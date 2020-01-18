@@ -1,7 +1,7 @@
 {
-  "name": "mrbl-payment-stripe",
+  "name": "medusa-payment-stripe",
   "version": "1.0.0",
-  "description": "Stripe Payment provider for mrbl commerce",
+  "description": "Stripe Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": "",
   "author": "Sebastian Rindom",
