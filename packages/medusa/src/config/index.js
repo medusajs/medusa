@@ -9,7 +9,7 @@ if (!envFound) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️")
 }
 
-export default {
+const config = {
   /**
    * Your favorite port
    */
@@ -21,9 +21,10 @@ export default {
   /**
    * Your secret sauce
    */
-  jwtSecret: process.env.JWT_SECRET,
+  jwtSecret: process.env.NODE_ENV === "test" ? "test" : process.env.JWT_SECRET,
 
-  cookieSecret: process.env.COOKIE_SECRET,
+  cookieSecret:
+    process.env.NODE_ENV === "test" ? "test" : process.env.COOKIE_SECRET,
 
   /**
    * Used by winston logger
@@ -39,3 +40,5 @@ export default {
     prefix: "/api",
   },
 }
+
+export default config

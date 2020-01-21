@@ -33,4 +33,6 @@ class MedusaError extends Error {
   }
 }
 
+MedusaError.Types = MedusaErrorTypes
+
 export default MedusaError

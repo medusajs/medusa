@@ -1,5 +1,8 @@
 import { Router } from "express"
 import middlewares from "../../middlewares"
+import authRoutes from "./auth"
+import productRoutes from "./products"
+import productVariantRoutes from "./product-variants"
 
 const route = Router()
 
@@ -7,12 +10,13 @@ export default app => {
   app.use("/admin", route)
 
   // Unauthenticated routes
-  // route.use("/auth", require("./auth").default)
+  authRoutes(route)
 
   // Authenticated routes
   route.use(middlewares.authenticate())
-  route.use("/products", require("./products").default)
-  route.use("/product-variants", require("./product-variants").default)
+
+  productRoutes(route)
+  // productVariantRoutes(route)
 
   return app
 }
