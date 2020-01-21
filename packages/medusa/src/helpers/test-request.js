@@ -1,4 +1,4 @@
-import { createContainer } from "awilix"
+import { createContainer, asValue } from "awilix"
 import express from "express"
 import supertest from "supertest"
 import jwt from "jsonwebtoken"
@@ -13,6 +13,11 @@ import config from "../config"
 const testApp = express()
 
 const container = createContainer()
+container.register({
+  logger: asValue({
+    error: () => {},
+  }),
+})
 
 servicesLoader({ container })
 expressLoader({ app: testApp })
@@ -29,13 +34,13 @@ apiLoader({ app: testApp })
 const supertestRequest = supertest(testApp)
 
 let adminSessionOpts = {
-  cookieName: "adminSession",
+  cookieName: "session",
   secret: "test",
 }
 export { adminSessionOpts }
 
 let clientSessionOpts = {
-  cookieName: "clientSession",
+  cookieName: "session",
   secret: "test",
 }
 export { clientSessionOpts }

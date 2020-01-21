@@ -90,39 +90,39 @@ export const variants = {
   empty_variant: emptyVariant,
 }
 
+export const ProductVariantServiceMock = {
+  retrieve: jest.fn().mockImplementation(variantId => {
+    if (variantId === "1") {
+      return Promise.resolve(variant1)
+    }
+    if (variantId === "2") {
+      return Promise.resolve(variant2)
+    }
+    if (variantId === "3") {
+      return Promise.resolve(variant3)
+    }
+    if (variantId === "4") {
+      return Promise.resolve(variant4)
+    }
+    if (variantId === "invalid_option") {
+      return Promise.resolve(invalidVariant)
+    }
+    if (variantId === "empty_option") {
+      return Promise.resolve(emptyVariant)
+    }
+    return Promise.resolve(undefined)
+  }),
+  delete: jest.fn().mockReturnValue(Promise.resolve()),
+  addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
+    return Promise.resolve({})
+  }),
+  deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {
+    return Promise.resolve({})
+  }),
+}
+
 const mock = jest.fn().mockImplementation(() => {
-  return {
-    retrieve: jest.fn().mockImplementation(variantId => {
-      if (variantId === "1") {
-        return Promise.resolve(variant1)
-      }
-      if (variantId === "2") {
-        return Promise.resolve(variant2)
-      }
-      if (variantId === "3") {
-        return Promise.resolve(variant3)
-      }
-      if (variantId === "4") {
-        return Promise.resolve(variant4)
-      }
-      if (variantId === "invalid_option") {
-        return Promise.resolve(invalidVariant)
-      }
-      if (variantId === "empty_option") {
-        return Promise.resolve(emptyVariant)
-      }
-      return Promise.resolve(undefined)
-    }),
-    delete: jest.fn().mockReturnValue(Promise.resolve()),
-    addOptionValue: jest
-      .fn()
-      .mockImplementation((variantId, optionId, value) => {
-        return Promise.resolve({})
-      }),
-    deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {
-      return Promise.resolve({})
-    }),
-  }
+  return ProductVariantServiceMock
 })
 
 export default mock
