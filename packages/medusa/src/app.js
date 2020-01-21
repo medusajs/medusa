@@ -1,9 +1,9 @@
 import "core-js/stable"
 import "regenerator-runtime/runtime"
 import express from "express"
+import { MedusaError } from "medusa-core-utils"
 import loaders from "./loaders"
 import Logger from "./loaders/logger"
-import { MedusaErrorTypes } from "./utils/errors"
 
 const PORT = process.env.PORT || 80
 
@@ -21,10 +21,10 @@ const startServer = async () => {
       case "ValidationError":
         statusCode = 400
         break
-      case MedusaErrorTypes.INVALID_DATA:
+      case MedusaError.Types.INVALID_DATA:
         statusCode = 400
         break
-      case MedusaErrorTypes.DB_ERROR:
+      case MedusaError.Types.DB_ERROR:
         statusCode = 500
         break
       default:

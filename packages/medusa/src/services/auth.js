@@ -14,6 +14,33 @@ class AuthService extends BaseService {
   }
 
   /**
+   * Authenticates a given user with an API token
+   * @param {string} token - the api_token of the user to authenticate
+   * @return {{
+   *    success: (bool),
+   *    user: (object | undefined),
+   *    error: (string | undefined)
+   * }}
+   *    success: whether authentication succeeded
+   *    user: the user document if authentication succeded
+   *    error: a string with the error message
+   */
+  async authenticateAPIToken(token) {
+    const user = await this.userModel_.findOne({ api_token: token })
+
+    if (user) {
+      return {
+        success: true,
+        user,
+      }
+    } else {
+      return {
+        success: false,
+        error: "Invalid API Token",
+      }
+    }
+  }
+  /**
    * Authenticates a given user based on an email, password combination. Uses
    * bcrypt to match password with hashed value.
    * @param {string} email - the email of the user

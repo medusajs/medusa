@@ -1,9 +1,9 @@
-import validator from "../../../../utils/validator"
+import { Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
   const { productId } = req.params
 
-  const schema = validator.objectId()
+  const schema = Validator.objectId()
   const { value, error } = schema.validate(productId)
 
   if (error) {

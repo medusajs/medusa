@@ -1,8 +1,7 @@
 import mongoose from "mongoose"
 import _ from "lodash"
+import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "../interfaces"
-import MedusaError, { MedusaErrorTypes } from "../utils/errors"
-import validator from "../utils/validator"
 
 /**
  * Provides layer to manipulate products.
@@ -29,11 +28,11 @@ class ProductService extends BaseService {
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = validator.objectId()
+    const schema = Validator.objectId()
     const { value, error } = schema.validate(rawId)
     if (error) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_ARGUMENT,
+        MedusaError.Types.INVALID_ARGUMENT,
         "The productId could not be casted to an ObjectId"
       )
     }
@@ -57,7 +56,7 @@ class ProductService extends BaseService {
   retrieve(productId) {
     const validatedId = this.validateId_(productId)
     return this.productModel_.findOne({ _id: validatedId }).catch(err => {
-      throw new MedusaError(MedusaErrorTypes.DB_ERROR, err.message)
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
   }
 
@@ -73,7 +72,7 @@ class ProductService extends BaseService {
         published: false,
       })
       .catch(err => {
-        throw new MedusaError(MedusaErrorTypes.DB_ERROR, err.message)
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
 
@@ -86,7 +85,7 @@ class ProductService extends BaseService {
     return this.productModel_
       .updateOne({ _id: productId }, { $set: { published: true } })
       .catch(err => {
-        throw new MedusaError(MedusaErrorTypes.DB_ERROR, err.message)
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
 
@@ -104,14 +103,14 @@ class ProductService extends BaseService {
 
     if (update.metadata) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         "Use setMetadata to update metadata fields"
       )
     }
 
     if (update.variants) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         "Use addVariant, reorderVariants, removeVariant to update Product Variants"
       )
     }
@@ -123,7 +122,7 @@ class ProductService extends BaseService {
         { runValidators: true }
       )
       .catch(err => {
-        throw new MedusaError(MedusaErrorTypes.DB_ERROR, err.message)
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
 
@@ -148,7 +147,7 @@ class ProductService extends BaseService {
     })
 
     return this.productModel_.deleteOne({ _id: product._id }).catch(err => {
-      throw new MedusaError(MedusaErrorTypes.DB_ERROR, err.message)
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
   }
 
@@ -163,7 +162,7 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
@@ -171,14 +170,14 @@ class ProductService extends BaseService {
     const variant = await this.productVariantService_.retrieve(variantId)
     if (!variant) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Variant with ${variantId} was not found`
       )
     }
 
     if (product.options.length !== variant.options.length) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
       )
     }
@@ -186,7 +185,7 @@ class ProductService extends BaseService {
     product.options.forEach(option => {
       if (!variant.options.find(vo => vo.option_id === option._id)) {
         throw new MedusaError(
-          MedusaErrorTypes.INVALID_DATA,
+          MedusaError.Types.INVALID_DATA,
           `Variant options do not contain value for ${option.title}`
         )
       }
@@ -207,7 +206,7 @@ class ProductService extends BaseService {
 
     if (combinationExists) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         `Variant with provided options already exists`
       )
     }
@@ -230,7 +229,7 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
@@ -238,7 +237,7 @@ class ProductService extends BaseService {
     // Make sure that option doesn't already exist
     if (product.options.find(o => o.title === optionTitle)) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         `An option with the title: ${optionTitle} already exists`
       )
     }
@@ -297,14 +296,14 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
 
     if (product.variants.length !== variantOrder.length) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         `Product variants and new variant order differ in length. To delete or add variants use removeVariant or addVariant`
       )
     }
@@ -313,7 +312,7 @@ class ProductService extends BaseService {
       const variant = product.variants.find(id => id === vId)
       if (!variant) {
         throw new MedusaError(
-          MedusaErrorTypes.INVALID_DATA,
+          MedusaError.Types.INVALID_DATA,
           `Product has no variant with id: ${vId}`
         )
       }
@@ -344,14 +343,14 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
 
     if (product.options.length !== optionOrder.length) {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_DATA,
+        MedusaError.Types.INVALID_DATA,
         `Product options and new options order differ in length. To delete or add options use removeOption or addOption`
       )
     }
@@ -360,7 +359,7 @@ class ProductService extends BaseService {
       const option = product.options.find(o => o._id === oId)
       if (!option) {
         throw new MedusaError(
-          MedusaErrorTypes.INVALID_DATA,
+          MedusaError.Types.INVALID_DATA,
           `Product has no option with id: ${oId}`
         )
       }
@@ -390,7 +389,7 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
@@ -398,7 +397,7 @@ class ProductService extends BaseService {
     const option = product.options.find(o => o._id === optionId)
     if (!option) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product has no option with id: ${optionId}`
       )
     }
@@ -410,7 +409,7 @@ class ProductService extends BaseService {
 
     if (titleExists) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `An option with title ${title} already exists`
       )
     }
@@ -439,7 +438,7 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
@@ -474,7 +473,7 @@ class ProductService extends BaseService {
 
       if (!equalsFirst.every(v => v)) {
         throw new MedusaError(
-          MedusaErrorTypes.INVALID_DATA,
+          MedusaError.Types.INVALID_DATA,
           `To delete an option, first delete all variants, such that when option is deleted, no duplicate variants will exist. For more info check MEDUSA.com`
         )
       }
@@ -508,7 +507,7 @@ class ProductService extends BaseService {
     const product = await this.retrieve(productId)
     if (!product) {
       throw new MedusaError(
-        MedusaErrorTypes.NOT_FOUND,
+        MedusaError.Types.NOT_FOUND,
         `Product with ${product._id} was not found`
       )
     }
@@ -555,7 +554,7 @@ class ProductService extends BaseService {
 
     if (typeof key !== "string") {
       throw new MedusaError(
-        MedusaErrorTypes.INVALID_ARGUMENT,
+        MedusaError.Types.INVALID_ARGUMENT,
         "Key type is invalid. Metadata keys must be strings"
       )
     }
@@ -564,7 +563,7 @@ class ProductService extends BaseService {
     return this.productModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
       .catch(err => {
-        throw new MedusaError(MedusaErrorTypes.DB_ERROR, err.message)
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
 }

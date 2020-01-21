@@ -1,12 +1,17 @@
 {
-  "name": "medusa-payment-stripe",
+  "name": "medusa-core-utils",
   "version": "1.0.0",
-  "description": "Stripe Payment provider for Meduas Commerce",
-  "main": "index.js",
+  "description": "Core utils for Medusa",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/srindom/medusa",
-    "directory": "packages/medusa-payment-stripe"
+    "directory": "packages/medusa-core-utils"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist/ --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
   },
   "author": "Sebastian Rindom",
   "license": "AGPL-3.0-or-later",
@@ -19,12 +24,8 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1"
   },
-  "scripts": {
-    "build": "babel src --out-dir . --ignore **/__tests__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__"
-  },
   "dependencies": {
-    "@babel/runtime": "^7.7.6"
+    "@hapi/joi": "^16.1.8",
+    "joi-objectid": "^3.0.1"
   }
 }

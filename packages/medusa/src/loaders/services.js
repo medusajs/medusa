@@ -4,8 +4,14 @@ import { Lifetime } from "awilix"
  * Registers all services in the services directory
  */
 export default ({ container }) => {
+  let loadPath = "src/services/*.js"
+
+  if (process.env.NODE_ENV === "test") {
+    loadPath = "src/services/__mocks__/*.js"
+  }
+
   // service/auth.js -> authService
-  container.loadModules(["src/services/*.js"], {
+  container.loadModules([loadPath], {
     resolverOptions: {
       lifetime: Lifetime.SINGLETON,
     },
@@ -19,7 +25,13 @@ export default ({ container }) => {
       const name = parts.join("")
 
       const splat = descriptor.path.split("/")
-      const namespace = splat[splat.length - 2]
+
+      let offset = 2
+      if (process.env.NODE_ENV === "test") {
+        offset = 3
+      }
+
+      const namespace = splat[splat.length - offset]
       const upperNamespace =
         namespace.charAt(0).toUpperCase() + namespace.slice(1, -1)
       return name + upperNamespace
