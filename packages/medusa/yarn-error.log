@@ -1,29 +1,29 @@
 Arguments: 
-  /Users/srindom/.nvm/versions/node/v10.15.3/bin/node /usr/local/Cellar/yarn/1.19.0/libexec/bin/yarn.js add -D client-sessions
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.17.3/libexec/bin/yarn.js
 
 PATH: 
-  /Users/srindom/.rvm/gems/ruby-2.6.3/bin:/Users/srindom/.rvm/gems/ruby-2.6.3@global/bin:/Users/srindom/.rvm/rubies/ruby-2.6.3/bin:/Users/srindom/.nvm/versions/node/v10.15.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/srindom/.rvm/bin
+  /Users/oliverjuhl/Desktop/development/google-cloud-sdk/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/oliverjuhl/miniconda3/bin:/Users/oliverjuhl/development/flutter/bin
 
 Yarn version: 
-  1.19.0
+  1.17.3
 
 Node version: 
-  10.15.3
+  10.15.0
 
 Platform: 
   darwin x64
 
 Trace: 
   Error: https://registry.yarnpkg.com/medusa-core-utils: Not found
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:66918:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:140539:22)
-      at Request.emit (events.js:189:13)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:141511:10)
-      at Request.emit (events.js:189:13)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:141433:12)
-      at Object.onceWrapper (events.js:277:13)
-      at IncomingMessage.emit (events.js:194:15)
-      at endReadableNT (_stream_readable.js:1125:12)
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:66830:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:140464:22)
+      at Request.emit (events.js:182:13)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:141436:10)
+      at Request.emit (events.js:182:13)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.17.3/libexec/lib/cli.js:141358:12)
+      at Object.onceWrapper (events.js:273:13)
+      at IncomingMessage.emit (events.js:187:15)
+      at endReadableNT (_stream_readable.js:1094:12)
       at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
@@ -48,6 +48,7 @@ npm manifest:
       "@babel/preset-env": "^7.7.5",
       "@babel/register": "^7.7.4",
       "@babel/runtime": "^7.7.6",
+      "client-sessions": "^0.8.0",
       "eslint": "^6.7.2",
       "jest": "^24.9.0",
       "nodemon": "^2.0.1",
@@ -1699,6 +1700,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
     integrity sha1-/xnt6Kml5XkyQUewwR8PvLq+1jk=
   
+  client-sessions@^0.8.0:
+    version "0.8.0"
+    resolved "https://registry.yarnpkg.com/client-sessions/-/client-sessions-0.8.0.tgz#a7d8c5558ad5d56f2a199f3533eb654b5df893fd"
+    integrity sha1-p9jFVYrV1W8qGZ81M+tlS134k/0=
+    dependencies:
+      cookies "^0.7.0"
+  
   cliui@^5.0.0:
     version "5.0.0"
     resolved "https://registry.yarnpkg.com/cliui/-/cliui-5.0.0.tgz#deefcfdb2e800784aa34f46fa08e06851c7bbbc5"
@@ -1877,6 +1885,14 @@ Lockfile:
     version "2.1.2"
     resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.2.tgz#dd8a235530752f988f9a0844f3fc589e3111125c"
     integrity sha512-Mw+adcfzPxcPeI+0WlvRrr/3lGVO0bD75SxX6811cxSh1Wbxx7xZBGK1eVtDf6si8rg2lhnUjsVLMFMfbRIuwA==
+  
+  cookies@^0.7.0:
+    version "0.7.3"
+    resolved "https://registry.yarnpkg.com/cookies/-/cookies-0.7.3.tgz#7912ce21fbf2e8c2da70cf1c3f351aecf59dadfa"
+    integrity sha512-+gixgxYSgQLTaTIilDHAdlNPZDENDQernEMiIcZpYYP14zgHsCt4Ce1FEjFtcp6GefhozebB6orvhAAWx/IS0A==
+    dependencies:
+      depd "~1.1.2"
+      keygrip "~1.0.3"
   
   copy-descriptor@^0.1.0:
     version "0.1.1"
@@ -3946,6 +3962,11 @@ Lockfile:
     version "2.3.1"
     resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.3.1.tgz#def12d9c941017fabfb00f873af95e9c99e1be87"
     integrity sha512-l3hLhffs9zqoDe8zjmb/mAN4B8VT3L56EUvKNqLFVs9YlFA+zx7ke1DO8STAdDyYNkeSo1nKmjuvQeI12So8Xw==
+  
+  keygrip@~1.0.3:
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.3.tgz#399d709f0aed2bab0a059e0cdd3a5023a053e1dc"
+    integrity sha512-/PpesirAIfaklxUzp4Yb7xBper9MwP6hNRA6BGGUFCgbJ+BM5CKBtsoxinNXkLHAr+GXS1/lSlF2rP7cv5Fl+g==
   
   kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
     version "3.2.2"

@@ -41,10 +41,10 @@ class ProductService extends BaseService {
   }
 
   /**
-   *
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
    */
-  list(query) {
-    const selector = {}
+  list(selector) {
     return this.productModel_.find(selector)
   }
 
@@ -477,15 +477,9 @@ class ProductService extends BaseService {
           `To delete an option, first delete all variants, such that when option is deleted, no duplicate variants will exist. For more info check MEDUSA.com`
         )
       }
-
-      await Promise.all(
-        product.variants.map(async variantId =>
-          this.productVariantService_.deleteOptionValue(variantId, optionId)
-        )
-      )
     }
 
-    return this.productModel_.updateOne(
+    const result = await this.productModel_.updateOne(
       { _id: productId },
       {
         $pull: {
@@ -495,6 +489,17 @@ class ProductService extends BaseService {
         },
       }
     )
+
+    // If we reached this point, we can delete option value from variants
+    if (product.variants) {
+      await Promise.all(
+        product.variants.map(async variantId =>
+          this.productVariantService_.deleteOptionValue(variantId, optionId)
+        )
+      )
+    }
+
+    return result
   }
 
   /**
@@ -543,7 +548,9 @@ class ProductService extends BaseService {
   }
 
   /**
-   * Sets metadata for a product
+   * Dedicated method to set metadata for a product.
+   * To ensure that plugins does not overwrite each
+   * others metadata fields, setMetadata is provided.
    * @param {string} productId - the product to decorate.
    * @param {string} key - key for metadata field
    * @param {string} value - value for metadata field.

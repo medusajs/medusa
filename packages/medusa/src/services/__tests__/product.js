@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
 import ProductService from "../product"
-import { ProductModelMock } from "./mocks/product-model"
+import { ProductModelMock } from "../../models/__mocks__/product"
 import {
   ProductVariantServiceMock,
   variants,
-} from "./mocks/product-variant-service"
+} from "../__mocks__/product-variant"
 import IdMap from "../../helpers/id-map"
 
 describe("ProductService", () => {
@@ -107,6 +107,7 @@ describe("ProductService", () => {
       jest.clearAllMocks()
       const productService = new ProductService({
         productModel: ProductModelMock,
+        productVariantService: ProductVariantServiceMock,
       })
 
       productService.publish(IdMap.getId("productId"))
@@ -189,7 +190,7 @@ describe("ProductService", () => {
     })
   })
 
-  describe("add metadata to product model", () => {
+  describe("setMetadata", () => {
     const productService = new ProductService({
       productModel: ProductModelMock,
     })
@@ -232,7 +233,7 @@ describe("ProductService", () => {
     })
   })
 
-  describe("update product", () => {
+  describe("update", () => {
     const productService = new ProductService({
       productModel: ProductModelMock,
     })
@@ -285,7 +286,7 @@ describe("ProductService", () => {
     })
   })
 
-  describe("delete product", () => {
+  describe("delete", () => {
     const productService = new ProductService({
       productModel: ProductModelMock,
       productVariantService: ProductVariantServiceMock,
@@ -306,16 +307,6 @@ describe("ProductService", () => {
       expect(ProductModelMock.deleteOne).toBeCalledWith({
         _id: IdMap.getId("deleteId"),
       })
-    })
-
-    it("throw error on invalid product id type", async () => {
-      try {
-        await productService.update(19314235, { title: "new title" })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The productId could not be casted to an ObjectId"
-        )
-      }
     })
   })
 
