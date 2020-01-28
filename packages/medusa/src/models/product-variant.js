@@ -15,6 +15,8 @@ class ProductVariantModel extends BaseModel {
     prices: { type: [MoneyAmountSchema], default: [], required: true },
     options: { type: [OptionValueSchema], default: [] },
     image: { type: String, default: "" },
+    metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
+    published: { type: Boolean, default: false },
   }
 }
 

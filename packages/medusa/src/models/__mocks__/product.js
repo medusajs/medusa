@@ -1,4 +1,4 @@
-import IdMap from "../../../helpers/id-map"
+import IdMap from "../../helpers/id-map"
 
 export const ProductModelMock = {
   create: jest.fn().mockReturnValue(Promise.resolve()),

@@ -60,6 +60,21 @@ const variant4 = {
   ],
 }
 
+const variant5 = {
+  _id: "5",
+  title: "Variant with valid id",
+  options: [
+    {
+      option_id: IdMap.getId("color_id"),
+      value: "blue",
+    },
+    {
+      option_id: IdMap.getId("size_id"),
+      value: "50",
+    },
+  ],
+}
+
 const invalidVariant = {
   _id: "invalid_option",
   title: "variant3",
@@ -103,6 +118,9 @@ export const ProductVariantServiceMock = {
     }
     if (variantId === "4") {
       return Promise.resolve(variant4)
+    }
+    if (variantId === IdMap.getId("validId")) {
+      return Promise.resolve(variant5)
     }
     if (variantId === "invalid_option") {
       return Promise.resolve(invalidVariant)
