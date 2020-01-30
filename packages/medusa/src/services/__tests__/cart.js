@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
+import { IdMap } from "medusa-test-utils"
 import CartService from "../cart"
 import { RegionServiceMock } from "../__mocks__/region"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
-import IdMap from "../../helpers/id-map"
 
 describe("CartService", () => {
   describe("retrieve", () => {
