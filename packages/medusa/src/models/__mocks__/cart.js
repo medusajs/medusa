@@ -1,4 +1,4 @@
-import IdMap from "../../helpers/id-map"
+import { IdMap } from "medusa-test-utils"
 
 export const carts = {
   emptyCart: {

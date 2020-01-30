@@ -1,0 +1,29 @@
+{
+  "name": "medusa-test-utils",
+  "version": "1.0.0",
+  "description": "Test utils for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/srindom/medusa",
+    "directory": "packages/medusa-test-utils"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist/ --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
+  },
+  "author": "Sebastian Rindom",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "cross-env": "^5.2.1"
+  },
+  "dependencies": {
+    "mongoose": "^5.8.0"
+  }
+}

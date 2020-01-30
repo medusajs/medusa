@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
+import { IdMap } from "medusa-test-utils"
 import ProductVariantService from "../product-variant"
 import { ProductVariantModelMock } from "../../models/__mocks__/product-variant"
-import IdMap from "../../helpers/id-map"
 import { ProductServiceMock } from "../__mocks__/product"
 
 describe("ProductVariantService", () => {
