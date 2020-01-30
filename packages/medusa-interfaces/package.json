@@ -1,12 +1,12 @@
 {
-  "name": "medusa-core-utils",
+  "name": "medusa-interfaces",
   "version": "1.0.0",
-  "description": "Core utils for Medusa",
+  "description": "Core interfaces for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/srindom/medusa",
-    "directory": "packages/medusa-core-utils"
+    "directory": "packages/medusa-interfaces"
   },
   "scripts": {
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
@@ -24,7 +24,6 @@
     "cross-env": "^5.2.1"
   },
   "dependencies": {
-    "@hapi/joi": "^16.1.8",
-    "joi-objectid": "^3.0.1"
+    "mongoose": "^5.8.0"
   }
 }

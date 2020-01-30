@@ -9,21 +9,23 @@ import PaymentMethodSchema from "./schemas/payment-method"
 import ShippingMethodSchema from "./schemas/shipping-method"
 import AddressSchema from "./schemas/address"
 
-class CartModel extends BaseModel {
-  static modelName = "Cart"
+class OrderModel extends BaseModel {
+  static modelName = "Order"
 
   static schema = {
-    email: { type: String },
-    billing_address: { type: AddressSchema },
-    shipping_address: { type: AddressSchema },
-    items: { type: [LineItemSchema], default: [] },
+    canceled: { type: Boolean, default: false },
+    archived: { type: Boolean, default: false },
+    email: { type: String, required: true },
+    billing_address: { type: AddressSchema, required: true },
+    shipping_address: { type: AddressSchema, required: true },
+    items: { type: [LineItemSchema], required: true },
     region: { type: String, required: true },
     discounts: { type: [String], default: [] },
-    customer_id: { type: String },
-    payment_method: { type: PaymentMethodSchema },
-    shipping_methods: { type: [ShippingMethodSchema] },
+    customer_id: { type: String, required: true },
+    payment_method: { type: PaymentMethodSchema, required: true },
+    shipping_methods: { type: [ShippingMethodSchema], required: true },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }
 
-export default CartModel
+export default OrderModel

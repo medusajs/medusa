@@ -1,13 +1,11 @@
 import glob from "glob"
+import { BaseModel, BaseService, PaymentService } from "medusa-interfaces"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
 import { asFunction } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import { plugins } from "../../medusa-config.js"
-import PaymentService from "../interfaces/payment-service"
-import BaseModel from "../interfaces/base-model"
-import BaseService from "../interfaces/base-service"
 
 /**
  * Registers all services in the services directory

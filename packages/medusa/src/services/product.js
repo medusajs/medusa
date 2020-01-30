@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
-import { BaseService } from "../interfaces"
+import { BaseService } from "medusa-interfaces"
 
 /**
  * Provides layer to manipulate products.

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import { BaseService } from "../interfaces"
+import { BaseService } from "medusa-interfaces"
 
 /**
  * Can authenticate a user based on email password combination

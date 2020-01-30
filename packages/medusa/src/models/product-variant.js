@@ -3,7 +3,7 @@
  *
  ******************************************************************************/
 import mongoose from "mongoose"
-import { BaseModel } from "../interfaces"
+import { BaseModel } from "medusa-interfaces"
 
 import MoneyAmountSchema from "./schemas/money-amount"
 import OptionValueSchema from "./schemas/option-value"
