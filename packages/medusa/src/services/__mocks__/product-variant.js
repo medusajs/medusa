@@ -130,6 +130,17 @@ export const ProductVariantServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  canCoverQuantity: jest.fn().mockImplementation((variantId, quantity) => {
+    if (variantId === IdMap.getId("can-cover")) {
+      return Promise.resolve(true)
+    }
+
+    if (variantId === IdMap.getId("cannot-cover")) {
+      return Promise.resolve(false)
+    }
+
+    return Promise.reject(new Error("Not found"))
+  }),
   delete: jest.fn().mockReturnValue(Promise.resolve()),
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})

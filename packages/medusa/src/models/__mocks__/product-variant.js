@@ -28,6 +28,33 @@ export const ProductVariantModelMock = {
     if (query._id === IdMap.getId("failId")) {
       return Promise.reject(new Error("test error"))
     }
+    if (query._id === IdMap.getId("inventory-test")) {
+      return Promise.resolve({
+        _id: IdMap.getId("inventory-test"),
+        title: "inventory",
+        inventory_quantity: 10,
+        allow_backorder: false,
+        manage_inventory: true,
+      })
+    }
+    if (query._id === IdMap.getId("no-inventory-test")) {
+      return Promise.resolve({
+        _id: IdMap.getId("no-inventory-test"),
+        title: "inventory",
+        inventory_quantity: 0,
+        allow_backorder: false,
+        manage_inventory: false,
+      })
+    }
+    if (query._id === IdMap.getId("backorder-test")) {
+      return Promise.resolve({
+        _id: IdMap.getId("backorder-test"),
+        title: "inventory",
+        inventory_quantity: 5,
+        allow_backorder: true,
+        manage_inventory: true,
+      })
+    }
     return Promise.resolve(undefined)
   }),
 }
