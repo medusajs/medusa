@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { BaseService } from "../interfaces"
+import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 /**

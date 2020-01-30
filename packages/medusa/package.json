@@ -49,6 +49,7 @@
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "medusa-core-utils": "^1.0.0",
+    "medusa-interfaces": "^1.0.0",
     "mongoose": "^5.8.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",

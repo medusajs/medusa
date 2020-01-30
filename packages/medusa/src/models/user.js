@@ -2,7 +2,7 @@
  * models/user.js
  *
  ******************************************************************************/
-import { BaseModel } from "../interfaces"
+import { BaseModel } from "medusa-interfaces"
 
 class UserModel extends BaseModel {
   static modelName = "User"

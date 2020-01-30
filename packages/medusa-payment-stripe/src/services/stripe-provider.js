@@ -1,5 +1,5 @@
 import _ from "lodash"
-import PaymentService from "../../../src/interfaces/payment-service"
+import { PaymentService } from "medusa-interfaces"
 
 class StripeProviderService extends PaymentService {
   static identifier = "stripe"
