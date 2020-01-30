@@ -195,6 +195,29 @@ class ProductVariantService extends BaseService {
   }
 
   /**
+   * Checks if the inventory of a variant can cover a given quantity. Will
+   * return true if the variant doesn't have managed inventory or if the variant
+   * allows backorders or if the inventory quantity is greater than `quantity`.
+   * @params {string} variantId - the id of the variant to check
+   * @params {number} quantity - the number of units to check availability for
+   * @return {boolean} true if the inventory covers the quantity
+   */
+  async canCoverQuantity(variantId, quantity) {
+    const variant = await this.retrieve(variantId)
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with ${variantId} was not found`
+      )
+    }
+
+    const { inventory_quantity, allow_backorder, manage_inventory } = variant
+    return (
+      !manage_inventory || allow_backorder || inventory_quantity >= quantity
+    )
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */

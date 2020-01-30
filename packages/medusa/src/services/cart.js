@@ -52,6 +52,93 @@ class CartService extends BaseService {
   }
 
   /**
+   * Used to validate line items.
+   * @param {object} rawLineItem - the raw cart id to validate.
+   * @return {object} the validated id
+   */
+  validateLineItem_(rawLineItem) {
+    const content = Validator.object({
+      unit_price: Validator.number().required(),
+      variant: Validator.object().required(),
+      product: Validator.object().required(),
+      quantity: Validator.number()
+        .integer()
+        .min(1),
+    })
+
+    const lineItemSchema = Validator.object({
+      title: Validator.string().required(),
+      description: Validator.string(),
+      thumbnail: Validator.string(),
+      content: Validator.alternatives()
+        .try(content, Validator.array().items(content))
+        .required(),
+      quantity: Validator.number()
+        .integer()
+        .min(1)
+        .required(),
+      metadata: Validator.object(),
+    })
+
+    const { value, error } = lineItemSchema.validate(rawLineItem)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        error.details[0].message
+      )
+    }
+
+    return value
+  }
+
+  /**
+   * Contents of a line item
+   * @typedef {(object | array)} LineItemContent
+   * @property {number} unit_price - the price of the content
+   * @property {object} variant - the product variant of the content
+   * @property {object} product - the product of the content
+   * @property {number} quantity - the quantity of the content
+   */
+
+  /**
+   * A collection of contents grouped in the same line item
+   * @typedef {LineItemContent[]} LineItemContentArray
+   */
+
+  /**
+   * Confirms if the contents of a line item is covered by the inventory.
+   * To be covered a variant must either not have its inventory managed or it
+   * must allow backorders or it must have enough inventory to cover the request.
+   * If the content is made up of multiple variants it will return true if all
+   * variants can be covered. If the content consists of a single variant it will
+   * return true if the variant is covered.
+   * @param {(LineItemContent | LineItemContentArray)} - the content of the line
+   *     item
+   * @param {number} - the quantity of the line item
+   * @return {boolean} true if the inventory covers the line item.
+   */
+  async confirmInventory_(content, lineQuantity) {
+    if (Array.isArray(content)) {
+      const coverage = await Promise.all(
+        content.map(({ variant, quantity }) => {
+          return this.productVariantService_.canCoverQuantity(
+            variant._id,
+            lineQuantity * quantity
+          )
+        })
+      )
+
+      return coverage.every(c => c)
+    }
+
+    const { variant, quantity } = content
+    return this.productVariantService_.canCoverQuantity(
+      variant._id,
+      lineQuantity * quantity
+    )
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
@@ -82,6 +169,72 @@ class CartService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(product, fields.concat(requiredFields))
     return decorated
+  }
+
+  /**
+   *
+   */
+  async addLineItem(cartId, lineItem) {
+    const validatedLineItem = this.validateLineItem_(lineItem)
+
+    const cart = await this.retrieve(cartId)
+    const currentItem = cart.items.find(line =>
+      _.isEqual(line.content, validatedLineItem.content)
+    )
+
+    // If content matches one of the line items currently in the cart we can
+    // simply update the quantity of the existing line item
+    if (currentItem) {
+      const newQuantity = currentItem.quantity + validatedLineItem.quantity
+
+      // Confirm inventory
+      const hasInventory = await this.confirmInventory_(
+        validatedLineItem.content,
+        newQuantity
+      )
+
+      if (!hasInventory) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Inventory doesn't cover the desired quantity"
+        )
+      }
+
+      return this.cartModel_.updateOne(
+        {
+          _id: cartId,
+          "items._id": currentItem._id,
+        },
+        {
+          $set: {
+            "items.$.quantity": newQuantity,
+          },
+        }
+      )
+    }
+
+    // Confirm inventory
+    const hasInventory = await this.confirmInventory_(
+      validatedLineItem.content,
+      validatedLineItem.quantity
+    )
+
+    if (!hasInventory) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Inventory doesn't cover the desired quantity"
+      )
+    }
+
+    // The line we are adding doesn't already exist so it is safe to push
+    return this.cartModel_.updateOne(
+      {
+        _id: cartId,
+      },
+      {
+        $push: { items: validatedLineItem },
+      }
+    )
   }
 
   /**

@@ -20,6 +20,7 @@ export default new mongoose.Schema({
   // [
   //   {
   //     unit_price: (MoneyAmount),
+  //     quantity: (Number),
   //     variant: (ProductVariantSchema),
   //     product: (ProductSchema)
   //   }

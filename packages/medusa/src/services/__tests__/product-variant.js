@@ -413,4 +413,50 @@ describe("ProductVariantService", () => {
       })
     })
   })
+
+  describe("canCoverQuantity", () => {
+    const productVariantService = new ProductVariantService({
+      productVariantModel: ProductVariantModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("returns true if there is more inventory than requested", async () => {
+      const res = await productVariantService.canCoverQuantity(
+        IdMap.getId("inventory-test"),
+        10
+      )
+
+      expect(res).toEqual(true)
+    })
+
+    it("returns true if inventory not managed", async () => {
+      const res = await productVariantService.canCoverQuantity(
+        IdMap.getId("no-inventory-test"),
+        10
+      )
+
+      expect(res).toEqual(true)
+    })
+
+    it("returns true if backorders allowed", async () => {
+      const res = await productVariantService.canCoverQuantity(
+        IdMap.getId("backorder-test"),
+        10
+      )
+
+      expect(res).toEqual(true)
+    })
+
+    it("returns false if insufficient inventory", async () => {
+      const res = await productVariantService.canCoverQuantity(
+        IdMap.getId("inventory-test"),
+        20
+      )
+
+      expect(res).toEqual(false)
+    })
+  })
 })

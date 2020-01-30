@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { IdMap } from "medusa-test-utils"
 import CartService from "../cart"
+import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 
@@ -55,6 +56,202 @@ describe("CartService", () => {
       } catch (err) {
         expect(err.message).toEqual(
           "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+    })
+  })
+
+  describe("addLineItem", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      productVariantService: ProductVariantServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates new line item", async () => {
+      const lineItem = {
+        title: "New Line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      }
+
+      await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("emptyCart"),
+        },
+        {
+          $push: { items: lineItem },
+        }
+      )
+    })
+
+    it("successfully merges existing line item", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      }
+
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+          "items._id": IdMap.getId("existingLine"),
+        },
+        {
+          $set: { "items.$.quantity": 20 },
+        }
+      )
+    })
+
+    it("successfully adds multi-content line", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: [
+          {
+            unit_price: 123,
+            variant: {
+              _id: IdMap.getId("can-cover"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+          {
+            unit_price: 123,
+            variant: {
+              _id: IdMap.getId("can-cover"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+        ],
+        quantity: 10,
+      }
+
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+        },
+        {
+          $push: { items: lineItem },
+        }
+      )
+    })
+
+    it("throws if line item not validated", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+      }
+
+      try {
+        await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      } catch (err) {
+        expect(err.message).toEqual(`"content" is required`)
+      }
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        content: {
+          variant: {
+            _id: IdMap.getId("cannot-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+          unit_price: 1234,
+        },
+      }
+
+      try {
+        await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      } catch (err) {
+        expect(err.message).toEqual(
+          `Inventory doesn't cover the desired quantity`
+        )
+      }
+    })
+
+    it("throws if inventory isn't covered multi-line", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        content: [
+          {
+            variant: {
+              _id: IdMap.getId("can-cover"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+            unit_price: 1234,
+          },
+          {
+            variant: {
+              _id: IdMap.getId("cannot-cover"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+            unit_price: 1234,
+          },
+        ],
+      }
+
+      try {
+        await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      } catch (err) {
+        expect(err.message).toEqual(
+          `Inventory doesn't cover the desired quantity`
         )
       }
     })
