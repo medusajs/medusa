@@ -111,8 +111,8 @@ class CustomerService extends BaseService {
    * @param {string} email - the email to add to customer
    * @return {Promise} the result of the update operation
    */
-  updateEmail(customerId, email) {
-    const customer = this.retrieve(customerId)
+  async updateEmail(customerId, email) {
+    const customer = await this.retrieve(customerId)
     if (!customer) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -122,12 +122,12 @@ class CustomerService extends BaseService {
 
     this.validateEmail_(email)
 
-    return this.cartModel_.updateOne(
+    return this.customerModel_.updateOne(
       {
         _id: customerId,
       },
       {
-        $set: { email: value },
+        $set: { email: email },
       }
     )
   }
@@ -138,8 +138,8 @@ class CustomerService extends BaseService {
    * @param {*} address - the new address to replace the current one
    * @return {Promise} the result of the update operation
    */
-  updateBillingAddress(customerId, address) {
-    const customer = this.retrieve(customerId)
+  async updateBillingAddress(customerId, address) {
+    const customer = await this.retrieve(customerId)
     if (!customer) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -154,7 +154,7 @@ class CustomerService extends BaseService {
         _id: customerId,
       },
       {
-        $set: { billing_address: value },
+        $set: { billing_address: address },
       }
     )
   }
@@ -168,8 +168,8 @@ class CustomerService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  update(customerId, update) {
-    const customer = this.retrieve(customerId)
+  async update(customerId, update) {
+    const customer = await this.retrieve(customerId)
     if (!customer) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -192,14 +192,28 @@ class CustomerService extends BaseService {
     }
 
     return this.customerModel_
-      .updateOne(
-        { _id: validatedId },
-        { $set: update },
-        { runValidators: true }
-      )
+      .updateOne({ _id: customerId }, { $set: update }, { runValidators: true })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Deletes a customer from a given customer id.
+   * @param {string} customerId - the id of the customer to delete. Must be
+   *   castable as an ObjectId
+   * @return {Promise} the result of the delete operation.
+   */
+  async delete(customerId) {
+    const customer = await this.retrieve(customerId)
+    // Delete is idempotent, but we return a promise to allow then-chaining
+    if (!customer) {
+      return Promise.resolve()
+    }
+
+    return this.customerModel_.deleteOne({ _id: customer._id }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
   }
 
   /**

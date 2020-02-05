@@ -120,27 +120,158 @@ describe("CustomerService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
-      await customerService.setMetadata(`${id}`, "metadata", "testMetadata")
+    it("successfully updates a customer", async () => {
+      await customerService.update(IdMap.getId("testCustomer"), {
+        first_name: "Olli",
+        last_name: "Test",
+      })
 
       expect(CustomerModelMock.updateOne).toBeCalledTimes(1)
       expect(CustomerModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { "metadata.metadata": "testMetadata" } }
+        { _id: IdMap.getId("testCustomer") },
+        { $set: { first_name: "Olli", last_name: "Test" } },
+        { runValidators: true }
       )
     })
 
-    it("throw error on invalid key type", async () => {
-      const id = mongoose.Types.ObjectId()
-
+    it("fails if metadata updates are attempted", async () => {
       try {
-        await customerService.setMetadata(`${id}`, 1234, "nono")
+        await customerService.update(IdMap.getId("testCustomer"), {
+          metadata: "Nononono",
+        })
+      } catch (err) {
+        expect(err.message).toEqual("Use setMetadata to update metadata fields")
+      }
+    })
+
+    it("fails if billing address updates are attempted", async () => {
+      try {
+        await customerService.update(IdMap.getId("testCustomer"), {
+          billing_address: {
+            last_name: "nnonono",
+          },
+        })
       } catch (err) {
         expect(err.message).toEqual(
-          "Key type is invalid. Metadata keys must be strings"
+          "Use updateBillingAddress to update billing address"
         )
       }
+    })
+  })
+
+  describe("updateEmail", () => {
+    const customerService = new CustomerService({
+      customerModel: CustomerModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates an email", async () => {
+      await customerService.updateEmail(
+        IdMap.getId("testCustomer"),
+        "oliver@medusa2.com"
+      )
+
+      expect(CustomerModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CustomerModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("testCustomer"),
+        },
+        {
+          $set: { email: "oliver@medusa2.com" },
+        }
+      )
+    })
+
+    it("throws on invalid email", async () => {
+      try {
+        await customerService.updateEmail(
+          IdMap.getId("testCustomer"),
+          "olivermedusa"
+        )
+      } catch (err) {
+        expect(err.message).toEqual("The email is not valid")
+      }
+
+      expect(CustomerModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+
+    describe("updateBillingAddress", () => {
+      const customerService = new CustomerService({
+        customerModel: CustomerModelMock,
+      })
+
+      beforeEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("successfully updates billing address", async () => {
+        await customerService.updateBillingAddress(
+          IdMap.getId("testCustomer"),
+          {
+            first_name: "Olli",
+            last_name: "Juhl",
+            address_1: "Laksegade",
+            city: "Copenhagen",
+            country_code: "DK",
+            postal_code: "2100",
+          }
+        )
+
+        expect(CustomerModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CustomerModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("testCustomer"),
+          },
+          {
+            $set: {
+              billing_address: {
+                first_name: "Olli",
+                last_name: "Juhl",
+                address_1: "Laksegade",
+                city: "Copenhagen",
+                country_code: "DK",
+                postal_code: "2100",
+              },
+            },
+          }
+        )
+      })
+
+      it("throws on invalid address", async () => {
+        try {
+          await customerService.updateBillingAddress(
+            IdMap.getId("testCustomer"),
+            {
+              first_name: 1234,
+            }
+          )
+        } catch (err) {
+          expect(err.message).toEqual("The address is not valid")
+        }
+
+        expect(CustomerModelMock.updateOne).toHaveBeenCalledTimes(0)
+      })
+    })
+  })
+  describe("delete", () => {
+    const customerService = new CustomerService({
+      customerModel: CustomerModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("deletes customer successfully", async () => {
+      await customerService.delete(IdMap.getId("deleteId"))
+
+      expect(CustomerModelMock.deleteOne).toBeCalledTimes(1)
+      expect(CustomerModelMock.deleteOne).toBeCalledWith({
+        _id: IdMap.getId("deleteId"),
+      })
     })
   })
 })
