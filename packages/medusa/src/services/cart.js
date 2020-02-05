@@ -172,7 +172,10 @@ class CartService extends BaseService {
   }
 
   /**
-   *
+   * Adds a line item to the cart.
+   * @param {string} cartId - the id of the cart that we will add to
+   * @param {LineItem} lineItem - the line item to add.
+   * @retur {Promise} the result of the update operation
    */
   async addLineItem(cartId, lineItem) {
     const validatedLineItem = this.validateLineItem_(lineItem)
