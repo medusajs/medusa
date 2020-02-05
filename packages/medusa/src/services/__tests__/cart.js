@@ -452,4 +452,120 @@ describe("CartService", () => {
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
     })
   })
+
+  describe("setRegion", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+      productVariantService: ProductVariantServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully set new region", async () => {
+      await cartService.setRegion(
+        IdMap.getId("fr-cart"),
+        IdMap.getId("region-us")
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("fr-cart"),
+        },
+        {
+          $set: {
+            region_id: IdMap.getId("region-us"),
+            items: [
+              {
+                _id: IdMap.getId("line"),
+                title: "merge line",
+                description: "This is a new line",
+                thumbnail: "test-img-yeah.com/thumb",
+                content: [
+                  {
+                    unit_price: 10,
+                    variant: {
+                      _id: IdMap.getId("eur-8-us-10"),
+                    },
+                    product: {
+                      _id: IdMap.getId("product"),
+                    },
+                    quantity: 1,
+                  },
+                  {
+                    unit_price: 12,
+                    variant: {
+                      _id: IdMap.getId("eur-10-us-12"),
+                    },
+                    product: {
+                      _id: IdMap.getId("product"),
+                    },
+                    quantity: 1,
+                  },
+                ],
+                quantity: 10,
+              },
+              {
+                _id: IdMap.getId("existingLine"),
+                title: "merge line",
+                description: "This is a new line",
+                thumbnail: "test-img-yeah.com/thumb",
+                content: {
+                  unit_price: 12,
+                  variant: {
+                    _id: IdMap.getId("eur-10-us-12"),
+                  },
+                  product: {
+                    _id: IdMap.getId("product"),
+                  },
+                  quantity: 1,
+                },
+                quantity: 10,
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("successfully set new region", async () => {
+      await cartService.setRegion(
+        IdMap.getId("complete-cart"),
+        IdMap.getId("region-us")
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("complete-cart"),
+        },
+        {
+          $set: {
+            region_id: IdMap.getId("region-us"),
+            shipping_method: undefined,
+            payment_method: undefined,
+            shipping_address: {
+              first_name: "hi",
+              last_name: "you",
+              country_code: "",
+              city: "of lights",
+              address_1: "You bet street",
+              postal_code: "4242",
+            },
+            billing_address: {
+              first_name: "hi",
+              last_name: "you",
+              country_code: "",
+              city: "of lights",
+              address_1: "You bet street",
+              postal_code: "4242",
+            },
+          },
+        }
+      )
+    })
+  })
 })

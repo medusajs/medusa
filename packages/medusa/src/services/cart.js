@@ -139,6 +139,38 @@ class CartService extends BaseService {
   }
 
   /**
+   * Transforms some line item content to have unit_prices corresponding to a
+   * given region's pricing scheme.
+   * @param {(LineItemContent | LineItemContentArray)} - the content of the line
+   *    item
+   * @param {string} regionId - the id of the region whose price we should
+   *    update to
+   * @return {(LineItemContent | LineItemContentArray)} true if the inventory
+   *    covers the line item.
+   */
+  async updateContentPrice_(content, regionId) {
+    if (Array.isArray(content)) {
+      return await Promise.all(
+        content.map(async c => {
+          const unitPrice = await this.productVariantService_.getRegionPrice(
+            c.variant._id,
+            regionId
+          )
+          c.unit_price = unitPrice
+          return c
+        })
+      )
+    }
+
+    const unitPrice = await this.productVariantService_.getRegionPrice(
+      content.variant._id,
+      regionId
+    )
+    content.unit_price = unitPrice
+    return content
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
@@ -348,18 +380,70 @@ class CartService extends BaseService {
    * @param {string} regionId - the id of the region to set the cart to
    * @return {Promise} the result of the update operation
    */
-  setRegion(cartId, regionId) {
-    // Check if cart exists
-    // Check if region exists
-    //
-    // If the cart already has items, go through the items and update the prices
-    // based on new tax rate, new currency, region specific pricing.
-    //
-    // If addresses are set, clear the country code.
-    //
-    // If the cart has a shipping method, clear this.
-    //
-    // Update the region
+  async setRegion(cartId, regionId) {
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
+    const region = await this.regionService_.retrieve(regionId)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The region: ${regionId} was not found`
+      )
+    }
+
+    let update = {
+      region_id: region._id,
+    }
+
+    // If the cart contains items we want to change the unit_price field of each
+    // item to correspond to the price given in the region
+    if (cart.items.length) {
+      const newItems = await Promise.all(
+        cart.items.map(async lineItem => {
+          lineItem.content = await this.updateContentPrice_(
+            lineItem.content,
+            region._id
+          )
+          return lineItem
+        })
+      )
+
+      update.items = newItems
+    }
+
+    // If the country code of a shipping address is set we need to clear it
+    let shippingAddress = cart.shipping_address
+    if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
+      shippingAddress.country_code = ""
+      update.shipping_address = shippingAddress
+    }
+
+    // If the country code of a billing address is set we need to clear it
+    let billingAddress = cart.billing_address
+    if (!_.isEmpty(billingAddress) && billingAddress.country_code) {
+      billingAddress.country_code = ""
+      update.billing_address = billingAddress
+    }
+
+    // Shipping methods are determined by region so the user needs to find a
+    // new shipping method
+    if (!_.isEmpty(cart.shipping_method)) {
+      update.shipping_method = undefined
+    }
+
+    // Payment methods are region specific so the user needs to find a
+    // new payment method
+    if (!_.isEmpty(cart.payment_method)) {
+      update.payment_method = undefined
+    }
+
+    return this.cartModel_.updateOne({ _id: cart._id }, { $set: update })
   }
 
   /**
