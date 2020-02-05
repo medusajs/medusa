@@ -13,7 +13,7 @@ class CustomerModel extends BaseModel {
     email: { type: String, required: true, unique: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
-    billingAddress: { type: AddressSchema },
+    billing_address: { type: AddressSchema },
     password_hash: { type: String },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
