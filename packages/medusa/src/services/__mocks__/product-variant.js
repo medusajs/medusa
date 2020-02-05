@@ -141,6 +141,25 @@ export const ProductVariantServiceMock = {
 
     return Promise.reject(new Error("Not found"))
   }),
+  getRegionPrice: jest.fn().mockImplementation((variantId, regionId) => {
+    if (variantId === IdMap.getId("eur-10-us-12")) {
+      if (regionId === IdMap.getId("region-france")) {
+        return Promise.resolve(10)
+      } else {
+        return Promise.resolve(12)
+      }
+    }
+
+    if (variantId === IdMap.getId("eur-8-us-10")) {
+      if (regionId === IdMap.getId("region-france")) {
+        return Promise.resolve(8)
+      } else {
+        return Promise.resolve(10)
+      }
+    }
+
+    return Promise.reject(new Error("Not found"))
+  }),
   delete: jest.fn().mockReturnValue(Promise.resolve()),
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})
