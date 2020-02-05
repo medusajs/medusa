@@ -127,7 +127,7 @@ class CustomerService extends BaseService {
         _id: customerId,
       },
       {
-        $set: { email: email },
+        $set: { email },
       }
     )
   }
