@@ -172,7 +172,10 @@ class CartService extends BaseService {
   }
 
   /**
-   *
+   * Adds a line item to the cart.
+   * @param {string} cartId - the id of the cart that we will add to
+   * @param {LineItem} lineItem - the line item to add.
+   * @retur {Promise} the result of the update operation
    */
   async addLineItem(cartId, lineItem) {
     const validatedLineItem = this.validateLineItem_(lineItem)
@@ -233,6 +236,72 @@ class CartService extends BaseService {
       },
       {
         $push: { items: validatedLineItem },
+      }
+    )
+  }
+
+  /**
+   * Sets the email of a cart
+   * @param {string} cartId - the id of the cart to add email to
+   * @param {string} email - the email to add to cart
+   * @return {Promise} the result of the update operation
+   */
+  updateEmail(cartId, email) {
+    const schema = Validator.string()
+      .email()
+      .required()
+    const { value, error } = schema.validate(email)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The email is not valid"
+      )
+    }
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cartId,
+      },
+      {
+        $set: { email: value },
+      }
+    )
+  }
+
+  updateBillingAddress(cartId, address) {
+    const { value, error } = Validator.address().validate(address)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The address is not valid"
+      )
+    }
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cartId,
+      },
+      {
+        $set: { billing_address: value },
+      }
+    )
+  }
+
+  updateShippingAddress(cartId, address) {
+    const { value, error } = Validator.address().validate(address)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The address is not valid"
+      )
+    }
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cartId,
+      },
+      {
+        $set: { shipping_address: value },
       }
     )
   }

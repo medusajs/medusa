@@ -7,7 +7,8 @@ export const MedusaErrorTypes = {
   DB_ERROR: "database_error",
   INVALID_ARGUMENT: "invalid_argument",
   INVALID_DATA: "invalid_data",
-  NOT_FOUND: "not_found"
+  NOT_FOUND: "not_found",
+  NOT_ALLOWED: "not_allowed"
 }
 
 /**

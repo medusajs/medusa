@@ -256,4 +256,153 @@ describe("CartService", () => {
       }
     })
   })
+
+  describe("updateEmail", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates an email", async () => {
+      await cartService.updateEmail(
+        IdMap.getId("emptyCart"),
+        "test@testdom.com"
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("emptyCart"),
+        },
+        {
+          $set: { email: "test@testdom.com" },
+        }
+      )
+    })
+
+    it("throws on invalid email", async () => {
+      try {
+        await cartService.updateEmail(IdMap.getId("emptyCart"), "test@test")
+      } catch (err) {
+        expect(err.message).toEqual("The email is not valid")
+      }
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("updateBillingAddress", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates billing address", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      await cartService.updateBillingAddress(IdMap.getId("emptyCart"), address)
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("emptyCart"),
+        },
+        {
+          $set: { billing_address: address },
+        }
+      )
+    })
+
+    it("throws on invalid address", async () => {
+      const address = {
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      try {
+        await cartService.updateBillingAddress(
+          IdMap.getId("emptyCart"),
+          address
+        )
+      } catch (err) {
+        expect(err.message).toEqual("The address is not valid")
+      }
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("updateShippingAddress", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates billing address", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      await cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("emptyCart"),
+        },
+        {
+          $set: { shipping_address: address },
+        }
+      )
+    })
+
+    it("throws on invalid address", async () => {
+      const address = {
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      try {
+        await cartService.updateShippingAddress(
+          IdMap.getId("emptyCart"),
+          address
+        )
+      } catch (err) {
+        expect(err.message).toEqual("The address is not valid")
+      }
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+  })
 })
