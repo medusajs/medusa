@@ -197,6 +197,58 @@ class ProductVariantService extends BaseService {
   }
 
   /**
+   * Gets the price specific to a region. If no region specific money amount
+   * exists the function will try to use a currency price. If no default
+   * currency price exists the function will throw an error.
+   * @param {string} variantId - the id of the variant to get price from
+   * @param {string} regionId - the id of the region to get price for
+   * @return {number} the price specific to the region
+   */
+  async getRegionPrice(variantId, regionId) {
+    const variant = await this.retrieve(variantId)
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant: ${variantId} was not found`
+      )
+    }
+
+    const region = await this.regionService_.retrieve(regionId)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Region: ${regionId} was not found`
+      )
+    }
+
+    let price
+
+    variant.prices.forEach(({ region_id, amount, currency_code }) => {
+      if (!price && !region_id && currency_code === region.currency_code) {
+        // If we haven't yet found a price and the current money amount is
+        // the default money amount for the currency of the region we have found
+        // a possible price match
+        price = amount
+      } else if (region_id === region._id) {
+        // If the region matches directly with the money amount this is the best
+        // price
+        price = amount
+      }
+    })
+
+    // Return the price if we found a suitable match
+    if (price) {
+      return price
+    }
+
+    // If we got this far no price could be found for the region
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `A price for region: ${region.name} could not be found`
+    )
+  }
+
+  /**
    * Sets the price of a specific region
    * @param {string} variantId - the id of the variant to update
    * @param {string} regionId - the id of the region to set price for
@@ -216,7 +268,7 @@ class ProductVariantService extends BaseService {
     if (!region) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Region: ${region} was not found`
+        `Region: ${regionId} was not found`
       )
     }
 
