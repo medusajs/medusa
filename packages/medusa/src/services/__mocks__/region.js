@@ -10,6 +10,18 @@ export const regions = {
     shipping_providers: ["test_shipper"],
     currency_code: "usd",
   },
+  regionFrance: {
+    _id: IdMap.getId("region-france"),
+    name: "France",
+    countries: ["FR"],
+    currency_code: "eur",
+  },
+  regionUs: {
+    _id: IdMap.getId("region-us"),
+    name: "USA",
+    countries: ["US"],
+    currency_code: "usd",
+  },
 }
 
 export const RegionServiceMock = {
@@ -17,10 +29,20 @@ export const RegionServiceMock = {
     if (regionId === IdMap.getId("testRegion")) {
       return Promise.resolve(regions.testRegion)
     }
+    if (regionId === IdMap.getId("region-france")) {
+      return Promise.resolve(regions.regionFrance)
+    }
+    if (regionId === IdMap.getId("region-us")) {
+      return Promise.resolve(regions.regionUs)
+    }
     return Promise.resolve(undefined)
   }),
   list: jest.fn().mockImplementation(data => {
-    return Promise.resolve([regions.testRegion])
+    return Promise.resolve([
+      regions.testRegion,
+      regions.regionFrance,
+      regions.regionUs,
+    ])
   }),
 }
 
