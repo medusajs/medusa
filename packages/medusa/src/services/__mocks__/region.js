@@ -22,6 +22,18 @@ export const regions = {
     countries: ["US"],
     currency_code: "usd",
   },
+  regionGermany: {
+    _id: IdMap.getId("region-de"),
+    name: "Germany",
+    countries: ["DE"],
+    currency_code: "eur",
+  },
+  regionSweden: {
+    _id: IdMap.getId("region-se"),
+    name: "Sweden",
+    countries: ["SE"],
+    currency_code: "sek",
+  },
 }
 
 export const RegionServiceMock = {
@@ -34,6 +46,12 @@ export const RegionServiceMock = {
     }
     if (regionId === IdMap.getId("region-us")) {
       return Promise.resolve(regions.regionUs)
+    }
+    if (regionId === IdMap.getId("region-de")) {
+      return Promise.resolve(regions.regionGermany)
+    }
+    if (regionId === IdMap.getId("region-se")) {
+      return Promise.resolve(regions.regionSweden)
     }
     return Promise.resolve(undefined)
   }),

@@ -659,4 +659,46 @@ describe("ProductVariantService", () => {
       )
     })
   })
+
+  describe("getRegionPrice", () => {
+    const productVariantService = new ProductVariantService({
+      productVariantModel: ProductVariantModelMock,
+      regionService: RegionServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("gets region specific price", async () => {
+      const res = await productVariantService.getRegionPrice(
+        IdMap.getId("eur-prices"),
+        IdMap.getId("region-france")
+      )
+
+      expect(res).toEqual(950)
+    })
+
+    it("gets currency default price", async () => {
+      const res = await productVariantService.getRegionPrice(
+        IdMap.getId("eur-prices"),
+        IdMap.getId("region-de")
+      )
+
+      expect(res).toEqual(1000)
+    })
+
+    it("throws if no region or currency", async () => {
+      try {
+        const res = await productVariantService.getRegionPrice(
+          IdMap.getId("eur-prices"),
+          IdMap.getId("region-se")
+        )
+      } catch (err) {
+        expect(err.message).toEqual(
+          "A price for region: Sweden could not be found"
+        )
+      }
+    })
+  })
 })
