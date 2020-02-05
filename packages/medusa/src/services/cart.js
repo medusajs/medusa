@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -63,7 +62,8 @@ class CartService extends BaseService {
       product: Validator.object().required(),
       quantity: Validator.number()
         .integer()
-        .min(1),
+        .min(1)
+        .default(1),
     })
 
     const lineItemSchema = Validator.object({
@@ -246,7 +246,15 @@ class CartService extends BaseService {
    * @param {string} email - the email to add to cart
    * @return {Promise} the result of the update operation
    */
-  updateEmail(cartId, email) {
+  async updateEmail(cartId, email) {
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
     const schema = Validator.string()
       .email()
       .required()
@@ -268,7 +276,21 @@ class CartService extends BaseService {
     )
   }
 
-  updateBillingAddress(cartId, address) {
+  /**
+   * Updates the cart's billing address.
+   * @param {string} cartId - the id of the cart to update
+   * @param {object} address - the value to set the billing address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateBillingAddress(cartId, address) {
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
     const { value, error } = Validator.address().validate(address)
     if (error) {
       throw new MedusaError(
@@ -287,7 +309,21 @@ class CartService extends BaseService {
     )
   }
 
-  updateShippingAddress(cartId, address) {
+  /**
+   * Updates the cart's shipping address.
+   * @param {string} cartId - the id of the cart to update
+   * @param {object} address - the value to set the shipping address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateShippingAddress(cartId, address) {
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
     const { value, error } = Validator.address().validate(address)
     if (error) {
       throw new MedusaError(
@@ -304,6 +340,26 @@ class CartService extends BaseService {
         $set: { shipping_address: value },
       }
     )
+  }
+
+  /**
+   * Set's the region of a cart.
+   * @param {string} cartId - the id of the cart to set region on
+   * @param {string} regionId - the id of the region to set the cart to
+   * @return {Promise} the result of the update operation
+   */
+  setRegion(cartId, regionId) {
+    // Check if cart exists
+    // Check if region exists
+    //
+    // If the cart already has items, go through the items and update the prices
+    // based on new tax rate, new currency, region specific pricing.
+    //
+    // If addresses are set, clear the country code.
+    //
+    // If the cart has a shipping method, clear this.
+    //
+    // Update the region
   }
 
   /**

@@ -102,6 +102,53 @@ describe("CartService", () => {
       )
     })
 
+    it("successfully defaults quantity of content to 1", async () => {
+      const lineItem = {
+        title: "New Line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+        },
+        quantity: 10,
+      }
+
+      await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("emptyCart"),
+        },
+        {
+          $push: {
+            items: {
+              title: "New Line",
+              description: "This is a new line",
+              thumbnail: "test-img-yeah.com/thumb",
+              content: {
+                unit_price: 123,
+                variant: {
+                  _id: IdMap.getId("can-cover"),
+                },
+                product: {
+                  _id: IdMap.getId("product"),
+                },
+                quantity: 1,
+              },
+              quantity: 10,
+            },
+          },
+        }
+      )
+    })
+
     it("successfully merges existing line item", async () => {
       const lineItem = {
         title: "merge line",

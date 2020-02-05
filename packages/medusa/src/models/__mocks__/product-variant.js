@@ -55,6 +55,56 @@ export const ProductVariantModelMock = {
         manage_inventory: true,
       })
     }
+
+    if (query._id === IdMap.getId("no-prices")) {
+      return Promise.resolve({
+        _id: IdMap.getId("no-prices"),
+        title: "No Prices",
+        prices: [],
+      })
+    }
+
+    if (query._id === IdMap.getId("eur-prices")) {
+      return Promise.resolve({
+        _id: IdMap.getId("eur-prices"),
+        title: "eur Prices",
+        prices: [
+          {
+            currency_code: "eur",
+            amount: 1000,
+          },
+          {
+            region_id: IdMap.getId("region-france"),
+            currency_code: "eur",
+            amount: 950,
+          },
+        ],
+      })
+    }
+
+    if (query._id === IdMap.getId("france-prices")) {
+      return Promise.resolve({
+        _id: IdMap.getId("france-prices"),
+        title: "France Prices",
+        prices: [
+          {
+            currency_code: "eur",
+            amount: 1000,
+          },
+          {
+            region_id: IdMap.getId("region-france"),
+            currency_code: "eur",
+            amount: 950,
+          },
+          {
+            region_id: IdMap.getId("region-us"),
+            currency_code: "usd",
+            amount: 1200,
+          },
+        ],
+      })
+    }
+
     return Promise.resolve(undefined)
   }),
 }

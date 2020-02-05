@@ -3,6 +3,7 @@ import { IdMap } from "medusa-test-utils"
 import ProductVariantService from "../product-variant"
 import { ProductVariantModelMock } from "../../models/__mocks__/product-variant"
 import { ProductServiceMock } from "../__mocks__/product"
+import { RegionServiceMock } from "../__mocks__/region"
 
 describe("ProductVariantService", () => {
   describe("retrieve", () => {
@@ -457,6 +458,205 @@ describe("ProductVariantService", () => {
       )
 
       expect(res).toEqual(false)
+    })
+  })
+
+  describe("setCurrencyPrice", () => {
+    const productVariantService = new ProductVariantService({
+      productVariantModel: ProductVariantModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("creates a prices array if none exist", async () => {
+      await productVariantService.setCurrencyPrice(
+        IdMap.getId("no-prices"),
+        "usd",
+        100
+      )
+
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("no-prices"),
+        },
+        {
+          $set: {
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 100,
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("updates all eur prices", async () => {
+      await productVariantService.setCurrencyPrice(
+        IdMap.getId("eur-prices"),
+        "eur",
+        100
+      )
+
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("eur-prices"),
+        },
+        {
+          $set: {
+            prices: [
+              {
+                currency_code: "eur",
+                amount: 100,
+              },
+              {
+                region_id: IdMap.getId("region-france"),
+                currency_code: "eur",
+                amount: 100,
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("creates usd prices", async () => {
+      await productVariantService.setCurrencyPrice(
+        IdMap.getId("eur-prices"),
+        "usd",
+        300
+      )
+
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("eur-prices"),
+        },
+        {
+          $set: {
+            prices: [
+              {
+                currency_code: "eur",
+                amount: 1000,
+              },
+              {
+                region_id: IdMap.getId("region-france"),
+                currency_code: "eur",
+                amount: 950,
+              },
+              {
+                currency_code: "usd",
+                amount: 300,
+              },
+            ],
+          },
+        }
+      )
+    })
+  })
+
+  describe("setRegionPrice", () => {
+    const productVariantService = new ProductVariantService({
+      productVariantModel: ProductVariantModelMock,
+      regionService: RegionServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("creates a prices array if none exist", async () => {
+      await productVariantService.setCurrencyPrice(
+        IdMap.getId("no-prices"),
+        "usd",
+        100
+      )
+
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("no-prices"),
+        },
+        {
+          $set: {
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 100,
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("updates all eur prices", async () => {
+      await productVariantService.setCurrencyPrice(
+        IdMap.getId("eur-prices"),
+        "eur",
+        100
+      )
+
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("eur-prices"),
+        },
+        {
+          $set: {
+            prices: [
+              {
+                currency_code: "eur",
+                amount: 100,
+              },
+              {
+                region_id: IdMap.getId("region-france"),
+                currency_code: "eur",
+                amount: 100,
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("creates usd prices", async () => {
+      await productVariantService.setCurrencyPrice(
+        IdMap.getId("eur-prices"),
+        "usd",
+        300
+      )
+
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("eur-prices"),
+        },
+        {
+          $set: {
+            prices: [
+              {
+                currency_code: "eur",
+                amount: 1000,
+              },
+              {
+                region_id: IdMap.getId("region-france"),
+                currency_code: "eur",
+                amount: 950,
+              },
+              {
+                currency_code: "usd",
+                amount: 300,
+              },
+            ],
+          },
+        }
+      )
     })
   })
 })

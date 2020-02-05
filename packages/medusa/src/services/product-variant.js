@@ -8,7 +8,12 @@ import { Validator, MedusaError } from "medusa-core-utils"
  */
 class ProductVariantService extends BaseService {
   /** @param { productVariantModel: (ProductVariantModel) } */
-  constructor({ productVariantModel, eventBusService, productService }) {
+  constructor({
+    productVariantModel,
+    eventBusService,
+    productService,
+    regionService,
+  }) {
     super()
 
     /** @private @const {ProductVariantModel} */
@@ -19,6 +24,9 @@ class ProductVariantService extends BaseService {
 
     /** @private @const {ProductService} */
     this.productService_ = productService
+
+    /** @private @const {RegionService} */
+    this.regionService_ = regionService
   }
 
   /**
@@ -94,6 +102,13 @@ class ProductVariantService extends BaseService {
   update(variantId, update) {
     const validatedId = this.validateId_(variantId)
 
+    if (update.prices) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use setCurrencyPrices, setRegionPrices method to update prices field"
+      )
+    }
+
     if (update.metadata) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -110,6 +125,155 @@ class ProductVariantService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Sets the default price for the given currency.
+   * @param {string} variantId - the id of the variant to set prices for
+   * @param {string} currencyCode - the currency to set prices for
+   * @param {number} amount - the amount to set the price to
+   * @return {Promise} the result of the update operation
+   */
+  async setCurrencyPrice(variantId, currencyCode, amount) {
+    const variant = await this.retrieve(variantId)
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant: ${variantId} was not found`
+      )
+    }
+
+    // If prices already exist we need to update all prices with the same currency
+    if (variant.prices.length) {
+      let foundDefault = false
+      const newPrices = variant.prices.map(moneyAmount => {
+        if (moneyAmount.currency_code === currencyCode) {
+          moneyAmount.amount = amount
+
+          if (!moneyAmount.region_id) {
+            foundDefault = true
+          }
+        }
+
+        return moneyAmount
+      })
+
+      // If there is no price entries for the currency we are updating we need
+      // to push it
+      if (!foundDefault) {
+        newPrices.push({
+          currency_code: currencyCode,
+          amount,
+        })
+      }
+
+      return this.productVariantModel_.updateOne(
+        {
+          _id: variant._id,
+        },
+        {
+          $set: {
+            prices: newPrices,
+          },
+        }
+      )
+    }
+
+    return this.productVariantModel_.updateOne(
+      {
+        _id: variant._id,
+      },
+      {
+        $set: {
+          prices: [
+            {
+              currency_code: currencyCode,
+              amount,
+            },
+          ],
+        },
+      }
+    )
+  }
+
+  /**
+   * Sets the price of a specific region
+   * @param {string} variantId - the id of the variant to update
+   * @param {string} regionId - the id of the region to set price for
+   * @param {number} amount - the amount to set the price to
+   * @return {Promise} the result of the update operation
+   */
+  async setRegionPrice(variantId, regionId, amount) {
+    const variant = await this.retrieve(variantId)
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant: ${variantId} was not found`
+      )
+    }
+
+    const region = await this.regionService_.retrieve(regionId)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Region: ${region} was not found`
+      )
+    }
+
+    // If prices already exist we need to update all prices with the same currency
+    if (variant.prices.length) {
+      let foundRegion = false
+      const newPrices = variant.prices.map(moneyAmount => {
+        if (moneyAmount.region_id === region._id) {
+          moneyAmount.amount = amount
+          foundRegion = true
+        }
+
+        return moneyAmount
+      })
+
+      // If the region doesn't exist in the prices we need to push it
+      if (!foundRegion) {
+        newPrices.push({
+          region_id: region._id,
+          currency_code: region.currency_code,
+          amount,
+        })
+      }
+
+      return this.productVariantModel_.updateOne(
+        {
+          _id: variant._id,
+        },
+        {
+          $set: {
+            prices: newPrices,
+          },
+        }
+      )
+    }
+
+    // Set the price both for default currency price and for the region
+    return this.productVariantModel_.updateOne(
+      {
+        _id: variant._id,
+      },
+      {
+        $set: {
+          prices: [
+            {
+              region_id: region._id,
+              currency_code: region.currency_code,
+              amount,
+            },
+            {
+              currency_code: region.currency_code,
+              amount,
+            },
+          ],
+        },
+      }
+    )
   }
 
   /**
