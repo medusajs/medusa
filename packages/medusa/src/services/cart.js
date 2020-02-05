@@ -167,7 +167,7 @@ class CartService extends BaseService {
    */
   async decorate(cart, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(product, fields.concat(requiredFields))
+    const decorated = _.pick(cart, fields.concat(requiredFields))
     return decorated
   }
 
