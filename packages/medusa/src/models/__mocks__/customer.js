@@ -9,6 +9,14 @@ export const customers = {
     billingAddress: {},
     password_hash: "123456789",
   },
+  wrongEmailCustomer: {
+    _id: IdMap.getId("wrongEmailCustomer"),
+    email: "oliver.com",
+    first_name: "Oliver",
+    last_name: "Juhl",
+    billingAddress: {},
+    password_hash: "123456789",
+  },
 }
 
 export const CustomerModelMock = {
@@ -20,6 +28,9 @@ export const CustomerModelMock = {
   findOne: jest.fn().mockImplementation(query => {
     if (query._id === IdMap.getId("testCustomer")) {
       return Promise.resolve(customers.testCustomer)
+    }
+    if (query._id === IdMap.getId("wrongEmailCustomer")) {
+      return Promise.resolve(customers.wrongEmailCustomer)
     }
     return Promise.resolve(undefined)
   }),

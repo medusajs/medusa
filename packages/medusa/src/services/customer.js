@@ -37,6 +37,38 @@ class CustomerService extends BaseService {
   }
 
   /**
+   * Used to validate customer email.
+   * @param {string} email - email to validate
+   * @return {string} the validated email
+   */
+  validateEmail_(email) {
+    const schema = Validator.string()
+      .email()
+      .required()
+    const { value, error } = schema.validate(email)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The email is not valid"
+      )
+    }
+
+    return value
+  }
+
+  validateBillingAddress_(address) {
+    const { value, error } = Validator.address().validate(address)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The address is not valid"
+      )
+    }
+
+    return value
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
@@ -54,6 +86,120 @@ class CustomerService extends BaseService {
     return this.customerModel_.findOne({ _id: validatedId }).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
+  }
+
+  /**
+   * Creates a customer with email and billing address
+   * (if provided) being validated.
+   * @param {object} customer - the customer to create
+   * @return {Promise} the result of create
+   */
+  create(customer) {
+    const { email, billing_address } = customer
+    this.validateEmail_(email)
+    if (billing_address) {
+      this.validateBillingAddress_(billing_address)
+    }
+    this.customerModel_.create(customer).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+  }
+
+  /**
+   * Sets the email of a customer
+   * @param {string} customerId - the id of the customer to update
+   * @param {string} email - the email to add to customer
+   * @return {Promise} the result of the update operation
+   */
+  updateEmail(customerId, email) {
+    const customer = this.retrieve(customerId)
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with ${customerId} was not found`
+      )
+    }
+
+    this.validateEmail_(email)
+
+    return this.cartModel_.updateOne(
+      {
+        _id: customerId,
+      },
+      {
+        $set: { email: value },
+      }
+    )
+  }
+
+  /**
+   * Sets the billing address of a customer
+   * @param {*} customerId - the customer to update address on
+   * @param {*} address - the new address to replace the current one
+   * @return {Promise} the result of the update operation
+   */
+  updateBillingAddress(customerId, address) {
+    const customer = this.retrieve(customerId)
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with ${customerId} was not found`
+      )
+    }
+
+    this.validateBillingAddress_(address)
+
+    return this.customerModel_.updateOne(
+      {
+        _id: customerId,
+      },
+      {
+        $set: { billing_address: value },
+      }
+    )
+  }
+
+  /**
+   * Updates a customer. Metadata updates and address updates should
+   * use dedicated methods, e.g. `setMetadata`, etc. The function
+   * will throw errors if metadata updates and address updates are attempted.
+   * @param {string} variantId - the id of the variant. Must be a string that
+   *   can be casted to an ObjectId
+   * @param {object} update - an object with the update values.
+   * @return {Promise} resolves to the update result.
+   */
+  update(customerId, update) {
+    const customer = this.retrieve(customerId)
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with ${customerId} was not found`
+      )
+    }
+
+    if (update.metadata) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use setMetadata to update metadata fields"
+      )
+    }
+
+    if (update.billing_address) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use updateBillingAddress to update billing address"
+      )
+    }
+
+    return this.customerModel_
+      .updateOne(
+        { _id: validatedId },
+        { $set: update },
+        { runValidators: true }
+      )
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
