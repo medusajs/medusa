@@ -567,5 +567,25 @@ describe("CartService", () => {
         }
       )
     })
+
+    it("filters items that don't have region prices", async () => {
+      await cartService.setRegion(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("testRegion")
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+        },
+        {
+          $set: {
+            region_id: IdMap.getId("testRegion"),
+            items: [],
+          },
+        }
+      )
+    })
   })
 })

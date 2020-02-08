@@ -213,6 +213,13 @@ class CartService extends BaseService {
     const validatedLineItem = this.validateLineItem_(lineItem)
 
     const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
     const currentItem = cart.items.find(line =>
       _.isEqual(line.content, validatedLineItem.content)
     )
@@ -406,15 +413,19 @@ class CartService extends BaseService {
     if (cart.items.length) {
       const newItems = await Promise.all(
         cart.items.map(async lineItem => {
-          lineItem.content = await this.updateContentPrice_(
-            lineItem.content,
-            region._id
-          )
+          try {
+            lineItem.content = await this.updateContentPrice_(
+              lineItem.content,
+              region._id
+            )
+          } catch (err) {
+            return null
+          }
           return lineItem
         })
       )
 
-      update.items = newItems
+      update.items = newItems.filter(i => !!i)
     }
 
     // If the country code of a shipping address is set we need to clear it
