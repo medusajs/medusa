@@ -143,7 +143,8 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    // If prices already exist we need to update all prices with the same currency
+    // If prices already exist we need to update all prices with the same
+    // currency
     if (variant.prices.length) {
       let foundDefault = false
       const newPrices = variant.prices.map(moneyAmount => {
