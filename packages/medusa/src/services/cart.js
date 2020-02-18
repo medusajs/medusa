@@ -432,12 +432,6 @@ class CartService extends BaseService {
     const provider = this.paymentProviderService_.retrieveProvider(
       paymentMethod.provider_id
     )
-    if (!provider) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `The payment provider for the payment method was not found`
-      )
-    }
 
     const status = await provider.getStatus(paymentMethod.data)
     if (status !== "authorized") {

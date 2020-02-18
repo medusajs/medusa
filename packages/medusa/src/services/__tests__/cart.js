@@ -695,9 +695,7 @@ describe("CartService", () => {
           PaymentProviderServiceMock.retrieveProvider
         ).toHaveBeenCalledWith("unregistered")
 
-        expect(err.message).toEqual(
-          `The payment provider for the payment method was not found`
-        )
+        expect(err.message).toEqual(`Provider Not Found`)
       }
     })
 
