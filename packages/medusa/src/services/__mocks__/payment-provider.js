@@ -17,7 +17,7 @@ export const PaymentProviderServiceMock = {
     if (providerId === "default_provider") {
       return DefaultProviderMock
     }
-    return undefined
+    throw new Error("Provider Not Found")
   }),
 }
 
