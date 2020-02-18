@@ -73,6 +73,18 @@ describe("UserService", () => {
     it("calls updateOne with correct params", async () => {
       await userService.setPassword(IdMap.getId("test-user"), "123456789")
       expect(UserModelMock.updateOne).toBeCalledTimes(1)
+      expect(UserModelMock.updateOne).toBeCalledWith(
+        { _id: IdMap.getId("test-user") },
+        {
+          $set: {
+            // Since bcrypt hashing always varies, we are testing the password
+            // match by using a regular expression.
+            password: expect.stringMatching(
+              /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
+            ),
+          },
+        }
+      )
     })
   })
 })
