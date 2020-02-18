@@ -1,6 +1,10 @@
 import mongoose from "mongoose"
 import { IdMap } from "medusa-test-utils"
 import CartService from "../cart"
+import {
+  PaymentProviderServiceMock,
+  DefaultProviderMock,
+} from "../__mocks__/payment-provider"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
@@ -586,6 +590,150 @@ describe("CartService", () => {
           },
         }
       )
+    })
+  })
+
+  describe("setPaymentMethod", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+      paymentProviderService: PaymentProviderServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully sets a payment method", async () => {
+      const paymentMethod = {
+        provider_id: "default_provider",
+        data: {
+          money_id: "success",
+        },
+      }
+
+      await cartService.setPaymentMethod(
+        IdMap.getId("cartWithLine"),
+        paymentMethod
+      )
+
+      expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("testRegion")
+      )
+
+      expect(PaymentProviderServiceMock.retrieveProvider).toHaveBeenCalledTimes(
+        1
+      )
+      expect(PaymentProviderServiceMock.retrieveProvider).toHaveBeenCalledWith(
+        "default_provider"
+      )
+      expect(DefaultProviderMock.getStatus).toHaveBeenCalledTimes(1)
+      expect(DefaultProviderMock.getStatus).toHaveBeenCalledWith({
+        money_id: "success",
+      })
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+        },
+        {
+          $set: { payment_method: paymentMethod },
+        }
+      )
+    })
+
+    it("fails if the region does not contain the provider_id", async () => {
+      const paymentMethod = {
+        provider_id: "unknown_provider",
+        data: {
+          money_id: "success",
+        },
+      }
+
+      try {
+        await cartService.setPaymentMethod(
+          IdMap.getId("cartWithLine"),
+          paymentMethod
+        )
+      } catch (err) {
+        expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
+        expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
+          IdMap.getId("testRegion")
+        )
+
+        expect(err.message).toEqual(
+          `The payment method is not available in this region`
+        )
+      }
+    })
+
+    it("fails if the payment provider is not registered", async () => {
+      const paymentMethod = {
+        provider_id: "unregistered",
+        data: {
+          money_id: "success",
+        },
+      }
+
+      try {
+        await cartService.setPaymentMethod(
+          IdMap.getId("cartWithLine"),
+          paymentMethod
+        )
+      } catch (err) {
+        expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
+        expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
+          IdMap.getId("testRegion")
+        )
+
+        expect(
+          PaymentProviderServiceMock.retrieveProvider
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          PaymentProviderServiceMock.retrieveProvider
+        ).toHaveBeenCalledWith("unregistered")
+
+        expect(err.message).toEqual(
+          `The payment provider for the payment method was not found`
+        )
+      }
+    })
+
+    it("fails if the payment is not authorized", async () => {
+      const paymentMethod = {
+        provider_id: "default_provider",
+        data: {
+          money_id: "fail",
+        },
+      }
+
+      try {
+        await cartService.setPaymentMethod(
+          IdMap.getId("cartWithLine"),
+          paymentMethod
+        )
+      } catch (err) {
+        expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
+        expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
+          IdMap.getId("testRegion")
+        )
+
+        expect(
+          PaymentProviderServiceMock.retrieveProvider
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          PaymentProviderServiceMock.retrieveProvider
+        ).toHaveBeenCalledWith("default_provider")
+
+        expect(DefaultProviderMock.getStatus).toHaveBeenCalledTimes(1)
+        expect(DefaultProviderMock.getStatus).toHaveBeenCalledWith({
+          money_id: "fail",
+        })
+
+        expect(err.message).toEqual(`The payment method was not authorized`)
+      }
     })
   })
 })

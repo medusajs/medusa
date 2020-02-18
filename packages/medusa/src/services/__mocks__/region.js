@@ -6,8 +6,8 @@ export const regions = {
     name: "Test Region",
     countries: ["DK", "US", "DE"],
     tax_rate: 0.25,
-    payment_providers: ["default_provider"],
-    shipping_providers: ["test_shipper"],
+    payment_providers: ["default_provider", "unregistered"],
+    fulfillment_providers: ["test_shipper"],
     currency_code: "usd",
   },
   regionFrance: {
