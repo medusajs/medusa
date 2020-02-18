@@ -69,7 +69,7 @@ class UserService extends BaseService {
   /**
    * Gets a user by id.
    * @param {string} userId - the id of the user to get.
-   * @return {Promise<Product>} the user document.
+   * @return {Promise<User>} the user document.
    */
   retrieve(userId) {
     const validatedId = this.validateId_(userId)
@@ -85,7 +85,8 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   create(user) {
-    this.validateEmail_(user.email)
+    const validatedEmail = this.validateEmail_(user.email)
+    user.email = validatedEmail
     this.userModel_.create(user).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
@@ -119,7 +120,6 @@ class UserService extends BaseService {
    */
   async setPassword(userId, password) {
     const user = await this.retrieve(userId)
-
     if (!user) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -128,7 +128,6 @@ class UserService extends BaseService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-
     if (!hashedPassword) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -151,8 +150,15 @@ class UserService extends BaseService {
    * @param {User} user - the user to reset password for
    * @returns {string} the generated JSON web token
    */
-  generateResetPasswordToken(user) {
-    const secret = user.password
+  async generateResetPasswordToken(userId) {
+    const user = await this.retrieve(userId)
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with ${userId} was not found`
+      )
+    }
+    const secret = user.passwordHash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { userId: user._id, exp: expiry }
     const token = jwt.sign(payload, secret)

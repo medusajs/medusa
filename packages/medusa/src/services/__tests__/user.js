@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 import { IdMap } from "medusa-test-utils"
 import UserService from "../user"
 import { UserModelMock, users } from "../../models/__mocks__/user"
@@ -84,6 +84,26 @@ describe("UserService", () => {
             ),
           },
         }
+      )
+    })
+  })
+
+  describe("generateResetPasswordToken", () => {
+    const userService = new UserService({
+      userModel: UserModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("generates a token successfully", async () => {
+      const token = await userService.generateResetPasswordToken(
+        IdMap.getId("test-user")
+      )
+
+      expect(token).toMatch(
+        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/
       )
     })
   })
