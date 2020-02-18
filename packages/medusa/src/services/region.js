@@ -1,0 +1,9 @@
+// paymentProviders
+// fulfillmentProviders
+// setCurrency
+// setTaxRate
+// putShippingProvider
+// putPaymentProvider
+// removeShippingProvider
+// removePaymentMethod
+// listShippingMethods
