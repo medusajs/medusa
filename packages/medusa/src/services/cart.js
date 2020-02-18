@@ -9,10 +9,11 @@ import { BaseService } from "medusa-interfaces"
 class CartService extends BaseService {
   constructor({
     cartModel,
-    regionService,
+    eventBusService,
+    paymentProviderService,
     productService,
     productVariantService,
-    eventBusService,
+    regionService,
   }) {
     super()
 
@@ -30,6 +31,9 @@ class CartService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {PaymentProviderService} */
+    this.paymentProviderService_ = paymentProviderService
   }
 
   /**
@@ -377,6 +381,79 @@ class CartService extends BaseService {
       },
       {
         $set: { shipping_address: value },
+      }
+    )
+  }
+
+  /**
+   * @typedef {object} PaymentMethod
+   * @property {string} provider_id - the identifier of the payment method's
+   *     provider
+   * @property {object} data - the data associated with the payment method
+   */
+
+  /**
+   * Sets a payment method for a cart.
+   * @param {string} cartId - the id of the cart to add payment method to
+   * @param {PaymentMethod} paymentMethod - the method to be set to the cart
+   * @returns {Promise} result of update operation
+   */
+  async setPaymentMethod(cartId, paymentMethod) {
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The cart does not have a region associated`
+      )
+    }
+
+    // The region must have the provider id in its providers array
+    if (
+      !(
+        region.payment_providers.length &&
+        region.payment_providers.includes(paymentMethod.provider_id)
+      )
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The payment method is not available in this region`
+      )
+    }
+
+    // Check if the payment method has been authorized.
+    const provider = this.paymentProviderService_.retrieveProvider(
+      paymentMethod.provider_id
+    )
+    if (!provider) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The payment provider for the payment method was not found`
+      )
+    }
+
+    const status = await provider.getStatus(paymentMethod.data)
+    if (status !== "authorized") {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The payment method was not authorized`
+      )
+    }
+
+    // At this point we can register the payment method.
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { payment_method: paymentMethod },
       }
     )
   }
