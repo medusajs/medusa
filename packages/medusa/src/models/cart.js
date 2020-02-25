@@ -14,14 +14,14 @@ class CartModel extends BaseModel {
 
   static schema = {
     email: { type: String },
-    billing_address: { type: AddressSchema },
-    shipping_address: { type: AddressSchema },
+    billing_address: { type: AddressSchema, default: {} },
+    shipping_address: { type: AddressSchema, default: {} },
     items: { type: [LineItemSchema], default: [] },
-    region_id: { type: String },
+    region_id: { type: String, required: true },
     discounts: { type: [String], default: [] },
-    customer_id: { type: String },
-    payment_method: { type: PaymentMethodSchema },
-    shipping_methods: { type: [ShippingMethodSchema] },
+    customer_id: { type: String, default: "" },
+    payment_method: { type: PaymentMethodSchema, default: {} },
+    shipping_methods: { type: [ShippingMethodSchema], default: [] },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }

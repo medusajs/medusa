@@ -195,6 +195,37 @@ class CartService extends BaseService {
   }
 
   /**
+   * Creates a cart.
+   * @param {Object} data - the data to create the cart with
+   * @return {Promise} the result of the create operation
+   */
+  async create(data) {
+    const { region_id } = data
+    if (!region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `A region_id must be provided when creating a cart`
+      )
+    }
+
+    const region = await this.regionService_.retrieve(region_id)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `A region with id: ${region_id} does not exist`
+      )
+    }
+
+    return this.cartModel_
+      .create({
+        region_id,
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
    * Decorates a cart.
    * @param {Cart} cart - the cart to decorate.
    * @param {string[]} fields - the fields to include.
