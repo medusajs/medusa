@@ -12,19 +12,28 @@ class PermissionService extends BaseService {
     this.roleModel_ = roleModel
   }
 
-  validatePermissions_(permissions) {
-    const schema = Validator.array().items(
-      Validator.object({
-        method: Validator.string(),
-        route: Validator.string(),
-      })
-    )
+  validatePermission_(permission) {
+    const schema = Validator.object({
+      method: Validator.string().valid(
+        "POST",
+        "GET",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "CONNECT",
+        "OPTIONS",
+        "HEAD",
+        "TRACE"
+      ),
+      endpoint: Validator.string(),
+    })
 
-    const { value, error } = schema.validate(permissions)
+    const { value, error } = schema.validate(permission)
+
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "Actions are not valid"
+        "Permission is not valid"
       )
     }
 
@@ -37,19 +46,21 @@ class PermissionService extends BaseService {
     })
   }
 
-  async hasPermission(user, method, route) {
+  async hasPermission(user, method, endpoint) {
     for (let i = 0; i < user.metadata.roles.length; i++) {
       const role = user.metadata.roles[i]
       const permissions = await this.roleModel_.findOne({ name: role })
-      return permissions.actions.some(action => {
-        return action.method === method && action.route === route
+      return permissions.permissions.some(action => {
+        return action.method === method && action.endpoint === endpoint
       })
     }
     return false
   }
 
-  async createRole(role, actions) {
-    const validatePermissions = this.validatePermissions_(actions)
+  async createRole(role, permissions) {
+    const validatedPermissions = permissions.map(permission =>
+      this.validatePermission_(permission)
+    )
     const exists = await this.roleModel_.findOne({ name: role })
     if (exists) {
       throw new MedusaError(
@@ -60,11 +71,52 @@ class PermissionService extends BaseService {
 
     return this.roleModel_.create({
       name: role,
-      permissions: validatePermissions,
+      permissions: validatedPermissions,
     })
   }
 
-  async updateRole() {}
+  async deleteRole(role) {
+    return this.roleModel_.deleteOne({
+      name: role,
+      permissions: validatedPermissions,
+    })
+  }
+
+  async addPermission(role, permission) {
+    const roleToUpdate = await this.roleModel_.findOne({ name: role })
+
+    if (!roleToUpdate) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `${role} does not exist. Use method createRole to create it.`
+      )
+    }
+
+    const validatedPermission = this.validatePermission_(permission)
+
+    return this.roleModel_.updateOne(
+      { _id: roleToUpdate._id },
+      { $push: { permissions: validatedPermission } }
+    )
+  }
+
+  async removePermission(role, permission) {
+    const roleToUpdate = await this.roleModel_.findOne({ name: role })
+
+    if (!roleToUpdate) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `${role} does not exist. Use method createRole to create it.`
+      )
+    }
+
+    const validatedPermission = this.validatePermission_(permission)
+
+    return this.roleModel_.updateOne(
+      { _id: roleToUpdate._id },
+      { $pull: { permissions: validatedPermission } }
+    )
+  }
 
   async grantRole(userId, role) {
     const user = await this.userService_.retrieve(userId)

@@ -14,13 +14,12 @@ describe("PermissionService", () => {
         roles: ["product_editor"],
       },
     }
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+    })
 
     beforeAll(async () => {
       jest.clearAllMocks()
-      const permissionService = new PermissionService({
-        roleModel: RoleModelMock,
-      })
-
       result = await permissionService.hasPermission(user, "POST", "/products")
     })
 
@@ -32,6 +31,15 @@ describe("PermissionService", () => {
 
     it("successfully grants access to user", () => {
       expect(result).toEqual(true)
+    })
+
+    it("succesfully denies access to user", async () => {
+      const accessDenied = await permissionService.hasPermission(
+        user,
+        "CREATE",
+        "/orders"
+      )
+      expect(accessDenied).toEqual(false)
     })
   })
 
@@ -56,28 +64,32 @@ describe("PermissionService", () => {
   })
 
   describe("createRole", () => {
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+    })
+
     beforeAll(async () => {
       jest.clearAllMocks()
-      const permissionService = new PermissionService({
-        roleModel: RoleModelMock,
-      })
 
-      const contentEditorActions = [
+      const contentEditorPermissions = [
         {
           method: "POST",
-          route: "/contents",
+          endpoint: "/contents",
         },
         {
           method: "GET",
-          route: "/contents",
+          endpoint: "/contents",
         },
         {
           method: "PUT",
-          route: "/contents",
+          endpoint: "/contents",
         },
       ]
 
-      await permissionService.createRole("content_editor", contentEditorActions)
+      await permissionService.createRole(
+        "content_editor",
+        contentEditorPermissions
+      )
     })
 
     it("calls permission model functions", () => {
@@ -87,18 +99,36 @@ describe("PermissionService", () => {
         permissions: [
           {
             method: "POST",
-            route: "/contents",
+            endpoint: "/contents",
           },
           {
             method: "GET",
-            route: "/contents",
+            endpoint: "/contents",
           },
           {
             method: "PUT",
-            route: "/contents",
+            endpoint: "/contents",
           },
         ],
       })
+    })
+
+    it("throws if any permission is invalid", async () => {
+      try {
+        await permissionService.createRole("content_editor", [
+          {
+            method: "POST",
+            endpoint: "/products",
+          },
+          {
+            // Should fail since this is not a valid http request
+            method: "FETCH",
+            endpoint: "/products",
+          },
+        ])
+      } catch (err) {
+        expect(err.message).toEqual("Permission is not valid")
+      }
     })
   })
 
@@ -146,6 +176,84 @@ describe("PermissionService", () => {
         )
       } catch (err) {
         expect(err.message).toEqual("User already has role: content_editor")
+      }
+    })
+  })
+
+  describe("addPermission", () => {
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+    })
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully adds permission", async () => {
+      const toAdd = {
+        method: "POST",
+        endpoint: "/products",
+      }
+      await permissionService.addPermission("product_editor", toAdd)
+
+      expect(RoleModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(RoleModelMock.updateOne).toHaveBeenCalledWith(
+        { _id: IdMap.getId("product_editor") },
+        {
+          $push: { permissions: { method: "POST", endpoint: "/products" } },
+        }
+      )
+    })
+
+    it("throws if permission is not valid", async () => {
+      const toAdd = {
+        method: "POST",
+        endpoint: 1234,
+      }
+
+      try {
+        await permissionService.addPermission("product_editor", toAdd)
+      } catch (err) {
+        expect(err.message).toEqual("Permission is not valid")
+      }
+    })
+  })
+
+  describe("removePermission", () => {
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+    })
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully removes permission", async () => {
+      const toRemove = {
+        method: "POST",
+        endpoint: "/products",
+      }
+      await permissionService.removePermission("product_editor", toRemove)
+
+      expect(RoleModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(RoleModelMock.updateOne).toHaveBeenCalledWith(
+        { _id: IdMap.getId("product_editor") },
+        {
+          $pull: { permissions: { method: "POST", endpoint: "/products" } },
+        }
+      )
+    })
+
+    it("throws if permission is not valid", async () => {
+      const update = {
+        method: "FETCH",
+        endpoint: "/cart",
+      }
+
+      try {
+        await permissionService.addPermission("product_editor", update)
+      } catch (err) {
+        expect(err.message).toEqual("Permission is not valid")
       }
     })
   })

@@ -2,19 +2,20 @@ import { IdMap } from "medusa-test-utils"
 
 export const permissions = {
   productEditorPermission: {
+    _id: IdMap.getId("product_editor"),
     role: "product_editor",
-    actions: [
+    permissions: [
       {
         method: "POST",
-        route: "/products",
+        endpoint: "/products",
       },
       {
         method: "GET",
-        route: "/products",
+        endpoint: "/products",
       },
       {
         method: "PUT",
-        route: "/products",
+        endpoint: "/products",
       },
     ],
   },
@@ -28,5 +29,8 @@ export const RoleModelMock = {
       return Promise.resolve(permissions.productEditorPermission)
     }
     return Promise.resolve(undefined)
+  }),
+  updateOne: jest.fn().mockImplementation((query, update) => {
+    return Promise.resolve()
   }),
 }

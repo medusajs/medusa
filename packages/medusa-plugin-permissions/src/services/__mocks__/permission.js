@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 
 export const PermissionServiceMock = {
-  hasPermission: jest.fn().mockImplementation((user, method, route) => {
+  hasPermission: jest.fn().mockImplementation((user, method, endpoint) => {
     if (user._id === IdMap.getId("test-user")) {
       return Promise.resolve(true)
     }
