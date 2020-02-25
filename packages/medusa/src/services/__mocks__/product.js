@@ -32,7 +32,14 @@ export const ProductServiceMock = {
         },
       ])
     }
-
+    if (data.variants === IdMap.getId("eur-10-us-12")) {
+      return Promise.resolve([
+        {
+          _id: "1234",
+          title: "test",
+        },
+      ])
+    }
     if (data.variants === IdMap.getId("failId")) {
       return Promise.resolve([])
     }

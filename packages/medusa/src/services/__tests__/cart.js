@@ -66,6 +66,9 @@ describe("CartService", () => {
   })
 
   describe("addLineItem", () => {
+    const validateLineItemMock = {
+      validateLineItem_: jest.fn().mockReturnValue(Promise.resolve()),
+    }
     const cartService = new CartService({
       cartModel: CartModelMock,
       productVariantService: ProductVariantServiceMock,
