@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 
 export const LineItemServiceMock = {
-  validateLineItem: jest.fn().mockImplementation(data => {
+  validate: jest.fn().mockImplementation(data => {
     if (data.title === "invalid lineitem") {
       throw new Error(`"content" is required`)
     }
