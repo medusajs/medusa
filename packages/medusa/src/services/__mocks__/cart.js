@@ -34,6 +34,24 @@ export const CartServiceMock = {
   addLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
     return Promise.resolve()
   }),
+  setRegion: jest.fn().mockImplementation((cartId, regionId) => {
+    if (regionId === IdMap.getId("fail")) {
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, "Region not found")
+    }
+    return Promise.resolve()
+  }),
+  updateEmail: jest.fn().mockImplementation((cartId, email) => {
+    return Promise.resolve()
+  }),
+  updateShippingAddress: jest.fn().mockImplementation((cartId, address) => {
+    return Promise.resolve()
+  }),
+  updateBillingAddress: jest.fn().mockImplementation((cartId, address) => {
+    return Promise.resolve()
+  }),
+  applyPromoCode: jest.fn().mockImplementation((cartId, code) => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
