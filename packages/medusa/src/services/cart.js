@@ -177,7 +177,7 @@ class CartService extends BaseService {
    * @retur {Promise} the result of the update operation
    */
   async addLineItem(cartId, lineItem) {
-    const validatedLineItem = this.lineItemService.validateLineItem_(lineItem)
+    const validatedLineItem = this.lineItemService_.validateLineItem(lineItem)
 
     const cart = await this.retrieve(cartId)
     if (!cart) {

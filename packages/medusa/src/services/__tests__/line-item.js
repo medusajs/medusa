@@ -20,7 +20,7 @@ describe("LineItemService", () => {
       )
     })
 
-    it("generates line item", () => {
+    it("generates line item and successfully defaults quantity of content to 1", () => {
       expect(result).toEqual({
         content: {
           unit_price: 10,

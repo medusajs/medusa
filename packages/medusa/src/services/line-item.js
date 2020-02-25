@@ -22,7 +22,7 @@ class LineItemService extends BaseService {
    * @param {object} rawLineItem - the raw line item to validate.
    * @return {object} the validated id
    */
-  validateLineItem_(rawLineItem) {
+  validateLineItem(rawLineItem) {
     const content = Validator.object({
       unit_price: Validator.number().required(),
       variant: Validator.object().required(),
@@ -59,6 +59,20 @@ class LineItemService extends BaseService {
   }
 
   /**
+   * Contents of a line item
+   * @typedef {(object | array)} LineItemContent
+   * @property {number} unit_price - the price of the content
+   * @property {object} variant - the product variant of the content
+   * @property {object} product - the product of the content
+   * @property {number} quantity - the quantity of the content
+   */
+
+  /**
+   * A collection of contents grouped in the same line item
+   * @typedef {LineItemContent[]} LineItemContentArray
+   */
+
+  /**
    * Generates a line item.
    * @param {string} variantId - id of the line item variant
    * @param {*} regionId - id of the cart region
@@ -91,15 +105,6 @@ class LineItemService extends BaseService {
       },
     }
   }
-
-  /**
-   * Contents of a line item
-   * @typedef {(object | array)} LineItemContent
-   * @property {number} unit_price - the price of the content
-   * @property {object} variant - the product variant of the content
-   * @property {object} product - the product of the content
-   * @property {number} quantity - the quantity of the content
-   */
 }
 
 export default LineItemService

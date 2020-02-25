@@ -66,12 +66,19 @@ describe("CartService", () => {
   })
 
   describe("addLineItem", () => {
-    const validateLineItemMock = {
-      validateLineItem_: jest.fn().mockReturnValue(Promise.resolve()),
+    const lineItemServiceMock = {
+      validateLineItem_: jest.fn().mockImplementation(data => {
+        if (data.title === "invalid lineitem") {
+          throw new Error(`"content" is required`)
+        }
+        return data
+      }),
     }
+
     const cartService = new CartService({
       cartModel: CartModelMock,
       productVariantService: ProductVariantServiceMock,
+      lineItemService: lineItemServiceMock,
     })
 
     beforeEach(() => {
@@ -105,53 +112,6 @@ describe("CartService", () => {
         },
         {
           $push: { items: lineItem },
-        }
-      )
-    })
-
-    it("successfully defaults quantity of content to 1", async () => {
-      const lineItem = {
-        title: "New Line",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-        content: {
-          unit_price: 123,
-          variant: {
-            _id: IdMap.getId("can-cover"),
-          },
-          product: {
-            _id: IdMap.getId("product"),
-          },
-        },
-        quantity: 10,
-      }
-
-      await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
-
-      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("emptyCart"),
-        },
-        {
-          $push: {
-            items: {
-              title: "New Line",
-              description: "This is a new line",
-              thumbnail: "test-img-yeah.com/thumb",
-              content: {
-                unit_price: 123,
-                variant: {
-                  _id: IdMap.getId("can-cover"),
-                },
-                product: {
-                  _id: IdMap.getId("product"),
-                },
-                quantity: 1,
-              },
-              quantity: 10,
-            },
-          },
         }
       )
     })
@@ -232,7 +192,7 @@ describe("CartService", () => {
 
     it("throws if line item not validated", async () => {
       const lineItem = {
-        title: "merge line",
+        title: "invalid lineitem",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
       }
