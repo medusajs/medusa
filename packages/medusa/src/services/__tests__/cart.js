@@ -8,6 +8,7 @@ import {
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
+import { LineItemServiceMock } from "../__mocks__/line-item"
 
 describe("CartService", () => {
   describe("retrieve", () => {
@@ -66,19 +67,10 @@ describe("CartService", () => {
   })
 
   describe("addLineItem", () => {
-    const lineItemServiceMock = {
-      validateLineItem_: jest.fn().mockImplementation(data => {
-        if (data.title === "invalid lineitem") {
-          throw new Error(`"content" is required`)
-        }
-        return data
-      }),
-    }
-
     const cartService = new CartService({
       cartModel: CartModelMock,
       productVariantService: ProductVariantServiceMock,
-      lineItemService: lineItemServiceMock,
+      lineItemService: LineItemServiceMock,
     })
 
     beforeEach(() => {
