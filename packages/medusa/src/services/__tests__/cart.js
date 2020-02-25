@@ -65,6 +65,28 @@ describe("CartService", () => {
     })
   })
 
+  describe("create", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates a cart", async () => {
+      await cartService.create({
+        region_id: IdMap.getId("testRegion"),
+      })
+
+      expect(CartModelMock.create).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.create).toHaveBeenCalledWith({
+        region_id: IdMap.getId("testRegion"),
+      })
+    })
+  })
+
   describe("addLineItem", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
