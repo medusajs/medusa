@@ -22,15 +22,6 @@ export const LineItemServiceMock = {
       quantity,
     })
   }),
-  validate: jest.fn().mockImplementation(cartId => {
-    if (cartId === IdMap.getId("regionCart")) {
-      return Promise.resolve(carts.regionCart)
-    }
-    if (cartId === IdMap.getId("emptyCart")) {
-      return Promise.resolve(carts.emptyCart)
-    }
-    return Promise.resolve(undefined)
-  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
