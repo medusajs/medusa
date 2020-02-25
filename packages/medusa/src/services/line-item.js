@@ -22,7 +22,7 @@ class LineItemService extends BaseService {
    * @param {object} rawLineItem - the raw line item to validate.
    * @return {object} the validated id
    */
-  validateLineItem(rawLineItem) {
+  validate(rawLineItem) {
     const content = Validator.object({
       unit_price: Validator.number().required(),
       variant: Validator.object().required(),
