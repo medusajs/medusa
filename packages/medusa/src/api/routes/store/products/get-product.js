@@ -11,7 +11,7 @@ export default async (req, res) => {
   }
 
   const productService = req.scope.resolve("productService")
-  const product = await productService.getProduct(value)
+  const product = await productService.retrieve(value)
 
   if (!product) {
     res.sendStatus(404)
