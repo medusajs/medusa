@@ -1,10 +1,7 @@
 import mongoose from "mongoose"
 import { IdMap } from "medusa-test-utils"
 import PermissionService from "../permission"
-import {
-  PermissionModelMock,
-  permissions,
-} from "../../models/__mocks__/permission"
+import { permissions, RoleModelMock } from "../../models/__mocks__/role"
 
 describe("PermissionService", () => {
   describe("hasPermission", () => {
@@ -21,14 +18,14 @@ describe("PermissionService", () => {
     beforeAll(async () => {
       jest.clearAllMocks()
       const permissionService = new PermissionService({
-        permissionModel: PermissionModelMock,
+        roleModel: RoleModelMock,
       })
 
       result = await permissionService.hasPermission(user, "POST", "/products")
     })
 
     it("calls permission model functions", () => {
-      expect(PermissionModelMock.findOne).toHaveBeenCalledTimes(
+      expect(RoleModelMock.findOne).toHaveBeenCalledTimes(
         user.metadata.roles.length
       )
     })
@@ -38,19 +35,19 @@ describe("PermissionService", () => {
     })
   })
 
-  describe("getPermissions", () => {
+  describe("retrieveRole", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
       const permissionService = new PermissionService({
-        permissionModel: PermissionModelMock,
+        roleModel: RoleModelMock,
       })
 
-      result = await permissionService.getPermissions("product_editor")
+      result = await permissionService.retrieveRole("product_editor")
     })
 
     it("calls permission model functions", () => {
-      expect(PermissionModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(RoleModelMock.findOne).toHaveBeenCalledTimes(1)
     })
 
     it("successfully fetches product editor permissions", () => {
@@ -58,11 +55,11 @@ describe("PermissionService", () => {
     })
   })
 
-  describe("createPermissions", () => {
+  describe("createRole", () => {
     beforeAll(async () => {
       jest.clearAllMocks()
       const permissionService = new PermissionService({
-        permissionModel: PermissionModelMock,
+        roleModel: RoleModelMock,
       })
 
       const contentEditorActions = [
@@ -80,17 +77,14 @@ describe("PermissionService", () => {
         },
       ]
 
-      await permissionService.createPermissions(
-        "content_editor",
-        contentEditorActions
-      )
+      await permissionService.createRole("content_editor", contentEditorActions)
     })
 
     it("calls permission model functions", () => {
-      expect(PermissionModelMock.create).toHaveBeenCalledTimes(1)
-      expect(PermissionModelMock.create).toHaveBeenCalledWith({
-        role: "content_editor",
-        actions: [
+      expect(RoleModelMock.create).toHaveBeenCalledTimes(1)
+      expect(RoleModelMock.create).toHaveBeenCalledWith({
+        name: "content_editor",
+        permissions: [
           {
             method: "POST",
             route: "/contents",
@@ -108,24 +102,51 @@ describe("PermissionService", () => {
     })
   })
 
-  describe("grantPermissions", () => {
+  describe("grantRole", () => {
+    const setMetadataMock = jest.fn().mockReturnValue(Promise.resolve())
+    const userRetrieveMock = jest.fn().mockReturnValue(
+      Promise.resolve({
+        _id: IdMap.getId("permission-user"),
+        email: "oliver@test.dk",
+        metadata: {
+          roles: ["content_editor"],
+        },
+      })
+    )
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+      userService: {
+        setMetadata: setMetadataMock,
+        retrieve: userRetrieveMock,
+      },
+    })
+
     beforeAll(async () => {
       jest.clearAllMocks()
-      const permissionService = new PermissionService({
-        permissionModel: PermissionModelMock,
-      })
+    })
 
-      await permissionService.grantPersissionRole(
+    it("successfully grants role to user", async () => {
+      await permissionService.grantRole(
+        IdMap.getId("permission-user"),
+        "product_editor"
+      )
+
+      expect(setMetadataMock).toHaveBeenCalledTimes(1)
+      expect(setMetadataMock).toHaveBeenCalledWith(
         IdMap.getId("permission-user"),
         "product_editor"
       )
     })
 
-    it("calls permission model functions", () => {
-      expect(PermissionModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(PermissionModelMock.create).toHaveBeenCalledWith({
-        ""
-      })
+    it("throws if user already has role", async () => {
+      try {
+        await permissionService.grantRole(
+          IdMap.getId("permission-user"),
+          "content_editor"
+        )
+      } catch (err) {
+        expect(err.message).toEqual("User already has role: content_editor")
+      }
     })
   })
 })

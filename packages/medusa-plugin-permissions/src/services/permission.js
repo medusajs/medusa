@@ -40,7 +40,7 @@ class PermissionService extends BaseService {
   async hasPermission(user, method, route) {
     for (let i = 0; i < user.metadata.roles.length; i++) {
       const role = user.metadata.roles[i]
-      const permissions = await this.roleModel_.findOne({ role: role })
+      const permissions = await this.roleModel_.findOne({ name: role })
       return permissions.actions.some(action => {
         return action.method === method && action.route === route
       })
@@ -49,8 +49,8 @@ class PermissionService extends BaseService {
   }
 
   async createRole(role, actions) {
-    const validatedActions = this.validateActions_(actions)
-    const exists = await this.roleModel_.findOne({ role })
+    const validatePermissions = this.validatePermissions_(actions)
+    const exists = await this.roleModel_.findOne({ name: role })
     if (exists) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -59,22 +59,36 @@ class PermissionService extends BaseService {
     }
 
     return this.roleModel_.create({
-      role,
-      actions: validatedActions,
+      name: role,
+      permissions: validatePermissions,
     })
   }
 
   async updateRole() {}
 
   async grantRole(userId, role) {
-    const exists = await this.roleModel_.findOne({ role })
+    const user = await this.userService_.retrieve(userId)
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.DB_ERROR,
+        `Could not find user with id: ${userId}`
+      )
+    }
+
+    if (user.metadata.roles.includes(role)) {
+      throw new MedusaError(
+        MedusaError.Types.DB_ERROR,
+        `User already has role: ${role}`
+      )
+    }
+
+    const exists = await this.roleModel_.findOne({ name: role })
     if (!exists) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
         `${role} does not exist`
       )
     }
-    // Check if user already has role
 
     return this.userService_.setMetadata(userId, role)
   }
