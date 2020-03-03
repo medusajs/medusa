@@ -476,6 +476,89 @@ class CartService extends BaseService {
   }
 
   /**
+   * Creates, updates and sets payment sessions associated with the cart. The
+   * first time the method is called payment sessions will be created for each
+   * provider. Additional calls will ensure that payment sessions have correct
+   * amounts, currencies, etc. as well as make sure to filter payment sessions
+   * that are not available for the cart's region.
+   * @param {string} cartId - the id of the cart to set payment session for
+   * @returns {Promise} the result of the update operation.
+   */
+  async setPaymentSessions(cartId) {
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Could not find a cart with the provided id"
+      )
+    }
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart's region could not be found"
+      )
+    }
+
+    // If there are existing payment sessions ensure that these are up to date
+    let sessions = []
+    if (cart.payment_sessions && cart.payment_sessions.length) {
+      sessions = await Promise.all(
+        cart.payment_sessions.map(async pSession => {
+          if (!region.payment_providers.includes(pSession.provider_id)) {
+            return null
+          }
+          return this.paymentProviderService_.updateSession(pSession, cart)
+        })
+      )
+    }
+
+    // Filter all null sessions
+    sessions = sessions.filter(s => !!s)
+
+    // For all the payment providers in the region make sure to either skip them
+    // if they already exist or create them if they don't yet exist.
+    let newSessions = await Promise.all(
+      region.payment_providers.map(async pId => {
+        if (sessions.find(s => s.provider_id === pId)) {
+          return null
+        }
+
+        return this.paymentProviderService_.createSession(pId, cart)
+      })
+    )
+
+    // Filter null sessions
+    newSessions = newSessions.filter(s => !!s)
+
+    // Update the payment sessions with the concatenated array of updated and
+    // newly created payment sessions
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { payment_sessions: sessions.concat(newSessions) },
+      }
+    )
+  }
+
+  async setShippingOptions(cartId) {
+    // Reduce over shipping options in the region and do the following:
+    // 1. Ask the ShippingOptionService if the cart qualifies for this option
+    // 2. Ask the ShippingOptionService to give a price for the option
+    // 3. Return an object with the data:
+    //    {
+    //      name: "Name of option",
+    //      price: 0, // Price of option
+    //      provider_id: "the fulfillment provider's id",
+    //      data: { // any additional data that the shipping method has }
+    //    }
+    // Set the shipping_options field equal to the resulting array
+  }
+
+  /**
    * Set's the region of a cart.
    * @param {string} cartId - the id of the cart to set region on
    * @param {string} regionId - the id of the region to set the cart to

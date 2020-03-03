@@ -807,4 +807,157 @@ describe("CartService", () => {
       }
     })
   })
+
+  describe("setPaymentSessions", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+      paymentProviderService: PaymentProviderServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("initializes payment sessions for each of the providers", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
+
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(2)
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "default_provider",
+        carts.cartWithLine
+      )
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "unregistered",
+        carts.cartWithLine
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session",
+                  cartId: IdMap.getId("cartWithLine"),
+                },
+              },
+              {
+                provider_id: "unregistered",
+                data: {
+                  id: "unregistered_session",
+                  cartId: IdMap.getId("cartWithLine"),
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("updates payment sessions for existing sessions", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cartWithPaySessions"))
+
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(0)
+
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(2)
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "default_provider",
+          data: {
+            id: "default_provider_session",
+          },
+        },
+        carts.cartWithPaySessions
+      )
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "unregistered",
+          data: {
+            id: "unregistered_session",
+          },
+        },
+        carts.cartWithPaySessions
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithPaySessions"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session_updated",
+                },
+              },
+              {
+                provider_id: "unregistered",
+                data: {
+                  id: "unregistered_session_updated",
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("filters sessions not available in the region", async () => {
+      await cartService.setPaymentSessions(
+        IdMap.getId("cartWithPaySessionsDifRegion")
+      )
+
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(1)
+
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(1)
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "default_provider",
+          data: {
+            id: "default_provider_session",
+          },
+        },
+        carts.cartWithPaySessionsDifRegion
+      )
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "france-provider",
+        carts.cartWithPaySessionsDifRegion
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithPaySessionsDifRegion"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session_updated",
+                },
+              },
+              {
+                provider_id: "france-provider",
+                data: {
+                  id: "france-provider_session",
+                  cartId: IdMap.getId("cartWithPaySessionsDifRegion"),
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
+  })
 })

@@ -6,8 +6,90 @@ export const carts = {
     title: "test",
     region_id: IdMap.getId("testRegion"),
     items: [],
-    shippingAddress: {},
-    billingAddress: {},
+    shipping_address: {},
+    billing_address: {},
+    discounts: [],
+    customer_id: "",
+  },
+  cartWithPaySessionsDifRegion: {
+    _id: IdMap.getId("cartWithPaySessionsDifRegion"),
+    region_id: IdMap.getId("region-france"),
+    items: [
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+    payment_sessions: [
+      {
+        provider_id: "default_provider",
+        data: {
+          id: "default_provider_session",
+        },
+      },
+      {
+        provider_id: "unregistered",
+        data: {
+          id: "unregistered_session",
+        },
+      },
+    ],
+    shipping_address: {},
+    billing_address: {},
+    discounts: [],
+    customer_id: "",
+  },
+  cartWithPaySessions: {
+    _id: IdMap.getId("cartWithPaySessions"),
+    region_id: IdMap.getId("testRegion"),
+    items: [
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+    payment_sessions: [
+      {
+        provider_id: "default_provider",
+        data: {
+          id: "default_provider_session",
+        },
+      },
+      {
+        provider_id: "unregistered",
+        data: {
+          id: "unregistered_session",
+        },
+      },
+    ],
+    shipping_address: {},
+    billing_address: {},
     discounts: [],
     customer_id: "",
   },
@@ -34,8 +116,8 @@ export const carts = {
         quantity: 10,
       },
     ],
-    shippingAddress: {},
-    billingAddress: {},
+    shipping_address: {},
+    billing_address: {},
     discounts: [],
     customer_id: "",
   },
@@ -141,6 +223,12 @@ export const CartModelMock = {
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
+    if (query._id === IdMap.getId("cartWithPaySessionsDifRegion")) {
+      return Promise.resolve(carts.cartWithPaySessionsDifRegion)
+    }
+    if (query._id === IdMap.getId("cartWithPaySessions")) {
+      return Promise.resolve(carts.cartWithPaySessions)
+    }
     if (query._id === IdMap.getId("emptyCart")) {
       return Promise.resolve(carts.emptyCart)
     }
