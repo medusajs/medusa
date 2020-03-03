@@ -11,5 +11,11 @@ export default app => {
   route.post("/", middlewares.wrap(require("./create-cart").default))
   route.post("/:id", middlewares.wrap(require("./update-cart").default))
 
+  // Line items
+  route.post(
+    "/:id/line-items",
+    middlewares.wrap(require("./create-line-item").default)
+  )
+
   return app
 }

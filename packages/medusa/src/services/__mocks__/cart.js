@@ -5,6 +5,7 @@ export const carts = {
   emptyCart: {
     _id: IdMap.getId("emptyCart"),
     items: [],
+    region_id: IdMap.getId("testRegion"),
   },
   regionCart: {
     _id: IdMap.getId("regionCart"),
