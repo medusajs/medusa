@@ -16,6 +16,10 @@ export default app => {
     "/:id/line-items",
     middlewares.wrap(require("./create-line-item").default)
   )
+  route.post(
+    "/:id/line-items/:line_id",
+    middlewares.wrap(require("./update-line-item").default)
+  )
 
   return app
 }

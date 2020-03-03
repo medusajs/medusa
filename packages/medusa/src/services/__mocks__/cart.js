@@ -35,6 +35,9 @@ export const CartServiceMock = {
   addLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
     return Promise.resolve()
   }),
+  updateLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
+    return Promise.resolve()
+  }),
   setRegion: jest.fn().mockImplementation((cartId, regionId) => {
     if (regionId === IdMap.getId("fail")) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Region not found")

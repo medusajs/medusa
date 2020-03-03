@@ -276,6 +276,68 @@ class CartService extends BaseService {
   }
 
   /**
+   * Updates a cart's existing line item.
+   * @param {string} cartId - the id of the cart to update
+   * @param {string} lineItemId - the id of the line item to update.
+   * @param {LineItem} lineItem - the line item to update. Must include an _id
+   *    field.
+   * @return {Promise} the result of the update operation
+   */
+  async updateLineItem(cartId, lineItemId, lineItem) {
+    const validatedLineItem = this.validateLineItem_(lineItem)
+
+    if (!lineItemId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Line Item must have an _id corresponding to an existing line item id"
+      )
+    }
+
+    // Ensure that the line item exists in the cart
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
+    const lineItemExists = cart.items.find(i => i._id === lineItemId)
+    if (!lineItemExists) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "A line item with the provided id doesn't exist in the cart"
+      )
+    }
+
+    // Ensure that inventory covers the request
+    const hasInventory = await this.confirmInventory_(
+      validatedLineItem.content,
+      validatedLineItem.quantity
+    )
+
+    if (!hasInventory) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Inventory doesn't cover the desired quantity"
+      )
+    }
+
+    // Update the line item
+    return this.cartModel_.updateOne(
+      {
+        _id: cartId,
+        "items._id": lineItemId,
+      },
+      {
+        $set: {
+          "items.$": validatedLineItem,
+        },
+      }
+    )
+  }
+
+  /**
    * Sets the email of a cart
    * @param {string} cartId - the id of the cart to add email to
    * @param {string} email - the email to add to cart

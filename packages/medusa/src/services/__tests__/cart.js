@@ -285,6 +285,102 @@ describe("CartService", () => {
     })
   })
 
+  describe("updateLineItem", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      productVariantService: ProductVariantServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates existing line item", async () => {
+      const lineItem = {
+        title: "update line",
+        description: "This is a new line",
+        thumbnail: "https://test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 2,
+      }
+
+      await cartService.updateLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("existingLine"),
+        lineItem
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+          "items._id": IdMap.getId("existingLine"),
+        },
+        {
+          $set: { "items.$": lineItem },
+        }
+      )
+    })
+
+    it("throws if line item not validated", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+      }
+
+      try {
+        await cartService.updateLineItem(
+          IdMap.getId("cartWithLine"),
+          IdMap.getId("bogus"),
+          lineItem
+        )
+      } catch (err) {
+        expect(err.message).toEqual(`"content" is required`)
+      }
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        content: {
+          variant: {
+            _id: IdMap.getId("cannot-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+          unit_price: 1234,
+        },
+      }
+
+      try {
+        await cartService.updateLineItem(
+          IdMap.getId("cartWithLine"),
+          IdMap.getId("existingLine"),
+          lineItem
+        )
+      } catch (err) {
+        expect(err.message).toEqual(
+          `Inventory doesn't cover the desired quantity`
+        )
+      }
+    })
+  })
+
   describe("updateEmail", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
