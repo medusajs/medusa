@@ -11,6 +11,32 @@ export const carts = {
     discounts: [],
     customer_id: "",
   },
+  withShippingOptions: {
+    _id: IdMap.getId("withShippingOptions"),
+    title: "test",
+    region_id: IdMap.getId("region-france"),
+    items: [],
+    shipping_options: [
+      {
+        _id: IdMap.getId("freeShipping"),
+        name: "Free Shipping",
+        region_id: IdMap.getId("testRegion"),
+        price: 10,
+        provider_id: "test_shipper",
+      },
+      {
+        _id: IdMap.getId("expensiveShipping"),
+        name: "Expensive Shipping",
+        region_id: IdMap.getId("testRegion"),
+        price: 100,
+        provider_id: "test_shipper",
+      },
+    ],
+    shipping_address: {},
+    billing_address: {},
+    discounts: [],
+    customer_id: "",
+  },
   cartWithPaySessionsDifRegion: {
     _id: IdMap.getId("cartWithPaySessionsDifRegion"),
     region_id: IdMap.getId("region-france"),
@@ -223,6 +249,9 @@ export const CartModelMock = {
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
+    if (query._id === IdMap.getId("withShippingOptions")) {
+      return Promise.resolve(carts.withShippingOptions)
+    }
     if (query._id === IdMap.getId("cartWithPaySessionsDifRegion")) {
       return Promise.resolve(carts.cartWithPaySessionsDifRegion)
     }

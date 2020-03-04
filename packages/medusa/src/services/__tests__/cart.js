@@ -7,6 +7,7 @@ import {
 } from "../__mocks__/payment-provider"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
+import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 
@@ -958,6 +959,135 @@ describe("CartService", () => {
           },
         }
       )
+    })
+  })
+
+  describe("setShippingOptions", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+      shippingOptionService: ShippingOptionServiceMock,
+    })
+
+    describe("gets shipping options from the cart's regions", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        await cartService.setShippingOptions(IdMap.getId("cartWithLine"))
+      })
+
+      it("gets shipping options from region", () => {
+        expect(ShippingOptionServiceMock.list).toHaveBeenCalledTimes(1)
+        expect(ShippingOptionServiceMock.list).toHaveBeenCalledWith({
+          region_id: IdMap.getId("testRegion"),
+        })
+      })
+
+      it("checks availability for two options", () => {
+        expect(
+          ShippingOptionServiceMock.checkAvailability
+        ).toHaveBeenCalledTimes(2)
+        expect(
+          ShippingOptionServiceMock.checkAvailability
+        ).toHaveBeenCalledWith(IdMap.getId("freeShipping"), carts.cartWithLine)
+        expect(
+          ShippingOptionServiceMock.checkAvailability
+        ).toHaveBeenCalledWith(
+          IdMap.getId("expensiveShipping"),
+          carts.cartWithLine
+        )
+      })
+
+      it("fetches prices for one option", () => {
+        expect(ShippingOptionServiceMock.fetchPrice).toHaveBeenCalledTimes(1)
+        expect(ShippingOptionServiceMock.fetchPrice).toHaveBeenCalledWith(
+          IdMap.getId("freeShipping"),
+          carts.cartWithLine
+        )
+      })
+
+      it("updates cart", () => {
+        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("cartWithLine"),
+          },
+          {
+            $set: {
+              shipping_options: [
+                {
+                  _id: IdMap.getId("freeShipping"),
+                  name: "Free Shipping",
+                  region_id: IdMap.getId("testRegion"),
+                  price: 10,
+                  data: {
+                    id: "fs",
+                  },
+                  provider_id: "test_shipper",
+                },
+              ],
+            },
+          }
+        )
+      })
+    })
+
+    describe("overrides with correct shipping options new region", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        await cartService.setShippingOptions(IdMap.getId("withShippingOptions"))
+      })
+
+      it("lists shipping options from region", () => {
+        expect(ShippingOptionServiceMock.list).toHaveBeenCalledTimes(1)
+        expect(ShippingOptionServiceMock.list).toHaveBeenCalledWith({
+          region_id: IdMap.getId("region-france"),
+        })
+      })
+
+      it("checks for availability", () => {
+        expect(
+          ShippingOptionServiceMock.checkAvailability
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          ShippingOptionServiceMock.checkAvailability
+        ).toHaveBeenCalledWith(
+          IdMap.getId("franceShipping"),
+          carts.withShippingOptions
+        )
+      })
+
+      it("fetches prices", () => {
+        expect(ShippingOptionServiceMock.fetchPrice).toHaveBeenCalledTimes(1)
+        expect(ShippingOptionServiceMock.fetchPrice).toHaveBeenCalledWith(
+          IdMap.getId("franceShipping"),
+          carts.withShippingOptions
+        )
+      })
+
+      it("updates cart", () => {
+        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("withShippingOptions"),
+          },
+          {
+            $set: {
+              shipping_options: [
+                {
+                  _id: IdMap.getId("franceShipping"),
+                  name: "FR Shipping",
+                  region_id: IdMap.getId("region-france"),
+                  data: {
+                    id: "bonjour",
+                  },
+                  price: 20,
+                  provider_id: "test_shipper",
+                },
+              ],
+            },
+          }
+        )
+      })
     })
   })
 })

@@ -15,6 +15,7 @@ class CartService extends BaseService {
     productVariantService,
     regionService,
     lineItemService,
+    shippingOptionService,
   }) {
     super()
 
@@ -38,6 +39,9 @@ class CartService extends BaseService {
 
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
+
+    /** @private @const {ShippingOptionsService} */
+    this.shippingOptionService_ = shippingOptionService
   }
 
   /**
@@ -544,18 +548,68 @@ class CartService extends BaseService {
     )
   }
 
+  /**
+   * Finds all shipping options that are available to the cart and stores them
+   * in shipping_options. Will find shipping options based on region and filter
+   * all shipping options that are not available based on the cart's contents,
+   * shipping address, etc.
+   * @param {string} cartId - the id of the cart
+   * @return {Promse} the result of the update operation
+   */
   async setShippingOptions(cartId) {
-    // Reduce over shipping options in the region and do the following:
-    // 1. Ask the ShippingOptionService if the cart qualifies for this option
-    // 2. Ask the ShippingOptionService to give a price for the option
-    // 3. Return an object with the data:
-    //    {
-    //      name: "Name of option",
-    //      price: 0, // Price of option
-    //      provider_id: "the fulfillment provider's id",
-    //      data: { // any additional data that the shipping method has }
-    //    }
-    // Set the shipping_options field equal to the resulting array
+    const cart = await this.retrieve(cartId)
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "The cart was not found"
+      )
+    }
+
+    // Get the shipping options available in the region
+    const regionOptions = await this.shippingOptionService_.list({
+      region_id: cart.region_id,
+    })
+
+    // Compile the cart's available options
+    let cartOptions = await Promise.all(
+      regionOptions.map(async option => {
+        const isAvailable = await this.shippingOptionService_.checkAvailability(
+          option._id,
+          cart
+        )
+        if (!isAvailable) {
+          return null
+        }
+
+        // Ask the shipping option service to calculate the price for us
+        const price = await this.shippingOptionService_.fetchPrice(
+          option._id,
+          cart
+        )
+
+        // Only includes relevant data in the shipping options
+        return {
+          _id: option._id,
+          name: option.name,
+          region_id: option.region_id,
+          provider_id: option.provider_id,
+          data: option.data,
+          price,
+        }
+      })
+    )
+
+    // Filter all null results
+    cartOptions = cartOptions.filter(o => !!o)
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { shipping_options: cartOptions },
+      }
+    )
   }
 
   /**
