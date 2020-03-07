@@ -78,15 +78,15 @@ class LineItemService extends BaseService {
    * @param {*} quantity - number of items
    */
   async generate(variantId, regionId, quantity) {
+    const variant = await this.productVariantService_.retrieve(variantId)
     const products = await this.productService_.list({ variants: variantId })
     if (!products.length) {
       throw new MedusaError(
-        MedusaError.Types.DB_ERROR,
+        MedusaError.Types.INVALID_DATA,
         `Could not find product for variant with id: ${variantId}`
       )
     }
     const product = products[0]
-    const variant = await this.productVariantService_.retrieve(variantId)
     const unit_price = await this.productVariantService_.getRegionPrice(
       variantId,
       regionId
