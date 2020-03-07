@@ -56,6 +56,12 @@ export const CartServiceMock = {
   applyPromoCode: jest.fn().mockImplementation((cartId, code) => {
     return Promise.resolve()
   }),
+  setPaymentSessions: jest.fn().mockImplementation(cartId => {
+    return Promise.resolve()
+  }),
+  setShippingOptions: jest.fn().mockImplementation(cartId => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

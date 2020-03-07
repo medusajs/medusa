@@ -21,5 +21,17 @@ export default app => {
     middlewares.wrap(require("./update-line-item").default)
   )
 
+  // Payment sessions
+  route.post(
+    "/:id/payment-sessions",
+    middlewares.wrap(require("./create-payment-sessions").default)
+  )
+
+  // Shipping Options
+  route.post(
+    "/:id/shipping-options",
+    middlewares.wrap(require("./create-shipping-options").default)
+  )
+
   return app
 }
