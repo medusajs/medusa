@@ -6,7 +6,7 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class LineItemService extends BaseService {
-  constructor({ productVariantService, productService }) {
+  constructor({ productVariantService, productService, regionService }) {
     super()
 
     /** @private @const {ProductVariantService} */
@@ -14,6 +14,9 @@ class LineItemService extends BaseService {
 
     /** @private @const {ProductService} */
     this.productService_ = productService
+
+    /** @private @const {RegionService} */
+    this.regionService_ = regionService
   }
 
   /**
@@ -79,13 +82,31 @@ class LineItemService extends BaseService {
    */
   async generate(variantId, regionId, quantity) {
     const variant = await this.productVariantService_.retrieve(variantId)
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant: ${variantId} was not found`
+      )
+    }
+
+    const region = await await this.regionService_.retrieve(regionId)
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Region: ${regionId} was not found`
+      )
+    }
+
     const products = await this.productService_.list({ variants: variantId })
+    // this should never fail, since a variant must have a product associated
+    // with it to exists, but better safe than sorry
     if (!products.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Could not find product for variant with id: ${variantId}`
       )
     }
+
     const product = products[0]
     const unit_price = await this.productVariantService_.getRegionPrice(
       variantId,
