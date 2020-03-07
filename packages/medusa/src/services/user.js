@@ -84,9 +84,11 @@ class UserService extends BaseService {
    * @param {object} user - the user to create
    * @return {Promise} the result of create
    */
-  create(user) {
+  async create(user) {
     const validatedEmail = this.validateEmail_(user.email)
+    const hashedPassword = await bcrypt.hash(password, 10)
     user.email = validatedEmail
+    user.passwordHash = hashedPassword
     this.userModel_.create(user).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
