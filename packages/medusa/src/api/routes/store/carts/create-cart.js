@@ -35,6 +35,7 @@ export default async (req, res) => {
     }
 
     cart = await cartService.retrieve(cart._id)
+    cart = await cartService.decorate(cart)
     res.status(201).json(cart)
   } catch (err) {
     throw err

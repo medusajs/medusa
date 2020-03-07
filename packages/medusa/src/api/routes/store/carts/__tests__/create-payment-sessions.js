@@ -27,6 +27,7 @@ describe("POST /store/carts/:id/payment-sessions", () => {
 
     it("returns the cart", () => {
       expect(subject.body._id).toEqual(IdMap.getId("emptyCart"))
+      expect(subject.body.decorated).toEqual(true)
     })
   })
 })

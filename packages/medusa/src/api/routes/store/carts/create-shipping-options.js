@@ -8,7 +8,8 @@ export default async (req, res) => {
     await cartService.setShippingOptions(id)
 
     // return the updated cart
-    const cart = await cartService.retrieve(id)
+    let cart = await cartService.retrieve(id)
+    cart = await cartService.decorate(cart)
     res.status(201).json(cart)
   } catch (err) {
     throw err

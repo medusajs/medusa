@@ -204,9 +204,7 @@ class CartService extends BaseService {
    * @return {Cart} return the decorated cart.
    */
   async decorate(cart, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(cart, fields.concat(requiredFields))
-    return decorated
+    return cart
   }
 
   /**
@@ -426,6 +424,8 @@ class CartService extends BaseService {
   }
 
   /**
+   * A payment method represents a way for the customer to pay. The payment
+   * method will typically come from one of the payment sessions.
    * @typedef {object} PaymentMethod
    * @property {string} provider_id - the identifier of the payment method's
    *     provider

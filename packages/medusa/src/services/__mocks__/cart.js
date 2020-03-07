@@ -62,6 +62,10 @@ export const CartServiceMock = {
   setShippingOptions: jest.fn().mockImplementation(cartId => {
     return Promise.resolve()
   }),
+  decorate: jest.fn().mockImplementation(cart => {
+    cart.decorated = true
+    return cart
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
