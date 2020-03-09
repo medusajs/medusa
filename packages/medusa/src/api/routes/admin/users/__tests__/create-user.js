@@ -1,16 +1,21 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../helpers/test-request"
-import { UserServiceMock } from "../../../../services/__mocks__/user"
+import { request } from "../../../../../helpers/test-request"
+import { UserServiceMock } from "../../../../../services/__mocks__/user"
 
-describe("POST /store/users", () => {
+describe("POST /admin/users", () => {
   describe("successfully creates a user", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", "/store/users", {
+      subject = await request("POST", "/admin/users", {
         payload: {
           email: "oliver@test.dk",
           password: "123456789",
+        },
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
         },
       })
     })
@@ -27,12 +32,15 @@ describe("POST /store/users", () => {
       })
     })
 
-    it("returns 201", () => {
-      expect(subject.status).toEqual(201)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
-    it("returns the cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("testUser"))
+    it("returns the user", () => {
+      expect(subject.body).toEqual({
+        _id: IdMap.getId("test-user"),
+        email: "oliver@test.dk",
+      })
     })
   })
 
@@ -40,10 +48,15 @@ describe("POST /store/users", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", "/store/users", {
+      subject = await request("POST", "/admin/users", {
         payload: {
-          email: IdMap.getId("fail"),
+          email: "olivertest.dk",
           password: "123456789",
+        },
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
         },
       })
     })
@@ -52,9 +65,8 @@ describe("POST /store/users", () => {
       jest.clearAllMocks()
     })
 
-    it("returns error", () => {
+    it("returns 400 on invalid email", () => {
       expect(subject.status).toEqual(400)
-      expect(subject.body.message).toEqual("Region not found")
     })
   })
 })

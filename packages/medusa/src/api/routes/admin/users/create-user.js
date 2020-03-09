@@ -8,8 +8,6 @@ export default async (req, res) => {
     password: Validator.string().required(),
   })
 
-  console.log("test")
-
   const { value, error } = schema.validate(req.body)
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
@@ -17,10 +15,10 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    console.log(value)
     let user = await userService.create(value)
     user = await userService.retrieve(user._id)
-    res.status(201).json(user)
+    user = await userService.decorate(user, ["email"])
+    res.status(200).json(user)
   } catch (err) {
     throw err
   }

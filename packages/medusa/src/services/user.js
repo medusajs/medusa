@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"

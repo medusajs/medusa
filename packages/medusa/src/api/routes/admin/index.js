@@ -2,6 +2,7 @@ import { Router } from "express"
 import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
+import userRoutes from "./users"
 import productVariantRoutes from "./product-variants"
 
 const route = Router()
@@ -16,6 +17,7 @@ export default app => {
   route.use(middlewares.authenticate())
 
   productRoutes(route)
+  userRoutes(route)
   // productVariantRoutes(route)
 
   return app
