@@ -37,7 +37,7 @@ export const UserServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  setPassword: jest.fn().mockImplementation((userId, password) => {
+  setPassword: jest.fn().mockImplementation(userId => {
     return Promise.resolve()
   }),
   decorate: jest.fn().mockImplementation((user, fields) => {

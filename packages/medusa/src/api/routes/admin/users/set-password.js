@@ -12,13 +12,13 @@ export default async (req, res) => {
   }
 
   const userService = req.scope.resolve("userService")
-  const user = await userService.setPassword(id, value.password)
-
-  if (!user) {
-    res.sendStatus(404)
-    return
+  try {
+    await userService.setPassword(id, value.password)
+  } catch (error) {
+    throw error
   }
 
-  const newUser = await userService.retrieve(id)
+  let newUser = await userService.retrieve(id)
+  newUser = await userService.decorate(newUser, ["email"])
   res.json(newUser)
 }

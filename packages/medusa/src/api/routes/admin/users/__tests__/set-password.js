@@ -11,6 +11,9 @@ describe("POST /admin/users/:id/set-password", () => {
         "POST",
         `/admin/users/${IdMap.getId("test-user")}/set-password`,
         {
+          payload: {
+            password: "987654321",
+          },
           adminSession: {
             jwt: {
               userId: IdMap.getId("admin_user"),
@@ -24,13 +27,27 @@ describe("POST /admin/users/:id/set-password", () => {
       jest.clearAllMocks()
     })
 
-    it("calls UserService generateResetPasswordToken", () => {
-      expect(UserServiceMock.generateResetPasswordToken).toHaveBeenCalledTimes(
-        1
+    it("calls UserService setPassword", () => {
+      expect(UserServiceMock.setPassword).toHaveBeenCalledTimes(1)
+      expect(UserServiceMock.setPassword).toHaveBeenCalledWith(
+        IdMap.getId("test-user"),
+        "987654321"
       )
-      expect(UserServiceMock.generateResetPasswordToken).toHaveBeenCalledWith(
-        IdMap.getId("test-user")
+    })
+
+    it("calls UserService setPassword", () => {
+      expect(UserServiceMock.setPassword).toHaveBeenCalledTimes(1)
+      expect(UserServiceMock.setPassword).toHaveBeenCalledWith(
+        IdMap.getId("test-user"),
+        "987654321"
       )
+    })
+
+    it("returns the update user", () => {
+      expect(subject.body).toEqual({
+        _id: IdMap.getId("test-user"),
+        email: "oliver@test.dk",
+      })
     })
 
     it("returns 200", () => {
