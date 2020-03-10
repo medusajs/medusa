@@ -14,6 +14,7 @@ class CartService extends BaseService {
     productService,
     productVariantService,
     regionService,
+    lineItemService,
   }) {
     super()
 
@@ -32,6 +33,9 @@ class CartService extends BaseService {
     /** @private @const {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @const {LineItemService} */
+    this.lineItemService_ = lineItemService
+
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
   }
@@ -48,47 +52,6 @@ class CartService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
         "The cartId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
-  }
-
-  /**
-   * Used to validate line items.
-   * @param {object} rawLineItem - the raw cart id to validate.
-   * @return {object} the validated id
-   */
-  validateLineItem_(rawLineItem) {
-    const content = Validator.object({
-      unit_price: Validator.number().required(),
-      variant: Validator.object().required(),
-      product: Validator.object().required(),
-      quantity: Validator.number()
-        .integer()
-        .min(1)
-        .default(1),
-    })
-
-    const lineItemSchema = Validator.object({
-      title: Validator.string().required(),
-      description: Validator.string(),
-      thumbnail: Validator.string(),
-      content: Validator.alternatives()
-        .try(content, Validator.array().items(content))
-        .required(),
-      quantity: Validator.number()
-        .integer()
-        .min(1)
-        .required(),
-      metadata: Validator.object(),
-    })
-
-    const { value, error } = lineItemSchema.validate(rawLineItem)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        error.details[0].message
       )
     }
 
@@ -245,7 +208,7 @@ class CartService extends BaseService {
    * @retur {Promise} the result of the update operation
    */
   async addLineItem(cartId, lineItem) {
-    const validatedLineItem = this.validateLineItem_(lineItem)
+    const validatedLineItem = this.lineItemService_.validate(lineItem)
 
     const cart = await this.retrieve(cartId)
     if (!cart) {

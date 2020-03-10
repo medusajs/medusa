@@ -1,6 +1,12 @@
 import { IdMap } from "medusa-test-utils"
 
 export const LineItemServiceMock = {
+  validate: jest.fn().mockImplementation(data => {
+    if (data.title === "invalid lineitem") {
+      throw new Error(`"content" is required`)
+    }
+    return data
+  }),
   generate: jest.fn().mockImplementation((variantId, quantity, regionId) => {
     return Promise.resolve({
       content: {
@@ -15,15 +21,6 @@ export const LineItemServiceMock = {
       },
       quantity,
     })
-  }),
-  validate: jest.fn().mockImplementation(cartId => {
-    if (cartId === IdMap.getId("regionCart")) {
-      return Promise.resolve(carts.regionCart)
-    }
-    if (cartId === IdMap.getId("emptyCart")) {
-      return Promise.resolve(carts.emptyCart)
-    }
-    return Promise.resolve(undefined)
   }),
 }
 
