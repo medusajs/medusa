@@ -1098,10 +1098,10 @@ describe("CartService", () => {
 
       it("checks availability", () => {
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledTimes(1)
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledWith(method, carts.cartWithPaySessions)
       })
 
@@ -1139,10 +1139,10 @@ describe("CartService", () => {
 
       it("checks availability", () => {
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledTimes(1)
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledWith(method, carts.frCart)
       })
 
@@ -1180,10 +1180,10 @@ describe("CartService", () => {
 
       it("checks availability", () => {
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledTimes(1)
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledWith(method, carts.frCart)
       })
 
@@ -1226,16 +1226,72 @@ describe("CartService", () => {
 
       it("checks availability", () => {
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledTimes(1)
         expect(
-          ShippingOptionServiceMock.checkAvailability
+          ShippingOptionServiceMock.validateCartOption
         ).toHaveBeenCalledWith(method, carts.frCart)
       })
 
       it("throw error", () => {
         expect(res.message).toEqual(
           "The selected shipping method cannot be applied to the cart"
+        )
+      })
+    })
+  })
+
+  describe("retrieveShippingOption", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    let res
+
+    describe("it retrieves the correct payment session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        res = await cartService.retrieveShippingOption(
+          IdMap.getId("fr-cart"),
+          IdMap.getId("freeShipping")
+        )
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("fr-cart"),
+        })
+      })
+
+      it("finds the correct payment session", () => {
+        expect(res._id).toEqual(IdMap.getId("freeShipping"))
+      })
+    })
+
+    describe("it fails when provider doesn't match open session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        try {
+          await cartService.retrieveShippingOption(
+            IdMap.getId("fr-cart"),
+            "nono"
+          )
+        } catch (err) {
+          res = err
+        }
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("fr-cart"),
+        })
+      })
+
+      it("throws invalid data errro", () => {
+        expect(res.message).toEqual(
+          "The option id doesn't match any available shipping options"
         )
       })
     })

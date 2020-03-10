@@ -63,7 +63,7 @@ export const ShippingOptionServiceMock = {
       ])
     }
   }),
-  checkAvailability: jest.fn().mockImplementation((method, cart) => {
+  validateCartOption: jest.fn().mockImplementation((method, cart) => {
     if (method._id === IdMap.getId("freeShipping")) {
       return Promise.resolve(true)
     }

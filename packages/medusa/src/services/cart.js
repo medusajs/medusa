@@ -573,11 +573,39 @@ class CartService extends BaseService {
     )
   }
 
+  /**
+   * Retrieves one of the open shipping options for the cart.
+   * @param {string} cartId - the id of the cart to retrieve the option from
+   * @param {string} optionId - the id of the option to retrieve
+   * @return {ShippingOption} the option that was found
+   */
+  async retrieveShippingOption(cartId, optionId) {
+    const cart = await this.retrieve(cartId)
+
+    const option = cart.shipping_options.find(({ _id }) => _id === optionId)
+
+    if (!option) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The option id doesn't match any available shipping options`
+      )
+    }
+
+    return option
+  }
+
+  /**
+   * Adds the shipping method to the list of shipping methods associated with
+   * the cart.
+   * @param {string} cartId - the id of the cart to add shipping method to
+   * @param {ShippingOption} method - the shipping method to add to the cart
+   * @return {Promise} the result of the update operation
+   */
   async addShippingMethod(cartId, method) {
     const cart = await this.retrieve(cartId)
     const { shipping_methods } = cart
 
-    const isValid = await this.shippingOptionService_.checkAvailability(
+    const isValid = await this.shippingOptionService_.validateCartOption(
       method,
       cart
     )

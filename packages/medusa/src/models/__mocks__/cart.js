@@ -244,6 +244,12 @@ export const carts = {
         profile_id: "default_profile",
       },
     ],
+    shipping_options: [
+      {
+        _id: IdMap.getId("freeShipping"),
+        profile_id: "default_profile",
+      },
+    ],
     shipping_address: {},
     billing_address: {},
     discounts: [],
