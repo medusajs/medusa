@@ -215,9 +215,7 @@ class CartService extends BaseService {
    */
   async addLineItem(cartId, lineItem) {
     const validatedLineItem = this.lineItemService_.validate(lineItem)
-
     const cart = await this.retrieve(cartId)
-
     const currentItem = cart.items.find(line =>
       _.isEqual(line.content, validatedLineItem.content)
     )
@@ -297,13 +295,6 @@ class CartService extends BaseService {
 
     // Ensure that the line item exists in the cart
     const cart = await this.retrieve(cartId)
-    if (!cart) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "The cart was not found"
-      )
-    }
-
     const lineItemExists = cart.items.find(i => i._id === lineItemId)
     if (!lineItemExists) {
       throw new MedusaError(
@@ -347,7 +338,6 @@ class CartService extends BaseService {
    */
   async updateEmail(cartId, email) {
     const cart = await this.retrieve(cartId)
-
     const schema = Validator.string()
       .email()
       .required()
@@ -377,7 +367,6 @@ class CartService extends BaseService {
    */
   async updateBillingAddress(cartId, address) {
     const cart = await this.retrieve(cartId)
-
     const { value, error } = Validator.address().validate(address)
     if (error) {
       throw new MedusaError(
@@ -404,7 +393,6 @@ class CartService extends BaseService {
    */
   async updateShippingAddress(cartId, address) {
     const cart = await this.retrieve(cartId)
-
     const { value, error } = Validator.address().validate(address)
     if (error) {
       throw new MedusaError(
@@ -441,7 +429,6 @@ class CartService extends BaseService {
    */
   async retrievePaymentSession(cartId, providerId) {
     const cart = await this.retrieve(cartId)
-
     const session = cart.payment_sessions.find(
       ({ provider_id }) => provider_id === providerId
     )
@@ -515,20 +502,7 @@ class CartService extends BaseService {
    */
   async setPaymentSessions(cartId) {
     const cart = await this.retrieve(cartId)
-    if (!cart) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "Could not find a cart with the provided id"
-      )
-    }
-
     const region = await this.regionService_.retrieve(cart.region_id)
-    if (!region) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "The cart's region could not be found"
-      )
-    }
 
     // If there are existing payment sessions ensure that these are up to date
     let sessions = []
