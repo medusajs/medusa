@@ -96,6 +96,10 @@ const emptyVariant = {
   options: [],
 }
 
+const eur10us12 = {
+  _id: IdMap.getId("eur-10-us-12"),
+}
+
 export const variants = {
   one: variant1,
   two: variant2,
@@ -103,6 +107,7 @@ export const variants = {
   four: variant4,
   invalid_variant: invalidVariant,
   empty_variant: emptyVariant,
+  eur10us12: eur10us12,
 }
 
 export const ProductVariantServiceMock = {
@@ -128,7 +133,8 @@ export const ProductVariantServiceMock = {
     if (variantId === "empty_option") {
       return Promise.resolve(emptyVariant)
     }
-    return Promise.resolve(undefined)
+    if (variantId === IdMap.getId("eur-10-us-12"))
+      return Promise.resolve(eur10us12)
   }),
   canCoverQuantity: jest.fn().mockImplementation((variantId, quantity) => {
     if (variantId === IdMap.getId("can-cover")) {
