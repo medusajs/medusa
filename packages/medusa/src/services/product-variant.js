@@ -249,7 +249,7 @@ class ProductVariantService extends BaseService {
     const region = await this.regionService_.retrieve(regionId)
 
     // If prices already exist we need to update all prices with the same currency
-    if (variant.prices.length) {
+    if (varint.prices.length) {
       let foundRegion = false
       const newPrices = variant.prices.map(moneyAmount => {
         if (moneyAmount.region_id === region._id) {
