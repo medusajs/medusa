@@ -573,59 +573,63 @@ class CartService extends BaseService {
     )
   }
 
+  async addShippingMethod(cartId, method) {
+    const cart = await this.retrieve(cartId)
+    const { shipping_methods } = cart
+
+    const isValid = await this.shippingOptionService_.checkAvailability(
+      method,
+      cart
+    )
+
+    if (!isValid) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The selected shipping method cannot be applied to the cart"
+      )
+    }
+
+    // Go through all existing selected shipping methods and update the one
+    // that has the same profile as the selected shipping method.
+    let exists = false
+    const newMethods = shipping_methods.map(sm => {
+      if (sm.profile_id === method.profile_id) {
+        exists = true
+        return method
+      }
+
+      return sm
+    })
+
+    // If none of the selected methods are for the same profile as the new
+    // shipping method the exists flag will be false. Therefore we push the new
+    // method.
+    if (!exists) {
+      newMethods.push(method)
+    }
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { shipping_methods: newMethods },
+      }
+    )
+  }
+
   /**
    * Finds all shipping options that are available to the cart and stores them
-   * in shipping_options. Will find shipping options based on region and filter
-   * all shipping options that are not available based on the cart's contents,
-   * shipping address, etc.
+   * in shipping_options. The shipping options are retrieved from the shipping
+   * option service.
    * @param {string} cartId - the id of the cart
    * @return {Promse} the result of the update operation
    */
   async setShippingOptions(cartId) {
     const cart = await this.retrieve(cartId)
-    if (!cart) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "The cart was not found"
-      )
-    }
 
     // Get the shipping options available in the region
-    const regionOptions = await this.shippingOptionService_.list({
-      region_id: cart.region_id,
-    })
-
-    // Compile the cart's available options
-    let cartOptions = await Promise.all(
-      regionOptions.map(async option => {
-        const isAvailable = await this.shippingOptionService_.checkAvailability(
-          option._id,
-          cart
-        )
-        if (!isAvailable) {
-          return null
-        }
-
-        // Ask the shipping option service to calculate the price for us
-        const price = await this.shippingOptionService_.fetchPrice(
-          option._id,
-          cart
-        )
-
-        // Only includes relevant data in the shipping options
-        return {
-          _id: option._id,
-          name: option.name,
-          region_id: option.region_id,
-          provider_id: option.provider_id,
-          data: option.data,
-          price,
-        }
-      })
-    )
-
-    // Filter all null results
-    cartOptions = cartOptions.filter(o => !!o)
+    const cartOptions = await this.shippingOptionService_.fetchCartOptions(cart)
 
     return this.cartModel_.updateOne(
       {
@@ -687,8 +691,8 @@ class CartService extends BaseService {
 
     // Shipping methods are determined by region so the user needs to find a
     // new shipping method
-    if (!_.isEmpty(cart.shipping_method)) {
-      update.shipping_method = undefined
+    if (cart.shipping_methods && cart.shipping_methods.length) {
+      update.shipping_methods = []
     }
 
     // Payment methods are region specific so the user needs to find a

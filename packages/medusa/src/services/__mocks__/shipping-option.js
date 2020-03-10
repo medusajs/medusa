@@ -5,6 +5,7 @@ export const shippingOptions = {
     _id: IdMap.getId("freeShipping"),
     name: "Free Shipping",
     region_id: IdMap.getId("testRegion"),
+    profile_id: IdMap.getId("default-profile"),
     data: {
       id: "fs",
     },
@@ -17,6 +18,7 @@ export const shippingOptions = {
   expensiveShipping: {
     _id: IdMap.getId("expensiveShipping"),
     name: "Expensive Shipping",
+    profile_id: IdMap.getId("fragile-profile"),
     region_id: IdMap.getId("testRegion"),
     data: {
       id: "es",
@@ -30,6 +32,7 @@ export const shippingOptions = {
   franceShipping: {
     _id: IdMap.getId("franceShipping"),
     name: "FR Shipping",
+    profile_id: IdMap.getId("default-profile"),
     region_id: IdMap.getId("region-france"),
     data: {
       id: "bonjour",
@@ -60,23 +63,31 @@ export const ShippingOptionServiceMock = {
       ])
     }
   }),
-  checkAvailability: jest.fn().mockImplementation((optionId, cart) => {
-    if (optionId === IdMap.getId("freeShipping")) {
+  checkAvailability: jest.fn().mockImplementation((method, cart) => {
+    if (method._id === IdMap.getId("freeShipping")) {
       return Promise.resolve(true)
     }
-    if (optionId === IdMap.getId("franceShipping")) {
+    if (method._id === IdMap.getId("franceShipping")) {
       return Promise.resolve(true)
+    }
+    if (method._id === IdMap.getId("fail")) {
+      return Promise.resolve(false)
     }
   }),
-  fetchPrice: jest.fn().mockImplementation((optionId, cart) => {
-    if (optionId === IdMap.getId("freeShipping")) {
-      return Promise.resolve(10)
-    }
-    if (optionId === IdMap.getId("expensiveShipping")) {
-      return Promise.resolve(100)
-    }
-    if (optionId === IdMap.getId("franceShipping")) {
-      return Promise.resolve(20)
+  fetchCartOptions: jest.fn().mockImplementation(cart => {
+    if (cart._id === IdMap.getId("cartWithLine")) {
+      return Promise.resolve([
+        {
+          _id: IdMap.getId("freeShipping"),
+          name: "Free Shipping",
+          region_id: IdMap.getId("testRegion"),
+          price: 10,
+          data: {
+            id: "fs",
+          },
+          provider_id: "test_shipper",
+        },
+      ])
     }
   }),
 }

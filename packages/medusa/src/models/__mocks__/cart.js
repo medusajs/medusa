@@ -81,6 +81,7 @@ export const carts = {
   cartWithPaySessions: {
     _id: IdMap.getId("cartWithPaySessions"),
     region_id: IdMap.getId("testRegion"),
+    shipping_methods: [],
     items: [
       {
         _id: IdMap.getId("existingLine"),
@@ -158,12 +159,14 @@ export const carts = {
         yes: "sir",
       },
     },
-    shipping_method: {
-      provider_id: "gls",
-      data: {
-        yes: "sir",
+    shipping_methods: [
+      {
+        provider_id: "gls",
+        data: {
+          yes: "sir",
+        },
       },
-    },
+    ],
     shipping_address: {
       first_name: "hi",
       last_name: "you",
@@ -235,8 +238,14 @@ export const carts = {
         quantity: 10,
       },
     ],
-    shippingAddress: {},
-    billingAddress: {},
+    shipping_methods: [
+      {
+        _id: IdMap.getId("freeShipping"),
+        profile_id: "default_profile",
+      },
+    ],
+    shipping_address: {},
+    billing_address: {},
     discounts: [],
     customer_id: "",
   },
