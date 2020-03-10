@@ -81,11 +81,21 @@ class CustomerService extends BaseService {
    * @param {string} customerId - the id of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  retrieve(customerId) {
+  async retrieve(customerId) {
     const validatedId = this.validateId_(customerId)
-    return this.customerModel_.findOne({ _id: validatedId }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+    const customer = await this.customerModel_
+      .findOne({ _id: validatedId })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with ${customerId} was not found`
+      )
+    }
+    return customer
   }
 
   /**
@@ -113,18 +123,11 @@ class CustomerService extends BaseService {
    */
   async updateEmail(customerId, email) {
     const customer = await this.retrieve(customerId)
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with ${customerId} was not found`
-      )
-    }
-
     this.validateEmail_(email)
 
     return this.customerModel_.updateOne(
       {
-        _id: customerId,
+        _id: customer._id,
       },
       {
         $set: { email },
@@ -140,18 +143,12 @@ class CustomerService extends BaseService {
    */
   async updateBillingAddress(customerId, address) {
     const customer = await this.retrieve(customerId)
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with ${customerId} was not found`
-      )
-    }
 
     this.validateBillingAddress_(address)
 
     return this.customerModel_.updateOne(
       {
-        _id: customerId,
+        _id: customer._id,
       },
       {
         $set: { billing_address: address },
@@ -170,12 +167,6 @@ class CustomerService extends BaseService {
    */
   async update(customerId, update) {
     const customer = await this.retrieve(customerId)
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with ${customerId} was not found`
-      )
-    }
 
     if (update.metadata) {
       throw new MedusaError(
@@ -192,7 +183,11 @@ class CustomerService extends BaseService {
     }
 
     return this.customerModel_
-      .updateOne({ _id: customerId }, { $set: update }, { runValidators: true })
+      .updateOne(
+        { _id: customer._id },
+        { $set: update },
+        { runValidators: true }
+      )
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -205,9 +200,11 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(customerId) {
-    const customer = await this.retrieve(customerId)
-    // Delete is idempotent, but we return a promise to allow then-chaining
-    if (!customer) {
+    let customer
+    try {
+      customer = await this.retrieve(customerId)
+    } catch (error) {
+      // Delete is idempotent, but we return a promise to allow then-chaining
       return Promise.resolve()
     }
 

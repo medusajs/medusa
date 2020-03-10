@@ -52,13 +52,21 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the product to get.
    * @return {Promise<Product>} the product document.
    */
-  retrieve(variantId) {
+  async retrieve(variantId) {
     const validatedId = this.validateId_(variantId)
-    return this.productVariantModel_
+    const variant = await this.productVariantModel_
       .findOne({ _id: validatedId })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with ${variantId} was not found`
+      )
+    }
+    return variant
   }
 
   /**
@@ -136,12 +144,6 @@ class ProductVariantService extends BaseService {
    */
   async setCurrencyPrice(variantId, currencyCode, amount) {
     const variant = await this.retrieve(variantId)
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variant: ${variantId} was not found`
-      )
-    }
 
     // If prices already exist we need to update all prices with the same
     // currency
@@ -207,23 +209,9 @@ class ProductVariantService extends BaseService {
    */
   async getRegionPrice(variantId, regionId) {
     const variant = await this.retrieve(variantId)
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variant: ${variantId} was not found`
-      )
-    }
-
     const region = await this.regionService_.retrieve(regionId)
-    if (!region) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Region: ${regionId} was not found`
-      )
-    }
 
     let price
-
     variant.prices.forEach(({ region_id, amount, currency_code }) => {
       if (!price && !region_id && currency_code === region.currency_code) {
         // If we haven't yet found a price and the current money amount is
@@ -258,23 +246,10 @@ class ProductVariantService extends BaseService {
    */
   async setRegionPrice(variantId, regionId, amount) {
     const variant = await this.retrieve(variantId)
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variant: ${variantId} was not found`
-      )
-    }
-
     const region = await this.regionService_.retrieve(regionId)
-    if (!region) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Region: ${regionId} was not found`
-      )
-    }
 
     // If prices already exist we need to update all prices with the same currency
-    if (variant.prices.length) {
+    if (varint.prices.length) {
       let foundRegion = false
       const newPrices = variant.prices.map(moneyAmount => {
         if (moneyAmount.region_id === region._id) {
@@ -358,12 +333,6 @@ class ProductVariantService extends BaseService {
     }
 
     const variant = await this.retrieve(variantId)
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variant with ${variantId} was not found`
-      )
-    }
 
     if (typeof optionValue !== "string" && typeof optionValue !== "number") {
       throw new MedusaError(
@@ -373,7 +342,7 @@ class ProductVariantService extends BaseService {
     }
 
     return this.productVariantModel_.updateOne(
-      { _id: variantId },
+      { _id: variant._id },
       { $push: { options: { option_id: optionId, value: `${optionValue}` } } }
     )
   }
@@ -421,12 +390,6 @@ class ProductVariantService extends BaseService {
    */
   async canCoverQuantity(variantId, quantity) {
     const variant = await this.retrieve(variantId)
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variant with ${variantId} was not found`
-      )
-    }
 
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     return (
@@ -449,14 +412,16 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(variantId) {
-    const variant = await this.retrieve(variantId)
-    // Delete is idempotent, but we return a promise to allow then-chaining
-    if (!variant) {
+    let variant
+    try {
+      variant = await this.retrieve(variantId)
+    } catch (error) {
+      // Delete is idempotent, but we return a promise to allow then-chaining
       return Promise.resolve()
     }
 
     return this.productVariantModel_
-      .deleteOne({ _id: variantId })
+      .deleteOne({ _id: variant._id })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
