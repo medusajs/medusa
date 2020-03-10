@@ -50,14 +50,25 @@ class ProductService extends BaseService {
 
   /**
    * Gets a product by id.
+   * Throws in case of DB Error and if product was not found.
    * @param {string} productId - the id of the product to get.
    * @return {Promise<Product>} the product document.
    */
-  retrieve(productId) {
+  async retrieve(productId) {
     const validatedId = this.validateId_(productId)
-    return this.productModel_.findOne({ _id: validatedId }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+    const product = await this.productModel_
+      .findOne({ _id: validatedId })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!product) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with ${productId} was not found`
+      )
+    }
+    return product
   }
 
   /**
@@ -134,9 +145,11 @@ class ProductService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(productId) {
-    const product = await this.retrieve(productId)
-    // Delete is idempotent, but we return a promise to allow then-chaining
-    if (!product) {
+    let product
+    try {
+      product = await this.retrieve(productId)
+    } catch (error) {
+      // Delete is idempotent, but we return a promise to allow then-chaining
       return Promise.resolve()
     }
 
@@ -160,20 +173,8 @@ class ProductService extends BaseService {
    */
   async addVariant(productId, variantId) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     const variant = await this.productVariantService_.retrieve(variantId)
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variant with ${variantId} was not found`
-      )
-    }
 
     if (product.options.length !== variant.options.length) {
       throw new MedusaError(
@@ -227,12 +228,6 @@ class ProductService extends BaseService {
    */
   async addOption(productId, optionTitle) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     // Make sure that option doesn't already exist
     if (product.options.find(o => o.title === optionTitle)) {
@@ -294,12 +289,6 @@ class ProductService extends BaseService {
 
   async reorderVariants(productId, variantOrder) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     if (product.variants.length !== variantOrder.length) {
       throw new MedusaError(
@@ -341,12 +330,6 @@ class ProductService extends BaseService {
    */
   async reorderOptions(productId, optionOrder) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     if (product.options.length !== optionOrder.length) {
       throw new MedusaError(
@@ -387,12 +370,6 @@ class ProductService extends BaseService {
    */
   async updateOption(productId, optionId, data) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     const option = product.options.find(o => o._id === optionId)
     if (!option) {
@@ -436,12 +413,6 @@ class ProductService extends BaseService {
    */
   async deleteOption(productId, optionId) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     if (!product.options.find(o => o._id === optionId)) {
       return Promise.resolve()
@@ -510,15 +481,9 @@ class ProductService extends BaseService {
    */
   async removeVariant(productId, variantId) {
     const product = await this.retrieve(productId)
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with ${product._id} was not found`
-      )
-    }
 
     return this.productModel_.updateOne(
-      { _id: productId },
+      { _id: product._id },
       {
         $pull: {
           variants: variantId,
