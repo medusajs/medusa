@@ -1090,4 +1090,63 @@ describe("CartService", () => {
       })
     })
   })
+
+  describe("retrievePaymentSession", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    let res
+
+    describe("it retrieves the correct payment session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        res = await cartService.retrievePaymentSession(
+          IdMap.getId("cartWithPaySessions"),
+          "default_provider"
+        )
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("cartWithPaySessions"),
+        })
+      })
+
+      it("finds the correct payment session", () => {
+        expect(res.provider_id).toEqual("default_provider")
+        expect(res.data).toEqual({
+          id: "default_provider_session",
+        })
+      })
+    })
+
+    describe("it fails when provider doesn't match open session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        try {
+          await cartService.retrievePaymentSession(
+            IdMap.getId("cartWithPaySessions"),
+            "nono"
+          )
+        } catch (err) {
+          res = err
+        }
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("cartWithPaySessions"),
+        })
+      })
+
+      it("throws invalid data errro", () => {
+        expect(res.message).toEqual(
+          "The provider_id did not match any open payment sessions"
+        )
+      })
+    })
+  })
 })

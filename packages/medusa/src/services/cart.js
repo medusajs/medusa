@@ -433,6 +433,30 @@ class CartService extends BaseService {
    */
 
   /**
+   * Retrieves an open payment session from the list of payment sessions
+   * stored in the cart. If none is an INVALID_DATA error is thrown.
+   * @param {string} cartId - the id of the cart to retrieve the session from
+   * @param {string} providerId - the id of the provider the session belongs to
+   * @return {PaymentMethod} the session
+   */
+  async retrievePaymentSession(cartId, providerId) {
+    const cart = await this.retrieve(cartId)
+
+    const session = cart.payment_sessions.find(
+      ({ provider_id }) => provider_id === providerId
+    )
+
+    if (!session) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The provider_id did not match any open payment sessions`
+      )
+    }
+
+    return session
+  }
+
+  /**
    * Sets a payment method for a cart.
    * @param {string} cartId - the id of the cart to add payment method to
    * @param {PaymentMethod} paymentMethod - the method to be set to the cart
@@ -455,7 +479,8 @@ class CartService extends BaseService {
       )
     }
 
-    // Check if the payment method has been authorized.
+    // The provider service will be able to perform operations on the
+    // session we are trying to set as the payment method.
     const provider = this.paymentProviderService_.retrieveProvider(
       paymentMethod.provider_id
     )
