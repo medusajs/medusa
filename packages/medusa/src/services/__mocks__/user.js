@@ -41,9 +41,8 @@ export const UserServiceMock = {
     return Promise.resolve()
   }),
   decorate: jest.fn().mockImplementation((user, fields) => {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(user, fields.concat(requiredFields))
-    return decorated
+    user.decorated = true
+    return user
   }),
   generateResetPasswordToken: jest
     .fn()

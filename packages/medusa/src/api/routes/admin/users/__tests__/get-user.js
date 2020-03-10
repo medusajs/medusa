@@ -29,17 +29,16 @@ describe("GET /admin/users/:id", () => {
       expect(UserServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("test-user")
       )
+      expect(UserServiceMock.decorate).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("returns correct decorated user", () => {
-      expect(subject.body).toEqual({
-        _id: IdMap.getId("test-user"),
-        email: "oliver@test.dk",
-      })
+    it("returns the user", () => {
+      expect(subject.body._id).toEqual(IdMap.getId("test-user"))
+      expect(subject.body.decorated).toEqual(true)
     })
   })
 })

@@ -43,11 +43,9 @@ describe("POST /admin/users/:id/set-password", () => {
       )
     })
 
-    it("returns the update user", () => {
-      expect(subject.body).toEqual({
-        _id: IdMap.getId("test-user"),
-        email: "oliver@test.dk",
-      })
+    it("returns the user", () => {
+      expect(subject.body._id).toEqual(IdMap.getId("test-user"))
+      expect(subject.body.decorated).toEqual(true)
     })
 
     it("returns 200", () => {
