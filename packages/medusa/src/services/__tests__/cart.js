@@ -205,20 +205,6 @@ describe("CartService", () => {
       )
     })
 
-    it("throws if line item not validated", async () => {
-      const lineItem = {
-        title: "invalid lineitem",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-      }
-
-      try {
-        await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      } catch (err) {
-        expect(err.message).toEqual(`"content" is required`)
-      }
-    })
-
     it("throws if inventory isn't covered", async () => {
       const lineItem = {
         title: "merge line",
@@ -290,6 +276,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
       productVariantService: ProductVariantServiceMock,
+      lineItemService: LineItemServiceMock,
     })
 
     beforeEach(() => {
@@ -330,24 +317,6 @@ describe("CartService", () => {
           $set: { "items.$": lineItem },
         }
       )
-    })
-
-    it("throws if line item not validated", async () => {
-      const lineItem = {
-        title: "merge line",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-      }
-
-      try {
-        await cartService.updateLineItem(
-          IdMap.getId("cartWithLine"),
-          IdMap.getId("bogus"),
-          lineItem
-        )
-      } catch (err) {
-        expect(err.message).toEqual(`"content" is required`)
-      }
     })
 
     it("throws if inventory isn't covered", async () => {

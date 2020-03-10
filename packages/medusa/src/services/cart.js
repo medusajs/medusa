@@ -286,7 +286,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateLineItem(cartId, lineItemId, lineItem) {
-    const validatedLineItem = this.validateLineItem_(lineItem)
+    const validatedLineItem = this.lineItemService_.validate(lineItem)
 
     if (!lineItemId) {
       throw new MedusaError(
