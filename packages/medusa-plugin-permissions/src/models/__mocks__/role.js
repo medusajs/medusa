@@ -3,7 +3,7 @@ import { IdMap } from "medusa-test-utils"
 export const permissions = {
   productEditorPermission: {
     _id: IdMap.getId("product_editor"),
-    role: "product_editor",
+    name: "product_editor",
     permissions: [
       {
         method: "POST",

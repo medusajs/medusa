@@ -47,8 +47,8 @@ class PermissionService extends BaseService {
 
     if (!role) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        `${role} does not exist. Use method createRole to create it.`
+        MedusaError.Types.NOT_FOUND,
+        `${name} does not exist. Use method createRole to create it.`
       )
     }
     return role
@@ -69,25 +69,40 @@ class PermissionService extends BaseService {
     const validatedPermissions = permissions.map(permission =>
       this.validatePermission_(permission)
     )
-    const role = await this.retrieveRole(roleName)
-    if (role) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        `${roleName} already exists`
-      )
-    }
 
-    return this.roleModel_.create({
-      name: roleName,
-      permissions: validatedPermissions,
-    })
+    return this.retrieveRole(roleName)
+      .then(role => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          `${role.name} already exists`
+        )
+      })
+      .catch(error => {
+        if (error.name === MedusaError.Types.NOT_FOUND) {
+          return this.roleModel_.create({
+            name: roleName,
+            permissions: validatedPermissions,
+          })
+        } else {
+          throw error
+        }
+      })
   }
 
   async deleteRole(roleName) {
-    return this.roleModel_.deleteOne({
-      name: roleName,
-      permissions: validatedPermissions,
-    })
+    const role = await this.retrieve(roleName)
+    // Delete is idempotent, but we return a promise to allow then-chaining
+    if (!role) {
+      return Promise.resolve()
+    }
+
+    return this.roleModel_
+      .deleteOne({
+        _id: role._id,
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   async addPermission(roleName, permission) {
@@ -111,7 +126,7 @@ class PermissionService extends BaseService {
   }
 
   async grantRole(userId, roleName) {
-    const role = await this.retrieve(roleName)
+    const role = await this.retrieveRole(roleName)
     const user = await this.userService_.retrieve(userId)
     if (user.metadata.roles.includes(role.name)) {
       throw new MedusaError(
@@ -120,9 +135,8 @@ class PermissionService extends BaseService {
       )
     }
 
-    const newRoles = user.metadata.roles.push(roleName)
-
-    return this.userService_.setMetadata(userId, "roles", newRoles)
+    user.metadata.roles.push(roleName)
+    return this.userService_.setMetadata(userId, "roles", user.metadata.roles)
   }
 
   async revokeRole(userId, roleName) {

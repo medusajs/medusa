@@ -45,11 +45,11 @@ describe("PermissionService", () => {
 
   describe("retrieveRole", () => {
     let result
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+    })
     beforeAll(async () => {
       jest.clearAllMocks()
-      const permissionService = new PermissionService({
-        roleModel: RoleModelMock,
-      })
 
       result = await permissionService.retrieveRole("product_editor")
     })
@@ -60,6 +60,16 @@ describe("PermissionService", () => {
 
     it("successfully fetches product editor permissions", () => {
       expect(result).toEqual(permissions.productEditorPermission)
+    })
+
+    it("throws if role with name does not exist", async () => {
+      try {
+        await permissionService.retrieveRole("product_editor")
+      } catch (error) {
+        expect(error.message).toEqual(
+          "test_editor does not exist. Use method createRole to create it."
+        )
+      }
     })
   })
 
@@ -130,6 +140,19 @@ describe("PermissionService", () => {
         expect(err.message).toEqual("Permission is not valid")
       }
     })
+
+    it("throws if role with name already exists", async () => {
+      try {
+        await permissionService.createRole("product_editor", [
+          {
+            method: "POST",
+            endpoint: "/order",
+          },
+        ])
+      } catch (err) {
+        expect(err.message).toEqual("product_editor already exists")
+      }
+    })
   })
 
   describe("grantRole", () => {
@@ -164,7 +187,8 @@ describe("PermissionService", () => {
       expect(setMetadataMock).toHaveBeenCalledTimes(1)
       expect(setMetadataMock).toHaveBeenCalledWith(
         IdMap.getId("permission-user"),
-        "product_editor"
+        "roles",
+        ["content_editor", "product_editor"]
       )
     })
 
@@ -172,10 +196,10 @@ describe("PermissionService", () => {
       try {
         await permissionService.grantRole(
           IdMap.getId("permission-user"),
-          "content_editor"
+          "product_editor"
         )
       } catch (err) {
-        expect(err.message).toEqual("User already has role: content_editor")
+        expect(err.message).toEqual("User already has role: product_editor")
       }
     })
   })
@@ -255,6 +279,52 @@ describe("PermissionService", () => {
       } catch (err) {
         expect(err.message).toEqual("Permission is not valid")
       }
+    })
+  })
+
+  describe("revokeRole", () => {
+    const setMetadataMock = jest.fn().mockReturnValue(Promise.resolve())
+    const userRetrieveMock = jest.fn().mockReturnValue(
+      Promise.resolve({
+        _id: IdMap.getId("product_editor"),
+        email: "oliver@test.dk",
+        metadata: {
+          roles: ["product_editor"],
+        },
+      })
+    )
+    const permissionService = new PermissionService({
+      roleModel: RoleModelMock,
+      userService: {
+        setMetadata: setMetadataMock,
+        retrieve: userRetrieveMock,
+      },
+    })
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully revokes a role from user", async () => {
+      await permissionService.revokeRole(
+        IdMap.getId("product_editor"),
+        "product_editor"
+      )
+
+      expect(setMetadataMock).toHaveBeenCalledTimes(1)
+      expect(setMetadataMock).toHaveBeenCalledWith(
+        IdMap.getId("product_editor"),
+        "roles",
+        []
+      )
+    })
+
+    it("succeeds idempotently if user does not have the role to delete", async () => {
+      await permissionService.revokeRole(
+        IdMap.getId("product_editor"),
+        "content_editor"
+      )
+
+      expect(setMetadataMock).toHaveBeenCalledTimes(0)
     })
   })
 })
