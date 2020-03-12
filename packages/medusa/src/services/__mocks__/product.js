@@ -1,4 +1,5 @@
 import { IdMap } from "medusa-test-utils"
+import { MedusaError } from "medusa-core-utils"
 
 export const products = {
   product1: {
@@ -14,6 +15,15 @@ export const products = {
 export const ProductServiceMock = {
   createDraft: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
+  }),
+  retrieve: jest.fn().mockImplementation(userId => {
+    if (userId === IdMap.getId("product1")) {
+      return Promise.resolve(products.product1)
+    }
+    return Promise.resolve(undefined)
+  }),
+  update: jest.fn().mockImplementation((userId, data) => {
+    return Promise.resolve()
   }),
   list: jest.fn().mockImplementation(data => {
     // Used to retrieve a product based on a variant id see

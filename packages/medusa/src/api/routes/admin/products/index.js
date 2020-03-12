@@ -7,6 +7,7 @@ export default app => {
   app.use("/products", route)
 
   route.post("/", middlewares.wrap(require("./create-product").default))
+  route.post("/:id", middlewares.wrap(require("./update-product").default))
 
   // route.get("/:productId", middlewares.wrap(require("./get-product").default))
 
