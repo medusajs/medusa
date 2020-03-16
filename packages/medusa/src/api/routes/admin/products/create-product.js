@@ -21,7 +21,7 @@ export default async (req, res) => {
     const data = await productService.createDraft(value)
 
     // Return the created product draft
-    res.status(201).json(data)
+    res.json(data)
   } catch (err) {
     throw err
   }

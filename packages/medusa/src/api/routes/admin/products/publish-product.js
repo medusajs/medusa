@@ -1,0 +1,13 @@
+export default async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const productService = req.scope.resolve("productService")
+    const product = await productService.retrieve(id)
+    await productService.publish(product._id)
+    const publishedProduct = await productService.retrieve(product._id)
+    res.json(publishedProduct)
+  } catch (error) {
+    throw error
+  }
+}

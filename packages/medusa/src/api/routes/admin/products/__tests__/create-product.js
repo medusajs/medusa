@@ -23,7 +23,7 @@ describe("POST /admin/products", () => {
     })
 
     it("returns 200", () => {
-      expect(subject.status).toEqual(201)
+      expect(subject.status).toEqual(200)
     })
 
     it("returns created product draft", () => {

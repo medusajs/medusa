@@ -6,6 +6,11 @@ export const products = {
     _id: IdMap.getId("product1"),
     name: "Product 1",
   },
+  publishProduct: {
+    _id: IdMap.getId("publish"),
+    name: "Product 1",
+    published: true,
+  },
   product2: {
     _id: IdMap.getId("product2"),
     name: "Product 2",
@@ -16,9 +21,19 @@ export const ProductServiceMock = {
   createDraft: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
   }),
-  retrieve: jest.fn().mockImplementation(userId => {
-    if (userId === IdMap.getId("product1")) {
+  publish: jest.fn().mockImplementation(_ => {
+    return Promise.resolve({
+      _id: IdMap.getId("publish"),
+      name: "Product 1",
+      published: true,
+    })
+  }),
+  retrieve: jest.fn().mockImplementation(productId => {
+    if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
+    }
+    if (productId === IdMap.getId("publish")) {
+      return Promise.resolve(products.publishProduct)
     }
     return Promise.resolve(undefined)
   }),
