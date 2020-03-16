@@ -26,8 +26,8 @@ describe("POST /store/carts", () => {
       })
     })
 
-    it("returns 201", () => {
-      expect(subject.status).toEqual(201)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
     it("returns the cart", () => {
@@ -98,8 +98,8 @@ describe("POST /store/carts", () => {
       jest.clearAllMocks()
     })
 
-    it("returns 201", () => {
-      expect(subject.status).toEqual(201)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
     it("calls line item generate", () => {

@@ -3,7 +3,7 @@ import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 
 describe("POST /store/carts/:id/shipping-options", () => {
-  describe("creates payment sessions", () => {
+  describe("creates shipping options", () => {
     let subject
 
     beforeAll(async () => {
@@ -21,8 +21,8 @@ describe("POST /store/carts/:id/shipping-options", () => {
       expect(CartServiceMock.setShippingOptions).toHaveBeenCalledTimes(1)
     })
 
-    it("returns 201", () => {
-      expect(subject.status).toEqual(201)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
     it("returns the cart", () => {
