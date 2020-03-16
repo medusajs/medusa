@@ -20,6 +20,8 @@ class CartModel extends BaseModel {
     region_id: { type: String, required: true },
     discounts: { type: [String], default: [] },
     customer_id: { type: String, default: "" },
+    payment_sessions: { type: [PaymentMethodSchema], default: [] },
+    shipping_options: { type: [ShippingMethodSchema], default: [] },
     payment_method: { type: PaymentMethodSchema, default: {} },
     shipping_methods: { type: [ShippingMethodSchema], default: [] },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
