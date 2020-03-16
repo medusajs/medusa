@@ -14,6 +14,7 @@ export const regions = {
     _id: IdMap.getId("region-france"),
     name: "France",
     countries: ["FR"],
+    payment_providers: ["default_provider", "france-provider"],
     currency_code: "eur",
   },
   regionUs: {

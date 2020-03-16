@@ -1,4 +1,5 @@
 import { IdMap } from "medusa-test-utils"
+import { MedusaError } from "medusa-core-utils"
 
 export const LineItemServiceMock = {
   validate: jest.fn().mockImplementation(data => {
@@ -8,6 +9,10 @@ export const LineItemServiceMock = {
     return data
   }),
   generate: jest.fn().mockImplementation((variantId, quantity, regionId) => {
+    if (variantId === IdMap.getId("fail") || regionId === IdMap.getId("fail")) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "Doesn't exist")
+    }
+
     return Promise.resolve({
       content: {
         variant: {

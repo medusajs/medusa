@@ -7,6 +7,7 @@ import {
 } from "../__mocks__/payment-provider"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
+import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 
@@ -204,20 +205,6 @@ describe("CartService", () => {
       )
     })
 
-    it("throws if line item not validated", async () => {
-      const lineItem = {
-        title: "invalid lineitem",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-      }
-
-      try {
-        await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      } catch (err) {
-        expect(err.message).toEqual(`"content" is required`)
-      }
-    })
-
     it("throws if inventory isn't covered", async () => {
       const lineItem = {
         title: "merge line",
@@ -277,6 +264,85 @@ describe("CartService", () => {
 
       try {
         await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      } catch (err) {
+        expect(err.message).toEqual(
+          `Inventory doesn't cover the desired quantity`
+        )
+      }
+    })
+  })
+
+  describe("updateLineItem", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      productVariantService: ProductVariantServiceMock,
+      lineItemService: LineItemServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates existing line item", async () => {
+      const lineItem = {
+        title: "update line",
+        description: "This is a new line",
+        thumbnail: "https://test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 2,
+      }
+
+      await cartService.updateLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("existingLine"),
+        lineItem
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+          "items._id": IdMap.getId("existingLine"),
+        },
+        {
+          $set: { "items.$": lineItem },
+        }
+      )
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        content: {
+          variant: {
+            _id: IdMap.getId("cannot-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+          unit_price: 1234,
+        },
+      }
+
+      try {
+        await cartService.updateLineItem(
+          IdMap.getId("cartWithLine"),
+          IdMap.getId("existingLine"),
+          lineItem
+        )
       } catch (err) {
         expect(err.message).toEqual(
           `Inventory doesn't cover the desired quantity`
@@ -459,6 +525,7 @@ describe("CartService", () => {
         {
           $set: {
             region_id: IdMap.getId("region-us"),
+            shipping_methods: [],
             items: [
               {
                 _id: IdMap.getId("line"),
@@ -526,7 +593,7 @@ describe("CartService", () => {
         {
           $set: {
             region_id: IdMap.getId("region-us"),
-            shipping_method: undefined,
+            shipping_methods: [],
             payment_method: undefined,
             shipping_address: {
               first_name: "hi",
@@ -709,6 +776,493 @@ describe("CartService", () => {
 
         expect(err.message).toEqual(`The payment method was not authorized`)
       }
+    })
+  })
+
+  describe("setPaymentSessions", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+      paymentProviderService: PaymentProviderServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("initializes payment sessions for each of the providers", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
+
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(2)
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "default_provider",
+        carts.cartWithLine
+      )
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "unregistered",
+        carts.cartWithLine
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session",
+                  cartId: IdMap.getId("cartWithLine"),
+                },
+              },
+              {
+                provider_id: "unregistered",
+                data: {
+                  id: "unregistered_session",
+                  cartId: IdMap.getId("cartWithLine"),
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("updates payment sessions for existing sessions", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cartWithPaySessions"))
+
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(0)
+
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(2)
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "default_provider",
+          data: {
+            id: "default_provider_session",
+          },
+        },
+        carts.cartWithPaySessions
+      )
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "unregistered",
+          data: {
+            id: "unregistered_session",
+          },
+        },
+        carts.cartWithPaySessions
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithPaySessions"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session_updated",
+                },
+              },
+              {
+                provider_id: "unregistered",
+                data: {
+                  id: "unregistered_session_updated",
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("filters sessions not available in the region", async () => {
+      await cartService.setPaymentSessions(
+        IdMap.getId("cartWithPaySessionsDifRegion")
+      )
+
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(1)
+
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(1)
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "default_provider",
+          data: {
+            id: "default_provider_session",
+          },
+        },
+        carts.cartWithPaySessionsDifRegion
+      )
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "france-provider",
+        carts.cartWithPaySessionsDifRegion
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithPaySessionsDifRegion"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session_updated",
+                },
+              },
+              {
+                provider_id: "france-provider",
+                data: {
+                  id: "france-provider_session",
+                  cartId: IdMap.getId("cartWithPaySessionsDifRegion"),
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
+  })
+
+  describe("setShippingOptions", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      regionService: RegionServiceMock,
+      shippingOptionService: ShippingOptionServiceMock,
+    })
+
+    describe("gets shipping options from the cart's regions", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        await cartService.setShippingOptions(IdMap.getId("cartWithLine"))
+      })
+
+      it("gets shipping options from region", () => {
+        expect(
+          ShippingOptionServiceMock.fetchCartOptions
+        ).toHaveBeenCalledTimes(1)
+        expect(ShippingOptionServiceMock.fetchCartOptions).toHaveBeenCalledWith(
+          carts.cartWithLine
+        )
+      })
+
+      it("updates cart", () => {
+        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("cartWithLine"),
+          },
+          {
+            $set: {
+              shipping_options: [
+                {
+                  _id: IdMap.getId("freeShipping"),
+                  name: "Free Shipping",
+                  region_id: IdMap.getId("testRegion"),
+                  price: 10,
+                  data: {
+                    id: "fs",
+                  },
+                  provider_id: "test_shipper",
+                },
+              ],
+            },
+          }
+        )
+      })
+    })
+  })
+
+  describe("retrievePaymentSession", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    let res
+
+    describe("it retrieves the correct payment session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        res = await cartService.retrievePaymentSession(
+          IdMap.getId("cartWithPaySessions"),
+          "default_provider"
+        )
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("cartWithPaySessions"),
+        })
+      })
+
+      it("finds the correct payment session", () => {
+        expect(res.provider_id).toEqual("default_provider")
+        expect(res.data).toEqual({
+          id: "default_provider_session",
+        })
+      })
+    })
+
+    describe("it fails when provider doesn't match open session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        try {
+          await cartService.retrievePaymentSession(
+            IdMap.getId("cartWithPaySessions"),
+            "nono"
+          )
+        } catch (err) {
+          res = err
+        }
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("cartWithPaySessions"),
+        })
+      })
+
+      it("throws invalid data errro", () => {
+        expect(res.message).toEqual(
+          "The provider_id did not match any open payment sessions"
+        )
+      })
+    })
+  })
+
+  describe("addShippingMethod", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      shippingOptionService: ShippingOptionServiceMock,
+    })
+
+    describe("successfully adds the shipping method", () => {
+      const method = {
+        _id: IdMap.getId("freeShipping"),
+        provider_id: "test_shipper",
+        profile_id: "default_profile",
+        price: 20,
+        region_id: IdMap.getId("testRegion"),
+        data: {
+          id: "testshipperid",
+        },
+        products: [IdMap.getId("product")],
+      }
+
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        const cartId = IdMap.getId("cartWithPaySessions")
+        await cartService.addShippingMethod(cartId, method)
+      })
+
+      it("checks availability", () => {
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledWith(method, carts.cartWithPaySessions)
+      })
+
+      it("updates cart", () => {
+        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("cartWithPaySessions"),
+          },
+          {
+            $set: { shipping_methods: [method] },
+          }
+        )
+      })
+    })
+
+    describe("successfully overrides existing profile shipping method", () => {
+      const method = {
+        _id: IdMap.getId("freeShipping"),
+        provider_id: "test_shipper",
+        profile_id: "default_profile",
+        price: 20,
+        region_id: IdMap.getId("testRegion"),
+        data: {
+          id: "testshipperid",
+        },
+        products: [IdMap.getId("product")],
+      }
+
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        const cartId = IdMap.getId("fr-cart")
+        await cartService.addShippingMethod(cartId, method)
+      })
+
+      it("checks availability", () => {
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledWith(method, carts.frCart)
+      })
+
+      it("updates cart", () => {
+        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("fr-cart"),
+          },
+          {
+            $set: { shipping_methods: [method] },
+          }
+        )
+      })
+    })
+
+    describe("successfully adds additional shipping method", () => {
+      const method = {
+        _id: IdMap.getId("freeShipping"),
+        provider_id: "test_shipper",
+        profile_id: "additional_profile",
+        price: 20,
+        region_id: IdMap.getId("testRegion"),
+        data: {
+          id: "testshipperid",
+        },
+        products: [IdMap.getId("product")],
+      }
+
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        const cartId = IdMap.getId("fr-cart")
+        await cartService.addShippingMethod(cartId, method)
+      })
+
+      it("checks availability", () => {
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledWith(method, carts.frCart)
+      })
+
+      it("updates cart", () => {
+        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+          {
+            _id: IdMap.getId("fr-cart"),
+          },
+          {
+            $set: {
+              shipping_methods: [
+                {
+                  _id: IdMap.getId("freeShipping"),
+                  profile_id: "default_profile",
+                },
+                method,
+              ],
+            },
+          }
+        )
+      })
+    })
+
+    describe("throws error on no availability", () => {
+      const method = {
+        _id: IdMap.getId("fail"),
+      }
+
+      let res
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        const cartId = IdMap.getId("fr-cart")
+        try {
+          await cartService.addShippingMethod(cartId, method)
+        } catch (err) {
+          res = err
+        }
+      })
+
+      it("checks availability", () => {
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledWith(method, carts.frCart)
+      })
+
+      it("throw error", () => {
+        expect(res.message).toEqual(
+          "The selected shipping method cannot be applied to the cart"
+        )
+      })
+    })
+  })
+
+  describe("retrieveShippingOption", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+    })
+
+    let res
+
+    describe("it retrieves the correct payment session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        res = await cartService.retrieveShippingOption(
+          IdMap.getId("fr-cart"),
+          IdMap.getId("freeShipping")
+        )
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("fr-cart"),
+        })
+      })
+
+      it("finds the correct payment session", () => {
+        expect(res._id).toEqual(IdMap.getId("freeShipping"))
+      })
+    })
+
+    describe("it fails when provider doesn't match open session", () => {
+      beforeAll(async () => {
+        jest.clearAllMocks()
+        try {
+          await cartService.retrieveShippingOption(
+            IdMap.getId("fr-cart"),
+            "nono"
+          )
+        } catch (err) {
+          res = err
+        }
+      })
+
+      it("retrieves the cart", () => {
+        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+        expect(CartModelMock.findOne).toHaveBeenCalledWith({
+          _id: IdMap.getId("fr-cart"),
+        })
+      })
+
+      it("throws invalid data errro", () => {
+        expect(res.message).toEqual(
+          "The option id doesn't match any available shipping options"
+        )
+      })
     })
   })
 })

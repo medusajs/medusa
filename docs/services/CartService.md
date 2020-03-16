@@ -50,7 +50,7 @@ removes the line item with the given line id by calling `removeLineItem`.
 ### Initializing the checkout
 When the customer is ready to check out they will reach your checkout page. At
 this point you want to display which payment and shipping options are offered.
-`POST /cart/payment-providers` and `POST /cart/fulfillment-providers` will
+`POST /cart/payment-sessions` and `POST /cart/fulfillment-sessions` will
 initialize payment sessions and shipping methods offered by fulfillment
 providers. The payment sessions will typically have to be updated if any further
 changes to the cart total happens (shipping fee, promo codes, user exits
@@ -93,3 +93,89 @@ function `setPaymentMethod` which will fetch the cart, search the
 check that the payment session is authorized. When the authorization is verified
 the payment method is set and the controller can safely call the Order service
 function `create`. 
+
+
+### How do payment sessions work?
+
+When the customer first enters the checkout page you should initialize payment 
+sessions for each of the possible payment providers. This is done with a single
+call to `POST /cart/payment-sessions`. Calls to `POST /cart/payment-sessions`
+will either create payment sessions for each payment provider or if the payment
+sessions have already been initialized ensure that the sessions are up to date (
+i.e. that the cart amount corresponds to the payment sessions' amounts). When 
+the customer reaches the payment part of the checkout (or alternatively when she
+decides to use one of the payment providers as a checkout provider) the payment
+method will be saved once authorized. 
+
+### How do fulfillment sessions work?
+
+When the customer first enters the checkout page, fulfillment sessions should be
+initialized. The fulfillment session is responsible for fetching shipping 
+options with a fulfillment provider. E.g. your store has an integration with
+your 3PL as a fulfillment provider. The 3PL has 4 shipping options: standard,
+express and fragile shipping as well as a parcel shop service where orders are 
+delivered to a local store.
+
+The store operator will have set up which shipping options are available in the
+customer's region. I.e. the store operator may have created a shipping option 
+called Free Shipping, which uses the "Standard Shipping" method from the 3PL 
+integration, and which is free when the order value is above 100 USD. The store
+operator may have also created an Express Shipping option which uses the 
+"Express Shipping" method from the 3PL integration and which costs 20 USD. 
+The store operator has also created a Fragile Shipping option which uses the
+"Fragile Shipping" method from the 3PL integration and which has variable
+pricing depending on the size of the shipment. The variable pricing is
+calculated by the integration depending on cart. Finally, the store operator has
+defined a parcel shop option, which uses the 3PL's parcel shop shipping method.
+The customer needs to provide the ID of the local store that she wants her order
+delivered to and the shipping method therefore takes some additional input to be
+a valid shipping method for an order.
+
+When the customer enters the checkout page the `POST /cart/shipping-options` 
+call will fetch each of the shipping options that the store operator has set up.
+Extending the above example, an array of shipping options would be stored in the
+cart in the format:
+
+```
+[
+  {
+    _id: [some-id],
+    provider_id: "3pl_integration",
+    name: "Free Shipping",
+    price: 0,
+    data: {
+      // This will contain data specific to the shipping method, i.e. the 
+      // id that the 3PL needs in order to process the order with this shipping
+      // method
+    }
+  },
+  {
+    _id: [some-id],
+    provider_id: "3pl_integration",
+    name: "Express Shipping",
+    price: 20,
+    data: {
+      // This will contain data specific to the shipping method, i.e. the 
+      // id that the 3PL needs in order to process the order with this shipping
+      // method
+    }
+  },
+  {
+    _id: [some-id],
+    provider_id: "3pl_integration",
+    name: "Fragile Shipping",
+    price: 120, // Calculated from the cart
+    data: {
+      // This will contain data specific to the shipping method, i.e. the 
+      // id that the 3PL needs in order to process the order with this shipping
+      // method
+    }
+  },
+  ...
+]
+```
+
+If the customer changes her cart, all shipping options will be recalculated. For
+example, if the customer removes something from the cart so that they no longer
+qualify for free shipping, the free shipping method will be removed at the same
+time the fragile shipping method's price will be updated. 
