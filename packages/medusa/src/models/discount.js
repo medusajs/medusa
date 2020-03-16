@@ -1,19 +1,14 @@
-/*******************************************************************************
- *
- ******************************************************************************/
-import mongoose from "mongoose"
 import { BaseModel } from "medusa-interfaces"
+import DiscountRule from "./schemas/discount-rule"
 
 class DiscountModel extends BaseModel {
   static modelName = "Discount"
 
   static schema = {
     code: { type: String, required: true, unique: true },
-    discount_value: { type: Number, required: true },
-    type: { String, required: true, required: true },
-    valid_for: { type: [String] },
+    discount_rule: { type: DiscountRule, required: true },
     usage_count: { type: Number, default: 0 },
-    limit: { type: Number },
+    active: { type: Boolean },
     starts_at: { type: Date },
     ends_at: { type: Date },
   }
