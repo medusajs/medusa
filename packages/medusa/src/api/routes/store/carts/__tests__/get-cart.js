@@ -23,6 +23,7 @@ describe("GET /store/carts", () => {
 
     it("returns products", () => {
       expect(subject.body._id).toEqual(IdMap.getId("emptyCart"))
+      expect(subject.body.decorated).toEqual(true)
     })
   })
 
