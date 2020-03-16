@@ -284,6 +284,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateLineItem(cartId, lineItemId, lineItem) {
+    const cart = await this.retrieve(cartId)
     const validatedLineItem = this.lineItemService_.validate(lineItem)
 
     if (!lineItemId) {
@@ -294,7 +295,6 @@ class CartService extends BaseService {
     }
 
     // Ensure that the line item exists in the cart
-    const cart = await this.retrieve(cartId)
     const lineItemExists = cart.items.find(i => i._id === lineItemId)
     if (!lineItemExists) {
       throw new MedusaError(
