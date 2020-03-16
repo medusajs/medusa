@@ -15,6 +15,7 @@ class CartService extends BaseService {
     productVariantService,
     regionService,
     lineItemService,
+    shippingOptionService,
   }) {
     super()
 
@@ -38,6 +39,9 @@ class CartService extends BaseService {
 
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
+
+    /** @private @const {ShippingOptionsService} */
+    this.shippingOptionService_ = shippingOptionService
   }
 
   /**
@@ -200,9 +204,7 @@ class CartService extends BaseService {
    * @return {Cart} return the decorated cart.
    */
   async decorate(cart, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(cart, fields.concat(requiredFields))
-    return decorated
+    return cart
   }
 
   /**
@@ -213,9 +215,7 @@ class CartService extends BaseService {
    */
   async addLineItem(cartId, lineItem) {
     const validatedLineItem = this.lineItemService_.validate(lineItem)
-
     const cart = await this.retrieve(cartId)
-
     const currentItem = cart.items.find(line =>
       _.isEqual(line.content, validatedLineItem.content)
     )
@@ -276,6 +276,61 @@ class CartService extends BaseService {
   }
 
   /**
+   * Updates a cart's existing line item.
+   * @param {string} cartId - the id of the cart to update
+   * @param {string} lineItemId - the id of the line item to update.
+   * @param {LineItem} lineItem - the line item to update. Must include an _id
+   *    field.
+   * @return {Promise} the result of the update operation
+   */
+  async updateLineItem(cartId, lineItemId, lineItem) {
+    const cart = await this.retrieve(cartId)
+    const validatedLineItem = this.lineItemService_.validate(lineItem)
+
+    if (!lineItemId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Line Item must have an _id corresponding to an existing line item id"
+      )
+    }
+
+    // Ensure that the line item exists in the cart
+    const lineItemExists = cart.items.find(i => i._id === lineItemId)
+    if (!lineItemExists) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "A line item with the provided id doesn't exist in the cart"
+      )
+    }
+
+    // Ensure that inventory covers the request
+    const hasInventory = await this.confirmInventory_(
+      validatedLineItem.content,
+      validatedLineItem.quantity
+    )
+
+    if (!hasInventory) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Inventory doesn't cover the desired quantity"
+      )
+    }
+
+    // Update the line item
+    return this.cartModel_.updateOne(
+      {
+        _id: cartId,
+        "items._id": lineItemId,
+      },
+      {
+        $set: {
+          "items.$": validatedLineItem,
+        },
+      }
+    )
+  }
+
+  /**
    * Sets the email of a cart
    * @param {string} cartId - the id of the cart to add email to
    * @param {string} email - the email to add to cart
@@ -283,7 +338,6 @@ class CartService extends BaseService {
    */
   async updateEmail(cartId, email) {
     const cart = await this.retrieve(cartId)
-
     const schema = Validator.string()
       .email()
       .required()
@@ -313,7 +367,6 @@ class CartService extends BaseService {
    */
   async updateBillingAddress(cartId, address) {
     const cart = await this.retrieve(cartId)
-
     const { value, error } = Validator.address().validate(address)
     if (error) {
       throw new MedusaError(
@@ -340,7 +393,6 @@ class CartService extends BaseService {
    */
   async updateShippingAddress(cartId, address) {
     const cart = await this.retrieve(cartId)
-
     const { value, error } = Validator.address().validate(address)
     if (error) {
       throw new MedusaError(
@@ -360,11 +412,36 @@ class CartService extends BaseService {
   }
 
   /**
+   * A payment method represents a way for the customer to pay. The payment
+   * method will typically come from one of the payment sessions.
    * @typedef {object} PaymentMethod
    * @property {string} provider_id - the identifier of the payment method's
    *     provider
    * @property {object} data - the data associated with the payment method
    */
+
+  /**
+   * Retrieves an open payment session from the list of payment sessions
+   * stored in the cart. If none is an INVALID_DATA error is thrown.
+   * @param {string} cartId - the id of the cart to retrieve the session from
+   * @param {string} providerId - the id of the provider the session belongs to
+   * @return {PaymentMethod} the session
+   */
+  async retrievePaymentSession(cartId, providerId) {
+    const cart = await this.retrieve(cartId)
+    const session = cart.payment_sessions.find(
+      ({ provider_id }) => provider_id === providerId
+    )
+
+    if (!session) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The provider_id did not match any open payment sessions`
+      )
+    }
+
+    return session
+  }
 
   /**
    * Sets a payment method for a cart.
@@ -389,7 +466,8 @@ class CartService extends BaseService {
       )
     }
 
-    // Check if the payment method has been authorized.
+    // The provider service will be able to perform operations on the
+    // session we are trying to set as the payment method.
     const provider = this.paymentProviderService_.retrieveProvider(
       paymentMethod.provider_id
     )
@@ -409,6 +487,158 @@ class CartService extends BaseService {
       },
       {
         $set: { payment_method: paymentMethod },
+      }
+    )
+  }
+
+  /**
+   * Creates, updates and sets payment sessions associated with the cart. The
+   * first time the method is called payment sessions will be created for each
+   * provider. Additional calls will ensure that payment sessions have correct
+   * amounts, currencies, etc. as well as make sure to filter payment sessions
+   * that are not available for the cart's region.
+   * @param {string} cartId - the id of the cart to set payment session for
+   * @returns {Promise} the result of the update operation.
+   */
+  async setPaymentSessions(cartId) {
+    const cart = await this.retrieve(cartId)
+    const region = await this.regionService_.retrieve(cart.region_id)
+
+    // If there are existing payment sessions ensure that these are up to date
+    let sessions = []
+    if (cart.payment_sessions && cart.payment_sessions.length) {
+      sessions = await Promise.all(
+        cart.payment_sessions.map(async pSession => {
+          if (!region.payment_providers.includes(pSession.provider_id)) {
+            return null
+          }
+          return this.paymentProviderService_.updateSession(pSession, cart)
+        })
+      )
+    }
+
+    // Filter all null sessions
+    sessions = sessions.filter(s => !!s)
+
+    // For all the payment providers in the region make sure to either skip them
+    // if they already exist or create them if they don't yet exist.
+    let newSessions = await Promise.all(
+      region.payment_providers.map(async pId => {
+        if (sessions.find(s => s.provider_id === pId)) {
+          return null
+        }
+
+        return this.paymentProviderService_.createSession(pId, cart)
+      })
+    )
+
+    // Filter null sessions
+    newSessions = newSessions.filter(s => !!s)
+
+    // Update the payment sessions with the concatenated array of updated and
+    // newly created payment sessions
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { payment_sessions: sessions.concat(newSessions) },
+      }
+    )
+  }
+
+  /**
+   * Retrieves one of the open shipping options for the cart.
+   * @param {string} cartId - the id of the cart to retrieve the option from
+   * @param {string} optionId - the id of the option to retrieve
+   * @return {ShippingOption} the option that was found
+   */
+  async retrieveShippingOption(cartId, optionId) {
+    const cart = await this.retrieve(cartId)
+
+    const option = cart.shipping_options.find(({ _id }) => _id === optionId)
+
+    if (!option) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The option id doesn't match any available shipping options`
+      )
+    }
+
+    return option
+  }
+
+  /**
+   * Adds the shipping method to the list of shipping methods associated with
+   * the cart.
+   * @param {string} cartId - the id of the cart to add shipping method to
+   * @param {ShippingOption} method - the shipping method to add to the cart
+   * @return {Promise} the result of the update operation
+   */
+  async addShippingMethod(cartId, method) {
+    const cart = await this.retrieve(cartId)
+    const { shipping_methods } = cart
+
+    const isValid = await this.shippingOptionService_.validateCartOption(
+      method,
+      cart
+    )
+
+    if (!isValid) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The selected shipping method cannot be applied to the cart"
+      )
+    }
+
+    // Go through all existing selected shipping methods and update the one
+    // that has the same profile as the selected shipping method.
+    let exists = false
+    const newMethods = shipping_methods.map(sm => {
+      if (sm.profile_id === method.profile_id) {
+        exists = true
+        return method
+      }
+
+      return sm
+    })
+
+    // If none of the selected methods are for the same profile as the new
+    // shipping method the exists flag will be false. Therefore we push the new
+    // method.
+    if (!exists) {
+      newMethods.push(method)
+    }
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { shipping_methods: newMethods },
+      }
+    )
+  }
+
+  /**
+   * Finds all shipping options that are available to the cart and stores them
+   * in shipping_options. The shipping options are retrieved from the shipping
+   * option service.
+   * @param {string} cartId - the id of the cart
+   * @return {Promse} the result of the update operation
+   */
+  async setShippingOptions(cartId) {
+    const cart = await this.retrieve(cartId)
+
+    // Get the shipping options available in the region
+    const cartOptions = await this.shippingOptionService_.fetchCartOptions(cart)
+
+    return this.cartModel_.updateOne(
+      {
+        _id: cart._id,
+      },
+      {
+        $set: { shipping_options: cartOptions },
       }
     )
   }
@@ -463,8 +693,8 @@ class CartService extends BaseService {
 
     // Shipping methods are determined by region so the user needs to find a
     // new shipping method
-    if (!_.isEmpty(cart.shipping_method)) {
-      update.shipping_method = undefined
+    if (cart.shipping_methods && cart.shipping_methods.length) {
+      update.shipping_methods = []
     }
 
     // Payment methods are region specific so the user needs to find a
