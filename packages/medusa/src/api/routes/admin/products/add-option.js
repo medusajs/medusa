@@ -15,9 +15,20 @@ export default async (req, res) => {
     const productService = req.scope.resolve("productService")
     const product = await productService.retrieve(id)
     await productService.addOption(product._id, value.optionTitle)
-    const newProduct = await productService.retrieve(product.id)
+    let newProduct = await productService.retrieve(product._id)
+    newProduct = await productService.decorate(newProduct, [
+      "title",
+      "description",
+      "tags",
+      "handle",
+      "images",
+      "options",
+      "variants",
+      "published",
+    ])
     res.json(newProduct)
   } catch (err) {
+    console.log(err)
     throw err
   }
 }

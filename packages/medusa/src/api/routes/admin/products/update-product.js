@@ -27,8 +27,17 @@ export default async (req, res) => {
 
   try {
     await productService.update(oldProduct._id, value)
-    const newProduct = await productService.retrieve(oldProduct._id)
-    // Return the created product draft
+    let newProduct = await productService.retrieve(oldProduct._id)
+    newProduct = await productService.decorate(newProduct, [
+      "title",
+      "description",
+      "tags",
+      "handle",
+      "images",
+      "options",
+      "variants",
+      "published",
+    ])
     res.json(newProduct)
   } catch (err) {
     throw err

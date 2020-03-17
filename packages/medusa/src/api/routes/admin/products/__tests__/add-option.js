@@ -2,17 +2,18 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("POST /admin/products/:id/variant/:variantId", () => {
-  describe("successful add variant", () => {
+describe("POST /admin/products/:id/option", () => {
+  describe("successful add option", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/products/${IdMap.getId(
-          "productWithOptions"
-        )}/variant/${IdMap.getId("variant2")}`,
+        `/admin/products/${IdMap.getId("productWithOptions")}/option`,
         {
+          payload: {
+            optionTitle: "Test option",
+          },
           adminSession: {
             jwt: {
               userId: IdMap.getId("admin_user"),
@@ -26,11 +27,11 @@ describe("POST /admin/products/:id/variant/:variantId", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("calls service addVariant", () => {
-      expect(ProductServiceMock.addVariant).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.addVariant).toHaveBeenCalledWith(
+    it("calls service addOption", () => {
+      expect(ProductServiceMock.addOption).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.addOption).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
-        IdMap.getId("variant2")
+        "Test option"
       )
     })
 

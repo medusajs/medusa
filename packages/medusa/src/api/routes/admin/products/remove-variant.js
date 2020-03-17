@@ -4,11 +4,18 @@ export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
     await productService.removeVariant(id, variantId)
-    res.json({
-      id: variantId,
-      object: "variant",
-      deleted: true,
-    })
+    let updatedProduct = await productService.retrieve(id)
+    updatedProduct = await productService.decorate(updatedProduct, [
+      "title",
+      "description",
+      "tags",
+      "handle",
+      "images",
+      "options",
+      "variants",
+      "published",
+    ])
+    res.json(updatedProduct)
   } catch (err) {
     throw err
   }

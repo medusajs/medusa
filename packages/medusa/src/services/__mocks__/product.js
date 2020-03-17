@@ -31,7 +31,7 @@ export const products = {
 
 export const ProductServiceMock = {
   createDraft: jest.fn().mockImplementation(data => {
-    return Promise.resolve(data)
+    return Promise.resolve(products.product1)
   }),
   publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
@@ -44,17 +44,17 @@ export const ProductServiceMock = {
     return Promise.resolve()
   }),
   addVariant: jest.fn().mockImplementation((productId, variantId) => {
-    return Promise.resolve()
+    return Promise.resolve(products.productWithOptions)
   }),
   removeVariant: jest.fn().mockImplementation((productId, variantId) => {
-    if (variantId === IdMap.getId("variant1")) {
-      return Promise.resolve({
-        _id: IdMap.getId("variant1"),
-        object: "variant",
-        deleted: true,
-      })
-    }
-    return Promise.resolve()
+    return Promise.resolve(products.productWithOptions)
+  }),
+  decorate: jest.fn().mockImplementation((product, fields) => {
+    product.decorated = true
+    return product
+  }),
+  addOption: jest.fn().mockImplementation((productId, optionTitle) => {
+    return Promise.resolve(products.productWithOptions)
   }),
   retrieve: jest.fn().mockImplementation(productId => {
     if (productId === IdMap.getId("product1")) {

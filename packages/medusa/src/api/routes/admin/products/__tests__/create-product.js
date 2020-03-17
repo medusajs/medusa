@@ -27,12 +27,8 @@ describe("POST /admin/products", () => {
     })
 
     it("returns created product draft", () => {
-      expect(subject.body).toEqual({
-        title: "Test Product",
-        description: "Test Description",
-        tags: "hi,med,dig",
-        handle: "test-product",
-      })
+      expect(subject.body._id).toEqual(IdMap.getId("product1"))
+      expect(subject.body.decorated).toEqual(true)
     })
 
     it("calls service createDraft", () => {
