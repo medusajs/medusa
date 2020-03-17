@@ -12,8 +12,28 @@ export default app => {
     "/:id/publish",
     middlewares.wrap(require("./publish-product").default)
   )
+  route.post(
+    "/:id/variant/:variantId",
+    middlewares.wrap(require("./add-variant").default)
+  )
+  route.post(
+    "/:id/option/:optionId",
+    middlewares.wrap(require("./update-option").default)
+  )
+  route.post("/:id/option", middlewares.wrap(require("./add-option").default))
+  route.post(
+    "/:id/variant/:variantId/remove",
+    middlewares.wrap(require("./remove-variant").default)
+  )
 
-  // route.get("/:productId", middlewares.wrap(require("./get-product").default))
+  route.delete("/:id", middlewares.wrap(require("./delete-product").default))
+  route.delete(
+    "/:id/option/:optionId",
+    middlewares.wrap(require("./delete-option").default)
+  )
+
+  route.get("/:id", middlewares.wrap(require("./get-product").default))
+  route.get("/", middlewares.wrap(require("./list-products").default))
 
   return app
 }

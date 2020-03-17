@@ -15,6 +15,18 @@ export const products = {
     _id: IdMap.getId("product2"),
     name: "Product 2",
   },
+  productWithOptions: {
+    _id: IdMap.getId("productWithOptions"),
+    name: "Test",
+    variants: [IdMap.getId("variant1")],
+    options: [
+      {
+        _id: IdMap.getId("option1"),
+        title: "Test",
+        values: [IdMap.getId("optionValue1")],
+      },
+    ],
+  },
 }
 
 export const ProductServiceMock = {
@@ -28,12 +40,31 @@ export const ProductServiceMock = {
       published: true,
     })
   }),
+  delete: jest.fn().mockImplementation(_ => {
+    return Promise.resolve()
+  }),
+  addVariant: jest.fn().mockImplementation((productId, variantId) => {
+    return Promise.resolve()
+  }),
+  removeVariant: jest.fn().mockImplementation((productId, variantId) => {
+    if (variantId === IdMap.getId("variant1")) {
+      return Promise.resolve({
+        _id: IdMap.getId("variant1"),
+        object: "variant",
+        deleted: true,
+      })
+    }
+    return Promise.resolve()
+  }),
   retrieve: jest.fn().mockImplementation(productId => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
     }
     if (productId === IdMap.getId("publish")) {
       return Promise.resolve(products.publishProduct)
+    }
+    if (productId === IdMap.getId("productWithOptions")) {
+      return Promise.resolve(products.productWithOptions)
     }
     return Promise.resolve(undefined)
   }),

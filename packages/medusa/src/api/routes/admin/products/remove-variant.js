@@ -1,12 +1,12 @@
 export default async (req, res) => {
-  const { id } = req.params
+  const { id, variantId } = req.params
 
   try {
     const productService = req.scope.resolve("productService")
-    await productService.delete(id)
+    await productService.removeVariant(id, variantId)
     res.json({
-      id,
-      object: "product",
+      id: variantId,
+      object: "variant",
       deleted: true,
     })
   } catch (err) {
