@@ -17,7 +17,7 @@ export default ({ container }) => {
   }
 
   const coreFull = path.join(__dirname, corePath)
-  const appFull = path.resolve(corePath)
+  const appFull = path.resolve(appPath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
