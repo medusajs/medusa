@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/srindom/medusa",
+    "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa"
   },
   "author": "Sebastian Rindom",
