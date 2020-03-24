@@ -8,6 +8,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Sebastian Rindom",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
@@ -60,5 +63,5 @@
     "regenerator-runtime": "^0.13.3",
     "winston": "^3.2.1"
   },
-  "gitHead": "edc9052adc77cf7dc9e3d058fb04edf371bdcf2f"
+  "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"
 }
