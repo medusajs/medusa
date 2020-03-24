@@ -1,6 +1,6 @@
 {
   "name": "medusa-test-utils",
-  "version": "0.1.4-alpha.0",
+  "version": "0.1.5-alpha.0",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -26,5 +26,5 @@
   "dependencies": {
     "mongoose": "^5.8.0"
   },
-  "gitHead": "6fce625a01a2d09a78446627e5096e14c979d3fd"
+  "gitHead": "edc9052adc77cf7dc9e3d058fb04edf371bdcf2f"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "0.1.4-alpha.0",
+  "version": "0.1.5-alpha.0",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
@@ -48,9 +48,9 @@
     "glob": "^7.1.6",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^0.1.4-alpha.0",
-    "medusa-interfaces": "^0.1.4-alpha.0",
-    "medusa-test-utils": "^0.1.4-alpha.0",
+    "medusa-core-utils": "^0.1.5-alpha.0",
+    "medusa-interfaces": "^0.1.5-alpha.0",
+    "medusa-test-utils": "^0.1.5-alpha.0",
     "mongoose": "^5.8.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -60,5 +60,5 @@
     "regenerator-runtime": "^0.13.3",
     "winston": "^3.2.1"
   },
-  "gitHead": "6fce625a01a2d09a78446627e5096e14c979d3fd"
+  "gitHead": "edc9052adc77cf7dc9e3d058fb04edf371bdcf2f"
 }
