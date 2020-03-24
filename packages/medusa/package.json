@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "0.1.7-alpha.0",
+  "version": "0.1.8-alpha.0",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
@@ -23,6 +23,7 @@
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
     "client-sessions": "^0.8.0",
+    "cross-env": "^5.2.1",
     "eslint": "^6.7.2",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
@@ -64,5 +65,5 @@
     "regenerator-runtime": "^0.13.3",
     "winston": "^3.2.1"
   },
-  "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"
+  "gitHead": "3fff45a0de2134405bdace9edc4dd1c3a6f5e0f8"
 }
