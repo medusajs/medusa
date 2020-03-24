@@ -2,7 +2,6 @@ import { BaseModel } from "medusa-interfaces"
 import { Lifetime } from "awilix"
 import glob from "glob"
 import path from "path"
-import { Lifetime } from "awilix"
 import { asFunction } from "awilix"
 
 /**
