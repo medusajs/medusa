@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "0.1.6-alpha.0",
+  "version": "0.1.7-alpha.0",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
@@ -30,8 +30,8 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
- "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-     "prepare": "cross-env NODE_ENV=production npm run build",
+    "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+    "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
     "test": "jest"
