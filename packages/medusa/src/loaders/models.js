@@ -11,10 +11,10 @@ export default ({ container }) => {
   let corePath = "../models/*.js"
   let appPath = "src/models/*.js"
 
-  const corefull = path.resolve(corePath)
-  const appfull = path.resolve(corePath)
+  const coreFull = path.join(__dirname, corePath)
+  const appFull = path.resolve(appPath)
 
-  const core = glob.sync(corePath, { cwd: __dirname })
+  const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
@@ -23,8 +23,8 @@ export default ({ container }) => {
     })
   })
 
-  if (corefull !== appfull) {
-    const files = glob.sync(appPath)
+  if (coreFull !== appFull) {
+    const files = glob.sync(appFull)
     files.forEach(fn => {
       const loaded = require(fn).default
 
