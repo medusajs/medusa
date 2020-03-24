@@ -27,5 +27,5 @@
     "@hapi/joi": "^16.1.8",
     "joi-objectid": "^3.0.1"
   },
-  "gitHead": "ba3d6676558a02016a6807971fcf9ac6cf8bb042"
+  "gitHead": "6fce625a01a2d09a78446627e5096e14c979d3fd"
 }
