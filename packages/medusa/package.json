@@ -30,7 +30,8 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+ "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
     "test": "jest"
