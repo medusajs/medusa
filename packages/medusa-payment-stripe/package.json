@@ -27,5 +27,6 @@
   "dependencies": {
     "@babel/runtime": "^7.7.6",
     "medusa-interfaces": "^0.1.1-alpha.0"
-  }
+  },
+  "gitHead": "75d85829c7cf934c6e60f3d373bf9c15330bb185"
 }

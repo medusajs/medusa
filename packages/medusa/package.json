@@ -59,5 +59,6 @@
     "passport-local": "^1.0.0",
     "regenerator-runtime": "^0.13.3",
     "winston": "^3.2.1"
-  }
+  },
+  "gitHead": "75d85829c7cf934c6e60f3d373bf9c15330bb185"
 }
