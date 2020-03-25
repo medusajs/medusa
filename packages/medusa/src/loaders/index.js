@@ -36,8 +36,6 @@ export default async ({ expressApp }) => {
   await servicesLoader({ container })
   Logger.info("Services initialized")
 
-  console.log(container.registrations)
-
   await pluginsLoader({ container })
   Logger.info("Plugins Intialized")
 
