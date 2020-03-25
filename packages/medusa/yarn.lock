@@ -2222,10 +2222,10 @@ eslint-visitor-keys@^1.1.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
   integrity sha512-8y9YjtM1JBJU/A9Kc+SbaOV4y29sSWckBwMHa+FGtVj5gN/sbnKDf6xJUl+8g7FAij9LVaP8C24DUiH/f/2Z9A==
 
-eslint@^6.7.2:
-  version "6.7.2"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-6.7.2.tgz#c17707ca4ad7b2d8af986a33feba71e18a9fecd1"
-  integrity sha512-qMlSWJaCSxDFr8fBPvJM9kJwbazrhNcBU3+DszDW1OlEwKBBRWsJc7NJFelvwQpanHCR14cOLD41x8Eqvo3Nng==
+eslint@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-6.8.0.tgz#62262d6729739f9275723824302fb227c8c93ffb"
+  integrity sha512-K+Iayyo2LtyYhDSYwz5D5QdWw0hCacNzyq1Y821Xna2xSJj7cijoLLYmLxTQgcgZ9mC61nryMy9S7GRbYpI5Ig==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.10.0"
@@ -4088,6 +4088,28 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
+
+medusa-core-utils@^0.1.6-alpha.0:
+  version "0.1.6-alpha.0"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.6-alpha.0.tgz#393a0cdcfdd7833a1c0c5ddcee5fe71578563a6f"
+  integrity sha512-1/8LsCvVnNwv95J5Y2OcEoWP6IkgpqIQi8fQk7igS3frWDUi2sU0MuSQUqiOLrkEqVCNkBs8s0j/NKAu1Ld40A==
+  dependencies:
+    "@hapi/joi" "^16.1.8"
+    joi-objectid "^3.0.1"
+
+medusa-interfaces@^0.1.6-alpha.0:
+  version "0.1.6-alpha.0"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.6-alpha.0.tgz#cc6357e5605382775aa22e10b318cde966259c9e"
+  integrity sha512-sVrR/FnaA+OCcJrVvfdrBuyBOs/Y01vbftqldM76WwIptkzcl6O+w2jGLn/YcMj4wswUYnhnPSc8YfmYjEgBMg==
+  dependencies:
+    mongoose "^5.8.0"
+
+medusa-test-utils@^0.1.6-alpha.0:
+  version "0.1.6-alpha.0"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.6-alpha.0.tgz#bfdf4a456904a7a3d4d78da0bb126c91d51ee61f"
+  integrity sha512-yizJyQF+xJSHtD+BgyGiZFv0EE3+TQDtIZJZEjisIsN0nzzZTOb/VYY8dgQWLFZdkumruiJwq4NCx7Dxp6CfNA==
+  dependencies:
+    mongoose "^5.8.0"
 
 memory-pager@^1.0.2:
   version "1.5.0"

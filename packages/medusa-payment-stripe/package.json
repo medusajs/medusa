@@ -17,7 +17,8 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "client-sessions": "^0.8.0",
-    "cross-env": "^5.2.1"
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0"
   },
   "scripts": {
     "build": "babel src --out-dir . --ignore **/__tests__",
