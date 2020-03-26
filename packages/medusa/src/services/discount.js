@@ -1,11 +1,17 @@
 import { BaseService } from "medusa-interfaces"
 import { Validator } from "medusa-core-utils"
+import _ from "lodash"
 
 /**
  * @implements BaseService
  */
 class DiscountService extends BaseService {
-  constructor({ discountModel, cartService, regionService }) {
+  constructor({
+    discountModel,
+    cartService,
+    regionService,
+    productVariantService,
+  }) {
     super()
 
     /** @private @const {DiscountModel} */
@@ -16,6 +22,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {ProductVariantService} */
+    this.productVariantService_ = productVariantService
   }
 
   validateId_(rawId) {
@@ -87,18 +96,6 @@ class DiscountService extends BaseService {
     return discount
   }
 
-  // DOES IT EVEN MAKE SENSE TO UPDATE DISCOUNT TYPE?
-  async updateDiscountType(discountId, discountType) {
-    const discount = this.retrieve(discountId)
-    const validatedDiscountType = this.validateDiscountType_(discountType)
-
-    return this.discountModel_.updateOne(
-      { _id: discount._id },
-      { $set: { discountType: validatedDiscountType } },
-      { runValidators: true }
-    )
-  }
-
   async update(discountId, update) {
     const discount = this.retrieve(discountId)
 
@@ -114,6 +111,91 @@ class DiscountService extends BaseService {
       { $set: update },
       { runValidators: true }
     )
+  }
+
+  async calculateItemDiscounts(discount, items, discountType) {
+    return items.forEach(({ content }) => {
+      return Promise.all(discount.valid_for.forEach(v => {
+        if (content.variant._id === v) {
+          const variantRegionPrice = await this.productVariantService_.getRegionPrice(
+            v._id,
+            cart.region_id
+          )
+
+          if (discountType === "percentage") {
+            return {
+              v,
+              amount: (variantRegionPrice / 100) * v.d.value,
+            }
+          } else {
+            return {
+              v,
+              amount:
+                d.value >= variantRegionPrice ? variantRegionPrice : d.value,
+            }
+          }
+        }
+      }))
+    })
+  }
+
+  async calculateDiscountTotal(cart) {
+    let subTotal = _.sum(cart.items, ({ content }) => content.amount)
+    let discounts = await Promise.all(cart.discounts.map(discount => this.retrieve(discount._id)))
+
+    // filter out invalid discounts
+    discounts = discounts.filter(d => {
+      const parsedEnd = new Date(d.ends_at)
+      const now = new Date()
+      return (
+        parsedEnd.getTime() > now.getTime() &&
+        d.regions.includes(cart.region_id)
+      )
+    })
+
+    // we only support having free shipping and one other discount, so first
+    // find the discount, which is not free shipping.
+    const discount = discounts.find(
+      ({ discount_rule }) => discount_rule !== "free_shipping"
+    )
+
+    if (!discount) {
+      return subTotal
+    }
+
+    const type = discount.discount_rule.type
+    const allocation = discount.discount_rule.allocation
+    const value = discount.discount_rule.value
+
+    if (type === "percentage" && allocation === "total") {
+      subTotal -= (subTotal / 100) * value
+      return subTotal
+    }
+
+    if (type === "percentage" && allocation === "item") {
+      const itemPercentageDiscounts = await this.calculateItemDiscounts(
+        discount,
+        cart.items,
+        "percentage"
+      )
+      const totalDiscount = _.sum(itemPercentageDiscounts, d => d.amount)
+      subTotal -= totalDiscount
+      return subTotal
+    }
+
+    if (type === "fixed" && allocation === "total") {
+      subTotal -= subTotal - value
+      return subTotal
+    }
+
+    if (type === "fixed" && allocation === "item") {
+      const itemFixedDiscounts = await this.calculateDiscountTotal(discount, cart.items, "fixed")
+      const totalDiscount = _.sum(itemFixedDiscounts, d => d.amount)
+      subTotal -= subTotal - totalDiscount
+      return subTotal
+    }
+
+    return subTotal
   }
 }
 

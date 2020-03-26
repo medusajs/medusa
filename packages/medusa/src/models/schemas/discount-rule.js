@@ -13,9 +13,10 @@ export default new mongoose.Schema({
   // This depends on the type above, since percentage can not be above 100.
   value: { type: Number, required: true },
   // This is either total, meaning that the discount will be applied to the
-  // total price of the cart or item, meaning that the discount can be applied
-  // to the product variants in the valid_for array. Lastly the allocation
-  // is completely ignored if discount type is free shipping.
+  // total price of the cart
+  // or item, meaning that the discount can be applied to the product variants
+  // in the valid_for array. Lastly the allocation is completely ignored if
+  // discount type is free shipping.
   allocation: { type: String, required: true },
   // Id's of product variants. Depends on allocation.
   // If total is set, then the valid_for will not be used for anything,

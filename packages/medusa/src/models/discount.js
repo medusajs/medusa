@@ -8,7 +8,7 @@ class DiscountModel extends BaseModel {
     code: { type: String, required: true, unique: true },
     discount_rule: { type: DiscountRule, required: true },
     usage_count: { type: Number, default: 0 },
-    active: { type: Boolean },
+    disabled: { type: Boolean, default: false },
     starts_at: { type: Date },
     ends_at: { type: Date },
   }
