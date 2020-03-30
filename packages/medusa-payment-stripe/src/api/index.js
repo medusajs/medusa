@@ -9,4 +9,6 @@ export default () => {
       success: true
     })
   })
+
+  return app
 }
