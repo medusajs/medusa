@@ -63,11 +63,13 @@ export default ({ container }) => {
 }
 
 function formatRegistrationName(fn) {
+  const offset = process.env.NODE_ENV === "test" ? 3 : 2
+
   const descriptorIndex = fn.split(".").length - 2
   const descriptor = fn.split(".")[descriptorIndex]
   const splat = descriptor.split("/")
   const rawname = splat[splat.length - 1]
-  const namespace = splat[splat.length - 2]
+  const namespace = splat[splat.length - offset]
   const upperNamespace =
     namespace.charAt(0).toUpperCase() + namespace.slice(1, -1)
 
