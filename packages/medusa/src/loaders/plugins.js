@@ -37,11 +37,13 @@ export default ({ container, app }) => {
 
 function registerApi(pluginDetails, app) {
   try {
+    console.log(pluginDetails)
     const routes = require(`${pluginDetails.resolve}/api`).default
     console.log(routes)
     app.use("/", routes())
     return app
   } catch (err) {
+    console.log(err)
     return app
   }
 }
@@ -60,6 +62,7 @@ function registerApi(pluginDetails, app) {
  */
 function registerServices(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/services/*`, {})
+  console.log(files)
   files.forEach(fn => {
     const loaded = require(fn).default
 
