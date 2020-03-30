@@ -8,12 +8,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  */
 class ProductVariantService extends BaseService {
   /** @param { productVariantModel: (ProductVariantModel) } */
-  constructor({
-    productVariantModel,
-    eventBusService,
-    productService,
-    regionService,
-  }) {
+  constructor({ productVariantModel, eventBusService, regionService }) {
     super()
 
     /** @private @const {ProductVariantModel} */
@@ -21,9 +16,6 @@ class ProductVariantService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @const {ProductService} */
-    this.productService_ = productService
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
