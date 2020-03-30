@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "0.1.6-alpha.0",
+  "version": "0.1.26",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
@@ -17,7 +17,8 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "client-sessions": "^0.8.0",
-    "cross-env": "^5.2.1"
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0"
   },
   "scripts": {
     "build": "babel src --out-dir . --ignore **/__tests__",
@@ -26,7 +27,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.6",
-    "medusa-interfaces": "^0.1.6-alpha.0"
+    "express": "^4.17.1",
+    "medusa-interfaces": "^0.1.16"
   },
-  "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"
+  "gitHead": "46685ed4c84f313ead741820cda9089465024344"
 }

@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "0.1.6-alpha.0",
+  "version": "0.1.16",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -21,7 +21,8 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
-    "cross-env": "^5.2.1"
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",

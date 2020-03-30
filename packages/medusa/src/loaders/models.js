@@ -11,10 +11,10 @@ export default ({ container }) => {
   let corePath = "../models/*.js"
   let appPath = "src/models/*.js"
 
-  const corefull = path.resolve(corePath)
-  const appfull = path.resolve(corePath)
+  const coreFull = path.join(__dirname, corePath)
+  const appFull = path.resolve(appPath)
 
-  const core = glob.sync(corePath, { cwd: __dirname })
+  const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
@@ -23,8 +23,8 @@ export default ({ container }) => {
     })
   })
 
-  if (corefull !== appfull) {
-    const files = glob.sync(appPath)
+  if (coreFull !== appFull) {
+    const files = glob.sync(appFull)
     files.forEach(fn => {
       const loaded = require(fn).default
 
@@ -44,11 +44,13 @@ export default ({ container }) => {
 }
 
 function formatRegistrationName(fn) {
+  const offset = process.env.NODE_ENV === "test" ? 3 : 2
+
   const descriptorIndex = fn.split(".").length - 2
   const descriptor = fn.split(".")[descriptorIndex]
   const splat = descriptor.split("/")
   const rawname = splat[splat.length - 1]
-  const namespace = splat[splat.length - 2]
+  const namespace = splat[splat.length - offset]
   const upperNamespace =
     namespace.charAt(0).toUpperCase() + namespace.slice(1, -1)
 
