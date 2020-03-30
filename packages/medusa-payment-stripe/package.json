@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "0.1.25-alpha.0",
+  "version": "0.1.26-alpha.0",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
@@ -30,5 +30,5 @@
     "express": "^4.17.1",
     "medusa-interfaces": "^0.1.16"
   },
-  "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"
+  "gitHead": "46685ed4c84f313ead741820cda9089465024344"
 }
