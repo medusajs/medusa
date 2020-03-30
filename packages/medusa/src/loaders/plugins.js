@@ -5,12 +5,14 @@ import path from "path"
 import fs from "fs"
 import { asFunction } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
-import { plugins } from "../../medusa-config.js"
 
 /**
  * Registers all services in the services directory
  */
 export default ({ container, app }) => {
+  const configPath = path.resolve("./medusa-config")
+  const { plugins } = require(configPath)
+
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
       return resolvePlugin(plugin)
