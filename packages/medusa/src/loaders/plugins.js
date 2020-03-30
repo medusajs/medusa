@@ -13,6 +13,9 @@ export default ({ container, app }) => {
   const configPath = path.resolve("./medusa-config")
   const { plugins } = require(configPath)
 
+  console.log(configPath)
+  console.log(plugins)
+
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
       return resolvePlugin(plugin)
@@ -25,6 +28,7 @@ export default ({ container, app }) => {
   })
 
   resolved.forEach(pluginDetails => {
+    console.log(pluginDetails)
     registerServices(pluginDetails, container)
     registerModels(pluginDetails, container)
     registerApi(pluginDetails, app)
@@ -34,6 +38,7 @@ export default ({ container, app }) => {
 function registerApi(pluginDetails, app) {
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
+    console.log(routes)
     app.use("/", routes())
     return app
   } catch (err) {
