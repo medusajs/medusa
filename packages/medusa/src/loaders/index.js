@@ -36,9 +36,6 @@ export default async ({ expressApp }) => {
   await servicesLoader({ container })
   Logger.info("Services initialized")
 
-  await pluginsLoader({ container })
-  Logger.info("Plugins Intialized")
-
   await mongooseLoader()
   Logger.info("MongoDB Intialized")
 
