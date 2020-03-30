@@ -308,22 +308,6 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation.
    */
   async addOptionValue(variantId, optionId, optionValue) {
-    const products = await this.productService_.list({ variants: variantId })
-    if (!products.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Products with variant: ${variantId} was not found`
-      )
-    }
-
-    const product = products[0]
-    if (!product.options.find(o => o._id === optionId)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Associated product does not have option: ${optionId}`
-      )
-    }
-
     const variant = await this.retrieve(variantId)
 
     if (typeof optionValue !== "string" && typeof optionValue !== "number") {
@@ -350,22 +334,6 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation.
    */
   async deleteOptionValue(variantId, optionId) {
-    const products = await this.productService_.list({ variants: variantId })
-    if (!products.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Products with variant: ${variantId} was not found`
-      )
-    }
-
-    const product = products[0]
-    if (product.options.find(o => o._id === optionId)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Associated product has option with id: ${optionId}`
-      )
-    }
-
     return this.productVariantModel_.updateOne(
       { _id: variantId },
       { $pull: { options: { option_id: optionId } } }
