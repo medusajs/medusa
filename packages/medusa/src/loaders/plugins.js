@@ -10,7 +10,7 @@ import { plugins } from "../../medusa-config.js"
 /**
  * Registers all services in the services directory
  */
-export default ({ container }) => {
+export default ({ container, app }) => {
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
       return resolvePlugin(plugin)
@@ -25,7 +25,18 @@ export default ({ container }) => {
   resolved.forEach(pluginDetails => {
     registerServices(pluginDetails, container)
     registerModels(pluginDetails, container)
+    registerApi(pluginDetails, app)
   })
+}
+
+function registerApi(pluginDetails, app) {
+  try {
+    const routes = require(`${pluginDetails.resolve}/api`).default
+    app.use("/", routes())
+    return app
+  } catch (err) {
+    return app
+  }
 }
 
 /**
