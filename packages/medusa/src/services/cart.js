@@ -438,7 +438,8 @@ class CartService extends BaseService {
       return Promise.resolve()
     }
 
-    // find current discounts and partition them into shipping and other
+    // find the current discounts (if there)
+    // partition them into shipping and other
     const [shippingDisc, otherDisc] = _.partition(
       await Promise.all(
         cart.discounts.map(discount => this.discountService_.retrieve(discount))
@@ -476,13 +477,12 @@ class CartService extends BaseService {
     }
 
     // replace the current discount if there, else add the new one
-    if (otherDisc.length > 0) {
+    if (otherDisc.length === 0) {
       return this.cartModel_.updateOne(
         {
           _id: cart._id,
         },
         {
-          $pull: { discounts: otherDisc[0]._id },
           $push: { discounts: discount._id },
         }
       )
@@ -492,6 +492,7 @@ class CartService extends BaseService {
           _id: cart._id,
         },
         {
+          $pull: { discounts: otherDisc[0]._id },
           $push: { discounts: discount._id },
         }
       )

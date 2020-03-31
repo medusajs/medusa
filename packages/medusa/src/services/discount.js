@@ -260,9 +260,7 @@ class DiscountService extends BaseService {
       return subTotal
     }
 
-    const type = discount.discount_rule.type
-    const allocation = discount.discount_rule.allocation
-    const value = discount.discount_rule.value
+    const { type, allocation, value } = discount.discount_rule
 
     if (type === "percentage" && allocation === "total") {
       subTotal -= (subTotal / 100) * value
