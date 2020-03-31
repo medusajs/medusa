@@ -43,10 +43,19 @@ export const shippingOptions = {
     },
     provider_id: "test_shipper",
   },
+  validId: {
+    _id: IdMap.getId("validId"),
+  },
 }
 
 export const ShippingOptionServiceMock = {
   retrieve: jest.fn().mockImplementation(optionId => {
+    if (optionId === IdMap.getId("validId")) {
+      return Promise.resolve(shippingOptions.validId)
+    }
+    if (optionId === IdMap.getId("franceShipping")) {
+      return Promise.resolve(shippingOptions.franceShipping)
+    }
     if (optionId === IdMap.getId("freeShipping")) {
       return Promise.resolve(shippingOptions.freeShipping)
     }
