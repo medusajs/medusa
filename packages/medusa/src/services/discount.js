@@ -6,7 +6,12 @@ import _ from "lodash"
  * @implements BaseService
  */
 class DiscountService extends BaseService {
-  constructor({ discountModel, regionService, productVariantService }) {
+  constructor({
+    discountModel,
+    regionService,
+    productVariantService,
+    totalsService,
+  }) {
     super()
 
     /** @private @const {DiscountModel} */
@@ -14,6 +19,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {TotalsService} */
+    this.totalsService_ = totalsService
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
@@ -216,28 +224,15 @@ class DiscountService extends BaseService {
   }
 
   async calculateDiscountTotal(cart) {
-    let subTotal = 0
-    if (!cart.items) {
+    let subTotal = this.totalsService_.getSubTotal(cart)
+
+    if (!cart.discounts) {
       return subTotal
     }
-
-    cart.items.map(item => {
-      if (Array.isArray(item.content)) {
-        const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
-        subTotal += temp * item.quantity
-      } else {
-        subTotal +=
-          item.content.unit_price * item.content.quantity * item.quantity
-      }
-    })
 
     let discounts = await Promise.all(
       cart.discounts.map(discount => this.retrieve(discount))
     )
-
-    if (!discounts) {
-      return subTotal
-    }
 
     // filter out invalid discounts
     discounts = discounts.filter(d => {

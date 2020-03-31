@@ -1,12 +1,9 @@
 import DiscountService from "../discount"
-import {
-  DiscountModelMock,
-  discounts,
-  discountTestCart,
-} from "../../models/__mocks__/discount"
+import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
 import { IdMap } from "medusa-test-utils"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { carts } from "../__mocks__/cart"
+import { TotalsServiceMock } from "../__mocks__/totals"
 
 describe("AuthService", () => {
   describe("create", () => {
@@ -176,6 +173,7 @@ describe("AuthService", () => {
     const discountService = new DiscountService({
       discountModel: DiscountModelMock,
       productVariantService: ProductVariantServiceMock,
+      totalsService: TotalsServiceMock,
     })
 
     beforeEach(() => {

@@ -26,6 +26,5 @@ export default new mongoose.Schema({
   valid_for: { type: [String], default: [] },
   // Id's of the regions in which the discount rule is valid.
   regions: { type: [String], required: true },
-  user_limit: { type: Number },
-  total_limit: { type: Number },
+  usage_limit: { type: Number },
 })

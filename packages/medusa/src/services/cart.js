@@ -414,7 +414,6 @@ class CartService extends BaseService {
       }
     )
   }
-
   /**
    * Updates the cart's discounts.
    * If discount besides free shipping is already applied, this
