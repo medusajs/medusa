@@ -15,7 +15,6 @@ class CartService extends BaseService {
     productVariantService,
     regionService,
     lineItemService,
-    shippingOptionService,
     shippingProfileService,
   }) {
     super()
@@ -40,9 +39,6 @@ class CartService extends BaseService {
 
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
-
-    /** @private @const {ShippingOptionsService} */
-    this.shippingOptionService_ = shippingOptionService
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
@@ -572,6 +568,36 @@ class CartService extends BaseService {
     return option
   }
 
+  getSubtotal(cart) {
+    // Will be implemented by other branch
+    return 50
+  }
+
+  /**
+   * Checks if a given shipping option can be applied to the cart.
+   * @param {string} cartId - the id of the cart
+   * @param {ShippingOption} shippingOption - the shipping option to check
+   * @return {bool} true if the shipping option is valid
+   */
+  validateShippingOption_(cart, shippingOption) {
+    if (cart.region_id !== shippingOption.region_id) {
+      return false
+    }
+
+    const subtotal = this.getSubtotal(cart)
+    const requirementResults = shippingOption.requirements.map(requirement => {
+      if (requirement.type === "max_subtotal") {
+        return requirement.value > subtotal
+      } else if (requirement.type === "min_subtotal") {
+        return requirement.value < subtotal
+      }
+
+      return true // default to true
+    })
+
+    return requirementResults.every(r => r)
+  }
+
   /**
    * Adds the shipping method to the list of shipping methods associated with
    * the cart.
@@ -583,10 +609,7 @@ class CartService extends BaseService {
     const cart = await this.retrieve(cartId)
     const { shipping_methods } = cart
 
-    const isValid = await this.shippingOptionService_.validateCartOption(
-      method,
-      cart
-    )
+    const isValid = this.validateShippingOption_(cart, method)
 
     if (!isValid) {
       throw new MedusaError(
@@ -625,6 +648,29 @@ class CartService extends BaseService {
   }
 
   /**
+   * Returns a list of all the productIds in the cart.
+   * @param {Cart} cart - the cart to extract products from
+   * @return {[string]} a list of product ids
+   */
+  getProductsInCart_(cart) {
+    return cart.items.reduce((acc, next) => {
+      if (Array.isArray(next.content)) {
+        next.content.forEach(({ product }) => {
+          if (!acc.includes(product._id)) {
+            acc.push(product._id)
+          }
+        })
+      } else {
+        if (!acc.includes(next.content.product._id)) {
+          acc.push(next.content.product._id)
+        }
+      }
+
+      return acc
+    }, [])
+  }
+
+  /**
    * Finds all shipping options that are available to the cart and stores them
    * in shipping_options. The shipping options are retrieved from the shipping
    * option service.
@@ -634,11 +680,22 @@ class CartService extends BaseService {
   async setShippingOptions(cartId) {
     const cart = await this.retrieve(cartId)
 
-    // Get the shipping options available in the region
-    const cartOptions = await this.shippingProfileService_.fetchCartOptions(
-      cart
-    )
+    const products = this.getProductsInCart_(cart)
 
+    // Retrieve a list of the shipping profiles that cover the products
+    const shippingProfiles = await this.shippingProfileService_.list({
+      products: { $in: products },
+    })
+
+    // Concatenate the shipping options from each of the profiles and filter
+    // all options that are not available for the cart.
+    const cartOptions = shippingProfiles
+      .reduce((acc, next) => {
+        return acc.concat(next.shipping_options)
+      }, [])
+      .filter(option => this.validateShippingOption_(cart, option))
+
+    // Update the shipping_options
     return this.cartModel_.updateOne(
       {
         _id: cart._id,
