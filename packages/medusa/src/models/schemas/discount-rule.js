@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 export default new mongoose.Schema({
-  description: { type: String, required: true },
+  description: { type: String },
   // Fixed, percentage or free shipping is allowed as type.
   // The fixed discount type can be used as normal coupon code, giftcards,
   // store credits and possibly more.
@@ -23,9 +23,9 @@ export default new mongoose.Schema({
   // since the discount will work for the cart total. Else if item allocation
   // is chosen, then we will go through the cart and apply the coupon code to
   // all the valid product variants.
-  valid_for: { type: [String] },
+  valid_for: { type: [String], default: [] },
   // Id's of the regions in which the discount rule is valid.
-  regions: { type: [String], default: [] },
+  regions: { type: [String], required: true },
   user_limit: { type: Number },
   total_limit: { type: Number },
 })

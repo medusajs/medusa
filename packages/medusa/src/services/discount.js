@@ -1,5 +1,5 @@
 import { BaseService } from "medusa-interfaces"
-import { Validator } from "medusa-core-utils"
+import { Validator, MedusaError } from "medusa-core-utils"
 import _ from "lodash"
 
 /**
@@ -42,7 +42,7 @@ class DiscountService extends BaseService {
 
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
-      description: Validator.string().required(),
+      description: Validator.string(),
       type: Validator.string().required(),
       value: Validator.number()
         .positive()
@@ -72,7 +72,7 @@ class DiscountService extends BaseService {
     return value
   }
 
-  async createDiscount(discount) {
+  async create(discount) {
     await this.validateDiscountRule_(discount.discount_rule)
     return this.discountModel_.create(discount).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
@@ -97,12 +97,12 @@ class DiscountService extends BaseService {
   }
 
   async update(discountId, update) {
-    const discount = this.retrieve(discountId)
+    const discount = await this.retrieve(discountId)
 
-    if (update.discountType) {
+    if (update.discount_rule) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Use updateDiscountType to update the discount type"
+        "Use updateDiscountRule to update the discount rule"
       )
     }
 
@@ -113,50 +113,111 @@ class DiscountService extends BaseService {
     )
   }
 
-  async calculateItemDiscounts(discount, items, discountType) {
-    return items.forEach(({ content }) => {
-      return Promise.all(discount.valid_for.forEach(v => {
-        if (content.variant._id === v) {
-          const variantRegionPrice = await this.productVariantService_.getRegionPrice(
-            v._id,
-            cart.region_id
-          )
+  calculateDiscount_(lineItem, variant, variantPrice, value, discountType) {
+    if (discountType === "percentage") {
+      return {
+        lineItem,
+        variant,
+        amount: (variantPrice / 100) * value,
+      }
+    } else {
+      return {
+        lineItem,
+        variant,
+        amount: value >= variantPrice ? variantPrice : value,
+      }
+    }
+  }
 
-          if (discountType === "percentage") {
-            return {
-              v,
-              amount: (variantRegionPrice / 100) * v.d.value,
+  async calculateItemDiscounts(discount, cart) {
+    let discounts = []
+    for (const item of cart.items) {
+      discount.discount_rule.valid_for.forEach(async v => {
+        if (Array.isArray(item.content)) {
+          item.content.forEach(async c => {
+            if (c.variant._id === v) {
+              const variantRegionPrice = await this.productVariantService_.getRegionPrice(
+                v,
+                cart.region_id
+              )
+              discounts.push(
+                this.calculateDiscount_(
+                  item._id,
+                  v,
+                  variantRegionPrice,
+                  discount.discount_rule.value,
+                  discount.discount_rule.type
+                )
+              )
             }
-          } else {
-            return {
+          })
+        } else {
+          if (item.content.variant._id === v) {
+            const variantRegionPrice = await this.productVariantService_.getRegionPrice(
               v,
-              amount:
-                d.value >= variantRegionPrice ? variantRegionPrice : d.value,
-            }
+              cart.region_id
+            )
+
+            discounts.push(
+              this.calculateDiscount_(
+                item._id,
+                v,
+                variantRegionPrice,
+                discount.discount_rule.value,
+                discount.discount_rule.type
+              )
+            )
           }
         }
-      }))
-    })
+      })
+    }
+    return discounts
   }
 
   async calculateDiscountTotal(cart) {
-    let subTotal = _.sum(cart.items, ({ content }) => content.amount)
-    let discounts = await Promise.all(cart.discounts.map(discount => this.retrieve(discount._id)))
+    let subTotal = 0
+    if (!cart.items) {
+      return subTotal
+    }
+
+    cart.items.map(item => {
+      if (Array.isArray(item.content)) {
+        const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
+        subTotal += temp * item.quantity
+      } else {
+        subTotal +=
+          item.content.unit_price * item.content.quantity * item.quantity
+      }
+    })
+
+    let discounts = await Promise.all(
+      cart.discounts.map(discount => this.retrieve(discount))
+    )
+
+    if (!discounts) {
+      return subTotal
+    }
 
     // filter out invalid discounts
     discounts = discounts.filter(d => {
-      const parsedEnd = new Date(d.ends_at)
-      const now = new Date()
-      return (
-        parsedEnd.getTime() > now.getTime() &&
-        d.regions.includes(cart.region_id)
-      )
+      // !ends_at implies that the discount never expires
+      // therefore, we do the check following check
+      if (d.ends_at) {
+        const parsedEnd = new Date(d.ends_at)
+        const now = new Date()
+        return (
+          parsedEnd.getTime() > now.getTime() &&
+          d.discount_rule.regions.includes(cart.region_id)
+        )
+      } else {
+        return d.discount_rule.regions.includes(cart.region_id)
+      }
     })
 
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
     const discount = discounts.find(
-      ({ discount_rule }) => discount_rule !== "free_shipping"
+      ({ discount_rule }) => discount_rule.type !== "free_shipping"
     )
 
     if (!discount) {
@@ -175,23 +236,27 @@ class DiscountService extends BaseService {
     if (type === "percentage" && allocation === "item") {
       const itemPercentageDiscounts = await this.calculateItemDiscounts(
         discount,
-        cart.items,
+        cart,
         "percentage"
       )
-      const totalDiscount = _.sum(itemPercentageDiscounts, d => d.amount)
+      const totalDiscount = _.sumBy(itemPercentageDiscounts, d => d.amount)
       subTotal -= totalDiscount
       return subTotal
     }
 
     if (type === "fixed" && allocation === "total") {
-      subTotal -= subTotal - value
+      subTotal -= value
       return subTotal
     }
 
     if (type === "fixed" && allocation === "item") {
-      const itemFixedDiscounts = await this.calculateDiscountTotal(discount, cart.items, "fixed")
-      const totalDiscount = _.sum(itemFixedDiscounts, d => d.amount)
-      subTotal -= subTotal - totalDiscount
+      const itemFixedDiscounts = await this.calculateItemDiscounts(
+        discount,
+        cart,
+        "fixed"
+      )
+      const totalDiscount = _.sumBy(itemFixedDiscounts, d => d.amount)
+      subTotal -= totalDiscount
       return subTotal
     }
 
