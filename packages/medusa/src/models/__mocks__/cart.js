@@ -203,7 +203,7 @@ export const carts = {
               _id: IdMap.getId("eur-8-us-10"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              _id: IdMap.getId("product1"),
             },
             quantity: 1,
           },
@@ -213,7 +213,7 @@ export const carts = {
               _id: IdMap.getId("eur-10-us-12"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              _id: IdMap.getId("product1"),
             },
             quantity: 1,
           },
@@ -231,7 +231,7 @@ export const carts = {
             _id: IdMap.getId("eur-10-us-12"),
           },
           product: {
-            _id: IdMap.getId("product"),
+            _id: IdMap.getId("product2"),
           },
           quantity: 1,
         },
