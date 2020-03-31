@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import { IdMap } from "medusa-test-utils"
 import ShippingOptionService from "../shipping-option"
 import { ShippingOptionModelMock } from "../../models/__mocks__/shipping-option"
+import { RegionServiceMock, regions } from "../__mocks__/region"
 import {
   FulfillmentProviderServiceMock,
   DefaultProviderMock,
@@ -380,6 +381,124 @@ describe("ShippingOptionService", () => {
       }
 
       expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("create", () => {
+    const optionService = new ShippingOptionService({
+      shippingOptionModel: ShippingOptionModelMock,
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      regionService: RegionServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("creates a shipping option", async () => {
+      const option = {
+        name: "Test Option",
+        provider_id: "default_provider",
+        data: {
+          id: "new",
+        },
+        region_id: IdMap.getId("region-france"),
+        price: {
+          type: "flat_rate",
+          amount: 13,
+        },
+      }
+
+      await optionService.create(option)
+
+      expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("region-france")
+      )
+
+      expect(
+        FulfillmentProviderServiceMock.retrieveProvider
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        FulfillmentProviderServiceMock.retrieveProvider
+      ).toHaveBeenCalledWith("default_provider")
+
+      expect(DefaultProviderMock.validateOption).toHaveBeenCalledTimes(1)
+      expect(DefaultProviderMock.validateOption).toHaveBeenCalledWith({
+        id: "new",
+      })
+
+      expect(ShippingOptionModelMock.create).toHaveBeenCalledTimes(1)
+      expect(ShippingOptionModelMock.create).toHaveBeenCalledWith(option)
+    })
+
+    it("fails if region doesn't have fulfillment provider", async () => {
+      const option = {
+        name: "Test Option",
+        provider_id: "testshipper",
+        data: {
+          id: "new",
+        },
+        region_id: IdMap.getId("region-france"),
+        price: {
+          type: "flat_rate",
+          amount: 13,
+        },
+      }
+
+      try {
+        await optionService.create(option)
+      } catch (err) {
+        expect(err.message).toEqual(
+          "The fulfillment provider is not available in the provided region"
+        )
+      }
+    })
+
+    it("fails if fulfillment provider cannot validate", async () => {
+      const option = {
+        name: "Test Option",
+        provider_id: "default_provider",
+        data: {
+          id: "bno",
+        },
+        region_id: IdMap.getId("region-france"),
+        price: {
+          type: "flat_rate",
+          amount: 13,
+        },
+      }
+
+      try {
+        await optionService.create(option)
+      } catch (err) {
+        expect(err.message).toEqual(
+          "The fulfillment provider cannot validate the shipping option"
+        )
+      }
+    })
+
+    it("fails if price is not validated", async () => {
+      const option = {
+        name: "Test Option",
+        provider_id: "default_provider",
+        data: {
+          id: "new",
+        },
+        region_id: IdMap.getId("region-france"),
+        price: {
+          type: "nonon",
+          amount: 13,
+        },
+      }
+
+      try {
+        await optionService.create(option)
+      } catch (err) {
+        expect(err.message).toEqual(
+          "The price must be of type flat_rate or calculated"
+        )
+      }
     })
   })
 })
