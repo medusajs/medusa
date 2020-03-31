@@ -16,6 +16,7 @@ class CartService extends BaseService {
     regionService,
     lineItemService,
     shippingOptionService,
+    shippingProfileService,
   }) {
     super()
 
@@ -42,6 +43,9 @@ class CartService extends BaseService {
 
     /** @private @const {ShippingOptionsService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @const {ShippingProfileService} */
+    this.shippingProfileService_ = shippingProfileService
   }
 
   /**
@@ -631,7 +635,9 @@ class CartService extends BaseService {
     const cart = await this.retrieve(cartId)
 
     // Get the shipping options available in the region
-    const cartOptions = await this.shippingOptionService_.fetchCartOptions(cart)
+    const cartOptions = await this.shippingProfileService_.fetchCartOptions(
+      cart
+    )
 
     return this.cartModel_.updateOne(
       {

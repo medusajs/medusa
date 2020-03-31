@@ -8,6 +8,7 @@ import {
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
+import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 
@@ -937,6 +938,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       regionService: RegionServiceMock,
       shippingOptionService: ShippingOptionServiceMock,
+      shippingProfileService: ShippingProfileServiceMock,
     })
 
     describe("gets shipping options from the cart's regions", () => {
@@ -947,11 +949,11 @@ describe("CartService", () => {
 
       it("gets shipping options from region", () => {
         expect(
-          ShippingOptionServiceMock.fetchCartOptions
+          ShippingProfileServiceMock.fetchCartOptions
         ).toHaveBeenCalledTimes(1)
-        expect(ShippingOptionServiceMock.fetchCartOptions).toHaveBeenCalledWith(
-          carts.cartWithLine
-        )
+        expect(
+          ShippingProfileServiceMock.fetchCartOptions
+        ).toHaveBeenCalledWith(carts.cartWithLine)
       })
 
       it("updates cart", () => {

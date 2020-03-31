@@ -83,22 +83,22 @@ export const ShippingOptionServiceMock = {
       return Promise.resolve(false)
     }
   }),
-  fetchCartOptions: jest.fn().mockImplementation(cart => {
-    if (cart._id === IdMap.getId("cartWithLine")) {
-      return Promise.resolve([
-        {
-          _id: IdMap.getId("freeShipping"),
-          name: "Free Shipping",
-          region_id: IdMap.getId("testRegion"),
-          price: 10,
-          data: {
-            id: "fs",
-          },
-          provider_id: "test_shipper",
-        },
-      ])
-    }
-  }),
+  //fetchCartOptions: jest.fn().mockImplementation(cart => {
+  //  if (cart._id === IdMap.getId("cartWithLine")) {
+  //    return Promise.resolve([
+  //      {
+  //        _id: IdMap.getId("freeShipping"),
+  //        name: "Free Shipping",
+  //        region_id: IdMap.getId("testRegion"),
+  //        price: 10,
+  //        data: {
+  //          id: "fs",
+  //        },
+  //        provider_id: "test_shipper",
+  //      },
+  //    ])
+  //  }
+  //}),
 }
 
 const mock = jest.fn().mockImplementation(() => {
