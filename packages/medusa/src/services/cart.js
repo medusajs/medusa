@@ -16,6 +16,7 @@ class CartService extends BaseService {
     regionService,
     lineItemService,
     shippingOptionService,
+    discountService,
   }) {
     super()
 
@@ -42,6 +43,9 @@ class CartService extends BaseService {
 
     /** @private @const {ShippingOptionsService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @const {DiscountService} */
+    this.discountService_ = discountService
   }
 
   /**
@@ -409,6 +413,90 @@ class CartService extends BaseService {
         $set: { shipping_address: value },
       }
     )
+  }
+
+  /**
+   * Updates the cart's discounts.
+   * If discount besides free shipping is already applied, this
+   * will be overwritten
+   * Throws if discount regions does not include the cart region
+   * @param {string} cartId - the id of the cart to update
+   * @param {string} discountCode - the discount code
+   * @return {Promise} the result of the update operation
+   */
+  async applyDiscount(cartId, discountCode) {
+    const cart = await this.retrieve(cartId)
+    const discount = await this.discountService_.retrieveByCode(discountCode)
+    if (!discount.discount_rule.regions.includes(cart.region_id)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The discount is not available in current region"
+      )
+    }
+
+    // if discount is already there, we simply resolve
+    if (cart.discounts.includes(discount._id)) {
+      return Promise.resolve()
+    }
+
+    // find current discounts and partition them into shipping and other
+    const [shippingDisc, otherDisc] = _.partition(
+      await Promise.all(
+        cart.discounts.map(discount => this.discountService_.retrieve(discount))
+      ),
+      d => d.discount_rule.type === "free_shipping"
+    )
+
+    // if no shipping exists and the one to apply is shipping, we simply add it
+    // else we remove the current shipping and add the other one
+    if (
+      shippingDisc.length === 0 &&
+      discount.discount_rule.type === "free_shipping"
+    ) {
+      return this.cartModel_.updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $push: { discounts: discount._id },
+        }
+      )
+    } else if (
+      shippingDisc.length > 0 &&
+      discount.discount_rule.type === "free_shipping"
+    ) {
+      return this.cartModel_.updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $pull: { discounts: shippingDisc[0]._id },
+          $push: { discounts: discount._id },
+        }
+      )
+    }
+
+    // replace the current discount if there, else add the new one
+    if (otherDisc.length > 0) {
+      return this.cartModel_.updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $pull: { discounts: otherDisc[0]._id },
+          $push: { discounts: discount._id },
+        }
+      )
+    } else {
+      return this.cartModel_.updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $push: { discounts: discount._id },
+        }
+      )
+    }
   }
 
   /**

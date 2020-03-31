@@ -77,6 +77,28 @@ export const discounts = {
       regions: [IdMap.getId("region-france")],
     },
   },
+  freeShipping: {
+    _id: IdMap.getId("freeshipping"),
+    code: "FREESHIPPING",
+    discount_rule: {
+      type: "free_shipping",
+      allocation: "total",
+      value: 10,
+      valid_for: [],
+      regions: [IdMap.getId("region-france")],
+    },
+  },
+  USDiscount: {
+    _id: IdMap.getId("us-discount"),
+    code: "US10",
+    discount_rule: {
+      type: "free_shipping",
+      allocation: "total",
+      value: 10,
+      valid_for: [],
+      regions: [IdMap.getId("us")],
+    },
+  },
 }
 
 export const DiscountModelMock = {
@@ -103,6 +125,9 @@ export const DiscountModelMock = {
     }
     if (query._id === IdMap.getId("expired")) {
       return Promise.resolve(discounts.expiredDiscount)
+    }
+    if (query.code === "10%OFF") {
+      return Promise.resolve(discounts.total10Percent)
     }
     return Promise.resolve(undefined)
   }),

@@ -18,22 +18,24 @@ describe("AuthService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer create", async () => {
+    it("calls model layer create and normalizes code", async () => {
       await discountService.create({
         code: "test",
         discount_rule: {
           type: "percentage",
           allocation: "total",
           value: 20,
+          regions: [IdMap.getId("fr-cart")],
         },
       })
       expect(DiscountModelMock.create).toHaveBeenCalledTimes(1)
       expect(DiscountModelMock.create).toHaveBeenCalledWith({
-        code: "test",
+        code: "TEST",
         discount_rule: {
           type: "percentage",
           allocation: "total",
           value: 20,
+          regions: [IdMap.getId("fr-cart")],
         },
       })
     })

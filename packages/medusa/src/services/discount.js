@@ -6,19 +6,11 @@ import _ from "lodash"
  * @implements BaseService
  */
 class DiscountService extends BaseService {
-  constructor({
-    discountModel,
-    cartService,
-    regionService,
-    productVariantService,
-  }) {
+  constructor({ discountModel, regionService, productVariantService }) {
     super()
 
     /** @private @const {DiscountModel} */
     this.discountModel_ = discountModel
-
-    /** @private @const {CartService} */
-    this.cartService_ = cartService
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
@@ -49,7 +41,9 @@ class DiscountService extends BaseService {
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().items(Validator.string()),
-      regions: Validator.array().items(Validator.string()),
+      regions: Validator.array()
+        .items(Validator.string())
+        .required(),
       user_limit: Validator.number(),
       total_limit: Validator.number(),
     })
@@ -72,8 +66,13 @@ class DiscountService extends BaseService {
     return value
   }
 
+  normalizeDiscountCode_(discountCode) {
+    return discountCode.toUpperCase()
+  }
+
   async create(discount) {
     await this.validateDiscountRule_(discount.discount_rule)
+    discount.code = this.normalizeDiscountCode_(discount.code)
     return this.discountModel_.create(discount).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
@@ -96,6 +95,23 @@ class DiscountService extends BaseService {
     return discount
   }
 
+  async retrieveByCode(discountCode) {
+    discountCode = this.normalizeDiscountCode_(discountCode)
+    const discount = await this.discountModel_
+      .findOne({ code: discountCode })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!discount) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Discount with code ${discountCode} was not found`
+      )
+    }
+    return discount
+  }
+
   async update(discountId, update) {
     const discount = await this.retrieve(discountId)
 
@@ -111,6 +127,31 @@ class DiscountService extends BaseService {
       { $set: update },
       { runValidators: true }
     )
+  }
+  async updateDiscountRule(discountId, update) {
+    const discount = await this.retrieve(discountId)
+
+    const validatedDiscountRule = this.validateDiscountRule_(update)
+
+    return this.discountModel_.updateOne(
+      { _id: discount._id },
+      { $set: { discount_rule: validatedDiscountRule } },
+      { runValidators: true }
+    )
+  }
+
+  async delete(discountId) {
+    let discount
+    try {
+      discount = await this.retrieve(discountId)
+    } catch (error) {
+      // Delete is idempotent, but we return a promise to allow then-chaining
+      return Promise.resolve()
+    }
+
+    return this.discountModel_.deleteOne({ _id: discount._id }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
   }
 
   calculateDiscount_(lineItem, variant, variantPrice, value, discountType) {
