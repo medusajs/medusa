@@ -9,7 +9,11 @@ import { BaseService } from "medusa-interfaces"
  */
 class ShippingOptionService extends BaseService {
   /** @param { shippingOptionModel: (ShippingOptionModel) } */
-  constructor({ shippingOptionModel, fulfillmentProviderService }) {
+  constructor({
+    shippingOptionModel,
+    fulfillmentProviderService,
+    regionService,
+  }) {
     super()
 
     /** @private @const {ShippingProfileModel} */
@@ -17,6 +21,9 @@ class ShippingOptionService extends BaseService {
 
     /** @private @const {ProductService} */
     this.providerService_ = fulfillmentProviderService
+
+    /** @private @const {RegionService} */
+    this.regionService_ = regionService
   }
 
   /**
@@ -96,20 +103,51 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
+   * Creates a new shipping option.
+   * @param {ShippingOption} option - the shipping option to create
+   * @return {Promise} the result of the create operation
+   */
+  async create(option) {
+    const region = await this.regionService_.retrieve(option.region_id)
+
+    if (!region.fulfillment_providers.includes(option.provider_id)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The fulfillment provider is not available in the provided region"
+      )
+    }
+
+    const provider = await this.providerService_.retrieveProvider(
+      option.provider_id
+    )
+    option.price = await this.validatePrice_(option.price, option)
+
+    const isValid = await provider.validateOption(option.data)
+    if (!isValid) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The fulfillment provider cannot validate the shipping option"
+      )
+    }
+
+    return this.optionModel_.create(option).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+  }
+
+  /**
    * @typedef ShippingOptionPrice
    * @property {string} type - one of flat_rate, calculated
    * @property {number} value - the value if available
    */
 
   /**
-   * Sets the price of a shipping option
-   * @param {string} optionId - the option to set price for
-   * @param {ShippingOptionPrice} - the price to set
-   * @return {Promise} the update result
+   * Validates a shipping option price
+   * @param {ShippingOptionPrice} price - the price to validate
+   * @param {ShippingOption} option - the option to validate against
+   * @return {ShippingOptionPrice} the validated price
    */
-  async setPrice(optionId, price) {
-    const option = await this.retrieve(optionId)
-
+  async validatePrice_(price, option) {
     if (
       !price.type ||
       (price.type !== "flat_rate" && price.type !== "calculated")
@@ -140,12 +178,25 @@ class ShippingOptionService extends BaseService {
       )
     }
 
+    return price
+  }
+
+  /**
+   * Sets the price of a shipping option
+   * @param {string} optionId - the option to set price for
+   * @param {ShippingOptionPrice} - the price to set
+   * @return {Promise} the update result
+   */
+  async setPrice(optionId, price) {
+    const option = await this.retrieve(optionId)
+    const validatedPrice = await this.validatePrice_(price, option)
+
     return this.optionModel_.updateOne(
       {
         _id: option._id,
       },
       {
-        $set: { price },
+        $set: { price: validatedPrice },
       }
     )
   }

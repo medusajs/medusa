@@ -1,4 +1,11 @@
 export const DefaultProviderMock = {
+  validateOption: jest.fn().mockImplementation(data => {
+    if (data.id === "new") {
+      return Promise.resolve(true)
+    }
+
+    return Promise.resolve(false)
+  }),
   canCalculate: jest.fn().mockImplementation(data => {
     if (data.id === "bonjour") {
       return Promise.resolve(true)
