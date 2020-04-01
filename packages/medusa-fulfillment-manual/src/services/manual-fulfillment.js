@@ -1,6 +1,8 @@
 import { FulfillmentService } from "medusa-interfaces"
 
 class ManualFulfillmentService extends FulfillmentService { 
+  static identifier = "manual"
+
   constructor() {
     super()
   }
