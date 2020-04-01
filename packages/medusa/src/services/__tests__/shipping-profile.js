@@ -398,4 +398,38 @@ describe("ShippingProfileService", () => {
       expect(ShippingProfileModelMock.updateOne).not.toBeCalled()
     })
   })
+
+  describe("create", () => {
+    const profileService = new ShippingProfileService({
+      shippingProfileModel: ShippingProfileModelMock,
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates a new shipping profile", async () => {
+      await profileService.create({
+        name: "New Profile",
+      })
+
+      expect(ShippingProfileModelMock.create).toHaveBeenCalledTimes(1)
+      expect(ShippingProfileModelMock.create).toHaveBeenCalledWith({
+        name: "New Profile",
+      })
+    })
+
+    it("throws if trying to create with products", async () => {
+      try {
+        await profileService.create({
+          name: "New Profile",
+          products: ["144"],
+        })
+      } catch (err) {
+        expect(err.message).toEqual(
+          "Please add products and shipping_options after creating Shipping Profiles"
+        )
+      }
+    })
+  })
 })

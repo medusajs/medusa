@@ -1,14 +1,8 @@
-import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id } = req.params
-
   const schema = Validator.object().keys({
-    option_id: Validator.string().required(),
-    data: Validator.object()
-      .optional()
-      .default({}),
+    cart_id: Validator.string(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -18,13 +12,12 @@ export default async (req, res) => {
 
   try {
     const cartService = req.scope.resolve("cartService")
+    const shippingProfileService = req.scope.resolve("shippingProfileService")
 
-    await cartService.addShippingMethod(id, value.option_id, value.data)
+    const cart = await cartService.retrieve(value.cart_id)
+    const options = await shippingProfileService.fetchCartOptions(cart)
 
-    let cart = await cartService.retrieve(id)
-    cart = await cartService.decorate(cart)
-
-    res.status(200).json(cart)
+    res.status(200).json(options)
   } catch (err) {
     throw err
   }
