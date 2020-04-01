@@ -97,7 +97,7 @@ class UserService extends BaseService {
   create(user) {
     const validatedEmail = this.validateEmail_(user.email)
     user.email = validatedEmail
-    this.userModel_.create(user).catch(err => {
+    return this.userModel_.create(user).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
   }
