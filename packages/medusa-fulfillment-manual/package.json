@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-manual",
-  "version": "0.1.26",
+  "version": "0.1.27-alpha.0",
   "description": "A manual fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -28,6 +28,6 @@
   "dependencies": {
     "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
-    "medusa-interfaces": "^0.1.16"
+    "medusa-interfaces": "^0.1.27-alpha.0"
   }
 }
