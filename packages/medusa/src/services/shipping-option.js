@@ -13,6 +13,7 @@ class ShippingOptionService extends BaseService {
     shippingOptionModel,
     fulfillmentProviderService,
     regionService,
+    totalsService,
   }) {
     super()
 
@@ -24,6 +25,9 @@ class ShippingOptionService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {TotalsService} */
+    this.totalsService_ = totalsService
   }
 
   /**
@@ -97,6 +101,69 @@ class ShippingOptionService extends BaseService {
         MedusaError.Types.NOT_FOUND,
         `Shipping Option with ${optionId} was not found`
       )
+    }
+
+    return option
+  }
+
+  /**
+   * Checks if the provided data for a fulfillment is valid.
+   * @param {string} optionId - the id of the option.
+   * @param {FulfillmentData} data - the data to validate
+   * @param {Cart} cart - the cart to validate against
+   * @return {FulfillmentData} the validated fulfillment data
+   */
+  async validateFulfillmentData(optionId, data, cart) {
+    const option = await this.retrieve(optionId)
+    const provider = await this.providerService_.retrieveProvider(
+      option.provider_id
+    )
+    return provider.validateFulfillmentData(data, cart)
+  }
+
+  /**
+   * Checks if a given option id is a valid option for a cart. If it is the
+   * option is returned with the correct price. Throws when region_ids do not
+   * match, or when the shipping option requirements are not satisfied.
+   * @param {string} optionId - the id of the option to check
+   * @param {Cart} cart - the cart object to check against
+   * @return {ShippingOption} the validated shipping option
+   */
+  async validateCartOption(optionId, cart) {
+    let option = await this.retrieve(optionId)
+
+    if (cart.region_id !== option.region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The shipping option is not available in the cart's region"
+      )
+    }
+
+    const subtotal = this.totalsService_.getSubtotal(cart)
+    const requirementResults = option.requirements.map(requirement => {
+      if (requirement.type === "max_subtotal") {
+        return requirement.value > subtotal
+      } else if (requirement.type === "min_subtotal") {
+        return requirement.value < subtotal
+      }
+
+      return true // default to true
+    })
+
+    if (!requirementResults.every(r => r)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The Cart deos not satisfy the shipping option's requirements"
+      )
+    }
+
+    if (option.price && option.price.type === "calculated") {
+      const provider = this.providerService_.retrieveProvider(
+        option.provider_id
+      )
+      option.price = await provider.calculatePrice(option.data, cart)
+    } else {
+      option.price = option.price.amount
     }
 
     return option
