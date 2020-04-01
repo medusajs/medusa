@@ -24,4 +24,4 @@ class FulfillmentProviderService {
   }
 }
 
-export default FilfillmentProviderService
+export default FulfillmentProviderService
