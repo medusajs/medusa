@@ -15,6 +15,7 @@ class CartService extends BaseService {
     productVariantService,
     regionService,
     lineItemService,
+    shippingOptionService,
     shippingProfileService,
   }) {
     super()
@@ -42,6 +43,9 @@ class CartService extends BaseService {
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
+
+    /** @private @const {ShippingOptionService} */
+    this.shippingOptionService_ = shippingOptionService
   }
 
   /**
@@ -548,83 +552,49 @@ class CartService extends BaseService {
   }
 
   /**
-   * Retrieves one of the open shipping options for the cart.
-   * @param {string} cartId - the id of the cart to retrieve the option from
-   * @param {string} optionId - the id of the option to retrieve
-   * @return {ShippingOption} the option that was found
-   */
-  async retrieveShippingOption(cartId, optionId) {
-    const cart = await this.retrieve(cartId)
-
-    const option = cart.shipping_options.find(({ _id }) => _id === optionId)
-
-    if (!option) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `The option id doesn't match any available shipping options`
-      )
-    }
-
-    return option
-  }
-
-  getSubtotal(cart) {
-    // Will be implemented by other branch
-    return 50
-  }
-
-  /**
-   * Checks if a given shipping option can be applied to the cart.
-   * @param {string} cartId - the id of the cart
-   * @param {ShippingOption} shippingOption - the shipping option to check
-   * @return {bool} true if the shipping option is valid
-   */
-  validateShippingOption_(cart, shippingOption) {
-    if (cart.region_id !== shippingOption.region_id) {
-      return false
-    }
-
-    const subtotal = this.getSubtotal(cart)
-    const requirementResults = shippingOption.requirements.map(requirement => {
-      if (requirement.type === "max_subtotal") {
-        return requirement.value > subtotal
-      } else if (requirement.type === "min_subtotal") {
-        return requirement.value < subtotal
-      }
-
-      return true // default to true
-    })
-
-    return requirementResults.every(r => r)
-  }
-
-  /**
    * Adds the shipping method to the list of shipping methods associated with
-   * the cart.
+   * the cart. Shipping Methods are the ways that an order is shipped, whereas a
+   * Shipping Option is a possible way to ship an order. Shipping Methods may
+   * also have additional details in the data field such as an id for a package
+   * shop.
    * @param {string} cartId - the id of the cart to add shipping method to
-   * @param {ShippingOption} method - the shipping method to add to the cart
+   * @param {ShippingMethod} method - the shipping method to add to the cart
    * @return {Promise} the result of the update operation
    */
-  async addShippingMethod(cartId, method) {
+  async addShippingMethod(cartId, optionId, data) {
     const cart = await this.retrieve(cartId)
     const { shipping_methods } = cart
 
-    const isValid = this.validateShippingOption_(cart, method)
+    const option = await this.shippingOptionService_.validateCartOption(
+      optionId,
+      cart
+    )
 
-    if (!isValid) {
+    option.data = await this.shippingOptionService_.validateFulfillmentData(
+      optionId,
+      data,
+      cart
+    )
+
+    const profile = await this.shippingProfileService_.list({
+      shipping_options: option._id,
+    })
+    if (profile.length !== 1) {
       throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "The selected shipping method cannot be applied to the cart"
+        MedusaError.Types.INVALID_DATA,
+        "Shipping Method must belong to a shipping profile"
       )
     }
+
+    option.profile_id = profile[0]._id
 
     // Go through all existing selected shipping methods and update the one
     // that has the same profile as the selected shipping method.
     let exists = false
     const newMethods = shipping_methods.map(sm => {
-      if (sm.profile_id === method.profile_id) {
+      if (sm.profile_id === option.profile_id) {
         exists = true
-        return method
+        return option
       }
 
       return sm
@@ -634,7 +604,7 @@ class CartService extends BaseService {
     // shipping method the exists flag will be false. Therefore we push the new
     // method.
     if (!exists) {
-      newMethods.push(method)
+      newMethods.push(option)
     }
 
     return this.cartModel_.updateOne(
@@ -643,65 +613,6 @@ class CartService extends BaseService {
       },
       {
         $set: { shipping_methods: newMethods },
-      }
-    )
-  }
-
-  /**
-   * Returns a list of all the productIds in the cart.
-   * @param {Cart} cart - the cart to extract products from
-   * @return {[string]} a list of product ids
-   */
-  getProductsInCart_(cart) {
-    return cart.items.reduce((acc, next) => {
-      if (Array.isArray(next.content)) {
-        next.content.forEach(({ product }) => {
-          if (!acc.includes(product._id)) {
-            acc.push(product._id)
-          }
-        })
-      } else {
-        if (!acc.includes(next.content.product._id)) {
-          acc.push(next.content.product._id)
-        }
-      }
-
-      return acc
-    }, [])
-  }
-
-  /**
-   * Finds all shipping options that are available to the cart and stores them
-   * in shipping_options. The shipping options are retrieved from the shipping
-   * option service.
-   * @param {string} cartId - the id of the cart
-   * @return {Promse} the result of the update operation
-   */
-  async setShippingOptions(cartId) {
-    const cart = await this.retrieve(cartId)
-
-    const products = this.getProductsInCart_(cart)
-
-    // Retrieve a list of the shipping profiles that cover the products
-    const shippingProfiles = await this.shippingProfileService_.list({
-      products: { $in: products },
-    })
-
-    // Concatenate the shipping options from each of the profiles and filter
-    // all options that are not available for the cart.
-    const cartOptions = shippingProfiles
-      .reduce((acc, next) => {
-        return acc.concat(next.shipping_options)
-      }, [])
-      .filter(option => this.validateShippingOption_(cart, option))
-
-    // Update the shipping_options
-    return this.cartModel_.updateOne(
-      {
-        _id: cart._id,
-      },
-      {
-        $set: { shipping_options: cartOptions },
       }
     )
   }
