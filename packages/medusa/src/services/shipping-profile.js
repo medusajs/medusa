@@ -73,6 +73,21 @@ class ShippingProfileService extends BaseService {
   }
 
   /**
+   * Creates a new shipping profile.
+   * @param {ShippingProfile} profile - the shipping profile to create from
+   * @return {Promise} the result of the create operation
+   */
+  create(profile) {
+    if (profile.products || profile.shipping_options) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Please add products and shipping_options after creating Shipping Profiles"
+      )
+    }
+    return this.profileModel_.create(profile)
+  }
+
+  /**
    * Updates a profile. Metadata updates and product updates should use
    * dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
    * will throw errors if metadata or product updates are attempted.

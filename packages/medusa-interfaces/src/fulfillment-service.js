@@ -11,6 +11,9 @@ class BaseFulfillmentService extends BaseService {
     super()
   }
 
+  getFulfillmentOptions() {
+  }
+
   validateFulfillmentData(data, cart) {
     throw Error("validateFulfillmentData must be overridden by the child class")
   }
@@ -19,7 +22,7 @@ class BaseFulfillmentService extends BaseService {
     throw Error("validateOption must be overridden by the child class")
   }
 
-  canCalculate() {
+  canCalculate(data) {
     throw Error("canCalculate must be overridden by the child class")
   }
 
