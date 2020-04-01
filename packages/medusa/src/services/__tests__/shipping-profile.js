@@ -344,7 +344,7 @@ describe("ShippingProfileService", () => {
     })
   })
 
-  describe("deleteShippingOption", () => {
+  describe("removeShippingOption", () => {
     const profileService = new ShippingProfileService({
       shippingProfileModel: ShippingProfileModelMock,
     })
@@ -364,15 +364,6 @@ describe("ShippingProfileService", () => {
         { _id: IdMap.getId("validId") },
         { $pull: { shipping_options: IdMap.getId("validId") } }
       )
-    })
-
-    it("if option does not exist, do nothing", async () => {
-      await profileService.removeShippingOption(
-        IdMap.getId("validId"),
-        IdMap.getId("option_id")
-      )
-
-      expect(ShippingProfileModelMock.updateOne).not.toBeCalled()
     })
   })
 

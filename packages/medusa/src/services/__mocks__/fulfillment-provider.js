@@ -13,6 +13,12 @@ export const DefaultProviderMock = {
 
     return Promise.resolve(false)
   }),
+  calculatePrice: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
+  createOrder: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
 }
 
 export const FulfillmentProviderServiceMock = {

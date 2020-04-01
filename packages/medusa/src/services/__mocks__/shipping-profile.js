@@ -11,6 +11,15 @@ export const profiles = {
 
 export const ShippingProfileServiceMock = {
   list: jest.fn().mockImplementation(selector => {
+    if (selector.shipping_options === IdMap.getId("fail")) {
+      return Promise.resolve([])
+    }
+    if (selector.shipping_options === IdMap.getId("freeShipping")) {
+      return Promise.resolve([{ _id: "default_profile" }])
+    }
+    if (selector.shipping_options === IdMap.getId("additional")) {
+      return Promise.resolve([{ _id: "additional_profile" }])
+    }
     if (
       selector.products &&
       selector.products.$in.includes(IdMap.getId("product"))
