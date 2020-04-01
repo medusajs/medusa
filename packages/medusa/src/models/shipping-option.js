@@ -10,7 +10,6 @@ class ShippingOptionModel extends BaseModel {
     name: { type: String, required: true },
     region_id: { type: String, required: true },
     provider_id: { type: String, required: true },
-    profile_id: { type: String },
     data: { type: mongoose.Schema.Types.Mixed, default: {} },
     price: { type: ShippingOptionPrice, required: true },
     requirements: { type: [ShippingOptionRequirement], default: [] },
