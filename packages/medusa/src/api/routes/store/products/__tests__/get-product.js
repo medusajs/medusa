@@ -4,7 +4,7 @@ import getProduct from "../get-product"
 describe("Get product by id", () => {
   const testId = `${mongoose.Types.ObjectId("56cb91bdc3464f14678934ca")}`
   const productServiceMock = {
-    getProduct: jest.fn().mockImplementation(id => {
+    retrieve: jest.fn().mockImplementation(id => {
       if (id === testId) {
         return Promise.resolve({ _id: id, title: "test" })
       }
@@ -42,8 +42,8 @@ describe("Get product by id", () => {
     })
 
     it("calls get product from productSerice", () => {
-      expect(productServiceMock.getProduct).toHaveBeenCalledTimes(1)
-      expect(productServiceMock.getProduct).toHaveBeenCalledWith(testId)
+      expect(productServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(productServiceMock.retrieve).toHaveBeenCalledWith(testId)
     })
 
     it("calls res.json", () => {

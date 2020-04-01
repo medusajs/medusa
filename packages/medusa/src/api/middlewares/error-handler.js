@@ -7,8 +7,12 @@ export default () => {
 
     let statusCode = 500
     switch (err.name) {
+      case MedusaError.Types.NOT_ALLOWED:
       case MedusaError.Types.INVALID_DATA:
         statusCode = 400
+        break
+      case MedusaError.Types.NOT_FOUND:
+        statusCode = 404
         break
       case MedusaError.Types.DB_ERROR:
         statusCode = 500

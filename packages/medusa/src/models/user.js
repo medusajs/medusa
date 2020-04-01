@@ -2,6 +2,7 @@
  * models/user.js
  *
  ******************************************************************************/
+import mongoose from "mongoose"
 import { BaseModel } from "medusa-interfaces"
 
 class UserModel extends BaseModel {
