@@ -177,6 +177,12 @@ class ShippingProfileService extends BaseService {
       return Promise.resolve()
     }
 
+    // If the shipping method exists in a different profile remove it
+    const profiles = await this.list({ shipping_options: shippingOption._id })
+    if (profiles.length > 0) {
+      await this.removeShippingOption(profiles[0]._id, shippingOption._id)
+    }
+
     // Everything went well add the shipping option
     return this.profileModel_.updateOne(
       { _id: profileId },
@@ -192,11 +198,6 @@ class ShippingProfileService extends BaseService {
    */
   async removeShippingOption(profileId, optionId) {
     const profile = await this.retrieve(profileId)
-
-    if (!profile.shipping_options.find(o => o === optionId)) {
-      // Remove is idempotent
-      return Promise.resolve()
-    }
 
     return this.profileModel_.updateOne(
       { _id: profileId },
@@ -250,6 +251,56 @@ class ShippingProfileService extends BaseService {
     }
 
     return decorated
+  }
+
+  /**
+   * Returns a list of all the productIds in the cart.
+   * @param {Cart} cart - the cart to extract products from
+   * @return {[string]} a list of product ids
+   */
+  getProductsInCart_(cart) {
+    return cart.items.reduce((acc, next) => {
+      if (Array.isArray(next.content)) {
+        next.content.forEach(({ product }) => {
+          if (!acc.includes(product._id)) {
+            acc.push(product._id)
+          }
+        })
+      } else {
+        if (!acc.includes(next.content.product._id)) {
+          acc.push(next.content.product._id)
+        }
+      }
+
+      return acc
+    }, [])
+  }
+
+  /**
+   * Finds all the shipping profiles that cover the products in a cart, and
+   * validates all options that are available for the cart.
+   * @param {Cart} cart - the cart object to find shipping options for
+   * @return {[ShippingOptions]} a list of the available shipping options
+   */
+  async fetchCartOptions(cart) {
+    const products = this.getProductsInCart_(cart)
+    const profiles = await this.list({ products: { $in: products } })
+    const optionIds = profiles.reduce((acc, next) =>
+      acc.concat(next.shipping_options)
+    )
+
+    const options = await Promise.all(
+      optionIds.map(oId => {
+        return this.shippingOptionService_
+          .validateCartOption(oId, cart)
+          .catch(err => {
+            // If validation failed we skip the option
+            return null
+          })
+      })
+    )
+
+    return options.filter(o => !!o)
   }
 
   /**

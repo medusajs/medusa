@@ -933,101 +933,6 @@ describe("CartService", () => {
     })
   })
 
-  describe("setShippingOptions", () => {
-    const cartService = new CartService({
-      cartModel: CartModelMock,
-      regionService: RegionServiceMock,
-      shippingOptionService: ShippingOptionServiceMock,
-      shippingProfileService: ShippingProfileServiceMock,
-    })
-
-    describe("gets shipping options", () => {
-      beforeAll(async () => {
-        jest.clearAllMocks()
-        await cartService.setShippingOptions(IdMap.getId("cartWithLine"))
-      })
-
-      it("gets shipping options from region", () => {
-        expect(ShippingProfileServiceMock.list).toHaveBeenCalledTimes(1)
-        expect(ShippingProfileServiceMock.list).toHaveBeenCalledWith({
-          products: { $in: [IdMap.getId("product")] },
-        })
-      })
-
-      it("updates cart", () => {
-        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-          {
-            _id: IdMap.getId("cartWithLine"),
-          },
-          {
-            $set: {
-              shipping_options: [
-                {
-                  _id: IdMap.getId("freeShipping"),
-                  name: "Free Shipping",
-                  region_id: IdMap.getId("testRegion"),
-                  price: {
-                    type: "flat_rate",
-                    amount: 10,
-                  },
-                  requirements: [{ type: "max_subtotal", value: 1000 }],
-                  data: {
-                    id: "fs",
-                  },
-                  provider_id: "test_shipper",
-                },
-              ],
-            },
-          }
-        )
-      })
-    })
-
-    describe("get shipping options multiple products", () => {
-      beforeAll(async () => {
-        jest.clearAllMocks()
-        await cartService.setShippingOptions(IdMap.getId("fr-cart"))
-      })
-
-      it("gets shipping options from region", () => {
-        expect(ShippingProfileServiceMock.list).toHaveBeenCalledTimes(1)
-        expect(ShippingProfileServiceMock.list).toHaveBeenCalledWith({
-          products: { $in: [IdMap.getId("product1"), IdMap.getId("product2")] },
-        })
-      })
-
-      it("updates cart", () => {
-        expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-        expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-          {
-            _id: IdMap.getId("fr-cart"),
-          },
-          {
-            $set: {
-              shipping_options: [
-                {
-                  _id: IdMap.getId("freeShipping"),
-                  name: "Free French Shipping",
-                  region_id: IdMap.getId("region-france"),
-                  price: {
-                    type: "flat_rate",
-                    amount: 10,
-                  },
-                  requirements: [{ type: "max_subtotal", value: 1000 }],
-                  data: {
-                    id: "fs",
-                  },
-                  provider_id: "test_shipper",
-                },
-              ],
-            },
-          }
-        )
-      })
-    })
-  })
-
   describe("retrievePaymentSession", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
@@ -1090,31 +995,49 @@ describe("CartService", () => {
   describe("addShippingMethod", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
+      shippingProfileService: ShippingProfileServiceMock,
+      shippingOptionService: ShippingOptionServiceMock,
     })
 
     describe("successfully adds the shipping method", () => {
-      const method = {
-        _id: IdMap.getId("freeShipping"),
-        provider_id: "test_shipper",
-        profile_id: "default_profile",
-        price: 20,
-        region_id: IdMap.getId("testRegion"),
-        data: {
-          id: "testshipperid",
-        },
-        requirements: [
-          {
-            type: "min_subtotal",
-            value: 10,
-          },
-        ],
-        products: [IdMap.getId("product")],
+      const data = {
+        id: "testshipperid",
+        extra: "yes",
       }
 
       beforeAll(async () => {
         jest.clearAllMocks()
         const cartId = IdMap.getId("cartWithPaySessions")
-        await cartService.addShippingMethod(cartId, method)
+        await cartService.addShippingMethod(
+          cartId,
+          IdMap.getId("freeShipping"),
+          data
+        )
+      })
+
+      it("validates option", () => {
+        expect(
+          ShippingOptionServiceMock.validateCartOption
+        ).toHaveBeenCalledWith(
+          IdMap.getId("freeShipping"),
+          carts.cartWithPaySessions
+        )
+      })
+
+      it("validates fulfillment data", () => {
+        expect(
+          ShippingOptionServiceMock.validateFulfillmentData
+        ).toHaveBeenCalledWith(
+          IdMap.getId("freeShipping"),
+          data,
+          carts.cartWithPaySessions
+        )
+      })
+
+      it("gets shipping profile", () => {
+        expect(ShippingProfileServiceMock.list).toHaveBeenCalledWith({
+          shipping_options: IdMap.getId("freeShipping"),
+        })
       })
 
       it("updates cart", () => {
@@ -1124,35 +1047,35 @@ describe("CartService", () => {
             _id: IdMap.getId("cartWithPaySessions"),
           },
           {
-            $set: { shipping_methods: [method] },
+            $set: {
+              shipping_methods: [
+                {
+                  _id: IdMap.getId("freeShipping"),
+                  price: 0,
+                  provider_id: "default_provider",
+                  profile_id: "default_profile",
+                  data,
+                },
+              ],
+            },
           }
         )
       })
     })
 
     describe("successfully overrides existing profile shipping method", () => {
-      const method = {
-        _id: IdMap.getId("freeShipping"),
-        provider_id: "test_shipper",
-        profile_id: "default_profile",
-        price: 20,
-        region_id: IdMap.getId("region-france"),
-        requirements: [
-          {
-            type: "min_subtotal",
-            value: 10,
-          },
-        ],
-        data: {
-          id: "testshipperid",
-        },
-        products: [IdMap.getId("product")],
+      const data = {
+        id: "testshipperid",
       }
 
       beforeAll(async () => {
         jest.clearAllMocks()
         const cartId = IdMap.getId("fr-cart")
-        await cartService.addShippingMethod(cartId, method)
+        await cartService.addShippingMethod(
+          cartId,
+          IdMap.getId("freeShipping"),
+          data
+        )
       })
 
       it("updates cart", () => {
@@ -1162,34 +1085,37 @@ describe("CartService", () => {
             _id: IdMap.getId("fr-cart"),
           },
           {
-            $set: { shipping_methods: [method] },
+            $set: {
+              shipping_methods: [
+                {
+                  _id: IdMap.getId("freeShipping"),
+                  price: 0,
+                  provider_id: "default_provider",
+                  profile_id: "default_profile",
+                  data: {
+                    id: "testshipperid",
+                  },
+                },
+              ],
+            },
           }
         )
       })
     })
 
     describe("successfully adds additional shipping method", () => {
-      const method = {
-        _id: IdMap.getId("freeShipping"),
-        provider_id: "test_shipper",
-        price: 20,
-        region_id: IdMap.getId("region-france"),
-        requirements: [
-          {
-            type: "min_subtotal",
-            value: 10,
-          },
-        ],
-        data: {
-          id: "testshipperid",
-        },
-        products: [IdMap.getId("product")],
+      const data = {
+        id: "additional_shipper_id",
       }
 
       beforeAll(async () => {
         jest.clearAllMocks()
         const cartId = IdMap.getId("fr-cart")
-        await cartService.addShippingMethod(cartId, method)
+        await cartService.addShippingMethod(
+          cartId,
+          IdMap.getId("additional"),
+          data
+        )
       })
 
       it("updates cart", () => {
@@ -1205,7 +1131,13 @@ describe("CartService", () => {
                   _id: IdMap.getId("freeShipping"),
                   profile_id: "default_profile",
                 },
-                method,
+                {
+                  _id: IdMap.getId("additional"),
+                  price: 0,
+                  profile_id: "additional_profile",
+                  provider_id: "default_provider",
+                  data,
+                },
               ],
             },
           }
@@ -1213,23 +1145,13 @@ describe("CartService", () => {
       })
     })
 
-    describe("throws error on no availability", () => {
-      const method = {
-        _id: IdMap.getId("fail"),
-        requirements: [
-          {
-            type: "min_subtotal",
-            value: 400,
-          },
-        ],
-      }
-
+    describe("throws if no profile", () => {
       let res
       beforeAll(async () => {
         jest.clearAllMocks()
         const cartId = IdMap.getId("fr-cart")
         try {
-          await cartService.addShippingMethod(cartId, method)
+          await cartService.addShippingMethod(cartId, IdMap.getId("fail"), {})
         } catch (err) {
           res = err
         }
@@ -1237,63 +1159,7 @@ describe("CartService", () => {
 
       it("throw error", () => {
         expect(res.message).toEqual(
-          "The selected shipping method cannot be applied to the cart"
-        )
-      })
-    })
-  })
-
-  describe("retrieveShippingOption", () => {
-    const cartService = new CartService({
-      cartModel: CartModelMock,
-    })
-
-    let res
-
-    describe("it retrieves the correct payment session", () => {
-      beforeAll(async () => {
-        jest.clearAllMocks()
-        res = await cartService.retrieveShippingOption(
-          IdMap.getId("fr-cart"),
-          IdMap.getId("freeShipping")
-        )
-      })
-
-      it("retrieves the cart", () => {
-        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(CartModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("fr-cart"),
-        })
-      })
-
-      it("finds the correct payment session", () => {
-        expect(res._id).toEqual(IdMap.getId("freeShipping"))
-      })
-    })
-
-    describe("it fails when provider doesn't match open session", () => {
-      beforeAll(async () => {
-        jest.clearAllMocks()
-        try {
-          await cartService.retrieveShippingOption(
-            IdMap.getId("fr-cart"),
-            "nono"
-          )
-        } catch (err) {
-          res = err
-        }
-      })
-
-      it("retrieves the cart", () => {
-        expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(CartModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("fr-cart"),
-        })
-      })
-
-      it("throws invalid data errro", () => {
-        expect(res.message).toEqual(
-          "The option id doesn't match any available shipping options"
+          "Shipping Method must belong to a shipping profile"
         )
       })
     })

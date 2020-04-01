@@ -14,6 +14,7 @@ export const ShippingProfileModelMock = {
   updateOne: jest.fn().mockImplementation((query, update) => {
     return Promise.resolve()
   }),
+  find: jest.fn().mockReturnValue(Promise.resolve([])),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
     if (query._id === IdMap.getId("validId")) {
