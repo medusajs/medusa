@@ -77,7 +77,7 @@ class ShippingProfileService extends BaseService {
    * @param {ShippingProfile} profile - the shipping profile to create from
    * @return {Promise} the result of the create operation
    */
-  create(profile) {
+  async create(profile) {
     if (profile.products || profile.shipping_options) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

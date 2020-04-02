@@ -420,16 +420,14 @@ describe("ShippingProfileService", () => {
     })
 
     it("throws if trying to create with products", async () => {
-      try {
-        await profileService.create({
+      await expect(
+        profileService.create({
           name: "New Profile",
           products: ["144"],
         })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Please add products and shipping_options after creating Shipping Profiles"
-        )
-      }
+      ).rejects.toThrow(
+        "Please add products and shipping_options after creating Shipping Profiles"
+      )
     })
   })
 })

@@ -61,7 +61,13 @@ export const ShippingOptionServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  setPrice: jest.fn().mockReturnValue(Promise.resolve()),
+  setRequirements: jest.fn().mockReturnValue(Promise.resolve()),
+  update: jest.fn().mockReturnValue(Promise.resolve()),
   list: jest.fn().mockImplementation(data => {
+    if (!data) {
+      return Promise.resolve()
+    }
     if (data.region_id === IdMap.getId("region-france")) {
       return Promise.resolve([shippingOptions.franceShipping])
     }
@@ -71,6 +77,9 @@ export const ShippingOptionServiceMock = {
         shippingOptions.expensiveShipping,
       ])
     }
+  }),
+  create: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
   }),
   validateFulfillmentData: jest
     .fn()
@@ -98,6 +107,7 @@ export const ShippingOptionServiceMock = {
       })
     }
   }),
+  delete: jest.fn().mockReturnValue(Promise.resolve()),
 }
 
 const mock = jest.fn().mockImplementation(() => {
