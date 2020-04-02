@@ -18,7 +18,7 @@ export const options = {
     ],
     price: {
       type: "flat_rate",
-      value: 10,
+      amount: 10,
     },
   },
   noCalc: {
@@ -38,7 +38,7 @@ export const options = {
     ],
     price: {
       type: "flat_rate",
-      value: 10,
+      amount: 10,
     },
   },
 }
