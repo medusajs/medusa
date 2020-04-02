@@ -4,6 +4,7 @@ import authRoutes from "./auth"
 import productRoutes from "./products"
 import productVariantRoutes from "./product-variants"
 import shippingOptionRoutes from "./shipping-options"
+import shippingProfileRoutes from "./shipping-profiles"
 
 const route = Router()
 
@@ -18,6 +19,7 @@ export default app => {
 
   productRoutes(route)
   shippingOptionRoutes(route)
+  shippingProfileRoutes(route)
   // productVariantRoutes(route)
 
   return app
