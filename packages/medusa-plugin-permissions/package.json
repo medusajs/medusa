@@ -1,5 +1,5 @@
 {
-  "name": "medusa-plugin-permission",
+  "name": "medusa-plugin-permissions",
   "version": "1.0.0",
   "description": "Role permission for Medusa core",
   "main": "dist/index.js",
