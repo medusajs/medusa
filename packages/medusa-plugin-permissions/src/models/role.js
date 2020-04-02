@@ -1,7 +1,3 @@
-/*******************************************************************************
- * models/permission.js
- *
- ******************************************************************************/
 import { BaseModel } from "medusa-interfaces"
 
 import PermissionSchema from "./schemas/permission"
