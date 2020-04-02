@@ -10,7 +10,19 @@ export const profiles = {
 }
 
 export const ShippingProfileServiceMock = {
+  update: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
+  create: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
+  retrieve: jest.fn().mockImplementation(profileId => {
+    return Promise.resolve()
+  }),
   list: jest.fn().mockImplementation(selector => {
+    if (!selector) {
+      return Promise.resolve([])
+    }
     if (selector.shipping_options === IdMap.getId("fail")) {
       return Promise.resolve([])
     }
@@ -96,6 +108,10 @@ export const ShippingProfileServiceMock = {
       ])
     }
   }),
+  addShippingOption: jest.fn().mockImplementation(() => Promise.resolve()),
+  removeShippingOption: jest.fn().mockImplementation(() => Promise.resolve()),
+  addProduct: jest.fn().mockImplementation(() => Promise.resolve()),
+  removeProduct: jest.fn().mockImplementation(() => Promise.resolve()),
   fetchCartOptions: jest.fn().mockImplementation(() => {
     return Promise.resolve([{ _id: IdMap.getId("cartShippingOption") }])
   }),
