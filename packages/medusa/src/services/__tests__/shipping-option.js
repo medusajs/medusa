@@ -3,6 +3,7 @@ import { IdMap } from "medusa-test-utils"
 import ShippingOptionService from "../shipping-option"
 import { ShippingOptionModelMock } from "../../models/__mocks__/shipping-option"
 import { RegionServiceMock, regions } from "../__mocks__/region"
+import { TotalsServiceMock } from "../__mocks__/totals"
 import {
   FulfillmentProviderServiceMock,
   DefaultProviderMock,
@@ -88,23 +89,15 @@ describe("ShippingOptionService", () => {
     it("throw error on invalid key type", async () => {
       const id = mongoose.Types.ObjectId()
 
-      try {
-        await optionService.setMetadata(`${id}`, 1234, "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
+      expect(() => optionService.setMetadata(`${id}`, 1234, "nono")).toThrow(
+        "Key type is invalid. Metadata keys must be strings"
+      )
     })
 
     it("throws error on invalid optionId type", async () => {
-      try {
-        await optionService.setMetadata("fakeProfileId", 1234, "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The shippingOptionId could not be casted to an ObjectId"
-        )
-      }
+      expect(() =>
+        optionService.setMetadata("fakeProfileId", 1234, "nono")
+      ).toThrow("The shippingOptionId could not be casted to an ObjectId")
     })
   })
 
@@ -130,56 +123,42 @@ describe("ShippingOptionService", () => {
       )
     })
 
-    it("throw error on invalid product id type", async () => {
-      try {
-        await optionService.update(19314235, { name: "new title" })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The shippingOptionId could not be casted to an ObjectId"
-        )
-      }
+    it("throw error on invalid shipping id type", async () => {
+      await expect(
+        optionService.update(19314235, { name: "new title" })
+      ).rejects.toThrow(
+        "The shippingOptionId could not be casted to an ObjectId"
+      )
     })
 
     it("throws error when trying to update metadata", async () => {
       const id = mongoose.Types.ObjectId()
-      try {
-        await optionService.update(`${id}`, { metadata: { key: "value" } })
-      } catch (err) {
-        expect(err.message).toEqual("Use setMetadata to update metadata fields")
-      }
+      await expect(
+        optionService.update(`${id}`, { metadata: { key: "value" } })
+      ).rejects.toThrow("Use setMetadata to update metadata fields")
     })
 
     it("throws error when trying to update region_id", async () => {
       const id = mongoose.Types.ObjectId()
-      try {
-        await optionService.update(`${id}`, { region_id: "id" })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Region and Provider cannot be updated after creation"
-        )
-      }
+      await expect(
+        optionService.update(`${id}`, { region_id: "id" })
+      ).rejects.toThrow("Region and Provider cannot be updated after creation")
     })
 
     it("throws error when trying to update provider_id", async () => {
       const id = mongoose.Types.ObjectId()
-      try {
-        await optionService.update(`${id}`, { provider_id: "id" })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Region and Provider cannot be updated after creation"
-        )
-      }
+      await expect(
+        optionService.update(`${id}`, { provider_id: "id" })
+      ).rejects.toThrow("Region and Provider cannot be updated after creation")
     })
 
     it("throws error when trying to update requirements", async () => {
       const id = mongoose.Types.ObjectId()
-      try {
-        await optionService.update(`${id}`, { products: ["1", "2"] })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Use addRequirement, removeRequirement to update the requirements field"
-        )
-      }
+      await expect(
+        optionService.update(`${id}`, { requirements: ["1", "2"] })
+      ).rejects.toThrow(
+        "Use addRequirement, removeRequirement to update the requirements field"
+      )
     })
   })
 
@@ -243,16 +222,12 @@ describe("ShippingOptionService", () => {
     })
 
     it("fails if type exists", async () => {
-      try {
-        await optionService.addRequirement(IdMap.getId("validId"), {
+      await expect(
+        optionService.addRequirement(IdMap.getId("validId"), {
           type: "min_subtotal",
           value: 100,
         })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "A requirement with type: min_subtotal already exists"
-        )
-      }
+      ).rejects.toThrow("A requirement with type: min_subtotal already exists")
 
       expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(0)
     })
@@ -356,31 +331,21 @@ describe("ShippingOptionService", () => {
     })
 
     it("fails on invalid type", async () => {
-      try {
-        await optionService.setPrice(IdMap.getId("validId"), {
+      await expect(
+        optionService.setPrice(IdMap.getId("validId"), {
           type: "non",
         })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The price must be of type flat_rate or calculated"
-        )
-      }
-
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(0)
+      ).rejects.toThrow("The price must be of type flat_rate or calculated")
     })
 
     it("fails if provider cannot calculate", async () => {
-      try {
-        await optionService.setPrice(IdMap.getId("noCalc"), {
+      await expect(
+        optionService.setPrice(IdMap.getId("noCalc"), {
           type: "calculated",
         })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The fulfillment provider cannot calculate prices for this option"
-        )
-      }
-
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(0)
+      ).rejects.toThrow(
+        "The fulfillment provider cannot calculate prices for this option"
+      )
     })
   })
 
@@ -403,6 +368,12 @@ describe("ShippingOptionService", () => {
           id: "new",
         },
         region_id: IdMap.getId("region-france"),
+        requirements: [
+          {
+            type: "min_subtotal",
+            value: 1,
+          },
+        ],
         price: {
           type: "flat_rate",
           amount: 13,
@@ -440,19 +411,21 @@ describe("ShippingOptionService", () => {
           id: "new",
         },
         region_id: IdMap.getId("region-france"),
+        requirements: [
+          {
+            type: "min_subtotal",
+            value: 1,
+          },
+        ],
         price: {
           type: "flat_rate",
           amount: 13,
         },
       }
 
-      try {
-        await optionService.create(option)
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The fulfillment provider is not available in the provided region"
-        )
-      }
+      await expect(optionService.create(option)).rejects.toThrow(
+        "The fulfillment provider is not available in the provided region"
+      )
     })
 
     it("fails if fulfillment provider cannot validate", async () => {
@@ -469,13 +442,34 @@ describe("ShippingOptionService", () => {
         },
       }
 
-      try {
-        await optionService.create(option)
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The fulfillment provider cannot validate the shipping option"
-        )
+      await expect(optionService.create(option)).rejects.toThrow(
+        "The fulfillment provider cannot validate the shipping option"
+      )
+    })
+
+    it("fails if requirement is not validated", async () => {
+      const option = {
+        name: "Test Option",
+        provider_id: "default_provider",
+        data: {
+          id: "new",
+        },
+        requirements: [
+          {
+            type: "_subtotal",
+            value: 100,
+          },
+        ],
+        region_id: IdMap.getId("region-france"),
+        price: {
+          type: "flat_rate",
+          amount: 13,
+        },
       }
+
+      await expect(optionService.create(option)).rejects.toThrow(
+        "Requirement type must be one of min_subtotal, max_subtotal"
+      )
     })
 
     it("fails if price is not validated", async () => {
@@ -492,13 +486,142 @@ describe("ShippingOptionService", () => {
         },
       }
 
-      try {
-        await optionService.create(option)
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The price must be of type flat_rate or calculated"
-        )
+      await expect(optionService.create(option)).rejects.toThrow(
+        "The price must be of type flat_rate or calculated"
+      )
+    })
+  })
+
+  describe("setRequirements", () => {
+    const optionService = new ShippingOptionService({
+      shippingOptionModel: ShippingOptionModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("sets requirements", async () => {
+      const requirements = [
+        {
+          type: "min_subtotal",
+          value: 1,
+        },
+      ]
+
+      await optionService.setRequirements(IdMap.getId("validId"), requirements)
+
+      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("validId"),
+        },
+        {
+          $set: { requirements },
+        }
+      )
+    })
+
+    it("fails on invalid req", async () => {
+      const requirements = [
+        {
+          type: "_",
+          value: 2,
+        },
+        {
+          type: "min_subtotal",
+          value: 1,
+        },
+      ]
+
+      await expect(
+        optionService.setRequirements(IdMap.getId("validId"), requirements)
+      ).rejects.toThrow(
+        "Requirement type must be one of min_subtotal, max_subtotal"
+      )
+    })
+
+    it("fails on duplicate reqs", async () => {
+      const requirements = [
+        {
+          type: "min_subtotal",
+          value: 2,
+        },
+        {
+          type: "min_subtotal",
+          value: 1,
+        },
+      ]
+
+      await expect(
+        optionService.setRequirements(IdMap.getId("validId"), requirements)
+      ).rejects.toThrow("Only one requirement of each type is allowed")
+    })
+  })
+
+  describe("validateCartOption", () => {
+    const optionService = new ShippingOptionService({
+      shippingOptionModel: ShippingOptionModelMock,
+      totalsService: TotalsServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("validates", async () => {
+      const cart = {
+        region_id: IdMap.getId("fr-region"),
+        subtotal: 400,
       }
+
+      const res = await optionService.validateCartOption(
+        IdMap.getId("validId"),
+        cart
+      )
+
+      expect(res).toEqual({
+        _id: IdMap.getId("validId"),
+        name: "Default Option",
+        region_id: IdMap.getId("fr-region"),
+        provider_id: "default_provider",
+        data: {
+          id: "bonjour",
+        },
+        requirements: [
+          {
+            _id: "requirement_id",
+            type: "min_subtotal",
+            value: 100,
+          },
+        ],
+        price: 10,
+      })
+    })
+
+    it("fails on invalid req", async () => {
+      const cart = {
+        region_id: IdMap.getId("nomatch"),
+      }
+
+      await expect(
+        optionService.validateCartOption(IdMap.getId("validId"), cart)
+      ).rejects.toThrow(
+        "The shipping option is not available in the cart's region"
+      )
+    })
+
+    it("fails if reqs are not satisfied", async () => {
+      const cart = {
+        region_id: IdMap.getId("fr-region"),
+        subtotal: 2,
+      }
+
+      await expect(
+        optionService.validateCartOption(IdMap.getId("validId"), cart)
+      ).rejects.toThrow(
+        "The Cart does not satisfy the shipping option's requirements"
+      )
     })
   })
 })

@@ -153,7 +153,7 @@ class ShippingOptionService extends BaseService {
     if (!requirementResults.every(r => r)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        "The Cart deos not satisfy the shipping option's requirements"
+        "The Cart does not satisfy the shipping option's requirements"
       )
     }
 
@@ -194,6 +194,14 @@ class ShippingOptionService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The fulfillment provider cannot validate the shipping option"
+      )
+    }
+
+    if (option.requirements) {
+      option.requirements = await Promise.all(
+        option.requirements.map(r => {
+          return this.validateRequirement_(r)
+        })
       )
     }
 
@@ -277,7 +285,7 @@ class ShippingOptionService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  update(optionId, update) {
+  async update(optionId, update) {
     const validatedId = this.validateId_(optionId)
 
     if (update.metadata) {
@@ -344,6 +352,35 @@ class ShippingOptionService extends BaseService {
    * @property {string} type - one of max_subtotal, min_subtotal
    * @property {number} value - the value to match against
    */
+
+  /**
+   * Sets or replaces requirements.
+   * @param {string} optionId - the option to add the requirements to.
+   * @param {[ShippingRequirement]} requirements - the requirements to set
+   * @return {Promise} the result of update
+   */
+  async setRequirements(optionId, requirements) {
+    const option = await this.retrieve(optionId)
+    const validatedRequirements = requirements.reduce((acc, r) => {
+      const validated = this.validateRequirement_(r)
+
+      if (acc.find(raw => raw.type === validated.type)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Only one requirement of each type is allowed"
+        )
+      }
+
+      acc.push(validated)
+
+      return acc
+    }, [])
+
+    return this.optionModel_.updateOne(
+      { _id: option._id },
+      { $set: { requirements: validatedRequirements } }
+    )
+  }
 
   /**
    * Adds a requirement to a shipping option. Only 1 requirement of each type
