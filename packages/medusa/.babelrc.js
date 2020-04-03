@@ -7,7 +7,10 @@ if (process.env.NODE_ENV !== `test`) {
 }
 
 module.exports = {
-  plugins: ["@babel/plugin-proposal-class-properties"],
+  plugins: [
+    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-transform-instanceof"
+  ],
   presets: ["@babel/preset-env"],
   env: {
     test: {
