@@ -143,7 +143,7 @@ class UserService extends BaseService {
 
     return this.userModel_.updateOne(
       { _id: user._id },
-      { $set: { password: hashedPassword } }
+      { $set: { password_hash: hashedPassword } }
     )
   }
 
