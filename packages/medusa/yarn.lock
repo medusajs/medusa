@@ -177,6 +177,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.0.0.tgz#bbb3fbee98661c569034237cc03967ba99b4f250"
   integrity sha512-CYAOUCARwExnEixLdB6sDm2dIJ/YgEAKDM1MOeMeZu9Ld/bDgVo8aiWrXwcY7OBh+1Ea2uUcVRcxKk0GJvW7QA==
 
+"@babel/helper-plugin-utils@^7.8.3":
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.8.3.tgz#9ea293be19babc0f52ff8ca88b34c3611b208670"
+  integrity sha512-j+fq49Xds2smCUNYmEHF9kGNkhbet6yVIBp4e6oeQpH1RUs/Ir06xUKzDjDkGcaaokPiTNs2JBWHjaE4csUkZQ==
+
 "@babel/helper-regex@^7.0.0", "@babel/helper-regex@^7.4.4":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/helper-regex/-/helper-regex-7.5.5.tgz#0aa6824f7100a2e0e89c1527c23936c152cab351"
@@ -461,6 +466,13 @@
   dependencies:
     "@babel/helper-function-name" "^7.7.4"
     "@babel/helper-plugin-utils" "^7.0.0"
+
+"@babel/plugin-transform-instanceof@^7.8.3":
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-instanceof/-/plugin-transform-instanceof-7.8.3.tgz#a44d7d71590da36be7429573300618aefd784c3d"
+  integrity sha512-c/jB6Ebe2u17hxo+rce6PDgbkuHyfcJOleqgHYttnvMrCsxVwUnYsMq7GhxXekzUQsv9IImhv6YICKihpen+Ag==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.8.3"
 
 "@babel/plugin-transform-literals@^7.7.4":
   version "7.7.4"
@@ -4089,25 +4101,25 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^0.1.6-alpha.0:
-  version "0.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.6-alpha.0.tgz#393a0cdcfdd7833a1c0c5ddcee5fe71578563a6f"
-  integrity sha512-1/8LsCvVnNwv95J5Y2OcEoWP6IkgpqIQi8fQk7igS3frWDUi2sU0MuSQUqiOLrkEqVCNkBs8s0j/NKAu1Ld40A==
+medusa-core-utils@^0.1.35:
+  version "0.1.35"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.35.tgz#839d4e83af50790f5e4c97611fa6e4581db41f17"
+  integrity sha512-b2PBc8ygrdr0GNRsijGp38VbSlTJStry+F61na3ri7WH6W/ykYZ3qTT9AbEX6THp388cd6S6+6TZpl6L+9mW3w==
   dependencies:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^0.1.6-alpha.0:
-  version "0.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.6-alpha.0.tgz#cc6357e5605382775aa22e10b318cde966259c9e"
-  integrity sha512-sVrR/FnaA+OCcJrVvfdrBuyBOs/Y01vbftqldM76WwIptkzcl6O+w2jGLn/YcMj4wswUYnhnPSc8YfmYjEgBMg==
+medusa-interfaces@^0.1.35:
+  version "0.1.35"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.35.tgz#871744cfa9ee9fff688068352c33c816b089f1fe"
+  integrity sha512-s3/IvDBLuxHn0PlHSBQnjVxkUXaS9nBxoMuTKpR31BHOyKRMKWm4EDcFKaXei43p9QOzDQEfbNeBP50tUgJTXw==
   dependencies:
     mongoose "^5.8.0"
 
-medusa-test-utils@^0.1.6-alpha.0:
-  version "0.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.6-alpha.0.tgz#bfdf4a456904a7a3d4d78da0bb126c91d51ee61f"
-  integrity sha512-yizJyQF+xJSHtD+BgyGiZFv0EE3+TQDtIZJZEjisIsN0nzzZTOb/VYY8dgQWLFZdkumruiJwq4NCx7Dxp6CfNA==
+medusa-test-utils@^0.1.35:
+  version "0.1.35"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.35.tgz#3a86a3af771a320bc5c46410761196edfa3fac91"
+  integrity sha512-3cjwsIfsTL4g8w1lSxSe3f95Qnp7gQTWsKtT5PnUIdUTH/b/u9NJYVxbP6Ztrn0UvH9s5Go76377kQTjkKCcfg==
   dependencies:
     mongoose "^5.8.0"
 
