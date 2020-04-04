@@ -1,6 +1,6 @@
 {
   "name": "medusa-test-utils",
-  "version": "0.1.16",
+  "version": "0.1.27-alpha.0",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
