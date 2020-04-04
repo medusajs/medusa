@@ -10,7 +10,7 @@ import { RegionServiceMock } from "../__mocks__/region"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
-import { DiscountModelMock } from "../../models/__mocks__/discount"
+import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
 import { DiscountServiceMock } from "../__mocks__/discount"
 
 describe("CartService", () => {
@@ -1293,7 +1293,7 @@ describe("CartService", () => {
           _id: IdMap.getId("fr-cart"),
         },
         {
-          $push: { discounts: IdMap.getId("total10") },
+          $push: { discounts: discounts.total10Percent },
         }
       )
     })
@@ -1317,8 +1317,8 @@ describe("CartService", () => {
           _id: IdMap.getId("discount-cart-with-existing"),
         },
         {
-          $push: { discounts: IdMap.getId("total10") },
-          $pull: { discounts: IdMap.getId("item10Percent") },
+          $push: { discounts: discounts.total10Percent },
+          $pull: { discounts: { _id: IdMap.getId("item10Percent") } },
         }
       )
     })
@@ -1344,7 +1344,7 @@ describe("CartService", () => {
           _id: IdMap.getId("discount-cart-with-existing"),
         },
         {
-          $push: { discounts: IdMap.getId("freeshipping") },
+          $push: { discounts: discounts.freeShipping },
         }
       )
     })
@@ -1370,7 +1370,7 @@ describe("CartService", () => {
           _id: IdMap.getId("discount-cart-with-existing"),
         },
         {
-          $push: { discounts: IdMap.getId("freeshipping") },
+          $push: { discounts: discounts.freeShipping },
         }
       )
     })

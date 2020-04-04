@@ -1,4 +1,5 @@
 import { IdMap } from "medusa-test-utils"
+import { discounts } from "./discount"
 
 export const carts = {
   emptyCart: {
@@ -257,7 +258,7 @@ export const carts = {
   },
   discountCartWithExisting: {
     _id: IdMap.getId("discount-cart-with-existing"),
-    discounts: [IdMap.getId("item10Percent")],
+    discounts: [discounts.item10Percent],
     region_id: IdMap.getId("region-france"),
     items: [
       {

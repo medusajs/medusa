@@ -11,6 +11,7 @@ class DiscountModel extends BaseModel {
     disabled: { type: Boolean, default: false },
     starts_at: { type: Date },
     ends_at: { type: Date },
+    regions: { type: [String], default: [] },
   }
 }
 

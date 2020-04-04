@@ -426,7 +426,7 @@ class CartService extends BaseService {
   async applyDiscount(cartId, discountCode) {
     const cart = await this.retrieve(cartId)
     const discount = await this.discountService_.retrieveByCode(discountCode)
-    if (!discount.discount_rule.regions.includes(cart.region_id)) {
+    if (!discount.regions.includes(cart.region_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The discount is not available in current region"
@@ -441,9 +441,7 @@ class CartService extends BaseService {
     // find the current discounts (if there)
     // partition them into shipping and other
     const [shippingDisc, otherDisc] = _.partition(
-      await Promise.all(
-        cart.discounts.map(discount => this.discountService_.retrieve(discount))
-      ),
+      cart.discounts,
       d => d.discount_rule.type === "free_shipping"
     )
 
@@ -458,7 +456,7 @@ class CartService extends BaseService {
           _id: cart._id,
         },
         {
-          $push: { discounts: discount._id },
+          $push: { discounts: discount },
         }
       )
     } else if (
@@ -470,8 +468,8 @@ class CartService extends BaseService {
           _id: cart._id,
         },
         {
-          $pull: { discounts: shippingDisc[0]._id },
-          $push: { discounts: discount._id },
+          $pull: { discounts: { _id: shippingDisc[0]._id } },
+          $push: { discounts: discount },
         }
       )
     }
@@ -483,7 +481,7 @@ class CartService extends BaseService {
           _id: cart._id,
         },
         {
-          $push: { discounts: discount._id },
+          $push: { discounts: discount },
         }
       )
     } else {
@@ -492,8 +490,8 @@ class CartService extends BaseService {
           _id: cart._id,
         },
         {
-          $pull: { discounts: otherDisc[0]._id },
-          $push: { discounts: discount._id },
+          $pull: { discounts: { _id: otherDisc[0]._id } },
+          $push: { discounts: discount },
         }
       )
     }

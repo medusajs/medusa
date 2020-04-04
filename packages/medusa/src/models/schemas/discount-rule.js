@@ -24,7 +24,5 @@ export default new mongoose.Schema({
   // is chosen, then we will go through the cart and apply the coupon code to
   // all the valid product variants.
   valid_for: { type: [String], default: [] },
-  // Id's of the regions in which the discount rule is valid.
-  regions: { type: [String], required: true },
   usage_limit: { type: Number },
 })

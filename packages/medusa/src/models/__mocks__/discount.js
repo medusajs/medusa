@@ -8,8 +8,8 @@ export const discounts = {
       type: "percentage",
       allocation: "total",
       value: 10,
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   item10Percent: {
     _id: IdMap.getId("item10Percent"),
@@ -19,8 +19,8 @@ export const discounts = {
       allocation: "item",
       value: 10,
       valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   total10Fixed: {
     _id: IdMap.getId("total10Fixed"),
@@ -29,8 +29,8 @@ export const discounts = {
       type: "fixed",
       allocation: "total",
       value: 10,
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   item9Fixed: {
     _id: IdMap.getId("item9Fixed"),
@@ -40,8 +40,8 @@ export const discounts = {
       allocation: "item",
       value: 9,
       valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   item2Fixed: {
     _id: IdMap.getId("item2Fixed"),
@@ -51,8 +51,8 @@ export const discounts = {
       allocation: "item",
       value: 2,
       valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   item10FixedNoVariants: {
     _id: IdMap.getId("item10FixedNoVariants"),
@@ -62,8 +62,8 @@ export const discounts = {
       allocation: "item",
       value: 10,
       valid_for: [],
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   expiredDiscount: {
     _id: IdMap.getId("expired"),
@@ -74,8 +74,8 @@ export const discounts = {
       allocation: "item",
       value: 10,
       valid_for: [],
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   freeShipping: {
     _id: IdMap.getId("freeshipping"),
@@ -85,8 +85,8 @@ export const discounts = {
       allocation: "total",
       value: 10,
       valid_for: [],
-      regions: [IdMap.getId("region-france")],
     },
+    regions: [IdMap.getId("region-france")],
   },
   USDiscount: {
     _id: IdMap.getId("us-discount"),
@@ -96,8 +96,17 @@ export const discounts = {
       allocation: "total",
       value: 10,
       valid_for: [],
-      regions: [IdMap.getId("us")],
     },
+    regions: [IdMap.getId("us")],
+  },
+  alreadyExists: {
+    code: "ALREADYEXISTS",
+    discount_rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 20,
+    },
+    regions: [IdMap.getId("fr-cart")],
   },
 }
 
@@ -128,6 +137,9 @@ export const DiscountModelMock = {
     }
     if (query.code === "10%OFF") {
       return Promise.resolve(discounts.total10Percent)
+    }
+    if (query.code === "aLrEaDyExIsts") {
+      return Promise.resolve(discounts.alreadyExists)
     }
     return Promise.resolve(undefined)
   }),
