@@ -8,9 +8,7 @@ class TestService extends BaseService {
   }
 
   async sayHi() {
-    console.log("hi service")
     const res = await this.testModel_.create({ title: "hi" })
-    console.log("hi res")
     return res
   }
 }

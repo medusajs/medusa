@@ -9,7 +9,6 @@ export default () => {
       const newHi = await testService.sayHi()
       res.status(200).json(newHi)
     } catch (e) {
-      console.log(e)
       next(e)
     }
   })
