@@ -25,7 +25,6 @@
     "eslint": "^6.8.0"
   },
   "dependencies": {
-    "@medusajs/medusa": "^0.1.26",
     "mongoose": "^5.8.0"
   },
   "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"

@@ -1014,40 +1014,6 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@medusajs/medusa@^0.1.26":
-  version "0.1.39"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa/-/medusa-0.1.39.tgz#6194d251907949129d8ff48bcda488c4758dfa43"
-  integrity sha512-bkmfEawBZYlrpVs+INCTEmCU9UUiI5ujcPRIC0gZbcA/VZq/eTlbbJIBB6MbhVFFyOiYQuHRjdDxZIcPAOWbHQ==
-  dependencies:
-    "@babel/plugin-transform-instanceof" "^7.8.3"
-    "@hapi/joi" "^16.1.8"
-    awilix "^4.2.3"
-    bcrypt "^3.0.7"
-    body-parser "^1.19.0"
-    bull "^3.12.1"
-    client-sessions "^0.8.0"
-    cookie-parser "^1.4.4"
-    core-js "^3.4.8"
-    cors "^2.8.5"
-    dotenv "^8.2.0"
-    express "^4.17.1"
-    express-session "^1.17.0"
-    fs-exists-cached "^1.0.0"
-    glob "^7.1.6"
-    joi-objectid "^3.0.1"
-    jsonwebtoken "^8.5.1"
-    medusa-core-utils "^0.1.39"
-    medusa-interfaces "^0.1.39"
-    medusa-test-utils "^0.1.39"
-    mongoose "^5.8.0"
-    morgan "^1.9.1"
-    passport "^0.4.0"
-    passport-http-bearer "^1.0.1"
-    passport-jwt "^4.0.0"
-    passport-local "^1.0.0"
-    regenerator-runtime "^0.13.3"
-    winston "^3.2.1"
-
 "@medusajs/medusa@file:../../packages/medusa":
   version "0.1.26"
   dependencies:
@@ -4291,7 +4257,7 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^0.1.16, medusa-core-utils@^0.1.39:
+medusa-core-utils@^0.1.16:
   version "0.1.39"
   resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.39.tgz#d57816c9bd43f9a92883650c1e66add1665291df"
   integrity sha512-R8+U1ile7if+nR6Cjh5exunx0ETV0OfkWUUBUpz1KmHSDv0V0CcvQqU9lcZesPFDEbu3Y2iEjsCqidVA4nG2nQ==
@@ -4299,7 +4265,7 @@ medusa-core-utils@^0.1.16, medusa-core-utils@^0.1.39:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^0.1.16, medusa-interfaces@^0.1.39:
+medusa-interfaces@^0.1.16:
   version "0.1.39"
   resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.39.tgz#633db3c8c6afd7fec9ae24496737369d840105cf"
   integrity sha512-byKIcK7o3L4shmGn+pgZAUyLrT991zCqK4jWXIleQJbGImQy6TmdXido+tEzFptVBJWMIQ8BWnP/b7r29D8EXA==
@@ -4310,11 +4276,10 @@ medusa-interfaces@^0.1.16, medusa-interfaces@^0.1.39:
   version "0.1.26"
   dependencies:
     "@babel/runtime" "^7.7.6"
-    "@medusajs/medusa" "^0.1.26"
     express "^4.17.1"
     medusa-interfaces "^0.1.16"
 
-medusa-test-utils@^0.1.16, medusa-test-utils@^0.1.39:
+medusa-test-utils@^0.1.16:
   version "0.1.39"
   resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.39.tgz#b7c166006a2fa4f02e52ab3bfafc19a3ae787f3e"
   integrity sha512-M/Br8/HYvl7x2oLnme4NxdQwoyV0XUyOWiCyvPp7q1HUTB684lhJf1MikZVrcSjsh2L1rpyi3GRbKdf4cpJWvw==
