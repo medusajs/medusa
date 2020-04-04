@@ -157,15 +157,25 @@ describe("PermissionService", () => {
 
   describe("grantRole", () => {
     const setMetadataMock = jest.fn().mockReturnValue(Promise.resolve())
-    const userRetrieveMock = jest.fn().mockReturnValue(
-      Promise.resolve({
-        _id: IdMap.getId("permission-user"),
-        email: "oliver@test.dk",
-        metadata: {
-          roles: ["content_editor"],
-        },
-      })
-    )
+    const userRetrieveMock = jest.fn().mockImplementation((data) => {
+      if (data === IdMap.getId("permission-user")) {
+        return Promise.resolve({
+          _id: IdMap.getId("permission-user"),
+          email: "oliver@test.dk",
+          metadata: {
+            roles: ["content_editor"],
+          },
+        })
+      }
+      if (data === IdMap.getId("user-without-roles")) {
+        return Promise.resolve({
+          _id: IdMap.getId("user-without-roles"),
+          email: "oliver@test.dk",
+          metadata: {},
+        })
+      }
+      return Promise.resolve(undefined)
+    })
     const permissionService = new PermissionService({
       roleModel: RoleModelMock,
       userService: {
@@ -174,7 +184,7 @@ describe("PermissionService", () => {
       },
     })
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
@@ -189,6 +199,20 @@ describe("PermissionService", () => {
         IdMap.getId("permission-user"),
         "roles",
         ["content_editor", "product_editor"]
+      )
+    })
+
+    it("sets user metadata.roles to user that does not have metadata.roles", async () => {
+      await permissionService.grantRole(
+        IdMap.getId("user-without-roles"),
+        "product_editor"
+      )
+
+      expect(setMetadataMock).toHaveBeenCalledTimes(1)
+      expect(setMetadataMock).toHaveBeenCalledWith(
+        IdMap.getId("user-without-roles"),
+        "roles",
+        ["product_editor"]
       )
     })
 
