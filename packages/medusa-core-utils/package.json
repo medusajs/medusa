@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
+    "@medusajs/medusa": "^0.1.26",
     "joi-objectid": "^3.0.1"
   },
   "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"

@@ -8,10 +8,12 @@ export default async ({ app }) => {
   const appPath = path.resolve("src/api")
 
   if (corePath !== appPath) {
-    const appRoutes = require(appPath).default
-    if (appRoutes) {
-      app.use("/", appRoutes())
-    }
+    try {
+      const appRoutes = require(appPath).default
+      if (appRoutes) {
+        app.use("/", appRoutes())
+      }
+    } catch (err) {}
   }
 
   app.use("/", routes())
