@@ -35,7 +35,7 @@ export default ({ container }) => {
 
       if (!(loaded.prototype instanceof BaseService)) {
         const logger = container.resolve("logger")
-        const message = `Models must inherit from BaseModel, please check ${fn}`
+        const message = `Services must inherit from BaseService, please check ${fn}`
         logger.error(message)
         throw new Error(message)
       }

@@ -1,3 +1,3 @@
 module.exports = {
-  plugins: [`medusa-payment-stripe`]
-};
+  plugins: [`medusa-payment-stripe`],
+}
