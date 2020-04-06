@@ -4089,25 +4089,25 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^0.1.6-alpha.0:
-  version "0.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.6-alpha.0.tgz#393a0cdcfdd7833a1c0c5ddcee5fe71578563a6f"
-  integrity sha512-1/8LsCvVnNwv95J5Y2OcEoWP6IkgpqIQi8fQk7igS3frWDUi2sU0MuSQUqiOLrkEqVCNkBs8s0j/NKAu1Ld40A==
+medusa-core-utils@^0.3.0:
+  version "0.1.39"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.39.tgz#d57816c9bd43f9a92883650c1e66add1665291df"
+  integrity sha512-R8+U1ile7if+nR6Cjh5exunx0ETV0OfkWUUBUpz1KmHSDv0V0CcvQqU9lcZesPFDEbu3Y2iEjsCqidVA4nG2nQ==
   dependencies:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^0.1.6-alpha.0:
-  version "0.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.6-alpha.0.tgz#cc6357e5605382775aa22e10b318cde966259c9e"
-  integrity sha512-sVrR/FnaA+OCcJrVvfdrBuyBOs/Y01vbftqldM76WwIptkzcl6O+w2jGLn/YcMj4wswUYnhnPSc8YfmYjEgBMg==
+medusa-interfaces@^0.3.0:
+  version "0.1.39"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.39.tgz#633db3c8c6afd7fec9ae24496737369d840105cf"
+  integrity sha512-byKIcK7o3L4shmGn+pgZAUyLrT991zCqK4jWXIleQJbGImQy6TmdXido+tEzFptVBJWMIQ8BWnP/b7r29D8EXA==
   dependencies:
     mongoose "^5.8.0"
 
-medusa-test-utils@^0.1.6-alpha.0:
-  version "0.1.6-alpha.0"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.6-alpha.0.tgz#bfdf4a456904a7a3d4d78da0bb126c91d51ee61f"
-  integrity sha512-yizJyQF+xJSHtD+BgyGiZFv0EE3+TQDtIZJZEjisIsN0nzzZTOb/VYY8dgQWLFZdkumruiJwq4NCx7Dxp6CfNA==
+medusa-test-utils@^0.3.0:
+  version "0.1.39"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.39.tgz#b7c166006a2fa4f02e52ab3bfafc19a3ae787f3e"
+  integrity sha512-M/Br8/HYvl7x2oLnme4NxdQwoyV0XUyOWiCyvPp7q1HUTB684lhJf1MikZVrcSjsh2L1rpyi3GRbKdf4cpJWvw==
   dependencies:
     mongoose "^5.8.0"
 
