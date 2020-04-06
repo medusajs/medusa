@@ -16,8 +16,8 @@ class TotalsService extends BaseService {
    * @param {Cart} Cart - the cart to calculate subtotal for
    * @return {int} the calculated subtotal
    */
-  getSubTotal(cart) {
-    let subTotal = 0
+  getSubtotal(cart) {
+    let subtotal = 0
     if (!cart.items) {
       return subTotal
     }
@@ -25,13 +25,13 @@ class TotalsService extends BaseService {
     cart.items.map(item => {
       if (Array.isArray(item.content)) {
         const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
-        subTotal += temp * item.quantity
+        subtotal += temp * item.quantity
       } else {
-        subTotal +=
+        subtotal +=
           item.content.unit_price * item.content.quantity * item.quantity
       }
     })
-    return subTotal
+    return subtotal
   }
 
   /**
@@ -74,25 +74,10 @@ class TotalsService extends BaseService {
   async getAllocationItemDiscounts(discount, cart) {
     let discounts = []
     for (const item of cart.items) {
-      discount.discount_rule.valid_for.forEach(async v => {
+      discount = discount.discount_rule.valid_for.map(async v => {
+        // Discounts do not apply to bundles, hence:
         if (Array.isArray(item.content)) {
-          item.content.forEach(async c => {
-            if (c.variant._id === v) {
-              const variantRegionPrice = await this.productVariantService_.getRegionPrice(
-                v,
-                cart.region_id
-              )
-              discounts.push(
-                this.calculateDiscount_(
-                  item._id,
-                  v,
-                  variantRegionPrice,
-                  discount.discount_rule.value,
-                  discount.discount_rule.type
-                )
-              )
-            }
-          })
+          return discounts
         } else {
           if (item.content.variant._id === v) {
             const variantRegionPrice = await this.productVariantService_.getRegionPrice(
@@ -100,14 +85,12 @@ class TotalsService extends BaseService {
               cart.region_id
             )
 
-            discounts.push(
-              this.calculateDiscount_(
-                item._id,
-                v,
-                variantRegionPrice,
-                discount.discount_rule.value,
-                discount.discount_rule.type
-              )
+            return this.calculateDiscount_(
+              item._id,
+              v,
+              variantRegionPrice,
+              discount.discount_rule.value,
+              discount.discount_rule.type
             )
           }
         }
@@ -124,10 +107,10 @@ class TotalsService extends BaseService {
    * @return {int} the subtotal after discounts are applied
    */
   async getDiscountTotal(cart) {
-    let subTotal = this.getSubTotal(cart)
+    let subtotal = this.getSubtotal(cart)
 
     if (!cart.discounts) {
-      return subTotal
+      return subtotal
     }
 
     // filter out invalid discounts
@@ -153,14 +136,14 @@ class TotalsService extends BaseService {
     )
 
     if (!discount) {
-      return subTotal
+      return subtotal
     }
 
     const { type, allocation, value } = discount.discount_rule
 
     if (type === "percentage" && allocation === "total") {
-      subTotal -= (subTotal / 100) * value
-      return subTotal
+      subtotal -= (subtotal / 100) * value
+      return subtotal
     }
 
     if (type === "percentage" && allocation === "item") {
@@ -170,13 +153,13 @@ class TotalsService extends BaseService {
         "percentage"
       )
       const totalDiscount = _.sumBy(itemPercentageDiscounts, d => d.amount)
-      subTotal -= totalDiscount
-      return subTotal
+      subtotal -= totalDiscount
+      return subtotal
     }
 
     if (type === "fixed" && allocation === "total") {
-      subTotal -= value
-      return subTotal
+      subtotal -= value
+      return subtotal
     }
 
     if (type === "fixed" && allocation === "item") {
@@ -186,11 +169,11 @@ class TotalsService extends BaseService {
         "fixed"
       )
       const totalDiscount = _.sumBy(itemFixedDiscounts, d => d.amount)
-      subTotal -= totalDiscount
-      return subTotal
+      subtotal -= totalDiscount
+      return subtotal
     }
 
-    return subTotal
+    return subtotal
   }
 }
 

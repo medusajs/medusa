@@ -19,7 +19,7 @@ class CartModel extends BaseModel {
     shipping_address: { type: AddressSchema, default: {} },
     items: { type: [LineItemSchema], default: [] },
     region_id: { type: String, required: true },
-    discounts: { type: [DiscountModel], default: [] },
+    discounts: { type: [DiscountModel.schema], default: [] },
     customer_id: { type: String, default: "" },
     payment_sessions: { type: [PaymentMethodSchema], default: [] },
     shipping_options: { type: [ShippingMethodSchema], default: [] },
