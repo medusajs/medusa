@@ -3,6 +3,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import _ from "lodash"
 
 /**
+ * Provides layer to manipulate discounts.
  * @implements BaseService
  */
 class DiscountService extends BaseService {
@@ -16,6 +17,11 @@ class DiscountService extends BaseService {
     this.totalsService_ = totalsService
   }
 
+  /**
+   * Validates discount id
+   * @param {string} rawId - the raw id to validate
+   * @return {string} the validated id
+   */
   validateId_(rawId) {
     const schema = Validator.objectId()
     const { value, error } = schema.validate(rawId)
@@ -29,6 +35,11 @@ class DiscountService extends BaseService {
     return value
   }
 
+  /**
+   * Validates discount rules
+   * @param {DiscountRule} discountRule - the discount rule to validate
+   * @return {DiscountRule} the validated discount rule
+   */
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
       description: Validator.string(),
@@ -60,10 +71,21 @@ class DiscountService extends BaseService {
     return value
   }
 
+  /**
+   * Used to normalize discount codes to uppercase.
+   * @param {string} discountCode - the discount code to normalize
+   * @return {string} the normalized discount code
+   */
   normalizeDiscountCode_(discountCode) {
     return discountCode.toUpperCase()
   }
 
+  /**
+   * Creates a discount with provided data given that the data is validated.
+   * Normalizes discount code to uppercase.
+   * @param {Discount} discount - the discount data to create
+   * @return {Promise} the result of the create operation
+   */
   async create(discount) {
     await this.validateDiscountRule_(discount.discount_rule)
 
@@ -74,6 +96,11 @@ class DiscountService extends BaseService {
     })
   }
 
+  /**
+   * Gets a discount by id.
+   * @param {string} discountId - id of discount to retrieve
+   * @return {Promise<Discount>} the discount document
+   */
   async retrieve(discountId) {
     const validatedId = this.validateId_(discountId)
     const discount = await this.discountModel_
@@ -91,6 +118,11 @@ class DiscountService extends BaseService {
     return discount
   }
 
+  /**
+   * Gets a discount by discount code.
+   * @param {string} discountCode - discount code of discount to retrieve
+   * @return {Promise<Discount>} the discount document
+   */
   async retrieveByCode(discountCode) {
     discountCode = this.normalizeDiscountCode_(discountCode)
     const discount = await this.discountModel_
@@ -108,6 +140,12 @@ class DiscountService extends BaseService {
     return discount
   }
 
+  /**
+   * Updates a discount.
+   * @param {string} discountId - discount id of discount to update
+   * @param {Discount} update - the data to update the discount with
+   * @return {Promise} the result of the update operation
+   */
   async update(discountId, update) {
     const discount = await this.retrieve(discountId)
 
@@ -124,6 +162,14 @@ class DiscountService extends BaseService {
       { runValidators: true }
     )
   }
+
+  /**
+   * Updates a discount rule.
+   * @param {string} discountId - id of discount with discount rule to update,
+   *   given that the rule is validated
+   * @param {Discount} update - the data to update the discount rule with
+   * @return {Promise} the result of the update operation
+   */
   async updateDiscountRule(discountId, update) {
     const discount = await this.retrieve(discountId)
 
@@ -136,6 +182,11 @@ class DiscountService extends BaseService {
     )
   }
 
+  /**
+   * Deletes a discount idempotently
+   * @param {string} discountId - id of discount to delete
+   * @return {Promise} the result of the delete operation
+   */
   async delete(discountId) {
     let discount
     try {
