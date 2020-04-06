@@ -21,7 +21,7 @@ export default app => {
     middlewares.wrap(require("./update-shipping-profile").default)
   )
   route.delete(
-    "/:option_id",
+    "/:profile_id",
     middlewares.wrap(require("./delete-shipping-profile").default)
   )
 

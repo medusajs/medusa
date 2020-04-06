@@ -5,7 +5,11 @@ export default async (req, res) => {
 
     await profileService.delete(profile_id)
 
-    res.sendStatus(200)
+    res.status(200).json({
+      id: profile_id,
+      object: "shipping_profile",
+      deleted: true,
+    })
   } catch (err) {
     throw err
   }
