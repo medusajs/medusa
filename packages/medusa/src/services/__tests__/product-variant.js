@@ -312,36 +312,6 @@ describe("ProductVariantService", () => {
       )
     })
 
-    it("throw error if product with variant does not exist", async () => {
-      try {
-        await productVariantService.addOptionValue(
-          IdMap.getId("failId"),
-          IdMap.getId("testOptionId"),
-          "testValue"
-        )
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Products with variant: ${IdMap.getId("failId")} was not found`
-        )
-      }
-    })
-
-    it("throw error if product does not have option id", async () => {
-      try {
-        await productVariantService.addOptionValue(
-          IdMap.getId("testVariant"),
-          IdMap.getId("failOptionId"),
-          "testValue"
-        )
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Associated product does not have option: ${IdMap.getId(
-            "failOptionId"
-          )}`
-        )
-      }
-    })
-
     it("throw error if option value is not string", async () => {
       try {
         await productVariantService.addOptionValue(
@@ -378,21 +348,6 @@ describe("ProductVariantService", () => {
         { _id: IdMap.getId("testVariant") },
         { $pull: { options: { option_id: IdMap.getId("testing") } } }
       )
-    })
-
-    it("throw error if product still has the option id of the option value we are trying to delete", async () => {
-      try {
-        await productVariantService.deleteOptionValue(
-          IdMap.getId("testVariant"),
-          IdMap.getId("testOptionId")
-        )
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Associated product has option with id: ${IdMap.getId(
-            "testOptionId"
-          )}`
-        )
-      }
     })
   })
 

@@ -1,11 +1,11 @@
 {
   "name": "medusa-test-utils",
-  "version": "1.0.0",
+  "version": "0.2.0-alpha.0",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/srindom/medusa",
+    "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-test-utils"
   },
   "scripts": {
@@ -21,9 +21,11 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
-    "cross-env": "^5.2.1"
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0"
   },
   "dependencies": {
     "mongoose": "^5.8.0"
-  }
+  },
+  "gitHead": "d3ae95ffe086bf40ffb92724afaefa38e4def25e"
 }
