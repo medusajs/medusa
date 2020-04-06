@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
-    "medusa-interfaces": "^0.2.0"
+    "medusa-interfaces": "^0.3.0"
   },
   "gitHead": "a83ab58c7665fa3748ad6e3d20865fff13b0b53e"
 }
