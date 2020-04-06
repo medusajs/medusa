@@ -16,8 +16,20 @@ export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
     const product = await productService.retrieve(id)
-    await productService.updateOption(product._id, optionId, value.update)
-    let newProduct = await productService.retrieve(product.id)
+
+    if (value.title) {
+      await productService.updateOption(product._id, optionId, {
+        title: value.title,
+      })
+    }
+
+    if (value.values) {
+      await productService.updateOption(product._id, optionId, {
+        values: value.values,
+      })
+    }
+
+    let newProduct = await productService.retrieve(product._id)
     newProduct = await productService.decorate(newProduct, [
       "title",
       "description",
@@ -28,6 +40,7 @@ export default async (req, res) => {
       "variants",
       "published",
     ])
+
     res.json(newProduct)
   } catch (err) {
     throw err

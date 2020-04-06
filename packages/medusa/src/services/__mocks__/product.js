@@ -4,20 +4,20 @@ import { MedusaError } from "medusa-core-utils"
 export const products = {
   product1: {
     _id: IdMap.getId("product1"),
-    name: "Product 1",
+    title: "Product 1",
   },
   publishProduct: {
     _id: IdMap.getId("publish"),
-    name: "Product 1",
+    title: "Product 1",
     published: true,
   },
   product2: {
     _id: IdMap.getId("product2"),
-    name: "Product 2",
+    title: "Product 2",
   },
   productWithOptions: {
     _id: IdMap.getId("productWithOptions"),
-    name: "Test",
+    title: "Test",
     variants: [IdMap.getId("variant1")],
     options: [
       {
@@ -56,6 +56,8 @@ export const ProductServiceMock = {
   addOption: jest.fn().mockImplementation((productId, optionTitle) => {
     return Promise.resolve(products.productWithOptions)
   }),
+  updateOption: jest.fn().mockReturnValue(Promise.resolve()),
+  deleteOption: jest.fn().mockReturnValue(Promise.resolve()),
   retrieve: jest.fn().mockImplementation(productId => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
@@ -100,7 +102,10 @@ export const ProductServiceMock = {
       return Promise.resolve([])
     }
 
-    return Promise.resolve([products.product1, products.product2])
+    return Promise.resolve([
+      { ...products.product1, decorated: true },
+      { ...products.product2, decorated: true },
+    ])
   }),
 }
 
