@@ -1,19 +1,20 @@
 {
-  "name": "medusa-interfaces",
-  "version": "0.3.0",
-  "description": "Core interfaces for Medusa",
+  "name": "medusa-plugin-permissions",
+  "version": "1.0.0",
+  "description": "Role permission for Medusa core",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/medusa-interfaces"
+    "directory": "packages/medusa-plugin-permissions"
   },
   "scripts": {
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
+    "test": "jest"
   },
-  "author": "Sebastian Rindom",
+  "author": "Oliver Juhl",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
@@ -21,11 +22,14 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
+    "@babel/runtime": "^7.7.6",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0"
+    "jest": "^24.9.0"
   },
   "dependencies": {
-    "mongoose": "^5.8.0"
-  },
-  "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"
+    "mongoose": "^5.8.0",
+    "medusa-test-utils": "^1.0.0",
+    "medusa-core-utils": "^1.0.0",
+    "medusa-interfaces": "^1.0.0"
+  }
 }
