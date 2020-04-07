@@ -8,7 +8,11 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class ShippingProfileService extends BaseService {
-  /** @param { shippingProfileModel: (ShippingProfileModel) } */
+  /** @param {
+   *    shippingProfileModel: (ShippingProfileModel),
+   *    productService: (ProductService),
+   *    shippingOptionService: (ProductService),
+   *  } */
   constructor({ shippingProfileModel, productService, shippingOptionService }) {
     super()
 

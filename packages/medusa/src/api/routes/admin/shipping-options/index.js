@@ -10,15 +10,15 @@ export default app => {
   route.post("/", middlewares.wrap(require("./create-shipping-option").default))
 
   route.get(
-    "/:optionId",
+    "/:option_id",
     middlewares.wrap(require("./get-shipping-option").default)
   )
   route.post(
-    "/:optionId",
+    "/:option_id",
     middlewares.wrap(require("./update-shipping-option").default)
   )
   route.delete(
-    "/:optionId",
+    "/:option_id",
     middlewares.wrap(require("./delete-shipping-option").default)
   )
 
