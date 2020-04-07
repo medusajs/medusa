@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("POST /admin/products/:id/option/:optionId", () => {
+describe("POST /admin/products/:id/options/:optionId", () => {
   describe("successfully updates an option", () => {
     let subject
 
@@ -11,7 +11,7 @@ describe("POST /admin/products/:id/option/:optionId", () => {
         "POST",
         `/admin/products/${IdMap.getId(
           "productWithOptions"
-        )}/option/${IdMap.getId("option1")}`,
+        )}/options/${IdMap.getId("option1")}`,
         {
           payload: {
             title: "Updated option title",

@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("DELETE /admin/products/:id/option/:optionId", () => {
+describe("DELETE /admin/products/:id/options/:optionId", () => {
   describe("successfully updates an option", () => {
     let subject
 
@@ -11,7 +11,7 @@ describe("DELETE /admin/products/:id/option/:optionId", () => {
         "DELETE",
         `/admin/products/${IdMap.getId(
           "productWithOptions"
-        )}/option/${IdMap.getId("option1")}`,
+        )}/options/${IdMap.getId("option1")}`,
         {
           adminSession: {
             jwt: {

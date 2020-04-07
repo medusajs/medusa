@@ -2,16 +2,16 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("POST /admin/products/:id/variant/:variantId/remove", () => {
+describe("POST /admin/products/:id/variants/:variantId", () => {
   describe("successful removes variant", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
-        "POST",
+        "DELETE",
         `/admin/products/${IdMap.getId(
           "productWithOptions"
-        )}/variant/${IdMap.getId("variant1")}/remove`,
+        )}/variants/${IdMap.getId("variant1")}`,
         {
           adminSession: {
             jwt: {

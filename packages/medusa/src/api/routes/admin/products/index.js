@@ -8,7 +8,6 @@ export default app => {
   // Inject <rootDir>/plugins/*/api/routes/admin/products/router.js
   // Inject <rootDir>/node_modules/*/api/routes/admin/products/router.js
 
-
   app.use("/products", route)
 
   route.post("/", middlewares.wrap(require("./create-product").default))
@@ -18,22 +17,22 @@ export default app => {
     middlewares.wrap(require("./publish-product").default)
   )
   route.post(
-    "/:id/variant/:variantId",
+    "/:id/variants/:variantId",
     middlewares.wrap(require("./add-variant").default)
   )
   route.post(
-    "/:id/option/:optionId",
+    "/:id/options/:optionId",
     middlewares.wrap(require("./update-option").default)
   )
-  route.post("/:id/option", middlewares.wrap(require("./add-option").default))
-  route.post(
-    "/:id/variant/:variantId/remove",
+  route.post("/:id/options", middlewares.wrap(require("./add-option").default))
+
+  route.delete(
+    "/:id/variants/:variantId",
     middlewares.wrap(require("./remove-variant").default)
   )
-
   route.delete("/:id", middlewares.wrap(require("./delete-product").default))
   route.delete(
-    "/:id/option/:optionId",
+    "/:id/options/:optionId",
     middlewares.wrap(require("./delete-option").default)
   )
 

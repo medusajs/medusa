@@ -14,6 +14,7 @@ describe("POST /admin/products/:id", () => {
           payload: {
             title: "Product 1",
             description: "Updated test description",
+            handle: "handle",
           },
           adminSession: {
             jwt: {
@@ -35,6 +36,7 @@ describe("POST /admin/products/:id", () => {
         {
           title: "Product 1",
           description: "Updated test description",
+          handle: "handle",
         }
       )
     })

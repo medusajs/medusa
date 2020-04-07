@@ -2,14 +2,14 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("POST /admin/products/:id/option", () => {
+describe("POST /admin/products/:id/options", () => {
   describe("successful add option", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/products/${IdMap.getId("productWithOptions")}/option`,
+        `/admin/products/${IdMap.getId("productWithOptions")}/options`,
         {
           payload: {
             optionTitle: "Test option",

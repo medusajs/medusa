@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("POST /admin/products/:id/variant/:variantId", () => {
+describe("POST /admin/products/:id/variants/:variantId", () => {
   describe("successful add variant", () => {
     let subject
 
@@ -11,7 +11,7 @@ describe("POST /admin/products/:id/variant/:variantId", () => {
         "POST",
         `/admin/products/${IdMap.getId(
           "productWithOptions"
-        )}/variant/${IdMap.getId("variant2")}`,
+        )}/variants/${IdMap.getId("variant2")}`,
         {
           adminSession: {
             jwt: {
