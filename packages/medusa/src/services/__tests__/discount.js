@@ -4,7 +4,7 @@ import { IdMap } from "medusa-test-utils"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 
-describe("AuthService", () => {
+describe("DiscountService", () => {
   describe("create", () => {
     const discountService = new DiscountService({
       discountModel: DiscountModelMock,

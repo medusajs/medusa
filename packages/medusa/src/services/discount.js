@@ -162,7 +162,7 @@ class DiscountService extends BaseService {
 
     if (update.metadata) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
+        MedusaError.Types.NOT_ALLOWED,
         "Use setMetadata to update discount metadata"
       )
     }

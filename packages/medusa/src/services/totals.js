@@ -74,24 +74,26 @@ class TotalsService extends BaseService {
   async getAllocationItemDiscounts(discount, cart) {
     const discounts = []
     for (const item of cart.items) {
-      discount.discount_rule.valid_for.map(async v => {
-        // Discounts do not apply to bundles, hence:
-        if (Array.isArray(item.content)) {
-          return discounts
-        } else {
-          if (item.content.variant._id === v) {
-            discounts.push(
-              this.calculateDiscount_(
-                item._id,
-                v,
-                item.content.unit_price,
-                discount.discount_rule.value,
-                discount.discount_rule.type
+      if (discount.discount_rule.valid_for.length > 0) {
+        discount.discount_rule.valid_for.map(v => {
+          // Discounts do not apply to bundles, hence:
+          if (Array.isArray(item.content)) {
+            return discounts
+          } else {
+            if (item.content.variant._id === v) {
+              discounts.push(
+                this.calculateDiscount_(
+                  item._id,
+                  v,
+                  item.content.unit_price,
+                  discount.discount_rule.value,
+                  discount.discount_rule.type
+                )
               )
-            )
+            }
           }
-        }
-      })
+        })
+      }
     }
     return discounts
   }
