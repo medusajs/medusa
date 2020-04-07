@@ -13,7 +13,7 @@ export default async (req, res) => {
 
   try {
     const regionService = req.scope.resolve("regionService")
-    await regionService.addCountry(region_id, country_code)
+    await regionService.addCountry(region_id, value.country_code)
 
     const data = await regionService.retrieve(region_id)
     res.status(200).json(data)
