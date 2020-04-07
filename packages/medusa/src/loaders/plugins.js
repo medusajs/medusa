@@ -1,5 +1,10 @@
 import glob from "glob"
-import { BaseModel, BaseService, PaymentService } from "medusa-interfaces"
+import {
+  BaseModel,
+  BaseService,
+  PaymentService,
+  FulfillmentService,
+} from "medusa-interfaces"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
@@ -60,7 +65,7 @@ function registerServices(pluginDetails, container) {
 
     if (!(loaded.prototype instanceof BaseService)) {
       const logger = container.resolve("logger")
-      const message = `Models must inherit from BaseModel, please check ${fn}`
+      const message = `Services must inherit from BaseService, please check ${fn}`
       logger.error(message)
       throw new Error(message)
     }
@@ -76,6 +81,20 @@ function registerServices(pluginDetails, container) {
       // resolution if we already know which payment provider we need to use
       container.register({
         [`pp_${loaded.identifier}`]: asFunction(
+          cradle => new loaded(cradle, pluginDetails.options)
+        ),
+      })
+    } else if (loaded.prototype instanceof FulfillmentService) {
+      // Register our payment providers to paymentProviders
+      container.registerAdd(
+        "fulfillmentProviders",
+        asFunction(cradle => new loaded(cradle, pluginDetails.options))
+      )
+
+      // Add the service directly to the container in order to make simple
+      // resolution if we already know which payment provider we need to use
+      container.register({
+        [`fp_${loaded.identifier}`]: asFunction(
           cradle => new loaded(cradle, pluginDetails.options)
         ),
       })

@@ -1,0 +1,13 @@
+/lib
+node_modules
+.DS_store
+.env*
+/*.js
+!index.js
+yarn.lock
+
+/api
+/services
+/models
+/subscribers
+
