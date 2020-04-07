@@ -19,7 +19,7 @@ class TotalsService extends BaseService {
   getSubtotal(cart) {
     let subtotal = 0
     if (!cart.items) {
-      return subTotal
+      return subtotal
     }
 
     cart.items.map(item => {
@@ -72,25 +72,22 @@ class TotalsService extends BaseService {
    *    and applied discount
    */
   async getAllocationItemDiscounts(discount, cart) {
-    let discounts = []
+    const discounts = []
     for (const item of cart.items) {
-      discount = discount.discount_rule.valid_for.map(async v => {
+      discount.discount_rule.valid_for.map(async v => {
         // Discounts do not apply to bundles, hence:
         if (Array.isArray(item.content)) {
           return discounts
         } else {
           if (item.content.variant._id === v) {
-            const variantRegionPrice = await this.productVariantService_.getRegionPrice(
-              v,
-              cart.region_id
-            )
-
-            return this.calculateDiscount_(
-              item._id,
-              v,
-              variantRegionPrice,
-              discount.discount_rule.value,
-              discount.discount_rule.type
+            discounts.push(
+              this.calculateDiscount_(
+                item._id,
+                v,
+                item.content.unit_price,
+                discount.discount_rule.value,
+                discount.discount_rule.type
+              )
             )
           }
         }

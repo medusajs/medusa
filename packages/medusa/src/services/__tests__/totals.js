@@ -23,16 +23,6 @@ describe("TotalsService", () => {
 
       expect(res).toEqual([
         {
-          lineItem: IdMap.getId("line"),
-          variant: IdMap.getId("eur-8-us-10"),
-          amount: 0.8,
-        },
-        {
-          lineItem: IdMap.getId("line"),
-          variant: IdMap.getId("eur-10-us-12"),
-          amount: 1,
-        },
-        {
           lineItem: IdMap.getId("existingLine"),
           variant: IdMap.getId("eur-10-us-12"),
           amount: 1,
@@ -47,16 +37,6 @@ describe("TotalsService", () => {
       )
 
       expect(res).toEqual([
-        {
-          lineItem: IdMap.getId("line"),
-          variant: IdMap.getId("eur-8-us-10"),
-          amount: 8,
-        },
-        {
-          lineItem: IdMap.getId("line"),
-          variant: IdMap.getId("eur-10-us-12"),
-          amount: 9,
-        },
         {
           lineItem: IdMap.getId("existingLine"),
           variant: IdMap.getId("eur-10-us-12"),
@@ -97,14 +77,14 @@ describe("TotalsService", () => {
       carts.discountCart.discounts.push(discounts.item2Fixed)
       res = await totalsService.getDiscountTotal(carts.discountCart)
 
-      expect(res).toEqual(274)
+      expect(res).toEqual(278)
     })
 
     it("calculate item percentage discount", async () => {
       carts.discountCart.discounts.push(discounts.item10Percent)
       res = await totalsService.getDiscountTotal(carts.discountCart)
 
-      expect(res).toEqual(277.2)
+      expect(res).toEqual(279)
     })
 
     it("calculate total fixed discount", async () => {

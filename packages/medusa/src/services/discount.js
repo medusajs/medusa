@@ -149,11 +149,15 @@ class DiscountService extends BaseService {
   async update(discountId, update) {
     const discount = await this.retrieve(discountId)
 
-    if (update.discount_rule) {
+    if (update.metadata) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Use updateDiscountRule to update the discount rule"
+        "Use setMetadata to update discount metadata"
       )
+    }
+
+    if (update.discount_rule) {
+      update.discount_rule = this.validateDiscountRule_(update.discount_rule)
     }
 
     return this.discountModel_.updateOne(
@@ -164,20 +168,65 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * Updates a discount rule.
-   * @param {string} discountId - id of discount with discount rule to update,
-   *   given that the rule is validated
-   * @param {Discount} update - the data to update the discount rule with
+   * Adds a valid variant to the discount rule valid_for array.
+   * @param {string} discountId - id of discount
+   * @param {string} variantId - id of variant to add
    * @return {Promise} the result of the update operation
    */
-  async updateDiscountRule(discountId, update) {
+  async addValidVariant(discountId, variantId) {
     const discount = await this.retrieve(discountId)
-
-    const validatedDiscountRule = this.validateDiscountRule_(update)
 
     return this.discountModel_.updateOne(
       { _id: discount._id },
-      { $set: { discount_rule: validatedDiscountRule } },
+      { $push: { discount_rule: { valid_for: variantId } } },
+      { runValidators: true }
+    )
+  }
+
+  /**
+   * Removes a valid variant from the discount rule valid_for array
+   * @param {string} discountId - id of discount
+   * @param {string} variantId - id of variant to add
+   * @return {Promise} the result of the update operation
+   */
+  async removeValidVariant(discountId, variantId) {
+    const discount = await this.retrieve(discountId)
+
+    return this.discountModel_.updateOne(
+      { _id: discount._id },
+      { $pull: { discount_rule: { valid_for: variantId } } },
+      { runValidators: true }
+    )
+  }
+
+  /**
+   * Adds a region to the discount regions array.
+   * @param {string} discountId - id of discount
+   * @param {string} regionId - id of region to add
+   * @return {Promise} the result of the update operation
+   */
+  async addRegion(discountId, regionId) {
+    const discount = await this.retrieve(discountId)
+
+    return this.discountModel_.updateOne(
+      { _id: discount._id },
+      { $push: { regions: regionId } },
+      { runValidators: true }
+    )
+  }
+
+  /**
+   * Removes a region from the discount regions array.
+   * @param {string} discountId - id of discount
+   * @param {string} regionId - id of region to remove
+   * @return {Promise} the result of the update operation
+   */
+  async removeRegion(discountId, regionId) {
+    const discount = await this.retrieve(discountId)
+
+    return this.discountModel_.updateOne(
+      { _id: discount._id },
+      { $pull: { regions: regionId } },
       { runValidators: true }
     )
   }
@@ -199,6 +248,33 @@ class DiscountService extends BaseService {
     return this.discountModel_.deleteOne({ _id: discount._id }).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
+  }
+
+  /**
+   * Dedicated method to set metadata for a discount.
+   * To ensure that plugins does not overwrite each
+   * others metadata fields, setMetadata is provided.
+   * @param {string} discountId - the id to apply metadata to.
+   * @param {string} key - key for metadata field
+   * @param {string} value - value for metadata field.
+   * @return {Promise} resolves to the updated result.
+   */
+  setMetadata(discountId, key, value) {
+    const validatedId = this.validateId_(discountId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.discountModel_
+      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 }
 

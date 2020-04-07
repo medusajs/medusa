@@ -85,16 +85,146 @@ describe("AuthService", () => {
       )
     })
 
-    it("fails if discount rule update are attempted", async () => {
+    it("successfully calls model layer with discount_rule", async () => {
+      await discountService.update(IdMap.getId("total10"), {
+        discount_rule: { type: "fixed", value: 10, allocation: "total" },
+      })
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("total10"),
+        },
+        {
+          $set: {
+            discount_rule: { type: "fixed", value: 10, allocation: "total" },
+          },
+        },
+        { runValidators: true }
+      )
+    })
+
+    it("throws if metadata update is attempted", async () => {
       try {
         await discountService.update(IdMap.getId("total10"), {
-          discount_rule: { type: "fixed", value: 10, allocation: "total" },
+          metadata: { test: "test" },
         })
       } catch (error) {
         expect(error.message).toEqual(
-          "Use updateDiscountRule to update the discount rule"
+          "Use setMetadata to update discount metadata"
         )
       }
+    })
+  })
+
+  describe("addValidVariant", () => {
+    const discountService = new DiscountService({
+      discountModel: DiscountModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls model layer updateOne", async () => {
+      await discountService.addValidVariant(
+        IdMap.getId("total10"),
+        IdMap.getId("testVariant")
+      )
+
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("total10"),
+        },
+        {
+          $push: { discount_rule: { valid_for: IdMap.getId("testVariant") } },
+        },
+        { runValidators: true }
+      )
+    })
+  })
+
+  describe("removeValidVariant", () => {
+    const discountService = new DiscountService({
+      discountModel: DiscountModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls model layer updateOne", async () => {
+      await discountService.removeValidVariant(
+        IdMap.getId("total10"),
+        IdMap.getId("testVariant")
+      )
+
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("total10"),
+        },
+        {
+          $pull: { discount_rule: { valid_for: IdMap.getId("testVariant") } },
+        },
+        { runValidators: true }
+      )
+    })
+  })
+
+  describe("addRegion", () => {
+    const discountService = new DiscountService({
+      discountModel: DiscountModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls model layer updateOne", async () => {
+      await discountService.addRegion(
+        IdMap.getId("total10"),
+        IdMap.getId("testRegion")
+      )
+
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("total10"),
+        },
+        {
+          $push: { regions: IdMap.getId("testRegion") },
+        },
+        { runValidators: true }
+      )
+    })
+  })
+
+  describe("removeRegion", () => {
+    const discountService = new DiscountService({
+      discountModel: DiscountModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls model layer updateOne", async () => {
+      await discountService.removeRegion(
+        IdMap.getId("total10"),
+        IdMap.getId("testRegion")
+      )
+
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("total10"),
+        },
+        {
+          $pull: { regions: IdMap.getId("testRegion") },
+        },
+        { runValidators: true }
+      )
     })
   })
 })
