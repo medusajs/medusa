@@ -1,13 +1,7 @@
 export default async (req, res) => {
-  const productService = req.scope.resolve("productService")
-  let products = await productService.list({})
-
-  if (!products) {
-    res.sendStatus(404)
-    return
-  }
-
   try {
+    const productService = req.scope.resolve("productService")
+    let products = await productService.list({})
     products = await Promise.all(
       products.map(
         async product =>

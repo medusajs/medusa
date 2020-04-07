@@ -17,17 +17,7 @@ export default async (req, res) => {
     const productService = req.scope.resolve("productService")
     const product = await productService.retrieve(id)
 
-    if (value.title) {
-      await productService.updateOption(product._id, optionId, {
-        title: value.title,
-      })
-    }
-
-    if (value.values) {
-      await productService.updateOption(product._id, optionId, {
-        values: value.values,
-      })
-    }
+    await productService.updateOption(product._id, optionId, value)
 
     let newProduct = await productService.retrieve(product._id)
     newProduct = await productService.decorate(newProduct, [

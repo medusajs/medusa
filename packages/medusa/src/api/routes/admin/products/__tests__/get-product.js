@@ -36,31 +36,4 @@ describe("GET /admin/products/:id", () => {
       expect(subject.body.decorated).toEqual(true)
     })
   })
-
-  describe("returns 404 on undefined cart", () => {
-    let subject
-
-    beforeAll(async () => {
-      subject = await request("GET", `/admin/products/failure`, {
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
-      })
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls get product from productSerice", () => {
-      expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.retrieve).toHaveBeenCalledWith("failure")
-    })
-
-    it("returns 404 status", () => {
-      expect(subject.status).toEqual(404)
-    })
-  })
 })

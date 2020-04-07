@@ -22,14 +22,9 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const productService = req.scope.resolve("productService")
-  const oldProduct = await productService.retrieve(id)
-  if (!oldProduct) {
-    res.sendStatus(404)
-    return
-  }
-
   try {
+    const productService = req.scope.resolve("productService")
+    const oldProduct = await productService.retrieve(id)
     await productService.update(oldProduct._id, value)
     let newProduct = await productService.retrieve(oldProduct._id)
     newProduct = await productService.decorate(newProduct, [
