@@ -6,7 +6,9 @@ export default async (req, res) => {
 
   const schema = Validator.object().keys({
     option_id: Validator.string().required(),
-    data: Validator.object().optional(),
+    data: Validator.object()
+      .optional()
+      .default({}),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -17,17 +19,7 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
-    const method = await cartService.retrieveShippingOption(id, value.option_id)
-
-    // If the option accepts additional data this will be added
-    if (!_.isEmpty(value.data)) {
-      method.data = {
-        ...method.data,
-        ...value.data,
-      }
-    }
-
-    await cartService.addShippingMethod(id, method)
+    await cartService.addShippingMethod(id, value.option_id, value.data)
 
     let cart = await cartService.retrieve(id)
     cart = await cartService.decorate(cart)

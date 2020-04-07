@@ -15,6 +15,18 @@ export const ProductServiceMock = {
   createDraft: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
   }),
+  retrieve: jest.fn().mockImplementation(id => {
+    if (id === IdMap.getId("validId")) {
+      return Promise.resolve({ _id: IdMap.getId("validId") })
+    }
+    if (id === IdMap.getId("product1")) {
+      return Promise.resolve(products.product1)
+    }
+    if (id === IdMap.getId("product2")) {
+      return Promise.resolve(products.product2)
+    }
+    return Promise.resolve(undefined)
+  }),
   list: jest.fn().mockImplementation(data => {
     // Used to retrieve a product based on a variant id see
     // ProductVariantService.addOptionValue

@@ -1,0 +1,33 @@
+{
+  "name": "medusa-fulfillment-manual",
+  "version": "0.1.27-alpha.0",
+  "description": "A manual fulfillment provider for Medusa",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-fulfillment-manual"
+  },
+  "author": "Sebastian Rindom",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "client-sessions": "^0.8.0",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0"
+  },
+  "scripts": {
+    "build": "babel src --out-dir . --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.7.6",
+    "express": "^4.17.1",
+    "medusa-interfaces": "^0.1.27-alpha.0"
+  }
+}
