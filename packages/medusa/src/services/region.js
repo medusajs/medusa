@@ -26,11 +26,23 @@ class RegionService extends BaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
   }
 
+  /**
+   * Creates a region.
+   * @param {Region} rawRegion - the unvalidated region
+   * @return {Region} the newly created region
+   */
   async create(rawRegion) {
     const region = await this.validateFields_(rawRegion)
     return this.regionModel_.create(region)
   }
 
+  /**
+   * Updates a region. Note metadata cannot be set with the update function, use
+   * setMetadata instead.
+   * @param {string} regionId - the region to update
+   * @param {object} update - the data to update the region with
+   * @return {Promise} the result of the update operation
+   */
   async update(regionId, update) {
     const region = await this.validateFields_(update, regionId)
     return this.regionModel_.updateOne(
@@ -43,6 +55,13 @@ class RegionService extends BaseService {
     )
   }
 
+  /**
+   * Validates fields for creation and updates. If the region already exisits
+   * the id can be passed to check that country updates are allowed.
+   * @param {object} region - the region data to validate
+   * @param {string?} id - optional id of the region to check against
+   * @return {object} the validated region data
+   */
   async validateFields_(region, id = undefined) {
     if (region.tax_rate) {
       this.validateTaxRate_(region.tax_rate)
@@ -87,6 +106,10 @@ class RegionService extends BaseService {
     return region
   }
 
+  /**
+   * Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
+   * @param {number} taxRate - a number representing the tax rate of the region
+   */
   validateTaxRate_(taxRate) {
     if (taxRate > 1 || taxRate < 0) {
       throw new MedusaError(
@@ -96,6 +119,10 @@ class RegionService extends BaseService {
     }
   }
 
+  /**
+   * Validates a currency code. Will throw if the currency code doesn't exist.
+   * @param {string} currencyCode - an ISO currency code
+   */
   validateCurrency_(currencyCode) {
     if (!currencies[currencyCode]) {
       throw new MedusaError(
@@ -105,6 +132,12 @@ class RegionService extends BaseService {
     }
   }
 
+  /**
+   * Validates a country code. Will normalize the code before checking for
+   * existence.
+   * @param {string} code - a 2 digit alphanumeric ISO country code
+   * @param {string} id - the id of the current region to check against
+   */
   async validateCountry_(code, id) {
     const countryCode = code.toUpperCase()
     const country = countries.find(c => c.alpha2 === countryCode)
@@ -144,6 +177,11 @@ class RegionService extends BaseService {
     return value
   }
 
+  /**
+   * Retrieves a region by its id.
+   * @param {string} regionId - the id of the region to retrieve
+   * @return {Region} the region
+   */
   async retrieve(regionId) {
     const validatedId = this.validateId_(regionId)
     const region = await this.regionModel_.findOne({ _id: validatedId })
@@ -157,12 +195,23 @@ class RegionService extends BaseService {
     return region
   }
 
+  /**
+   * Deletes a region.
+   * @param {string} regionId - the region to delete
+   * @return {Promise} the result of the delete operation
+   */
   delete(regionId) {
     return this.regionModel_.deleteOne({
       _id: regionId,
     })
   }
 
+  /**
+   * Adds a country to the region.
+   * @param {string} regionId - the region to add a country to
+   * @param {string} code - a 2 digit alphanumeric ISO country code.
+   * @return {Promise} the result of the update operation
+   */
   async addCountry(regionId, code) {
     const region = await this.retrieve(regionId)
     const countryCode = await this.validateCountry_(code, regionId)
@@ -181,6 +230,12 @@ class RegionService extends BaseService {
     )
   }
 
+  /**
+   * Removes a country from a Region
+   * @param {string} regionId - the region to remove from
+   * @param {string} code - a 2 digit alphanumeric ISO country code to remove
+   * @return {Promise} the result of the update operation
+   */
   async removeCountry(regionId, code) {
     const countryCode = code.toUpperCase()
     const region = await this.retrieve(regionId)
@@ -195,6 +250,13 @@ class RegionService extends BaseService {
     )
   }
 
+  /**
+   * Adds a payment provider that is available in the region. Fails if the
+   * provider doesn't exist.
+   * @param {string} regionId - the region to add the provider to
+   * @param {string} providerId - the provider to add to the region
+   * @return {Promise} the result of the update operation
+   */
   async addPaymentProvider(regionId, providerId) {
     const region = await this.retrieve(regionId)
 
@@ -215,6 +277,13 @@ class RegionService extends BaseService {
     )
   }
 
+  /**
+   * Adds a fulfillment provider that is available in the region. Fails if the
+   * provider doesn't exist.
+   * @param {string} regionId - the region to add the provider to
+   * @param {string} providerId - the provider to add to the region
+   * @return {Promise} the result of the update operation
+   */
   async addFulfillmentProvider(regionId, providerId) {
     const region = await this.retrieve(regionId)
 
@@ -235,6 +304,12 @@ class RegionService extends BaseService {
     )
   }
 
+  /**
+   * Removes a payment provider from a region. Is idempotent.
+   * @param {string} regionId - the region to remove the provider from
+   * @param {string} providerId - the provider to remove from the region
+   * @return {Promise} the result of the update operation
+   */
   async removePaymentProvider(regionId, providerId) {
     const region = await this.retrieve(regionId)
 
@@ -248,6 +323,12 @@ class RegionService extends BaseService {
     )
   }
 
+  /**
+   * Removes a fulfillment provider from a region. Is idempotent.
+   * @param {string} regionId - the region to remove the provider from
+   * @param {string} providerId - the provider to remove from the region
+   * @return {Promise} the result of the update operation
+   */
   async removeFulfillmentProvider(regionId, providerId) {
     const region = await this.retrieve(regionId)
 
