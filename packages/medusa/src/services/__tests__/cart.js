@@ -10,6 +10,8 @@ import { RegionServiceMock } from "../__mocks__/region"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
+import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
+import { DiscountServiceMock } from "../__mocks__/discount"
 
 describe("CartService", () => {
   describe("retrieve", () => {
@@ -1263,6 +1265,127 @@ describe("CartService", () => {
           "The option id doesn't match any available shipping options"
         )
       })
+    })
+  })
+
+  describe("applyDiscount", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      discountService: DiscountServiceMock,
+    })
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully applies discount to cart", async () => {
+      await cartService.applyDiscount(IdMap.getId("fr-cart"), "10%OFF")
+      expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.findOne).toHaveBeenCalledWith({
+        _id: IdMap.getId("fr-cart"),
+      })
+
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledWith("10%OFF")
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("fr-cart"),
+        },
+        {
+          $push: { discounts: discounts.total10Percent },
+        }
+      )
+    })
+
+    it("successfully applies discount to cart and removes old one", async () => {
+      await cartService.applyDiscount(
+        IdMap.getId("discount-cart-with-existing"),
+        "10%OFF"
+      )
+      expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.findOne).toHaveBeenCalledWith({
+        _id: IdMap.getId("discount-cart-with-existing"),
+      })
+
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledWith("10%OFF")
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("discount-cart-with-existing"),
+        },
+        {
+          $push: { discounts: discounts.total10Percent },
+          $pull: { discounts: { _id: IdMap.getId("item10Percent") } },
+        }
+      )
+    })
+
+    it("successfully applies free shipping", async () => {
+      await cartService.applyDiscount(
+        IdMap.getId("discount-cart-with-existing"),
+        "FREESHIPPING"
+      )
+      expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.findOne).toHaveBeenCalledWith({
+        _id: IdMap.getId("discount-cart-with-existing"),
+      })
+
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledWith(
+        "FREESHIPPING"
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("discount-cart-with-existing"),
+        },
+        {
+          $push: { discounts: discounts.freeShipping },
+        }
+      )
+    })
+
+    it("successfully resolves ", async () => {
+      await cartService.applyDiscount(
+        IdMap.getId("discount-cart-with-existing"),
+        "FREESHIPPING"
+      )
+      expect(CartModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.findOne).toHaveBeenCalledWith({
+        _id: IdMap.getId("discount-cart-with-existing"),
+      })
+
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledWith(
+        "FREESHIPPING"
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("discount-cart-with-existing"),
+        },
+        {
+          $push: { discounts: discounts.freeShipping },
+        }
+      )
+    })
+
+    it("throws if discount is not available in region", async () => {
+      try {
+        await cartService.applyDiscount(
+          IdMap.getId("discount-cart-with-existing"),
+          "US10"
+        )
+      } catch (error) {
+        expect(error.message).toEqual(
+          "The discount is not available in current region"
+        )
+      }
     })
   })
 })
