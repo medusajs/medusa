@@ -3,6 +3,7 @@ import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
 import productVariantRoutes from "./product-variants"
+import regionRoutes from "./regions"
 
 const route = Router()
 
@@ -16,6 +17,7 @@ export default app => {
   route.use(middlewares.authenticate())
 
   productRoutes(route)
+  regionRoutes(route)
   // productVariantRoutes(route)
 
   return app
