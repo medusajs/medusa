@@ -65,6 +65,9 @@ export const ProductServiceMock = {
     if (productId === IdMap.getId("product2")) {
       return Promise.resolve(products.product2)
     }
+    if (productId === IdMap.getId("validId")) {
+      return Promise.resolve({ _id: IdMap.getId("validId") })
+    }
     if (productId === IdMap.getId("publish")) {
       return Promise.resolve(products.publishProduct)
     }
