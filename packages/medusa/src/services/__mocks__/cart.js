@@ -131,6 +131,59 @@ export const carts = {
     discounts: [],
     customer_id: "",
   },
+  discountCart: {
+    _id: IdMap.getId("discount-cart"),
+    discounts: [],
+    region_id: IdMap.getId("region-france"),
+    items: [
+      {
+        _id: IdMap.getId("line"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: [
+          {
+            unit_price: 8,
+            variant: {
+              _id: IdMap.getId("eur-8-us-10"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+          {
+            unit_price: 10,
+            variant: {
+              _id: IdMap.getId("eur-10-us-12"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+        ],
+        quantity: 10,
+      },
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 10,
+          variant: {
+            _id: IdMap.getId("eur-10-us-12"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+  },
 }
 
 export const CartServiceMock = {

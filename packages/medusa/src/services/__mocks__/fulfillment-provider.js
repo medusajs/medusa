@@ -1,21 +1,30 @@
-export const DefaultFulfillmentMock = {
-  getStatus: jest.fn().mockImplementation(data => {
-    if (data.money_id === "success") {
-      return Promise.resolve("authorized")
+export const DefaultProviderMock = {
+  validateOption: jest.fn().mockImplementation(data => {
+    if (data.id === "new") {
+      return Promise.resolve(true)
     }
 
-    if (data.money_id === "fail") {
-      return Promise.resolve("fail")
+    return Promise.resolve(false)
+  }),
+  canCalculate: jest.fn().mockImplementation(data => {
+    if (data.id === "bonjour") {
+      return Promise.resolve(true)
     }
 
-    return Promise.resolve("initial")
+    return Promise.resolve(false)
+  }),
+  calculatePrice: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
+  createOrder: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
   }),
 }
 
 export const FulfillmentProviderServiceMock = {
   retrieveProvider: jest.fn().mockImplementation(providerId => {
     if (providerId === "default_provider") {
-      return DefaultFulfillmentMock
+      return DefaultProviderMock
     }
     throw new Error("Provider Not Found")
   }),

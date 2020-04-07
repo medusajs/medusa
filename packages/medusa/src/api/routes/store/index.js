@@ -1,6 +1,7 @@
 import { Router } from "express"
 import productRoutes from "./products"
 import cartRoutes from "./carts"
+import shippingOptionRoutes from "./shipping-options"
 import middlewares from "../../middlewares"
 
 const route = Router()
@@ -10,6 +11,7 @@ export default app => {
 
   productRoutes(route)
   cartRoutes(route)
+  shippingOptionRoutes(route)
 
   return app
 }

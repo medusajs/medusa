@@ -15,6 +15,7 @@ export const regions = {
     name: "France",
     countries: ["FR"],
     payment_providers: ["default_provider", "france-provider"],
+    fulfillment_providers: ["default_provider"],
     currency_code: "eur",
   },
   regionUs: {
