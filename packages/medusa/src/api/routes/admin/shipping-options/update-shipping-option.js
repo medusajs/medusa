@@ -28,19 +28,7 @@ export default async (req, res) => {
   try {
     const optionService = req.scope.resolve("shippingOptionService")
 
-    if (value.name) {
-      await optionService.update(optionId, {
-        name: value.name,
-      })
-    }
-
-    if (value.price) {
-      await optionService.setPrice(optionId, value.price)
-    }
-
-    if (value.requirements) {
-      await optionService.setRequirements(optionId, value.requirements)
-    }
+    await optionService.update(optionId, value)
 
     const data = await optionService.retrieve(optionId)
 

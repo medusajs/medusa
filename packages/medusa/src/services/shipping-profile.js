@@ -96,7 +96,7 @@ class ShippingProfileService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  update(profileId, update) {
+  async update(profileId, update) {
     const validatedId = this.validateId_(profileId)
 
     if (update.metadata) {
@@ -107,16 +107,47 @@ class ShippingProfileService extends BaseService {
     }
 
     if (update.products) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use addProduct, removeProduct to update the products field"
+      // We use the set to ensure that the array doesn't include duplicates
+      const productSet = new Set(update.products)
+
+      // Go through each product and ensure they exist and if they are found in
+      // other profiles that they are removed from there.
+      update.products = await Promise.all(
+        [...productSet].map(async pId => {
+          const product = await this.productService_.retrieve(pId)
+
+          // Ensure that every product only exists in exactly one profile
+          const existing = await this.profileModel_.findOne({
+            products: product._id,
+          })
+          if (existing && existing._id !== profileId) {
+            await this.removeProduct(existing._id, product._id)
+          }
+
+          return product._id
+        })
       )
     }
 
     if (update.shipping_options) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use addShippingOption, removeShippingOption to update the shipping_options field"
+      // No duplicates
+      const optionSet = new Set(update.shipping_options)
+
+      update.shipping_options = await Promise.all(
+        [...optionSet].map(async sId => {
+          const profile = await this.retrieve(profileId)
+          const shippingOption = await this.shippingOptionService_.retrieve(sId)
+
+          // If the shipping method exists in a different profile remove it
+          const existing = await this.profileModel_.findOne({
+            shipping_options: shippingOption._id,
+          })
+          if (existing && existing._id !== profileId) {
+            await this.removeShippingOption(existing._id, shippingOption._id)
+          }
+
+          return shippingOption._id
+        })
       )
     }
 

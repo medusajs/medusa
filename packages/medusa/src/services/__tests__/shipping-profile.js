@@ -158,6 +158,8 @@ describe("ShippingProfileService", () => {
   describe("update", () => {
     const profileService = new ShippingProfileService({
       shippingProfileModel: ShippingProfileModelMock,
+      productService: ProductServiceMock,
+      shippingOptionService: ShippingOptionServiceMock,
     })
 
     beforeEach(() => {
@@ -165,7 +167,7 @@ describe("ShippingProfileService", () => {
     })
 
     it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
+      const id = IdMap.getId("validId")
 
       await profileService.update(`${id}`, { name: "new title" })
 
@@ -177,45 +179,103 @@ describe("ShippingProfileService", () => {
       )
     })
 
+    it("calls updateOne products", async () => {
+      const id = IdMap.getId("validId")
+
+      await profileService.update(`${id}`, {
+        products: [IdMap.getId("product1"), IdMap.getId("product1")],
+      })
+
+      expect(ProductServiceMock.retrieve).toBeCalledTimes(1)
+      expect(ProductServiceMock.retrieve).toBeCalledWith(
+        IdMap.getId("product1")
+      )
+
+      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
+      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
+        { _id: `${id}` },
+        { $set: { products: [IdMap.getId("product1")] } },
+        { runValidators: true }
+      )
+    })
+
+    it("calls updateOne products", async () => {
+      const id = IdMap.getId("profile1")
+
+      await profileService.update(`${id}`, {
+        products: [IdMap.getId("validId")],
+      })
+
+      expect(ProductServiceMock.retrieve).toBeCalledTimes(1)
+      expect(ProductServiceMock.retrieve).toBeCalledWith(IdMap.getId("validId"))
+
+      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(2)
+      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
+        { _id: IdMap.getId("validId") },
+        { $pull: { products: IdMap.getId("validId") } }
+      )
+      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
+        { _id: `${id}` },
+        { $set: { products: [IdMap.getId("validId")] } },
+        { runValidators: true }
+      )
+    })
+
+    it("calls updateOne with shipping options", async () => {
+      const id = IdMap.getId("profile1")
+
+      await profileService.update(`${id}`, {
+        shipping_options: [IdMap.getId("validId")],
+      })
+
+      expect(ShippingOptionServiceMock.retrieve).toBeCalledTimes(1)
+      expect(ShippingOptionServiceMock.retrieve).toBeCalledWith(
+        IdMap.getId("validId")
+      )
+
+      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(2)
+      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
+        { _id: IdMap.getId("validId") },
+        { $pull: { shipping_options: IdMap.getId("validId") } }
+      )
+      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
+        { _id: `${id}` },
+        { $set: { shipping_options: [IdMap.getId("validId")] } },
+        { runValidators: true }
+      )
+    })
+
+    it("calls updateOne with shipping options", async () => {
+      const id = IdMap.getId("validId")
+
+      await profileService.update(`${id}`, {
+        shipping_options: [IdMap.getId("validId")],
+      })
+
+      expect(ShippingOptionServiceMock.retrieve).toBeCalledTimes(1)
+      expect(ShippingOptionServiceMock.retrieve).toBeCalledWith(
+        IdMap.getId("validId")
+      )
+
+      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
+      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
+        { _id: `${id}` },
+        { $set: { shipping_options: [IdMap.getId("validId")] } },
+        { runValidators: true }
+      )
+    })
+
     it("throw error on invalid product id type", async () => {
-      try {
-        await profileService.update(19314235, { name: "new title" })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The profileId could not be casted to an ObjectId"
-        )
-      }
+      await expect(
+        profileService.update(19314235, { name: "new title" })
+      ).rejects.toThrow("The profileId could not be casted to an ObjectId")
     })
 
     it("throws error when trying to update metadata", async () => {
-      const id = mongoose.Types.ObjectId()
-      try {
-        await profileService.update(`${id}`, { metadata: { key: "value" } })
-      } catch (err) {
-        expect(err.message).toEqual("Use setMetadata to update metadata fields")
-      }
-    })
-
-    it("throws error when trying to update shipping options", async () => {
-      const id = mongoose.Types.ObjectId()
-      try {
-        await profileService.update(`${id}`, { shipping_options: ["1", "2"] })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Use addShippingOption, removeShippingOption to update the shipping_options field"
-        )
-      }
-    })
-
-    it("throws error when trying to update products", async () => {
-      const id = mongoose.Types.ObjectId()
-      try {
-        await profileService.update(`${id}`, { products: ["1", "2"] })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Use addProduct, removeProduct to update the products field"
-        )
-      }
+      const id = IdMap.getId("validId")
+      await expect(
+        profileService.update(`${id}`, { metadata: { key: "value" } })
+      ).rejects.toThrow("Use setMetadata to update metadata fields")
     })
   })
 

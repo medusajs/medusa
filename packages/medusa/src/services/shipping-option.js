@@ -257,26 +257,6 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
-   * Sets the price of a shipping option
-   * @param {string} optionId - the option to set price for
-   * @param {ShippingOptionPrice} - the price to set
-   * @return {Promise} the update result
-   */
-  async setPrice(optionId, price) {
-    const option = await this.retrieve(optionId)
-    const validatedPrice = await this.validatePrice_(price, option)
-
-    return this.optionModel_.updateOne(
-      {
-        _id: option._id,
-      },
-      {
-        $set: { price: validatedPrice },
-      }
-    )
-  }
-
-  /**
    * Updates a profile. Metadata updates and product updates should use
    * dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
    * will throw errors if metadata or product updates are attempted.
@@ -286,16 +266,17 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(optionId, update) {
+    const option = await this.retrieve(optionId)
     const validatedId = this.validateId_(optionId)
 
     if (update.metadata) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
+        MedusaError.Types.NOT_ALLOWED,
         "Use setMetadata to update metadata fields"
       )
     }
 
-    if (update.region_id || update.provider_id) {
+    if (update.region_id || update.provider_id || update.data) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Region and Provider cannot be updated after creation"
@@ -303,17 +284,24 @@ class ShippingOptionService extends BaseService {
     }
 
     if (update.requirements) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use addRequirement, removeRequirement to update the requirements field"
-      )
+      update.requirements = update.requirements.reduce((acc, r) => {
+        const validated = this.validateRequirement_(r)
+
+        if (acc.find(raw => raw.type === validated.type)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Only one requirement of each type is allowed"
+          )
+        }
+
+        acc.push(validated)
+
+        return acc
+      }, [])
     }
 
     if (update.price) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setPrice to update the price field"
-      )
+      update.price = await this.validatePrice_(update.price, option)
     }
 
     return this.optionModel_
@@ -352,35 +340,6 @@ class ShippingOptionService extends BaseService {
    * @property {string} type - one of max_subtotal, min_subtotal
    * @property {number} value - the value to match against
    */
-
-  /**
-   * Sets or replaces requirements.
-   * @param {string} optionId - the option to add the requirements to.
-   * @param {[ShippingRequirement]} requirements - the requirements to set
-   * @return {Promise} the result of update
-   */
-  async setRequirements(optionId, requirements) {
-    const option = await this.retrieve(optionId)
-    const validatedRequirements = requirements.reduce((acc, r) => {
-      const validated = this.validateRequirement_(r)
-
-      if (acc.find(raw => raw.type === validated.type)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Only one requirement of each type is allowed"
-        )
-      }
-
-      acc.push(validated)
-
-      return acc
-    }, [])
-
-    return this.optionModel_.updateOne(
-      { _id: option._id },
-      { $set: { requirements: validatedRequirements } }
-    )
-  }
 
   /**
    * Adds a requirement to a shipping option. Only 1 requirement of each type

@@ -43,27 +43,17 @@ describe("POST /admin/shipping-options", () => {
         IdMap.getId("validId"),
         {
           name: "Test option",
-        }
-      )
-
-      expect(ShippingOptionServiceMock.setPrice).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionServiceMock.setPrice).toHaveBeenCalledWith(
-        IdMap.getId("validId"),
-        {
-          type: "flat_rate",
-          amount: 100,
-        }
-      )
-
-      expect(ShippingOptionServiceMock.setRequirements).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionServiceMock.setRequirements).toHaveBeenCalledWith(
-        IdMap.getId("validId"),
-        [
-          {
-            type: "min_subtotal",
-            value: 1,
+          price: {
+            type: "flat_rate",
+            amount: 100,
           },
-        ]
+          requirements: [
+            {
+              type: "min_subtotal",
+              value: 1,
+            },
+          ],
+        }
       )
     })
   })

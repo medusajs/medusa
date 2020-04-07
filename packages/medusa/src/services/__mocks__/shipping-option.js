@@ -43,6 +43,9 @@ export const shippingOptions = {
     },
     provider_id: "test_shipper",
   },
+  shipping1: {
+    _id: IdMap.getId("shipping1"),
+  },
   validId: {
     _id: IdMap.getId("validId"),
   },
@@ -50,6 +53,9 @@ export const shippingOptions = {
 
 export const ShippingOptionServiceMock = {
   retrieve: jest.fn().mockImplementation(optionId => {
+    if (optionId === IdMap.getId("shipping1")) {
+      return Promise.resolve(shippingOptions.shipping1)
+    }
     if (optionId === IdMap.getId("validId")) {
       return Promise.resolve(shippingOptions.validId)
     }
@@ -61,8 +67,6 @@ export const ShippingOptionServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  setPrice: jest.fn().mockReturnValue(Promise.resolve()),
-  setRequirements: jest.fn().mockReturnValue(Promise.resolve()),
   update: jest.fn().mockReturnValue(Promise.resolve()),
   list: jest.fn().mockImplementation(data => {
     if (!data) {
