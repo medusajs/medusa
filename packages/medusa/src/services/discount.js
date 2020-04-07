@@ -7,7 +7,12 @@ import _ from "lodash"
  * @implements BaseService
  */
 class DiscountService extends BaseService {
-  constructor({ discountModel, totalsService }) {
+  constructor({
+    discountModel,
+    totalsService,
+    productVariantService,
+    regionService,
+  }) {
     super()
 
     /** @private @const {DiscountModel} */
@@ -15,6 +20,12 @@ class DiscountService extends BaseService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    /** @private @const {ProductVariantService} */
+    this.productVariantService_ = productVariantService
+
+    /** @private @const {RegionService} */
+    this.regionService_ = regionService
   }
 
   /**
@@ -176,9 +187,11 @@ class DiscountService extends BaseService {
   async addValidVariant(discountId, variantId) {
     const discount = await this.retrieve(discountId)
 
+    const variant = await this.productVariantService_.retrieve(variantId)
+
     return this.discountModel_.updateOne(
       { _id: discount._id },
-      { $push: { discount_rule: { valid_for: variantId } } },
+      { $push: { discount_rule: { valid_for: variant._id } } },
       { runValidators: true }
     )
   }
@@ -192,9 +205,11 @@ class DiscountService extends BaseService {
   async removeValidVariant(discountId, variantId) {
     const discount = await this.retrieve(discountId)
 
+    const variant = await this.productVariantService_.retrieve(variantId)
+
     return this.discountModel_.updateOne(
       { _id: discount._id },
-      { $pull: { discount_rule: { valid_for: variantId } } },
+      { $pull: { discount_rule: { valid_for: variant._id } } },
       { runValidators: true }
     )
   }
@@ -208,9 +223,11 @@ class DiscountService extends BaseService {
   async addRegion(discountId, regionId) {
     const discount = await this.retrieve(discountId)
 
+    const region = await this.regionService_.retrieve(regionId)
+
     return this.discountModel_.updateOne(
       { _id: discount._id },
-      { $push: { regions: regionId } },
+      { $push: { regions: region._id } },
       { runValidators: true }
     )
   }
@@ -224,9 +241,11 @@ class DiscountService extends BaseService {
   async removeRegion(discountId, regionId) {
     const discount = await this.retrieve(discountId)
 
+    const region = await this.regionService_.retrieve(regionId)
+
     return this.discountModel_.updateOne(
       { _id: discount._id },
-      { $pull: { regions: regionId } },
+      { $pull: { regions: region._id } },
       { runValidators: true }
     )
   }

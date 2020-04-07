@@ -2,8 +2,7 @@ import DiscountService from "../discount"
 import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
 import { IdMap } from "medusa-test-utils"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
-import { carts } from "../__mocks__/cart"
-import { TotalsServiceMock } from "../__mocks__/totals"
+import { RegionServiceMock } from "../__mocks__/region"
 
 describe("AuthService", () => {
   describe("create", () => {
@@ -119,6 +118,7 @@ describe("AuthService", () => {
   describe("addValidVariant", () => {
     const discountService = new DiscountService({
       discountModel: DiscountModelMock,
+      productVariantService: ProductVariantServiceMock,
     })
 
     beforeEach(() => {
@@ -147,6 +147,7 @@ describe("AuthService", () => {
   describe("removeValidVariant", () => {
     const discountService = new DiscountService({
       discountModel: DiscountModelMock,
+      productVariantService: ProductVariantServiceMock,
     })
 
     beforeEach(() => {
@@ -175,6 +176,7 @@ describe("AuthService", () => {
   describe("addRegion", () => {
     const discountService = new DiscountService({
       discountModel: DiscountModelMock,
+      regionService: RegionServiceMock,
     })
 
     beforeEach(() => {
@@ -203,6 +205,7 @@ describe("AuthService", () => {
   describe("removeRegion", () => {
     const discountService = new DiscountService({
       discountModel: DiscountModelMock,
+      regionService: RegionServiceMock,
     })
 
     beforeEach(() => {
