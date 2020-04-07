@@ -6,6 +6,11 @@ export const users = {
     email: "oliver@medusa.test",
     passwordHash: "123456789",
   },
+  permissionUser: {
+    _id: IdMap.getId("permissions-user"),
+    email: "oliver@medusa.com",
+    passwordHash: "123456789",
+  },
 }
 
 export const UserModelMock = {
@@ -17,6 +22,9 @@ export const UserModelMock = {
   findOne: jest.fn().mockImplementation(query => {
     if (query._id === IdMap.getId("test-user")) {
       return Promise.resolve(users.testUser)
+    }
+    if (query._id === IdMap.getId("permission-user")) {
+      return Promise.resolve(users.permissionUser)
     }
     return Promise.resolve(undefined)
   }),
