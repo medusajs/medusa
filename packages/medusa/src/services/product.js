@@ -379,7 +379,7 @@ class ProductService extends BaseService {
       )
     }
 
-    const { title } = data
+    const { title, values } = data
     const titleExists = product.options.some(
       o => o.title.toUpperCase() === title.toUpperCase()
     )
