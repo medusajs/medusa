@@ -5,36 +5,6 @@ import { IdMap } from "medusa-test-utils"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
 describe("Get product by id", () => {
-  const testId = `${mongoose.Types.ObjectId("56cb91bdc3464f14678934ca")}`
-  // const productServiceMock = {
-  //   retrieve: jest.fn().mockImplementation(id => {
-  //     if (id === testId) {
-  //       return Promise.resolve({ _id: id, title: "test" })
-  //     }
-  //     return Promise.resolve(undefined)
-  //   }),
-  // }
-  // const reqMock = id => {
-  //   return {
-  //     params: {
-  //       productId: id,
-  //     },
-  //     scope: {
-  //       resolve: jest.fn().mockImplementation(name => {
-  //         if (name === "productService") {
-  //           return productServiceMock
-  //         }
-  //         return undefined
-  //       }),
-  //     },
-  //   }
-  // }
-
-  // const resMock = {
-  //   sendStatus: jest.fn().mockReturnValue(),
-  //   json: jest.fn().mockReturnValue(),
-  // }
-
   describe("get product by id successfull", () => {
     let subject
     beforeAll(async () => {
