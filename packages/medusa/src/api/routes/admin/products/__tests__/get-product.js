@@ -1,12 +1,11 @@
-import mongoose from "mongoose"
-import getProduct from "../get-product"
-import { request } from "../../../../../helpers/test-request"
 import { IdMap } from "medusa-test-utils"
+import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("Get product by id", () => {
-  describe("get product by id successfull", () => {
+describe("GET /admin/products/:id", () => {
+  describe("successfully gets a product", () => {
     let subject
+
     beforeAll(async () => {
       subject = await request(
         "GET",
