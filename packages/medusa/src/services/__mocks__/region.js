@@ -57,6 +57,21 @@ export const RegionServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  delete: jest.fn().mockImplementation(data => Promise.resolve()),
+  create: jest.fn().mockImplementation(data => Promise.resolve()),
+  addCountry: jest.fn().mockImplementation(data => Promise.resolve()),
+  addFulfillmentProvider: jest
+    .fn()
+    .mockImplementation(data => Promise.resolve()),
+  addPaymentProvider: jest.fn().mockImplementation(data => Promise.resolve()),
+  removeCountry: jest.fn().mockImplementation(data => Promise.resolve()),
+  removeFulfillmentProvider: jest
+    .fn()
+    .mockImplementation(data => Promise.resolve()),
+  removePaymentProvider: jest
+    .fn()
+    .mockImplementation(data => Promise.resolve()),
+  update: jest.fn().mockImplementation(data => Promise.resolve()),
   list: jest.fn().mockImplementation(data => {
     return Promise.resolve([
       regions.testRegion,
