@@ -3,6 +3,7 @@ import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
 import productVariantRoutes from "./product-variants"
+import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 
@@ -18,6 +19,7 @@ export default app => {
   route.use(middlewares.authenticate())
 
   productRoutes(route)
+  regionRoutes(route)
   shippingOptionRoutes(route)
   shippingProfileRoutes(route)
   // productVariantRoutes(route)
