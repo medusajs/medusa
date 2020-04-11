@@ -21,6 +21,7 @@ export const UserServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  list: jest.fn().mockReturnValue(Promise.resolve([])),
   delete: jest.fn().mockImplementation(data => {
     if (data === IdMap.getId("delete-user")) {
       return Promise.resolve({

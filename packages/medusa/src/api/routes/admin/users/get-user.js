@@ -1,14 +1,13 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  const userService = req.scope.resolve("userService")
-  let user = await userService.retrieve(id)
+  try {
+    const userService = req.scope.resolve("userService")
 
-  if (!user) {
-    res.sendStatus(404)
-    return
+    let user = await userService.retrieve(id)
+    user = await userService.decorate(user, ["email"])
+    res.json(user)
+  } catch (error) {
+    throw error
   }
-
-  user = await userService.decorate(user, ["email"])
-  res.json(user)
 }

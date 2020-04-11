@@ -11,14 +11,15 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const userService = req.scope.resolve("userService")
   try {
+    const userService = req.scope.resolve("userService")
     await userService.setPassword(id, value.password)
+
+    let newUser = await userService.retrieve(id)
+    newUser = await userService.decorate(newUser, ["email"])
+
+    res.json(newUser)
   } catch (error) {
     throw error
   }
-
-  let newUser = await userService.retrieve(id)
-  newUser = await userService.decorate(newUser, ["email"])
-  res.json(newUser)
 }
