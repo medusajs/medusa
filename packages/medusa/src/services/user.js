@@ -67,16 +67,26 @@ class UserService extends BaseService {
 
   /**
    * Gets a user by id.
+   * Throws in case of DB Error and if user was not found.
    * @param {string} userId - the id of the user to get.
    * @return {Promise<User>} the user document.
    */
-  retrieve(userId) {
+  async retrieve(userId) {
     const validatedId = this.validateId_(userId)
-    return this.userModel_.findOne({ _id: validatedId }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
-  }
+    const user = await this.userModel_
+      .findOne({ _id: validatedId })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
 
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with ${userId} was not found`
+      )
+    }
+    return user
+  }
   /**
    * Creates a user with username being validated.
    * Fails if email is not a valid format.
@@ -88,7 +98,7 @@ class UserService extends BaseService {
     const hashedPassword = await bcrypt.hash(password, 10)
     user.email = validatedEmail
     user.passwordHash = hashedPassword
-    this.userModel_.create(user).catch(err => {
+    return this.userModel_.create(user).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
   }
@@ -100,9 +110,11 @@ class UserService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(userId) {
-    const user = await this.retrieve(userId)
-    // Delete is idempotent, but we return a promise to allow then-chaining
-    if (!user) {
+    let user
+    try {
+      user = await this.retrieve(userId)
+    } catch (error) {
+      // delete is idempotent, but we return a promise to allow then-chaining
       return Promise.resolve()
     }
 
@@ -121,12 +133,6 @@ class UserService extends BaseService {
    */
   async setPassword(userId, password) {
     const user = await this.retrieve(userId)
-    if (!user) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `User with ${userId} was not found`
-      )
-    }
 
     const hashedPassword = await bcrypt.hash(password, 10)
     if (!hashedPassword) {
@@ -137,8 +143,8 @@ class UserService extends BaseService {
     }
 
     return this.userModel_.updateOne(
-      { _id: userId },
-      { $set: { password: hashedPassword } }
+      { _id: user._id },
+      { $set: { password_hash: hashedPassword } }
     )
   }
 
@@ -153,12 +159,6 @@ class UserService extends BaseService {
    */
   async generateResetPasswordToken(userId) {
     const user = await this.retrieve(userId)
-    if (!user) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `User with ${userId} was not found`
-      )
-    }
     const secret = user.passwordHash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { userId: user._id, exp: expiry }

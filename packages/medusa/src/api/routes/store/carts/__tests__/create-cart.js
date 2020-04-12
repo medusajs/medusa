@@ -26,12 +26,13 @@ describe("POST /store/carts", () => {
       })
     })
 
-    it("returns 201", () => {
-      expect(subject.status).toEqual(201)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
     it("returns the cart", () => {
       expect(subject.body._id).toEqual(IdMap.getId("regionCart"))
+      expect(subject.body.decorated).toEqual(true)
     })
   })
 
@@ -97,8 +98,8 @@ describe("POST /store/carts", () => {
       jest.clearAllMocks()
     })
 
-    it("returns 201", () => {
-      expect(subject.status).toEqual(201)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
     it("calls line item generate", () => {
@@ -117,6 +118,7 @@ describe("POST /store/carts", () => {
 
     it("returns cart", () => {
       expect(subject.body._id).toEqual(IdMap.getId("regionCart"))
+      expect(subject.body.decorated).toEqual(true)
     })
   })
 

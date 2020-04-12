@@ -79,7 +79,7 @@ describe("UserService", () => {
           $set: {
             // Since bcrypt hashing always varies, we are testing the password
             // match by using a regular expression.
-            password: expect.stringMatching(
+            password_hash: expect.stringMatching(
               /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
             ),
           },
