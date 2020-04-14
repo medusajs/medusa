@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -83,7 +82,49 @@ class UserService extends BaseService {
     if (!user) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `User with ${userId} was not found`
+        `User with id: ${userId} was not found`
+      )
+    }
+    return user
+  }
+
+  /**
+   * Gets a user by api token.
+   * Throws in case of DB Error and if user was not found.
+   * @param {string} apiToken - the token of the user to get.
+   * @return {Promise<User>} the user document.
+   */
+  async retrieveByApiToken(apiToken) {
+    const user = await this.userModel_
+      .findOne({ api_token: apiToken })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with api token: ${apiToken} was not found`
+      )
+    }
+    return user
+  }
+
+  /**
+   * Gets a user by email.
+   * Throws in case of DB Error and if user was not found.
+   * @param {string} email - the email of the user to get.
+   * @return {Promise<User>} the user document.
+   */
+  async retrieveByEmail(email) {
+    const user = await this.userModel_.findOne({ email }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with email: ${email} was not found`
       )
     }
     return user

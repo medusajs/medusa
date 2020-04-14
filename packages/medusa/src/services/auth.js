@@ -6,11 +6,10 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class AuthService extends BaseService {
-  /** @param { userModel: (UserModel) } */
-  constructor({ userModel }) {
+  constructor({ userService }) {
     super()
-    /** @private @const {UserModel} */
-    this.userModel_ = userModel
+    /** @private @const {UserService} */
+    this.userService_ = userService
   }
 
   /**
@@ -26,14 +25,13 @@ class AuthService extends BaseService {
    *    error: a string with the error message
    */
   async authenticateAPIToken(token) {
-    const user = await this.userModel_.findOne({ api_token: token })
-
-    if (user) {
+    try {
+      const user = await this.userService_.retrieveByApiToken(token)
       return {
         success: true,
         user,
       }
-    } else {
+    } catch (error) {
       return {
         success: false,
         error: "Invalid API Token",
@@ -48,19 +46,27 @@ class AuthService extends BaseService {
    * @return {{ success: (bool), user: (object | undefined) }}
    *    success: whether authentication succeeded
    *    user: the user document if authentication succeded
+   *    error: a string with the error message
    */
   async authenticate(email, password) {
-    const user = await this.userModel_.findOne({ email })
-    const passwordsMatch = await bcrypt.compare(password, user.passwordHash)
-
-    if (passwordsMatch) {
-      return {
-        success: true,
-        user,
+    try {
+      const user = await this.userService_.retrieveByEmail(email)
+      const passwordsMatch = await bcrypt.compare(password, user.password_hash)
+      if (passwordsMatch) {
+        return {
+          success: true,
+          user,
+        }
+      } else {
+        return {
+          success: false,
+          error: "Invalid email or password",
+        }
       }
-    } else {
+    } catch (error) {
       return {
         success: false,
+        error: "Invalid email or password",
       }
     }
   }
