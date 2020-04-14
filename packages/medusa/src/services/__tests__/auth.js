@@ -1,44 +1,49 @@
 import bcrypt from "bcrypt"
 import AuthService from "../auth"
-
-const UserModelMock = {
-  findOne: opt => {
-    return bcrypt
-      .hash("123456", 10)
-      .then(hash => ({ email: "email@mail.com", passwordHash: hash }))
-  },
-}
+import { users, UserServiceMock } from "../__mocks__/user"
 
 describe("AuthService", () => {
-  describe("constructor", () => {
-    let authService
-    beforeAll(() => {
-      authService = new AuthService({ userModel: UserModelMock })
-    })
-
-    it("assigns userModel", () => {
-      expect(authService.userModel_).toEqual(UserModelMock)
-    })
-  })
-
   describe("authenticate", () => {
     let authService
+    authService = new AuthService({ userService: UserServiceMock })
     beforeEach(() => {
-      authService = new AuthService({ userModel: UserModelMock })
+      jest.clearAllMocks()
     })
 
-    it("returns success when passwords match", async () => {
-      const result = await authService.authenticate("email@mail.com", "123456")
+    it("returns success and user when passwords match", async () => {
+      const result = await authService.authenticate(
+        "oliver@test.dk",
+        "123456789"
+      )
 
       expect(result.success).toEqual(true)
-      expect(result.user.email).toEqual("email@mail.com")
+      expect(result.user.email).toEqual("oliver@test.dk")
     })
 
     it("returns failure when passwords don't match", async () => {
-      const result = await authService.authenticate("email@mail.com", "not")
+      const result = await authService.authenticate(
+        "oliver@test.dk",
+        "invalid-password"
+      )
 
       expect(result.success).toEqual(false)
+      expect(result.error).toEqual("Invalid email or password")
       expect(result.user).toEqual(undefined)
+    })
+  })
+
+  describe("authenticateAPIToken", () => {
+    let authService
+    authService = new AuthService({ userService: UserServiceMock })
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("returns success and user when passwords match", async () => {
+      const result = await authService.authenticateAPIToken("123456789")
+
+      expect(result.success).toEqual(true)
+      expect(result.user).toEqual(users.user1)
     })
   })
 })
