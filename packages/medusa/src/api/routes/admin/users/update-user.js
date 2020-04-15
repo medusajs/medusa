@@ -1,23 +1,9 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { option_id } = req.params
+  const { id } = req.params
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
-    price: Validator.object()
-      .keys({
-        type: Validator.string().required(),
-        amount: Validator.number().optional(),
-      })
-      .optional(),
-    requirements: Validator.array()
-      .items(
-        Validator.object({
-          type: Validator.string().required(),
-          value: Validator.number().required(),
-        })
-      )
-      .optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -26,14 +12,16 @@ export default async (req, res) => {
   }
 
   try {
-    const optionService = req.scope.resolve("shippingOptionService")
+    const userService = req.scope.resolve("userService")
 
-    await optionService.update(option_id, value)
+    await userService.update(id, value)
 
-    const data = await optionService.retrieve(option_id)
+    let user = await userService.retrieve(id)
+    user = await userService.decorate(["email"])
 
-    res.status(200).json(data)
+    res.status(200).json(user)
   } catch (err) {
+    console.log(err)
     throw err
   }
 }

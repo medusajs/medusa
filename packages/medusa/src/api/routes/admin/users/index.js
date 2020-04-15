@@ -10,6 +10,7 @@ export default app => {
   route.get("/:id", middlewares.wrap(require("./get-user").default))
 
   route.post("/", middlewares.wrap(require("./create-user").default))
+  route.post("/:id", middlewares.wrap(require("./update-user").default))
   route.post(
     "/:id/set-password",
     middlewares.wrap(require("./set-password").default)

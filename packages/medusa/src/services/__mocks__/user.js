@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt"
 import { IdMap } from "medusa-test-utils"
 import _ from "lodash"
 
@@ -26,6 +27,7 @@ export const UserServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  update: jest.fn().mockReturnValue(Promise.resolve()),
   list: jest.fn().mockReturnValue(Promise.resolve([])),
   delete: jest.fn().mockImplementation(data => {
     if (data === IdMap.getId("delete-user")) {
