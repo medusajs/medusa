@@ -16,10 +16,35 @@ describe("UserService", () => {
       result = await userService.retrieve(IdMap.getId("test-user"))
     })
 
-    it("calls cart model functions", () => {
+    it("calls user model functions", () => {
       expect(UserModelMock.findOne).toHaveBeenCalledTimes(1)
       expect(UserModelMock.findOne).toHaveBeenCalledWith({
         _id: IdMap.getId("test-user"),
+      })
+    })
+
+    it("returns the user", () => {
+      expect(result).toEqual(users.testUser)
+    })
+  })
+
+  describe("create", () => {
+    let result
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const userService = new UserService({
+        userModel: UserModelMock,
+      })
+      result = await userService.retrieve(IdMap.getId("test-user"))
+    })
+
+    it("calls user model functions", () => {
+      expect(UserModelMock.create).toHaveBeenCalledTimes(1)
+      expect(UserModelMock.create).toHaveBeenCalledWith({
+        email: "oliver@test.dk",
+        name: "Oliver",
+        password_hash: "hashedpassword",
       })
     })
 

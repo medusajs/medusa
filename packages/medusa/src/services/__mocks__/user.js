@@ -7,6 +7,11 @@ export const users = {
     email: "oliver@test.dk",
     password: "hashed123456789",
   },
+  jwtUser: {
+    _id: "test-user-id",
+    email: "oliver@test.dk",
+    passwordHash: "123456789hash",
+  },
   deleteUser: {
     _id: IdMap.getId("delete-user"),
     email: "oliver@deletetest.dk",
@@ -35,6 +40,10 @@ export const UserServiceMock = {
   retrieve: jest.fn().mockImplementation(userId => {
     if (userId === IdMap.getId("test-user")) {
       return Promise.resolve(users.testUser)
+    }
+    // used for jwt token tests
+    if (userId === "test-user-id") {
+      return Promise.resolve(users.jwtUser)
     }
     return Promise.resolve(undefined)
   }),

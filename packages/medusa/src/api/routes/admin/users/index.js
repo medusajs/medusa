@@ -15,8 +15,13 @@ export default app => {
     middlewares.wrap(require("./set-password").default)
   )
   route.post(
-    "/:id/reset-password",
+    "/:id/reset-password-token",
     middlewares.wrap(require("./reset-password-token").default)
+  )
+
+  route.post(
+    "/:id/reset-password",
+    middlewares.wrap(require("./reset-password").default)
   )
 
   route.delete("/:id", middlewares.wrap(require("./delete-user").default))

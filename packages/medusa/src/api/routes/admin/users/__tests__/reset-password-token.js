@@ -2,14 +2,14 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { UserServiceMock } from "../../../../../services/__mocks__/user"
 
-describe("POST /admin/users/:id/reset-password", () => {
+describe("POST /admin/users/:id/reset-password-token", () => {
   describe("successfully generates reset password token", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/users/${IdMap.getId("test-user")}/reset-password`,
+        `/admin/users/${IdMap.getId("test-user")}/reset-password-token`,
         {
           adminSession: {
             jwt: {

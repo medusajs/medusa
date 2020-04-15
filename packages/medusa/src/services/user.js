@@ -104,6 +104,46 @@ class UserService extends BaseService {
   }
 
   /**
+   * Updates a user.
+   * @param {object} user - the user to create
+   * @return {Promise} the result of create
+   */
+  async update(userId, update) {
+    const validatedId = this.validateId_(userId)
+
+    if (update.password_hash) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "This function should not be used to reset password"
+      )
+    }
+
+    if (update.email) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "You are not allowed to update email"
+      )
+    }
+
+    if (update.metadata) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use setMetadata to update metadata fields"
+      )
+    }
+
+    return this.userModel_
+      .updateOne(
+        { _id: validatedId },
+        { $set: update },
+        { runValidators: true }
+      )
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
    * Deletes a user from a given user id.
    * @param {string} userId - the id of the user to delete. Must be
    *   castable as an ObjectId
@@ -137,7 +177,7 @@ class UserService extends BaseService {
     const hashedPassword = await bcrypt.hash(password, 10)
     if (!hashedPassword) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
+        MedusaError.Types.DB_ERROR,
         `An error occured while hashing password`
       )
     }
