@@ -26,10 +26,12 @@ describe("POST /admin/users", () => {
 
     it("calls UserService create", () => {
       expect(UserServiceMock.create).toHaveBeenCalledTimes(1)
-      expect(UserServiceMock.create).toHaveBeenCalledWith({
-        email: "oliver@test.dk",
-        password: "123456789",
-      })
+      expect(UserServiceMock.create).toHaveBeenCalledWith(
+        {
+          email: "oliver@test.dk",
+        },
+        "123456789"
+      )
     })
 
     it("returns 200", () => {

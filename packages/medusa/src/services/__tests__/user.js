@@ -31,25 +31,31 @@ describe("UserService", () => {
   describe("create", () => {
     let result
 
-    beforeAll(async () => {
-      jest.clearAllMocks()
-      const userService = new UserService({
-        userModel: UserModelMock,
-      })
-      result = await userService.retrieve(IdMap.getId("test-user"))
+    const userService = new UserService({
+      userModel: UserModelMock,
     })
 
-    it("calls user model functions", () => {
+    beforeAll(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls user model functions", async () => {
+      result = await userService.create(
+        {
+          email: "oliver@test.dk",
+          name: "Oliver",
+          password_hash: "hashedpassword",
+        },
+        "password"
+      )
       expect(UserModelMock.create).toHaveBeenCalledTimes(1)
       expect(UserModelMock.create).toHaveBeenCalledWith({
         email: "oliver@test.dk",
         name: "Oliver",
-        password_hash: "hashedpassword",
+        password_hash: expect.stringMatching(
+          /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
+        ),
       })
-    })
-
-    it("returns the user", () => {
-      expect(result).toEqual(users.testUser)
     })
   })
 

@@ -1,10 +1,12 @@
 import { Validator, MedusaError } from "medusa-core-utils"
+import _ from "lodash"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
     email: Validator.string()
       .email()
       .required(),
+    name: Validator.string().optional(),
     password: Validator.string().required(),
   })
 
@@ -15,9 +17,12 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    let user = await userService.create(value)
+    const data = _.pick(value, ["email", "name"])
+
+    let user = await userService.create(data, value.password)
     user = await userService.retrieve(user._id)
     user = await userService.decorate(user, ["email"])
+
     res.status(200).json(user)
   } catch (err) {
     throw err
