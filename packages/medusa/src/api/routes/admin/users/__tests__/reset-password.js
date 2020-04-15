@@ -46,7 +46,7 @@ describe("POST /admin/users/:id/reset-password", () => {
     })
 
     it("returns updated user", () => {
-      expect(subject.body.user._id).toEqual("test-user-id")
+      expect(subject.body._id).toEqual("test-user-id")
     })
 
     it("returns 200", () => {

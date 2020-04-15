@@ -17,7 +17,6 @@ export default async (req, res) => {
     const userService = req.scope.resolve("userService")
     let user = await userService.retrieve(id)
 
-    console.log(user)
     const decodedToken = await jwt.verify(value.token, user.password_hash)
     if (!decodedToken) {
       res.status(401).send("Invalid or expired password reset token")

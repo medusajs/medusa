@@ -5,17 +5,17 @@ export const users = {
   testUser: {
     _id: IdMap.getId("test-user"),
     email: "oliver@test.dk",
-    password: "hashed123456789",
+    password_hash: "hashed123456789",
   },
   jwtUser: {
     _id: "test-user-id",
     email: "oliver@test.dk",
-    passwordHash: "123456789hash",
+    password_hash: "123456789hash",
   },
   deleteUser: {
     _id: IdMap.getId("delete-user"),
     email: "oliver@deletetest.dk",
-    password: "hashed123456789",
+    password_hash: "hashed123456789",
   },
 }
 
@@ -57,6 +57,20 @@ export const UserServiceMock = {
   generateResetPasswordToken: jest
     .fn()
     .mockReturnValue(Promise.resolve("JSONWEBTOKEN")),
+  retrieveByApiToken: jest.fn().mockImplementation(token => {
+    if (token === "123456789") {
+      return Promise.resolve(users.user1)
+    }
+    return Promise.resolve(undefined)
+  }),
+  retrieveByEmail: jest.fn().mockImplementation(email => {
+    if (email === "oliver@test.dk") {
+      return bcrypt
+        .hash("123456789", 10)
+        .then(hash => ({ email, password_hash: hash }))
+    }
+    return Promise.resolve(undefined)
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
