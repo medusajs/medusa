@@ -156,7 +156,7 @@ class UserService extends BaseService {
     if (update.password_hash) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "This function should not be used to reset password"
+        "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
       )
     }
 

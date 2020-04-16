@@ -59,6 +59,29 @@ describe("UserService", () => {
     })
   })
 
+  describe("update", () => {
+    const userService = new UserService({
+      userModel: UserModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls updateOne with correct params", async () => {
+      await userService.update(IdMap.getId("test-user"), {
+        name: "new name",
+      })
+
+      expect(UserModelMock.updateOne).toBeCalledTimes(1)
+      expect(UserModelMock.updateOne).toBeCalledWith(
+        { _id: IdMap.getId("test-user") },
+        { $set: { name: "new name" } },
+        { runValidators: true }
+      )
+    })
+  })
+
   describe("setMetadata", () => {
     const userService = new UserService({
       userModel: UserModelMock,
