@@ -1,8 +1,8 @@
 export default async (req, res) => {
-  const { id } = req.params
+  const { user_id } = req.params
 
   const userService = req.scope.resolve("userService")
-  const user = await userService.delete(id)
+  const user = await userService.delete(user_id)
 
   if (!user) {
     res.sendStatus(404)
@@ -10,7 +10,7 @@ export default async (req, res) => {
   }
 
   res.status(200).send({
-    id,
+    id: user_id,
     object: "user",
     deleted: true,
   })

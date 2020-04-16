@@ -1,7 +1,7 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id } = req.params
+  const { user_id } = req.params
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
     api_token: Validator.string().optional(),
@@ -15,10 +15,10 @@ export default async (req, res) => {
   try {
     const userService = req.scope.resolve("userService")
 
-    await userService.update(id, value)
+    await userService.update(user_id, value)
 
-    let user = await userService.retrieve(id)
-    user = await userService.decorate(["email"])
+    let user = await userService.retrieve(user_id)
+    user = await userService.decorate(["email", "name"])
 
     res.status(200).json(user)
   } catch (err) {

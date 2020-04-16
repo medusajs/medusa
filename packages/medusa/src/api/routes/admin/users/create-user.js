@@ -21,7 +21,7 @@ export default async (req, res) => {
 
     let user = await userService.create(data, value.password)
     user = await userService.retrieve(user._id)
-    user = await userService.decorate(user, ["email"])
+    user = await userService.decorate(user, ["email", "name"])
 
     res.status(200).json(user)
   } catch (err) {

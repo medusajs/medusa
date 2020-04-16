@@ -2,7 +2,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import jwt from "jsonwebtoken"
 
 export default async (req, res) => {
-  const { id } = req.params
+  const { user_id } = req.params
   const schema = Validator.object().keys({
     token: Validator.string().required(),
     password: Validator.string().required(),
@@ -15,7 +15,7 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    let user = await userService.retrieve(id)
+    let user = await userService.retrieve(user_id)
 
     const decodedToken = await jwt.verify(value.token, user.password_hash)
     if (!decodedToken) {
@@ -25,7 +25,7 @@ export default async (req, res) => {
     await userService.setPassword(user._id, value.password)
 
     user = await userService.retrieve(user._id)
-    user = await userService.decorate(user, ["email"])
+    user = await userService.decorate(user, ["email", "name"])
     res.status(200).json(user)
   } catch (error) {
     throw error
