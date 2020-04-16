@@ -4,8 +4,7 @@ export default async (req, res) => {
   try {
     const userService = req.scope.resolve("userService")
 
-    let user = await userService.retrieve(user_id)
-    user = await userService.decorate(user, ["email", "name"])
+    const user = await userService.retrieve(user_id)
     res.json(user)
   } catch (error) {
     throw error

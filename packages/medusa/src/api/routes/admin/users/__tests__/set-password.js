@@ -35,17 +35,8 @@ describe("POST /admin/users/:id/set-password", () => {
       )
     })
 
-    it("calls UserService setPassword", () => {
-      expect(UserServiceMock.setPassword).toHaveBeenCalledTimes(1)
-      expect(UserServiceMock.setPassword).toHaveBeenCalledWith(
-        IdMap.getId("test-user"),
-        "987654321"
-      )
-    })
-
     it("returns the user", () => {
       expect(subject.body._id).toEqual(IdMap.getId("test-user"))
-      expect(subject.body.decorated).toEqual(true)
     })
 
     it("returns 200", () => {

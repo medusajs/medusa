@@ -40,7 +40,6 @@ describe("POST /admin/users", () => {
 
     it("returns the user", () => {
       expect(subject.body._id).toEqual(IdMap.getId("test-user"))
-      expect(subject.body.decorated).toEqual(true)
     })
   })
 

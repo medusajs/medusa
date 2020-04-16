@@ -19,9 +19,7 @@ export default async (req, res) => {
     const userService = req.scope.resolve("userService")
     const data = _.pick(value, ["email", "name"])
 
-    let user = await userService.create(data, value.password)
-    user = await userService.retrieve(user._id)
-    user = await userService.decorate(user, ["email", "name"])
+    const user = await userService.create(data, value.password)
 
     res.status(200).json(user)
   } catch (err) {

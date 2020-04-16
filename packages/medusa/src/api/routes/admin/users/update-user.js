@@ -16,9 +16,7 @@ export default async (req, res) => {
     const userService = req.scope.resolve("userService")
 
     await userService.update(user_id, value)
-
-    let user = await userService.retrieve(user_id)
-    user = await userService.decorate(["email", "name"])
+    const user = await userService.retrieve(user_id)
 
     res.status(200).json(user)
   } catch (err) {

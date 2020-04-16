@@ -24,9 +24,9 @@ export default async (req, res) => {
 
     await userService.setPassword(user._id, value.password)
 
-    user = await userService.retrieve(user._id)
-    user = await userService.decorate(user, ["email", "name"])
-    res.status(200).json(user)
+    const updatedUser = await userService.retrieve(user._id)
+
+    res.status(200).json(updatedUser)
   } catch (error) {
     throw error
   }

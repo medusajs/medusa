@@ -29,7 +29,6 @@ describe("GET /admin/users/:id", () => {
       expect(UserServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("test-user")
       )
-      expect(UserServiceMock.decorate).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {
@@ -38,7 +37,6 @@ describe("GET /admin/users/:id", () => {
 
     it("returns the user", () => {
       expect(subject.body._id).toEqual(IdMap.getId("test-user"))
-      expect(subject.body.decorated).toEqual(true)
     })
   })
 })
