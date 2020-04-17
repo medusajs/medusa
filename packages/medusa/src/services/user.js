@@ -135,12 +135,54 @@ class UserService extends BaseService {
    * @param {object} user - the user to create
    * @return {Promise} the result of create
    */
-  create(user) {
+  async create(user, password) {
     const validatedEmail = this.validateEmail_(user.email)
+    const hashedPassword = await bcrypt.hash(password, 10)
     user.email = validatedEmail
+    user.password_hash = hashedPassword
     return this.userModel_.create(user).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
+  }
+
+  /**
+   * Updates a user.
+   * @param {object} user - the user to create
+   * @return {Promise} the result of create
+   */
+  async update(userId, update) {
+    const validatedId = this.validateId_(userId)
+
+    if (update.password_hash) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
+      )
+    }
+
+    if (update.email) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "You are not allowed to update email"
+      )
+    }
+
+    if (update.metadata) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use setMetadata to update metadata fields"
+      )
+    }
+
+    return this.userModel_
+      .updateOne(
+        { _id: validatedId },
+        { $set: update },
+        { runValidators: true }
+      )
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -177,7 +219,7 @@ class UserService extends BaseService {
     const hashedPassword = await bcrypt.hash(password, 10)
     if (!hashedPassword) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
+        MedusaError.Types.DB_ERROR,
         `An error occured while hashing password`
       )
     }
@@ -199,7 +241,7 @@ class UserService extends BaseService {
    */
   async generateResetPasswordToken(userId) {
     const user = await this.retrieve(userId)
-    const secret = user.passwordHash
+    const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { userId: user._id, exp: expiry }
     const token = jwt.sign(payload, secret)

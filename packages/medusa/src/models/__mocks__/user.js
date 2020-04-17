@@ -4,12 +4,12 @@ export const users = {
   testUser: {
     _id: IdMap.getId("test-user"),
     email: "oliver@medusa.test",
-    passwordHash: "123456789",
+    password_hash: "123456789",
   },
   permissionUser: {
     _id: IdMap.getId("permissions-user"),
     email: "oliver@medusa.com",
-    passwordHash: "123456789",
+    password_hash: "123456789",
   },
 }
 
