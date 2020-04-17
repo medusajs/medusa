@@ -18,10 +18,18 @@ export default async (req, res) => {
 
   try {
     const productService = req.scope.resolve("productService")
-    const data = await productService.createDraft(value)
-
-    // Return the created product draft
-    res.status(201).json(data)
+    let newProduct = await productService.createDraft(value)
+    newProduct = await productService.decorate(newProduct, [
+      "title",
+      "description",
+      "tags",
+      "handle",
+      "images",
+      "options",
+      "variants",
+      "published",
+    ])
+    res.json(newProduct)
   } catch (err) {
     throw err
   }

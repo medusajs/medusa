@@ -42,6 +42,10 @@ class BasePaymentService extends BaseService {
     throw Error("updatePayment must be overridden by the child class")
   }
 
+  getStatus() {
+    throw Error("getStatus must be overridden by the child class")
+  }
+
   authorizePayment() {
     throw Error("authorizePayment must be overridden by the child class")
   }

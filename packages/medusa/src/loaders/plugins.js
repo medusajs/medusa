@@ -1,16 +1,23 @@
 import glob from "glob"
-import { BaseModel, BaseService, PaymentService } from "medusa-interfaces"
+import {
+  BaseModel,
+  BaseService,
+  PaymentService,
+  FulfillmentService,
+} from "medusa-interfaces"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
 import { asFunction } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
-import { plugins } from "../../medusa-config.js"
 
 /**
  * Registers all services in the services directory
  */
-export default ({ container }) => {
+export default ({ container, app }) => {
+  const configPath = path.resolve("./medusa-config")
+  const { plugins } = require(configPath)
+
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
       return resolvePlugin(plugin)
@@ -25,7 +32,18 @@ export default ({ container }) => {
   resolved.forEach(pluginDetails => {
     registerServices(pluginDetails, container)
     registerModels(pluginDetails, container)
+    registerApi(pluginDetails, app)
   })
+}
+
+function registerApi(pluginDetails, app) {
+  try {
+    const routes = require(`${pluginDetails.resolve}/api`).default
+    app.use("/", routes())
+    return app
+  } catch (err) {
+    return app
+  }
 }
 
 /**
@@ -47,7 +65,7 @@ function registerServices(pluginDetails, container) {
 
     if (!(loaded.prototype instanceof BaseService)) {
       const logger = container.resolve("logger")
-      const message = `Models must inherit from BaseModel, please check ${fn}`
+      const message = `Services must inherit from BaseService, please check ${fn}`
       logger.error(message)
       throw new Error(message)
     }
@@ -63,6 +81,20 @@ function registerServices(pluginDetails, container) {
       // resolution if we already know which payment provider we need to use
       container.register({
         [`pp_${loaded.identifier}`]: asFunction(
+          cradle => new loaded(cradle, pluginDetails.options)
+        ),
+      })
+    } else if (loaded.prototype instanceof FulfillmentService) {
+      // Register our payment providers to paymentProviders
+      container.registerAdd(
+        "fulfillmentProviders",
+        asFunction(cradle => new loaded(cradle, pluginDetails.options))
+      )
+
+      // Add the service directly to the container in order to make simple
+      // resolution if we already know which payment provider we need to use
+      container.register({
+        [`fp_${loaded.identifier}`]: asFunction(
           cradle => new loaded(cradle, pluginDetails.options)
         ),
       })

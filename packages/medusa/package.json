@@ -1,12 +1,15 @@
 {
-  "name": "medusa",
-  "version": "1.0.0",
+  "name": "@medusajs/medusa",
+  "version": "0.3.0",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/srindom/medusa",
+    "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Sebastian Rindom",
   "license": "AGPL-3.0-or-later",
@@ -19,8 +22,8 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
-    "client-sessions": "^0.8.0",
-    "eslint": "^6.7.2",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
@@ -28,6 +31,7 @@
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+    "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
     "test": "jest"
@@ -38,6 +42,7 @@
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
+    "client-sessions": "^0.8.0",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.4.8",
     "cors": "^2.8.5",
@@ -48,9 +53,9 @@
     "glob": "^7.1.6",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.0.0",
-    "medusa-interfaces": "^1.0.0",
-    "medusa-test-utils": "^1.0.0",
+    "medusa-core-utils": "^0.3.0",
+    "medusa-interfaces": "^0.3.0",
+    "medusa-test-utils": "^0.3.0",
     "mongoose": "^5.8.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -59,5 +64,6 @@
     "passport-local": "^1.0.0",
     "regenerator-runtime": "^0.13.3",
     "winston": "^3.2.1"
-  }
+  },
+  "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"
 }
