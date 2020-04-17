@@ -16,7 +16,7 @@ describe("UserService", () => {
       result = await userService.retrieve(IdMap.getId("test-user"))
     })
 
-    it("calls cart model functions", () => {
+    it("calls user model functions", () => {
       expect(UserModelMock.findOne).toHaveBeenCalledTimes(1)
       expect(UserModelMock.findOne).toHaveBeenCalledWith({
         _id: IdMap.getId("test-user"),
@@ -25,6 +25,60 @@ describe("UserService", () => {
 
     it("returns the user", () => {
       expect(result).toEqual(users.testUser)
+    })
+  })
+
+  describe("create", () => {
+    let result
+
+    const userService = new UserService({
+      userModel: UserModelMock,
+    })
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls user model functions", async () => {
+      result = await userService.create(
+        {
+          email: "oliver@test.dk",
+          name: "Oliver",
+          password_hash: "hashedpassword",
+        },
+        "password"
+      )
+      expect(UserModelMock.create).toHaveBeenCalledTimes(1)
+      expect(UserModelMock.create).toHaveBeenCalledWith({
+        email: "oliver@test.dk",
+        name: "Oliver",
+        password_hash: expect.stringMatching(
+          /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
+        ),
+      })
+    })
+  })
+
+  describe("update", () => {
+    const userService = new UserService({
+      userModel: UserModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls updateOne with correct params", async () => {
+      await userService.update(IdMap.getId("test-user"), {
+        name: "new name",
+      })
+
+      expect(UserModelMock.updateOne).toBeCalledTimes(1)
+      expect(UserModelMock.updateOne).toBeCalledWith(
+        { _id: IdMap.getId("test-user") },
+        { $set: { name: "new name" } },
+        { runValidators: true }
+      )
     })
   })
 

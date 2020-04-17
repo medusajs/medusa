@@ -2,6 +2,7 @@ import { Router } from "express"
 import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
+import userRoutes from "./users"
 import productVariantRoutes from "./product-variants"
 import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
@@ -20,6 +21,7 @@ export default app => {
   route.use(middlewares.authenticate())
 
   productRoutes(route)
+  userRoutes(route)
   regionRoutes(route)
   shippingOptionRoutes(route)
   shippingProfileRoutes(route)

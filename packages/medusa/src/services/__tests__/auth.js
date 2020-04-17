@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt"
 import AuthService from "../auth"
 import { users, UserServiceMock } from "../__mocks__/user"
 
