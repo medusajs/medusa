@@ -9,6 +9,12 @@ class OrderService extends BaseService {
     /** @private @const {OrderModel} */
     this.orderModel_ = orderModel
 
+    /** @private @const {PaymentProviderService} */
+    this.paymentProviderService_ = paymentProviderService
+
+    /** @private @const {FulfillmentProviderService} */
+    this.fulfillmentProviderService_ = fulfillmentProviderService
+
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
@@ -73,7 +79,6 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   create(order) {
-    // const { email, billing_address, shipping_address } =
     return this.orderModel_.create(order).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
@@ -159,6 +164,108 @@ class OrderService extends BaseService {
       },
       {
         $set: { shipping_address: validatedAddress },
+      }
+    )
+  }
+
+  /**
+   * Cancels an order.
+   * Throws if fulfillment process has been initiated.
+   * Throws if payment process has been initiated.
+   * @param {string} orderId - id of order to cancel.
+   * @return {Promise} result of the update operation.
+   */
+  async cancel(orderId) {
+    const order = await this.retrieve(orderId)
+
+    if (order.fulfillment_status !== "not_fulfilled") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "You are not allowed to cancel an order with fulfillment processed"
+      )
+    }
+
+    if (order.payment_status !== "awaiting") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "You are not allowed to cancel to an order with payment processed"
+      )
+    }
+
+    return this.orderModel_.updateOne(
+      {
+        _id: orderId,
+      },
+      {
+        $set: { status: "cancelled" },
+      }
+    )
+  }
+
+  /**
+   * Captures payment for an order.
+   * @param {string} orderId - id of order to capture payment for.
+   * @return {Promise} result of the update operation.
+   */
+  async capturePayment(orderId) {
+    const order = await this.retrieve(orderId)
+
+    const providerId = order.payment_method.provider_id
+    const paymentProvider = await this.paymentProviderService_.retrieveProvider(
+      providerId
+    )
+
+    await paymentProvider.capturePayment()
+
+    return this.orderModel_.updateOne(
+      {
+        _id: orderId,
+      },
+      {
+        $set: { payment_status: "captured" },
+      }
+    )
+  }
+
+  async createFulfillment(orderId) {
+    const order = await this.retrieve(orderId)
+
+    const shippingMethods = order.shipping_methods
+
+    if (shippingMethods.length === 1) {
+      const fulfillmentProviderId = shippingMethods[0].provider_id
+      const fulfillmentProvider = this.fulfillmentProviderService_.retrieveProvider(
+        fulfillmentProviderId
+      )
+
+      // TODO: What should be provided to createOrder?
+      await fulfillmentProvider.createOrder()
+
+      return this.orderModel_.updateOne(
+        {
+          _id: orderId,
+        },
+        {
+          $set: { fulfillment_status: "fulfilled" },
+        }
+      )
+    }
+
+    const fulfillmentProviders = shippingMethods.map(sm =>
+      this.fulfillmentProviderService_.retrieveProvider(sm.provider_id)
+    )
+
+    // TODO: What should be provided to createOrder?
+    await Promise.all(
+      fulfillmentProviders.map(provider => provider.createOrder())
+    )
+
+    return this.orderModel_.updateOne(
+      {
+        _id: orderId,
+      },
+      {
+        $set: { fulfillment_status: "fulfilled" },
       }
     )
   }

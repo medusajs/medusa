@@ -1,6 +1,3 @@
-/*******************************************************************************
- *
- ******************************************************************************/
 import mongoose from "mongoose"
 import { BaseModel } from "medusa-interfaces"
 
@@ -13,8 +10,12 @@ class OrderModel extends BaseModel {
   static modelName = "Order"
 
   static schema = {
-    canceled: { type: Boolean, default: false },
-    archived: { type: Boolean, default: false },
+    // pending, completed, archived, cancelled
+    status: { type: Boolean, default: "pending" },
+    // not_fulfilled, partially_fulfilled (some line items have been returned), fulfilled, returned,
+    fulfillment_status: { type: String, default: "not_fulfilled" },
+    // awaiting, captured, refunded
+    payment_status: { type: String, default: "awaiting" },
     email: { type: String, required: true },
     billing_address: { type: AddressSchema, required: true },
     shipping_address: { type: AddressSchema, required: true },
