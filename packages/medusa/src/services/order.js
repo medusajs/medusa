@@ -3,7 +3,12 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 class OrderService extends BaseService {
-  constructor({ orderModel, eventBusService }) {
+  constructor({
+    orderModel,
+    paymentProviderService,
+    fulfillmentProviderService,
+    eventBusService,
+  }) {
     super()
 
     /** @private @const {OrderModel} */
@@ -11,6 +16,9 @@ class OrderService extends BaseService {
 
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
+
+    /** @private @const {ShippingProvileService} */
+    this.shippingProfileService_ = shippingProfileService
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
@@ -74,11 +82,33 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Gets an order by id.
+   * @param {string} orderId - id of order to retrieve
+   * @return {Promise<Order>} the order document
+   */
+  async retrieve(orderId) {
+    const validatedId = this.validateId_(orderId)
+    const order = await this.orderModel_
+      .findOne({ _id: validatedId })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!order) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with ${orderId} was not found`
+      )
+    }
+    return order
+  }
+
+  /**
    * Creates an order
    * @param {object} order - the order to create
    * @return {Promise} resolves to the creation result.
    */
-  create(order) {
+  async create(order) {
     return this.orderModel_.create(order).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
@@ -93,7 +123,7 @@ class OrderService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  update(orderId, update) {
+  async update(orderId, update) {
     const validatedId = this.validateId_(orderId)
 
     if (update.metadata) {
@@ -215,7 +245,8 @@ class OrderService extends BaseService {
       providerId
     )
 
-    await paymentProvider.capturePayment()
+    // TODO: What should be provided to capturePayment
+    await paymentProvider.capturePayment(order)
 
     return this.orderModel_.updateOne(
       {
@@ -227,19 +258,30 @@ class OrderService extends BaseService {
     )
   }
 
+  /**
+   * Creates fulfillments for an order.
+   * In a situation where the order has more than one shipping method,
+   * we need to partition the order items, such that they can be sent
+   * to their respective fulfillment provider.
+   * @param {string} orderId - id of order to cancel.
+   * @return {Promise} result of the update operation.
+   */
   async createFulfillment(orderId) {
     const order = await this.retrieve(orderId)
 
-    const shippingMethods = order.shipping_methods
+    const { shippingMethods } = order
 
+    // if only one shipping method is attached to the order, we simply create
+    // the order for the single provider given in the method
     if (shippingMethods.length === 1) {
       const fulfillmentProviderId = shippingMethods[0].provider_id
       const fulfillmentProvider = this.fulfillmentProviderService_.retrieveProvider(
         fulfillmentProviderId
       )
 
-      // TODO: What should be provided to createOrder?
-      await fulfillmentProvider.createOrder()
+      order.shipping_methods[0].items = order.items
+
+      await fulfillmentProvider.createOrder(order.items)
 
       return this.orderModel_.updateOne(
         {
@@ -251,13 +293,31 @@ class OrderService extends BaseService {
       )
     }
 
-    const fulfillmentProviders = shippingMethods.map(sm =>
-      this.fulfillmentProviderService_.retrieveProvider(sm.provider_id)
+    // partition order items to their dedicated shipping method
+    await Promise.all(
+      shippingMethods.map(method => {
+        const { profile_id } = method
+        const profile = this.shippingProfileService_.retrieve(profile_id)
+        // for each method find the items in the order, that are associated
+        // with the profile on the current shipping method
+        method.items = order.items.filter(({ content }) => {
+          if (Array.isArray(content)) {
+            // we require bunndles to have same shipping method, therefore:
+            return profile.includes(content[0].product._id)
+          } else {
+            return profile.includes(content.product._id)
+          }
+        })
+      })
     )
 
-    // TODO: What should be provided to createOrder?
     await Promise.all(
-      fulfillmentProviders.map(provider => provider.createOrder())
+      shippingMethods.map(method => {
+        const provider = this.fulfillmentProviderService_.retrieveProvider(
+          method.provider_id
+        )
+        provider.createOrder(method.items)
+      })
     )
 
     return this.orderModel_.updateOne(
@@ -268,6 +328,19 @@ class OrderService extends BaseService {
         $set: { fulfillment_status: "fulfilled" },
       }
     )
+  }
+
+  /**
+   * Return either the entire or part of an order.
+   * @param {Order} order - the order to decorate.
+   * @param {string[]} fields - the fields to include.
+   * @param {string[]} expandFields - fields to expand.
+   * @return {Order} return the decorated order.
+   */
+  async return(orderId, lineItems) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(order, fields.concat(requiredFields))
+    return decorated
   }
 
   /**
