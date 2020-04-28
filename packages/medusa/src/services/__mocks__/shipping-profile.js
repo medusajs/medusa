@@ -4,7 +4,7 @@ export const profiles = {
   default: {
     _id: IdMap.getId("default"),
     name: "default_profile",
-    products: [],
+    products: [IdMap.getId("product")],
     shipping_options: [],
   },
 }
@@ -16,7 +16,10 @@ export const ShippingProfileServiceMock = {
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
   }),
-  retrieve: jest.fn().mockImplementation(profileId => {
+  retrieve: jest.fn().mockImplementation(data => {
+    if (data === IdMap.getId("default")) {
+      return Promise.resolve(profiles.default)
+    }
     return Promise.resolve()
   }),
   list: jest.fn().mockImplementation(selector => {

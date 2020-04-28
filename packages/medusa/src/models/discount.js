@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import { BaseModel } from "medusa-interfaces"
 import DiscountRule from "./schemas/discount-rule"
 

@@ -6,6 +6,7 @@ class OrderService extends BaseService {
   constructor({
     orderModel,
     paymentProviderService,
+    shippingProfileService,
     fulfillmentProviderService,
     eventBusService,
   }) {
@@ -211,14 +212,14 @@ class OrderService extends BaseService {
     if (order.fulfillment_status !== "not_fulfilled") {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "You are not allowed to cancel an order with fulfillment processed"
+        "Can't cancel a fulfilled order"
       )
     }
 
     if (order.payment_status !== "awaiting") {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "You are not allowed to cancel to an order with payment processed"
+        "Can't cancel an order with payment processed"
       )
     }
 
@@ -239,6 +240,13 @@ class OrderService extends BaseService {
    */
   async capturePayment(orderId) {
     const order = await this.retrieve(orderId)
+
+    if (order.payment_status !== "awaiting") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Payment already captured"
+      )
+    }
 
     const providerId = order.payment_method.provider_id
     const paymentProvider = await this.paymentProviderService_.retrieveProvider(
@@ -269,12 +277,19 @@ class OrderService extends BaseService {
   async createFulfillment(orderId) {
     const order = await this.retrieve(orderId)
 
-    const { shippingMethods } = order
+    if (order.fulfillment_status !== "not_fulfilled") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Order is already fulfilled"
+      )
+    }
+
+    const { shipping_methods } = order
 
     // if only one shipping method is attached to the order, we simply create
     // the order for the single provider given in the method
-    if (shippingMethods.length === 1) {
-      const fulfillmentProviderId = shippingMethods[0].provider_id
+    if (shipping_methods.length === 1) {
+      const fulfillmentProviderId = shipping_methods[0].provider_id
       const fulfillmentProvider = this.fulfillmentProviderService_.retrieveProvider(
         fulfillmentProviderId
       )
@@ -295,24 +310,24 @@ class OrderService extends BaseService {
 
     // partition order items to their dedicated shipping method
     await Promise.all(
-      shippingMethods.map(method => {
+      shipping_methods.map(async method => {
         const { profile_id } = method
-        const profile = this.shippingProfileService_.retrieve(profile_id)
+        const profile = await this.shippingProfileService_.retrieve(profile_id)
         // for each method find the items in the order, that are associated
         // with the profile on the current shipping method
         method.items = order.items.filter(({ content }) => {
           if (Array.isArray(content)) {
-            // we require bunndles to have same shipping method, therefore:
-            return profile.includes(content[0].product._id)
+            // we require bundles to have same shipping method, therefore:
+            return profile.products.includes(content[0].product._id)
           } else {
-            return profile.includes(content.product._id)
+            return profile.products.includes(content.product._id)
           }
         })
       })
     )
 
     await Promise.all(
-      shippingMethods.map(method => {
+      shipping_methods.map(method => {
         const provider = this.fulfillmentProviderService_.retrieveProvider(
           method.provider_id
         )
@@ -332,15 +347,52 @@ class OrderService extends BaseService {
 
   /**
    * Return either the entire or part of an order.
-   * @param {Order} order - the order to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {Order} return the decorated order.
+   * @param {string} orderId - the order to return.
+   * @param {string[]} lineItems - the line items to return
+   * @return {Promise} the result of the update operation
    */
   async return(orderId, lineItems) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(order, fields.concat(requiredFields))
-    return decorated
+    const order = await this.retrieve(orderId)
+
+    if (
+      order.fulfillment_status === "not_fulfilled" ||
+      order.fulfillment_status === "returned"
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Can't return an unfulfilled or already returned order"
+      )
+    }
+
+    if (order.payment_status !== "captured") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Can't return an order with payment unprocessed"
+      )
+    }
+
+    const { provider_id } = order.payment_method
+    const paymentProvider = this.paymentProviderService_.retrieveProvider(
+      provider_id
+    )
+
+    // return payment
+    //
+
+    order.items.forEach(item => {
+      if (lineItems.includes(item._id)) {
+        item.returned = true
+      }
+    })
+
+    return this.orderModel_.updateOne(
+      {
+        _id: orderId,
+      },
+      {
+        $set: { fulfillment_status: "fulfilled" },
+      }
+    )
   }
 
   /**
