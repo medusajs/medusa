@@ -61,9 +61,8 @@ function registerMedusaApi(pluginDetails, container) {
 function registerMedusaMiddleware(pluginDetails, container) {
   let module
   try {
-    module = require(`${pluginDetails.resolve}/api/medusa-middleware`)
+    module = require(`${pluginDetails.resolve}/api/medusa-middleware`).default
   } catch (err) {
-    // console.log(err)
     return
   }
 
@@ -77,7 +76,7 @@ function registerMedusaMiddleware(pluginDetails, container) {
 
   if (module.preAuthentication) {
     middlewareService.addPreAuthentication(
-      module.postAuthentication,
+      module.preAuthentication,
       pluginDetails.options
     )
   }

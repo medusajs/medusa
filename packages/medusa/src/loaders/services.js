@@ -16,7 +16,7 @@ export default ({ container }) => {
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
     container.register({
-      [name]: asFunction(cradle => new loaded(cradle)),
+      [name]: asFunction(cradle => new loaded(cradle)).singleton(),
     })
   })
 }

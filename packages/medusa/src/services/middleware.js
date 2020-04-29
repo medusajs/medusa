@@ -21,19 +21,19 @@ class MiddlewareService {
     }
   }
 
-  addPostAuthentication(fn, options) {
-    this.validateMiddleware_(fn)
+  addPostAuthentication(middleware, options) {
+    this.validateMiddleware_(middleware)
     this.postAuthentication_.push({
       middleware,
-      options,
+      options: options || {},
     })
   }
 
-  addPreAuthentication(fn, options) {
-    this.validateMiddleware_(fn)
+  addPreAuthentication(middleware, options) {
+    this.validateMiddleware_(middleware)
     this.preAuthentication_.push({
       middleware,
-      options,
+      options: options || {},
     })
   }
 

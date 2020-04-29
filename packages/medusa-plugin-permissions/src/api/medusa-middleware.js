@@ -2,13 +2,23 @@
 // Since this middleware uses the user object on the request, this should be
 // injected after authentication in the core middleware, hence we name
 // the middleware postAuth.
-export default postAuth = () => {
-  return (err, req, res, next) => {
-    const permissionService = req.scope.resolve("permissionService")
-    if (permissionService.hasPermission(req.user, req.method, req.path)) {
+export default {
+  preAuthentication: () => {
+    console.log("pre")
+    return (err, req, res, next) => {
+      console.log(req)
       next()
-    } else {
-      res.status(422)
+    }
+  },
+  postAuthentication: () => {
+    console.log("pst")
+    return (err, req, res, next) => {
+      const permissionService = req.scope.resolve("permissionService")
+      if (permissionService.hasPermission(req.user, req.method, req.path)) {
+        next()
+      } else {
+        res.status(422)
+      }
     }
   }
 }
