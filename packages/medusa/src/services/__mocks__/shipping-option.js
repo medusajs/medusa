@@ -43,16 +43,35 @@ export const shippingOptions = {
     },
     provider_id: "test_shipper",
   },
+  shipping1: {
+    _id: IdMap.getId("shipping1"),
+  },
+  validId: {
+    _id: IdMap.getId("validId"),
+  },
 }
 
 export const ShippingOptionServiceMock = {
   retrieve: jest.fn().mockImplementation(optionId => {
+    if (optionId === IdMap.getId("shipping1")) {
+      return Promise.resolve(shippingOptions.shipping1)
+    }
+    if (optionId === IdMap.getId("validId")) {
+      return Promise.resolve(shippingOptions.validId)
+    }
+    if (optionId === IdMap.getId("franceShipping")) {
+      return Promise.resolve(shippingOptions.franceShipping)
+    }
     if (optionId === IdMap.getId("freeShipping")) {
       return Promise.resolve(shippingOptions.freeShipping)
     }
     return Promise.resolve(undefined)
   }),
+  update: jest.fn().mockReturnValue(Promise.resolve()),
   list: jest.fn().mockImplementation(data => {
+    if (!data) {
+      return Promise.resolve()
+    }
     if (data.region_id === IdMap.getId("region-france")) {
       return Promise.resolve([shippingOptions.franceShipping])
     }
@@ -63,33 +82,36 @@ export const ShippingOptionServiceMock = {
       ])
     }
   }),
-  validateCartOption: jest.fn().mockImplementation((method, cart) => {
-    if (method._id === IdMap.getId("freeShipping")) {
-      return Promise.resolve(true)
+  create: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
+  validateFulfillmentData: jest
+    .fn()
+    .mockImplementation((methodId, data, cart) => {
+      return Promise.resolve(data)
+    }),
+  validateCartOption: jest.fn().mockImplementation((methodId, cart) => {
+    if (methodId === IdMap.getId("freeShipping")) {
+      return Promise.resolve({
+        _id: IdMap.getId("freeShipping"),
+        price: 0,
+        provider_id: "default_provider",
+      })
     }
-    if (method._id === IdMap.getId("franceShipping")) {
-      return Promise.resolve(true)
+    if (methodId === IdMap.getId("additional")) {
+      return Promise.resolve({
+        _id: IdMap.getId("additional"),
+        price: 0,
+        provider_id: "default_provider",
+      })
     }
-    if (method._id === IdMap.getId("fail")) {
-      return Promise.resolve(false)
+    if (methodId === IdMap.getId("fail")) {
+      return Promise.resolve({
+        _id: IdMap.getId("fail"),
+      })
     }
   }),
-  fetchCartOptions: jest.fn().mockImplementation(cart => {
-    if (cart._id === IdMap.getId("cartWithLine")) {
-      return Promise.resolve([
-        {
-          _id: IdMap.getId("freeShipping"),
-          name: "Free Shipping",
-          region_id: IdMap.getId("testRegion"),
-          price: 10,
-          data: {
-            id: "fs",
-          },
-          provider_id: "test_shipper",
-        },
-      ])
-    }
-  }),
+  delete: jest.fn().mockReturnValue(Promise.resolve()),
 }
 
 const mock = jest.fn().mockImplementation(() => {

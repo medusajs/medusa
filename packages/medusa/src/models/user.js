@@ -10,7 +10,8 @@ class UserModel extends BaseModel {
   static schema = {
     email: { type: String, required: true },
     name: { type: String },
-    password_hash: { type: String },
+    password_hash: { type: String, required: true },
+    api_token: { type: String },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }

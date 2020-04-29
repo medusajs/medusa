@@ -1,0 +1,5 @@
+61 error Error: Command failed: git tag v0.1.27-alpha.0 -m v0.1.27-alpha.0
+61 error fatal: tag 'v0.1.27-alpha.0' already exists
+61 error
+61 error     at makeError (/Users/srindom/Developer/medusa-js/node_modules/execa/index.js:174:9)
+61 error     at Promise.all.then.arr (/Users/srindom/Developer/medusa-js/node_modules/execa/index.js:278:16)

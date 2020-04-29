@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -83,7 +82,49 @@ class UserService extends BaseService {
     if (!user) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `User with ${userId} was not found`
+        `User with id: ${userId} was not found`
+      )
+    }
+    return user
+  }
+
+  /**
+   * Gets a user by api token.
+   * Throws in case of DB Error and if user was not found.
+   * @param {string} apiToken - the token of the user to get.
+   * @return {Promise<User>} the user document.
+   */
+  async retrieveByApiToken(apiToken) {
+    const user = await this.userModel_
+      .findOne({ api_token: apiToken })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with api token: ${apiToken} was not found`
+      )
+    }
+    return user
+  }
+
+  /**
+   * Gets a user by email.
+   * Throws in case of DB Error and if user was not found.
+   * @param {string} email - the email of the user to get.
+   * @return {Promise<User>} the user document.
+   */
+  async retrieveByEmail(email) {
+    const user = await this.userModel_.findOne({ email }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with email: ${email} was not found`
       )
     }
     return user
@@ -94,12 +135,54 @@ class UserService extends BaseService {
    * @param {object} user - the user to create
    * @return {Promise} the result of create
    */
-  create(user) {
+  async create(user, password) {
     const validatedEmail = this.validateEmail_(user.email)
+    const hashedPassword = await bcrypt.hash(password, 10)
     user.email = validatedEmail
+    user.password_hash = hashedPassword
     return this.userModel_.create(user).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
+  }
+
+  /**
+   * Updates a user.
+   * @param {object} user - the user to create
+   * @return {Promise} the result of create
+   */
+  async update(userId, update) {
+    const validatedId = this.validateId_(userId)
+
+    if (update.password_hash) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
+      )
+    }
+
+    if (update.email) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "You are not allowed to update email"
+      )
+    }
+
+    if (update.metadata) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use setMetadata to update metadata fields"
+      )
+    }
+
+    return this.userModel_
+      .updateOne(
+        { _id: validatedId },
+        { $set: update },
+        { runValidators: true }
+      )
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -136,7 +219,7 @@ class UserService extends BaseService {
     const hashedPassword = await bcrypt.hash(password, 10)
     if (!hashedPassword) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
+        MedusaError.Types.DB_ERROR,
         `An error occured while hashing password`
       )
     }
@@ -158,7 +241,7 @@ class UserService extends BaseService {
    */
   async generateResetPasswordToken(userId) {
     const user = await this.retrieve(userId)
-    const secret = user.passwordHash
+    const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { userId: user._id, exp: expiry }
     const token = jwt.sign(payload, secret)

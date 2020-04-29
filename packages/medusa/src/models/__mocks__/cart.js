@@ -1,4 +1,5 @@
 import { IdMap } from "medusa-test-utils"
+import { discounts } from "./discount"
 
 export const carts = {
   emptyCart: {
@@ -203,6 +204,75 @@ export const carts = {
               _id: IdMap.getId("eur-8-us-10"),
             },
             product: {
+              _id: IdMap.getId("product1"),
+            },
+            quantity: 1,
+          },
+          {
+            unit_price: 10,
+            variant: {
+              _id: IdMap.getId("eur-10-us-12"),
+            },
+            product: {
+              _id: IdMap.getId("product1"),
+            },
+            quantity: 1,
+          },
+        ],
+        quantity: 10,
+      },
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 10,
+          variant: {
+            _id: IdMap.getId("eur-10-us-12"),
+          },
+          product: {
+            _id: IdMap.getId("product2"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+    shipping_methods: [
+      {
+        _id: IdMap.getId("freeShipping"),
+        profile_id: "default_profile",
+      },
+    ],
+    shipping_options: [
+      {
+        _id: IdMap.getId("freeShipping"),
+        profile_id: "default_profile",
+      },
+    ],
+    shipping_address: {},
+    billing_address: {},
+    discounts: [],
+    customer_id: "",
+  },
+  discountCartWithExisting: {
+    _id: IdMap.getId("discount-cart-with-existing"),
+    discounts: [discounts.item10Percent],
+    region_id: IdMap.getId("region-france"),
+    items: [
+      {
+        _id: IdMap.getId("line"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: [
+          {
+            unit_price: 8,
+            variant: {
+              _id: IdMap.getId("eur-8-us-10"),
+            },
+            product: {
               _id: IdMap.getId("product"),
             },
             quantity: 1,
@@ -238,22 +308,6 @@ export const carts = {
         quantity: 10,
       },
     ],
-    shipping_methods: [
-      {
-        _id: IdMap.getId("freeShipping"),
-        profile_id: "default_profile",
-      },
-    ],
-    shipping_options: [
-      {
-        _id: IdMap.getId("freeShipping"),
-        profile_id: "default_profile",
-      },
-    ],
-    shipping_address: {},
-    billing_address: {},
-    discounts: [],
-    customer_id: "",
   },
 }
 
@@ -284,6 +338,9 @@ export const CartModelMock = {
     }
     if (query._id === IdMap.getId("complete-cart")) {
       return Promise.resolve(carts.completeCart)
+    }
+    if (query._id === IdMap.getId("discount-cart-with-existing")) {
+      return Promise.resolve(carts.discountCartWithExisting)
     }
     return Promise.resolve(undefined)
   }),
