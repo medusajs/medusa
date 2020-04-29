@@ -31,8 +31,8 @@
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
     "medusa-core-utils": "^0.3.0",
-    "medusa-interfaces": "^0.1.27",
-    "medusa-test-utils": "^0.1.27",
+    "medusa-interfaces": "^0.3.0",
+    "medusa-test-utils": "^0.3.0",
     "mongoose": "^5.8.0"
   }
 }

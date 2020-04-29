@@ -157,16 +157,6 @@ function registerServices(pluginDetails, container) {
   })
 }
 
-function f(ChildClass, ParentClass) {
-  let p = ChildClass.prototype
-  while (p != null) {
-    console.log(p)
-    console.log(ParentClass.prototype)
-    if (p === ParentClass.prototype) return true
-    p = p.__proto__
-  }
-  return false
-}
 /**
  * Registers a plugin's models at the right location in our container. Models
  * must inherit from BaseModel. Models are registered directly in the container.
@@ -182,9 +172,7 @@ function registerModels(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
   files.forEach(fn => {
     const loaded = require(fn).default
-    console.log(f(loaded, BaseModel))
 
-    // TODO: Figure out why the instanceof operator isn't working
     if (!(loaded.prototype instanceof BaseModel)) {
       const logger = container.resolve("logger")
       const message = `Models must inherit from BaseModel, please check ${fn}`
