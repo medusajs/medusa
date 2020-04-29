@@ -5,6 +5,7 @@ import {
   PaymentService,
   FulfillmentService,
 } from "medusa-interfaces"
+import { getConfigFile } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
@@ -15,14 +16,16 @@ import { sync as existsSync } from "fs-exists-cached"
  * Registers all services in the services directory
  */
 export default ({ container, app }) => {
-  const configPath = path.resolve("/medusa-config")
-  let plugins
+  const { configModule, configFilePath } = getConfigFile(
+    process.cwd(),
+    `medusa-config`
+  )
 
-  try {
-    plugins = require(configPath).plugins
-  } catch (err) {
+  if (!configModule) {
     return
   }
+
+  const { plugins } = configModule
 
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
@@ -33,6 +36,14 @@ export default ({ container, app }) => {
     details.options = plugin.options
 
     return details
+  })
+
+  resolved.push({
+    resolve: process.cwd(),
+    name: `project-plugin`,
+    id: createPluginId(`project-plugin`),
+    options: {},
+    version: createFileContentHash(process.cwd(), `**`),
   })
 
   resolved.forEach(pluginDetails => {
