@@ -54,7 +54,7 @@ export default async ({ expressApp }) => {
   await pluginsLoader({ container, app: expressApp })
   Logger.info("Plugins Intialized")
 
-  await apiLoader({ app: expressApp })
+  await apiLoader({ container, app: expressApp })
   Logger.info("API initialized")
 }
 

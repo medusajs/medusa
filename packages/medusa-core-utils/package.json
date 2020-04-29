@@ -26,6 +26,7 @@
     "prettier": "^1.19.1"
   },
   "dependencies": {
+    "@babel/plugin-transform-classes": "^7.9.5",
     "@hapi/joi": "^16.1.8",
     "joi-objectid": "^3.0.1"
   },

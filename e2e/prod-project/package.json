@@ -27,10 +27,8 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "@medusajs/medusa": "^0.1.39",
     "express": "^4.17.1",
-    "medusa-interfaces": "^0.1.39",
-    "medusa-payment-stripe": "^0.1.39"
+    "medusa-payment-stripe": "^0.1.27"
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node node_modules/@medusajs/medusa/dist/app.js"

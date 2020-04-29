@@ -5,7 +5,7 @@ import {
   PaymentService,
   FulfillmentService,
 } from "medusa-interfaces"
-import { getConfigFile } from "medusa-core-utils"
+import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
@@ -49,8 +49,38 @@ export default ({ container, app }) => {
   resolved.forEach(pluginDetails => {
     registerModels(pluginDetails, container)
     registerServices(pluginDetails, container)
+    registerMedusaApi(pluginDetails, container)
     registerApi(pluginDetails, app)
   })
+}
+
+function registerMedusaApi(pluginDetails, container) {
+  registerMedusaMiddleware(pluginDetails, container)
+}
+
+function registerMedusaMiddleware(pluginDetails, container) {
+  let module
+  try {
+    module = require(`${pluginDetails.resolve}/api/medusa-middleware`)
+  } catch (err) {
+    // console.log(err)
+    return
+  }
+
+  const middlewareService = container.resolve("middlewareService")
+  if (module.postAuthentication) {
+    middlewareService.addPostAuthentication(
+      module.postAuthentication,
+      pluginDetails.options
+    )
+  }
+
+  if (module.preAuthentication) {
+    middlewareService.addPreAuthentication(
+      module.postAuthentication,
+      pluginDetails.options
+    )
+  }
 }
 
 /**
@@ -79,7 +109,7 @@ function registerApi(pluginDetails, app) {
  * @return {void}
  */
 function registerServices(pluginDetails, container) {
-  const files = glob.sync(`${pluginDetails.resolve}/services/*`, {})
+  const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
   files.forEach(fn => {
     const loaded = require(fn).default
 
@@ -127,6 +157,16 @@ function registerServices(pluginDetails, container) {
   })
 }
 
+function f(ChildClass, ParentClass) {
+  let p = ChildClass.prototype
+  while (p != null) {
+    console.log(p)
+    console.log(ParentClass.prototype)
+    if (p === ParentClass.prototype) return true
+    p = p.__proto__
+  }
+  return false
+}
 /**
  * Registers a plugin's models at the right location in our container. Models
  * must inherit from BaseModel. Models are registered directly in the container.
@@ -139,9 +179,12 @@ function registerServices(pluginDetails, container) {
  * @return {void}
  */
 function registerModels(pluginDetails, container) {
-  const files = glob.sync(`${pluginDetails.resolve}/models/*`, {})
+  const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
   files.forEach(fn => {
     const loaded = require(fn).default
+    console.log(f(loaded, BaseModel))
+
+    // TODO: Figure out why the instanceof operator isn't working
     if (!(loaded.prototype instanceof BaseModel)) {
       const logger = container.resolve("logger")
       const message = `Models must inherit from BaseModel, please check ${fn}`
@@ -223,15 +266,22 @@ function resolvePlugin(pluginName) {
     }
   }
 
+  const rootDir = path.resolve(".")
+
   /**
    *  Here we have an absolute path to an internal plugin, or a name of a module
    *  which should be located in node_modules.
    */
   try {
+    const requireSource =
+      rootDir !== null
+        ? createRequireFromPath(`${rootDir}/:internal:`)
+        : require
+
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
     const resolvedPath = path.dirname(
-      require.resolve(`${pluginName}/package.json`)
+      requireSource.resolve(`${pluginName}/package.json`)
     )
 
     const packageJSON = JSON.parse(
@@ -250,4 +300,8 @@ function resolvePlugin(pluginName) {
       `Unable to find plugin "${pluginName}". Perhaps you need to install its package?`
     )
   }
+}
+
+function createFileContentHash(path, files) {
+  return path + files
 }

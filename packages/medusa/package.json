@@ -18,6 +18,7 @@
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
@@ -31,12 +32,14 @@
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+    "watch": "babel -w src --out-dir dist --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
     "test": "jest"
   },
   "dependencies": {
+    "@babel/plugin-transform-classes": "^7.9.5",
     "@hapi/joi": "^16.1.8",
     "awilix": "^4.2.3",
     "bcrypt": "^3.0.7",
