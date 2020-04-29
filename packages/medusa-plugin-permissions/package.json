@@ -27,9 +27,9 @@
     "jest": "^24.9.0"
   },
   "dependencies": {
-    "mongoose": "^5.8.0",
-    "medusa-test-utils": "^1.0.0",
-    "medusa-core-utils": "^1.0.0",
-    "medusa-interfaces": "^1.0.0"
+    "medusa-core-utils": "^0.1.27",
+    "medusa-interfaces": "^0.1.27",
+    "medusa-test-utils": "^0.1.27",
+    "mongoose": "^5.8.0"
   }
 }

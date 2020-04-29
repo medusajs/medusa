@@ -29,6 +29,7 @@
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
+    "medusa-core-utils": "^0.3.0",
     "medusa-interfaces": "^0.3.0"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"

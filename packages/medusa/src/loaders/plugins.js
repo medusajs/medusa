@@ -15,8 +15,14 @@ import { sync as existsSync } from "fs-exists-cached"
  * Registers all services in the services directory
  */
 export default ({ container, app }) => {
-  const configPath = path.resolve("./medusa-config")
-  const { plugins } = require(configPath)
+  const configPath = path.resolve("/medusa-config")
+  let plugins
+
+  try {
+    plugins = require(configPath).plugins
+  } catch (err) {
+    return
+  }
 
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
@@ -30,12 +36,15 @@ export default ({ container, app }) => {
   })
 
   resolved.forEach(pluginDetails => {
-    registerServices(pluginDetails, container)
     registerModels(pluginDetails, container)
+    registerServices(pluginDetails, container)
     registerApi(pluginDetails, app)
   })
 }
 
+/**
+ * Registers the plugin's api routes.
+ */
 function registerApi(pluginDetails, app) {
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
