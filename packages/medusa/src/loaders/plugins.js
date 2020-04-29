@@ -151,7 +151,9 @@ function registerModels(pluginDetails, container) {
 
     const name = formatRegistrationName(fn)
     container.register({
-      [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
+      [name]: asFunction(
+        cradle => new loaded(cradle, pluginDetails.options)
+      ).singleton(),
     })
   })
 }
