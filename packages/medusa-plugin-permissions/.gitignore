@@ -6,3 +6,9 @@ node_modules/
 !index.js
 yarn.lock
 yarn-error.log
+
+/api
+/services
+/models
+/subscribers
+
