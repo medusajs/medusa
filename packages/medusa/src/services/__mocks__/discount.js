@@ -2,6 +2,9 @@ import { IdMap } from "medusa-test-utils"
 import { discounts } from "../../models/__mocks__/discount"
 
 export const DiscountServiceMock = {
+  create: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
   retrieveByCode: jest.fn().mockImplementation(data => {
     if (data === "10%OFF") {
       return Promise.resolve(discounts.total10Percent)
@@ -26,6 +29,23 @@ export const DiscountServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  update: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
+  delete: jest.fn().mockImplementation(data => {
+    return Promise.resolve({
+      _id: IdMap.getId("total10"),
+      object: "discount",
+      deleted: true,
+    })
+  }),
+  list: jest.fn().mockImplementation(data => {
+    return Promise.resolve([])
+  }),
+  addRegion: jest.fn().mockReturnValue(Promise.resolve()),
+  removeRegion: jest.fn().mockReturnValue(Promise.resolve()),
+  addValidVariant: jest.fn().mockReturnValue(Promise.resolve()),
+  removeValidVariant: jest.fn().mockReturnValue(Promise.resolve()),
 }
 
 const mock = jest.fn().mockImplementation(() => {
