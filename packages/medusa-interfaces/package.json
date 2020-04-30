@@ -11,7 +11,8 @@
   "scripts": {
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
+    "test": "jest"
   },
   "author": "Sebastian Rindom",
   "license": "AGPL-3.0-or-later",
@@ -22,7 +23,9 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "jest": "^25.5.2",
+    "prettier": "^1.19.1"
   },
   "dependencies": {
     "mongoose": "^5.8.0"
