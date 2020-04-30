@@ -19,11 +19,13 @@ export default (app, container) => {
   // Unauthenticated routes
   authRoutes(route)
 
+  // Calls all middleware that has been registered to run before authentication.
   middlewareService.usePreAuthentication(app)
 
   // Authenticated routes
   route.use(middlewares.authenticate())
 
+  // Calls all middleware that has been registered to run after authentication.
   middlewareService.usePostAuthentication(app)
 
   productRoutes(route)
