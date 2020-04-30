@@ -18,6 +18,7 @@
     "@babel/preset-env": "^7.7.5",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
+    "jest": "^25.5.2",
     "eslint": "^6.8.0"
   },
   "scripts": {
