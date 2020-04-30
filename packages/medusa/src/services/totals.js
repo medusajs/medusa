@@ -12,17 +12,17 @@ class TotalsService extends BaseService {
     this.productVariantService_ = productVariantService
   }
   /**
-   * Calculates subtotal of a given cart
-   * @param {Cart} Cart - the cart to calculate subtotal for
+   * Calculates subtotal of a given cart or order.
+   * @param {Cart || Order} object - cart or order to calculate subtotal for
    * @return {int} the calculated subtotal
    */
-  getSubtotal(cart) {
+  getSubtotal(object) {
     let subtotal = 0
-    if (!cart.items) {
+    if (!object.items) {
       return subtotal
     }
 
-    cart.items.map(item => {
+    object.items.map(item => {
       if (Array.isArray(item.content)) {
         const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
         subtotal += temp * item.quantity

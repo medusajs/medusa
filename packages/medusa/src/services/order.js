@@ -127,6 +127,15 @@ class OrderService extends BaseService {
   async update(orderId, update) {
     const validatedId = this.validateId_(orderId)
 
+    const order = await this.retrieve(orderId)
+
+    // List of BAD update operations
+    // Shipping: fulfilled, partially_fulfilled, returned
+    // Billing: fulfilled, partially_fulfilled, returned, captured, refunded
+    // Status: not_fulfilled
+    // Payment method: captured, completed, archived, cancelled, refunded, fulfilled, partially_fulfilled, returned
+    // Items: captured, completed, archived, refunded, cancelled
+
     if (update.metadata) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -211,14 +220,14 @@ class OrderService extends BaseService {
 
     if (order.fulfillment_status !== "not_fulfilled") {
       throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
+        MedusaError.Types.NOT_ALLOWED,
         "Can't cancel a fulfilled order"
       )
     }
 
     if (order.payment_status !== "awaiting") {
       throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
+        MedusaError.Types.NOT_ALLOWED,
         "Can't cancel an order with payment processed"
       )
     }
@@ -253,7 +262,6 @@ class OrderService extends BaseService {
       providerId
     )
 
-    // TODO: What should be provided to capturePayment
     await paymentProvider.capturePayment(order)
 
     return this.orderModel_.updateOne(
@@ -359,14 +367,14 @@ class OrderService extends BaseService {
       order.fulfillment_status === "returned"
     ) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
+        MedusaError.Types.NOT_ALLOWED,
         "Can't return an unfulfilled or already returned order"
       )
     }
 
     if (order.payment_status !== "captured") {
       throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
+        MedusaError.Types.NOT_ALLOWED,
         "Can't return an order with payment unprocessed"
       )
     }
@@ -375,9 +383,6 @@ class OrderService extends BaseService {
     const paymentProvider = this.paymentProviderService_.retrieveProvider(
       provider_id
     )
-
-    // return payment
-    //
 
     order.items.forEach(item => {
       if (lineItems.includes(item._id)) {
