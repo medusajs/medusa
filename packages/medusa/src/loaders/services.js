@@ -1,14 +1,15 @@
 import { BaseService, PaymentService } from "medusa-interfaces"
 import glob from "glob"
 import path from "path"
-import { Lifetime } from "awilix"
-import { asFunction } from "awilix"
+import { Lifetime, asFunction } from "awilix"
 
 /**
  * Registers all services in the services directory
  */
 export default ({ container }) => {
-  let corePath = "../services/*.js"
+  const isTest = process.env.NODE_ENV === "test"
+
+  const corePath = isTest ? "../services/__mocks__/*.js" : "../services/*.js"
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })
