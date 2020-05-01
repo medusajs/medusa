@@ -1,65 +1,25 @@
 import { BaseService, PaymentService } from "medusa-interfaces"
 import glob from "glob"
 import path from "path"
-import { Lifetime } from "awilix"
-import { asFunction } from "awilix"
+import { Lifetime, asFunction } from "awilix"
 
 /**
  * Registers all services in the services directory
  */
 export default ({ container }) => {
-  let corePath = "../services/*.js"
-  let appPath = "src/services/*.js"
+  const isTest = process.env.NODE_ENV === "test"
 
-  if (process.env.NODE_ENV === "test") {
-    corePath = "../services/__mocks__/*.js"
-    appPath = "src/services/__mocks__/*.js"
-  }
-
+  const corePath = isTest ? "../services/__mocks__/*.js" : "../services/*.js"
   const coreFull = path.join(__dirname, corePath)
-  const appFull = path.resolve(appPath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
     container.register({
-      [name]: asFunction(cradle => new loaded(cradle)),
+      [name]: asFunction(cradle => new loaded(cradle)).singleton(),
     })
   })
-
-  if (coreFull !== appFull) {
-    const files = glob.sync(appFull)
-    files.forEach(fn => {
-      const loaded = require(fn).default
-
-      if (!(loaded.prototype instanceof BaseService)) {
-        const logger = container.resolve("logger")
-        const message = `Models must inherit from BaseModel, please check ${fn}`
-        logger.error(message)
-        throw new Error(message)
-      }
-
-      if (loaded.prototype instanceof PaymentService) {
-        // Register our payment providers to paymentProviders
-        container.registerAdd(
-          "paymentProviders",
-          asFunction(cradle => new loaded(cradle))
-        )
-
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which payment provider we need to use
-        container.register({
-          [`pp_${loaded.identifier}`]: asFunction(cradle => new loaded(cradle)),
-        })
-      } else {
-        const name = formatRegistrationName(fn)
-        container.register({
-          [name]: asFunction(cradle => new loaded(cradle)),
-        })
-      }
-    })
-  }
 }
 
 function formatRegistrationName(fn) {
