@@ -19,15 +19,19 @@
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
+    "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "prettier": "^1.19.1"
   },
   "dependencies": {
+    "medusa-core-utils": "^0.3.0",
     "mongoose": "^5.8.0"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"
