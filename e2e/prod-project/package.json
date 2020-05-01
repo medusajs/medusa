@@ -1,0 +1,36 @@
+{
+  "name": "prod-project",
+  "version": "1.0.0",
+  "description": "Test project for testing production setup",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "e2e/prod-project"
+  },
+  "author": "Sebastian Rindom",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/register": "^7.7.4",
+    "@babel/runtime": "^7.7.6",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.7.2",
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.1",
+    "prettier": "^2.0.2",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "medusa-payment-stripe": "^0.1.27"
+  },
+  "scripts": {
+    "start": "nodemon --watch plugins/ --watch src/ --exec babel-node node_modules/@medusajs/medusa/dist/app.js"
+  }
+}

@@ -11,14 +11,22 @@ import discountRoutes from "./discounts"
 
 const route = Router()
 
-export default app => {
+export default (app, container) => {
+  const middlewareService = container.resolve("middlewareService")
+
   app.use("/admin", route)
 
   // Unauthenticated routes
   authRoutes(route)
 
+  // Calls all middleware that has been registered to run before authentication.
+  middlewareService.usePreAuthentication(app)
+
   // Authenticated routes
   route.use(middlewares.authenticate())
+
+  // Calls all middleware that has been registered to run after authentication.
+  middlewareService.usePostAuthentication(app)
 
   productRoutes(route)
   userRoutes(route)
