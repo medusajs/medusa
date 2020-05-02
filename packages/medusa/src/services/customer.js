@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import bcrypt from "bcrypt"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -99,18 +100,47 @@ class CustomerService extends BaseService {
   }
 
   /**
+   * Gets a customer by email.
+   * @param {string} email - the email of the customer to get.
+   * @return {Promise<Customer>} the customer document.
+   */
+  async retrieveByEmail(email) {
+    this.validateEmail_(email)
+    const customer = await this.customerModel_.findOne({ email }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with email ${email} was not found`
+      )
+    }
+
+    return customer
+  }
+
+  /**
    * Creates a customer with email and billing address
    * (if provided) being validated.
    * @param {object} customer - the customer to create
    * @return {Promise} the result of create
    */
-  create(customer) {
-    const { email, billing_address } = customer
+  async create(customer) {
+    const { email, billing_address, password } = customer
     this.validateEmail_(email)
+
     if (billing_address) {
       this.validateBillingAddress_(billing_address)
     }
-    this.customerModel_.create(customer).catch(err => {
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10)
+      customer.password_hash = hashedPassword
+      delete customer.password
+    }
+
+    return this.customerModel_.create(customer).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
   }

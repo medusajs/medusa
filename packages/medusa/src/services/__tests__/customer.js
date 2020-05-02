@@ -26,6 +26,28 @@ describe("CustomerService", () => {
     })
   })
 
+  describe("retrieveByEmail", () => {
+    let result
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const customerService = new CustomerService({
+        customerModel: CustomerModelMock,
+      })
+      result = await customerService.retrieveByEmail("oliver@medusa.com")
+    })
+
+    it("calls customer model functions", () => {
+      expect(CustomerModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(CustomerModelMock.findOne).toHaveBeenCalledWith({
+        email: "oliver@medusa.com",
+      })
+    })
+
+    it("returns the customer", () => {
+      expect(result).toEqual(customers.testCustomer)
+    })
+  })
+
   describe("setMetadata", () => {
     const customerService = new CustomerService({
       customerModel: CustomerModelMock,
@@ -68,8 +90,8 @@ describe("CustomerService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer create", () => {
-      customerService.create({
+    it("calls model layer create", async () => {
+      await customerService.create({
         email: "oliver@medusa.com",
         first_name: "Oliver",
         last_name: "Juhl",
@@ -83,20 +105,37 @@ describe("CustomerService", () => {
       })
     })
 
-    it("fails if email is in incorrect format", () => {
-      try {
+    it("calls model layer create", async () => {
+      await customerService.create({
+        email: "oliver@medusa.com",
+        first_name: "Oliver",
+        last_name: "Juhl",
+        password: "secretsauce",
+      })
+
+      expect(CustomerModelMock.create).toBeCalledTimes(1)
+      expect(CustomerModelMock.create).toBeCalledWith({
+        email: "oliver@medusa.com",
+        first_name: "Oliver",
+        last_name: "Juhl",
+        password_hash: expect.stringMatching(
+          /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
+        ),
+      })
+    })
+
+    it("fails if email is in incorrect format", async () => {
+      expect(
         customerService.create({
           email: "olivermedusa.com",
           first_name: "Oliver",
           last_name: "Juhl",
         })
-      } catch (error) {
-        expect(error.message).toEqual("The email is not valid")
-      }
+      ).rejects.toThrow("The email is not valid")
     })
 
     it("fails if billing address is in incorrect format", () => {
-      try {
+      expect(
         customerService.create({
           email: "oliver@medusa.com",
           first_name: "Oliver",
@@ -105,9 +144,7 @@ describe("CustomerService", () => {
             first_name: 1234,
           },
         })
-      } catch (error) {
-        expect(error.message).toEqual("The address is not valid")
-      }
+      ).rejects.toThrow("The address is not valid")
     })
   })
 

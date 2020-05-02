@@ -69,6 +69,16 @@ export async function request(method, url, opts = {}) {
     // console.log(sessions.util.decode(adminSessionOpts, opts.headers.Cookie))
   }
   if (opts.clientSession) {
+    if (opts.clientSession.jwt) {
+      opts.clientSession.jwt = jwt.sign(
+        opts.clientSession.jwt,
+        config.jwtSecret,
+        {
+          expiresIn: "30d",
+        }
+      )
+    }
+
     headers.Cookie +=
       clientSessionOpts.cookieName +
       "=" +

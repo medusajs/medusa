@@ -26,6 +26,9 @@ export const CustomerModelMock = {
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
+    if (query.email === "oliver@medusa.com") {
+      return Promise.resolve(customers.testCustomer)
+    }
     if (query._id === IdMap.getId("testCustomer")) {
       return Promise.resolve(customers.testCustomer)
     }
