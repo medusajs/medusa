@@ -15,6 +15,7 @@ class CustomerModel extends BaseModel {
     last_name: { type: String, required: true },
     billing_address: { type: AddressSchema },
     has_account: { type: Boolean, default: false },
+    orders: { type: [String], default: [] },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }
