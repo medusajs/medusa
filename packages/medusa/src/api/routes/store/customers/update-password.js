@@ -4,8 +4,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    first_name: Validator.string(),
-    last_name: Validator.string(),
+    password: Validator.string().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -15,6 +14,7 @@ export default async (req, res) => {
 
   try {
     const customerService = req.scope.resolve("customerService")
+
     await customerService.update(id, value)
 
     const customer = await customerService.retrieve(id)

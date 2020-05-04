@@ -13,7 +13,28 @@ export const CustomerServiceMock = {
     d.decorated = true
     return d
   }),
+  generateResetPasswordToken: jest.fn().mockImplementation(id => {
+    return Promise.resolve()
+  }),
+  retrieve: jest.fn().mockImplementation(id => {
+    if (id === IdMap.getId("lebron")) {
+      return Promise.resolve({
+        _id: IdMap.getId("lebron"),
+        first_name: "LeBron",
+        last_name: "James",
+        email: "lebron@james.com",
+        password_hash: "1234",
+      })
+    }
+  }),
   retrieveByEmail: jest.fn().mockImplementation(email => {
+    if (email === "lebron@james.com") {
+      return Promise.resolve({
+        _id: IdMap.getId("lebron"),
+        email,
+        password_hash: "1234",
+      })
+    }
     if (email === "oliver@test.dk") {
       return bcrypt
         .hash("123456789", 10)

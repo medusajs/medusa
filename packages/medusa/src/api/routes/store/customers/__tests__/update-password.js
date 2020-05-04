@@ -2,17 +2,16 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
-describe("POST /store/customers/:id", () => {
+describe("POST /store/customers/:id/password", () => {
   describe("successfully updates a customer", () => {
     let subject
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/store/customers/${IdMap.getId("lebron")}`,
+        `/store/customers/${IdMap.getId("lebron")}/password`,
         {
           payload: {
-            first_name: "LeBron",
-            last_name: "James",
+            password: "NewPass",
           },
           clientSession: {
             jwt: {
@@ -27,13 +26,12 @@ describe("POST /store/customers/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CustomerService create", () => {
+    it("calls CustomerService update", () => {
       expect(CustomerServiceMock.update).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
         {
-          first_name: "LeBron",
-          last_name: "James",
+          password: "NewPass",
         }
       )
     })
@@ -49,7 +47,7 @@ describe("POST /store/customers/:id", () => {
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/store/customers/${IdMap.getId("customer1")}`,
+        `/store/customers/${IdMap.getId("customer1")}/password`,
         {
           payload: {
             first_name: "LeBron",
