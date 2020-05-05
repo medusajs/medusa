@@ -27,6 +27,7 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@medusajs/medusa": "^0.1.27",
     "express": "^4.17.1",
     "medusa-payment-stripe": "^0.1.27"
   },

@@ -15,9 +15,9 @@ import { sync as existsSync } from "fs-exists-cached"
 /**
  * Registers all services in the services directory
  */
-export default ({ container, app }) => {
+export default ({ rootDirectory, container, app }) => {
   const { configModule, configFilePath } = getConfigFile(
-    process.cwd(),
+    rootDirectory,
     `medusa-config`
   )
 
@@ -39,7 +39,7 @@ export default ({ container, app }) => {
   })
 
   resolved.push({
-    resolve: process.cwd(),
+    resolve: rootDirectory,
     name: `project-plugin`,
     id: createPluginId(`project-plugin`),
     options: {},

@@ -8,7 +8,7 @@ import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
 import Logger from "./logger"
 
-export default async ({ expressApp }) => {
+export default async ({ directory: rootDirectory, expressApp }) => {
   const container = createContainer()
   container.registerAdd = function(name, registration) {
     let storeKey = name + "_STORE"
@@ -51,7 +51,7 @@ export default async ({ expressApp }) => {
     next()
   })
 
-  await pluginsLoader({ container, app: expressApp })
+  await pluginsLoader({ container, rootDirectory, app: expressApp })
   Logger.info("Plugins Intialized")
 
   await apiLoader({ container, app: expressApp })
