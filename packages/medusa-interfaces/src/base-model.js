@@ -72,8 +72,9 @@ class BaseModel {
    * @param options {?object=} mongoose options
    * @return {object} mongoose result
    */
-  updateOne(query, update, options) {
-    return this.mongooseModel_.updateOne(query, update, options)
+  updateOne(query, update, options = {}) {
+    options.new = true
+    return this.mongooseModel_.findOneAndUpdate(query, update, options)
   }
 
   /**
