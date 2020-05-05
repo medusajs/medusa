@@ -5,6 +5,7 @@ import LineItemSchema from "./schemas/line-item"
 import PaymentMethodSchema from "./schemas/payment-method"
 import ShippingMethodSchema from "./schemas/shipping-method"
 import AddressSchema from "./schemas/address"
+import DiscountModel from "./discount"
 
 class OrderModel extends BaseModel {
   static modelName = "Order"
@@ -21,11 +22,10 @@ class OrderModel extends BaseModel {
     shipping_address: { type: AddressSchema, required: true },
     items: { type: [LineItemSchema], required: true },
     region: { type: String, required: true },
-    discounts: { type: [String], default: [] },
+    discounts: { type: [DiscountModel.schema], default: [] },
     customer_id: { type: String, required: true },
     payment_method: { type: PaymentMethodSchema, required: true },
     shipping_methods: { type: [ShippingMethodSchema], required: true },
-    returned: { type: Boolean, default: false },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }

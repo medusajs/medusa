@@ -1,16 +1,35 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements BaseService
  */
 class TotalsService extends BaseService {
-  constructor({ productVariantService }) {
+  constructor({ productVariantService, regionService }) {
     super()
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
+
+    /** @private @const {RegionService} */
+    this.regionService_ = regionService
   }
+
+  /**
+   * Calculates subtotal of a given cart or order.
+   * @param {Cart || Order} object - cart or order to calculate subtotal for
+   * @return {int} the calculated subtotal
+   */
+  async getTotal(object) {
+    const subtotal = this.getSubtotal(object)
+    const taxTotal = await this.getTaxTotal(object)
+    const discountTotal = await this.getDiscountTotal(object)
+    const shippingTotal = this.getShippingTotal(object)
+
+    return subtotal + taxTotal + shippingTotal - discountTotal
+  }
+
   /**
    * Calculates subtotal of a given cart or order.
    * @param {Cart || Order} object - cart or order to calculate subtotal for
@@ -35,6 +54,135 @@ class TotalsService extends BaseService {
   }
 
   /**
+   * Calculates shipping total
+   * @param {Cart | Object} object - cart or order to calculate subtotal for
+   * @return {int} shipping total
+   */
+  getShippingTotal(order) {
+    const { shipping_methods } = order
+    return shipping_methods.reduce((acc, next) => {
+      return acc + next.price
+    }, 0)
+  }
+
+  /**
+   * Calculates tax total
+   * Currently based on the Danish tax system
+   * @param {Cart | Object} object - cart or order to calculate subtotal for
+   * @return {int} tax total
+   */
+  async getTaxTotal(object) {
+    const subtotal = this.getSubtotal(object)
+    const shippingTotal = this.getShippingTotal(object)
+    const region = await this.regionService_.retrieve(object.region)
+    const { tax_rate } = region
+    return (subtotal + shippingTotal) * tax_rate
+  }
+
+  /**
+   * Calculates refund total of line items.
+   * If any of the items to return have been discounted, we need to
+   * apply the discount again before refunding them.
+   * @param {Order} order - cart or order to calculate subtotal for
+   * @param {[LineItem]} lineItems -
+   * @return {int} the calculated subtotal
+   */
+  async getRefundTotal(order, lineItems) {
+    const discount = order.discounts.find(
+      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+    )
+
+    if (_.differenceBy(lineItems, order.items, "_id").length !== 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Line items does not exist on order"
+      )
+    }
+
+    const subtotal = this.getSubtotal({ items: lineItems })
+
+    // if nothing is discounted, return the subtotal of line items
+    if (!discount) {
+      return subtotal
+    }
+
+    const { value, type, allocation } = discount.discount_rule
+
+    if (type === "percentage" && allocation === "total") {
+      const discountTotal = (subtotal / 100) * value
+      return subtotal - discountTotal
+    }
+
+    if (type === "fixed" && allocation === "total") {
+      return subtotal - value
+    }
+
+    if (type === "percentage" && allocation === "item") {
+      // Find discounted items
+      const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
+        discount,
+        { items: lineItems },
+        "percentage"
+      )
+
+      // Find discount total by taking each discounted item, reducing it by
+      // its discount value. Then summing all those items together.
+      const discountRefundTotal = _.sumBy(
+        itemPercentageDiscounts,
+        d => d.lineItem.content.unit_price * d.lineItem.quantity - d.amount
+      )
+
+      // Find the items that weren't discounted
+      const notDiscountedItems = _.differenceBy(
+        lineItems,
+        Array.from(itemPercentageDiscounts, el => el.lineItem),
+        "_id"
+      )
+
+      // If all items were discounted, we return the total of the discounted
+      // items
+      if (!notDiscountedItems) {
+        return discountRefundTotal
+      }
+
+      // Otherwise, we find the total those not discounted
+      const notDiscRefundTotal = this.getSubtotal({ items: notDiscountedItems })
+
+      // Finally, return the sum of discounted and not discounted items
+      return notDiscRefundTotal + discountRefundTotal
+    }
+
+    // See immediate `if`-statement above for a elaboration on the following
+    // calculations. This time with fixed discount type.
+    if (type === "fixed" && allocation === "item") {
+      const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
+        discount,
+        { items: lineItems },
+        "fixed"
+      )
+
+      const discountRefundTotal = _.sumBy(
+        itemPercentageDiscounts,
+        d => d.lineItem.content.unit_price * d.lineItem.quantity - d.amount
+      )
+
+      const notDiscountedItems = _.differenceBy(
+        lineItems,
+        Array.from(itemPercentageDiscounts, el => el.lineItem),
+        "_id"
+      )
+
+      if (!notDiscountedItems) {
+        return notDiscRefundTotal
+      }
+
+      const notDiscRefundTotal = this.getSubtotal({ items: notDiscountedItems })
+
+      return notDiscRefundTotal + discountRefundTotal
+    }
+  }
+
+  /**
    * Calculates either fixed or percentage discount of a variant
    * @param {string} lineItem - id of line item
    * @param {string} variant - id of variant in line item
@@ -49,13 +197,16 @@ class TotalsService extends BaseService {
       return {
         lineItem,
         variant,
-        amount: (variantPrice / 100) * value,
+        amount: ((variantPrice * lineItem.quantity) / 100) * value,
       }
     } else {
       return {
         lineItem,
         variant,
-        amount: value >= variantPrice ? variantPrice : value,
+        amount:
+          value >= variantPrice * lineItem.quantity
+            ? variantPrice * lineItem.quantity
+            : value * lineItem.quantity,
       }
     }
   }
@@ -75,16 +226,16 @@ class TotalsService extends BaseService {
     const discounts = []
     for (const item of cart.items) {
       if (discount.discount_rule.valid_for.length > 0) {
-        discount.discount_rule.valid_for.map(v => {
+        discount.discount_rule.valid_for.map(variant => {
           // Discounts do not apply to bundles, hence:
           if (Array.isArray(item.content)) {
             return discounts
           } else {
-            if (item.content.variant._id === v) {
+            if (item.content.variant._id === variant) {
               discounts.push(
                 this.calculateDiscount_(
-                  item._id,
-                  v,
+                  item,
+                  variant,
                   item.content.unit_price,
                   discount.discount_rule.value,
                   discount.discount_rule.type
@@ -99,17 +250,16 @@ class TotalsService extends BaseService {
   }
 
   /**
-   * Calculates discount total of a cart using the discounts provided in the
-   * cart.discounts array. This will be subtracted from the cart subtotal,
-   * which is returned from the function.
+   * Calculates the total discount amount for each of the different supported
+   * discount types. If discounts aren't present or invalid returns 0.
    * @param {Cart} Cart - the cart to calculate discounts for
-   * @return {int} the subtotal after discounts are applied
+   * @return {int} the total discounts amount
    */
   async getDiscountTotal(cart) {
     let subtotal = this.getSubtotal(cart)
 
     if (!cart.discounts) {
-      return subtotal
+      return 0
     }
 
     // filter out invalid discounts
@@ -135,14 +285,13 @@ class TotalsService extends BaseService {
     )
 
     if (!discount) {
-      return subtotal
+      return 0
     }
 
     const { type, allocation, value } = discount.discount_rule
 
     if (type === "percentage" && allocation === "total") {
-      subtotal -= (subtotal / 100) * value
-      return subtotal
+      return (subtotal / 100) * value
     }
 
     if (type === "percentage" && allocation === "item") {
@@ -152,13 +301,11 @@ class TotalsService extends BaseService {
         "percentage"
       )
       const totalDiscount = _.sumBy(itemPercentageDiscounts, d => d.amount)
-      subtotal -= totalDiscount
-      return subtotal
+      return totalDiscount
     }
 
     if (type === "fixed" && allocation === "total") {
-      subtotal -= value
-      return subtotal
+      return value
     }
 
     if (type === "fixed" && allocation === "item") {
@@ -168,11 +315,10 @@ class TotalsService extends BaseService {
         "fixed"
       )
       const totalDiscount = _.sumBy(itemFixedDiscounts, d => d.amount)
-      subtotal -= totalDiscount
-      return subtotal
+      return totalDiscount
     }
 
-    return subtotal
+    return 0
   }
 }
 

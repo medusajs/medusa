@@ -8,6 +8,7 @@ class OrderService extends BaseService {
     paymentProviderService,
     shippingProfileService,
     fulfillmentProviderService,
+    lineItemService,
     eventBusService,
   }) {
     super()
@@ -23,6 +24,9 @@ class OrderService extends BaseService {
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
+
+    /** @private @const {LineItemService} */
+    this.lineItemService_ = lineItemService
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -82,6 +86,29 @@ class OrderService extends BaseService {
     return value
   }
 
+  async partitionItems_(shipping_methods, items) {
+    let updatedMethods = []
+    // partition order items to their dedicated shipping method
+    await Promise.all(
+      shipping_methods.map(async method => {
+        const { profile_id } = method
+        const profile = await this.shippingProfileService_.retrieve(profile_id)
+        // for each method find the items in the order, that are associated
+        // with the profile on the current shipping method
+        method.items = items.filter(({ content }) => {
+          if (Array.isArray(content)) {
+            // we require bundles to have same shipping method, therefore:
+            return profile.products.includes(content[0].product._id)
+          } else {
+            return profile.products.includes(content.product._id)
+          }
+        })
+        updatedMethods.push(method)
+      })
+    )
+    return updatedMethods
+  }
+
   /**
    * Gets an order by id.
    * @param {string} orderId - id of order to retrieve
@@ -129,12 +156,20 @@ class OrderService extends BaseService {
 
     const order = await this.retrieve(orderId)
 
-    // List of BAD update operations
-    // Shipping: fulfilled, partially_fulfilled, returned
-    // Billing: fulfilled, partially_fulfilled, returned, captured, refunded
-    // Status: not_fulfilled
-    // Payment method: captured, completed, archived, cancelled, refunded, fulfilled, partially_fulfilled, returned
-    // Items: captured, completed, archived, refunded, cancelled
+    if (
+      (update.shipping_address ||
+        update.billing_address ||
+        update.payment_method ||
+        update.items) &&
+      (order.fulfillment_status !== "not_fulfilled" ||
+        order.payment_status !== "awaiting" ||
+        order.status !== "pending")
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Can't update shipping, billing, items and payment method when order is processed"
+      )
+    }
 
     if (update.metadata) {
       throw new MedusaError(
@@ -143,69 +178,35 @@ class OrderService extends BaseService {
       )
     }
 
+    const updateFields = { ...update }
+
+    if (update.shipping_address) {
+      updateFields.shipping_address = this.validateAddress_(
+        update.shipping_adress
+      )
+    }
+
+    if (update.billing_address) {
+      updateFields.billing_address = this.validateAddress_(
+        update.billing_address
+      )
+    }
+
+    if (update.items) {
+      updateFields.items = update.items.map(item =>
+        this.lineItemService_.validate(item)
+      )
+    }
+
     return this.orderModel_
       .updateOne(
         { _id: validatedId },
-        { $set: update },
+        { $set: updateFields },
         { runValidators: true }
       )
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
-  }
-
-  /**
-   * Updates an order's billing address.
-   * @param {string} orderId - the id of the order to update
-   * @param {object} address - the value to set the billing address to
-   * @return {Promise} the result of the update operation
-   */
-  async updateBillingAddress(orderId, address) {
-    const order = await this.retrieve(orderId)
-    if (!order) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "The order was not found"
-      )
-    }
-
-    const validatedAddress = this.validateAddress_(address)
-
-    return this.orderModel_.updateOne(
-      {
-        _id: orderId,
-      },
-      {
-        $set: { billing_address: validatedAddress },
-      }
-    )
-  }
-
-  /**
-   * Updates the order's shipping address.
-   * @param {string} orderId - the id of the order to update
-   * @param {object} address - the value to set the shipping address to
-   * @return {Promise} the result of the update operation
-   */
-  async updateShippingAddress(orderId, address) {
-    const order = await this.retrieve(orderId)
-    if (!order) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "The order was not found"
-      )
-    }
-
-    const validatedAddress = this.validateAddress_(address)
-
-    return this.orderModel_.updateOne(
-      {
-        _id: orderId,
-      },
-      {
-        $set: { shipping_address: validatedAddress },
-      }
-    )
   }
 
   /**
@@ -232,6 +233,8 @@ class OrderService extends BaseService {
       )
     }
 
+    // cancel payment method
+
     return this.orderModel_.updateOne(
       {
         _id: orderId,
@@ -257,12 +260,12 @@ class OrderService extends BaseService {
       )
     }
 
-    const providerId = order.payment_method.provider_id
+    const { provider_id, data } = order.payment_method
     const paymentProvider = await this.paymentProviderService_.retrieveProvider(
-      providerId
+      provider_id
     )
 
-    await paymentProvider.capturePayment(order)
+    await paymentProvider.capturePayment(data)
 
     return this.orderModel_.updateOne(
       {
@@ -292,7 +295,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const { shipping_methods } = order
+    const { shipping_methods, items } = order
 
     // if only one shipping method is attached to the order, we simply create
     // the order for the single provider given in the method
@@ -302,9 +305,9 @@ class OrderService extends BaseService {
         fulfillmentProviderId
       )
 
-      order.shipping_methods[0].items = order.items
+      shipping_methods[0].items = items
 
-      await fulfillmentProvider.createOrder(order.items)
+      await fulfillmentProvider.createOrder(shipping_methods[0].data, items)
 
       return this.orderModel_.updateOne(
         {
@@ -317,29 +320,14 @@ class OrderService extends BaseService {
     }
 
     // partition order items to their dedicated shipping method
-    await Promise.all(
-      shipping_methods.map(async method => {
-        const { profile_id } = method
-        const profile = await this.shippingProfileService_.retrieve(profile_id)
-        // for each method find the items in the order, that are associated
-        // with the profile on the current shipping method
-        method.items = order.items.filter(({ content }) => {
-          if (Array.isArray(content)) {
-            // we require bundles to have same shipping method, therefore:
-            return profile.products.includes(content[0].product._id)
-          } else {
-            return profile.products.includes(content.product._id)
-          }
-        })
-      })
-    )
+    order.shipping_methods = await this.partitionItems_(shipping_methods, items)
 
     await Promise.all(
-      shipping_methods.map(method => {
+      order.shipping_methods.map(method => {
         const provider = this.fulfillmentProviderService_.retrieveProvider(
           method.provider_id
         )
-        provider.createOrder(method.items)
+        provider.createOrder(method.data, method.items)
       })
     )
 
@@ -379,10 +367,13 @@ class OrderService extends BaseService {
       )
     }
 
-    const { provider_id } = order.payment_method
+    const { provider_id, data } = order.payment_method
     const paymentProvider = this.paymentProviderService_.retrieveProvider(
       provider_id
     )
+
+    const amount = totalsService.getRefundTotal(order, lineItems)
+    paymentProvider.refundPayment(data, amount)
 
     order.items.forEach(item => {
       if (lineItems.includes(item._id)) {
@@ -390,12 +381,17 @@ class OrderService extends BaseService {
       }
     })
 
+    const fullReturn = order.items.length === lineItems.length
+
     return this.orderModel_.updateOne(
       {
         _id: orderId,
       },
       {
-        $set: { fulfillment_status: "fulfilled" },
+        $set: {
+          items: order.items,
+          fulfillment_status: fullReturn ? "returned" : "partially_fulfilled",
+        },
       }
     )
   }
