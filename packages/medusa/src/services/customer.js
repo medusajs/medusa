@@ -92,6 +92,10 @@ class CustomerService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
     const payload = { customer_id: customer._id, exp: expiry }
     const token = jwt.sign(payload, secret)
+
+    // TODO: Call event layer to ensure that there is an email service that
+    // sends the token.
+
     return token
   }
 
