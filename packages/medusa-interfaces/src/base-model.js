@@ -41,7 +41,6 @@ class BaseModel {
    * @return {Mongooose.Model} the mongoose model
    */
   createMongooseModel_() {
-    console.log(mongoose.modelNames())
     return mongoose.model(this.getModelName(), this.getSchema())
   }
 

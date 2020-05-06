@@ -16,13 +16,8 @@ export default async function({ directory, email, password }) {
     expressApp: app,
   })
 
-  const userModel = container.resolve("userModel")
-  console.log(dbConnection.modelNames())
-
   const userService = container.resolve("userService")
   const user = await userService.create({ email }, password)
-
-  console.log(user)
 
   process.exit()
 }
