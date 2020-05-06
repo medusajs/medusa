@@ -1,9 +1,10 @@
 import { IdMap } from "medusa-test-utils"
-import { OrderModelMock } from "../../models/__mocks__/order"
+import { OrderModelMock, orders } from "../../models/__mocks__/order"
 import OrderService from "../order"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { FulfillmentProviderServiceMock } from "../__mocks__/fulfillment-provider"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
+import { TotalsServiceMock } from "../__mocks__/totals"
 
 describe("OrderService", () => {
   describe("create", () => {
@@ -78,7 +79,49 @@ describe("OrderService", () => {
       )
     })
 
-    it("fails if metadata update are attempted", async () => {
+    it("throws on invalid billing address", async () => {
+      const address = {
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      try {
+        await orderService.update(IdMap.getId("test-order"), {
+          billing_address: address,
+        })
+      } catch (err) {
+        expect(err.message).toEqual("The address is not valid")
+      }
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+
+    it("throws on invalid shipping address", async () => {
+      const address = {
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      try {
+        await orderService.update(IdMap.getId("test-order"), {
+          shipping_address: address,
+        })
+      } catch (err) {
+        expect(err.message).toEqual("The address is not valid")
+      }
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+
+    it("throws if metadata update are attempted", async () => {
       try {
         await orderService.update(IdMap.getId("test-order"), {
           metadata: { test: "foo" },
@@ -177,6 +220,78 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("test-order") },
         { $set: { fulfillment_status: "fulfilled" } }
+      )
+    })
+
+    it("throws if payment is already processed", async () => {
+      try {
+        await orderService.createFulfillment(IdMap.getId("fulfilled-order"))
+      } catch (error) {
+        expect(error.message).toEqual("Order is already fulfilled")
+      }
+    })
+  })
+
+  describe("return", () => {
+    const orderService = new OrderService({
+      orderModel: OrderModelMock,
+      paymentProviderService: PaymentProviderServiceMock,
+      totalsService: TotalsServiceMock,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls order model functions", async () => {
+      await orderService.return(IdMap.getId("processed-order"), [
+        {
+          _id: IdMap.getId("existingLine"),
+          title: "merge line",
+          description: "This is a new line",
+          thumbnail: "test-img-yeah.com/thumb",
+          content: {
+            unit_price: 123,
+            variant: {
+              _id: IdMap.getId("can-cover"),
+            },
+            product: {
+              _id: IdMap.getId("validId"),
+            },
+            quantity: 1,
+          },
+          quantity: 10,
+        },
+      ])
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
+        { _id: IdMap.getId("processed-order") },
+        {
+          $set: {
+            items: [
+              {
+                _id: IdMap.getId("existingLine"),
+                content: {
+                  product: {
+                    _id: IdMap.getId("validId"),
+                  },
+                  quantity: 1,
+                  unit_price: 123,
+                  variant: {
+                    _id: IdMap.getId("can-cover"),
+                  },
+                },
+                description: "This is a new line",
+                quantity: 10,
+                returned_quantity: 10,
+                thumbnail: "test-img-yeah.com/thumb",
+                title: "merge line",
+              },
+            ],
+            fulfillment_status: "returned",
+          },
+        }
       )
     })
 

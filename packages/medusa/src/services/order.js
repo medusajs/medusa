@@ -9,6 +9,7 @@ class OrderService extends BaseService {
     shippingProfileService,
     fulfillmentProviderService,
     lineItemService,
+    totalsService,
     eventBusService,
   }) {
     super()
@@ -27,6 +28,9 @@ class OrderService extends BaseService {
 
     /** @private @const {LineItemService} */
     this.lineItemService_ = lineItemService
+
+    /** @private @const {TotalsService} */
+    this.totalsService_ = totalsService
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -182,7 +186,7 @@ class OrderService extends BaseService {
 
     if (update.shipping_address) {
       updateFields.shipping_address = this.validateAddress_(
-        update.shipping_adress
+        update.shipping_address
       )
     }
 
@@ -372,12 +376,13 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    const amount = totalsService.getRefundTotal(order, lineItems)
-    paymentProvider.refundPayment(data, amount)
+    const amount = this.totalsService_.getRefundTotal(order, lineItems)
+    await paymentProvider.refundPayment(data, amount)
 
     order.items.forEach(item => {
-      if (lineItems.includes(item._id)) {
-        item.returned = true
+      const returnedItem = lineItems.find(({ _id }) => _id === item._id)
+      if (returnedItem) {
+        item.returned_quantity = returnedItem.quantity
       }
     })
 
