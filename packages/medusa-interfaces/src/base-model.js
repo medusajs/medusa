@@ -8,7 +8,7 @@ import mongoose from "mongoose"
 class BaseModel {
   constructor() {
     /** @const the underlying mongoose model used for queries */
-    this.mongooseModel_ = this.createMongooseModel_(this.schema)
+    this.mongooseModel_ = this.createMongooseModel_()
   }
 
   /**
@@ -41,6 +41,7 @@ class BaseModel {
    * @return {Mongooose.Model} the mongoose model
    */
   createMongooseModel_() {
+    console.log(mongoose.modelNames())
     return mongoose.model(this.getModelName(), this.getSchema())
   }
 

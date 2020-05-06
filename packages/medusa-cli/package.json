@@ -36,10 +36,12 @@
     "@hapi/joi": "^16.1.8",
     "chalk": "^4.0.0",
     "clipboardy": "^2.3.0",
+    "core-js": "^3.6.5",
     "fs-exists-cached": "^1.0.0",
     "joi-objectid": "^3.0.1",
     "meant": "^1.0.1",
     "medusa-core-utils": "^0.1.27",
+    "regenerator-runtime": "^0.13.5",
     "resolve-cwd": "^3.0.0",
     "yargs": "^15.3.1"
   },

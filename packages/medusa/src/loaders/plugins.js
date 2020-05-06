@@ -39,7 +39,7 @@ export default ({ rootDirectory, container, app }) => {
   })
 
   resolved.push({
-    resolve: rootDirectory,
+    resolve: `${rootDirectory}/dist`,
     name: `project-plugin`,
     id: createPluginId(`project-plugin`),
     options: {},
@@ -51,6 +51,7 @@ export default ({ rootDirectory, container, app }) => {
     registerServices(pluginDetails, container)
     registerMedusaApi(pluginDetails, container)
     registerApi(pluginDetails, app)
+    registerSubscribers(pluginDetails, container)
   })
 }
 
@@ -153,6 +154,31 @@ function registerServices(pluginDetails, container) {
         [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
       })
     }
+  })
+}
+
+/**
+ * Registers a plugin's models at the right location in our container. Models
+ * must inherit from BaseModel. Models are registered directly in the container.
+ * Names are camelCase formatted and namespaced by the folder i.e:
+ * models/example-person -> examplePersonModel
+ * @param {object} pluginDetails - the plugin details including plugin options,
+ *    version, id, resolved path, etc. See resolvePlugin
+ * @param {object} container - the container where the services will be
+ *    registered
+ * @return {void}
+ */
+function registerSubscribers(pluginDetails, container) {
+  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
+  files.forEach(fn => {
+    const loaded = require(fn).default
+
+    const name = formatRegistrationName(fn)
+    container.build(
+      asFunction(
+        cradle => new loaded(cradle, pluginDetails.options)
+      ).singleton()
+    )
   })
 }
 

@@ -62,34 +62,86 @@ function buildLocalCommands(cli, isLocalProject) {
     }
   }
 
-  cli.command({
-    command: `develop`,
-    desc: `Start development server. Watches file and rebuilds when something changes`,
-    builder: _ =>
-      _.option(`H`, {
-        alias: `host`,
-        type: `string`,
-        default: defaultHost,
-        describe: `Set host. Defaults to ${defaultHost}`,
-      }).option(`p`, {
-        alias: `port`,
-        type: `string`,
-        default: process.env.PORT || defaultPort,
-        describe: process.env.PORT
-          ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-          : `Set port. Defaults to ${defaultPort}`,
-      }),
-    handler: handlerP(
-      getCommandHandler(`develop`, (args, cmd) => {
-        process.env.NODE_ENV = process.env.NODE_ENV || `development`
-        cmd(args)
-        // Return an empty promise to prevent handlerP from exiting early.
-        // The development server shouldn't ever exit until the user directly
-        // kills it so this is fine.
-        return new Promise(resolve => {})
-      })
-    ),
-  })
+  cli
+    .command({
+      command: `develop`,
+      desc: `Start development server. Watches file and rebuilds when something changes`,
+      builder: _ =>
+        _.option(`H`, {
+          alias: `host`,
+          type: `string`,
+          default: defaultHost,
+          describe: `Set host. Defaults to ${defaultHost}`,
+        }).option(`p`, {
+          alias: `port`,
+          type: `string`,
+          default: process.env.PORT || defaultPort,
+          describe: process.env.PORT
+            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+            : `Set port. Defaults to ${defaultPort}`,
+        }),
+      handler: handlerP(
+        getCommandHandler(`develop`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise(resolve => {})
+        })
+      ),
+    })
+    .command({
+      command: `start`,
+      desc: `Start development server.`,
+      builder: _ =>
+        _.option(`H`, {
+          alias: `host`,
+          type: `string`,
+          default: defaultHost,
+          describe: `Set host. Defaults to ${defaultHost}`,
+        }).option(`p`, {
+          alias: `port`,
+          type: `string`,
+          default: process.env.PORT || defaultPort,
+          describe: process.env.PORT
+            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+            : `Set port. Defaults to ${defaultPort}`,
+        }),
+      handler: handlerP(
+        getCommandHandler(`start`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise(resolve => {})
+        })
+      ),
+    })
+    .command({
+      command: `user`,
+      desc: `Create a user`,
+      builder: _ =>
+        _.option(`e`, {
+          alias: `email`,
+          type: `string`,
+          describe: `User's email.`,
+        }).option(`p`, {
+          alias: `password`,
+          type: `string`,
+          describe: `User's password.`,
+        }),
+      handler: handlerP(
+        getCommandHandler(`user`, (args, cmd) => {
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise(resolve => {})
+        })
+      ),
+    })
 }
 
 function isLocalMedusaProject() {

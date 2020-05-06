@@ -8,3 +8,5 @@ class CartSubscriber {
     })
   }
 }
+
+export default CartSubscriber

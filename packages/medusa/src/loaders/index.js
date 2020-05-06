@@ -36,7 +36,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await servicesLoader({ container })
   Logger.info("Services initialized")
 
-  await mongooseLoader({ container })
+  const dbConnection = await mongooseLoader({ container })
   Logger.info("MongoDB Intialized")
 
   await expressLoader({ app: expressApp })
@@ -56,6 +56,8 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
   await apiLoader({ container, app: expressApp })
   Logger.info("API initialized")
+
+  return { container, dbConnection, app: expressApp }
 }
 
 function asArray(resolvers) {

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import "@babel/polyfill"
+import "core-js/stable"
+import "regenerator-runtime/runtime"
 import os from "os"
 import semver from "semver"
 import util from "util"

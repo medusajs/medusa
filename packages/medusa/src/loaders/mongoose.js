@@ -3,7 +3,12 @@ import config from "../config"
 
 export default async ({ container }) => {
   const logger = container.resolve("logger")
-  await mongoose
+
+  mongoose.connection.on("error", err => {
+    logger.error(err)
+  })
+
+  return mongoose
     .connect(config.databaseURL, {
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -12,8 +17,4 @@ export default async ({ container }) => {
     .catch(err => {
       logger.error(err)
     })
-
-  mongoose.connection.on("error", err => {
-    logger.error(err)
-  })
 }

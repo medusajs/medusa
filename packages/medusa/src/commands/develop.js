@@ -1,19 +1,45 @@
-import "core-js/stable"
-import "regenerator-runtime/runtime"
+import { spawn, execSync } from "child_process"
+import mongoose from "mongoose"
+import chokidar from "chokidar"
 import express from "express"
+import path from "path"
+
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
 export default async function({ port, directory }) {
-  const app = express()
+  const args = process.argv
+  args.shift()
+  args.shift()
+  args.shift()
 
-  await loaders({ directory, expressApp: app })
+  execSync("babel src -d dist", {
+    cwd: directory,
+    stdio: ["ignore", process.stdout, process.stderr],
+  })
 
-  app.listen(port, err => {
-    if (err) {
-      console.log(err)
-      return
-    }
-    Logger.info(`Server is ready on port: ${port}!`)
+  let child = spawn("medusa", [`start`, ...args], {
+    cwd: directory,
+    env: process.env,
+    stdio: ["pipe", process.stdout, process.stderr],
+  })
+
+  chokidar.watch(`${directory}/src`).on("change", file => {
+    const f = file.split("src")[1]
+    Logger.info(`${f} changed: restarting...`)
+    child.kill("SIGINT")
+
+    execSync(`babel src -d dist`, {
+      cwd: directory,
+      stdio: ["pipe", process.stdout, process.stderr],
+    })
+
+    Logger.info("Rebuilt")
+
+    child = spawn("medusa", [`start`, ...args], {
+      cwd: directory,
+      env: process.env,
+      stdio: ["pipe", process.stdout, process.stderr],
+    })
   })
 }
