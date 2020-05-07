@@ -1,18 +1,20 @@
 {
-  "name": "medusa-interfaces",
-  "version": "0.3.0",
-  "description": "Core interfaces for Medusa",
+  "name": "medusa-cli",
+  "version": "0.1.0",
+  "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
+  "bin": {
+    "medusa": "dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/medusa-interfaces"
+    "directory": "packages/medusa-cli"
   },
   "scripts": {
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
-    "test": "jest"
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
   },
   "author": "Sebastian Rindom",
   "license": "AGPL-3.0-or-later",
@@ -21,20 +23,27 @@
     "@babel/core": "^7.7.5",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-classes": "^7.9.5",
-    "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
-    "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "prettier": "^1.19.1"
   },
-  "peerDependencies": {
-    "mongoose": "5.x"
-  },
   "dependencies": {
-    "medusa-core-utils": "^0.3.0"
+    "@babel/polyfill": "^7.8.7",
+    "@babel/runtime": "^7.9.6",
+    "@hapi/joi": "^16.1.8",
+    "chalk": "^4.0.0",
+    "clipboardy": "^2.3.0",
+    "core-js": "^3.6.5",
+    "fs-exists-cached": "^1.0.0",
+    "joi-objectid": "^3.0.1",
+    "meant": "^1.0.1",
+    "medusa-core-utils": "^0.1.27",
+    "regenerator-runtime": "^0.13.5",
+    "resolve-cwd": "^3.0.0",
+    "yargs": "^15.3.1"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"
 }

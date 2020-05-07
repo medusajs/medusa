@@ -2156,7 +2156,7 @@ core-js-compat@^3.4.7:
     browserslist "^4.8.0"
     semver "^6.3.0"
 
-core-js@^3.2.1, core-js@^3.4.8:
+core-js@^3.2.1:
   version "3.4.8"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.8.tgz#e0fc0c61f2ef90cbc10c531dbffaa46dfb7152dd"
   integrity sha512-b+BBmCZmVgho8KnBUOXpvlqEMguko+0P+kXCwD4vIprsXC6ht1qgPxtb1OK6XgSlrySF71wkwBQ0Hv695bk9gQ==
@@ -4521,6 +4521,13 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
+
+medusa-interfaces@^0.1.27:
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.27.tgz#e77f9a9f82a7118eac8b35c1498ef8a5cec78898"
+  integrity sha512-FVRyD85aBCPon+itf0cgTc1/lQXxHcMXGWGF8fIMzcoVj8xqSjculwZmY4GH4EtKhv3X3+DGe0BsIMbiW31unA==
+  dependencies:
+    mongoose "^5.8.0"
 
 memory-pager@^1.0.2:
   version "1.5.0"

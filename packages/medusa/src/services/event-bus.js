@@ -59,7 +59,8 @@ class EventBusService {
    *
    * @returns {Promise} resolves to the results of the subscriber calls.
    */
-  async worker_({ eventName, data }) {
+  worker_ = job => {
+    const { eventName, data } = job.data
     const observers = this.observers_[eventName] || []
     this.logger_.info(
       `Processing ${eventName} which has ${observers.length} subscribers`

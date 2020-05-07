@@ -8,7 +8,7 @@ import mongoose from "mongoose"
 class BaseModel {
   constructor() {
     /** @const the underlying mongoose model used for queries */
-    this.mongooseModel_ = this.createMongooseModel_(this.schema)
+    this.mongooseModel_ = this.createMongooseModel_()
   }
 
   /**
@@ -72,8 +72,9 @@ class BaseModel {
    * @param options {?object=} mongoose options
    * @return {object} mongoose result
    */
-  updateOne(query, update, options) {
-    return this.mongooseModel_.updateOne(query, update, options)
+  updateOne(query, update, options = {}) {
+    options.new = true
+    return this.mongooseModel_.findOneAndUpdate(query, update, options)
   }
 
   /**
