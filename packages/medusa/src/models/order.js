@@ -12,7 +12,7 @@ class OrderModel extends BaseModel {
 
   static schema = {
     // pending, completed, archived, cancelled
-    status: { type: Boolean, default: "pending" },
+    status: { type: String, default: "pending" },
     // not_fulfilled, partially_fulfilled (some line items have been returned), fulfilled, returned,
     fulfillment_status: { type: String, default: "not_fulfilled" },
     // awaiting, captured, refunded
