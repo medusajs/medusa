@@ -197,6 +197,10 @@ class CustomerService extends BaseService {
       )
     }
 
+    if (update.email) {
+      this.validateEmail_(update.email)
+    }
+
     if (update.billing_address) {
       this.validateBillingAddress_(update.billing_address)
     }
