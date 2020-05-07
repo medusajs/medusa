@@ -13,6 +13,7 @@ export default async ({ container }) => {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     })
     .catch(err => {
       logger.error(err)
