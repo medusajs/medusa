@@ -132,6 +132,53 @@ describe("OrderService", () => {
         )
       }
     })
+
+    it("throws if address updates are attempted after fulfillment", async () => {
+      try {
+        await orderService.update(IdMap.getId("fulfilled-order"), {
+          billing_address: {
+            first_name: "Lebron",
+            last_name: "James",
+            address_1: "24 Dunks Drive",
+            city: "Los Angeles",
+            country_code: "US",
+            province: "CA",
+            postal_code: "93011",
+          },
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Can't update shipping, billing, items and payment method when order is processed"
+        )
+      }
+    })
+
+    it("throws if payment method update is attempted after fulfillment", async () => {
+      try {
+        await orderService.update(IdMap.getId("fulfilled-order"), {
+          payment_method: {
+            provider_id: "test",
+            profile_id: "test",
+          },
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Can't update shipping, billing, items and payment method when order is processed"
+        )
+      }
+    })
+
+    it("throws if items update is attempted after fulfillment", async () => {
+      try {
+        await orderService.update(IdMap.getId("fulfilled-order"), {
+          items: [],
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Can't update shipping, billing, items and payment method when order is processed"
+        )
+      }
+    })
   })
 
   describe("cancel", () => {
@@ -295,11 +342,92 @@ describe("OrderService", () => {
       )
     })
 
+    it("calls order model functions and sets partially_fulfilled", async () => {
+      await orderService.return(IdMap.getId("order-refund"), [
+        {
+          _id: IdMap.getId("existingLine"),
+          title: "merge line",
+          description: "This is a new line",
+          thumbnail: "test-img-yeah.com/thumb",
+          content: {
+            unit_price: 100,
+            variant: {
+              _id: IdMap.getId("eur-8-us-10"),
+            },
+            product: {
+              _id: IdMap.getId("product"),
+            },
+            quantity: 1,
+          },
+          quantity: 2,
+        },
+      ])
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
+        { _id: IdMap.getId("order-refund") },
+        {
+          $set: {
+            items: [
+              {
+                _id: IdMap.getId("existingLine"),
+                content: {
+                  product: {
+                    _id: IdMap.getId("product"),
+                  },
+                  quantity: 1,
+                  unit_price: 100,
+                  variant: {
+                    _id: IdMap.getId("eur-8-us-10"),
+                  },
+                },
+                description: "This is a new line",
+                quantity: 10,
+                returned_quantity: 2,
+                thumbnail: "test-img-yeah.com/thumb",
+                title: "merge line",
+              },
+              {
+                _id: IdMap.getId("existingLine2"),
+                title: "merge line",
+                description: "This is a new line",
+                thumbnail: "test-img-yeah.com/thumb",
+                content: {
+                  unit_price: 100,
+                  variant: {
+                    _id: IdMap.getId("can-cover"),
+                  },
+                  product: {
+                    _id: IdMap.getId("product"),
+                  },
+                  quantity: 1,
+                },
+                quantity: 10,
+              },
+            ],
+            fulfillment_status: "partially_fulfilled",
+          },
+        }
+      )
+    })
+
     it("throws if payment is already processed", async () => {
       try {
-        await orderService.createFulfillment(IdMap.getId("fulfilled-order"))
+        await orderService.return(IdMap.getId("fulfilled-order"))
       } catch (error) {
-        expect(error.message).toEqual("Order is already fulfilled")
+        expect(error.message).toEqual(
+          "Can't return an order with payment unprocessed"
+        )
+      }
+    })
+
+    it("throws if return is attempted on unfulfilled order", async () => {
+      try {
+        await orderService.return(IdMap.getId("not-fulfilled-order"))
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Can't return an unfulfilled or already returned order"
+        )
       }
     })
   })

@@ -164,7 +164,7 @@ export const orders = {
         quantity: 10,
       },
       {
-        _id: IdMap.getId("existingLine"),
+        _id: IdMap.getId("existingLine2"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
@@ -231,6 +231,10 @@ export const OrderModelMock = {
     }
     if (query._id === IdMap.getId("processed-order")) {
       return Promise.resolve(orders.processedOrder)
+    }
+    if (query._id === IdMap.getId("order-refund")) {
+      orders.orderToRefund.payment_status = "captured"
+      return Promise.resolve(orders.orderToRefund)
     }
     return Promise.resolve(undefined)
   }),

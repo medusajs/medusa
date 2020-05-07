@@ -96,7 +96,6 @@ export const OrderServiceMock = {
   }),
   return: jest.fn().mockImplementation(order => {
     if (order === IdMap.getId("test-order")) {
-      orders.testOrder.status = "returned"
       return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)

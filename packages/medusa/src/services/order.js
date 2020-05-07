@@ -379,14 +379,16 @@ class OrderService extends BaseService {
     const amount = this.totalsService_.getRefundTotal(order, lineItems)
     await paymentProvider.refundPayment(data, amount)
 
-    order.items.forEach(item => {
-      const returnedItem = lineItems.find(({ _id }) => _id === item._id)
+    lineItems.map(item => {
+      const returnedItem = order.items.find(({ _id }) => _id === item._id)
       if (returnedItem) {
-        item.returned_quantity = returnedItem.quantity
+        returnedItem.returned_quantity = item.quantity
       }
     })
 
-    const fullReturn = order.items.length === lineItems.length
+    const fullReturn = order.items.every(
+      item => item.quantity === item.returned_quantity
+    )
 
     return this.orderModel_.updateOne(
       {

@@ -2,14 +2,14 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { OrderServiceMock } from "../../../../../services/__mocks__/order"
 
-describe("POST /admin/orders/:id/capture-payment", () => {
-  describe("successfully fulfills an order", () => {
+describe("POST /admin/orders/:id/capture", () => {
+  describe("successfully captures payment for an order", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/orders/${IdMap.getId("test-order")}/capture-payment`,
+        `/admin/orders/${IdMap.getId("test-order")}/capture`,
         {
           adminSession: {
             jwt: {

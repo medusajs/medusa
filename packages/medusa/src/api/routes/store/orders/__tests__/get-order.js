@@ -28,25 +28,4 @@ describe("GET /store/orders", () => {
       expect(subject.body._id).toEqual(IdMap.getId("test-order"))
     })
   })
-
-  describe("returns 404 on undefined order", () => {
-    let subject
-
-    beforeAll(async () => {
-      subject = await request("GET", `/store/orders/none`)
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls OrderService Retrieve", () => {
-      expect(OrderServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(OrderServiceMock.retrieve).toHaveBeenCalledWith("none")
-    })
-
-    it("returns 404", () => {
-      expect(subject.status).toEqual(404)
-    })
-  })
 })
