@@ -8,7 +8,7 @@ import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
 import Logger from "./logger"
 
-export default async ({ expressApp }) => {
+export default async ({ directory: rootDirectory, expressApp }) => {
   const container = createContainer()
   container.registerAdd = function(name, registration) {
     let storeKey = name + "_STORE"
@@ -36,7 +36,7 @@ export default async ({ expressApp }) => {
   await servicesLoader({ container })
   Logger.info("Services initialized")
 
-  await mongooseLoader({ container })
+  const dbConnection = await mongooseLoader({ container })
   Logger.info("MongoDB Intialized")
 
   await expressLoader({ app: expressApp })
@@ -51,11 +51,13 @@ export default async ({ expressApp }) => {
     next()
   })
 
-  await pluginsLoader({ container, app: expressApp })
+  await pluginsLoader({ container, rootDirectory, app: expressApp })
   Logger.info("Plugins Intialized")
 
   await apiLoader({ container, app: expressApp })
   Logger.info("API initialized")
+
+  return { container, dbConnection, app: expressApp }
 }
 
 function asArray(resolvers) {

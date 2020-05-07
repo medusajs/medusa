@@ -10,8 +10,7 @@
   "author": "Sebastian Rindom",
   "license": "GPL-3.0",
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
+    "@babel/core": "^7.9.6",
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-instanceof": "^7.8.3",
@@ -27,8 +26,12 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@medusajs/medusa": "^0.1.27",
+    "bl": "^4.0.2",
     "express": "^4.17.1",
-    "medusa-payment-stripe": "^0.1.27"
+    "medusa-interfaces": "^0.1.27",
+    "medusa-payment-stripe": "^0.1.27",
+    "mongoose": "^5.9.12"
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node node_modules/@medusajs/medusa/dist/app.js"

@@ -7,6 +7,11 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class CartService extends BaseService {
+  static Events = {
+    CREATED: "cart.created",
+    UPDATED: "cart.updated",
+  }
+
   constructor({
     cartModel,
     eventBusService,
@@ -199,6 +204,10 @@ class CartService extends BaseService {
       .create({
         region_id: region._id,
       })
+      .then(result => {
+        this.eventBus_.emit(CartService.Events.CREATED, result)
+        return result
+      })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -246,17 +255,23 @@ class CartService extends BaseService {
         )
       }
 
-      return this.cartModel_.updateOne(
-        {
-          _id: cartId,
-          "items._id": currentItem._id,
-        },
-        {
-          $set: {
-            "items.$.quantity": newQuantity,
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cartId,
+            "items._id": currentItem._id,
           },
-        }
-      )
+          {
+            $set: {
+              "items.$.quantity": newQuantity,
+            },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
     }
 
     // Confirm inventory
@@ -273,14 +288,20 @@ class CartService extends BaseService {
     }
 
     // The line we are adding doesn't already exist so it is safe to push
-    return this.cartModel_.updateOne(
-      {
-        _id: cartId,
-      },
-      {
-        $push: { items: validatedLineItem },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cartId,
+        },
+        {
+          $push: { items: validatedLineItem },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -325,17 +346,23 @@ class CartService extends BaseService {
     }
 
     // Update the line item
-    return this.cartModel_.updateOne(
-      {
-        _id: cartId,
-        "items._id": lineItemId,
-      },
-      {
-        $set: {
-          "items.$": validatedLineItem,
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cartId,
+          "items._id": lineItemId,
         },
-      }
-    )
+        {
+          $set: {
+            "items.$": validatedLineItem,
+          },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -357,14 +384,20 @@ class CartService extends BaseService {
       )
     }
 
-    return this.cartModel_.updateOne(
-      {
-        _id: cart._id,
-      },
-      {
-        $set: { email: value },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { email: value },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -383,14 +416,20 @@ class CartService extends BaseService {
       )
     }
 
-    return this.cartModel_.updateOne(
-      {
-        _id: cart._id,
-      },
-      {
-        $set: { billing_address: value },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { billing_address: value },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -409,14 +448,20 @@ class CartService extends BaseService {
       )
     }
 
-    return this.cartModel_.updateOne(
-      {
-        _id: cartId,
-      },
-      {
-        $set: { shipping_address: value },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cartId,
+        },
+        {
+          $set: { shipping_address: value },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
   /**
    * Updates the cart's discounts.
@@ -455,49 +500,73 @@ class CartService extends BaseService {
       shippingDisc.length === 0 &&
       discount.discount_rule.type === "free_shipping"
     ) {
-      return this.cartModel_.updateOne(
-        {
-          _id: cart._id,
-        },
-        {
-          $push: { discounts: discount },
-        }
-      )
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cart._id,
+          },
+          {
+            $push: { discounts: discount },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
     } else if (
       shippingDisc.length > 0 &&
       discount.discount_rule.type === "free_shipping"
     ) {
-      return this.cartModel_.updateOne(
-        {
-          _id: cart._id,
-        },
-        {
-          $pull: { discounts: { _id: shippingDisc[0]._id } },
-          $push: { discounts: discount },
-        }
-      )
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cart._id,
+          },
+          {
+            $pull: { discounts: { _id: shippingDisc[0]._id } },
+            $push: { discounts: discount },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
     }
 
     // replace the current discount if there, else add the new one
     if (otherDisc.length === 0) {
-      return this.cartModel_.updateOne(
-        {
-          _id: cart._id,
-        },
-        {
-          $push: { discounts: discount },
-        }
-      )
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cart._id,
+          },
+          {
+            $push: { discounts: discount },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
     } else {
-      return this.cartModel_.updateOne(
-        {
-          _id: cart._id,
-        },
-        {
-          $pull: { discounts: { _id: otherDisc[0]._id } },
-          $push: { discounts: discount },
-        }
-      )
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cart._id,
+          },
+          {
+            $pull: { discounts: { _id: otherDisc[0]._id } },
+            $push: { discounts: discount },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
     }
   }
 
@@ -571,14 +640,20 @@ class CartService extends BaseService {
     }
 
     // At this point we can register the payment method.
-    return this.cartModel_.updateOne(
-      {
-        _id: cart._id,
-      },
-      {
-        $set: { payment_method: paymentMethod },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { payment_method: paymentMethod },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -627,14 +702,20 @@ class CartService extends BaseService {
 
     // Update the payment sessions with the concatenated array of updated and
     // newly created payment sessions
-    return this.cartModel_.updateOne(
-      {
-        _id: cart._id,
-      },
-      {
-        $set: { payment_sessions: sessions.concat(newSessions) },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { payment_sessions: sessions.concat(newSessions) },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -693,14 +774,20 @@ class CartService extends BaseService {
       newMethods.push(option)
     }
 
-    return this.cartModel_.updateOne(
-      {
-        _id: cart._id,
-      },
-      {
-        $set: { shipping_methods: newMethods },
-      }
-    )
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { shipping_methods: newMethods },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -763,7 +850,13 @@ class CartService extends BaseService {
       update.payment_method = undefined
     }
 
-    return this.cartModel_.updateOne({ _id: cart._id }, { $set: update })
+    return this.cartModel_
+      .updateOne({ _id: cart._id }, { $set: update })
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -788,6 +881,11 @@ class CartService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.cartModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

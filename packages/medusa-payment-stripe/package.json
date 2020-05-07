@@ -15,6 +15,8 @@
     "@babel/core": "^7.7.5",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/plugin-transform-classes": "^7.9.5",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/preset-env": "^7.7.5",
     "@babel/runtime": "^7.9.6",
     "client-sessions": "^0.8.0",
@@ -28,9 +30,6 @@
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
   "dependencies": {
-    "@babel/plugin-transform-classes": "^7.9.5",
-    "@babel/plugin-transform-instanceof": "^7.8.3",
-    "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
     "medusa-core-utils": "^0.3.0",
     "medusa-interfaces": "^0.3.0"

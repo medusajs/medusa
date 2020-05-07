@@ -7,6 +7,7 @@ import {
 } from "../__mocks__/payment-provider"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
@@ -40,6 +41,7 @@ describe("CartService", () => {
   describe("setMetadata", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -49,6 +51,12 @@ describe("CartService", () => {
     it("calls updateOne with correct params", async () => {
       const id = mongoose.Types.ObjectId()
       await cartService.setMetadata(`${id}`, "metadata", "testMetadata")
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
       expect(CartModelMock.updateOne).toBeCalledTimes(1)
       expect(CartModelMock.updateOne).toBeCalledWith(
@@ -74,6 +82,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
       regionService: RegionServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -84,6 +93,12 @@ describe("CartService", () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
       })
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.created",
+        expect.any(Object)
+      )
 
       expect(CartModelMock.create).toHaveBeenCalledTimes(1)
       expect(CartModelMock.create).toHaveBeenCalledWith({
@@ -97,6 +112,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       productVariantService: ProductVariantServiceMock,
       lineItemService: LineItemServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -122,6 +138,12 @@ describe("CartService", () => {
       }
 
       await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
@@ -280,6 +302,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       productVariantService: ProductVariantServiceMock,
       lineItemService: LineItemServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -308,6 +331,12 @@ describe("CartService", () => {
         IdMap.getId("cartWithLine"),
         IdMap.getId("existingLine"),
         lineItem
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
       )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
@@ -357,6 +386,7 @@ describe("CartService", () => {
   describe("updateEmail", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -367,6 +397,12 @@ describe("CartService", () => {
       await cartService.updateEmail(
         IdMap.getId("emptyCart"),
         "test@testdom.com"
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
       )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
@@ -394,6 +430,7 @@ describe("CartService", () => {
   describe("updateBillingAddress", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -412,6 +449,12 @@ describe("CartService", () => {
       }
 
       await cartService.updateBillingAddress(IdMap.getId("emptyCart"), address)
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
@@ -450,6 +493,7 @@ describe("CartService", () => {
   describe("updateShippingAddress", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -468,6 +512,12 @@ describe("CartService", () => {
       }
 
       await cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
@@ -508,6 +558,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       regionService: RegionServiceMock,
       productVariantService: ProductVariantServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -518,6 +569,12 @@ describe("CartService", () => {
       await cartService.setRegion(
         IdMap.getId("fr-cart"),
         IdMap.getId("region-us")
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
       )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
@@ -645,6 +702,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       regionService: RegionServiceMock,
       paymentProviderService: PaymentProviderServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -662,6 +720,12 @@ describe("CartService", () => {
       await cartService.setPaymentMethod(
         IdMap.getId("cartWithLine"),
         paymentMethod
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
       )
 
       expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
@@ -787,6 +851,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       regionService: RegionServiceMock,
       paymentProviderService: PaymentProviderServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -795,6 +860,12 @@ describe("CartService", () => {
 
     it("initializes payment sessions for each of the providers", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
       expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(2)
       expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
@@ -938,6 +1009,7 @@ describe("CartService", () => {
   describe("retrievePaymentSession", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     let res
@@ -999,6 +1071,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       shippingProfileService: ShippingProfileServiceMock,
       shippingOptionService: ShippingOptionServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     describe("successfully adds the shipping method", () => {
@@ -1043,6 +1116,12 @@ describe("CartService", () => {
       })
 
       it("updates cart", () => {
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          "cart.updated",
+          expect.any(Object)
+        )
+
         expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
         expect(CartModelMock.updateOne).toHaveBeenCalledWith(
           {
@@ -1171,6 +1250,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
       discountService: DiscountServiceMock,
+      eventBusService: EventBusServiceMock,
     })
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -1182,6 +1262,12 @@ describe("CartService", () => {
       expect(CartModelMock.findOne).toHaveBeenCalledWith({
         _id: IdMap.getId("fr-cart"),
       })
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
       expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.retrieveByCode).toHaveBeenCalledWith("10%OFF")
