@@ -86,7 +86,9 @@ describe("EventBusService", () => {
         jest.resetAllMocks()
         eventBus = new EventBusService({ logger: loggerMock })
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
-        result = await eventBus.worker_({ eventName: "eventName", data: {} })
+        result = await eventBus.worker_({
+          data: { eventName: "eventName", data: {} },
+        })
       })
 
       it("calls logger", () => {
@@ -112,7 +114,9 @@ describe("EventBusService", () => {
         eventBus.subscribe("eventName", () => Promise.reject("fail2"))
         eventBus.subscribe("eventName", () => Promise.reject("fail3"))
 
-        result = await eventBus.worker_({ eventName: "eventName", data: {} })
+        result = await eventBus.worker_({
+          data: { eventName: "eventName", data: {} },
+        })
       })
 
       it("calls logger warn on rejections", () => {
