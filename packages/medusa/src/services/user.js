@@ -243,7 +243,7 @@ class UserService extends BaseService {
     const user = await this.retrieve(userId)
     const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-    const payload = { userId: user._id, exp: expiry }
+    const payload = { user_id: user._id, exp: expiry }
     const token = jwt.sign(payload, secret)
     return token
   }

@@ -18,25 +18,34 @@
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
-    "jest": "^24.9.0",
+    "jest": "^25.5.2",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2"
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+    "watch": "babel -w src --out-dir dist --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
     "test": "jest"
   },
+  "peerDependencies": {
+    "medusa-interfaces": "^0.3.0"
+  },
+  "peerDependencies": {
+    "mongoose": "5.x"
+  },
   "dependencies": {
+    "@babel/plugin-transform-classes": "^7.9.5",
     "@hapi/joi": "^16.1.8",
     "awilix": "^4.2.3",
     "bcrypt": "^3.0.7",
@@ -44,7 +53,6 @@
     "bull": "^3.12.1",
     "client-sessions": "^0.8.0",
     "cookie-parser": "^1.4.4",
-    "core-js": "^3.4.8",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -54,15 +62,13 @@
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "medusa-core-utils": "^0.3.0",
-    "medusa-interfaces": "^0.3.0",
+    "medusa-interfaces": "^0.1.27",
     "medusa-test-utils": "^0.3.0",
-    "mongoose": "^5.8.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "regenerator-runtime": "^0.13.3",
     "winston": "^3.2.1"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"

@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import bcrypt from "bcrypt"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -69,6 +70,36 @@ class CustomerService extends BaseService {
   }
 
   /**
+   * Generate a JSON Web token, that will be sent to a customer, that wishes to
+   * reset password.
+   * The token will be signed with the customer's current password hash as a
+   * secret a long side a payload with userId and the expiry time for the token,
+   * which is always 15 minutes.
+   * @param {string} customerId - the customer to reset the password for
+   * @returns {string} the generated JSON web token
+   */
+  async generateResetPasswordToken(customerId) {
+    const customer = await this.retrieve(customerId)
+
+    if (!customer.has_account) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You must have an account to reset the password. Create an account first"
+      )
+    }
+
+    const secret = customer.password_hash
+    const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
+    const payload = { customer_id: customer._id, exp: expiry }
+    const token = jwt.sign(payload, secret)
+
+    // TODO: Call event layer to ensure that there is an email service that
+    // sends the token.
+
+    return token
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
@@ -99,61 +130,52 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * Creates a customer with email and billing address
-   * (if provided) being validated.
+   * Gets a customer by email.
+   * @param {string} email - the email of the customer to get.
+   * @return {Promise<Customer>} the customer document.
+   */
+  async retrieveByEmail(email) {
+    this.validateEmail_(email)
+    const customer = await this.customerModel_.findOne({ email }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with email ${email} was not found`
+      )
+    }
+
+    return customer
+  }
+
+  /**
+   * Creates a customer from an email - customers can have accounts associated,
+   * e.g. to login and view order history, etc. If a password is provided the
+   * customer will automatically get an account, otherwise the customer is just
+   * used to hold details of customers.
    * @param {object} customer - the customer to create
    * @return {Promise} the result of create
    */
-  create(customer) {
-    const { email, billing_address } = customer
+  async create(customer) {
+    const { email, billing_address, password } = customer
     this.validateEmail_(email)
+
     if (billing_address) {
       this.validateBillingAddress_(billing_address)
     }
-    this.customerModel_.create(customer).catch(err => {
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10)
+      customer.password_hash = hashedPassword
+      customer.has_account = true
+      delete customer.password
+    }
+
+    return this.customerModel_.create(customer).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
-  }
-
-  /**
-   * Sets the email of a customer
-   * @param {string} customerId - the id of the customer to update
-   * @param {string} email - the email to add to customer
-   * @return {Promise} the result of the update operation
-   */
-  async updateEmail(customerId, email) {
-    const customer = await this.retrieve(customerId)
-    this.validateEmail_(email)
-
-    return this.customerModel_.updateOne(
-      {
-        _id: customer._id,
-      },
-      {
-        $set: { email },
-      }
-    )
-  }
-
-  /**
-   * Sets the billing address of a customer
-   * @param {*} customerId - the customer to update address on
-   * @param {*} address - the new address to replace the current one
-   * @return {Promise} the result of the update operation
-   */
-  async updateBillingAddress(customerId, address) {
-    const customer = await this.retrieve(customerId)
-
-    this.validateBillingAddress_(address)
-
-    return this.customerModel_.updateOne(
-      {
-        _id: customer._id,
-      },
-      {
-        $set: { billing_address: address },
-      }
-    )
   }
 
   /**
@@ -175,11 +197,19 @@ class CustomerService extends BaseService {
       )
     }
 
+    if (update.email) {
+      this.validateEmail_(update.email)
+    }
+
     if (update.billing_address) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use updateBillingAddress to update billing address"
-      )
+      this.validateBillingAddress_(update.billing_address)
+    }
+
+    if (update.password) {
+      const hashedPassword = await bcrypt.hash(update.password, 10)
+      update.password_hash = hashedPassword
+      update.has_account = true
+      delete update.password
     }
 
     return this.customerModel_

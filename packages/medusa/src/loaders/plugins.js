@@ -5,6 +5,7 @@ import {
   PaymentService,
   FulfillmentService,
 } from "medusa-interfaces"
+import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
@@ -14,9 +15,17 @@ import { sync as existsSync } from "fs-exists-cached"
 /**
  * Registers all services in the services directory
  */
-export default ({ container, app }) => {
-  const configPath = path.resolve("./medusa-config")
-  const { plugins } = require(configPath)
+export default ({ rootDirectory, container, app }) => {
+  const { configModule, configFilePath } = getConfigFile(
+    rootDirectory,
+    `medusa-config`
+  )
+
+  if (!configModule) {
+    return
+  }
+
+  const { plugins } = configModule
 
   const resolved = plugins.map(plugin => {
     if (_.isString(plugin)) {
@@ -29,13 +38,54 @@ export default ({ container, app }) => {
     return details
   })
 
+  resolved.push({
+    resolve: `${rootDirectory}/dist`,
+    name: `project-plugin`,
+    id: createPluginId(`project-plugin`),
+    options: {},
+    version: createFileContentHash(process.cwd(), `**`),
+  })
+
   resolved.forEach(pluginDetails => {
-    registerServices(pluginDetails, container)
     registerModels(pluginDetails, container)
+    registerServices(pluginDetails, container)
+    registerMedusaApi(pluginDetails, container)
     registerApi(pluginDetails, app)
+    registerSubscribers(pluginDetails, container)
   })
 }
 
+function registerMedusaApi(pluginDetails, container) {
+  registerMedusaMiddleware(pluginDetails, container)
+}
+
+function registerMedusaMiddleware(pluginDetails, container) {
+  let module
+  try {
+    module = require(`${pluginDetails.resolve}/api/medusa-middleware`).default
+  } catch (err) {
+    return
+  }
+
+  const middlewareService = container.resolve("middlewareService")
+  if (module.postAuthentication) {
+    middlewareService.addPostAuthentication(
+      module.postAuthentication,
+      pluginDetails.options
+    )
+  }
+
+  if (module.preAuthentication) {
+    middlewareService.addPreAuthentication(
+      module.preAuthentication,
+      pluginDetails.options
+    )
+  }
+}
+
+/**
+ * Registers the plugin's api routes.
+ */
 function registerApi(pluginDetails, app) {
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
@@ -59,7 +109,7 @@ function registerApi(pluginDetails, app) {
  * @return {void}
  */
 function registerServices(pluginDetails, container) {
-  const files = glob.sync(`${pluginDetails.resolve}/services/*`, {})
+  const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
   files.forEach(fn => {
     const loaded = require(fn).default
 
@@ -118,10 +168,36 @@ function registerServices(pluginDetails, container) {
  *    registered
  * @return {void}
  */
-function registerModels(pluginDetails, container) {
-  const files = glob.sync(`${pluginDetails.resolve}/models/*`, {})
+function registerSubscribers(pluginDetails, container) {
+  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
   files.forEach(fn => {
     const loaded = require(fn).default
+
+    const name = formatRegistrationName(fn)
+    container.build(
+      asFunction(
+        cradle => new loaded(cradle, pluginDetails.options)
+      ).singleton()
+    )
+  })
+}
+
+/**
+ * Registers a plugin's models at the right location in our container. Models
+ * must inherit from BaseModel. Models are registered directly in the container.
+ * Names are camelCase formatted and namespaced by the folder i.e:
+ * models/example-person -> examplePersonModel
+ * @param {object} pluginDetails - the plugin details including plugin options,
+ *    version, id, resolved path, etc. See resolvePlugin
+ * @param {object} container - the container where the services will be
+ *    registered
+ * @return {void}
+ */
+function registerModels(pluginDetails, container) {
+  const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
+  files.forEach(fn => {
+    const loaded = require(fn).default
+
     if (!(loaded.prototype instanceof BaseModel)) {
       const logger = container.resolve("logger")
       const message = `Models must inherit from BaseModel, please check ${fn}`
@@ -131,7 +207,9 @@ function registerModels(pluginDetails, container) {
 
     const name = formatRegistrationName(fn)
     container.register({
-      [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
+      [name]: asFunction(
+        cradle => new loaded(cradle, pluginDetails.options)
+      ).singleton(),
     })
   })
 }
@@ -201,15 +279,22 @@ function resolvePlugin(pluginName) {
     }
   }
 
+  const rootDir = path.resolve(".")
+
   /**
    *  Here we have an absolute path to an internal plugin, or a name of a module
    *  which should be located in node_modules.
    */
   try {
+    const requireSource =
+      rootDir !== null
+        ? createRequireFromPath(`${rootDir}/:internal:`)
+        : require
+
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
     const resolvedPath = path.dirname(
-      require.resolve(`${pluginName}/package.json`)
+      requireSource.resolve(`${pluginName}/package.json`)
     )
 
     const packageJSON = JSON.parse(
@@ -228,4 +313,8 @@ function resolvePlugin(pluginName) {
       `Unable to find plugin "${pluginName}". Perhaps you need to install its package?`
     )
   }
+}
+
+function createFileContentHash(path, files) {
+  return path + files
 }
