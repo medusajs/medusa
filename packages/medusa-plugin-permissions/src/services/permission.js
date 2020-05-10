@@ -55,6 +55,7 @@ class PermissionService extends BaseService {
   }
 
   async hasPermission(user, method, endpoint) {
+    if (!user) return false
     for (let i = 0; i < user.metadata.roles.length; i++) {
       const role = user.metadata.roles[i]
       const permissions = await this.retrieveRole(role)

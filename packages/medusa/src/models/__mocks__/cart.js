@@ -312,9 +312,9 @@ export const carts = {
 }
 
 export const CartModelMock = {
-  create: jest.fn().mockReturnValue(Promise.resolve()),
+  create: jest.fn().mockImplementation(data => Promise.resolve(data)),
   updateOne: jest.fn().mockImplementation((query, update) => {
-    return Promise.resolve()
+    return Promise.resolve(update)
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
