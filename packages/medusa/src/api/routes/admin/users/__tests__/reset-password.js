@@ -19,7 +19,7 @@ describe("POST /admin/users/reset-password", () => {
           email: "vandijk@test.dk",
           token: jwt.sign(
             {
-              userId: IdMap.getId("vandijk"),
+              user_id: IdMap.getId("vandijk"),
               name: "Virgil Van Dijk",
               email: "vandijk@test.dk",
               exp,
