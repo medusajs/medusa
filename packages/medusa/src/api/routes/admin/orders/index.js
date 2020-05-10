@@ -21,6 +21,10 @@ export default app => {
   )
   route.post("/:id/return", middlewares.wrap(require("./return-order").default))
   route.post("/:id/cancel", middlewares.wrap(require("./cancel-order").default))
+  route.post(
+    "/:id/archive",
+    middlewares.wrap(require("./archive-order").default)
+  )
 
   return app
 }

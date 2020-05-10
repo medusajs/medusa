@@ -56,6 +56,69 @@ export const orders = {
       },
     ],
   },
+  processedOrder: {
+    _id: IdMap.getId("processed-order"),
+    email: "oliver@test.dk",
+    billing_address: {
+      first_name: "Oli",
+      last_name: "Medusa",
+      address_1: "testaddress",
+      city: "LA",
+      country_code: "US",
+      postal_code: "90002",
+    },
+    shipping_address: {
+      first_name: "Oli",
+      last_name: "Medusa",
+      address_1: "testaddress",
+      city: "LA",
+      country_code: "US",
+      postal_code: "90002",
+    },
+    items: [
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("validId"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+    ],
+    region: IdMap.getId("region-france"),
+    customer_id: IdMap.getId("test-customer"),
+    payment_method: {
+      provider_id: "default_provider",
+    },
+    shipping_methods: [
+      {
+        _id: IdMap.getId("expensiveShipping"),
+        name: "Expensive Shipping",
+        price: 100,
+        provider_id: "default_provider",
+        profile_id: IdMap.getId("default"),
+      },
+      {
+        _id: IdMap.getId("freeShipping"),
+        name: "Free Shipping",
+        price: 10,
+        provider_id: "default_provider",
+        profile_id: IdMap.getId("profile1"),
+      },
+    ],
+    fulfillment_status: "fulfilled",
+    payment_status: "captured",
+    status: "completed",
+  },
 }
 
 export const OrderServiceMock = {
@@ -67,6 +130,9 @@ export const OrderServiceMock = {
     if (orderId === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }
+    if (orderId === IdMap.getId("processed-order")) {
+      return Promise.resolve(orders.processedOrder)
+    }
     return Promise.resolve(undefined)
   }),
   decorate: jest.fn().mockImplementation(order => {
@@ -77,6 +143,13 @@ export const OrderServiceMock = {
     if (order === IdMap.getId("test-order")) {
       orders.testOrder.status = "cancelled"
       return Promise.resolve(orders.testOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
+  archive: jest.fn().mockImplementation(order => {
+    if (order === IdMap.getId("processed-order")) {
+      orders.processedOrder.status = "archived"
+      return Promise.resolve(orders.processedOrder)
     }
     return Promise.resolve(undefined)
   }),

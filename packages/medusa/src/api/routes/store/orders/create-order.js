@@ -15,7 +15,22 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
 
     const cart = await cartService.retrieve(value.cartId)
-    const order = await orderService.create(cart)
+    let order = await orderService.create(cart)
+    order = await orderService.decorate(order, [
+      "status",
+      "fulfillment_status",
+      "payment_status",
+      "email",
+      "billing_address",
+      "shipping_address",
+      "items",
+      "region",
+      "discounts",
+      "customer_id",
+      "payment_method",
+      "shipping_methods",
+      "metadata",
+    ])
 
     res.status(200).json(order)
   } catch (err) {

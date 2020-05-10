@@ -4,7 +4,6 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    status: Validator.string(),
     email: Validator.string().email(),
     billing_address: Validator.address(),
     shipping_address: Validator.address(),

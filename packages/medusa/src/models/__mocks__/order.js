@@ -125,6 +125,7 @@ export const orders = {
     ],
     fulfillment_status: "fulfilled",
     payment_status: "captured",
+    status: "completed",
   },
   orderToRefund: {
     _id: IdMap.getId("refund-order"),

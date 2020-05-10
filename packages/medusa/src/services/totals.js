@@ -101,9 +101,11 @@ class TotalsService extends BaseService {
 
     const subtotal = this.getSubtotal({ items: lineItems })
 
+    const region = await this.regionService_.retrieve(order.region)
+
     // if nothing is discounted, return the subtotal of line items
     if (!discount) {
-      return subtotal
+      return subtotal * (1 + region.tax_rate)
     }
 
     const { value, type, allocation } = discount.discount_rule

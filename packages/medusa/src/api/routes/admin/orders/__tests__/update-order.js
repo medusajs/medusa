@@ -12,7 +12,7 @@ describe("POST /admin/orders/:id", () => {
         `/admin/orders/${IdMap.getId("test-order")}`,
         {
           payload: {
-            status: "completed",
+            email: "oliver@test.dk",
           },
           adminSession: {
             jwt: {
@@ -32,7 +32,7 @@ describe("POST /admin/orders/:id", () => {
       expect(OrderServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
         {
-          status: "completed",
+          email: "oliver@test.dk",
         }
       )
     })

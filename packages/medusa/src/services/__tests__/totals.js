@@ -152,6 +152,7 @@ describe("TotalsService", () => {
     let res
     const totalsService = new TotalsService({
       productVariantService: ProductVariantServiceMock,
+      regionService: RegionServiceMock,
     })
 
     beforeEach(() => {
@@ -180,7 +181,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(1230)
+      expect(res).toEqual(1537.5)
     })
 
     it("calculates refund with total precentage discount", async () => {

@@ -63,7 +63,6 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.update(IdMap.getId("test-order"), {
         email: "oliver@test.dk",
-        status: "completed",
       })
 
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
@@ -72,7 +71,6 @@ describe("OrderService", () => {
         {
           $set: {
             email: "oliver@test.dk",
-            status: "completed",
           },
         },
         { runValidators: true }
@@ -428,6 +426,34 @@ describe("OrderService", () => {
         expect(error.message).toEqual(
           "Can't return an unfulfilled or already returned order"
         )
+      }
+    })
+  })
+
+  describe("archive", () => {
+    const orderService = new OrderService({
+      orderModel: OrderModelMock,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls order model functions", async () => {
+      await orderService.archive(IdMap.getId("processed-order"))
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
+        { _id: IdMap.getId("processed-order") },
+        { $set: { status: "archived" } }
+      )
+    })
+
+    it("throws if order is unprocessed", async () => {
+      try {
+        await orderService.archive(IdMap.getId("test-order"))
+      } catch (error) {
+        expect(error.message).toEqual("Can't archive an unprocessed order")
       }
     })
   })

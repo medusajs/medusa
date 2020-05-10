@@ -99,14 +99,18 @@ class OrderService extends BaseService {
         const profile = await this.shippingProfileService_.retrieve(profile_id)
         // for each method find the items in the order, that are associated
         // with the profile on the current shipping method
-        method.items = items.filter(({ content }) => {
-          if (Array.isArray(content)) {
-            // we require bundles to have same shipping method, therefore:
-            return profile.products.includes(content[0].product._id)
-          } else {
-            return profile.products.includes(content.product._id)
-          }
-        })
+        if (shipping_methods.length === 1) {
+          method.items = items
+        } else {
+          method.items = items.filter(({ content }) => {
+            if (Array.isArray(content)) {
+              // we require bundles to have same shipping method, therefore:
+              return profile.products.includes(content[0].product._id)
+            } else {
+              return profile.products.includes(content.product._id)
+            }
+          })
+        }
         updatedMethods.push(method)
       })
     )
@@ -156,8 +160,6 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(orderId, update) {
-    const validatedId = this.validateId_(orderId)
-
     const order = await this.retrieve(orderId)
 
     if (
@@ -179,6 +181,13 @@ class OrderService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Use setMetadata to update metadata fields"
+      )
+    }
+
+    if (update.status || update.fulfillment_status || update.payment_status) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Can't update order statuses. This will happen automatically. Use metadata in order for additional statuses"
       )
     }
 
@@ -204,7 +213,7 @@ class OrderService extends BaseService {
 
     return this.orderModel_
       .updateOne(
-        { _id: validatedId },
+        { _id: order._id },
         { $set: updateFields },
         { runValidators: true }
       )
@@ -237,7 +246,7 @@ class OrderService extends BaseService {
       )
     }
 
-    // cancel payment method
+    // TODO: cancel payment method
 
     return this.orderModel_.updateOne(
       {
@@ -264,6 +273,13 @@ class OrderService extends BaseService {
       )
     }
 
+    // prepare update object
+    const updateFields = { payment_status: "captured" }
+    const completed = order.fulfillment_status !== "not_fulfilled"
+    if (completed) {
+      updateFields.status = "completed"
+    }
+
     const { provider_id, data } = order.payment_method
     const paymentProvider = await this.paymentProviderService_.retrieveProvider(
       provider_id
@@ -276,7 +292,7 @@ class OrderService extends BaseService {
         _id: orderId,
       },
       {
-        $set: { payment_status: "captured" },
+        $set: updateFields,
       }
     )
   }
@@ -301,26 +317,11 @@ class OrderService extends BaseService {
 
     const { shipping_methods, items } = order
 
-    // if only one shipping method is attached to the order, we simply create
-    // the order for the single provider given in the method
-    if (shipping_methods.length === 1) {
-      const fulfillmentProviderId = shipping_methods[0].provider_id
-      const fulfillmentProvider = this.fulfillmentProviderService_.retrieveProvider(
-        fulfillmentProviderId
-      )
-
-      shipping_methods[0].items = items
-
-      await fulfillmentProvider.createOrder(shipping_methods[0].data, items)
-
-      return this.orderModel_.updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $set: { fulfillment_status: "fulfilled" },
-        }
-      )
+    // prepare update object
+    const updateFields = { fulfillment_status: "fulfilled" }
+    const completed = order.payment_status !== "awaiting"
+    if (completed) {
+      updateFields.status = "completed"
     }
 
     // partition order items to their dedicated shipping method
@@ -340,7 +341,7 @@ class OrderService extends BaseService {
         _id: orderId,
       },
       {
-        $set: { fulfillment_status: "fulfilled" },
+        $set: updateFields,
       }
     )
   }
@@ -399,6 +400,32 @@ class OrderService extends BaseService {
           items: order.items,
           fulfillment_status: fullReturn ? "returned" : "partially_fulfilled",
         },
+      }
+    )
+  }
+
+  /**
+   * Archives an order. It only alloved, if the order has been fulfilled
+   * and payment has been captured.
+   * @param {string} orderId - the order to archive
+   * @return {Promise} the result of the update operation
+   */
+  async archive(orderId) {
+    const order = await this.retrieve(orderId)
+
+    if (order.status !== ("completed" || "refunded")) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Can't archive an unprocessed order"
+      )
+    }
+
+    return this.orderModel_.updateOne(
+      {
+        _id: orderId,
+      },
+      {
+        $set: { status: "archived" },
       }
     )
   }
