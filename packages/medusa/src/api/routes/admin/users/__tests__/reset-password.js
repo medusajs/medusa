@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import { request } from "../../../../../helpers/test-request"
 import { UserServiceMock } from "../../../../../services/__mocks__/user"
 
-describe("POST /admin/users/:id/reset-password", () => {
+describe("POST /admin/users/reset-password", () => {
   describe("successfully resets password", () => {
     let subject
 
@@ -13,42 +13,37 @@ describe("POST /admin/users/:id/reset-password", () => {
 
     it("calls UserService setPassword", async () => {
       const exp = Math.floor(Date.now() / 1000) + 60 * 15
-      const token = jwt.sign(
-        {
-          userId: "test-user-id",
-          name: "Oliver Juhl",
-          email: "oliver@test.dk",
-          exp,
-        },
-        "123456789hash"
-      )
 
-      subject = await request(
-        "POST",
-        `/admin/users/test-user-id/reset-password`,
-        {
-          payload: {
-            token,
-            password: "new-password",
-          },
-          adminSession: {
-            jwt: {
-              userId: IdMap.getId("admin_user"),
+      subject = await request("POST", `/admin/users/reset-password`, {
+        payload: {
+          email: "vandijk@test.dk",
+          token: jwt.sign(
+            {
+              user_id: IdMap.getId("vandijk"),
+              name: "Virgil Van Dijk",
+              email: "vandijk@test.dk",
+              exp,
             },
+            "1234"
+          ),
+          password: "new-password",
+        },
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
           },
-        }
-      )
+        },
+      })
       expect(UserServiceMock.setPassword).toHaveBeenCalledTimes(1)
       expect(UserServiceMock.setPassword).toHaveBeenCalledWith(
-        "test-user-id",
+        IdMap.getId("vandijk"),
         "new-password"
       )
     })
 
     it("returns updated user", () => {
-      expect(subject.body._id).toEqual("test-user-id")
+      expect(subject.body._id).toEqual(IdMap.getId("vandijk"))
     })
-
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })

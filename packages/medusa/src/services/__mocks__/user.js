@@ -8,6 +8,11 @@ export const users = {
     email: "oliver@test.dk",
     password_hash: "hashed123456789",
   },
+  vanDijk: {
+    _id: IdMap.getId("vandijk"),
+    email: "vandijk@test.dk",
+    password_hash: "hashed123456789",
+  },
   jwtUser: {
     _id: "test-user-id",
     email: "oliver@test.dk",
@@ -43,6 +48,9 @@ export const UserServiceMock = {
     if (userId === IdMap.getId("test-user")) {
       return Promise.resolve(users.testUser)
     }
+    if (userId === IdMap.getId("vandijk")) {
+      return Promise.resolve(users.vanDijk)
+    }
     // used for jwt token tests
     if (userId === "test-user-id") {
       return Promise.resolve(users.jwtUser)
@@ -66,6 +74,13 @@ export const UserServiceMock = {
     return Promise.resolve(undefined)
   }),
   retrieveByEmail: jest.fn().mockImplementation(email => {
+    if (email === "vandijk@test.dk") {
+      return Promise.resolve({
+        _id: IdMap.getId("vandijk"),
+        email,
+        password_hash: "1234",
+      })
+    }
     if (email === "oliver@test.dk") {
       return bcrypt
         .hash("123456789", 10)
