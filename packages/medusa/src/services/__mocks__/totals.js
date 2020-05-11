@@ -10,6 +10,12 @@ export const TotalsServiceMock = {
     }
     return 0
   }),
+  getRefundTotal: jest.fn().mockImplementation((order, lineItems) => {
+    if (order._id === IdMap.getId("processed-order")) {
+      return 1230
+    }
+    return 0
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

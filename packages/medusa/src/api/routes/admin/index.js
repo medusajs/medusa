@@ -8,6 +8,7 @@ import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 import discountRoutes from "./discounts"
+import orderRoutes from "./orders"
 
 const route = Router()
 
@@ -34,6 +35,7 @@ export default (app, container) => {
   shippingOptionRoutes(route)
   shippingProfileRoutes(route)
   discountRoutes(route)
+  orderRoutes(route)
   // productVariantRoutes(route)
 
   return app
