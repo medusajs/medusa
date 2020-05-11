@@ -33,5 +33,6 @@ export default new mongoose.Schema({
   // cards etc. the unit_price field is provided to give more granular control.
   content: { type: mongoose.Schema.Types.Mixed, required: true },
   quantity: { type: Number, required: true },
+  returned: { type: Boolean, default: false },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
 })
