@@ -17,6 +17,7 @@ export const regions = {
     payment_providers: ["default_provider", "france-provider"],
     fulfillment_providers: ["default_provider"],
     currency_code: "eur",
+    tax_rate: 0.25,
   },
   regionUs: {
     _id: IdMap.getId("region-us"),
