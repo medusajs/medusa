@@ -20,7 +20,7 @@ describe("GET /admin/product-variants", () => {
       expect(ProductVariantServiceMock.list).toHaveBeenCalledTimes(1)
     })
 
-    it("returns 200 and decorated products", () => {
+    it("returns 200 and product variants", () => {
       expect(subject.status).toEqual(200)
       expect(subject.body[0]._id).toEqual(IdMap.getId("testVariant"))
     })

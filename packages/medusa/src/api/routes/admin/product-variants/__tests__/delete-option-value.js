@@ -26,7 +26,7 @@ describe("DELETE /admin/product-variants/:id/options", () => {
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
-    it("calls service addOption", () => {
+    it("calls service deleteOptionValue", () => {
       expect(ProductVariantServiceMock.deleteOptionValue).toHaveBeenCalledTimes(
         1
       )

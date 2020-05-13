@@ -24,7 +24,7 @@ describe("GET /admin/product-variants/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls get product from productSerice", () => {
+    it("calls productVariantService retrieve", () => {
       expect(ProductVariantServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("testVariant")
