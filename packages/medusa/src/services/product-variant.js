@@ -66,7 +66,7 @@ class ProductVariantService extends BaseService {
    * @param {object} variant - the variant to create
    * @return {Promise} resolves to the creation result.
    */
-  createDraft(productVariant) {
+  async createDraft(productVariant) {
     return this.productVariantModel_
       .create({
         ...productVariant,
@@ -99,7 +99,7 @@ class ProductVariantService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  update(variantId, update) {
+  async update(variantId, update) {
     const validatedId = this.validateId_(variantId)
 
     if (update.prices) {
