@@ -4,11 +4,13 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    title: Validator.string().required(),
+    title: Validator.string().optional(),
     prices: Validator.array()
       .items({})
-      .required(),
-    options: Validator.array().items({}),
+      .optional(),
+    options: Validator.array()
+      .items({})
+      .optional(),
     image: Validator.string().optional(),
     inventory_quantity: Validator.number().optional(),
     allow_backorder: Validator.boolean().optional(),
