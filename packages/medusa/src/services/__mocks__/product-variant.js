@@ -117,6 +117,16 @@ export const variants = {
 }
 
 export const ProductVariantServiceMock = {
+  createDraft: jest.fn().mockImplementation(data => {
+    return Promise.resolve(testVariant)
+  }),
+  publish: jest.fn().mockImplementation(_ => {
+    return Promise.resolve({
+      _id: IdMap.getId("publish"),
+      name: "Product Variant",
+      published: true,
+    })
+  }),
   retrieve: jest.fn().mockImplementation(variantId => {
     if (variantId === "1") {
       return Promise.resolve(variant1)
@@ -132,6 +142,9 @@ export const ProductVariantServiceMock = {
     }
     if (variantId === IdMap.getId("validId")) {
       return Promise.resolve(variant5)
+    }
+    if (variantId === IdMap.getId("testVariant")) {
+      return Promise.resolve(testVariant)
     }
     if (variantId === "invalid_option") {
       return Promise.resolve(invalidVariant)
@@ -177,8 +190,14 @@ export const ProductVariantServiceMock = {
     return Promise.reject(new Error("Not found"))
   }),
   delete: jest.fn().mockReturnValue(Promise.resolve()),
+  update: jest.fn().mockReturnValue(Promise.resolve()),
+  setCurrencyPrice: jest.fn().mockReturnValue(Promise.resolve()),
+  setRegionPrice: jest.fn().mockReturnValue(Promise.resolve()),
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})
+  }),
+  list: jest.fn().mockImplementation(data => {
+    return Promise.resolve([testVariant])
   }),
   deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {
     return Promise.resolve({})
