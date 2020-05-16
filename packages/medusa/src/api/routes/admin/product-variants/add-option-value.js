@@ -4,8 +4,8 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    optionId: Validator.objectId().required(),
-    optionValue: Validator.string().required(),
+    option_id: Validator.objectId().required(),
+    value: Validator.string().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -17,8 +17,8 @@ export default async (req, res) => {
     const productVariantService = req.scope.resolve("productVariantService")
     const productVariant = await productVariantService.addOptionValue(
       id,
-      value.optionId,
-      value.optionValue
+      value.option_id,
+      value.value
     )
 
     res.status(200).json(productVariant)
