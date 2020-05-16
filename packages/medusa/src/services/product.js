@@ -184,7 +184,7 @@ class ProductService extends BaseService {
     }
 
     product.options.forEach(option => {
-      if (!variant.options.find(vo => vo.option_id === option._id)) {
+      if (!variant.options.find(vo => option._id.equals(vo.option_id))) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Variant options do not contain value for ${option.title}`
@@ -414,11 +414,11 @@ class ProductService extends BaseService {
   async deleteOption(productId, optionId) {
     const product = await this.retrieve(productId)
 
-    if (!product.options.find(o => o._id === optionId)) {
+    if (!product.options.find(o => o._id.equals(optionId))) {
       return Promise.resolve()
     }
 
-    if (product.variants) {
+    if (product.variants.length) {
       // For the option we want to delete, make sure that all variants have the
       // same option values. The reason for doing is, that we want to avoid
       // duplicate variants. For example, if we have a product with size and
