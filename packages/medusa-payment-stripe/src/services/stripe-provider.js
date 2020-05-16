@@ -5,25 +5,14 @@ import { PaymentService } from "medusa-interfaces"
 class StripeProviderService extends PaymentService {
   static identifier = "stripe"
 
-  constructor(appScope, options, { customerService }) {
+  constructor(appScope, options, { customerService, totalsService }) {
     super()
-    console.log(options)
 
     this.stripe_ = Stripe(options.api_key)
 
     this.customerService_ = customerService
-  }
 
-  async createCustomer(customerId, email) {
-    const stripeCustomer = await this.stripe_.customers.create({
-      email: email,
-    })
-
-    await this.customerService_.setMetadata(
-      customerId,
-      "stripe_id",
-      stripeCustomer.id
-    )
+    this.totalsService_ = totalsService
   }
 
   /**
@@ -67,28 +56,32 @@ class StripeProviderService extends PaymentService {
    * @param {number} amount - the amount to create a payment for
    * @returns {string} id of payment intent
    */
-  async createPayment(cart, amount) {
+  async createPayment(cart) {
     const { customer_id } = cart
 
-    const customer = this.customerService_.retrieve(customer_id)
+    let stripeCustomerId
 
-    if (!customer.metadata.stripe_id) {
-      try {
-        const stripeCustomer = await this.stripe_.customers.create({
+    if (!customer_id) {
+      const { id } = await this.stripe_.customers.create({
+        email: cart.email,
+      })
+      stripeCustomerId = id
+    } else {
+      const customer = this.customerService_.retrieve(customer_id)
+      if (!customer.metadata.stripe_id) {
+        const { id } = await this.stripe_.customers.create({
           email: cart.email,
         })
-        await this.customerService_.setMetadata(
-          customer._id,
-          "stripe_id",
-          stripeCustomer.id
-        )
-      } catch (error) {
-        throw error
+        await this.customerService_.setMetadata(customer._id, "stripe_id", id)
+      } else {
+        stripeCustomerId = customer.metadata.stripe_id
       }
     }
 
+    const amount = this.totalsService_.getTotal(cart)
+
     const paymentIntent = await this.stripe_.paymentIntents({
-      customer: customer.metadata.stripe_id,
+      customer: stripeCustomerId,
       amount,
     })
 
@@ -136,12 +129,9 @@ class StripeProviderService extends PaymentService {
    * @returns {string} id of payment intent
    */
   async capturePayment(paymentData) {
-    // TODO: Check if we actually store it like this
-    const { payment_intent_id } = paymentData
+    const { id } = paymentData
     try {
-      const capturedIntent = await this.stripe_.paymentIntents.capture(
-        payment_intent_id
-      )
+      const capturedIntent = await this.stripe_.paymentIntents.capture(id)
       return capturedIntent.id
     } catch (error) {
       throw error
@@ -154,12 +144,11 @@ class StripeProviderService extends PaymentService {
    * @returns {string} id of payment intent
    */
   async refundPayment(paymentData, amount) {
-    // TODO: Check if we actually store it like this
-    const { payment_intent_id } = paymentData
+    const { id } = paymentData
     try {
       const refundedIntent = await stripe.refunds.create({
         amount,
-        payment_intent: payment_intent_id,
+        payment_intent: id,
       })
       return refundedIntent.id
     } catch (error) {
@@ -173,20 +162,14 @@ class StripeProviderService extends PaymentService {
    * @returns {string} id of payment intent
    */
   async cancelPayment(paymentData) {
-    // TODO: Check if we actually store it like this
-    const { payment_intent_id } = paymentData
+    const { id } = paymentData
     try {
-      const cancelledIntent = await stripe.paymentIntents.cancel(
-        payment_intent_id
-      )
+      const cancelledIntent = await stripe.paymentIntents.cancel(id)
       return cancelledIntent.id
     } catch (error) {
       throw error
     }
   }
-
-  // TODO: Investigate what should happen from a Stripe perspective
-  deletePayment(paymentData) {}
 }
 
 export default StripeProviderService
