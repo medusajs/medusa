@@ -20,30 +20,51 @@ class CartSubscriber {
   }
 
   async onCustomerUpdated(cart) {
-    const { customer_id, payment_method } = cart
-    const customer = await this.customerService_.retrieve(customer_id)
+    const { customer_id, payment_sessions } = cart
 
-    if (customer.metadata.stripe_id === payment_method.data.customer) {
+    if (!payment_sessions) {
       return Promise.resolve()
     }
 
-    if (customer.metadata.stripe_id !== payment_method.data.customer) {
-      if (!payment_method) {
-        const paymentIntent = await this.stripeProviderService_.createPayment(
-          cart
-        )
-        await this.cartService_.updatePaymentMethod(
-          cart._id,
-          payment_method.provider_id,
-          paymentIntent
-        )
-      } else {
-        const { id } = payment_method.data
-        await this.stripeProviderService_.updatePayment(id, {
-          customer: customer.metadata.stripe_id,
-        })
-      }
+    const customer = await this.customerService_.retrieve(customer_id)
+
+    const paymentIntent = await this.stripeProviderService_.retrievePayment(
+      cart
+    )
+
+    let stripeCustomer = await this.stripeProviderService_.retrieveCustomer(
+      customer.metadata.stripe_id
+    )
+
+    if (!stripeCustomer) {
+      stripeCustomer = await this.stripeProviderService_.createCustomer(
+        customer
+      )
     }
+
+    if (stripeCustomer.id === paymentIntent.customer) {
+      return Promise.resolve()
+    }
+
+    if (!paymentIntent.customer) {
+      return this.stripeProviderService_.updatePaymentIntentCustomer(
+        stripeCustomer.id
+      )
+    }
+
+    if (stripeCustomer.id !== paymentIntent.customer) {
+      await this.stripeProviderService_.cancelPayment(paymentIntent.id)
+      const newPaymentIntent = await this.stripeProviderService_.createPayment(
+        cart
+      )
+
+      await this.cartService_.updatePaymentSession(
+        cart._id,
+        "stripe",
+        newPaymentIntent
+      )
+    }
+
     return Promise.resolve()
   }
 }

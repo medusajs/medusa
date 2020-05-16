@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class StripeProviderService extends PaymentService {
   static identifier = "stripe"
 
-  constructor(appScope, options, { customerService, totalsService }) {
+  constructor({ customerService, totalsService }, options) {
     super()
 
     this.stripe_ = Stripe(options.api_key)
@@ -27,27 +27,47 @@ class StripeProviderService extends PaymentService {
     const paymentIntent = await this.stripe_.paymentIntents.retrieve(
       payment_intent_id
     )
-    const { status } = paymentIntent
 
     let status = "initial"
 
-    if (status === "requires_payment_method") {
+    if (paymentIntent.status === "requires_payment_method") {
       return status
     }
 
-    if (status === "requires_action") {
+    if (paymentIntent.status === "requires_action") {
       status = "authorized"
     }
 
-    if (status === "succeeded") {
+    if (paymentIntent.status === "succeeded") {
       status = "succeeded"
     }
 
-    if (status === "cancelled") {
+    if (paymentIntent.status === "cancelled") {
       status = "cancelled"
     }
 
     return status
+  }
+
+  async retrieveCustomer(customerId) {
+    return this.stripe_.customers.retrieve(customerId)
+  }
+
+  // customer metadata
+  async createCustomer(customer) {
+    try {
+      const stripeCustomer = await this.stripe_.customers.create({
+        email: customer.email,
+      })
+      await this.customerService_.setMetadata(
+        customer._id,
+        "stripe_id",
+        stripeCustomer.id
+      )
+      return stripeCustomer
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
@@ -67,10 +87,10 @@ class StripeProviderService extends PaymentService {
       })
       stripeCustomerId = id
     } else {
-      const customer = this.customerService_.retrieve(customer_id)
+      const customer = await this.customerService_.retrieve(customer_id)
       if (!customer.metadata.stripe_id) {
         const { id } = await this.stripe_.customers.create({
-          email: cart.email,
+          email: customer.email,
         })
         await this.customerService_.setMetadata(customer._id, "stripe_id", id)
       } else {
@@ -79,8 +99,7 @@ class StripeProviderService extends PaymentService {
     }
 
     const amount = this.totalsService_.getTotal(cart)
-
-    const paymentIntent = await this.stripe_.paymentIntents({
+    const paymentIntent = await this.stripe_.paymentIntents.create({
       customer: stripeCustomerId,
       amount,
     })
@@ -94,10 +113,9 @@ class StripeProviderService extends PaymentService {
    * @returns {string} id of payment intent
    */
   async retrievePayment(cart) {
-    const { provider_id } = cart.payment_method
-
     try {
-      return this.stripe_.paymentIntents.retrieve(provider_id)
+      const { data } = cart.payment_method
+      return this.stripe_.paymentIntents.retrieve(data.id)
     } catch (error) {
       throw error
     }
@@ -109,15 +127,34 @@ class StripeProviderService extends PaymentService {
    * @param {Object} data - the update object for the payment intent
    * @returns {string} id of payment intent
    */
-  async updatePayment(cart, data) {
-    const { provider_id } = cart.payment_method
-
+  async updatePayment(cart, update) {
     try {
-      const updatedIntent = this.stripe_.paymentIntents.update(
-        provider_id,
-        data
+      const { data } = cart.payment_method
+      const updatedIntent = await this.stripe_.paymentIntents.update(
+        data.id,
+        update
       )
-      return updatedIntent.id
+      return updatedIntent
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Updates customer of Stripe PaymentIntent.
+   * @param {string} cart - the cart to update payment intent for
+   * @param {Object} data - the update object for the payment intent
+   * @returns {string} id of payment intent
+   */
+  async updatePaymentIntentCustomer(paymentIntent, id) {
+    try {
+      const updatedIntent = await this.stripe_.paymentIntents.update(
+        paymentIntent,
+        {
+          customer: id,
+        }
+      )
+      return updatedIntent
     } catch (error) {
       throw error
     }
