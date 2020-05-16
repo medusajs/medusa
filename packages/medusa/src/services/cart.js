@@ -725,7 +725,8 @@ class CartService extends BaseService {
    * also have additional details in the data field such as an id for a package
    * shop.
    * @param {string} cartId - the id of the cart to add shipping method to
-   * @param {ShippingMethod} method - the shipping method to add to the cart
+   * @param {string} optionId - id of shipping option to add as valid method
+   * @param {Object} data - the fulmillment data for the method
    * @return {Promise} the result of the update operation
    */
   async addShippingMethod(cartId, optionId, data) {
