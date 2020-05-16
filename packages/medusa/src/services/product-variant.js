@@ -61,6 +61,7 @@ class ProductVariantService extends BaseService {
     return variant
   }
 
+  // TODO: Validate productVariant
   /**
    * Creates an unpublished product variant.
    * @param {object} variant - the variant to create
