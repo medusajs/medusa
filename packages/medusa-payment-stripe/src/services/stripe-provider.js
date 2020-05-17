@@ -8,6 +8,8 @@ class StripeProviderService extends PaymentService {
   constructor({ customerService, totalsService }, options) {
     super()
 
+    this.options_ = options
+
     this.stripe_ = Stripe(options.api_key)
 
     this.customerService_ = customerService
@@ -195,6 +197,21 @@ class StripeProviderService extends PaymentService {
     } catch (error) {
       throw error
     }
+  }
+
+  /**
+   * Constructs Stripe Webhook event
+   * @param {Object} data - the data of the webhook request: req.body
+   * @param {Object} signature - the Stripe signature on the event, that
+   *    ensures integrity of the webhook event
+   * @returns {Object} Stripe Webhook event
+   */
+  constructWebhookEvent(data, signature) {
+    return this.stripe_.webhooks.constructEvent(
+      data,
+      signature,
+      this.options_.webhook_secret
+    )
   }
 }
 

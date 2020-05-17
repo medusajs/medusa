@@ -96,7 +96,7 @@ describe("StripeProviderService", () => {
       })
     })
 
-    it("returns created stripe customer", () => {
+    it("returns stripe payment intent", () => {
       expect(result).toEqual({
         id: "pi_lebron",
         customer: "cus_lebron",
@@ -132,7 +132,7 @@ describe("StripeProviderService", () => {
       )
     })
 
-    it("returns updated payment intent", () => {
+    it("returns cancelled stripe payment intent", () => {
       expect(result).toEqual({
         id: "pi_lebron",
         customer: "cus_lebron",
@@ -161,7 +161,7 @@ describe("StripeProviderService", () => {
       )
     })
 
-    it("returns created stripe customer", () => {
+    it("returns update stripe payment intent", () => {
       expect(result).toEqual({
         id: "pi_lebron",
         customer: "cus_lebron_2",
@@ -184,7 +184,7 @@ describe("StripeProviderService", () => {
       result = await stripeProviderService.capturePayment("pi_lebron")
     })
 
-    it("returns created stripe customer", () => {
+    it("returns captured stripe payment intent", () => {
       expect(result).toEqual({
         id: "pi_lebron",
         customer: "cus_lebron",
@@ -208,7 +208,7 @@ describe("StripeProviderService", () => {
       result = await stripeProviderService.refundPayment("pi_lebron", 1000)
     })
 
-    it("returns created stripe customer", () => {
+    it("returns refunded stripe payment intent", () => {
       expect(result).toEqual({
         id: "re_123",
         payment_intent: "pi_lebron",
@@ -232,7 +232,7 @@ describe("StripeProviderService", () => {
       result = await stripeProviderService.cancelPayment("pi_lebron")
     })
 
-    it("returns created stripe customer", () => {
+    it("returns cancelled stripe payment intent", () => {
       expect(result).toEqual({
         id: "pi_lebron",
         customer: "cus_lebron",
