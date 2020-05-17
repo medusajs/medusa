@@ -110,7 +110,7 @@ class StripeProviderService extends PaymentService {
   /**
    * Retrieves Stripe PaymentIntent.
    * @param {string} cart - the cart to retrieve payment intent for
-   * @returns {string} id of payment intent
+   * @returns {Object} Stripe PaymentIntent
    */
   async retrievePayment(cart) {
     try {
@@ -125,16 +125,12 @@ class StripeProviderService extends PaymentService {
    * Updates Stripe PaymentIntent.
    * @param {string} cart - the cart to update payment intent for
    * @param {Object} data - the update object for the payment intent
-   * @returns {string} id of payment intent
+   * @returns {Object} Stripe PaymentIntent
    */
   async updatePayment(cart, update) {
     try {
       const { data } = cart.payment_method
-      const updatedIntent = await this.stripe_.paymentIntents.update(
-        data.id,
-        update
-      )
-      return updatedIntent
+      return this.stripe_.paymentIntents.update(data.id, update)
     } catch (error) {
       throw error
     }
@@ -144,17 +140,13 @@ class StripeProviderService extends PaymentService {
    * Updates customer of Stripe PaymentIntent.
    * @param {string} cart - the cart to update payment intent for
    * @param {Object} data - the update object for the payment intent
-   * @returns {string} id of payment intent
+   * @returns {Object} Stripe PaymentIntent
    */
   async updatePaymentIntentCustomer(paymentIntent, id) {
     try {
-      const updatedIntent = await this.stripe_.paymentIntents.update(
-        paymentIntent,
-        {
-          customer: id,
-        }
-      )
-      return updatedIntent
+      return this.stripe_.paymentIntents.update(paymentIntent, {
+        customer: id,
+      })
     } catch (error) {
       throw error
     }
@@ -163,13 +155,12 @@ class StripeProviderService extends PaymentService {
   /**
    * Captures payment for Stripe PaymentIntent.
    * @param {Object} paymentData - payment method data from cart
-   * @returns {string} id of payment intent
+   * @returns {Object} Stripe PaymentIntent
    */
   async capturePayment(paymentData) {
     const { id } = paymentData
     try {
-      const capturedIntent = await this.stripe_.paymentIntents.capture(id)
-      return capturedIntent.id
+      return this.stripe_.paymentIntents.capture(id)
     } catch (error) {
       throw error
     }
@@ -183,11 +174,10 @@ class StripeProviderService extends PaymentService {
   async refundPayment(paymentData, amount) {
     const { id } = paymentData
     try {
-      const refundedIntent = await stripe.refunds.create({
+      return this.stripe_.refunds.create({
         amount,
         payment_intent: id,
       })
-      return refundedIntent.id
     } catch (error) {
       throw error
     }
@@ -201,8 +191,7 @@ class StripeProviderService extends PaymentService {
   async cancelPayment(paymentData) {
     const { id } = paymentData
     try {
-      const cancelledIntent = await stripe.paymentIntents.cancel(id)
-      return cancelledIntent.id
+      return this.stripe_.paymentIntents.cancel(id)
     } catch (error) {
       throw error
     }

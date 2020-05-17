@@ -52,6 +52,31 @@ export const StripeMock = {
         amount: 1000,
       })
     }),
+    capture: jest.fn().mockImplementation((data) => {
+      return Promise.resolve({
+        id: "pi_lebron",
+        customer: "cus_lebron",
+        amount: 1000,
+        status: "succeeded",
+      })
+    }),
+    cancel: jest.fn().mockImplementation((data) => {
+      return Promise.resolve({
+        id: "pi_lebron",
+        customer: "cus_lebron",
+        status: "cancelled",
+      })
+    }),
+  },
+  refunds: {
+    create: jest.fn().mockImplementation((data) => {
+      return Promise.resolve({
+        id: "re_123",
+        payment_intent: "pi_lebron",
+        amount: 1000,
+        status: "succeeded",
+      })
+    }),
   },
 }
 

@@ -169,4 +169,75 @@ describe("StripeProviderService", () => {
       })
     })
   })
+
+  describe("capturePayment", () => {
+    let result
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const stripeProviderService = new StripeProviderService(
+        {},
+        {
+          api_key: "test",
+        }
+      )
+
+      result = await stripeProviderService.capturePayment("pi_lebron")
+    })
+
+    it("returns created stripe customer", () => {
+      expect(result).toEqual({
+        id: "pi_lebron",
+        customer: "cus_lebron",
+        amount: 1000,
+        status: "succeeded",
+      })
+    })
+  })
+
+  describe("refundPayment", () => {
+    let result
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const stripeProviderService = new StripeProviderService(
+        {},
+        {
+          api_key: "test",
+        }
+      )
+
+      result = await stripeProviderService.refundPayment("pi_lebron", 1000)
+    })
+
+    it("returns created stripe customer", () => {
+      expect(result).toEqual({
+        id: "re_123",
+        payment_intent: "pi_lebron",
+        amount: 1000,
+        status: "succeeded",
+      })
+    })
+  })
+
+  describe("cancelPayment", () => {
+    let result
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const stripeProviderService = new StripeProviderService(
+        {},
+        {
+          api_key: "test",
+        }
+      )
+
+      result = await stripeProviderService.cancelPayment("pi_lebron")
+    })
+
+    it("returns created stripe customer", () => {
+      expect(result).toEqual({
+        id: "pi_lebron",
+        customer: "cus_lebron",
+        status: "cancelled",
+      })
+    })
+  })
 })
