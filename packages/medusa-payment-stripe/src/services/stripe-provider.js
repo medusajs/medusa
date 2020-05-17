@@ -23,12 +23,9 @@ class StripeProviderService extends PaymentService {
    * @returns {string} the status of the payment intent
    */
   async getStatus(paymentData) {
-    // TODO: Check if we actually store it like this
-    const { payment_intent_id } = paymentData
+    const { id } = paymentData
 
-    const paymentIntent = await this.stripe_.paymentIntents.retrieve(
-      payment_intent_id
-    )
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id)
 
     let status = "initial"
 
