@@ -101,6 +101,7 @@ export const ProductServiceMock = {
         {
           _id: "1234",
           title: "test",
+          thumbnail: "test.1234",
         },
       ])
     }

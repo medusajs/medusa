@@ -12,8 +12,8 @@ describe("POST /admin/product-variants/:id/options", () => {
         `/admin/product-variants/${IdMap.getId("testVariant")}/options`,
         {
           payload: {
-            optionId: IdMap.getId("testOption"),
-            optionValue: "test",
+            option_id: IdMap.getId("testOption"),
+            value: "test",
           },
           adminSession: {
             jwt: {

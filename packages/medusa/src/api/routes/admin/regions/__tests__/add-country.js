@@ -7,7 +7,7 @@ describe("POST /admin/regions/:region_id/countries", () => {
     let subject
 
     beforeAll(async () => {
-      const id = IdMap.getId("region")
+      const id = IdMap.getId("testRegion")
       subject = await request("POST", `/admin/regions/${id}/countries`, {
         payload: {
           country_code: "se",
@@ -27,7 +27,7 @@ describe("POST /admin/regions/:region_id/countries", () => {
     it("calls service addCountry", () => {
       expect(RegionServiceMock.addCountry).toHaveBeenCalledTimes(1)
       expect(RegionServiceMock.addCountry).toHaveBeenCalledWith(
-        IdMap.getId("region"),
+        IdMap.getId("testRegion"),
         "se"
       )
     })

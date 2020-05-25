@@ -4,7 +4,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    optionId: Validator.objectId().required(),
+    option_id: Validator.objectId().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -16,7 +16,7 @@ export default async (req, res) => {
     const productVariantService = req.scope.resolve("productVariantService")
     const productVariant = await productVariantService.deleteOptionValue(
       id,
-      value.optionId
+      value.option_id
     )
 
     res.status(200).json(productVariant)

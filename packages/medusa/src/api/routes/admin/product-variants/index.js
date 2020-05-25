@@ -17,15 +17,7 @@ export default app => {
     middlewares.wrap(require("./publish-product-variant").default)
   )
 
-  route.post(
-    "/:id/currency-price",
-    middlewares.wrap(require("./set-currency-price").default)
-  )
-
-  route.post(
-    "/:id/region-price",
-    middlewares.wrap(require("./set-region-price").default)
-  )
+  route.post("/:id/prices", middlewares.wrap(require("./add-price").default))
 
   route.post(
     "/:id/options",
