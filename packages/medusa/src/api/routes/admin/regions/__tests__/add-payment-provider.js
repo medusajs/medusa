@@ -7,7 +7,7 @@ describe("POST /admin/regions/:region_id/payment-providers", () => {
     let subject
 
     beforeAll(async () => {
-      const id = IdMap.getId("region")
+      const id = IdMap.getId("testRegion")
       subject = await request(
         "POST",
         `/admin/regions/${id}/payment-providers`,
@@ -31,7 +31,7 @@ describe("POST /admin/regions/:region_id/payment-providers", () => {
     it("calls service addCountry", () => {
       expect(RegionServiceMock.addPaymentProvider).toHaveBeenCalledTimes(1)
       expect(RegionServiceMock.addPaymentProvider).toHaveBeenCalledWith(
-        IdMap.getId("region"),
+        IdMap.getId("testRegion"),
         "default_provider"
       )
     })

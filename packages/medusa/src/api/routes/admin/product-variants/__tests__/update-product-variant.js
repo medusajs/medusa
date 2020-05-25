@@ -13,7 +13,12 @@ describe("POST /admin/product-variants/:id", () => {
         {
           payload: {
             title: "Test Product Variant Updated",
-            prices: [{}],
+            prices: [
+              {
+                currency_code: "DKK",
+                amount: 1234,
+              },
+            ],
           },
           adminSession: {
             jwt: {
@@ -34,7 +39,12 @@ describe("POST /admin/product-variants/:id", () => {
         IdMap.getId("testVariant"),
         {
           title: "Test Product Variant Updated",
-          prices: [{}],
+          prices: [
+            {
+              currency_code: "DKK",
+              amount: 1234,
+            },
+          ],
         }
       )
     })
