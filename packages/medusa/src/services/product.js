@@ -29,7 +29,7 @@ class ProductService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -193,7 +193,7 @@ class ProductService extends BaseService {
     })
 
     let combinationExists = false
-    if (product.variants) {
+    if (product.variants && product.variants.length) {
       // Check if option value of the variant to add already exists. Go through
       // each existing variant. Check if this variants option values are
       // identical to the option values of the variant being added.

@@ -41,7 +41,7 @@ export const orders = {
         quantity: 10,
       },
     ],
-    region: IdMap.getId("testRegion"),
+    region_id: IdMap.getId("testRegion"),
     customer_id: IdMap.getId("testCustomer"),
     payment_method: {
       provider_id: "default_provider",
@@ -94,7 +94,7 @@ export const orders = {
         quantity: 10,
       },
     ],
-    region: IdMap.getId("region-france"),
+    region_id: IdMap.getId("region-france"),
     customer_id: IdMap.getId("test-customer"),
     payment_method: {
       provider_id: "default_provider",

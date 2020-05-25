@@ -12,7 +12,7 @@ describe("DELETE /admin/product-variants/:id/options", () => {
         `/admin/product-variants/${IdMap.getId("testVariant")}/options`,
         {
           payload: {
-            optionId: IdMap.getId("testOption"),
+            option_id: IdMap.getId("testOption"),
           },
           adminSession: {
             jwt: {
