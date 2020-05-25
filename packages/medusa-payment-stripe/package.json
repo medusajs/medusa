@@ -13,11 +13,12 @@
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-transform-instanceof": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
+    "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.9.6",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
@@ -25,14 +26,19 @@
     "jest": "^25.5.2"
   },
   "scripts": {
-    "build": "babel src --out-dir . --ignore **/__tests__",
+    "build": "babel src -d dist",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__"
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
   },
   "dependencies": {
+    "@babel/plugin-transform-classes": "^7.9.5",
     "express": "^4.17.1",
     "medusa-core-utils": "^0.3.0",
-    "medusa-interfaces": "^0.3.0"
+    "medusa-interfaces": "^0.3.0",
+    "medusa-test-utils": "^0.3.0",
+    "stripe": "^8.50.0",
+    "body-parser": "^1.19.0"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"
 }
