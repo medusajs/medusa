@@ -6,8 +6,5 @@ node_modules
 !index.js
 yarn.lock
 
-/api
-/services
-/models
-/subscribers
+/dist
 
