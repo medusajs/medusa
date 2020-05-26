@@ -72,6 +72,16 @@ class ProductService extends BaseService {
   }
 
   /**
+   * Gets all variants belonging to a product.
+   * @param {string} productId - the id of the product to get variants from.
+   * @return {Promise} an array of variants
+   */
+  async retrieveVariants(productId) {
+    const product = await this.retrieve(productId)
+    return this.productVariantService_.list({ _id: { $in: product.variants } })
+  }
+
+  /**
    * Creates an unpublished product.
    * @param {object} product - the product to create
    * @return {Promise} resolves to the creation result.
@@ -171,10 +181,8 @@ class ProductService extends BaseService {
    * @param {string} variantId - the variant to add to the product
    * @return {Promise} the result of update
    */
-  async addVariant(productId, variantId) {
+  async createVariant(productId, variant) {
     const product = await this.retrieve(productId)
-
-    const variant = await this.productVariantService_.retrieve(variantId)
 
     if (product.options.length !== variant.options.length) {
       throw new MedusaError(
@@ -212,9 +220,11 @@ class ProductService extends BaseService {
       )
     }
 
+    const newVariant = await this.productVariantService_.createDraft(variant)
+
     return this.productModel_.updateOne(
       { _id: product._id },
-      { $push: { variants: variantId } }
+      { $push: { variants: newVariant._id } }
     )
   }
 
@@ -479,8 +489,10 @@ class ProductService extends BaseService {
    * @param {string} variantId - the variant to remove from product
    * @return {Promise} the result of update
    */
-  async removeVariant(productId, variantId) {
+  async deleteVariant(productId, variantId) {
     const product = await this.retrieve(productId)
+
+    await this.productVariantService_.delete(variantId)
 
     return this.productModel_.updateOne(
       { _id: product._id },
@@ -489,6 +501,58 @@ class ProductService extends BaseService {
           variants: variantId,
         },
       }
+    )
+  }
+
+  async updateOptionValue(productId, variantId, optionId, value) {
+    const product = await this.retrieve(productId)
+
+    // Check if the product-to-variant relationship holds
+    if (!product.variants.includes(variantId)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The variant could not be found in the product"
+      )
+    }
+
+    // Retrieve all variants
+    const variants = await this.retrieveVariants(productId)
+    const toUpdate = variants.find(v => v._id.equals(variantId))
+
+    // Check if an update would create duplicate variants
+    const canUpdate = variants.every(v => {
+      // The variant we update is irrelevant
+      if (v._id.equals(variantId)) {
+        return true
+      }
+
+      // Check if the variant's options are identical to the variant we
+      // are updating
+      const hasMatchingOptions = v.options.every(option => {
+        if (option.option_id === optionId) {
+          return option.value === value
+        }
+
+        const toUpdateOption = toUpdate.options.find(
+          o => o.option_id === option.option_id
+        )
+        return toUpdateOption.value === option.value
+      })
+
+      return !hasMatchingOptions
+    })
+
+    if (!canUpdate) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "A variant with the given option value combination already exist"
+      )
+    }
+
+    return this.productVariantService_.updateOptionValue(
+      variantId,
+      optionId,
+      value
     )
   }
 
