@@ -314,8 +314,8 @@ class ProductVariantService extends BaseService {
     }
 
     return this.productVariantModel_.updateOne(
-      { _id: variant._id, "options.option_id": optionId },
-      { $set: { "options.$.option_id": `${optionValue}` } }
+      { _id: variantId, "options.option_id": optionId },
+      { $set: { "options.$.value": `${optionValue}` } }
     )
   }
 

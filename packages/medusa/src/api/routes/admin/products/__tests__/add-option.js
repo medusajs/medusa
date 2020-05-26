@@ -36,8 +36,10 @@ describe("POST /admin/products/:id/options", () => {
     })
 
     it("returns the updated product decorated", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(
+        IdMap.getId("productWithOptions")
+      )
+      expect(subject.body.product.decorated).toEqual(true)
     })
   })
 })

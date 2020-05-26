@@ -25,7 +25,7 @@ describe("POST /admin/products/:id/publish", () => {
     })
 
     it("returns product with published flag true", () => {
-      expect(subject.body.published).toEqual(true)
+      expect(subject.body.product.published).toEqual(true)
     })
 
     it("calls service publish", () => {
