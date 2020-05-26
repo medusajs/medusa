@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   try {
     const productService = req.scope.resolve("productService")
-    const product = await productService.addVariant(id, variantId)
+    const product = await productService.deleteVariant(id, variantId)
     const data = await productService.decorate(product, [
       "title",
       "description",
@@ -14,7 +14,7 @@ export default async (req, res) => {
       "variants",
       "published",
     ])
-    res.json(data)
+    res.json(product)
   } catch (err) {
     throw err
   }

@@ -2,17 +2,24 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("POST /admin/products/:id/variants/:variantId", () => {
+describe("POST /admin/products/:id/variants", () => {
   describe("successful add variant", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/products/${IdMap.getId(
-          "productWithOptions"
-        )}/variants/${IdMap.getId("variant2")}`,
+        `/admin/products/${IdMap.getId("productWithOptions")}/variants`,
         {
+          payload: {
+            title: "Test Product Variant",
+            prices: [
+              {
+                currency_code: "DKK",
+                amount: 1234,
+              },
+            ],
+          },
           adminSession: {
             jwt: {
               userId: IdMap.getId("admin_user"),
@@ -27,10 +34,18 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("calls service addVariant", () => {
-      expect(ProductServiceMock.addVariant).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.addVariant).toHaveBeenCalledWith(
+      expect(ProductServiceMock.createVariant).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.createVariant).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
-        IdMap.getId("variant2")
+        {
+          title: "Test Product Variant",
+          prices: [
+            {
+              currency_code: "DKK",
+              amount: 1234,
+            },
+          ],
+        }
       )
     })
 
