@@ -34,9 +34,12 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
       )
     })
 
-    it("returns decorated product with variant removed", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+    it("returns delete result", () => {
+      expect(subject.body).toEqual({
+        variant_id: IdMap.getId("variant1"),
+        object: "product-variant",
+        deleted: true,
+      })
     })
   })
 })

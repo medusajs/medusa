@@ -18,24 +18,29 @@ export default app => {
     middlewares.wrap(require("./create-variant").default)
   )
 
+  route.get(
+    "/:id/variants",
+    middlewares.wrap(require("./get-variants").default)
+  )
+
   route.post(
     "/:id/variants/:variant_id",
     middlewares.wrap(require("./update-variant").default)
   )
 
   route.post(
-    "/:id/options/:optionId",
+    "/:id/options/:option_id",
     middlewares.wrap(require("./update-option").default)
   )
   route.post("/:id/options", middlewares.wrap(require("./add-option").default))
 
   route.delete(
-    "/:id/variants/:variantId",
+    "/:id/variants/:variant_id",
     middlewares.wrap(require("./delete-variant").default)
   )
   route.delete("/:id", middlewares.wrap(require("./delete-product").default))
   route.delete(
-    "/:id/options/:optionId",
+    "/:id/options/:option_id",
     middlewares.wrap(require("./delete-option").default)
   )
 

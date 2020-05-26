@@ -70,8 +70,10 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("returns decorated product with variant removed", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(
+        IdMap.getId("productWithOptions")
+      )
+      expect(subject.body.product.decorated).toEqual(true)
     })
   })
 
@@ -118,8 +120,10 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("returns decorated product with variant removed", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(
+        IdMap.getId("productWithOptions")
+      )
+      expect(subject.body.product.decorated).toEqual(true)
     })
   })
 
@@ -165,8 +169,10 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("returns decorated product with variant removed", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(
+        IdMap.getId("productWithOptions")
+      )
+      expect(subject.body.product.decorated).toEqual(true)
     })
   })
 })

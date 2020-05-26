@@ -130,7 +130,7 @@ describe("ProductService", () => {
     })
 
     const fakeProduct = {
-      _id: "1234",
+      _id: IdMap.getId("fakeId"),
       variants: ["1", "2", "3"],
       tags: "testtag1, testtag2",
       handle: "test-product",
@@ -148,7 +148,7 @@ describe("ProductService", () => {
         ["variants"]
       )
       expect(decorated).toEqual({
-        _id: "1234",
+        _id: IdMap.getId("fakeId"),
         metadata: { testKey: "testValue" },
         variants: [variants.one, variants.two, variants.three],
       })
@@ -161,7 +161,7 @@ describe("ProductService", () => {
         ["variants"]
       )
       expect(decorated).toEqual({
-        _id: "1234",
+        _id: IdMap.getId("fakeId"),
         metadata: { testKey: "testValue" },
         handle: "test-product",
         variants: [variants.one, variants.two, variants.three],
@@ -174,7 +174,7 @@ describe("ProductService", () => {
         "tags",
       ])
       expect(decorated).toEqual({
-        _id: "1234",
+        _id: IdMap.getId("fakeId"),
         metadata: { testKey: "testValue" },
         tags: "testtag1, testtag2",
         handle: "test-product",
@@ -184,7 +184,7 @@ describe("ProductService", () => {
     it("returns decorated product with metadata", async () => {
       const decorated = await productService.decorate(fakeProduct, [])
       expect(decorated).toEqual({
-        _id: "1234",
+        _id: IdMap.getId("fakeId"),
         metadata: { testKey: "testValue" },
       })
     })
@@ -316,7 +316,7 @@ describe("ProductService", () => {
       productVariantService: ProductVariantServiceMock,
     })
 
-    beforeEach(() => {
+    afterEach(() => {
       jest.clearAllMocks()
     })
 
@@ -350,7 +350,7 @@ describe("ProductService", () => {
         ],
       })
 
-      expect(ProductModelMock.findOne).toBeCalledTimes(1)
+      expect(ProductModelMock.findOne).toBeCalledTimes(2)
       expect(ProductModelMock.findOne).toBeCalledWith({
         _id: IdMap.getId("variantProductId"),
       })
@@ -358,6 +358,51 @@ describe("ProductService", () => {
       expect(ProductModelMock.updateOne).toBeCalledTimes(1)
       expect(ProductModelMock.updateOne).toBeCalledWith(
         { _id: IdMap.getId("variantProductId") },
+        { $push: { variants: expect.stringMatching(/.*/) } }
+      )
+    })
+
+    it("add variant to product successfully", async () => {
+      await productService.createVariant(
+        IdMap.getId("productWithFourVariants"),
+        {
+          title: "variant1",
+          options: [
+            {
+              option_id: IdMap.getId("color_id"),
+              value: "blue",
+            },
+            {
+              option_id: IdMap.getId("size_id"),
+              value: "1600",
+            },
+          ],
+        }
+      )
+
+      expect(ProductVariantServiceMock.createDraft).toBeCalledTimes(1)
+      expect(ProductVariantServiceMock.createDraft).toBeCalledWith({
+        title: "variant1",
+        options: [
+          {
+            option_id: IdMap.getId("color_id"),
+            value: "blue",
+          },
+          {
+            option_id: IdMap.getId("size_id"),
+            value: "1600",
+          },
+        ],
+      })
+
+      expect(ProductModelMock.findOne).toBeCalledTimes(2)
+      expect(ProductModelMock.findOne).toBeCalledWith({
+        _id: IdMap.getId("productWithFourVariants"),
+      })
+
+      expect(ProductModelMock.updateOne).toBeCalledTimes(1)
+      expect(ProductModelMock.updateOne).toBeCalledWith(
+        { _id: IdMap.getId("productWithFourVariants") },
         { $push: { variants: expect.stringMatching(/.*/) } }
       )
     })
