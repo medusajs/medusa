@@ -298,6 +298,28 @@ class ProductVariantService extends BaseService {
   }
 
   /**
+   * Updates variant's option value.
+   * Option value must be of type string or number.
+   * @param {string} variantId - the variant to decorate.
+   * @param {string} optionId - the option from product.
+   * @param {string | number} optionValue - option value to add.
+   * @return {Promise} the result of the update operation.
+   */
+  async updateOptionValue(variantId, optionId, optionValue) {
+    if (typeof optionValue !== "string" && typeof optionValue !== "number") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Option value is not of type string or number`
+      )
+    }
+
+    return this.productVariantModel_.updateOne(
+      { _id: variant._id, "options.option_id": optionId },
+      { $set: { "options.$.option_id": `${optionValue}` } }
+    )
+  }
+
+  /**
    * Adds option value to a varaint.
    * Fails when product with variant does not exists or
    * if that product does not have an option with the given

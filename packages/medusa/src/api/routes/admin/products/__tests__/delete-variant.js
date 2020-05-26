@@ -27,8 +27,8 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("calls service removeVariant", () => {
-      expect(ProductServiceMock.removeVariant).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.removeVariant).toHaveBeenCalledWith(
+      expect(ProductServiceMock.deleteVariant).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.deleteVariant).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
         IdMap.getId("variant1")
       )
