@@ -202,14 +202,17 @@ class ProductService extends BaseService {
 
     let combinationExists = false
     if (product.variants && product.variants.length) {
+      const variants = await this.retrieveVariants(productId)
       // Check if option value of the variant to add already exists. Go through
       // each existing variant. Check if this variants option values are
       // identical to the option values of the variant being added.
-      combinationExists = product.variants.some(async vId => {
-        const v = await this.productVariantService_.retrieve(vId)
-        return v.options.reduce((acc, option, index) => {
-          return acc && option.value === variant.options[index].value
-        }, true)
+      combinationExists = variants.some(v => {
+        return v.options.every(option => {
+          const variantOption = variant.options.find(o =>
+            option.option_id.equals(o.option_id)
+          )
+          return option.value === variantOption.value
+        })
       })
     }
 
@@ -440,14 +443,14 @@ class ProductService extends BaseService {
       const firstVariant = await this.productVariantService_.retrieve(
         product.variants[0]
       )
-      const valueToMatch = firstVariant.options.find(
-        o => o.option_id === optionId
+      const valueToMatch = firstVariant.options.find(o =>
+        o.option_id.equals(optionId)
       ).value
 
       const equalsFirst = await Promise.all(
         product.variants.map(async vId => {
           const v = await this.productVariantService_.retrieve(vId)
-          const option = v.options.find(o => o.option_id === optionId)
+          const option = v.options.find(o => o.option_id.equals(optionId))
           return option.value === valueToMatch
         })
       )
@@ -529,12 +532,12 @@ class ProductService extends BaseService {
       // Check if the variant's options are identical to the variant we
       // are updating
       const hasMatchingOptions = v.options.every(option => {
-        if (option.option_id === optionId) {
+        if (option.option_id.equals(optionId)) {
           return option.value === value
         }
 
-        const toUpdateOption = toUpdate.options.find(
-          o => o.option_id === option.option_id
+        const toUpdateOption = toUpdate.options.find(o =>
+          option.option_id.equals(o.option_id)
         )
         return toUpdateOption.value === option.value
       })
@@ -567,11 +570,7 @@ class ProductService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(product, fields.concat(requiredFields))
     if (expandFields.includes("variants")) {
-      decorated.variants = await Promise.all(
-        product.variants.map(variantId =>
-          this.productVariantService_.retrieve(variantId)
-        )
-      )
+      decorated.variants = await this.retrieveVariants(product._id)
     }
     return decorated
   }

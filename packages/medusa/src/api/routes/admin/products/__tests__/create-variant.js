@@ -39,6 +39,7 @@ describe("POST /admin/products/:id/variants", () => {
         IdMap.getId("productWithOptions"),
         {
           title: "Test Product Variant",
+          options: [],
           prices: [
             {
               currency_code: "DKK",
@@ -50,8 +51,10 @@ describe("POST /admin/products/:id/variants", () => {
     })
 
     it("returns the updated product decorated", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(
+        IdMap.getId("productWithOptions")
+      )
+      expect(subject.body.product.decorated).toEqual(true)
     })
   })
 })

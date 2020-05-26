@@ -10,10 +10,12 @@ export default async (req, res) => {
         amount: Validator.number().required(),
       })
       .required(),
-    options: Validator.array().items({
-      option_id: Validator.objectId().required(),
-      value: Validator.string().required(),
-    }),
+    options: Validator.array()
+      .items({
+        option_id: Validator.objectId().required(),
+        value: Validator.string().required(),
+      })
+      .default([]),
     image: Validator.string().optional(),
     inventory_quantity: Validator.number().optional(),
     allow_backorder: Validator.boolean().optional(),
@@ -39,7 +41,7 @@ export default async (req, res) => {
       "variants",
       "published",
     ])
-    res.json(data)
+    res.json({ product: data })
   } catch (err) {
     throw err
   }
