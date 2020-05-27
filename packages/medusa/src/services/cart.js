@@ -448,9 +448,18 @@ class CartService extends BaseService {
     const cart = await this.retrieve(cartId)
     const { value, error } = Validator.address().validate(address)
     if (error) {
+      console.log(error)
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The address is not valid"
+      )
+    }
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+    if (!region.countries.includes(address.country_code.toUpperCase())) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the cart region"
       )
     }
 

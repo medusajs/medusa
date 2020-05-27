@@ -351,6 +351,19 @@ class RegionService extends BaseService {
       }
     )
   }
+
+  /**
+   * Decorates a region
+   * @param {object} region - the region to decorate
+   * @param {[string]} fields - the fields to include
+   * @param {[string]} expandFields - the fields to expand
+   * @return {Region} the region
+   */
+  async decorate(region, fields, expandFields = []) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(region, fields.concat(requiredFields))
+    return decorated
+  }
 }
 
 export default RegionService

@@ -19,7 +19,7 @@ class PaymentProviderService {
    */
   retrieveProvider(provider_id) {
     try {
-      const provider = this.container_.resolve(`pp_${provider_id}`)
+      const provider = this.container_[`pp_${provider_id}`]
       return provider
     } catch (err) {
       throw new MedusaError(
