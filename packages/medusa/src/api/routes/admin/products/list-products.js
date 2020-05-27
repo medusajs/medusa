@@ -17,7 +17,7 @@ export default async (req, res) => {
           ])
       )
     )
-    res.json(products)
+    res.json({ products })
   } catch (error) {
     throw error
   }
