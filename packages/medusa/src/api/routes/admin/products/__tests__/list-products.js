@@ -21,10 +21,10 @@ describe("GET /admin/products", () => {
 
     it("returns 200 and decorated products", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body[0]._id).toEqual(products.product1._id)
-      expect(subject.body[0].decorated).toEqual(true)
-      expect(subject.body[1]._id).toEqual(products.product2._id)
-      expect(subject.body[1].decorated).toEqual(true)
+      expect(subject.body.products[0]._id).toEqual(products.product1._id)
+      expect(subject.body.products[0].decorated).toEqual(true)
+      expect(subject.body.products[1]._id).toEqual(products.product2._id)
+      expect(subject.body.products[1].decorated).toEqual(true)
     })
 
     it("calls update", () => {

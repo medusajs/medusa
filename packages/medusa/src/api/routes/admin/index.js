@@ -3,7 +3,6 @@ import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
 import userRoutes from "./users"
-import productVariantRoutes from "./product-variants"
 import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -36,7 +35,6 @@ export default (app, container) => {
   shippingProfileRoutes(route)
   discountRoutes(route)
   orderRoutes(route)
-  productVariantRoutes(route)
 
   return app
 }
