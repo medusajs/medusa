@@ -23,7 +23,8 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
-    "jest": "^25.5.2"
+    "jest": "^25.5.2",
+    "medusa-test-utils": "^0.3.0"
   },
   "scripts": {
     "build": "babel src -d dist",
