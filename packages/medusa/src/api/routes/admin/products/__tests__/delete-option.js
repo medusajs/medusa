@@ -25,7 +25,7 @@ describe("DELETE /admin/products/:id/options/:optionId", () => {
     it("returns 200 and correct delete info", () => {
       expect(subject.status).toEqual(200)
       expect(subject.body).toEqual({
-        optionId: IdMap.getId("option1"),
+        option_id: IdMap.getId("option1"),
         object: "option",
         deleted: true,
       })
