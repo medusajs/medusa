@@ -29,7 +29,7 @@ class ProductService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -69,6 +69,16 @@ class ProductService extends BaseService {
       )
     }
     return product
+  }
+
+  /**
+   * Gets all variants belonging to a product.
+   * @param {string} productId - the id of the product to get variants from.
+   * @return {Promise} an array of variants
+   */
+  async retrieveVariants(productId) {
+    const product = await this.retrieve(productId)
+    return this.productVariantService_.list({ _id: { $in: product.variants } })
   }
 
   /**
@@ -171,10 +181,8 @@ class ProductService extends BaseService {
    * @param {string} variantId - the variant to add to the product
    * @return {Promise} the result of update
    */
-  async addVariant(productId, variantId) {
+  async createVariant(productId, variant) {
     const product = await this.retrieve(productId)
-
-    const variant = await this.productVariantService_.retrieve(variantId)
 
     if (product.options.length !== variant.options.length) {
       throw new MedusaError(
@@ -184,7 +192,7 @@ class ProductService extends BaseService {
     }
 
     product.options.forEach(option => {
-      if (!variant.options.find(vo => vo.option_id === option._id)) {
+      if (!variant.options.find(vo => option._id.equals(vo.option_id))) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Variant options do not contain value for ${option.title}`
@@ -193,15 +201,18 @@ class ProductService extends BaseService {
     })
 
     let combinationExists = false
-    if (product.variants) {
+    if (product.variants && product.variants.length) {
+      const variants = await this.retrieveVariants(productId)
       // Check if option value of the variant to add already exists. Go through
       // each existing variant. Check if this variants option values are
       // identical to the option values of the variant being added.
-      combinationExists = product.variants.some(async vId => {
-        const v = await this.productVariantService_.retrieve(vId)
-        return v.options.reduce((acc, option, index) => {
-          return acc && option.value === variant.options[index].value
-        }, true)
+      combinationExists = variants.some(v => {
+        return v.options.every(option => {
+          const variantOption = variant.options.find(o =>
+            option.option_id.equals(o.option_id)
+          )
+          return option.value === variantOption.value
+        })
       })
     }
 
@@ -212,9 +223,11 @@ class ProductService extends BaseService {
       )
     }
 
+    const newVariant = await this.productVariantService_.createDraft(variant)
+
     return this.productModel_.updateOne(
       { _id: product._id },
-      { $push: { variants: variantId } }
+      { $push: { variants: newVariant._id } }
     )
   }
 
@@ -414,11 +427,11 @@ class ProductService extends BaseService {
   async deleteOption(productId, optionId) {
     const product = await this.retrieve(productId)
 
-    if (!product.options.find(o => o._id === optionId)) {
+    if (!product.options.find(o => o._id.equals(optionId))) {
       return Promise.resolve()
     }
 
-    if (product.variants) {
+    if (product.variants.length) {
       // For the option we want to delete, make sure that all variants have the
       // same option values. The reason for doing is, that we want to avoid
       // duplicate variants. For example, if we have a product with size and
@@ -430,14 +443,14 @@ class ProductService extends BaseService {
       const firstVariant = await this.productVariantService_.retrieve(
         product.variants[0]
       )
-      const valueToMatch = firstVariant.options.find(
-        o => o.option_id === optionId
+      const valueToMatch = firstVariant.options.find(o =>
+        o.option_id.equals(optionId)
       ).value
 
       const equalsFirst = await Promise.all(
         product.variants.map(async vId => {
           const v = await this.productVariantService_.retrieve(vId)
-          const option = v.options.find(o => o.option_id === optionId)
+          const option = v.options.find(o => o.option_id.equals(optionId))
           return option.value === valueToMatch
         })
       )
@@ -479,8 +492,10 @@ class ProductService extends BaseService {
    * @param {string} variantId - the variant to remove from product
    * @return {Promise} the result of update
    */
-  async removeVariant(productId, variantId) {
+  async deleteVariant(productId, variantId) {
     const product = await this.retrieve(productId)
+
+    await this.productVariantService_.delete(variantId)
 
     return this.productModel_.updateOne(
       { _id: product._id },
@@ -489,6 +504,58 @@ class ProductService extends BaseService {
           variants: variantId,
         },
       }
+    )
+  }
+
+  async updateOptionValue(productId, variantId, optionId, value) {
+    const product = await this.retrieve(productId)
+
+    // Check if the product-to-variant relationship holds
+    if (!product.variants.includes(variantId)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The variant could not be found in the product"
+      )
+    }
+
+    // Retrieve all variants
+    const variants = await this.retrieveVariants(productId)
+    const toUpdate = variants.find(v => v._id.equals(variantId))
+
+    // Check if an update would create duplicate variants
+    const canUpdate = variants.every(v => {
+      // The variant we update is irrelevant
+      if (v._id.equals(variantId)) {
+        return true
+      }
+
+      // Check if the variant's options are identical to the variant we
+      // are updating
+      const hasMatchingOptions = v.options.every(option => {
+        if (option.option_id.equals(optionId)) {
+          return option.value === value
+        }
+
+        const toUpdateOption = toUpdate.options.find(o =>
+          option.option_id.equals(o.option_id)
+        )
+        return toUpdateOption.value === option.value
+      })
+
+      return !hasMatchingOptions
+    })
+
+    if (!canUpdate) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "A variant with the given option value combination already exist"
+      )
+    }
+
+    return this.productVariantService_.updateOptionValue(
+      variantId,
+      optionId,
+      value
     )
   }
 
@@ -503,11 +570,7 @@ class ProductService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(product, fields.concat(requiredFields))
     if (expandFields.includes("variants")) {
-      decorated.variants = await Promise.all(
-        product.variants.map(variantId =>
-          this.productVariantService_.retrieve(variantId)
-        )
-      )
+      decorated.variants = await this.retrieveVariants(product._id)
     }
     return decorated
   }

@@ -20,8 +20,8 @@ export default async (req, res) => {
 
     const lineItem = await lineItemService.generate(
       value.variant_id,
-      value.quantity,
-      cart.region_id
+      cart.region_id,
+      value.quantity
     )
     await cartService.addLineItem(cart._id, lineItem)
 
