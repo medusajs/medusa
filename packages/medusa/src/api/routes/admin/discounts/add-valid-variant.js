@@ -8,7 +8,7 @@ export default async (req, res) => {
     await discountService.addValidVariant(discount_id, variant_id)
 
     const data = discountService.retrieve(discount_id)
-    res.status(200).json(data)
+    res.status(200).json({ discount: data })
   } catch (err) {
     throw err
   }

@@ -6,6 +6,7 @@ const route = Router()
 export default app => {
   app.use("/orders", route)
 
+  route.get("/", middlewares.wrap(require("./list-orders").default))
   route.get("/:id", middlewares.wrap(require("./get-order").default))
 
   route.post("/", middlewares.wrap(require("./create-order").default))

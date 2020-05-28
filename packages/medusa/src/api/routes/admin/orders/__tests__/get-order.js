@@ -33,7 +33,7 @@ describe("GET /admin/orders", () => {
 
     it("returns order", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body._id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body.order._id).toEqual(IdMap.getId("test-order"))
     })
   })
 })
