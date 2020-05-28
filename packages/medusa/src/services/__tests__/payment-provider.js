@@ -28,10 +28,10 @@ describe("ProductService", () => {
   })
 
   describe("createSession", () => {
-    const createSession = jest.fn().mockReturnValue(Promise.resolve())
+    const createPayment = jest.fn().mockReturnValue(Promise.resolve())
     const container = {
       pp_default_provider: {
-        createSession,
+        createPayment,
       },
     }
 
@@ -42,19 +42,19 @@ describe("ProductService", () => {
         total: 100,
       })
 
-      expect(createSession).toBeCalledTimes(1)
-      expect(createSession).toBeCalledWith({
+      expect(createPayment).toBeCalledTimes(1)
+      expect(createPayment).toBeCalledWith({
         total: 100,
       })
     })
   })
 
   describe("updateSession", () => {
-    const updateSession = jest.fn().mockReturnValue(Promise.resolve())
+    const updatePayment = jest.fn().mockReturnValue(Promise.resolve())
 
     const container = {
       pp_default_provider: {
-        updateSession,
+        updatePayment,
       },
     }
 
@@ -73,8 +73,8 @@ describe("ProductService", () => {
         }
       )
 
-      expect(updateSession).toBeCalledTimes(1)
-      expect(updateSession).toBeCalledWith(
+      expect(updatePayment).toBeCalledTimes(1)
+      expect(updatePayment).toBeCalledWith(
         { id: "1234" },
         {
           total: 100,

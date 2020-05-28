@@ -17,7 +17,7 @@ class PaymentProviderService {
    */
   createSession(providerId, cart) {
     const provider = this.retrieveProvider(providerId)
-    return provider.createSession(cart)
+    return provider.createPayment(cart)
   }
 
   /**
@@ -29,7 +29,7 @@ class PaymentProviderService {
    */
   updateSession(paymentSession, cart) {
     const provider = this.retrieveProvider(paymentSession.provider_id)
-    return provider.updateSession(paymentSession.data, cart)
+    return provider.updatePayment(paymentSession.data, cart)
   }
 
   /**
