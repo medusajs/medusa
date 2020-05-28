@@ -4,7 +4,6 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
     let cart = await cartService.retrieve(id)
     cart = await cartService.decorate(cart)
-
     res.json({ cart })
   } catch (err) {
     throw err

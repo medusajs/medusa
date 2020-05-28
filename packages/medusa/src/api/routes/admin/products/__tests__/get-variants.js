@@ -2,14 +2,14 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
-describe("GET /admin/products/:id", () => {
+describe("GET /admin/products/:id/variants", () => {
   describe("successfully gets a product", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "GET",
-        `/admin/products/${IdMap.getId("product1")}`,
+        `/admin/products/${IdMap.getId("product1")}/variants`,
         {
           adminSession: {
             jwt: {
@@ -25,15 +25,15 @@ describe("GET /admin/products/:id", () => {
     })
 
     it("calls get product from productSerice", () => {
-      expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
+      expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledWith(
         IdMap.getId("product1")
       )
     })
 
-    it("returns product decorated", () => {
-      expect(subject.body.product._id).toEqual(IdMap.getId("product1"))
-      expect(subject.body.product.decorated).toEqual(true)
+    it("returns variants", () => {
+      expect(subject.body.variants[0]._id).toEqual(IdMap.getId("1"))
+      expect(subject.body.variants[1]._id).toEqual(IdMap.getId("2"))
     })
   })
 })

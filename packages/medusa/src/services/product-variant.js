@@ -28,7 +28,7 @@ class ProductVariantService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -61,6 +61,7 @@ class ProductVariantService extends BaseService {
     return variant
   }
 
+  // TODO: Validate productVariant
   /**
    * Creates an unpublished product variant.
    * @param {object} variant - the variant to create
@@ -293,6 +294,28 @@ class ProductVariantService extends BaseService {
           ],
         },
       }
+    )
+  }
+
+  /**
+   * Updates variant's option value.
+   * Option value must be of type string or number.
+   * @param {string} variantId - the variant to decorate.
+   * @param {string} optionId - the option from product.
+   * @param {string | number} optionValue - option value to add.
+   * @return {Promise} the result of the update operation.
+   */
+  async updateOptionValue(variantId, optionId, optionValue) {
+    if (typeof optionValue !== "string" && typeof optionValue !== "number") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Option value is not of type string or number`
+      )
+    }
+
+    return this.productVariantModel_.updateOne(
+      { _id: variantId, "options.option_id": optionId },
+      { $set: { "options.$.value": `${optionValue}` } }
     )
   }
 

@@ -43,7 +43,7 @@ describe("GET /store/carts", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none")
     })
 
-    it("returns products", () => {
+    it("returns 404 status", () => {
       expect(subject.status).toEqual(404)
     })
   })
