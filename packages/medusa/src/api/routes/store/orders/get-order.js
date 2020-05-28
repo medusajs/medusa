@@ -20,7 +20,7 @@ export default async (req, res) => {
       "metadata",
     ])
 
-    res.json(order)
+    res.json({ order })
   } catch (error) {
     throw error
   }

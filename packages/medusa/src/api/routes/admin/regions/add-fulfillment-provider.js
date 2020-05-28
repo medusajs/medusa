@@ -16,7 +16,7 @@ export default async (req, res) => {
     await regionService.addFulfillmentProvider(region_id, value.provider_id)
 
     const data = await regionService.retrieve(region_id)
-    res.status(200).json(data)
+    res.status(200).json({ region: data })
   } catch (err) {
     throw err
   }

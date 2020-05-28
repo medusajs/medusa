@@ -36,7 +36,7 @@ describe("POST /admin/users/:id/set-password", () => {
     })
 
     it("returns the user", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("test-user"))
+      expect(subject.body.user._id).toEqual(IdMap.getId("test-user"))
     })
 
     it("returns 200", () => {

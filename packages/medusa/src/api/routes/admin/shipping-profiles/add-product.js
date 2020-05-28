@@ -13,11 +13,8 @@ export default async (req, res) => {
 
   try {
     const profileService = req.scope.resolve("shippingProfileService")
-
-    await profileService.addProduct(profile_id, value.product_id)
-
-    const data = profileService.retrieve(profile_id)
-    res.status(200).json(data)
+    const data = await profileService.addProduct(profile_id, value.product_id)
+    res.status(200).json({ shipping_profile: data })
   } catch (err) {
     throw err
   }

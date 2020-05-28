@@ -4,9 +4,7 @@ import middlewares from "../../../middlewares"
 const route = Router()
 
 export default app => {
-  app.use("/shipping-options", route)
-
-  route.get("/", middlewares.wrap(require("./list-shipping-options").default))
-
+  app.use("/auth", route)
+  route.post("/", middlewares.wrap(require("./create-session").default))
   return app
 }

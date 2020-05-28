@@ -37,8 +37,8 @@ describe("POST /store/customers/:id/password", () => {
     })
 
     it("returns product decorated", () => {
-      expect(subject.body.first_name).toEqual("LeBron")
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.customer.first_name).toEqual("LeBron")
+      expect(subject.body.customer.decorated).toEqual(true)
     })
   })
 
