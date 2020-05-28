@@ -101,9 +101,10 @@ class LineItemService extends BaseService {
     )
 
     return {
-      variant,
-      product,
+      title: product.title,
+      description: variant.title,
       quantity,
+      thumbnail: product.thumbnail,
       content: {
         unit_price,
         variant,
