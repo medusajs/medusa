@@ -31,8 +31,8 @@ describe("POST /store/carts", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("regionCart"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("regionCart"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 
@@ -117,8 +117,8 @@ describe("POST /store/carts", () => {
     })
 
     it("returns cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("regionCart"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("regionCart"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 

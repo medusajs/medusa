@@ -28,7 +28,7 @@ export default async (req, res) => {
 
     const updated = await customerService.retrieve(customer._id)
     const data = await customerService.decorate(customer)
-    res.status(200).json(data)
+    res.status(200).json({ customer: data })
   } catch (error) {
     throw error
   }

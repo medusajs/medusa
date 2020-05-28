@@ -27,12 +27,8 @@ export default async (req, res) => {
 
   try {
     const optionService = req.scope.resolve("shippingOptionService")
-
-    await optionService.update(option_id, value)
-
-    const data = await optionService.retrieve(option_id)
-
-    res.status(200).json(data)
+    const data = await optionService.update(option_id, value)
+    res.status(200).json({ shipping_option: data })
   } catch (err) {
     throw err
   }

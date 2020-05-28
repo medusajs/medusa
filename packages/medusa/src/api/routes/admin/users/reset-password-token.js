@@ -16,6 +16,7 @@ export default async (req, res) => {
     const userService = req.scope.resolve("userService")
     const user = await userService.retrieveByEmail(value.email)
 
+    // Should call a email service provider that sends the token to the user
     await userService.generateResetPasswordToken(user._id)
 
     res.sendStatus(204)

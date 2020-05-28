@@ -5,7 +5,7 @@ export default async (req, res) => {
 
     const data = await profileService.retrieve(profile_id)
 
-    res.status(200).json(data)
+    res.status(200).json({ shipping_profile: data })
   } catch (err) {
     throw err
   }

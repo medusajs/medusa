@@ -36,7 +36,7 @@ describe("GET /admin/users/:id", () => {
     })
 
     it("returns the user", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("test-user"))
+      expect(subject.body.user._id).toEqual(IdMap.getId("test-user"))
     })
   })
 })

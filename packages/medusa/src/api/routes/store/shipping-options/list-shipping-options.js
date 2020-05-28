@@ -17,7 +17,7 @@ export default async (req, res) => {
     const cart = await cartService.retrieve(value.cart_id)
     const options = await shippingProfileService.fetchCartOptions(cart)
 
-    res.status(200).json(options)
+    res.status(200).json({ shipping_options: options })
   } catch (err) {
     throw err
   }

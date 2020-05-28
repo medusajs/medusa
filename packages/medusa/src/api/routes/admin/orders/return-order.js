@@ -16,7 +16,7 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
     const order = await orderService.return(id, value.items)
 
-    res.status(200).json(order)
+    res.status(200).json({ order })
   } catch (err) {
     throw err
   }
