@@ -727,9 +727,6 @@ class CartService extends BaseService {
     // Filter null sessions
     newSessions = newSessions.filter(s => !!s)
 
-    console.log(sessions)
-    console.log(newSessions)
-
     // Update the payment sessions with the concatenated array of updated and
     // newly created payment sessions
     return this.cartModel_
