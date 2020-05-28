@@ -7,7 +7,7 @@ export default async (req, res) => {
     await profileService.removeShippingOption(profile_id, option_id)
 
     const data = profileService.retrieve(profile_id)
-    res.status(200).json(data)
+    res.status(200).json({ shipping_profile: data })
   } catch (err) {
     throw err
   }

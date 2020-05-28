@@ -33,8 +33,8 @@ describe("POST /admin/orders/:id/fulfillment", () => {
 
     it("returns order with fulfillment_status = fulfilled", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body._id).toEqual(IdMap.getId("test-order"))
-      expect(subject.body.fulfillment_status).toEqual("fulfilled")
+      expect(subject.body.order._id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body.order.fulfillment_status).toEqual("fulfilled")
     })
   })
 })

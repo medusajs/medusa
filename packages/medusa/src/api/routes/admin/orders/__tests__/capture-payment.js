@@ -33,8 +33,8 @@ describe("POST /admin/orders/:id/capture", () => {
 
     it("returns order with payment_status = captured", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body._id).toEqual(IdMap.getId("test-order"))
-      expect(subject.body.payment_status).toEqual("captured")
+      expect(subject.body.order._id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body.order.payment_status).toEqual("captured")
     })
   })
 })

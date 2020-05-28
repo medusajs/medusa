@@ -33,7 +33,7 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
     const order = await orderService.update(id, value)
 
-    res.status(200).json(order)
+    res.status(200).json({ order })
   } catch (err) {
     throw err
   }
