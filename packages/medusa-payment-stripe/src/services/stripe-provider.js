@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class StripeProviderService extends PaymentService {
   static identifier = "stripe"
 
-  constructor({ customerService, totalsService }, options) {
+  constructor({ customerService, totalsService, regionService }, options) {
     super()
 
     this.options_ = options
@@ -13,6 +13,8 @@ class StripeProviderService extends PaymentService {
     this.stripe_ = Stripe(options.api_key)
 
     this.customerService_ = customerService
+
+    this.regionService_ = regionService
 
     this.totalsService_ = totalsService
   }
@@ -76,10 +78,10 @@ class StripeProviderService extends PaymentService {
    * @returns {string} id of payment intent
    */
   async createPayment(cart) {
-    const { customer_id } = cart
+    const { customer_id, region_id } = cart
+    const { currency_code } = await this.regionService_.retrieve(region_id)
 
     let stripeCustomerId
-
     if (!customer_id) {
       const { id } = await this.stripe_.customers.create({
         email: cart.email,
@@ -97,10 +99,11 @@ class StripeProviderService extends PaymentService {
       }
     }
 
-    const amount = this.totalsService_.getTotal(cart)
+    const amount = await this.totalsService_.getTotal(cart)
     const paymentIntent = await this.stripe_.paymentIntents.create({
       customer: stripeCustomerId,
-      amount,
+      amount: amount * 100, // Stripe amount is in cents
+      currency: currency_code
     })
 
     return paymentIntent

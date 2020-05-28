@@ -335,8 +335,9 @@ class ShippingProfileService extends BaseService {
   async fetchCartOptions(cart) {
     const products = this.getProductsInCart_(cart)
     const profiles = await this.list({ products: { $in: products } })
-    const optionIds = profiles.reduce((acc, next) =>
-      acc.concat(next.shipping_options)
+    const optionIds = profiles.reduce(
+      (acc, next) => acc.concat(next.shipping_options),
+      []
     )
 
     const options = await Promise.all(
