@@ -148,12 +148,14 @@ function registerServices(pluginDetails, container) {
           cradle => new loaded(cradle, pluginDetails.options)
         ),
       })
-    } else {
-      const name = formatRegistrationName(fn)
-      container.register({
-        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
-      })
     }
+
+    // Always register the service with a nice name, if we need to import it
+    // from somewhere
+    const name = formatRegistrationName(fn)
+    container.register({
+      [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
+    })
   })
 }
 

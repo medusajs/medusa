@@ -692,7 +692,15 @@ class CartService extends BaseService {
           if (!region.payment_providers.includes(pSession.provider_id)) {
             return null
           }
-          return this.paymentProviderService_.updateSession(pSession, cart)
+
+          const data = await this.paymentProviderService_.updateSession(
+            pSession,
+            cart
+          )
+          return {
+            provider_id: pSession.provider_id,
+            data,
+          }
         })
       )
     }
@@ -708,12 +716,19 @@ class CartService extends BaseService {
           return null
         }
 
-        return this.paymentProviderService_.createSession(pId, cart)
+        const data = await this.paymentProviderService_.createSession(pId, cart)
+        return {
+          provider_id: pId,
+          data,
+        }
       })
     )
 
     // Filter null sessions
     newSessions = newSessions.filter(s => !!s)
+
+    console.log(sessions)
+    console.log(newSessions)
 
     // Update the payment sessions with the concatenated array of updated and
     // newly created payment sessions
