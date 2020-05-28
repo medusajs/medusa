@@ -27,16 +27,19 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("calls service removeVariant", () => {
-      expect(ProductServiceMock.removeVariant).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.removeVariant).toHaveBeenCalledWith(
+      expect(ProductServiceMock.deleteVariant).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.deleteVariant).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
         IdMap.getId("variant1")
       )
     })
 
-    it("returns decorated product with variant removed", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("productWithOptions"))
-      expect(subject.body.decorated).toEqual(true)
+    it("returns delete result", () => {
+      expect(subject.body).toEqual({
+        variant_id: IdMap.getId("variant1"),
+        object: "product-variant",
+        deleted: true,
+      })
     })
   })
 })
