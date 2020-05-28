@@ -29,7 +29,7 @@ export default async (req, res) => {
     const optionService = req.scope.resolve("shippingOptionService")
     const data = await optionService.create(value)
 
-    res.status(200).json(data)
+    res.status(200).json({ shipping_option: data })
   } catch (err) {
     throw err
   }

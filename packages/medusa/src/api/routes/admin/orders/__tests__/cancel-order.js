@@ -33,8 +33,8 @@ describe("POST /admin/orders/:id/cancel", () => {
 
     it("returns order with status = cancelled", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body._id).toEqual(IdMap.getId("test-order"))
-      expect(subject.body.status).toEqual("cancelled")
+      expect(subject.body.order._id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body.order.status).toEqual("cancelled")
     })
   })
 })

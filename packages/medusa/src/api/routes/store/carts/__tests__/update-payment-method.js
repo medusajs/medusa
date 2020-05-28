@@ -46,8 +46,8 @@ describe("POST /store/carts/:id/payment-method", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("cartWithPaySessions"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("cartWithPaySessions"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 

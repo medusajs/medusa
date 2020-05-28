@@ -21,7 +21,7 @@ export default async (req, res) => {
 
     const user = await userService.create(data, value.password)
 
-    res.status(200).json(user)
+    res.status(200).json({ user })
   } catch (err) {
     throw err
   }

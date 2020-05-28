@@ -11,7 +11,7 @@ export default async (req, res) => {
     let cart = await cartService.retrieve(id)
     cart = await cartService.decorate(cart)
 
-    res.status(200).json(cart)
+    res.status(200).json({ cart })
   } catch (err) {
     throw err
   }

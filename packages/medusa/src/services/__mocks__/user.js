@@ -58,7 +58,17 @@ export const UserServiceMock = {
     return Promise.resolve(undefined)
   }),
   setPassword: jest.fn().mockImplementation(userId => {
-    return Promise.resolve()
+    if (userId === IdMap.getId("test-user")) {
+      return Promise.resolve(users.testUser)
+    }
+    if (userId === IdMap.getId("vandijk")) {
+      return Promise.resolve(users.vanDijk)
+    }
+    // used for jwt token tests
+    if (userId === "test-user-id") {
+      return Promise.resolve(users.jwtUser)
+    }
+    return Promise.resolve(undefined)
   }),
   decorate: jest.fn().mockImplementation((user, fields) => {
     user.decorated = true
