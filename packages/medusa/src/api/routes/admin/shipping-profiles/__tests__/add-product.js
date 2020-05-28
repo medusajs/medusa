@@ -29,10 +29,6 @@ describe("POST /admin/shipping-profiles/:profile_id/products", () => {
     })
 
     it("calls service retrieve", () => {
-      expect(ShippingProfileServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(ShippingProfileServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("validId")
-      )
       expect(ShippingProfileServiceMock.addProduct).toHaveBeenCalledTimes(1)
       expect(ShippingProfileServiceMock.addProduct).toHaveBeenCalledWith(
         IdMap.getId("validId"),

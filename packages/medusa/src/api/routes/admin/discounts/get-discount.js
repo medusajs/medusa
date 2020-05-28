@@ -4,7 +4,7 @@ export default async (req, res) => {
     const discountService = req.scope.resolve("discountService")
     const data = await discountService.retrieve(discount_id)
 
-    res.status(200).json(data)
+    res.status(200).json({ discount: data })
   } catch (err) {
     throw err
   }

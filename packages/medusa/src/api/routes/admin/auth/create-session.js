@@ -26,5 +26,5 @@ export default async (req, res) => {
     expiresIn: "24h",
   })
 
-  res.json(result.user)
+  res.json({ user: result.user })
 }

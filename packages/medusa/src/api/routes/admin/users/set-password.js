@@ -13,11 +13,8 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    await userService.setPassword(user_id, value.password)
-
-    const newUser = await userService.retrieve(user_id)
-
-    res.json(newUser)
+    const data = await userService.setPassword(user_id, value.password)
+    res.json({ user: data })
   } catch (error) {
     throw error
   }

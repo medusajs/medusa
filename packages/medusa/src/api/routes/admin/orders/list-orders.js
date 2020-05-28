@@ -1,11 +1,11 @@
 export default async (req, res) => {
-  const { id } = req.params
+  const selector = {}
 
   try {
     const orderService = req.scope.resolve("orderService")
-    const order = await orderService.retrieve(id)
+    const orders = await orderService.list(selector)
 
-    res.json({ order })
+    res.json({ orders })
   } catch (error) {
     throw error
   }

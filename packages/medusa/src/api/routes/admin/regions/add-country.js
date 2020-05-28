@@ -16,7 +16,7 @@ export default async (req, res) => {
     await regionService.addCountry(region_id, value.country_code)
 
     const data = await regionService.retrieve(region_id)
-    res.status(200).json(data)
+    res.status(200).json({ region: data })
   } catch (err) {
     throw err
   }

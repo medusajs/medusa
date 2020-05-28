@@ -31,8 +31,8 @@ describe("POST /store/customers/password-reset", () => {
     })
 
     it("returns customer decorated", () => {
-      expect(subject.body.email).toEqual("lebron@james.com")
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.customer.email).toEqual("lebron@james.com")
+      expect(subject.body.customer.decorated).toEqual(true)
     })
   })
 

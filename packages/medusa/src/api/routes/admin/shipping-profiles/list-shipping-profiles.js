@@ -4,7 +4,7 @@ export default async (req, res) => {
 
     const data = await profileService.list()
 
-    res.status(200).json(data)
+    res.status(200).json({ shipping_profiles: data })
   } catch (err) {
     throw err
   }

@@ -37,8 +37,8 @@ describe("POST /store/carts/:id/shipping-methods", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 
@@ -81,8 +81,8 @@ describe("POST /store/carts/:id/shipping-methods", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 })
