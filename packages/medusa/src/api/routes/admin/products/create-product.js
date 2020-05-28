@@ -29,7 +29,7 @@ export default async (req, res) => {
       "variants",
       "published",
     ])
-    res.json(newProduct)
+    res.json({ product: newProduct })
   } catch (err) {
     throw err
   }

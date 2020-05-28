@@ -10,6 +10,13 @@ export const ProductModelMock = {
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
+    if (query._id === IdMap.getId("fakeId")) {
+      return Promise.resolve({
+        _id: IdMap.getId("fakeId"),
+        title: "Product With Variants",
+        variants: ["1", "2", "3"],
+      })
+    }
     if (query._id === IdMap.getId("productWithFourVariants")) {
       return Promise.resolve({
         _id: IdMap.getId("productWithFourVariants"),
