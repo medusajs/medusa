@@ -28,5 +28,5 @@ export default async (req, res) => {
     ["variants"]
   )
 
-  res.json(product)
+  res.json({ product })
 }

@@ -52,8 +52,8 @@ export default async (req, res) => {
     }
 
     let newCart = await cartService.retrieve(id)
-    newCart = await cartService.decorate(newCart)
-    res.json(newCart)
+    const data = await cartService.decorate(newCart)
+    res.json({ cart: data })
   } catch (err) {
     throw err
   }
