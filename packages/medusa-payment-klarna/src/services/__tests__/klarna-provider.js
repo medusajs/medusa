@@ -1,4 +1,3 @@
-import { IdMap } from "medusa-test-utils"
 import KlarnaProviderService from "../klarna-provider"
 import { CustomerServiceMock } from "../../__mocks__/customer"
 import { carts } from "../../__mocks__/cart"

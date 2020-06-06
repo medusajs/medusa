@@ -84,8 +84,10 @@ class KlarnaProviderService extends PaymentService {
     })
   }
 
-  async cartToKlarnaOrder_(cart) {
+  async cartToKlarnaOrder(cart) {
     let order = {
+      // Cart id is stored, such that we can use it for hooks
+      merchant_data: cart._id,
       // TODO: Investigate if other locales are needed
       locale: "en-US",
     }
@@ -124,10 +126,9 @@ class KlarnaProviderService extends PaymentService {
       terms: this.options_.merchant_urls.terms,
       checkout: this.options_.merchant_urls.checkout,
       confirmation: this.options_.merchant_urls.confirmation,
-      // TODO: Add webhooks for these
-      push: `${this.backendUrl_}/`,
-      shipping_option_update: `${this.backendUrl_}/`,
-      address_update: `${this.backendUrl_}/`,
+      push: `${this.backendUrl_}/klarna/hooks/push`,
+      shipping_option_update: `${this.backendUrl_}/klarna/hooks/shipping`,
+      address_update: `${this.backendUrl_}/klarna/hooks/address`,
     }
 
     // If the cart does not have shipping methods yet, preselect one from
@@ -135,7 +136,7 @@ class KlarnaProviderService extends PaymentService {
     if (!cart.shipping_methods) {
       const shipping_method = cart.shipping_options[0]
       order.selected_shipping_option = {
-        id: shipping_method.provider_id,
+        id: shipping_method._id,
         // TODO: Add shipping method name
         name: shipping_method.provider_id,
         price: shipping_method.price * (1 + tax_rate) * 100,
@@ -145,12 +146,11 @@ class KlarnaProviderService extends PaymentService {
       }
     }
 
-    // If the cart does have shipping methods, set the selected shipping
-    // method
+    // If the cart does have shipping methods, set the selected shipping method
     if (cart.shipping_methods) {
       const shipping_method = cart.shipping_methods[0]
       order.selected_shipping_option = {
-        id: shipping_method.provider_id,
+        id: shipping_method._id,
         name: shipping_method.provider_id,
         price: shipping_method.price * (1 + tax_rate) * 100,
         tax_amount: shipping_method.price * tax_rate * 100,
@@ -159,7 +159,7 @@ class KlarnaProviderService extends PaymentService {
     }
 
     order.shipping_options = cart.shipping_options.map((so) => ({
-      id: so.provider_id,
+      id: so._id,
       name: so.provider_id,
       price: so.price * (1 + tax_rate) * 100,
       tax_amount: so.price * tax_rate * 100,
@@ -198,7 +198,7 @@ class KlarnaProviderService extends PaymentService {
    */
   async createPayment(cart) {
     try {
-      const order = await this.cartToKlarnaOrder_(cart)
+      const order = await this.cartToKlarnaOrder(cart)
       return this.klarna_.post(this.klarnaUrl_, order)
     } catch (error) {
       throw error
@@ -214,6 +214,54 @@ class KlarnaProviderService extends PaymentService {
     try {
       const { data } = cart.payment_method
       return this.klarna_.get(`${this.klarnaUrl}/${data.id}`)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Retrieves completed Klarna Order.
+   * @param {string} klarnaOrderId - id of the order to retrieve
+   * @returns {Object} Klarna order
+   */
+  async retrieveCompletedOrder(klarnaOrderId) {
+    try {
+      return this.klarna_.get(`ordermanagement/v1/orders/${klarnaOrderId}`)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Acknowledges a Klarna order as part of the order completion process
+   * @param {string} klarnaOrderId - id of the order to acknowledge
+   * @returns {Promise} result of acknowledgement
+   */
+  async acknowledgeOrder(klarnaOrderId) {
+    try {
+      return this.klarna_.post(
+        `/ordermanagement/v1/orders/${klarnaOrderId}/acknowledge`,
+        {}
+      )
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Adds the id of the Medusa order to the Klarna Order to create a relation
+   * @param {string} klarnaOrderId - id of the klarna order
+   * @param {string} orderId - id of the Medusa order
+   * @returns {Promise} result of Klarna update
+   */
+  async addOrderToKlarnaOrder(klarnaOrderId, orderId) {
+    try {
+      return this.klarna_.post(
+        `/ordermanagement/v1/orders/${klarnaOrderId}/merchant-references`,
+        {
+          merchant_reference1: orderId,
+        }
+      )
     } catch (error) {
       throw error
     }

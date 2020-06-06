@@ -6,5 +6,5 @@ node_modules
 !index.js
 yarn.lock
 
-/dist
+dist
 
