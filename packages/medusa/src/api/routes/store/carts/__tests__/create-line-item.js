@@ -32,8 +32,8 @@ describe("POST /store/carts/:id", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         IdMap.getId("testVariant"),
-        3,
-        IdMap.getId("testRegion")
+        IdMap.getId("testRegion"),
+        3
       )
     })
 
@@ -42,8 +42,8 @@ describe("POST /store/carts/:id", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("emptyCart"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 
@@ -71,8 +71,8 @@ describe("POST /store/carts/:id", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         IdMap.getId("fail"),
-        3,
-        IdMap.getId("testRegion")
+        IdMap.getId("testRegion"),
+        3
       )
     })
 

@@ -25,11 +25,9 @@ export default async (req, res) => {
       return
     }
 
-    await userService.setPassword(user._id, value.password)
+    const data = await userService.setPassword(user._id, value.password)
 
-    const updatedUser = await userService.retrieve(user._id)
-
-    res.status(200).json(updatedUser)
+    res.status(200).json({ user: data })
   } catch (error) {
     throw error
   }

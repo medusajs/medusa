@@ -1,15 +1,21 @@
 import mongoose from "mongoose"
 
+String.prototype.equals = function(that) {
+  return this === that
+}
+
 class IdMap {
   ids = {}
 
-  getId(key) {
+  getId(key, backend=false) {
     if (this.ids[key]) {
       return this.ids[key]
     }
-    const id = `${mongoose.Types.ObjectId()}`
-    this.ids[key] = id
-    return id
+
+    const mongooseId = `${mongoose.Types.ObjectId()}`
+    this.ids[key] = mongooseId
+
+    return mongooseId
   }
 }
 

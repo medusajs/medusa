@@ -21,18 +21,21 @@ export const regions = {
   },
   regionUs: {
     _id: IdMap.getId("region-us"),
+    tax_rate: 0.25,
     name: "USA",
     countries: ["US"],
     currency_code: "usd",
   },
   regionGermany: {
     _id: IdMap.getId("region-de"),
+    tax_rate: 0.25,
     name: "Germany",
     countries: ["DE"],
     currency_code: "eur",
   },
   regionSweden: {
     _id: IdMap.getId("region-se"),
+    tax_rate: 0.25,
     name: "Sweden",
     countries: ["SE"],
     currency_code: "sek",
@@ -56,7 +59,7 @@ export const RegionServiceMock = {
     if (regionId === IdMap.getId("region-se")) {
       return Promise.resolve(regions.regionSweden)
     }
-    return Promise.resolve(undefined)
+    throw Error(regionId + "not found")
   }),
   delete: jest.fn().mockImplementation(data => Promise.resolve()),
   create: jest.fn().mockImplementation(data => Promise.resolve()),

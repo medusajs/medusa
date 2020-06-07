@@ -74,7 +74,7 @@ class TotalsService extends BaseService {
   async getTaxTotal(object) {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
-    const region = await this.regionService_.retrieve(object.region)
+    const region = await this.regionService_.retrieve(object.region_id)
     const { tax_rate } = region
     return (subtotal + shippingTotal) * tax_rate
   }
@@ -101,7 +101,7 @@ class TotalsService extends BaseService {
 
     const subtotal = this.getSubtotal({ items: lineItems })
 
-    const region = await this.regionService_.retrieve(order.region)
+    const region = await this.regionService_.retrieve(order.region_id)
 
     // if nothing is discounted, return the subtotal of line items
     if (!discount) {

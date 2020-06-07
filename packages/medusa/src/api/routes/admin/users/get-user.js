@@ -5,7 +5,7 @@ export default async (req, res) => {
     const userService = req.scope.resolve("userService")
 
     const user = await userService.retrieve(user_id)
-    res.json(user)
+    res.json({ user })
   } catch (error) {
     throw error
   }

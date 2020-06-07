@@ -25,7 +25,7 @@ describe("GET /store/orders", () => {
     })
 
     it("returns order", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body.order._id).toEqual(IdMap.getId("test-order"))
     })
   })
 })

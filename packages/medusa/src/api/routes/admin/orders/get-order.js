@@ -5,7 +5,7 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
     const order = await orderService.retrieve(id)
 
-    res.json(order)
+    res.json({ order })
   } catch (error) {
     throw error
   }

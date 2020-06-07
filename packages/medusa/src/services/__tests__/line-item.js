@@ -24,23 +24,21 @@ describe("LineItemService", () => {
 
     it("generates line item and successfully defaults quantity of content to 1", () => {
       expect(result).toEqual({
+        title: "test",
+        description: "EUR10US-12",
+        thumbnail: "test.1234",
         content: {
           unit_price: 10,
           variant: {
             _id: IdMap.getId("eur-10-us-12"),
+            title: "EUR10US-12",
           },
           product: {
             _id: "1234",
             title: "test",
+            thumbnail: "test.1234",
           },
           quantity: 1,
-        },
-        product: {
-          _id: "1234",
-          title: "test",
-        },
-        variant: {
-          _id: IdMap.getId("eur-10-us-12"),
         },
         quantity: 2,
       })

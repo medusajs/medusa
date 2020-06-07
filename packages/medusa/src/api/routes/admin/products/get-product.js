@@ -15,5 +15,5 @@ export default async (req, res) => {
     "published",
   ])
 
-  res.json(product)
+  res.json({ product })
 }
