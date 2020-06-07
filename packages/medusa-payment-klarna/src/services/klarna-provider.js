@@ -19,6 +19,7 @@ class KlarnaProviderService extends PaymentService {
     })
 
     this.klarnaOrderUrl_ = "/checkout/v3/orders"
+
     this.klarnaOrderManagementUrl_ = "/ordermanagement/v1/orders"
 
     this.backendUrl_ = process.env.BACKEND_URL || ""
