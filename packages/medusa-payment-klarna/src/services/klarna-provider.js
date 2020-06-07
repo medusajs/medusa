@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
 
-  constructor({ customerService, totalsService, regionService }, options) {
+  constructor({ totalsService, regionService }, options) {
     super()
 
     this.options_ = options
@@ -18,18 +18,17 @@ class KlarnaProviderService extends PaymentService {
       },
     })
 
-    this.klarnaUrl_ = "/checkout/v3/orders"
+    this.klarnaOrderUrl_ = "/checkout/v3/orders"
+    this.klarnaOrderManagementUrl_ = "/ordermanagement/v1/orders"
 
     this.backendUrl_ = process.env.BACKEND_URL || ""
-
-    this.customerService_ = customerService
 
     this.totalsService_ = totalsService
 
     this.regionService_ = regionService
   }
 
-  async lineItemsToOrderLines_(lineItems, taxRate) {
+  async lineItemsToOrderLines_(cart, taxRate) {
     let order_lines = []
     // Find the discount, that is not free shipping
     const discount = cart.discounts.find(
@@ -42,7 +41,7 @@ class KlarnaProviderService extends PaymentService {
       cart
     )
 
-    lineItems.forEach((item) => {
+    cart.items.forEach((item) => {
       // For bundles, we create an order line for each item in the bundle
       if (Array.isArray(item.content)) {
         item.content.forEach((c) => {
@@ -66,15 +65,17 @@ class KlarnaProviderService extends PaymentService {
 
         // Find the discount for current item and default to 0
         const itemDiscount =
-          itemDiscounts.find((el) => el.lineItem._id === item._id) || 0
+          (itemDiscounts &&
+            itemDiscounts.find((el) => el.lineItem._id === item._id)) ||
+          0
 
         // Withdraw discount from the total item amount
         const total_discount_amount =
           total_amount - itemDiscount * (taxRate + 1)
 
         order_lines.push({
-          unit_price: c.unit_price,
-          quantity: c.quantity,
+          unit_price: item.content.unit_price,
+          quantity: item.content.quantity,
           total_discount_amount,
           tax_rate: taxRate,
           total_amount,
@@ -110,8 +111,8 @@ class KlarnaProviderService extends PaymentService {
     }
 
     // TODO: Check if country matches ISO
-    if (billing_address.country) {
-      order.purchase_country = billing_address.country
+    if (cart.billing_address.country) {
+      order.purchase_country = cart.billing_address.country
     } else {
       // Defaults to Sweden
       order.purchase_country = "SE"
@@ -180,7 +181,7 @@ class KlarnaProviderService extends PaymentService {
   async getStatus(paymentData) {
     try {
       const { id } = paymentData
-      const order = await this.klarna_.get(`${this.klarnaUrl}/${id}`)
+      const order = await this.klarna_.get(`${this.klarnaOrderUrl_}/${id}`)
       // TODO: Klarna docs does not provide a list of statues, so we need to
       // play around our selves to figure it out
       let status = "initial"
@@ -199,7 +200,7 @@ class KlarnaProviderService extends PaymentService {
   async createPayment(cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart)
-      return this.klarna_.post(this.klarnaUrl_, order)
+      return this.klarna_.post(this.klarnaOrderUrl__, order)
     } catch (error) {
       throw error
     }
@@ -213,7 +214,7 @@ class KlarnaProviderService extends PaymentService {
   async retrievePayment(cart) {
     try {
       const { data } = cart.payment_method
-      return this.klarna_.get(`${this.klarnaUrl}/${data.id}`)
+      return this.klarna_.get(`${this.klarnaOrderUrl_}/${data.id}`)
     } catch (error) {
       throw error
     }
@@ -226,7 +227,9 @@ class KlarnaProviderService extends PaymentService {
    */
   async retrieveCompletedOrder(klarnaOrderId) {
     try {
-      return this.klarna_.get(`ordermanagement/v1/orders/${klarnaOrderId}`)
+      return this.klarna_.get(
+        `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}`
+      )
     } catch (error) {
       throw error
     }
@@ -235,14 +238,15 @@ class KlarnaProviderService extends PaymentService {
   /**
    * Acknowledges a Klarna order as part of the order completion process
    * @param {string} klarnaOrderId - id of the order to acknowledge
-   * @returns {Promise} result of acknowledgement
+   * @returns {string} id of acknowledged order
    */
   async acknowledgeOrder(klarnaOrderId) {
     try {
-      return this.klarna_.post(
-        `/ordermanagement/v1/orders/${klarnaOrderId}/acknowledge`,
+      await this.klarna_.post(
+        `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/acknowledge`,
         {}
       )
+      return klarnaOrderId
     } catch (error) {
       throw error
     }
@@ -252,16 +256,18 @@ class KlarnaProviderService extends PaymentService {
    * Adds the id of the Medusa order to the Klarna Order to create a relation
    * @param {string} klarnaOrderId - id of the klarna order
    * @param {string} orderId - id of the Medusa order
-   * @returns {Promise} result of Klarna update
+   * @returns {string} id of updated order
    */
   async addOrderToKlarnaOrder(klarnaOrderId, orderId) {
     try {
-      return this.klarna_.post(
-        `/ordermanagement/v1/orders/${klarnaOrderId}/merchant-references`,
+      await this.klarna_.post(
+        `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/merchant-references`,
         {
           merchant_reference1: orderId,
         }
       )
+
+      return klarnaOrderId
     } catch (error) {
       throw error
     }
@@ -271,12 +277,12 @@ class KlarnaProviderService extends PaymentService {
    * Updates Klarna order.
    * @param {string} order - the order to update
    * @param {Object} data - the update object
-   * @returns {Object} Klarna order
+   * @returns {Object} updated order
    */
   async updatePayment(order, update) {
     try {
       const { data } = order.payment_method
-      return this.klarna_.get(`${this.klarnaUrl}/${data.id}`, update)
+      return this.klarna_.post(`${this.klarnaOrderUrl_}/${data.id}`, update)
     } catch (error) {
       throw error
     }
@@ -285,47 +291,56 @@ class KlarnaProviderService extends PaymentService {
   /**
    * Captures Klarna order.
    * @param {Object} paymentData - payment method data from cart
-   * @returns {Object} result of order capturing
+   * @returns {string} id of captured order
    */
   async capturePayment(paymentData) {
     try {
       const { id } = paymentData
-      const orderData = await this.klarna_.get(`${this.klarnaUrl}/${id}`)
+      const orderData = await this.klarna_.get(`${this.klarnaOrderUrl_}/${id}`)
       const { order_amount } = orderData.order
 
-      return this.klarna_.post(`${this.klarnaUrl}/${id}/captures`, {
-        captured_amount: order_amount,
-      })
+      await this.klarna_.post(
+        `${this.klarnaOrderManagementUrl_}/${id}/captures`,
+        {
+          captured_amount: order_amount,
+        }
+      )
+      return id
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Refunds payment for Stripe PaymentIntent.
+   * Refunds payment for Klarna Order.
    * @param {Object} paymentData - payment method data from cart
-   * @returns {string} id of payment intent
+   * @returns {string} id of refunded order
    */
   async refundPayment(paymentData, amount) {
     try {
       const { id } = paymentData
-      return this.klarna_.post(`${this.klarnaUrl}/${id}/refunds`, {
-        refunded_amount: amount,
-      })
+      await this.klarna_.post(
+        `${this.klarnaOrderManagementUrl_}/${id}/refunds`,
+        {
+          refunded_amount: amount,
+        }
+      )
+      return id
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Cancels payment for Stripe PaymentIntent.
+   * Cancels payment for Klarna Order.
    * @param {Object} paymentData - payment method data from cart
-   * @returns {string} id of payment intent
+   * @returns {string} id of cancelled order
    */
   async cancelPayment(paymentData) {
     try {
       const { id } = paymentData
-      return this.klarna_.post(`${this.klarnaUrl}/${id}/cancel`)
+      await this.klarna_.post(`${this.klarnaOrderUrl_}/${id}/cancel`)
+      return id
     } catch (error) {
       throw error
     }
