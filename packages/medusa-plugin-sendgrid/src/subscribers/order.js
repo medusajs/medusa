@@ -8,8 +8,6 @@ class OrderSubscriber {
       // TODO: How to make from and subject dynamic
       await this.sendgridService_.sendEmail(
         "order.placed",
-        "Oli",
-        "Order confirmation",
         order
       )
     })
@@ -18,8 +16,6 @@ class OrderSubscriber {
       // TODO: How to make from and subject dynamic
       await this.sendgridService_.sendEmail(
         "order.cancelled",
-        "Oli",
-        "Order confirmation",
         order
       )
     })
@@ -28,8 +24,6 @@ class OrderSubscriber {
       // TODO: How to make from and subject dynamic
       await this.sendgridService_.sendEmail(
         "order.updated",
-        "Oli",
-        "Order confirmation",
         order
       )
     })

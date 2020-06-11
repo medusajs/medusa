@@ -2,44 +2,68 @@ import { BaseService } from "medusa-interfaces"
 import SendGrid from "@sendgrid/mail"
 
 class SendGridService extends BaseService {
-  constructor({}, options) {
+  /**
+   * @param {Object} options - options defined in `medusa-config.js`
+   *    e.g.
+   *    {
+   *      api_key: SendGrid api key
+   *      order_placed: {
+   *        template_id: 1234,
+   *        from: Medusa <hello@medusa.example>,
+   *        subject: Medusa - Order confirmation
+   *      },
+   *      order_updated: {
+   *        ...
+   *      }
+   *    }
+   */
+  constructor(options) {
     super()
 
-    this.sendGrid_ = SendGrid.setApiKey(options.api_key)
+    this.options_ = options
+
+    // this.sendGrid_ = SendGrid.setApiKey(options.api_key)
+    SendGrid.setApiKey(options.api_key)
   }
 
   /**
    * Sends an order confirmation using SendGrid.
    * @param {string} event - event related to the order
-   * @param {string} from - sender of the order confirmation,
-   *    e.g. `Medusa <hello@medusa.example>`
-   * @param {string} subject - subject of the order confirmation,
-   *    e.g. `Medusa - Order confirmation`
    * @param {Object} order - the order object sent to SendGrid, that must
    *    correlate with the structure specificed in the dynamic template
    * @returns {Promise} result of the send operation
    */
-  async sendEmail(event, from, subject, order) {
-    let templateId
+  async sendEmail(event, order) {
+    let templateId, from, subject
     switch (event) {
       case "order.placed":
-        templateId = options.template_id.order_placed
+        templateId = this.options_.order_placed.template_id
+        from = this.options_.order_placed.from
+        subject = this.options_.order_placed.subject
         break
       case "order.updated":
-        templateId = options.template_id.order_updated
+        templateId = this.options_.order_updated.template_id
+        from = this.options_.order_updated.from
+        subject = this.options_.order_updated.subject
         break
       case "order.cancelled":
-        templateId = options.template_id.order_cancelled
+        templateId = this.options_.order_cancelled.template_id
+        from = this.options_.order_cancelled.from
+        subject = this.options_.order_cancelled.subject
         break
     }
 
-    return this.sendGrid_.send({
-      from: options.sender,
-      subject,
-      templateId,
-      to: order.email,
-      dynamic_template_data: order,
-    })
+    try {
+      return SendGrid.send({
+        from,
+        subject,
+        templateId,
+        to: order.email,
+        dynamic_template_data: order,
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
