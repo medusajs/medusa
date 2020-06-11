@@ -22,13 +22,13 @@ class SendGridService extends BaseService {
   }
 
   /**
-   * Sends an order confirmation using SendGrid.
+   * Sends a transactional email based on an event using SendGrid.
    * @param {string} event - event related to the order
    * @param {Object} order - the order object sent to SendGrid, that must
    *    correlate with the structure specificed in the dynamic template
    * @returns {Promise} result of the send operation
    */
-  async sendEmail(event, order) {
+  async transactionalEmail(event, order) {
     let templateId
     switch (event) {
       case "order.placed":
@@ -40,14 +40,37 @@ class SendGridService extends BaseService {
       case "order.cancelled":
         templateId = this.options_.order_cancelled_template
         break
+      default:
+        return
     }
 
     try {
       return SendGrid.send({
-        templateId,
+        template_id: templateId,
         from: options.from,
         to: order.email,
         dynamic_template_data: order,
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Sends an email using SendGrid.
+   * @param {string} templateId - id of template in SendGrid
+   * @param {string} from - sender of email
+   * @param {string} to - receiver of email
+   * @param {Object} data - data to send in mail (match with template)
+   * @returns {Promise} result of the send operation
+   */
+  async sendEmail(templateId, from, to, data) {
+    try {
+      return SendGrid.send({
+        to,
+        from,
+        template_id: templateId,
+        dynamic_template_data: data,
       })
     } catch (error) {
       throw error

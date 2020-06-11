@@ -5,15 +5,15 @@ class OrderSubscriber {
     this.eventBus_ = eventBusService
 
     this.eventBus_.subscribe("order.placed", async (order) => {
-      await this.sendgridService_.sendEmail("order.placed", order)
+      await this.sendgridService_.transactionalEmail("order.placed", order)
     })
 
     this.eventBus_.subscribe("order.cancelled", async (order) => {
-      await this.sendgridService_.sendEmail("order.cancelled", order)
+      await this.sendgridService_.transactionalEmail("order.cancelled", order)
     })
 
     this.eventBus_.subscribe("order.updated", async (order) => {
-      await this.sendgridService_.sendEmail("order.updated", order)
+      await this.sendgridService_.transactionalEmail("order.updated", order)
     })
   }
 }
