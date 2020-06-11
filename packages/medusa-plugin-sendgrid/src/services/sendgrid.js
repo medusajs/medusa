@@ -7,14 +7,10 @@ class SendGridService extends BaseService {
    *    e.g.
    *    {
    *      api_key: SendGrid api key
-   *      order_placed: {
-   *        template_id: 1234,
-   *        from: Medusa <hello@medusa.example>,
-   *        subject: Medusa - Order confirmation
-   *      },
-   *      order_updated: {
-   *        ...
-   *      }
+   *      from: Medusa <hello@medusa.example>,
+   *      order_placed_template: 01234
+   *      order_updated_template: 56789
+   *      order_updated_cancellede: 4242
    *    }
    */
   constructor(options) {
@@ -22,7 +18,6 @@ class SendGridService extends BaseService {
 
     this.options_ = options
 
-    // this.sendGrid_ = SendGrid.setApiKey(options.api_key)
     SendGrid.setApiKey(options.api_key)
   }
 
@@ -34,30 +29,23 @@ class SendGridService extends BaseService {
    * @returns {Promise} result of the send operation
    */
   async sendEmail(event, order) {
-    let templateId, from, subject
+    let templateId
     switch (event) {
       case "order.placed":
-        templateId = this.options_.order_placed.template_id
-        from = this.options_.order_placed.from
-        subject = this.options_.order_placed.subject
+        templateId = this.options_.order_placed_template
         break
       case "order.updated":
-        templateId = this.options_.order_updated.template_id
-        from = this.options_.order_updated.from
-        subject = this.options_.order_updated.subject
+        templateId = this.options_.order_updated_template
         break
       case "order.cancelled":
-        templateId = this.options_.order_cancelled.template_id
-        from = this.options_.order_cancelled.from
-        subject = this.options_.order_cancelled.subject
+        templateId = this.options_.order_cancelled_template
         break
     }
 
     try {
       return SendGrid.send({
-        from,
-        subject,
         templateId,
+        from: options.from,
         to: order.email,
         dynamic_template_data: order,
       })
