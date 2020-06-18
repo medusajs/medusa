@@ -39,7 +39,6 @@
     "medusa-core-utils": "^0.3.0",
     "medusa-interfaces": "^0.3.0",
     "medusa-test-utils": "^0.3.0",
-    "redis": "^3.0.2",
-    "stripe": "^8.50.0"
+    "redis": "^3.0.2"
   }
 }
