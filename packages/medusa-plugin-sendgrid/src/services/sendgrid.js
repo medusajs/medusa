@@ -8,9 +8,11 @@ class SendGridService extends BaseService {
    *    {
    *      api_key: SendGrid api key
    *      from: Medusa <hello@medusa.example>,
-   *      order_placed_template: 01234
-   *      order_updated_template: 56789
-   *      order_updated_cancellede: 4242
+   *      order_placed_template: 01234,
+   *      order_updated_template: 56789,
+   *      order_updated_cancellede: 4242,
+   *      user_password_reset: 0000,
+   *      customer_password_reset: 1111,
    *    }
    */
   constructor(options) {
@@ -39,6 +41,12 @@ class SendGridService extends BaseService {
         break
       case "order.cancelled":
         templateId = this.options_.order_cancelled_template
+        break
+      case "user.password_reset":
+        templateId = this.options_.user_password_reset
+        break
+      case "customer.password_reset":
+        templateId = this.options_.customer_password_reset
         break
       default:
         return
