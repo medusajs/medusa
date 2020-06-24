@@ -3,7 +3,7 @@ import { IdMap } from "medusa-test-utils"
 export const store = {
   _id: IdMap.getId("store"),
   name: "Test store",
-  currencies: ["DKK", "SEK"],
+  currencies: ["DKK", "SEK", "GBP"],
 }
 
 export const StoreServiceMock = {
