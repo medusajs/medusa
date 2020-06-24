@@ -9,6 +9,7 @@ import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 import discountRoutes from "./discounts"
 import orderRoutes from "./orders"
+import storeRoutes from "./store"
 
 const route = Router()
 
@@ -37,6 +38,7 @@ export default (app, container) => {
   discountRoutes(route)
   orderRoutes(route)
   productVariantRoutes(route)
+  storeRoutes(route)
 
   return app
 }
