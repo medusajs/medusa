@@ -1,4 +1,4 @@
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import { getConfigFile } from "medusa-core-utils"
 
 import routes from "../api"
 
