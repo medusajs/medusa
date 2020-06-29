@@ -14,6 +14,8 @@ class ProductVariantModel extends BaseModel {
     title: { type: String, required: true },
     prices: { type: [MoneyAmountSchema], default: [], required: true },
     options: { type: [OptionValueSchema], default: [] },
+    sku: { type: String, unique: true, sparse: true },
+    ean: { type: String, unique: true, sparse: true },
     image: { type: String, default: "" },
     published: { type: Boolean, default: false },
     inventory_quantity: { type: Number, default: 0 },
