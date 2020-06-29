@@ -5,10 +5,32 @@ export default async (req, res) => {
     title: Validator.string().required(),
     description: Validator.string(),
     tags: Validator.string(),
+    options: Validator.array().items({
+      title: Validator.string().required(),
+    }),
     images: Validator.array().items(Validator.string()),
-    variants: Validator.array().items(Validator.string()),
+    variants: Validator.array().items({
+      title: Validator.string().required(),
+      sku: Validator.string(),
+      ean: Validator.string(),
+      prices: Validator.array()
+        .items({
+          currency_code: Validator.string().required(),
+          amount: Validator.number().required(),
+        })
+        .required(),
+      options: Validator.array()
+        .items({
+          value: Validator.string().required(),
+        })
+        .default([]),
+      inventory_quantity: Validator.number().optional(),
+      allow_backorder: Validator.boolean().optional(),
+      manage_inventory: Validator.boolean().optional(),
+      metadata: Validator.object().optional(),
+    }),
     metadata: Validator.object(),
-    handle: Validator.string().required(),
+    handle: Validator.string(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -17,8 +39,31 @@ export default async (req, res) => {
   }
 
   try {
+    const { variants } = value
+    delete value.variants
+
     const productService = req.scope.resolve("productService")
     let newProduct = await productService.createDraft(value)
+
+    if (variants) {
+      const optionIds = value.options.map(
+        o => newProduct.options.find(newO => newO.title === o.title)._id
+      )
+
+      await Promise.all(
+        variants.map(v => {
+          const variant = {
+            ...v,
+            options: v.options.map((o, index) => ({
+              ...o,
+              option_id: optionIds[index],
+            })),
+          }
+          return productService.createVariant(newProduct._id, variant)
+        })
+      )
+    }
+
     newProduct = await productService.decorate(newProduct, [
       "title",
       "description",
