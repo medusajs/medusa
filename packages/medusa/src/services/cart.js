@@ -448,7 +448,6 @@ class CartService extends BaseService {
     const cart = await this.retrieve(cartId)
     const { value, error } = Validator.address().validate(address)
     if (error) {
-      console.log(error)
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The address is not valid"
