@@ -45,7 +45,6 @@ export default (app, container, config) => {
   shippingProfileRoutes(route)
   discountRoutes(route)
   orderRoutes(route)
-  productVariantRoutes(route)
   storeRoutes(route)
 
   return app
