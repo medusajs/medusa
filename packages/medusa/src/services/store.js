@@ -40,6 +40,19 @@ class StoreService extends BaseService {
   }
 
   /**
+   * Creates a store if it doesn't already exist.
+   * @return {Promise<Store>} the store.
+   */
+  async create() {
+    const store = await this.retrieve()
+    if (!store) {
+      return this.storeModel_.create({})
+    }
+
+    return store
+  }
+
+  /**
    * Retrieve the store settings. There is always a maximum of one store.
    * @return {Promise<Store>} the customer document.
    */
