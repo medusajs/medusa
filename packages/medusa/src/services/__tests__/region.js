@@ -4,6 +4,7 @@ import RegionService from "../region"
 import { RegionModelMock } from "../../models/__mocks__/region"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { FulfillmentProviderServiceMock } from "../__mocks__/fulfillment-provider"
+import { StoreServiceMock } from "../__mocks__/store"
 
 describe("RegionService", () => {
   describe("create", () => {
@@ -14,6 +15,7 @@ describe("RegionService", () => {
     it("successfully creates a new region", async () => {
       const regionService = new RegionService({
         regionModel: RegionModelMock,
+        storeService: StoreServiceMock,
       })
 
       await regionService.create({
@@ -37,6 +39,7 @@ describe("RegionService", () => {
         regionModel: RegionModelMock,
         paymentProviderService: PaymentProviderServiceMock,
         fulfillmentProviderService: FulfillmentProviderServiceMock,
+        storeService: StoreServiceMock,
       })
 
       await regionService.create({
@@ -103,6 +106,7 @@ describe("RegionService", () => {
         regionModel: RegionModelMock,
         paymentProviderService: PaymentProviderServiceMock,
         fulfillmentProviderService: FulfillmentProviderServiceMock,
+        storeService: StoreServiceMock,
       })
 
       await expect(
@@ -195,6 +199,7 @@ describe("RegionService", () => {
         regionModel: RegionModelMock,
         paymentProviderService: PaymentProviderServiceMock,
         fulfillmentProviderService: FulfillmentProviderServiceMock,
+        storeService: StoreServiceMock,
       })
 
       await regionService.update(IdMap.getId("region-se"), {

@@ -54,7 +54,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await pluginsLoader({ container, rootDirectory, app: expressApp })
   Logger.info("Plugins Intialized")
 
-  await apiLoader({ container, app: expressApp })
+  await apiLoader({ container, rootDirectory, app: expressApp })
   Logger.info("API initialized")
 
   return { container, dbConnection, app: expressApp }
