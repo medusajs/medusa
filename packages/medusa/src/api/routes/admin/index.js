@@ -1,4 +1,6 @@
 import { Router } from "express"
+import cors from "cors"
+
 import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
@@ -13,14 +15,21 @@ import storeRoutes from "./store"
 
 const route = Router()
 
-export default (app, container) => {
-  const middlewareService = container.resolve("middlewareService")
-
+export default (app, container, config) => {
   app.use("/admin", route)
+
+  const adminCors = config.admin_cors || ""
+  route.use(
+    cors({
+      origin: adminCors.split(","),
+      credentials: true,
+    })
+  )
 
   // Unauthenticated routes
   authRoutes(route)
 
+  const middlewareService = container.resolve("middlewareService")
   // Calls all middleware that has been registered to run before authentication.
   middlewareService.usePreAuthentication(app)
 
