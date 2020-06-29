@@ -20,8 +20,8 @@ describe("GET /store/products", () => {
     })
 
     it("returns products", () => {
-      expect(subject.body[0]._id).toEqual(IdMap.getId("product1"))
-      expect(subject.body[1]._id).toEqual(IdMap.getId("product2"))
+      expect(subject.body.products[0]._id).toEqual(IdMap.getId("product1"))
+      expect(subject.body.products[1]._id).toEqual(IdMap.getId("product2"))
     })
   })
 })

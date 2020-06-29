@@ -20,15 +20,15 @@ export default async (req, res) => {
 
     const lineItem = await lineItemService.generate(
       value.variant_id,
-      value.quantity,
-      cart.region_id
+      cart.region_id,
+      value.quantity
     )
     await cartService.addLineItem(cart._id, lineItem)
 
     cart = await cartService.retrieve(cart._id)
     cart = await cartService.decorate(cart)
 
-    res.status(200).json(cart)
+    res.status(200).json({ cart })
   } catch (err) {
     throw err
   }

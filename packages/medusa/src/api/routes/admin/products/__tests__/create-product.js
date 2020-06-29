@@ -27,8 +27,8 @@ describe("POST /admin/products", () => {
     })
 
     it("returns created product draft", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("product1"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(IdMap.getId("product1"))
+      expect(subject.body.product.decorated).toEqual(true)
     })
 
     it("calls service createDraft", () => {

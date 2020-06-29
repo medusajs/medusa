@@ -21,7 +21,6 @@ export default async (req, res) => {
     regions: Validator.array()
       .items(Validator.string())
       .optional(),
-    metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -36,7 +35,7 @@ export default async (req, res) => {
 
     const data = await discountService.retrieve(discount_id)
 
-    res.status(200).json(data)
+    res.status(200).json({ discounts: data })
   } catch (err) {
     throw err
   }

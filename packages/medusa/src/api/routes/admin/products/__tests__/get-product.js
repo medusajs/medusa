@@ -32,8 +32,8 @@ describe("GET /admin/products/:id", () => {
     })
 
     it("returns product decorated", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("product1"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.product._id).toEqual(IdMap.getId("product1"))
+      expect(subject.body.product.decorated).toEqual(true)
     })
   })
 })

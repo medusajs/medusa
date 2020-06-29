@@ -22,8 +22,8 @@ describe("GET /store/carts", () => {
     })
 
     it("returns products", () => {
-      expect(subject.body._id).toEqual(IdMap.getId("emptyCart"))
-      expect(subject.body.decorated).toEqual(true)
+      expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
+      expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 
@@ -43,7 +43,7 @@ describe("GET /store/carts", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none")
     })
 
-    it("returns products", () => {
+    it("returns 404 status", () => {
       expect(subject.status).toEqual(404)
     })
   })

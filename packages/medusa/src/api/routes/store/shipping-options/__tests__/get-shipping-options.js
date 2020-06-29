@@ -40,7 +40,9 @@ describe("GET /store/shipping-options", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body[0]._id).toEqual(IdMap.getId("cartShippingOption"))
+      expect(subject.body.shipping_options[0]._id).toEqual(
+        IdMap.getId("cartShippingOption")
+      )
     })
   })
 })
