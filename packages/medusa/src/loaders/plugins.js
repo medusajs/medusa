@@ -9,7 +9,7 @@ import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
-import { asFunction } from "awilix"
+import { asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 
 /**
@@ -112,6 +112,7 @@ function registerServices(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
   files.forEach(fn => {
     const loaded = require(fn).default
+    const name = formatRegistrationName(fn)
 
     if (!(loaded.prototype instanceof BaseService)) {
       const logger = container.resolve("logger")
@@ -130,9 +131,8 @@ function registerServices(pluginDetails, container) {
       // Add the service directly to the container in order to make simple
       // resolution if we already know which payment provider we need to use
       container.register({
-        [`pp_${loaded.identifier}`]: asFunction(
-          cradle => new loaded(cradle, pluginDetails.options)
-        ),
+        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
+        [`pp_${loaded.identifier}`]: aliasTo(name),
       })
     } else if (loaded.prototype instanceof FulfillmentService) {
       // Register our payment providers to paymentProviders
@@ -144,12 +144,10 @@ function registerServices(pluginDetails, container) {
       // Add the service directly to the container in order to make simple
       // resolution if we already know which payment provider we need to use
       container.register({
-        [`fp_${loaded.identifier}`]: asFunction(
-          cradle => new loaded(cradle, pluginDetails.options)
-        ),
+        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
+        [`fp_${loaded.identifier}`]: aliasTo(name),
       })
     } else {
-      const name = formatRegistrationName(fn)
       container.register({
         [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
       })
