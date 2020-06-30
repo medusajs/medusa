@@ -81,6 +81,16 @@ class StoreService extends BaseService {
       )
     }
 
+    if (update.default_currency) {
+      update.default_currency = update.default_currency.toUpperCase()
+      if (!currencies[update.default_currency]) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid currency ${update.default_currency}`
+        )
+      }
+    }
+
     if (update.currencies) {
       update.currencies = update.currencies.map(c => c.toUpperCase())
       update.currencies.forEach(c => {
