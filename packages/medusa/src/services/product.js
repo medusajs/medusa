@@ -81,7 +81,7 @@ class ProductService extends BaseService {
    * @param {string} productId - the id of the product to get variants from.
    * @return {Promise} an array of variants
    */
-  async retrieveVariants(productId) {
+  async retrieveVariants(productId) {)
     const product = await this.retrieve(productId)
     return this.productVariantService_.list({ _id: { $in: product.variants } })
   }
