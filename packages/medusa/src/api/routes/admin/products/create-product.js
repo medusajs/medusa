@@ -43,6 +43,8 @@ export default async (req, res) => {
     delete value.variants
 
     const productService = req.scope.resolve("productService")
+    const shippingProfileService = req.scope.resolve("shippingProfileService")
+
     let newProduct = await productService.createDraft(value)
 
     if (variants) {
@@ -63,6 +65,10 @@ export default async (req, res) => {
         })
       )
     }
+
+    // Add to default shipping profile
+    const { _id } = await shippingProfileService.retrieveDefault()
+    await shippingProfileService.addProduct(_id, newProduct._id)
 
     newProduct = await productService.decorate(newProduct, [
       "title",
