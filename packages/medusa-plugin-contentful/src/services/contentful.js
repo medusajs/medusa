@@ -1,16 +1,20 @@
 import _ from "lodash"
+import { BaseService } from "medusa-interfaces"
 import { createClient } from "contentful-management"
 import redis from "redis"
 
-class ContentfulService extends PaymentService {
-  constructor({ productService, productVariantService, eventBus }, options) {
+class ContentfulService extends BaseService {
+  constructor(
+    { productService, productVariantService, eventBusService },
+    options
+  ) {
     super()
 
     this.productService_ = productService
 
     this.productVariantService_ = productVariantService
 
-    this.eventBus_ = eventBus
+    this.eventBus_ = eventBusService
 
     this.options_ = options
 
@@ -39,8 +43,8 @@ class ContentfulService extends PaymentService {
 
   async getContentfulEnvironment_() {
     try {
-      const space = await this.contentful_.getSpace(options.space_id)
-      const environment = await space.getEnvironment(options.environment)
+      const space = await this.contentful_.getSpace(this.options_.space_id)
+      const environment = await space.getEnvironment(this.options_.environment)
       return environment
     } catch (error) {
       throw error
@@ -48,6 +52,10 @@ class ContentfulService extends PaymentService {
   }
 
   async getVariantEntries_(variantEntryIds) {
+    if (!variantEntryIds) {
+      return []
+    }
+
     try {
       const environment = await this.getContentfulEnvironment_()
       return Promise.all(variantEntryIds.map((v) => environment.getEntry(v)))
@@ -57,6 +65,10 @@ class ContentfulService extends PaymentService {
   }
 
   async getVariantLinks_(variantEntries) {
+    if (!variantEntries) {
+      return []
+    }
+
     return variantEntries.map((v) => ({
       sys: {
         type: "Link",
@@ -117,9 +129,9 @@ class ContentfulService extends PaymentService {
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let productEntry = undefined
-      productEntry = await environment.getEntry(product._id)
-      // if not, we create a new one
-      if (!productEntry) {
+      try {
+        productEntry = await environment.getEntry(product._id)
+      } catch (error) {
         return this.createProductInContentful(product)
       }
 
