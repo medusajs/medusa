@@ -32,10 +32,6 @@ class ContentfulService extends BaseService {
           return reject(err)
         }
 
-        if (reply) {
-          return reject("Missing key")
-        }
-
         return resolve(JSON.parse(reply))
       })
     })
@@ -88,7 +84,7 @@ class ContentfulService extends BaseService {
             "en-US": product.title,
           },
           variants: {
-            "en-US": this.getVariantLinks_(variantEntries),
+            "en-US": [],
           },
           objectId: {
             "en-US": product._id,
@@ -126,6 +122,17 @@ class ContentfulService extends BaseService {
 
   async updateProductInContentful(product) {
     try {
+      const ignoreIds = (await this.getIgnoreIds_("product")) || []
+
+      if (ignoreIds.includes(product._id)) {
+        const newIgnoreIds = ignoreIds.filter((id) => id !== product._id)
+        this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
+        return
+      } else {
+        ignoreIds.push(product._id)
+        this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      }
+
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let productEntry = undefined
@@ -135,25 +142,18 @@ class ContentfulService extends BaseService {
         return this.createProductInContentful(product)
       }
 
-      const variantEntries = await this.getVariantEntries_(product.variants)
+      // const variantEntries = await this.getVariantEntries_(product.variants)
       productEntry.fields = _.assignIn(productEntry.fields, {
         title: {
           "en-US": product.title,
         },
         variants: {
-          "en-US": this.getVariantLinks_(variantEntries),
+          "en-US": [],
         },
       })
 
-      await productEntry.update()
-      const publishedEntry = await productEntry.publish()
-
-      const ignoreIds = await this.getIgnoreIds_("product")
-      if (ignoreIds.includes(publishedEntry.sys.id)) {
-        ignoreIds.filter((id) => id !== publishedEntry.sys.id)
-      } else {
-        this.eventBus_.emit("product.updated", publishedEntry)
-      }
+      const updatedEntry = await productEntry.update()
+      const publishedEntry = await updatedEntry.publish()
 
       return publishedEntry
     } catch (error) {
@@ -191,6 +191,7 @@ class ContentfulService extends BaseService {
       const publishedEntry = await variantEntry.publish()
 
       const ignoreIds = await this.getIgnoreIds_("product_variant")
+
       if (ignoreIds.includes(publishedEntry.sys.id)) {
         ignoreIds.filter((id) => id !== publishedEntry.sys.id)
       } else {
@@ -203,25 +204,29 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async sendContentfulProductToAdmin(product) {
+  async sendContentfulProductToAdmin(productId) {
     try {
       const environment = await this.getContentfulEnvironment_()
-      const productEntry = await environment.getEntry(product.sys.id)
+      const productEntry = await environment.getEntry(productId)
 
-      const ignoreIds = await this.getIgnoreIds_("product")
-      ignoreIds.push(product.sys.id)
-      this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      const ignoreIds = (await this.getIgnoreIds_("product")) || []
+      if (ignoreIds.includes(productId)) {
+        const newIgnoreIds = ignoreIds.filter((id) => id !== productId)
+        this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
+        return
+      } else {
+        ignoreIds.push(productId)
+        this.redis_.set("product_ignore_ids", JSON.stringify([productId]))
+      }
 
-      const updatedProduct = await this.productService_.update(
-        productEntry.objectId,
-        {
-          title: productEntry.fields.title["en-US"],
-          variants: productEntry.fields.variants["en-US"],
-        }
-      )
+      const updatedProduct = await this.productService_.update(productId, {
+        title: productEntry.fields.title["en-US"],
+        // variants: productEntry.fields.variants["en-US"],
+      })
 
       return updatedProduct
     } catch (error) {
+      console.log(error)
       throw error
     }
   }
