@@ -2,16 +2,17 @@ export default async (req, res) => {
   try {
     const contentfulService = req.scope.resolve("contentfulService")
 
-    const contentfulType = req.body.contentType.sys.id
+    const contentfulType = req.body.sys.contentType.sys.id
+    const entryId = req.body.sys.id
 
     let updated = {}
     switch (contentfulType) {
       case "product":
-        updated = await contentfulService.sendContentfulProductToAdmin(req.body)
+        updated = await contentfulService.sendContentfulProductToAdmin(entryId)
         break
       case "productVariant":
         updated = await contentfulService.sendContentfulProductVariantToAdmin(
-          req.body
+          entryId
         )
         break
       default:
