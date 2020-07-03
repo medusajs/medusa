@@ -4,6 +4,7 @@ import ProductVariantService from "../product-variant"
 import { ProductVariantModelMock } from "../../models/__mocks__/product-variant"
 import { ProductServiceMock } from "../__mocks__/product"
 import { RegionServiceMock } from "../__mocks__/region"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("ProductVariantService", () => {
   describe("retrieve", () => {
@@ -12,6 +13,7 @@ describe("ProductVariantService", () => {
       beforeAll(async () => {
         const productVariantService = new ProductVariantService({
           productVariantModel: ProductVariantModelMock,
+          eventBusService: EventBusServiceMock,
         })
 
         res = await productVariantService.retrieve(IdMap.getId("validId"))
@@ -38,6 +40,7 @@ describe("ProductVariantService", () => {
       beforeAll(async () => {
         const productVariantService = new ProductVariantService({
           productVariantModel: ProductVariantModelMock,
+          eventBusService: EventBusServiceMock,
         })
 
         await productVariantService
@@ -69,6 +72,7 @@ describe("ProductVariantService", () => {
       jest.clearAllMocks()
       const productVariantService = new ProductVariantService({
         productVariantModel: ProductVariantModelMock,
+        eventBusService: EventBusServiceMock,
       })
 
       productVariantService.createDraft({
@@ -106,6 +110,7 @@ describe("ProductVariantService", () => {
       jest.clearAllMocks()
       const productVariantService = new ProductVariantService({
         productVariantModel: ProductVariantModelMock,
+        eventBusService: EventBusServiceMock,
       })
 
       productVariantService.publish(IdMap.getId("variantId"))
@@ -124,6 +129,7 @@ describe("ProductVariantService", () => {
   describe("update", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -168,6 +174,7 @@ describe("ProductVariantService", () => {
   describe("decorate", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     const fakeVariant = {
@@ -216,6 +223,7 @@ describe("ProductVariantService", () => {
   describe("setMetadata", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -264,6 +272,7 @@ describe("ProductVariantService", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
       productService: ProductServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -331,6 +340,7 @@ describe("ProductVariantService", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
       productService: ProductServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -354,6 +364,7 @@ describe("ProductVariantService", () => {
   describe("delete", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -373,6 +384,7 @@ describe("ProductVariantService", () => {
   describe("canCoverQuantity", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -419,6 +431,7 @@ describe("ProductVariantService", () => {
   describe("setCurrencyPrice", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -519,6 +532,7 @@ describe("ProductVariantService", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
       regionService: RegionServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {
@@ -619,6 +633,7 @@ describe("ProductVariantService", () => {
     const productVariantService = new ProductVariantService({
       productVariantModel: ProductVariantModelMock,
       regionService: RegionServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(() => {

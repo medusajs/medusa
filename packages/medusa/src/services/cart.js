@@ -370,6 +370,40 @@ class CartService extends BaseService {
         return result
       })
   }
+  /**
+   * Sets the customer id of a cart
+   * @param {string} cartId - the id of the cart to add email to
+   * @param {string} customerId - the customer to add to cart
+   * @return {Promise} the result of the update operation
+   */
+  async updateCustomerId(cartId, customerId) {
+    const cart = await this.retrieve(cartId)
+    const schema = Validator.string()
+      .objectId()
+      .required()
+    const { value, error } = schema.validate(customerId)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The customerId is not valid"
+      )
+    }
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { customer_id: value },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+  }
 
   /**
    * Sets the email of a cart
@@ -451,6 +485,14 @@ class CartService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The address is not valid"
+      )
+    }
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+    if (!region.countries.includes(address.country_code.toUpperCase())) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the cart region"
       )
     }
 
@@ -683,7 +725,15 @@ class CartService extends BaseService {
           if (!region.payment_providers.includes(pSession.provider_id)) {
             return null
           }
-          return this.paymentProviderService_.updateSession(pSession, cart)
+
+          const data = await this.paymentProviderService_.updateSession(
+            pSession,
+            cart
+          )
+          return {
+            provider_id: pSession.provider_id,
+            data,
+          }
         })
       )
     }
@@ -699,7 +749,11 @@ class CartService extends BaseService {
           return null
         }
 
-        return this.paymentProviderService_.createSession(pId, cart)
+        const data = await this.paymentProviderService_.createSession(pId, cart)
+        return {
+          provider_id: pId,
+          data,
+        }
       })
     )
 

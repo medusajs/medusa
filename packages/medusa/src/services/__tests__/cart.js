@@ -494,6 +494,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
       eventBusService: EventBusServiceMock,
+      regionService: RegionServiceMock,
     })
 
     beforeEach(() => {
@@ -530,8 +531,27 @@ describe("CartService", () => {
       )
     })
 
+    it("throws if country not in region", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "ru",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      await expect(
+        cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
+      ).rejects.toThrow("Shipping country must be in the cart region")
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+
     it("throws on invalid address", async () => {
       const address = {
+        // Missing first_name
         last_name: "James",
         address_1: "24 Dunks Drive",
         city: "Los Angeles",
@@ -540,14 +560,9 @@ describe("CartService", () => {
         postal_code: "93011",
       }
 
-      try {
-        await cartService.updateShippingAddress(
-          IdMap.getId("emptyCart"),
-          address
-        )
-      } catch (err) {
-        expect(err.message).toEqual("The address is not valid")
-      }
+      await expect(
+        cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
+      ).rejects.toThrow("The address is not valid")
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
     })

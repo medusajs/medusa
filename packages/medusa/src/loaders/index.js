@@ -6,6 +6,7 @@ import modelsLoader from "./models"
 import servicesLoader from "./services"
 import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
+import defaultsLoader from "./defaults"
 import Logger from "./logger"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
@@ -54,8 +55,11 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await pluginsLoader({ container, rootDirectory, app: expressApp })
   Logger.info("Plugins Intialized")
 
-  await apiLoader({ container, app: expressApp })
+  await apiLoader({ container, rootDirectory, app: expressApp })
   Logger.info("API initialized")
+
+  await defaultsLoader({ container })
+  Logger.info("Defaults initialized")
 
   return { container, dbConnection, app: expressApp }
 }

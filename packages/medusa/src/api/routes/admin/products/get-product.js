@@ -4,16 +4,19 @@ export default async (req, res) => {
   const productService = req.scope.resolve("productService")
   let product = await productService.retrieve(id)
 
-  product = await productService.decorate(product, [
-    "title",
-    "description",
-    "tags",
-    "handle",
-    "images",
-    "options",
-    "variants",
-    "published",
-  ])
+  product = await productService.decorate(
+    product,
+    [
+      "title",
+      "description",
+      "tags",
+      "handle",
+      "images",
+      "options",
+      "published",
+    ],
+    ["variants"]
+  )
 
   res.json({ product })
 }

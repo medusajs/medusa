@@ -13,7 +13,7 @@ class ProductModel extends BaseModel {
     title: { type: String, required: true },
     description: { type: String, default: "" },
     tags: { type: String, default: "" },
-    handle: { type: String, required: true, unique: true },
+    handle: { type: String, unique: true, sparse: true },
     images: { type: [String], default: [] },
     options: { type: [OptionSchema], default: [] },
     variants: { type: [String], default: [] },
