@@ -12,6 +12,7 @@ export default async (req, res) => {
     discounts: Validator.array().items({
       code: Validator.string(),
     }),
+    customer_id: Validator.string(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -27,6 +28,10 @@ export default async (req, res) => {
   }
 
   try {
+    if (value.customer_id) {
+      await cartService.updateCustomerId(id, value.customer_id)
+    }
+
     if (value.region_id) {
       await cartService.setRegion(id, value.region_id)
     }

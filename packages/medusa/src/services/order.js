@@ -43,7 +43,7 @@ class OrderService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -137,6 +137,14 @@ class OrderService extends BaseService {
       )
     }
     return order
+  }
+
+  /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(selector) {
+    return this.orderModel_.find(selector)
   }
 
   /**
