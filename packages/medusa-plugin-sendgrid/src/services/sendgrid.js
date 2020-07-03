@@ -10,12 +10,12 @@ class SendGridService extends BaseService {
    *      from: Medusa <hello@medusa.example>,
    *      order_placed_template: 01234,
    *      order_updated_template: 56789,
-   *      order_updated_cancellede: 4242,
-   *      user_password_reset: 0000,
-   *      customer_password_reset: 1111,
+   *      order_updated_cancelled_template: 4242,
+   *      user_password_reset_template: 0000,
+   *      customer_password_reset_template: 1111,
    *    }
    */
-  constructor(options) {
+  constructor({}, options) {
     super()
 
     this.options_ = options
@@ -43,10 +43,10 @@ class SendGridService extends BaseService {
         templateId = this.options_.order_cancelled_template
         break
       case "user.password_reset":
-        templateId = this.options_.user_password_reset
+        templateId = this.options_.user_password_reset_template
         break
       case "customer.password_reset":
-        templateId = this.options_.customer_password_reset
+        templateId = this.options_.customer_password_reset_template
         break
       default:
         return

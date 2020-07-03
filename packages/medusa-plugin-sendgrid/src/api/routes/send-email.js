@@ -14,7 +14,7 @@ export default async (req, res) => {
   }
 
   try {
-    const sendgridService = req.resolve("sendgridService")
+    const sendgridService = req.scope.resolve("sendgridService")
     await sendgridService.sendEmail(
       value.template_id,
       value.from,

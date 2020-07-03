@@ -1,11 +1,11 @@
 import { Router } from "express"
 import bodyParser from "body-parser"
-import middlewares from "../../middlewares"
+import middlewares from "../middleware"
 
 const route = Router()
 
 export default (app) => {
-  app.use("/mails", route)
+  app.use("/sendgrid", route)
 
   route.post(
     "/send",
