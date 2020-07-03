@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-manual",
-  "version": "0.1.27-alpha.0",
+  "version": "1.0",
   "description": "A manual fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -23,7 +23,7 @@
     "jest": "^25.5.2"
   },
   "scripts": {
-    "build": "babel src --out-dir . --ignore **/__tests__",
+    "build": "babel src -d dist",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
@@ -32,7 +32,6 @@
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
-    "medusa-core-utils": "^0.3.0",
-    "medusa-interfaces": "^0.1.27-alpha.0"
+    "medusa-core-utils": "^0.3.0"
   }
 }

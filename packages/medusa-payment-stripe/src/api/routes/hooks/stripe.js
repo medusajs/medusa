@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   let event
   try {
-    const stripeProviderService = req.resolve("pp_stripe")
+    const stripeProviderService = req.scope.resolve("pp_stripe")
     event = stripeProviderService.constructWebhookEvent(req.body, signature)
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`)
