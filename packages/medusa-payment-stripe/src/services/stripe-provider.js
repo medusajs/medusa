@@ -103,7 +103,7 @@ class StripeProviderService extends PaymentService {
     const paymentIntent = await this.stripe_.paymentIntents.create({
       customer: stripeCustomerId,
       amount: amount * 100, // Stripe amount is in cents
-      currency: currency_code
+      currency: currency_code,
     })
 
     return paymentIntent
@@ -134,7 +134,7 @@ class StripeProviderService extends PaymentService {
       const { id } = data
       const amount = this.totalsService_.getTotal(cart)
       return this.stripe_.paymentIntents.update(id, {
-        amount
+        amount,
       })
     } catch (error) {
       throw error
