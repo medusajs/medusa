@@ -31,6 +31,9 @@ export const ShippingProfileServiceMock = {
     }
     return Promise.resolve()
   }),
+  retrieveDefault: jest.fn().mockImplementation(data => {
+    return Promise.resolve({ _id: IdMap.getId("default_shipping_profile") })
+  }),
   list: jest.fn().mockImplementation(selector => {
     if (!selector) {
       return Promise.resolve([])

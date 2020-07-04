@@ -370,6 +370,40 @@ class CartService extends BaseService {
         return result
       })
   }
+  /**
+   * Sets the customer id of a cart
+   * @param {string} cartId - the id of the cart to add email to
+   * @param {string} customerId - the customer to add to cart
+   * @return {Promise} the result of the update operation
+   */
+  async updateCustomerId(cartId, customerId) {
+    const cart = await this.retrieve(cartId)
+    const schema = Validator.string()
+      .objectId()
+      .required()
+    const { value, error } = schema.validate(customerId)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The customerId is not valid"
+      )
+    }
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { customer_id: value },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+  }
 
   /**
    * Sets the email of a cart

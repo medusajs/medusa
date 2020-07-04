@@ -13,6 +13,8 @@ class ProductVariantModel extends BaseModel {
   static schema = {
     title: { type: String, required: true },
     prices: { type: [MoneyAmountSchema], default: [], required: true },
+    sku: { type: String, default: "" },
+    barcode: { type: String, default: "" },
     options: { type: [OptionValueSchema], default: [] },
     sku: { type: String, unique: true, sparse: true },
     ean: { type: String, unique: true, sparse: true },
