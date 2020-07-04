@@ -33,7 +33,7 @@ class ShippingProfileService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -71,6 +71,27 @@ class ShippingProfileService extends BaseService {
         MedusaError.Types.NOT_FOUND,
         `Shipping Profile with ${profileId} was not found`
       )
+    }
+
+    return profile
+  }
+
+  async retrieveDefault() {
+    return await this.profileModel_
+      .findOne({ name: "default_shipping_profile" })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Creates a default shipping profile, if this does not already exist.
+   * @return {Promise<ShippingProfile>} the shipping profile
+   */
+  async createDefault() {
+    const profile = await this.retrieveDefault()
+    if (!profile) {
+      return this.profileModel_.create({ name: "default_shipping_profile" })
     }
 
     return profile
