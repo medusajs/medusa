@@ -11,14 +11,14 @@ export default async (req, res) => {
       "handle",
       "images",
       "options",
-      "variants",
       "published",
-    ])
+    ], ["variants"])
 
     res.json({
       variant_id,
       object: "product-variant",
       deleted: true,
+      product: data,
     })
   } catch (err) {
     throw err
