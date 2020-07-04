@@ -5,6 +5,8 @@ export default async (req, res) => {
   const { id, variant_id } = req.params
   const schema = Validator.object().keys({
     title: Validator.string().optional(),
+    sku: Validator.string(),
+    ean: Validator.string(),
     prices: Validator.array().items(
       Validator.object()
         .keys({

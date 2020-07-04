@@ -119,7 +119,7 @@ class ProductService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  update(productId, update) {
+  async update(productId, update) {
     const validatedId = this.validateId_(productId)
 
     if (update.metadata) {
@@ -130,10 +130,51 @@ class ProductService extends BaseService {
     }
 
     if (update.variants) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use addVariant, reorderVariants, removeVariant to update Product Variants"
+      update.variants = await Promise.all(
+        update.variants.map(async variant => {
+          if (variant._id) {
+            if (variant.prices && variant.prices.length) {
+              for (const price of variant.prices) {
+                if (price.region_id) {
+                  await this.productVariantService_.setRegionPrice(
+                    variant._id,
+                    price.region_id,
+                    price.amount
+                  )
+                } else {
+                  await this.productVariantService_.setCurrencyPrice(
+                    variant._id,
+                    price.currency_code,
+                    price.amount
+                  )
+                }
+              }
+            }
+
+            if (variant.options && variant.options.length) {
+              for (const option of variant.options) {
+                await this.updateOptionValue(
+                  productId,
+                  variant._id,
+                  option.option_id,
+                  option.value
+                )
+              }
+            }
+
+            delete variant.prices
+            delete variant.options
+
+            if (!_.isEmpty(variant)) {
+              await this.productVariantService_.update(variant._id, variant)
+            }
+          } else {
+            await this.createVariant(productId, variant).then(res => res._id)
+          }
+        })
       )
+
+      delete update.variants
     }
 
     return this.productModel_
