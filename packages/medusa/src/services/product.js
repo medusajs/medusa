@@ -467,7 +467,7 @@ class ProductService extends BaseService {
   async updateOption(productId, optionId, data) {
     const product = await this.retrieve(productId)
 
-    const option = product.options.find(o => o._id === optionId)
+    const option = product.options.find(o => o._id.equals(optionId))
     if (!option) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -477,7 +477,8 @@ class ProductService extends BaseService {
 
     const { title, values } = data
     const titleExists = product.options.some(
-      o => o.title.toUpperCase() === title.toUpperCase()
+      o =>
+        o.title.toUpperCase() === title.toUpperCase() && !o._id.equals(optionId)
     )
 
     if (titleExists) {
@@ -567,13 +568,14 @@ class ProductService extends BaseService {
       )
       .then(result => {
         this.eventBus_.emit(ProductService.Events.UPDATED, result)
+        return result
       })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
 
     // If we reached this point, we can delete option value from variants
-    if (product.variants) {
+    if (product.variants.length) {
       await Promise.all(
         product.variants.map(async variantId =>
           this.productVariantService_.deleteOptionValue(variantId, optionId)
