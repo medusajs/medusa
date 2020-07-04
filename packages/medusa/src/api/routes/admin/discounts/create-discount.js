@@ -7,10 +7,13 @@ export default async (req, res) => {
       .keys({
         description: Validator.string().optional(),
         type: Validator.string().required(),
-        value: Validator.number().required(),
+        value: Validator.number()
+          .positive()
+          .required(),
         allocation: Validator.string().required(),
         valid_for: Validator.array().items(Validator.string()),
         usage_limit: Validator.number().optional(),
+        total_limit: Validator.number().optional(),
       })
       .required(),
     usage_count: Validator.number().optional(),
