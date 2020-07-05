@@ -87,17 +87,23 @@ describe("ShippingOptionService", () => {
     })
 
     it("throw error on invalid key type", async () => {
-      const id = mongoose.Types.ObjectId()
-
-      expect(() => optionService.setMetadata(`${id}`, 1234, "nono")).toThrow(
-        "Key type is invalid. Metadata keys must be strings"
-      )
+      try {
+        optionService.setMetadata(IdMap.getId("test"), 1234, "nono")
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
     })
 
     it("throws error on invalid optionId type", async () => {
-      expect(() =>
+      try {
         optionService.setMetadata("fakeProfileId", 1234, "nono")
-      ).toThrow("The shippingOptionId could not be casted to an ObjectId")
+      } catch (error) {
+        expect(error.message).toEqual(
+          "The shippingOptionId could not be casted to an ObjectId"
+        )
+      }
     })
   })
 
