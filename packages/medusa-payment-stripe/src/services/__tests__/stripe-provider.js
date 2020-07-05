@@ -120,14 +120,10 @@ describe("StripeProviderService", () => {
 
       result = await stripeProviderService.updatePayment(
         {
-          payment_method: {
-            data: {
-              id: "pi_lebron",
-            },
-          },
+          id: "pi_lebron",
         },
         {
-          amount: 1000,
+          total: 1000,
         }
       )
     })

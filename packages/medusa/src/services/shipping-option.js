@@ -37,7 +37,7 @@ class ShippingOptionService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -246,10 +246,10 @@ class ShippingOptionService extends BaseService {
       }
     }
 
-    if (price.type === "flat_rate" && (!price.amount || price.amount < 0)) {
+    if (price.type === "flat_rate" && (!price.amount || price.amount <= 0)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Flat rate prices must have a postive amount field."
+        "Flat rate prices must have be zero or have a postive amount field."
       )
     }
 

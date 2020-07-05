@@ -14,7 +14,7 @@ class FulfillmentProviderService {
    */
   retrieveProvider(provider_id) {
     try {
-      return this.container_.resolve(`fp_${provider_id}`)
+      return this.container_[`fp_${provider_id}`]
     } catch (err) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

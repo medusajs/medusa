@@ -4,11 +4,11 @@ import store from "./routes/store"
 import errorHandler from "./middlewares/error-handler"
 
 // guaranteed to get dependencies
-export default container => {
+export default (container, config) => {
   const app = Router()
 
-  admin(app, container)
-  store(app, container)
+  admin(app, container, config)
+  store(app, container, config)
 
   app.use(errorHandler())
 

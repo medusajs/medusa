@@ -4,10 +4,10 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    title: Validator.string().required(),
+    title: Validator.string(),
     description: Validator.string().optional(),
     tags: Validator.string().optional(),
-    handle: Validator.string().required(),
+    handle: Validator.string(),
     images: Validator.array()
       .items(Validator.string())
       .optional(),
@@ -34,9 +34,8 @@ export default async (req, res) => {
       "handle",
       "images",
       "options",
-      "variants",
       "published",
-    ])
+    ], ["variants"])
     res.json({ product: newProduct })
   } catch (err) {
     throw err

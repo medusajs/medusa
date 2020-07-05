@@ -9,6 +9,10 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class UserService extends BaseService {
+  static Events = {
+    PASSWORD_RESET: "user.password_reset",
+  }
+
   constructor({ userModel, eventBusService }) {
     super()
 
@@ -245,6 +249,11 @@ class UserService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { user_id: user._id, exp: expiry }
     const token = jwt.sign(payload, secret)
+    // Notify subscribers
+    this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
+      email: user.email,
+      token,
+    })
     return token
   }
 

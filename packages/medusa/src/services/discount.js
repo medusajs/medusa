@@ -35,7 +35,7 @@ class DiscountService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -47,9 +47,9 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * Validates discount rules
-   * @param {DiscountRule} discountRule - the discount rule to validate
-   * @return {DiscountRule} the validated discount rule
+   * Creates a discount rule with provided data given that the data is validated.
+   * @param {DiscountRule} discountRule - the discount rule to create
+   * @return {Promise} the result of the create operation
    */
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
@@ -92,13 +92,21 @@ class DiscountService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(selector) {
+    return this.discountModel_.find(selector)
+  }
+
+  /**
    * Creates a discount with provided data given that the data is validated.
    * Normalizes discount code to uppercase.
    * @param {Discount} discount - the discount data to create
    * @return {Promise} the result of the create operation
    */
   async create(discount) {
-    await this.validateDiscountRule_(discount.discount_rule)
+    discount.discount_rule = this.validateDiscountRule_(discount.discount_rule)
 
     discount.code = this.normalizeDiscountCode_(discount.code)
 

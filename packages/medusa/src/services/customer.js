@@ -9,6 +9,10 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class CustomerService extends BaseService {
+  static Events = {
+    PASSWORD_RESET: "customer.password_reset",
+  }
+
   constructor({ customerModel, eventBusService }) {
     super()
 
@@ -26,7 +30,7 @@ class CustomerService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -92,10 +96,11 @@ class CustomerService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
     const payload = { customer_id: customer._id, exp: expiry }
     const token = jwt.sign(payload, secret)
-
-    // TODO: Call event layer to ensure that there is an email service that
-    // sends the token.
-
+    // Notify subscribers
+    this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
+      email: customer.email,
+      token,
+    })
     return token
   }
 

@@ -7,6 +7,11 @@ import { Validator, MedusaError } from "medusa-core-utils"
  * @implements BaseService
  */
 class ProductVariantService extends BaseService {
+  static Events = {
+    UPDATED: "product-variant.updated",
+    CREATED: "product-variant.created",
+  }
+
   /** @param { productVariantModel: (ProductVariantModel) } */
   constructor({ productVariantModel, eventBusService, regionService }) {
     super()
@@ -73,6 +78,10 @@ class ProductVariantService extends BaseService {
         ...productVariant,
         published: false,
       })
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.CREATED, result)
+        return result
+      })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -83,9 +92,13 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - ID of the variant to publish.
    * @return {Promise} resolves to the creation result.
    */
-  publish(variantId) {
+  async publish(variantId) {
     return this.productVariantModel_
       .updateOne({ _id: variantId }, { $set: { published: true } })
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -123,6 +136,10 @@ class ProductVariantService extends BaseService {
         { $set: update },
         { runValidators: true }
       )
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -163,33 +180,49 @@ class ProductVariantService extends BaseService {
         })
       }
 
-      return this.productVariantModel_.updateOne(
+      return this.productVariantModel_
+        .updateOne(
+          {
+            _id: variant._id,
+          },
+          {
+            $set: {
+              prices: newPrices,
+            },
+          }
+        )
+        .then(result => {
+          this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+          return result
+        })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+    }
+
+    return this.productVariantModel_
+      .updateOne(
         {
           _id: variant._id,
         },
         {
           $set: {
-            prices: newPrices,
+            prices: [
+              {
+                currency_code: currencyCode,
+                amount,
+              },
+            ],
           },
         }
       )
-    }
-
-    return this.productVariantModel_.updateOne(
-      {
-        _id: variant._id,
-      },
-      {
-        $set: {
-          prices: [
-            {
-              currency_code: currencyCode,
-              amount,
-            },
-          ],
-        },
-      }
-    )
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -262,39 +295,55 @@ class ProductVariantService extends BaseService {
         })
       }
 
-      return this.productVariantModel_.updateOne(
+      return this.productVariantModel_
+        .updateOne(
+          {
+            _id: variant._id,
+          },
+          {
+            $set: {
+              prices: newPrices,
+            },
+          }
+        )
+        .then(result => {
+          this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+          return result
+        })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+    }
+
+    // Set the price both for default currency price and for the region
+    return this.productVariantModel_
+      .updateOne(
         {
           _id: variant._id,
         },
         {
           $set: {
-            prices: newPrices,
+            prices: [
+              {
+                region_id: region._id,
+                currency_code: region.currency_code,
+                amount,
+              },
+              {
+                currency_code: region.currency_code,
+                amount,
+              },
+            ],
           },
         }
       )
-    }
-
-    // Set the price both for default currency price and for the region
-    return this.productVariantModel_.updateOne(
-      {
-        _id: variant._id,
-      },
-      {
-        $set: {
-          prices: [
-            {
-              region_id: region._id,
-              currency_code: region.currency_code,
-              amount,
-            },
-            {
-              currency_code: region.currency_code,
-              amount,
-            },
-          ],
-        },
-      }
-    )
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -313,10 +362,18 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    return this.productVariantModel_.updateOne(
-      { _id: variantId, "options.option_id": optionId },
-      { $set: { "options.$.value": `${optionValue}` } }
-    )
+    return this.productVariantModel_
+      .updateOne(
+        { _id: variantId, "options.option_id": optionId },
+        { $set: { "options.$.value": `${optionValue}` } }
+      )
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -340,10 +397,18 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    return this.productVariantModel_.updateOne(
-      { _id: variant._id },
-      { $push: { options: { option_id: optionId, value: `${optionValue}` } } }
-    )
+    return this.productVariantModel_
+      .updateOne(
+        { _id: variant._id },
+        { $push: { options: { option_id: optionId, value: `${optionValue}` } } }
+      )
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -357,10 +422,18 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation.
    */
   async deleteOptionValue(variantId, optionId) {
-    return this.productVariantModel_.updateOne(
-      { _id: variantId },
-      { $pull: { options: { option_id: optionId } } }
-    )
+    return this.productVariantModel_
+      .updateOne(
+        { _id: variantId },
+        { $pull: { options: { option_id: optionId } } }
+      )
+      .then(result => {
+        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
@@ -384,7 +457,7 @@ class ProductVariantService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
+  async list(selector) {
     return this.productVariantModel_.find(selector)
   }
 
