@@ -231,6 +231,62 @@ class CartService extends BaseService {
   }
 
   /**
+   * Removes a line item from the cart.
+   * @param {string} cartId - the id of the cart that we will remove from
+   * @param {LineItem} lineItemId - the line item to remove.
+   * @retur {Promise} the result of the update operation
+   */
+  async removeLineItem(cartId, lineItemId) {
+    const cart = await this.retrieve(cartId)
+    const itemToRemove = cart.items.find(line => line._id === lineItemId)
+
+    if (!itemToRemove) {
+      return Promise.resolve()
+    }
+
+    // If cart has more than one of those line items, we update the quantity
+    // instead of removing it
+    if (itemToRemove.quantity > 1) {
+      const newQuantity = itemToRemove.quantity - 1
+
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cartId,
+            "items._id": itemToRemove._id,
+          },
+          {
+            $set: {
+              "items.$.quantity": newQuantity,
+            },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
+    }
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cartId,
+        },
+        {
+          $pull: {
+            items: { _id: itemToRemove._id },
+          },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+  }
+
+  /**
    * Adds a line item to the cart.
    * @param {string} cartId - the id of the cart that we will add to
    * @param {LineItem} lineItem - the line item to add.
