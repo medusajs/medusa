@@ -78,6 +78,46 @@ describe("CartService", () => {
     })
   })
 
+  describe("deleteMetadata", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls updateOne with correct params", async () => {
+      const id = mongoose.Types.ObjectId()
+      await cartService.deleteMetadata(`${id}`, "metadata")
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(CartModelMock.updateOne).toBeCalledTimes(1)
+      expect(CartModelMock.updateOne).toBeCalledWith(
+        { _id: `${id}` },
+        { $unset: { "metadata.metadata": "" } }
+      )
+    })
+
+    it("throw error on invalid key type", async () => {
+      const id = mongoose.Types.ObjectId()
+
+      try {
+        await cartService.deleteMetadata(`${id}`, 1234)
+      } catch (err) {
+        expect(err.message).toEqual(
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+    })
+  })
+
   describe("create", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,

@@ -929,7 +929,7 @@ class CartService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(cartId, key, value) {
+  async setMetadata(cartId, key, value) {
     const validatedId = this.validateId_(cartId)
 
     if (typeof key !== "string") {
@@ -942,6 +942,35 @@ class CartService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.cartModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a cart.
+   * @param {string} cartId - the cart to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(cartId, key) {
+    const validatedId = this.validateId_(cartId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.cartModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .then(result => {
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
