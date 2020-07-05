@@ -143,6 +143,23 @@ export const carts = {
         },
         quantity: 10,
       },
+      {
+        _id: IdMap.getId("itemToRemove"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 1,
+      },
     ],
     shipping_address: {},
     billing_address: {},
