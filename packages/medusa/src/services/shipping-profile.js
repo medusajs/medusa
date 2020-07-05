@@ -382,7 +382,7 @@ class ShippingProfileService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(profileId, key, value) {
+  async setMetadata(profileId, key, value) {
     const validatedId = this.validateId_(profileId)
 
     if (typeof key !== "string") {
@@ -395,6 +395,30 @@ class ShippingProfileService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.profileModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a shipping profile.
+   * @param {string} profileId - the shipping profile to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(profileId, key) {
+    const validatedId = this.validateId_(profileId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.profileModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

@@ -270,7 +270,7 @@ class CustomerService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(customerId, key, value) {
+  async setMetadata(customerId, key, value) {
     const validatedId = this.validateId_(customerId)
 
     if (typeof key !== "string") {
@@ -283,6 +283,30 @@ class CustomerService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.customerModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a customer.
+   * @param {string} customerId - the customer to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(customerId, key) {
+    const validatedId = this.validateId_(customerId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.customerModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
