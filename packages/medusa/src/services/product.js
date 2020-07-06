@@ -692,7 +692,7 @@ class ProductService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(productId, key, value) {
+  async setMetadata(productId, key, value) {
     const validatedId = this.validateId_(productId)
 
     if (typeof key !== "string") {
@@ -709,6 +709,30 @@ class ProductService extends BaseService {
         this.eventBus_.emit(ProductService.Events.UPDATED, result)
         return result
       })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a product.
+   * @param {string} productId - the product to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(productId, key) {
+    const validatedId = this.validateId_(productId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.productModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
