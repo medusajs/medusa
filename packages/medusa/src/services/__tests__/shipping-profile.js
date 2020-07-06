@@ -146,7 +146,7 @@ describe("ShippingProfileService", () => {
 
     it("throws error on invalid profileId type", async () => {
       try {
-        await profileService.setMetadata("fakeProfileId", 1234, "nono")
+        await profileService.setMetadata("fakeProfileId", "1234", "nono")
       } catch (err) {
         expect(err.message).toEqual(
           "The profileId could not be casted to an ObjectId"

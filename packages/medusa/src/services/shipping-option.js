@@ -412,7 +412,7 @@ class ShippingOptionService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(optionId, key, value) {
+  async setMetadata(optionId, key, value) {
     const validatedId = this.validateId_(optionId)
 
     if (typeof key !== "string") {
@@ -425,6 +425,30 @@ class ShippingOptionService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.optionModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a shipping option.
+   * @param {string} optionId - the shipping option to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(optionId, key) {
+    const validatedId = this.validateId_(optionId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.optionModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
