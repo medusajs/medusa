@@ -79,7 +79,13 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of the find operation
    */
   list(selector) {
-    return this.optionModel_.find(selector)
+    const query = {}
+
+    if (selector.region_id !== undefined) {
+      query.region_id = selector.region_id
+    }
+
+    return this.optionModel_.find(query)
   }
 
   /**

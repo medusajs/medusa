@@ -5,7 +5,7 @@ export default async (req, res) => {
     name: Validator.string().required(),
     region_id: Validator.string().required(),
     provider_id: Validator.string().required(),
-    profile_id: Validator.string().required(),
+    profile_id: Validator.string(),
     data: Validator.object().required(),
     price: Validator.object()
       .keys({

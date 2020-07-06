@@ -7,6 +7,8 @@ class StoreModel extends BaseModel {
     name: { type: String, required: true, default: "Medusa Store" },
     default_currency: { type: String, required: true, default: "USD" },
     currencies: { type: [String], default: [] },
+    payment_providers: { type: [String], default: [] },
+    fulfillment_providers: { type: [String], default: [] },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }
