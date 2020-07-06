@@ -154,7 +154,7 @@ class RegionService extends BaseService {
     }
 
     const existing = await this.regionModel_.findOne({ countries: countryCode })
-    if (existing && existing._id !== id) {
+    if (existing && !existing._id.equals(id)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         `${country.name} already exists in ${existing.name}, delete it in that region before adding it`
