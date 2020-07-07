@@ -4,11 +4,8 @@ export default async (req, res) => {
   try {
     const fileService = req.scope.resolve("fileService")
 
-    console.log(fileService)
-
     const result = await Promise.all(
       req.files.map(async f => {
-        console.log(f)
         return fileService.upload(f).then(result => {
           fs.unlinkSync(f.path)
           return result
