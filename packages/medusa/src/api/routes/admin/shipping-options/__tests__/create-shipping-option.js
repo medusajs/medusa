@@ -13,7 +13,6 @@ describe("POST /admin/shipping-options", () => {
           region_id: "testregion",
           provider_id: "test_provider",
           data: { id: "test" },
-          profile_id: "test",
           price: {
             type: "flat_rate",
             amount: 100,
@@ -34,7 +33,6 @@ describe("POST /admin/shipping-options", () => {
     })
 
     it("returns 200", () => {
-      console.log(subject)
       expect(subject.status).toEqual(200)
     })
 
@@ -45,7 +43,7 @@ describe("POST /admin/shipping-options", () => {
         region_id: "testregion",
         provider_id: "test_provider",
         data: { id: "test" },
-        profile_id: "test",
+        profile_id: expect.stringMatching(/.*/),
         price: {
           type: "flat_rate",
           amount: 100,
