@@ -9,6 +9,7 @@ export default async (req, res) => {
       title: Validator.string().required(),
     }),
     images: Validator.array().items(Validator.string()),
+    thumbnail: Validator.string().optional(),
     variants: Validator.array().items({
       title: Validator.string().required(),
       sku: Validator.string(),
@@ -45,6 +46,7 @@ export default async (req, res) => {
     const productService = req.scope.resolve("productService")
     const shippingProfileService = req.scope.resolve("shippingProfileService")
 
+    value.thumbnail = value.thumbnail || value.images[0]
     let newProduct = await productService.createDraft(value)
 
     if (variants) {
@@ -70,16 +72,20 @@ export default async (req, res) => {
     const { _id } = await shippingProfileService.retrieveDefault()
     await shippingProfileService.addProduct(_id, newProduct._id)
 
-    newProduct = await productService.decorate(newProduct, [
-      "title",
-      "description",
-      "tags",
-      "handle",
-      "images",
-      "options",
-      "variants",
-      "published",
-    ])
+    newProduct = await productService.decorate(
+      newProduct,
+      [
+        "title",
+        "description",
+        "tags",
+        "handle",
+        "images",
+        "thumbnail",
+        "options",
+        "published",
+      ],
+      ["variants"]
+    )
     res.json({ product: newProduct })
   } catch (err) {
     throw err
