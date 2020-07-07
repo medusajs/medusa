@@ -4,6 +4,7 @@ import {
   BaseService,
   PaymentService,
   FulfillmentService,
+  FileService,
 } from "medusa-interfaces"
 import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
@@ -146,6 +147,13 @@ function registerServices(pluginDetails, container) {
       container.register({
         [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
         [`fp_${loaded.identifier}`]: aliasTo(name),
+      })
+    } else if (loaded.prototype instanceof FileService) {
+      // Add the service directly to the container in order to make simple
+      // resolution if we already know which payment provider we need to use
+      container.register({
+        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
+        [`fileService`]: aliasTo(name),
       })
     } else {
       container.register({
