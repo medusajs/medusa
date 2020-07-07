@@ -15,6 +15,7 @@ class ProductModel extends BaseModel {
     tags: { type: String, default: "" },
     handle: { type: String, unique: true, sparse: true },
     images: { type: [String], default: [] },
+    thumbnail: { type: String, default: "" },
     options: { type: [OptionSchema], default: [] },
     variants: { type: [String], default: [] },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },

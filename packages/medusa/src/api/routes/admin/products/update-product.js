@@ -11,6 +11,7 @@ export default async (req, res) => {
     images: Validator.array()
       .items(Validator.string())
       .optional(),
+    thumbnail: Validator.string().optional(),
     variants: Validator.array()
       .items({
         _id: Validator.string(),
@@ -50,9 +51,13 @@ export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
     const oldProduct = await productService.retrieve(id)
-    await productService.update(oldProduct._id, value)
-    let newProduct = await productService.retrieve(oldProduct._id)
-    newProduct = await productService.decorate(
+
+    if (!oldProduct.thumbnail && value.images) {
+      value.thumbnail = value.thumbnail || value.images[0]
+    }
+
+    const product = await productService.update(oldProduct._id, value)
+    const data = await productService.decorate(
       newProduct,
       [
         "title",
@@ -60,12 +65,13 @@ export default async (req, res) => {
         "tags",
         "handle",
         "images",
+        "thumbnail",
         "options",
         "published",
       ],
       ["variants"]
     )
-    res.json({ product: newProduct })
+    res.json({ product: data })
   } catch (err) {
     throw err
   }

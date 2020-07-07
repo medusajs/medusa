@@ -11,6 +11,7 @@ export default async (req, res) => {
               "title",
               "description",
               "tags",
+              "thumbnail",
               "handle",
               "images",
               "options",
