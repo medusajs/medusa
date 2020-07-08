@@ -160,14 +160,18 @@ class ContentfulService extends BaseService {
       try {
         productEntry = await environment.getEntry(product._id)
       } catch (error) {
+        console.log(error)
         return this.createProductInContentful(product)
       }
 
-      const variantEntries = await this.getVariantEntries_(product.variants)
+      const variantEntries = await this.getVariantEntries_(product._id)
       const variantLinks = this.getVariantLinks_(variantEntries)
       productEntry.fields = _.assignIn(productEntry.fields, {
         title: {
           "en-US": product.title,
+        },
+        options: {
+          "en-US": product.options,
         },
         variants: {
           "en-US": variantLinks,
@@ -218,6 +222,9 @@ class ContentfulService extends BaseService {
         },
         sku: {
           "en-US": variant.sku,
+        },
+        options: {
+          "en-US": variant.options,
         },
         prices: {
           "en-US": variant.prices,

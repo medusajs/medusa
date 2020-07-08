@@ -3,7 +3,7 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
     let cart = await cartService.retrieve(id)
-    cart = await cartService.decorate(cart)
+    cart = await cartService.decorate(cart, [], ["region"])
     res.json({ cart })
   } catch (err) {
     throw err

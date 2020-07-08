@@ -227,6 +227,9 @@ class CartService extends BaseService {
   async decorate(cart, fields, expandFields = []) {
     const c = cart.toObject()
     c.total = await this.totalsService_.getTotal(cart)
+    if (expandFields.includes("region")) {
+      c.region = await this.regionService_.retrieve(cart.region_id)
+    }
     return c
   }
 
