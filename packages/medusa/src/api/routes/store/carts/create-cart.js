@@ -2,7 +2,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    region_id: Validator.string().required(),
+    region_id: Validator.string(),
     items: Validator.array()
       .items({
         variant_id: Validator.string().required(),
@@ -19,7 +19,16 @@ export default async (req, res) => {
   try {
     const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
-    let cart = await cartService.create({ region_id: value.region_id })
+
+    // Add a default region if no region has been specified
+    let regionId = value.region_id
+    if (!value.region_id) {
+      const regionService = req.scope.resolve("regionService")
+      const regions = await regionService.list()
+      regionId = regions[0]._id
+    }
+
+    let cart = await cartService.create({ region_id: regionId })
 
     if (value.items) {
       await Promise.all(
@@ -35,7 +44,7 @@ export default async (req, res) => {
     }
 
     cart = await cartService.retrieve(cart._id)
-    cart = await cartService.decorate(cart)
+    cart = await cartService.decorate(cart, [], ["region"])
     res.status(200).json({ cart })
   } catch (err) {
     throw err

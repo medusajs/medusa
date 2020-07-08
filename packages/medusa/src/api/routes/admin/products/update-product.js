@@ -58,7 +58,7 @@ export default async (req, res) => {
 
     const product = await productService.update(oldProduct._id, value)
     const data = await productService.decorate(
-      newProduct,
+      product,
       [
         "title",
         "description",
