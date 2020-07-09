@@ -37,8 +37,12 @@ class LineItemService extends BaseService {
 
     const lineItemSchema = Validator.object({
       title: Validator.string().required(),
-      description: Validator.string(),
-      thumbnail: Validator.string(),
+      description: Validator.string()
+        .allow("")
+        .optional(),
+      thumbnail: Validator.string()
+        .allow("")
+        .optional(),
       content: Validator.alternatives()
         .try(content, Validator.array().items(content))
         .required(),
@@ -46,7 +50,7 @@ class LineItemService extends BaseService {
         .integer()
         .min(1)
         .required(),
-      metadata: Validator.object(),
+      metadata: Validator.object().default({}),
     })
 
     const { value, error } = lineItemSchema.validate(rawLineItem)
