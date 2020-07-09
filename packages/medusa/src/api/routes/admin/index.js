@@ -12,6 +12,7 @@ import discountRoutes from "./discounts"
 import orderRoutes from "./orders"
 import storeRoutes from "./store"
 import uploadRoutes from "./uploads"
+import customerRoutes from "./customers"
 
 const route = Router()
 
@@ -48,6 +49,7 @@ export default (app, container, config) => {
   orderRoutes(route)
   storeRoutes(route)
   uploadRoutes(route)
+  customerRoutes(route)
 
   return app
 }

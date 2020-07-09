@@ -124,6 +124,14 @@ class OrderService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(selector) {
+    return this.orderModel_.find(selector)
+  }
+
+  /**
    * Gets an order by id.
    * @param {string} orderId - id of order to retrieve
    * @return {Promise<Order>} the order document
