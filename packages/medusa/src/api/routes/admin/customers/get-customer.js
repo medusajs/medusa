@@ -8,7 +8,6 @@ export default async (req, res) => {
       "first_name",
       "last_name",
     ])
-    console.log(customer)
     res.json({ customer })
   } catch (err) {
     throw err
