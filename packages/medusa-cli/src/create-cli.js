@@ -3,9 +3,7 @@ const resolveCwd = require(`resolve-cwd`)
 const yargs = require(`yargs`)
 const { getLocalMedusaVersion } = require(`./util/version`)
 const { didYouMean } = require(`./did-you-mean`)
-const envinfo = require(`envinfo`)
 const existsSync = require(`fs-exists-cached`).sync
-const clipboardy = require(`clipboardy`)
 
 const handlerP = fn => (...args) => {
   Promise.resolve(fn(...args)).then(
