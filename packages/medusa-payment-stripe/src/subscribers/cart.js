@@ -10,12 +10,13 @@ class CartSubscriber {
     this.stripeProviderService_ = stripeProviderService
     this.eventBus_ = eventBusService
 
-    this.eventBus_.subscribe("cart.created", (data) => {
-      console.log(data)
-    })
-
     this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
       await this.onCustomerUpdated(cart)
+    })
+
+    this.eventBus_.subscribe("order.completed", async (order) => {
+      const paymentData = order.payment_method.data
+      await this.stripeProviderService_.capturePayment(paymentData)
     })
   }
 
