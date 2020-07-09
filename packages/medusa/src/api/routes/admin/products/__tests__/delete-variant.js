@@ -39,6 +39,19 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
         variant_id: IdMap.getId("variant1"),
         object: "product-variant",
         deleted: true,
+        product: {
+          _id: IdMap.getId("productWithOptions"),
+          decorated: true,
+          options: [
+            {
+              _id: IdMap.getId("option1"),
+              title: "Test",
+              values: [IdMap.getId("optionValue1")],
+            },
+          ],
+          title: "Test",
+          variants: [IdMap.getId("variant1")],
+        },
       })
     })
   })
