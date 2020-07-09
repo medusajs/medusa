@@ -6,7 +6,11 @@ const route = Router()
 export default app => {
   app.use("/customers", route)
 
+  route.get("/", middlewares.wrap(require("./list-customers").default))
+  route.get("/:id", middlewares.wrap(require("./get-customer").default))
+
   route.post("/", middlewares.wrap(require("./create-customer").default))
+
   route.post(
     "/password-reset",
     middlewares.wrap(require("./reset-password").default)

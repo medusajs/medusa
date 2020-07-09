@@ -11,6 +11,10 @@ class BasePaymentService extends BaseService {
     super()
   }
 
+  getIdentifier() {
+    return this.constructor.identifier
+  }
+
   /**
    * Used to create a payment to be processed with the service's payment gateway.
    * @param cart {object} - the cart that the payment should cover.

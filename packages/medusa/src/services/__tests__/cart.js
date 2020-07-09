@@ -14,6 +14,7 @@ import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
 import { DiscountServiceMock } from "../__mocks__/discount"
+import idMap from "medusa-test-utils/dist/id-map"
 
 describe("CartService", () => {
   describe("retrieve", () => {
@@ -70,6 +71,46 @@ describe("CartService", () => {
 
       try {
         await cartService.setMetadata(`${id}`, 1234, "nono")
+      } catch (err) {
+        expect(err.message).toEqual(
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+    })
+  })
+
+  describe("deleteMetadata", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      eventBusService: EventBusServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls updateOne with correct params", async () => {
+      const id = mongoose.Types.ObjectId()
+      await cartService.deleteMetadata(`${id}`, "metadata")
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(CartModelMock.updateOne).toBeCalledTimes(1)
+      expect(CartModelMock.updateOne).toBeCalledWith(
+        { _id: `${id}` },
+        { $unset: { "metadata.metadata": "" } }
+      )
+    })
+
+    it("throw error on invalid key type", async () => {
+      const id = mongoose.Types.ObjectId()
+
+      try {
+        await cartService.deleteMetadata(`${id}`, 1234)
       } catch (err) {
         expect(err.message).toEqual(
           "Key type is invalid. Metadata keys must be strings"
@@ -297,6 +338,75 @@ describe("CartService", () => {
     })
   })
 
+  describe("removeLineItem", () => {
+    const cartService = new CartService({
+      cartModel: CartModelMock,
+      productVariantService: ProductVariantServiceMock,
+      lineItemService: LineItemServiceMock,
+      eventBusService: EventBusServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully removes a line item", async () => {
+      await cartService.removeLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("itemToRemove")
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+        },
+        {
+          $pull: { items: { _id: IdMap.getId("itemToRemove") } },
+        }
+      )
+    })
+
+    it("successfully decrements quantity if more than 1", async () => {
+      await cartService.removeLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("existingLine")
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithLine"),
+          "items._id": IdMap.getId("existingLine"),
+        },
+        {
+          $set: { "items.$.quantity": 9 },
+        }
+      )
+    })
+
+    it("resolves if line item is not in cart", async () => {
+      await cartService.removeLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("nonExisting")
+      )
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+  })
+
   describe("updateLineItem", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
@@ -494,6 +604,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
       eventBusService: EventBusServiceMock,
+      regionService: RegionServiceMock,
     })
 
     beforeEach(() => {
@@ -530,8 +641,27 @@ describe("CartService", () => {
       )
     })
 
+    it("throws if country not in region", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "ru",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      await expect(
+        cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
+      ).rejects.toThrow("Shipping country must be in the cart region")
+
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
+    })
+
     it("throws on invalid address", async () => {
       const address = {
+        // Missing first_name
         last_name: "James",
         address_1: "24 Dunks Drive",
         city: "Los Angeles",
@@ -540,14 +670,9 @@ describe("CartService", () => {
         postal_code: "93011",
       }
 
-      try {
-        await cartService.updateShippingAddress(
-          IdMap.getId("emptyCart"),
-          address
-        )
-      } catch (err) {
-        expect(err.message).toEqual("The address is not valid")
-      }
+      await expect(
+        cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
+      ).rejects.toThrow("The address is not valid")
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
     })

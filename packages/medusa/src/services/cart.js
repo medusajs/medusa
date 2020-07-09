@@ -227,7 +227,66 @@ class CartService extends BaseService {
   async decorate(cart, fields, expandFields = []) {
     const c = cart.toObject()
     c.total = await this.totalsService_.getTotal(cart)
+    if (expandFields.includes("region")) {
+      c.region = await this.regionService_.retrieve(cart.region_id)
+    }
     return c
+  }
+
+  /**
+   * Removes a line item from the cart.
+   * @param {string} cartId - the id of the cart that we will remove from
+   * @param {LineItem} lineItemId - the line item to remove.
+   * @retur {Promise} the result of the update operation
+   */
+  async removeLineItem(cartId, lineItemId) {
+    const cart = await this.retrieve(cartId)
+    const itemToRemove = cart.items.find(line => line._id === lineItemId)
+
+    if (!itemToRemove) {
+      return Promise.resolve()
+    }
+
+    // If cart has more than one of those line items, we update the quantity
+    // instead of removing it
+    if (itemToRemove.quantity > 1) {
+      const newQuantity = itemToRemove.quantity - 1
+
+      return this.cartModel_
+        .updateOne(
+          {
+            _id: cartId,
+            "items._id": itemToRemove._id,
+          },
+          {
+            $set: {
+              "items.$.quantity": newQuantity,
+            },
+          }
+        )
+        .then(result => {
+          // Notify subscribers
+          this.eventBus_.emit(CartService.Events.UPDATED, result)
+          return result
+        })
+    }
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cartId,
+        },
+        {
+          $pull: {
+            items: { _id: itemToRemove._id },
+          },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
   }
 
   /**
@@ -370,6 +429,40 @@ class CartService extends BaseService {
         return result
       })
   }
+  /**
+   * Sets the customer id of a cart
+   * @param {string} cartId - the id of the cart to add email to
+   * @param {string} customerId - the customer to add to cart
+   * @return {Promise} the result of the update operation
+   */
+  async updateCustomerId(cartId, customerId) {
+    const cart = await this.retrieve(cartId)
+    const schema = Validator.string()
+      .objectId()
+      .required()
+    const { value, error } = schema.validate(customerId)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The customerId is not valid"
+      )
+    }
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { customer_id: value },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+  }
 
   /**
    * Sets the email of a cart
@@ -451,6 +544,14 @@ class CartService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The address is not valid"
+      )
+    }
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+    if (!region.countries.includes(address.country_code.toUpperCase())) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the cart region"
       )
     }
 
@@ -683,7 +784,15 @@ class CartService extends BaseService {
           if (!region.payment_providers.includes(pSession.provider_id)) {
             return null
           }
-          return this.paymentProviderService_.updateSession(pSession, cart)
+
+          const data = await this.paymentProviderService_.updateSession(
+            pSession,
+            cart
+          )
+          return {
+            provider_id: pSession.provider_id,
+            data,
+          }
         })
       )
     }
@@ -699,7 +808,11 @@ class CartService extends BaseService {
           return null
         }
 
-        return this.paymentProviderService_.createSession(pId, cart)
+        const data = await this.paymentProviderService_.createSession(pId, cart)
+        return {
+          provider_id: pId,
+          data,
+        }
       })
     )
 
@@ -875,7 +988,7 @@ class CartService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(cartId, key, value) {
+  async setMetadata(cartId, key, value) {
     const validatedId = this.validateId_(cartId)
 
     if (typeof key !== "string") {
@@ -888,6 +1001,35 @@ class CartService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.cartModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a cart.
+   * @param {string} cartId - the cart to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(cartId, key) {
+    const validatedId = this.validateId_(cartId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.cartModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .then(result => {
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)

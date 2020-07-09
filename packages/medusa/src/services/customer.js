@@ -9,6 +9,10 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class CustomerService extends BaseService {
+  static Events = {
+    PASSWORD_RESET: "customer.password_reset",
+  }
+
   constructor({ customerModel, eventBusService }) {
     super()
 
@@ -26,7 +30,7 @@ class CustomerService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -92,10 +96,11 @@ class CustomerService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
     const payload = { customer_id: customer._id, exp: expiry }
     const token = jwt.sign(payload, secret)
-
-    // TODO: Call event layer to ensure that there is an email service that
-    // sends the token.
-
+    // Notify subscribers
+    this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
+      email: customer.email,
+      token,
+    })
     return token
   }
 
@@ -250,7 +255,7 @@ class CustomerService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Customer} return the decorated customer.
    */
-  async decorate(customer, fields, expandFields = []) {
+  decorate(customer, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
     return decorated
@@ -265,7 +270,7 @@ class CustomerService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(customerId, key, value) {
+  async setMetadata(customerId, key, value) {
     const validatedId = this.validateId_(customerId)
 
     if (typeof key !== "string") {
@@ -278,6 +283,30 @@ class CustomerService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.customerModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a customer.
+   * @param {string} customerId - the customer to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(customerId, key) {
+    const validatedId = this.validateId_(customerId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.customerModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

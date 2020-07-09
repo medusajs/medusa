@@ -31,16 +31,20 @@ export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
     const product = await productService.createVariant(id, value)
-    const data = await productService.decorate(product, [
-      "title",
-      "description",
-      "tags",
-      "handle",
-      "images",
-      "options",
-      "variants",
-      "published",
-    ])
+    const data = await productService.decorate(
+      product,
+      [
+        "title",
+        "description",
+        "tags",
+        "thumbnail",
+        "handle",
+        "images",
+        "options",
+        "published",
+      ],
+      ["variants"]
+    )
     res.json({ product: data })
   } catch (err) {
     throw err
