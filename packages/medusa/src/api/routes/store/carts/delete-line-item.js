@@ -1,14 +1,12 @@
+import { Validator, MedusaError } from "medusa-core-utils"
+
 export default async (req, res) => {
-  const { id } = req.params
+  const { id, line_id } = req.params
 
   try {
     const cartService = req.scope.resolve("cartService")
 
-    // Ask the cart service to set payment sessions
-    await cartService.setPaymentSessions(id)
-
-    // return the updated cart
-    let cart = await cartService.retrieve(id)
+    let cart = await cartService.removeLineItem(id, line_id)
     cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
