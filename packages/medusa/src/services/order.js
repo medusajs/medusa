@@ -154,11 +154,50 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Gets an order by cart id.
+   * @param {string} cartId - cart id to find order
+   * @return {Promise<Order>} the order document
+   */
+  async retrieveByCartId(cartId) {
+    const order = await this.orderModel_
+      .findOne({ metadata: { cart_id: cartId } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!order) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with cart id ${cartId} was not found`
+      )
+    }
+    return order
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
   list(selector) {
     return this.orderModel_.find(selector)
+  }
+
+  /**
+   * Creates an order from a cart
+   * @param {object} order - the order to create
+   * @return {Promise} resolves to the creation result.
+   */
+  async createFromCart(cart) {
+    return this.orderModel_
+      .create({ ...cart, metadata: { cart_id: cart._id } })
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(OrderService.Events.PLACED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 
   /**
