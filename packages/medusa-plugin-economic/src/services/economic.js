@@ -1,6 +1,7 @@
 import axios from "axios"
 import moment from "moment"
 import { BaseService } from "medusa-interfaces"
+import { MedusaError } from "medusa-core-utils"
 
 ECONOMIC_BASE_URL = "https://restapi.e-conomic.com"
 
@@ -134,7 +135,7 @@ class EconomicService extends BaseService {
     })
   }
 
-  async createInvoiceFromOrder(order, lineItems) {
+  async createInvoiceFromOrder(order) {
     // Fetch currency code from order region
     const {
       currency_code,
@@ -144,6 +145,8 @@ class EconomicService extends BaseService {
     const vatZoneAndCustomer = this.decideCustomerAndVatNumber_(
       billing_address.country
     )
+
+    const lines = await this.createEconomicLinesFromOrder(order)
 
     return {
       date: moment().format("YYYY-MM-DD"),
@@ -184,6 +187,33 @@ class EconomicService extends BaseService {
         order._id,
         "economicDraftId",
         draftInvoice.draftInvoiceNumber
+      )
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async bookEconomicInvoice(orderId) {
+    try {
+      const order = await this.orderService_.retrieve(orderId)
+      const { economicDraftId } = order.setMetadata
+
+      if (!economicDraftId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "The order does not have an invoice number"
+        )
+      }
+
+      const bookInvoiceRequest = {
+        draftInvoice: {
+          draftInvoiceNumber: parseInt(economicDraftId),
+        },
+      }
+
+      await this.economic_.post(
+        `${ECONOMIC_BASE_URL}/invoices/booked`,
+        bookInvoiceRequest
       )
     } catch (error) {
       throw error
