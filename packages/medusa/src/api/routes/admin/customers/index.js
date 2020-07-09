@@ -10,9 +10,6 @@ export default app => {
   route.get("/:id", middlewares.wrap(require("./get-customer").default))
 
   route.post("/", middlewares.wrap(require("./create-customer").default))
-  route.post(
-    "/:id/password",
-    middlewares.wrap(require("./update-password").default)
-  )
+  route.post("/:id", middlewares.wrap(require("./update-customer").default))
   return app
 }
