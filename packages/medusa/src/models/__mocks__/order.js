@@ -63,6 +63,9 @@ export const orders = {
     fulfillment_status: "not_fulfilled",
     payment_status: "awaiting",
     status: "pending",
+    metadata: {
+      cart_id: IdMap.getId("test-cart"),
+    },
   },
   processedOrder: {
     _id: IdMap.getId("processed-order"),
@@ -236,6 +239,9 @@ export const OrderModelMock = {
     if (query._id === IdMap.getId("order-refund")) {
       orders.orderToRefund.payment_status = "captured"
       return Promise.resolve(orders.orderToRefund)
+    }
+    if (query.metadata.cart_id === IdMap.getId("test-cart")) {
+      return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)
   }),
