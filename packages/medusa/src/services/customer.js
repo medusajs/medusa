@@ -255,7 +255,7 @@ class CustomerService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Customer} return the decorated customer.
    */
-  async decorate(customer, fields, expandFields = []) {
+  decorate(customer, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
     return decorated
