@@ -1,0 +1,10 @@
+/lib
+node_modules
+.DS_store
+.env*
+/*.js
+!index.js
+!jest.config.js
+
+dist
+
