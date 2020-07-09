@@ -57,22 +57,6 @@ describe("POST /store/carts", () => {
     })
   })
 
-  describe("returns invalid data if region_id is not set", () => {
-    let subject
-
-    beforeAll(async () => {
-      subject = await request("POST", `/store/carts`)
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("returns error", () => {
-      expect(subject.status).toEqual(400)
-    })
-  })
-
   describe("creates cart with line items", () => {
     let subject
 
