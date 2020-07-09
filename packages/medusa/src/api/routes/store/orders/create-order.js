@@ -15,7 +15,7 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
 
     const cart = await cartService.retrieve(value.cartId)
-    let order = await orderService.create(cart)
+    let order = await orderService.createFromCart(cart)
     order = await orderService.decorate(order, [
       "status",
       "fulfillment_status",
