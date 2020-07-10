@@ -736,20 +736,6 @@ class CartService extends BaseService {
       )
     }
 
-    // The provider service will be able to perform operations on the
-    // session we are trying to set as the payment method.
-    const provider = this.paymentProviderService_.retrieveProvider(
-      paymentMethod.provider_id
-    )
-
-    const status = await provider.getStatus(paymentMethod.data)
-    if (!(status === "authorized" || status === "succeeded")) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `The payment method was not authorized`
-      )
-    }
-
     // At this point we can register the payment method.
     return this.cartModel_
       .updateOne(

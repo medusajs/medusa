@@ -14,7 +14,6 @@ class EconomicService extends BaseService {
    *      customer_number_dk: 012
    *      customer_number_eu: 345
    *      customer_number_world: 678,
-   *      vat_number: 42,
    *      unit_number: 42,
    *      payment_terms_number: 42,
    *      shipping_product_number: 42,
