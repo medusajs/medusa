@@ -2,8 +2,8 @@ export default async (req, res) => {
   const { klarna_order_id } = req.query
 
   try {
-    const orderService = req.resolve("orderService")
-    const klarnaProviderService = req.resolve("pp_klarna")
+    const orderService = req.scope.resolve("orderService")
+    const klarnaProviderService = req.scope.resolve("pp_klarna")
 
     const klarnaOrder = await klarnaProviderService.retrieveCompletedOrder(
       klarna_order_id
