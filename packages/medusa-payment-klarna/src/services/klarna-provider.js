@@ -213,9 +213,11 @@ class KlarnaProviderService extends PaymentService {
       const order = await this.klarna_.get(
         `${this.klarnaOrderUrl_}/${order_id}`
       )
-      // TODO: Klarna docs does not provide a list of statues, so we need to
-      // play around our selves to figure it out
+
       let status = "initial"
+      if (order.status === "AUTHORIZED") {
+        status = "authorized"
+      }
       return status
     } catch (error) {
       throw error
