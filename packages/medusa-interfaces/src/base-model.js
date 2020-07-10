@@ -45,7 +45,6 @@ class BaseModel {
   }
 
   /**
-   * @private
    */
   startSession() {
     return this.mongooseModel_.startSession()
