@@ -7,6 +7,7 @@ class OrderService extends BaseService {
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELLED: "order.cancelled",
+    COMPLETED: "order.completed",
   }
 
   constructor({
@@ -16,6 +17,7 @@ class OrderService extends BaseService {
     fulfillmentProviderService,
     lineItemService,
     totalsService,
+    regionService,
     eventBusService,
   }) {
     super()
@@ -37,6 +39,9 @@ class OrderService extends BaseService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    /** @private @const {RegionService} */
+    this.regionService_ = regionService
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -198,6 +203,37 @@ class OrderService extends BaseService {
    */
   list(selector) {
     return this.orderModel_.find(selector)
+  }
+
+  /**
+   * @param {string} orderId - id of the order to complete
+   * @return {Promise} the result of the find operation
+   */
+  async completeOrder(orderId) {
+    const order = await this.retrieve(orderId)
+    this.orderModel_
+      .updateOne(
+        { _id: order._id },
+        {
+          $set: { status: "completed" },
+        }
+      )
+      .then(async result => {
+        const completeOrderJob = await this.eventBus_.emit(
+          OrderService.Events.COMPLETED,
+          result
+        )
+
+        return completeOrderJob
+          .finished()
+          .then(async () => {
+            return this.retrieve(order._id)
+          })
+          .catch(error => {
+            console.log(error)
+            throw error
+          })
+      })
   }
 
   /**
@@ -603,9 +639,17 @@ class OrderService extends BaseService {
    * @return {Order} return the decorated order.
    */
   async decorate(order, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(order, fields.concat(requiredFields))
-    return decorated
+    const o = order.toObject()
+    o.shipping_total = await this.totalsService_.getShippingTotal(order)
+    o.discount_total = await this.totalsService_.getDiscountTotal(order)
+    o.tax_total = await this.totalsService_.getTaxTotal(order)
+    o.subtotal = await this.totalsService_.getSubtotal(order)
+    o.total = await this.totalsService_.getTotal(order)
+    o.created = order._id.getTimestamp()
+    if (expandFields.includes("region")) {
+      o.region = await this.regionService_.retrieve(order.region_id)
+    }
+    return o
   }
 
   /**
