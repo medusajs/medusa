@@ -188,8 +188,20 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   async createFromCart(cart) {
+    const o = {
+      payment_method: cart.payment_method,
+      shipping_methods: cart.shipping_methods,
+      items: cart.items,
+      shipping_address: cart.shipping_address,
+      billing_address: cart.shipping_address,
+      region_id: cart.region_id,
+      email: cart.email,
+      customer_id: cart.customer_id,
+      cart_id: cart._id,
+    }
+
     return this.orderModel_
-      .create({ ...cart, metadata: { cart_id: cart._id } })
+      .create(o)
       .then(result => {
         // Notify subscribers
         this.eventBus_.emit(OrderService.Events.PLACED, result)
