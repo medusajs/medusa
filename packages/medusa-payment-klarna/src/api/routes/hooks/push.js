@@ -12,7 +12,10 @@ export default async (req, res) => {
     const cartId = klarnaOrder.merchant_data
     const order = await orderService.list({ cart_id: cartId })[0]
 
-    await klarnaProviderService.acknowledgeOrder(klarnaOrder.id, order._id)
+    await klarnaProviderService.acknowledgeOrder(
+      klarnaOrder.order_id,
+      order._id
+    )
     res.sendStatus(200)
   } catch (error) {
     throw error

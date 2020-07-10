@@ -181,8 +181,10 @@ class KlarnaProviderService extends PaymentService {
    */
   async getStatus(paymentData) {
     try {
-      const { id } = paymentData
-      const order = await this.klarna_.get(`${this.klarnaOrderUrl_}/${id}`)
+      const { order_id } = paymentData
+      const order = await this.klarna_.get(
+        `${this.klarnaOrderUrl_}/${order_id}`
+      )
       // TODO: Klarna docs does not provide a list of statues, so we need to
       // play around our selves to figure it out
       let status = "initial"
@@ -215,7 +217,7 @@ class KlarnaProviderService extends PaymentService {
   async retrievePayment(cart) {
     try {
       const { data } = cart.payment_method
-      return this.klarna_.get(`${this.klarnaOrderUrl_}/${data.id}`)
+      return this.klarna_.get(`${this.klarnaOrderUrl_}/${data.order_id}`)
     } catch (error) {
       throw error
     }
@@ -283,7 +285,10 @@ class KlarnaProviderService extends PaymentService {
   async updatePayment(order, update) {
     try {
       const { data } = order.payment_method
-      return this.klarna_.post(`${this.klarnaOrderUrl_}/${data.id}`, update)
+      return this.klarna_.post(
+        `${this.klarnaOrderUrl_}/${data.order_id}`,
+        update
+      )
     } catch (error) {
       throw error
     }
@@ -296,17 +301,19 @@ class KlarnaProviderService extends PaymentService {
    */
   async capturePayment(paymentData) {
     try {
-      const { id } = paymentData
-      const orderData = await this.klarna_.get(`${this.klarnaOrderUrl_}/${id}`)
+      const { order_id } = paymentData
+      const orderData = await this.klarna_.get(
+        `${this.klarnaOrderUrl_}/${order_id}`
+      )
       const { order_amount } = orderData.order
 
       await this.klarna_.post(
-        `${this.klarnaOrderManagementUrl_}/${id}/captures`,
+        `${this.klarnaOrderManagementUrl_}/${order_id}/captures`,
         {
           captured_amount: order_amount,
         }
       )
-      return id
+      return order_id
     } catch (error) {
       throw error
     }
@@ -319,14 +326,14 @@ class KlarnaProviderService extends PaymentService {
    */
   async refundPayment(paymentData, amount) {
     try {
-      const { id } = paymentData
+      const { order_id } = paymentData
       await this.klarna_.post(
-        `${this.klarnaOrderManagementUrl_}/${id}/refunds`,
+        `${this.klarnaOrderManagementUrl_}/${order_id}/refunds`,
         {
           refunded_amount: amount,
         }
       )
-      return id
+      return order_id
     } catch (error) {
       throw error
     }
@@ -339,9 +346,9 @@ class KlarnaProviderService extends PaymentService {
    */
   async cancelPayment(paymentData) {
     try {
-      const { id } = paymentData
-      await this.klarna_.post(`${this.klarnaOrderUrl_}/${id}/cancel`)
-      return id
+      const { order_id } = paymentData
+      await this.klarna_.post(`${this.klarnaOrderUrl_}/${order_id}/cancel`)
+      return order_id
     } catch (error) {
       throw error
     }
