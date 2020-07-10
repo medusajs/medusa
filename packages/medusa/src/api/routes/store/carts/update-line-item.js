@@ -24,10 +24,8 @@ export default async (req, res) => {
       cart.region_id
     )
 
-    await cartService.updateLineItem(cart._id, line_id, lineItem)
-
-    cart = await cartService.retrieve(cart._id)
-    cart = await cartService.decorate(cart)
+    cart = await cartService.updateLineItem(cart._id, line_id, lineItem)
+    cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {

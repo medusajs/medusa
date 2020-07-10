@@ -26,7 +26,7 @@ export default async (req, res) => {
     await cartService.addLineItem(cart._id, lineItem)
 
     cart = await cartService.retrieve(cart._id)
-    cart = await cartService.decorate(cart)
+    cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {
