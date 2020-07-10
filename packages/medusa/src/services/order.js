@@ -175,6 +175,24 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Checks the existence of an order by cart id.
+   * @param {string} cartId - cart id to find order
+   * @return {Promise<Order>} the order document
+   */
+  async existsByCartId(cartId) {
+    const order = await this.orderModel_
+      .findOne({ metadata: { cart_id: cartId } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!order) {
+      return false
+    }
+    return true
+  }
+
+  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
@@ -188,28 +206,72 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   async createFromCart(cart) {
-    const o = {
-      payment_method: cart.payment_method,
-      shipping_methods: cart.shipping_methods,
-      items: cart.items,
-      shipping_address: cart.shipping_address,
-      billing_address: cart.shipping_address,
-      region_id: cart.region_id,
-      email: cart.email,
-      customer_id: cart.customer_id,
-      cart_id: cart._id,
-    }
+    // Create DB session for transaction
+    const dbSession = await this.orderModel_.startSession()
 
-    return this.orderModel_
-      .create(o)
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.PLACED, result)
-        return result
+    try {
+      // Initialize DB transaction
+      await dbSession.withTransaction(async () => {
+        // Check if order from cart already exists
+        // If so, this function throws
+        const exists = await this.existsByCartId(cart._id)
+        if (exists) {
+          throw new MedusaError(
+            MedusaError.types.INVALID_ARGUMENT,
+            "Order from cart already exists"
+          )
+        }
+
+        // Throw if payment method does not exist
+        if (!cart.payment_method) {
+          throw new MedusaError(
+            MedusaError.types.INVALID_ARGUMENT,
+            "Cart does not contain a payment method"
+          )
+        }
+
+        const { payment_method } = cart
+
+        const paymentProvider = await this.paymentProviderService_.retrieveProvider(
+          payment_method.provider_id
+        )
+        const paymentStatus = await paymentProvider.getStatus(
+          payment_method.data
+        )
+
+        // If payment status is not authorized, we throw
+        if (paymentStatus !== "authorized") {
+          throw new MedusaError(
+            MedusaError.types.INVALID_ARGUMENT,
+            "Payment method is not authorized"
+          )
+        }
+
+        const o = {
+          payment_method: cart.payment_method,
+          shipping_methods: cart.shipping_methods,
+          items: cart.items,
+          shipping_address: cart.shipping_address,
+          billing_address: cart.shipping_address,
+          region_id: cart.region_id,
+          email: cart.email,
+          customer_id: cart.customer_id,
+          cart_id: cart._id,
+        }
+
+        const orderDocument = await this.orderModel_.create(o)
+        // Commit transaction
+        await dbSession.commitTransaction()
+        // Emit and return
+        this.eventBus_emit(OrderService.Events.PLACED, orderDocument)
+        return orderDocument
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    } catch (error) {
+      console.log(error)
+      await dbSession.abortTransaction()
+    } finally {
+      await dbSession.endSession()
+    }
   }
 
   /**
