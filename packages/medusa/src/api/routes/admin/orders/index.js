@@ -11,6 +11,10 @@ export default app => {
 
   route.post("/", middlewares.wrap(require("./create-order").default))
   route.post("/:id", middlewares.wrap(require("./update-order").default))
+  route.post(
+    "/:id/complete",
+    middlewares.wrap(require("./complete-order").default)
+  )
 
   route.post(
     "/:id/capture",
