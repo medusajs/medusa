@@ -6,5 +6,11 @@ node_modules
 !index.js
 !jest.config.js
 
-dist
+/dist
+/api
+/services
+/models
+/subscribers
+/__mocks__
+
 
