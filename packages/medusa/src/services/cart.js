@@ -968,6 +968,21 @@ class CartService extends BaseService {
       update.shipping_methods = []
     }
 
+    //if (cart.items.length && cart.payment_sessions.length) {
+    //  update.payment_sessions = await Promise.all(
+    //    region.payment_providers.map(async pId => {
+    //      const data = await this.paymentProviderService_.createSession(pId, {
+    //        ...cart,
+    //        ...update,
+    //      })
+    //      return {
+    //        provider_id: pId,
+    //        data,
+    //      }
+    //    })
+    //  )
+    //}
+
     // Payment methods are region specific so the user needs to find a
     // new payment method
     if (!_.isEmpty(cart.payment_method)) {
