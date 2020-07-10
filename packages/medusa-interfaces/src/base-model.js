@@ -45,6 +45,13 @@ class BaseModel {
   }
 
   /**
+   * @private
+   */
+  startSession() {
+    return this.mongooseModel_.startSession()
+  }
+
+  /**
    * Queries the mongoose model via the mongoose's findOne.
    * @param query {object} a mongoose selector query
    * @param options {?object=} mongoose options
