@@ -92,6 +92,19 @@ class KlarnaProviderService extends PaymentService {
       }
     })
 
+    if (cart.shipping_methods.length) {
+      const shippingMethod = cart.shipping_methods[0]
+      const price = shippingMethod.price
+      order_lines.push({
+        name: `${shippingMethod.name}`,
+        quantity: 1,
+        unit_price: price * (1 + taxRate) * 100,
+        tax_rate: taxRate * 10000,
+        total_amount: price * (1 + taxRate) * 100,
+        total_tax_amount: price * taxRate * 100,
+      })
+    }
+
     return order_lines
   }
 
@@ -137,9 +150,9 @@ class KlarnaProviderService extends PaymentService {
       terms: this.options_.merchant_urls.terms,
       checkout: this.options_.merchant_urls.checkout,
       confirmation: this.options_.merchant_urls.confirmation,
-      push: `${this.backendUrl_}/klarna/hooks/push`,
-      shipping_option_update: `${this.backendUrl_}/klarna/hooks/shipping`,
-      address_update: `${this.backendUrl_}/klarna/hooks/address`,
+      push: `${this.backendUrl_}/klarna/push`,
+      shipping_option_update: `${this.backendUrl_}/klarna/shipping`,
+      address_update: `${this.backendUrl_}/klarna/address`,
     }
 
 
@@ -151,8 +164,7 @@ class KlarnaProviderService extends PaymentService {
       const shipping_method = shippingOptions[0]
       order.selected_shipping_option = {
         id: shipping_method._id,
-        // TODO: Add shipping method name
-        name: shipping_method.provider_id,
+        name: shipping_method.name,
         price: shipping_method.price * (1 + tax_rate) * 100,
         tax_amount: shipping_method.price * tax_rate * 100,
         // Medusa tax rate of e.g. 0.25 (25%) needs to be 2500 in Klarna
@@ -162,7 +174,7 @@ class KlarnaProviderService extends PaymentService {
       const shipping_method = cart.shipping_methods[0]
       order.selected_shipping_option = {
         id: shipping_method._id,
-        name: shipping_method.provider_id,
+        name: shipping_method.name,
         price: shipping_method.price * (1 + tax_rate) * 100,
         tax_amount: shipping_method.price * tax_rate * 100,
         tax_rate: tax_rate * 10000,
@@ -173,7 +185,7 @@ class KlarnaProviderService extends PaymentService {
 
     order.shipping_options = shippingOptions.map((so) => ({
       id: so._id,
-      name: so.provider_id,
+      name: so.name,
       price: so.price * (1 + tax_rate) * 100,
       tax_amount: so.price * tax_rate * 100,
       tax_rate: tax_rate * 10000,
