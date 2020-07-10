@@ -2,10 +2,10 @@ import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    cart_id: Validator.string(),
+    cart_id: Validator.string().required(),
   })
 
-  const { value, error } = schema.validate(req.body)
+  const { value, error } = schema.validate(req.params)
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
