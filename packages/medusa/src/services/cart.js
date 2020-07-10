@@ -226,6 +226,10 @@ class CartService extends BaseService {
    */
   async decorate(cart, fields, expandFields = []) {
     const c = cart.toObject()
+    c.shipping_total = await this.totalsService_.getShippingTotal(cart)
+    c.discount_total = await this.totalsService_.getDiscountTotal(cart)
+    c.tax_total = await this.totalsService_.getTaxTotal(cart)
+    c.subtotal = await this.totalsService_.getSubtotal(cart)
     c.total = await this.totalsService_.getTotal(cart)
     if (expandFields.includes("region")) {
       c.region = await this.regionService_.retrieve(cart.region_id)
@@ -241,10 +245,10 @@ class CartService extends BaseService {
    */
   async removeLineItem(cartId, lineItemId) {
     const cart = await this.retrieve(cartId)
-    const itemToRemove = cart.items.find(line => line._id === lineItemId)
+    const itemToRemove = cart.items.find(line => line._id.equals(lineItemId))
 
     if (!itemToRemove) {
-      return Promise.resolve()
+      return Promise.resolve(cart)
     }
 
     // If cart has more than one of those line items, we update the quantity
@@ -739,7 +743,7 @@ class CartService extends BaseService {
     )
 
     const status = await provider.getStatus(paymentMethod.data)
-    if (status !== "authorized") {
+    if (!(status === "authorized" || status === "succeeded")) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         `The payment method was not authorized`
