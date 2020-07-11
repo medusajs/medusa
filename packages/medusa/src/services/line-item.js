@@ -117,6 +117,28 @@ class LineItemService extends BaseService {
       },
     }
   }
+
+  isEqual(line, match) {
+    if (Array.isArray(line.content)) {
+      if (
+        Array.isArray(match.content) &&
+        match.content.length === line.content.length
+      ) {
+        return line.content.every(
+          (c, index) =>
+            c.variant._id.equals(match[index].variant._id) &&
+            c.quantity === match[index].quantity
+        )
+      }
+    } else if (!Array.isArray(match.content)) {
+      return (
+        line.content.variant._id.equals(match.content.variant._id) &&
+        line.content.quantity === match.content.quantity
+      )
+    }
+
+    return false
+  }
 }
 
 export default LineItemService

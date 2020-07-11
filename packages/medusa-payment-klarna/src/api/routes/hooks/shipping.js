@@ -10,14 +10,11 @@ export default async (req, res) => {
     const cart = await cartService.retrieve(merchant_data)
     const shippingOptions = await shippingProfileService.fetchCartOptions(cart)
 
-    const option = shippingOptions.find(({ _id }) => _id === selected_shipping_option.id)
+    const option = shippingOptions.find(({ _id }) => _id.equals(selected_shipping_option.id))
 
     if (option) {
-      await cartService.addShippingMethod(cart._id, option._id, option.data)
-
-      // Fetch and return updated Klarna order
-      const updatedCart = await cartService.retrieve(cart._id)
-      const order = klarnaProviderService.cartToKlarnaOrder(updatedCart)
+      const newCart = await cartService.addShippingMethod(cart._id, option._id, option.data)
+      const order = await klarnaProviderService.cartToKlarnaOrder(newCart)
       res.json(order)
     } else {
       res.sendStatus(400)

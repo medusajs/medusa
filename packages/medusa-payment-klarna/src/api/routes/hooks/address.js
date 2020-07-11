@@ -5,6 +5,7 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
     const klarnaProviderService = req.scope.resolve("pp_klarna")
+    const shippingProfileService = req.scope.resolve("shippingProfileService")
 
     const cart = await cartService.retrieve(merchant_data)
 
@@ -22,6 +23,12 @@ export default async (req, res) => {
       await cartService.updateShippingAddress(cart._id, updatedAddress)
       await cartService.updateBillingAddress(cart._id, updatedAddress)
       await cartService.updateEmail(cart._id, shipping_address.email)
+
+      const shippingOptions = await shippingProfileService.fetchCartOptions(cart)
+      if (shippingOptions.length === 1) {
+        const option = shippingOptions[0]
+        await cartService.addShippingMethod(cart._id, option._id, option.data)
+      }
 
       // Fetch and return updated Klarna order
       const updatedCart = await cartService.retrieve(cart._id)
