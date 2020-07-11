@@ -51,7 +51,7 @@ export default async (req, res) => {
     if (value.discounts && value.discounts.length) {
       await Promise.all(
         value.discounts.map(async ({ code }) =>
-          cartService.applyPromoCode(id, code)
+          cartService.applyDiscount(id, code)
         )
       )
     }

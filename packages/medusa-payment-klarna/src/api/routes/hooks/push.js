@@ -16,7 +16,7 @@ export default async (req, res) => {
 
     try {
       const order = await orderService.retrieveByCartId(cartId)
-      await klarnaProviderService.acknowledgeOrder(klarnaOrder.id, order._id)
+      await klarnaProviderService.acknowledgeOrder(klarnaOrder.order_id, order._id)
     } catch (err) {
       if (err.type === MeudsaError.Types.NOT_FOUND) {
         let cart = await cartService.retrieve(cartId)
@@ -24,7 +24,7 @@ export default async (req, res) => {
         cart = await cartService.setPaymentMethod(cart._id, method)
 
         const order = await orderService.createFromCart(cart)
-        await klarnaProviderService.acknowledgeOrder(klarnaOrder.id, order._id)
+        await klarnaProviderService.acknowledgeOrder(klarnaOrder.order_id, order._id)
       }
     }
 

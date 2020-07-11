@@ -16,6 +16,8 @@ export default async (req, res) => {
 
     const cart = await cartService.retrieve(value.cartId)
     let order = await orderService.createFromCart(cart)
+
+    order = await orderService.retrieveByCartId(value.cartId)
     order = await orderService.decorate(order, [
       "status",
       "fulfillment_status",

@@ -25,6 +25,11 @@ export default app => {
     middlewares.wrap(require("./delete-line-item").default)
   )
 
+  route.delete(
+    "/:id/discounts/:code",
+    middlewares.wrap(require("./delete-discount").default)
+  )
+
   // Payment sessions
   route.post(
     "/:id/payment-sessions",

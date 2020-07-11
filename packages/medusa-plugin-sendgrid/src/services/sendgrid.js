@@ -10,7 +10,7 @@ class SendGridService extends BaseService {
    *      from: Medusa <hello@medusa.example>,
    *      order_placed_template: 01234,
    *      order_updated_template: 56789,
-   *      order_updated_cancelled_template: 4242,
+   *      order_cancelled_template: 4242,
    *      user_password_reset_template: 0000,
    *      customer_password_reset_template: 1111,
    *    }
@@ -42,6 +42,9 @@ class SendGridService extends BaseService {
       case "order.cancelled":
         templateId = this.options_.order_cancelled_template
         break
+      case "order.completed":
+        templateId = this.options_.order_completed_template
+        break
       case "user.password_reset":
         templateId = this.options_.user_password_reset_template
         break
@@ -55,7 +58,7 @@ class SendGridService extends BaseService {
     try {
       return SendGrid.send({
         template_id: templateId,
-        from: options.from,
+        from: this.options_.from,
         to: order.email,
         dynamic_template_data: order,
       })
