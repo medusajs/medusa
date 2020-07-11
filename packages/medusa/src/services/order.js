@@ -230,7 +230,6 @@ class OrderService extends BaseService {
             return this.retrieve(order._id)
           })
           .catch(error => {
-            console.log(error)
             throw error
           })
       })
