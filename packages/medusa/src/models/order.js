@@ -22,6 +22,7 @@ class OrderModel extends BaseModel {
     billing_address: { type: AddressSchema, required: true },
     shipping_address: { type: AddressSchema, required: true },
     items: { type: [LineItemSchema], required: true },
+    currency_code: { type: String, required: true },
     region_id: { type: String, required: true },
     discounts: { type: [DiscountSchema], default: [] },
     customer_id: { type: String },

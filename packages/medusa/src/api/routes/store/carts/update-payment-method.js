@@ -5,6 +5,7 @@ export default async (req, res) => {
 
   const schema = Validator.object().keys({
     provider_id: Validator.string().required(),
+    data: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -15,13 +16,7 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
-    const session = await cartService.retrievePaymentSession(
-      id,
-      value.provider_id
-    )
-    await cartService.setPaymentMethod(id, session)
-
-    let cart = await cartService.retrieve(id)
+    let cart = await cartService.setPaymentMethod(id, value)
     cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })

@@ -105,7 +105,7 @@ class StripeProviderService extends PaymentService {
       amount: amount * 100, // Stripe amount is in cents
       currency: currency_code,
       capture_method: "manual",
-      metadata: { cart_id: cart._id },
+      metadata: { cart_id: `${cart._id}` },
     })
 
     return paymentIntent
@@ -113,12 +113,11 @@ class StripeProviderService extends PaymentService {
 
   /**
    * Retrieves Stripe PaymentIntent.
-   * @param {string} cart - the cart to retrieve payment intent for
+   * @param {object} data - the data of the payment to retrieve
    * @returns {Object} Stripe PaymentIntent
    */
-  async retrievePayment(cart) {
+  async retrievePayment(data) {
     try {
-      const { data } = cart.payment_method
       return this.stripe_.paymentIntents.retrieve(data.id)
     } catch (error) {
       throw error
