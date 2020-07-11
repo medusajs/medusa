@@ -3,7 +3,7 @@ import moment from "moment"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
-ECONOMIC_BASE_URL = "https://restapi.e-conomic.com"
+const ECONOMIC_BASE_URL = "https://restapi.e-conomic.com"
 
 class EconomicService extends BaseService {
   /**
@@ -16,7 +16,6 @@ class EconomicService extends BaseService {
    *      customer_number_world: 678,
    *      unit_number: 42,
    *      payment_terms_number: 42,
-   *      shipping_product_number: 42,
    *      layout_number: 42,
    *      vatzone_number_eu: 42,
    *      vatzone_number_dk: 42,
@@ -198,7 +197,7 @@ class EconomicService extends BaseService {
   async bookEconomicInvoice(orderId) {
     try {
       const order = await this.orderService_.retrieve(orderId)
-      const { economicDraftId } = order.setMetadata
+      const { economicDraftId } = order.metadata
 
       if (!economicDraftId) {
         throw new MedusaError(
