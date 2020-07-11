@@ -2,6 +2,7 @@ import axios from "axios"
 import moment from "moment"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import EUCountries from "../utils/eu-countries"
 
 const ECONOMIC_BASE_URL = "https://restapi.e-conomic.com"
 
@@ -44,30 +45,25 @@ class EconomicService extends BaseService {
     })
   }
 
-  decideCustomerAndVatNumber_(country) {
-    // Add these to utils
-    const EUCountries = []
-    const WorldCountries = []
+  decideCustomerAndVatNumber_(country_code) {
+    const upperCased = country_code.toUpperCase()
+    if (EUCountries.includes(upperCased)) {
+      return {
+        vat: this.options_.vatzone_number_eu,
+        customer: this.options_.customer_number_eu,
+      }
+    }
 
-    const flag = false
-    switch (flag) {
-      case EUCountries.includes(country): {
-        return {
-          vat: this.options_.vatzone_number_eu,
-          customer: this.options_.customer_number_eu,
-        }
+    if (upperCased === "DK") {
+      return {
+        vat: this.options_.vatzone_number_dk,
+        customer: this.options_.customer_number_dk,
       }
-      case WorldCountries.includes(country): {
-        return {
-          vat: this.options_.vatzone_number_world,
-          customer: this.options_.customer_number_world,
-        }
-      }
-      default:
-        return {
-          vat: this.options_.vatzone_number_dk,
-          customer: this.options_.customer_number_dk,
-        }
+    }
+
+    return {
+      vat: this.options_.vatzone_number_world,
+      customer: this.options_.customer_number_world,
     }
   }
 
@@ -79,10 +75,13 @@ class EconomicService extends BaseService {
     )
     // If the discount has an item specific allocation method,
     // we need to fetch the discount for each item
-    const itemDiscounts = await this.totalsService_.getAllocationItemDiscounts(
-      discount,
-      order
-    )
+    let itemDiscounts = []
+    if (discount) {
+      itemDiscounts = await this.totalsService_.getAllocationItemDiscounts(
+        discount,
+        order
+      )
+    }
 
     order.items.forEach((item) => {
       // For bundles, we create an order line for each item in the bundle
@@ -135,13 +134,12 @@ class EconomicService extends BaseService {
 
   async createInvoiceFromOrder(order) {
     // Fetch currency code from order region
-    const {
-      currency_code,
-      billing_address,
-    } = await this.regionService_.retrieve(order.region_id)
+    const { currency_code } = await this.regionService_.retrieve(
+      order.region_id
+    )
 
     const vatZoneAndCustomer = this.decideCustomerAndVatNumber_(
-      billing_address.country
+      order.billing_address.country_code
     )
 
     const lines = await this.createEconomicLinesFromOrder(order)
@@ -174,7 +172,6 @@ class EconomicService extends BaseService {
   async draftEconomicInvoice(orderId) {
     const order = await this.orderService_.retrieve(orderId)
     const invoice = await this.createInvoiceFromOrder(order)
-
     try {
       const draftInvoice = await this.economic_.post(
         `${ECONOMIC_BASE_URL}/invoices/drafts`,
@@ -184,7 +181,7 @@ class EconomicService extends BaseService {
       await this.orderService_.setMetadata(
         order._id,
         "economicDraftId",
-        draftInvoice.draftInvoiceNumber
+        draftInvoice.data.draftInvoiceNumber
       )
 
       const invoiceOrder = await this.orderService_.retrieve(order._id)

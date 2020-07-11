@@ -230,7 +230,6 @@ class OrderService extends BaseService {
             return this.retrieve(order._id)
           })
           .catch(error => {
-            console.log(error)
             throw error
           })
       })
@@ -287,7 +286,7 @@ class OrderService extends BaseService {
       // If payment status is not authorized, we throw
       if (paymentStatus !== "authorized") {
         throw new MedusaError(
-          MedusaError.types.INVALID_ARGUMENT,
+          MedusaError.Types.INVALID_ARGUMENT,
           "Payment method is not authorized"
         )
       }
