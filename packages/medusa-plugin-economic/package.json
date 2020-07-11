@@ -38,6 +38,7 @@
     "express": "^4.17.1",
     "medusa-core-utils": "^0.3.0",
     "medusa-interfaces": "^0.3.0",
-    "medusa-test-utils": "^0.3.0"
+    "medusa-test-utils": "^0.3.0",
+    "moment": "^2.27.0"
   }
 }

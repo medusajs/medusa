@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-    "watch": "babel -w src --out-dir dist --ignore **/__tests__",
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
