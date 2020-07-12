@@ -1,6 +1,7 @@
 import { Router } from "express"
 import cors from "cors"
 
+import authRoutes from "./auth"
 import productRoutes from "./products"
 import cartRoutes from "./carts"
 import orderRoutes from "./orders"
@@ -21,6 +22,7 @@ export default (app, container, config) => {
     })
   )
 
+  authRoutes(route)
   customerRoutes(route)
   productRoutes(route)
   orderRoutes(route)

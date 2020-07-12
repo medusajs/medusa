@@ -22,6 +22,7 @@ class CartService extends BaseService {
     lineItemService,
     shippingOptionService,
     shippingProfileService,
+    customerService,
     discountService,
     totalsService,
   }) {
@@ -50,6 +51,9 @@ class CartService extends BaseService {
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
+
+    /** @private @const {CustomerService} */
+    this.customerService_ = customerService
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
@@ -487,13 +491,24 @@ class CartService extends BaseService {
       )
     }
 
+    let customer = await this.customerService_
+      .retrieveByEmail(value)
+      .catch(err => undefined)
+
+    if (!customer) {
+      customer = await this.customerService_.create({ email })
+    }
+
     return this.cartModel_
       .updateOne(
         {
           _id: cart._id,
         },
         {
-          $set: { email: value },
+          $set: {
+            email: value,
+            customer_id: customer._id,
+          },
         }
       )
       .then(result => {
@@ -996,6 +1011,11 @@ class CartService extends BaseService {
         this.eventBus_.emit(CartService.Events.UPDATED, result)
         return result
       })
+  }
+
+  async delete(cartId) {
+    const cart = await this.retrieve(cartId)
+    return this.cartModel_.deleteOne({ _id: cart._id })
   }
 
   /**
