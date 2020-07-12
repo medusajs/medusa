@@ -17,9 +17,9 @@ export default async (req, res) => {
         ["orders"]
       )
       res.json({ customer: data })
+    } else {
+      res.sendStatus(401)
     }
-
-    res.sendStatus(401)
   } catch (err) {
     throw err
   }
