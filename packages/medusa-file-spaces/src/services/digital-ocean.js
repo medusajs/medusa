@@ -15,20 +15,20 @@ class DigitalOceanService extends FileService {
   }
 
   upload(file) {
-    aws.config.setPromisesDependency();
+    aws.config.setPromisesDependency()
     aws.config.update({
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
       region: this.region_,
       endpoint: this.endpoint_,
-    });
+    })
 
-    const s3 = new aws.S3();
+    const s3 = new aws.S3()
     var params = {
-      ACL: 'public-read',
+      ACL: "public-read",
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
-      Key: `${file.originalname}`
+      Key: `${file.originalname}`,
     }
 
     return new Promise((resolve, reject) => {
@@ -44,7 +44,29 @@ class DigitalOceanService extends FileService {
   }
 
   delete(file) {
-    console.log(file)
+    aws.config.setPromisesDependency()
+    aws.config.update({
+      accessKeyId: this.accessKeyId_,
+      secretAccessKey: this.secretAccessKey_,
+      region: this.region_,
+      endpoint: this.endpoint_,
+    })
+
+    const s3 = new aws.S3()
+    var params = {
+      Bucket: this.bucket_,
+      Key: `${file}`,
+    }
+
+    return new Promise((resolve, reject) => {
+      s3.deleteObject(params, (err, data) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(data)
+      })
+    })
   }
 }
 
