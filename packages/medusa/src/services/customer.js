@@ -13,7 +13,7 @@ class CustomerService extends BaseService {
     PASSWORD_RESET: "customer.password_reset",
   }
 
-  constructor({ customerModel, eventBusService }) {
+  constructor({ customerModel, orderService, eventBusService }) {
     super()
 
     /** @private @const {CustomerModel} */
@@ -21,6 +21,9 @@ class CustomerService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {EventBus} */
+    this.orderService_ = orderService
   }
 
   /**
@@ -171,16 +174,32 @@ class CustomerService extends BaseService {
       this.validateBillingAddress_(billing_address)
     }
 
-    if (password) {
+    const existing = await this.retrieveByEmail(email).catch(err => undefined)
+
+    if (existing && password && !existing.has_account) {
       const hashedPassword = await bcrypt.hash(password, 10)
       customer.password_hash = hashedPassword
       customer.has_account = true
       delete customer.password
-    }
 
-    return this.customerModel_.create(customer).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+      return this.customerModel_.updateOne(
+        { _id: existing._id },
+        {
+          $set: customer,
+        }
+      )
+    } else {
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10)
+        customer.password_hash = hashedPassword
+        customer.has_account = true
+        delete customer.password
+      }
+
+      return this.customerModel_.create(customer).catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+    }
   }
 
   /**
@@ -228,6 +247,14 @@ class CustomerService extends BaseService {
       })
   }
 
+  async addOrder(customerId, orderId) {
+    const customer = await this.retrieve(customerId)
+    return this.customerModel_.updateOne(
+      { _id: customer._id },
+      { $addToSet: { orders: orderId } }
+    )
+  }
+
   /**
    * Deletes a customer from a given customer id.
    * @param {string} customerId - the id of the customer to delete. Must be
@@ -255,9 +282,16 @@ class CustomerService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Customer} return the decorated customer.
    */
-  decorate(customer, fields, expandFields = []) {
+  async decorate(customer, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
+
+    if (expandFields.includes("orders")) {
+      decorated.orders = await Promise.all(
+        customer.orders.map(async o => this.orderService_.retrieve(o))
+      )
+    }
+
     return decorated
   }
 
