@@ -78,7 +78,7 @@ class KlarnaProviderService extends PaymentService {
           0
 
         // Withdraw discount from the total item amount
-        const quantity = item.content.quantity
+        const quantity = item.quantity
         const unit_price = item.content.unit_price * 100 * (taxRate + 1)
         const total_discount_amount = itemDiscount * (taxRate + 1) * 100
         const total_amount = unit_price * quantity - total_discount_amount
@@ -155,7 +155,7 @@ class KlarnaProviderService extends PaymentService {
       terms: this.options_.merchant_urls.terms,
       checkout: this.options_.merchant_urls.checkout,
       confirmation: this.options_.merchant_urls.confirmation,
-      push: `${this.backendUrl_}/klarna/push`,
+      push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order_id}`,
       shipping_option_update: `${this.backendUrl_}/klarna/shipping`,
       address_update: `${this.backendUrl_}/klarna/address`,
     }
@@ -274,6 +274,7 @@ class KlarnaProviderService extends PaymentService {
       )
       return klarnaOrderId
     } catch (error) {
+
       throw error
     }
   }

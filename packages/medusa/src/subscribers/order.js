@@ -1,6 +1,13 @@
 class OrderSubscriber {
-  constructor({ paymentProviderService, eventBusService }) {
+  constructor({
+    paymentProviderService,
+    cartService,
+    customerService,
+    eventBusService,
+  }) {
     this.paymentProviderService_ = paymentProviderService
+    this.customerService_ = customerService
+    this.cartService_ = cartService
 
     this.eventBus_ = eventBusService
 
@@ -10,6 +17,14 @@ class OrderSubscriber {
       )
 
       await paymentProvider.capturePayment(order._id)
+    })
+
+    this.eventBus_.subscribe("order.placed", async order => {
+      await this.customerService_.addOrder(order.customer_id, order._id)
+    })
+
+    this.eventBus_.subscribe("order.placed", async order => {
+      await this.cartService_.delete(order.cart_id)
     })
   }
 }

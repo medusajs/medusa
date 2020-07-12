@@ -317,8 +317,8 @@ class OrderService extends BaseService {
       })
 
       // Emit and return
-      this.eventBus_.emit(OrderService.Events.PLACED, orderDocument)
-      return orderDocument
+      this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
+      return orderDocument[0]
     })
   }
 
