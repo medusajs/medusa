@@ -288,7 +288,10 @@ class CustomerService extends BaseService {
 
     if (expandFields.includes("orders")) {
       decorated.orders = await Promise.all(
-        customer.orders.map(async o => this.orderService_.retrieve(o))
+        customer.orders.map(async o => {
+          const order = await this.orderService_.retrieve(o)
+          return this.orderService_.decorate(order)
+        })
       )
     }
 
