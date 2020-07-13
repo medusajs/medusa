@@ -21,6 +21,10 @@ class OrderSubscriber {
 
     this.eventBus_.subscribe("order.placed", async order => {
       await this.customerService_.addOrder(order.customer_id, order._id)
+      await this.customerService_.addAddress(
+        order.customer_id,
+        order.shipping_address
+      )
     })
 
     this.eventBus_.subscribe("order.placed", async order => {

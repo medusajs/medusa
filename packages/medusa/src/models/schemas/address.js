@@ -12,5 +12,6 @@ export default new mongoose.Schema({
   country_code: { type: String, required: true },
   province: { type: String },
   postal_code: { type: String, required: true },
+  phone: { type: String },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
 })

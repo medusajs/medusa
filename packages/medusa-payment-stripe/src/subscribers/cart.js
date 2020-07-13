@@ -29,8 +29,14 @@ class CartSubscriber {
 
     const customer = await this.customerService_.retrieve(customer_id)
 
+    const stripeSession = payment_sessions.find(s => s.provider_id === "stripe")
+
+    if (!stripeSession) {
+      return Promise.resolve()
+    }
+
     const paymentIntent = await this.stripeProviderService_.retrievePayment(
-      cart
+      stripeSession.data
     )
 
     let stripeCustomer = await this.stripeProviderService_.retrieveCustomer(

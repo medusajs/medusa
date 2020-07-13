@@ -65,6 +65,14 @@ class BasePaymentService extends BaseService {
   deletePayment() {
     throw Error("deletePayment must be overridden by the child class")
   }
+
+  /**
+   * If the payment provider can save a payment method this function will
+   * retrieve them.
+   */
+  retrieveSavedMethods(customer) {
+    return Promise.resolve([])
+  }
 }
 
 export default BasePaymentService
