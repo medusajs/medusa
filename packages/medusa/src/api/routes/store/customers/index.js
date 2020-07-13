@@ -29,5 +29,26 @@ export default app => {
     "/:id/password",
     middlewares.wrap(require("./update-password").default)
   )
+
+  route.post(
+    "/:id/addresses",
+    middlewares.wrap(require("./create-address").default)
+  )
+
+  route.post(
+    "/:id/addresses/:address_id",
+    middlewares.wrap(require("./update-address").default)
+  )
+
+  route.delete(
+    "/:id/addresses/:address_id",
+    middlewares.wrap(require("./delete-address").default)
+  )
+
+  route.get(
+    "/:id/payment-methods",
+    middlewares.wrap(require("./get-payment-methods").default)
+  )
+
   return app
 }

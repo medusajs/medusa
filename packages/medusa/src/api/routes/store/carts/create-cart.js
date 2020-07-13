@@ -28,7 +28,17 @@ export default async (req, res) => {
       regionId = regions[0]._id
     }
 
-    let cart = await cartService.create({ region_id: regionId })
+    let customerId = ""
+    if (req.user && req.user.customer_id) {
+      const customerService = req.scope.resolve("customerService")
+      const customer = await customerService.retrieve(req.user.customer_id)
+      customerId = customer._id
+    }
+
+    let cart = await cartService.create({
+      region_id: regionId,
+      customer_id: customerId,
+    })
 
     if (value.items) {
       await Promise.all(

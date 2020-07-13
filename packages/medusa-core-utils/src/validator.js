@@ -7,12 +7,13 @@ Joi.address = () => {
     first_name: Joi.string().required(),
     last_name: Joi.string().required(),
     address_1: Joi.string().required(),
-    address_2: Joi.string(),
+    address_2: Joi.string().allow(""),
     city: Joi.string().required(),
     country_code: Joi.string().required(),
-    province: Joi.string(),
+    province: Joi.string().allow(""),
     postal_code: Joi.string().required(),
-    metadata: Joi.object()
+    phone: Joi.string().required(),
+    metadata: Joi.object(),
   })
 }
 
