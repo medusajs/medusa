@@ -35,14 +35,11 @@ export default async (req, res) => {
     }
   )
 
-  const data = await customerService.decorate(result.customer, [
-    "_id",
-    "email",
-    "orders",
-    "shipping_addresses",
-    "first_name",
-    "last_name",
-  ])
+  const data = await customerService.decorate(
+    result.customer,
+    ["_id", "email", "orders", "shipping_addresses", "first_name", "last_name"],
+    ["orders"]
+  )
 
   res.json({ customer: data })
 }
