@@ -50,7 +50,22 @@ class StripeProviderService extends PaymentService {
     return status
   }
 
+  async retrieveSavedMethods(customer) {
+    if (customer.metadata && customer.metadata.stripe_id) {
+      const methods = await this.stripe_.paymentMethods.list({
+        customer: customer.metadata.stripe_id, type: "card"
+      })
+
+      return methods.data
+    }
+
+    return Promise.resolve([])
+  }
+
   async retrieveCustomer(customerId) {
+    if (!customerId) {
+      return Promise.resolve()
+    }
     return this.stripe_.customers.retrieve(customerId)
   }
 
@@ -104,6 +119,7 @@ class StripeProviderService extends PaymentService {
       customer: stripeCustomerId,
       amount: amount * 100, // Stripe amount is in cents
       currency: currency_code,
+      setup_future_usage: "on-session",
       capture_method: "manual",
       metadata: { cart_id: `${cart._id}` },
     })

@@ -8,6 +8,7 @@ import { BaseService } from "medusa-interfaces"
  */
 class CartService extends BaseService {
   static Events = {
+    CUSTOMER_UPDATED: "cart.customer_updated",
     CREATED: "cart.created",
     UPDATED: "cart.updated",
   }
@@ -207,9 +208,20 @@ class CartService extends BaseService {
     }
 
     const region = await this.regionService_.retrieve(region_id)
+    if (region.countries.length === 1) {
+      // Preselect the country if the region only has 1
+      data.shipping_address = {
+        country_code: countries[0],
+      }
+
+      data.billing_address = {
+        country_code: countries[0],
+      }
+    }
 
     return this.cartModel_
       .create({
+        ...data,
         region_id: region._id,
       })
       .then(result => {
@@ -445,10 +457,8 @@ class CartService extends BaseService {
    */
   async updateCustomerId(cartId, customerId) {
     const cart = await this.retrieve(cartId)
-    const schema = Validator.string()
-      .objectId()
-      .required()
-    const { value, error } = schema.validate(customerId)
+    const schema = Validator.objectId().required()
+    const { value, error } = schema.validate(customerId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -467,7 +477,7 @@ class CartService extends BaseService {
       )
       .then(result => {
         // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        this.eventBus_.emit(CartService.Events.CUSTOMER_UPDATED, result)
         return result
       })
   }
@@ -499,6 +509,8 @@ class CartService extends BaseService {
       customer = await this.customerService_.create({ email })
     }
 
+    const customerChanged = !customer._id.equals(cart.customer_id)
+
     return this.cartModel_
       .updateOne(
         {
@@ -513,6 +525,9 @@ class CartService extends BaseService {
       )
       .then(result => {
         // Notify subscribers
+        if (customerChanged) {
+          this.eventBus_.emit(CartService.Events.CUSTOMER_UPDATED, result)
+        }
         this.eventBus_.emit(CartService.Events.UPDATED, result)
         return result
       })
@@ -966,15 +981,9 @@ class CartService extends BaseService {
     // If the country code of a shipping address is set we need to clear it
     let shippingAddress = cart.shipping_address
     if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
-      shippingAddress.country_code = ""
+      shippingAddress.country_code =
+        region.countries.length === 1 ? region.countries[0] : ""
       update.shipping_address = shippingAddress
-    }
-
-    // If the country code of a billing address is set we need to clear it
-    let billingAddress = cart.billing_address
-    if (!_.isEmpty(billingAddress) && billingAddress.country_code) {
-      billingAddress.country_code = ""
-      update.billing_address = billingAddress
     }
 
     // Shipping methods are determined by region so the user needs to find a
@@ -1000,7 +1009,8 @@ class CartService extends BaseService {
 
     // Payment methods are region specific so the user needs to find a
     // new payment method
-    if (!_.isEmpty(cart.payment_method)) {
+    if (!_.isEmpty(cart.payment_method) || cart.payment_sessions.length) {
+      update.payment_sessions = []
       update.payment_method = undefined
     }
 

@@ -255,6 +255,52 @@ class CustomerService extends BaseService {
     )
   }
 
+  async addAddress(customerId, address) {
+    const customer = await this.retrieve(customerId)
+    this.validateBillingAddress_(address)
+
+    let shouldAdd = !!customer.shipping_addresses.find(
+      a =>
+        a.country_code === address.country_code &&
+        a.address_1 === address.address_1 &&
+        a.address_2 === address.address_2 &&
+        a.city === address.city &&
+        a.phone === address.phone &&
+        a.postal_code === address.postal_code &&
+        a.province === address.province &&
+        a.first_name === address.first_name &&
+        a.last_name === address.last_name
+    )
+
+    if (shouldAdd) {
+      return this.customerModel_.updateOne(
+        { _id: customer._id },
+        { $addToSet: { shipping_addresses: address } }
+      )
+    } else {
+      return customer
+    }
+  }
+
+  async updateAddress(customerId, addressId, address) {
+    const customer = await this.retrieve(customerId)
+    this.validateBillingAddress_(address)
+
+    return this.customerModel_.updateOne(
+      { _id: customer._id, "shipping_addresses._id": addressId },
+      { $set: { "shipping_addresses.$": address } }
+    )
+  }
+
+  async removeAddress(customerId, addressId) {
+    const customer = await this.retrieve(customerId)
+
+    return this.customerModel_.updateOne(
+      { _id: customer._id },
+      { $pull: { shipping_addresses: { _id: addressId } } }
+    )
+  }
+
   /**
    * Deletes a customer from a given customer id.
    * @param {string} customerId - the id of the customer to delete. Must be
