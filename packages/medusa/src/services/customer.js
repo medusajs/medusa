@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
@@ -102,6 +102,8 @@ class CustomerService extends BaseService {
     // Notify subscribers
     this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
       email: customer.email,
+      first_name: customer.first_name,
+      last_name: customer.last_name,
       token,
     })
     return token
@@ -328,7 +330,7 @@ class CustomerService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Customer} return the decorated customer.
    */
-  async decorate(customer, fields, expandFields = []) {
+  async decorate(customer, fields = [], expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
 

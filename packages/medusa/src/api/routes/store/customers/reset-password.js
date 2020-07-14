@@ -20,13 +20,14 @@ export default async (req, res) => {
     const customer = await customerService.retrieveByEmail(value.email)
 
     const decodedToken = await jwt.verify(value.token, customer.password_hash)
-    if (!decodedToken || decodedToken.customer_id !== customer._id) {
+    if (!decodedToken || !customer._id.equals(decodedToken.customer_id)) {
       res.status(401).send("Invalid or expired password reset token")
+      return
     }
 
-    await customerService.update(customer._id, { password: value.password })
-
-    const updated = await customerService.retrieve(customer._id)
+    const updated = await customerService.update(customer._id, {
+      password: value.password,
+    })
     const data = await customerService.decorate(customer)
     res.status(200).json({ customer: data })
   } catch (error) {

@@ -539,10 +539,7 @@ class CartService extends BaseService {
     const cart = await this.retrieve(cartId)
     const { value, error } = Validator.address().validate(address)
     if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The address is not valid"
-      )
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.message)
     }
 
     address.country_code = address.country_code.toUpperCase()
@@ -573,10 +570,7 @@ class CartService extends BaseService {
     const cart = await this.retrieve(cartId)
     const { value, error } = Validator.address().validate(address)
     if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The address is not valid"
-      )
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.message)
     }
 
     address.country_code = address.country_code.toUpperCase()
@@ -858,6 +852,61 @@ class CartService extends BaseService {
         },
         {
           $set: { payment_sessions: sessions.concat(newSessions) },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+  }
+
+  async deletePaymentSession(cartId, providerId) {
+    const cart = await this.retrieve(cartId)
+    if (cart.payment_sessions) {
+      const session = cart.payment_sessions.find(
+        s => s.provider_id === providerId
+      )
+
+      if (session) {
+        // Delete the session with the provider
+        await this.paymentProviderService_.deleteSession(session)
+
+        const selector = {
+          $pull: { payment_sessions: { provider_id: providerId } },
+        }
+
+        if (
+          cart.payment_method &&
+          cart.payment_method.provider_id === providerId
+        ) {
+          selector["$set"] = { payment_method: null }
+        }
+
+        return this.cartModel_
+          .updateOne({ _id: cart._id }, selector)
+          .then(result => {
+            // Notify subscribers
+            this.eventBus_.emit(CartService.Events.UPDATED, result)
+            return result
+          })
+      }
+    }
+
+    return cart
+  }
+
+  async updatePaymentSession(cartId, providerId, session) {
+    const cart = await this.retrieve(cartId)
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+          "payment_sessions.provider_id": providerId,
+        },
+        {
+          $set: { "payment_sessions.$": session },
         }
       )
       .then(result => {

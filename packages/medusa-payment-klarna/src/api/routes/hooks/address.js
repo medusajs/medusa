@@ -16,8 +16,9 @@ export default async (req, res) => {
         address_1: shipping_address.street_address,
         address_2: shipping_address.street_address2,
         city: shipping_address.city,
-        country_code: shipping_address.country,
+        country_code: shipping_address.country.toUpperCase(),
         postal_code: shipping_address.postal_code,
+        phone: shipping_address.phone
       }
       
       await cartService.updateShippingAddress(cart._id, updatedAddress)

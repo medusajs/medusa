@@ -60,7 +60,7 @@ class CartSubscriber {
     }
 
     if (stripeCustomer.id !== paymentIntent.customer) {
-      await this.stripeProviderService_.cancelPayment(paymentIntent.id)
+      await this.stripeProviderService_.cancelPayment(paymentIntent)
       const newPaymentIntent = await this.stripeProviderService_.createPayment(
         cart
       )
