@@ -30,7 +30,7 @@ class SendGridService extends BaseService {
    *    correlate with the structure specificed in the dynamic template
    * @returns {Promise} result of the send operation
    */
-  async transactionalEmail(event, order) {
+  async transactionalEmail(event, data) {
     let templateId
     switch (event) {
       case "order.placed":
@@ -54,13 +54,12 @@ class SendGridService extends BaseService {
       default:
         return
     }
-
     try {
       return SendGrid.send({
         template_id: templateId,
         from: this.options_.from,
-        to: order.email,
-        dynamic_template_data: order,
+        to: data.email,
+        dynamic_template_data: data,
       })
     } catch (error) {
       throw error
