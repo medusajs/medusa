@@ -158,6 +158,15 @@ class StripeProviderService extends PaymentService {
     }
   }
 
+  async deletePayment(data) {
+    try {
+      const { id } = data
+      return this.stripe_.paymentIntents.cancel(id)
+    } catch (error) {
+      throw error
+    }
+  }
+
   /**
    * Updates customer of Stripe PaymentIntent.
    * @param {string} cart - the cart to update payment intent for

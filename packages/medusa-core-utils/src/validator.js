@@ -12,7 +12,7 @@ Joi.address = () => {
     country_code: Joi.string().required(),
     province: Joi.string().allow(""),
     postal_code: Joi.string().required(),
-    phone: Joi.string().required(),
+    phone: Joi.string(),
     metadata: Joi.object(),
   })
 }
