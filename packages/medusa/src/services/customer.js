@@ -259,7 +259,7 @@ class CustomerService extends BaseService {
     const customer = await this.retrieve(customerId)
     this.validateBillingAddress_(address)
 
-    let shouldAdd = !!customer.shipping_addresses.find(
+    let shouldAdd = !customer.shipping_addresses.find(
       a =>
         a.country_code === address.country_code &&
         a.address_1 === address.address_1 &&

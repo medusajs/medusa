@@ -119,7 +119,7 @@ class StripeProviderService extends PaymentService {
       customer: stripeCustomerId,
       amount: amount * 100, // Stripe amount is in cents
       currency: currency_code,
-      setup_future_usage: "on-session",
+      setup_future_usage: "on_session",
       capture_method: "manual",
       metadata: { cart_id: `${cart._id}` },
     })
