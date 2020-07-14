@@ -29,15 +29,18 @@ export default async (req, res) => {
     }
 
     let customerId = ""
+    let email = ""
     if (req.user && req.user.customer_id) {
       const customerService = req.scope.resolve("customerService")
       const customer = await customerService.retrieve(req.user.customer_id)
       customerId = customer._id
+      email = customer.email
     }
 
     let cart = await cartService.create({
       region_id: regionId,
       customer_id: customerId,
+      email,
     })
 
     if (value.items) {

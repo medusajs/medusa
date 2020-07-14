@@ -211,11 +211,7 @@ class CartService extends BaseService {
     if (region.countries.length === 1) {
       // Preselect the country if the region only has 1
       data.shipping_address = {
-        country_code: countries[0],
-      }
-
-      data.billing_address = {
-        country_code: countries[0],
+        country_code: region.countries[0],
       }
     }
 

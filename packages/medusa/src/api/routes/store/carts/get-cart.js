@@ -6,7 +6,11 @@ export default async (req, res) => {
 
     // If there is a logged in user add the user to the cart
     if (req.user && req.user.customer_id) {
-      if (!cart.customer_id || cart.customer_id !== req.user.customer_id) {
+      if (
+        !cart.customer_id ||
+        !cart.email ||
+        cart.customer_id !== req.user.customer_id
+      ) {
         const customerService = req.scope.resolve("customerService")
         const customer = await customerService.retrieve(req.user.customer_id)
 
