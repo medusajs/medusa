@@ -42,10 +42,10 @@ export const ShippingProfileServiceMock = {
       return Promise.resolve([])
     }
     if (selector.shipping_options === IdMap.getId("freeShipping")) {
-      return Promise.resolve([{ _id: "default_profile" }])
+      return Promise.resolve([{ _id: IdMap.getId("default_profile") }])
     }
     if (selector.shipping_options === IdMap.getId("additional")) {
-      return Promise.resolve([{ _id: "additional_profile" }])
+      return Promise.resolve([{ _id: IdMap.getId("additional_profile") }])
     }
     if (
       selector.products &&

@@ -9,6 +9,7 @@ export default async (req, res) => {
 
   const { value, error } = schema.validate(req.body)
   if (error) {
+    console.log(error)
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
@@ -23,6 +24,13 @@ export default async (req, res) => {
       cart = await cartService.retrieve(id)
 
       const existing = cart.items.find(i => i._id.equals(line_id))
+      if (!existing) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Could not find the line item"
+        )
+      }
+
       const lineItem = await lineItemService.generate(
         existing.content.variant._id,
         cart.region_id,

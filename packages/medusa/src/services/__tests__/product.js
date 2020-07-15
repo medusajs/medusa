@@ -281,17 +281,6 @@ describe("ProductService", () => {
         expect(err.message).toEqual("Use setMetadata to update metadata fields")
       }
     })
-
-    it("throws error when trying to update variants", async () => {
-      const id = mongoose.Types.ObjectId()
-      try {
-        await productService.update(`${id}`, { variants: ["1", "2"] })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Use addVariant, reorderVariants, removeVariant to update Product Variants"
-        )
-      }
-    })
   })
 
   describe("delete", () => {

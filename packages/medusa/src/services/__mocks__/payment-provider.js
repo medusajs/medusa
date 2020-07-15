@@ -10,6 +10,9 @@ export const DefaultProviderMock = {
 
     return Promise.resolve("initial")
   }),
+  retrievePayment: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
   capturePayment: jest.fn().mockReturnValue(Promise.resolve()),
   refundPayment: jest.fn().mockReturnValue(Promise.resolve()),
 }

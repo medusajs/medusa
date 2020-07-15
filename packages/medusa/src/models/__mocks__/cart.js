@@ -168,13 +168,21 @@ export const carts = {
   },
   completeCart: {
     _id: IdMap.getId("complete-cart"),
-    title: "test",
     region_id: IdMap.getId("region-france"),
     items: [],
+    email: "test",
+    payment_sessions: [
+      {
+        provider_id: "default_provider",
+        data: {
+          money_id: "success",
+        },
+      },
+    ],
     payment_method: {
-      provider_id: "stripe",
+      provider_id: "default_provider",
       data: {
-        yes: "sir",
+        money_id: "success",
       },
     },
     shipping_methods: [
@@ -259,7 +267,7 @@ export const carts = {
     shipping_methods: [
       {
         _id: IdMap.getId("freeShipping"),
-        profile_id: "default_profile",
+        profile_id: IdMap.getId("default_profile"),
       },
     ],
     shipping_options: [

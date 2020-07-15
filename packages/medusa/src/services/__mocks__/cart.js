@@ -215,13 +215,40 @@ export const CartServiceMock = {
   }),
   setPaymentMethod: jest.fn().mockImplementation((cartId, method) => {
     if (method.provider_id === "default_provider") {
-      return Promise.resolve()
+      return Promise.resolve(carts.cartWithPaySessions)
     }
 
     throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Not allowed")
   }),
+  removeLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
+    if (cartId === IdMap.getId("fr-cart")) {
+      return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("regionCart")) {
+      return Promise.resolve(carts.regionCart)
+    }
+    if (cartId === IdMap.getId("emptyCart")) {
+      return Promise.resolve(carts.emptyCart)
+    }
+    if (cartId === IdMap.getId("cartWithPaySessions")) {
+      return Promise.resolve(carts.cartWithPaySessions)
+    }
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, "cart not found")
+  }),
   updateLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
-    return Promise.resolve()
+    if (cartId === IdMap.getId("fr-cart")) {
+      return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("regionCart")) {
+      return Promise.resolve(carts.regionCart)
+    }
+    if (cartId === IdMap.getId("emptyCart")) {
+      return Promise.resolve(carts.emptyCart)
+    }
+    if (cartId === IdMap.getId("cartWithPaySessions")) {
+      return Promise.resolve(carts.cartWithPaySessions)
+    }
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, "cart not found")
   }),
   setRegion: jest.fn().mockImplementation((cartId, regionId) => {
     if (regionId === IdMap.getId("fail")) {
@@ -238,7 +265,7 @@ export const CartServiceMock = {
   updateBillingAddress: jest.fn().mockImplementation((cartId, address) => {
     return Promise.resolve()
   }),
-  applyPromoCode: jest.fn().mockImplementation((cartId, code) => {
+  applyDiscount: jest.fn().mockImplementation((cartId, code) => {
     return Promise.resolve()
   }),
   setPaymentSessions: jest.fn().mockImplementation(cartId => {

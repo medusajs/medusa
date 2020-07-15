@@ -46,7 +46,9 @@ export default async (req, res) => {
     const productService = req.scope.resolve("productService")
     const shippingProfileService = req.scope.resolve("shippingProfileService")
 
-    value.thumbnail = value.thumbnail || value.images[0]
+    if (!value.thumbnail && value.images && value.images.length) {
+      value.thumbnail = value.images[0]
+    }
     let newProduct = await productService.createDraft(value)
 
     if (variants) {

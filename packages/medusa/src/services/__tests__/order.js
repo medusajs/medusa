@@ -6,6 +6,7 @@ import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { FulfillmentProviderServiceMock } from "../__mocks__/fulfillment-provider"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { TotalsServiceMock } from "../__mocks__/totals"
+import { RegionServiceMock } from "../__mocks__/region"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("OrderService", () => {
@@ -34,6 +35,8 @@ describe("OrderService", () => {
   describe("createFromCart", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
+      paymentProviderService: PaymentProviderServiceMock,
+      regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
     })
 
@@ -44,10 +47,17 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.createFromCart(carts.completeCart)
 
-      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.create).toHaveBeenCalledWith({
+      const order = {
         ...carts.completeCart,
-        metadata: { cart_id: carts.completeCart._id },
+        currency_code: "eur",
+        cart_id: carts.completeCart._id,
+      }
+      delete order._id
+      delete order.payment_sessions
+
+      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
+        session: expect.anything(),
       })
     })
   })
@@ -89,7 +99,7 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       expect(OrderModelMock.findOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.findOne).toHaveBeenCalledWith({
-        metadata: { cart_id: IdMap.getId("test-cart") },
+        cart_id: IdMap.getId("test-cart"),
       })
     })
 
