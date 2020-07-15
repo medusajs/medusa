@@ -209,11 +209,16 @@ export const orders = {
 }
 
 export const OrderModelMock = {
-  create: jest.fn().mockReturnValue(Promise.resolve()),
+  create: jest.fn().mockImplementation(data => Promise.resolve(data)),
   updateOne: jest.fn().mockImplementation((query, update) => {
     return Promise.resolve()
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
+  startSession: jest.fn().mockReturnValue(
+    Promise.resolve({
+      withTransaction: fn => fn(),
+    })
+  ),
   findOne: jest.fn().mockImplementation(query => {
     if (query._id === IdMap.getId("test-order")) {
       orders.testOrder.payment_status = "awaiting"
@@ -240,7 +245,7 @@ export const OrderModelMock = {
       orders.orderToRefund.payment_status = "captured"
       return Promise.resolve(orders.orderToRefund)
     }
-    if (query.metadata.cart_id === IdMap.getId("test-cart")) {
+    if (query.cart_id === IdMap.getId("test-cart")) {
       return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)

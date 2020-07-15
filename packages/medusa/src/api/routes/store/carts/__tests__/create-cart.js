@@ -22,6 +22,8 @@ describe("POST /store/carts", () => {
     it("calls CartService create", () => {
       expect(CartServiceMock.create).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.create).toHaveBeenCalledWith({
+        email: "",
+        customer_id: "",
         region_id: IdMap.getId("testRegion"),
       })
     })

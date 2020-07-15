@@ -52,8 +52,13 @@ export default async (req, res) => {
     const productService = req.scope.resolve("productService")
     const oldProduct = await productService.retrieve(id)
 
-    if (!oldProduct.thumbnail && value.images) {
-      value.thumbnail = value.thumbnail || value.images[0]
+    if (
+      !oldProduct.thumbnail &&
+      !value.thumbnail &&
+      value.images &&
+      value.images.length
+    ) {
+      value.thumbnail = value.images[0]
     }
 
     const product = await productService.update(oldProduct._id, value)

@@ -8,11 +8,10 @@ describe("GET /store/shipping-options", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("GET", `/store/shipping-options`, {
-        payload: {
-          cart_id: IdMap.getId("emptyCart"),
-        },
-      })
+      subject = await request(
+        "GET",
+        `/store/shipping-options/${IdMap.getId("emptyCart")}`
+      )
     })
 
     afterAll(() => {
