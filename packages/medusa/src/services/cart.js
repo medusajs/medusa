@@ -237,7 +237,7 @@ class CartService extends BaseService {
    * @return {Cart} return the decorated cart.
    */
   async decorate(cart, fields, expandFields = []) {
-    const c = cart.toObject()
+    const c = cart
     c.shipping_total = await this.totalsService_.getShippingTotal(cart)
     c.discount_total = await this.totalsService_.getDiscountTotal(cart)
     c.tax_total = await this.totalsService_.getTaxTotal(cart)
@@ -1054,9 +1054,12 @@ class CartService extends BaseService {
 
     // Payment methods are region specific so the user needs to find a
     // new payment method
-    if (!_.isEmpty(cart.payment_method) || cart.payment_sessions.length) {
-      update.payment_sessions = []
+    if (!_.isEmpty(cart.payment_method)) {
       update.payment_method = undefined
+    }
+
+    if (cart.payment_sessions && cart.payment_sessions.length) {
+      update.payment_sessions = []
     }
 
     return this.cartModel_

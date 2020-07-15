@@ -136,8 +136,7 @@ class ShippingOptionService extends BaseService {
    * @return {ShippingOption} the validated shipping option
    */
   async validateCartOption(optionId, cart) {
-    const optionDoc = await this.retrieve(optionId)
-    let option = optionDoc.toObject()
+    const option = await this.retrieve(optionId)
 
     if (cart.region_id !== option.region_id) {
       throw new MedusaError(

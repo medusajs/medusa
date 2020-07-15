@@ -8,6 +8,7 @@ import {
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { CustomerServiceMock } from "../__mocks__/customer"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
@@ -497,6 +498,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       cartModel: CartModelMock,
       eventBusService: EventBusServiceMock,
+      customerService: CustomerServiceMock,
     })
 
     beforeEach(() => {
@@ -509,7 +511,11 @@ describe("CartService", () => {
         "test@testdom.com"
       )
 
-      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(2)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.customer_updated",
+        expect.any(Object)
+      )
       expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
         "cart.updated",
         expect.any(Object)
@@ -521,7 +527,10 @@ describe("CartService", () => {
           _id: IdMap.getId("emptyCart"),
         },
         {
-          $set: { email: "test@testdom.com" },
+          $set: {
+            email: "test@testdom.com",
+            customer_id: IdMap.getId("testdom"),
+          },
         }
       )
     })
@@ -556,6 +565,7 @@ describe("CartService", () => {
         country_code: "US",
         province: "CA",
         postal_code: "93011",
+        phone: "+1 (222) 333 4444",
       }
 
       await cartService.updateBillingAddress(IdMap.getId("emptyCart"), address)
@@ -593,7 +603,7 @@ describe("CartService", () => {
           address
         )
       } catch (err) {
-        expect(err.message).toEqual("The address is not valid")
+        expect(err.message).toEqual(`"first_name" is required`)
       }
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
@@ -620,6 +630,7 @@ describe("CartService", () => {
         country_code: "US",
         province: "CA",
         postal_code: "93011",
+        phone: "+1 (222) 333 4444",
       }
 
       await cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
@@ -650,6 +661,7 @@ describe("CartService", () => {
         country_code: "ru",
         province: "CA",
         postal_code: "93011",
+        phone: "+1 (222) 333 4444",
       }
 
       await expect(
@@ -672,7 +684,7 @@ describe("CartService", () => {
 
       await expect(
         cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
-      ).rejects.toThrow("The address is not valid")
+      ).rejects.toThrow(`"first_name" is required`)
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
     })
@@ -779,19 +791,12 @@ describe("CartService", () => {
           $set: {
             region_id: IdMap.getId("region-us"),
             shipping_methods: [],
+            payment_sessions: [],
             payment_method: undefined,
             shipping_address: {
               first_name: "hi",
               last_name: "you",
-              country_code: "",
-              city: "of lights",
-              address_1: "You bet street",
-              postal_code: "4242",
-            },
-            billing_address: {
-              first_name: "hi",
-              last_name: "you",
-              country_code: "",
+              country_code: "US",
               city: "of lights",
               address_1: "You bet street",
               postal_code: "4242",
@@ -858,17 +863,6 @@ describe("CartService", () => {
         IdMap.getId("testRegion")
       )
 
-      expect(PaymentProviderServiceMock.retrieveProvider).toHaveBeenCalledTimes(
-        1
-      )
-      expect(PaymentProviderServiceMock.retrieveProvider).toHaveBeenCalledWith(
-        "default_provider"
-      )
-      expect(DefaultProviderMock.getStatus).toHaveBeenCalledTimes(1)
-      expect(DefaultProviderMock.getStatus).toHaveBeenCalledWith({
-        money_id: "success",
-      })
-
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
         {
@@ -902,71 +896,6 @@ describe("CartService", () => {
         expect(err.message).toEqual(
           `The payment method is not available in this region`
         )
-      }
-    })
-
-    it("fails if the payment provider is not registered", async () => {
-      const paymentMethod = {
-        provider_id: "unregistered",
-        data: {
-          money_id: "success",
-        },
-      }
-
-      try {
-        await cartService.setPaymentMethod(
-          IdMap.getId("cartWithLine"),
-          paymentMethod
-        )
-      } catch (err) {
-        expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
-        expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
-          IdMap.getId("testRegion")
-        )
-
-        expect(
-          PaymentProviderServiceMock.retrieveProvider
-        ).toHaveBeenCalledTimes(1)
-        expect(
-          PaymentProviderServiceMock.retrieveProvider
-        ).toHaveBeenCalledWith("unregistered")
-
-        expect(err.message).toEqual(`Provider Not Found`)
-      }
-    })
-
-    it("fails if the payment is not authorized", async () => {
-      const paymentMethod = {
-        provider_id: "default_provider",
-        data: {
-          money_id: "fail",
-        },
-      }
-
-      try {
-        await cartService.setPaymentMethod(
-          IdMap.getId("cartWithLine"),
-          paymentMethod
-        )
-      } catch (err) {
-        expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
-        expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
-          IdMap.getId("testRegion")
-        )
-
-        expect(
-          PaymentProviderServiceMock.retrieveProvider
-        ).toHaveBeenCalledTimes(1)
-        expect(
-          PaymentProviderServiceMock.retrieveProvider
-        ).toHaveBeenCalledWith("default_provider")
-
-        expect(DefaultProviderMock.getStatus).toHaveBeenCalledTimes(1)
-        expect(DefaultProviderMock.getStatus).toHaveBeenCalledWith({
-          money_id: "fail",
-        })
-
-        expect(err.message).toEqual(`The payment method was not authorized`)
       }
     })
   })
@@ -1259,7 +1188,7 @@ describe("CartService", () => {
                   _id: IdMap.getId("freeShipping"),
                   price: 0,
                   provider_id: "default_provider",
-                  profile_id: "default_profile",
+                  profile_id: IdMap.getId("default_profile"),
                   data,
                 },
               ],
@@ -1297,7 +1226,7 @@ describe("CartService", () => {
                   _id: IdMap.getId("freeShipping"),
                   price: 0,
                   provider_id: "default_provider",
-                  profile_id: "default_profile",
+                  profile_id: IdMap.getId("default_profile"),
                   data: {
                     id: "testshipperid",
                   },
@@ -1335,12 +1264,12 @@ describe("CartService", () => {
               shipping_methods: [
                 {
                   _id: IdMap.getId("freeShipping"),
-                  profile_id: "default_profile",
+                  profile_id: IdMap.getId("default_profile"),
                 },
                 {
                   _id: IdMap.getId("additional"),
                   price: 0,
-                  profile_id: "additional_profile",
+                  profile_id: IdMap.getId("additional_profile"),
                   provider_id: "default_provider",
                   data,
                 },

@@ -60,7 +60,9 @@ export const ProductServiceMock = {
     .fn()
     .mockReturnValue(Promise.resolve(products.productWithOptions)),
   updateOptionValue: jest.fn().mockReturnValue(Promise.resolve()),
-  deleteOption: jest.fn().mockReturnValue(Promise.resolve()),
+  deleteOption: jest
+    .fn()
+    .mockReturnValue(Promise.resolve(products.productWithOptions)),
   retrieveVariants: jest
     .fn()
     .mockReturnValue(
@@ -84,8 +86,8 @@ export const ProductServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  update: jest.fn().mockImplementation((userId, data) => {
-    return Promise.resolve()
+  update: jest.fn().mockImplementation((product, data) => {
+    return Promise.resolve(products.product1)
   }),
   list: jest.fn().mockImplementation(data => {
     // Used to retrieve a product based on a variant id see

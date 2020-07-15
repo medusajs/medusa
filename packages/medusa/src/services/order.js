@@ -264,9 +264,16 @@ class OrderService extends BaseService {
         )
       }
 
-      const { payment_method } = cart
+      const { payment_method, payment_sessions } = cart
 
-      let paymentSession = cart.payment_sessions.find(
+      if (!payment_sessions || !payment_sessions.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "cart must have payment sessions"
+        )
+      }
+
+      let paymentSession = payment_sessions.find(
         ps => ps.provider_id === payment_method.provider_id
       )
 
@@ -301,6 +308,7 @@ class OrderService extends BaseService {
           provider_id: paymentSession.provider_id,
           data: paymentData,
         },
+        discounts: cart.discounts,
         shipping_methods: cart.shipping_methods,
         items: cart.items,
         shipping_address: cart.shipping_address,
@@ -651,7 +659,7 @@ class OrderService extends BaseService {
    * @return {Order} return the decorated order.
    */
   async decorate(order, fields, expandFields = []) {
-    const o = order.toObject()
+    const o = order
     o.shipping_total = await this.totalsService_.getShippingTotal(order)
     o.discount_total = await this.totalsService_.getDiscountTotal(order)
     o.tax_total = await this.totalsService_.getTaxTotal(order)
