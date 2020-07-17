@@ -9,6 +9,7 @@ import _ from "lodash"
 class DiscountService extends BaseService {
   constructor({
     discountModel,
+    dynamicDiscountCodeModel,
     totalsService,
     productVariantService,
     regionService,
@@ -17,6 +18,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {DiscountModel} */
     this.discountModel_ = discountModel
+
+    /** @private @const {DynamicDiscountCodeModel} */
+    this.dynamicCodeModel_ = dynamicDiscountCodeModel
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -144,18 +148,38 @@ class DiscountService extends BaseService {
    */
   async retrieveByCode(discountCode) {
     discountCode = this.normalizeDiscountCode_(discountCode)
-    const discount = await this.discountModel_
+    let discount = await this.discountModel_
       .findOne({ code: discountCode })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
 
     if (!discount) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Discount with code ${discountCode} was not found`
-      )
+      const dynamicCode = await this.dynamicCodeModel_
+        .findOne({ code: discountCode })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+
+      if (!dynamicCode) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Discount with code ${discountCode} was not found`
+        )
+      }
+
+      discount = await this.retrieve(dynamicCode.discount_id)
+      if (!discount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Discount with code ${discountCode} was not found`
+        )
+      }
+
+      discount.code = discountCode
+      discount.disabled = dynamicCode.disabled
     }
+
     return discount
   }
 
@@ -184,6 +208,49 @@ class DiscountService extends BaseService {
       { $set: update },
       { runValidators: true }
     )
+  }
+
+  /**
+   * Creates a dynamic code for a discount id.
+   * @param {string} discountId - the id of the discount to create a code for
+   * @param {string} code - the code to identify the discount by
+   * @return {Promise} the newly created dynamic code
+   */
+  async createDynamicCode(discountId, data) {
+    const discount = await this.retrieve(discountId)
+    if (!discount.is_dynamic) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount must be set to dynamic"
+      )
+    }
+
+    const code = this.normalizeDiscountCode_(data.code)
+    return this.dynamicCodeModel_.create({
+      ...data,
+      discount_id: discount._id,
+      code,
+    })
+  }
+
+  /**
+   * Creates a dynamic code for a discount id.
+   * @param {string} discountId - the id of the discount to create a code for
+   * @param {string} code - the code to identify the discount by
+   * @return {Promise} the newly created dynamic code
+   */
+  async deleteDynamicCode(discountId, code) {
+    const discont = await this.retrieve(discountId)
+    if (!discount.is_dynamic) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount must be set to dynamic"
+      )
+    }
+
+    return this.dynamicCodeModel_.deleteOne({
+      code,
+    })
   }
 
   /**
