@@ -610,6 +610,14 @@ class CartService extends BaseService {
   async applyDiscount(cartId, discountCode) {
     const cart = await this.retrieve(cartId)
     const discount = await this.discountService_.retrieveByCode(discountCode)
+
+    if (discount.disabled) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The discount code is disabled"
+      )
+    }
+
     if (!discount.regions.includes(cart.region_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

@@ -1,5 +1,9 @@
 import DiscountService from "../discount"
 import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
+import {
+  DynamicDiscountCodeModelMock,
+  dynamicDiscounts,
+} from "../../models/__mocks__/dynamic-discount-code"
 import { IdMap } from "medusa-test-utils"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
@@ -58,6 +62,46 @@ describe("DiscountService", () => {
 
     it("successfully returns cart", () => {
       expect(res).toEqual(discounts.total10Percent)
+    })
+  })
+
+  describe("retrieveByCode", () => {
+    let res
+    const discountService = new DiscountService({
+      discountModel: DiscountModelMock,
+      dynamicDiscountCodeModel: DynamicDiscountCodeModelMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls model layer findOne", async () => {
+      res = await discountService.retrieveByCode("10%off")
+      expect(DiscountModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
+        code: "10%OFF",
+      })
+      expect(res).toEqual(discounts.total10Percent)
+    })
+
+    it("finds dynamic code", async () => {
+      res = await discountService.retrieveByCode("dynamicoff")
+      expect(DiscountModelMock.findOne).toHaveBeenCalledTimes(2)
+      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
+        _id: IdMap.getId("dynamic"),
+      })
+      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
+        code: "DYNAMICOFF",
+      })
+      expect(DynamicDiscountCodeModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(DynamicDiscountCodeModelMock.findOne).toHaveBeenCalledWith({
+        code: "DYNAMICOFF",
+      })
+      expect(res).toEqual({
+        ...discounts.dynamic,
+        code: "DYNAMICOFF",
+      })
     })
   })
 

@@ -34,7 +34,6 @@ export default async (req, res) => {
 
     res.status(200).json({ order })
   } catch (err) {
-    console.log(err)
     // If something fails it might be because the order has already been created
     // if it has we find it from the cart id
     const orderService = req.scope.resolve("orderService")

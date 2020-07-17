@@ -7,6 +7,7 @@ class DiscountModel extends BaseModel {
 
   static schema = {
     code: { type: String, required: true, unique: true },
+    is_dynamic: { type: Boolean, default: false },
     discount_rule: { type: DiscountRule, required: true },
     usage_count: { type: Number, default: 0 },
     disabled: { type: Boolean, default: false },
