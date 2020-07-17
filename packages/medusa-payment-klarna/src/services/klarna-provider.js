@@ -37,20 +37,6 @@ class KlarnaProviderService extends PaymentService {
 
   async lineItemsToOrderLines_(cart, taxRate) {
     let order_lines = []
-    // Find the discount, that is not free shipping
-    const discount = cart.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
-    )
-
-    let itemDiscounts = []
-    if (discount) {
-      // If the discount has an item specific allocation method,
-      // we need to fetch the discount for each item
-      itemDiscounts = await this.totalsService_.getAllocationItemDiscounts(
-        discount,
-        cart
-      )
-    }
 
     cart.items.forEach((item) => {
       // For bundles, we create an order line for each item in the bundle
@@ -62,8 +48,6 @@ class KlarnaProviderService extends PaymentService {
           order_lines.push({
             name: item.title,
             unit_price: c.unit_price,
-            // Medusa does not allow discount on bundles
-            total_discount_amount: 0,
             quantity: c.quantity,
             tax_rate: taxRate * 10000,
             total_amount,
@@ -71,17 +55,10 @@ class KlarnaProviderService extends PaymentService {
           })
         })
       } else {
-        // Find the discount for current item and default to 0
-        const itemDiscount =
-          (itemDiscounts &&
-            itemDiscounts.find((el) => el.lineItem._id === item._id)) ||
-          0
-
         // Withdraw discount from the total item amount
         const quantity = item.quantity
         const unit_price = item.content.unit_price * 100 * (taxRate + 1)
-        const total_discount_amount = itemDiscount * (taxRate + 1) * 100
-        const total_amount = unit_price * quantity - total_discount_amount
+        const total_amount = unit_price * quantity
         const total_tax_amount = total_amount * (taxRate / (1 + taxRate))
 
         order_lines.push({
@@ -89,7 +66,6 @@ class KlarnaProviderService extends PaymentService {
           tax_rate: taxRate * 10000,
           quantity,
           unit_price,
-          total_discount_amount,
           total_amount,
           total_tax_amount,
         })
@@ -127,6 +103,20 @@ class KlarnaProviderService extends PaymentService {
 
     order.order_lines = await this.lineItemsToOrderLines_(cart, tax_rate)
 
+    const discount = (await this.totalsService_.getDiscountTotal(cart)) * 100
+    if (discount) {
+      order.order_lines.push({
+        name: `Discount`,
+        quantity: 1,
+        type: "discount",
+        unit_price: 0,
+        total_discount_amount: discount * (1 + tax_rate),
+        tax_rate: tax_rate * 10000,
+        total_amount: - discount * (1 + tax_rate),
+        total_tax_amount: - discount * tax_rate
+      })
+    }
+
     if (!_.isEmpty(cart.billing_address)) {
       order.billing_address = {
         email: cart.email,
@@ -145,7 +135,6 @@ class KlarnaProviderService extends PaymentService {
       // Defaults to Sweden
       order.purchase_country = "SE"
     }
-
     order.order_amount = (await this.totalsService_.getTotal(cart)) * 100
     order.order_tax_amount = (await this.totalsService_.getTaxTotal(cart)) * 100
     // TODO: Check if currency matches ISO
@@ -179,7 +168,6 @@ class KlarnaProviderService extends PaymentService {
       }
 
       // If the cart does have shipping methods, set the selected shipping method
-
       order.shipping_options = shippingOptions.map((so) => ({
         id: so._id,
         name: so.name,
@@ -190,6 +178,7 @@ class KlarnaProviderService extends PaymentService {
       }))
     }
 
+    console.log(order)
     return order
   }
 

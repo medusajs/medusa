@@ -22,6 +22,16 @@ export default app => {
     middlewares.wrap(require("./delete-discount").default)
   )
 
+  // Dynamic codes
+  route.post(
+    "/:discount_id/dynamic-codes",
+    middlewares.wrap(require("./create-dynamic-code").default)
+  )
+  route.delete(
+    "/:discount_id/dynamic-codes/:code",
+    middlewares.wrap(require("./delete-dynamic-code").default)
+  )
+
   // Discount valid variants management
   route.post(
     "/:discount_id/variants/:variant_id",

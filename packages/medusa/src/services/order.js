@@ -245,89 +245,93 @@ class OrderService extends BaseService {
     const dbSession = await this.orderModel_.startSession()
 
     // Initialize DB transaction
-    return dbSession.withTransaction(async () => {
-      // Check if order from cart already exists
-      // If so, this function throws
-      const exists = await this.existsByCartId(cart._id)
-      if (exists) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Order from cart already exists"
+    return dbSession
+      .withTransaction(async () => {
+        // Check if order from cart already exists
+        // If so, this function throws
+        const exists = await this.existsByCartId(cart._id)
+        if (exists) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Order from cart already exists"
+          )
+        }
+
+        // Throw if payment method does not exist
+        if (!cart.payment_method) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Cart does not contain a payment method"
+          )
+        }
+
+        const { payment_method, payment_sessions } = cart
+
+        if (!payment_sessions || !payment_sessions.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "cart must have payment sessions"
+          )
+        }
+
+        let paymentSession = payment_sessions.find(
+          ps => ps.provider_id === payment_method.provider_id
         )
-      }
 
-      // Throw if payment method does not exist
-      if (!cart.payment_method) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Cart does not contain a payment method"
+        // Throw if payment method does not exist
+        if (!paymentSession) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Cart does not have an authorized payment session"
+          )
+        }
+
+        const region = await this.regionService_.retrieve(cart.region_id)
+        const paymentProvider = this.paymentProviderService_.retrieveProvider(
+          paymentSession.provider_id
         )
-      }
-
-      const { payment_method, payment_sessions } = cart
-
-      if (!payment_sessions || !payment_sessions.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "cart must have payment sessions"
+        const paymentStatus = await paymentProvider.getStatus(
+          paymentSession.data
         )
-      }
 
-      let paymentSession = payment_sessions.find(
-        ps => ps.provider_id === payment_method.provider_id
-      )
+        // If payment status is not authorized, we throw
+        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Payment method is not authorized"
+          )
+        }
 
-      // Throw if payment method does not exist
-      if (!paymentSession) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Cart does not have an authorized payment session"
+        const paymentData = await paymentProvider.retrievePayment(
+          paymentSession.data
         )
-      }
 
-      const region = await this.regionService_.retrieve(cart.region_id)
-      const paymentProvider = this.paymentProviderService_.retrieveProvider(
-        paymentSession.provider_id
-      )
-      const paymentStatus = await paymentProvider.getStatus(paymentSession.data)
+        const o = {
+          payment_method: {
+            provider_id: paymentSession.provider_id,
+            data: paymentData,
+          },
+          discounts: cart.discounts,
+          shipping_methods: cart.shipping_methods,
+          items: cart.items,
+          shipping_address: cart.shipping_address,
+          billing_address: cart.shipping_address,
+          region_id: cart.region_id,
+          email: cart.email,
+          customer_id: cart.customer_id,
+          cart_id: cart._id,
+          currency_code: region.currency_code,
+        }
 
-      // If payment status is not authorized, we throw
-      if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Payment method is not authorized"
-        )
-      }
+        const orderDocument = await this.orderModel_.create([o], {
+          session: dbSession,
+        })
 
-      const paymentData = await paymentProvider.retrievePayment(
-        paymentSession.data
-      )
-
-      const o = {
-        payment_method: {
-          provider_id: paymentSession.provider_id,
-          data: paymentData,
-        },
-        discounts: cart.discounts,
-        shipping_methods: cart.shipping_methods,
-        items: cart.items,
-        shipping_address: cart.shipping_address,
-        billing_address: cart.shipping_address,
-        region_id: cart.region_id,
-        email: cart.email,
-        customer_id: cart.customer_id,
-        cart_id: cart._id,
-        currency_code: region.currency_code,
-      }
-
-      const orderDocument = await this.orderModel_.create([o], {
-        session: dbSession,
+        // Emit and return
+        this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
+        return orderDocument[0].toObject()
       })
-
-      // Emit and return
-      this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
-      return orderDocument[0]
-    })
+      .then(() => this.orderModel_.findOne({ cart_id: cart._id }))
   }
 
   /**

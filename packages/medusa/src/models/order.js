@@ -28,6 +28,7 @@ class OrderModel extends BaseModel {
     customer_id: { type: String },
     payment_method: { type: PaymentMethodSchema, required: true },
     shipping_methods: { type: [ShippingMethodSchema], required: true },
+    created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }
