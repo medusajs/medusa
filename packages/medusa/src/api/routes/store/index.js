@@ -27,7 +27,7 @@ export default (app, container, config) => {
   route.use(middlewares.authenticateCustomer())
 
   authRoutes(route)
-  customerRoutes(route)
+  customerRoutes(route, container)
   productRoutes(route)
   orderRoutes(route)
   cartRoutes(route)

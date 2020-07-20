@@ -52,6 +52,7 @@ export default ({ rootDirectory, container, app }) => {
     registerServices(pluginDetails, container)
     registerMedusaApi(pluginDetails, container)
     registerApi(pluginDetails, app)
+    registerCoreRouters(pluginDetails, container)
     registerSubscribers(pluginDetails, container)
   })
 }
@@ -82,6 +83,29 @@ function registerMedusaMiddleware(pluginDetails, container) {
       pluginDetails.options
     )
   }
+}
+
+function registerCoreRouters(pluginDetails, container) {
+  const middlewareService = container.resolve("middlewareService")
+  const { resolve } = pluginDetails
+  const adminFiles = glob.sync(`${resolve}/api/admin/[!__]*.js`, {})
+  const storeFiles = glob.sync(`${resolve}/api/store/[!__]*.js`, {})
+
+  adminFiles.forEach(fn => {
+    const descriptor = fn.split(".")[0]
+    const splat = descriptor.split("/")
+    const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
+    const loaded = require(fn).default
+    middlewareService.addRouter(path, loaded())
+  })
+
+  storeFiles.forEach(fn => {
+    const descriptor = fn.split(".")[0]
+    const splat = descriptor.split("/")
+    const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
+    const loaded = require(fn).default
+    middlewareService.addRouter(path, loaded())
+  })
 }
 
 /**
