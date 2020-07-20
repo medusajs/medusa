@@ -106,6 +106,11 @@ const eur10us12 = {
   title: "EUR10US-12",
 }
 
+const giftCardVar = {
+  _id: IdMap.getId("giftCardVar"),
+  title: "100 USD",
+}
+
 export const variants = {
   one: variant1,
   two: variant2,
@@ -115,6 +120,7 @@ export const variants = {
   empty_variant: emptyVariant,
   eur10us12: eur10us12,
   testVariant: testVariant,
+  giftCard: giftCardVar,
 }
 
 export const ProductVariantServiceMock = {
@@ -129,6 +135,9 @@ export const ProductVariantServiceMock = {
     })
   }),
   retrieve: jest.fn().mockImplementation(variantId => {
+    if (variantId === IdMap.getId("giftCardVar")) {
+      return Promise.resolve(variants.giftCard)
+    }
     if (variantId === "1") {
       return Promise.resolve(variant1)
     }
@@ -186,6 +195,10 @@ export const ProductVariantServiceMock = {
       } else {
         return Promise.resolve(10)
       }
+    }
+
+    if (variantId === IdMap.getId("giftCardVar")) {
+      return Promise.resolve(100)
     }
 
     return Promise.reject(new Error("Not found"))

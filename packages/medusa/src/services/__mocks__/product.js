@@ -96,6 +96,16 @@ export const ProductServiceMock = {
   list: jest.fn().mockImplementation(data => {
     // Used to retrieve a product based on a variant id see
     // ProductVariantService.addOptionValue
+    if (data.variants === IdMap.getId("giftCardVar")) {
+      return Promise.resolve([
+        {
+          _id: IdMap.getId("giftCardProd"),
+          title: "Gift Card",
+          is_giftcard: true,
+          thumbnail: "1234",
+        },
+      ])
+    }
     if (data.variants === IdMap.getId("testVariant")) {
       return Promise.resolve([
         {
