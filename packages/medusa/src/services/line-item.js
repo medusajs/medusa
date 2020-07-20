@@ -83,8 +83,9 @@ class LineItemService extends BaseService {
    * @param {string} variantId - id of the line item variant
    * @param {*} regionId - id of the cart region
    * @param {*} quantity - number of items
+   * @param {object} metadata - metadata for the line item
    */
-  async generate(variantId, regionId, quantity) {
+  async generate(variantId, regionId, quantity, metadata = {}) {
     const variant = await this.productVariantService_.retrieve(variantId)
     const region = await this.regionService_.retrieve(regionId)
 
@@ -104,7 +105,7 @@ class LineItemService extends BaseService {
       region._id
     )
 
-    return {
+    const line = {
       title: product.title,
       description: variant.title,
       quantity,
@@ -116,6 +117,13 @@ class LineItemService extends BaseService {
         quantity: 1,
       },
     }
+
+    if (product.is_giftcard) {
+      line.is_giftcard = true
+      line.metadata = metadata
+    }
+
+    return line
   }
 
   isEqual(line, match) {
