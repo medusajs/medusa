@@ -22,5 +22,7 @@ export default async ({ container }) => {
     fulfillment_providers: fulfilIds,
     payment_providers: payIds,
   })
+
   await profileService.createDefault()
+  await profileService.createGiftCardDefault()
 }

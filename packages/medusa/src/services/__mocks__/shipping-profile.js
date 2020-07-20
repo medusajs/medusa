@@ -31,6 +31,9 @@ export const ShippingProfileServiceMock = {
     }
     return Promise.resolve()
   }),
+  retrieveGiftCardDefault: jest.fn().mockImplementation(data => {
+    return Promise.resolve({ _id: IdMap.getId("giftCardProfile") })
+  }),
   retrieveDefault: jest.fn().mockImplementation(data => {
     return Promise.resolve({ _id: IdMap.getId("default_shipping_profile") })
   }),
