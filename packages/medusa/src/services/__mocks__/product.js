@@ -31,7 +31,11 @@ export const products = {
 
 export const ProductServiceMock = {
   createDraft: jest.fn().mockImplementation(data => {
-    return Promise.resolve(products.product1)
+    if (data.title === "Test Product") {
+      return Promise.resolve(products.product1)
+    }
+
+    return Promise.resolve({ ...data })
   }),
   publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
