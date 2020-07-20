@@ -98,6 +98,32 @@ class ShippingProfileService extends BaseService {
   }
 
   /**
+   * Retrieves the default gift card profile
+   * @return the shipping profile for gift cards
+   */
+  async retrieveGiftCardProfile() {
+    return await this.profileModel_
+      .findOne({ name: "default_gift_card_profile" })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Creates a default shipping profile, for gift cards if unless it already
+   * exists.
+   * @return {Promise<ShippingProfile>} the shipping profile
+   */
+  async createGiftCardDefault() {
+    const profile = await this.retrieveGiftCardProfile()
+    if (!profile) {
+      return this.profileModel_.create({ name: "default_gift_card_profile" })
+    }
+
+    return profile
+  }
+
+  /**
    * Creates a new shipping profile.
    * @param {ShippingProfile} profile - the shipping profile to create from
    * @return {Promise} the result of the create operation

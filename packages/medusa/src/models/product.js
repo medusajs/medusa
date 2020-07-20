@@ -14,6 +14,7 @@ class ProductModel extends BaseModel {
     description: { type: String, default: "" },
     tags: { type: String, default: "" },
     handle: { type: String, unique: true, sparse: true },
+    is_giftcard: { type: Boolean, default: false },
     images: { type: [String], default: [] },
     thumbnail: { type: String, default: "" },
     options: { type: [OptionSchema], default: [] },

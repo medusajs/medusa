@@ -5,6 +5,7 @@ export default async (req, res) => {
     title: Validator.string().required(),
     description: Validator.string(),
     tags: Validator.string(),
+    is_giftcard: Validator.boolean().default(false),
     options: Validator.array().items({
       title: Validator.string().required(),
     }),
@@ -71,8 +72,13 @@ export default async (req, res) => {
     }
 
     // Add to default shipping profile
-    const { _id } = await shippingProfileService.retrieveDefault()
-    await shippingProfileService.addProduct(_id, newProduct._id)
+    if (value.is_giftcard) {
+      const { _id } = await shippingProfileService.retrieveGiftCardDefault()
+      await shippingProfileService.addProduct(_id, newProduct._id)
+    } else {
+      const { _id } = await shippingProfileService.retrieveDefault()
+      await shippingProfileService.addProduct(_id, newProduct._id)
+    }
 
     newProduct = await productService.decorate(
       newProduct,
@@ -90,6 +96,7 @@ export default async (req, res) => {
     )
     res.json({ product: newProduct })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }
