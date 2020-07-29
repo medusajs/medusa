@@ -6,6 +6,7 @@ import {
 } from "../../models/__mocks__/dynamic-discount-code"
 import { IdMap } from "medusa-test-utils"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { RegionServiceMock } from "../__mocks__/region"
 
 describe("DiscountService", () => {
@@ -272,6 +273,34 @@ describe("DiscountService", () => {
         },
         { runValidators: true }
       )
+    })
+  })
+
+  describe("generateGiftCard", () => {
+    const discountService = new DiscountService({
+      discountModel: DiscountModelMock,
+      regionService: RegionServiceMock,
+      eventBusService: EventBusServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls model layer create", async () => {
+      await discountService.generateGiftCard(100, IdMap.getId("testRegion"))
+
+      expect(DiscountModelMock.create).toHaveBeenCalledTimes(1)
+      expect(DiscountModelMock.create).toHaveBeenCalledWith({
+        code: expect.stringMatching(/(([A-Z0-9]){4}(-?)){4}/),
+        is_giftcard: true,
+        discount_rule: {
+          type: "fixed",
+          allocation: "total",
+          value: 100,
+        },
+        regions: [IdMap.getId("testRegion")],
+      })
     })
   })
 })

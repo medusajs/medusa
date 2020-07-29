@@ -143,7 +143,14 @@ class ProductService extends BaseService {
     }
 
     if (update.variants) {
-      update.variants = await Promise.all(
+      const existingVariants = await this.retrieveVariants(validatedId)
+      for (const existing of existingVariants) {
+        if (!update.variants.find(v => v._id && existing._id.equals(v._id))) {
+          await this.deleteVariant(productId, existing._id)
+        }
+      }
+
+      await Promise.all(
         update.variants.map(async variant => {
           if (variant._id) {
             if (variant.prices && variant.prices.length) {

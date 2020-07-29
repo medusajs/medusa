@@ -292,36 +292,29 @@ class TotalsService extends BaseService {
     }
 
     const { type, allocation, value } = discount.discount_rule
+    let toReturn = 0
 
     if (type === "percentage" && allocation === "total") {
-      return (subtotal / 100) * value
-    }
-
-    if (type === "percentage" && allocation === "item") {
+      toReturn = (subtotal / 100) * value
+    } else if (type === "percentage" && allocation === "item") {
       const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
         discount,
         cart,
         "percentage"
       )
-      const totalDiscount = _.sumBy(itemPercentageDiscounts, d => d.amount)
-      return totalDiscount
-    }
-
-    if (type === "fixed" && allocation === "total") {
-      return value
-    }
-
-    if (type === "fixed" && allocation === "item") {
+      toReturn = _.sumBy(itemPercentageDiscounts, d => d.amount)
+    } else if (type === "fixed" && allocation === "total") {
+      toReturn = value
+    } else if (type === "fixed" && allocation === "item") {
       const itemFixedDiscounts = await this.getAllocationItemDiscounts(
         discount,
         cart,
         "fixed"
       )
-      const totalDiscount = _.sumBy(itemFixedDiscounts, d => d.amount)
-      return totalDiscount
+      toReturn = _.sumBy(itemFixedDiscounts, d => d.amount)
     }
 
-    return 0
+    return Math.min(subtotal, toReturn)
   }
 }
 
