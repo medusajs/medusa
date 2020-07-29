@@ -10,6 +10,7 @@ import { RegionServiceMock } from "../__mocks__/region"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { CustomerServiceMock } from "../__mocks__/customer"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
+import { TotalsServiceMock } from "../__mocks__/totals"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { CartModelMock, carts } from "../../models/__mocks__/cart"
 import { LineItemServiceMock } from "../__mocks__/line-item"
@@ -193,7 +194,12 @@ describe("CartService", () => {
           _id: IdMap.getId("emptyCart"),
         },
         {
-          $push: { items: lineItem },
+          $push: {
+            items: {
+              ...lineItem,
+              has_shipping: false,
+            },
+          },
         }
       )
     })
@@ -225,7 +231,10 @@ describe("CartService", () => {
           "items._id": IdMap.getId("existingLine"),
         },
         {
-          $set: { "items.$.quantity": 20 },
+          $set: {
+            "items.$.quantity": 20,
+            "items.$.has_shipping": false,
+          },
         }
       )
     })
@@ -267,7 +276,12 @@ describe("CartService", () => {
           _id: IdMap.getId("cartWithLine"),
         },
         {
-          $push: { items: lineItem },
+          $push: {
+            items: {
+              ...lineItem,
+              has_shipping: false,
+            },
+          },
         }
       )
     })
@@ -390,10 +404,9 @@ describe("CartService", () => {
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
         {
           _id: IdMap.getId("cartWithLine"),
-          "items._id": IdMap.getId("existingLine"),
         },
         {
-          $set: { "items.$.quantity": 9 },
+          $pull: { items: { _id: IdMap.getId("existingLine") } },
         }
       )
     })
@@ -905,6 +918,7 @@ describe("CartService", () => {
       cartModel: CartModelMock,
       regionService: RegionServiceMock,
       paymentProviderService: PaymentProviderServiceMock,
+      totalsService: TotalsServiceMock,
       eventBusService: EventBusServiceMock,
     })
 
@@ -1183,6 +1197,26 @@ describe("CartService", () => {
           },
           {
             $set: {
+              items: [
+                {
+                  _id: IdMap.getId("existingLine"),
+                  title: "merge line",
+                  description: "This is a new line",
+                  has_shipping: true,
+                  thumbnail: "test-img-yeah.com/thumb",
+                  content: {
+                    unit_price: 123,
+                    variant: {
+                      _id: IdMap.getId("can-cover"),
+                    },
+                    product: {
+                      _id: IdMap.getId("product"),
+                    },
+                    quantity: 1,
+                  },
+                  quantity: 10,
+                },
+              ],
               shipping_methods: [
                 {
                   _id: IdMap.getId("freeShipping"),
@@ -1221,6 +1255,10 @@ describe("CartService", () => {
           },
           {
             $set: {
+              items: carts.frCart.items.map(i => ({
+                ...i,
+                has_shipping: false,
+              })),
               shipping_methods: [
                 {
                   _id: IdMap.getId("freeShipping"),
@@ -1261,6 +1299,10 @@ describe("CartService", () => {
           },
           {
             $set: {
+              items: carts.frCart.items.map(i => ({
+                ...i,
+                has_shipping: false,
+              })),
               shipping_methods: [
                 {
                   _id: IdMap.getId("freeShipping"),
