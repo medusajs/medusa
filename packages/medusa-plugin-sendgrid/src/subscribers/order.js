@@ -4,6 +4,10 @@ class OrderSubscriber {
 
     this.eventBus_ = eventBusService
 
+    this.eventBus_.subscribe("order.gift_card_created", async (order) => {
+      await this.sendgridService_.transactionalEmail("order.gift_card_created", order)
+    })
+
     this.eventBus_.subscribe("order.placed", async (order) => {
       await this.sendgridService_.transactionalEmail("order.placed", order)
     })

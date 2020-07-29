@@ -37,6 +37,7 @@ class LineItemService extends BaseService {
 
     const lineItemSchema = Validator.object({
       title: Validator.string().required(),
+      is_giftcard: Validator.bool().optional(),
       description: Validator.string()
         .allow("")
         .optional(),

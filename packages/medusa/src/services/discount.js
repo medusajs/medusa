@@ -1,6 +1,7 @@
+import _ from "lodash"
+import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
-import _ from "lodash"
 
 /**
  * Provides layer to manipulate discounts.
@@ -13,6 +14,7 @@ class DiscountService extends BaseService {
     totalsService,
     productVariantService,
     regionService,
+    eventBusService,
   }) {
     super()
 
@@ -30,6 +32,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {EventBus} */
+    this.eventBus_ = eventBusService
   }
 
   /**
@@ -60,7 +65,7 @@ class DiscountService extends BaseService {
       description: Validator.string(),
       type: Validator.string().required(),
       value: Validator.number()
-        .positive()
+        .min(0)
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().items(Validator.string()),
@@ -208,6 +213,38 @@ class DiscountService extends BaseService {
       { $set: update },
       { runValidators: true }
     )
+  }
+
+  /**
+   * Generates a gift card with the specified value which is valid in the
+   * specified region.
+   * @param {number} value - the value that the gift card represents
+   * @param {string} regionId - the id of the region in which the gift card can
+   *    be used
+   * @return {Discount} the newly created gift card
+   */
+  async generateGiftCard(value, regionId) {
+    const region = await this.regionService_.retrieve(regionId)
+
+    const code = [
+      randomize("A0", 4),
+      randomize("A0", 4),
+      randomize("A0", 4),
+      randomize("A0", 4),
+    ].join("-")
+
+    const discountRule = this.validateDiscountRule_({
+      type: "fixed",
+      allocation: "total",
+      value,
+    })
+
+    return this.discountModel_.create({
+      code,
+      discount_rule: discountRule,
+      is_giftcard: true,
+      regions: [region._id],
+    })
   }
 
   /**

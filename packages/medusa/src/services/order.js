@@ -4,6 +4,7 @@ import { BaseService } from "medusa-interfaces"
 
 class OrderService extends BaseService {
   static Events = {
+    GIFT_CARD_CREATED: "order.gift_card_created",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELLED: "order.cancelled",
@@ -14,6 +15,7 @@ class OrderService extends BaseService {
     orderModel,
     paymentProviderService,
     shippingProfileService,
+    discountService,
     fulfillmentProviderService,
     lineItemService,
     totalsService,
@@ -42,6 +44,9 @@ class OrderService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {DiscountService} */
+    this.discountService_ = discountService
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -306,6 +311,33 @@ class OrderService extends BaseService {
           paymentSession.data
         )
 
+        // Generate gift cards if in cart
+        const items = await Promise.all(
+          cart.items.map(async i => {
+            if (i.is_giftcard) {
+              const giftcard = await this.discountService_
+                .generateGiftCard(i.content.unit_price, region._id)
+                .then(result => {
+                  this.eventBus_.emit(OrderService.Events.GIFT_CARD_CREATED, {
+                    currency_code: region.currency_code,
+                    tax_rate: region.tax_rate,
+                    giftcard: result,
+                    email: cart.email,
+                  })
+                  return result
+                })
+              return {
+                ...i,
+                metadata: {
+                  ...i.metadata,
+                  giftcard: giftcard._id,
+                },
+              }
+            }
+            return i
+          })
+        )
+
         const o = {
           payment_method: {
             provider_id: paymentSession.provider_id,
@@ -313,7 +345,7 @@ class OrderService extends BaseService {
           },
           discounts: cart.discounts,
           shipping_methods: cart.shipping_methods,
-          items: cart.items,
+          items,
           shipping_address: cart.shipping_address,
           billing_address: cart.shipping_address,
           region_id: cart.region_id,
@@ -329,7 +361,7 @@ class OrderService extends BaseService {
 
         // Emit and return
         this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
-        return orderDocument[0].toObject()
+        return orderDocument[0]
       })
       .then(() => this.orderModel_.findOne({ cart_id: cart._id }))
   }
@@ -541,14 +573,17 @@ class OrderService extends BaseService {
     }
 
     // partition order items to their dedicated shipping method
-    order.shipping_methods = await this.partitionItems_(shipping_methods, items)
+    updateFields.shipping_methods = await this.partitionItems_(
+      shipping_methods,
+      items
+    )
 
     await Promise.all(
-      order.shipping_methods.map(method => {
+      updateFields.shipping_methods.map(method => {
         const provider = this.fulfillmentProviderService_.retrieveProvider(
           method.provider_id
         )
-        provider.createOrder(method.data, method.items)
+        return provider.createOrder(method.data, method.items)
       })
     )
 
