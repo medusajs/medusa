@@ -252,6 +252,45 @@ class TotalsService extends BaseService {
     return discounts
   }
 
+  async getLineDiscounts(cart, discount) {
+    const subtotal = this.getSubtotal(cart)
+    const { type, allocation, value } = discount.discount_rule
+    if (allocation === "total") {
+      let percentage = 0
+      if (type === "percentage") {
+        percentage = value / 100
+      } else if (type === "fixed") {
+        percentage = value / subtotal
+      }
+
+      return cart.items.map(item => {
+        const lineTotal = item.content.unit_price * item.quantity
+
+        return {
+          item,
+          amount: lineTotal * percentage,
+        }
+      })
+    } else if (allocation === "item") {
+      const allocationDiscounts = this.getAllocationItemDiscounts(
+        discount,
+        cart,
+        type
+      )
+      return cart.items.map(item => {
+        const discounted = allocationDiscounts.find(a =>
+          a.lineItem._id.equals(item._id)
+        )
+        return {
+          item,
+          amount: !!discounted ? discounted.amount : 0,
+        }
+      })
+    }
+
+    return cart.items.map(i => ({ item: i, amount: 0 }))
+  }
+
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
