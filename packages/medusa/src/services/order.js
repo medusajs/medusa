@@ -5,6 +5,8 @@ import { BaseService } from "medusa-interfaces"
 class OrderService extends BaseService {
   static Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
+    PAYMENT_CAPTURED: "order.payment_captured",
+    SHIPMENT_CREATED: "order.shipment_created",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELLED: "order.cancelled",
@@ -352,6 +354,7 @@ class OrderService extends BaseService {
           email: cart.email,
           customer_id: cart.customer_id,
           cart_id: cart._id,
+          tax_rate: region.tax_rate,
           currency_code: region.currency_code,
         }
 
@@ -364,6 +367,58 @@ class OrderService extends BaseService {
         return orderDocument[0]
       })
       .then(() => this.orderModel_.findOne({ cart_id: cart._id }))
+  }
+
+  /**
+   * Adds a shipment to the order to indicate that an order has left the warehouse
+   */
+  async createShipment(orderId, shipment) {
+    const order = await this.retrieve(orderId)
+
+    console.log(order)
+    if (order.fulfillment_status === "shipped") {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Order has already been shipped"
+      )
+    }
+
+    const shipmentSchema = Validator.object({
+      item_ids: Validator.array()
+        .items(Validator.string())
+        .required(),
+      tracking_number: Validator.string().required(),
+    })
+
+    const { value, error } = shipmentSchema.validate(shipment)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Shipment not valid: ${error}`
+      )
+    }
+
+    const existing = order.shipments || []
+    const shipments = [...existing, value]
+    const allCovered = order.items.every(
+      i => !!shipments.find(s => s.item_ids.includes(`${i._id}`))
+    )
+
+    const update = {
+      $push: { shipments: value },
+      $set: {
+        fulfillment_status: allCovered ? "shipped" : "partially_shipped",
+      },
+    }
+
+    // Add the shipment to the order
+    return this.orderModel_.updateOne({ _id: orderId }, update).then(result => {
+      this.eventBus_.emit(OrderService.Events.SHIPMENT_CREATED, {
+        order_id: orderId,
+        shipment,
+      })
+      return result
+    })
   }
 
   /**
@@ -535,14 +590,19 @@ class OrderService extends BaseService {
 
     await paymentProvider.capturePayment(data)
 
-    return this.orderModel_.updateOne(
-      {
-        _id: orderId,
-      },
-      {
-        $set: updateFields,
-      }
-    )
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: orderId,
+        },
+        {
+          $set: updateFields,
+        }
+      )
+      .then(result => {
+        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURED, result)
+        return result
+      })
   }
 
   /**
