@@ -39,7 +39,11 @@ class OrderSubscriber {
     })
 
     this.eventBus_.subscribe("order.placed", async order => {
-      await this.cartService_.delete(order.cart_id)
+      await this.cartService_.delete(order.cart_id).catch(err => {
+        if (err.type !== "not_found") {
+          throw err
+        }
+      })
     })
 
     this.eventBus_.subscribe("order.placed", this.handleDiscounts)
