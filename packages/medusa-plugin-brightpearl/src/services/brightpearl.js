@@ -2,10 +2,11 @@ import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 
 class BrightpearlService extends BaseService {
-  constructor({ totalsService, regionService, orderService, discountService }, options) {
+  constructor({ totalsService, productVariantService, regionService, orderService, discountService }, options) {
     super()
 
     this.options = options
+    this.productVariantService_ = productVariantService
     this.regionService_ = regionService
     this.orderService_ = orderService
     this.totalsService_ = totalsService
@@ -17,6 +18,69 @@ class BrightpearlService extends BaseService {
       app_ref: options.app_ref,
       token: options.token
     })
+  }
+
+  async verifyWebhooks() {
+    const hooks = [
+      {
+        subscribeTo: "product.modified.on-hand-modified",
+        httpMethod: "POST",
+        uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
+        bodyTemplate: '{"account": "${account-code}", "lifecycleEvent": "${lifecycle-event}", "resourceType": "${resource-type}", "id": "${resource-id}" }',
+        contentType: "application/json",
+        idSetAccepted: false,
+      }
+    ]
+
+    const installedHooks = await this.brightpearl_.webhooks.list().catch(() => [])
+    for (const hook of hooks) {
+      const isInstalled = installedHooks.find(i => 
+        i.subscribeTo === hook.subscribeTo &&
+        i.httpMethod === hook.httpMethod &&
+        i.uriTemplate === hook.uriTemplate &&
+        i.bodyTemplate === hook.bodyTemplate &&
+        i.contentType === hook.contentType &&
+        i.idSetAccepted === hook.idSetAccepted
+      )
+
+      if (!isInstalled) {
+        await this.brightpearl_.webhooks.create(hook)
+      }
+    }
+  }
+
+  async syncInventory() {
+    const variants = await this.productVariantService_.list()
+    return Promise.all(variants.map(async v => {
+      const brightpearlProduct = await this.retrieveProductBySKU(v.sku)
+      if (!brightpearlProduct) {
+        return
+      }
+
+      const { productId } = brightpearlProduct
+      const availability = await this.brightpearl_.products.retrieveAvailability(productId)
+      const onHand = availability[productId].total.onHand
+       
+      return this.productVariantService_.update(v._id, {
+        inventory_quantity: onHand
+      })
+    }))
+  }
+
+  async updateInventory(productId) {
+    const brightpearlProduct = await this.brightpearl_.products.retrieve(productId)
+    const availability = await this.brightpearl_.products.retrieveAvailability(productId)
+
+    const onHand = availability[productId].total.onHand
+
+    const sku = brightpearlProduct.identity.sku
+    const [ variant ] = await this.productVariantService_.list({ sku })
+
+    if (variant && variant.manage_inventory) {
+      await this.productVariantService_.update(variant._id, {
+        inventory_quantity: onHand
+      })
+    }
   }
 
   async createGoodsOutNote(fromOrder, shipment) {
