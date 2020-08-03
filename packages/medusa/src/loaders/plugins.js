@@ -16,7 +16,7 @@ import { sync as existsSync } from "fs-exists-cached"
 /**
  * Registers all services in the services directory
  */
-export default ({ rootDirectory, container, app }) => {
+export default async ({ rootDirectory, container, app }) => {
   const { configModule, configFilePath } = getConfigFile(
     rootDirectory,
     `medusa-config`
@@ -55,6 +55,29 @@ export default ({ rootDirectory, container, app }) => {
     registerCoreRouters(pluginDetails, container)
     registerSubscribers(pluginDetails, container)
   })
+
+  await Promise.all(
+    resolved.map(async pluginDetails => runLoaders(pluginDetails, container))
+  )
+}
+
+async function runLoaders(pluginDetails, container) {
+  const loaderFiles = glob.sync(
+    `${pluginDetails.resolve}/loaders/[!__]*.js`,
+    {}
+  )
+  await Promise.all(
+    loaderFiles.map(async loader => {
+      try {
+        const module = require(loader).default
+        if (typeof module === "function") {
+          await module(container)
+        }
+      } catch (err) {
+        return Promise.resolve()
+      }
+    })
+  )
 }
 
 function registerMedusaApi(pluginDetails, container) {

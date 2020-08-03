@@ -10,6 +10,7 @@ class BrightpearlClient {
       },
     })
 
+    this.webhooks = this.buildWebhookEndpoints()
     this.payments = this.buildPaymentEndpoints()
     this.warehouses = this.buildWarehouseEndpoints()
     this.orders = this.buildOrderEndpoints()
@@ -29,6 +30,25 @@ class BrightpearlClient {
       }
       return object
     })
+  }
+
+  buildWebhookEndpoints = () => {
+    return {
+      list: () => {
+        return this.client_.request({
+          url: `/integration-service/webhook`,
+          method: "GET",
+        })
+        .then(({ data }) => data.response)
+      },
+      create: (data) => {
+        return this.client_.request({
+          url: `/integration-service/webhook`,
+          method: "POST",
+          data
+        })
+      }
+    }
   }
 
   buildPaymentEndpoints = () => {
@@ -128,6 +148,18 @@ class BrightpearlClient {
 
   buildProductEndpoints = () => { 
     return {
+      retrieveAvailability: productId => {
+        return this.client_.request({
+          url: `/warehouse-service/product-availability/${productId}`,
+        })
+        .then(({ data }) => data.response && data.response)
+      },
+      retrieve: (productId) => {
+        return this.client_.request({
+          url: `/product-service/product/${productId}`,
+        })
+        .then(({ data }) => data.response && data.response[0])
+      },
       retrieveBySKU: (sku) => {
         return this.client_.request({
           url: `/product-service/product-search?SKU=${sku}`,
