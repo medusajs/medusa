@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _medusaInterfaces = _interopRequireDefault(require("medusa-interfaces"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _medusaInterfaces = require("medusa-interfaces");
 
 function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
 
@@ -23,7 +21,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function () { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -35,8 +33,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var ManualFulfillmentService = /*#__PURE__*/function (_BaseFulfillmentServi) {
-  _inherits(ManualFulfillmentService, _BaseFulfillmentServi);
+var ManualFulfillmentService = /*#__PURE__*/function (_FulfillmentService) {
+  _inherits(ManualFulfillmentService, _FulfillmentService);
 
   var _super = _createSuper(ManualFulfillmentService);
 
@@ -61,11 +59,7 @@ var ManualFulfillmentService = /*#__PURE__*/function (_BaseFulfillmentServi) {
   }, {
     key: "validateOption",
     value: function validateOption(data) {
-      if (data.id === "manual-fulfillment") {
-        return true;
-      }
-
-      return false;
+      return true;
     }
   }, {
     key: "canCalculate",
@@ -86,7 +80,7 @@ var ManualFulfillmentService = /*#__PURE__*/function (_BaseFulfillmentServi) {
   }]);
 
   return ManualFulfillmentService;
-}(_medusaInterfaces["default"]);
+}(_medusaInterfaces.FulfillmentService);
 
 _defineProperty(ManualFulfillmentService, "identifier", "manual");
 

@@ -25,7 +25,8 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^0.3.0"
+    "medusa-test-utils": "^0.3.0",
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "build": "babel src -d dist",
@@ -37,6 +38,7 @@
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "medusa-core-utils": "^0.3.0",
-    "medusa-interfaces": "^0.3.0"
+    "medusa-interfaces": "^0.3.0",
+    "randomatic": "^3.1.1"
   }
 }

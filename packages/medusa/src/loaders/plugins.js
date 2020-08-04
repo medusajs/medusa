@@ -5,6 +5,7 @@ import {
   PaymentService,
   FulfillmentService,
   FileService,
+  OauthService,
 } from "medusa-interfaces"
 import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
@@ -47,14 +48,16 @@ export default async ({ rootDirectory, container, app }) => {
     version: createFileContentHash(process.cwd(), `**`),
   })
 
-  resolved.forEach(pluginDetails => {
-    registerModels(pluginDetails, container)
-    registerServices(pluginDetails, container)
-    registerMedusaApi(pluginDetails, container)
-    registerApi(pluginDetails, app)
-    registerCoreRouters(pluginDetails, container)
-    registerSubscribers(pluginDetails, container)
-  })
+  await Promise.all(
+    resolved.map(async pluginDetails => {
+      registerModels(pluginDetails, container)
+      await registerServices(pluginDetails, container)
+      registerMedusaApi(pluginDetails, container)
+      registerApi(pluginDetails, app)
+      registerCoreRouters(pluginDetails, container)
+      registerSubscribers(pluginDetails, container)
+    })
+  )
 
   await Promise.all(
     resolved.map(async pluginDetails => runLoaders(pluginDetails, container))
@@ -156,58 +159,80 @@ function registerApi(pluginDetails, app) {
  *    registered
  * @return {void}
  */
-function registerServices(pluginDetails, container) {
+async function registerServices(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
-  files.forEach(fn => {
-    const loaded = require(fn).default
-    const name = formatRegistrationName(fn)
+  await Promise.all(
+    files.map(async fn => {
+      const loaded = require(fn).default
+      const name = formatRegistrationName(fn)
 
-    if (!(loaded.prototype instanceof BaseService)) {
-      const logger = container.resolve("logger")
-      const message = `Services must inherit from BaseService, please check ${fn}`
-      logger.error(message)
-      throw new Error(message)
-    }
+      if (!(loaded.prototype instanceof BaseService)) {
+        const logger = container.resolve("logger")
+        const message = `Services must inherit from BaseService, please check ${fn}`
+        logger.error(message)
+        throw new Error(message)
+      }
 
-    if (loaded.prototype instanceof PaymentService) {
-      // Register our payment providers to paymentProviders
-      container.registerAdd(
-        "paymentProviders",
-        asFunction(cradle => new loaded(cradle, pluginDetails.options))
-      )
+      if (loaded.prototype instanceof PaymentService) {
+        // Register our payment providers to paymentProviders
+        container.registerAdd(
+          "paymentProviders",
+          asFunction(cradle => new loaded(cradle, pluginDetails.options))
+        )
 
-      // Add the service directly to the container in order to make simple
-      // resolution if we already know which payment provider we need to use
-      container.register({
-        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
-        [`pp_${loaded.identifier}`]: aliasTo(name),
-      })
-    } else if (loaded.prototype instanceof FulfillmentService) {
-      // Register our payment providers to paymentProviders
-      container.registerAdd(
-        "fulfillmentProviders",
-        asFunction(cradle => new loaded(cradle, pluginDetails.options))
-      )
+        // Add the service directly to the container in order to make simple
+        // resolution if we already know which payment provider we need to use
+        container.register({
+          [name]: asFunction(
+            cradle => new loaded(cradle, pluginDetails.options)
+          ),
+          [`pp_${loaded.identifier}`]: aliasTo(name),
+        })
+      } else if (loaded.prototype instanceof OauthService) {
+        const oauthService = container.resolve("oauthService")
 
-      // Add the service directly to the container in order to make simple
-      // resolution if we already know which payment provider we need to use
-      container.register({
-        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
-        [`fp_${loaded.identifier}`]: aliasTo(name),
-      })
-    } else if (loaded.prototype instanceof FileService) {
-      // Add the service directly to the container in order to make simple
-      // resolution if we already know which payment provider we need to use
-      container.register({
-        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
-        [`fileService`]: aliasTo(name),
-      })
-    } else {
-      container.register({
-        [name]: asFunction(cradle => new loaded(cradle, pluginDetails.options)),
-      })
-    }
-  })
+        const appDetails = loaded.getAppDetails(pluginDetails.options)
+        await oauthService.registerOauthApp(appDetails)
+
+        const name = appDetails.application_name
+        container.register({
+          [`${name}Oauth`]: asFunction(
+            cradle => new loaded(cradle, pluginDetails.options)
+          ),
+        })
+      } else if (loaded.prototype instanceof FulfillmentService) {
+        // Register our payment providers to paymentProviders
+        container.registerAdd(
+          "fulfillmentProviders",
+          asFunction(cradle => new loaded(cradle, pluginDetails.options))
+        )
+
+        // Add the service directly to the container in order to make simple
+        // resolution if we already know which payment provider we need to use
+        container.register({
+          [name]: asFunction(
+            cradle => new loaded(cradle, pluginDetails.options)
+          ),
+          [`fp_${loaded.identifier}`]: aliasTo(name),
+        })
+      } else if (loaded.prototype instanceof FileService) {
+        // Add the service directly to the container in order to make simple
+        // resolution if we already know which payment provider we need to use
+        container.register({
+          [name]: asFunction(
+            cradle => new loaded(cradle, pluginDetails.options)
+          ),
+          [`fileService`]: aliasTo(name),
+        })
+      } else {
+        container.register({
+          [name]: asFunction(
+            cradle => new loaded(cradle, pluginDetails.options)
+          ),
+        })
+      }
+    })
+  )
 }
 
 /**
