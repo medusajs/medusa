@@ -13,6 +13,7 @@ import orderRoutes from "./orders"
 import storeRoutes from "./store"
 import uploadRoutes from "./uploads"
 import customerRoutes from "./customers"
+import appRoutes from "./apps"
 
 const route = Router()
 
@@ -40,6 +41,7 @@ export default (app, container, config) => {
   // Calls all middleware that has been registered to run after authentication.
   middlewareService.usePostAuthentication(app)
 
+  appRoutes(route)
   productRoutes(route)
   userRoutes(route)
   regionRoutes(route)
