@@ -109,6 +109,9 @@ export const orders = {
     customer_id: IdMap.getId("test-customer"),
     payment_method: {
       provider_id: "default_provider",
+      data: {
+        hi: "hi",
+      },
     },
     shipping_methods: [
       {
@@ -133,6 +136,7 @@ export const orders = {
   orderToRefund: {
     _id: IdMap.getId("refund-order"),
     email: "oliver@test.dk",
+    tax_rate: 0.25,
     billing_address: {
       first_name: "Oli",
       last_name: "Medusa",

@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 
