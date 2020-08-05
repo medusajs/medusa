@@ -36,5 +36,6 @@ export default new mongoose.Schema({
   content: { type: mongoose.Schema.Types.Mixed, required: true },
   quantity: { type: Number, required: true },
   returned: { type: Boolean, default: false },
+  returned_quantity: { type: Number, default: 0 },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
 })

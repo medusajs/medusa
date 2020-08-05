@@ -7,6 +7,7 @@ class OrderService extends BaseService {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
     SHIPMENT_CREATED: "order.shipment_created",
+    ITEMS_RETURNED: "order.items_returned",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELLED: "order.cancelled",
@@ -218,28 +219,28 @@ class OrderService extends BaseService {
    */
   async completeOrder(orderId) {
     const order = await this.retrieve(orderId)
-    this.orderModel_
+
+    // Capture the payment
+    await this.capturePayment(orderId)
+
+    // Run all other registered events
+    const completeOrderJob = await this.eventBus_.emit(
+      OrderService.Events.COMPLETED,
+      result
+    )
+
+    await completeOrderJob.finished().catch(error => {
+      throw error
+    })
+
+    return this.orderModel_
       .updateOne(
         { _id: order._id },
         {
           $set: { status: "completed" },
         }
       )
-      .then(async result => {
-        const completeOrderJob = await this.eventBus_.emit(
-          OrderService.Events.COMPLETED,
-          result
-        )
-
-        return completeOrderJob
-          .finished()
-          .then(async () => {
-            return this.retrieve(order._id)
-          })
-          .catch(error => {
-            throw error
-          })
-      })
+      .then(async result => {})
   }
 
   /**
@@ -672,8 +673,24 @@ class OrderService extends BaseService {
    * @param {string[]} lineItems - the line items to return
    * @return {Promise} the result of the update operation
    */
-  async return(orderId, lineItems) {
+  async return(orderId, lineItems, refundAmount) {
     const order = await this.retrieve(orderId)
+
+    // Find the lines to return
+    const returnLines = lineItems.map(({ item_id, quantity }) => {
+      const item = order.items.find(i => i._id.equals(item_id))
+      if (!item) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Return contains invalid line item"
+        )
+      }
+
+      return {
+        ...item,
+        quantity,
+      }
+    })
 
     if (
       order.fulfillment_status === "not_fulfilled" ||
@@ -697,31 +714,50 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    const amount = this.totalsService_.getRefundTotal(order, lineItems)
+    const amount =
+      refundAmount || this.totalsService_.getRefundTotal(order, returnLines)
     await paymentProvider.refundPayment(data, amount)
 
-    lineItems.map(item => {
-      const returnedItem = order.items.find(({ _id }) => _id === item._id)
-      if (returnedItem) {
-        returnedItem.returned_quantity = item.quantity
+    let isFullReturn = true
+    const newItems = order.items.map(i => {
+      const isReturn = returnLines.find(r => r._id.equals(i._id))
+      if (isReturn) {
+        let returned = false
+        if (i.quantity === isReturn.quantity) {
+          returned = true
+        }
+        return {
+          ...i,
+          returned_quantity: isReturn.quantity,
+          returned,
+        }
+      } else {
+        isFullReturn = false
+        return i
       }
     })
 
-    const fullReturn = order.items.every(
-      item => item.quantity === item.returned_quantity
-    )
-
-    return this.orderModel_.updateOne(
-      {
-        _id: orderId,
-      },
-      {
-        $set: {
-          items: order.items,
-          fulfillment_status: fullReturn ? "returned" : "partially_fulfilled",
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: orderId,
         },
-      }
-    )
+        {
+          $set: {
+            items: newItems,
+            fulfillment_status: isFullReturn
+              ? "returned"
+              : "partially_returned",
+          },
+        }
+      )
+      .then(result => {
+        this.eventBus_.emit(OrderService.Events.ITEMS_RETURNED, {
+          order: result,
+          items: returnLines,
+        })
+        return result
+      })
   }
 
   /**
@@ -768,6 +804,14 @@ class OrderService extends BaseService {
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
+
+    o.items = o.items.map(i => {
+      return {
+        ...i,
+        refundable: this.totalsService_.getLineItemRefund(o, i),
+      }
+    })
+
     return o
   }
 

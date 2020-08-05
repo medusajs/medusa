@@ -22,7 +22,7 @@ describe("EventBusService", () => {
     })
 
     it("creates bull queue", () => {
-      expect(Bull).toHaveBeenCalledTimes(1)
+      expect(Bull).toHaveBeenCalledTimes(2)
       expect(Bull).toHaveBeenCalledWith("EventBusService:queue", "testhost")
     })
   })
