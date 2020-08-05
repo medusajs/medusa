@@ -11,21 +11,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var webhookLoader = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(container) {
-    var brightpearlService;
+    var brightpearlService, client;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             brightpearlService = container.resolve("brightpearlService");
-            _context.next = 3;
+            _context.prev = 1;
+            _context.next = 4;
+            return brightpearlService.getClient();
+
+          case 4:
+            client = _context.sent;
+            _context.next = 7;
             return brightpearlService.verifyWebhooks();
 
-          case 3:
+          case 7:
+            _context.next = 14;
+            break;
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](1);
+
+            if (!(_context.t0.name === "not_allowed")) {
+              _context.next = 13;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 13:
+            throw _context.t0;
+
+          case 14:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[1, 9]]);
   }));
 
   return function webhookLoader(_x) {
