@@ -26,7 +26,7 @@ class KlarnaProviderService extends PaymentService {
     this.klarnaOrderManagementUrl_ = "/ordermanagement/v1/orders"
 
     this.backendUrl_ =
-      process.env.BACKEND_URL || "https://7e9a5bc2a2eb.ngrok.io"
+      process.env.BACKEND_URL || "https://c8e1abe7d8b3.ngrok.io"
 
     this.totalsService_ = totalsService
 
@@ -73,10 +73,14 @@ class KlarnaProviderService extends PaymentService {
     })
 
     if (cart.shipping_methods.length) {
-      const shippingMethod = cart.shipping_methods[0]
-      const price = shippingMethod.price
+      const { name, price } = cart.shipping_methods.reduce((acc, next) => {
+        acc.name = [...acc.name, next.name]
+        acc.price += next.price
+        return acc
+      }, { name: [], price: 0 })
+
       order_lines.push({
-        name: `${shippingMethod.name}`,
+        name: name.join(" + "),
         quantity: 1,
         type: "shipping_fee",
         unit_price: price * (1 + taxRate) * 100,
@@ -167,18 +171,42 @@ class KlarnaProviderService extends PaymentService {
         }
       }
 
-      // If the cart does have shipping methods, set the selected shipping method
-      order.shipping_options = shippingOptions.map((so) => ({
-        id: so._id,
-        name: so.name,
-        price: so.price * (1 + tax_rate) * 100,
-        tax_amount: so.price * tax_rate * 100,
-        tax_rate: tax_rate * 10000,
-        preselected: shippingOptions.length === 1
-      }))
+      const partitioned = shippingOptions.reduce((acc, next) => {
+        if (acc[next.profile_id]) {
+          acc[next.profile_id] = [...acc[next.profile_id], next]
+        } else {
+          acc[next.profile_id] = [next]
+        }
+        return acc
+      }, {})
+
+      let f = (a, b) => [].concat(...a.map(a => b.map(b => [].concat(a, b))))
+      let cartesian = (a, b, ...c) => b ? cartesian(f(a, b), ...c) : a
+
+      const methods = Object.keys(partitioned).map(k => partitioned[k])
+      const combinations = cartesian(...methods)
+
+
+      order.shipping_options = combinations.map((combination) => {
+        combination = Array.isArray(combination) ? combination : [combination]
+        const details = combination.reduce((acc, next) => {
+          acc.id = [...acc.id, next._id]
+          acc.name = [...acc.name, next.name]
+          acc.price += next.price
+          return acc
+        }, { id: [], name: [], price: 0 })
+
+        return {
+          id: details.id.join("."),
+          name: details.name.join(" + "),
+          price: details.price * (1 + tax_rate) * 100,
+          tax_amount: details.price * tax_rate * 100,
+          tax_rate: tax_rate * 10000,
+          preselected: combinations.length === 1
+        }
+      })
     }
 
-    console.log(order)
     return order
   }
 

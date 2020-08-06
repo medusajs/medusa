@@ -353,6 +353,37 @@ describe("ShippingProfileService", () => {
     })
   })
 
+  describe("fetchCartOptions", () => {
+    const profileService = new ShippingProfileService({
+      shippingProfileModel: ShippingProfileModelMock,
+      shippingOptionService: ShippingOptionServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("fetches correct options", async () => {
+      await profileService.fetchCartOptions({
+        items: [
+          {
+            content: { product: { _id: IdMap.getId("product_1") } },
+          },
+          {
+            content: { product: { _id: IdMap.getId("product_2") } },
+          },
+        ],
+      })
+
+      expect(ShippingProfileModelMock.find).toBeCalledTimes(1)
+      expect(ShippingProfileModelMock.find).toBeCalledWith({
+        products: { $in: [IdMap.getId("product_1"), IdMap.getId("product_2")] },
+      })
+
+      expect(ShippingOptionServiceMock.validateCartOption).toBeCalledTimes(2)
+    })
+  })
+
   describe("addShippingOption", () => {
     const profileService = new ShippingProfileService({
       shippingProfileModel: ShippingProfileModelMock,
