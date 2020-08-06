@@ -67,6 +67,7 @@
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "randomatic": "^3.1.1",
     "winston": "^3.2.1"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"

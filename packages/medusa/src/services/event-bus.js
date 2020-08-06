@@ -13,11 +13,20 @@ class EventBusService {
     /** @private {object} */
     this.observers_ = {}
 
+    /** @private {object} to handle cron jobs */
+    this.cronHandlers_ = {}
+
+    /** @private {BullQueue} used for cron jobs */
+    this.cronQueue_ = new Bull(`cron-jobs:queue`, config.redisURI)
+
     /** @private {BullQueue} */
     this.queue_ = new Bull(`${this.constructor.name}:queue`, config.redisURI)
 
     // Register our worker to handle emit calls
     this.queue_.process(this.worker_)
+
+    // Register cron worker
+    this.cronQueue_.process(this.cronWorker_)
   }
 
   /**
@@ -35,6 +44,21 @@ class EventBusService {
       this.observers_[event].push(subscriber)
     } else {
       this.observers_[event] = [subscriber]
+    }
+  }
+
+  /**
+   *
+   */
+  registerCronHandler_(event, subscriber) {
+    if (typeof subscriber !== "function") {
+      throw new Error("Handler must be a function")
+    }
+
+    if (this.observers_[event]) {
+      this.cronHandlers_[event].push(subscriber)
+    } else {
+      this.cronHandlers_[event] = [subscriber]
     }
   }
 
@@ -75,6 +99,37 @@ class EventBusService {
           return err
         })
       })
+    )
+  }
+
+  cronWorker_ = job => {
+    const { eventName, data } = job.data
+    const observers = this.cronHandlers_[eventName] || []
+    this.logger_.info(`Processing cron job: ${eventName}`)
+
+    return Promise.all(
+      observers.map(subscriber => {
+        return subscriber(data).catch(err => {
+          this.logger_.warn(
+            `An error occured while processing ${eventName}: ${err}`
+          )
+          return err
+        })
+      })
+    )
+  }
+
+  /**
+   * Registers a cron job.
+   */
+  createCronJob(eventName, data, cron, handler) {
+    this.registerCronHandler(eventName, handler)
+    return this.cronQueue_.add(
+      {
+        eventName,
+        data,
+      },
+      { repeat: { cron } }
     )
   }
 }

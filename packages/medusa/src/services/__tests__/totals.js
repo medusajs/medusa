@@ -193,7 +193,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 123,
+            unit_price: 100,
             variant: {
               _id: IdMap.getId("can-cover"),
             },
@@ -206,7 +206,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(1107)
+      expect(res).toEqual(1125)
     })
 
     it("calculates refund with total fixed discount", async () => {
@@ -218,7 +218,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 123,
+            unit_price: 100,
             variant: {
               _id: IdMap.getId("can-cover"),
             },
@@ -231,7 +231,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(359)
+      expect(res).toEqual(373.125)
     })
 
     it("calculates refund with item fixed discount", async () => {
@@ -243,7 +243,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 123,
+            unit_price: 100,
             variant: {
               _id: IdMap.getId("eur-8-us-10"),
             },
@@ -256,7 +256,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(363)
+      expect(res).toEqual(367.5)
     })
 
     it("calculates refund with item percentage discount", async () => {
@@ -268,7 +268,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 123,
+            unit_price: 100,
             variant: {
               _id: IdMap.getId("eur-8-us-10"),
             },
@@ -281,7 +281,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(332.1)
+      expect(res).toEqual(337.5)
     })
 
     it("throws if line items to return is not in order", async () => {

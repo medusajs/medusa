@@ -13,11 +13,6 @@ class CartSubscriber {
     this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
       await this.onCustomerUpdated(cart)
     })
-
-    this.eventBus_.subscribe("order.completed", async (order) => {
-      const paymentData = order.payment_method.data
-      await this.stripeProviderService_.capturePayment(paymentData)
-    })
   }
 
   async onCustomerUpdated(cart) {
