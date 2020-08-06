@@ -29,10 +29,6 @@ class OrderSubscriber {
 
       await this.customerService_.addAddress(order.customer_id, address)
     })
-
-    this.eventBus_.subscribe("order.placed", async order => {
-      await this.cartService_.delete(order.cart_id)
-    })
   }
 }
 

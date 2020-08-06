@@ -180,6 +180,28 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Gets an order by metadata key value pair.
+   * @param {string} key - key of metadata
+   * @param {string} value - value of metadata
+   * @return {Promise<Order>} the order document
+   */
+  async retrieveByMetadata(key, value) {
+    const order = await this.orderModel_
+      .findOne({ metadata: { [key]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+
+    if (!order) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with metadata ${key}: ${value} was not found`
+      )
+    }
+    return order
+  }
+
+  /**
    * Checks the existence of an order by cart id.
    * @param {string} cartId - cart id to find order
    * @return {Promise<Order>} the order document
@@ -321,6 +343,7 @@ class OrderService extends BaseService {
           customer_id: cart.customer_id,
           cart_id: cart._id,
           currency_code: region.currency_code,
+          metadata: cart.metadata,
         }
 
         const orderDocument = await this.orderModel_.create([o], {
@@ -501,7 +524,19 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    await paymentProvider.capturePayment(data)
+    const captureData = await paymentProvider.capturePayment(data)
+
+    // If Adyen is used as payment provider, we need to check the
+    // validity of the capture request
+    if (
+      captureData.data.pspReference &&
+      captureData.data.response !== "[capture-received]"
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Could not process capture"
+      )
+    }
 
     return this.orderModel_.updateOne(
       {

@@ -51,7 +51,7 @@ export default ({ rootDirectory, container, app }) => {
     registerModels(pluginDetails, container)
     registerServices(pluginDetails, container)
     registerMedusaApi(pluginDetails, container)
-    registerApi(pluginDetails, app)
+    registerApi(pluginDetails, app, rootDirectory)
     registerCoreRouters(pluginDetails, container)
     registerSubscribers(pluginDetails, container)
   })
@@ -111,10 +111,10 @@ function registerCoreRouters(pluginDetails, container) {
 /**
  * Registers the plugin's api routes.
  */
-function registerApi(pluginDetails, app) {
+function registerApi(pluginDetails, app, rootDirectory = "") {
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
-    app.use("/", routes())
+    app.use("/", routes(rootDirectory))
     return app
   } catch (err) {
     return app

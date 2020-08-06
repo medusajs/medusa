@@ -3,5 +3,8 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.19.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
   }
 }
