@@ -817,13 +817,13 @@ class CartService extends BaseService {
             return null
           }
 
-          const data = await this.paymentProviderService_.updateSession(
-            pSession,
-            cart
-          )
+          // const data = await this.paymentProviderService_.updateSession(
+          //   pSession,
+          //   cart
+          // )
           return {
             provider_id: pSession.provider_id,
-            data,
+            data: {},
           }
         })
       )
@@ -981,13 +981,18 @@ class CartService extends BaseService {
       newMethods.push(option)
     }
 
+    const finalMethods = newMethods.map(m => {
+      const { _id, ...rest } = m
+      return rest
+    })
+
     return this.cartModel_
       .updateOne(
         {
           _id: cart._id,
         },
         {
-          $set: { shipping_methods: newMethods },
+          $set: { shipping_methods: finalMethods },
         }
       )
       .then(result => {
