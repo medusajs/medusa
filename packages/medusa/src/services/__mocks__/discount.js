@@ -46,6 +46,11 @@ export const DiscountServiceMock = {
   removeRegion: jest.fn().mockReturnValue(Promise.resolve()),
   addValidVariant: jest.fn().mockReturnValue(Promise.resolve()),
   removeValidVariant: jest.fn().mockReturnValue(Promise.resolve()),
+  generateGiftCard: jest.fn().mockReturnValue(
+    Promise.resolve({
+      _id: IdMap.getId("gift_card_id"),
+    })
+  ),
 }
 
 const mock = jest.fn().mockImplementation(() => {

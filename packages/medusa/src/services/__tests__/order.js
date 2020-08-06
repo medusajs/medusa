@@ -2,7 +2,11 @@ import { IdMap } from "medusa-test-utils"
 import { OrderModelMock, orders } from "../../models/__mocks__/order"
 import { carts } from "../../models/__mocks__/cart"
 import OrderService from "../order"
-import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import {
+  PaymentProviderServiceMock,
+  DefaultProviderMock,
+} from "../__mocks__/payment-provider"
+import { DiscountServiceMock } from "../__mocks__/discount"
 import { FulfillmentProviderServiceMock } from "../__mocks__/fulfillment-provider"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { TotalsServiceMock } from "../__mocks__/totals"
@@ -36,6 +40,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       paymentProviderService: PaymentProviderServiceMock,
+      discountService: DiscountServiceMock,
       regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
     })
@@ -51,9 +56,88 @@ describe("OrderService", () => {
         ...carts.completeCart,
         currency_code: "eur",
         cart_id: carts.completeCart._id,
+        tax_rate: 0.25,
       }
       delete order._id
       delete order.payment_sessions
+
+      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
+        session: expect.anything(),
+      })
+    })
+
+    it("creates cart with gift card", async () => {
+      await orderService.createFromCart(carts.withGiftCard)
+
+      const order = {
+        ...carts.withGiftCard,
+        items: [
+          {
+            _id: IdMap.getId("existingLine"),
+            title: "merge line",
+            description: "This is a new line",
+            is_giftcard: false,
+            thumbnail: "test-img-yeah.com/thumb",
+            content: {
+              unit_price: 123,
+              variant: {
+                _id: IdMap.getId("can-cover"),
+              },
+              product: {
+                _id: IdMap.getId("product"),
+              },
+              quantity: 1,
+            },
+            quantity: 10,
+          },
+          {
+            _id: IdMap.getId("giftline"),
+            title: "GiftCard",
+            description: "Gift card line",
+            thumbnail: "test-img-yeah.com/thumb",
+            metadata: {
+              giftcard: IdMap.getId("gift_card_id"),
+              name: "Test Name",
+            },
+            is_giftcard: true,
+            content: {
+              unit_price: 100,
+              variant: {
+                _id: IdMap.getId("giftCardVar"),
+              },
+              product: {
+                _id: IdMap.getId("giftCardProd"),
+              },
+              quantity: 1,
+            },
+            quantity: 1,
+          },
+        ],
+        currency_code: "eur",
+        cart_id: carts.withGiftCard._id,
+        tax_rate: 0.25,
+      }
+
+      delete order._id
+      delete order.payment_sessions
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(2)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "order.gift_card_created",
+        {
+          currency_code: "eur",
+          tax_rate: 0.25,
+          email: "test",
+          giftcard: expect.any(Object),
+        }
+      )
+
+      expect(DiscountServiceMock.generateGiftCard).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.generateGiftCard).toHaveBeenCalledWith(
+        100,
+        IdMap.getId("region-france")
+      )
 
       expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
@@ -280,6 +364,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       paymentProviderService: PaymentProviderServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(async () => {
@@ -297,11 +382,9 @@ describe("OrderService", () => {
     })
 
     it("throws if payment is already processed", async () => {
-      try {
-        await orderService.capturePayment(IdMap.getId("payed-order"))
-      } catch (error) {
-        expect(error.message).toEqual("Payment already captured")
-      }
+      await expect(
+        orderService.capturePayment(IdMap.getId("payed-order"))
+      ).rejects.toThrow("Payment already captured")
     })
   })
 
@@ -324,16 +407,36 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("test-order") },
-        { $set: { fulfillment_status: "fulfilled" } }
+        {
+          $set: {
+            fulfillment_status: "fulfilled",
+            shipping_methods: [
+              {
+                _id: IdMap.getId("expensiveShipping"),
+                items: [],
+                name: "Expensive Shipping",
+                price: 100,
+                profile_id: IdMap.getId("default"),
+                provider_id: "default_provider",
+              },
+              {
+                _id: IdMap.getId("freeShipping"),
+                items: [],
+                name: "Free Shipping",
+                price: 10,
+                profile_id: IdMap.getId("profile1"),
+                provider_id: "default_provider",
+              },
+            ],
+          },
+        }
       )
     })
 
     it("throws if payment is already processed", async () => {
-      try {
-        await orderService.createFulfillment(IdMap.getId("fulfilled-order"))
-      } catch (error) {
-        expect(error.message).toEqual("Order is already fulfilled")
-      }
+      await expect(
+        orderService.createFulfillment(IdMap.getId("fulfilled-order"))
+      ).rejects.toThrow("Order is already fulfilled")
     })
   })
 
@@ -342,6 +445,7 @@ describe("OrderService", () => {
       orderModel: OrderModelMock,
       paymentProviderService: PaymentProviderServiceMock,
       totalsService: TotalsServiceMock,
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(async () => {
@@ -351,20 +455,7 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.return(IdMap.getId("processed-order"), [
         {
-          _id: IdMap.getId("existingLine"),
-          title: "merge line",
-          description: "This is a new line",
-          thumbnail: "test-img-yeah.com/thumb",
-          content: {
-            unit_price: 123,
-            variant: {
-              _id: IdMap.getId("can-cover"),
-            },
-            product: {
-              _id: IdMap.getId("validId"),
-            },
-            quantity: 1,
-          },
+          item_id: IdMap.getId("existingLine"),
           quantity: 10,
         },
       ])
@@ -392,31 +483,75 @@ describe("OrderService", () => {
                 returned_quantity: 10,
                 thumbnail: "test-img-yeah.com/thumb",
                 title: "merge line",
+                returned: true,
               },
             ],
             fulfillment_status: "returned",
           },
         }
       )
+
+      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledTimes(1)
+      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledWith(
+        { hi: "hi" },
+        1230
+      )
     })
 
-    it("calls order model functions and sets partially_fulfilled", async () => {
+    it("return with custom refund", async () => {
+      await orderService.return(
+        IdMap.getId("processed-order"),
+        [
+          {
+            item_id: IdMap.getId("existingLine"),
+            quantity: 10,
+          },
+        ],
+        102
+      )
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
+        { _id: IdMap.getId("processed-order") },
+        {
+          $set: {
+            items: [
+              {
+                _id: IdMap.getId("existingLine"),
+                content: {
+                  product: {
+                    _id: IdMap.getId("validId"),
+                  },
+                  quantity: 1,
+                  unit_price: 123,
+                  variant: {
+                    _id: IdMap.getId("can-cover"),
+                  },
+                },
+                description: "This is a new line",
+                quantity: 10,
+                returned_quantity: 10,
+                thumbnail: "test-img-yeah.com/thumb",
+                title: "merge line",
+                returned: true,
+              },
+            ],
+            fulfillment_status: "returned",
+          },
+        }
+      )
+
+      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledTimes(1)
+      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledWith(
+        { hi: "hi" },
+        102
+      )
+    })
+
+    it("calls order model functions and sets partially_returned", async () => {
       await orderService.return(IdMap.getId("order-refund"), [
         {
-          _id: IdMap.getId("existingLine"),
-          title: "merge line",
-          description: "This is a new line",
-          thumbnail: "test-img-yeah.com/thumb",
-          content: {
-            unit_price: 100,
-            variant: {
-              _id: IdMap.getId("eur-8-us-10"),
-            },
-            product: {
-              _id: IdMap.getId("product"),
-            },
-            quantity: 1,
-          },
+          item_id: IdMap.getId("existingLine"),
           quantity: 2,
         },
       ])
@@ -441,6 +576,7 @@ describe("OrderService", () => {
                 },
                 description: "This is a new line",
                 quantity: 10,
+                returned: false,
                 returned_quantity: 2,
                 thumbnail: "test-img-yeah.com/thumb",
                 title: "merge line",
@@ -463,7 +599,7 @@ describe("OrderService", () => {
                 quantity: 10,
               },
             ],
-            fulfillment_status: "partially_fulfilled",
+            fulfillment_status: "partially_returned",
           },
         }
       )
@@ -471,7 +607,7 @@ describe("OrderService", () => {
 
     it("throws if payment is already processed", async () => {
       try {
-        await orderService.return(IdMap.getId("fulfilled-order"))
+        await orderService.return(IdMap.getId("fulfilled-order"), [])
       } catch (error) {
         expect(error.message).toEqual(
           "Can't return an order with payment unprocessed"
@@ -481,7 +617,7 @@ describe("OrderService", () => {
 
     it("throws if return is attempted on unfulfilled order", async () => {
       try {
-        await orderService.return(IdMap.getId("not-fulfilled-order"))
+        await orderService.return(IdMap.getId("not-fulfilled-order"), [])
       } catch (error) {
         expect(error.message).toEqual(
           "Can't return an unfulfilled or already returned order"

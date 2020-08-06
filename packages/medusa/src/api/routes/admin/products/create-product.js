@@ -3,7 +3,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const schema = Validator.object().keys({
     title: Validator.string().required(),
-    description: Validator.string(),
+    description: Validator.string().allow(""),
     tags: Validator.string(),
     is_giftcard: Validator.boolean().default(false),
     options: Validator.array().items({
@@ -15,6 +15,7 @@ export default async (req, res) => {
       title: Validator.string().required(),
       sku: Validator.string(),
       ean: Validator.string(),
+      barcode: Validator.string(),
       prices: Validator.array()
         .items({
           currency_code: Validator.string().required(),
