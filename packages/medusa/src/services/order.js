@@ -17,6 +17,7 @@ class OrderService extends BaseService {
 
   constructor({
     orderModel,
+    counterService,
     paymentProviderService,
     shippingProfileService,
     discountService,
@@ -54,6 +55,8 @@ class OrderService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
+
+    this.counterService_ = counterService
   }
 
   /**
@@ -343,6 +346,7 @@ class OrderService extends BaseService {
         )
 
         const o = {
+          display_id: await this.counterService_.getNext("orders"),
           payment_method: {
             provider_id: paymentSession.provider_id,
             data: paymentData,
@@ -789,8 +793,8 @@ class OrderService extends BaseService {
         }
         return {
           ...i,
-          returned_quantity: returnedQuantity
-          returned
+          returned_quantity: returnedQuantity,
+          returned,
         }
       } else {
         if (!i.returned) {
