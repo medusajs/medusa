@@ -15,6 +15,7 @@ class OrderModel extends BaseModel {
   static modelName = "Order"
 
   static schema = {
+    display_id: { type: String, required: true, unique: true },
     // pending, completed, archived, cancelled
     status: { type: String, default: "pending" },
     // not_fulfilled, partially_fulfilled (some line items have been returned), fulfilled, returned,
