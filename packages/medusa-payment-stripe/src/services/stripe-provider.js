@@ -96,6 +96,8 @@ class StripeProviderService extends PaymentService {
     const { customer_id, region_id } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
+    console.log(customer_id)
+
     let stripeCustomerId
     if (!customer_id) {
       const { id } = await this.stripe_.customers.create({
@@ -104,7 +106,8 @@ class StripeProviderService extends PaymentService {
       stripeCustomerId = id
     } else {
       const customer = await this.customerService_.retrieve(customer_id)
-      if (!customer.metadata.stripe_id) {
+      console.log(customer)
+      if (!(customer.metadata && customer.metadata.stripe_id)) {
         const { id } = await this.stripe_.customers.create({
           email: customer.email,
         })
@@ -151,7 +154,7 @@ class StripeProviderService extends PaymentService {
       const { id } = data
       const amount = this.totalsService_.getTotal(cart)
       return this.stripe_.paymentIntents.update(id, {
-        amount,
+        amount: amount * 100,
       })
     } catch (error) {
       throw error
@@ -212,7 +215,7 @@ class StripeProviderService extends PaymentService {
     const { id } = paymentData
     try {
       return this.stripe_.refunds.create({
-        amount,
+        amount: amount * 100,
         payment_intent: id,
       })
     } catch (error) {
