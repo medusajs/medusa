@@ -7,7 +7,10 @@ import {
   DefaultProviderMock,
 } from "../__mocks__/payment-provider"
 import { DiscountServiceMock } from "../__mocks__/discount"
-import { FulfillmentProviderServiceMock } from "../__mocks__/fulfillment-provider"
+import {
+  FulfillmentProviderServiceMock,
+  DefaultProviderMock as FulfillmentProviderMock,
+} from "../__mocks__/fulfillment-provider"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { RegionServiceMock } from "../__mocks__/region"
@@ -402,32 +405,97 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.createFulfillment(IdMap.getId("test-order"))
+      await orderService.createFulfillment(IdMap.getId("test-order"), [
+        {
+          item_id: IdMap.getId("existingLine"),
+          quantity: 10,
+        },
+      ])
+
+      expect(FulfillmentProviderMock.createOrder).toHaveBeenCalledTimes(1)
+      expect(FulfillmentProviderMock.createOrder).toHaveBeenCalledWith(
+        {
+          extra: "hi",
+        },
+        [
+          {
+            _id: IdMap.getId("existingLine"),
+            title: "merge line",
+            description: "This is a new line",
+            thumbnail: "test-img-yeah.com/thumb",
+            content: {
+              unit_price: 123,
+              variant: {
+                _id: IdMap.getId("can-cover"),
+              },
+              product: {
+                _id: IdMap.getId("validId"),
+              },
+              quantity: 1,
+            },
+            quantity: 10,
+          },
+        ]
+      )
 
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("test-order") },
         {
+          $push: {
+            fulfillments: {
+              $each: [
+                {
+                  data: {
+                    extra: "hi",
+                  },
+                  items: [
+                    {
+                      _id: IdMap.getId("existingLine"),
+                      title: "merge line",
+                      description: "This is a new line",
+                      thumbnail: "test-img-yeah.com/thumb",
+                      content: {
+                        unit_price: 123,
+                        variant: {
+                          _id: IdMap.getId("can-cover"),
+                        },
+                        product: {
+                          _id: IdMap.getId("validId"),
+                        },
+                        quantity: 1,
+                      },
+                      quantity: 10,
+                    },
+                  ],
+                  provider_id: "default_provider",
+                },
+              ],
+            },
+          },
           $set: {
-            fulfillment_status: "fulfilled",
-            shipping_methods: [
+            items: [
               {
-                _id: IdMap.getId("expensiveShipping"),
-                items: [],
-                name: "Expensive Shipping",
-                price: 100,
-                profile_id: IdMap.getId("default"),
-                provider_id: "default_provider",
-              },
-              {
-                _id: IdMap.getId("freeShipping"),
-                items: [],
-                name: "Free Shipping",
-                price: 10,
-                profile_id: IdMap.getId("profile1"),
-                provider_id: "default_provider",
+                _id: IdMap.getId("existingLine"),
+                title: "merge line",
+                description: "This is a new line",
+                thumbnail: "test-img-yeah.com/thumb",
+                content: {
+                  unit_price: 123,
+                  variant: {
+                    _id: IdMap.getId("can-cover"),
+                  },
+                  product: {
+                    _id: IdMap.getId("validId"),
+                  },
+                  quantity: 1,
+                },
+                quantity: 10,
+                fulfilled_quantity: 10,
+                fulfilled: true,
               },
             ],
+            fulfillment_status: "fulfilled",
           },
         }
       )
@@ -435,7 +503,12 @@ describe("OrderService", () => {
 
     it("throws if payment is already processed", async () => {
       await expect(
-        orderService.createFulfillment(IdMap.getId("fulfilled-order"))
+        orderService.createFulfillment(IdMap.getId("fulfilled-order"), [
+          {
+            item_id: IdMap.getId("existingLine"),
+            quantity: 10,
+          },
+        ])
       ).rejects.toThrow("Order is already fulfilled")
     })
   })
@@ -464,6 +537,20 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("processed-order") },
         {
+          $push: {
+            refunds: {
+              amount: 1230,
+            },
+            returns: {
+              items: [
+                {
+                  item_id: IdMap.getId("existingLine"),
+                  quantity: 10,
+                },
+              ],
+              refund_amount: 1230,
+            },
+          },
           $set: {
             items: [
               {
@@ -514,6 +601,20 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("processed-order") },
         {
+          $push: {
+            refunds: {
+              amount: 102,
+            },
+            returns: {
+              items: [
+                {
+                  item_id: IdMap.getId("existingLine"),
+                  quantity: 10,
+                },
+              ],
+              refund_amount: 102,
+            },
+          },
           $set: {
             items: [
               {
@@ -560,6 +661,20 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("order-refund") },
         {
+          $push: {
+            refunds: {
+              amount: 0,
+            },
+            returns: {
+              items: [
+                {
+                  item_id: IdMap.getId("existingLine"),
+                  quantity: 2,
+                },
+              ],
+              refund_amount: 0,
+            },
+          },
           $set: {
             items: [
               {

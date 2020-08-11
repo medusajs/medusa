@@ -80,6 +80,11 @@ class TotalsService extends BaseService {
     return (subtotal - discountTotal + shippingTotal) * tax_rate
   }
 
+  getRefundedTotal(object) {
+    const total = object.refunds.reduce((acc, next) => acc + next.amount, 0)
+    return total
+  }
+
   getLineItemRefund(order, lineItem) {
     const { tax_rate, discounts } = order
     const taxRate = tax_rate || 0

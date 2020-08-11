@@ -323,7 +323,7 @@ describe("TotalsService", () => {
     it("calculates shipping", async () => {
       res = await totalsService.getShippingTotal(orders.testOrder)
 
-      expect(res).toEqual(110)
+      expect(res).toEqual(100)
     })
   })
   describe("getTaxTotal", () => {
@@ -341,7 +341,7 @@ describe("TotalsService", () => {
     it("calculates tax", async () => {
       res = await totalsService.getTaxTotal(orders.testOrder)
 
-      expect(res).toEqual(335)
+      expect(res).toEqual(332.5)
     })
   })
 
@@ -358,8 +358,7 @@ describe("TotalsService", () => {
 
     it("calculates total", async () => {
       res = await totalsService.getTotal(orders.testOrder)
-
-      expect(res).toEqual(1230 + 335 + 110)
+      expect(res).toEqual(1230 + 332.5 + 100)
     })
   })
 })
