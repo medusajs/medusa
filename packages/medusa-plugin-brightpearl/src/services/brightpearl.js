@@ -374,7 +374,7 @@ class BrightpearlService extends BaseService {
       currency: {
         code: fromOrder.currency_code,
       },
-      ref: fromOrder._id,
+      ref: fromOrder.display_id,
       externalRef: fromOrder._id,
       channelId: this.options.channel_id || `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
