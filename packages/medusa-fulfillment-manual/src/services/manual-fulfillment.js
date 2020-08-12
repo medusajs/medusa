@@ -33,7 +33,7 @@ class ManualFulfillmentService extends FulfillmentService {
 
   createOrder() {
     // No data is being sent anywhere
-    return
+    return Promise.resolve({})
   }
 }
 
