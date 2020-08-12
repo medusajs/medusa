@@ -41,24 +41,52 @@ class BrightpearlService extends BaseService {
     }
 
     const client = new Brightpearl({
+      account: this.options.account,
       url: data.api_domain,
       auth_type: data.token_type,
       access_token: data.access_token,
     })
 
+    this.authData_ = data
     this.brightpearlClient_ = client
     return client
+  }
+
+  async getAuthData() {
+    if (this.authData_) {
+      return this.authData_
+    }
+
+    const { data } = await this.oauthService_.retrieveByName("brightpearl")
+    if (!data || !data.access_token) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You must authenticate the Brightpearl app in settings before continuing"
+      )
+    }
+
+    this.authData_ = data
+    return data
   }
 
   async verifyWebhooks() {
     const brightpearl = await this.getClient()
     const hooks = [
       {
+        subscribeTo: "goods-out-note.created",
+        httpMethod: "POST",
+        uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
+        bodyTemplate:
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+        contentType: "application/json",
+        idSetAccepted: false,
+      },
+      {
         subscribeTo: "product.modified.on-hand-modified",
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycleEvent": "${lifecycle-event}", "resourceType": "${resource-type}", "id": "${resource-id}" }',
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -107,18 +135,22 @@ class BrightpearlService extends BaseService {
 
   async updateInventory(productId) {
     const client = await this.getClient()
-    const brightpearlProduct = await client.products.retrieve(productId)
-    const availability = await client.products.retrieveAvailability(productId)
+    const availability = await client.products
+      .retrieveAvailability(productId)
+      .catch(() => null)
 
-    const onHand = availability[productId].total.onHand
+    if (availability) {
+      const brightpearlProduct = await client.products.retrieve(productId)
+      const onHand = availability[productId].total.onHand
 
-    const sku = brightpearlProduct.identity.sku
-    const [variant] = await this.productVariantService_.list({ sku })
+      const sku = brightpearlProduct.identity.sku
+      const [variant] = await this.productVariantService_.list({ sku })
 
-    if (variant && variant.manage_inventory) {
-      await this.productVariantService_.update(variant._id, {
-        inventory_quantity: onHand,
-      })
+      if (variant && variant.manage_inventory) {
+        await this.productVariantService_.update(variant._id, {
+          inventory_quantity: onHand,
+        })
+      }
     }
   }
 
@@ -174,9 +206,156 @@ class BrightpearlService extends BaseService {
     return client.warehouses.updateGoodsOutNote(noteId, {
       priority: false,
       shipping: {
-        reference: shipment.tracking_number,
+        reference: shipment.tracking_numbers.join(", "),
       },
     })
+  }
+
+  async createRefundCredit(fromOrder, fromRefund) {
+    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const client = await this.getClient()
+    const authData = await this.getAuthData()
+    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+    if (orderId) {
+      let accountingCode = "4000"
+      if (
+        fromRefund.reason === "discount" &&
+        this.options.discount_account_code
+      ) {
+        accountingCode = this.options.discount_account_code
+      }
+
+      const parentSo = await client.orders.retrieve(orderId)
+      const order = {
+        currency: parentSo.currency,
+        ref: parentSo.ref,
+        externalRef: `${parentSo.externalRef}.${fromOrder.refunds.length}`,
+        channelId: this.options.channel_id || `1`,
+        installedIntegrationInstanceId: authData.installation_instance_id,
+        customer: parentSo.customer,
+        delivery: parentSo.delivery,
+        parentId: orderId,
+        rows: [
+          {
+            name: `${fromRefund.reason}: ${fromRefund.note}`,
+            quantity: 1,
+            taxCode: region.tax_code,
+            net: fromRefund.amount / (1 + fromOrder.tax_rate),
+            tax:
+              fromRefund.amount - fromRefund.amount / (1 + fromOrder.tax_rate),
+            nominalCode: accountingCode,
+          },
+        ],
+      }
+
+      return client.orders
+        .createCredit(order)
+        .then(async (creditId) => {
+          const paymentMethod = fromOrder.payment_method
+          const paymentType = "PAYMENT"
+          const payment = {
+            transactionRef: `${paymentMethod._id}.${fromOrder.refunds.length}`,
+            transactionCode: fromOrder._id,
+            paymentMethodCode: this.options.payment_method_code || "1220",
+            orderId: creditId,
+            currencyIsoCode: fromOrder.currency_code,
+            amountPaid: fromRefund.amount,
+            paymentDate: new Date(),
+            paymentType,
+          }
+
+          const existing = fromOrder.metadata.brightpearl_credit_ids || []
+          const newIds = [...existing, creditId]
+
+          await client.payments.create(payment)
+
+          return this.orderService_.setMetadata(
+            fromOrder._id,
+            "brightpearl_credit_ids",
+            newIds
+          )
+        })
+        .catch((err) => console.log(err.response.data.errors))
+    }
+  }
+
+  async createSalesCredit(fromOrder, fromReturn) {
+    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const client = await this.getClient()
+    const authData = await this.getAuthData()
+    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+    if (orderId) {
+      const parentSo = await client.orders.retrieve(orderId)
+      const order = {
+        currency: parentSo.currency,
+        ref: parentSo.ref,
+        externalRef: `${parentSo.externalRef}.${fromOrder.refunds.length}`,
+        channelId: this.options.channel_id || `1`,
+        installedIntegrationInstanceId: authData.installation_instance_id,
+        customer: parentSo.customer,
+        delivery: parentSo.delivery,
+        parentId: orderId,
+        rows: fromReturn.items.map((i) => {
+          const parentRow = parentSo.rows.find((row) => {
+            return row.externalRef === i.item_id
+          })
+          return {
+            net: (parentRow.net / parentRow.quantity) * i.quantity,
+            tax: (parentRow.tax / parentRow.quantity) * i.quantity,
+            productId: parentRow.productId,
+            taxCode: parentRow.taxCode,
+            externalRef: parentRow.externalRef,
+            nominalCode: parentRow.nominalCode,
+            quantity: i.quantity,
+          }
+        }),
+      }
+
+      const total = order.rows.reduce((acc, next) => {
+        return acc + next.net + next.tax
+      }, 0)
+
+      const difference = fromReturn.refund_amount - total
+      if (difference) {
+        order.rows.push({
+          name: "Difference",
+          quantity: 1,
+          taxCode: region.tax_code,
+          net: difference / (1 + fromOrder.tax_rate),
+          tax: difference - difference / (1 + fromOrder.tax_rate),
+          nominalCode: this.options.sales_account_code || "4000",
+        })
+      }
+
+      return client.orders
+        .createCredit(order)
+        .then(async (creditId) => {
+          const paymentMethod = fromOrder.payment_method
+          const paymentType = "PAYMENT"
+          const payment = {
+            transactionRef: `${paymentMethod._id}.${fromOrder.refunds.length}`,
+            transactionCode: fromOrder._id,
+            paymentMethodCode: this.options.payment_method_code || "1220",
+            orderId: creditId,
+            currencyIsoCode: fromOrder.currency_code,
+            amountPaid: fromReturn.refund_amount,
+            paymentDate: new Date(),
+            paymentType,
+          }
+
+          const existing = fromOrder.metadata.brightpearl_credit_ids || []
+          const newIds = [...existing, creditId]
+
+          await client.payments.create(payment)
+
+          return this.orderService_.setMetadata(
+            fromOrder._id,
+            "brightpearl_credit_ids",
+            newIds
+          )
+        })
+        .catch((err) => console.log(err.response.data.errors))
+    }
   }
 
   async createSalesOrder(fromOrder) {
@@ -188,12 +367,17 @@ class BrightpearlService extends BaseService {
       customer = await this.createCustomer(fromOrder)
     }
 
+    const authData = await this.getAuthData()
+
     const { shipping_address } = fromOrder
     const order = {
       currency: {
         code: fromOrder.currency_code,
       },
+      ref: fromOrder.display_id,
       externalRef: fromOrder._id,
+      channelId: this.options.channel_id || `1`,
+      installedIntegrationInstanceId: authData.installation_instance_id,
       customer: {
         id: customer.contactId,
         address: {
@@ -237,7 +421,7 @@ class BrightpearlService extends BaseService {
         const payment = {
           transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
           transactionCode: fromOrder._id,
-          paymentMethodCode: "1220",
+          paymentMethodCode: this.options.payment_method_code || "1220",
           orderId: salesOrderId,
           currencyIsoCode: fromOrder.currency_code,
           paymentDate: new Date(),
@@ -365,6 +549,35 @@ class BrightpearlService extends BaseService {
         return null
       }
       return products[0]
+    })
+  }
+
+  async createFulfillmentFromGoodsOut(id) {
+    const client = await this.getClient()
+
+    // Get goods out and associated order
+    const goodsOut = await client.warehouses.retrieveGoodsOutNote(id)
+    const order = await client.orders.retrieve(goodsOut.orderId)
+
+    console.log(order)
+
+    // Combine the line items that we are going to create a fulfillment for
+    const lines = Object.keys(goodsOut.orderRows)
+      .map((key) => {
+        const row = order.rows.find((r) => r.id == key)
+        if (row) {
+          return {
+            item_id: row.externalRef,
+            quantity: goodsOut.orderRows[key][0].quantity,
+          }
+        }
+
+        return null
+      })
+      .filter((i) => !!i)
+
+    return this.orderService_.createFulfillment(order.ref, lines, {
+      goods_out_note: id,
     })
   }
 

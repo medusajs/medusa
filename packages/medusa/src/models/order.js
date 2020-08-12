@@ -7,11 +7,15 @@ import ShippingMethodSchema from "./schemas/shipping-method"
 import AddressSchema from "./schemas/address"
 import DiscountSchema from "./schemas/discount"
 import ShipmentSchema from "./schemas/shipment"
+import ReturnSchema from "./schemas/return"
+import RefundSchema from "./schemas/refund"
+import FulfillmentSchema from "./schemas/fulfillment"
 
 class OrderModel extends BaseModel {
   static modelName = "Order"
 
   static schema = {
+    display_id: { type: String, required: true, unique: true },
     // pending, completed, archived, cancelled
     status: { type: String, default: "pending" },
     // not_fulfilled, partially_fulfilled (some line items have been returned), fulfilled, returned,
@@ -26,6 +30,9 @@ class OrderModel extends BaseModel {
     currency_code: { type: String, required: true },
     tax_rate: { type: Number, required: true },
     shipments: { type: [ShipmentSchema], default: [] },
+    fulfillments: { type: [FulfillmentSchema], default: [] },
+    returns: { type: [ReturnSchema], default: [] },
+    refunds: { type: [RefundSchema], default: [] },
     region_id: { type: String, required: true },
     discounts: { type: [DiscountSchema], default: [] },
     customer_id: { type: String },

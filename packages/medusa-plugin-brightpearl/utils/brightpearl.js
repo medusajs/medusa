@@ -98,13 +98,22 @@ var BrightpearlClient = /*#__PURE__*/function () {
             return data.response;
           });
         },
+        retrieveGoodsOutNote: function retrieveGoodsOutNote(id) {
+          return _this.client_.request({
+            url: "/warehouse-service/order/*/goods-note/goods-out/".concat(id),
+            method: "GET"
+          }).then(function (_ref5) {
+            var data = _ref5.data;
+            return data.response && data.response[id];
+          });
+        },
         createGoodsOutNote: function createGoodsOutNote(orderId, data) {
           return _this.client_.request({
             url: "/warehouse-service/order/".concat(orderId, "/goods-note/goods-out"),
             method: "POST",
             data: data
-          }).then(function (_ref5) {
-            var data = _ref5.data;
+          }).then(function (_ref6) {
+            var data = _ref6.data;
             return data.response;
           });
         },
@@ -137,8 +146,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             data: {
               products: data
             }
-          }).then(function (_ref6) {
-            var data = _ref6.data;
+          }).then(function (_ref7) {
+            var data = _ref7.data;
             return data.response;
           });
         }
@@ -151,8 +160,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
           return _this.client_.request({
             url: "/order-service/sales-order/".concat(orderId),
             method: "GET"
-          }).then(function (_ref7) {
-            var data = _ref7.data;
+          }).then(function (_ref8) {
+            var data = _ref8.data;
             return data.response.length && data.response[0];
           })["catch"](function (err) {
             return console.log(err);
@@ -163,8 +172,18 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/order-service/sales-order",
             method: "POST",
             data: order
-          }).then(function (_ref8) {
-            var data = _ref8.data;
+          }).then(function (_ref9) {
+            var data = _ref9.data;
+            return data.response;
+          });
+        },
+        createCredit: function createCredit(salesCredit) {
+          return _this.client_.request({
+            url: "/order-service/sales-credit",
+            method: "POST",
+            data: salesCredit
+          }).then(function (_ref10) {
+            var data = _ref10.data;
             return data.response;
           });
         }
@@ -178,8 +197,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/contact-service/postal-address",
             method: "POST",
             data: address
-          }).then(function (_ref9) {
-            var data = _ref9.data;
+          }).then(function (_ref11) {
+            var data = _ref11.data;
             return data.response;
           });
         }
@@ -191,24 +210,24 @@ var BrightpearlClient = /*#__PURE__*/function () {
         retrieveAvailability: function retrieveAvailability(productId) {
           return _this.client_.request({
             url: "/warehouse-service/product-availability/".concat(productId)
-          }).then(function (_ref10) {
-            var data = _ref10.data;
+          }).then(function (_ref12) {
+            var data = _ref12.data;
             return data.response && data.response;
           });
         },
         retrieve: function retrieve(productId) {
           return _this.client_.request({
             url: "/product-service/product/".concat(productId)
-          }).then(function (_ref11) {
-            var data = _ref11.data;
+          }).then(function (_ref13) {
+            var data = _ref13.data;
             return data.response && data.response[0];
           });
         },
         retrieveBySKU: function retrieveBySKU(sku) {
           return _this.client_.request({
             url: "/product-service/product-search?SKU=".concat(sku)
-          }).then(function (_ref12) {
-            var data = _ref12.data;
+          }).then(function (_ref14) {
+            var data = _ref14.data;
             return _this.buildSearchResults_(data.response);
           });
         }
@@ -220,8 +239,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
         retrieveByEmail: function retrieveByEmail(email) {
           return _this.client_.request({
             url: "/contact-service/contact-search?primaryEmail=".concat(email)
-          }).then(function (_ref13) {
-            var data = _ref13.data;
+          }).then(function (_ref15) {
+            var data = _ref15.data;
             return _this.buildSearchResults_(data.response);
           });
         },
@@ -230,8 +249,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/contact-service/contact",
             method: "POST",
             data: customerData
-          }).then(function (_ref14) {
-            var data = _ref14.data;
+          }).then(function (_ref16) {
+            var data = _ref16.data;
             return data.response;
           });
         }
@@ -239,7 +258,7 @@ var BrightpearlClient = /*#__PURE__*/function () {
     });
 
     this.client_ = _axios["default"].create({
-      baseURL: "".concat(options.url, "/public-api/").concat(options.account),
+      baseURL: "https://".concat(options.url, "/public-api/").concat(options.account),
       headers: {
         "brightpearl-app-ref": "medusa-dev",
         "brightpearl-dev-ref": "sebrindom",

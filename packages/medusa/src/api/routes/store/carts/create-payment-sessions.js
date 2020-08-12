@@ -13,7 +13,7 @@ export default async (req, res) => {
 
     res.status(200).json({ cart })
   } catch (err) {
-    console.log(err.response.data)
+    console.log(err)
     throw err
   }
 }
