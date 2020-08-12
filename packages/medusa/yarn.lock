@@ -4568,10 +4568,25 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
+medusa-core-utils@^0.3.0:
+  version "0.1.39"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-0.1.39.tgz#d57816c9bd43f9a92883650c1e66add1665291df"
+  integrity sha512-R8+U1ile7if+nR6Cjh5exunx0ETV0OfkWUUBUpz1KmHSDv0V0CcvQqU9lcZesPFDEbu3Y2iEjsCqidVA4nG2nQ==
+  dependencies:
+    "@hapi/joi" "^16.1.8"
+    joi-objectid "^3.0.1"
+
 medusa-interfaces@^0.1.27:
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-0.1.27.tgz#e77f9a9f82a7118eac8b35c1498ef8a5cec78898"
   integrity sha512-FVRyD85aBCPon+itf0cgTc1/lQXxHcMXGWGF8fIMzcoVj8xqSjculwZmY4GH4EtKhv3X3+DGe0BsIMbiW31unA==
+  dependencies:
+    mongoose "^5.8.0"
+
+medusa-test-utils@^0.3.0:
+  version "0.1.39"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-0.1.39.tgz#b7c166006a2fa4f02e52ab3bfafc19a3ae787f3e"
+  integrity sha512-M/Br8/HYvl7x2oLnme4NxdQwoyV0XUyOWiCyvPp7q1HUTB684lhJf1MikZVrcSjsh2L1rpyi3GRbKdf4cpJWvw==
   dependencies:
     mongoose "^5.8.0"
 
