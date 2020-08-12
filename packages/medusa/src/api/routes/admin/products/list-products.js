@@ -1,7 +1,17 @@
+import _ from "lodash"
+
 export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
-    let products = await productService.list({})
+    const queryBuilderService = req.scope.resolve("queryBuilderService")
+
+    const query = queryBuilderService.buildQuery(req.query, [
+      "title",
+      "description",
+    ])
+
+    let products = await productService.list(query)
+
     products = await Promise.all(
       products.map(
         async product =>
