@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-adyen",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "Adyen Payment provider for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -40,8 +40,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "medusa-core-utils": "^0.1.27",
-    "medusa-interfaces": "^1.0.0-alpha.0",
-    "medusa-test-utils": "^1.0.0-alpha.0"
+    "medusa-interfaces": "^1.0.0-alpha.1",
+    "medusa-test-utils": "^1.0.0-alpha.1"
   },
   "gitHead": "a1cf900ed8e5660941dda581f04e27d2f9607e4f"
 }
