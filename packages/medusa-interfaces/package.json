@@ -1,6 +1,6 @@
 {
   "name": "medusa-interfaces",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "Core interfaces for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -34,7 +34,7 @@
     "mongoose": "5.x"
   },
   "dependencies": {
-    "medusa-core-utils": "^1.0.0-alpha.2"
+    "medusa-core-utils": "^1.0.0-alpha.3"
   },
   "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
 }
