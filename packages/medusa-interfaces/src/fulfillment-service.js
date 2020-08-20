@@ -11,11 +11,8 @@ class BaseFulfillmentService extends BaseService {
     super()
   }
 
-  getIdentifier() {
-    return this.constructor.identifier
+  getFulfillmentOptions() {
   }
-
-  getFulfillmentOptions() {}
 
   validateFulfillmentData(data, cart) {
     throw Error("validateFulfillmentData must be overridden by the child class")

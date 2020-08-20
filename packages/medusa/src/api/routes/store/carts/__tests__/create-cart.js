@@ -22,8 +22,6 @@ describe("POST /store/carts", () => {
     it("calls CartService create", () => {
       expect(CartServiceMock.create).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.create).toHaveBeenCalledWith({
-        email: "",
-        customer_id: "",
         region_id: IdMap.getId("testRegion"),
       })
     })
@@ -56,6 +54,22 @@ describe("POST /store/carts", () => {
     it("returns error", () => {
       expect(subject.status).toEqual(400)
       expect(subject.body.message).toEqual("Region not found")
+    })
+  })
+
+  describe("returns invalid data if region_id is not set", () => {
+    let subject
+
+    beforeAll(async () => {
+      subject = await request("POST", `/store/carts`)
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("returns error", () => {
+      expect(subject.status).toEqual(400)
     })
   })
 

@@ -37,7 +37,7 @@ class ShippingOptionService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
+    const { value, error } = schema.validate(rawId)
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -79,13 +79,7 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of the find operation
    */
   list(selector) {
-    const query = {}
-
-    if (selector.region_id !== undefined) {
-      query.region_id = selector.region_id
-    }
-
-    return this.optionModel_.find(query)
+    return this.optionModel_.find(selector)
   }
 
   /**
@@ -136,7 +130,7 @@ class ShippingOptionService extends BaseService {
    * @return {ShippingOption} the validated shipping option
    */
   async validateCartOption(optionId, cart) {
-    const option = await this.retrieve(optionId)
+    let option = await this.retrieve(optionId)
 
     if (cart.region_id !== option.region_id) {
       throw new MedusaError(
@@ -150,7 +144,7 @@ class ShippingOptionService extends BaseService {
       if (requirement.type === "max_subtotal") {
         return requirement.value > subtotal
       } else if (requirement.type === "min_subtotal") {
-        return requirement.value <= subtotal
+        return requirement.value < subtotal
       }
 
       return true // default to true
@@ -252,13 +246,10 @@ class ShippingOptionService extends BaseService {
       }
     }
 
-    if (
-      price.type === "flat_rate" &&
-      (price.amount === undefined || price.amount < 0)
-    ) {
+    if (price.type === "flat_rate" && (!price.amount || price.amount < 0)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Flat rate prices must be zero or have a postive amount field."
+        "Flat rate prices must have a postive amount field."
       )
     }
 
@@ -415,7 +406,7 @@ class ShippingOptionService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(optionId, key, value) {
+  setMetadata(optionId, key, value) {
     const validatedId = this.validateId_(optionId)
 
     if (typeof key !== "string") {
@@ -428,30 +419,6 @@ class ShippingOptionService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.optionModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a shipping option.
-   * @param {string} optionId - the shipping option to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(optionId, key) {
-    const validatedId = this.validateId_(optionId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.optionModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

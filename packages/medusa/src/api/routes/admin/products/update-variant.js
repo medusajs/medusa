@@ -5,8 +5,6 @@ export default async (req, res) => {
   const { id, variant_id } = req.params
   const schema = Validator.object().keys({
     title: Validator.string().optional(),
-    sku: Validator.string(),
-    ean: Validator.string(),
     prices: Validator.array().items(
       Validator.object()
         .keys({
@@ -76,22 +74,16 @@ export default async (req, res) => {
     }
 
     const product = await productService.retrieve(id)
-    const data = await productService.decorate(
-      product,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "images",
-        "options",
-        "thumbnail",
-        "variants",
-        "is_giftcard",
-        "published",
-      ],
-      ["variants"]
-    )
+    const data = await productService.decorate(product, [
+      "title",
+      "description",
+      "tags",
+      "handle",
+      "images",
+      "options",
+      "variants",
+      "published",
+    ])
     res.json({ product: data })
   } catch (err) {
     throw err

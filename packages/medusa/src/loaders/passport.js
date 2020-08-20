@@ -6,7 +6,6 @@ import config from "../config"
 
 export default async ({ app, container }) => {
   const authService = container.resolve("authService")
-  const userService = container.resolve("userService")
 
   // For good old email password authentication
   passport.use(
@@ -38,7 +37,7 @@ export default async ({ app, container }) => {
         jwtFromRequest: req => req.session.jwt,
         secretOrKey: config.jwtSecret,
       },
-      async (jwtPayload, done) => {
+      (jwtPayload, done) => {
         return done(null, jwtPayload)
       }
     )

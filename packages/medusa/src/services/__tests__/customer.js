@@ -107,7 +107,7 @@ describe("CustomerService", () => {
 
     it("calls model layer create", async () => {
       await customerService.create({
-        email: "new@medusa.com",
+        email: "oliver@medusa.com",
         first_name: "Oliver",
         last_name: "Juhl",
         password: "secretsauce",
@@ -115,7 +115,7 @@ describe("CustomerService", () => {
 
       expect(CustomerModelMock.create).toBeCalledTimes(1)
       expect(CustomerModelMock.create).toBeCalledWith({
-        email: "new@medusa.com",
+        email: "oliver@medusa.com",
         first_name: "Oliver",
         last_name: "Juhl",
         has_account: true,
@@ -200,7 +200,6 @@ describe("CustomerService", () => {
           city: "Copenhagen",
           country_code: "DK",
           postal_code: "2100",
-          phone: "+1 (222) 333 4444",
         },
       })
 
@@ -218,7 +217,6 @@ describe("CustomerService", () => {
               city: "Copenhagen",
               country_code: "DK",
               postal_code: "2100",
-              phone: "+1 (222) 333 4444",
             },
           },
         },

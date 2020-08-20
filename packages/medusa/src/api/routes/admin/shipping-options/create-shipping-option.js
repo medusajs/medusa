@@ -5,14 +5,11 @@ export default async (req, res) => {
     name: Validator.string().required(),
     region_id: Validator.string().required(),
     provider_id: Validator.string().required(),
-    profile_id: Validator.string(),
-    data: Validator.object().required(),
-    price: Validator.object()
-      .keys({
-        type: Validator.string().required(),
-        amount: Validator.number().optional(),
-      })
-      .required(),
+    data: Validator.object(),
+    price: Validator.object().keys({
+      type: Validator.string().required(),
+      amount: Validator.number().optional(),
+    }),
     requirements: Validator.array()
       .items(
         Validator.object({
@@ -30,17 +27,7 @@ export default async (req, res) => {
 
   try {
     const optionService = req.scope.resolve("shippingOptionService")
-    const shippingProfileService = req.scope.resolve("shippingProfileService")
-
-    // Add to default shipping profile
-    if (!value.profile_id) {
-      const { _id } = await shippingProfileService.retrieveDefault()
-      value.profile_id = _id
-    }
-
     const data = await optionService.create(value)
-
-    await shippingProfileService.addShippingOption(value.profile_id, data._id)
 
     res.status(200).json({ shipping_option: data })
   } catch (err) {

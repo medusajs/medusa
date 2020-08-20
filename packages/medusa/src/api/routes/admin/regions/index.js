@@ -9,11 +9,6 @@ export default app => {
   route.get("/", middlewares.wrap(require("./list-regions").default))
   route.get("/:region_id", middlewares.wrap(require("./get-region").default))
 
-  route.get(
-    "/:region_id/fulfillment-options",
-    middlewares.wrap(require("./get-fulfillment-options").default)
-  )
-
   route.post("/", middlewares.wrap(require("./create-region").default))
   route.post(
     "/:region_id",
