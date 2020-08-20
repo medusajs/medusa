@@ -34,6 +34,7 @@ export default async (req, res) => {
     )
     res.json({ products })
   } catch (error) {
+    console.log(error)
     throw error
   }
 }
