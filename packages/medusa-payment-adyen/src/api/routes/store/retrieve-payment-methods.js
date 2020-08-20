@@ -24,6 +24,11 @@ export default async (req, res) => {
       (ps) => ps.provider_id.split("Adyen")[0]
     )
 
+    if (allowedMethods.length === 0) {
+      res.status(200).json({ paymentMethods: {} })
+      return
+    }
+
     const { data } = await adyenService.retrievePaymentMethods(
       cart,
       allowedMethods,

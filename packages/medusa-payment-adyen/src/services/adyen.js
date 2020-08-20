@@ -16,7 +16,7 @@ class AdyenService extends BaseService {
     this.options_ = options
 
     this.adyenCheckoutApi = axios.create({
-      baseURL: "https://checkout-test.adyen.com/v52",
+      baseURL: "https://checkout-test.adyen.com/v53",
       headers: {
         "Content-Type": "application/json",
         "x-API-key": this.options_.api_key,
@@ -24,7 +24,7 @@ class AdyenService extends BaseService {
     })
 
     this.adyenPaymentApi = axios.create({
-      baseURL: "https://pal-test.adyen.com/pal/servlet/Payment/v52",
+      baseURL: "https://pal-test.adyen.com/pal/servlet/Payment/v53",
       headers: {
         "Content-Type": "application/json",
         "x-API-key": this.options_.api_key,
@@ -96,6 +96,14 @@ class AdyenService extends BaseService {
     return data
   }
 
+  async updatePayment(paymentData, details) {
+    const request = {
+      paymentData,
+      details,
+    }
+    return this.adyenCheckoutApi.post("/payments/details", request)
+  }
+
   /**
    * Creates and authorizes an Ayden payment
    * @returns {Object} payment data result
@@ -146,11 +154,29 @@ class AdyenService extends BaseService {
     const { pspReference, amount } = data
 
     try {
-      return this.adyenPaymentApi.post("/capture", {
+      const captured = this.adyenPaymentApi.post("/capture", {
         originalReference: pspReference,
         modificationAmount: amount,
         merchantAccount: this.options_.merchant_account,
       })
+
+      if (
+        captured.data.pspReference &&
+        captured.data.response !== "[capture-received]"
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Could not process capture"
+        )
+      }
+      
+      // await this.orderService_.setMetadata(
+      //   orderId,
+      //   "adyen_capture_reference",
+      //   captureData.data.pspReference
+      // )
+
+      return captured
     } catch (error) {
       console.log(error)
       throw error
