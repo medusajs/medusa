@@ -5,10 +5,10 @@ import middlewares from "../../middlewares"
 const route = Router()
 
 export default (app) => {
-  app.use("/stripe", route)
+  app.use("/hooks", route)
 
   route.post(
-    "/hooks",
+    "/stripe",
     // stripe constructEvent fails without body-parser
     bodyParser.raw({ type: "application/json" }),
     middlewares.wrap(require("./stripe").default)

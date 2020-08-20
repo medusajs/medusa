@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import mongoose from "mongoose"
 import bcrypt from "bcrypt"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
@@ -9,11 +9,7 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class CustomerService extends BaseService {
-  static Events = {
-    PASSWORD_RESET: "customer.password_reset",
-  }
-
-  constructor({ customerModel, orderService, eventBusService }) {
+  constructor({ customerModel, eventBusService }) {
     super()
 
     /** @private @const {CustomerModel} */
@@ -21,9 +17,6 @@ class CustomerService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @const {EventBus} */
-    this.orderService_ = orderService
   }
 
   /**
@@ -33,7 +26,7 @@ class CustomerService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
+    const { value, error } = schema.validate(rawId)
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -99,13 +92,10 @@ class CustomerService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
     const payload = { customer_id: customer._id, exp: expiry }
     const token = jwt.sign(payload, secret)
-    // Notify subscribers
-    this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
-      email: customer.email,
-      first_name: customer.first_name,
-      last_name: customer.last_name,
-      token,
-    })
+
+    // TODO: Call event layer to ensure that there is an email service that
+    // sends the token.
+
     return token
   }
 
@@ -176,32 +166,16 @@ class CustomerService extends BaseService {
       this.validateBillingAddress_(billing_address)
     }
 
-    const existing = await this.retrieveByEmail(email).catch(err => undefined)
-
-    if (existing && password && !existing.has_account) {
+    if (password) {
       const hashedPassword = await bcrypt.hash(password, 10)
       customer.password_hash = hashedPassword
       customer.has_account = true
       delete customer.password
-
-      return this.customerModel_.updateOne(
-        { _id: existing._id },
-        {
-          $set: customer,
-        }
-      )
-    } else {
-      if (password) {
-        const hashedPassword = await bcrypt.hash(password, 10)
-        customer.password_hash = hashedPassword
-        customer.has_account = true
-        delete customer.password
-      }
-
-      return this.customerModel_.create(customer).catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
     }
+
+    return this.customerModel_.create(customer).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
   }
 
   /**
@@ -249,60 +223,6 @@ class CustomerService extends BaseService {
       })
   }
 
-  async addOrder(customerId, orderId) {
-    const customer = await this.retrieve(customerId)
-    return this.customerModel_.updateOne(
-      { _id: customer._id },
-      { $addToSet: { orders: orderId } }
-    )
-  }
-
-  async addAddress(customerId, address) {
-    const customer = await this.retrieve(customerId)
-    this.validateBillingAddress_(address)
-
-    let shouldAdd = !customer.shipping_addresses.find(
-      a =>
-        a.country_code === address.country_code &&
-        a.address_1 === address.address_1 &&
-        a.address_2 === address.address_2 &&
-        a.city === address.city &&
-        a.phone === address.phone &&
-        a.postal_code === address.postal_code &&
-        a.province === address.province &&
-        a.first_name === address.first_name &&
-        a.last_name === address.last_name
-    )
-
-    if (shouldAdd) {
-      return this.customerModel_.updateOne(
-        { _id: customer._id },
-        { $addToSet: { shipping_addresses: address } }
-      )
-    } else {
-      return customer
-    }
-  }
-
-  async updateAddress(customerId, addressId, address) {
-    const customer = await this.retrieve(customerId)
-    this.validateBillingAddress_(address)
-
-    return this.customerModel_.updateOne(
-      { _id: customer._id, "shipping_addresses._id": addressId },
-      { $set: { "shipping_addresses.$": address } }
-    )
-  }
-
-  async removeAddress(customerId, addressId) {
-    const customer = await this.retrieve(customerId)
-
-    return this.customerModel_.updateOne(
-      { _id: customer._id },
-      { $pull: { shipping_addresses: { _id: addressId } } }
-    )
-  }
-
   /**
    * Deletes a customer from a given customer id.
    * @param {string} customerId - the id of the customer to delete. Must be
@@ -330,19 +250,9 @@ class CustomerService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Customer} return the decorated customer.
    */
-  async decorate(customer, fields = [], expandFields = []) {
+  async decorate(customer, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
-
-    if (expandFields.includes("orders")) {
-      decorated.orders = await Promise.all(
-        customer.orders.map(async o => {
-          const order = await this.orderService_.retrieve(o)
-          return this.orderService_.decorate(order)
-        })
-      )
-    }
-
     return decorated
   }
 
@@ -355,7 +265,7 @@ class CustomerService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(customerId, key, value) {
+  setMetadata(customerId, key, value) {
     const validatedId = this.validateId_(customerId)
 
     if (typeof key !== "string") {
@@ -368,30 +278,6 @@ class CustomerService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.customerModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a customer.
-   * @param {string} customerId - the customer to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(customerId, key) {
-    const validatedId = this.validateId_(customerId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.customerModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

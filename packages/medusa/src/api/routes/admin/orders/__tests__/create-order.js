@@ -21,7 +21,6 @@ describe("POST /admin/orders", () => {
             country_code: "US",
             province: "CA",
             postal_code: "93011",
-            phone: "+1 (222) 333 4444",
           },
           shipping_address: {
             first_name: "Virgil",
@@ -31,7 +30,6 @@ describe("POST /admin/orders", () => {
             country_code: "US",
             province: "CA",
             postal_code: "93011",
-            phone: "+1 (222) 333 4444",
           },
           items: [
             {
@@ -92,7 +90,6 @@ describe("POST /admin/orders", () => {
           country_code: "US",
           province: "CA",
           postal_code: "93011",
-          phone: "+1 (222) 333 4444",
         },
         shipping_address: {
           first_name: "Virgil",
@@ -102,7 +99,6 @@ describe("POST /admin/orders", () => {
           country_code: "US",
           province: "CA",
           postal_code: "93011",
-          phone: "+1 (222) 333 4444",
         },
         items: [
           {

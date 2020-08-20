@@ -193,7 +193,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 100,
+            unit_price: 123,
             variant: {
               _id: IdMap.getId("can-cover"),
             },
@@ -206,7 +206,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(1125)
+      expect(res).toEqual(1107)
     })
 
     it("calculates refund with total fixed discount", async () => {
@@ -218,7 +218,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 100,
+            unit_price: 123,
             variant: {
               _id: IdMap.getId("can-cover"),
             },
@@ -231,7 +231,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(373.125)
+      expect(res).toEqual(359)
     })
 
     it("calculates refund with item fixed discount", async () => {
@@ -243,7 +243,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 100,
+            unit_price: 123,
             variant: {
               _id: IdMap.getId("eur-8-us-10"),
             },
@@ -256,7 +256,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(367.5)
+      expect(res).toEqual(363)
     })
 
     it("calculates refund with item percentage discount", async () => {
@@ -268,7 +268,7 @@ describe("TotalsService", () => {
           description: "This is a new line",
           thumbnail: "test-img-yeah.com/thumb",
           content: {
-            unit_price: 100,
+            unit_price: 123,
             variant: {
               _id: IdMap.getId("eur-8-us-10"),
             },
@@ -281,7 +281,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(337.5)
+      expect(res).toEqual(332.1)
     })
 
     it("throws if line items to return is not in order", async () => {
@@ -323,7 +323,7 @@ describe("TotalsService", () => {
     it("calculates shipping", async () => {
       res = await totalsService.getShippingTotal(orders.testOrder)
 
-      expect(res).toEqual(100)
+      expect(res).toEqual(110)
     })
   })
   describe("getTaxTotal", () => {
@@ -341,7 +341,7 @@ describe("TotalsService", () => {
     it("calculates tax", async () => {
       res = await totalsService.getTaxTotal(orders.testOrder)
 
-      expect(res).toEqual(332.5)
+      expect(res).toEqual(335)
     })
   })
 
@@ -358,7 +358,8 @@ describe("TotalsService", () => {
 
     it("calculates total", async () => {
       res = await totalsService.getTotal(orders.testOrder)
-      expect(res).toEqual(1230 + 332.5 + 100)
+
+      expect(res).toEqual(1230 + 335 + 110)
     })
   })
 })

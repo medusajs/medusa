@@ -17,7 +17,7 @@ export const DefaultProviderMock = {
     return Promise.resolve()
   }),
   createOrder: jest.fn().mockImplementation(data => {
-    return Promise.resolve(data)
+    return Promise.resolve()
   }),
 }
 

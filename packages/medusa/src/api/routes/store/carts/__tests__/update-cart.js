@@ -14,7 +14,6 @@ describe("POST /store/carts/:id", () => {
       city: "Los Angeles",
       province: "CA",
       postal_code: "91092",
-      phone: "+1 (222) 333 4444",
     }
 
     beforeAll(async () => {
@@ -74,8 +73,8 @@ describe("POST /store/carts/:id", () => {
     })
 
     it("applies promo code", () => {
-      expect(CartServiceMock.applyDiscount).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.applyDiscount).toHaveBeenCalledWith(
+      expect(CartServiceMock.applyPromoCode).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.applyPromoCode).toHaveBeenCalledWith(
         IdMap.getId("emptyCart"),
         "TESTCODE"
       )

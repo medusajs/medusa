@@ -1,8 +1,7 @@
 {
   "plugins": [
     "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-instanceof",
-    "@babel/plugin-transform-classes"
+    "@babel/plugin-transform-instanceof"
   ],
   "presets": ["@babel/preset-env"],
   "env": {

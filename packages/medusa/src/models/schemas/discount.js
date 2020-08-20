@@ -3,7 +3,6 @@ import mongoose from "mongoose"
 import DiscountRule from "./discount-rule"
 
 export default new mongoose.Schema({
-  is_giftcard: { type: Boolean },
   code: { type: String },
   discount_rule: { type: DiscountRule },
   usage_count: { type: Number },

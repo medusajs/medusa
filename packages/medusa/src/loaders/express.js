@@ -1,4 +1,5 @@
 import express from "express"
+import bodyParser from "body-parser"
 import session from "client-sessions"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
@@ -13,6 +14,7 @@ export default async ({ app }) => {
     })
   )
   app.use(cookieParser())
+  app.use(bodyParser.json())
   app.use(
     session({
       cookieName: "session",
