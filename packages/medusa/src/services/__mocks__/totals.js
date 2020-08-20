@@ -5,6 +5,9 @@ export const TotalsServiceMock = {
     if (cart.total) {
       return cart.total
     }
+    if (cart._id === IdMap.getId("processed-order")) {
+      return 1230
+    }
     return 0
   }),
   getSubtotal: jest.fn().mockImplementation(cart => {
@@ -14,6 +17,9 @@ export const TotalsServiceMock = {
     if (cart._id === IdMap.getId("discount-cart")) {
       return 280
     }
+    return 0
+  }),
+  getRefundedTotal: jest.fn().mockImplementation(order => {
     return 0
   }),
   getRefundTotal: jest.fn().mockImplementation((order, lineItems) => {

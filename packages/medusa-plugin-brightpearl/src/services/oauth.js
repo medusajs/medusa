@@ -24,6 +24,17 @@ class BrightpearlOauth extends OauthService {
     }
   }
 
+  async refreshToken(refreshToken) {
+    const params = {
+      refresh_token: refreshToken,
+      client_id: "medusa-dev",
+      client_secret: CLIENT_SECRET,
+    }
+
+    const data = await Brightpearl.refreshToken(this.account_, params)
+    return data
+  }
+
   async generateToken(code) {
     const params = {
       client_id: "medusa-dev",

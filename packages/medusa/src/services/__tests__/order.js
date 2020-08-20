@@ -15,12 +15,14 @@ import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { RegionServiceMock } from "../__mocks__/region"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { CounterServiceMock } from "../__mocks__/counter"
 
 describe("OrderService", () => {
   describe("create", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       eventBusService: EventBusServiceMock,
+      counterService: CounterServiceMock,
     })
 
     beforeEach(async () => {
@@ -46,6 +48,7 @@ describe("OrderService", () => {
       discountService: DiscountServiceMock,
       regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
+      counterService: CounterServiceMock,
     })
 
     beforeEach(async () => {
@@ -59,6 +62,7 @@ describe("OrderService", () => {
         ...carts.completeCart,
         currency_code: "eur",
         cart_id: carts.completeCart._id,
+        display_id: "1233",
         tax_rate: 0.25,
       }
       delete order._id
@@ -75,6 +79,7 @@ describe("OrderService", () => {
 
       const order = {
         ...carts.withGiftCard,
+        display_id: "1233",
         items: [
           {
             _id: IdMap.getId("existingLine"),
@@ -469,6 +474,7 @@ describe("OrderService", () => {
                     },
                   ],
                   provider_id: "default_provider",
+                  metadata: {},
                 },
               ],
             },
@@ -712,6 +718,7 @@ describe("OrderService", () => {
                   quantity: 1,
                 },
                 quantity: 10,
+                returned_quantity: 0,
               },
             ],
             fulfillment_status: "partially_returned",

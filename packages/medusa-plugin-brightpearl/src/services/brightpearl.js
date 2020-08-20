@@ -40,12 +40,25 @@ class BrightpearlService extends BaseService {
       )
     }
 
-    const client = new Brightpearl({
-      account: this.options.account,
-      url: data.api_domain,
-      auth_type: data.token_type,
-      access_token: data.access_token,
-    })
+    const client = new Brightpearl(
+      {
+        account: this.options.account,
+        url: data.api_domain,
+        auth_type: data.token_type,
+        access_token: data.access_token,
+      },
+      async (client) => {
+        const newAuth = await this.oauthService_.refreshToken(
+          "brightpearl",
+          data.refresh_token
+        )
+        console.log(newAuth)
+        client.updateAuth({
+          auth_type: newAuth.token_type,
+          access_token: newAuth.access_token,
+        })
+      }
+    )
 
     this.authData_ = data
     this.brightpearlClient_ = client
@@ -542,6 +555,11 @@ class BrightpearlService extends BaseService {
     })
   }
 
+  async retrieveProduct(byId) {
+    const client = await this.getClient()
+    return client.products.retrieve(byId)
+  }
+
   async retrieveProductBySKU(sku) {
     const client = await this.getClient()
     return client.products.retrieveBySKU(sku).then((products) => {
@@ -559,8 +577,6 @@ class BrightpearlService extends BaseService {
     const goodsOut = await client.warehouses.retrieveGoodsOutNote(id)
     const order = await client.orders.retrieve(goodsOut.orderId)
 
-    console.log(order)
-
     // Combine the line items that we are going to create a fulfillment for
     const lines = Object.keys(goodsOut.orderRows)
       .map((key) => {
@@ -576,7 +592,7 @@ class BrightpearlService extends BaseService {
       })
       .filter((i) => !!i)
 
-    return this.orderService_.createFulfillment(order.ref, lines, {
+    return this.orderService_.createFulfillment(order.externalRef, lines, {
       goods_out_note: id,
     })
   }

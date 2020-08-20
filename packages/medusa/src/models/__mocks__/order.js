@@ -99,6 +99,7 @@ export const orders = {
           quantity: 1,
         },
         quantity: 10,
+        returned_quantity: 0,
       },
     ],
     region_id: IdMap.getId("region-france"),
@@ -166,6 +167,7 @@ export const orders = {
           quantity: 1,
         },
         quantity: 10,
+        returned_quantity: 0,
       },
       {
         _id: IdMap.getId("existingLine2"),
@@ -183,6 +185,7 @@ export const orders = {
           quantity: 1,
         },
         quantity: 10,
+        returned_quantity: 0,
       },
     ],
     region_id: IdMap.getId("region-france"),
