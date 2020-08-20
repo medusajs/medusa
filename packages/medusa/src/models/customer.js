@@ -11,9 +11,11 @@ class CustomerModel extends BaseModel {
 
   static schema = {
     email: { type: String, required: true, unique: true },
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
+    first_name: { type: String },
+    last_name: { type: String },
     billing_address: { type: AddressSchema },
+    payment_methods: { type: [mongoose.Schema.Types.Mixed], default: [] },
+    shipping_addresses: { type: [AddressSchema], default: [] },
     password_hash: { type: String },
     has_account: { type: Boolean, default: false },
     orders: { type: [String], default: [] },

@@ -32,6 +32,11 @@ class PaymentProviderService {
     return provider.updatePayment(paymentSession.data, cart)
   }
 
+  deleteSession(paymentSession) {
+    const provider = this.retrieveProvider(paymentSession.provider_id)
+    return provider.deletePayment(paymentSession.data)
+  }
+
   /**
    * Finds a provider given an id
    * @param {string} providerId - the id of the provider to get

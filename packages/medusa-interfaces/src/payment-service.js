@@ -11,6 +11,10 @@ class BasePaymentService extends BaseService {
     super()
   }
 
+  getIdentifier() {
+    return this.constructor.identifier
+  }
+
   /**
    * Used to create a payment to be processed with the service's payment gateway.
    * @param cart {object} - the cart that the payment should cover.
@@ -60,6 +64,14 @@ class BasePaymentService extends BaseService {
 
   deletePayment() {
     throw Error("deletePayment must be overridden by the child class")
+  }
+
+  /**
+   * If the payment provider can save a payment method this function will
+   * retrieve them.
+   */
+  retrieveSavedMethods(customer) {
+    return Promise.resolve([])
   }
 }
 

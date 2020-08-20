@@ -22,7 +22,7 @@ describe("GET /admin/shipping-options", () => {
 
     it("calls service retrieve", () => {
       expect(ShippingOptionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionServiceMock.list).toHaveBeenCalledWith()
+      expect(ShippingOptionServiceMock.list).toHaveBeenCalledWith({})
     })
   })
 })

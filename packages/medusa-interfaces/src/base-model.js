@@ -45,13 +45,19 @@ class BaseModel {
   }
 
   /**
+   */
+  startSession() {
+    return this.mongooseModel_.startSession()
+  }
+
+  /**
    * Queries the mongoose model via the mongoose's findOne.
    * @param query {object} a mongoose selector query
    * @param options {?object=} mongoose options
    * @return {?mongoose.Document} the retreived mongoose document or null.
    */
   findOne(query, options = {}) {
-    return this.mongooseModel_.findOne(query, options)
+    return this.mongooseModel_.findOne(query, options).lean()
   }
 
   /**
@@ -62,7 +68,7 @@ class BaseModel {
    * an empty array
    */
   find(query, options) {
-    return this.mongooseModel_.find(query, options)
+    return this.mongooseModel_.find(query, options).lean()
   }
 
   /**
@@ -74,7 +80,7 @@ class BaseModel {
    */
   updateOne(query, update, options = {}) {
     options.new = true
-    return this.mongooseModel_.findOneAndUpdate(query, update, options)
+    return this.mongooseModel_.findOneAndUpdate(query, update, options).lean()
   }
 
   /**

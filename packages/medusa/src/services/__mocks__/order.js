@@ -125,7 +125,18 @@ export const OrderServiceMock = {
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(orders.testOrder)
   }),
-  update: jest.fn().mockImplementation(data => Promise.resolve()),
+  createFromCart: jest.fn().mockImplementation(data => {
+    return Promise.resolve(orders.testOrder)
+  }),
+  update: jest.fn().mockImplementation(data => {
+    if (data === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    if (data === IdMap.getId("processed-order")) {
+      return Promise.resolve(orders.processedOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
   retrieve: jest.fn().mockImplementation(orderId => {
     if (orderId === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
@@ -134,6 +145,9 @@ export const OrderServiceMock = {
       return Promise.resolve(orders.processedOrder)
     }
     return Promise.resolve(undefined)
+  }),
+  retrieveByCartId: jest.fn().mockImplementation(cartId => {
+    return Promise.resolve()
   }),
   decorate: jest.fn().mockImplementation(order => {
     order.decorated = true

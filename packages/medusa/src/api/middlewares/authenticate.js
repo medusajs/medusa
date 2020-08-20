@@ -1,5 +1,7 @@
 import passport from "passport"
 
 export default () => {
-  return passport.authenticate(["jwt", "bearer"], { session: false })
+  return (req, res, next) => {
+    passport.authenticate(["jwt", "bearer"], { session: false })(req, res, next)
+  }
 }

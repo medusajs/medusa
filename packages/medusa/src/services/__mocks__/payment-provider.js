@@ -10,6 +10,9 @@ export const DefaultProviderMock = {
 
     return Promise.resolve("initial")
   }),
+  retrievePayment: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
   capturePayment: jest.fn().mockReturnValue(Promise.resolve()),
   refundPayment: jest.fn().mockReturnValue(Promise.resolve()),
 }
@@ -17,20 +20,14 @@ export const DefaultProviderMock = {
 export const PaymentProviderServiceMock = {
   updateSession: jest.fn().mockImplementation((session, cart) => {
     return Promise.resolve({
-      provider_id: session.provider_id,
-      data: {
-        ...session.data,
-        id: `${session.data.id}_updated`,
-      },
+      ...session.data,
+      id: `${session.data.id}_updated`,
     })
   }),
   createSession: jest.fn().mockImplementation((providerId, cart) => {
     return Promise.resolve({
-      provider_id: providerId,
-      data: {
-        id: `${providerId}_session`,
-        cartId: cart._id,
-      },
+      id: `${providerId}_session`,
+      cartId: cart._id,
     })
   }),
   retrieveProvider: jest.fn().mockImplementation(providerId => {

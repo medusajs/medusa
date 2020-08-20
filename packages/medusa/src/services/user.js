@@ -9,6 +9,10 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class UserService extends BaseService {
+  static Events = {
+    PASSWORD_RESET: "user.password_reset",
+  }
+
   constructor({ userModel, eventBusService }) {
     super()
 
@@ -245,6 +249,11 @@ class UserService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { user_id: user._id, exp: expiry }
     const token = jwt.sign(payload, secret)
+    // Notify subscribers
+    this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
+      email: user.email,
+      token,
+    })
     return token
   }
 
@@ -270,7 +279,7 @@ class UserService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(userId, key, value) {
+  async setMetadata(userId, key, value) {
     const validatedId = this.validateId_(userId)
 
     if (typeof key !== "string") {
@@ -283,6 +292,30 @@ class UserService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.userModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a user.
+   * @param {string} userId - the user to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(userId, key) {
+    const validatedId = this.validateId_(userId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.userModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

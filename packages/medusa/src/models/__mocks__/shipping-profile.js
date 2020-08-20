@@ -11,7 +11,13 @@ export const profiles = {
     _id: IdMap.getId("profile1"),
     name: "Profile One",
     products: [IdMap.getId("product1")],
-    shipping_options: [IdMap.getId("shipping1")],
+    shipping_options: [IdMap.getId("shipping_1")],
+  },
+  profile2: {
+    _id: IdMap.getId("profile2"),
+    name: "Profile two",
+    products: [IdMap.getId("product2")],
+    shipping_options: [IdMap.getId("shipping_2")],
   },
 }
 
@@ -21,6 +27,10 @@ export const ShippingProfileModelMock = {
     return Promise.resolve()
   }),
   find: jest.fn().mockImplementation(query => {
+    if (query.products && query.products.$in) {
+      return Promise.resolve([profiles.profile1, profiles.profile2])
+    }
+
     return Promise.resolve([])
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
