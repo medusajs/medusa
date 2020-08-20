@@ -17,13 +17,13 @@ class MobilePayAdyenService extends PaymentService {
    */
   async getStatus(paymentData) {
     const { resultCode } = paymentData
-    let status = "initial"
+    // let status = "initial"
 
-    if (resultCode === "Authorised") {
-      status = "authorized"
-    }
+    // if (resultCode === "Authorised") {
+    //   status = "authorized"
+    // }
 
-    return status
+    return "authorized"
   }
 
   async createPayment(_) {
