@@ -169,12 +169,6 @@ class AdyenService extends BaseService {
           "Could not process capture"
         )
       }
-      
-      // await this.orderService_.setMetadata(
-      //   orderId,
-      //   "adyen_capture_reference",
-      //   captureData.data.pspReference
-      // )
 
       return captured
     } catch (error) {
