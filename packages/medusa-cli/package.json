@@ -11,6 +11,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-cli"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
@@ -44,5 +47,5 @@
     "resolve-cwd": "^3.0.0",
     "yargs": "^15.3.1"
   },
-  "gitHead": "b26bba807b22461c0495a2fe193b25a412723ced"
+  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
 }
