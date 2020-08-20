@@ -22,10 +22,10 @@ class TotalsService extends BaseService {
    * @return {int} the calculated subtotal
    */
   async getTotal(object) {
-    const subtotal = this.getSubtotal(object)
+    const subtotal = await this.getSubtotal(object)
     const taxTotal = await this.getTaxTotal(object)
     const discountTotal = await this.getDiscountTotal(object)
-    const shippingTotal = this.getShippingTotal(object)
+    const shippingTotal = await this.getShippingTotal(object)
 
     return subtotal + taxTotal + shippingTotal - discountTotal
   }
@@ -74,9 +74,41 @@ class TotalsService extends BaseService {
   async getTaxTotal(object) {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
+    const discountTotal = await this.getDiscountTotal(object)
     const region = await this.regionService_.retrieve(object.region_id)
     const { tax_rate } = region
-    return (subtotal + shippingTotal) * tax_rate
+    return (subtotal - discountTotal + shippingTotal) * tax_rate
+  }
+
+  getRefundedTotal(object) {
+    const total = object.refunds.reduce((acc, next) => acc + next.amount, 0)
+    return total
+  }
+
+  getLineItemRefund(order, lineItem) {
+    const { tax_rate, discounts } = order
+    const taxRate = tax_rate || 0
+
+    const discount = discounts.find(
+      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+    )
+
+    if (!discount) {
+      return lineItem.content.unit_price * lineItem.quantity * (1 + taxRate)
+    }
+
+    const lineDiscounts = this.getLineDiscounts(order, discount)
+    const discountedLine = lineDiscounts.find(line =>
+      line.item._id.equals(lineItem._id)
+    )
+
+    const discountAmount =
+      (discountedLine.amount / discountedLine.item.quantity) * lineItem.quantity
+
+    return (
+      (lineItem.content.unit_price * lineItem.quantity - discountAmount) *
+      (1 + taxRate)
+    )
   }
 
   /**
@@ -87,101 +119,9 @@ class TotalsService extends BaseService {
    * @param {[LineItem]} lineItems -
    * @return {int} the calculated subtotal
    */
-  async getRefundTotal(order, lineItems) {
-    const discount = order.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
-    )
-
-    if (_.differenceBy(lineItems, order.items, "_id").length !== 0) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Line items does not exist on order"
-      )
-    }
-
-    const subtotal = this.getSubtotal({ items: lineItems })
-
-    const region = await this.regionService_.retrieve(order.region_id)
-
-    // if nothing is discounted, return the subtotal of line items
-    if (!discount) {
-      return subtotal * (1 + region.tax_rate)
-    }
-
-    const { value, type, allocation } = discount.discount_rule
-
-    if (type === "percentage" && allocation === "total") {
-      const discountTotal = (subtotal / 100) * value
-      return subtotal - discountTotal
-    }
-
-    if (type === "fixed" && allocation === "total") {
-      return subtotal - value
-    }
-
-    if (type === "percentage" && allocation === "item") {
-      // Find discounted items
-      const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
-        discount,
-        { items: lineItems },
-        "percentage"
-      )
-
-      // Find discount total by taking each discounted item, reducing it by
-      // its discount value. Then summing all those items together.
-      const discountRefundTotal = _.sumBy(
-        itemPercentageDiscounts,
-        d => d.lineItem.content.unit_price * d.lineItem.quantity - d.amount
-      )
-
-      // Find the items that weren't discounted
-      const notDiscountedItems = _.differenceBy(
-        lineItems,
-        Array.from(itemPercentageDiscounts, el => el.lineItem),
-        "_id"
-      )
-
-      // If all items were discounted, we return the total of the discounted
-      // items
-      if (!notDiscountedItems) {
-        return discountRefundTotal
-      }
-
-      // Otherwise, we find the total those not discounted
-      const notDiscRefundTotal = this.getSubtotal({ items: notDiscountedItems })
-
-      // Finally, return the sum of discounted and not discounted items
-      return notDiscRefundTotal + discountRefundTotal
-    }
-
-    // See immediate `if`-statement above for a elaboration on the following
-    // calculations. This time with fixed discount type.
-    if (type === "fixed" && allocation === "item") {
-      const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
-        discount,
-        { items: lineItems },
-        "fixed"
-      )
-
-      const discountRefundTotal = _.sumBy(
-        itemPercentageDiscounts,
-        d => d.lineItem.content.unit_price * d.lineItem.quantity - d.amount
-      )
-
-      const notDiscountedItems = _.differenceBy(
-        lineItems,
-        Array.from(itemPercentageDiscounts, el => el.lineItem),
-        "_id"
-      )
-
-      if (!notDiscountedItems) {
-        return notDiscRefundTotal
-      }
-
-      const notDiscRefundTotal = this.getSubtotal({ items: notDiscountedItems })
-
-      return notDiscRefundTotal + discountRefundTotal
-    }
+  getRefundTotal(order, lineItems) {
+    const refunds = lineItems.map(i => this.getLineItemRefund(order, i))
+    return refunds.reduce((acc, next) => acc + next, 0)
   }
 
   /**
@@ -224,7 +164,7 @@ class TotalsService extends BaseService {
    * @return {[{ string, string, int }]} array of triples of lineitem, variant
    *    and applied discount
    */
-  async getAllocationItemDiscounts(discount, cart) {
+  getAllocationItemDiscounts(discount, cart) {
     const discounts = []
     for (const item of cart.items) {
       if (discount.discount_rule.valid_for.length > 0) {
@@ -251,6 +191,45 @@ class TotalsService extends BaseService {
     return discounts
   }
 
+  getLineDiscounts(cart, discount) {
+    const subtotal = this.getSubtotal(cart)
+    const { type, allocation, value } = discount.discount_rule
+    if (allocation === "total") {
+      let percentage = 0
+      if (type === "percentage") {
+        percentage = value / 100
+      } else if (type === "fixed") {
+        percentage = value / subtotal
+      }
+
+      return cart.items.map(item => {
+        const lineTotal = item.content.unit_price * item.quantity
+
+        return {
+          item,
+          amount: lineTotal * percentage,
+        }
+      })
+    } else if (allocation === "item") {
+      const allocationDiscounts = this.getAllocationItemDiscounts(
+        discount,
+        cart,
+        type
+      )
+      return cart.items.map(item => {
+        const discounted = allocationDiscounts.find(a =>
+          a.lineItem._id.equals(item._id)
+        )
+        return {
+          item,
+          amount: !!discounted ? discounted.amount : 0,
+        }
+      })
+    }
+
+    return cart.items.map(i => ({ item: i, amount: 0 }))
+  }
+
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
@@ -260,7 +239,7 @@ class TotalsService extends BaseService {
   async getDiscountTotal(cart) {
     let subtotal = this.getSubtotal(cart)
 
-    if (!cart.discounts) {
+    if (!cart.discounts || !cart.discounts.length) {
       return 0
     }
 
@@ -291,36 +270,29 @@ class TotalsService extends BaseService {
     }
 
     const { type, allocation, value } = discount.discount_rule
+    let toReturn = 0
 
     if (type === "percentage" && allocation === "total") {
-      return (subtotal / 100) * value
-    }
-
-    if (type === "percentage" && allocation === "item") {
+      toReturn = (subtotal / 100) * value
+    } else if (type === "percentage" && allocation === "item") {
       const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
         discount,
         cart,
         "percentage"
       )
-      const totalDiscount = _.sumBy(itemPercentageDiscounts, d => d.amount)
-      return totalDiscount
-    }
-
-    if (type === "fixed" && allocation === "total") {
-      return value
-    }
-
-    if (type === "fixed" && allocation === "item") {
+      toReturn = _.sumBy(itemPercentageDiscounts, d => d.amount)
+    } else if (type === "fixed" && allocation === "total") {
+      toReturn = value
+    } else if (type === "fixed" && allocation === "item") {
       const itemFixedDiscounts = await this.getAllocationItemDiscounts(
         discount,
         cart,
         "fixed"
       )
-      const totalDiscount = _.sumBy(itemFixedDiscounts, d => d.amount)
-      return totalDiscount
+      toReturn = _.sumBy(itemFixedDiscounts, d => d.amount)
     }
 
-    return 0
+    return Math.min(subtotal, toReturn)
   }
 }
 

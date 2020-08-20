@@ -1,6 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import {
+  ProductServiceMock,
+  products,
+} from "../../../../../services/__mocks__/product"
 
 describe("DELETE /admin/products/:id/options/:optionId", () => {
   describe("successfully updates an option", () => {
@@ -28,6 +31,7 @@ describe("DELETE /admin/products/:id/options/:optionId", () => {
         option_id: IdMap.getId("option1"),
         object: "option",
         deleted: true,
+        product: products.productWithOptions,
       })
     })
 

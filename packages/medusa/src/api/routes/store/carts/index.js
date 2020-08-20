@@ -20,11 +20,25 @@ export default app => {
     "/:id/line-items/:line_id",
     middlewares.wrap(require("./update-line-item").default)
   )
+  route.delete(
+    "/:id/line-items/:line_id",
+    middlewares.wrap(require("./delete-line-item").default)
+  )
+
+  route.delete(
+    "/:id/discounts/:code",
+    middlewares.wrap(require("./delete-discount").default)
+  )
 
   // Payment sessions
   route.post(
     "/:id/payment-sessions",
     middlewares.wrap(require("./create-payment-sessions").default)
+  )
+
+  route.delete(
+    "/:id/payment-sessions/:provider_id",
+    middlewares.wrap(require("./delete-payment-session").default)
   )
   route.post(
     "/:id/payment-method",
@@ -32,10 +46,6 @@ export default app => {
   )
 
   // Shipping Options
-  route.post(
-    "/:id/shipping-options",
-    middlewares.wrap(require("./create-shipping-options").default)
-  )
   route.post(
     "/:id/shipping-methods",
     middlewares.wrap(require("./add-shipping-method").default)

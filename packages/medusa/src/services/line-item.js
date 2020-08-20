@@ -37,8 +37,13 @@ class LineItemService extends BaseService {
 
     const lineItemSchema = Validator.object({
       title: Validator.string().required(),
-      description: Validator.string(),
-      thumbnail: Validator.string(),
+      is_giftcard: Validator.bool().optional(),
+      description: Validator.string()
+        .allow("")
+        .optional(),
+      thumbnail: Validator.string()
+        .allow("")
+        .optional(),
       content: Validator.alternatives()
         .try(content, Validator.array().items(content))
         .required(),
@@ -46,7 +51,7 @@ class LineItemService extends BaseService {
         .integer()
         .min(1)
         .required(),
-      metadata: Validator.object(),
+      metadata: Validator.object().default({}),
     })
 
     const { value, error } = lineItemSchema.validate(rawLineItem)
@@ -79,8 +84,9 @@ class LineItemService extends BaseService {
    * @param {string} variantId - id of the line item variant
    * @param {*} regionId - id of the cart region
    * @param {*} quantity - number of items
+   * @param {object} metadata - metadata for the line item
    */
-  async generate(variantId, regionId, quantity) {
+  async generate(variantId, regionId, quantity, metadata = {}) {
     const variant = await this.productVariantService_.retrieve(variantId)
     const region = await this.regionService_.retrieve(regionId)
 
@@ -100,7 +106,7 @@ class LineItemService extends BaseService {
       region._id
     )
 
-    return {
+    const line = {
       title: product.title,
       description: variant.title,
       quantity,
@@ -112,6 +118,35 @@ class LineItemService extends BaseService {
         quantity: 1,
       },
     }
+
+    if (product.is_giftcard) {
+      line.is_giftcard = true
+      line.metadata = metadata
+    }
+
+    return line
+  }
+
+  isEqual(line, match) {
+    if (Array.isArray(line.content)) {
+      if (
+        Array.isArray(match.content) &&
+        match.content.length === line.content.length
+      ) {
+        return line.content.every(
+          (c, index) =>
+            c.variant._id.equals(match[index].variant._id) &&
+            c.quantity === match[index].quantity
+        )
+      }
+    } else if (!Array.isArray(match.content)) {
+      return (
+        line.content.variant._id.equals(match.content.variant._id) &&
+        line.content.quantity === match.content.quantity
+      )
+    }
+
+    return false
   }
 }
 

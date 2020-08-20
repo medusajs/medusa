@@ -146,7 +146,7 @@ describe("ShippingProfileService", () => {
 
     it("throws error on invalid profileId type", async () => {
       try {
-        await profileService.setMetadata("fakeProfileId", 1234, "nono")
+        await profileService.setMetadata("fakeProfileId", "1234", "nono")
       } catch (err) {
         expect(err.message).toEqual(
           "The profileId could not be casted to an ObjectId"
@@ -350,6 +350,37 @@ describe("ShippingProfileService", () => {
       })
 
       expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(0)
+    })
+  })
+
+  describe("fetchCartOptions", () => {
+    const profileService = new ShippingProfileService({
+      shippingProfileModel: ShippingProfileModelMock,
+      shippingOptionService: ShippingOptionServiceMock,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("fetches correct options", async () => {
+      await profileService.fetchCartOptions({
+        items: [
+          {
+            content: { product: { _id: IdMap.getId("product_1") } },
+          },
+          {
+            content: { product: { _id: IdMap.getId("product_2") } },
+          },
+        ],
+      })
+
+      expect(ShippingProfileModelMock.find).toBeCalledTimes(1)
+      expect(ShippingProfileModelMock.find).toBeCalledWith({
+        products: { $in: [IdMap.getId("product_1"), IdMap.getId("product_2")] },
+      })
+
+      expect(ShippingOptionServiceMock.validateCartOption).toBeCalledTimes(2)
     })
   })
 

@@ -12,7 +12,7 @@ class ContentfulSubscriber {
     })
 
     this.eventBus_.subscribe("product.created", async (data) => {
-      await this.contentfulService_.createProductVariantInContentful(data)
+      await this.contentfulService_.createProductInContentful(data)
     })
   }
 }

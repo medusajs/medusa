@@ -143,10 +143,58 @@ class ProductService extends BaseService {
     }
 
     if (update.variants) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use addVariant, reorderVariants, removeVariant to update Product Variants"
+      const existingVariants = await this.retrieveVariants(validatedId)
+      for (const existing of existingVariants) {
+        if (!update.variants.find(v => v._id && existing._id.equals(v._id))) {
+          await this.deleteVariant(productId, existing._id)
+        }
+      }
+
+      await Promise.all(
+        update.variants.map(async variant => {
+          if (variant._id) {
+            if (variant.prices && variant.prices.length) {
+              for (const price of variant.prices) {
+                if (price.region_id) {
+                  await this.productVariantService_.setRegionPrice(
+                    variant._id,
+                    price.region_id,
+                    price.amount
+                  )
+                } else {
+                  await this.productVariantService_.setCurrencyPrice(
+                    variant._id,
+                    price.currency_code,
+                    price.amount
+                  )
+                }
+              }
+            }
+
+            if (variant.options && variant.options.length) {
+              for (const option of variant.options) {
+                await this.updateOptionValue(
+                  productId,
+                  variant._id,
+                  option.option_id,
+                  option.value
+                )
+              }
+            }
+
+            delete variant.prices
+            delete variant.options
+
+            if (!_.isEmpty(variant)) {
+              await this.productVariantService_.update(variant._id, variant)
+            }
+          } else {
+            await this.createVariant(productId, variant).then(res => res._id)
+          }
+        })
       )
+
+      delete update.variants
     }
 
     return this.productModel_
@@ -426,7 +474,7 @@ class ProductService extends BaseService {
   async updateOption(productId, optionId, data) {
     const product = await this.retrieve(productId)
 
-    const option = product.options.find(o => o._id === optionId)
+    const option = product.options.find(o => o._id.equals(optionId))
     if (!option) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -436,7 +484,8 @@ class ProductService extends BaseService {
 
     const { title, values } = data
     const titleExists = product.options.some(
-      o => o.title.toUpperCase() === title.toUpperCase()
+      o =>
+        o.title.toUpperCase() === title.toUpperCase() && !o._id.equals(optionId)
     )
 
     if (titleExists) {
@@ -526,13 +575,14 @@ class ProductService extends BaseService {
       )
       .then(result => {
         this.eventBus_.emit(ProductService.Events.UPDATED, result)
+        return result
       })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
 
     // If we reached this point, we can delete option value from variants
-    if (product.variants) {
+    if (product.variants.length) {
       await Promise.all(
         product.variants.map(async variantId =>
           this.productVariantService_.deleteOptionValue(variantId, optionId)
@@ -649,7 +699,7 @@ class ProductService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(productId, key, value) {
+  async setMetadata(productId, key, value) {
     const validatedId = this.validateId_(productId)
 
     if (typeof key !== "string") {
@@ -666,6 +716,30 @@ class ProductService extends BaseService {
         this.eventBus_.emit(ProductService.Events.UPDATED, result)
         return result
       })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a product.
+   * @param {string} productId - the product to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(productId, key) {
+    const validatedId = this.validateId_(productId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.productModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

@@ -32,10 +32,6 @@ class ContentfulService extends BaseService {
           return reject(err)
         }
 
-        if (reply) {
-          return reject("Missing key")
-        }
-
         return resolve(JSON.parse(reply))
       })
     })
@@ -51,24 +47,26 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async getVariantEntries_(variantEntryIds) {
-    if (!variantEntryIds) {
-      return []
-    }
-
+  async getVariantEntries_(productId) {
     try {
-      const environment = await this.getContentfulEnvironment_()
-      return Promise.all(variantEntryIds.map((v) => environment.getEntry(v)))
+      const productVariants = await this.productService_.retrieveVariants(
+        productId
+      )
+
+      const contentfulVariants = await Promise.all(
+        productVariants.map((variant) =>
+          this.updateProductVariantInContentful(variant)
+        )
+      )
+
+      return contentfulVariants
     } catch (error) {
+      console.log(error)
       throw error
     }
   }
 
-  async getVariantLinks_(variantEntries) {
-    if (!variantEntries) {
-      return []
-    }
-
+  getVariantLinks_(variantEntries) {
     return variantEntries.map((v) => ({
       sys: {
         type: "Link",
@@ -81,20 +79,30 @@ class ContentfulService extends BaseService {
   async createProductInContentful(product) {
     try {
       const environment = await this.getContentfulEnvironment_()
-      const variantEntries = await this.getVariantEntries_(product.variants)
-      return environment.createEntryWithId("product", product._id, {
-        fields: {
-          title: {
-            "en-US": product.title,
+      const variantEntries = await this.getVariantEntries_(product._id)
+      const variantLinks = this.getVariantLinks_(variantEntries)
+      const result = await environment.createEntryWithId(
+        "product",
+        product._id,
+        {
+          fields: {
+            title: {
+              "en-US": product.title,
+            },
+            variants: {
+              "en-US": variantLinks,
+            },
+            objectId: {
+              "en-US": product._id,
+            },
           },
-          variants: {
-            "en-US": this.getVariantLinks_(variantEntries),
-          },
-          objectId: {
-            "en-US": product._id,
-          },
-        },
-      })
+        }
+      )
+
+      const ignoreIds = (await this.getIgnoreIds_("product")) || []
+      ignoreIds.push(product._id)
+      this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      return result
     } catch (error) {
       throw error
     }
@@ -103,22 +111,31 @@ class ContentfulService extends BaseService {
   async createProductVariantInContentful(variant) {
     try {
       const environment = await this.getContentfulEnvironment_()
-      return environment.createEntryWithId("productVariant", variant._id, {
-        fields: {
-          title: {
-            "en-US": variant.title,
+      const result = await environment.createEntryWithId(
+        "productVariant",
+        variant._id,
+        {
+          fields: {
+            title: {
+              "en-US": variant.title,
+            },
+            sku: {
+              "en-US": variant.sku,
+            },
+            prices: {
+              "en-US": variant.prices,
+            },
+            objectId: {
+              "en-US": variant._id,
+            },
           },
-          sku: {
-            "en-US": variant.sku,
-          },
-          prices: {
-            "en-US": variant.prices,
-          },
-          objectId: {
-            "en-US": variant._id,
-          },
-        },
-      })
+        }
+      )
+
+      const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
+      ignoreIds.push(variant._id)
+      this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      return result
     } catch (error) {
       throw error
     }
@@ -126,34 +143,46 @@ class ContentfulService extends BaseService {
 
   async updateProductInContentful(product) {
     try {
+      const ignoreIds = (await this.getIgnoreIds_("product")) || []
+
+      if (ignoreIds.includes(product._id)) {
+        const newIgnoreIds = ignoreIds.filter((id) => id !== product._id)
+        this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
+        return
+      } else {
+        ignoreIds.push(product._id)
+        this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      }
+
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let productEntry = undefined
       try {
         productEntry = await environment.getEntry(product._id)
       } catch (error) {
+        console.log(error)
         return this.createProductInContentful(product)
       }
 
-      const variantEntries = await this.getVariantEntries_(product.variants)
+      const variantEntries = await this.getVariantEntries_(product._id)
+      const variantLinks = this.getVariantLinks_(variantEntries)
       productEntry.fields = _.assignIn(productEntry.fields, {
         title: {
           "en-US": product.title,
         },
+        options: {
+          "en-US": product.options,
+        },
         variants: {
-          "en-US": this.getVariantLinks_(variantEntries),
+          "en-US": variantLinks,
+        },
+        objectId: {
+          "en-US": product._id,
         },
       })
 
-      await productEntry.update()
-      const publishedEntry = await productEntry.publish()
-
-      const ignoreIds = await this.getIgnoreIds_("product")
-      if (ignoreIds.includes(publishedEntry.sys.id)) {
-        ignoreIds.filter((id) => id !== publishedEntry.sys.id)
-      } else {
-        this.eventBus_.emit("product.updated", publishedEntry)
-      }
+      const updatedEntry = await productEntry.update()
+      const publishedEntry = await updatedEntry.publish()
 
       return publishedEntry
     } catch (error) {
@@ -163,12 +192,27 @@ class ContentfulService extends BaseService {
 
   async updateProductVariantInContentful(variant) {
     try {
+      const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
+
+      if (ignoreIds.includes(variant._id)) {
+        const newIgnoreIds = ignoreIds.filter((id) => id !== variant._id)
+        this.redis_.set(
+          "product_variant_ignore_ids",
+          JSON.stringify(newIgnoreIds)
+        )
+        return
+      } else {
+        ignoreIds.push(variant._id)
+        this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      }
+
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let variantEntry = undefined
-      variantEntry = await environment.getEntry(variant._id)
       // if not, we create a new one
-      if (!variantEntry) {
+      try {
+        variantEntry = await environment.getEntry(variant._id)
+      } catch (error) {
         return this.createProductVariantInContentful(variant)
       }
 
@@ -179,6 +223,9 @@ class ContentfulService extends BaseService {
         sku: {
           "en-US": variant.sku,
         },
+        options: {
+          "en-US": variant.options,
+        },
         prices: {
           "en-US": variant.prices,
         },
@@ -187,15 +234,8 @@ class ContentfulService extends BaseService {
         },
       })
 
-      await variantEntry.update()
-      const publishedEntry = await variantEntry.publish()
-
-      const ignoreIds = await this.getIgnoreIds_("product_variant")
-      if (ignoreIds.includes(publishedEntry.sys.id)) {
-        ignoreIds.filter((id) => id !== publishedEntry.sys.id)
-      } else {
-        this.eventBus_.emit("product-variant.updated", publishedEntry)
-      }
+      const updatedEntry = await variantEntry.update()
+      const publishedEntry = await updatedEntry.publish()
 
       return publishedEntry
     } catch (error) {
@@ -203,22 +243,24 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async sendContentfulProductToAdmin(product) {
+  async sendContentfulProductToAdmin(productId) {
     try {
       const environment = await this.getContentfulEnvironment_()
-      const productEntry = await environment.getEntry(product.sys.id)
+      const productEntry = await environment.getEntry(productId)
 
-      const ignoreIds = await this.getIgnoreIds_("product")
-      ignoreIds.push(product.sys.id)
-      this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      const ignoreIds = (await this.getIgnoreIds_("product")) || []
+      if (ignoreIds.includes(productId)) {
+        const newIgnoreIds = ignoreIds.filter((id) => id !== productId)
+        this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
+        return
+      } else {
+        ignoreIds.push(productId)
+        this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      }
 
-      const updatedProduct = await this.productService_.update(
-        productEntry.objectId,
-        {
-          title: productEntry.fields.title["en-US"],
-          variants: productEntry.fields.variants["en-US"],
-        }
-      )
+      const updatedProduct = await this.productService_.update(productId, {
+        title: productEntry.fields.title["en-US"],
+      })
 
       return updatedProduct
     } catch (error) {
@@ -226,21 +268,28 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async sendContentfulProductVariantToAdmin(variant) {
+  async sendContentfulProductVariantToAdmin(variantId) {
     try {
       const environment = await this.getContentfulEnvironment_()
-      const variantEntry = await environment.getEntry(variant.sys.id)
+      const variantEntry = await environment.getEntry(variantId)
 
-      const ignoreIds = await this.getIgnoreIds_("product_variant")
-      ignoreIds.push(variant.sys.id)
-      this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
+      if (ignoreIds.includes(variantId)) {
+        const newIgnoreIds = ignoreIds.filter((id) => id !== variantId)
+        this.redis_.set(
+          "product_variant_ignore_ids",
+          JSON.stringify(newIgnoreIds)
+        )
+        return
+      } else {
+        ignoreIds.push(variantId)
+        this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      }
 
-      const updatedVariant = await this.variantService_.update(
-        variantEntry.objectId,
+      const updatedVariant = await this.productVariantService_.update(
+        variantId,
         {
           title: variantEntry.fields.title["en-US"],
-          sku: variantEntry.fields.sku["en-US"],
-          prices: variantEntry.fields.prices["en-US"],
         }
       )
 

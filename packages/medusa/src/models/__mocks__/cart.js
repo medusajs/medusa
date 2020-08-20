@@ -41,6 +41,7 @@ export const carts = {
   cartWithPaySessionsDifRegion: {
     _id: IdMap.getId("cartWithPaySessionsDifRegion"),
     region_id: IdMap.getId("region-france"),
+    total: 1,
     items: [
       {
         _id: IdMap.getId("existingLine"),
@@ -81,6 +82,7 @@ export const carts = {
   },
   cartWithPaySessions: {
     _id: IdMap.getId("cartWithPaySessions"),
+    total: 1,
     region_id: IdMap.getId("testRegion"),
     shipping_methods: [],
     items: [
@@ -123,6 +125,7 @@ export const carts = {
   },
   cartWithLine: {
     _id: IdMap.getId("cartWithLine"),
+    total: 1,
     title: "test",
     region_id: IdMap.getId("testRegion"),
     items: [
@@ -143,21 +146,132 @@ export const carts = {
         },
         quantity: 10,
       },
+      {
+        _id: IdMap.getId("itemToRemove"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 1,
+      },
     ],
     shipping_address: {},
     billing_address: {},
     discounts: [],
     customer_id: "",
   },
+  withGiftCard: {
+    _id: IdMap.getId("withGiftCard"),
+    region_id: IdMap.getId("region-france"),
+    items: [
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        is_giftcard: false,
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      },
+      {
+        _id: IdMap.getId("giftline"),
+        title: "GiftCard",
+        description: "Gift card line",
+        thumbnail: "test-img-yeah.com/thumb",
+        metadata: {
+          name: "Test Name",
+        },
+        is_giftcard: true,
+        content: {
+          unit_price: 100,
+          variant: {
+            _id: IdMap.getId("giftCardVar"),
+          },
+          product: {
+            _id: IdMap.getId("giftCardProd"),
+          },
+          quantity: 1,
+        },
+        quantity: 1,
+      },
+    ],
+    email: "test",
+    payment_sessions: [
+      {
+        provider_id: "default_provider",
+        data: {
+          money_id: "success",
+        },
+      },
+    ],
+    payment_method: {
+      provider_id: "default_provider",
+      data: {
+        money_id: "success",
+      },
+    },
+    shipping_methods: [
+      {
+        provider_id: "gls",
+        data: {
+          yes: "sir",
+        },
+      },
+    ],
+    shipping_address: {
+      first_name: "hi",
+      last_name: "you",
+      country_code: "DK",
+      city: "of lights",
+      address_1: "You bet street",
+      postal_code: "4242",
+    },
+    billing_address: {
+      first_name: "hi",
+      last_name: "you",
+      country_code: "DK",
+      city: "of lights",
+      address_1: "You bet street",
+      postal_code: "4242",
+    },
+    discounts: [],
+    customer_id: "",
+  },
   completeCart: {
     _id: IdMap.getId("complete-cart"),
-    title: "test",
     region_id: IdMap.getId("region-france"),
     items: [],
+    email: "test",
+    payment_sessions: [
+      {
+        provider_id: "default_provider",
+        data: {
+          money_id: "success",
+        },
+      },
+    ],
     payment_method: {
-      provider_id: "stripe",
+      provider_id: "default_provider",
       data: {
-        yes: "sir",
+        money_id: "success",
       },
     },
     shipping_methods: [
@@ -242,7 +356,7 @@ export const carts = {
     shipping_methods: [
       {
         _id: IdMap.getId("freeShipping"),
-        profile_id: "default_profile",
+        profile_id: IdMap.getId("default_profile"),
       },
     ],
     shipping_options: [

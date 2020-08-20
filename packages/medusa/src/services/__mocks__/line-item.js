@@ -8,7 +8,28 @@ export const LineItemServiceMock = {
     }
     return data
   }),
-  generate: jest.fn().mockImplementation((variantId, quantity, regionId) => {
+  isEqual: jest.fn().mockImplementation((line, match) => {
+    if (Array.isArray(line.content)) {
+      if (
+        Array.isArray(match.content) &&
+        match.content.length === line.content.length
+      ) {
+        return line.content.every(
+          (c, index) =>
+            c.variant._id === match[index].variant._id &&
+            c.quantity === match[index].quantity
+        )
+      }
+    } else if (!Array.isArray(match.content)) {
+      return (
+        line.content.variant._id === match.content.variant._id &&
+        line.content.quantity === match.content.quantity
+      )
+    }
+
+    return false
+  }),
+  generate: jest.fn().mockImplementation((variantId, regionId, quantity) => {
     if (variantId === IdMap.getId("fail") || regionId === IdMap.getId("fail")) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "Doesn't exist")
     }

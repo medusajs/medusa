@@ -35,7 +35,6 @@
     "@babel/runtime": "^7.9.6",
     "@hapi/joi": "^16.1.8",
     "chalk": "^4.0.0",
-    "clipboardy": "^2.3.0",
     "core-js": "^3.6.5",
     "fs-exists-cached": "^1.0.0",
     "joi-objectid": "^3.0.1",

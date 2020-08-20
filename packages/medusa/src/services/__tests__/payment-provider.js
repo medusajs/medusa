@@ -1,13 +1,10 @@
-import { createContainer, asValue } from "awilix"
 import PaymentProviderService from "../payment-provider"
 
 describe("ProductService", () => {
   describe("retrieveProvider", () => {
-    const container = createContainer()
-
-    container.register({
-      pp_default_provider: asValue("good"),
-    })
+    const container = {
+      pp_default_provider: "good",
+    }
 
     const providerService = new PaymentProviderService(container)
 

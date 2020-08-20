@@ -15,7 +15,7 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
 
     const cart = await cartService.retrieve(value.cartId)
-    let order = await orderService.create(cart)
+    let order = await orderService.createFromCart(cart)
     order = await orderService.decorate(order, [
       "status",
       "fulfillment_status",
@@ -34,6 +34,26 @@ export default async (req, res) => {
 
     res.status(200).json({ order })
   } catch (err) {
-    throw err
+    // If something fails it might be because the order has already been created
+    // if it has we find it from the cart id
+    const orderService = req.scope.resolve("orderService")
+    let order = await orderService.retrieveByCartId(value.cartId)
+    order = await orderService.decorate(order, [
+      "status",
+      "fulfillment_status",
+      "payment_status",
+      "email",
+      "billing_address",
+      "shipping_address",
+      "items",
+      "region",
+      "discounts",
+      "customer_id",
+      "payment_method",
+      "shipping_methods",
+      "metadata",
+    ])
+
+    res.status(200).json({ order })
   }
 }

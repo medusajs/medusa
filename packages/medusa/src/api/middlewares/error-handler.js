@@ -16,7 +16,7 @@ export default () => {
         break
       case MedusaError.Types.DB_ERROR:
         statusCode = 500
-        logger.error(err)
+        console.log(err)
         break
       default:
         break

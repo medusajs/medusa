@@ -28,7 +28,7 @@ class StoreService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -43,10 +43,12 @@ class StoreService extends BaseService {
    * Creates a store if it doesn't already exist.
    * @return {Promise<Store>} the store.
    */
-  async create() {
-    const store = await this.retrieve()
+  async create(providers) {
+    let store = await this.retrieve()
     if (!store) {
-      return this.storeModel_.create({})
+      return this.storeModel_.create(providers)
+    } else {
+      store = await this.update(providers)
     }
 
     return store
@@ -79,6 +81,16 @@ class StoreService extends BaseService {
         MedusaError.Types.INVALID_DATA,
         "Use setMetadata to update metadata fields"
       )
+    }
+
+    if (update.default_currency) {
+      update.default_currency = update.default_currency.toUpperCase()
+      if (!currencies[update.default_currency]) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid currency ${update.default_currency}`
+        )
+      }
     }
 
     if (update.currencies) {
