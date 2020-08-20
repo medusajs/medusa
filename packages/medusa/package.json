@@ -32,14 +32,11 @@
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-    "watch": "babel -w src --out-dir dist --ignore **/__tests__",
+    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
     "test": "jest"
-  },
-  "peerDependencies": {
-    "medusa-interfaces": "^0.3.0"
   },
   "peerDependencies": {
     "mongoose": "5.x"
@@ -65,10 +62,12 @@
     "medusa-interfaces": "^0.1.27",
     "medusa-test-utils": "^0.3.0",
     "morgan": "^1.9.1",
+    "multer": "^1.4.2",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "randomatic": "^3.1.1",
     "winston": "^3.2.1"
   },
   "gitHead": "35e0930650d5f4aedf2610749cd131ae8b7e17cc"

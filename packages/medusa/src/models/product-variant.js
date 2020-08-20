@@ -16,6 +16,8 @@ class ProductVariantModel extends BaseModel {
     sku: { type: String, default: "" },
     barcode: { type: String, default: "" },
     options: { type: [OptionValueSchema], default: [] },
+    sku: { type: String, unique: true, sparse: true },
+    ean: { type: String, unique: true, sparse: true },
     image: { type: String, default: "" },
     published: { type: Boolean, default: false },
     inventory_quantity: { type: Number, default: 0 },

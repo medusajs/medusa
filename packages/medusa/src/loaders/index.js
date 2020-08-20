@@ -4,9 +4,10 @@ import mongooseLoader from "./mongoose"
 import apiLoader from "./api"
 import modelsLoader from "./models"
 import servicesLoader from "./services"
+import subscribersLoader from "./subscribers"
 import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
-import storeLoader from "./store"
+import defaultsLoader from "./defaults"
 import Logger from "./logger"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
@@ -37,6 +38,9 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await servicesLoader({ container })
   Logger.info("Services initialized")
 
+  await subscribersLoader({ container })
+  Logger.info("Subscribers initialized")
+
   const dbConnection = await mongooseLoader({ container })
   Logger.info("MongoDB Intialized")
 
@@ -58,8 +62,8 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await apiLoader({ container, rootDirectory, app: expressApp })
   Logger.info("API initialized")
 
-  await storeLoader({ container })
-  Logger.info("Store initialized")
+  await defaultsLoader({ container })
+  Logger.info("Defaults initialized")
 
   return { container, dbConnection, app: expressApp }
 }

@@ -35,6 +35,13 @@ export const CustomerServiceMock = {
         password_hash: "1234",
       })
     }
+    if (email === "test@testdom.com") {
+      return Promise.resolve({
+        _id: IdMap.getId("testdom"),
+        email,
+        password_hash: "1234",
+      })
+    }
     if (email === "oliver@test.dk") {
       return bcrypt
         .hash("123456789", 10)

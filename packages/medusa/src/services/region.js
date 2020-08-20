@@ -154,7 +154,7 @@ class RegionService extends BaseService {
     }
 
     const existing = await this.regionModel_.findOne({ countries: countryCode })
-    if (existing && existing._id !== id) {
+    if (existing && !existing._id.equals(id)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         `${country.name} already exists in ${existing.name}, delete it in that region before adding it`
@@ -355,6 +355,19 @@ class RegionService extends BaseService {
         },
       }
     )
+  }
+
+  /**
+   * Decorates a region
+   * @param {object} region - the region to decorate
+   * @param {[string]} fields - the fields to include
+   * @param {[string]} expandFields - the fields to expand
+   * @return {Region} the region
+   */
+  async decorate(region, fields, expandFields = []) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(region, fields.concat(requiredFields))
+    return decorated
   }
 }
 

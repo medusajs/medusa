@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class StripeProviderService extends PaymentService {
   static identifier = "stripe"
 
-  constructor({ customerService, totalsService }, options) {
+  constructor({ customerService, totalsService, regionService }, options) {
     super()
 
     this.options_ = options
@@ -13,6 +13,8 @@ class StripeProviderService extends PaymentService {
     this.stripe_ = Stripe(options.api_key)
 
     this.customerService_ = customerService
+
+    this.regionService_ = regionService
 
     this.totalsService_ = totalsService
   }
@@ -33,7 +35,7 @@ class StripeProviderService extends PaymentService {
       return status
     }
 
-    if (paymentIntent.status === "requires_action") {
+    if (paymentIntent.status === "requires_capture") {
       status = "authorized"
     }
 
@@ -48,7 +50,22 @@ class StripeProviderService extends PaymentService {
     return status
   }
 
+  async retrieveSavedMethods(customer) {
+    if (customer.metadata && customer.metadata.stripe_id) {
+      const methods = await this.stripe_.paymentMethods.list({
+        customer: customer.metadata.stripe_id, type: "card"
+      })
+
+      return methods.data
+    }
+
+    return Promise.resolve([])
+  }
+
   async retrieveCustomer(customerId) {
+    if (!customerId) {
+      return Promise.resolve()
+    }
     return this.stripe_.customers.retrieve(customerId)
   }
 
@@ -76,10 +93,12 @@ class StripeProviderService extends PaymentService {
    * @returns {string} id of payment intent
    */
   async createPayment(cart) {
-    const { customer_id } = cart
+    const { customer_id, region_id } = cart
+    const { currency_code } = await this.regionService_.retrieve(region_id)
+
+    console.log(customer_id)
 
     let stripeCustomerId
-
     if (!customer_id) {
       const { id } = await this.stripe_.customers.create({
         email: cart.email,
@@ -87,7 +106,8 @@ class StripeProviderService extends PaymentService {
       stripeCustomerId = id
     } else {
       const customer = await this.customerService_.retrieve(customer_id)
-      if (!customer.metadata.stripe_id) {
+      console.log(customer)
+      if (!(customer.metadata && customer.metadata.stripe_id)) {
         const { id } = await this.stripe_.customers.create({
           email: customer.email,
         })
@@ -97,10 +117,14 @@ class StripeProviderService extends PaymentService {
       }
     }
 
-    const amount = this.totalsService_.getTotal(cart)
+    const amount = await this.totalsService_.getTotal(cart)
     const paymentIntent = await this.stripe_.paymentIntents.create({
       customer: stripeCustomerId,
-      amount,
+      amount: amount * 100, // Stripe amount is in cents
+      currency: currency_code,
+      setup_future_usage: "on_session",
+      capture_method: "manual",
+      metadata: { cart_id: `${cart._id}` },
     })
 
     return paymentIntent
@@ -108,12 +132,11 @@ class StripeProviderService extends PaymentService {
 
   /**
    * Retrieves Stripe PaymentIntent.
-   * @param {string} cart - the cart to retrieve payment intent for
+   * @param {object} data - the data of the payment to retrieve
    * @returns {Object} Stripe PaymentIntent
    */
-  async retrievePayment(cart) {
+  async retrievePayment(data) {
     try {
-      const { data } = cart.payment_method
       return this.stripe_.paymentIntents.retrieve(data.id)
     } catch (error) {
       throw error
@@ -122,14 +145,32 @@ class StripeProviderService extends PaymentService {
 
   /**
    * Updates Stripe PaymentIntent.
-   * @param {string} cart - the cart to update payment intent for
-   * @param {Object} data - the update object for the payment intent
+   * @param {object} data - The payment session data.
+   * @param {Object} cart - the current cart value
    * @returns {Object} Stripe PaymentIntent
    */
-  async updatePayment(cart, update) {
+  async updatePayment(data, cart) {
     try {
-      const { data } = cart.payment_method
-      return this.stripe_.paymentIntents.update(data.id, update)
+      const { id } = data
+      const amount = this.totalsService_.getTotal(cart)
+      return this.stripe_.paymentIntents.update(id, {
+        amount: amount * 100,
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async deletePayment(data) {
+    try {
+      const { id } = data
+      return this.stripe_.paymentIntents.cancel(id)
+        .catch(err => {
+          if (err.statusCode === 400) {
+            return
+          }
+          throw err
+        })
     } catch (error) {
       throw error
     }
@@ -174,7 +215,7 @@ class StripeProviderService extends PaymentService {
     const { id } = paymentData
     try {
       return this.stripe_.refunds.create({
-        amount,
+        amount: amount * 100,
         payment_intent: id,
       })
     } catch (error) {

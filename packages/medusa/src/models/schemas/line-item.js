@@ -7,6 +7,8 @@ export default new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
   thumbnail: { type: String },
+  is_giftcard: { type: Boolean, default: false },
+  has_shipping: { type: Boolean, default: false },
 
   // mongoose doesn't allow multi-type validation but this field allows both
   // an object containing:
@@ -34,5 +36,8 @@ export default new mongoose.Schema({
   content: { type: mongoose.Schema.Types.Mixed, required: true },
   quantity: { type: Number, required: true },
   returned: { type: Boolean, default: false },
+  fulfilled: { type: Boolean, default: false },
+  fulfilled_quantity: { type: Number, default: 0 },
+  returned_quantity: { type: Number, default: 0 },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
 })

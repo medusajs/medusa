@@ -46,13 +46,13 @@ export default async (req, res) => {
     if (value.discounts && value.discounts.length) {
       await Promise.all(
         value.discounts.map(async ({ code }) =>
-          cartService.applyPromoCode(id, code)
+          cartService.applyDiscount(id, code)
         )
       )
     }
 
     let newCart = await cartService.retrieve(id)
-    const data = await cartService.decorate(newCart)
+    const data = await cartService.decorate(newCart, [], ["region"])
     res.json({ cart: data })
   } catch (err) {
     throw err
