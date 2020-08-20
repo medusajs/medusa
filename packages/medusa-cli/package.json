@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-cli",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
