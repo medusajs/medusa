@@ -22,7 +22,9 @@ class ContentfulService extends BaseService {
       accessToken: options.access_token,
     })
 
-    this.redis_ = redis.createClient()
+    this.redis_ = redis.createClient({
+      url: process.env.REDIS_URI,
+    })
   }
 
   async getIgnoreIds_(type) {
