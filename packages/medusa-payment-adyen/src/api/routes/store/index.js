@@ -33,6 +33,18 @@ export default (app, rootDirectory) => {
   )
 
   route.post(
+    "/update",
+    bodyParser.json(),
+    middlewares.wrap(require("./update-payment").default)
+  )
+
+  route.post(
+    "/payment-status",
+    bodyParser.json(),
+    middlewares.wrap(require("./check-payment-status").default)
+  )
+
+  route.get(
     "/payment-status",
     bodyParser.json(),
     middlewares.wrap(require("./check-payment-status").default)
