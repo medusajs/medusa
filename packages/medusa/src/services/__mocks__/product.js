@@ -31,11 +31,7 @@ export const products = {
 
 export const ProductServiceMock = {
   createDraft: jest.fn().mockImplementation(data => {
-    if (data.title === "Test Product") {
-      return Promise.resolve(products.product1)
-    }
-
-    return Promise.resolve({ ...data })
+    return Promise.resolve(products.product1)
   }),
   publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
@@ -64,9 +60,7 @@ export const ProductServiceMock = {
     .fn()
     .mockReturnValue(Promise.resolve(products.productWithOptions)),
   updateOptionValue: jest.fn().mockReturnValue(Promise.resolve()),
-  deleteOption: jest
-    .fn()
-    .mockReturnValue(Promise.resolve(products.productWithOptions)),
+  deleteOption: jest.fn().mockReturnValue(Promise.resolve()),
   retrieveVariants: jest
     .fn()
     .mockReturnValue(
@@ -90,22 +84,12 @@ export const ProductServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  update: jest.fn().mockImplementation((product, data) => {
-    return Promise.resolve(products.product1)
+  update: jest.fn().mockImplementation((userId, data) => {
+    return Promise.resolve()
   }),
   list: jest.fn().mockImplementation(data => {
     // Used to retrieve a product based on a variant id see
     // ProductVariantService.addOptionValue
-    if (data.variants === IdMap.getId("giftCardVar")) {
-      return Promise.resolve([
-        {
-          _id: IdMap.getId("giftCardProd"),
-          title: "Gift Card",
-          is_giftcard: true,
-          thumbnail: "1234",
-        },
-      ])
-    }
     if (data.variants === IdMap.getId("testVariant")) {
       return Promise.resolve([
         {

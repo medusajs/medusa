@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import { IdMap } from "medusa-test-utils"
 import UserService from "../user"
 import { UserModelMock, users } from "../../models/__mocks__/user"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("UserService", () => {
   describe("retrieve", () => {
@@ -145,7 +144,6 @@ describe("UserService", () => {
 
   describe("generateResetPasswordToken", () => {
     const userService = new UserService({
-      eventBusService: EventBusServiceMock,
       userModel: UserModelMock,
     })
 

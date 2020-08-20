@@ -7,17 +7,6 @@ class MiddlewareService {
   constructor(container) {
     this.postAuthentication_ = []
     this.preAuthentication_ = []
-    this.routers = {}
-  }
-
-  addRouter(path, router) {
-    const existing = this.routers[path] || []
-    this.routers[path] = [...existing, router]
-  }
-
-  getRouters(path) {
-    const routers = this.routers[path] || []
-    return routers
   }
 
   /**

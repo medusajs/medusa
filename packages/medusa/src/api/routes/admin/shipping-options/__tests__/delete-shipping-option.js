@@ -2,8 +2,8 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ShippingOptionServiceMock } from "../../../../../services/__mocks__/shipping-option"
 
-describe("DELETE /admin/shipping-options/{id}", () => {
-  describe("successful deletion", () => {
+describe("POST /admin/shipping-options", () => {
+  describe("successful creation", () => {
     let subject
 
     beforeAll(async () => {

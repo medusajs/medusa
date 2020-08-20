@@ -14,7 +14,20 @@ describe("POST /admin/orders/:id/return", () => {
           payload: {
             items: [
               {
-                item_id: IdMap.getId("existingLine"),
+                _id: IdMap.getId("existingLine"),
+                title: "merge line",
+                description: "This is a new line",
+                thumbnail: "test-img-yeah.com/thumb",
+                content: {
+                  unit_price: 123,
+                  variant: {
+                    _id: IdMap.getId("can-cover"),
+                  },
+                  product: {
+                    _id: IdMap.getId("validId"),
+                  },
+                  quantity: 1,
+                },
                 quantity: 10,
               },
             ],
@@ -38,7 +51,20 @@ describe("POST /admin/orders/:id/return", () => {
         IdMap.getId("test-order"),
         [
           {
-            item_id: IdMap.getId("existingLine"),
+            _id: IdMap.getId("existingLine"),
+            title: "merge line",
+            description: "This is a new line",
+            thumbnail: "test-img-yeah.com/thumb",
+            content: {
+              unit_price: 123,
+              variant: {
+                _id: IdMap.getId("can-cover"),
+              },
+              product: {
+                _id: IdMap.getId("validId"),
+              },
+              quantity: 1,
+            },
             quantity: 10,
           },
         ]

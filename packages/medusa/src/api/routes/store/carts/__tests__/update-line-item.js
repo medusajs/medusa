@@ -8,13 +8,14 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     let subject
 
     beforeAll(async () => {
-      const cartId = IdMap.getId("fr-cart")
+      const cartId = IdMap.getId("emptyCart")
       const lineId = IdMap.getId("existingLine")
       subject = await request(
         "POST",
         `/store/carts/${cartId}/line-items/${lineId}`,
         {
           payload: {
+            variant_id: IdMap.getId("can-cover"),
             quantity: 3,
           },
         }
@@ -32,9 +33,9 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     it("calls LineItemService generate", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("eur-10-us-12"),
-        IdMap.getId("region-france"),
-        3
+        IdMap.getId("can-cover"),
+        3,
+        IdMap.getId("testRegion")
       )
     })
 
@@ -43,23 +44,25 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
+      expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
       expect(subject.body.cart.decorated).toEqual(true)
     })
   })
 
-  describe("removes line item on quantity 0", () => {
+  describe("handles unsuccessful line item generation", () => {
     let subject
 
     beforeAll(async () => {
-      const cartId = IdMap.getId("fr-cart")
+      const cartId = IdMap.getId("emptyCart")
       const lineId = IdMap.getId("existingLine")
+
       subject = await request(
         "POST",
         `/store/carts/${cartId}/line-items/${lineId}`,
         {
           payload: {
-            quantity: 0,
+            variant_id: IdMap.getId("fail"),
+            quantity: 3,
           },
         }
       )
@@ -69,21 +72,21 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService create", () => {
-      expect(CartServiceMock.removeLineItem).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.removeLineItem).toHaveBeenCalledWith(
-        IdMap.getId("fr-cart"),
-        IdMap.getId("existingLine")
+    it("calls LineItemService generate", () => {
+      expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
+      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
+        IdMap.getId("fail"),
+        3,
+        IdMap.getId("testRegion")
       )
     })
 
-    it("returns 200", () => {
-      expect(subject.status).toEqual(200)
+    it("returns 400", () => {
+      expect(subject.status).toEqual(400)
     })
 
-    it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+    it("returns error", () => {
+      expect(subject.body.message).toEqual("Doesn't exist")
     })
   })
 })

@@ -33,8 +33,7 @@ describe("POST /store/carts/:id", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         IdMap.getId("testVariant"),
         IdMap.getId("testRegion"),
-        3,
-        undefined // no metadata
+        3
       )
     })
 
@@ -73,8 +72,7 @@ describe("POST /store/carts/:id", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         IdMap.getId("fail"),
         IdMap.getId("testRegion"),
-        3,
-        undefined // no metdata
+        3
       )
     })
 

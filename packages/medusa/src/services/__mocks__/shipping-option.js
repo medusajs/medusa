@@ -110,7 +110,6 @@ export const ShippingOptionServiceMock = {
         _id: IdMap.getId("fail"),
       })
     }
-    return Promise.resolve({ _id: methodId })
   }),
   delete: jest.fn().mockReturnValue(Promise.resolve()),
 }
