@@ -1,6 +1,6 @@
 export const CounterServiceMock = {
   getNext: jest.fn().mockImplementation(data => {
-    return Promise.resolve()
+    return Promise.resolve("1233")
   }),
 }
 
