@@ -6,6 +6,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     variant_id: Validator.string().required(),
     quantity: Validator.number().required(),
+    metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -21,12 +22,13 @@ export default async (req, res) => {
     const lineItem = await lineItemService.generate(
       value.variant_id,
       cart.region_id,
-      value.quantity
+      value.quantity,
+      value.metadata
     )
     await cartService.addLineItem(cart._id, lineItem)
 
     cart = await cartService.retrieve(cart._id)
-    cart = await cartService.decorate(cart)
+    cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {

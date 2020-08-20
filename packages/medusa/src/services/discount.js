@@ -1,6 +1,7 @@
+import _ from "lodash"
+import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
-import _ from "lodash"
 
 /**
  * Provides layer to manipulate discounts.
@@ -9,14 +10,19 @@ import _ from "lodash"
 class DiscountService extends BaseService {
   constructor({
     discountModel,
+    dynamicDiscountCodeModel,
     totalsService,
     productVariantService,
     regionService,
+    eventBusService,
   }) {
     super()
 
     /** @private @const {DiscountModel} */
     this.discountModel_ = discountModel
+
+    /** @private @const {DynamicDiscountCodeModel} */
+    this.dynamicCodeModel_ = dynamicDiscountCodeModel
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -26,6 +32,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {EventBus} */
+    this.eventBus_ = eventBusService
   }
 
   /**
@@ -35,7 +44,7 @@ class DiscountService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -47,16 +56,16 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * Validates discount rules
-   * @param {DiscountRule} discountRule - the discount rule to validate
-   * @return {DiscountRule} the validated discount rule
+   * Creates a discount rule with provided data given that the data is validated.
+   * @param {DiscountRule} discountRule - the discount rule to create
+   * @return {Promise} the result of the create operation
    */
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
       description: Validator.string(),
       type: Validator.string().required(),
       value: Validator.number()
-        .positive()
+        .min(0)
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().items(Validator.string()),
@@ -92,13 +101,21 @@ class DiscountService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(selector) {
+    return this.discountModel_.find(selector)
+  }
+
+  /**
    * Creates a discount with provided data given that the data is validated.
    * Normalizes discount code to uppercase.
    * @param {Discount} discount - the discount data to create
    * @return {Promise} the result of the create operation
    */
   async create(discount) {
-    await this.validateDiscountRule_(discount.discount_rule)
+    discount.discount_rule = this.validateDiscountRule_(discount.discount_rule)
 
     discount.code = this.normalizeDiscountCode_(discount.code)
 
@@ -136,18 +153,38 @@ class DiscountService extends BaseService {
    */
   async retrieveByCode(discountCode) {
     discountCode = this.normalizeDiscountCode_(discountCode)
-    const discount = await this.discountModel_
+    let discount = await this.discountModel_
       .findOne({ code: discountCode })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
 
     if (!discount) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Discount with code ${discountCode} was not found`
-      )
+      const dynamicCode = await this.dynamicCodeModel_
+        .findOne({ code: discountCode })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+
+      if (!dynamicCode) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Discount with code ${discountCode} was not found`
+        )
+      }
+
+      discount = await this.retrieve(dynamicCode.discount_id)
+      if (!discount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Discount with code ${discountCode} was not found`
+        )
+      }
+
+      discount.code = discountCode
+      discount.disabled = dynamicCode.disabled
     }
+
     return discount
   }
 
@@ -176,6 +213,81 @@ class DiscountService extends BaseService {
       { $set: update },
       { runValidators: true }
     )
+  }
+
+  /**
+   * Generates a gift card with the specified value which is valid in the
+   * specified region.
+   * @param {number} value - the value that the gift card represents
+   * @param {string} regionId - the id of the region in which the gift card can
+   *    be used
+   * @return {Discount} the newly created gift card
+   */
+  async generateGiftCard(value, regionId) {
+    const region = await this.regionService_.retrieve(regionId)
+
+    const code = [
+      randomize("A0", 4),
+      randomize("A0", 4),
+      randomize("A0", 4),
+      randomize("A0", 4),
+    ].join("-")
+
+    const discountRule = this.validateDiscountRule_({
+      type: "fixed",
+      allocation: "total",
+      value,
+    })
+
+    return this.discountModel_.create({
+      code,
+      discount_rule: discountRule,
+      is_giftcard: true,
+      regions: [region._id],
+    })
+  }
+
+  /**
+   * Creates a dynamic code for a discount id.
+   * @param {string} discountId - the id of the discount to create a code for
+   * @param {string} code - the code to identify the discount by
+   * @return {Promise} the newly created dynamic code
+   */
+  async createDynamicCode(discountId, data) {
+    const discount = await this.retrieve(discountId)
+    if (!discount.is_dynamic) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount must be set to dynamic"
+      )
+    }
+
+    const code = this.normalizeDiscountCode_(data.code)
+    return this.dynamicCodeModel_.create({
+      ...data,
+      discount_id: discount._id,
+      code,
+    })
+  }
+
+  /**
+   * Creates a dynamic code for a discount id.
+   * @param {string} discountId - the id of the discount to create a code for
+   * @param {string} code - the code to identify the discount by
+   * @return {Promise} the newly created dynamic code
+   */
+  async deleteDynamicCode(discountId, code) {
+    const discont = await this.retrieve(discountId)
+    if (!discount.is_dynamic) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount must be set to dynamic"
+      )
+    }
+
+    return this.dynamicCodeModel_.deleteOne({
+      code,
+    })
   }
 
   /**
@@ -278,7 +390,7 @@ class DiscountService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(discountId, key, value) {
+  async setMetadata(discountId, key, value) {
     const validatedId = this.validateId_(discountId)
 
     if (typeof key !== "string") {
@@ -291,6 +403,30 @@ class DiscountService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.discountModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a discount.
+   * @param {string} discountId - the discount to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(discountId, key) {
+    const validatedId = this.validateId_(discountId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.discountModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

@@ -12,6 +12,7 @@ describe("POST /admin/shipping-options", () => {
           name: "Test option",
           region_id: "testregion",
           provider_id: "test_provider",
+          data: { id: "test" },
           price: {
             type: "flat_rate",
             amount: 100,
@@ -41,6 +42,8 @@ describe("POST /admin/shipping-options", () => {
         name: "Test option",
         region_id: "testregion",
         provider_id: "test_provider",
+        data: { id: "test" },
+        profile_id: expect.stringMatching(/.*/),
         price: {
           type: "flat_rate",
           amount: 100,

@@ -6,16 +6,20 @@ export default async (req, res) => {
     const product = await productService.retrieve(id)
     await productService.publish(product._id)
     let publishedProduct = await productService.retrieve(product._id)
-    publishedProduct = await productService.decorate(publishedProduct, [
-      "title",
-      "description",
-      "tags",
-      "handle",
-      "images",
-      "options",
-      "variants",
-      "published",
-    ])
+    publishedProduct = await productService.decorate(
+      publishedProduct,
+      [
+        "title",
+        "description",
+        "tags",
+        "handle",
+        "thumbnail",
+        "images",
+        "options",
+        "published",
+      ],
+      ["variants"]
+    )
     res.json({ product: publishedProduct })
   } catch (error) {
     throw error

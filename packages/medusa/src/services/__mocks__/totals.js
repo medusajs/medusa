@@ -1,6 +1,12 @@
 import { IdMap } from "medusa-test-utils"
 
 export const TotalsServiceMock = {
+  getTotal: jest.fn().mockImplementation(cart => {
+    if (cart.total) {
+      return cart.total
+    }
+    return 0
+  }),
   getSubtotal: jest.fn().mockImplementation(cart => {
     if (cart.subtotal) {
       return cart.subtotal
@@ -15,6 +21,9 @@ export const TotalsServiceMock = {
       return 1230
     }
     return 0
+  }),
+  getRefundedTotal: jest.fn().mockImplementation((order, lineItems) => {
+    return Promise.resolve()
   }),
 }
 

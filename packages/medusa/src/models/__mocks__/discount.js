@@ -1,6 +1,17 @@
 import { IdMap } from "medusa-test-utils"
 
 export const discounts = {
+  dynamic: {
+    _id: IdMap.getId("dynamic"),
+    code: "Something",
+    is_dynamic: true,
+    discount_rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
   total10Percent: {
     _id: IdMap.getId("total10"),
     code: "10%OFF",
@@ -111,12 +122,15 @@ export const discounts = {
 }
 
 export const DiscountModelMock = {
-  create: jest.fn().mockReturnValue(Promise.resolve()),
+  create: jest.fn().mockImplementation(data => Promise.resolve(data)),
   updateOne: jest.fn().mockImplementation((query, update) => {
     return Promise.resolve()
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
   findOne: jest.fn().mockImplementation(query => {
+    if (query._id === IdMap.getId("dynamic")) {
+      return Promise.resolve(discounts.dynamic)
+    }
     if (query._id === IdMap.getId("total10")) {
       return Promise.resolve(discounts.total10Percent)
     }

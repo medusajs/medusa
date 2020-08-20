@@ -33,7 +33,7 @@ class ShippingProfileService extends BaseService {
    */
   validateId_(rawId) {
     const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId)
+    const { value, error } = schema.validate(rawId.toString())
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -71,6 +71,53 @@ class ShippingProfileService extends BaseService {
         MedusaError.Types.NOT_FOUND,
         `Shipping Profile with ${profileId} was not found`
       )
+    }
+
+    return profile
+  }
+
+  async retrieveDefault() {
+    return await this.profileModel_
+      .findOne({ name: "default_shipping_profile" })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Creates a default shipping profile, if this does not already exist.
+   * @return {Promise<ShippingProfile>} the shipping profile
+   */
+  async createDefault() {
+    const profile = await this.retrieveDefault()
+    if (!profile) {
+      return this.profileModel_.create({ name: "default_shipping_profile" })
+    }
+
+    return profile
+  }
+
+  /**
+   * Retrieves the default gift card profile
+   * @return the shipping profile for gift cards
+   */
+  async retrieveGiftCardDefault() {
+    return await this.profileModel_
+      .findOne({ name: "default_gift_card_profile" })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Creates a default shipping profile, for gift cards if unless it already
+   * exists.
+   * @return {Promise<ShippingProfile>} the shipping profile
+   */
+  async createGiftCardDefault() {
+    const profile = await this.retrieveGiftCardDefault()
+    if (!profile) {
+      return this.profileModel_.create({ name: "default_gift_card_profile" })
     }
 
     return profile
@@ -335,18 +382,27 @@ class ShippingProfileService extends BaseService {
   async fetchCartOptions(cart) {
     const products = this.getProductsInCart_(cart)
     const profiles = await this.list({ products: { $in: products } })
-    const optionIds = profiles.reduce((acc, next) =>
-      acc.concat(next.shipping_options)
+    const optionIds = profiles.reduce(
+      (acc, next) => acc.concat(next.shipping_options),
+      []
     )
 
     const options = await Promise.all(
-      optionIds.map(oId => {
-        return this.shippingOptionService_
+      optionIds.map(async oId => {
+        const option = await this.shippingOptionService_
           .validateCartOption(oId, cart)
           .catch(err => {
             // If validation failed we skip the option
             return null
           })
+
+        if (option) {
+          return {
+            ...option,
+            profile: profiles.find(p => p._id.equals(option.profile_id)),
+          }
+        }
+        return null
       })
     )
 
@@ -360,7 +416,7 @@ class ShippingProfileService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata(profileId, key, value) {
+  async setMetadata(profileId, key, value) {
     const validatedId = this.validateId_(profileId)
 
     if (typeof key !== "string") {
@@ -373,6 +429,30 @@ class ShippingProfileService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.profileModel_
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a shipping profile.
+   * @param {string} profileId - the shipping profile to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(profileId, key) {
+    const validatedId = this.validateId_(profileId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.profileModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
