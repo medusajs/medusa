@@ -12,11 +12,6 @@ describe("POST /store/orders", () => {
         payload: {
           cartId: IdMap.getId("fr-cart"),
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
       })
     })
 
@@ -25,8 +20,8 @@ describe("POST /store/orders", () => {
     })
 
     it("calls service create", () => {
-      expect(OrderServiceMock.create).toHaveBeenCalledTimes(1)
-      expect(OrderServiceMock.create).toHaveBeenCalledWith(carts.frCart)
+      expect(OrderServiceMock.createFromCart).toHaveBeenCalledTimes(1)
+      expect(OrderServiceMock.createFromCart).toHaveBeenCalledWith(carts.frCart)
     })
   })
 })

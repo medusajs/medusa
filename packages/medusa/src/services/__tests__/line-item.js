@@ -44,4 +44,51 @@ describe("LineItemService", () => {
       })
     })
   })
+
+  describe("generate with giftcard", () => {
+    let result
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const lineItemService = new LineItemService({
+        productVariantService: ProductVariantServiceMock,
+        productService: ProductServiceMock,
+        regionService: RegionServiceMock,
+      })
+      result = await lineItemService.generate(
+        IdMap.getId("giftCardVar"),
+        IdMap.getId("region-france"),
+        1,
+        {
+          name: "Test Name",
+        }
+      )
+    })
+
+    it("results correctly", () => {
+      expect(result).toEqual({
+        title: "Gift Card",
+        description: "100 USD",
+        thumbnail: "1234",
+        is_giftcard: true,
+        content: {
+          unit_price: 100,
+          variant: {
+            _id: IdMap.getId("giftCardVar"),
+            title: "100 USD",
+          },
+          product: {
+            _id: IdMap.getId("giftCardProd"),
+            title: "Gift Card",
+            thumbnail: "1234",
+            is_giftcard: true,
+          },
+          quantity: 1,
+        },
+        metadata: {
+          name: "Test Name",
+        },
+        quantity: 1,
+      })
+    })
+  })
 })

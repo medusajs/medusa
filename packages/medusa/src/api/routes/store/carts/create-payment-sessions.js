@@ -9,10 +9,11 @@ export default async (req, res) => {
 
     // return the updated cart
     let cart = await cartService.retrieve(id)
-    cart = await cartService.decorate(cart)
+    cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }

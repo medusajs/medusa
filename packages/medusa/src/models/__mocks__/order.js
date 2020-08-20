@@ -51,18 +51,17 @@ export const orders = {
         price: 100,
         provider_id: "default_provider",
         profile_id: IdMap.getId("default"),
-      },
-      {
-        _id: IdMap.getId("freeShipping"),
-        name: "Free Shipping",
-        price: 10,
-        provider_id: "default_provider",
-        profile_id: IdMap.getId("profile1"),
+        data: {
+          extra: "hi",
+        },
       },
     ],
     fulfillment_status: "not_fulfilled",
     payment_status: "awaiting",
     status: "pending",
+    metadata: {
+      cart_id: IdMap.getId("test-cart"),
+    },
   },
   processedOrder: {
     _id: IdMap.getId("processed-order"),
@@ -89,6 +88,7 @@ export const orders = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        returned_quantity: 0,
         content: {
           unit_price: 123,
           variant: {
@@ -106,6 +106,9 @@ export const orders = {
     customer_id: IdMap.getId("test-customer"),
     payment_method: {
       provider_id: "default_provider",
+      data: {
+        hi: "hi",
+      },
     },
     shipping_methods: [
       {
@@ -130,6 +133,7 @@ export const orders = {
   orderToRefund: {
     _id: IdMap.getId("refund-order"),
     email: "oliver@test.dk",
+    tax_rate: 0.25,
     billing_address: {
       first_name: "Oli",
       last_name: "Medusa",
@@ -163,6 +167,7 @@ export const orders = {
           quantity: 1,
         },
         quantity: 10,
+        returned_quantity: 0,
       },
       {
         _id: IdMap.getId("existingLine2"),
@@ -206,11 +211,16 @@ export const orders = {
 }
 
 export const OrderModelMock = {
-  create: jest.fn().mockReturnValue(Promise.resolve()),
+  create: jest.fn().mockImplementation(data => Promise.resolve(data)),
   updateOne: jest.fn().mockImplementation((query, update) => {
     return Promise.resolve()
   }),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
+  startSession: jest.fn().mockReturnValue(
+    Promise.resolve({
+      withTransaction: fn => fn(),
+    })
+  ),
   findOne: jest.fn().mockImplementation(query => {
     if (query._id === IdMap.getId("test-order")) {
       orders.testOrder.payment_status = "awaiting"
@@ -236,6 +246,9 @@ export const OrderModelMock = {
     if (query._id === IdMap.getId("order-refund")) {
       orders.orderToRefund.payment_status = "captured"
       return Promise.resolve(orders.orderToRefund)
+    }
+    if (query.cart_id === IdMap.getId("test-cart")) {
+      return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)
   }),

@@ -29,7 +29,7 @@ testApp.use((req, res, next) => {
   next()
 })
 
-apiLoader({ container, app: testApp })
+apiLoader({ container, rootDirectory: ".", app: testApp })
 
 const supertestRequest = supertest(testApp)
 
