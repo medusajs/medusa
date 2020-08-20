@@ -1,9 +1,11 @@
-import { IdMap } from "medusa-test-utils"
-
 export const CounterServiceMock = {
-  getNext: jest.fn().mockImplementation(counter => {
-    if (counter === "orders") {
-      return Promise.resolve("1233")
-    }
+  getNext: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
   }),
 }
+
+const mock = jest.fn().mockImplementation(() => {
+  return CounterServiceMock
+})
+
+export default mock

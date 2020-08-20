@@ -603,19 +603,7 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    const captureData = await paymentProvider.capturePayment(data)
-
-    // If Adyen is used as payment provider, we need to check the
-    // validity of the capture request
-    if (
-      captureData.data.pspReference &&
-      captureData.data.response !== "[capture-received]"
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Could not process capture"
-      )
-    }
+    await paymentProvider.capturePayment(data)
 
     return this.orderModel_
       .updateOne(

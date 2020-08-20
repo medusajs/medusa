@@ -88,6 +88,7 @@ export const orders = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        returned_quantity: 0,
         content: {
           unit_price: 123,
           variant: {

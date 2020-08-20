@@ -13,7 +13,7 @@ export default async (req, res) => {
 
   switch (event.success) {
     case "false":
-      res.status(400).send(event.reason)
+      res.status(400).send("[accepted]")
       return
     default:
       res.status(200).send("[accepted]")
