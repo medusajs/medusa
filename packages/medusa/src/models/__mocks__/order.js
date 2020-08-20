@@ -88,6 +88,7 @@ export const orders = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        returned_quantity: 0,
         content: {
           unit_price: 123,
           variant: {
@@ -166,6 +167,7 @@ export const orders = {
           quantity: 1,
         },
         quantity: 10,
+        returned_quantity: 0,
       },
       {
         _id: IdMap.getId("existingLine2"),

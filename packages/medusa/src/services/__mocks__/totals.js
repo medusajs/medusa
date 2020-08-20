@@ -22,6 +22,9 @@ export const TotalsServiceMock = {
     }
     return 0
   }),
+  getRefundedTotal: jest.fn().mockImplementation((order, lineItems) => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

@@ -14,6 +14,7 @@ import {
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { RegionServiceMock } from "../__mocks__/region"
+import { CounterServiceMock } from "../__mocks__/counter"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("OrderService", () => {
@@ -46,6 +47,7 @@ describe("OrderService", () => {
       discountService: DiscountServiceMock,
       regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
+      counterService: CounterServiceMock
     })
 
     beforeEach(async () => {
@@ -468,6 +470,7 @@ describe("OrderService", () => {
                       quantity: 10,
                     },
                   ],
+                  metadata: {},
                   provider_id: "default_provider",
                 },
               ],
