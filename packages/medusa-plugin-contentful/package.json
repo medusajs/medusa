@@ -40,5 +40,6 @@
     "medusa-interfaces": "^1.0.0-alpha.0",
     "medusa-test-utils": "^1.0.0-alpha.0",
     "redis": "^3.0.2"
-  }
+  },
+  "gitHead": "a1cf900ed8e5660941dda581f04e27d2f9607e4f"
 }
