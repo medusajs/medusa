@@ -1,5 +1,10 @@
-61 error Error: Command failed: git tag v0.1.27-alpha.0 -m v0.1.27-alpha.0
-61 error fatal: tag 'v0.1.27-alpha.0' already exists
-61 error
-61 error     at makeError (/Users/srindom/Developer/medusa-js/node_modules/execa/index.js:174:9)
-61 error     at Promise.all.then.arr (/Users/srindom/Developer/medusa-js/node_modules/execa/index.js:278:16)
+0 silly argv { _: [ 'publish' ],
+0 silly argv   composed: 'publish',
+0 silly argv   lernaVersion: '3.20.2',
+0 silly argv   '$0': '/usr/local/bin/lerna',
+0 silly argv   bump: 'from-git' }
+1 notice cli v3.20.2
+2 verbose rootPath /Users/srindom/Developer/medusa-js
+3 error JSONError: Unexpected token : in JSON at position 9 while parsing near '  "name": "@medusajs/medusa"...' in packages/medusa/package.json
+3 error     at module.exports (/Users/srindom/Developer/medusa-js/node_modules/parse-json/index.js:26:19)
+3 error     at parse (/Users/srindom/Developer/medusa-js/node_modules/load-json-file/index.js:15:9)
