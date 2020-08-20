@@ -3,8 +3,8 @@ import { Validator, MedusaError } from "medusa-core-utils"
 export default async (req, res) => {
   const schema = Validator.object().keys({
     cart_id: Validator.string().required(),
-    payment_method: Validator.object().required(),
     provider_id: Validator.string().required(),
+    payment_data: Validator.object().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -20,7 +20,7 @@ export default async (req, res) => {
 
     const { data } = await paymentProvider.authorizePayment(
       cart,
-      value.payment_method
+      value.payment_data.paymentMethod
     )
 
     const transactionReference = data.pspReference
@@ -45,6 +45,11 @@ export default async (req, res) => {
       value.provider_id,
       newPaymentSession
     )
+
+    await cartService.setPaymentMethod(cart._id, {
+      provider_id: value.provider_id,
+      data,
+    })
 
     res.status(200).json({ data })
   } catch (err) {
