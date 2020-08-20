@@ -16,7 +16,6 @@ import { TotalsServiceMock } from "../__mocks__/totals"
 import { RegionServiceMock } from "../__mocks__/region"
 import { CounterServiceMock } from "../__mocks__/counter"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { CounterServiceMock } from "../__mocks__/counter"
 
 describe("OrderService", () => {
   describe("create", () => {
