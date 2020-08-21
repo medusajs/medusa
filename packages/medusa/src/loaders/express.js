@@ -21,7 +21,7 @@ export default async ({ app }) => {
       activeDuration: 1000 * 60 * 5,
       cookie: {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
       },
     })
   )
