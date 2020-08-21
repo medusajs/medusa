@@ -1,9 +1,15 @@
 export default async (req, res) => {
-  const selector = {}
-
   try {
     const customerService = req.scope.resolve("customerService")
-    const customers = await customerService.list(selector)
+    const queryBuilderService = req.scope.resolve("queryBuilderService")
+
+    const query = queryBuilderService.buildQuery(req.query, [
+      "email",
+      "first_name",
+      "last_name",
+    ])
+
+    const customers = await customerService.list(query)
 
     res.json({ customers })
   } catch (error) {
