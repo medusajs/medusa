@@ -6,7 +6,7 @@ import morgan from "morgan"
 import config from "../config"
 
 export default async ({ app }) => {
-  app.enable("trust proxy")
+  app.set("trust proxy", 1)
   app.use(
     morgan("combined", {
       skip: () => process.env.NODE_ENV === "test",
@@ -19,11 +19,9 @@ export default async ({ app }) => {
       secret: config.cookieSecret,
       duration: 24 * 60 * 60 * 1000,
       activeDuration: 1000 * 60 * 5,
-      proxy: true,
       cookie: {
         httpOnly: true,
-        secureProxy: true,
-        secure: process.env.NODE_ENV === "production",
+        secureProxy: process.env.NODE_ENV === "production",
       },
     })
   )
