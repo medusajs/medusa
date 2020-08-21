@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-adyen",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.6",
   "description": "Adyen Payment provider for Medusa Commerce",
   "main": "index.js",
   "repository": {
