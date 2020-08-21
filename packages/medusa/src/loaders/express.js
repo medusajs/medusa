@@ -1,11 +1,16 @@
 import express from "express"
-import session from "client-sessions"
+import session from "express-session"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
+import redis from "redis"
+import createStore from "connect-redis"
 
 import config from "../config"
 
 export default async ({ app }) => {
+  const RedisStore = createStore(session)
+  const redisClient = redis.createClient(config.redisURI)
+
   app.set("trust proxy", 1)
   app.use(
     morgan("combined", {
@@ -15,13 +20,15 @@ export default async ({ app }) => {
   app.use(cookieParser())
   app.use(
     session({
+      store: new RedisStore({ client: redisClient }),
+      resave: true,
+      saveUninitialized: true,
       cookieName: "session",
+      proxy: true,
       secret: config.cookieSecret,
-      duration: 24 * 60 * 60 * 1000,
-      activeDuration: 1000 * 60 * 5,
       cookie: {
-        httpOnly: true,
-        secureProxy: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 10 * 60 * 60 * 1000,
       },
     })
   )
