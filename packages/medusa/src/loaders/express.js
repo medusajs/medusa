@@ -19,8 +19,10 @@ export default async ({ app }) => {
       secret: config.cookieSecret,
       duration: 24 * 60 * 60 * 1000,
       activeDuration: 1000 * 60 * 5,
+      proxy: true,
       cookie: {
         httpOnly: true,
+        secureProxy: true,
         secure: process.env.NODE_ENV === "production",
       },
     })
