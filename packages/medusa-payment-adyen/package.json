@@ -39,7 +39,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "medusa-core-utils": "^0.1.27",
+    "medusa-core-utils": "^1.0.0-alpha.3",
     "medusa-interfaces": "^1.0.0-alpha.3",
     "medusa-test-utils": "^1.0.0-alpha.3"
   },
