@@ -47,7 +47,9 @@ export default async ({ app, container }) => {
   // Alternatively use bearer token to authenticate to the admin api
   passport.use(
     new BearerStrategy((token, done) => {
+      console.log(token)
       const auth = authService.authenticateAPIToken(token)
+      console.log(auth)
       if (auth.success) {
         done(null, auth.user)
       } else {
