@@ -27,7 +27,7 @@ export default async ({ app }) => {
       proxy: true,
       secret: config.cookieSecret,
       cookie: {
-        sameSite: false,
+        sameSite: "none",
         secure: process.env.NODE_ENV === "production",
         maxAge: 10 * 60 * 60 * 1000,
       },
