@@ -1,5 +1,10 @@
 import axios from "axios"
+import rateLimit from "axios-rate-limit"
 import qs from "querystring"
+
+// Brightpearl allows 200 requests per minute
+const RATE_LIMIT_REQUESTS = 200
+const RATE_LIMIT_INTERVAL = 60 * 1000
 
 class BrightpearlClient {
   static createToken(account, data) {
@@ -40,13 +45,16 @@ class BrightpearlClient {
   }
 
   constructor(options, onRefreshToken) {
-    this.client_ = axios.create({
-      baseURL: `https://${options.url}/public-api/${options.account}`,
-      headers: {
-        "brightpearl-app-ref": "medusa-dev",
-        "brightpearl-dev-ref": "sebrindom",
-      },
-    })
+    this.client_ = rateLimit(
+      axios.create({
+        baseURL: `https://${options.url}/public-api/${options.account}`,
+        headers: {
+          "brightpearl-app-ref": "medusa-dev",
+          "brightpearl-dev-ref": "sebrindom",
+        },
+      }),
+      { maxRequests: RATE_LIMIT_REQUESTS, perMilliseconds: RATE_LIMIT_INTERVAL }
+    )
 
     this.authType_ = options.auth_type
     this.token_ = options.access_token
