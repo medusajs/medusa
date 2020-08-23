@@ -93,7 +93,7 @@ class BrightpearlClient {
 
     this.client_.interceptors.response.use(undefined, async (error) => {
       const response = error.response
-      console.log(response)
+      console.log(response.data && response.data.errors)
 
       if (response) {
         if (

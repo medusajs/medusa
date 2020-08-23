@@ -344,46 +344,47 @@ var BrightpearlClient = /*#__PURE__*/function () {
               switch (_context.prev = _context.next) {
                 case 0:
                   response = error.response;
+                  console.log(response);
 
                   if (!response) {
-                    _context.next = 14;
+                    _context.next = 15;
                     break;
                   }
 
                   if (!(response.status === 401 && error.config && !error.config.__isRetryRequest)) {
-                    _context.next = 14;
+                    _context.next = 15;
                     break;
                   }
 
-                  _context.prev = 3;
-                  _context.next = 6;
+                  _context.prev = 4;
+                  _context.next = 7;
                   return onRefresh(_this2);
 
-                case 6:
-                  _context.next = 12;
+                case 7:
+                  _context.next = 13;
                   break;
 
-                case 8:
-                  _context.prev = 8;
-                  _context.t0 = _context["catch"](3);
+                case 9:
+                  _context.prev = 9;
+                  _context.t0 = _context["catch"](4);
                   console.log(_context.t0); // refreshing has failed, but report the original error, i.e. 401
 
                   return _context.abrupt("return", Promise.reject(error));
 
-                case 12:
+                case 13:
                   // retry the original request
                   error.config.__isRetryRequest = true;
                   return _context.abrupt("return", _this2.client_(error.config));
 
-                case 14:
+                case 15:
                   return _context.abrupt("return", Promise.reject(error));
 
-                case 15:
+                case 16:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[3, 8]]);
+          }, _callee, null, [[4, 9]]);
         }));
 
         return function (_x) {
