@@ -13,6 +13,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!_instanceof(instance, Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -44,9 +48,30 @@ var BrightpearlClient = /*#__PURE__*/function () {
         return data;
       });
     }
+  }, {
+    key: "refreshToken",
+    value: function refreshToken(account, data) {
+      var params = {
+        grant_type: "refresh_token",
+        refresh_token: data.refresh_token,
+        client_id: data.client_id,
+        client_secret: data.client_secret
+      };
+      return (0, _axios["default"])({
+        url: "https://ws-eu1.brightpearl.com/".concat(account, "/oauth/token"),
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded"
+        },
+        data: _querystring["default"].stringify(params)
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+        return data;
+      });
+    }
   }]);
 
-  function BrightpearlClient(options) {
+  function BrightpearlClient(options, onRefreshToken) {
     var _this = this;
 
     _classCallCheck(this, BrightpearlClient);
@@ -57,8 +82,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
           return _this.client_.request({
             url: "/integration-service/webhook",
             method: "GET"
-          }).then(function (_ref2) {
-            var data = _ref2.data;
+          }).then(function (_ref3) {
+            var data = _ref3.data;
             return data.response;
           });
         },
@@ -79,8 +104,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/accounting-service/customer-payment",
             method: "POST",
             data: payment
-          }).then(function (_ref3) {
-            var data = _ref3.data;
+          }).then(function (_ref4) {
+            var data = _ref4.data;
             return data.response;
           });
         }
@@ -93,8 +118,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
           return _this.client_.request({
             url: "/warehouse-service/order/".concat(orderId, "/reservation"),
             method: "GET"
-          }).then(function (_ref4) {
-            var data = _ref4.data;
+          }).then(function (_ref5) {
+            var data = _ref5.data;
             return data.response;
           });
         },
@@ -102,8 +127,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
           return _this.client_.request({
             url: "/warehouse-service/order/*/goods-note/goods-out/".concat(id),
             method: "GET"
-          }).then(function (_ref5) {
-            var data = _ref5.data;
+          }).then(function (_ref6) {
+            var data = _ref6.data;
             return data.response && data.response[id];
           });
         },
@@ -112,8 +137,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/warehouse-service/order/".concat(orderId, "/goods-note/goods-out"),
             method: "POST",
             data: data
-          }).then(function (_ref6) {
-            var data = _ref6.data;
+          }).then(function (_ref7) {
+            var data = _ref7.data;
             return data.response;
           });
         },
@@ -146,8 +171,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             data: {
               products: data
             }
-          }).then(function (_ref7) {
-            var data = _ref7.data;
+          }).then(function (_ref8) {
+            var data = _ref8.data;
             return data.response;
           });
         }
@@ -160,8 +185,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
           return _this.client_.request({
             url: "/order-service/sales-order/".concat(orderId),
             method: "GET"
-          }).then(function (_ref8) {
-            var data = _ref8.data;
+          }).then(function (_ref9) {
+            var data = _ref9.data;
             return data.response.length && data.response[0];
           })["catch"](function (err) {
             return console.log(err);
@@ -172,8 +197,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/order-service/sales-order",
             method: "POST",
             data: order
-          }).then(function (_ref9) {
-            var data = _ref9.data;
+          }).then(function (_ref10) {
+            var data = _ref10.data;
             return data.response;
           });
         },
@@ -182,8 +207,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/order-service/sales-credit",
             method: "POST",
             data: salesCredit
-          }).then(function (_ref10) {
-            var data = _ref10.data;
+          }).then(function (_ref11) {
+            var data = _ref11.data;
             return data.response;
           });
         }
@@ -197,8 +222,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/contact-service/postal-address",
             method: "POST",
             data: address
-          }).then(function (_ref11) {
-            var data = _ref11.data;
+          }).then(function (_ref12) {
+            var data = _ref12.data;
             return data.response;
           });
         }
@@ -210,24 +235,24 @@ var BrightpearlClient = /*#__PURE__*/function () {
         retrieveAvailability: function retrieveAvailability(productId) {
           return _this.client_.request({
             url: "/warehouse-service/product-availability/".concat(productId)
-          }).then(function (_ref12) {
-            var data = _ref12.data;
+          }).then(function (_ref13) {
+            var data = _ref13.data;
             return data.response && data.response;
           });
         },
         retrieve: function retrieve(productId) {
           return _this.client_.request({
             url: "/product-service/product/".concat(productId)
-          }).then(function (_ref13) {
-            var data = _ref13.data;
+          }).then(function (_ref14) {
+            var data = _ref14.data;
             return data.response && data.response[0];
           });
         },
         retrieveBySKU: function retrieveBySKU(sku) {
           return _this.client_.request({
             url: "/product-service/product-search?SKU=".concat(sku)
-          }).then(function (_ref14) {
-            var data = _ref14.data;
+          }).then(function (_ref15) {
+            var data = _ref15.data;
             return _this.buildSearchResults_(data.response);
           });
         }
@@ -239,8 +264,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
         retrieveByEmail: function retrieveByEmail(email) {
           return _this.client_.request({
             url: "/contact-service/contact-search?primaryEmail=".concat(email)
-          }).then(function (_ref15) {
-            var data = _ref15.data;
+          }).then(function (_ref16) {
+            var data = _ref16.data;
             return _this.buildSearchResults_(data.response);
           });
         },
@@ -249,8 +274,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/contact-service/contact",
             method: "POST",
             data: customerData
-          }).then(function (_ref16) {
-            var data = _ref16.data;
+          }).then(function (_ref17) {
+            var data = _ref17.data;
             return data.response;
           });
         }
@@ -261,10 +286,11 @@ var BrightpearlClient = /*#__PURE__*/function () {
       baseURL: "https://".concat(options.url, "/public-api/").concat(options.account),
       headers: {
         "brightpearl-app-ref": "medusa-dev",
-        "brightpearl-dev-ref": "sebrindom",
-        Authorization: "".concat(options.auth_type, " ").concat(options.access_token)
+        "brightpearl-dev-ref": "sebrindom"
       }
     });
+    this.authType_ = options.auth_type;
+    this.token_ = options.access_token;
     this.webhooks = this.buildWebhookEndpoints();
     this.payments = this.buildPaymentEndpoints();
     this.warehouses = this.buildWarehouseEndpoints();
@@ -272,9 +298,91 @@ var BrightpearlClient = /*#__PURE__*/function () {
     this.addresses = this.buildAddressEndpoints();
     this.customers = this.buildCustomerEndpoints();
     this.products = this.buildProductEndpoints();
+    this.buildRefreshTokenInterceptor_(onRefreshToken);
   }
 
   _createClass(BrightpearlClient, [{
+    key: "updateAuth",
+    value: function updateAuth(data) {
+      if (data.auth_type) {
+        this.authType_ = data.auth_type;
+      }
+
+      if (data.access_token) {
+        this.token_ = data.access_token;
+      }
+    }
+  }, {
+    key: "buildRefreshTokenInterceptor_",
+    value: function buildRefreshTokenInterceptor_(onRefresh) {
+      var _this2 = this;
+
+      this.client_.interceptors.request.use(function (request) {
+        var authType = _this2.authType_;
+        var token = _this2.token_;
+
+        if (token) {
+          request.headers["Authorization"] = "".concat(authType, " ").concat(token);
+        }
+
+        return request;
+      });
+      this.client_.interceptors.response.use(undefined, /*#__PURE__*/function () {
+        var _ref18 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(error) {
+          var response;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  response = error.response;
+
+                  if (!response) {
+                    _context.next = 14;
+                    break;
+                  }
+
+                  if (!(response.status === 401 && error.config && !error.config.__isRetryRequest)) {
+                    _context.next = 14;
+                    break;
+                  }
+
+                  _context.prev = 3;
+                  _context.next = 6;
+                  return onRefresh(_this2);
+
+                case 6:
+                  _context.next = 12;
+                  break;
+
+                case 8:
+                  _context.prev = 8;
+                  _context.t0 = _context["catch"](3);
+                  console.log(_context.t0); // refreshing has failed, but report the original error, i.e. 401
+
+                  return _context.abrupt("return", Promise.reject(error));
+
+                case 12:
+                  // retry the original request
+                  error.config.__isRetryRequest = true;
+                  return _context.abrupt("return", _this2.client_(error.config));
+
+                case 14:
+                  return _context.abrupt("return", Promise.reject(error));
+
+                case 15:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[3, 8]]);
+        }));
+
+        return function (_x) {
+          return _ref18.apply(this, arguments);
+        };
+      }());
+    }
+  }, {
     key: "buildSearchResults_",
     value: function buildSearchResults_(response) {
       var results = response.results,

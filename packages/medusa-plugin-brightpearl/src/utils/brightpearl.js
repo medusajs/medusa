@@ -21,16 +21,35 @@ class BrightpearlClient {
     }).then(({ data }) => data)
   }
 
-  constructor(options) {
+  static refreshToken(account, data) {
+    const params = {
+      grant_type: "refresh_token",
+      refresh_token: data.refresh_token,
+      client_id: data.client_id,
+      client_secret: data.client_secret,
+    }
+
+    return axios({
+      url: `https://ws-eu1.brightpearl.com/${account}/oauth/token`,
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify(params),
+    }).then(({ data }) => data)
+  }
+
+  constructor(options, onRefreshToken) {
     this.client_ = axios.create({
       baseURL: `https://${options.url}/public-api/${options.account}`,
       headers: {
         "brightpearl-app-ref": "medusa-dev",
         "brightpearl-dev-ref": "sebrindom",
-        Authorization: `${options.auth_type} ${options.access_token}`,
       },
     })
 
+    this.authType_ = options.auth_type
+    this.token_ = options.access_token
     this.webhooks = this.buildWebhookEndpoints()
     this.payments = this.buildPaymentEndpoints()
     this.warehouses = this.buildWarehouseEndpoints()
@@ -38,6 +57,57 @@ class BrightpearlClient {
     this.addresses = this.buildAddressEndpoints()
     this.customers = this.buildCustomerEndpoints()
     this.products = this.buildProductEndpoints()
+
+    this.buildRefreshTokenInterceptor_(onRefreshToken)
+  }
+
+  updateAuth(data) {
+    if (data.auth_type) {
+      this.authType_ = data.auth_type
+    }
+
+    if (data.access_token) {
+      this.token_ = data.access_token
+    }
+  }
+
+  buildRefreshTokenInterceptor_(onRefresh) {
+    this.client_.interceptors.request.use((request) => {
+      const authType = this.authType_
+      const token = this.token_
+
+      if (token) {
+        request.headers["Authorization"] = `${authType} ${token}`
+      }
+
+      return request
+    })
+
+    this.client_.interceptors.response.use(undefined, async (error) => {
+      const response = error.response
+
+      if (response) {
+        if (
+          response.status === 401 &&
+          error.config &&
+          !error.config.__isRetryRequest
+        ) {
+          try {
+            await onRefresh(this)
+          } catch (authError) {
+            console.log(authError)
+            // refreshing has failed, but report the original error, i.e. 401
+            return Promise.reject(error)
+          }
+
+          // retry the original request
+          error.config.__isRetryRequest = true
+          return this.client_(error.config)
+        }
+      }
+
+      return Promise.reject(error)
+    })
   }
 
   buildSearchResults_(response) {
