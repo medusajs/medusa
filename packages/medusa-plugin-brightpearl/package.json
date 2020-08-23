@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "axios-rate-limit": "^1.2.1",
     "express": "^4.17.1",
     "medusa-core-utils": "^1.0.0-alpha.3",
     "medusa-interfaces": "^1.0.0-alpha.3",
