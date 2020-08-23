@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _axiosRateLimit = _interopRequireDefault(require("axios-rate-limit"));
+
 var _querystring = _interopRequireDefault(require("querystring"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -24,6 +26,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// Brightpearl allows 200 requests per minute
+var RATE_LIMIT_REQUESTS = 200;
+var RATE_LIMIT_INTERVAL = 60 * 1000;
 
 var BrightpearlClient = /*#__PURE__*/function () {
   _createClass(BrightpearlClient, null, [{
@@ -282,12 +288,15 @@ var BrightpearlClient = /*#__PURE__*/function () {
       };
     });
 
-    this.client_ = _axios["default"].create({
+    this.client_ = (0, _axiosRateLimit["default"])(_axios["default"].create({
       baseURL: "https://".concat(options.url, "/public-api/").concat(options.account),
       headers: {
         "brightpearl-app-ref": "medusa-dev",
         "brightpearl-dev-ref": "sebrindom"
       }
+    }), {
+      maxRequests: RATE_LIMIT_REQUESTS,
+      perMilliseconds: RATE_LIMIT_INTERVAL
     });
     this.authType_ = options.auth_type;
     this.token_ = options.access_token;
