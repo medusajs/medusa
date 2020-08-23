@@ -15,7 +15,8 @@ class BrightpearlOauth extends OauthService {
     const client_id = "medusa-dev"
     const client_secret = CLIENT_SECRET
     const state = randomize("A0", 16)
-    const redirect = "https://localhost:8000/a/oauth/brightpearl"
+    const redirect =
+      "https://staging-tekla-admin.medusa-commerce.com/a/oauth/brightpearl"
     return {
       application_name: "brightpearl",
       display_name: "Brightpearl",
@@ -24,11 +25,23 @@ class BrightpearlOauth extends OauthService {
     }
   }
 
+  async refreshToken(refreshToken) {
+    const params = {
+      refresh_token: refreshToken,
+      client_id: "medusa-dev",
+      client_secret: CLIENT_SECRET,
+    }
+
+    const data = await Brightpearl.refreshToken(this.account_, params)
+    return data
+  }
+
   async generateToken(code) {
     const params = {
       client_id: "medusa-dev",
       client_secret: CLIENT_SECRET,
-      redirect: "https://localhost:8000/a/oauth/brightpearl",
+      redirect:
+        "https://staging-tekla-admin.medusa-commerce.com/a/oauth/brightpearl",
       code,
     }
 
