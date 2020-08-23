@@ -52,7 +52,6 @@ class BrightpearlService extends BaseService {
           "brightpearl",
           data.refresh_token
         )
-        console.log(newAuth)
         client.updateAuth({
           auth_type: newAuth.token_type,
           access_token: newAuth.access_token,
