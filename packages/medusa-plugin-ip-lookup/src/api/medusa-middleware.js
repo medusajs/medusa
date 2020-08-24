@@ -20,12 +20,12 @@ export default {
 
       // Find region using the country code from ip lookup
       const regions = await regionService.list({
-        country_code: data.country_code,
+        countries: data.country_code,
       })
 
       // If this region exists, add it to the body of the cart creation request
       if (regions[0]) {
-        req.body.region_id = regions[0]._id
+        req.body.region_id = regions[0]._id.toString()
       }
 
       next()
