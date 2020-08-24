@@ -46,7 +46,7 @@
     "@babel/plugin-transform-classes": "^7.9.5",
     "@hapi/joi": "^16.1.8",
     "awilix": "^4.2.3",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "chokidar": "^3.4.2",
