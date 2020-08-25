@@ -415,6 +415,7 @@ class OrderService extends BaseService {
             ...metadata,
           },
         }
+        return shipment
       }
       return f
     })
