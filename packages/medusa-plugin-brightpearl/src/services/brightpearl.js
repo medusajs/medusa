@@ -229,7 +229,7 @@ class BrightpearlService extends BaseService {
     const authData = await this.getAuthData()
     const orderId = fromOrder.metadata.brightpearl_sales_order_id
     if (orderId) {
-      let accountingCode = "4000"
+      let accountingCode = this.options.sales_account_code || "4000"
       if (
         fromRefund.reason === "discount" &&
         this.options.discount_account_code
