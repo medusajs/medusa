@@ -109,6 +109,10 @@ function registerMedusaMiddleware(pluginDetails, container) {
       pluginDetails.options
     )
   }
+
+  if (module.preCartCreation) {
+    middlewareService.addPreCartCreation(module.preCartCreation)
+  }
 }
 
 function registerCoreRouters(pluginDetails, container) {

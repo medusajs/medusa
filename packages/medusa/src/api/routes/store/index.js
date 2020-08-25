@@ -30,7 +30,7 @@ export default (app, container, config) => {
   customerRoutes(route, container)
   productRoutes(route)
   orderRoutes(route)
-  cartRoutes(route)
+  cartRoutes(route, container)
   shippingOptionRoutes(route)
   regionRoutes(route)
 
