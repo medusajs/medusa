@@ -344,7 +344,7 @@ var BrightpearlClient = /*#__PURE__*/function () {
               switch (_context.prev = _context.next) {
                 case 0:
                   response = error.response;
-                  console.log(response);
+                  console.log(response.data && response.data.errors);
 
                   if (!response) {
                     _context.next = 15;
