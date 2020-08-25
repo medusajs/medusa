@@ -1,0 +1,36 @@
+{
+  "name": "medusa-plugin-ip-lookup",
+  "version": "1.0.0-alpha.3",
+  "description": "IP lookup middleware for Medusa core",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-plugin-ip-lookup"
+  },
+  "scripts": {
+    "build": "babel src --out-dir . --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
+  },
+  "author": "Oliver Juhl",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-classes": "^7.9.5",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/runtime": "^7.7.6",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.2"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "mongoose": "^5.8.0"
+  },
+  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+}
