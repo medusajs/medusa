@@ -7,6 +7,7 @@ class MiddlewareService {
   constructor(container) {
     this.postAuthentication_ = []
     this.preAuthentication_ = []
+    this.preCartCreation_ = []
     this.routers = {}
   }
 
@@ -66,6 +67,17 @@ class MiddlewareService {
   }
 
   /**
+   * Adds a middleware function to be called before cart creation
+   * @param {function} middleware - the middleware function. Should return a
+   *   middleware function.
+   * @return {void}
+   */
+  addPreCartCreation(middleware) {
+    this.validateMiddleware_(middleware)
+    this.preCartCreation_.push(middleware)
+  }
+
+  /**
    * Adds post authentication middleware to an express app.
    * @param {ExpressApp} app - the express app to add the middleware to
    * @return {void}
@@ -85,6 +97,10 @@ class MiddlewareService {
     for (const object of this.preAuthentication_) {
       app.use(object.middleware(object.options))
     }
+  }
+
+  usePreCartCreation() {
+    return this.preCartCreation_
   }
 }
 
