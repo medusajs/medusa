@@ -7,6 +7,7 @@ class OrderService extends BaseService {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
     SHIPMENT_CREATED: "order.shipment_created",
+    FULFILLMENT_CREATED: "order.fulfillment_created",
     ITEMS_RETURNED: "order.items_returned",
     REFUND_CREATED: "order.refund_created",
     PLACED: "order.placed",
@@ -683,7 +684,7 @@ class OrderService extends BaseService {
         )
 
         const data = await provider
-          .createOrder(method.data, method.items)
+          .createOrder(method.data, method.items, order)
           .then(res => {
             successfullyFulfilled = [...successfullyFulfilled, ...method.items]
             return res
