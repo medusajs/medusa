@@ -3,11 +3,12 @@ export default async (req, res) => {
   try {
     const customerService = req.scope.resolve("customerService")
     let customer = await customerService.retrieve(id)
-    customer = customerService.decorate(customer, [
-      "email",
-      "first_name",
-      "last_name",
-    ])
+    customer = await customerService.decorate(
+      customer,
+      ["email", "payment_methods", "has_account", "shipping_addresses"],
+      ["orders"]
+    )
+
     res.json({ customer })
   } catch (err) {
     throw err

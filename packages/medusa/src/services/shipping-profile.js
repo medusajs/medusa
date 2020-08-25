@@ -333,13 +333,13 @@ class ShippingProfileService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     let decorated = _.pick(profile, fields.concat(requiredFields))
 
-    if (expandFields.includes("products")) {
+    if (expandFields.includes("products") && profile.products) {
       decorated.products = await Promise.all(
         profile.products.map(pId => this.productService_.retrieve(pId))
       )
     }
 
-    if (expandFields.includes("shipping_options")) {
+    if (expandFields.includes("shipping_options") && profile.shipping_options) {
       decorated.shipping_options = await Promise.all(
         profile.shipping_options.map(oId =>
           this.shippingOptionService_.retrieve(oId)
