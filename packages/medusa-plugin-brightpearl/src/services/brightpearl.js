@@ -576,6 +576,11 @@ class BrightpearlService extends BaseService {
     const goodsOut = await client.warehouses.retrieveGoodsOutNote(id)
     const order = await client.orders.retrieve(goodsOut.orderId)
 
+    // Only relevant for medusa orders check channel id
+    if (order.channelId !== parseInt(this.options.channel_id)) {
+      return
+    }
+
     // Combine the line items that we are going to create a fulfillment for
     const lines = Object.keys(goodsOut.orderRows)
       .map((key) => {
