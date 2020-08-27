@@ -1,6 +1,7 @@
 export const MiddlewareServiceMock = {
   usePostAuthentication: jest.fn(),
   usePreAuthentication: jest.fn(),
+  usePreCartCreation: jest.fn().mockReturnValue([]),
   getRouters: jest.fn().mockReturnValue([]),
 }
 
