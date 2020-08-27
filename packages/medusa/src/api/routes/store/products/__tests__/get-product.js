@@ -10,14 +10,7 @@ describe("Get product by id", () => {
     beforeAll(async () => {
       subject = await request(
         "GET",
-        `/admin/products/${IdMap.getId("product1")}`,
-        {
-          adminSession: {
-            jwt: {
-              userId: IdMap.getId("admin_user"),
-            },
-          },
-        }
+        `/store/products/${IdMap.getId("product1")}`
       )
     })
 
