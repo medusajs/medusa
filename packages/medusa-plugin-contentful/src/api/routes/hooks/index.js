@@ -7,7 +7,11 @@ const route = Router()
 export default (app) => {
   app.use("/hooks", route)
 
-  route.post("/contentful", middlewares.wrap(require("./contentful").default))
+  route.post(
+    "/contentful",
+    bodyParser.json(),
+    middlewares.wrap(require("./contentful").default)
+  )
 
   return app
 }
