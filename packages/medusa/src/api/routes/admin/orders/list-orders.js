@@ -6,6 +6,7 @@ export default async (req, res) => {
     const queryBuilderService = req.scope.resolve("queryBuilderService")
 
     const query = queryBuilderService.buildQuery(req.query, [
+      "display_id",
       "email",
       "status",
       "fulfillment_status",
