@@ -28,6 +28,9 @@
     "cross-env": "^5.2.1",
     "jest": "^25.5.2"
   },
+  "peerDependencies": {
+    "medusa-interfaces": "1.x"
+  },
   "dependencies": {
     "axios": "^0.20.0",
     "mongoose": "^5.8.0"
