@@ -247,9 +247,6 @@ class OrderService extends BaseService {
   async completeOrder(orderId) {
     const order = await this.retrieve(orderId)
 
-    // Capture the payment
-    await this.capturePayment(orderId)
-
     // Run all other registered events
     const completeOrderJob = await this.eventBus_.emit(
       OrderService.Events.COMPLETED,
@@ -593,12 +590,7 @@ class OrderService extends BaseService {
       )
     }
 
-    // prepare update object
     const updateFields = { payment_status: "captured" }
-    const completed = order.fulfillment_status !== "not_fulfilled"
-    if (completed) {
-      updateFields.status = "completed"
-    }
 
     const { provider_id, data } = order.payment_method
     const paymentProvider = await this.paymentProviderService_.retrieveProvider(
