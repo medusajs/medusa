@@ -138,9 +138,12 @@ class BrightpearlService extends BaseService {
         )
         const onHand = availability[productId].total.onHand
 
-        return this.productVariantService_.update(v._id, {
-          inventory_quantity: onHand,
-        })
+        // Only update if the inventory levels have changed
+        if (parseInt(v.inventory_quantity) !== parseInt(onHand)) {
+          return this.productVariantService_.update(v._id, {
+            inventory_quantity: onHand,
+          })
+        }
       })
     )
   }
