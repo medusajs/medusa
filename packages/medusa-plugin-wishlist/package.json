@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-wishlist",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.26",
   "description": "Provides /customers/:id/wishlist to add items to a customr's wishlist",
   "main": "index.js",
   "repository": {
