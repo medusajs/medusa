@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.24",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
