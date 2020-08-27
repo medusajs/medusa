@@ -145,8 +145,18 @@ class OrderService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.orderModel_.find(selector)
+  list(selector, offset, limit) {
+    return this.orderModel_
+      .find(selector, {}, offset, limit)
+      .sort({ created: -1 })
+  }
+
+  /**
+   * Return the total number of documents in database
+   * @return {Promise} the result of the count operation
+   */
+  count() {
+    return this.orderModel_.count()
   }
 
   /**
@@ -230,14 +240,6 @@ class OrderService extends BaseService {
       return false
     }
     return true
-  }
-
-  /**
-   * @param {Object} selector - the query object for find
-   * @return {Promise} the result of the find operation
-   */
-  list(selector) {
-    return this.orderModel_.find(selector)
   }
 
   /**

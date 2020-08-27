@@ -50,6 +50,7 @@
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "chokidar": "^3.4.2",
+    "client-sessions": "^0.8.0",
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.6.5",
