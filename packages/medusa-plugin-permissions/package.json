@@ -28,9 +28,11 @@
     "cross-env": "^5.2.1",
     "jest": "^25.5.2"
   },
+  "peerDependencies": {
+    "medusa-interfaces": "1.x"
+  },
   "dependencies": {
     "medusa-core-utils": "^1.0.0-alpha.24",
-    "medusa-interfaces": "^1.0.0-alpha.24",
     "medusa-test-utils": "^1.0.0-alpha.24",
     "mongoose": "^5.8.0"
   },
