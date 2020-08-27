@@ -145,8 +145,18 @@ class OrderService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.orderModel_.find(selector)
+  list(selector, offset, limit) {
+    return this.orderModel_
+      .find(selector, {}, offset, limit)
+      .sort({ created: -1 })
+  }
+
+  /**
+   * Return the total number of documents in database
+   * @return {Promise} the result of the count operation
+   */
+  count() {
+    return this.orderModel_.count()
   }
 
   /**
@@ -233,22 +243,11 @@ class OrderService extends BaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @return {Promise} the result of the find operation
-   */
-  list(selector) {
-    return this.orderModel_.find(selector)
-  }
-
-  /**
    * @param {string} orderId - id of the order to complete
    * @return {Promise} the result of the find operation
    */
   async completeOrder(orderId) {
     const order = await this.retrieve(orderId)
-
-    // Capture the payment
-    await this.capturePayment(orderId)
 
     // Run all other registered events
     const completeOrderJob = await this.eventBus_.emit(
@@ -593,12 +592,7 @@ class OrderService extends BaseService {
       )
     }
 
-    // prepare update object
     const updateFields = { payment_status: "captured" }
-    const completed = order.fulfillment_status !== "not_fulfilled"
-    if (completed) {
-      updateFields.status = "completed"
-    }
 
     const { provider_id, data } = order.payment_method
     const paymentProvider = await this.paymentProviderService_.retrieveProvider(

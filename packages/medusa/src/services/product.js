@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { Validator, MedusaError, compareObjectsByProp } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 /**
@@ -49,8 +49,16 @@ class ProductService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.productModel_.find(selector)
+  list(selector, offset, limit) {
+    return this.productModel_.find(selector, {}, offset, limit)
+  }
+
+  /**
+   * Return the total number of documents in database
+   * @return {Promise} the result of the count operation
+   */
+  count() {
+    return this.productModel_.count()
   }
 
   /**
@@ -153,32 +161,53 @@ class ProductService extends BaseService {
       await Promise.all(
         update.variants.map(async variant => {
           if (variant._id) {
+            const variantFromDb = existingVariants.find(v =>
+              v._id.equals(variant._id)
+            )
             if (variant.prices && variant.prices.length) {
-              for (const price of variant.prices) {
-                if (price.region_id) {
-                  await this.productVariantService_.setRegionPrice(
-                    variant._id,
-                    price.region_id,
-                    price.amount
-                  )
-                } else {
-                  await this.productVariantService_.setCurrencyPrice(
-                    variant._id,
-                    price.currency_code,
-                    price.amount
-                  )
+              // if equal we dont want to update
+              const isPricesEqual = compareObjectsByProp(
+                variant,
+                variantFromDb,
+                "prices"
+              )
+
+              if (!isPricesEqual) {
+                for (const price of variant.prices) {
+                  if (price.region_id) {
+                    await this.productVariantService_.setRegionPrice(
+                      variant._id,
+                      price.region_id,
+                      price.amount
+                    )
+                  } else {
+                    await this.productVariantService_.setCurrencyPrice(
+                      variant._id,
+                      price.currency_code,
+                      price.amount
+                    )
+                  }
                 }
               }
             }
 
             if (variant.options && variant.options.length) {
-              for (const option of variant.options) {
-                await this.updateOptionValue(
-                  productId,
-                  variant._id,
-                  option.option_id,
-                  option.value
-                )
+              // if equal we dont want to update
+              const isOptionsEqual = compareObjectsByProp(
+                variant,
+                variantFromDb,
+                "options"
+              )
+
+              if (!isOptionsEqual) {
+                for (const option of variant.options) {
+                  await this.updateOptionValue(
+                    productId,
+                    variant._id,
+                    option.option_id,
+                    option.value
+                  )
+                }
               }
             }
 
