@@ -393,6 +393,7 @@ class BrightpearlService extends BaseService {
       externalRef: fromOrder._id,
       channelId: this.options.channel_id || `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
+      statusId: this.options.default_status_id || `3`,
       customer: {
         id: customer.contactId,
         address: {
