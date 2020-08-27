@@ -169,7 +169,8 @@ class ContentfulService extends BaseService {
       const variantEntries = await this.getVariantEntries_(product._id)
       const variantLinks = this.getVariantLinks_(variantEntries)
 
-      productEntryFields = {
+      const productEntryFields = {
+        ...productEntry.fields,
         title: {
           "en-US": product.title,
         },
@@ -222,6 +223,7 @@ class ContentfulService extends BaseService {
       }
 
       const variantEntryFields = {
+        ...variantEntry.fields,
         title: {
           "en-US": variant.title,
         },
