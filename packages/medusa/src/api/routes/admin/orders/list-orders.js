@@ -13,13 +13,18 @@ export default async (req, res) => {
       "payment_status",
     ])
 
-    let orders = await orderService.list(query)
+    const limit = parseInt(req.query.limit) || 0
+    const offset = parseInt(req.query.offset) || 0
+
+    let orders = await orderService.list(query, offset, limit)
 
     orders = await Promise.all(
       orders.map(order => orderService.decorate(order))
     )
 
-    res.json({ orders })
+    let numOrders = await orderService.count()
+
+    res.json({ orders, total_count: numOrders })
   } catch (error) {
     throw error
   }
