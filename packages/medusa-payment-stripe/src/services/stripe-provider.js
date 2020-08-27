@@ -53,7 +53,8 @@ class StripeProviderService extends PaymentService {
   async retrieveSavedMethods(customer) {
     if (customer.metadata && customer.metadata.stripe_id) {
       const methods = await this.stripe_.paymentMethods.list({
-        customer: customer.metadata.stripe_id, type: "card"
+        customer: customer.metadata.stripe_id,
+        type: "card",
       })
 
       return methods.data
@@ -96,8 +97,6 @@ class StripeProviderService extends PaymentService {
     const { customer_id, region_id } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
-    console.log(customer_id)
-
     let stripeCustomerId
     if (!customer_id) {
       const { id } = await this.stripe_.customers.create({
@@ -106,7 +105,6 @@ class StripeProviderService extends PaymentService {
       stripeCustomerId = id
     } else {
       const customer = await this.customerService_.retrieve(customer_id)
-      console.log(customer)
       if (!(customer.metadata && customer.metadata.stripe_id)) {
         const { id } = await this.stripe_.customers.create({
           email: customer.email,
@@ -120,7 +118,7 @@ class StripeProviderService extends PaymentService {
     const amount = await this.totalsService_.getTotal(cart)
     const paymentIntent = await this.stripe_.paymentIntents.create({
       customer: stripeCustomerId,
-      amount: amount * 100, // Stripe amount is in cents
+      amount: parseInt(amount * 100), // Stripe amount is in cents
       currency: currency_code,
       setup_future_usage: "on_session",
       capture_method: "manual",
@@ -152,9 +150,9 @@ class StripeProviderService extends PaymentService {
   async updatePayment(data, cart) {
     try {
       const { id } = data
-      const amount = this.totalsService_.getTotal(cart)
+      const amount = await this.totalsService_.getTotal(cart)
       return this.stripe_.paymentIntents.update(id, {
-        amount: amount * 100,
+        amount: parseInt(amount * 100),
       })
     } catch (error) {
       throw error
@@ -164,13 +162,12 @@ class StripeProviderService extends PaymentService {
   async deletePayment(data) {
     try {
       const { id } = data
-      return this.stripe_.paymentIntents.cancel(id)
-        .catch(err => {
-          if (err.statusCode === 400) {
-            return
-          }
-          throw err
-        })
+      return this.stripe_.paymentIntents.cancel(id).catch((err) => {
+        if (err.statusCode === 400) {
+          return
+        }
+        throw err
+      })
     } catch (error) {
       throw error
     }
@@ -215,7 +212,7 @@ class StripeProviderService extends PaymentService {
     const { id } = paymentData
     try {
       return this.stripe_.refunds.create({
-        amount: amount * 100,
+        amount: parseInt(amount * 100),
         payment_intent: id,
       })
     } catch (error) {
