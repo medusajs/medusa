@@ -138,9 +138,12 @@ class BrightpearlService extends BaseService {
         )
         const onHand = availability[productId].total.onHand
 
-        return this.productVariantService_.update(v._id, {
-          inventory_quantity: onHand,
-        })
+        // Only update if the inventory levels have changed
+        if (parseInt(v.inventory_quantity) !== parseInt(onHand)) {
+          return this.productVariantService_.update(v._id, {
+            inventory_quantity: onHand,
+          })
+        }
       })
     )
   }
@@ -575,6 +578,11 @@ class BrightpearlService extends BaseService {
     // Get goods out and associated order
     const goodsOut = await client.warehouses.retrieveGoodsOutNote(id)
     const order = await client.orders.retrieve(goodsOut.orderId)
+
+    // Only relevant for medusa orders check channel id
+    if (order.channelId !== parseInt(this.options.channel_id)) {
+      return
+    }
 
     // Combine the line items that we are going to create a fulfillment for
     const lines = Object.keys(goodsOut.orderRows)
