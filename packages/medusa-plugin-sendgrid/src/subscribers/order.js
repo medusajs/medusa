@@ -1,8 +1,30 @@
 class OrderSubscriber {
-  constructor({ totalsService, sendgridService, eventBusService }) {
+  constructor({
+    totalsService,
+    orderService,
+    sendgridService,
+    eventBusService,
+  }) {
+    this.orderService_ = orderService
     this.totalsService_ = totalsService
     this.sendgridService_ = sendgridService
     this.eventBus_ = eventBusService
+
+    this.eventBus_.subscribe(
+      "order.shipment_created",
+      async ({ order_id, shipment }) => {
+        const order = await this.orderService_.retrieve(order_id)
+        const data = {
+          ...order,
+          tracking_number: shipment.tracking_numbers.join(", "),
+        }
+
+        await this.sendgridService_.transactionalEmail(
+          "order.shipment_created",
+          data
+        )
+      }
+    )
 
     this.eventBus_.subscribe("order.gift_card_created", async (order) => {
       await this.sendgridService_.transactionalEmail(
