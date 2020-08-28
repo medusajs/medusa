@@ -13,6 +13,7 @@ class DiscountService extends BaseService {
     dynamicDiscountCodeModel,
     totalsService,
     productVariantService,
+    productService,
     regionService,
     eventBusService,
   }) {
@@ -29,6 +30,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
+
+    /** @private @const {ProductService} */
+    this.productService_ = productService
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
@@ -430,6 +434,28 @@ class DiscountService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Decorates a discount.
+   * @param {Discount} discount - the discount to decorate.
+   * @param {string[]} fields - the fields to include.
+   * @param {string[]} expandFields - fields to expand.
+   * @return {Discount} return the decorated discount.
+   */
+  async decorate(discount, fields = [], expandFields = []) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(discount, fields.concat(requiredFields))
+
+    if (expandFields.includes("valid_for")) {
+      decorated.discount_rule.valid_for = await Promise.all(
+        decorated.discount_rule.valid_for.map(async p => {
+          return this.productService_.retrieve(p)
+        })
+      )
+    }
+
+    return decorated
   }
 }
 
