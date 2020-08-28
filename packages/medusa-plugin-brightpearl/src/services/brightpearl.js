@@ -524,10 +524,7 @@ class BrightpearlService extends BaseService {
     )
     let lineDiscounts = []
     if (discount) {
-      lineDiscounts = this.totalsService_.getLineDiscounts(
-        fromOrder,
-        discount
-      )
+      lineDiscounts = this.totalsService_.getLineDiscounts(fromOrder, discount)
     }
 
     const lines = await Promise.all(
@@ -537,8 +534,10 @@ class BrightpearlService extends BaseService {
         )
 
         const discount = lineDiscounts.find((l) =>
-          l.item._id.equals(item._id)
-        ) || { amount: 0 }
+          item._id.equals(l.item._id)
+        ) || {
+          amount: 0,
+        }
 
         const row = {}
         if (bpProduct) {
