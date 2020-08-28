@@ -18,39 +18,38 @@ var inventorySync = /*#__PURE__*/function () {
           case 0:
             brightpearlService = container.resolve("brightpearlService");
             eventBus = container.resolve("eventBusService");
-            console.log("hi inventory");
-            _context.prev = 3;
-            _context.next = 6;
+            _context.prev = 2;
+            _context.next = 5;
             return brightpearlService.getClient();
 
-          case 6:
+          case 5:
             client = _context.sent;
             pattern = "43 4,10,14,20 * * *"; // nice for tests "*/10 * * * * *"
 
             eventBus.createCronJob("inventory-sync", {}, pattern, brightpearlService.syncInventory());
-            _context.next = 16;
+            _context.next = 15;
             break;
 
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](3);
+          case 10:
+            _context.prev = 10;
+            _context.t0 = _context["catch"](2);
 
             if (!(_context.t0.name === "not_allowed")) {
-              _context.next = 15;
+              _context.next = 14;
               break;
             }
 
             return _context.abrupt("return");
 
-          case 15:
+          case 14:
             throw _context.t0;
 
-          case 16:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 11]]);
+    }, _callee, null, [[2, 10]]);
   }));
 
   return function inventorySync(_x) {
