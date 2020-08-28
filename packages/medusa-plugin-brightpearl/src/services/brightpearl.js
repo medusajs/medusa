@@ -524,7 +524,7 @@ class BrightpearlService extends BaseService {
     )
     let lineDiscounts = []
     if (discount) {
-      lineDiscounts = this.discountService_.getLineDiscounts(
+      lineDiscounts = this.totalsService_.getLineDiscounts(
         fromOrder,
         discount
       )

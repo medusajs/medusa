@@ -50,7 +50,7 @@ class TotalsService extends BaseService {
           item.content.unit_price * item.content.quantity * item.quantity
       }
     })
-    return subtotal
+    return this.rounded(subtotal)
   }
 
   /**
@@ -77,12 +77,12 @@ class TotalsService extends BaseService {
     const discountTotal = await this.getDiscountTotal(object)
     const region = await this.regionService_.retrieve(object.region_id)
     const { tax_rate } = region
-    return (subtotal - discountTotal + shippingTotal) * tax_rate
+    return this.rounded((subtotal - discountTotal + shippingTotal) * tax_rate)
   }
 
   getRefundedTotal(object) {
     const total = object.refunds.reduce((acc, next) => acc + next.amount, 0)
-    return total
+    return this.rounded(total)
   }
 
   getLineItemRefund(order, lineItem) {
@@ -105,9 +105,9 @@ class TotalsService extends BaseService {
     const discountAmount =
       (discountedLine.amount / discountedLine.item.quantity) * lineItem.quantity
 
-    return (
+    return this.rounded(
       (lineItem.content.unit_price * lineItem.quantity - discountAmount) *
-      (1 + taxRate)
+        (1 + taxRate)
     )
   }
 
@@ -121,7 +121,7 @@ class TotalsService extends BaseService {
    */
   getRefundTotal(order, lineItems) {
     const refunds = lineItems.map(i => this.getLineItemRefund(order, i))
-    return refunds.reduce((acc, next) => acc + next, 0)
+    return this.rounded(refunds.reduce((acc, next) => acc + next, 0))
   }
 
   /**
@@ -292,7 +292,14 @@ class TotalsService extends BaseService {
       toReturn = _.sumBy(itemFixedDiscounts, d => d.amount)
     }
 
-    return Math.min(subtotal, toReturn)
+    return this.rounded(Math.min(subtotal, toReturn))
+  }
+
+  rounded(value) {
+    const decimalPlaces = 4
+    return Number(
+      Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
+    )
   }
 }
 
