@@ -533,9 +533,7 @@ class BrightpearlService extends BaseService {
           item.content.variant.sku
         )
 
-        const discount = lineDiscounts.find((l) =>
-          item._id.equals(l.item._id)
-        ) || {
+        const discount = lineDiscounts.find((l) => item._id === l.item._id) || {
           amount: 0,
         }
 
