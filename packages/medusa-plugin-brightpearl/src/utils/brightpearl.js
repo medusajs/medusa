@@ -289,6 +289,18 @@ class BrightpearlClient {
           })
           .then(({ data }) => data.response && data.response[0])
       },
+      search: (search) => {
+        return this.client_
+          .request({
+            url: `/product-service/product-search?${search}`,
+          })
+          .then(({ data }) => {
+            return {
+              products: this.buildSearchResults_(data.response),
+              metadata: data.response.metaData,
+            }
+          })
+      },
       retrieveBySKU: (sku) => {
         return this.client_
           .request({

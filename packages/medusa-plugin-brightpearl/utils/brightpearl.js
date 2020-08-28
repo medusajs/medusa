@@ -254,11 +254,22 @@ var BrightpearlClient = /*#__PURE__*/function () {
             return data.response && data.response[0];
           });
         },
+        search: function search(_search) {
+          return _this.client_.request({
+            url: "/product-service/product-search?".concat(_search)
+          }).then(function (_ref15) {
+            var data = _ref15.data;
+            return {
+              products: _this.buildSearchResults_(data.response),
+              metadata: data.response.metaData
+            };
+          });
+        },
         retrieveBySKU: function retrieveBySKU(sku) {
           return _this.client_.request({
             url: "/product-service/product-search?SKU=".concat(sku)
-          }).then(function (_ref15) {
-            var data = _ref15.data;
+          }).then(function (_ref16) {
+            var data = _ref16.data;
             return _this.buildSearchResults_(data.response);
           });
         }
@@ -270,8 +281,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
         retrieveByEmail: function retrieveByEmail(email) {
           return _this.client_.request({
             url: "/contact-service/contact-search?primaryEmail=".concat(email)
-          }).then(function (_ref16) {
-            var data = _ref16.data;
+          }).then(function (_ref17) {
+            var data = _ref17.data;
             return _this.buildSearchResults_(data.response);
           });
         },
@@ -280,8 +291,8 @@ var BrightpearlClient = /*#__PURE__*/function () {
             url: "/contact-service/contact",
             method: "POST",
             data: customerData
-          }).then(function (_ref17) {
-            var data = _ref17.data;
+          }).then(function (_ref18) {
+            var data = _ref18.data;
             return data.response;
           });
         }
@@ -337,7 +348,7 @@ var BrightpearlClient = /*#__PURE__*/function () {
         return request;
       });
       this.client_.interceptors.response.use(undefined, /*#__PURE__*/function () {
-        var _ref18 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(error) {
+        var _ref19 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(error) {
           var response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
@@ -388,7 +399,7 @@ var BrightpearlClient = /*#__PURE__*/function () {
         }));
 
         return function (_x) {
-          return _ref18.apply(this, arguments);
+          return _ref19.apply(this, arguments);
         };
       }());
     }

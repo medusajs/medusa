@@ -651,13 +651,6 @@ class OrderService extends BaseService {
       })
       .filter(i => !!i)
 
-    if (order.fulfillment_status !== "not_fulfilled") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Order is already fulfilled"
-      )
-    }
-
     const { shipping_methods } = order
 
     // prepare update object
