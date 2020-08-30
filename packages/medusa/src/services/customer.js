@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { kdf } from "scrypt"
+import Scrypt from "scrypt-kdf"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -166,7 +166,7 @@ class CustomerService extends BaseService {
    * @return hashed password
    */
   async hashPassword_(password) {
-    const buf = await kdf(password, { N: 1, r: 1, p: 1 })
+    const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
     return buf.toString("base64")
   }
 

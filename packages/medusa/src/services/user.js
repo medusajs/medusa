@@ -1,5 +1,5 @@
 import _ from "lodash"
-import bcrypt from "bcrypt"
+import Scrypt from "scrypt-kdf"
 import jwt from "jsonwebtoken"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -133,6 +133,17 @@ class UserService extends BaseService {
     }
     return user
   }
+
+  /**
+   * Hashes a password
+   * @param {string} password - the value to hash
+   * @return hashed password
+   */
+  async hashPassword_(password) {
+    const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
+    return buf.toString("base64")
+  }
+
   /**
    * Creates a user with username being validated.
    * Fails if email is not a valid format.
@@ -141,7 +152,7 @@ class UserService extends BaseService {
    */
   async create(user, password) {
     const validatedEmail = this.validateEmail_(user.email)
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await this.hashPassword_(password)
     user.email = validatedEmail
     user.password_hash = hashedPassword
     return this.userModel_.create(user).catch(err => {
