@@ -1,4 +1,4 @@
-import { verifyKdf } from "scrypt"
+import Scrypt from "scrypt-kdf"
 import { BaseService } from "medusa-interfaces"
 
 /**
@@ -23,8 +23,8 @@ class AuthService extends BaseService {
    * @return {bool} the result of the comparison
    */
   async comparePassword_(password, hash) {
-    const buf = new Buffer(hash, "base64")
-    return verifyKdf(buf, password)
+    const buf = Buffer.from(hash, "base64")
+    return Scrypt.verify(buf, password)
   }
 
   /**
