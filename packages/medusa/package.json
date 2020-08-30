@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.0.0-alpha.37",
+  "version": "1.0.0-y.0",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
