@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+import { verifyKdf } from "scrypt"
 import { BaseService } from "medusa-interfaces"
 
 /**
@@ -14,6 +14,17 @@ class AuthService extends BaseService {
 
     /** @private @const {CustomerService} */
     this.customerService_ = customerService
+  }
+
+  /**
+   * Verifies if a password is valid given the provided password hash
+   * @param {string} password - the raw password to check
+   * @param {string} hash - the hash to compare against
+   * @return {bool} the result of the comparison
+   */
+  async comparePassword_(password, hash) {
+    const buf = new Buffer(hash, "base64")
+    return verifyKdf(buf, password)
   }
 
   /**
@@ -45,7 +56,7 @@ class AuthService extends BaseService {
 
   /**
    * Authenticates a given user based on an email, password combination. Uses
-   * bcrypt to match password with hashed value.
+   * scrypt to match password with hashed value.
    * @param {string} email - the email of the user
    * @param {string} password - the password of the user
    * @return {{ success: (bool), user: (object | undefined) }}
@@ -56,7 +67,10 @@ class AuthService extends BaseService {
   async authenticate(email, password) {
     try {
       const user = await this.userService_.retrieveByEmail(email)
-      const passwordsMatch = await bcrypt.compare(password, user.password_hash)
+      const passwordsMatch = await this.comparePassword_(
+        password,
+        user.password_hash
+      )
       if (passwordsMatch) {
         return {
           success: true,
@@ -78,7 +92,7 @@ class AuthService extends BaseService {
 
   /**
    * Authenticates a customer based on an email, password combination. Uses
-   * bcrypt to match password with hashed value.
+   * scrypt to match password with hashed value.
    * @param {string} email - the email of the user
    * @param {string} password - the password of the user
    * @return {{ success: (bool), user: (object | undefined) }}
@@ -96,7 +110,7 @@ class AuthService extends BaseService {
         }
       }
 
-      const passwordsMatch = await bcrypt.compare(
+      const passwordsMatch = await this.comparePassword_(
         password,
         customer.password_hash
       )
