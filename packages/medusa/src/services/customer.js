@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import bcrypt from "bcrypt"
+import { kdf } from "scrypt"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -161,6 +161,16 @@ class CustomerService extends BaseService {
   }
 
   /**
+   * Hashes a password
+   * @param {string} password - the value to hash
+   * @return hashed password
+   */
+  async hashPassword_(password) {
+    const buf = await kdf(password, { N: 1, r: 1, p: 1 })
+    return buf.toString("base64")
+  }
+
+  /**
    * Creates a customer from an email - customers can have accounts associated,
    * e.g. to login and view order history, etc. If a password is provided the
    * customer will automatically get an account, otherwise the customer is just
@@ -179,7 +189,7 @@ class CustomerService extends BaseService {
     const existing = await this.retrieveByEmail(email).catch(err => undefined)
 
     if (existing && password && !existing.has_account) {
-      const hashedPassword = await bcrypt.hash(password, 10)
+      const hashedPassword = await this.hashPassword_(password)
       customer.password_hash = hashedPassword
       customer.has_account = true
       delete customer.password
@@ -192,7 +202,7 @@ class CustomerService extends BaseService {
       )
     } else {
       if (password) {
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
         customer.has_account = true
         delete customer.password
@@ -232,7 +242,7 @@ class CustomerService extends BaseService {
     }
 
     if (update.password) {
-      const hashedPassword = await bcrypt.hash(update.password, 10)
+      const hashedPassword = await this.hashPassword_(update.password)
       update.password_hash = hashedPassword
       update.has_account = true
       delete update.password
