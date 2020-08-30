@@ -71,7 +71,7 @@
     "randomatic": "^3.1.1",
     "redis": "^3.0.2",
     "resolve-cwd": "^3.0.0",
-    "scrypt": "^6.0.3",
+    "scrypt-kdf": "^2.0.1",
     "winston": "^3.2.1"
   },
   "gitHead": "27d4e07c5251e43ba6be2d5fa35f1d5287b11043"
