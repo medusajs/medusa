@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import bcrypt from "bcrypt"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
