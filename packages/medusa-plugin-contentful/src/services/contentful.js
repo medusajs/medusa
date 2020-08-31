@@ -267,8 +267,14 @@ class ContentfulService extends BaseService {
         this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
       }
 
+      // Get the thumbnail
+      const thumb = await environment.getAsset(
+        entry.fields.thumbnail["en-US"].sys.id
+      )
+
       const updatedProduct = await this.productService_.update(productId, {
         title: productEntry.fields.title["en-US"],
+        thumbnail: thumb.fields.file["en-US"].url,
       })
 
       return updatedProduct
