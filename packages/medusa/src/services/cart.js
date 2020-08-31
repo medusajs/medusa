@@ -1135,10 +1135,15 @@ class CartService extends BaseService {
     }
 
     // If the country code of a shipping address is set we need to clear it
-    let shippingAddress = cart.shipping_address
+    let shippingAddress = cart.shipping_address || {}
     if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
-      shippingAddress.country_code =
-        region.countries.length === 1 ? region.countries[0] : ""
+      shippingAddress.country_code = ""
+      update.shipping_address = shippingAddress
+    }
+
+    // If there is only one country in the region preset it
+    if (region.countries.length === 1) {
+      shippingAddress.country_code = region.countries[0]
       update.shipping_address = shippingAddress
     }
 
