@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-klarna",
-  "version": "1.0.0-y.1",
+  "version": "1.0.0-y.2",
   "description": "Klarna Payment provider for Medusa Commerce",
   "main": "index.js",
   "repository": {
