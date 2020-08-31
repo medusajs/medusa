@@ -136,7 +136,8 @@ class KlarnaProviderService extends PaymentService {
 
     // TODO: Check if country matches ISO
     if (!_.isEmpty(cart.billing_address) && cart.billing_address.country) {
-      order.purchase_country = cart.billing_address.country
+      order.purchase_country =
+        cart.shipping_address.country_code || cart.billing_address.country_code
     } else {
       // Defaults to Sweden
       order.purchase_country = "SE"
