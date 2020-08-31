@@ -25,8 +25,7 @@ class KlarnaProviderService extends PaymentService {
 
     this.klarnaOrderManagementUrl_ = "/ordermanagement/v1/orders"
 
-    this.backendUrl_ =
-      process.env.BACKEND_URL || "https://c8e1abe7d8b3.ngrok.io"
+    this.backendUrl_ = options.backend_url
 
     this.totalsService_ = totalsService
 
@@ -73,11 +72,14 @@ class KlarnaProviderService extends PaymentService {
     })
 
     if (cart.shipping_methods.length) {
-      const { name, price } = cart.shipping_methods.reduce((acc, next) => {
-        acc.name = [...acc.name, next.name]
-        acc.price += next.price
-        return acc
-      }, { name: [], price: 0 })
+      const { name, price } = cart.shipping_methods.reduce(
+        (acc, next) => {
+          acc.name = [...acc.name, next.name]
+          acc.price += next.price
+          return acc
+        },
+        { name: [], price: 0 }
+      )
 
       order_lines.push({
         name: name.join(" + "),
@@ -116,8 +118,8 @@ class KlarnaProviderService extends PaymentService {
         unit_price: 0,
         total_discount_amount: discount * (1 + tax_rate),
         tax_rate: tax_rate * 10000,
-        total_amount: - discount * (1 + tax_rate),
-        total_tax_amount: - discount * tax_rate
+        total_amount: -discount * (1 + tax_rate),
+        total_tax_amount: -discount * tax_rate,
       })
     }
 
@@ -180,21 +182,24 @@ class KlarnaProviderService extends PaymentService {
         return acc
       }, {})
 
-      let f = (a, b) => [].concat(...a.map(a => b.map(b => [].concat(a, b))))
-      let cartesian = (a, b, ...c) => b ? cartesian(f(a, b), ...c) : a
+      let f = (a, b) =>
+        [].concat(...a.map((a) => b.map((b) => [].concat(a, b))))
+      let cartesian = (a, b, ...c) => (b ? cartesian(f(a, b), ...c) : a)
 
-      const methods = Object.keys(partitioned).map(k => partitioned[k])
+      const methods = Object.keys(partitioned).map((k) => partitioned[k])
       const combinations = cartesian(...methods)
-
 
       order.shipping_options = combinations.map((combination) => {
         combination = Array.isArray(combination) ? combination : [combination]
-        const details = combination.reduce((acc, next) => {
-          acc.id = [...acc.id, next._id]
-          acc.name = [...acc.name, next.name]
-          acc.price += next.price
-          return acc
-        }, { id: [], name: [], price: 0 })
+        const details = combination.reduce(
+          (acc, next) => {
+            acc.id = [...acc.id, next._id]
+            acc.name = [...acc.name, next.name]
+            acc.price += next.price
+            return acc
+          },
+          { id: [], name: [], price: 0 }
+        )
 
         return {
           id: details.id.join("."),
@@ -202,7 +207,7 @@ class KlarnaProviderService extends PaymentService {
           price: details.price * (1 + tax_rate) * 100,
           tax_amount: details.price * tax_rate * 100,
           tax_rate: tax_rate * 10000,
-          preselected: combinations.length === 1
+          preselected: combinations.length === 1,
         }
       })
     }
@@ -256,7 +261,8 @@ class KlarnaProviderService extends PaymentService {
    */
   async retrievePayment(paymentData) {
     try {
-      return this.klarna_.get(`${this.klarnaOrderUrl_}/${paymentData.order_id}`)
+      return this.klarna_
+        .get(`${this.klarnaOrderUrl_}/${paymentData.order_id}`)
         .then(({ data }) => data)
     } catch (error) {
       throw error
@@ -292,14 +298,12 @@ class KlarnaProviderService extends PaymentService {
       await this.klarna_.patch(
         `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/merchant-references`,
         {
-          merchant_reference1: orderId
+          merchant_reference1: orderId,
         }
       )
 
-
       return klarnaOrderId
     } catch (error) {
-
       throw error
     }
   }
