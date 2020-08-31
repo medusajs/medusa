@@ -357,10 +357,10 @@ class KlarnaProviderService extends PaymentService {
   async capturePayment(paymentData) {
     try {
       const { order_id } = paymentData
-      const orderData = await this.klarna_.get(
+      const { data: order } = await this.klarna_.get(
         `${this.klarnaOrderManagementUrl_}/${order_id}`
       )
-      const { order_amount } = orderData.order
+      const { order_amount } = order
 
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${order_id}/captures`,
