@@ -358,7 +358,7 @@ class KlarnaProviderService extends PaymentService {
     try {
       const { order_id } = paymentData
       const orderData = await this.klarna_.get(
-        `${this.klarnaOrderUrl_}/${order_id}`
+        `${this.klarnaOrderManagementUrl_}/${order_id}`
       )
       const { order_amount } = orderData.order
 
@@ -402,7 +402,9 @@ class KlarnaProviderService extends PaymentService {
   async cancelPayment(paymentData) {
     try {
       const { order_id } = paymentData
-      await this.klarna_.post(`${this.klarnaOrderUrl_}/${order_id}/cancel`)
+      await this.klarna_.post(
+        `${this.klarnaOrderManagementUrl_}/${order_id}/cancel`
+      )
       return order_id
     } catch (error) {
       throw error
