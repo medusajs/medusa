@@ -269,7 +269,7 @@ class ContentfulService extends BaseService {
 
       // Get the thumbnail
       const thumb = await environment.getAsset(
-        entry.fields.thumbnail["en-US"].sys.id
+        productEntry.fields.thumbnail["en-US"].sys.id
       )
 
       const updatedProduct = await this.productService_.update(productId, {
