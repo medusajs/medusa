@@ -368,7 +368,7 @@ class OrderService extends BaseService {
         )
 
         const o = {
-          display_id: await this.counterService_.getNext("orders"),
+          display_id: await this.counterService_.getNext("orders", dbSession),
           payment_method: {
             provider_id: paymentSession.provider_id,
             data: paymentData,

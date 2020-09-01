@@ -18,12 +18,12 @@ export default (app, rootDirectory) => {
     })
   )
 
-  app.use("/adyen-hooks", route)
+  app.use("/adyen", route)
 
   route.post(
-    "/capture",
+    "/notification",
     bodyParser.json(),
-    middlewares.wrap(require("./capture-hook").default)
+    middlewares.wrap(require("./adyen").default)
   )
 
   return app

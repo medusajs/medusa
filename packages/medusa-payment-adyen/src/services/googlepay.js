@@ -30,8 +30,8 @@ class GooglePayAdyenService extends PaymentService {
     return {}
   }
 
-  async authorizePayment(cart, paymentMethod) {
-    return this.adyenService_.authorizePayment(cart, paymentMethod)
+  async authorizePayment(cart, paymentMethod, amount) {
+    return this.adyenService_.authorizePayment(cart, paymentMethod, amount)
   }
 
   async retrievePayment(data) {

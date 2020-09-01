@@ -4,7 +4,6 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     cart_id: Validator.string().required(),
     provider_id: Validator.string().required(),
-    payment_data: Validator.object().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -15,40 +14,42 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
     const paymentProvider = req.scope.resolve(`pp_${value.provider_id}`)
+    const regionService = req.scope.resolve("regionService")
+    const totalsService = req.scope.resolve("totalsService")
 
     const cart = await cartService.retrieve(value.cart_id)
 
-    const { data } = await paymentProvider.authorizePayment(
-      cart,
-      value.payment_data.paymentMethod
+    const paymentSession = await cartService.retrievePaymentSession(
+      cart._id,
+      value.provider_id
     )
 
-    const transactionReference = data.pspReference
+    const region = await regionService.retrieve(cart.region_id)
+    const total = await totalsService.getTotal(cart)
 
-    let newPaymentSession = cart.payment_sessions.find(
-      (ps) => ps.provider_id === value.provider_id
-    )
-
-    newPaymentSession = {
-      ...newPaymentSession,
-      data,
+    const amount = {
+      currency: region.currency_code,
+      value: total * 100,
     }
 
-    await cartService.setMetadata(
-      cart._id,
-      "adyen_transaction_ref",
-      transactionReference
+    const { data } = await paymentProvider.authorizePayment(
+      cart,
+      paymentSession.data.paymentMethod,
+      amount
     )
+
+    data.amount = amount
+    paymentSession.data = data
 
     await cartService.updatePaymentSession(
       cart._id,
       value.provider_id,
-      newPaymentSession
+      paymentSession
     )
 
     await cartService.setPaymentMethod(cart._id, {
       provider_id: value.provider_id,
-      data,
+      data: paymentSession,
     })
 
     res.status(200).json({ data })

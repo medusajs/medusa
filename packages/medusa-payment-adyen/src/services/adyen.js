@@ -108,15 +108,9 @@ class AdyenService extends BaseService {
    * Creates and authorizes an Ayden payment
    * @returns {Object} payment data result
    */
-  async authorizePayment(cart, paymentMethod) {
-    const region = await this.regionService_.retrieve(cart.region_id)
-    const total = await this.totalsService_.getTotal(cart)
-
+  async authorizePayment(cart, paymentMethod, amount) {
     let request = {
-      amount: {
-        currency: region.currency_code,
-        value: total * 100,
-      },
+      amount,
       shopperReference: cart.customer_id,
       paymentMethod,
       reference: cart._id,
@@ -125,11 +119,6 @@ class AdyenService extends BaseService {
       metadata: {
         cart_id: cart._id,
       },
-    }
-
-    if (paymentMethod.storedPaymentMethodId) {
-      request.shopperInteraction = "Ecommerce"
-      request.recurringProcessingModel = "CardOnFile"
     }
 
     return await this.adyenCheckoutApi.post("/payments", request)
@@ -172,7 +161,6 @@ class AdyenService extends BaseService {
 
       return captured
     } catch (error) {
-      console.log(error)
       throw error
     }
   }
