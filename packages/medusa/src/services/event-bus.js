@@ -8,6 +8,8 @@ import Redis from "ioredis"
  */
 class EventBusService {
   constructor({ logger, redisClient, redisSubscriber }, config) {
+    console.log(config)
+
     /** @private {logger} */
     this.logger_ = logger
 
