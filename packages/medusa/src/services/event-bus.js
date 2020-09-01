@@ -7,7 +7,7 @@ import config from "../config"
  * @interface
  */
 class EventBusService {
-  constructor({ logger }) {
+  constructor({ logger, redisClient, redisSubscriber }) {
     /** @private {logger} */
     this.logger_ = logger
 
@@ -20,17 +20,13 @@ class EventBusService {
     /** @private {BullQueue} used for cron jobs */
     this.cronQueue_ = new Bull(`cron-jobs:queue`, config.redisURI)
 
-    // Economical way of dealing with redis clients
-    const client = new Redis(config.redisURI)
-    const subscriber = new Redis(config.redisURI)
-
     const opts = {
       createClient: type => {
         switch (type) {
           case "client":
-            return client
+            return redisClient
           case "subscriber":
-            return subscriber
+            return redisSubscriber
           default:
             return new Redis(config.redisURI)
         }

@@ -1,4 +1,6 @@
 import { createContainer, asValue } from "awilix"
+import Redis from "ioredis"
+
 import expressLoader from "./express"
 import mongooseLoader from "./mongoose"
 import apiLoader from "./api"
@@ -9,6 +11,7 @@ import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
 import defaultsLoader from "./defaults"
 import Logger from "./logger"
+import config from "../config"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
   const container = createContainer()
@@ -28,7 +31,13 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     return this
   }.bind(container)
 
+  // Economical way of dealing with redis clients
+  const client = new Redis(config.redisURI)
+  const subscriber = new Redis(config.redisURI)
+
   container.register({
+    redisClient: client,
+    redisSubscriber: subscriber,
     logger: asValue(Logger),
   })
 
