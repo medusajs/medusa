@@ -6,7 +6,7 @@ import { Lifetime, asFunction } from "awilix"
 /**
  * Registers all services in the services directory
  */
-export default ({ container }) => {
+export default ({ container, configModule }) => {
   const isTest = process.env.NODE_ENV === "test"
 
   const corePath = isTest ? "../services/__mocks__/*.js" : "../services/*.js"
@@ -17,7 +17,9 @@ export default ({ container }) => {
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
     container.register({
-      [name]: asFunction(cradle => new loaded(cradle)).singleton(),
+      [name]: asFunction(
+        cradle => new loaded(cradle, configModule)
+      ).singleton(),
     })
   })
 }
