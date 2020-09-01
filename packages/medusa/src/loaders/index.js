@@ -36,8 +36,8 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const subscriber = new Redis(config.redisURI)
 
   container.register({
-    redisClient: client,
-    redisSubscriber: subscriber,
+    redisClient: asValue(client),
+    redisSubscriber: asValue(subscriber),
     logger: asValue(Logger),
   })
 
