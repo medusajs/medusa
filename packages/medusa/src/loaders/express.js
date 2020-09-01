@@ -7,9 +7,9 @@ import createStore from "connect-redis"
 
 import config from "../config"
 
-export default async ({ app }) => {
+export default async ({ app, configModule }) => {
   const RedisStore = createStore(session)
-  const redisClient = redis.createClient(config.redisURI)
+  const redisClient = redis.createClient(configModule.projectConfig.redis_url)
 
   app.set("trust proxy", 1)
   app.use(
