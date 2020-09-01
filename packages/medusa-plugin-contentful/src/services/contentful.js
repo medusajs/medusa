@@ -23,7 +23,7 @@ class ContentfulService extends BaseService {
     })
 
     this.redis_ = redis.createClient({
-      url: process.env.REDIS_URI,
+      url: options.redis_url,
     })
   }
 
