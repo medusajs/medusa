@@ -58,6 +58,7 @@
     "express-session": "^1.17.1",
     "fs-exists-cached": "^1.0.0",
     "glob": "^7.1.6",
+    "ioredis": "^4.17.3",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "medusa-core-utils": "^1.0.0-alpha.30",
