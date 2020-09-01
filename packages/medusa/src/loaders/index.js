@@ -49,7 +49,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await modelsLoader({ container })
   Logger.info("Models initialized")
 
-  await servicesLoader({ container })
+  await servicesLoader({ container, configModule })
   Logger.info("Services initialized")
 
   await subscribersLoader({ container })

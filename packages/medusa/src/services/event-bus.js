@@ -1,13 +1,13 @@
 import Bull from "bull"
 import Redis from "ioredis"
-import config from "../config"
+
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  * @interface
  */
 class EventBusService {
-  constructor({ logger, redisClient, redisSubscriber }) {
+  constructor({ logger, redisClient, redisSubscriber }, config) {
     /** @private {logger} */
     this.logger_ = logger
 
@@ -18,7 +18,10 @@ class EventBusService {
     this.cronHandlers_ = {}
 
     /** @private {BullQueue} used for cron jobs */
-    this.cronQueue_ = new Bull(`cron-jobs:queue`, config.redisURI)
+    this.cronQueue_ = new Bull(
+      `cron-jobs:queue`,
+      config.projectConfig.redis_url
+    )
 
     const opts = {
       createClient: type => {
@@ -28,7 +31,7 @@ class EventBusService {
           case "subscriber":
             return redisSubscriber
           default:
-            return new Redis(config.redisURI)
+            return new Redis(config.projectConfig.redis_url)
         }
       },
     }
