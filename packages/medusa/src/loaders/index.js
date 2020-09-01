@@ -58,7 +58,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const dbConnection = await mongooseLoader({ container, configModule })
   Logger.info("MongoDB Intialized")
 
-  await expressLoader({ app: expressApp })
+  await expressLoader({ app: expressApp, configModule })
   Logger.info("Express Intialized")
 
   await passportLoader({ app: expressApp, container })
