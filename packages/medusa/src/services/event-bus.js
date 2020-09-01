@@ -1,4 +1,5 @@
 import Bull from "bull"
+import Redis from "ioredis"
 import config from "../config"
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -19,8 +20,25 @@ class EventBusService {
     /** @private {BullQueue} used for cron jobs */
     this.cronQueue_ = new Bull(`cron-jobs:queue`, config.redisURI)
 
+    // Economical way of dealing with redis clients
+    const client = new Redis(config.redisURI)
+    const subscriber = new Redis(config.redisURI)
+
+    const opts = {
+      createClient: type => {
+        switch (type) {
+          case "client":
+            return client
+          case "subscriber":
+            return subscriber
+          default:
+            throw new Error("Unknown type: ", type)
+        }
+      },
+    }
+
     /** @private {BullQueue} */
-    this.queue_ = new Bull(`${this.constructor.name}:queue`, config.redisURI)
+    this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
 
     // Register our worker to handle emit calls
     this.queue_.process(this.worker_)
