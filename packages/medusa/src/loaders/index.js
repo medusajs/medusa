@@ -1,5 +1,6 @@
 import { createContainer, asValue } from "awilix"
 import Redis from "ioredis"
+import { getConfigFile } from "medusa-core-utils"
 
 import expressLoader from "./express"
 import mongooseLoader from "./mongoose"
@@ -11,9 +12,13 @@ import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
 import defaultsLoader from "./defaults"
 import Logger from "./logger"
-import config from "../config"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
+  const { configModule, configFilePath } = getConfigFile(
+    rootDirectory,
+    `medusa-config`
+  )
+
   const container = createContainer()
   container.registerAdd = function(name, registration) {
     let storeKey = name + "_STORE"
@@ -32,8 +37,8 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   }.bind(container)
 
   // Economical way of dealing with redis clients
-  const client = new Redis(config.redisURI)
-  const subscriber = new Redis(config.redisURI)
+  const client = new Redis(configModule.projectConfig.redis_url)
+  const subscriber = new Redis(configModule.projectConfig.redis_url)
 
   container.register({
     redisClient: asValue(client),
@@ -50,7 +55,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await subscribersLoader({ container })
   Logger.info("Subscribers initialized")
 
-  const dbConnection = await mongooseLoader({ container })
+  const dbConnection = await mongooseLoader({ container, configModule })
   Logger.info("MongoDB Intialized")
 
   await expressLoader({ app: expressApp })
