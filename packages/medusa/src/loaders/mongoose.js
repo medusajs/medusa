@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
-import config from "../config"
 
-export default async ({ container }) => {
+export default async ({ container, configModule }) => {
   const logger = container.resolve("logger")
 
   mongoose.connection.on("error", err => {
@@ -9,7 +8,7 @@ export default async ({ container }) => {
   })
 
   return mongoose
-    .connect(config.databaseURL, {
+    .connect(configModule.projectConfig.mongo_url, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
