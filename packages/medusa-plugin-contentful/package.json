@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-contentful",
-  "version": "1.0.0-y.10",
+  "version": "1.0.0-y.18",
   "description": "Contentful plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
