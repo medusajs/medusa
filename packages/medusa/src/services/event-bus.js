@@ -32,7 +32,7 @@ class EventBusService {
           case "subscriber":
             return subscriber
           default:
-            throw new Error("Unknown type: ", type)
+            return new Redis(config.redisURI)
         }
       },
     }
