@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 
 export default async ({ container, configModule }) => {
+  console.log(configModule)
   const logger = container.resolve("logger")
 
   mongoose.connection.on("error", err => {
