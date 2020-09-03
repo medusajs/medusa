@@ -93,7 +93,6 @@ class BrightpearlClient {
 
     this.client_.interceptors.response.use(undefined, async (error) => {
       const response = error.response
-      console.log(response.data && response.data.errors)
 
       if (response) {
         if (
@@ -104,7 +103,6 @@ class BrightpearlClient {
           try {
             await onRefresh(this)
           } catch (authError) {
-            console.log(authError)
             // refreshing has failed, but report the original error, i.e. 401
             return Promise.reject(error)
           }

@@ -1,4 +1,7 @@
 import { createContainer, asValue } from "awilix"
+import Redis from "ioredis"
+import { getConfigFile } from "medusa-core-utils"
+
 import expressLoader from "./express"
 import mongooseLoader from "./mongoose"
 import apiLoader from "./api"
@@ -11,6 +14,11 @@ import defaultsLoader from "./defaults"
 import Logger from "./logger"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
+  const { configModule, configFilePath } = getConfigFile(
+    rootDirectory,
+    `medusa-config`
+  )
+
   const container = createContainer()
   container.registerAdd = function(name, registration) {
     let storeKey = name + "_STORE"
@@ -28,23 +36,29 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     return this
   }.bind(container)
 
+  // Economical way of dealing with redis clients
+  const client = new Redis(configModule.projectConfig.redis_url)
+  const subscriber = new Redis(configModule.projectConfig.redis_url)
+
   container.register({
+    redisClient: asValue(client),
+    redisSubscriber: asValue(subscriber),
     logger: asValue(Logger),
   })
 
   await modelsLoader({ container })
   Logger.info("Models initialized")
 
-  await servicesLoader({ container })
+  await servicesLoader({ container, configModule })
   Logger.info("Services initialized")
 
   await subscribersLoader({ container })
   Logger.info("Subscribers initialized")
 
-  const dbConnection = await mongooseLoader({ container })
+  const dbConnection = await mongooseLoader({ container, configModule })
   Logger.info("MongoDB Intialized")
 
-  await expressLoader({ app: expressApp })
+  await expressLoader({ app: expressApp, configModule })
   Logger.info("Express Intialized")
 
   await passportLoader({ app: expressApp, container })

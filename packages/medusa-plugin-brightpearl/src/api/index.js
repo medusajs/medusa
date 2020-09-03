@@ -1,6 +1,8 @@
 import { Router } from "express"
 import bodyParser from "body-parser"
 
+const BP_SECRET_TOKEN = process.env.BP_SECRET_TOKEN || ""
+
 export default (container) => {
   const app = Router()
 
@@ -39,6 +41,36 @@ export default (container) => {
       res.sendStatus(200)
     }
   )
+
+  app.post("/brightpearl/orders/:id", async (req, res) => {
+    const { access_token } = req.query
+    const { id } = req.params
+
+    if (
+      !access_token ||
+      !id ||
+      !BP_SECRET_TOKEN ||
+      access_token !== BP_SECRET_TOKEN
+    ) {
+      res.sendStatus(401)
+      return
+    }
+
+    const brightpearlService = req.scope.resolve("brightpearlService")
+    const orderService = req.scope.resolve("orderService")
+
+    try {
+      const order = await orderService.retrieve(id)
+      if (order.metadata && order.metadata.brightpearl_sales_order_id) {
+        throw new Error("Already sent to BP")
+      }
+
+      await brightpearlService.createSalesOrder(order)
+      res.sendStatus(200)
+    } catch (err) {
+      res.status(400).json(err)
+    }
+  })
 
   return app
 }

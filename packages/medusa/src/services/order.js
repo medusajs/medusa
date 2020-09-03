@@ -252,21 +252,19 @@ class OrderService extends BaseService {
     // Run all other registered events
     const completeOrderJob = await this.eventBus_.emit(
       OrderService.Events.COMPLETED,
-      result
+      order
     )
 
     await completeOrderJob.finished().catch(error => {
       throw error
     })
 
-    return this.orderModel_
-      .updateOne(
-        { _id: order._id },
-        {
-          $set: { status: "completed" },
-        }
-      )
-      .then(async result => {})
+    return this.orderModel_.updateOne(
+      { _id: order._id },
+      {
+        $set: { status: "completed" },
+      }
+    )
   }
 
   /**

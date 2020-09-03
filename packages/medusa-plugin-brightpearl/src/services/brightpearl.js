@@ -279,9 +279,12 @@ class BrightpearlService extends BaseService {
             name: `${fromRefund.reason}: ${fromRefund.note}`,
             quantity: 1,
             taxCode: region.tax_code,
-            net: fromRefund.amount / (1 + fromOrder.tax_rate),
-            tax:
-              fromRefund.amount - fromRefund.amount / (1 + fromOrder.tax_rate),
+            net: this.totalsService_.rounded(
+              fromRefund.amount / (1 + fromOrder.tax_rate)
+            ),
+            tax: this.totalsService_.rounded(
+              fromRefund.amount - fromRefund.amount / (1 + fromOrder.tax_rate)
+            ),
             nominalCode: accountingCode,
           },
         ],
@@ -339,8 +342,12 @@ class BrightpearlService extends BaseService {
             return row.externalRef === i.item_id
           })
           return {
-            net: (parentRow.net / parentRow.quantity) * i.quantity,
-            tax: (parentRow.tax / parentRow.quantity) * i.quantity,
+            net: this.totalsService_.rounded(
+              (parentRow.net / parentRow.quantity) * i.quantity
+            ),
+            tax: this.totalsService_.rounded(
+              (parentRow.tax / parentRow.quantity) * i.quantity
+            ),
             productId: parentRow.productId,
             taxCode: parentRow.taxCode,
             externalRef: parentRow.externalRef,
@@ -360,8 +367,12 @@ class BrightpearlService extends BaseService {
           name: "Difference",
           quantity: 1,
           taxCode: region.tax_code,
-          net: difference / (1 + fromOrder.tax_rate),
-          tax: difference - difference / (1 + fromOrder.tax_rate),
+          net: this.totalsService_.rounded(
+            difference / (1 + fromOrder.tax_rate)
+          ),
+          tax: this.totalsService_.rounded(
+            difference - difference / (1 + fromOrder.tax_rate)
+          ),
           nominalCode: this.options.sales_account_code || "4000",
         })
       }
@@ -524,10 +535,7 @@ class BrightpearlService extends BaseService {
     )
     let lineDiscounts = []
     if (discount) {
-      lineDiscounts = this.totalsService_.getLineDiscounts(
-        fromOrder,
-        discount
-      )
+      lineDiscounts = this.totalsService_.getLineDiscounts(fromOrder, discount)
     }
 
     const lines = await Promise.all(
@@ -536,9 +544,9 @@ class BrightpearlService extends BaseService {
           item.content.variant.sku
         )
 
-        const discount = lineDiscounts.find((l) =>
-          l.item._id.equals(item._id)
-        ) || { amount: 0 }
+        const discount = lineDiscounts.find((l) => item._id === l.item._id) || {
+          amount: 0,
+        }
 
         const row = {}
         if (bpProduct) {
@@ -546,8 +554,10 @@ class BrightpearlService extends BaseService {
         } else {
           row.name = item.title
         }
-        row.net = item.content.unit_price * item.quantity - discount.amount
-        row.tax = row.net * fromOrder.tax_rate
+        row.net = this.totalsService_.rounded(
+          item.content.unit_price * item.quantity - discount.amount
+        )
+        row.tax = this.totalsService_.rounded(row.net * fromOrder.tax_rate)
         row.quantity = item.quantity
         row.taxCode = region.tax_code
         row.externalRef = item._id
@@ -563,8 +573,8 @@ class BrightpearlService extends BaseService {
       lines.push({
         name: `Shipping: ${shippingMethods.map((m) => m.name).join(" + ")}`,
         quantity: 1,
-        net: shippingTotal,
-        tax: shippingTotal * fromOrder.tax_rate,
+        net: this.totalsService_.rounded(shippingTotal),
+        tax: this.totalsService_.rounded(shippingTotal * fromOrder.tax_rate),
         taxCode: region.tax_code,
         nominalCode: this.options.shipping_account_code || "4040",
       })

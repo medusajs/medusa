@@ -42,6 +42,9 @@ class SendGridService extends BaseService {
       case "order.updated":
         templateId = this.options_.order_updated_template
         break
+      case "order.shipment_created":
+        templateId = this.options_.order_shipped_template
+        break
       case "order.cancelled":
         templateId = this.options_.order_cancelled_template
         break
