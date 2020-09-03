@@ -15,8 +15,7 @@ class BrightpearlOauth extends OauthService {
     const client_id = "medusa-dev"
     const client_secret = CLIENT_SECRET
     const state = randomize("A0", 16)
-    const redirect =
-      "https://tekla-staging-admin.medusa-commerce.com/a/oauth/brightpearl"
+    const redirect = "https://tekla.medusa-commerce.com/a/oauth/brightpearl"
     return {
       application_name: "brightpearl",
       display_name: "Brightpearl",
@@ -40,8 +39,7 @@ class BrightpearlOauth extends OauthService {
     const params = {
       client_id: "medusa-dev",
       client_secret: CLIENT_SECRET,
-      redirect:
-        "https://tekla-staging-admin.medusa-commerce.com/a/oauth/brightpearl",
+      redirect: "https://tekla.medusa-commerce.com/a/oauth/brightpearl",
       code,
     }
 
