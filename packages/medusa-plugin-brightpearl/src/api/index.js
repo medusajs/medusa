@@ -66,7 +66,7 @@ export default (container) => {
       }
 
       await brightpearlService.createSalesOrder(order)
-      res.status(200)
+      res.sendStatus(200)
     } catch (err) {
       res.status(400).json(err)
     }
