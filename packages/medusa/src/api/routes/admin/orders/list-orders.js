@@ -22,7 +22,7 @@ export default async (req, res) => {
       orders.map(order => orderService.decorate(order))
     )
 
-    let numOrders = await orderService.count()
+    const numOrders = await orderService.count()
 
     res.json({ orders, total_count: numOrders })
   } catch (error) {

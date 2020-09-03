@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
+import mongoose from "mongoose"
 import { BaseService } from "medusa-interfaces"
 
 class OrderService extends BaseService {
@@ -274,7 +275,7 @@ class OrderService extends BaseService {
    */
   async createFromCart(cart) {
     // Create DB session for transaction
-    const dbSession = await this.orderModel_.startSession()
+    const dbSession = await mongoose.startSession()
 
     // Initialize DB transaction
     return dbSession
@@ -366,7 +367,7 @@ class OrderService extends BaseService {
         )
 
         const o = {
-          display_id: await this.counterService_.getNext("orders"),
+          display_id: await this.counterService_.getNext("orders", dbSession),
           payment_method: {
             provider_id: paymentSession.provider_id,
             data: paymentData,
@@ -405,6 +406,16 @@ class OrderService extends BaseService {
     let shipment
     const updated = order.fulfillments.map(f => {
       if (f._id.equals(fulfillmentId)) {
+        // For each item in the shipment, we set their status to shipped
+        f.items.map(item => {
+          const itemIdx = order.items.findIndex(el => el._id.equals(item._id))
+          // Update item in order.items and in fullfillment.items to
+          // ensure consistency
+          if (item !== -1) {
+            item.is_shipped = true
+            order.items[itemIdx].is_shipped = true
+          }
+        })
         shipment = {
           ...f,
           tracking_numbers: trackingNumbers,
@@ -423,7 +434,7 @@ class OrderService extends BaseService {
       .updateOne(
         { _id: orderId },
         {
-          $set: { fulfillments: updated },
+          $set: { fulfillments: updated, items: order.items },
         }
       )
       .then(result => {

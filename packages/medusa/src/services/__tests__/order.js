@@ -47,7 +47,7 @@ describe("OrderService", () => {
       discountService: DiscountServiceMock,
       regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
-      counterService: CounterServiceMock
+      counterService: CounterServiceMock,
     })
 
     beforeEach(async () => {

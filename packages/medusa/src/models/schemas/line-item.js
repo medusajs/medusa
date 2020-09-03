@@ -9,7 +9,7 @@ export default new mongoose.Schema({
   thumbnail: { type: String },
   is_giftcard: { type: Boolean, default: false },
   has_shipping: { type: Boolean, default: false },
-
+  is_shipped: { type: Boolean, default: false },
   // mongoose doesn't allow multi-type validation but this field allows both
   // an object containing:
   // {
