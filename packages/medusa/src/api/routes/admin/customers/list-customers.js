@@ -9,9 +9,14 @@ export default async (req, res) => {
       "last_name",
     ])
 
-    const customers = await customerService.list(query)
+    const limit = parseInt(req.query.limit) || 0
+    const offset = parseInt(req.query.offset) || 0
 
-    res.json({ customers })
+    const customers = await customerService.list(query, offset, limit)
+
+    const numCustomers = await customerService.count()
+
+    res.json({ customers, total_count: numCustomers })
   } catch (error) {
     throw error
   }
