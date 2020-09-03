@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-ip-lookup",
-  "version": "1.0.0-y.20",
+  "version": "1.0.0-y.24",
   "description": "IP lookup middleware for Medusa core",
   "main": "dist/index.js",
   "repository": {
