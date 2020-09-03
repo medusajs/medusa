@@ -36,6 +36,7 @@ export default {
 
       next()
     } catch (error) {
+      console.log(error)
       next()
     }
   },
