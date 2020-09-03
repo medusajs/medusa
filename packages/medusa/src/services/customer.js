@@ -113,8 +113,16 @@ class CustomerService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.customerModel_.find(selector)
+  list(selector, offset, limit) {
+    return this.customerModel_.find(selector, {}, offset, limit)
+  }
+
+  /**
+   * Return the total number of documents in database
+   * @return {Promise} the result of the count operation
+   */
+  count() {
+    return this.customerModel_.count()
   }
 
   /**
