@@ -11,11 +11,7 @@ export default {
 
       const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
 
-      console.log(ip)
-
       const { data } = await ipLookupService.lookupIp(ip)
-
-      console.log(data)
 
       if (!data.country_code) {
         next()
@@ -27,8 +23,6 @@ export default {
         countries: data.country_code,
       })
 
-      console.log(regions)
-
       // If this region exists, add it to the body of the cart creation request
       if (regions[0]) {
         req.body.region_id = regions[0]._id.toString()
@@ -36,7 +30,6 @@ export default {
 
       next()
     } catch (error) {
-      console.log(error)
       next()
     }
   },
