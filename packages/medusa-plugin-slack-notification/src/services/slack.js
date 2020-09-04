@@ -6,7 +6,8 @@ class SlackService extends BaseService {
   /**
    * @param {Object} options - options defined in `medusa-config.js`
    *    {
-   *      slack_url: "https://hooks.slack.com/services/..."
+   *      slack_url: "https://hooks.slack.com/services/...",
+   *      admin_orders_url: "https:..../orders"
    *    }
    */
   constructor({ orderService, totalsService, regionService }, options) {
@@ -35,7 +36,7 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `Order *<http://localhost:8000/a/orders/${order._id}|#${order._id}>* has been processed.`,
+          text: `Order *<${this.options_.admin_orders_url}/${order._id}|#${order.display_id}>* has been processed.`,
         },
       },
       {
