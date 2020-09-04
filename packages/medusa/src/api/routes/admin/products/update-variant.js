@@ -71,6 +71,18 @@ export default async (req, res) => {
     delete value.prices
     delete value.options
 
+    if (!_.isEmpty(value.metadata)) {
+      for (let key of Object.keys(value.metadata)) {
+        await productVariantService.setMetadata(
+          variant_id,
+          key,
+          value.metadata[key]
+        )
+      }
+
+      delete value.metadata
+    }
+
     if (!_.isEmpty(value)) {
       await productVariantService.update(variant_id, value)
     }
