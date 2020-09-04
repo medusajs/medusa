@@ -27,6 +27,12 @@ export default (app, rootDirectory) => {
   )
 
   route.post(
+    "/apple-pay-session",
+    bodyParser.json(),
+    middlewares.wrap(require("./apple-pay-session").default)
+  )
+
+  route.post(
     "/authorize",
     bodyParser.json(),
     middlewares.wrap(require("./authorize-payment").default)

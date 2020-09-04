@@ -47,27 +47,15 @@ class CardAdyenService extends PaymentService {
   }
 
   async capturePayment(data) {
-    try {
-      return this.adyenService_.capturePayment(data)
-    } catch (error) {
-      throw error
-    }
+    return this.adyenService_.capturePayment(data)
   }
 
-  async refundPayment(data) {
-    try {
-      return this.adyenService_.refundPayment(data)
-    } catch (error) {
-      throw error
-    }
+  async refundPayment(data, amountToRefund) {
+    return this.adyenService_.refundPayment(data, amountToRefund)
   }
 
   async cancelPayment(data) {
-    try {
-      return this.adyenService_.cancelPayment(data)
-    } catch (error) {
-      throw error
-    }
+    return this.adyenService_.cancelPayment(data)
   }
 }
 

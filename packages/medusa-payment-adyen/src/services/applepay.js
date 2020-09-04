@@ -1,5 +1,9 @@
 import _ from "lodash"
+import https from "https"
+import fs from "fs"
+import axios from "axios"
 import { PaymentService } from "medusa-interfaces"
+const certificate = fs.readFileSync("./apple-pay-cert.pem", "utf8")
 
 class ApplePayAdyenService extends PaymentService {
   static identifier = "applepayAdyen"
@@ -30,6 +34,28 @@ class ApplePayAdyenService extends PaymentService {
     return {}
   }
 
+  async getApplePaySession(validationUrl) {
+    const endpointURL = `https://${validationUrl}/paymentSession`
+
+    const httpsAgent = new https.Agent({
+      cert: certificate,
+      key: certificate,
+    })
+
+    return axios.post(
+      endpointURL,
+      {
+        merchantIdentifier: "merchant.com.adyen.teklafabrics.test",
+        displayName: "Tekla Fabrics",
+        initiative: "web",
+        initiativeContext: "teklafabrics.com",
+      },
+      {
+        httpsAgent,
+      }
+    )
+  }
+
   async authorizePayment(cart, paymentMethod, amount) {
     return this.adyenService_.authorizePayment(cart, paymentMethod, amount)
   }
@@ -47,27 +73,15 @@ class ApplePayAdyenService extends PaymentService {
   }
 
   async capturePayment(data) {
-    try {
-      return this.adyenService_.capturePayment(data)
-    } catch (error) {
-      throw error
-    }
+    return this.adyenService_.capturePayment(data)
   }
 
-  async refundPayment(data) {
-    try {
-      return this.adyenService_.refundPayment(data)
-    } catch (error) {
-      throw error
-    }
+  async refundPayment(data, amountToRefund) {
+    return this.adyenService_.refundPayment(data, amountToRefund)
   }
 
   async cancelPayment(data) {
-    try {
-      return this.adyenService_.cancelPayment(data)
-    } catch (error) {
-      throw error
-    }
+    return this.adyenService_.cancelPayment(data)
   }
 }
 

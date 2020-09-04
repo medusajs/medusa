@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   const notification = req.body
   const event = notification.notificationItems[0].NotificationRequestItem
-  console.log(event)
+
   const valid = adyenService.validateNotification(event)
 
   if (!valid) {

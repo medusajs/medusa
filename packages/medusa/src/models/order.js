@@ -16,11 +16,12 @@ class OrderModel extends BaseModel {
 
   static schema = {
     display_id: { type: String, required: true, unique: true },
-    // pending, completed, archived, cancelled
+    // pending, completed, failed, archived, cancelled
     status: { type: String, default: "pending" },
-    // not_fulfilled, partially_fulfilled (some line items have been returned), fulfilled, returned,
+    // not_fulfilled, partially_fulfilled, fulfilled, returned,
+    // partially_returned, shipped, partially_shipped
     fulfillment_status: { type: String, default: "not_fulfilled" },
-    // awaiting, captured, refunded
+    // awaiting, captured, refunded, partially_refunded, failed
     payment_status: { type: String, default: "awaiting" },
     email: { type: String, required: true },
     cart_id: { type: String, unique: true, sparse: true },

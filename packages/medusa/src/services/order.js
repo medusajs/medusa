@@ -6,6 +6,9 @@ class OrderService extends BaseService {
   static Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
+    PAYMENT_CAPTURE_FAILED: "order.payment_capture_failed",
+    PAYMENT_REFUNDED: "order.payment_refunded",
+    PAYMENT_REFUND_FAILED: "order.payment_refund_failed",
     SHIPMENT_CREATED: "order.shipment_created",
     FULFILLMENT_CREATED: "order.fulfillment_created",
     ITEMS_RETURNED: "order.items_returned",
@@ -466,17 +469,14 @@ class OrderService extends BaseService {
     const order = await this.retrieve(orderId)
 
     if (
-      (update.shipping_address ||
-        update.billing_address ||
-        update.payment_method ||
-        update.items) &&
+      (update.shipping_address || update.billing_address || update.items) &&
       (order.fulfillment_status !== "not_fulfilled" ||
         order.payment_status !== "awaiting" ||
         order.status !== "pending")
     ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        "Can't update shipping, billing, items and payment method when order is processed"
+        "Can't update shipping, billing and items when order is processed"
       )
     }
 
@@ -576,6 +576,122 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Registers a failed payment.
+   * @param {string} orderId - id of order to capture payment for.
+   * @param {string} details - detailed reason for the failed payment
+   * @return {Promise} result of the update operation.
+   */
+  async registerPaymentFailed(orderId, details) {
+    const order = await this.retrieve(orderId)
+
+    await this.setMetadata(order._id, "payment_failed", details)
+
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: order._id,
+        },
+        {
+          payment_status: "failed",
+          status: "failed",
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Registers a payment capture.
+   * @param {string} orderId - id of order to capture payment for.
+   * @return {Promise} result of the update operation.
+   */
+  async registerPaymentCapture(orderId) {
+    const order = await this.retrieve(orderId)
+
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: order._id,
+        },
+        {
+          payment_status: "captured",
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Registers a payment refund.
+   * @param {string} orderId - id of order to capture payment for.
+   * @param {string} items - items that have been refunded
+   * @return {Promise} result of the update operation.
+   */
+  async registerRefund(orderId) {
+    const order = await this.retrieve(orderId)
+
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: order._id,
+        },
+        {
+          payment_status:
+            order.total === order.refunded_total
+              ? "refunded"
+              : "partially_refunded",
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(OrderService.Events.PAYMENT_REFUNDED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Registers a payment refund fail.
+   * @param {string} orderId - id of order to capture payment for.
+   * @return {Promise} result of the update operation.
+   */
+  async registerRefundFailed(orderId) {
+    const order = await this.retrieve(orderId)
+
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: order._id,
+        },
+        {
+          payment_status: "failed",
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(OrderService.Events.PAYMENT_REFUNDED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
    * Captures payment for an order.
    * @param {string} orderId - id of order to capture payment for.
    * @return {Promise} result of the update operation.
@@ -590,28 +706,21 @@ class OrderService extends BaseService {
       )
     }
 
-    const updateFields = { payment_status: "captured" }
-
     const { provider_id, data } = order.payment_method
     const paymentProvider = await this.paymentProviderService_.retrieveProvider(
       provider_id
     )
 
-    await paymentProvider.capturePayment(data)
+    const paymentStatus = await paymentProvider.capturePayment(data)
 
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $set: updateFields,
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURED, result)
-        return result
-      })
+    return this.orderModel_.updateOne(
+      {
+        _id: orderId,
+      },
+      {
+        $set: { payment_status: paymentStatus },
+      }
+    )
   }
 
   /**
@@ -788,7 +897,7 @@ class OrderService extends BaseService {
 
     const amount =
       refundAmount || this.totalsService_.getRefundTotal(order, returnLines)
-    await paymentProvider.refundPayment(data, amount)
+    const paymentStatus = await paymentProvider.refundPayment(data, amount)
 
     let isFullReturn = true
     const newItems = order.items.map(i => {
@@ -834,6 +943,7 @@ class OrderService extends BaseService {
             fulfillment_status: isFullReturn
               ? "returned"
               : "partially_returned",
+            payment_status: paymentStatus,
           },
         }
       )
@@ -895,7 +1005,10 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    await paymentProvider.refundPayment(data, refundAmount)
+    const paymentStatus = await paymentProvider.refundPayment(
+      data,
+      refundAmount
+    )
 
     return this.orderModel_
       .updateOne(
@@ -909,6 +1022,9 @@ class OrderService extends BaseService {
               reason,
               note,
             },
+          },
+          $set: {
+            payment_status: paymentStatus,
           },
         }
       )
