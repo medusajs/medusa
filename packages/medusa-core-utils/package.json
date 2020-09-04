@@ -29,7 +29,7 @@
     "prettier": "^1.19.1"
   },
   "dependencies": {
-    "@hapi/joi": "^16.1.8",
+    "joi": "^17.2.1",
     "joi-objectid": "^3.0.1"
   },
   "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
