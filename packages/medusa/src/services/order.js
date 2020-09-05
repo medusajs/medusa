@@ -408,6 +408,7 @@ class OrderService extends BaseService {
         shipment = {
           ...f,
           tracking_numbers: trackingNumbers,
+          shipped_at: Date.now(),
           metadata: {
             ...f.metadata,
             ...metadata,
