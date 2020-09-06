@@ -91,7 +91,7 @@ class SlackService extends BaseService {
           text: `*${lineItem.title}*\n${lineItem.quantity} x ${
             !Array.isArray(lineItem.content) &&
             (lineItem.content.unit_price * (1 + order.tax_rate)).toFixed(2)
-          }`,
+          } ${order.currency_code}`,
         },
       }
       if (lineItem.thumbnail) {
