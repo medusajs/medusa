@@ -15,6 +15,7 @@
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
@@ -23,7 +24,8 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
-    "jest": "^25.5.2"
+    "jest": "^25.5.2",
+    "medusa-test-utils": "^1.0.1"
   },
   "scripts": {
     "build": "babel src -d .",
@@ -32,12 +34,10 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "^1.0.1"
   },
   "dependencies": {
-    "@babel/plugin-transform-classes": "^7.9.5",
     "body-parser": "^1.19.0",
-    "contentful-management": "^5.27.1",
     "express": "^4.17.1",
     "medusa-core-utils": "^1.0.0",
     "redis": "^3.0.2"
