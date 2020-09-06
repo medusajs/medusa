@@ -95,17 +95,20 @@ class SlackService extends BaseService {
         },
       }
       if (lineItem.thumbnail) {
-        line.accessory.type = "image"
+        let url = lineItem.thumbnail
         if (
           !lineItem.thumbnail.startsWith("http:") &&
           !lineItem.thumbnail.startsWith("https:")
         ) {
-          line.accessory.image_url = `https:${lineItem.thumbnail}`
-        } else {
-          line.accessory.image_url = lineItem.thumbnail
+          url = `https:${lineItem.thumbnail}`
         }
 
-        line.accessory.alt_text = "Item"
+        line.accessory = {
+          type: "image",
+          alt_text: "Item",
+          image_url: url
+        }
+
       }
 
       blocks.push(line)
