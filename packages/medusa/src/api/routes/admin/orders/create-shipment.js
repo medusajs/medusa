@@ -20,7 +20,7 @@ export default async (req, res) => {
     let order = orderService.createShipment(
       id,
       value.fulfillment_id,
-      trackingNumbers
+      value.tracking_numbers
     )
     order = await orderService.decorate(order, [], ["region"])
     res.json({ order })
