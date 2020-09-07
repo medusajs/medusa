@@ -25,6 +25,11 @@ export default app => {
     middlewares.wrap(require("./capture-payment").default)
   )
   route.post(
+    "/:id/shipment",
+    middlewares.wrap(require("./create-shipment").default)
+  )
+
+  route.post(
     "/:id/fulfillment",
     middlewares.wrap(require("./create-fulfillment").default)
   )
