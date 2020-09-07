@@ -411,6 +411,7 @@ class OrderService extends BaseService {
         shipment = {
           ...f,
           tracking_numbers: trackingNumbers,
+          shipped_at: Date.now(),
           metadata: {
             ...f.metadata,
             ...metadata,
@@ -821,8 +822,12 @@ class OrderService extends BaseService {
         }
       )
       .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.UPDATED, result)
+        for (const fulfillment of results) {
+          this.eventBus_.emit(OrderService.Events.FULFILLMENT_CREATED, {
+            order_id: orderId,
+            fulfillment,
+          })
+        }
         return result
       })
       .catch(err => {

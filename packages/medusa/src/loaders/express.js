@@ -8,6 +8,13 @@ import createStore from "connect-redis"
 import config from "../config"
 
 export default async ({ app, configModule }) => {
+  let sameSite = false
+  let secure = false
+  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+    secure = true
+    sameSite = "none"
+  }
+
   const RedisStore = createStore(session)
   const redisClient = redis.createClient(configModule.projectConfig.redis_url)
 
@@ -27,8 +34,8 @@ export default async ({ app, configModule }) => {
       proxy: true,
       secret: config.cookieSecret,
       cookie: {
-        sameSite: process.env.NODE_ENV === "production" ? "none" : false,
-        secure: process.env.NODE_ENV === "production",
+        sameSite,
+        secure,
         maxAge: 10 * 60 * 60 * 1000,
       },
     })

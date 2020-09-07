@@ -82,14 +82,9 @@ class SendGridService extends BaseService {
    * @param {Object} data - data to send in mail (match with template)
    * @returns {Promise} result of the send operation
    */
-  async sendEmail(templateId, from, to, data) {
+  async sendEmail(options) {
     try {
-      return SendGrid.send({
-        to,
-        from,
-        template_id: templateId,
-        dynamic_template_data: data,
-      })
+      return SendGrid.send(options)
     } catch (error) {
       throw error
     }
