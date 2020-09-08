@@ -4,13 +4,10 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .required(),
-    metadata: Validator.object().optional(),
+    fulfillment_id: Validator.string().required(),
+    tracking_numbers: Validator.array()
+      .items(Validator.string())
+      .optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -20,11 +17,10 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-
-    let order = await orderService.createFulfillment(
+    let order = await orderService.createShipment(
       id,
-      value.items,
-      value.metadata
+      value.fulfillment_id,
+      value.tracking_numbers
     )
     order = await orderService.decorate(order, [], ["region"])
     res.json({ order })
