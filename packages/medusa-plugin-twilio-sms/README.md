@@ -3,6 +3,7 @@
 Twilio SMS / Messaging plugin.
 
 ## Plugin Options
+
 ```
 {
   account_sid: [twilio messaging account sid] (required),
@@ -18,8 +19,6 @@ You can resolve the Twilio SMS service to dynamically send SMS's via Twilio.
 Example:
 
 ```js
-
 const twilioSmsService = scope.resolve("twilioSmsService")
-twilioSmsService.sendSms("+4500112233", "Hello world!")
-
+twilioSmsService.sendSms({ to: "+4500112233", body: "Hello world!" })
 ```

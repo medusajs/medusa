@@ -19,11 +19,14 @@ class TwilioSmsService extends BaseService {
     this.twilioClient = twilio(options.account_sid, options.auth_token)
   }
 
-  async sendSms(to, body) {
+  /**
+   * @param {Object} data - Twilio message options
+   * see: https://www.twilio.com/docs/sms/api/message-resource#create-a-message-resource
+   */
+  async sendSms(data) {
     return this.twilioClient.messages.create({
-      to,
-      body,
       from: this.options_.from_number,
+      ...data,
     })
   }
 }
