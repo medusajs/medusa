@@ -236,7 +236,7 @@ class OrderService extends BaseService {
     const order = await this.orderModel_
       .findOne({ metadata: { cart_id: cartId } })
       .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        return undefined
       })
 
     if (!order) {
@@ -408,6 +408,16 @@ class OrderService extends BaseService {
     let shipment
     const updated = order.fulfillments.map(f => {
       if (f._id.equals(fulfillmentId)) {
+        // For each item in the shipment, we set their status to shipped
+        f.items.map(item => {
+          const itemIdx = order.items.findIndex(el => el._id.equals(item._id))
+          // Update item in order.items and in fullfillment.items to
+          // ensure consistency
+          if (item !== -1) {
+            item.shipped_quantity = item.quantity
+            order.items[itemIdx].shipped_quantity += item.quantity
+          }
+        })
         shipment = {
           ...f,
           tracking_numbers: trackingNumbers,
@@ -427,7 +437,7 @@ class OrderService extends BaseService {
       .updateOne(
         { _id: orderId },
         {
-          $set: { fulfillments: updated },
+          $set: { fulfillments: updated, items: order.items },
         }
       )
       .then(result => {
@@ -737,14 +747,16 @@ class OrderService extends BaseService {
 
     const lineItems = itemsToFulfill
       .map(({ item_id, quantity }) => {
-        const item = order.items.find(i => i._id.equals(item_id))
+        const itemIdx = order.items.findIndex(i => i._id.equals(item_id))
 
-        if (!item) {
+        if (itemIdx === -1) {
           // This will in most cases be called by a webhook so to ensure that
           // things go through smoothly in instances where extra items outside
           // of Medusa are added we allow unknown items
           return null
         }
+
+        const item = order.items[itemIdx]
 
         if (quantity > item.quantity - item.fulfilled_quantity) {
           throw new MedusaError(
@@ -763,10 +775,6 @@ class OrderService extends BaseService {
 
     // prepare update object
     const updateFields = { fulfillment_status: "fulfilled" }
-    const completed = order.payment_status !== "awaiting"
-    if (completed) {
-      updateFields.status = "completed"
-    }
 
     // partition order items to their dedicated shipping method
     const fulfillments = await this.partitionItems_(shipping_methods, lineItems)
@@ -784,6 +792,14 @@ class OrderService extends BaseService {
             successfullyFulfilled = [...successfullyFulfilled, ...method.items]
             return res
           })
+
+        method.items = method.items.map(el => {
+          return {
+            ...el,
+            fulfilled_quantity: el.quantity,
+            fulfilled: true,
+          }
+        })
 
         return {
           provider_id: method.provider_id,
