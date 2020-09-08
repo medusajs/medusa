@@ -17,7 +17,7 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-    let order = orderService.createShipment(
+    let order = await orderService.createShipment(
       id,
       value.fulfillment_id,
       value.tracking_numbers
