@@ -6,6 +6,7 @@ class OrderSubscriber {
     eventBusService,
     discountService,
     totalsService,
+    orderService,
   }) {
     this.totalsService_ = totalsService
 
@@ -16,6 +17,8 @@ class OrderSubscriber {
     this.discountService_ = discountService
 
     this.cartService_ = cartService
+
+    this.orderService_ = orderService
 
     this.eventBus_ = eventBusService
 
@@ -31,6 +34,24 @@ class OrderSubscriber {
     })
 
     this.eventBus_.subscribe("order.placed", this.handleDiscounts)
+
+    this.eventBus_.subscribe("order.shipment_created")
+  }
+
+  handleAutomaticCapture = async (orderId, _) => {
+    const order = await this.orderService_.retrieve(orderId)
+
+    let fullyShipped = true
+    for (const item of order.items) {
+      if (item.quantity === item.shipped_quantity) {
+        fullyShipped = false
+        break
+      }
+    }
+
+    if (fullyShipped) {
+      await this.orderService_.capturePayment(order._id)
+    }
   }
 
   handleDiscounts = async order => {
