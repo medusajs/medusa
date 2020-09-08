@@ -139,7 +139,7 @@ class AdyenService extends BaseService {
    * @param {Object} amount - object containing currency and value
    * @returns {Promise} result of the payment authorization
    */
-  async authorizePayment(cart, paymentMethod, amount) {
+  async authorizePayment(cart, paymentMethod, amount, additionalOptions = {}) {
     let request = {
       amount,
       shopperReference: cart.customer_id,
@@ -150,6 +150,13 @@ class AdyenService extends BaseService {
       metadata: {
         cart_id: cart._id,
       },
+    }
+
+    if (paymentMethod.type === "klarna") {
+      request = {
+        ...request,
+        ...additionalOptions,
+      }
     }
 
     return await this.adyenCheckoutApi.post("/payments", request)
