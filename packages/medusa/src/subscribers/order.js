@@ -41,12 +41,12 @@ class OrderSubscriber {
     )
   }
 
-  handleAutomaticCapture = async (orderId, _) => {
-    const order = await this.orderService_.retrieve(orderId)
+  handleAutomaticCapture = async data => {
+    const order = await this.orderService_.retrieve(data.order_id)
 
     let fullyShipped = true
     for (const item of order.items) {
-      if (item.quantity === item.shipped_quantity) {
+      if (item.quantity !== item.shipped_quantity) {
         fullyShipped = false
         break
       }
