@@ -35,7 +35,10 @@ class OrderSubscriber {
 
     this.eventBus_.subscribe("order.placed", this.handleDiscounts)
 
-    this.eventBus_.subscribe("order.shipment_created")
+    this.eventBus_.subscribe(
+      "order.shipment_created",
+      this.handleAutomaticCapture
+    )
   }
 
   handleAutomaticCapture = async (orderId, _) => {

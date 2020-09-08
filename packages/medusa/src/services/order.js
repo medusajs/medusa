@@ -233,7 +233,7 @@ class OrderService extends BaseService {
     const order = await this.orderModel_
       .findOne({ metadata: { cart_id: cartId } })
       .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        return undefined
       })
 
     if (!order) {
