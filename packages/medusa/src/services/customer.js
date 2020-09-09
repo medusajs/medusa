@@ -173,7 +173,7 @@ class CustomerService extends BaseService {
    * @param {string} phone - the phone of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByEmail(phone) {
+  async retrieveByPhone(phone) {
     const customer = await this.customerModel_.findOne({ phone }).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
