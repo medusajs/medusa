@@ -10,6 +10,7 @@ export default async (req, res) => {
     first_name: Validator.string().required(),
     last_name: Validator.string().required(),
     password: Validator.string().required(),
+    phone: Validator.string().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -36,6 +37,7 @@ export default async (req, res) => {
       "shipping_addresses",
       "first_name",
       "last_name",
+      "phone",
     ])
     res.status(201).json({ customer: data })
   } catch (err) {

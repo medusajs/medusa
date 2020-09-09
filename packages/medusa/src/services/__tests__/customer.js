@@ -48,6 +48,28 @@ describe("CustomerService", () => {
     })
   })
 
+  describe("retrieveByPhone", () => {
+    let result
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      const customerService = new CustomerService({
+        customerModel: CustomerModelMock,
+      })
+      result = await customerService.retrieveByPhone("12345678")
+    })
+
+    it("calls customer model functions", () => {
+      expect(CustomerModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(CustomerModelMock.findOne).toHaveBeenCalledWith({
+        phone: "12345678",
+      })
+    })
+
+    it("returns the customer", () => {
+      expect(result).toEqual(customers.customerWithPhone)
+    })
+  })
+
   describe("setMetadata", () => {
     const customerService = new CustomerService({
       customerModel: CustomerModelMock,

@@ -169,6 +169,26 @@ class CustomerService extends BaseService {
   }
 
   /**
+   * Gets a customer by phone.
+   * @param {string} phone - the phone of the customer to get.
+   * @return {Promise<Customer>} the customer document.
+   */
+  async retrieveByPhone(phone) {
+    const customer = await this.customerModel_.findOne({ phone }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
+
+    if (!customer) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with phone ${phone} was not found`
+      )
+    }
+
+    return customer
+  }
+
+  /**
    * Hashes a password
    * @param {string} password - the value to hash
    * @return hashed password
