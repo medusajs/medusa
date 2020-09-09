@@ -39,5 +39,6 @@
     "medusa-core-utils": "^1.0.7",
     "medusa-test-utils": "^1.0.7",
     "twilio": "^3.49.1"
-  }
+  },
+  "gitHead": "e1c465d244b20e68dd88bcb12db0a061f25581ec"
 }
