@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-brightpearl",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Brightpearl plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
