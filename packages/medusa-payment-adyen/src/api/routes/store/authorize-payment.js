@@ -47,10 +47,7 @@ export default async (req, res) => {
       paymentSession
     )
 
-    await cartService.setPaymentMethod(cart._id, {
-      provider_id: value.provider_id,
-      data: paymentSession,
-    })
+    await cartService.setPaymentMethod(cart._id, paymentSession)
 
     res.status(200).json({ data })
   } catch (err) {

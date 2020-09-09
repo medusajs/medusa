@@ -15,11 +15,11 @@ class AdyenSubscriber {
   async handleAdyenNotification(notification) {
     switch (true) {
       // DISCUSS THIS RACE CONDITION
-      // case notification.success === "true" &&
-      //   notification.eventCode === "AUTHORISATION": {
-      //   this.handleAuthorization(notification)
-      //   break
-      // }
+      case notification.success === "true" &&
+        notification.eventCode === "AUTHORISATION": {
+        this.handleAuthorization(notification)
+        break
+      }
       case notification.success === "true" &&
         notification.eventCode === "CAPTURE": {
         this.handleCapture_(notification)
@@ -66,10 +66,8 @@ class AdyenSubscriber {
 
       paymentSession.data = {
         ...paymentSession.data,
-        status: notification.eventCode,
         pspReference: notification.pspReference,
-        amount: notification.amount,
-        additionalData: notification.additionalData,
+        resultCode: "Authorised",
       }
 
       await this.cartService_.updatePaymentSession(
@@ -78,7 +76,11 @@ class AdyenSubscriber {
         paymentSession
       )
 
-      await this.orderService_.createFromCart(cart)
+      await this.cartService_.setPaymentMethod(cart._id, paymentSession)
+
+      const toCreate = await this.cartService_.retrieve(cart._id)
+
+      await this.orderService_.createFromCart(toCreate)
     }
   }
 

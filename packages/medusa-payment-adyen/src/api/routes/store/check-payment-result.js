@@ -2,7 +2,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    payload: Validator.string().required(),
+    payload: Validator.string().default(""),
     payment_data: Validator.string().required(),
     provider_id: Validator.string().required(),
     cart_id: Validator.string().required(),
@@ -23,8 +23,6 @@ export default async (req, res) => {
       value.payment_data,
       value.payload
     )
-
-    console.log(data)
 
     const paymentSession = await cartService.retrievePaymentSession(
       value.cart_id,
