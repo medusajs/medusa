@@ -13,7 +13,6 @@ class AdyenSubscriber {
   }
 
   async handleAdyenNotification(notification) {
-    console.log(notification)
     switch (true) {
       // DISCUSS THIS RACE CONDITION
       // case notification.success === "true" &&

@@ -642,11 +642,6 @@ class OrderService extends BaseService {
           fulfillment_status: status,
         }
       )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, result)
-        return result
-      })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -729,7 +724,7 @@ class OrderService extends BaseService {
       )
       .then(result => {
         // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.PAYMENT_REFUNDED, result)
+        this.eventBus_.emit(OrderService.Events.PAYMENT_REFUND_FAILED, result)
         return result
       })
       .catch(err => {
