@@ -85,7 +85,7 @@ class BrightpearlClient {
       const token = this.token_
 
       if (token) {
-        request.headers["Authorization"] = `${authType} ${token}`
+        request.headers["Authorization"] = `Bearer ${token}`
       }
 
       return request
