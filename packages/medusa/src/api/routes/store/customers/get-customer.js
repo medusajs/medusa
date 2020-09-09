@@ -5,7 +5,7 @@ export default async (req, res) => {
     let customer = await customerService.retrieve(id)
     customer = customerService.decorate(
       customer,
-      ["email", "first_name", "last_name", "shipping_addresses"],
+      ["email", "first_name", "last_name", "shipping_addresses", "phone"],
       ["orders"]
     )
     res.json({ customer })

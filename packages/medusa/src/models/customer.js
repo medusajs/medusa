@@ -17,6 +17,7 @@ class CustomerModel extends BaseModel {
     payment_methods: { type: [mongoose.Schema.Types.Mixed], default: [] },
     shipping_addresses: { type: [AddressSchema], default: [] },
     password_hash: { type: String },
+    phone: { type: String, default: "" },
     has_account: { type: Boolean, default: false },
     orders: { type: [String], default: [] },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
