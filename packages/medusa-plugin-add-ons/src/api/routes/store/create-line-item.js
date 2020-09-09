@@ -27,14 +27,11 @@ export default async (req, res) => {
       value.add_ons
     )
 
-    await cartService.addLineItem(cart._id, lineItem)
-
-    cart = await cartService.retrieve(cart._id)
+    cart = await cartService.addLineItem(cart._id, lineItem)
     cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {
-    console.log(err)
     throw err
   }
 }
