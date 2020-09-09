@@ -9,7 +9,7 @@
     "directory": "packages/medusa-plugin-economic"
   },
   "author": "Oliver Juhl",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
