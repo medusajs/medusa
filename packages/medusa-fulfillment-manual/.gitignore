@@ -10,4 +10,5 @@ yarn.lock
 /services
 /models
 /subscribers
+/dist
 

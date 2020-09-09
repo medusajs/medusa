@@ -54,6 +54,12 @@ class OrderSubscriber {
 
     if (fullyShipped) {
       await this.orderService_.capturePayment(order._id)
+      await this.orderService_.registerShipmentStatus(order._id, "shipped")
+    } else {
+      await this.orderService_.registerShipmentStatus(
+        order._id,
+        "partially_shipped"
+      )
     }
   }
 

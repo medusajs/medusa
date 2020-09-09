@@ -618,6 +618,41 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Registers a fully shipped order.
+   * @param {string} orderId - id of order to capture payment for.
+   * @param {string} details - detailed reason for the failed payment
+   * @return {Promise} result of the update operation.
+   */
+  async registerShipmentStatus(orderId, status) {
+    const order = await this.retrieve(orderId)
+
+    if (status !== "partially_shipped" && status !== "shipped") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Status must be partially_shipped or shipped"
+      )
+    }
+
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: order._id,
+        },
+        {
+          fulfillment_status: status,
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, result)
+        return result
+      })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
    * Registers a payment capture.
    * @param {string} orderId - id of order to capture payment for.
    * @return {Promise} result of the update operation.
@@ -773,8 +808,7 @@ class OrderService extends BaseService {
 
     const { shipping_methods } = order
 
-    // prepare update object
-    const updateFields = { fulfillment_status: "fulfilled" }
+    const updateFields = {}
 
     // partition order items to their dedicated shipping method
     const fulfillments = await this.partitionItems_(shipping_methods, lineItems)
@@ -786,7 +820,7 @@ class OrderService extends BaseService {
           method.provider_id
         )
 
-        const data = await provider
+        const data = provider
           .createOrder(method.data, method.items, order)
           .then(res => {
             successfullyFulfilled = [...successfullyFulfilled, ...method.items]
@@ -820,12 +854,21 @@ class OrderService extends BaseService {
 
         return {
           ...i,
-          fulfilled_quantity: ful.quantity,
+          fulfilled_quantity: i.fulfilled_quantity + ful.quantity,
         }
       }
 
       return i
     })
+
+    updateFields.fulfillment_status = "fulfilled"
+
+    for (const el of updateFields.items) {
+      if (el.quantity !== el.fulfilled_quantity) {
+        updateFields.fulfillment_status = "partially_fulfilled"
+        break
+      }
+    }
 
     return this.orderModel_
       .updateOne(
