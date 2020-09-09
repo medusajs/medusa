@@ -89,6 +89,8 @@ class EventBusService {
     return this.queue_.add({
       eventName,
       data,
+    }, {
+      removeOnComplete: true
     })
   }
 

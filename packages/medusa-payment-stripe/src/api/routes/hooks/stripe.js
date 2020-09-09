@@ -16,25 +16,26 @@ export default async (req, res) => {
   const orderService = req.scope.resolve("orderService")
 
   const cartId = paymentIntent.metadata.cart_id
-  const order = await orderService.retrieveByCartId(cartId)
+  const order = await orderService
+    .retrieveByCartId(cartId)
     .catch(() => undefined)
 
   // handle payment intent events
   switch (event.type) {
     case "payment_intent.succeeded":
-      if (order) { 
+      if (order) {
         await orderService.update(order._id, {
           payment_status: "captured",
         })
       }
       break
-    case "payment_intent.cancelled":
-      if (order) { 
-        await orderService.update(order._id, {
-          status: "cancelled",
-        })
-      }
-      break
+    //case "payment_intent.canceled":
+    //  if (order) {
+    //    await orderService.update(order._id, {
+    //      status: "canceled",
+    //    })
+    //  }
+    //  break
     case "payment_intent.payment_failed":
       // TODO: Not implemented yet
       break
@@ -45,7 +46,7 @@ export default async (req, res) => {
       }
       break
     default:
-      res.status(400)
+      res.sendStatus(204)
       return
   }
 

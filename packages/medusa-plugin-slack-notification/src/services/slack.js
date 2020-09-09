@@ -6,7 +6,8 @@ class SlackService extends BaseService {
   /**
    * @param {Object} options - options defined in `medusa-config.js`
    *    {
-   *      slack_url: "https://hooks.slack.com/services/..."
+   *      slack_url: "https://hooks.slack.com/services/...",
+   *      admin_orders_url: "https:..../orders"
    *    }
    */
   constructor({ orderService, totalsService, regionService }, options) {
@@ -35,7 +36,7 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `Order *<http://localhost:8000/a/orders/${order._id}|#${order._id}>* has been processed.`,
+          text: `Order *<${this.options_.admin_orders_url}/${order._id}|#${order.display_id}>* has been processed.`,
         },
       },
       {
@@ -55,10 +56,28 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Subtotal*\t${subtotal}\n*Shipping*\t${shippingTotal}\n*Discount Total*\t${discountTotal}\n*Tax*\t${taxTotal}\n*Total*\t${total}`,
+          text: `*Subtotal*\t${subtotal.toFixed(2)} ${
+            order.currency_code
+          }\n*Shipping*\t${shippingTotal.toFixed(2)} ${
+            order.currency_code
+          }\n*Discount Total*\t${discountTotal.toFixed(2)} ${
+            order.currency_code
+          }\n*Tax*\t${taxTotal.toFixed(2)} ${
+            order.currency_code
+          }\n*Total*\t${total.toFixed(2)} ${order.currency_code}`,
         },
       },
     ]
+
+    order.discounts.forEach((d) => {
+      blocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*Promo Code*\t${d.code} ${d.discount_rule.value}${d.discount_rule.type === "percentage" ? "%" : ` ${order.currency_code}`}`,
+        },
+      })
+    })
 
     blocks.push({
       type: "divider",
@@ -70,14 +89,26 @@ class SlackService extends BaseService {
         text: {
           type: "mrkdwn",
           text: `*${lineItem.title}*\n${lineItem.quantity} x ${
-            !Array.isArray(lineItem.content) && lineItem.content.unit_price
-          }`,
+            !Array.isArray(lineItem.content) &&
+            (lineItem.content.unit_price * (1 + order.tax_rate)).toFixed(2)
+          } ${order.currency_code}`,
         },
       }
       if (lineItem.thumbnail) {
-        line.accessory.type = "image"
-        line.accessory.image_url = lineItem.thumbnail
-        line.accessory.alt_text = "Item"
+        let url = lineItem.thumbnail
+        if (
+          !lineItem.thumbnail.startsWith("http:") &&
+          !lineItem.thumbnail.startsWith("https:")
+        ) {
+          url = `https:${lineItem.thumbnail}`
+        }
+
+        line.accessory = {
+          type: "image",
+          alt_text: "Item",
+          image_url: url
+        }
+
       }
 
       blocks.push(line)
@@ -88,7 +119,7 @@ class SlackService extends BaseService {
     })
 
     return axios.post(this.options_.slack_url, {
-      text: `Order ${order._id} was processed`,
+      text: `Order ${order.display_id} was processed`,
       blocks,
     })
   }
