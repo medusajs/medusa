@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -14,7 +14,7 @@
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
   },
   "author": "Sebastian Rindom",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",

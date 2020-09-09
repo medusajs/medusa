@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-ip-lookup",
-  "version": "1.0.1",
+  "version": "1.0.10",
   "description": "IP lookup middleware for Medusa core",
   "main": "dist/index.js",
   "repository": {
@@ -15,7 +15,7 @@
     "test": "jest"
   },
   "author": "Oliver Juhl",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
