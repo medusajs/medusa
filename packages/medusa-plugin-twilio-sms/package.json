@@ -1,0 +1,43 @@
+{
+  "name": "medusa-plugin-twilio-sms",
+  "version": "1.0.7",
+  "description": "Twilio SMS service",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-plugin-twilio-sms"
+  },
+  "author": "Oliver Juhl",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/register": "^7.7.4",
+    "@babel/runtime": "^7.9.6",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0",
+    "jest": "^25.5.2"
+  },
+  "scripts": {
+    "build": "babel src -d .",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "medusa-interfaces": "1.x"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-classes": "^7.9.5",
+    "body-parser": "^1.19.0",
+    "medusa-core-utils": "^1.0.7",
+    "medusa-test-utils": "^1.0.7",
+    "twilio": "^3.49.1"
+  }
+}
