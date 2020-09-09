@@ -19,4 +19,4 @@ const refreshToken = async (container) => {
   }
 }
 
-export default inventorySync
+export default refreshToken
