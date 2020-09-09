@@ -37,6 +37,7 @@ class KlarnaAdyenService extends PaymentService {
 
     const klarnaRequestObj = {}
     klarnaRequestObj.shopperEmail = cart.email
+    klarnaRequestObj.countryCode = cart.shipping_address.country_code
     klarnaRequestObj.shopperName = {
       firstName: cart.shipping_address.first_name,
       lastName: cart.shipping_address.last_name,
@@ -44,24 +45,25 @@ class KlarnaAdyenService extends PaymentService {
     }
 
     klarnaRequestObj.lineItems = cart.items.map((item) => {
-      const itemExcludingTax = item.content.unit_price * quantity
+      const itemExcludingTax = item.content.unit_price * item.quantity
       const withTax = itemExcludingTax * (1 + region.tax_rate)
-      const totalTax = (withTax / 100) * region.tax_rate
 
       return {
         quantity: item.quantity,
-        amountExcludingTax: itemExcludingTax,
+        amountExcludingTax: itemExcludingTax * 100,
         taxPercentage: region.tax_rate * 10000,
         description: item.title,
         id: item.title,
-        taxAmount: totalTax,
-        amountIncludingTax: withTax,
+        taxAmount: withTax * 100 - itemExcludingTax * 100,
+        amountIncludingTax: withTax * 100,
       }
     })
+
+    return klarnaRequestObj
   }
 
   async authorizePayment(cart, paymentMethod, amount) {
-    const additionalOptions = this.getKlarnaRequestObject(cart)
+    const additionalOptions = await this.getKlarnaRequestObject(cart)
 
     return this.adyenService_.authorizePayment(
       cart,
