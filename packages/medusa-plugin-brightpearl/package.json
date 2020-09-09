@@ -22,7 +22,7 @@
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.9.6",
     "client-sessions": "^0.8.0",
-    "cross-env": "^5.2.1",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "medusa-test-utils": "^1.0.10",
@@ -44,5 +44,5 @@
     "medusa-core-utils": "^1.0.10",
     "randomatic": "^3.1.1"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "f5de0d355a735cb7f001858b307abc13ca1702bc"
 }
