@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
     "directory": "packages/medusa-payment-stripe"
   },
   "author": "Sebastian Rindom",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
@@ -39,8 +39,8 @@
     "@babel/plugin-transform-classes": "^7.9.5",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.0.7",
-    "medusa-test-utils": "^1.0.7",
+    "medusa-core-utils": "^1.0.10",
+    "medusa-test-utils": "^1.0.10",
     "stripe": "^8.50.0"
   },
   "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"

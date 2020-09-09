@@ -8,6 +8,12 @@ export default (app, container) => {
 
   app.use("/carts", route)
 
+  // Inject plugin routes
+  const routers = middlewareService.getRouters("store/carts")
+  for (const router of routers) {
+    route.use("/", router)
+  }
+
   route.get("/:id", middlewares.wrap(require("./get-cart").default))
 
   route.post(

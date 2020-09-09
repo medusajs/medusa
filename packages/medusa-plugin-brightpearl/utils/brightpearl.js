@@ -342,7 +342,7 @@ var BrightpearlClient = /*#__PURE__*/function () {
         var token = _this2.token_;
 
         if (token) {
-          request.headers["Authorization"] = "".concat(authType, " ").concat(token);
+          request.headers["Authorization"] = "Bearer ".concat(token);
         }
 
         return request;

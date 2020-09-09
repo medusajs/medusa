@@ -1,6 +1,6 @@
 {
   "name": "medusa-test-utils",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -14,7 +14,7 @@
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
   },
   "author": "Sebastian Rindom",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
-    "medusa-core-utils": "^1.0.7",
+    "medusa-core-utils": "^1.0.10",
     "mongoose": "^5.8.0"
   },
   "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"

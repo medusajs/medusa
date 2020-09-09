@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
+import { Validator, MedusaError } from "medusa-core-utils"
 
 class AddOnService extends BaseService {
   static Events = {
@@ -8,7 +9,13 @@ class AddOnService extends BaseService {
   }
 
   constructor(
-    { addOnModel, productService, productVariantService, eventBusService },
+    {
+      addOnModel,
+      productService,
+      productVariantService,
+      regionService,
+      eventBusService,
+    },
     options
   ) {
     super()
@@ -19,14 +26,16 @@ class AddOnService extends BaseService {
 
     this.productVariantService_ = productVariantService
 
+    this.regionService_ = regionService
+
     this.eventBus_ = eventBusService
 
     this.options_ = options
   }
 
   /**
-   * Used to validate product ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw product id to validate.
+   * Used to validate add-on ids. Throws an error if the cast fails
+   * @param {string} rawId - the raw add-on id to validate.
    * @return {string} the validated id
    */
   validateId_(rawId) {
@@ -35,7 +44,7 @@ class AddOnService extends BaseService {
     if (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "The productId could not be casted to an ObjectId"
+        "The addOnId could not be casted to an ObjectId"
       )
     }
 
@@ -73,11 +82,17 @@ class AddOnService extends BaseService {
   }
 
   /**
-   * Creates an unpublished add-on.
+   * Creates an add-on.
    * @param {object} addOn - the add-on to create
    * @return {Promise} resolves to the creation result.
    */
   async create(addOn) {
+    await Promise.all(
+      addOn.valid_for.map((prodId) => {
+        this.productService_.retrieve(prodId)
+      })
+    )
+
     return this.addOnModel_
       .create(addOn)
       .then((result) => {
@@ -87,6 +102,100 @@ class AddOnService extends BaseService {
       .catch((err) => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Deletes an add-on.
+   * @param {object} addOnId - the add-on to delete
+   * @return {Promise} resolves to the deletion result.
+   */
+  async delete(addOnId) {
+    const addOn = await this.retrieve(addOnId)
+    return this.addOnModel_.deleteOne({ _id: addOn._id })
+  }
+
+  /**
+   * Retrieves all valid add-ons for a given product.
+   * @param {object} productId - the product id to find add-ons for
+   * @return {Promise} returns a promise containing all add-ons for the product
+   */
+  async retrieveByProduct(productId) {
+    const product = await this.productService_.retrieve(productId)
+    return this.addOnModel_.find({ valid_for: product._id })
+  }
+
+  /**
+   * Updates an add-on. Metadata updates should use dedicated methods, e.g.
+   * `setMetadata`, etc. The function will throw errors if metadata updates
+   * are attempted.
+   * @param {string} addOnId - the id of the add-on. Must be a string that
+   *   can be casted to an ObjectId
+   * @param {object} update - an object with the update values.
+   * @return {Promise} resolves to the update result.
+   */
+  async update(addOnId, update) {
+    const validatedId = this.validateId_(addOnId)
+
+    await Promise.all(
+      update.valid_for.map((prodId) => {
+        this.productService_.retrieve(prodId)
+      })
+    )
+
+    if (update.metadata) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Use setMetadata to update metadata fields"
+      )
+    }
+
+    return this.addOnModel_
+      .updateOne(
+        { _id: validatedId },
+        { $set: update },
+        { runValidators: true }
+      )
+      .catch((err) => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Gets the price specific to a region. If no region specific money amount
+   * exists the function will try to use a currency price. If no default
+   * currency price exists the function will throw an error.
+   * @param {string} addOnId - the id of the add-on to get price from
+   * @param {string} regionId - the id of the region to get price for
+   * @return {number} the price specific to the region
+   */
+  async getRegionPrice(addOnId, regionId) {
+    const addOn = await this.retrieve(addOnId)
+    const region = await this.regionService_.retrieve(regionId)
+
+    let price
+    addOn.prices.forEach(({ amount, currency_code }) => {
+      if (!price && currency_code === region.currency_code) {
+        // If we haven't yet found a price and the current money amount is
+        // the default money amount for the currency of the region we have found
+        // a possible price match
+        price = amount
+      } else if (region_id === region._id) {
+        // If the region matches directly with the money amount this is the best
+        // price
+        price = amount
+      }
+    })
+
+    // Return the price if we found a suitable match
+    if (price) {
+      return price
+    }
+
+    // If we got this far no price could be found for the region
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `A price for region: ${region.name} could not be found`
+    )
   }
 }
 
