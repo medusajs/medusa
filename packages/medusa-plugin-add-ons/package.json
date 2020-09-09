@@ -40,5 +40,5 @@
     "medusa-core-utils": "^1.0.10",
     "redis": "^3.0.2"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "f5de0d355a735cb7f001858b307abc13ca1702bc"
 }
