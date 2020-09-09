@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-twilio-sms",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Twilio SMS service",
   "main": "index.js",
   "repository": {
