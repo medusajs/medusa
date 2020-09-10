@@ -11,8 +11,10 @@ const refreshToken = async (container) => {
       console.log(`running refresh token ${REFRESH_CRON}`)
       const appData = await oauthService.retrieveByName("brightpearl")
       const data = appData.data
+      console.log(appData)
+      console.log(data)
       if (!data || !data.access_token) {
-        await oauthService
+        return oauthService
           .refreshToken("brightpearl", data.refresh_token)
           .catch((err) => {
             console.log(err)
