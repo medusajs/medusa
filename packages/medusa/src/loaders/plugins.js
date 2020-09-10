@@ -77,6 +77,8 @@ async function runLoaders(pluginDetails, container) {
           await module(container)
         }
       } catch (err) {
+        const logger = container.resolve("logger")
+        logger.warn(`Running loader failed: ${err.message}`)
         return Promise.resolve()
       }
     })
