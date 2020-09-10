@@ -140,6 +140,11 @@ class EventBusService {
 
   /**
    * Registers a cron job.
+   * @param {string} eventName - the name of the event
+   * @param {object} data - the data to be sent with the event
+   * @param {string} cron - the cron pattern
+   * @param {function} handler - the handler to call on each cron job
+   * @return void
    */
   createCronJob(eventName, data, cron, handler) {
     this.logger_.info(`Registering ${eventName}`)
