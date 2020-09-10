@@ -13,7 +13,8 @@ const refreshToken = async (container) => {
       const data = appData.data
       console.log(appData)
       console.log(data)
-      if (!data || !data.access_token) {
+      if (data && data.access_token) {
+        console.log("calling oauth")
         return oauthService
           .refreshToken("brightpearl", data.refresh_token)
           .catch((err) => {
