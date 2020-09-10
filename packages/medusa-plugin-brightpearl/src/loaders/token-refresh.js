@@ -8,22 +8,13 @@ const refreshToken = async (container) => {
   try {
     logger.info("registering refresh cron job BP")
     eventBus.createCronJob("refresh-token-bp", {}, REFRESH_CRON, async () => {
-      console.log(`running refresh token ${REFRESH_CRON}`)
       const appData = await oauthService.retrieveByName("brightpearl")
       const data = appData.data
-      console.log(appData)
-      console.log(data)
-      if (data && data.access_token) {
-        console.log("calling oauth")
-        return oauthService
-          .refreshToken("brightpearl", data.refresh_token)
-          .catch((err) => {
-            console.log(err)
-          })
+      if (data && data.refresh_token) {
+        return oauthService.refreshToken("brightpearl", data.refresh_token)
       }
     })
   } catch (err) {
-    console.log(err)
     if (err.name === "not_allowed") {
       return
     }

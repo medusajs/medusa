@@ -27,7 +27,6 @@ class BrightpearlClient {
   }
 
   static refreshToken(account, data) {
-    console.log("bp client", data)
     const params = {
       grant_type: "refresh_token",
       refresh_token: data.refresh_token,

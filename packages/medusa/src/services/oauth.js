@@ -84,7 +84,6 @@ class Oauth extends OauthService {
   }
 
   async refreshToken(appName, refreshToken) {
-    console.log("top level oauth", refreshToken)
     const app = await this.retrieveByName(appName)
     const service = this.container_[`${app.application_name}Oauth`]
     if (!service) {
