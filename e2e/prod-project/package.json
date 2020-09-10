@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@medusajs/medusa": "^0.1.27",
-    "bl": "^4.0.2",
+    "bl": "^4.0.3",
     "express": "^4.17.1",
     "medusa-interfaces": "^0.1.27",
     "medusa-payment-stripe": "^0.1.27",
