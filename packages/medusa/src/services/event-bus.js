@@ -17,12 +17,6 @@ class EventBusService {
     /** @private {object} to handle cron jobs */
     this.cronHandlers_ = {}
 
-    /** @private {BullQueue} used for cron jobs */
-    this.cronQueue_ = new Bull(
-      `cron-jobs:queue`,
-      config.projectConfig.redis_url
-    )
-
     const opts = {
       createClient: type => {
         switch (type) {
@@ -35,6 +29,9 @@ class EventBusService {
         }
       },
     }
+
+    /** @private {BullQueue} used for cron jobs */
+    this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
 
     /** @private {BullQueue} */
     this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
@@ -86,12 +83,15 @@ class EventBusService {
    * @return {BullJob} - the job from our queue
    */
   emit(eventName, data) {
-    return this.queue_.add({
-      eventName,
-      data,
-    }, {
-      removeOnComplete: true
-    })
+    return this.queue_.add(
+      {
+        eventName,
+        data,
+      },
+      {
+        removeOnComplete: true,
+      }
+    )
   }
 
   /**
@@ -140,9 +140,15 @@ class EventBusService {
 
   /**
    * Registers a cron job.
+   * @param {string} eventName - the name of the event
+   * @param {object} data - the data to be sent with the event
+   * @param {string} cron - the cron pattern
+   * @param {function} handler - the handler to call on each cron job
+   * @return void
    */
   createCronJob(eventName, data, cron, handler) {
-    this.registerCronHandler(eventName, handler)
+    this.logger_.info(`Registering ${eventName}`)
+    this.registerCronHandler_(eventName, handler)
     return this.cronQueue_.add(
       {
         eventName,
