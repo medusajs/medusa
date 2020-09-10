@@ -25,12 +25,14 @@ class BrightpearlOauth extends OauthService {
   }
 
   async refreshToken(refreshToken) {
+    console.log("bp oauth", refreshToken)
     const params = {
       refresh_token: refreshToken,
       client_id: "medusa-dev",
       client_secret: CLIENT_SECRET,
     }
 
+    console.log("bp oauth params", params)
     const data = await Brightpearl.refreshToken(this.account_, params)
     return data
   }

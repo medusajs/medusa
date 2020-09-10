@@ -27,6 +27,7 @@ class BrightpearlClient {
   }
 
   static refreshToken(account, data) {
+    console.log("bp client", data)
     const params = {
       grant_type: "refresh_token",
       refresh_token: data.refresh_token,
@@ -44,7 +45,6 @@ class BrightpearlClient {
     })
       .then(({ data }) => data)
       .catch((err) => {
-        console.log(err)
         throw err
       })
   }
