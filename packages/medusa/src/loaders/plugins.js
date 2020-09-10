@@ -74,9 +74,11 @@ async function runLoaders(pluginDetails, container) {
       try {
         const module = require(loader).default
         if (typeof module === "function") {
-          await module(container)
+          await module(container, pluginDetails.options)
         }
       } catch (err) {
+        const logger = container.resolve("logger")
+        logger.warn(`Running loader failed: ${err.message}`)
         return Promise.resolve()
       }
     })
