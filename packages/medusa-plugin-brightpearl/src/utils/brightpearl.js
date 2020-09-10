@@ -41,7 +41,12 @@ class BrightpearlClient {
         "content-type": "application/x-www-form-urlencoded",
       },
       data: qs.stringify(params),
-    }).then(({ data }) => data)
+    })
+      .then(({ data }) => data)
+      .catch((err) => {
+        console.log(err)
+        throw err
+      })
   }
 
   constructor(options, onRefreshToken) {

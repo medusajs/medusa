@@ -12,7 +12,11 @@ const refreshToken = async (container) => {
       const data = await oauthService.retrieveByName("brightpearl")
       console.log(data)
       if (!data || !data.access_token) {
-        await oauthService.refreshToken("brightpearl", data.refresh_token)
+        await oauthService
+          .refreshToken("brightpearl", data.refresh_token)
+          .catch((err) => {
+            console.log(err)
+          })
       }
     })
   } catch (err) {
