@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.15](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.14...@medusajs/medusa@1.0.15) (2020-09-10)
+
+
+### Bug Fixes
+
+* cron jobs and brightpearl auto refresh ([#107](https://github.com/medusajs/medusa/issues/107)) ([c7bd783](https://github.com/medusajs/medusa/commit/c7bd7838aa620d6f23d9f5e17592cc5a82818c9e))
+
+
+
+
+
 ## [1.0.14](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.13...@medusajs/medusa@1.0.14) (2020-09-09)
 
 **Note:** Version bump only for package @medusajs/medusa
