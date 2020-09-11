@@ -8,6 +8,11 @@ export default app => {
 
   route.get("/:id", middlewares.wrap(require("./get-order").default))
 
+  route.get(
+    "/cart/:cart_id",
+    middlewares.wrap(require("./get-order-by-cart").default)
+  )
+
   route.post("/", middlewares.wrap(require("./create-order").default))
 
   return app

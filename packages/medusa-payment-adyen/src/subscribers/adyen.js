@@ -14,10 +14,14 @@ class AdyenSubscriber {
 
   async handleAdyenNotification(notification) {
     switch (true) {
-      // DISCUSS THIS RACE CONDITION
       case notification.success === "true" &&
         notification.eventCode === "AUTHORISATION": {
-        this.handleAuthorization(notification)
+        this.handleAuthorization_(notification)
+        break
+      }
+      case notification.success === "false" &&
+        notification.eventCode === "AUTHORISATION": {
+        this.handleFailedAuthorization_(notification)
         break
       }
       case notification.success === "true" &&
@@ -50,33 +54,53 @@ class AdyenSubscriber {
     }
   }
 
-  async handleAuthorization(notification) {
+  async handleFailedAuthorization_(notification) {
+    const cartId = notification.additionalData["metadata.cart_id"]
+    // We need to ensure, that an order is created in situations, where the
+    // customer might have closed their browser prior to order creation
+    let cart = await this.cartService_.retrieve(cartId)
+
+    const { payment_method } = cart
+
+    payment_method.data = {
+      ...payment_method.data,
+      pspReference: notification.pspReference,
+      resultCode: "Failed",
+    }
+
+    await this.cartService_.setPaymentMethod(cart._id, payment_method)
+  }
+
+  async handleAuthorization_(notification) {
     const cartId = notification.additionalData["metadata.cart_id"]
     // We need to ensure, that an order is created in situations, where the
     // customer might have closed their browser prior to order creation
     try {
-      await this.orderService_.retrieveByCartId(cartId)
-    } catch (error) {
-      let cart = await this.cartService_.retrieve(cartId)
+      const order = await this.orderService_.retrieveByCartId(cartId)
 
-      const paymentSession = await this.cartService_.retrievePaymentSession(
-        cart._id,
-        cart.payment_method.provider_id
-      )
+      const paymentMethod = order.payment_method
 
-      paymentSession.data = {
-        ...paymentSession.data,
+      paymentMethod.data = {
+        ...paymentMethod.data,
         pspReference: notification.pspReference,
         resultCode: "Authorised",
       }
 
-      await this.cartService_.updatePaymentSession(
-        cart._id,
-        cart.payment_method.provider_id,
-        paymentSession
-      )
+      await this.orderService_.update(order._id, {
+        payment_method: paymentMethod,
+      })
+    } catch (error) {
+      let cart = await this.cartService_.retrieve(cartId)
 
-      await this.cartService_.setPaymentMethod(cart._id, paymentSession)
+      const { payment_method } = cart
+
+      payment_method.data = {
+        ...payment_method.data,
+        pspReference: notification.pspReference,
+        resultCode: "Authorised",
+      }
+
+      await this.cartService_.setPaymentMethod(cart._id, payment_method)
 
       const toCreate = await this.cartService_.retrieve(cart._id)
 

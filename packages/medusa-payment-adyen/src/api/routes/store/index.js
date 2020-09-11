@@ -56,11 +56,5 @@ export default (app, rootDirectory) => {
     middlewares.wrap(require("./update-cart-payment").default)
   )
 
-  route.get(
-    "/payment-status",
-    bodyParser.json(),
-    middlewares.wrap(require("./check-payment-status").default)
-  )
-
   return app
 }

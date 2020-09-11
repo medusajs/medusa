@@ -83,7 +83,7 @@ class AdyenService extends BaseService {
     }
 
     try {
-      return await this.adyenCheckoutApi.post("/paymentMethods", request)
+      return this.adyenCheckoutApi.post("/paymentMethods", request)
     } catch (error) {
       throw error
     }
@@ -143,7 +143,7 @@ class AdyenService extends BaseService {
     let request = {
       amount,
       shopperReference: cart.customer_id,
-      paymentMethod,
+      paymentMethod: paymentMethod.data.paymentMethod,
       reference: cart._id,
       merchantAccount: this.options_.merchant_account,
       returnUrl: this.options_.return_url,
@@ -232,7 +232,6 @@ class AdyenService extends BaseService {
       })
       return "processing_refund"
     } catch (error) {
-      console.log(error)
       throw error
     }
   }

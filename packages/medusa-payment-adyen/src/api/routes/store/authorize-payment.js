@@ -19,11 +19,6 @@ export default async (req, res) => {
 
     const cart = await cartService.retrieve(value.cart_id)
 
-    const paymentSession = await cartService.retrievePaymentSession(
-      cart._id,
-      value.provider_id
-    )
-
     const region = await regionService.retrieve(cart.region_id)
     const total = await totalsService.getTotal(cart)
 
@@ -34,20 +29,14 @@ export default async (req, res) => {
 
     const { data } = await paymentProvider.authorizePayment(
       cart,
-      paymentSession.data.paymentMethod,
+      cart.payment_method,
       amount
     )
 
     data.amount = amount
-    paymentSession.data = data
+    cart.payment_method.data = data
 
-    await cartService.updatePaymentSession(
-      cart._id,
-      value.provider_id,
-      paymentSession
-    )
-
-    await cartService.setPaymentMethod(cart._id, paymentSession)
+    await cartService.setPaymentMethod(cart._id, cart.payment_method)
 
     res.status(200).json({ data })
   } catch (err) {

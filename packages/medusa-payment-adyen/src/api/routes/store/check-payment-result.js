@@ -24,22 +24,15 @@ export default async (req, res) => {
       value.payload
     )
 
-    const paymentSession = await cartService.retrievePaymentSession(
-      value.cart_id,
-      value.provider_id
-    )
+    const cart = await cartService.retrieve(value.cart_id)
 
-    paymentSession.data = {
-      ...paymentSession.data,
+    cart.payment_method.data = {
+      ...cart.payment_method.data,
       pspReference: data.pspReference,
       resultCode: data.resultCode,
     }
 
-    await cartService.updatePaymentSession(
-      value.cart_id,
-      value.provider_id,
-      paymentSession
-    )
+    await cartService.setPaymentMethod(value.cart_id, cart.payment_method)
 
     const status = await paymentProvider.getStatus(data)
 

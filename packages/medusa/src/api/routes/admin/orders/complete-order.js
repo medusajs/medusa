@@ -7,7 +7,6 @@ export default async (req, res) => {
     order = await orderService.decorate(order, [], ["region"])
     res.json({ order })
   } catch (error) {
-    console.log(error)
     throw error
   }
 }

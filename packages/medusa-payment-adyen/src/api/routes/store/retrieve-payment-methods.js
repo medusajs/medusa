@@ -20,9 +20,11 @@ export default async (req, res) => {
     const region = await regionService.retrieve(cart.region_id)
     const total = await totalsService.getTotal(cart)
 
-    const allowedMethods = cart.payment_sessions.map(
-      (ps) => ps.provider_id.split("Adyen")[0]
-    )
+    const allowedMethods = cart.payment_sessions.map((ps) => {
+      if (ps.provider_id.includes("adyen")) {
+        return ps.provider_id.split("-adyen")[0]
+      }
+    })
 
     if (allowedMethods.length === 0) {
       res.status(200).json({ paymentMethods: {} })

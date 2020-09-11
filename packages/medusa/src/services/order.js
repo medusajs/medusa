@@ -300,33 +300,14 @@ class OrderService extends BaseService {
           )
         }
 
-        const { payment_method, payment_sessions } = cart
-
-        if (!payment_sessions || !payment_sessions.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "cart must have payment sessions"
-          )
-        }
-
-        let paymentSession = payment_sessions.find(
-          ps => ps.provider_id === payment_method.provider_id
-        )
-
-        // Throw if payment method does not exist
-        if (!paymentSession) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Cart does not have an authorized payment session"
-          )
-        }
+        const { payment_method } = cart
 
         const region = await this.regionService_.retrieve(cart.region_id)
         const paymentProvider = this.paymentProviderService_.retrieveProvider(
-          paymentSession.provider_id
+          payment_method.provider_id
         )
         const paymentStatus = await paymentProvider.getStatus(
-          paymentSession.data
+          payment_method.data
         )
 
         // If payment status is not authorized, we throw
@@ -338,7 +319,7 @@ class OrderService extends BaseService {
         }
 
         const paymentData = await paymentProvider.retrievePayment(
-          paymentSession.data
+          payment_method.data
         )
 
         // Generate gift cards if in cart
@@ -371,7 +352,7 @@ class OrderService extends BaseService {
         const o = {
           display_id: await this.counterService_.getNext("orders", dbSession),
           payment_method: {
-            provider_id: paymentSession.provider_id,
+            provider_id: payment_method.provider_id,
             data: paymentData,
           },
           discounts: cart.discounts,
@@ -682,6 +663,8 @@ class OrderService extends BaseService {
    */
   async registerRefund(orderId) {
     const order = await this.retrieve(orderId)
+    const refundedTotal = await this.totalsService_.getRefundedTotal(order)
+    const total = await this.totalsService_.getTotal(order)
 
     return this.orderModel_
       .updateOne(
@@ -690,9 +673,7 @@ class OrderService extends BaseService {
         },
         {
           payment_status:
-            order.total === order.refunded_total
-              ? "refunded"
-              : "partially_refunded",
+            total === refundedTotal ? "refunded" : "partially_refunded",
         }
       )
       .then(result => {
