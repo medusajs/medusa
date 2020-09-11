@@ -35,6 +35,11 @@ class SendGridService extends BaseService {
     switch (event) {
       case "order.gift_card_created":
         templateId = this.options_.gift_card_created_template
+        data = {
+          ...data,
+          display_value:
+            data.giftcard.discount_rule.value * (1 + data.tax_rate),
+        }
         break
       case "order.placed":
         templateId = this.options_.order_placed_template
