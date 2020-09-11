@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.15...@medusajs/medusa@1.0.16) (2020-09-11)
+
+
+### Bug Fixes
+
+* **medusa:** add line item to order.gift_card_created event ([c5019ca](https://github.com/medusajs/medusa/commit/c5019ca0d1ee708ab3be441e084023d0bbccef72))
+
+
+
+
+
 ## [1.0.15](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.14...@medusajs/medusa@1.0.15) (2020-09-10)
 
 
