@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
+import mongoose from "mongoose"
 import { BaseService } from "medusa-interfaces"
 
 class OrderService extends BaseService {
@@ -277,7 +278,7 @@ class OrderService extends BaseService {
    */
   async createFromCart(cart) {
     // Create DB session for transaction
-    const dbSession = await this.orderModel_.startSession()
+    const dbSession = await mongoose.startSession()
 
     // Initialize DB transaction
     return dbSession
