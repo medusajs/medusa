@@ -346,6 +346,7 @@ class OrderService extends BaseService {
                 .generateGiftCard(i.content.unit_price, region._id)
                 .then(result => {
                   this.eventBus_.emit(OrderService.Events.GIFT_CARD_CREATED, {
+                    line_item: i,
                     currency_code: region.currency_code,
                     tax_rate: region.tax_rate,
                     giftcard: result,
