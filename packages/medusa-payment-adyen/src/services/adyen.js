@@ -82,6 +82,10 @@ class AdyenService extends BaseService {
       channel: "Web",
     }
 
+    if (cart.customer_id) {
+      request.shopperReference = cart.customer_id
+    }
+
     try {
       return this.adyenCheckoutApi.post("/paymentMethods", request)
     } catch (error) {
@@ -150,6 +154,12 @@ class AdyenService extends BaseService {
       metadata: {
         cart_id: cart._id,
       },
+    }
+
+    if (paymentMethod.data.storePaymentMethod) {
+      request.storePaymentMethod = "true"
+      request.shopperInteraction = "Ecommerce"
+      request.recurringProcessingModel = "CardOnFile"
     }
 
     if (paymentMethod.type === "klarna") {
