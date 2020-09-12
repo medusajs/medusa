@@ -534,7 +534,7 @@ class BrightpearlService extends BaseService {
       ({ discount_rule }) => discount_rule.type !== "free_shipping"
     )
     let lineDiscounts = []
-    if (discount) {
+    if (discount && !discount.is_giftcard) {
       lineDiscounts = this.totalsService_.getLineDiscounts(fromOrder, discount)
     }
 
@@ -563,9 +563,24 @@ class BrightpearlService extends BaseService {
         row.externalRef = item._id
         row.nominalCode = this.options.sales_account_code || "4000"
 
+        if (item.is_giftcard) {
+          row.nominalCode = this.options.gift_card_account_code || "4000"
+        }
+
         return row
       })
     )
+
+    // If a gift card was applied to the order we 
+    if (discount && discount.is_giftcard) {
+      lines.push({
+        name: `Gift Card: ${discount.code}`,
+        net: -1 * this.totalsSerivce_.getDiscountTotal(fromOrder),
+        quantity: 1,
+        taxCode: region.tax_code,
+        nominalCode: this.options.gift_card_account_code || "4000",
+      })
+    }
 
     const shippingTotal = this.totalsService_.getShippingTotal(fromOrder)
     const shippingMethods = fromOrder.shipping_methods
