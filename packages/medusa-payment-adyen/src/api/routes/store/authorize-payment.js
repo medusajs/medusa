@@ -33,6 +33,12 @@ export default async (req, res) => {
       amount
     )
 
+    // MongoDB does not allow us to store keys with dots
+    if (data.additionalData) {
+      delete data.additionalData["recurring.shopperReference"]
+      delete data.additionalData["recurring.recurringDetailReference"]
+    }
+
     data.amount = amount
     cart.payment_method.data = data
 
