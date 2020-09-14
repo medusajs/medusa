@@ -34,33 +34,6 @@ class OrderSubscriber {
     })
 
     this.eventBus_.subscribe("order.placed", this.handleDiscounts)
-
-    this.eventBus_.subscribe(
-      "order.shipment_created",
-      this.handleAutomaticCapture
-    )
-  }
-
-  handleAutomaticCapture = async data => {
-    const order = await this.orderService_.retrieve(data.order_id)
-
-    let fullyShipped = true
-    for (const item of order.items) {
-      if (item.quantity !== item.shipped_quantity) {
-        fullyShipped = false
-        break
-      }
-    }
-
-    if (fullyShipped) {
-      await this.orderService_.capturePayment(order._id)
-      await this.orderService_.registerShipmentStatus(order._id, "shipped")
-    } else {
-      await this.orderService_.registerShipmentStatus(
-        order._id,
-        "partially_shipped"
-      )
-    }
   }
 
   handleDiscounts = async order => {
