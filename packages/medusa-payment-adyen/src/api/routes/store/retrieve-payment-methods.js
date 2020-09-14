@@ -32,7 +32,6 @@ export default async (req, res) => {
     }
 
     const { data } = await adyenService.retrievePaymentMethods(
-      cart,
       allowedMethods,
       total,
       region.currency_code

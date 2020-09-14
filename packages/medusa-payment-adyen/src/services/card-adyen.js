@@ -10,6 +10,10 @@ class CardAdyenService extends PaymentService {
     this.adyenService_ = adyenService
   }
 
+  async retrieveSavedMethods(customer) {
+    return this.adyenService_.retrieveSavedMethods(customer)
+  }
+
   /**
    * Status for Adyen payment.
    * @param {Object} paymentData - payment method data from cart

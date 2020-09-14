@@ -64,6 +64,29 @@ class AdyenService extends BaseService {
   }
 
   /**
+   * Retrieve stored payment methods from Ayden.
+   * @param {Customer} customer - customer to retrieve methods for
+   * @returns {Promise} result containing the stored payment methods from Adyen
+   */
+  async retrieveSavedMethods(customer) {
+    let request = {
+      merchantAccount: this.options_.merchant_account,
+      channel: "Web",
+      shopperReference: customer._id,
+    }
+
+    try {
+      const { data } = await this.adyenCheckoutApi.post(
+        "/paymentMethods",
+        request
+      )
+      return data.storedPaymentMethods
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
    * Retrieve payment methods from Ayden.
    * @param {Cart} cart - cart to retrieve payment methods for
    * @param {[string]} allowedMethods - the allowed methods based on region
@@ -71,7 +94,7 @@ class AdyenService extends BaseService {
    * @param {string} currency - the currency code to use for the payment
    * @returns {Promise} result containing the payment methods from Adyen
    */
-  async retrievePaymentMethods(cart, allowedMethods, total, currency) {
+  async retrievePaymentMethods(allowedMethods, total, currency) {
     let request = {
       allowedPaymentMethods: allowedMethods,
       amount: {
@@ -80,10 +103,6 @@ class AdyenService extends BaseService {
       },
       merchantAccount: this.options_.merchant_account,
       channel: "Web",
-    }
-
-    if (cart.customer_id) {
-      request.shopperReference = cart.customer_id
     }
 
     try {
