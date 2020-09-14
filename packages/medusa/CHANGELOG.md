@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.15...@medusajs/medusa@1.0.16) (2020-09-11)
+
+
+### Bug Fixes
+
+* **medusa:** add line item to order.gift_card_created event ([c5019ca](https://github.com/medusajs/medusa/commit/c5019ca0d1ee708ab3be441e084023d0bbccef72))
+
+
+
+
+
+## [1.0.15](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.14...@medusajs/medusa@1.0.15) (2020-09-10)
+
+
+### Bug Fixes
+
+* cron jobs and brightpearl auto refresh ([#107](https://github.com/medusajs/medusa/issues/107)) ([c7bd783](https://github.com/medusajs/medusa/commit/c7bd7838aa620d6f23d9f5e17592cc5a82818c9e))
+
+
+
+
+
 ## [1.0.14](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.13...@medusajs/medusa@1.0.14) (2020-09-09)
 
 **Note:** Version bump only for package @medusajs/medusa
