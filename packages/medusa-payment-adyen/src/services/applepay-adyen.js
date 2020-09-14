@@ -3,7 +3,6 @@ import https from "https"
 import fs from "fs"
 import axios from "axios"
 import { PaymentService } from "medusa-interfaces"
-const certificate = fs.readFileSync("./apple-pay-cert.pem", "utf8")
 
 class ApplePayAdyenService extends PaymentService {
   static identifier = "applepay-adyen"
@@ -36,6 +35,16 @@ class ApplePayAdyenService extends PaymentService {
 
   async getApplePaySession(validationUrl) {
     const endpointURL = `https://${validationUrl}/paymentSession`
+
+    let certificate
+    try {
+      // Place certificate in root folder
+      certificate = fs.readFileSync("./apple-pay-cert.pem")
+    } catch (error) {
+      throw new Error(
+        "Could not find ApplePay certificate. Make sure to place it in root folder of your server"
+      )
+    }
 
     const httpsAgent = new https.Agent({
       cert: certificate,
