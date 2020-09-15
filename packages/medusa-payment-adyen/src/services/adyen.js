@@ -22,7 +22,8 @@ class AdyenService extends BaseService {
      *    api_key: "",
      *    notification_hmac: "",
      *    return_url: "",
-     *    merchant_account: ""
+     *    merchant_account: "",
+     *    origin: ""
      * }
      */
     this.options_ = options
@@ -170,6 +171,7 @@ class AdyenService extends BaseService {
       reference: cart._id,
       merchantAccount: this.options_.merchant_account,
       returnUrl: this.options_.return_url,
+      origin: this.options_.origin,
       metadata: {
         cart_id: cart._id,
       },

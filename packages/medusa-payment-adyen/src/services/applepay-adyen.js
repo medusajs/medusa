@@ -7,10 +7,12 @@ import { PaymentService } from "medusa-interfaces"
 class ApplePayAdyenService extends PaymentService {
   static identifier = "applepay-adyen"
 
-  constructor({ adyenService }) {
+  constructor({ adyenService, shippingProfileService }) {
     super()
 
     this.adyenService_ = adyenService
+
+    this.shippingProfileService_ = shippingProfileService
   }
 
   /**
@@ -29,8 +31,13 @@ class ApplePayAdyenService extends PaymentService {
     return status
   }
 
-  async createPayment(_) {
-    return {}
+  async createPayment(cart) {
+    const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      cart
+    )
+    return {
+      shipping_options: shippingOptions,
+    }
   }
 
   async getApplePaySession(validationUrl) {

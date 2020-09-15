@@ -4,10 +4,12 @@ import { PaymentService } from "medusa-interfaces"
 class GooglePayAdyenService extends PaymentService {
   static identifier = "paywithgoogle-adyen"
 
-  constructor({ adyenService }) {
+  constructor({ adyenService, shippingProfileService }) {
     super()
 
     this.adyenService_ = adyenService
+
+    this.shippingProfileService_ = shippingProfileService
   }
 
   /**
@@ -26,8 +28,13 @@ class GooglePayAdyenService extends PaymentService {
     return status
   }
 
-  async createPayment(_) {
-    return {}
+  async createPayment(cart) {
+    const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      cart
+    )
+    return {
+      shipping_options: shippingOptions,
+    }
   }
 
   async authorizePayment(cart, paymentMethod, amount) {
