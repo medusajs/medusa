@@ -174,6 +174,7 @@ class AdyenService extends BaseService {
    * @returns {Promise} result of the payment authorization
    */
   async authorizePayment(cart, paymentMethod, amount, shopperIp) {
+    console.log(paymentMethod.data)
     let request = {
       amount,
       shopperIp,
