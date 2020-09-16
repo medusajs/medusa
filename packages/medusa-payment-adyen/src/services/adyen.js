@@ -47,7 +47,11 @@ class AdyenService extends BaseService {
     config.apiKey = this.options_.api_key
     config.merchantAccount = this.options_.merchant_account
 
-    const client = new Client({ config })
+    const client = new Client({
+      config,
+      liveEndpointUrlPrefix: this.options_.live_endpoint_prefix,
+    })
+
     client.setEnvironment(this.options_.environment)
 
     return client
