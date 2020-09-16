@@ -11,7 +11,7 @@ export default async (req, res) => {
   }
 
   try {
-    const paymentProvider = req.scope.resolve("pp_applepayAdyen")
+    const paymentProvider = req.scope.resolve("pp_applepay-adyen")
 
     const { data } = await paymentProvider.getApplePaySession(
       value.validation_url
