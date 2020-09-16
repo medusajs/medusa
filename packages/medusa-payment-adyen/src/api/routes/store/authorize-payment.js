@@ -37,8 +37,6 @@ export default async (req, res) => {
     // Shopper IP address for risk valuation
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
 
-    console.log(ip)
-
     const authorizedPayment = await paymentProvider.authorizePayment(
       cart,
       value.payment_method,
