@@ -4,7 +4,6 @@ import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
-const ADYEN_ENVIRONMENT = process.env.ADYEN_ENVIRONMENT || "TEST"
 const PAYMENT_URL =
   process.env.ADYEN_PAYMENT_URL ||
   "https://pal-test.adyen.com/pal/servlet/Payment/v64"
@@ -49,7 +48,7 @@ class AdyenService extends BaseService {
     config.merchantAccount = this.options_.merchant_account
 
     const client = new Client({ config })
-    client.setEnvironment(ADYEN_ENVIRONMENT)
+    client.setEnvironment(this.options_.environment)
 
     return client
   }
