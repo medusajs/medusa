@@ -218,7 +218,7 @@ async function registerServices(pluginDetails, container) {
         container.register({
           [name]: asFunction(
             cradle => new loaded(cradle, pluginDetails.options)
-          ),
+          ).singleton(),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (loaded.prototype instanceof FileService) {
