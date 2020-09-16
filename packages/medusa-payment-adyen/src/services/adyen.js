@@ -49,10 +49,12 @@ class AdyenService extends BaseService {
 
     const client = new Client({
       config,
-      liveEndpointUrlPrefix: this.options_.live_endpoint_prefix,
     })
 
-    client.setEnvironment(this.options_.environment)
+    client.setEnvironment(
+      this.options_.environment,
+      this.options_.live_endpoint_prefix
+    )
 
     return client
   }
