@@ -2,9 +2,9 @@ import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
+import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
-const CHECKOUT_URL =
-  process.env.ADYEN_CHECKOUT_URL || "https://checkout-test.adyen.com/v53"
+const ENVIRONMENT = process.env.NODE_ENV === "production" ? "LIVE" : "TEST"
 const PAYMENT_URL =
   process.env.ADYEN_PAYMENT_URL ||
   "https://pal-test.adyen.com/pal/servlet/Payment/v64"
@@ -28,13 +28,7 @@ class AdyenService extends BaseService {
      */
     this.options_ = options
 
-    this.adyenCheckoutApi = axios.create({
-      baseURL: CHECKOUT_URL,
-      headers: {
-        "Content-Type": "application/json",
-        "x-API-key": this.options_.api_key,
-      },
-    })
+    this.adyenClient_ = this.initAdyenClient()
 
     this.adyenPaymentApi = axios.create({
       baseURL: PAYMENT_URL,
@@ -47,6 +41,17 @@ class AdyenService extends BaseService {
 
   getOptions() {
     return this.options_
+  }
+
+  initAdyenClient() {
+    const config = new Config()
+    config.apiKey = this.options_.api_key
+    config.merchantAccount = this.options_.merchant_account
+
+    const client = new Client({ config })
+    client.setEnvironment(ENVIRONMENT)
+
+    return client
   }
 
   /**
@@ -77,11 +82,8 @@ class AdyenService extends BaseService {
     }
 
     try {
-      const { data } = await this.adyenCheckoutApi.post(
-        "/paymentMethods",
-        request
-      )
-      return data.storedPaymentMethods
+      const checkout = new CheckoutAPI(this.adyenClient_)
+      return checkout.paymentMethods(request)
     } catch (error) {
       throw error
     }
@@ -107,7 +109,8 @@ class AdyenService extends BaseService {
     }
 
     try {
-      return this.adyenCheckoutApi.post("/paymentMethods", request)
+      const checkout = new CheckoutAPI(this.adyenClient_)
+      return checkout.paymentMethods(request)
     } catch (error) {
       throw error
     }
@@ -153,7 +156,9 @@ class AdyenService extends BaseService {
       paymentData,
       details,
     }
-    return this.adyenCheckoutApi.post("/payments/details", request)
+
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    return checkout.paymentsDetails(request)
   }
 
   /**
@@ -163,19 +168,35 @@ class AdyenService extends BaseService {
    * @param {Object} amount - object containing currency and value
    * @returns {Promise} result of the payment authorization
    */
-  async authorizePayment(cart, paymentMethod, amount, additionalOptions = {}) {
+  async authorizePayment(cart, paymentMethod, amount, shopperIp) {
     let request = {
       amount,
+      shopperIp,
       shopperReference: cart.customer_id,
       paymentMethod: paymentMethod.data.paymentMethod,
       reference: cart._id,
       merchantAccount: this.options_.merchant_account,
       returnUrl: this.options_.return_url,
       origin: this.options_.origin,
+      channel: "Web",
+      additionalData: {
+        allow3DS2: true,
+      },
+      browserInfo: paymentMethod.data.browserInfo || {},
+      billingAddress: {
+        city: cart.shipping_address.city,
+        country: cart.shipping_address.country_code,
+        houseNumberOrName: cart.shipping_address.address_2 || "",
+        postalCode: cart.shipping_address.postal_code,
+        stateOrProvice: cart.shipping_address.province || "",
+        street: cart.shipping_address.address_1,
+      },
       metadata: {
         cart_id: cart._id,
       },
     }
+
+    console.log(request)
 
     if (paymentMethod.data.storePaymentMethod) {
       request.storePaymentMethod = "true"
@@ -183,14 +204,8 @@ class AdyenService extends BaseService {
       request.recurringProcessingModel = "CardOnFile"
     }
 
-    if (paymentMethod.type === "klarna") {
-      request = {
-        ...request,
-        ...additionalOptions,
-      }
-    }
-
-    return await this.adyenCheckoutApi.post("/payments", request)
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    return checkout.payments(request)
   }
 
   /**
@@ -206,7 +221,8 @@ class AdyenService extends BaseService {
         payload,
       },
     }
-    return this.adyenCheckoutApi.post("/payments/details", request)
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    return checkout.paymentsDetails(request)
   }
 
   /**
@@ -292,13 +308,8 @@ class AdyenService extends BaseService {
    * @returns {Object} payment data result of delete
    */
   async deletePayment(paymentData) {
-    const { pspReference } = paymentData
-
     try {
-      return this.adyenPaymentApi.post("/cancel", {
-        originalReference: pspReference,
-        merchantAccount: this.options_.merchant_account,
-      })
+      return {}
     } catch (error) {
       throw error
     }

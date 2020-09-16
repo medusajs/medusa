@@ -31,15 +31,20 @@ export default async (req, res) => {
       return
     }
 
-    const { data } = await adyenService.retrievePaymentMethods(
+    const pmMethods = await adyenService.retrievePaymentMethods(
       allowedMethods,
       total,
       region.currency_code
     )
+    // const { data } = await adyenService.retrievePaymentMethods(
+    //   allowedMethods,
+    //   total,
+    //   region.currency_code
+    // )
 
     // Adyen does not behave 100% correctly in regards to allowed methods
     // Therefore, we sanity filter before sending them to the storefront
-    const { paymentMethods, groups, storedPaymentMethods } = data
+    const { paymentMethods, groups, storedPaymentMethods } = pmMethods
     const methods = paymentMethods.filter((pm) =>
       allowedMethods.includes(pm.type)
     )

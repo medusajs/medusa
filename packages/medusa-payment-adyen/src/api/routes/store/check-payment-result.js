@@ -19,7 +19,7 @@ export default async (req, res) => {
 
     const paymentProvider = req.scope.resolve(`pp_${value.provider_id}`)
 
-    const { data } = await adyen.checkPaymentResult(
+    const result = await adyen.checkPaymentResult(
       value.payment_data,
       value.payload
     )
@@ -28,13 +28,13 @@ export default async (req, res) => {
 
     cart.payment_method.data = {
       ...cart.payment_method.data,
-      pspReference: data.pspReference,
-      resultCode: data.resultCode,
+      pspReference: result.pspReference,
+      resultCode: result.resultCode,
     }
 
     await cartService.setPaymentMethod(value.cart_id, cart.payment_method)
 
-    const status = await paymentProvider.getStatus(data)
+    const status = await paymentProvider.getStatus(result)
 
     res.status(200).json({ status })
   } catch (err) {

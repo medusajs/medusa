@@ -18,14 +18,18 @@ export default async (req, res) => {
 
     const cart = await cartService.retrieve(value.cart_id)
 
-    const { data } = await paymentProvider.updatePayment(
+    const updatedPayment = await paymentProvider.updatePayment(
       value.payment_data.paymentData,
       value.payment_data.details
     )
 
-    await cartService.updatePaymentSession(cart._id, value.provider_id, data)
+    await cartService.updatePaymentSession(
+      cart._id,
+      value.provider_id,
+      updatedPayment
+    )
 
-    res.status(200).json({ data })
+    res.status(200).json({ data: updatedPayment })
   } catch (err) {
     throw err
   }

@@ -3,7 +3,6 @@ import { Validator, MedusaError } from "medusa-core-utils"
 export default async (req, res) => {
   const schema = Validator.object().keys({
     cart_id: Validator.string().required(),
-    // provider_id: Validator.string().required(),
     payment_method: Validator.object()
       .keys({
         provider_id: Validator.string().required(),
@@ -35,25 +34,32 @@ export default async (req, res) => {
       value: total * 100,
     }
 
-    const { data } = await paymentProvider.authorizePayment(
+    // Shopper IP address for risk valuation
+    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+
+    console.log(ip)
+
+    const authorizedPayment = await paymentProvider.authorizePayment(
       cart,
       value.payment_method,
-      amount
+      amount,
+      ip
     )
 
     // MongoDB does not allow us to store keys with dots
-    if (data.additionalData) {
+    if (authorizedPayment.additionalData) {
       delete data.additionalData["recurring.shopperReference"]
       delete data.additionalData["recurring.recurringDetailReference"]
     }
 
-    data.amount = amount
-    value.payment_method.data = data
+    authorizedPayment.amount = amount
+    value.payment_method.data = authorizedPayment
 
     await cartService.setPaymentMethod(cart._id, value.payment_method)
 
-    res.status(200).json({ data })
+    res.status(200).json({ data: authorizedPayment })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }
