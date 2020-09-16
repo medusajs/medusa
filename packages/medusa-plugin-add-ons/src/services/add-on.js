@@ -197,6 +197,26 @@ class AddOnService extends BaseService {
       `A price for region: ${region.name} could not be found`
     )
   }
+
+  /**
+   * Decorates a add-on with add-on variants.
+   * @param {AddOn} addOn - the add-on to decorate.
+   * @param {string[]} fields - the fields to include.
+   * @param {string[]} expandFields - fields to expand.
+   * @return {AddOn} return the decorated add-on.
+   */
+  async decorate(addOn, fields, expandFields = []) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(addOn, fields.concat(requiredFields))
+    if (expandFields.includes("valid_for")) {
+      decorated.valid_for = await Promise.all(
+        decorated.valid_for.map(
+          async (p) => await this.productService_.retrieve(p)
+        )
+      )
+    }
+    return decorated
+  }
 }
 
 export default AddOnService
