@@ -4,10 +4,6 @@ import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
-const PAYMENT_URL =
-  process.env.ADYEN_PAYMENT_URL ||
-  "https://pal-test.adyen.com/pal/servlet/Payment/v64"
-
 class AdyenService extends BaseService {
   constructor({ regionService, totalsService }, options) {
     super()
@@ -22,24 +18,31 @@ class AdyenService extends BaseService {
      *    notification_hmac: "",
      *    return_url: "",
      *    merchant_account: "",
-     *    origin: ""
+     *    origin: "",
+     *    environment: "",
+     *    live_endpoint_prefix: "",
+     *    payment_endpoint: ""
      * }
      */
     this.options_ = options
 
     this.adyenClient_ = this.initAdyenClient()
 
-    this.adyenPaymentApi = axios.create({
-      baseURL: PAYMENT_URL,
+    this.adyenPaymentApi = this.initPaymentClient()
+  }
+
+  getOptions() {
+    return this.options_
+  }
+
+  initPaymentClient() {
+    return axios.create({
+      baseURL: this.options_.payment_endpoint,
       headers: {
         "Content-Type": "application/json",
         "x-API-key": this.options_.api_key,
       },
     })
-  }
-
-  getOptions() {
-    return this.options_
   }
 
   initAdyenClient() {
