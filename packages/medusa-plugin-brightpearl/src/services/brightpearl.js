@@ -644,6 +644,8 @@ class BrightpearlService extends BaseService {
     const address = await client.addresses.create({
       addressLine1: fromOrder.shipping_address.address_1,
       addressLine2: fromOrder.shipping_address.address_2,
+      addressLine3: fromOrder.shipping_address.city,
+      addressLine4: fromOrder.shipping_address.province,
       postalCode: fromOrder.shipping_address.postal_code,
       countryIsoCode: fromOrder.shipping_address.country_code,
     })
