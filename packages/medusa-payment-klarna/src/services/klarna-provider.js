@@ -385,7 +385,7 @@ class KlarnaProviderService extends PaymentService {
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${order_id}/refunds`,
         {
-          refunded_amount: amount,
+          refunded_amount: amount * 100,
         }
       )
       return order_id
