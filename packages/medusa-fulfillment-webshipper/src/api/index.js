@@ -4,10 +4,11 @@ import crypto from "crypto"
 import cors from "cors"
 import { getConfigFile } from "medusa-core-utils"
 
-export default () => {
+export default (rootDirectory) => {
   const app = Router()
 
-  const { projectConfig } = getConfigFile(".", "medusa-config")
+  const { configModule } = getConfigFile(rootDirectory, "medusa-config")
+  const { projectConfig } = configModule
 
   const corsOptions = {
     origin: projectConfig.store_cors.split(","),
@@ -67,4 +68,6 @@ export default () => {
       res.sendStatus(200)
     }
   )
+
+  return app
 }
