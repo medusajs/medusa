@@ -233,6 +233,21 @@ class AdyenService extends BaseService {
   }
 
   /**
+   * Additional details
+   * @param {Object} paymentData - payment data
+   * @param {Object} details - payment details
+   * @returns {Promise} current payment result
+   */
+  async additionalDetails(paymentData, details) {
+    const request = {
+      paymentData,
+      details,
+    }
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    return checkout.paymentsDetails(request)
+  }
+
+  /**
    * Captures an Ayden payment
    * @param {Object} data - payment data to capture
    * @returns {string} status = processing_captures

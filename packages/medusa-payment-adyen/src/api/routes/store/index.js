@@ -49,6 +49,12 @@ export default (app, rootDirectory) => {
     bodyParser.json(),
     middlewares.wrap(require("./check-payment-result").default)
   )
+  
+  route.post(
+    "/additional-details",
+    bodyParser.json(),
+    middlewares.wrap(require("./additional-details").default)
+  )
 
   route.post(
     "/update-cart-payment/:cart_id",
