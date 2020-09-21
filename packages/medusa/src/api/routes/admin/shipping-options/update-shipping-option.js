@@ -18,6 +18,7 @@ export default async (req, res) => {
         })
       )
       .optional(),
+    metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -27,7 +28,16 @@ export default async (req, res) => {
 
   try {
     const optionService = req.scope.resolve("shippingOptionService")
+    if (!_.isEmpty(value.metadata)) {
+      for (let key of Object.keys(value.metadata)) {
+        await optionService.setMetadata(option_id, key, value.metadata[key])
+      }
+
+      delete value.metadata
+    }
+
     const data = await optionService.update(option_id, value)
+
     res.status(200).json({ shipping_option: data })
   } catch (err) {
     throw err
