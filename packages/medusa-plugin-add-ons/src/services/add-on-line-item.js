@@ -40,7 +40,7 @@ class AddOnLineItemService extends BaseService {
    * @param {*} quantity - number of items
    * @param {[string]} addOnIds - id of add-ons
    */
-  async generate(variantId, regionId, quantity, addOnIds) {
+  async generate(variantId, regionId, quantity, addOnIds, metadata = {}) {
     const variant = await this.productVariantService_.retrieve(variantId)
     const region = await this.regionService_.retrieve(regionId)
 
@@ -90,6 +90,7 @@ class AddOnLineItemService extends BaseService {
       },
       should_merge: false,
       metadata: {
+        ...metadata,
         add_ons: addOnIds,
       },
     }

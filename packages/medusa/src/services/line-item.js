@@ -118,6 +118,7 @@ class LineItemService extends BaseService {
         product,
         quantity: 1,
       },
+      metadata,
     }
 
     if (product.is_giftcard) {
