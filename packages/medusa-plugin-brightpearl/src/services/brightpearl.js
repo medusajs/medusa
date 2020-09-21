@@ -26,10 +26,6 @@ class BrightpearlService extends BaseService {
   }
 
   async getClient() {
-    if (this.brightpearlClient_) {
-      return this.brightpearlClient_
-    }
-
     const authData = await this.oauthService_.retrieveByName("brightpearl")
     const { data } = authData
 
@@ -60,7 +56,6 @@ class BrightpearlService extends BaseService {
     )
 
     this.authData_ = data
-    this.brightpearlClient_ = client
     return client
   }
 
