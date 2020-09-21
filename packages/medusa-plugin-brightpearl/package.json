@@ -21,6 +21,8 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.9.6",
+    "axios-mock-adapter": "^1.18.2",
+    "axios-mock-server": "^0.19.0",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
