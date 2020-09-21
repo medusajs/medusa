@@ -7,12 +7,14 @@ import { PaymentService } from "medusa-interfaces"
 class ApplePayAdyenService extends PaymentService {
   static identifier = "applepay-adyen"
 
-  constructor({ adyenService, shippingProfileService }) {
+  constructor({ adyenService, shippingProfileService }, options) {
     super()
 
     this.adyenService_ = adyenService
 
     this.shippingProfileService_ = shippingProfileService
+
+    this.options_ = options
   }
 
   /**
@@ -41,13 +43,14 @@ class ApplePayAdyenService extends PaymentService {
   }
 
   async getApplePaySession(validationUrl) {
-    const endpointURL = `https://${validationUrl}/paymentSession`
+    const endpointURL = `${validationUrl}/paymentSession`
 
     let certificate
     try {
       // Place certificate in root folder
       certificate = fs.readFileSync("./apple-pay-cert.pem")
     } catch (error) {
+      console.log(error)
       throw new Error(
         "Could not find ApplePay certificate. Make sure to place it in root folder of your server"
       )
@@ -61,10 +64,10 @@ class ApplePayAdyenService extends PaymentService {
     return axios.post(
       endpointURL,
       {
-        merchantIdentifier: "merchant.com.adyen.teklafabrics.test",
-        displayName: "Tekla Fabrics",
+        merchantIdentifier: this.options_.applepay_merchant_id,
+        displayName: this.options_.applepay_display_name,
         initiative: "web",
-        initiativeContext: "teklafabrics.com",
+        initiativeContext: this.options_.applepay_initiative_context,
       },
       {
         httpsAgent,
