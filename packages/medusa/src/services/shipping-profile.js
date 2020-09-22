@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -50,6 +49,36 @@ class ShippingProfileService extends BaseService {
    */
   list(selector) {
     return this.profileModel_.find(selector)
+  }
+
+  async fetchOptionsByProductIds(productIds, filter) {
+    const profiles = await this.list({ products: { $in: productIds } })
+    const optionIds = profiles.reduce(
+      (acc, next) => acc.concat(next.shipping_options),
+      []
+    )
+
+    const options = await Promise.all(
+      optionIds.map(async oId => {
+        const option = await this.shippingOptionService_
+          .retrieve(oId)
+          .catch(_ => undefined)
+
+        if (!option) {
+          return null
+        }
+
+        let canSend = true
+        if (filter.region_id) {
+          if (filter.region_id !== option.region_id) {
+            canSend = false
+          }
+        }
+        return canSend ? option : null
+      })
+    )
+
+    return options.filter(o => !!o)
   }
 
   /**
@@ -297,7 +326,7 @@ class ShippingProfileService extends BaseService {
     const profile = await this.retrieve(profileId)
 
     return this.profileModel_.updateOne(
-      { _id: profileId },
+      { _id: profile._id },
       { $pull: { shipping_options: optionId } }
     )
   }
@@ -391,7 +420,7 @@ class ShippingProfileService extends BaseService {
       optionIds.map(async oId => {
         const option = await this.shippingOptionService_
           .validateCartOption(oId, cart)
-          .catch(err => {
+          .catch(_ => {
             // If validation failed we skip the option
             return null
           })

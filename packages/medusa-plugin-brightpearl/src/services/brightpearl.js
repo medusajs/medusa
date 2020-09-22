@@ -26,10 +26,6 @@ class BrightpearlService extends BaseService {
   }
 
   async getClient() {
-    if (this.brightpearlClient_) {
-      return this.brightpearlClient_
-    }
-
     const authData = await this.oauthService_.retrieveByName("brightpearl")
     const { data } = authData
 
@@ -60,7 +56,6 @@ class BrightpearlService extends BaseService {
     )
 
     this.authData_ = data
-    this.brightpearlClient_ = client
     return client
   }
 
@@ -644,6 +639,8 @@ class BrightpearlService extends BaseService {
     const address = await client.addresses.create({
       addressLine1: fromOrder.shipping_address.address_1,
       addressLine2: fromOrder.shipping_address.address_2,
+      addressLine3: fromOrder.shipping_address.city,
+      addressLine4: fromOrder.shipping_address.province,
       postalCode: fromOrder.shipping_address.postal_code,
       countryIsoCode: fromOrder.shipping_address.country_code,
     })

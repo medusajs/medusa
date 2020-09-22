@@ -226,7 +226,7 @@ class ShippingOptionService extends BaseService {
    * Validates a shipping option price
    * @param {ShippingOptionPrice} price - the price to validate
    * @param {ShippingOption} option - the option to validate against
-   * @return {ShippingOptionPrice} the validated price
+   * @return {Promise<ShippingOptionPrice>} the validated price
    */
   async validatePrice_(price, option) {
     if (
