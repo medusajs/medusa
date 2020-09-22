@@ -10,6 +10,7 @@ import ShipmentSchema from "./schemas/shipment"
 import ReturnSchema from "./schemas/return"
 import RefundSchema from "./schemas/refund"
 import FulfillmentSchema from "./schemas/fulfillment"
+import SwapOrderSchema from "./schemas/swap-order"
 
 class OrderModel extends BaseModel {
   static modelName = "Order"
@@ -38,6 +39,7 @@ class OrderModel extends BaseModel {
     customer_id: { type: String },
     payment_method: { type: PaymentMethodSchema, required: true },
     shipping_methods: { type: [ShippingMethodSchema], required: true },
+    swap_orders: { type: [SwapOrderSchema], default: [] },
     created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
