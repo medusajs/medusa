@@ -36,24 +36,25 @@ class BrightpearlService extends BaseService {
       )
     }
 
-    const client = new Brightpearl(
-      {
-        account: this.options.account,
-        url: data.api_domain,
-        auth_type: data.token_type,
-        access_token: data.access_token,
+    const tokenStore = {
+      getToken: async () => {
+        const appData = await this.oauthService_.retrieveByName("brightpearl")
+        const authenticationData = appData.data
+        return authenticationData.access_token
       },
-      async (client) => {
-        const newAuth = await this.oauthService_.refreshToken(
-          "brightpearl",
-          data.refresh_token
+      refreshToken: async () => {
+        const newAuthentication = await this.oauthService_.refreshToken(
+          "brightpearl"
         )
-        client.updateAuth({
-          auth_type: newAuth.token_type,
-          access_token: newAuth.access_token,
-        })
-      }
-    )
+        return newAuthentication.data.refresh_token
+      },
+    }
+
+    const client = new Brightpearl({
+      account: this.options.account,
+      url: data.api_domain,
+      token_store: tokenStore,
+    })
 
     this.authData_ = data
     return client
