@@ -22,6 +22,14 @@ export default async (req, res) => {
   try {
     const addOnService = req.scope.resolve("addOnService")
 
+    if (value.metadata) {
+      Object.entries(value.metadata).map(([key, value]) => {
+        addOnService.setMetadata(id, key, value)
+      })
+
+      delete value.metadata
+    }
+
     const addOn = await addOnService.update(id, value)
 
     res.status(200).json({ addOn })
