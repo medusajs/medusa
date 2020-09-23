@@ -38,6 +38,7 @@ class LineItemService extends BaseService {
     const lineItemSchema = Validator.object({
       title: Validator.string().required(),
       is_giftcard: Validator.bool().optional(),
+      should_merge: Validator.bool().optional(),
       description: Validator.string()
         .allow("")
         .optional(),
@@ -110,6 +111,7 @@ class LineItemService extends BaseService {
       title: product.title,
       description: variant.title,
       quantity,
+      should_merge: true,
       thumbnail: product.thumbnail,
       content: {
         unit_price,
@@ -117,6 +119,7 @@ class LineItemService extends BaseService {
         product,
         quantity: 1,
       },
+      metadata,
     }
 
     if (product.is_giftcard) {

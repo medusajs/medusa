@@ -34,63 +34,13 @@ class AddOnLineItemService extends BaseService {
   }
 
   /**
-   * Used to validate line items.
-   * @param {object} rawLineItem - the raw line item to validate.
-   * @return {object} the validated id
-   */
-  validate(rawLineItem) {
-    const content = Validator.object({
-      unit_price: Validator.number().required(),
-      variant: Validator.object().required(),
-      product: Validator.object().required(),
-      quantity: Validator.number().integer().min(1).default(1),
-    })
-
-    const lineItemSchema = Validator.object({
-      title: Validator.string().required(),
-      is_giftcard: Validator.bool().optional(),
-      description: Validator.string().allow("").optional(),
-      thumbnail: Validator.string().allow("").optional(),
-      content: Validator.alternatives()
-        .try(content, Validator.array().items(content))
-        .required(),
-      quantity: Validator.number().integer().min(1).required(),
-      metadata: Validator.object().default({}),
-    })
-
-    const { value, error } = lineItemSchema.validate(rawLineItem)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        error.details[0].message
-      )
-    }
-
-    return value
-  }
-
-  /**
-   * Contents of a line item
-   * @typedef {(object | array)} LineItemContent
-   * @property {number} unit_price - the price of the content
-   * @property {object} variant - the product variant of the content
-   * @property {object} product - the product of the content
-   * @property {number} quantity - the quantity of the content
-   */
-
-  /**
-   * A collection of contents grouped in the same line item
-   * @typedef {LineItemContent[]} LineItemContentArray
-   */
-
-  /**
    * Generates a line item.
    * @param {string} variantId - id of the line item variant
    * @param {*} regionId - id of the cart region
    * @param {*} quantity - number of items
    * @param {[string]} addOnIds - id of add-ons
    */
-  async generate(variantId, regionId, quantity, addOnIds) {
+  async generate(variantId, regionId, quantity, addOnIds, metadata = {}) {
     const variant = await this.productVariantService_.retrieve(variantId)
     const region = await this.regionService_.retrieve(regionId)
 
@@ -132,13 +82,16 @@ class AddOnLineItemService extends BaseService {
       title: product.title,
       quantity,
       thumbnail: product.thumbnail,
+      should_merge: false,
       content: {
         unit_price: unitPrice * quantity,
         variant,
         product,
         quantity: 1,
       },
+      should_merge: false,
       metadata: {
+        ...metadata,
         add_ons: addOnIds,
       },
     }
@@ -146,26 +99,17 @@ class AddOnLineItemService extends BaseService {
     return line
   }
 
-  isEqual(line, match) {
-    if (Array.isArray(line.content)) {
-      if (
-        Array.isArray(match.content) &&
-        match.content.length === line.content.length
-      ) {
-        return line.content.every(
-          (c, index) =>
-            c.variant._id.equals(match[index].variant._id) &&
-            c.quantity === match[index].quantity
+  async decorate(lineItem, fields, expandFields = []) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(lineItem, fields.concat(requiredFields))
+    if (expandFields.includes("add_ons") && decorated.metadata.add_ons) {
+      decorated.metadata.add_ons = await Promise.all(
+        decorated.metadata.add_ons.map(
+          async (ao) => await this.addOnService_.retrieve(ao)
         )
-      }
-    } else if (!Array.isArray(match.content)) {
-      return (
-        line.content.variant._id.equals(match.content.variant._id) &&
-        line.content.quantity === match.content.quantity
       )
     }
-
-    return false
+    return decorated
   }
 }
 

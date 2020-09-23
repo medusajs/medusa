@@ -5,11 +5,11 @@ export default async (req, res) => {
     name: Validator.string().required(),
     prices: Validator.array()
       .items({
-        currency_code: Validator.string().required(),
-        amount: Validator.number().required(),
+        currency_code: Validator.string(),
+        amount: Validator.number(),
       })
       .required(),
-    valid_for: Validator.array().items(Validator.string()).required(),
+    valid_for: Validator.array().items(),
     metadata: Validator.object().optional(),
   })
 
