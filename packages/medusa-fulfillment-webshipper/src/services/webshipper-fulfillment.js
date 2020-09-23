@@ -78,12 +78,19 @@ class WebshipperFulfillmentService extends FulfillmentService {
           fulfillmentItems
         )
 
-        invoice = await this.client_.documents.create({
-          document_size: this.options_.document_size || "A4",
-          document_format: "PDF",
-          base64: base64Invoice,
-          document_type: "invoice",
-        })
+        invoice = await this.client_.documents
+          .create({
+            type: "documents",
+            attributes: {
+              document_size: this.options_.document_size || "A4",
+              document_format: "PDF",
+              base64: base64Invoice,
+              document_type: "invoice",
+            },
+          })
+          .catch((err) => {
+            throw err
+          })
       }
 
       const { shipping_address } = fromOrder
@@ -151,10 +158,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
       }
       if (invoice) {
         newOrder.relationships.documents = {
-          data: {
-            id: invoice.data.id,
-            type: invoice.data.type,
-          },
+          data: [
+            {
+              id: invoice.data.id,
+              type: invoice.data.type,
+            },
+          ],
         }
       }
 
@@ -164,7 +173,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
           return result.data
         })
         .catch((err) => {
-          console.log(err)
           this.logger_.warn(err.response)
           throw err
         })
