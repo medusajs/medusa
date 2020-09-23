@@ -111,6 +111,7 @@ class LineItemService extends BaseService {
       title: product.title,
       description: variant.title,
       quantity,
+      should_merge: true,
       thumbnail: product.thumbnail,
       content: {
         unit_price,

@@ -82,6 +82,7 @@ class AddOnLineItemService extends BaseService {
       title: product.title,
       quantity,
       thumbnail: product.thumbnail,
+      should_merge: false,
       content: {
         unit_price: unitPrice * quantity,
         variant,
