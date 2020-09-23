@@ -29,6 +29,16 @@ export default async (req, res) => {
 
     cart = await cartService.addLineItem(cart._id, lineItem)
     cart = await cartService.decorate(cart, [], ["region"])
+    
+    cart.items = await Promise.all(
+      cart.items.map((item) =>
+        lineItemService.decorate(
+          item,
+          ["title", "quantity", "thumbnail", "content", "should_merge"],
+          ["add_ons"]
+        )
+      )
+    )
 
     res.status(200).json({ cart })
   } catch (err) {

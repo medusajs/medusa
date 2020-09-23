@@ -6,7 +6,7 @@ export default (rootDirectory) => {
   const app = Router()
 
   store(app, rootDirectory)
-  admin(app)
+  admin(app, rootDirectory)
 
   return app
 }
