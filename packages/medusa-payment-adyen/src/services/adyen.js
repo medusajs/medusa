@@ -204,8 +204,6 @@ class AdyenService extends BaseService {
       },
     }
 
-    console.log(request)
-
     if (paymentMethod.data.storePaymentMethod) {
       request.storePaymentMethod = "true"
       request.shopperInteraction = "Ecommerce"

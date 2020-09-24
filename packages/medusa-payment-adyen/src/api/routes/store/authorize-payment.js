@@ -1,4 +1,5 @@
 import { Validator, MedusaError } from "medusa-core-utils"
+import requestIp from "request-ip"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -35,13 +36,14 @@ export default async (req, res) => {
     }
 
     // Shopper IP address for risk valuation
-    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+    const shopperIp = requestIp.getClientIp(req)
+    console.log("Shopper ip: ", shopperIp)
 
     const authorizedPayment = await paymentProvider.authorizePayment(
       cart,
       value.payment_method,
       amount,
-      ip
+      shopperIp
     )
 
     // MongoDB does not allow us to store keys with dots
