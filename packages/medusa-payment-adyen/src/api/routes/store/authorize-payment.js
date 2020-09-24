@@ -37,7 +37,6 @@ export default async (req, res) => {
 
     // Shopper IP address for risk valuation
     const shopperIp = requestIp.getClientIp(req)
-    console.log("Shopper ip: ", shopperIp)
 
     const authorizedPayment = await paymentProvider.authorizePayment(
       cart,
@@ -51,8 +50,6 @@ export default async (req, res) => {
       delete data.additionalData["recurring.shopperReference"]
       delete data.additionalData["recurring.recurringDetailReference"]
     }
-
-    console.log(authorizedPayment)
 
     authorizedPayment.amount = amount
     value.payment_method.data = authorizedPayment

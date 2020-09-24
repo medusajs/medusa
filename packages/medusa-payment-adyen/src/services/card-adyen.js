@@ -34,8 +34,13 @@ class CardAdyenService extends PaymentService {
     return {}
   }
 
-  async authorizePayment(cart, paymentMethod, amount) {
-    return this.adyenService_.authorizePayment(cart, paymentMethod, amount)
+  async authorizePayment(cart, paymentMethod, amount, shopperIp) {
+    return this.adyenService_.authorizePayment(
+      cart,
+      paymentMethod,
+      amount,
+      shopperIp
+    )
   }
 
   async retrievePayment(data) {

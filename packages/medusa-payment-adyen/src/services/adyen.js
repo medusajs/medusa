@@ -210,6 +210,8 @@ class AdyenService extends BaseService {
       request.recurringProcessingModel = "CardOnFile"
     }
 
+    console.log(request)
+
     const checkout = new CheckoutAPI(this.adyenClient_)
     return checkout.payments(request)
   }
