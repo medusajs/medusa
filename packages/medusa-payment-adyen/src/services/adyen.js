@@ -179,7 +179,7 @@ class AdyenService extends BaseService {
   async authorizePayment(cart, paymentMethod, amount, shopperIp) {
     let request = {
       amount,
-      shopperIp,
+      shopperIP: shopperIp,
       shopperReference: cart.customer_id,
       paymentMethod: paymentMethod.data.paymentMethod,
       reference: cart._id,
