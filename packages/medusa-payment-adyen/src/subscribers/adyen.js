@@ -13,6 +13,7 @@ class AdyenSubscriber {
   }
 
   async handleAdyenNotification(notification) {
+    console.log(notification)
     switch (true) {
       case notification.success === "true" &&
         notification.eventCode === "AUTHORISATION": {

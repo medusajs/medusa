@@ -50,6 +50,8 @@ export default async (req, res) => {
       delete data.additionalData["recurring.recurringDetailReference"]
     }
 
+    console.log(authorizedPayment)
+
     authorizedPayment.amount = amount
     value.payment_method.data = authorizedPayment
 
