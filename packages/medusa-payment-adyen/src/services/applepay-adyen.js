@@ -69,6 +69,7 @@ class ApplePayAdyenService extends PaymentService {
 
     console.log("Validation URL: ", validationUrl)
     console.log("Request: ", request)
+    console.log(certificate.toString())
     console.log("Certificate: ", certificate)
 
     try {
