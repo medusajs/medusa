@@ -43,8 +43,6 @@ class ApplePayAdyenService extends PaymentService {
   }
 
   async getApplePaySession(validationUrl) {
-    const endpointURL = `${validationUrl}/paymentSession`
-
     let certificate
     try {
       // Place certificate in root folder
@@ -59,20 +57,27 @@ class ApplePayAdyenService extends PaymentService {
     const httpsAgent = new https.Agent({
       cert: certificate,
       key: certificate,
+      rejectUnauthorized: false,
     })
 
-    return axios.post(
-      endpointURL,
-      {
-        merchantIdentifier: this.options_.applepay_merchant_id,
-        displayName: this.options_.applepay_display_name,
-        initiative: "web",
-        initiativeContext: this.options_.applepay_initiative_context,
-      },
-      {
+    const request = {
+      merchantIdentifier: this.options_.applepay_merchant_id,
+      displayName: this.options_.applepay_display_name,
+      initiative: "web",
+      initiativeContext: this.options_.applepay_initiative_context,
+    }
+
+    console.log("Validation URL: ", validationUrl)
+    console.log("Request: ", request)
+    console.log("Certificate: ", certificate)
+
+    try {
+      return axios.post(validationUrl, request, {
         httpsAgent,
-      }
-    )
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async authorizePayment(cart, paymentMethod, amount, shopperIp) {
