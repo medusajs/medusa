@@ -72,9 +72,13 @@ class ApplePayAdyenService extends PaymentService {
     console.log("Certificate: ", certificate)
 
     try {
-      return axios.post(validationUrl, request, {
-        httpsAgent,
-      })
+      return axios.post(
+        "https://apple-pay-gateway.apple.com/paymentservices/paymentSession",
+        request,
+        {
+          httpsAgent,
+        }
+      )
     } catch (error) {
       console.log(error)
     }
