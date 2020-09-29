@@ -102,7 +102,11 @@ class AddOnLineItemService extends BaseService {
   async decorate(lineItem, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(lineItem, fields.concat(requiredFields))
-    if (expandFields.includes("add_ons") && decorated.metadata.add_ons) {
+    if (
+      expandFields.includes("add_ons") &&
+      decorated.metadata &&
+      decorated.metadata.add_ons
+    ) {
       decorated.metadata.add_ons = await Promise.all(
         decorated.metadata.add_ons.map(
           async (ao) => await this.addOnService_.retrieve(ao)
