@@ -33,12 +33,6 @@ export default (app, rootDirectory) => {
   )
 
   route.post(
-    "/authorize",
-    bodyParser.json(),
-    middlewares.wrap(require("./authorize-payment").default)
-  )
-
-  route.post(
     "/update",
     bodyParser.json(),
     middlewares.wrap(require("./update-payment").default)
@@ -49,17 +43,11 @@ export default (app, rootDirectory) => {
     bodyParser.json(),
     middlewares.wrap(require("./check-payment-result").default)
   )
-  
+
   route.post(
     "/additional-details",
     bodyParser.json(),
     middlewares.wrap(require("./additional-details").default)
-  )
-
-  route.post(
-    "/update-cart-payment/:cart_id",
-    bodyParser.json(),
-    middlewares.wrap(require("./update-cart-payment").default)
   )
 
   return app

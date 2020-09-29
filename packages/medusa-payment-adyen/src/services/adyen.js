@@ -1,5 +1,6 @@
 import axios from "axios"
 import _ from "lodash"
+import requestIp from "request-ip"
 import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
@@ -172,16 +173,28 @@ class AdyenService extends BaseService {
   /**
    * Creates and authorizes an Ayden payment
    * @param {Cart} cart - cart to authorize payment for
-   * @param {Object} paymentMethod - method used for the payment
-   * @param {Object} amount - object containing currency and value
+   * @param {Object} paymentData - method used for the payment
+   * @param {Object} request - express request object
    * @returns {Promise} result of the payment authorization
    */
-  async authorizePayment(cart, paymentMethod, amount, shopperIp) {
+  async authorizePayment(cart, paymentData, context) {
+    const region = await this.regionService_.retrieve(cart.region_id)
+    const total = await this.totalsService_.getTotal(cart)
+
+    const amount = {
+      currency: region.currency_code,
+      value: total * 100,
+    }
+
+    const shopperIp = requestIp.getClientIp(context)
+
+    console.log(paymentData)
+
     let request = {
       amount,
       shopperIP: shopperIp,
       shopperReference: cart.customer_id,
-      paymentMethod: paymentMethod.data.paymentMethod,
+      paymentMethod: paymentData.data.paymentMethod,
       reference: cart._id,
       merchantAccount: this.options_.merchant_account,
       returnUrl: this.options_.return_url,
@@ -190,7 +203,7 @@ class AdyenService extends BaseService {
       additionalData: {
         allow3DS2: true,
       },
-      browserInfo: paymentMethod.data.browserInfo || {},
+      browserInfo: paymentData.data.browserInfo || {},
       billingAddress: {
         city: cart.shipping_address.city,
         country: cart.shipping_address.country_code,
@@ -204,16 +217,27 @@ class AdyenService extends BaseService {
       },
     }
 
-    if (paymentMethod.data.storePaymentMethod) {
+    if (paymentData.data.storePaymentMethod) {
       request.storePaymentMethod = "true"
       request.shopperInteraction = "Ecommerce"
       request.recurringProcessingModel = "CardOnFile"
     }
 
-    console.log(request)
-
     const checkout = new CheckoutAPI(this.adyenClient_)
-    return checkout.payments(request)
+
+    try {
+      const authorized = await checkout.payments(request)
+      // MongoDB does not allow us to store keys with dots
+      if (authorized.additionalData) {
+        delete authorized.additionalData["recurring.shopperReference"]
+        delete authorized.additionalData["recurring.recurringDetailReference"]
+      }
+
+      return authorized
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   }
 
   /**

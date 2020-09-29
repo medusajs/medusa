@@ -29,21 +29,11 @@ class GooglePayAdyenService extends PaymentService {
   }
 
   async createPayment(cart) {
-    const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
-      cart
-    )
-    return {
-      shipping_options: shippingOptions,
-    }
+    return {}
   }
 
-  async authorizePayment(cart, paymentMethod, amount, shopperIp) {
-    return this.adyenService_.authorizePayment(
-      cart,
-      paymentMethod,
-      amount,
-      shopperIp
-    )
+  async authorizePayment(cart, data, context) {
+    return this.adyenService_.authorizePayment(cart, data, context)
   }
 
   async retrievePayment(data) {

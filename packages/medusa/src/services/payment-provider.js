@@ -21,6 +21,20 @@ class PaymentProviderService {
   }
 
   /**
+   * Authorizes a payment using payment method from cart.
+   * @param {Cart} cart - a cart object used to calculate the amount, etc. from
+   * @param {string} providerId - the id of the chosen payment provider
+   * @param {Object} data - additional data that can be passed to the function
+   * @param {Object} context - express request object, that can be used for
+   *    additional data input, such as IP address
+   * @return {Promise} the authorized payment
+   */
+  authorizePayment(cart, providerId, data, context) {
+    const provider = this.retrieveProvider(providerId)
+    return provider.authorizePayment(cart, data, context)
+  }
+
+  /**
    * Updates an existing payment session.
    * @param {PaymentSession} paymentSession - the payment session object to
    *    update

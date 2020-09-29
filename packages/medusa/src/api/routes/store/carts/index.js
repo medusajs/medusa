@@ -58,9 +58,15 @@ export default (app, container) => {
     "/:id/payment-sessions/:provider_id",
     middlewares.wrap(require("./delete-payment-session").default)
   )
+
   route.post(
-    "/:id/payment-method",
+    "/:id/payment-method/:provider_id",
     middlewares.wrap(require("./update-payment-method").default)
+  )
+
+  route.post(
+    "/:id/payment-method/:provider_id/authorize",
+    middlewares.wrap(require("./authorize-payment-method").default)
   )
 
   // Shipping Options
