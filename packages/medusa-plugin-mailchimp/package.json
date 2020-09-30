@@ -37,7 +37,9 @@
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mailchimp-api-v3": "^1.14.0",
     "medusa-core-utils": "^1.0.10",
     "medusa-test-utils": "^1.0.10"
   }

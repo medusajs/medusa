@@ -1,16 +1,30 @@
 import { Router } from "express"
 import bodyParser from "body-parser"
 import middlewares from "../middleware"
+import { getConfigFile } from "medusa-core-utils"
+import cors from "cors"
 
 const route = Router()
 
-export default (app) => {
-  app.use("/sendgrid", route)
+export default (app, rootDirectory) => {
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
+  const config = (configModule && configModule.projectConfig) || {}
+
+  console.log(storeCors)
+
+  route.use(
+    cors({
+      origin: storeCors.split(","),
+      credentials: true,
+    })
+  )
+
+  app.use("/mailchimp", route)
 
   route.post(
-    "/send",
-    bodyParser.raw({ type: "application/json" }),
-    middlewares.wrap(require("./send-email").default)
+    "/subscribe",
+    bodyParser.json(),
+    middlewares.wrap(require("./subscribe-newsletter").default)
   )
   return app
 }
