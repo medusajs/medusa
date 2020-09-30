@@ -1,0 +1,41 @@
+title: Regions
+domain: store
+route: /regions
+description: >
+  A Region represents a collection of countries that have common pricing 
+  schemes, shipping options, tax schemes, etc. Carts must have a region
+  associated.
+endpoints:
+  - path: /
+    method: GET
+    title: List Regions
+    description: >
+      Retrieves the regions configured for the store.
+  - path: /:id
+    method: GET
+    title: Retrieve a Region
+    params:
+      - name: id
+        type: String
+        description: Id of the region.
+    description: >
+      Retrieves a region
+
+response: |
+  {
+    "region": {
+      "name": "Denmark",
+      "currency_code": "DKK",
+      "tax_rate": 0.25,
+      "countries": [
+        "DK"
+        ],
+      "payment_providers": [
+        "stripe"
+        ],
+      "fulfillment_providers": [
+        "manual"
+        ],
+      "_id": "5f4cd45b5d1e3200214c0e49"
+    }
+  }
