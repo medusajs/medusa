@@ -25,7 +25,6 @@ class MailchimpService extends BaseService {
    * @return {Promise} result of newsletter subscription
    */
   async subscribeNewsletter(email, data) {
-    console.log(this.options_.newsletter_list_id)
     return this.mailchimp_.post(
       `/lists/${this.options_.newsletter_list_id}/members`,
       {

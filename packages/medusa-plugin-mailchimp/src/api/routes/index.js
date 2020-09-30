@@ -10,7 +10,7 @@ export default (app, rootDirectory) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
   const config = (configModule && configModule.projectConfig) || {}
 
-  console.log(storeCors)
+  const storeCors = config.store_cors || ""
 
   route.use(
     cors({
