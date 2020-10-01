@@ -147,7 +147,7 @@ class LineItemService extends BaseService {
       return (
         line.content.variant._id.equals(match.content.variant._id) &&
         line.content.quantity === match.content.quantity &&
-        _.isEqual(line.metadata, match.metdata)
+        _.isEqual(line.metadata, match.metadata)
       )
     }
 
