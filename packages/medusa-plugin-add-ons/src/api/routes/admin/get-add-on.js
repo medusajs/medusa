@@ -3,7 +3,13 @@ export default async (req, res) => {
 
   try {
     const addOnService = req.scope.resolve("addOnService")
-    const addOn = await addOnService.retrieve(id)
+    let addOn = await addOnService.retrieve(id)
+    addOn = await addOnService.decorate(
+      addOn,
+      ["name", "valid_for", "prices"],
+      ["valid_for"]
+    )
+
     res.json({ add_on: addOn })
   } catch (err) {
     throw err
