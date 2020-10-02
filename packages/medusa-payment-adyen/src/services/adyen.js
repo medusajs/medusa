@@ -188,8 +188,6 @@ class AdyenService extends BaseService {
 
     const shopperIp = requestIp.getClientIp(context)
 
-    console.log(paymentData)
-
     let request = {
       amount,
       shopperIP: shopperIp,
