@@ -375,7 +375,7 @@ class CartService extends BaseService {
 
     // If content matches one of the line items currently in the cart we can
     // simply update the quantity of the existing line item
-    if (currentItem) {
+    if (currentItem && validatedLineItem.should_merge) {
       const newQuantity = currentItem.quantity + validatedLineItem.quantity
 
       // Confirm inventory

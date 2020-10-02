@@ -1,0 +1,166 @@
+title: Customers
+domain: store
+route: /customers
+description: >
+  Customers can create a login to view Order history and manage details. 
+  Customers must have unique emails.
+endpoints: 
+  - path: /
+    method: POST
+    title: Create a Customer Login
+    body:
+      - name: email
+        type: String
+        required: true
+        description: The Customer's email; must be unique.
+      - name: first_name
+        type: String
+        required: true
+        description: The Customer's first name.
+      - name: last_name
+        type: String
+        required: true
+        description: The Customer's last name.
+      - name: password
+        type: String
+        required: true
+        description: The Customer's desired password.
+      - name: phone
+        type: String
+        description: The customer's phone number.
+    description: >
+      Creates a customer profile with the given details. If the email has been
+      used on previous orders the newly created Customer profile will be able to
+      view the order history associated with this email.
+
+  - path: /password-reset
+    method: POST
+    title: Reset Customer password
+    body:
+      - name: email
+        type: String
+        required: true
+        description: The email of the Customer.
+      - name: token
+        type: String
+        required: true
+        description: > 
+          The token that will be used to reset the password. Should be generated
+          with a prior call to `/password-token`.
+      - name: password
+        type: String
+        required: true
+        description: > 
+          The new password to authenticate the user with.
+    description: >
+      Resets a customer's password. The reset call requires a valid token 
+
+  - path: /password-token
+    method: POST
+    title: Request Customer password reset token
+    body:
+      - name: email
+        type: String
+        required: true
+        description: The email of the Customer profile to reset password for.
+    description: >
+      Generates a reset password token. The token should be sent to the customer
+      via an email provider. Note that this doesn't send any emails it only 
+      generates the token and informs listeners to
+      `customer.password_token_generated` that the token was created.
+
+
+  - path: /:id
+    method: GET
+    title: Retrieve Customer
+    params: 
+      - name: id
+        type: String
+        description: The id of the Customer to retrieve.
+    description: >
+      Retrieves the customer's details. The Customer identified by `id` must be
+      authenticated.
+
+  - path: /:id
+    method: POST
+    title: Update Customer details
+    params: 
+      - name: id
+        type: String
+        description: The id of the customer.
+    body:
+      - name: first_name
+        type: String
+        description: The Customer's first name.
+      - name: last_name
+        type: String
+        description: The Customer's last name.
+      - name: password
+        type: String
+        description: >
+          The Customer's password. Will create a hashed value for the database.
+      - name: phone
+        type: String
+        description: The Customer's phone number.
+    description: >
+      Updates the customer's details. The customer identified by `id` must be
+      authenticated in order to call this endpoint.
+
+  - path: /:id/addresses
+    method: POST
+    title: Create a new Customer address
+    params:
+      - name: id
+        type: String
+        description: The id of the Customer.
+    body:
+      - name: address
+        type: Address
+        description: The address to add.
+    description: >
+      Adds an address to the customer's saved addresses. The customer must be 
+      authenticated prior to making this call.
+
+  - path: /:id/addresses/:address_id
+    method: POST
+    title: Update a Customer address
+    params:
+      - name: id
+        type: String
+        description: The id of the Customer.
+      - name: address_id
+        type: String
+        description: The id of the saved address to update.
+    body:
+      - name: address
+        type: Address
+        description: The address to update.
+    description: >
+      Updates a saved customer address. The customer must be authenticated prior
+      to making this call.
+
+  - path: /:id/payment-methods
+    method: GET
+    title: Retrieve Customer's saved payment methods
+    params: 
+      - name: id
+        type: String
+        description: The id of the customer.
+    description: >
+      Asks each payment provider for saved payment methods if any exist. This 
+      will only return in methods in the case where the payment provider allows
+      payment methods to be saved. The customer must be authenticated in order 
+      to call this endpoint.
+
+response: |
+  {
+    "customer": {
+      "_id": "5ea80c76d9549d0006c21da7",
+      "email": "mrs@potato.com",
+      "orders": [],
+      "shipping_addresses": [],
+      "first_name": "Potato",
+      "last_name": "Head",
+      "metadata": {}
+    }
+  }

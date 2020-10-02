@@ -1,7 +1,7 @@
-import { Validator, MedusaError } from "medusa-core-utils";
+import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params
 
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
@@ -11,21 +11,29 @@ export default async (req, res) => {
         amount: Validator.number().required(),
       })
       .optional(),
-    valid_for: Validator.array().items(Validator.string()).optional(),
+    valid_for: Validator.array().optional(),
     metadata: Validator.object().optional(),
-  });
+  })
 
-  const { value, error } = schema.validate(req.body);
+  const { value, error } = schema.validate(req.body)
   if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details);
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
   try {
-    const addOnService = req.scope.resolve("addOnService");
+    const addOnService = req.scope.resolve("addOnService")
 
-    const addOn = await addOnService.update(id, value);
+    if (value.metadata) {
+      Object.entries(value.metadata).map(([key, value]) => {
+        addOnService.setMetadata(id, key, value)
+      })
 
-    res.status(200).json({ addOn });
+      delete value.metadata
+    }
+
+    const addOn = await addOnService.update(id, value)
+
+    res.status(200).json({ addOn })
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}

@@ -1,0 +1,235 @@
+title: Orders
+domain: store
+route: /orders
+description: >
+  An Order represents a selection of items purchased and holds information about
+  how the items have been purchased and will be fulfilled. 
+endpoints:
+  - path: /:id
+    method: GET
+    title: Retrieve an Order
+    params: 
+      - name: id
+        type: String
+        description: The id of the order.
+    description: >
+      Retrieves an order. 
+  - path: /
+    method: POST
+    title: Creates an Order
+    body:
+      - name: cartId
+        type: String
+        description: Id of the cart from which the order should be created.
+    description: >
+      Creates an order from a cart.
+
+response: |
+  {
+    "_id": "5f65c961395b3e0021d8f994",
+    "status": "pending",
+    "fulfillment_status": "not_fulfilled",
+    "payment_status": "awaiting",
+    "display_id": "1000",
+    "payment_method": {
+      "_id": "5f65c961395b3e0021d8f995",
+      "provider_id": "provider",
+      "data": {
+        "id": "importantForPaymentProvider",
+        "more": "information"
+      }
+    },
+    "discounts": [
+      {
+        "regions": [
+          "5f40ce8f7743b30021337e2b",
+          "5f4788eff847d30021ac331d",
+          "5f4cb9a07435de0021c69f09"
+        ],
+        "_id": "5f626102bd79500021ea17a3",
+        "is_giftcard": false,
+        "usage_count": 6,
+        "disabled": false,
+        "code": "TEST",
+        "discount_rule": {
+          "valid_for": [],
+          "_id": "5f626102bd79500021ea17a4",
+          "description": "TEST",
+          "value": 99,
+          "type": "percentage",
+          "allocation": "total"
+        }
+      }
+    ],
+    "shipping_methods": [
+      {
+        "name": "Always Free",
+        "items": [],
+        "_id": "5f5b7c1b55c13000213c0989",
+        "data": {
+          "id": "manual-fulfillment"
+        },
+        "profile_id": "5f3e8fd5cac0ff0021a2be66",
+        "price": 0,
+        "provider_id": "manual"
+      }
+    ],
+    "items": [
+      {
+        "is_giftcard": false,
+        "has_shipping": true,
+        "shipped_quantity": 0,
+        "returned": false,
+        "fulfilled": false,
+        "fulfilled_quantity": 0,
+        "returned_quantity": 0,
+        "_id": "5f65c927395b3e0021d8f984",
+        "title": "Item",
+        "description": "70x140",
+        "quantity": 1,
+        "thumbnail": "",
+        "content": {
+          "unit_price": 316,
+          "variant": {
+            "_id": "5f40f0a2b687940021667170",
+            "barcode": "",
+            "image": "",
+            "published": false,
+            "inventory_quantity": 20,
+            "allow_backorder": false,
+            "manage_inventory": true,
+            "title": "1234",
+            "sku": "SKU1234",
+            "ean": "5713682002297",
+            "options": [
+              {
+                "_id": "5f40f0a2b687940021667171",
+                "value": "70x140",
+                "option_id": "5f40f0a2b687940021667163"
+              }
+            ],
+            "prices": [
+              {
+                "_id": "5f40f0a2b687940021667172",
+                "currency_code": "EUR",
+                "amount": 44
+              },
+              {
+                "_id": "5f40f0a2b687940021667173",
+                "currency_code": "DKK",
+                "amount": 316
+              }
+            ],
+            "__v": 0
+          },
+          "product": {
+            "_id": "5f40f0a2b687940021667162",
+            "description": "100% Good",
+            "tags": "",
+            "is_giftcard": false,
+            "images": [],
+            "thumbnail": "",
+            "variants": [
+              "5f40f0a2b687940021667164",
+              "5f40f0a2b687940021667168",
+              "5f40f0a2b68794002166716c",
+              "5f40f0a2b687940021667170",
+              "5f40f0a2b687940021667174"
+            ],
+            "published": false,
+            "title": "Item",
+            "options": [
+              {
+                "values": [],
+                "_id": "5f40f0a2b687940021667163",
+                "title": "Size"
+              }
+            ],
+            "__v": 0
+          },
+          "quantity": 1
+        },
+        "refundable": 3.95
+      }
+    ],
+    "shipping_address": {
+      "_id": "5f60adf22162dd0021362beb",
+      "country_code": "DK",
+      "first_name": "John",
+      "last_name": "Jones",
+      "address_1": "Jone ST 9",
+      "city": "Jonstown",
+      "postal_code": "12332"
+    },
+    "billing_address": {
+      "_id": "5f60adf22162dd0021362beb",
+      "country_code": "DK",
+      "first_name": "John",
+      "last_name": "Jones",
+      "address_1": "Jone ST 9",
+      "city": "Jonstown",
+      "postal_code": "12332"
+    },
+    "region_id": "5f40ce8f7743b30021337e2b",
+    "email": "jojo@jon.com",
+    "customer_id": "5f42870e715758002170ed86",
+    "cart_id": "5f4bd6b47435de0021c69f04",
+    "tax_rate": 0.25,
+    "currency_code": "DKK",
+    "shipments": [],
+    "fulfillments": [],
+    "returns": [],
+    "refunds": [],
+    "created": "2020-09-19T09:03:29.000Z",
+    "shipping_total": 0,
+    "discount_total": 312.84,
+    "tax_total": 0.79,
+    "subtotal": 316,
+    "total": 3.95,
+    "refunded_total": 0,
+    "refundable_amount": 3.95,
+    "region": {
+      "_id": "5f40ce8f7743b30021337e2b",
+      "tax_rate": 0.25,
+      "countries": [
+        "DK"
+      ],
+      "payment_providers": [
+        "provider"
+      ],
+      "fulfillment_providers": [
+        "manual"
+      ],
+      "name": "Denmark",
+      "currency_code": "DKK",
+      "tax_code": "D25",
+      "__v": 0
+    },
+    "customer": {
+      "_id": "5f42870e715758002170ed86",
+      "payment_methods": [],
+      "has_account": true,
+      "orders": [
+        "5f65c961395b3e0021d8f994"
+      ],
+      "email": "jojo@jon.com",
+      "shipping_addresses": [
+        {
+          "_id": "5f60adf22162dd0021362beb",
+          "country_code": "DK",
+          "first_name": "John",
+          "last_name": "Jones",
+          "address_1": "Jone ST 9",
+          "city": "Jonstown",
+          "postal_code": "12332"
+        }
+      ],
+      "__v": 0,
+      "metadata": {
+        "stripe_id": "cus_123123123"
+      },
+      "first_name": "John",
+      "last_name": "Jones",
+      "password_hash": "c2NyeXB0AAEAAAABAAAAAd3Q0jehDc8N3cTdqlPCfeZtF5pILidEESwxcA9Yh8PuojRYBXG0xIiFKVq1xXGfXZlY6zkp1IGBXZDHKb9ZtExImjKlFJNwFxwiiaLFS6oD"
+    }
+  }
