@@ -43,7 +43,6 @@ export default (app, container) => {
     middlewares.wrap(require("./delete-discount").default)
   )
 
-  // Payment sessions
   route.post(
     "/:id/payment-sessions",
     middlewares.wrap(require("./create-payment-sessions").default)
