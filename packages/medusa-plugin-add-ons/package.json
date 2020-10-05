@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-add-ons",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Add-on plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
