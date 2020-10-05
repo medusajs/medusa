@@ -73,11 +73,6 @@ class ApplePayAdyenService extends PaymentService {
       initiativeContext: this.options_.applepay_initiative_context,
     }
 
-    console.log("Validation URL: ", validationUrl)
-    console.log("Request: ", request)
-    console.log(certificate.toString())
-    console.log("Certificate: ", certificate)
-
     try {
       return axios.post(validationUrl, request, {
         httpsAgent,
