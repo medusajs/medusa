@@ -3,7 +3,8 @@ export const mockCreateOrder = jest
   .fn()
   .mockReturnValue(Promise.resolve("1234"))
 
-const mock = jest.fn().mockImplementation(function (options, onRefresh) {
+const mock = jest.fn().mockImplementation(function (options) {
+  this.tokenStore_ = options.token_store
   this.token_ = options.access_token
   this.client = axios.create({
     baseURL: `https://mock.com`,
@@ -17,8 +18,8 @@ const mock = jest.fn().mockImplementation(function (options, onRefresh) {
     this.token_ = data.access_token
   }
 
-  this.client.interceptors.request.use((request) => {
-    const token = this.token_
+  this.client.interceptors.request.use(async (request) => {
+    const token = await this.tokenStore_.getToken()
 
     if (token) {
       request.headers["Authorization"] = `Bearer ${token}`
@@ -37,7 +38,7 @@ const mock = jest.fn().mockImplementation(function (options, onRefresh) {
         !error.config.__isRetryRequest
       ) {
         try {
-          await onRefresh(this)
+          await this.tokenStore_.refreshToken()
         } catch (authError) {
           // refreshing has failed, but report the original error, i.e. 401
           return Promise.reject(error)
