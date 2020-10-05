@@ -46,8 +46,16 @@ class Webshipper {
           url: path,
         }).then(({ data }) => data)
       },
-      list: async () => {
-        const path = `/v2/shipping_rates`
+      list: async (params = {}) => {
+        let path = `/v2/shipping_rates`
+
+        if (Object.entries(params).length) {
+          const search = Object.entries(params).map(([key, value]) => {
+            return `filter[${key}]=${value}`
+          })
+          path += `?${search.join("&")}`
+        }
+
         return this.client_({
           method: "GET",
           url: path,
