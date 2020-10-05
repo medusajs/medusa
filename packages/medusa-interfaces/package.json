@@ -1,6 +1,6 @@
 {
   "name": "medusa-interfaces",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Core interfaces for Medusa",
   "main": "dist/index.js",
   "repository": {
