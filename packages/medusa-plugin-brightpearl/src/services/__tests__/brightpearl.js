@@ -49,16 +49,20 @@ const RegionService = {
 describe("BrightpearlService", () => {
   describe("getClient", () => {
     it("creates client", async () => {
+      let token = "bad"
       const oauth = {
         refreshToken: () => {
+          token = "good"
           return Promise.resolve({
-            access_token: "good",
+            data: {
+              access_token: "good",
+            },
           })
         },
         retrieveByName: () => {
           return Promise.resolve({
             data: {
-              access_token: "bad",
+              access_token: token,
             },
           })
         },
