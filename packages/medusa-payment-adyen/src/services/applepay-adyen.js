@@ -34,7 +34,29 @@ class ApplePayAdyenService extends PaymentService {
   }
 
   async createPayment(cart) {
-    return {}
+    const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      cart
+    )
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+
+    // const shipping_options = shippingOptions.map((el) => ({
+    //   id: el._id,
+    //   label: `${el.price} ${region.currency_code}`,
+    // }))
+    const shipping_options = shippingOptions.map((el) => ({
+      label: "Free Shipping",
+      detail: "Arrives in 5 to 7 days",
+      amount: "0.00",
+      identifier: "FreeShip",
+    }))
+
+    return {
+      label: "Free Shipping",
+      detail: "Arrives in 5 to 7 days",
+      amount: "0.00",
+      identifier: "FreeShip",
+    }
   }
 
   async getApplePaySession(validationUrl) {

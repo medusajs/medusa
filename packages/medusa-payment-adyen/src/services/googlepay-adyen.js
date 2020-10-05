@@ -4,12 +4,14 @@ import { PaymentService } from "medusa-interfaces"
 class GooglePayAdyenService extends PaymentService {
   static identifier = "paywithgoogle-adyen"
 
-  constructor({ adyenService, shippingProfileService }) {
+  constructor({ adyenService, shippingProfileService, regionService }) {
     super()
 
     this.adyenService_ = adyenService
 
     this.shippingProfileService_ = shippingProfileService
+
+    this.regionService_ = regionService
   }
 
   /**
@@ -29,7 +31,18 @@ class GooglePayAdyenService extends PaymentService {
   }
 
   async createPayment(cart) {
-    return {}
+    const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      cart
+    )
+
+    const region = await this.regionService_.retrieve(cart.region_id)
+
+    const shipping_options = shippingOptions.map((el) => ({
+      id: el._id,
+      label: `${el.price} ${region.currency_code} - ${el.name}`,
+    }))
+
+    return { shipping_options }
   }
 
   async authorizePayment(cart, data, context) {
