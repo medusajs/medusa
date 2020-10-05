@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.20](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.19...@medusajs/medusa@1.0.20) (2020-10-05)
+
+
+### Bug Fixes
+
+* **medusa-plugin-addon:** Fixes admin endpoints, Adds flag to avoid merging add-on line-items ([d8483cd](https://github.com/medusajs/medusa/commit/d8483cd1352ecc587112723786b7c31882f9416e))
+
+
+### Features
+
+* webshipper ([#118](https://github.com/medusajs/medusa/issues/118)) ([893a7f6](https://github.com/medusajs/medusa/commit/893a7f69afea67e854a67fc3b92c8a10c9c1b75c))
+
+
+
+
+
 ## [1.0.19](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.18...@medusajs/medusa@1.0.19) (2020-09-21)
 
 **Note:** Version bump only for package @medusajs/medusa
