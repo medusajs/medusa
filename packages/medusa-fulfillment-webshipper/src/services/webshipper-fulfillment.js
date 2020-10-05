@@ -23,7 +23,9 @@ class WebshipperFulfillmentService extends FulfillmentService {
   }
 
   async getFulfillmentOptions() {
-    const rates = await this.client_.shippingRates.list()
+    const rates = await this.client_.shippingRates.list({
+      order_channel_id: this.options_.order_channel_id,
+    })
 
     return rates.data.map((r) => ({
       id: r.attributes.name,
