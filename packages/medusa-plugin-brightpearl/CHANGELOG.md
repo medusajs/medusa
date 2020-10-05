@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.0.15...medusa-plugin-brightpearl@1.0.16) (2020-10-05)
+
+
+### Bug Fixes
+
+* **medusa-plugin-brightpearl:** automatic token refresh ([34eb53f](https://github.com/medusajs/medusa/commit/34eb53f72e8bb6f1f18a39ac6838991bbed86660))
+
+
+
+
+
 ## [1.0.15](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.0.14...medusa-plugin-brightpearl@1.0.15) (2020-09-17)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl

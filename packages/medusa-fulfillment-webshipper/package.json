@@ -1,18 +1,12 @@
 {
-  "name": "medusa-interfaces",
-  "version": "1.0.11",
-  "description": "Core interfaces for Medusa",
-  "main": "dist/index.js",
+  "name": "medusa-fulfillment-webshipper",
+  "version": "1.0.2",
+  "description": "Webshipper Fulfillment provider for Medusa",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/medusa-interfaces"
-  },
-  "scripts": {
-    "build": "babel src --out-dir dist/ --ignore **/__tests__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
-    "test": "jest"
+    "directory": "packages/medusa-fulfillment-webshipper"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
@@ -20,20 +14,27 @@
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-transform-classes": "^7.9.5",
-    "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "@babel/runtime": "^7.9.6",
+    "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
-    "jest": "^25.5.2",
-    "prettier": "^1.19.1"
+    "jest": "^25.5.2"
+  },
+  "scripts": {
+    "build": "babel src -d .",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
   "peerDependencies": {
-    "mongoose": "5.x"
+    "medusa-interfaces": "1.x"
   },
   "dependencies": {
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "medusa-core-utils": "^1.0.10"
   },
   "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
