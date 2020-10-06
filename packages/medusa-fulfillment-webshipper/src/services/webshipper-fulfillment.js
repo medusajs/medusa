@@ -244,7 +244,10 @@ class WebshipperFulfillmentService extends FulfillmentService {
    * @return {Promise<object>} the result of the cancellation
    */
   async cancelFulfillment(data) {
-    console.log(data)
+    if (Array.isArray(data)) {
+      data = data[0]
+    }
+
     const order = await this.client_.orders.retrieve(data.id)
 
     if (order.attributes.status !== "pending") {
