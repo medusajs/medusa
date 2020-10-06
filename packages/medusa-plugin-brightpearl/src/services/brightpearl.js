@@ -462,35 +462,6 @@ class BrightpearlService extends BaseService {
         )
         return salesOrderId
       })
-      .then(async (salesOrderId) => {
-        const paymentMethod = fromOrder.payment_method
-        const paymentType = "AUTH"
-        const payment = {
-          transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
-          transactionCode: fromOrder._id,
-          paymentMethodCode: this.options.payment_method_code || "1220",
-          orderId: salesOrderId,
-          currencyIsoCode: fromOrder.currency_code,
-          paymentDate: new Date(),
-          paymentType,
-        }
-
-        // Only if authorization type
-        if (paymentType === "AUTH") {
-          const today = new Date()
-          const authExpire = today.setDate(today.getDate() + 7)
-          payment.amountAuthorized = await this.totalsService_.getTotal(
-            fromOrder
-          )
-          payment.authorizationExpiry = new Date(authExpire)
-        } else {
-          // For captured
-        }
-
-        await client.payments.create(payment)
-
-        return salesOrderId
-      })
       .then((salesOrderId) => {
         return this.orderService_.setMetadata(
           fromOrder._id,
@@ -500,7 +471,7 @@ class BrightpearlService extends BaseService {
       })
   }
 
-  async createCapturedPayment(fromOrder) {
+  async createPayment(fromOrder) {
     const client = await this.getClient()
     const soId =
       fromOrder.metadata && fromOrder.metadata.brightpearl_sales_order_id
@@ -508,7 +479,7 @@ class BrightpearlService extends BaseService {
       return
     }
 
-    const paymentType = "CAPTURE"
+    const paymentType = "RECEIPT"
     const paymentMethod = fromOrder.payment_method
     const payment = {
       transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
