@@ -47,7 +47,7 @@ describe("OrderService", () => {
       discountService: DiscountServiceMock,
       regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
-      counterService: CounterServiceMock
+      counterService: CounterServiceMock,
     })
 
     beforeEach(async () => {
@@ -135,6 +135,7 @@ describe("OrderService", () => {
           tax_rate: 0.25,
           email: "test",
           giftcard: expect.any(Object),
+          line_item: expect.any(Object),
         }
       )
 
@@ -328,6 +329,8 @@ describe("OrderService", () => {
 
   describe("cancel", () => {
     const orderService = new OrderService({
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      paymentProviderService: PaymentProviderServiceMock,
       orderModel: OrderModelMock,
       eventBusService: EventBusServiceMock,
     })
@@ -342,7 +345,24 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("not-fulfilled-order") },
-        { $set: { status: "cancelled" } }
+        {
+          $set: {
+            status: "canceled",
+            fulfillment_status: "canceled",
+            payment_status: "canceled",
+            fulfillments: [
+              {
+                data: {},
+                is_canceled: true,
+                provider_id: "default_provider",
+              },
+            ],
+            payment_method: {
+              data: {},
+              provider_id: "default_provider",
+            },
+          },
+        }
       )
     })
 
@@ -359,7 +379,7 @@ describe("OrderService", () => {
         await orderService.cancel(IdMap.getId("payed-order"))
       } catch (error) {
         expect(error.message).toEqual(
-          "Can't cancel an order with payment processed"
+          "Can't cancel an order with a processed payment"
         )
       }
     })
@@ -435,9 +455,11 @@ describe("OrderService", () => {
               },
               quantity: 1,
             },
+            fulfilled_quantity: 0,
             quantity: 10,
           },
-        ]
+        ],
+        orders.testOrder
       )
 
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
@@ -467,6 +489,7 @@ describe("OrderService", () => {
                         },
                         quantity: 1,
                       },
+                      fulfilled_quantity: 0,
                       quantity: 10,
                     },
                   ],
@@ -504,15 +527,15 @@ describe("OrderService", () => {
       )
     })
 
-    it("throws if payment is already processed", async () => {
+    it("throws if too many items are requested fulfilled", async () => {
       await expect(
-        orderService.createFulfillment(IdMap.getId("fulfilled-order"), [
+        orderService.createFulfillment(IdMap.getId("test-order"), [
           {
             item_id: IdMap.getId("existingLine"),
-            quantity: 10,
+            quantity: 11,
           },
         ])
-      ).rejects.toThrow("Order is already fulfilled")
+      ).rejects.toThrow("Cannot fulfill more items than have been purchased")
     })
   })
 

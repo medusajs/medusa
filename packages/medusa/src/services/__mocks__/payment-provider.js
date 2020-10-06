@@ -15,6 +15,7 @@ export const DefaultProviderMock = {
   }),
   capturePayment: jest.fn().mockReturnValue(Promise.resolve()),
   refundPayment: jest.fn().mockReturnValue(Promise.resolve()),
+  cancelPayment: jest.fn().mockReturnValue(Promise.resolve({})),
 }
 
 export const PaymentProviderServiceMock = {

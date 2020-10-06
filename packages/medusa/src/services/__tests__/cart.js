@@ -228,12 +228,26 @@ describe("CartService", () => {
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
         {
           _id: IdMap.getId("cartWithLine"),
-          "items._id": IdMap.getId("existingLine"),
         },
         {
-          $set: {
-            "items.$.quantity": 20,
-            "items.$.has_shipping": false,
+          $push: {
+            items: {
+              title: "merge line",
+              description: "This is a new line",
+              thumbnail: "test-img-yeah.com/thumb",
+              has_shipping: false,
+              content: {
+                unit_price: 123,
+                variant: {
+                  _id: IdMap.getId("can-cover"),
+                },
+                product: {
+                  _id: IdMap.getId("product"),
+                },
+                quantity: 1,
+              },
+              quantity: 10,
+            },
           },
         }
       )
@@ -736,6 +750,9 @@ describe("CartService", () => {
           $set: {
             region_id: IdMap.getId("region-us"),
             shipping_methods: [],
+            shipping_address: {
+              country_code: "US",
+            },
             items: [
               {
                 _id: IdMap.getId("line"),

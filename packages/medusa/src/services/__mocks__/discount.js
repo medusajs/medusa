@@ -42,6 +42,9 @@ export const DiscountServiceMock = {
   list: jest.fn().mockImplementation(data => {
     return Promise.resolve([])
   }),
+  decorate: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
   addRegion: jest.fn().mockReturnValue(Promise.resolve()),
   removeRegion: jest.fn().mockReturnValue(Promise.resolve()),
   addValidVariant: jest.fn().mockReturnValue(Promise.resolve()),

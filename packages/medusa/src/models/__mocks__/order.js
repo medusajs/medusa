@@ -36,6 +36,7 @@ export const orders = {
           },
           quantity: 1,
         },
+        fulfilled_quantity: 0,
         quantity: 10,
       },
     ],
@@ -54,6 +55,12 @@ export const orders = {
         data: {
           extra: "hi",
         },
+      },
+    ],
+    fulfillments: [
+      {
+        provider_id: "default_provider",
+        data: {},
       },
     ],
     fulfillment_status: "not_fulfilled",
