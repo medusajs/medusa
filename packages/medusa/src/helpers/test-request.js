@@ -31,20 +31,6 @@ container.register({
 })
 
 testApp.set("trust proxy", 1)
-//testApp.use(
-//  session({
-//    resave: true,
-//    saveUninitialized: true,
-//    cookieName: "session",
-//    proxy: true,
-//    secret: "test",
-//    cookie: {
-//      sameSite: false,
-//      secure: false,
-//      maxAge: 10 * 60 * 60 * 1000,
-//    },
-//  })
-//)
 testApp.use((req, res, next) => {
   req.session = {}
   const data = req.get("Cookie")
