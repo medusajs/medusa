@@ -27,6 +27,7 @@ describe("LineItemService", () => {
         title: "test",
         description: "EUR10US-12",
         thumbnail: "test.1234",
+        should_merge: true,
         content: {
           unit_price: 10,
           variant: {
@@ -41,6 +42,7 @@ describe("LineItemService", () => {
           quantity: 1,
         },
         quantity: 2,
+        metadata: {},
       })
     })
   })
@@ -88,6 +90,7 @@ describe("LineItemService", () => {
           name: "Test Name",
         },
         quantity: 1,
+        should_merge: true,
       })
     })
   })

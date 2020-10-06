@@ -21,6 +21,9 @@ export default () => {
         break
     }
 
-    res.status(statusCode).json(err.message)
+    res.status(statusCode).json({
+      name: err.name,
+      message: err.message,
+    })
   }
 }
