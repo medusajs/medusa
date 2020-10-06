@@ -53,9 +53,7 @@ describe("UserService", () => {
       expect(UserModelMock.create).toHaveBeenCalledWith({
         email: "oliver@test.dk",
         name: "Oliver",
-        password_hash: expect.stringMatching(
-          /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
-        ),
+        password_hash: expect.stringMatching(/.{128}$/),
       })
     })
   })
@@ -134,9 +132,7 @@ describe("UserService", () => {
           $set: {
             // Since bcrypt hashing always varies, we are testing the password
             // match by using a regular expression.
-            password_hash: expect.stringMatching(
-              /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
-            ),
+            password_hash: expect.stringMatching(/^.{128}$/),
           },
         }
       )

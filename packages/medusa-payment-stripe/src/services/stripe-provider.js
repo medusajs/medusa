@@ -43,8 +43,8 @@ class StripeProviderService extends PaymentService {
       status = "succeeded"
     }
 
-    if (paymentIntent.status === "cancelled") {
-      status = "cancelled"
+    if (paymentIntent.status === "canceled") {
+      status = "canceled"
     }
 
     return status
@@ -228,8 +228,13 @@ class StripeProviderService extends PaymentService {
   async cancelPayment(paymentData) {
     const { id } = paymentData
     try {
-      return this.stripe_.paymentIntents.cancel(id)
+      const result = await this.stripe_.paymentIntents.cancel(id)
+      return result
     } catch (error) {
+      if (error.payment_intent.status === "canceled") {
+        return error.payment_intent
+      }
+
       throw error
     }
   }

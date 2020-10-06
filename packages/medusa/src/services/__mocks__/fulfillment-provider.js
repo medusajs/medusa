@@ -13,6 +13,9 @@ export const DefaultProviderMock = {
 
     return Promise.resolve(false)
   }),
+  cancelFulfillment: jest.fn().mockImplementation(data => {
+    return {}
+  }),
   calculatePrice: jest.fn().mockImplementation(data => {
     return Promise.resolve()
   }),

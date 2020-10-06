@@ -126,6 +126,7 @@ export const ShippingProfileServiceMock = {
       ])
     }
   }),
+  decorate: jest.fn().mockImplementation(d => Promise.resolve(d)),
   addShippingOption: jest.fn().mockImplementation(() => Promise.resolve()),
   removeShippingOption: jest.fn().mockImplementation(() => Promise.resolve()),
   addProduct: jest.fn().mockImplementation(() => Promise.resolve()),

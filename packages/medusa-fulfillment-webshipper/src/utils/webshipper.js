@@ -83,6 +83,13 @@ class Webshipper {
           },
         }).then(({ data }) => data)
       },
+      delete: async (id) => {
+        const path = `/v2/orders/${id}`
+        return this.client_({
+          method: "DELETE",
+          url: path,
+        }).then(({ data }) => data)
+      },
     }
   }
 

@@ -10,7 +10,10 @@ import config from "../config"
 export default async ({ app, configModule }) => {
   let sameSite = false
   let secure = false
-  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.NODE_ENV === "staging"
+  ) {
     secure = true
     sameSite = "none"
   }

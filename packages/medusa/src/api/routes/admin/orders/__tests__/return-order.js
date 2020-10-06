@@ -41,7 +41,8 @@ describe("POST /admin/orders/:id/return", () => {
             item_id: IdMap.getId("existingLine"),
             quantity: 10,
           },
-        ]
+        ],
+        undefined
       )
     })
   })

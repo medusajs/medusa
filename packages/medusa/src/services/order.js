@@ -12,7 +12,7 @@ class OrderService extends BaseService {
     REFUND_CREATED: "order.refund_created",
     PLACED: "order.placed",
     UPDATED: "order.updated",
-    CANCELLED: "order.cancelled",
+    CANCELED: "order.canceled",
     COMPLETED: "order.completed",
   }
 
@@ -542,21 +542,35 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     const order = await this.retrieve(orderId)
 
-    if (order.fulfillment_status !== "not_fulfilled") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't cancel a fulfilled order"
-      )
-    }
-
     if (order.payment_status !== "awaiting") {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        "Can't cancel an order with payment processed"
+        "Can't cancel an order with a processed payment"
       )
     }
 
-    // TODO: cancel payment method
+    const fulfillments = await Promise.all(
+      order.fulfillments.map(async fulfillment => {
+        const { provider_id, data } = fulfillment
+        const provider = await this.fulfillmentProviderService_.retrieveProvider(
+          provider_id
+        )
+        const newData = await provider.cancelFulfillment(data)
+        return {
+          ...fulfillment,
+          is_canceled: true,
+          data: newData,
+        }
+      })
+    )
+
+    const { provider_id, data } = order.payment_method
+    const paymentProvider = await this.paymentProviderService_.retrieveProvider(
+      provider_id
+    )
+
+    // Cancel payment with payment provider
+    const payData = await paymentProvider.cancelPayment(data)
 
     return this.orderModel_
       .updateOne(
@@ -564,12 +578,21 @@ class OrderService extends BaseService {
           _id: orderId,
         },
         {
-          $set: { status: "cancelled" },
+          $set: {
+            status: "canceled",
+            fulfillment_status: "canceled",
+            payment_status: "canceled",
+            fulfillments,
+            payment_method: {
+              ...order.payment_method,
+              data: payData,
+            },
+          },
         }
       )
       .then(result => {
         // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.CANCELLED, result)
+        this.eventBus_.emit(OrderService.Events.CANCELED, result)
         return result
       })
       .catch(err => {
