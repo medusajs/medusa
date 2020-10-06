@@ -39,7 +39,9 @@ class GooglePayAdyenService extends PaymentService {
 
     const shipping_options = shippingOptions.map((el) => ({
       id: el._id,
-      label: `${el.price} ${region.currency_code} - ${el.name}`,
+      label: `${el.price * (1 + region.tax_rate)} ${region.currency_code} - ${
+        el.name
+      }`,
     }))
 
     return { shipping_options }

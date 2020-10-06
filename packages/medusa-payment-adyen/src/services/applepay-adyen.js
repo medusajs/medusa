@@ -7,12 +7,17 @@ import { PaymentService } from "medusa-interfaces"
 class ApplePayAdyenService extends PaymentService {
   static identifier = "applepay-adyen"
 
-  constructor({ adyenService, shippingProfileService }, options) {
+  constructor(
+    { adyenService, shippingProfileService, regionService },
+    options
+  ) {
     super()
 
     this.adyenService_ = adyenService
 
     this.shippingProfileService_ = shippingProfileService
+
+    this.regionService_ = regionService
 
     this.options_ = options
   }
@@ -38,10 +43,12 @@ class ApplePayAdyenService extends PaymentService {
       cart
     )
 
+    const region = await this.regionService_.retrieve(cart.region_id)
+
     const shipping_options = shippingOptions.map((el) => ({
       label: `${el.name}`,
       detail: "",
-      amount: `${el.price}`,
+      amount: `${el.price * (1 + region.tax_rate)}`,
       identifier: el._id,
     }))
 
