@@ -732,7 +732,7 @@ class OrderService extends BaseService {
           _id: orderId,
         },
         {
-          $push: { fulfillments: { $each: results } },
+          $addToSet: { fulfillments: { $each: results } },
           $set: updateFields,
         }
       )
