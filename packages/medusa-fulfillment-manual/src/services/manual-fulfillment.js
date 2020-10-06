@@ -35,6 +35,10 @@ class ManualFulfillmentService extends FulfillmentService {
     // No data is being sent anywhere
     return Promise.resolve({})
   }
+
+  cancelFulfillment() {
+    return Promise.resolve({})
+  }
 }
 
 export default ManualFulfillmentService
