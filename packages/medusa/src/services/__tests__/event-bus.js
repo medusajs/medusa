@@ -23,7 +23,9 @@ describe("EventBusService", () => {
 
     it("creates bull queue", () => {
       expect(Bull).toHaveBeenCalledTimes(2)
-      expect(Bull).toHaveBeenCalledWith("EventBusService:queue", "testhost")
+      expect(Bull).toHaveBeenCalledWith("EventBusService:queue", {
+        createClient: expect.any(Function),
+      })
     })
   })
 
