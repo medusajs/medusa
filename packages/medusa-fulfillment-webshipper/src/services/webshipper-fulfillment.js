@@ -248,13 +248,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
       data = data[0]
     }
 
-    const order = await this.client_.orders.retrieve(data.id)
+    const order = await this.client_.orders
+      .retrieve(data.id)
+      .catch(() => undefined)
 
-    if (order.attributes.status !== "pending") {
-      if (order.attributes.status === "cancelled") {
-        return Promise.resolve(order)
+    if (order) {
+      if (order.data.attributes.status !== "pending") {
+        if (order.data.attributes.status === "cancelled") {
+          return Promise.resolve(order)
+        }
+        throw new Error("Cannot cancel order")
       }
-      throw new Error("Cannot cancel order")
     }
 
     return this.client_.orders.delete(data.id)
