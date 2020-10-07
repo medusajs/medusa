@@ -141,9 +141,7 @@ describe("CustomerService", () => {
         first_name: "Oliver",
         last_name: "Juhl",
         has_account: true,
-        password_hash: expect.stringMatching(
-          /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
-        ),
+        password_hash: expect.stringMatching(/^.{128}$/),
       })
     })
 
@@ -259,9 +257,7 @@ describe("CustomerService", () => {
         {
           $set: {
             has_account: true,
-            password_hash: expect.stringMatching(
-              /^\$2[aby]?\$[\d]+\$[./A-Za-z0-9]{53}$/
-            ),
+            password_hash: expect.stringMatching(/^.{128}$/),
           },
         },
         { runValidators: true }

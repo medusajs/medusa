@@ -231,7 +231,7 @@ class UserService extends BaseService {
   async setPassword(userId, password) {
     const user = await this.retrieve(userId)
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await this.hashPassword_(password)
     if (!hashedPassword) {
       throw new MedusaError(
         MedusaError.Types.DB_ERROR,

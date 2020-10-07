@@ -236,6 +236,33 @@ class WebshipperFulfillmentService extends FulfillmentService {
       url: link,
     })
   }
+
+  /**
+   * Cancels a fulfillment. If the fulfillment has already been canceled this
+   * is idemptotent. Can only cancel pending orders.
+   * @param {object} data - the fulfilment data
+   * @return {Promise<object>} the result of the cancellation
+   */
+  async cancelFulfillment(data) {
+    if (Array.isArray(data)) {
+      data = data[0]
+    }
+
+    const order = await this.client_.orders
+      .retrieve(data.id)
+      .catch(() => undefined)
+
+    if (order) {
+      if (order.data.attributes.status !== "pending") {
+        if (order.data.attributes.status === "cancelled") {
+          return Promise.resolve(order)
+        }
+        throw new Error("Cannot cancel order")
+      }
+    }
+
+    return this.client_.orders.delete(data.id)
+  }
 }
 
 export default WebshipperFulfillmentService

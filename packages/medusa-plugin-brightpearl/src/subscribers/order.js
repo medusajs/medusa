@@ -22,7 +22,7 @@ class OrderSubscriber {
   }
 
   registerCapturedPayment = (order) => {
-    return this.brightpearlService_.createCapturedPayment(order)
+    return this.brightpearlService_.createPayment(order)
   }
 
   registerShipment = async (data) => {

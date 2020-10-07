@@ -48,7 +48,7 @@ class BrightpearlClient {
       })
   }
 
-  constructor(options, onRefreshToken) {
+  constructor(options) {
     this.client_ = rateLimit(
       axios.create({
         baseURL: `https://${options.url}/public-api/${options.account}`,
@@ -60,8 +60,8 @@ class BrightpearlClient {
       { maxRequests: RATE_LIMIT_REQUESTS, perMilliseconds: RATE_LIMIT_INTERVAL }
     )
 
+    this.tokenStore_ = options.token_store
     this.authType_ = options.auth_type
-    this.token_ = options.access_token
     this.webhooks = this.buildWebhookEndpoints()
     this.payments = this.buildPaymentEndpoints()
     this.warehouses = this.buildWarehouseEndpoints()
@@ -70,23 +70,12 @@ class BrightpearlClient {
     this.customers = this.buildCustomerEndpoints()
     this.products = this.buildProductEndpoints()
 
-    this.buildRefreshTokenInterceptor_(onRefreshToken)
+    this.buildRefreshTokenInterceptor_()
   }
 
-  updateAuth(data) {
-    if (data.auth_type) {
-      this.authType_ = data.auth_type
-    }
-
-    if (data.access_token) {
-      this.token_ = data.access_token
-    }
-  }
-
-  buildRefreshTokenInterceptor_(onRefresh) {
-    this.client_.interceptors.request.use((request) => {
-      const authType = this.authType_
-      const token = this.token_
+  buildRefreshTokenInterceptor_() {
+    this.client_.interceptors.request.use(async (request) => {
+      const token = await this.tokenStore_.getToken()
 
       if (token) {
         request.headers["Authorization"] = `Bearer ${token}`
@@ -105,7 +94,7 @@ class BrightpearlClient {
           !error.config.__isRetryRequest
         ) {
           try {
-            await onRefresh(this)
+            await this.tokenStore_.refreshToken()
           } catch (authError) {
             // refreshing has failed, but report the original error, i.e. 401
             return Promise.reject(error)
