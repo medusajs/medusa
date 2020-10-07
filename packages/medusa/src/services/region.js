@@ -367,7 +367,8 @@ class RegionService extends BaseService {
   async decorate(region, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(region, fields.concat(requiredFields))
-    return decorated
+    const final = await this.runDecorators_(decorated)
+    return final
   }
 }
 

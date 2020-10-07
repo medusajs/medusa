@@ -278,7 +278,8 @@ class UserService extends BaseService {
   async decorate(user, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(user, fields.concat(requiredFields))
-    return decorated
+    const final = await this.runDecorators_(decorated)
+    return final
   }
 
   /**

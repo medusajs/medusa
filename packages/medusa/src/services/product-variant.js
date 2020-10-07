@@ -493,7 +493,8 @@ class ProductVariantService extends BaseService {
   async decorate(variant, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(variant, fields.concat(requiredFields))
-    return decorated
+    const final = await this.runDecorators_(decorated)
+    return final
   }
 
   /**
