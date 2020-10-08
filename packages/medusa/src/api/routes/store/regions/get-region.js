@@ -10,7 +10,7 @@ export default async (req, res) => {
     throw error
   }
 
-  const productService = req.scope.resolve("regionService")
+  const regionService = req.scope.resolve("regionService")
   const region = await regionService.retrieve(value)
 
   const data = await regionService.decorate(region, [
@@ -22,5 +22,5 @@ export default async (req, res) => {
     "fulfillment_providers",
   ])
 
-  res.json({ region })
+  res.json({ region: data })
 }
