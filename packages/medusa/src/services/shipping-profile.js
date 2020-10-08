@@ -376,7 +376,8 @@ class ShippingProfileService extends BaseService {
       )
     }
 
-    return decorated
+    const final = await this.runDecorators_(decorated)
+    return final
   }
 
   /**

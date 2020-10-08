@@ -985,7 +985,8 @@ class OrderService extends BaseService {
       }
     })
 
-    return o
+    const final = await this.runDecorators_(o)
+    return final
   }
 
   /**
