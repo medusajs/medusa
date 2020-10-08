@@ -593,7 +593,12 @@ class BrightpearlService extends BaseService {
         if (row) {
           return {
             item_id: row.externalRef,
-            quantity: goodsOut.orderRows[key][0].quantity,
+
+            // Brightpearl sometimes gives multiple order row entries
+            quantity: goodsOut.orderRows[key].reduce(
+              (sum, next) => sum + next.quantity,
+              0
+            ),
           }
         }
 
