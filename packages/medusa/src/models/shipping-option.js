@@ -14,6 +14,7 @@ class ShippingOptionModel extends BaseModel {
     data: { type: mongoose.Schema.Types.Mixed, default: {} },
     price: { type: ShippingOptionPrice, required: true },
     requirements: { type: [ShippingOptionRequirement], default: [] },
+    is_return: { type: Boolean, default: false },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }
