@@ -1,9 +1,5 @@
-import mongoose from "mongoose"
-import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-
-import { currencies } from "../utils/currencies"
 
 /**
  * Provides layer to manipulate documents.
@@ -47,12 +43,12 @@ class DocumentService extends BaseService {
   }
 
   /**
-   * Retrieve the store settings. There is always a maximum of one store.
-   * @return {Promise<Store>} the customer document.
+   * Retrieve a document.
+   * @return {Promise<Document>} the document.
    */
   async retrieve(id) {
     const validatedId = this.validateId_(id)
-    return this.storeModel_.findOne({ _id: validatedId }).catch(err => {
+    return this.documentModel_.findOne({ _id: validatedId }).catch(err => {
       throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
   }
@@ -66,8 +62,8 @@ class DocumentService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(update) {
-    const store = await this.retrieve()
+  async update(id, update) {
+    const doc = await this.retrieve(id)
 
     if (update.metadata) {
       throw new MedusaError(
@@ -76,91 +72,40 @@ class DocumentService extends BaseService {
       )
     }
 
-    if (update.default_currency) {
-      update.default_currency = update.default_currency.toUpperCase()
-      if (!currencies[update.default_currency]) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Invalid currency ${update.default_currency}`
-        )
-      }
-    }
-
-    if (update.currencies) {
-      update.currencies = update.currencies.map(c => c.toUpperCase())
-      update.currencies.forEach(c => {
-        if (!currencies[c]) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Invalid currency ${c}`
-          )
-        }
-      })
-    }
-
-    return this.storeModel_
-      .updateOne({ _id: store._id }, { $set: update }, { runValidators: true })
+    return this.documentModel_
+      .updateOne({ _id: doc._id }, { $set: update }, { runValidators: true })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
 
   /**
-   * Add a currency to the store
-   * @param {string} code - 3 character ISO currency code
-   * @return {Promise} result after update
+   * Deletes a document
+   * @param {string} id - the id of the document to delete.
+   * @return {Promise} the result of the delete operation.
    */
-  async addCurrency(code) {
-    code = code.toUpperCase()
-    const store = await this.retrieve()
-
-    if (!currencies[code]) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Invalid currency ${code}`
-      )
+  async delete(id) {
+    let doc
+    try {
+      doc = await this.retrieve(id)
+    } catch (error) {
+      return Promise.resolve()
     }
 
-    if (store.currencies.includes(code)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Currency already added`
-      )
-    }
-
-    return this.storeModel_.updateOne(
-      {
-        _id: store._id,
-      },
-      { $push: { currencies: code } }
-    )
+    return this.documentModel_.deleteOne({ _id: doc._id }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
   }
 
   /**
-   * Removes a currency from the store
-   * @param {string} code - 3 character ISO currency code
-   * @return {Promise} result after update
-   */
-  async removeCurrency(code) {
-    const store = await this.retrieve()
-    code = code.toUpperCase()
-    return this.storeModel_.updateOne(
-      {
-        _id: store._id,
-      },
-      { $pull: { currencies: code } }
-    )
-  }
-
-  /**
-   * Decorates a store object.
-   * @param {Store} store - the store to decorate.
+   * Decorates a document object.
+   * @param {Document} doc - the document to decorate.
    * @param {string[]} fields - the fields to include.
    * @param {string[]} expandFields - fields to expand.
-   * @return {Store} return the decorated Store.
+   * @return {Document} return the decorated doc.
    */
-  async decorate(store, fields, expandFields = []) {
-    return store
+  async decorate(doc, fields, expandFields = []) {
+    return doc
   }
 
   /**
