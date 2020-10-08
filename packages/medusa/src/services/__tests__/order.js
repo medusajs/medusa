@@ -7,6 +7,7 @@ import {
   DefaultProviderMock,
 } from "../__mocks__/payment-provider"
 import { DiscountServiceMock } from "../__mocks__/discount"
+import { DocumentServiceMock } from "../__mocks__/document"
 import {
   FulfillmentProviderServiceMock,
   DefaultProviderMock as FulfillmentProviderMock,
@@ -352,6 +353,7 @@ describe("OrderService", () => {
             payment_status: "canceled",
             fulfillments: [
               {
+                _id: IdMap.getId("fulfillment"),
                 data: {},
                 is_canceled: true,
                 provider_id: "default_provider",
@@ -419,6 +421,7 @@ describe("OrderService", () => {
       paymentProviderService: PaymentProviderServiceMock,
       fulfillmentProviderService: FulfillmentProviderServiceMock,
       shippingProfileService: ShippingProfileServiceMock,
+      documentService: DocumentServiceMock,
       eventBusService: EventBusServiceMock,
     })
 
@@ -462,6 +465,20 @@ describe("OrderService", () => {
         orders.testOrder
       )
 
+      expect(
+        FulfillmentProviderMock.getFulfillmentDocuments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        FulfillmentProviderMock.getFulfillmentDocuments
+      ).toHaveBeenCalledWith({ extra: "hi" })
+
+      expect(DocumentServiceMock.create).toHaveBeenCalledTimes(1)
+      expect(DocumentServiceMock.create).toHaveBeenCalledWith({
+        name: "Test",
+        type: "pdf",
+        base_64: "verylong",
+      })
+
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("test-order") },
@@ -473,6 +490,7 @@ describe("OrderService", () => {
                   data: {
                     extra: "hi",
                   },
+                  documents: ["doc1234"],
                   items: [
                     {
                       _id: IdMap.getId("existingLine"),
@@ -763,6 +781,64 @@ describe("OrderService", () => {
         expect(error.message).toEqual(
           "Can't return an unfulfilled or already returned order"
         )
+      }
+    })
+  })
+
+  describe("createShipment", () => {
+    const orderService = new OrderService({
+      orderModel: OrderModelMock,
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      documentService: DocumentServiceMock,
+      eventBusService: EventBusServiceMock,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls order model functions", async () => {
+      await orderService.createShipment(
+        IdMap.getId("test-order"),
+        IdMap.getId("fulfillment"),
+        ["1234", "2345"],
+        {}
+      )
+
+      expect(
+        FulfillmentProviderMock.getShipmentDocuments
+      ).toHaveBeenCalledTimes(1)
+      expect(FulfillmentProviderMock.getShipmentDocuments).toHaveBeenCalledWith(
+        {}
+      )
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("test-order"),
+          "fulfillments._id": IdMap.getId("fulfillment"),
+        },
+        {
+          $set: {
+            "fulfillments.$": {
+              _id: IdMap.getId("fulfillment"),
+              provider_id: "default_provider",
+              tracking_numbers: ["1234", "2345"],
+              data: {},
+              documents: ["doc1234"],
+              shipped_at: Date.now(),
+              metadata: {},
+            },
+          },
+        }
+      )
+    })
+
+    it("throws if order is unprocessed", async () => {
+      try {
+        await orderService.archive(IdMap.getId("test-order"))
+      } catch (error) {
+        expect(error.message).toEqual("Can't archive an unprocessed order")
       }
     })
   })

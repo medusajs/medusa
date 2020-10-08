@@ -26,6 +26,7 @@ class OrderService extends BaseService {
     lineItemService,
     totalsService,
     regionService,
+    documentService,
     eventBusService,
   }) {
     super()
@@ -57,6 +58,10 @@ class OrderService extends BaseService {
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
 
+    /** @private @const {DocumentService} */
+    this.documentService_ = documentService
+
+    /** @private @const {CounterService} */
     this.counterService_ = counterService
   }
 
@@ -398,34 +403,56 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Adds a shipment to the order to indicate that an order has left the warehouse
+   * Adds a shipment to the order to indicate that an order has left the
+   * warehouse. Will ask the fulfillment provider for any documents that may
+   * have been created in regards to the shipment.
+   * @param {string} orderId - the id of the order that has been shipped
+   * @param {string} fulfillmentId - the fulfillment that has now been shipped
+   * @param {Array<String>} trackingNumbers - array of tracking numebers
+   *   associated with the shipment
+   * @param {Dictionary<String, String>} metadata - optional metadata to add to
+   *   the fulfillment
+   * @return {order} the resulting order following the update.
    */
   async createShipment(orderId, fulfillmentId, trackingNumbers, metadata = {}) {
     const order = await this.retrieve(orderId)
 
-    let shipment
-    const updated = order.fulfillments.map(f => {
-      if (f._id.equals(fulfillmentId)) {
-        shipment = {
-          ...f,
-          tracking_numbers: trackingNumbers,
-          shipped_at: Date.now(),
-          metadata: {
-            ...f.metadata,
-            ...metadata,
-          },
-        }
-        return shipment
-      }
-      return f
-    })
+    const shipment = order.fulfillments.find(f => f._id.equals(fulfillmentId))
+    if (!shipment) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Could not find a fulfillment with the provided id`
+      )
+    }
+
+    const provider = await this.fulfillmentProviderService_.retrieveProvider(
+      shipment.provider_id
+    )
+    const toCreate = await provider.getShipmentDocuments(shipment.data)
+    const documents = await Promise.all(
+      toCreate.map(async d => {
+        const doc = await this.documentService_.create(d)
+        return doc._id
+      })
+    )
+
+    const updated = {
+      ...shipment,
+      tracking_numbers: trackingNumbers,
+      shipped_at: Date.now(),
+      metadata: {
+        ...shipment.metadata,
+        ...metadata,
+      },
+      documents: [...(shipment.documents || []), ...documents],
+    }
 
     // Add the shipment to the order
     return this.orderModel_
       .updateOne(
-        { _id: orderId },
+        { _id: orderId, "fulfillments._id": fulfillmentId },
         {
-          $set: { fulfillments: updated },
+          $set: { "fulfillments.$": updated },
         }
       )
       .then(result => {
@@ -700,9 +727,18 @@ class OrderService extends BaseService {
             return res
           })
 
+        const toCreate = await provider.getFulfillmentDocuments(data)
+        const documents = await Promise.all(
+          toCreate.map(async d => {
+            const doc = await this.documentService_.create(d)
+            return doc._id
+          })
+        )
+
         return {
           provider_id: method.provider_id,
           items: method.items,
+          documents,
           data,
           metadata,
         }

@@ -59,6 +59,7 @@ export const orders = {
     ],
     fulfillments: [
       {
+        _id: IdMap.getId("fulfillment"),
         provider_id: "default_provider",
         data: {},
       },

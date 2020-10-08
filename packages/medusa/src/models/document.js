@@ -7,6 +7,7 @@ class DocumentModel extends BaseModel {
   static schema = {
     base_64: { type: String, required: true },
     name: { type: String, required: true },
+    type: { type: String, required: true },
     created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
