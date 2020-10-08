@@ -466,7 +466,7 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("test-order") },
         {
-          $push: {
+          $addToSet: {
             fulfillments: {
               $each: [
                 {
