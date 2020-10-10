@@ -31,6 +31,12 @@ export const DefaultProviderMock = {
       },
     ])
   }),
+  createReturn: jest.fn().mockImplementation(data => {
+    return Promise.resolve({
+      ...data,
+      shipped: true,
+    })
+  }),
   getReturnDocuments: jest.fn().mockImplementation(() => {
     return Promise.resolve([
       {

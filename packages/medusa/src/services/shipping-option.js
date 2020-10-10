@@ -163,14 +163,7 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    if (option.price && option.price.type === "calculated") {
-      const provider = this.providerService_.retrieveProvider(
-        option.provider_id
-      )
-      option.price = await provider.calculatePrice(option.data, cart)
-    } else {
-      option.price = option.price.amount
-    }
+    option.price = await this.getPrice(option, cart)
 
     return option
   }
@@ -432,6 +425,26 @@ class ShippingOptionService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Returns the amount to be paid for a shipping method. Will ask the
+   * fulfillment provider to calculate the price if the shipping option has the
+   * price type "calculated".
+   * @param {ShippingOption} option - the shipping option to retrieve the price
+   *   for.
+   * @param {Cart || Order} cart - the context in which the price should be
+   *   retrieved.
+   * @returns {Promise<Number>} the price of the shipping option.
+   */
+  async getPrice(option, cart) {
+    if (option.price && option.price.type === "calculated") {
+      const provider = this.providerService_.retrieveProvider(
+        option.provider_id
+      )
+      return provider.calculatePrice(option.data, cart)
+    }
+    return option.price.amount
   }
 
   /**
