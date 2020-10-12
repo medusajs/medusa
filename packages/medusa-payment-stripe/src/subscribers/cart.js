@@ -24,7 +24,9 @@ class CartSubscriber {
 
     const customer = await this.customerService_.retrieve(customer_id)
 
-    const stripeSession = payment_sessions.find(s => s.provider_id === "stripe")
+    const stripeSession = payment_sessions.find(
+      (s) => s.provider_id === "stripe"
+    )
 
     if (!stripeSession) {
       return Promise.resolve()
@@ -34,9 +36,12 @@ class CartSubscriber {
       stripeSession.data
     )
 
-    let stripeCustomer = await this.stripeProviderService_.retrieveCustomer(
-      customer.metadata.stripe_id
-    )
+    let stripeCustomer
+    if (customer.metadata && customer.metadata.stripe_id) {
+      stripeCustomer = await this.stripeProviderService_.retrieveCustomer(
+        customer.metadata.stripe_id
+      )
+    }
 
     if (!stripeCustomer) {
       stripeCustomer = await this.stripeProviderService_.createCustomer(
