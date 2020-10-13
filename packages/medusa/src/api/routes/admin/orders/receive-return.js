@@ -1,7 +1,7 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id } = req.params
+  const { id, return_id } = req.params
 
   const schema = Validator.object().keys({
     items: Validator.array()
@@ -20,7 +20,13 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-    let order = await orderService.return(id, value.items, value.refund)
+    let order = await orderService.return(
+      id,
+      return_id,
+      value.items,
+      value.refund,
+      true
+    )
     order = await orderService.decorate(order, [], ["region"])
 
     res.status(200).json({ order })

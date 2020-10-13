@@ -1096,6 +1096,21 @@ describe("OrderService", () => {
       )
     })
 
+    it("sets correct shipping method", async () => {
+      const items = [
+        {
+          item_id: IdMap.getId("existingLine"),
+          quantity: 10,
+        },
+      ]
+      await orderService.requestReturn(IdMap.getId("processed-order"), items)
+
+      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(
+        OrderModelMock.updateOne.mock.calls[0][1].$push.returns.refund_amount
+      ).toEqual(1230)
+    })
+
     it("throws if payment is already processed", async () => {
       await expect(
         orderService.requestReturn(IdMap.getId("fulfilled-order"), [])

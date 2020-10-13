@@ -1132,14 +1132,6 @@ class OrderService extends BaseService {
         })
     }
 
-    // Find the lines to return
-    const { provider_id, data } = order.payment_method
-    const paymentProvider = this.paymentProviderService_.retrieveProvider(
-      provider_id
-    )
-
-    await paymentProvider.refundPayment(data, toRefund)
-
     let isFullReturn = true
     const newItems = order.items.map(i => {
       const isReturn = returnLines.find(r => r._id.equals(i._id))
@@ -1174,6 +1166,14 @@ class OrderService extends BaseService {
         return r
       }
     })
+
+    // Find the lines to return
+    const { provider_id, data } = order.payment_method
+    const paymentProvider = this.paymentProviderService_.retrieveProvider(
+      provider_id
+    )
+
+    await paymentProvider.refundPayment(data, toRefund)
 
     return this.orderModel_
       .updateOne(

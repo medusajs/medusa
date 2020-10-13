@@ -14,7 +14,7 @@ import mongoose from "mongoose"
  */
 export default new mongoose.Schema({
   item_id: { type: String, required: true, unique: true },
-  content: { type: mongoose.Schema.Mixed, required: true },
+  content: { type: mongoose.Schema.Types.Mixed, required: true },
   quantity: { type: Number, required: true },
   is_requested: { type: Boolean, required: true },
   requested_quantity: { type: Number },
