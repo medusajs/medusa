@@ -246,7 +246,9 @@ class CartService extends BaseService {
     if (expandFields.includes("region")) {
       c.region = await this.regionService_.retrieve(cart.region_id)
     }
-    return c
+
+    const final = await this.runDecorators_(c)
+    return final
   }
 
   /**

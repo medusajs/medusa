@@ -14,16 +14,20 @@ describe("GET /store/carts", () => {
       jest.clearAllMocks()
     })
 
-    it("calls get product from productSerice", () => {
+    it("calls retrieve from CartService", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("emptyCart")
       )
     })
 
-    it("returns products", () => {
+    it("returns cart", () => {
       expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
       expect(subject.body.cart.decorated).toEqual(true)
+    })
+
+    it("returns 200 status", () => {
+      expect(subject.status).toEqual(200)
     })
   })
 

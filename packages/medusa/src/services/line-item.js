@@ -1,5 +1,6 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import _ from "lodash"
 
 /**
  * Provides layer to manipulate line items.
@@ -145,7 +146,8 @@ class LineItemService extends BaseService {
     } else if (!Array.isArray(match.content)) {
       return (
         line.content.variant._id.equals(match.content.variant._id) &&
-        line.content.quantity === match.content.quantity
+        line.content.quantity === match.content.quantity &&
+        _.isEqual(line.metadata, match.metadata)
       )
     }
 

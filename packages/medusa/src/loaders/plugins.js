@@ -18,10 +18,7 @@ import { sync as existsSync } from "fs-exists-cached"
  * Registers all services in the services directory
  */
 export default async ({ rootDirectory, container, app }) => {
-  const { configModule, configFilePath } = getConfigFile(
-    rootDirectory,
-    `medusa-config`
-  )
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   if (!configModule) {
     return
@@ -53,7 +50,7 @@ export default async ({ rootDirectory, container, app }) => {
       registerModels(pluginDetails, container)
       await registerServices(pluginDetails, container)
       registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory)
+      registerApi(pluginDetails, app, rootDirectory, container)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
     })
@@ -143,12 +140,22 @@ function registerCoreRouters(pluginDetails, container) {
 /**
  * Registers the plugin's api routes.
  */
-function registerApi(pluginDetails, app, rootDirectory = "") {
+function registerApi(pluginDetails, app, rootDirectory = "", container) {
+  const logger = container.resolve("logger")
+  logger.info(`Registering custom endpoints for ${pluginDetails.name}`)
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
-    app.use("/", routes(rootDirectory))
+    if (routes) {
+      app.use("/", routes(rootDirectory))
+    }
     return app
   } catch (err) {
+    if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
+      logger.warn(
+        `An error occured while registering customer endpoints for ${pluginDetails.name}`
+      )
+      logger.error(err.stack)
+    }
     return app
   }
 }
@@ -218,7 +225,7 @@ async function registerServices(pluginDetails, container) {
         container.register({
           [name]: asFunction(
             cradle => new loaded(cradle, pluginDetails.options)
-          ),
+          ).singleton(),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (loaded.prototype instanceof FileService) {

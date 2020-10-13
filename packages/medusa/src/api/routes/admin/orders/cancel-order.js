@@ -3,7 +3,8 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-    const order = await orderService.cancel(id)
+    let order = await orderService.cancel(id)
+    order = await orderService.decorate(order, [], ["region"])
     res.json({ order })
   } catch (error) {
     throw error

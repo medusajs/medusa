@@ -405,7 +405,8 @@ class ShippingOptionService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     let decorated = _.pick(shippingOption, fields.concat(requiredFields))
 
-    return decorated
+    const final = await this.runDecorators_(decorated)
+    return final
   }
 
   /**
