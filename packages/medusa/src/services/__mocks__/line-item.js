@@ -29,25 +29,31 @@ export const LineItemServiceMock = {
 
     return false
   }),
-  generate: jest.fn().mockImplementation((variantId, regionId, quantity) => {
-    if (variantId === IdMap.getId("fail") || regionId === IdMap.getId("fail")) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "Doesn't exist")
-    }
+  generate: jest
+    .fn()
+    .mockImplementation((variantId, regionId, quantity, metadata = {}) => {
+      if (
+        variantId === IdMap.getId("fail") ||
+        regionId === IdMap.getId("fail")
+      ) {
+        throw new MedusaError(MedusaError.Types.INVALID_DATA, "Doesn't exist")
+      }
 
-    return Promise.resolve({
-      content: {
-        variant: {
-          _id: variantId,
+      return Promise.resolve({
+        content: {
+          variant: {
+            _id: variantId,
+          },
+          product: {
+            _id: `p_${variantId}`,
+          },
+          quantity: 1,
+          unit_price: 100,
         },
-        product: {
-          _id: `p_${variantId}`,
-        },
-        quantity: 1,
-        unit_price: 100,
-      },
-      quantity,
-    })
-  }),
+        quantity,
+        metadata,
+      })
+    }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
