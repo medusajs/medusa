@@ -33,6 +33,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       name: r.attributes.name,
       require_drop_point: r.attributes.require_drop_point,
       carrier_id: r.attributes.carrier_id,
+      is_return: r.attributes.is_return,
     }))
   }
 
@@ -61,6 +62,106 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
   calculatePrice() {
     // Calculate prices
+  }
+
+  /**
+   * Creates a return shipment in webshipper using the given method data, and
+   * return lines.
+   */
+  async createReturn(methodData, returnLines, fromOrder) {
+    const relationships = {
+      shipping_rate: {
+        data: {
+          type: "shipping_rates",
+          id: methodData.webshipper_id,
+        },
+      },
+    }
+
+    const existing = fromOrder.metadata.webshipper_order_id
+    if (existing) {
+      relationships.order = {
+        data: {
+          type: "orders",
+          id: existing,
+        },
+      }
+    }
+
+    let docs = []
+    if (this.invoiceGenerator_) {
+      const base64Invoice = await this.invoiceGenerator_.createReturnInvoice(
+        fromOrder,
+        returnLines
+      )
+      docs.push({
+        document_size: "A4",
+        document_format: "PDF",
+        base64: base64Invoice,
+        document_type: "invoice",
+      })
+    }
+
+    const { shipping_address } = fromOrder
+    const returnShipment = {
+      type: "shipments",
+      attributes: {
+        reference: `R${fromOrder.display_id}-${fromOrder.returns.length + 1}`,
+        ext_ref: `${fromOrder._id}.${fromOrder.returns.length}`,
+        is_return: true,
+        included_documents: docs,
+        sender_address: {
+          att_contact: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          address_1: shipping_address.address_1,
+          address_2: shipping_address.address_2,
+          zip: shipping_address.postal_code,
+          city: shipping_address.city,
+          country_code: shipping_address.country_code,
+          state: shipping_address.province,
+          phone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+        delivery_address: this.options_.return_address,
+      },
+      relationships,
+    }
+
+    return this.client_.shipments
+      .create(returnShipment)
+      .then((result) => {
+        return result.data
+      })
+      .catch((err) => {
+        this.logger_.warn(err.response)
+        throw err
+      })
+  }
+
+  async getReturnDocuments(data) {
+    const shipment = await this.client_.shipments.retrieve(data.id)
+    const labels = await this.retrieveRelationship(
+      shipment.data.relationships.labels
+    ).then((res) => res.data)
+    const docs = await this.retrieveRelationship(
+      shipment.data.relationships.documents
+    ).then((res) => res.data)
+    const toReturn = []
+    for (const d of labels) {
+      toReturn.push({
+        name: "Return label",
+        base_64: d.attributes.base64,
+        type: "pdf",
+      })
+    }
+    for (const d of docs) {
+      toReturn.push({
+        name: d.attributes.document_type,
+        base_64: d.attributes.base64,
+        type: "pdf",
+      })
+    }
+
+    return toReturn
   }
 
   async createOrder(methodData, fulfillmentItems, fromOrder) {
@@ -203,6 +304,30 @@ class WebshipperFulfillmentService extends FulfillmentService {
         )
       }
     }
+  }
+
+  /**
+   * This plugin doesn't support shipment documents.
+   */
+  async getShipmentDocuments() {
+    return []
+  }
+
+  /**
+   * Retrieves the documents associated with an order.
+   * @return {Promise<Array<_>>} an array of document objects to store in the
+   *   database.
+   */
+  async getFulfillmentDocuments(data) {
+    const order = await this.client_.orders.retrieve(data.id)
+    const docs = await this.retrieveRelationship(
+      order.data.relationships.documents
+    ).then((res) => res.data)
+    return docs.map((d) => ({
+      name: d.attributes.document_type,
+      base_64: d.attributes.base64,
+      type: "pdf",
+    }))
   }
 
   async retrieveDropPoints(id, zip, countryCode, address1) {

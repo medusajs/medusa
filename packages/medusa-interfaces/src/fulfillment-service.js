@@ -63,6 +63,37 @@ class BaseFulfillmentService extends BaseService {
   createOrder() {
     throw Error("createOrder must be overridden by the child class")
   }
+
+  /**
+   * Used to retrieve documents associated with a fulfillment.
+   * Will default to returning no documents.
+   */
+  getFulfillmentDocuments(data) {
+    return []
+  }
+
+  /**
+   * Used to create a return order. Should return the data necessary for future
+   * operations on the return; in particular the data may be used to receive
+   * documents attached to the return.
+   */
+  createReturn(fromData) {
+    throw Error("createReturn must be overridden by the child class")
+  }
+
+  /**
+   * Used to retrieve documents related to a return order.
+   */
+  getReturnDocuments(data) {
+    return []
+  }
+
+  /**
+   * Used to retrieve documents related to a shipment.
+   */
+  getShipmentDocuments(data) {
+    return []
+  }
 }
 
 export default BaseFulfillmentService
