@@ -22,7 +22,6 @@ export default async (req, res) => {
   }
 
   try {
-    /** @constant {OrderService} */
     const orderService = req.scope.resolve("orderService")
 
     let oldOrder
@@ -52,7 +51,8 @@ export default async (req, res) => {
     )
 
     /**
-     * If we are ready to receive immediately, we find the
+     * If we are ready to receive immediately, we find the newly created return
+     * and register it as received.
      */
     if (value.receive_now) {
       const newReturn = order.returns.find(

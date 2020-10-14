@@ -9,7 +9,7 @@ class DocumentService extends BaseService {
   constructor({ documentModel, eventBusService }) {
     super()
 
-    /** @private @const {storeModel} */
+    /** @private @const {DocumentModel} */
     this.documentModel_ = documentModel
 
     /** @private @const {EventBus} */
@@ -109,16 +109,16 @@ class DocumentService extends BaseService {
   }
 
   /**
-   * Dedicated method to set metadata for a store.
+   * Dedicated method to set metadata for a document.
    * To ensure that plugins does not overwrite each
    * others metadata fields, setMetadata is provided.
-   * @param {string} customerId - the customer to apply metadata to.
+   * @param {string} id - the document id
    * @param {string} key - key for metadata field
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(key, value) {
-    const store = await this.retrieve()
+  async setMetadata(id, key, value) {
+    const doc = await this.retrieve(id)
     if (typeof key !== "string") {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -127,8 +127,8 @@ class DocumentService extends BaseService {
     }
 
     const keyPath = `metadata.${key}`
-    return this.storeModel_
-      .updateOne({ _id: store._id }, { $set: { [keyPath]: value } })
+    return this.documentModel_
+      .updateOne({ _id: doc._id }, { $set: { [keyPath]: value } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
