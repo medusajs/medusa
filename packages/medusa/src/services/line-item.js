@@ -120,12 +120,13 @@ class LineItemService extends BaseService {
         product,
         quantity: 1,
       },
-      metadata,
+      metadata: {
+        ...metadata,
+      },
     }
 
     if (product.is_giftcard) {
       line.is_giftcard = true
-      line.metadata = metadata
     }
 
     return line

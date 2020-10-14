@@ -34,7 +34,8 @@ export default async (req, res) => {
       const lineItem = await lineItemService.generate(
         existing.content.variant._id,
         cart.region_id,
-        value.quantity
+        value.quantity,
+        existing.metadata || {}
       )
 
       cart = await cartService.updateLineItem(cart._id, line_id, lineItem)
