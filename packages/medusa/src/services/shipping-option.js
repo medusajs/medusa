@@ -85,6 +85,10 @@ class ShippingOptionService extends BaseService {
       query.region_id = selector.region_id
     }
 
+    if ("is_return" in selector) {
+      query.is_return = selector.is_return.toLowerCase() === "true"
+    }
+
     return this.optionModel_.find(query)
   }
 
@@ -138,6 +142,10 @@ class ShippingOptionService extends BaseService {
   async validateCartOption(optionId, cart) {
     const option = await this.retrieve(optionId)
 
+    if (option.is_return) {
+      return null
+    }
+
     if (cart.region_id !== option.region_id) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -163,22 +171,17 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    if (option.price && option.price.type === "calculated") {
-      const provider = this.providerService_.retrieveProvider(
-        option.provider_id
-      )
-      option.price = await provider.calculatePrice(option.data, cart)
-    } else {
-      option.price = option.price.amount
-    }
+    option.price = await this.getPrice(option, cart)
 
     return option
   }
 
   /**
-   * Creates a new shipping option.
+   * Creates a new shipping option. Used both for outbound and inbound shipping
+   * options. The difference is registered by the `is_return` field which
+   * defaults to false.
    * @param {ShippingOption} option - the shipping option to create
-   * @return {Promise} the result of the create operation
+   * @return {Promise<ShippingOption>} the result of the create operation
    */
   async create(option) {
     const region = await this.regionService_.retrieve(option.region_id)
@@ -432,6 +435,26 @@ class ShippingOptionService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Returns the amount to be paid for a shipping method. Will ask the
+   * fulfillment provider to calculate the price if the shipping option has the
+   * price type "calculated".
+   * @param {ShippingOption} option - the shipping option to retrieve the price
+   *   for.
+   * @param {Cart || Order} cart - the context in which the price should be
+   *   retrieved.
+   * @returns {Promise<Number>} the price of the shipping option.
+   */
+  async getPrice(option, cart) {
+    if (option.price && option.price.type === "calculated") {
+      const provider = this.providerService_.retrieveProvider(
+        option.provider_id
+      )
+      return provider.calculatePrice(option.data, cart)
+    }
+    return option.price.amount
   }
 
   /**

@@ -759,6 +759,7 @@ describe("CartService", () => {
                 title: "merge line",
                 description: "This is a new line",
                 thumbnail: "test-img-yeah.com/thumb",
+                has_shipping: false,
                 content: [
                   {
                     unit_price: 10,
@@ -788,6 +789,7 @@ describe("CartService", () => {
                 title: "merge line",
                 description: "This is a new line",
                 thumbnail: "test-img-yeah.com/thumb",
+                has_shipping: false,
                 content: {
                   unit_price: 12,
                   variant: {
