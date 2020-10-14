@@ -394,7 +394,7 @@ class OrderService extends BaseService {
           cart_id: cart._id,
           tax_rate: region.tax_rate,
           currency_code: region.currency_code,
-          metadata: cart.metadata,
+          metadata: cart.metadata || {},
         }
 
         const orderDocument = await this.orderModel_.create([o], {
