@@ -7,7 +7,6 @@ import {
   DefaultProviderMock,
 } from "../__mocks__/payment-provider"
 import { DiscountServiceMock } from "../__mocks__/discount"
-import { DocumentServiceMock } from "../__mocks__/document"
 import {
   FulfillmentProviderServiceMock,
   DefaultProviderMock as FulfillmentProviderMock,
@@ -64,6 +63,7 @@ describe("OrderService", () => {
         currency_code: "eur",
         cart_id: carts.completeCart._id,
         tax_rate: 0.25,
+        metadata: {},
       }
       delete order._id
       delete order.payment_sessions
@@ -79,6 +79,7 @@ describe("OrderService", () => {
 
       const order = {
         ...carts.withGiftCard,
+        metadata: {},
         items: [
           {
             _id: IdMap.getId("existingLine"),
@@ -422,7 +423,6 @@ describe("OrderService", () => {
       paymentProviderService: PaymentProviderServiceMock,
       fulfillmentProviderService: FulfillmentProviderServiceMock,
       shippingProfileService: ShippingProfileServiceMock,
-      documentService: DocumentServiceMock,
       eventBusService: EventBusServiceMock,
     })
 
@@ -466,20 +466,6 @@ describe("OrderService", () => {
         orders.testOrder
       )
 
-      expect(
-        FulfillmentProviderMock.getFulfillmentDocuments
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        FulfillmentProviderMock.getFulfillmentDocuments
-      ).toHaveBeenCalledWith({ extra: "hi" })
-
-      expect(DocumentServiceMock.create).toHaveBeenCalledTimes(1)
-      expect(DocumentServiceMock.create).toHaveBeenCalledWith({
-        name: "Test",
-        type: "pdf",
-        base_64: "verylong",
-      })
-
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("test-order") },
@@ -491,7 +477,6 @@ describe("OrderService", () => {
                   data: {
                     extra: "hi",
                   },
-                  documents: ["doc1234"],
                   items: [
                     {
                       _id: IdMap.getId("existingLine"),
@@ -596,6 +581,7 @@ describe("OrderService", () => {
               {
                 _id: IdMap.getId("return"),
                 status: "received",
+                documents: ["doc1234"],
                 shipping_method: {
                   _id: IdMap.getId("return-shipping"),
                   is_return: true,
@@ -612,7 +598,6 @@ describe("OrderService", () => {
                   id: "return_shipment",
                   shipped: true,
                 },
-                documents: ["doc1234"],
                 items: [
                   {
                     item_id: IdMap.getId("existingLine"),
@@ -714,6 +699,7 @@ describe("OrderService", () => {
             ],
             returns: [
               {
+                documents: ["doc1234"],
                 _id: IdMap.getId("return"),
                 status: "received",
                 shipping_method: {
@@ -732,7 +718,6 @@ describe("OrderService", () => {
                   id: "return_shipment",
                   shipped: true,
                 },
-                documents: ["doc1234"],
                 items: [
                   {
                     item_id: IdMap.getId("existingLine"),
@@ -805,11 +790,11 @@ describe("OrderService", () => {
                   price: 2,
                   provider_id: "default_provider",
                 },
+                documents: ["doc1234"],
                 shipping_data: {
                   id: "return_shipment",
                   shipped: true,
                 },
-                documents: ["doc1234"],
                 items: [
                   {
                     item_id: IdMap.getId("existingLine"),
@@ -978,7 +963,6 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       shippingOptionService: ShippingOptionServiceMock,
-      documentService: DocumentServiceMock,
       fulfillmentProviderService: FulfillmentProviderServiceMock,
       paymentProviderService: PaymentProviderServiceMock,
       totalsService: TotalsServiceMock,
@@ -1034,21 +1018,6 @@ describe("OrderService", () => {
         orders.processedOrder
       )
 
-      expect(FulfillmentProviderMock.getReturnDocuments).toHaveBeenCalledTimes(
-        1
-      )
-      expect(FulfillmentProviderMock.getReturnDocuments).toHaveBeenCalledWith({
-        id: "return_shipment",
-        shipped: true,
-      })
-
-      expect(DocumentServiceMock.create).toHaveBeenCalledTimes(1)
-      expect(DocumentServiceMock.create).toHaveBeenCalledWith({
-        name: "Test Return",
-        type: "pdf",
-        base_64: "verylong return",
-      })
-
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         { _id: IdMap.getId("processed-order") },
@@ -1071,7 +1040,6 @@ describe("OrderService", () => {
                 id: "return_shipment",
                 shipped: true,
               },
-              documents: ["doc1234"],
               items: [
                 {
                   item_id: IdMap.getId("existingLine"),
@@ -1128,7 +1096,6 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       fulfillmentProviderService: FulfillmentProviderServiceMock,
-      documentService: DocumentServiceMock,
       eventBusService: EventBusServiceMock,
     })
 
@@ -1141,13 +1108,6 @@ describe("OrderService", () => {
         IdMap.getId("test-order"),
         IdMap.getId("fulfillment"),
         ["1234", "2345"],
-        {}
-      )
-
-      expect(
-        FulfillmentProviderMock.getShipmentDocuments
-      ).toHaveBeenCalledTimes(1)
-      expect(FulfillmentProviderMock.getShipmentDocuments).toHaveBeenCalledWith(
         {}
       )
 
@@ -1164,7 +1124,6 @@ describe("OrderService", () => {
               provider_id: "default_provider",
               tracking_numbers: ["1234", "2345"],
               data: {},
-              documents: ["doc1234"],
               shipped_at: expect.anything(),
               metadata: {},
             },

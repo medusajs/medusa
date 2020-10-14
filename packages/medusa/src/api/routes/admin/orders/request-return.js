@@ -40,12 +40,16 @@ export default async (req, res) => {
       }
     }
 
-    let order = await orderService
-      .requestReturn(id, value.items, shippingMethod, value.refund)
-      .catch(err => {
-        console.log(err)
-        throw err
-      })
+    let refundAmount = value.refund
+    if (typeof value.refund !== "undefined" && value.refund < 0) {
+      refundAmount = 0
+    }
+    let order = await orderService.requestReturn(
+      id,
+      value.items,
+      shippingMethod,
+      refundAmount
+    )
 
     /**
      * If we are ready to receive immediately, we find the

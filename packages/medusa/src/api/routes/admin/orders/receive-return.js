@@ -20,11 +20,16 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
+
+    let refundAmount = value.refund
+    if (typeof value.refund !== "undefined" && value.refund < 0) {
+      refundAmount = 0
+    }
     let order = await orderService.return(
       id,
       return_id,
       value.items,
-      value.refund,
+      refundAmount,
       true
     )
     order = await orderService.decorate(order, [], ["region"])

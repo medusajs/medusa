@@ -943,7 +943,7 @@ class OrderService extends BaseService {
         )
       }
 
-      toRefund -= shipping_method.price
+      toRefund = Math.max(0, toRefund - shipping_method.price)
     }
 
     const newReturn = {
@@ -1141,41 +1141,34 @@ class OrderService extends BaseService {
       }
     })
 
-    // Find the lines to return
-    const { provider_id, data } = order.payment_method
-    const paymentProvider = this.paymentProviderService_.retrieveProvider(
-      provider_id
-    )
+    const update = {
+      $set: {
+        returns: newReturns,
+        items: newItems,
+        fulfillment_status: isFullReturn ? "returned" : "partially_returned",
+      },
+    }
 
-    await paymentProvider.refundPayment(data, toRefund)
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $push: {
-            refunds: {
-              amount: toRefund,
-            },
-          },
-          $set: {
-            returns: newReturns,
-            items: newItems,
-            fulfillment_status: isFullReturn
-              ? "returned"
-              : "partially_returned",
-          },
-        }
+    if (toRefund > 0) {
+      const { provider_id, data } = order.payment_method
+      const paymentProvider = this.paymentProviderService_.retrieveProvider(
+        provider_id
       )
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.ITEMS_RETURNED, {
-          order: result,
-          return: result.returns.find(r => r._id.equals(returnId)),
-        })
-        return result
+      await paymentProvider.refundPayment(data, toRefund)
+      update.$push = {
+        refunds: {
+          amount: toRefund,
+        },
+      }
+    }
+
+    return this.orderModel_.updateOne({ _id: orderId }, update).then(result => {
+      this.eventBus_.emit(OrderService.Events.ITEMS_RETURNED, {
+        order: result,
+        return: result.returns.find(r => r._id.equals(returnId)),
       })
+      return result
+    })
   }
 
   /**

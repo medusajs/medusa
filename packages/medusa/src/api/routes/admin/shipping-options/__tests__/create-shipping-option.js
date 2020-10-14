@@ -7,6 +7,7 @@ describe("POST /admin/shipping-options", () => {
     let subject
 
     beforeAll(async () => {
+      jest.clearAllMocks()
       subject = await request("POST", "/admin/shipping-options", {
         payload: {
           name: "Test option",
@@ -39,6 +40,7 @@ describe("POST /admin/shipping-options", () => {
     it("calls service create", () => {
       expect(ShippingOptionServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ShippingOptionServiceMock.create).toHaveBeenCalledWith({
+        is_return: false,
         name: "Test option",
         region_id: "testregion",
         provider_id: "test_provider",
@@ -62,6 +64,7 @@ describe("POST /admin/shipping-options", () => {
     let subject
 
     beforeAll(async () => {
+      jest.clearAllMocks()
       subject = await request("POST", "/admin/shipping-options", {
         payload: {
           price: {
