@@ -184,6 +184,33 @@ export const carts = {
       },
     ],
   },
+  cartWithMetadataLineItem: {
+    _id: IdMap.getId("cartLineItemMetadata"),
+    discounts: [],
+    region_id: IdMap.getId("region-france"),
+    items: [
+      {
+        _id: IdMap.getId("lineWithMetadata"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 10,
+          variant: {
+            _id: IdMap.getId("eur-10-us-12"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+        metadata: {
+          status: "confirmed",
+        },
+      },
+    ],
+  },
 }
 
 export const CartServiceMock = {
@@ -198,6 +225,9 @@ export const CartServiceMock = {
   retrieve: jest.fn().mockImplementation(cartId => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("cartLineItemMetadata")) {
+      return Promise.resolve(carts.cartWithMetadataLineItem)
     }
     if (cartId === IdMap.getId("regionCart")) {
       return Promise.resolve(carts.regionCart)
@@ -238,6 +268,9 @@ export const CartServiceMock = {
   updateLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("cartLineItemMetadata")) {
+      return Promise.resolve(carts.cartWithMetadataLineItem)
     }
     if (cartId === IdMap.getId("regionCart")) {
       return Promise.resolve(carts.regionCart)
