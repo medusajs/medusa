@@ -11,7 +11,7 @@ export default async (req, res) => {
       })
       .required(),
     shipping_method: Validator.string().optional(),
-    shipping_price: Validator.string().optional(),
+    shipping_price: Validator.number().optional(),
     receive_now: Validator.boolean().default(false),
     refund: Validator.number().optional(),
   })
@@ -34,16 +34,18 @@ export default async (req, res) => {
 
     let shippingMethod
     if (value.shipping_method) {
-      shippingMethod.id = value.shipping_method
-      shippingMethod.price = value.shipping_price
+      shippingMethod = {
+        id: value.shipping_method,
+        price: value.shipping_price,
+      }
     }
 
-    let order = await orderService.requestReturn(
-      id,
-      value.items,
-      shippingMethod,
-      value.refund
-    )
+    let order = await orderService
+      .requestReturn(id, value.items, shippingMethod, value.refund)
+      .catch(err => {
+        console.log(err)
+        throw err
+      })
 
     /**
      * If we are ready to receive immediately, we find the

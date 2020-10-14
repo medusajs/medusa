@@ -431,17 +431,6 @@ class OrderService extends BaseService {
       )
     }
 
-    const provider = await this.fulfillmentProviderService_.retrieveProvider(
-      shipment.provider_id
-    )
-    const toCreate = await provider.getShipmentDocuments(shipment.data)
-    const documents = await Promise.all(
-      toCreate.map(async d => {
-        const doc = await this.documentService_.create(d)
-        return doc._id
-      })
-    )
-
     const updated = {
       ...shipment,
       tracking_numbers: trackingNumbers,
@@ -450,7 +439,6 @@ class OrderService extends BaseService {
         ...shipment.metadata,
         ...metadata,
       },
-      documents: [...(shipment.documents || []), ...documents],
     }
 
     // Add the shipment to the order
@@ -746,18 +734,9 @@ class OrderService extends BaseService {
             return res
           })
 
-        const toCreate = await provider.getFulfillmentDocuments(data)
-        const documents = await Promise.all(
-          toCreate.map(async d => {
-            const doc = await this.documentService_.create(d)
-            return doc._id
-          })
-        )
-
         return {
           provider_id: method.provider_id,
           items: method.items,
-          documents,
           data,
           metadata,
         }
@@ -937,7 +916,6 @@ class OrderService extends BaseService {
       this.validateReturnLineItem_
     )
 
-    let docs = []
     let fulfillmentData = {}
     let shipping_method = {}
     if (typeof shippingMethod !== "undefined") {
@@ -952,9 +930,6 @@ class OrderService extends BaseService {
         returnLines,
         order
       )
-
-      const toCreate = await provider.getReturnDocuments(fulfillmentData)
-      docs = await this.createDocuments_(toCreate, d => d._id)
 
       if (typeof shippingMethod.price !== "undefined") {
         shipping_method.price = shippingMethod.price
@@ -982,7 +957,6 @@ class OrderService extends BaseService {
         metadata: i.metadata,
       })),
       shipping_data: fulfillmentData,
-      documents: docs,
     }
 
     return this.orderModel_

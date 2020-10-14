@@ -85,6 +85,10 @@ class ShippingOptionService extends BaseService {
       query.region_id = selector.region_id
     }
 
+    if ("is_return" in selector) {
+      query.is_return = selector.is_return.toLowerCase() === "true"
+    }
+
     return this.optionModel_.find(query)
   }
 
@@ -138,6 +142,10 @@ class ShippingOptionService extends BaseService {
   async validateCartOption(optionId, cart) {
     const option = await this.retrieve(optionId)
 
+    if (option.is_return) {
+      return null
+    }
+
     if (cart.region_id !== option.region_id) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -169,9 +177,11 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
-   * Creates a new shipping option.
+   * Creates a new shipping option. Used both for outbound and inbound shipping
+   * options. The difference is registered by the `is_return` field which
+   * defaults to false.
    * @param {ShippingOption} option - the shipping option to create
-   * @return {Promise} the result of the create operation
+   * @return {Promise<ShippingOption>} the result of the create operation
    */
   async create(option) {
     const region = await this.regionService_.retrieve(option.region_id)

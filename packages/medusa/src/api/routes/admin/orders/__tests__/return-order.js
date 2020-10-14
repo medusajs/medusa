@@ -33,8 +33,8 @@ describe("POST /admin/orders/:id/return", () => {
     })
 
     it("calls OrderService return", () => {
-      expect(OrderServiceMock.return).toHaveBeenCalledTimes(1)
-      expect(OrderServiceMock.return).toHaveBeenCalledWith(
+      expect(OrderServiceMock.requestReturn).toHaveBeenCalledTimes(1)
+      expect(OrderServiceMock.requestReturn).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
         [
           {
@@ -42,7 +42,8 @@ describe("POST /admin/orders/:id/return", () => {
             quantity: 10,
           },
         ],
-        undefined
+        undefined, // no shipping method
+        undefined // no refund amount
       )
     })
   })

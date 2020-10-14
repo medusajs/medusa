@@ -73,7 +73,9 @@ class BaseFulfillmentService extends BaseService {
   }
 
   /**
-   * Used to create a return order.
+   * Used to create a return order. Should return the data necessary for future
+   * operations on the return; in particular the data may be used to receive
+   * documents attached to the return.
    */
   createReturn(fromData) {
     throw Error("createReturn must be overridden by the child class")

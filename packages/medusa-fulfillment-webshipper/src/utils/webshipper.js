@@ -95,6 +95,13 @@ class Webshipper {
 
   buildShipmentEndpoints_ = () => {
     return {
+      retrieve: async (id) => {
+        const path = `/v2/shipments/${id}`
+        return this.client_({
+          method: "GET",
+          url: path,
+        }).then(({ data }) => data)
+      },
       create: async (data) => {
         const path = `/v2/shipments`
         return this.client_({

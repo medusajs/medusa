@@ -181,7 +181,13 @@ export const OrderServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  return: jest.fn().mockImplementation(order => {
+  requestReturn: jest.fn().mockImplementation(order => {
+    if (order === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
+  receiveReturn: jest.fn().mockImplementation(order => {
     if (order === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }
