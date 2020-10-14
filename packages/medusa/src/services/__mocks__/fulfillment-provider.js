@@ -22,6 +22,39 @@ export const DefaultProviderMock = {
   createOrder: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
   }),
+  getFulfillmentDocuments: jest.fn().mockImplementation(() => {
+    return Promise.resolve([
+      {
+        name: "Test",
+        type: "pdf",
+        base_64: "verylong",
+      },
+    ])
+  }),
+  createReturn: jest.fn().mockImplementation(data => {
+    return Promise.resolve({
+      ...data,
+      shipped: true,
+    })
+  }),
+  getReturnDocuments: jest.fn().mockImplementation(() => {
+    return Promise.resolve([
+      {
+        name: "Test Return",
+        type: "pdf",
+        base_64: "verylong return",
+      },
+    ])
+  }),
+  getShipmentDocuments: jest.fn().mockImplementation(() => {
+    return Promise.resolve([
+      {
+        name: "Test Shipment",
+        type: "pdf",
+        base_64: "verylong shipment",
+      },
+    ])
+  }),
 }
 
 export const FulfillmentProviderServiceMock = {

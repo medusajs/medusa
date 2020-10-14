@@ -1122,6 +1122,7 @@ class CartService extends BaseService {
       const newItems = await Promise.all(
         cart.items.map(async lineItem => {
           try {
+            lineItem.has_shipping = false
             lineItem.content = await this.updateContentPrice_(
               lineItem.content,
               region._id
