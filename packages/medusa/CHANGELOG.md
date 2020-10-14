@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.26](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.25...@medusajs/medusa@1.0.26) (2020-10-14)
+
+
+### Features
+
+* return shipping and flow ([#125](https://github.com/medusajs/medusa/issues/125)) ([c1e821d](https://github.com/medusajs/medusa/commit/c1e821d9d4d33756c7309e5cf110d7aa9b67297d))
+
+
+
+
+
 ## [1.0.25](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.24...@medusajs/medusa@1.0.25) (2020-10-08)
 
 **Note:** Version bump only for package @medusajs/medusa

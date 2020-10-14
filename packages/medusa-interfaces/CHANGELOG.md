@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.12](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.0.11...medusa-interfaces@1.0.12) (2020-10-14)
+
+
+### Features
+
+* return shipping and flow ([#125](https://github.com/medusajs/medusa/issues/125)) ([c1e821d](https://github.com/medusajs/medusa/commit/c1e821d9d4d33756c7309e5cf110d7aa9b67297d))
+
+
+
+
+
 ## 1.0.11 (2020-10-05)
 
 
