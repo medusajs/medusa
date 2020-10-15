@@ -124,6 +124,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
         ],
         sender_address: {
           att_contact: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          // Some carriers require a company_name
+          company_name: `${shipping_address.first_name} ${shipping_address.last_name}`,
           address_1: shipping_address.address_1,
           address_2: shipping_address.address_2,
           zip: shipping_address.postal_code,
