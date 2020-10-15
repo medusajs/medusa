@@ -110,6 +110,18 @@ class WebshipperFulfillmentService extends FulfillmentService {
         ext_ref: `${fromOrder._id}.${fromOrder.returns.length}`,
         is_return: true,
         included_documents: docs,
+        packages: [
+          {
+            weight: 100,
+            weight_unit: "g",
+            dimensions: {
+              unit: "cm",
+              height: 15,
+              width: 15,
+              length: 15,
+            },
+          },
+        ],
         sender_address: {
           att_contact: `${shipping_address.first_name} ${shipping_address.last_name}`,
           address_1: shipping_address.address_1,
