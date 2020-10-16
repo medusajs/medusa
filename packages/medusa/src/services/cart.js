@@ -442,6 +442,7 @@ class CartService extends BaseService {
         }
       )
       .then(result => {
+        console.log(result)
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
         return result
@@ -818,14 +819,43 @@ class CartService extends BaseService {
     return session
   }
 
-  /**
-   * Sets a payment method for a cart.
-   * @param {string} cartId - the id of the cart to add payment method to
-   * @param {PaymentMethod} paymentMethod - the method to be set to the cart
-   * @returns {Promise} result of update operation
-   */
-  async setPaymentMethod(cartId, paymentMethod) {
+  async authorizePaymentMethod(
+    cartId,
+    providerId,
+    paymentMethod,
+    context = {}
+  ) {
     const cart = await this.retrieve(cartId)
+
+    // Ensure that payment method is valid for cart
+    await this.validatePaymentMethod_(cart, paymentMethod)
+
+    const authorizedPayment = await this.paymentProviderService_.authorizePayment(
+      cart,
+      providerId,
+      paymentMethod,
+      context
+    )
+
+    paymentMethod.data = authorizedPayment
+
+    return this.cartModel_
+      .updateOne(
+        {
+          _id: cart._id,
+        },
+        {
+          $set: { payment_method: paymentMethod },
+        }
+      )
+      .then(result => {
+        // Notify subscribers
+        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        return result
+      })
+  }
+
+  async validatePaymentMethod_(cart, paymentMethod) {
     const region = await this.regionService_.retrieve(cart.region_id)
 
     // The region must have the provider id in its providers array
@@ -840,6 +870,19 @@ class CartService extends BaseService {
         `The payment method is not available in this region`
       )
     }
+  }
+
+  /**
+   * Sets a payment method for a cart.
+   * @param {string} cartId - the id of the cart to add payment method to
+   * @param {PaymentMethod} paymentMethod - the method to be set to the cart
+   * @returns {Promise} result of update operation
+   */
+  async setPaymentMethod(cartId, paymentMethod) {
+    const cart = await this.retrieve(cartId)
+
+    // Ensure that payment method is valid for cart
+    await this.validatePaymentMethod_(cart, paymentMethod)
 
     // At this point we can register the payment method.
     return this.cartModel_

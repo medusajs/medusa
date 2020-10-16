@@ -57,8 +57,6 @@ class AdyenSubscriber {
 
   async handleFailedAuthorization_(notification) {
     const cartId = notification.additionalData["metadata.cart_id"]
-    // We need to ensure, that an order is created in situations, where the
-    // customer might have closed their browser prior to order creation
     let cart = await this.cartService_.retrieve(cartId)
 
     const { payment_method } = cart

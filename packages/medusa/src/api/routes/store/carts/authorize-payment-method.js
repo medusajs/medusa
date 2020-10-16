@@ -14,22 +14,15 @@ export default async (req, res) => {
 
   try {
     const cartService = req.scope.resolve("cartService")
-    const paymentProvider = req.scope.resolve("paymentProviderService")
 
-    const cart = await cartService.retrieve(id)
-
-    const authorizedPayment = await paymentProvider.authorizePayment(
-      cart,
+    const authorizedCart = await cartService.authorizePaymentMethod(
+      id,
       provider_id,
       value.payment_method,
       req
     )
 
-    value.payment_method.data = authorizedPayment
-
-    await cartService.setPaymentMethod(cart._id, value.payment_method)
-
-    res.status(200).json({ data: authorizedPayment })
+    res.status(200).json({ cart: authorizedCart })
   } catch (err) {
     console.log(err)
     throw err

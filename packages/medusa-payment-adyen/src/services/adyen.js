@@ -181,8 +181,6 @@ class AdyenService extends BaseService {
     const region = await this.regionService_.retrieve(cart.region_id)
     const total = await this.totalsService_.getTotal(cart)
 
-    console.log(paymentData)
-
     const amount = {
       currency: region.currency_code,
       value: total * 100,
