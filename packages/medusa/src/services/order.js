@@ -452,7 +452,7 @@ class OrderService extends BaseService {
       .then(result => {
         this.eventBus_.emit(OrderService.Events.SHIPMENT_CREATED, {
           order_id: orderId,
-          shipment,
+          shipment: result.fulfillments.find(f => f._id.equals(fulfillmentId)),
         })
         return result
       })
