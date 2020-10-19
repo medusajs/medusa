@@ -22,6 +22,8 @@ export default async (req, res) => {
       value.details
     )
 
+    console.log("Additional details: ", result)
+
     const cart = await cartService.retrieve(value.cart_id)
 
     cart.payment_method.data = {

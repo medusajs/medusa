@@ -45,6 +45,8 @@ export default async (req, res) => {
       shopperIp
     )
 
+    console.log("Authorized payment: ", authorizedPayment)
+
     // MongoDB does not allow us to store keys with dots
     if (authorizedPayment.additionalData) {
       delete data.additionalData["recurring.shopperReference"]
