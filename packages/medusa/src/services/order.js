@@ -728,7 +728,7 @@ class OrderService extends BaseService {
         )
 
         const data = await provider
-          .createOrder(method.data, method.items, order)
+          .createOrder(method.data, method.items, { ...order })
           .then(res => {
             successfullyFulfilled = [...successfullyFulfilled, ...method.items]
             return res
