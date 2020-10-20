@@ -1146,6 +1146,7 @@ class CartService extends BaseService {
         )
       }
       shippingAddress.country_code = countryCode
+      update.shipping_address = shippingAddress
     } else {
       // If the country code of a shipping address is set we need to clear it
       if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
