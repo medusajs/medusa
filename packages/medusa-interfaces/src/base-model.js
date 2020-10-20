@@ -50,18 +50,13 @@ class BaseModel {
   /**
    * @private
    * Creates a mongoose model based on schema, schema options and model name.
-   * For each schema option, we add a key / value pair.
    * @return {Mongooose.Model} the mongoose model
    */
   createMongooseModel_() {
     const schema = this.getSchema()
     const options = this.getSchemaOptions()
 
-    const mongooseSchema = new mongoose.Schema(schema)
-
-    Object.keys(options).forEach(key => {
-      mongooseSchema.set(key, options[key])
-    })
+    const mongooseSchema = new mongoose.Schema(schema, options)
 
     return mongoose.model(this.getModelName(), mongooseSchema)
   }
