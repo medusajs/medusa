@@ -6,6 +6,7 @@ export default async (req, res) => {
 
   const schema = Validator.object().keys({
     region_id: Validator.string(),
+    country_code: Validator.string().optional(),
     email: Validator.string().email(),
     billing_address: Validator.address(),
     shipping_address: Validator.address(),
@@ -28,7 +29,7 @@ export default async (req, res) => {
 
   try {
     if (value.region_id) {
-      await cartService.setRegion(id, value.region_id)
+      await cartService.setRegion(id, value.region_id, value.country_code)
     }
 
     if (value.email) {
