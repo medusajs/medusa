@@ -201,6 +201,7 @@ class AdyenService extends BaseService {
       additionalData: {
         allow3DS2: true,
       },
+      redirectFromIssuerMethod: "GET",
       browserInfo: paymentData.data.browserInfo || {},
       billingAddress: {
         city: cart.shipping_address.city,
@@ -214,8 +215,6 @@ class AdyenService extends BaseService {
         cart_id: cart._id,
       },
     }
-
-    console.log(request)
 
     if (paymentData.data.storePaymentMethod) {
       request.storePaymentMethod = "true"
@@ -268,6 +267,7 @@ class AdyenService extends BaseService {
       paymentData,
       details,
     }
+
     const checkout = new CheckoutAPI(this.adyenClient_)
     return checkout.paymentsDetails(request)
   }
