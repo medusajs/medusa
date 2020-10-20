@@ -36,12 +36,34 @@ class BaseModel {
   }
 
   /**
+   * Returns the schema options defined in child class.
+   * @return {object} the schema options
+   */
+  getSchemaOptions() {
+    if (!this.constructor.schemaOptions) {
+      return {}
+    }
+
+    return this.constructor.schemaOptions
+  }
+
+  /**
    * @private
-   * Creates a mongoose model based on schema and model name.
+   * Creates a mongoose model based on schema, schema options and model name.
+   * For each schema option, we add a key / value pair.
    * @return {Mongooose.Model} the mongoose model
    */
   createMongooseModel_() {
-    return mongoose.model(this.getModelName(), this.getSchema())
+    const schema = this.getSchema()
+    const options = this.getSchemaOptions()
+
+    const mongooseSchema = new mongoose.Schema(schema)
+
+    Object.keys(options).forEach(key => {
+      mongooseSchema.set(key, options[key])
+    })
+
+    return mongoose.model(this.getModelName(), mongooseSchema)
   }
 
   /**
