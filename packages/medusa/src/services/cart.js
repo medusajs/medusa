@@ -1108,7 +1108,7 @@ class CartService extends BaseService {
    * @param {string} regionId - the id of the region to set the cart to
    * @return {Promise} the result of the update operation
    */
-  async setRegion(cartId, regionId) {
+  async setRegion(cartId, regionId, countryCode) {
     const cart = await this.retrieve(cartId)
     const region = await this.regionService_.retrieve(regionId)
 
@@ -1137,17 +1137,27 @@ class CartService extends BaseService {
       update.items = newItems.filter(i => !!i)
     }
 
-    // If the country code of a shipping address is set we need to clear it
     let shippingAddress = cart.shipping_address || {}
-    if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
-      shippingAddress.country_code = ""
-      update.shipping_address = shippingAddress
-    }
+    if (countryCode !== undefined) {
+      if (!region.countries.includes(countryCode)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Country not available in region`
+        )
+      }
+      shippingAddress.country_code = countryCode
+    } else {
+      // If the country code of a shipping address is set we need to clear it
+      if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
+        shippingAddress.country_code = ""
+        update.shipping_address = shippingAddress
+      }
 
-    // If there is only one country in the region preset it
-    if (region.countries.length === 1) {
-      shippingAddress.country_code = region.countries[0]
-      update.shipping_address = shippingAddress
+      // If there is only one country in the region preset it
+      if (region.countries.length === 1) {
+        shippingAddress.country_code = region.countries[0]
+        update.shipping_address = shippingAddress
+      }
     }
 
     // Shipping methods are determined by region so the user needs to find a
