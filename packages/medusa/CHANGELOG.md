@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.31](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.30...@medusajs/medusa@1.0.31) (2020-10-20)
+
+
+### Features
+
+* **medusa-interfaces:** Adds schema options to base model ([cc23a3b](https://github.com/medusajs/medusa/commit/cc23a3b0706c41ec57bb25ea3de9c6e39bd04f31))
+
+
+
+
+
 ## [1.0.30](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.29...@medusajs/medusa@1.0.30) (2020-10-20)
 
 **Note:** Version bump only for package @medusajs/medusa
