@@ -112,7 +112,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
         included_documents: docs,
         packages: [
           {
-            weight: 100,
+            weight: 500,
             weight_unit: "g",
             dimensions: {
               unit: "cm",
@@ -120,6 +120,23 @@ class WebshipperFulfillmentService extends FulfillmentService {
               width: 15,
               length: 15,
             },
+            customs_lines: returnLines.map((item) => {
+              return {
+                ext_ref: item._id,
+                sku: item.content.variant.sku,
+                description: item.title,
+                quantity: item.quantity,
+                country_of_origin:
+                  item.content.variant.metadata &&
+                  item.content.variant.metadata.origin_country,
+                tarif_number:
+                  item.content.variant.metadata &&
+                  item.content.variant.metadata.hs_code,
+                unit_price: item.content.unit_price,
+                vat_percent: fromOrder.tax_rate * 100,
+                currency: fromOrder.currency_code,
+              }
+            }),
           },
         ],
         sender_address: {
