@@ -163,7 +163,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
         return result.data
       })
       .catch((err) => {
-        console.log(err.response.data.errors)
         this.logger_.warn(err.response)
         throw err
       })
