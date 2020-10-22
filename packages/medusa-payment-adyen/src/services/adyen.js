@@ -1,6 +1,5 @@
 import axios from "axios"
 import _ from "lodash"
-import requestIp from "request-ip"
 import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
@@ -174,7 +173,7 @@ class AdyenService extends BaseService {
    * Creates and authorizes an Ayden payment
    * @param {Cart} cart - cart to authorize payment for
    * @param {Object} paymentData - method used for the payment
-   * @param {Object} request - express request object
+   * @param {Object} context - properties neeed in current context
    * @returns {Promise} result of the payment authorization
    */
   async authorizePayment(cart, paymentData, context) {
@@ -186,11 +185,9 @@ class AdyenService extends BaseService {
       value: total * 100,
     }
 
-    const shopperIp = requestIp.getClientIp(context)
-
     let request = {
       amount,
-      shopperIP: shopperIp,
+      shopperIP: context.shopperIp,
       shopperReference: cart.customer_id,
       paymentMethod: paymentData.data.paymentMethod,
       reference: cart._id,
@@ -331,11 +328,12 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Cancels an Ayden payment
-   * @param {Object} paymentData - payment data to cancel
-   * @returns {Object} payment data result of cancel
+   * Cancels an Ayden payment. In the context of Adyen, we cancel the payment
+   * since they don't have support for deleting it.
+   * @param {Object} paymentData - payment data to delete
+   * @returns {Object} payment data result of delete
    */
-  async cancelPayment(paymentData) {
+  async deletePayment(paymentData) {
     const { pspReference } = paymentData
 
     try {
@@ -349,14 +347,18 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Deletes an Ayden payment. In the context of Adyen, we cancel the payment
-   * since they don't have support for deleting it.
-   * @param {Object} paymentData - payment data to delete
-   * @returns {Object} payment data result of delete
+   * Cancels an Ayden payment.
+   * @param {Object} paymentData - payment data to cancel
+   * @returns {Object} payment data result of cancel
    */
-  async deletePayment(paymentData) {
+  async cancelPayment(paymentData) {
+    const { pspReference } = paymentData
+
     try {
-      return {}
+      return this.adyenPaymentApi.post("/cancel", {
+        originalReference: pspReference,
+        merchantAccount: this.options_.merchant_account,
+      })
     } catch (error) {
       throw error
     }

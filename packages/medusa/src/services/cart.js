@@ -11,6 +11,7 @@ class CartService extends BaseService {
     CUSTOMER_UPDATED: "cart.customer_updated",
     CREATED: "cart.created",
     UPDATED: "cart.updated",
+    PAYMENT_AUTHORIZED: "cart.payment_authorized",
   }
 
   constructor({
@@ -850,7 +851,7 @@ class CartService extends BaseService {
       )
       .then(result => {
         // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        this.eventBus_.emit(CartService.Events.PAYMENT_AUTHORIZED, result)
         return result
       })
   }

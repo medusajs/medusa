@@ -294,22 +294,7 @@ describe("OrderService", () => {
         })
       } catch (error) {
         expect(error.message).toEqual(
-          "Can't update shipping, billing, items and payment method when order is processed"
-        )
-      }
-    })
-
-    it("throws if payment method update is attempted after fulfillment", async () => {
-      try {
-        await orderService.update(IdMap.getId("fulfilled-order"), {
-          payment_method: {
-            provider_id: "test",
-            profile_id: "test",
-          },
-        })
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Can't update shipping, billing, items and payment method when order is processed"
+          "Can't update shipping, billing and items when order is processed"
         )
       }
     })
@@ -321,7 +306,7 @@ describe("OrderService", () => {
         })
       } catch (error) {
         expect(error.message).toEqual(
-          "Can't update shipping, billing, items and payment method when order is processed"
+          "Can't update shipping, billing and items when order is processed"
         )
       }
     })

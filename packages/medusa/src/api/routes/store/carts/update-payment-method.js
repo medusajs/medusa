@@ -1,9 +1,10 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id, provider_id } = req.params
+  const { id } = req.params
 
   const schema = Validator.object().keys({
+    provider_id: Validator.string().required(),
     data: Validator.object().optional(),
   })
 
@@ -16,7 +17,7 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
 
     let cart = await cartService.setPaymentMethod(id, {
-      provider_id,
+      provider_id: value.provider_id,
       data: value.data,
     })
     cart = await cartService.decorate(cart, [], ["region"])

@@ -1,4 +1,5 @@
 import { Validator, MedusaError } from "medusa-core-utils"
+import requestIp from "request-ip"
 
 export default async (req, res) => {
   const { id, provider_id } = req.params
@@ -15,11 +16,17 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
+    const shopperIp = requestIp.getClientIp(req)
+
+    const context = {
+      shopperIp,
+    }
+
     const authorizedCart = await cartService.authorizePaymentMethod(
       id,
       provider_id,
       value.payment_method,
-      req
+      context
     )
 
     res.status(200).json({ cart: authorizedCart })
