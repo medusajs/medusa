@@ -187,7 +187,7 @@ class AdyenService extends BaseService {
 
     let request = {
       amount,
-      shopperIP: context.shopperIp,
+      shopperIP: context.ip_address,
       shopperReference: cart.customer_id,
       paymentMethod: paymentData.data.paymentMethod,
       reference: cart._id,

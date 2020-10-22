@@ -278,7 +278,7 @@ class OrderService extends BaseService {
    */
   async createFromCart(cart) {
     // Create DB session for transaction
-    const dbSession = await mongoose.startSession()
+    const dbSession = await this.orderModel_.startSession()
 
     // Initialize DB transaction
     return dbSession
@@ -821,7 +821,7 @@ class OrderService extends BaseService {
           method.provider_id
         )
 
-        const data = provider
+        const data = await provider
           .createOrder(method.data, method.items, order)
           .then(res => {
             successfullyFulfilled = [...successfullyFulfilled, ...method.items]

@@ -16,10 +16,10 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
-    const shopperIp = requestIp.getClientIp(req)
+    const ipAddress = requestIp.getClientIp(req)
 
     const context = {
-      shopperIp,
+      ip_address: ipAddress,
     }
 
     const authorizedCart = await cartService.authorizePaymentMethod(
