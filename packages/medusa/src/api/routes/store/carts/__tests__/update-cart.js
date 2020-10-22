@@ -45,7 +45,8 @@ describe("POST /store/carts/:id", () => {
       expect(CartServiceMock.setRegion).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.setRegion).toHaveBeenCalledWith(
         IdMap.getId("emptyCart"),
-        IdMap.getId("testRegion")
+        IdMap.getId("testRegion"),
+        undefined
       )
     })
 
