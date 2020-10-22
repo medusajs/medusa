@@ -1,6 +1,21 @@
 import { IdMap } from "medusa-test-utils"
 
 export const shippingOptions = {
+  returnShipping: {
+    _id: IdMap.getId("return-shipping"),
+    is_return: true,
+    name: "Return Shipping",
+    region_id: IdMap.getId("region-france"),
+    profile_id: IdMap.getId("default-profile"),
+    data: {
+      id: "return_shipment",
+    },
+    price: {
+      type: "flat_rate",
+      amount: 20,
+    },
+    provider_id: "default_provider",
+  },
   freeShipping: {
     _id: IdMap.getId("freeShipping"),
     name: "Free Shipping",
@@ -53,6 +68,9 @@ export const shippingOptions = {
 
 export const ShippingOptionServiceMock = {
   retrieve: jest.fn().mockImplementation(optionId => {
+    if (optionId === IdMap.getId("return-shipping")) {
+      return Promise.resolve(shippingOptions.returnShipping)
+    }
     if (optionId === IdMap.getId("shipping1")) {
       return Promise.resolve(shippingOptions.shipping1)
     }

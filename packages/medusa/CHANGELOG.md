@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.32](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.31...@medusajs/medusa@1.0.32) (2020-10-20)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.31](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.30...@medusajs/medusa@1.0.31) (2020-10-20)
+
+
+### Features
+
+* **medusa-interfaces:** Adds schema options to base model ([cc23a3b](https://github.com/medusajs/medusa/commit/cc23a3b0706c41ec57bb25ea3de9c6e39bd04f31))
+
+
+
+
+
+## [1.0.30](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.29...@medusajs/medusa@1.0.30) (2020-10-20)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.29](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.28...@medusajs/medusa@1.0.29) (2020-10-20)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.28](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.27...@medusajs/medusa@1.0.28) (2020-10-19)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.27](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.26...@medusajs/medusa@1.0.27) (2020-10-17)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.26](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.25...@medusajs/medusa@1.0.26) (2020-10-14)
+
+
+### Features
+
+* return shipping and flow ([#125](https://github.com/medusajs/medusa/issues/125)) ([c1e821d](https://github.com/medusajs/medusa/commit/c1e821d9d4d33756c7309e5cf110d7aa9b67297d))
+
+
+
+
+
 ## [1.0.25](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.24...@medusajs/medusa@1.0.25) (2020-10-08)
 
 **Note:** Version bump only for package @medusajs/medusa

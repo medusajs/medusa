@@ -8,5 +8,6 @@ export default new mongoose.Schema({
   tracking_numbers: { type: [String], default: [] },
   shipped_at: { type: String },
   is_canceled: { type: Boolean, default: false },
+  documents: { type: [String], default: [] },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
 })
