@@ -196,7 +196,8 @@ class AdyenService extends BaseService {
       origin: this.options_.origin,
       channel: "Web",
       additionalData: {
-        allow3DS2: true,
+        // allow3DS2: true,
+        executeThreeD: false,
       },
       redirectFromIssuerMethod: "GET",
       browserInfo: paymentData.data.browserInfo || {},
