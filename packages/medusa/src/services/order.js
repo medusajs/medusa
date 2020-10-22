@@ -409,38 +409,43 @@ class OrderService extends BaseService {
     const order = await this.retrieve(orderId)
 
     let shipment
-    const updated = order.fulfillments.map(f => {
-      if (f._id.equals(fulfillmentId)) {
-        // For each item in the shipment, we set their status to shipped
-        f.items.map(item => {
-          const itemIdx = order.items.findIndex(el => el._id.equals(item._id))
-          // Update item in order.items and in fullfillment.items to
-          // ensure consistency
-          if (item !== -1) {
-            item.shipped_quantity = item.quantity
-            order.items[itemIdx].shipped_quantity += item.quantity
-          }
-        })
-        shipment = {
-          ...f,
-          tracking_numbers: trackingNumbers,
-          shipped_at: Date.now(),
-          metadata: {
-            ...f.metadata,
-            ...metadata,
-          },
-        }
-        return shipment
+
+    shipment = order.fulfillments.find(f => f._id.equals(fulfillmentId))
+
+    if (!shipment) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Could not find a fulfillment with the provided id`
+      )
+    }
+    // For each item in the shipment, we set their status to shipped
+    shipment.items.map(item => {
+      const itemIdx = order.items.findIndex(el => el._id.equals(item._id))
+      // Update item in order.items and in fullfillment.items to
+      // ensure consistency
+      if (item !== -1) {
+        item.shipped_quantity = item.quantity
+        order.items[itemIdx].shipped_quantity =
+          order.items[itemIdx].shipped_quantity || 0 + item.quantity
       }
-      return f
     })
+
+    const updated = {
+      ...shipment,
+      tracking_numbers: trackingNumbers,
+      shipped_at: Date.now(),
+      metadata: {
+        ...shipment.metadata,
+        ...metadata,
+      },
+    }
 
     // Add the shipment to the order
     return this.orderModel_
       .updateOne(
         { _id: orderId, "fulfillments._id": fulfillmentId },
         {
-          $set: { fulfillments: updated, items: order.items },
+          $set: { "fulfillments.$": updated, items: order.items },
         }
       )
       .then(result => {

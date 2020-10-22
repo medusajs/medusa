@@ -40,6 +40,7 @@ export default new mongoose.Schema(
     returned: { type: Boolean, default: false },
     fulfilled: { type: Boolean, default: false },
     fulfilled_quantity: { type: Number, default: 0 },
+    shipped_quantity: { type: Number, default: 0 },
     returned_quantity: { type: Number, default: 0 },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   },

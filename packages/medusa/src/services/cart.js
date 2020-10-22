@@ -443,7 +443,6 @@ class CartService extends BaseService {
         }
       )
       .then(result => {
-        console.log(result)
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
         return result

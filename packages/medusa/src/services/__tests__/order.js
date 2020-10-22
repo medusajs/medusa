@@ -343,6 +343,7 @@ describe("OrderService", () => {
                 _id: IdMap.getId("fulfillment"),
                 data: {},
                 is_canceled: true,
+                items: [],
                 provider_id: "default_provider",
               },
             ],
@@ -479,7 +480,7 @@ describe("OrderService", () => {
                         quantity: 1,
                       },
                       fulfilled_quantity: 10,
-                      fulfilled: 10,
+                      fulfilled: true,
                       quantity: 10,
                     },
                   ],
@@ -1105,14 +1106,16 @@ describe("OrderService", () => {
         },
         {
           $set: {
-            "fulfillments.$": {
-              _id: IdMap.getId("fulfillment"),
-              provider_id: "default_provider",
-              tracking_numbers: ["1234", "2345"],
-              data: {},
-              shipped_at: expect.anything(),
-              metadata: {},
-            },
+            fulfillments: [
+              {
+                _id: IdMap.getId("fulfillment"),
+                provider_id: "default_provider",
+                tracking_numbers: ["1234", "2345"],
+                data: {},
+                shipped_at: expect.anything(),
+                metadata: {},
+              },
+            ],
           },
         }
       )
