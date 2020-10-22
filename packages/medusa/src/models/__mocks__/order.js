@@ -62,6 +62,7 @@ export const orders = {
         _id: IdMap.getId("fulfillment"),
         provider_id: "default_provider",
         data: {},
+        items: [],
       },
     ],
     fulfillment_status: "not_fulfilled",
