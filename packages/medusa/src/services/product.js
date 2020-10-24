@@ -716,7 +716,8 @@ class ProductService extends BaseService {
     if (expandFields.includes("variants")) {
       decorated.variants = await this.retrieveVariants(product._id)
     }
-    return decorated
+    const final = await this.runDecorators_(decorated)
+    return final
   }
 
   /**

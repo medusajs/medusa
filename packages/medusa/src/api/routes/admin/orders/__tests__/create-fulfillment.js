@@ -11,6 +11,14 @@ describe("POST /admin/orders/:id/fulfillment", () => {
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/fulfillment`,
         {
+          payload: {
+            items: [
+              {
+                item_id: IdMap.getId("line1"),
+                quantity: 1,
+              },
+            ],
+          },
           adminSession: {
             jwt: {
               userId: IdMap.getId("admin_user"),
@@ -27,7 +35,14 @@ describe("POST /admin/orders/:id/fulfillment", () => {
     it("calls OrderService createFulfillment", () => {
       expect(OrderServiceMock.createFulfillment).toHaveBeenCalledTimes(1)
       expect(OrderServiceMock.createFulfillment).toHaveBeenCalledWith(
-        IdMap.getId("test-order")
+        IdMap.getId("test-order"),
+        [
+          {
+            item_id: IdMap.getId("line1"),
+            quantity: 1,
+          },
+        ],
+        undefined
       )
     })
 

@@ -42,6 +42,10 @@ describe("POST /store/customers/:id", () => {
       expect(subject.body.customer.first_name).toEqual("LeBron")
       expect(subject.body.customer.decorated).toEqual(true)
     })
+
+    it("status code 200", () => {
+      expect(subject.status).toEqual(200)
+    })
   })
 
   describe("fails if not authenticated", () => {

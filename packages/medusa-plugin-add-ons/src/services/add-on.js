@@ -197,6 +197,57 @@ class AddOnService extends BaseService {
       `A price for region: ${region.name} could not be found`
     )
   }
+
+  /**
+   * Decorates a add-on with add-on variants.
+   * @param {AddOn} addOn - the add-on to decorate.
+   * @param {string[]} fields - the fields to include.
+   * @param {string[]} expandFields - fields to expand.
+   * @return {AddOn} return the decorated add-on.
+   */
+  async decorate(addOn, fields, expandFields = []) {
+    const requiredFields = ["_id", "metadata"]
+    const decorated = _.pick(addOn, fields.concat(requiredFields))
+    if (expandFields.includes("valid_for")) {
+      decorated.valid_for = await Promise.all(
+        decorated.valid_for.map(
+          async (p) => await this.productService_.retrieve(p)
+        )
+      )
+    }
+    return decorated
+  }
+
+  /**
+   * Dedicated method to set metadata for an add-on.
+   * To ensure that plugins does not overwrite each
+   * others metadata fields, setMetadata is provided.
+   * @param {string} addOnId - the add-on to decorate.
+   * @param {string} key - key for metadata field
+   * @param {string} value - value for metadata field.
+   * @return {Promise} resolves to the updated result.
+   */
+  async setMetadata(addOnId, key, value) {
+    const validatedId = this.validateId_(addOnId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.addOnModel_
+      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .then((result) => {
+        this.eventBus_.emit(AddOnService.Events.UPDATED, result)
+        return result
+      })
+      .catch((err) => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
 }
 
 export default AddOnService

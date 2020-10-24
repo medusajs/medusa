@@ -37,6 +37,7 @@ export const ProductServiceMock = {
 
     return Promise.resolve({ ...data })
   }),
+  count: jest.fn().mockReturnValue(4),
   publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
       _id: IdMap.getId("publish"),

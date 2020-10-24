@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+import Scrypt from "scrypt-kdf"
 import { IdMap } from "medusa-test-utils"
 
 export const CustomerServiceMock = {
@@ -43,9 +43,10 @@ export const CustomerServiceMock = {
       })
     }
     if (email === "oliver@test.dk") {
-      return bcrypt
-        .hash("123456789", 10)
-        .then(hash => ({ email, password_hash: hash }))
+      return Scrypt.kdf("123456789", { logN: 1, r: 1, p: 1 }).then(hash => ({
+        email,
+        password_hash: hash.toString("base64"),
+      }))
     }
     return Promise.resolve(undefined)
   }),

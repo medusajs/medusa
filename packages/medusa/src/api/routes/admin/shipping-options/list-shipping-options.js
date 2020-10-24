@@ -2,7 +2,7 @@ import _ from "lodash"
 
 export default async (req, res) => {
   try {
-    const query = _.pick(req.query, ["region_id", "region_id[]"])
+    const query = _.pick(req.query, ["region_id", "region_id[]", "is_return"])
 
     const optionService = req.scope.resolve("shippingOptionService")
     const data = await optionService.list(query)

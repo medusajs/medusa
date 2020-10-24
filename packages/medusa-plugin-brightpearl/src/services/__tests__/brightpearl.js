@@ -1,5 +1,6 @@
 import BrightpearlService from "../brightpearl"
-import Brightpearl, { mockCreateOrder } from "../../utils/brightpearl"
+import { mockCreateOrder } from "../../utils/brightpearl"
+import MockAdapter from "axios-mock-adapter"
 
 jest.mock("../../utils/brightpearl")
 
@@ -46,6 +47,47 @@ const RegionService = {
 }
 
 describe("BrightpearlService", () => {
+  describe("getClient", () => {
+    it("creates client", async () => {
+      let token = "bad"
+      const oauth = {
+        refreshToken: () => {
+          token = "good"
+          return Promise.resolve({
+            data: {
+              access_token: "good",
+            },
+          })
+        },
+        retrieveByName: () => {
+          return Promise.resolve({
+            data: {
+              access_token: token,
+            },
+          })
+        },
+      }
+
+      const bpService = new BrightpearlService({ oauthService: oauth }, {})
+      const client = await bpService.getClient()
+
+      const mockServer = new MockAdapter(client.client)
+
+      mockServer.onGet("/success").reply(() => {
+        return [200]
+      })
+      mockServer.onGet("/fail").reply((req) => {
+        if (req.headers.Authorization === "Bearer good") {
+          return [200]
+        }
+        return [401]
+      })
+
+      await client.test.fail()
+      await client.test.fail()
+    })
+  })
+
   describe("createSalesOrder", () => {
     const order = {
       items: [
