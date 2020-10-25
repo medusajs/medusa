@@ -300,54 +300,63 @@ class OrderService extends BaseService {
           )
         }
 
-        // Throw if payment method does not exist
-        if (!cart.payment_method) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Cart does not contain a payment method"
-          )
-        }
+        const total = await this.totalsService_.getTotal(cart)
 
+        let paymentSession = {}
+        let paymentData = {}
         const { payment_method, payment_sessions } = cart
 
-        if (!payment_sessions || !payment_sessions.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "cart must have payment sessions"
+        // Would be the case if a discount code is applied that covers the item
+        // total
+        if (total !== 0) {
+          // Throw if payment method does not exist
+          if (!payment_method) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Cart does not contain a payment method"
+            )
+          }
+
+          if (!payment_sessions || !payment_sessions.length) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "cart must have payment sessions"
+            )
+          }
+
+          paymentSession = payment_sessions.find(
+            ps => ps.provider_id === payment_method.provider_id
           )
-        }
 
-        let paymentSession = payment_sessions.find(
-          ps => ps.provider_id === payment_method.provider_id
-        )
+          // Throw if payment method does not exist
+          if (!paymentSession) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Cart does not have an authorized payment session"
+            )
+          }
 
-        // Throw if payment method does not exist
-        if (!paymentSession) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Cart does not have an authorized payment session"
+          const paymentProvider = this.paymentProviderService_.retrieveProvider(
+            paymentSession.provider_id
+          )
+          const paymentStatus = await paymentProvider.getStatus(
+            paymentSession.data
+          )
+
+          // If payment status is not authorized, we throw
+          if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Payment method is not authorized"
+            )
+          }
+
+          paymentData = await paymentProvider.retrievePayment(
+            paymentSession.data
           )
         }
 
         const region = await this.regionService_.retrieve(cart.region_id)
-        const paymentProvider = this.paymentProviderService_.retrieveProvider(
-          paymentSession.provider_id
-        )
-        const paymentStatus = await paymentProvider.getStatus(
-          paymentSession.data
-        )
-
-        // If payment status is not authorized, we throw
-        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Payment method is not authorized"
-          )
-        }
-
-        const paymentData = await paymentProvider.retrievePayment(
-          paymentSession.data
-        )
 
         // Generate gift cards if in cart
         const items = await Promise.all(
@@ -377,12 +386,17 @@ class OrderService extends BaseService {
           })
         )
 
-        const o = {
-          display_id: await this.counterService_.getNext("orders"),
-          payment_method: {
+        let payment = {}
+        if (paymentSession.provider_id) {
+          payment = {
             provider_id: paymentSession.provider_id,
             data: paymentData,
-          },
+          }
+        }
+
+        const o = {
+          display_id: await this.counterService_.getNext("orders"),
+          payment_method: payment,
           discounts: cart.discounts,
           shipping_methods: cart.shipping_methods,
           items,

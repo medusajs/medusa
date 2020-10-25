@@ -45,6 +45,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       paymentProviderService: PaymentProviderServiceMock,
+      totalsService: TotalsServiceMock,
       discountService: DiscountServiceMock,
       regionService: RegionServiceMock,
       eventBusService: EventBusServiceMock,
@@ -56,7 +57,10 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.createFromCart(carts.completeCart)
+      await orderService.createFromCart({
+        ...carts.completeCart,
+        total: 100,
+      })
 
       const order = {
         ...carts.completeCart,
@@ -74,8 +78,34 @@ describe("OrderService", () => {
       })
     })
 
+    it("creates cart with 0 total", async () => {
+      await orderService.createFromCart({
+        ...carts.completeCart,
+        total: 0,
+      })
+
+      const order = {
+        ...carts.completeCart,
+        payment_method: {},
+        currency_code: "eur",
+        cart_id: carts.completeCart._id,
+        tax_rate: 0.25,
+        metadata: {},
+      }
+      delete order._id
+      delete order.payment_sessions
+
+      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
+      expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
+        session: expect.anything(),
+      })
+    })
+
     it("creates cart with gift card", async () => {
-      await orderService.createFromCart(carts.withGiftCard)
+      await orderService.createFromCart({
+        ...carts.withGiftCard,
+        total: 100,
+      })
 
       const order = {
         ...carts.withGiftCard,
