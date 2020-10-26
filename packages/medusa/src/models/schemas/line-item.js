@@ -3,6 +3,9 @@
  ******************************************************************************/
 import mongoose from "mongoose"
 
+/**
+ * REMEMBER: Update line item service validate as well
+ */
 export default new mongoose.Schema(
   {
     title: { type: String, required: true },

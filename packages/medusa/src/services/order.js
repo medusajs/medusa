@@ -358,34 +358,6 @@ class OrderService extends BaseService {
 
         const region = await this.regionService_.retrieve(cart.region_id)
 
-        // Generate gift cards if in cart
-        const items = await Promise.all(
-          cart.items.map(async i => {
-            if (i.is_giftcard) {
-              const giftcard = await this.discountService_
-                .generateGiftCard(i.content.unit_price, region._id)
-                .then(result => {
-                  this.eventBus_.emit(OrderService.Events.GIFT_CARD_CREATED, {
-                    line_item: i,
-                    currency_code: region.currency_code,
-                    tax_rate: region.tax_rate,
-                    giftcard: result,
-                    email: cart.email,
-                  })
-                  return result
-                })
-              return {
-                ...i,
-                metadata: {
-                  ...i.metadata,
-                  giftcard: giftcard._id,
-                },
-              }
-            }
-            return i
-          })
-        )
-
         let payment = {}
         if (paymentSession.provider_id) {
           payment = {
@@ -399,7 +371,7 @@ class OrderService extends BaseService {
           payment_method: payment,
           discounts: cart.discounts,
           shipping_methods: cart.shipping_methods,
-          items,
+          items: cart.items,
           shipping_address: cart.shipping_address,
           billing_address: cart.shipping_address,
           region_id: cart.region_id,
@@ -411,9 +383,11 @@ class OrderService extends BaseService {
           metadata: cart.metadata || {},
         }
 
-        const orderDocument = await this.orderModel_.create([o], {
-          session: dbSession,
-        })
+        const orderDocument = await this.orderModel_
+          .create([o], {
+            session: dbSession,
+          })
+          .catch(err => console.log(err))
 
         // Emit and return
         this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])

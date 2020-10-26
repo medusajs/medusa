@@ -112,6 +112,7 @@ class EventBusService {
     return Promise.all(
       observers.map(subscriber => {
         return subscriber(data).catch(err => {
+          console.log(err)
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
