@@ -73,6 +73,7 @@
     "redis": "^3.0.2",
     "resolve-cwd": "^3.0.0",
     "scrypt-kdf": "^2.0.1",
+    "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
   "gitHead": "b54e28769a423c9285a1119535cfa1590d08a559"
