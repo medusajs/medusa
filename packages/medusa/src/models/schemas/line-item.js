@@ -4,7 +4,8 @@
 import mongoose from "mongoose"
 
 /**
- * REMEMBER: Update line item service validate as well
+ * REMEMBER: When updating this line you must also update the LineItemService's 
+ * validate method too. Otherwise we cannot copy lines directly. 
  */
 export default new mongoose.Schema(
   {
