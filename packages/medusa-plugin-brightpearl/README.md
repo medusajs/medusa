@@ -13,8 +13,9 @@ Sends orders to Brightpearl, listens for stock movements, handles returns.
   default_status_id: [the status id to assign new orders with] (optional: defaults to 1)
   payment_method_code: [the method code to register payments with] (optional: defaults to 1220)
   sales_account_code: [nominal code to assign line items to] (optional: defaults to 4000)
-  shipping_account_code: [nominal code to assign shipping line to] (optional: defaults to 4040)jk
+  shipping_account_code: [nominal code to assign shipping line to] (optional: defaults to 4040)
   discount_account_code: [nominal code to use for Discount-type refunds] (optional)
+  gift_card_account_code: [nominal code to use for gift card products and redeems] (optional: default to 4000)
   inventory_sync_cron: [cron pattern for inventory sync, if left out the job will not be created] (default: false)
 ```
 

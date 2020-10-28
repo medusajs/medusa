@@ -199,7 +199,10 @@ class TotalsService extends BaseService {
       if (type === "percentage") {
         percentage = value / 100
       } else if (type === "fixed") {
-        percentage = value / subtotal
+        // If the fixed discount exceeds the subtotal we should
+        // calculate a 100% discount
+        const nominator = Math.min(value, subtotal)
+        percentage = nominator / subtotal
       }
 
       return cart.items.map(item => {
@@ -275,7 +278,7 @@ class TotalsService extends BaseService {
     if (type === "percentage" && allocation === "total") {
       toReturn = (subtotal / 100) * value
     } else if (type === "percentage" && allocation === "item") {
-      const itemPercentageDiscounts = await this.getAllocationItemDiscounts(
+      const itemPercentageDiscounts = this.getAllocationItemDiscounts(
         discount,
         cart,
         "percentage"
@@ -284,7 +287,7 @@ class TotalsService extends BaseService {
     } else if (type === "fixed" && allocation === "total") {
       toReturn = value
     } else if (type === "fixed" && allocation === "item") {
-      const itemFixedDiscounts = await this.getAllocationItemDiscounts(
+      const itemFixedDiscounts = this.getAllocationItemDiscounts(
         discount,
         cart,
         "fixed"
