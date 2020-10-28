@@ -538,7 +538,10 @@ class BrightpearlService extends BaseService {
       })
     )
 
-    // If a gift card was applied to the order we
+    // If a gift card was applied to the order we reduce the order amount 
+    // correspondingly. This reduces the amount payable, while debiting the
+    // gift card account that was previously credited, when the gift card was
+    // purchased.
     if (discount && discount.is_giftcard) {
       const discountTotal = await this.totalsService_.getDiscountTotal(
         fromOrder
