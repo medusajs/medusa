@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.33](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.32...@medusajs/medusa@1.0.33) (2020-10-28)
+
+
+### Features
+
+* **medusa:** adds support for gift cards ([#132](https://github.com/medusajs/medusa/issues/132)) ([f2c62cd](https://github.com/medusajs/medusa/commit/f2c62cd2321c9013c15160a80598f912daef4647))
+
+
+
+
+
 ## [1.0.32](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.31...@medusajs/medusa@1.0.32) (2020-10-20)
 
 **Note:** Version bump only for package @medusajs/medusa
