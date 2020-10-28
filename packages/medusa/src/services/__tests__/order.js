@@ -135,7 +135,6 @@ describe("OrderService", () => {
             description: "Gift card line",
             thumbnail: "test-img-yeah.com/thumb",
             metadata: {
-              giftcard: IdMap.getId("gift_card_id"),
               name: "Test Name",
             },
             is_giftcard: true,
@@ -159,24 +158,6 @@ describe("OrderService", () => {
 
       delete order._id
       delete order.payment_sessions
-
-      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(2)
-      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-        "order.gift_card_created",
-        {
-          currency_code: "eur",
-          tax_rate: 0.25,
-          email: "test",
-          giftcard: expect.any(Object),
-          line_item: expect.any(Object),
-        }
-      )
-
-      expect(DiscountServiceMock.generateGiftCard).toHaveBeenCalledTimes(1)
-      expect(DiscountServiceMock.generateGiftCard).toHaveBeenCalledWith(
-        100,
-        IdMap.getId("region-france")
-      )
 
       expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.create).toHaveBeenCalledWith([order], {

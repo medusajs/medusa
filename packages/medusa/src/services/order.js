@@ -1252,6 +1252,7 @@ class OrderService extends BaseService {
     o.refunded_total = await this.totalsService_.getRefundedTotal(order)
     o.refundable_amount = o.total - o.refunded_total
     o.created = order._id.getTimestamp()
+
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
