@@ -300,92 +300,78 @@ class OrderService extends BaseService {
           )
         }
 
-        // Throw if payment method does not exist
-        if (!cart.payment_method) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Cart does not contain a payment method"
-          )
-        }
+        const total = await this.totalsService_.getTotal(cart)
 
+        let paymentSession = {}
+        let paymentData = {}
         const { payment_method, payment_sessions } = cart
 
-        if (!payment_sessions || !payment_sessions.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "cart must have payment sessions"
+        // Would be the case if a discount code is applied that covers the item
+        // total
+        if (total !== 0) {
+          // Throw if payment method does not exist
+          if (!payment_method) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Cart does not contain a payment method"
+            )
+          }
+
+          if (!payment_sessions || !payment_sessions.length) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "cart must have payment sessions"
+            )
+          }
+
+          paymentSession = payment_sessions.find(
+            ps => ps.provider_id === payment_method.provider_id
           )
-        }
 
-        let paymentSession = payment_sessions.find(
-          ps => ps.provider_id === payment_method.provider_id
-        )
+          // Throw if payment method does not exist
+          if (!paymentSession) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Cart does not have an authorized payment session"
+            )
+          }
 
-        // Throw if payment method does not exist
-        if (!paymentSession) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Cart does not have an authorized payment session"
+          const paymentProvider = this.paymentProviderService_.retrieveProvider(
+            paymentSession.provider_id
+          )
+          const paymentStatus = await paymentProvider.getStatus(
+            paymentSession.data
+          )
+
+          // If payment status is not authorized, we throw
+          if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Payment method is not authorized"
+            )
+          }
+
+          paymentData = await paymentProvider.retrievePayment(
+            paymentSession.data
           )
         }
 
         const region = await this.regionService_.retrieve(cart.region_id)
-        const paymentProvider = this.paymentProviderService_.retrieveProvider(
-          paymentSession.provider_id
-        )
-        const paymentStatus = await paymentProvider.getStatus(
-          paymentSession.data
-        )
 
-        // If payment status is not authorized, we throw
-        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Payment method is not authorized"
-          )
+        let payment = {}
+        if (paymentSession.provider_id) {
+          payment = {
+            provider_id: paymentSession.provider_id,
+            data: paymentData,
+          }
         }
-
-        const paymentData = await paymentProvider.retrievePayment(
-          paymentSession.data
-        )
-
-        // Generate gift cards if in cart
-        const items = await Promise.all(
-          cart.items.map(async i => {
-            if (i.is_giftcard) {
-              const giftcard = await this.discountService_
-                .generateGiftCard(i.content.unit_price, region._id)
-                .then(result => {
-                  this.eventBus_.emit(OrderService.Events.GIFT_CARD_CREATED, {
-                    line_item: i,
-                    currency_code: region.currency_code,
-                    tax_rate: region.tax_rate,
-                    giftcard: result,
-                    email: cart.email,
-                  })
-                  return result
-                })
-              return {
-                ...i,
-                metadata: {
-                  ...i.metadata,
-                  giftcard: giftcard._id,
-                },
-              }
-            }
-            return i
-          })
-        )
 
         const o = {
           display_id: await this.counterService_.getNext("orders"),
-          payment_method: {
-            provider_id: paymentSession.provider_id,
-            data: paymentData,
-          },
+          payment_method: payment,
           discounts: cart.discounts,
           shipping_methods: cart.shipping_methods,
-          items,
+          items: cart.items,
           shipping_address: cart.shipping_address,
           billing_address: cart.shipping_address,
           region_id: cart.region_id,
@@ -397,9 +383,11 @@ class OrderService extends BaseService {
           metadata: cart.metadata || {},
         }
 
-        const orderDocument = await this.orderModel_.create([o], {
-          session: dbSession,
-        })
+        const orderDocument = await this.orderModel_
+          .create([o], {
+            session: dbSession,
+          })
+          .catch(err => console.log(err))
 
         // Emit and return
         this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
@@ -1264,6 +1252,7 @@ class OrderService extends BaseService {
     o.refunded_total = await this.totalsService_.getRefundedTotal(order)
     o.refundable_amount = o.total - o.refunded_total
     o.created = order._id.getTimestamp()
+
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
