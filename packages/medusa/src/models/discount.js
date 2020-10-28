@@ -15,6 +15,8 @@ class DiscountModel extends BaseModel {
     starts_at: { type: Date },
     ends_at: { type: Date },
     regions: { type: [String], default: [] },
+    original_amount: { type: Number },
+    created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }

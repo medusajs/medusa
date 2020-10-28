@@ -37,15 +37,17 @@ class LineItemService extends BaseService {
     })
 
     const lineItemSchema = Validator.object({
+      _id: Validator.any().optional(),
       title: Validator.string().required(),
-      is_giftcard: Validator.bool().optional(),
-      should_merge: Validator.bool().optional(),
       description: Validator.string()
         .allow("")
         .optional(),
       thumbnail: Validator.string()
         .allow("")
         .optional(),
+      is_giftcard: Validator.bool().optional(),
+      should_merge: Validator.bool().optional(),
+      has_shipping: Validator.bool().optional(),
       content: Validator.alternatives()
         .try(content, Validator.array().items(content))
         .required(),
@@ -53,6 +55,18 @@ class LineItemService extends BaseService {
         .integer()
         .min(1)
         .required(),
+      returned: Validator.bool().optional(),
+      fulfilled: Validator.bool().optional(),
+      shipped: Validator.bool().optional(),
+      fulfilled_quantity: Validator.number()
+        .integer()
+        .optional(),
+      returned_quantity: Validator.number()
+        .integer()
+        .optional(),
+      shipped_quantity: Validator.number()
+        .integer()
+        .optional(),
       metadata: Validator.object().default({}),
     })
 
