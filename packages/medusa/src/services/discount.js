@@ -248,6 +248,7 @@ class DiscountService extends BaseService {
       discount_rule: discountRule,
       is_giftcard: true,
       regions: [region._id],
+      original_amount: value,
     })
   }
 
@@ -444,13 +445,42 @@ class DiscountService extends BaseService {
    * @return {Discount} return the decorated discount.
    */
   async decorate(discount, fields = [], expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
+    const requiredFields = [
+      "_id",
+      "code",
+      "regions",
+      "discount_rule",
+      "is_dynamic",
+      "is_giftcard",
+      "disabled",
+      "metadata",
+    ]
     const decorated = _.pick(discount, fields.concat(requiredFields))
 
     if (expandFields.includes("valid_for")) {
+      let prods = {}
       decorated.discount_rule.valid_for = await Promise.all(
         decorated.discount_rule.valid_for.map(async p => {
-          return this.productService_.retrieve(p)
+          if (p in prods) {
+            return prods[p]
+          }
+          const next = await this.productService_.retrieve(p)
+          prods[p] = next
+          return next
+        })
+      )
+    }
+
+    if (expandFields.includes("regions")) {
+      let regions = {}
+      decorated.regions = await Promise.all(
+        decorated.regions.map(async r => {
+          if (r in regions) {
+            return regions[r]
+          }
+          const next = await this.regionService_.retrieve(r)
+          regions[r] = next
+          return next
         })
       )
     }
