@@ -29,7 +29,6 @@ class OrderModel extends BaseModel {
     items: { type: [LineItemSchema], required: true },
     currency_code: { type: String, required: true },
     tax_rate: { type: Number, required: true },
-    shipments: { type: [ShipmentSchema], default: [] },
     fulfillments: { type: [FulfillmentSchema], default: [] },
     returns: { type: [ReturnSchema], default: [] },
     refunds: { type: [RefundSchema], default: [] },
