@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.34](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.33...@medusajs/medusa@1.0.34) (2020-10-31)
+
+
+### Bug Fixes
+
+* adds field selection to list order endpoint ([#133](https://github.com/medusajs/medusa/issues/133)) ([b1786ce](https://github.com/medusajs/medusa/commit/b1786ce9d8684b1611c994380e39b25c3ac181a1))
+
+
+
+
+
 ## [1.0.33](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.32...@medusajs/medusa@1.0.33) (2020-10-28)
 
 
