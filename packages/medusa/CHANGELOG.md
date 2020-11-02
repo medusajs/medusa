@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.35](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.34...@medusajs/medusa@1.0.35) (2020-11-02)
+
+
+### Bug Fixes
+
+* add country code on preCartCreation ([e3faa64](https://github.com/medusajs/medusa/commit/e3faa646a7b91d2686b56718df46bea5b709731b))
+
+
+
+
+
 ## [1.0.34](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.33...@medusajs/medusa@1.0.34) (2020-10-31)
 
 
