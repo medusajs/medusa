@@ -40,7 +40,7 @@ export const DiscountServiceMock = {
     })
   }),
   list: jest.fn().mockImplementation(data => {
-    return Promise.resolve([])
+    return Promise.resolve([{}])
   }),
   decorate: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)

@@ -1,12 +1,12 @@
 class OrderSubscriber {
   constructor({
     paymentProviderService,
-    cartService,
     customerService,
     eventBusService,
     discountService,
     totalsService,
     orderService,
+    regionService,
   }) {
     this.totalsService_ = totalsService
 
@@ -16,7 +16,9 @@ class OrderSubscriber {
 
     this.discountService_ = discountService
 
-    this.cartService_ = cartService
+    this.orderService_ = orderService
+
+    this.regionService_ = regionService
 
     this.orderService_ = orderService
 
@@ -34,6 +36,8 @@ class OrderSubscriber {
     })
 
     this.eventBus_.subscribe("order.placed", this.handleDiscounts)
+
+    this.eventBus_.subscribe("order.placed", this.handleGiftCards)
   }
 
   handleDiscounts = async order => {
@@ -60,6 +64,40 @@ class OrderSubscriber {
         }
       })
     )
+  }
+
+  handleGiftCards = async order => {
+    const region = await this.regionService_.retrieve(order.region_id)
+    const items = await Promise.all(
+      order.items.map(async i => {
+        if (i.is_giftcard) {
+          const giftcard = await this.discountService_
+            .generateGiftCard(i.content.unit_price, region._id)
+            .then(result => {
+              this.eventBus_.emit("order.gift_card_created", {
+                line_item: i,
+                currency_code: region.currency_code,
+                tax_rate: region.tax_rate,
+                giftcard: result,
+                email: order.email,
+              })
+              return result
+            })
+          return {
+            ...i,
+            metadata: {
+              ...i.metadata,
+              giftcard: giftcard._id,
+            },
+          }
+        }
+        return i
+      })
+    )
+
+    return this.orderService_.update(order._id, {
+      items,
+    })
   }
 }
 

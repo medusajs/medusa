@@ -304,63 +304,53 @@ class OrderService extends BaseService {
           )
         }
 
-        // Throw if payment method does not exist
-        if (!cart.payment_method) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Cart does not contain a payment method"
-          )
-        }
+        const total = await this.totalsService_.getTotal(cart)
 
+        let paymentData = {}
         const { payment_method } = cart
 
-        const region = await this.regionService_.retrieve(cart.region_id)
-        const paymentProvider = this.paymentProviderService_.retrieveProvider(
-          payment_method.provider_id
-        )
-        const paymentStatus = await paymentProvider.getStatus(
-          payment_method.data
-        )
+        // Would be the case if a discount code is applied that covers the item
+        // total
+        if (total !== 0) {
+          // Throw if payment method does not exist
+          if (!payment_method) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Cart does not contain a payment method"
+            )
+          }
 
-        // If payment status is not authorized, we throw
-        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Payment method is not authorized"
+          const paymentProvider = this.paymentProviderService_.retrieveProvider(
+            payment_method.provider_id
+          )
+          const paymentStatus = await paymentProvider.getStatus(
+            payment_method.data
+          )
+
+          // If payment status is not authorized, we throw
+          if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              "Payment method is not authorized"
+            )
+          }
+
+          paymentData = await paymentProvider.retrievePayment(
+            payment_method.data
           )
         }
 
         const paymentData = await paymentProvider.retrievePayment(
           payment_method.data
         )
+        const region = await this.regionService_.retrieve(cart.region_id)
 
-        // Generate gift cards if in cart
-        const items = await Promise.all(
-          cart.items.map(async i => {
-            if (i.is_giftcard) {
-              const giftcard = await this.discountService_
-                .generateGiftCard(i.content.unit_price, region._id)
-                .then(result => {
-                  this.eventBus_.emit(OrderService.Events.GIFT_CARD_CREATED, {
-                    line_item: i,
-                    currency_code: region.currency_code,
-                    tax_rate: region.tax_rate,
-                    giftcard: result,
-                    email: cart.email,
-                  })
-                  return result
-                })
-              return {
-                ...i,
-                metadata: {
-                  ...i.metadata,
-                  giftcard: giftcard._id,
-                },
-              }
-            }
-            return i
-          })
-        )
+        if (payment_method.provider_id) {
+          payment = {
+            provider_id: payment_method.provider_id,
+            data: paymentData,
+          }
+        }
 
         const o = {
           display_id: await this.counterService_.getNext("orders", dbSession),
@@ -370,7 +360,7 @@ class OrderService extends BaseService {
           },
           discounts: cart.discounts,
           shipping_methods: cart.shipping_methods,
-          items,
+          items: cart.items,
           shipping_address: cart.shipping_address,
           billing_address: cart.shipping_address,
           region_id: cart.region_id,
@@ -382,9 +372,11 @@ class OrderService extends BaseService {
           metadata: cart.metadata || {},
         }
 
-        const orderDocument = await this.orderModel_.create([o], {
-          session: dbSession,
-        })
+        const orderDocument = await this.orderModel_
+          .create([o], {
+            session: dbSession,
+          })
+          .catch(err => console.log(err))
 
         // Emit and return
         this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
@@ -1412,32 +1404,96 @@ class OrderService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Order} return the decorated order.
    */
-  async decorate(order, fields, expandFields = []) {
-    const o = order
-    o.shipping_total = await this.totalsService_.getShippingTotal(order)
-    o.discount_total = await this.totalsService_.getDiscountTotal(order)
-    o.tax_total = await this.totalsService_.getTaxTotal(order)
-    o.subtotal = await this.totalsService_.getSubtotal(order)
-    o.total = await this.totalsService_.getTotal(order)
-    o.refunded_total = await this.totalsService_.getRefundedTotal(order)
-    o.refundable_amount = o.total - o.refunded_total
+  async decorate(order, fields = [], expandFields = []) {
+    if (fields.length === 0) {
+      // Default to include all fields
+      fields = [
+        "_id",
+        "display_id",
+        "status",
+        "fulfillment_status",
+        "payment_status",
+        "email",
+        "cart_id",
+        "billing_address",
+        "shipping_address",
+        "items",
+        "currency_code",
+        "tax_rate",
+        "fulfillments",
+        "returns",
+        "refunds",
+        "region_id",
+        "discounts",
+        "customer_id",
+        "payment_method",
+        "shipping_methods",
+        "documents",
+        "created",
+        "metadata",
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "subtotal",
+        "total",
+        "refunded_total",
+        "refundable_amount",
+      ]
+    }
+    const requiredFields = [
+      "_id",
+      "display_id",
+      "fulfillment_status",
+      "payment_status",
+      "status",
+      "currency_code",
+      "region_id",
+      "metadata",
+    ]
+    const o = _.pick(order, fields.concat(requiredFields))
+
+    if (fields.includes("shipping_total")) {
+      o.shipping_total = await this.totalsService_.getShippingTotal(order)
+    }
+    if (fields.includes("discount_total")) {
+      o.discount_total = await this.totalsService_.getDiscountTotal(order)
+    }
+    if (fields.includes("tax_total")) {
+      o.tax_total = await this.totalsService_.getTaxTotal(order)
+    }
+    if (fields.includes("subtotal")) {
+      o.subtotal = await this.totalsService_.getSubtotal(order)
+    }
+    if (fields.includes("total")) {
+      o.total = await this.totalsService_.getTotal(order)
+    }
+    if (fields.includes("refunded_total")) {
+      o.refunded_total = await this.totalsService_.getRefundedTotal(order)
+    }
+    if (fields.includes("refundable_amount")) {
+      o.refundable_amount = o.total - o.refunded_total
+    }
+
     o.created = order._id.getTimestamp()
+
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
 
-    o.items = o.items.map(i => {
-      return {
-        ...i,
-        refundable: this.totalsService_.getLineItemRefund(o, {
+    if (fields.includes("items")) {
+      o.items = order.items.map(i => {
+        return {
           ...i,
-          quantity: i.quantity - i.returned_quantity,
-        }),
-      }
-    })
+          refundable: this.totalsService_.getLineItemRefund(o, {
+            ...i,
+            quantity: i.quantity - i.returned_quantity,
+          }),
+        }
+      })
+    }
 
-    const final = await this.runDecorators_(o)
-    return final
+    const data = await this.runDecorators_(o)
+    return data
   }
 
   /**
