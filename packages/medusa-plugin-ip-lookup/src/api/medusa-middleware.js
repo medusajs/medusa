@@ -26,6 +26,7 @@ export default {
       // If this region exists, add it to the body of the cart creation request
       if (regions[0]) {
         req.body.region_id = regions[0]._id.toString()
+        req.body.country_code = data.country_code
       }
 
       next()

@@ -1,5 +1,6 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import _ from "lodash"
 
 /**
  * Provides layer to manipulate line items.
@@ -36,14 +37,17 @@ class LineItemService extends BaseService {
     })
 
     const lineItemSchema = Validator.object({
+      _id: Validator.any().optional(),
       title: Validator.string().required(),
-      is_giftcard: Validator.bool().optional(),
       description: Validator.string()
         .allow("")
         .optional(),
       thumbnail: Validator.string()
         .allow("")
         .optional(),
+      is_giftcard: Validator.bool().optional(),
+      should_merge: Validator.bool().optional(),
+      has_shipping: Validator.bool().optional(),
       content: Validator.alternatives()
         .try(content, Validator.array().items(content))
         .required(),
@@ -51,6 +55,18 @@ class LineItemService extends BaseService {
         .integer()
         .min(1)
         .required(),
+      returned: Validator.bool().optional(),
+      fulfilled: Validator.bool().optional(),
+      shipped: Validator.bool().optional(),
+      fulfilled_quantity: Validator.number()
+        .integer()
+        .optional(),
+      returned_quantity: Validator.number()
+        .integer()
+        .optional(),
+      shipped_quantity: Validator.number()
+        .integer()
+        .optional(),
       metadata: Validator.object().default({}),
     })
 
@@ -110,6 +126,7 @@ class LineItemService extends BaseService {
       title: product.title,
       description: variant.title,
       quantity,
+      should_merge: true,
       thumbnail: product.thumbnail,
       content: {
         unit_price,
@@ -117,11 +134,13 @@ class LineItemService extends BaseService {
         product,
         quantity: 1,
       },
+      metadata: {
+        ...metadata,
+      },
     }
 
     if (product.is_giftcard) {
       line.is_giftcard = true
-      line.metadata = metadata
     }
 
     return line
@@ -142,7 +161,8 @@ class LineItemService extends BaseService {
     } else if (!Array.isArray(match.content)) {
       return (
         line.content.variant._id.equals(match.content.variant._id) &&
-        line.content.quantity === match.content.quantity
+        line.content.quantity === match.content.quantity &&
+        _.isEqual(line.metadata, match.metadata)
       )
     }
 

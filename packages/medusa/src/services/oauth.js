@@ -83,8 +83,9 @@ class Oauth extends OauthService {
     })
   }
 
-  async refreshToken(appName, refreshToken) {
+  async refreshToken(appName) {
     const app = await this.retrieveByName(appName)
+    const refreshToken = app.data.refresh_token
     const service = this.container_[`${app.application_name}Oauth`]
     if (!service) {
       throw new MedusaError(

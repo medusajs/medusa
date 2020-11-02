@@ -13,6 +13,10 @@ import DiscountSchema from "./schemas/discount"
 class CartModel extends BaseModel {
   static modelName = "Cart"
 
+  static schemaOptions = {
+    minimize: false,
+  }
+
   static schema = {
     email: { type: String },
     billing_address: { type: AddressSchema },

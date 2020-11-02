@@ -6,7 +6,6 @@ import PaymentMethodSchema from "./schemas/payment-method"
 import ShippingMethodSchema from "./schemas/shipping-method"
 import AddressSchema from "./schemas/address"
 import DiscountSchema from "./schemas/discount"
-import ShipmentSchema from "./schemas/shipment"
 import ReturnSchema from "./schemas/return"
 import RefundSchema from "./schemas/refund"
 import FulfillmentSchema from "./schemas/fulfillment"
@@ -30,7 +29,6 @@ class OrderModel extends BaseModel {
     items: { type: [LineItemSchema], required: true },
     currency_code: { type: String, required: true },
     tax_rate: { type: Number, required: true },
-    shipments: { type: [ShipmentSchema], default: [] },
     fulfillments: { type: [FulfillmentSchema], default: [] },
     returns: { type: [ReturnSchema], default: [] },
     refunds: { type: [RefundSchema], default: [] },
@@ -40,6 +38,7 @@ class OrderModel extends BaseModel {
     payment_method: { type: PaymentMethodSchema, required: true },
     shipping_methods: { type: [ShippingMethodSchema], required: true },
     swap_orders: { type: [SwapOrderSchema], default: [] },
+    documents: { type: [String], default: [] },
     created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }

@@ -294,6 +294,7 @@ describe("DiscountService", () => {
       expect(DiscountModelMock.create).toHaveBeenCalledWith({
         code: expect.stringMatching(/(([A-Z0-9]){4}(-?)){4}/),
         is_giftcard: true,
+        original_amount: 100,
         discount_rule: {
           type: "fixed",
           allocation: "total",

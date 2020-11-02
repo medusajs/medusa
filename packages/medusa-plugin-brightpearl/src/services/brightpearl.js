@@ -36,24 +36,25 @@ class BrightpearlService extends BaseService {
       )
     }
 
-    const client = new Brightpearl(
-      {
-        account: this.options.account,
-        url: data.api_domain,
-        auth_type: data.token_type,
-        access_token: data.access_token,
+    const tokenStore = {
+      getToken: async () => {
+        const appData = await this.oauthService_.retrieveByName("brightpearl")
+        const authenticationData = appData.data
+        return authenticationData.access_token
       },
-      async (client) => {
-        const newAuth = await this.oauthService_.refreshToken(
-          "brightpearl",
-          data.refresh_token
+      refreshToken: async () => {
+        const newAuthentication = await this.oauthService_.refreshToken(
+          "brightpearl"
         )
-        client.updateAuth({
-          auth_type: newAuth.token_type,
-          access_token: newAuth.access_token,
-        })
-      }
-    )
+        return newAuthentication.data.refresh_token
+      },
+    }
+
+    const client = new Brightpearl({
+      account: this.options.account,
+      url: data.api_domain,
+      token_store: tokenStore,
+    })
 
     this.authData_ = data
     return client
@@ -461,35 +462,6 @@ class BrightpearlService extends BaseService {
         )
         return salesOrderId
       })
-      .then(async (salesOrderId) => {
-        const paymentMethod = fromOrder.payment_method
-        const paymentType = "AUTH"
-        const payment = {
-          transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
-          transactionCode: fromOrder._id,
-          paymentMethodCode: this.options.payment_method_code || "1220",
-          orderId: salesOrderId,
-          currencyIsoCode: fromOrder.currency_code,
-          paymentDate: new Date(),
-          paymentType,
-        }
-
-        // Only if authorization type
-        if (paymentType === "AUTH") {
-          const today = new Date()
-          const authExpire = today.setDate(today.getDate() + 7)
-          payment.amountAuthorized = await this.totalsService_.getTotal(
-            fromOrder
-          )
-          payment.authorizationExpiry = new Date(authExpire)
-        } else {
-          // For captured
-        }
-
-        await client.payments.create(payment)
-
-        return salesOrderId
-      })
       .then((salesOrderId) => {
         return this.orderService_.setMetadata(
           fromOrder._id,
@@ -499,7 +471,7 @@ class BrightpearlService extends BaseService {
       })
   }
 
-  async createCapturedPayment(fromOrder) {
+  async createPayment(fromOrder) {
     const client = await this.getClient()
     const soId =
       fromOrder.metadata && fromOrder.metadata.brightpearl_sales_order_id
@@ -507,7 +479,7 @@ class BrightpearlService extends BaseService {
       return
     }
 
-    const paymentType = "CAPTURE"
+    const paymentType = "RECEIPT"
     const paymentMethod = fromOrder.payment_method
     const payment = {
       transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
@@ -529,7 +501,7 @@ class BrightpearlService extends BaseService {
       ({ discount_rule }) => discount_rule.type !== "free_shipping"
     )
     let lineDiscounts = []
-    if (discount) {
+    if (discount && !discount.is_giftcard) {
       lineDiscounts = this.totalsService_.getLineDiscounts(fromOrder, discount)
     }
 
@@ -539,7 +511,7 @@ class BrightpearlService extends BaseService {
           item.content.variant.sku
         )
 
-        const discount = lineDiscounts.find((l) => item._id === l.item._id) || {
+        const ld = lineDiscounts.find((l) => item._id === l.item._id) || {
           amount: 0,
         }
 
@@ -550,7 +522,7 @@ class BrightpearlService extends BaseService {
           row.name = item.title
         }
         row.net = this.totalsService_.rounded(
-          item.content.unit_price * item.quantity - discount.amount
+          item.content.unit_price * item.quantity - ld.amount
         )
         row.tax = this.totalsService_.rounded(row.net * fromOrder.tax_rate)
         row.quantity = item.quantity
@@ -558,9 +530,33 @@ class BrightpearlService extends BaseService {
         row.externalRef = item._id
         row.nominalCode = this.options.sales_account_code || "4000"
 
+        if (item.is_giftcard) {
+          row.nominalCode = this.options.gift_card_account_code || "4000"
+        }
+
         return row
       })
     )
+
+    // If a gift card was applied to the order we reduce the order amount 
+    // correspondingly. This reduces the amount payable, while debiting the
+    // gift card account that was previously credited, when the gift card was
+    // purchased.
+    if (discount && discount.is_giftcard) {
+      const discountTotal = await this.totalsService_.getDiscountTotal(
+        fromOrder
+      )
+      lines.push({
+        name: `Gift Card: ${discount.code}`,
+        net: -1 * discountTotal,
+        tax: this.totalsService_.rounded(
+          -1 * discountTotal * fromOrder.tax_rate
+        ),
+        quantity: 1,
+        taxCode: region.tax_code,
+        nominalCode: this.options.gift_card_account_code || "4000",
+      })
+    }
 
     const shippingTotal = this.totalsService_.getShippingTotal(fromOrder)
     const shippingMethods = fromOrder.shipping_methods
@@ -621,7 +617,12 @@ class BrightpearlService extends BaseService {
         if (row) {
           return {
             item_id: row.externalRef,
-            quantity: goodsOut.orderRows[key][0].quantity,
+
+            // Brightpearl sometimes gives multiple order row entries
+            quantity: goodsOut.orderRows[key].reduce(
+              (sum, next) => sum + next.quantity,
+              0
+            ),
           }
         }
 

@@ -1,37 +1,13 @@
 import { createContainer, asValue } from "awilix"
 import express from "express"
+import cookieParser from "cookie-parser"
 import supertest from "supertest"
 import jwt from "jsonwebtoken"
-import sessions from "client-sessions"
-import cookie from "cookie"
+import session from "express-session"
 import servicesLoader from "../loaders/services"
-import expressLoader from "../loaders/express"
 import apiLoader from "../loaders/api"
 import passportLoader from "../loaders/passport"
 import config from "../config"
-
-const testApp = express()
-
-const container = createContainer()
-container.register({
-  logger: asValue({
-    error: () => {},
-  }),
-})
-
-servicesLoader({ container })
-expressLoader({ app: testApp })
-passportLoader({ app: testApp, container })
-
-// Add the registered services to the request scope
-testApp.use((req, res, next) => {
-  req.scope = container.createScope()
-  next()
-})
-
-apiLoader({ container, rootDirectory: ".", app: testApp })
-
-const supertestRequest = supertest(testApp)
 
 let adminSessionOpts = {
   cookieName: "session",
@@ -45,9 +21,44 @@ let clientSessionOpts = {
 }
 export { clientSessionOpts }
 
+const testApp = express()
+
+const container = createContainer()
+container.register({
+  logger: asValue({
+    error: () => {},
+  }),
+})
+
+testApp.set("trust proxy", 1)
+testApp.use((req, res, next) => {
+  req.session = {}
+  const data = req.get("Cookie")
+  if (data) {
+    req.session = {
+      ...req.session,
+      ...JSON.parse(data),
+    }
+  }
+  next()
+})
+
+servicesLoader({ container })
+passportLoader({ app: testApp, container })
+
+testApp.use((req, res, next) => {
+  req.scope = container.createScope()
+  next()
+})
+
+apiLoader({ container, rootDirectory: ".", app: testApp })
+
+const supertestRequest = supertest(testApp)
+
 export async function request(method, url, opts = {}) {
   let { payload, headers } = opts
 
+  let req = supertestRequest[method.toLowerCase()](url)
   headers = headers || {}
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
@@ -60,13 +71,7 @@ export async function request(method, url, opts = {}) {
         }
       )
     }
-
-    headers.Cookie +=
-      adminSessionOpts.cookieName +
-      "=" +
-      sessions.util.encode(adminSessionOpts, opts.adminSession) +
-      "; "
-    // console.log(sessions.util.decode(adminSessionOpts, opts.headers.Cookie))
+    headers.Cookie = JSON.stringify(opts.adminSession) || ""
   }
   if (opts.clientSession) {
     if (opts.clientSession.jwt) {
@@ -79,15 +84,8 @@ export async function request(method, url, opts = {}) {
       )
     }
 
-    headers.Cookie +=
-      clientSessionOpts.cookieName +
-      "=" +
-      sessions.util.encode(clientSessionOpts, opts.clientSession) +
-      "; "
-    // console.log(sessions.util.decode(adminSessionOpts, opts.headers.Cookie))
+    headers.Cookie = JSON.stringify(opts.clientSession) || ""
   }
-
-  let req = supertestRequest[method.toLowerCase()](url)
 
   for (let name in headers) {
     req.set(name, headers[name])
