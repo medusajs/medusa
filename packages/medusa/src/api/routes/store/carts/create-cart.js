@@ -3,6 +3,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 export default async (req, res) => {
   const schema = Validator.object().keys({
     region_id: Validator.string(),
+    country_code: Validator.string().optional(),
     items: Validator.array()
       .items({
         variant_id: Validator.string().required(),
@@ -37,12 +38,19 @@ export default async (req, res) => {
       email = customer.email
     }
 
-    let cart = await cartService.create({
+    const toCreate = {
       region_id: regionId,
       customer_id: customerId,
       email,
-    })
+    }
 
+    if (value.country_code) {
+      toCreate.shipping_address = {
+        country_code: value.country_code.toUpperCase(),
+      }
+    }
+
+    let cart = await cartService.create(toCreate)
     if (value.items) {
       await Promise.all(
         value.items.map(async i => {
