@@ -137,6 +137,18 @@ export const OrderServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  setMetadata: jest.fn().mockImplementation((id, key, value) => {
+    if (id === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
+  deleteMetadata: jest.fn().mockImplementation((id, key, value) => {
+    if (id === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
   retrieve: jest.fn().mockImplementation(orderId => {
     if (orderId === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
