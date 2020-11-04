@@ -1242,33 +1242,96 @@ class OrderService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Order} return the decorated order.
    */
-  async decorate(order, fields, expandFields = []) {
-    const o = order
-    o.shipping_total = await this.totalsService_.getShippingTotal(order)
-    o.discount_total = await this.totalsService_.getDiscountTotal(order)
-    o.tax_total = await this.totalsService_.getTaxTotal(order)
-    o.subtotal = await this.totalsService_.getSubtotal(order)
-    o.total = await this.totalsService_.getTotal(order)
-    o.refunded_total = await this.totalsService_.getRefundedTotal(order)
-    o.refundable_amount = o.total - o.refunded_total
+  async decorate(order, fields = [], expandFields = []) {
+    if (fields.length === 0) {
+      // Default to include all fields
+      fields = [
+        "_id",
+        "display_id",
+        "status",
+        "fulfillment_status",
+        "payment_status",
+        "email",
+        "cart_id",
+        "billing_address",
+        "shipping_address",
+        "items",
+        "currency_code",
+        "tax_rate",
+        "fulfillments",
+        "returns",
+        "refunds",
+        "region_id",
+        "discounts",
+        "customer_id",
+        "payment_method",
+        "shipping_methods",
+        "documents",
+        "created",
+        "metadata",
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "subtotal",
+        "total",
+        "refunded_total",
+        "refundable_amount",
+      ]
+    }
+    const requiredFields = [
+      "_id",
+      "display_id",
+      "fulfillment_status",
+      "payment_status",
+      "status",
+      "currency_code",
+      "region_id",
+      "metadata",
+    ]
+    const o = _.pick(order, fields.concat(requiredFields))
+
+    if (fields.includes("shipping_total")) {
+      o.shipping_total = await this.totalsService_.getShippingTotal(order)
+    }
+    if (fields.includes("discount_total")) {
+      o.discount_total = await this.totalsService_.getDiscountTotal(order)
+    }
+    if (fields.includes("tax_total")) {
+      o.tax_total = await this.totalsService_.getTaxTotal(order)
+    }
+    if (fields.includes("subtotal")) {
+      o.subtotal = await this.totalsService_.getSubtotal(order)
+    }
+    if (fields.includes("total")) {
+      o.total = await this.totalsService_.getTotal(order)
+    }
+    if (fields.includes("refunded_total")) {
+      o.refunded_total = await this.totalsService_.getRefundedTotal(order)
+    }
+    if (fields.includes("refundable_amount")) {
+      o.refundable_amount = o.total - o.refunded_total
+    }
+
     o.created = order._id.getTimestamp()
 
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
 
-    o.items = o.items.map(i => {
-      return {
-        ...i,
-        refundable: this.totalsService_.getLineItemRefund(o, {
+    if (fields.includes("items")) {
+      o.items = order.items.map(i => {
+        return {
           ...i,
-          quantity: i.quantity - i.returned_quantity,
-        }),
-      }
-    })
+          refundable: this.totalsService_.getLineItemRefund(o, {
+            ...i,
+            quantity: i.quantity - i.returned_quantity,
+          }),
+        }
+      })
+    }
 
-    const final = await this.runDecorators_(o)
-    return final
+    const data = await this.runDecorators_(o)
+    return data
   }
 
   /**
