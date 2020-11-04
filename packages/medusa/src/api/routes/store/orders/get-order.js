@@ -19,6 +19,11 @@ export default async (req, res) => {
         "customer_id",
         "payment_method",
         "shipping_methods",
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "subtotal",
+        "total",
         "metadata",
       ],
       ["region"]
