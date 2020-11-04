@@ -17,6 +17,41 @@ class IdempotencyKeyService extends BaseService {
   }
 
   /**
+   * Execute the initial steps in a idempotent request.
+   * @param {string} headerKey - potential idempotency key from header
+   * @param {string} reqMethod - method of request
+   * @param {string} reqParams - params of request
+   * @param {string} reqPath - path of request
+   * @return {Promise<IdempotencyKeyModel>} the existing or created idempotency key
+   */
+  async initializeRequest(headerKey, reqMethod, reqParams, reqPath) {
+    // If idempotency key exists, return it
+    let key = await this.retrieve(headerKey)
+    if (key) {
+      return key
+    }
+
+    const dbSession = await this.transactionService_.createSession()
+    await dbSession.startTransaction()
+
+    try {
+      key = await this.create(
+        {
+          request_method: reqMethod,
+          request_params: reqParams,
+          request_path: reqPath,
+        },
+        dbSession
+      )
+      await dbSession.commitTransaction()
+      return key
+    } catch (error) {
+      await dbSession.abortTransaction()
+      throw error
+    }
+  }
+
+  /**
    * Creates an idempotency key for a request.
    * If no idempotency key is provided in request, we will create a unique
    * identifier.
@@ -37,6 +72,12 @@ class IdempotencyKeyService extends BaseService {
       })
   }
 
+  /**
+   * Retrieves an idempotency key
+   * @param {string} idempotencyKey - key to retrieve
+   * @param {object} session - mongoose transaction session
+   * @return {Promise<IdempotencyKeyModel>} idempotency key
+   */
   async retrieve(idempotencyKey, session) {
     if (session) {
       return this.idempotencyKeyModel_.findOne(
@@ -50,6 +91,12 @@ class IdempotencyKeyService extends BaseService {
     }
   }
 
+  /**
+   * Locks an idempotency.
+   * @param {string} idempotencyKey - key to lock
+   * @param {object} session - mongoose transaction session
+   * @return {Promise} result of the update operation
+   */
   async lock(idempotencyKey, session) {
     const key = await this.idempotencyKeyModel_.findOne(
       { idempotency_key: idempotencyKey },
@@ -67,15 +114,31 @@ class IdempotencyKeyService extends BaseService {
     )
   }
 
+  /**
+   * Locks an idempotency.
+   * @param {string} idempotencyKey - key to update
+   * @param {object} update - update object
+   * @param {object} session - mongoose transaction session
+   * @return {Promise} result of the update operation
+   */
   async update(idempotencyKey, update, session) {
-    const test = await this.idempotencyKeyModel_.updateOne(
+    return this.idempotencyKeyModel_.updateOne(
       { idempotency_key: idempotencyKey },
       { $set: update },
       { session }
     )
-    return test
   }
 
+  /**
+   * Performs an atomic phase.
+   * An atomic phase contains some related functionality, that needs to be
+   * transactionally executed in isolation. An idempotent request will
+   * always consist of 2 or more of these phases. The required phases are
+   * "started" and "finished".
+   * @param {string} idempotencyKey - current idempotency key
+   * @param {Function} func - functionality to execute within the phase
+   * @return {IdempotencyKeyModel} new updated idempotency key
+   */
   async atomicPhase(idempotencyKey, func) {
     let key
     const session = await this.transactionService_.createSession()
@@ -85,8 +148,6 @@ class IdempotencyKeyService extends BaseService {
       const { recovery_point, response_code, response_body } = await func(
         session
       )
-
-      console.log(recovery_point, response_code, response_body)
 
       if (recovery_point) {
         key = await this.update(

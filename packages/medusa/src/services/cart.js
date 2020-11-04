@@ -66,6 +66,26 @@ class CartService extends BaseService {
     this.totalsService_ = totalsService
   }
 
+  withSession(session) {
+    const cloned = new CartService({
+      cartModel: this.cartModel_,
+      eventBusService: this.eventBusService,
+      paymentProviderService: this.paymentProviderService_,
+      productService: this.productService_,
+      productVariantService: this.productVariantService_,
+      regionService: this.regionService_,
+      lineItemService: this.lineItemService_,
+      shippingOptionService: this.shippingOptionService_,
+      shippingProfileService: this.shippingProfileService_,
+      customerService: this.customerService_,
+      discountService: this.discountService_,
+      totalsService: this.totalsService_,
+    })
+
+    cloned.current_session = session
+    return cloned
+  }
+
   /**
    * Used to validate cart ids. Throws an error if the cast fails
    * @param {string} rawId - the raw cart id to validate.
@@ -215,18 +235,32 @@ class CartService extends BaseService {
       }
     }
 
-    return this.cartModel_
-      .create({
-        ...data,
-        region_id: region._id,
-      })
-      .then(result => {
-        this.eventBus_.emit(CartService.Events.CREATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const toCreate = {
+      ...data,
+      region_id: region._id,
+    }
+
+    if (this.current_session) {
+      return this.cartModel_
+        .create([toCreate], { session: this.current_session })
+        .then(result => {
+          this.eventBus_.emit(CartService.Events.CREATED, result)
+          return result[0]
+        })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+    } else {
+      return this.cartModel_
+        .create(toCreate)
+        .then(result => {
+          this.eventBus_.emit(CartService.Events.CREATED, result)
+          return result
+        })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+    }
   }
 
   /**
@@ -320,7 +354,8 @@ class CartService extends BaseService {
         {
           _id: cartId,
         },
-        update
+        update,
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -404,7 +439,8 @@ class CartService extends BaseService {
               "items.$.quantity": newQuantity,
               "items.$.has_shipping": hasShipping,
             },
-          }
+          },
+          { session: this.current_session }
         )
         .then(result => {
           // Notify subscribers
@@ -439,7 +475,8 @@ class CartService extends BaseService {
               has_shipping: hasShipping,
             },
           },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -500,7 +537,8 @@ class CartService extends BaseService {
           $set: {
             "items.$": validatedLineItem,
           },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -532,7 +570,8 @@ class CartService extends BaseService {
         },
         {
           $set: { customer_id: value },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -580,7 +619,8 @@ class CartService extends BaseService {
             email: value,
             customer_id: customer._id,
           },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -614,7 +654,8 @@ class CartService extends BaseService {
         },
         {
           $set: { billing_address: value },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -653,7 +694,8 @@ class CartService extends BaseService {
         },
         {
           $set: { shipping_address: value },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -713,7 +755,8 @@ class CartService extends BaseService {
           },
           {
             $push: { discounts: discount },
-          }
+          },
+          { session: this.current_session }
         )
         .then(result => {
           // Notify subscribers
@@ -732,7 +775,8 @@ class CartService extends BaseService {
           {
             $pull: { discounts: { _id: shippingDisc[0]._id } },
             $push: { discounts: discount },
-          }
+          },
+          { session: this.current_session }
         )
         .then(result => {
           // Notify subscribers
@@ -750,7 +794,8 @@ class CartService extends BaseService {
           },
           {
             $push: { discounts: discount },
-          }
+          },
+          { session: this.current_session }
         )
         .then(result => {
           // Notify subscribers
@@ -766,7 +811,8 @@ class CartService extends BaseService {
           {
             $pull: { discounts: { _id: otherDisc[0]._id } },
             $push: { discounts: discount },
-          }
+          },
+          { session: this.current_session }
         )
         .then(result => {
           // Notify subscribers
@@ -782,7 +828,8 @@ class CartService extends BaseService {
       { _id: cart._id },
       {
         $pull: { discounts: { code: discountCode } },
-      }
+      },
+      { session: this.current_session }
     )
   }
 
@@ -849,7 +896,8 @@ class CartService extends BaseService {
         },
         {
           $set: { payment_method: paymentMethod },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -881,7 +929,8 @@ class CartService extends BaseService {
           },
           {
             $set: { payment_sessions: [] },
-          }
+          },
+          { session: this.current_session }
         )
         .then(result => {
           // Notify subscribers
@@ -951,7 +1000,8 @@ class CartService extends BaseService {
         },
         {
           $set: { payment_sessions: sessions.concat(newSessions) },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -983,7 +1033,9 @@ class CartService extends BaseService {
         }
 
         return this.cartModel_
-          .updateOne({ _id: cart._id }, selector)
+          .updateOne({ _id: cart._id }, selector, {
+            session: this.current_session,
+          })
           .then(result => {
             // Notify subscribers
             this.eventBus_.emit(CartService.Events.UPDATED, result)
@@ -1006,7 +1058,8 @@ class CartService extends BaseService {
         },
         {
           $set: { "payment_sessions.$": session },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -1093,7 +1146,8 @@ class CartService extends BaseService {
         },
         {
           $set: { shipping_methods: newMethods, items: newItems },
-        }
+        },
+        { session: this.current_session }
       )
       .then(result => {
         // Notify subscribers
@@ -1188,7 +1242,11 @@ class CartService extends BaseService {
     }
 
     return this.cartModel_
-      .updateOne({ _id: cart._id }, { $set: update })
+      .updateOne(
+        { _id: cart._id },
+        { $set: update },
+        { session: this.current_session }
+      )
       .then(result => {
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
@@ -1198,7 +1256,10 @@ class CartService extends BaseService {
 
   async delete(cartId) {
     const cart = await this.retrieve(cartId)
-    return this.cartModel_.deleteOne({ _id: cart._id })
+    return this.cartModel_.deleteOne(
+      { _id: cart._id },
+      { session: this.current_session }
+    )
   }
 
   /**
@@ -1222,7 +1283,11 @@ class CartService extends BaseService {
 
     const keyPath = `metadata.${key}`
     return this.cartModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .updateOne(
+        { _id: validatedId },
+        { $set: { [keyPath]: value } },
+        { session: this.current_session }
+      )
       .then(result => {
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
@@ -1251,7 +1316,11 @@ class CartService extends BaseService {
 
     const keyPath = `metadata.${key}`
     return this.cartModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
+      .updateOne(
+        { _id: validatedId },
+        { $unset: { [keyPath]: "" } },
+        { session: this.current_session }
+      )
       .then(result => {
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
