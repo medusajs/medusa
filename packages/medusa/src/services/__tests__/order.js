@@ -2,6 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { OrderModelMock, orders } from "../../models/__mocks__/order"
 import { carts } from "../../models/__mocks__/cart"
 import OrderService from "../order"
+import ReturnService from "../return"
 import {
   PaymentProviderServiceMock,
   DefaultProviderMock,
@@ -554,9 +555,17 @@ describe("OrderService", () => {
     })
   })
 
-  describe("return", () => {
+  describe("receiveReturn", () => {
+    const returnService = new ReturnService({
+      totalsService: TotalsServiceMock,
+      shippingOptionService: ShippingOptionServiceMock,
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+    })
     const orderService = new OrderService({
       orderModel: OrderModelMock,
+      returnService,
+      shippingOptionService: ShippingOptionServiceMock,
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
       paymentProviderService: PaymentProviderServiceMock,
       totalsService: TotalsServiceMock,
       eventBusService: EventBusServiceMock,
@@ -567,7 +576,7 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.return(
+      await orderService.receiveReturn(
         IdMap.getId("returned-order"),
         IdMap.getId("return"),
         [
@@ -665,7 +674,7 @@ describe("OrderService", () => {
     })
 
     it("return with custom refund", async () => {
-      await orderService.return(
+      await orderService.receiveReturn(
         IdMap.getId("returned-order"),
         IdMap.getId("return"),
         [
@@ -764,7 +773,7 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions and sets partially_returned", async () => {
-      await orderService.return(
+      await orderService.receiveReturn(
         IdMap.getId("order-refund"),
         IdMap.getId("return"),
         [
@@ -876,7 +885,7 @@ describe("OrderService", () => {
     })
 
     it("sets requires_action on additional items", async () => {
-      await orderService.return(
+      await orderService.receiveReturn(
         IdMap.getId("order-refund"),
         IdMap.getId("return"),
         [
@@ -924,17 +933,17 @@ describe("OrderService", () => {
 
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("order-refund") },
+        { _id: IdMap.getId("order-refund"), "returns._id": originalReturn._id },
         {
           $set: {
-            returns: [toSet],
+            "returns.$": toSet,
           },
         }
       )
     })
 
     it("sets requires_action on unmatcing quantities", async () => {
-      await orderService.return(
+      await orderService.receiveReturn(
         IdMap.getId("order-refund"),
         IdMap.getId("return"),
         [
@@ -960,10 +969,10 @@ describe("OrderService", () => {
 
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("order-refund") },
+        { _id: IdMap.getId("order-refund"), "returns._id": originalReturn._id },
         {
           $set: {
-            returns: [toSet],
+            "returns.$": toSet,
           },
         }
       )
@@ -971,8 +980,14 @@ describe("OrderService", () => {
   })
 
   describe("requestReturn", () => {
+    const returnService = new ReturnService({
+      totalsService: TotalsServiceMock,
+      shippingOptionService: ShippingOptionServiceMock,
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+    })
     const orderService = new OrderService({
       orderModel: OrderModelMock,
+      returnService,
       shippingOptionService: ShippingOptionServiceMock,
       fulfillmentProviderService: FulfillmentProviderServiceMock,
       paymentProviderService: PaymentProviderServiceMock,

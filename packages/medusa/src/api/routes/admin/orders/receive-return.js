@@ -25,7 +25,7 @@ export default async (req, res) => {
     if (typeof value.refund !== "undefined" && value.refund < 0) {
       refundAmount = 0
     }
-    let order = await orderService.return(
+    let order = await orderService.receiveReturn(
       id,
       return_id,
       value.items,
