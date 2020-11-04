@@ -10,6 +10,10 @@ export default async (req, res) => {
       "description",
     ])
 
+    if ("is_giftcard" in req.query) {
+      query.is_giftcard = req.query.is_giftcard === "true"
+    }
+
     const limit = parseInt(req.query.limit) || 0
     const offset = parseInt(req.query.offset) || 0
 
@@ -40,7 +44,6 @@ export default async (req, res) => {
 
     res.json({ products, total_count: numProducts })
   } catch (error) {
-    console.log(error)
     throw error
   }
 }

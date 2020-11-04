@@ -501,7 +501,7 @@ class BrightpearlService extends BaseService {
       ({ discount_rule }) => discount_rule.type !== "free_shipping"
     )
     let lineDiscounts = []
-    if (discount) {
+    if (discount && !discount.is_giftcard) {
       lineDiscounts = this.totalsService_.getLineDiscounts(fromOrder, discount)
     }
 
@@ -511,7 +511,7 @@ class BrightpearlService extends BaseService {
           item.content.variant.sku
         )
 
-        const discount = lineDiscounts.find((l) => item._id === l.item._id) || {
+        const ld = lineDiscounts.find((l) => item._id === l.item._id) || {
           amount: 0,
         }
 
@@ -522,7 +522,7 @@ class BrightpearlService extends BaseService {
           row.name = item.title
         }
         row.net = this.totalsService_.rounded(
-          item.content.unit_price * item.quantity - discount.amount
+          item.content.unit_price * item.quantity - ld.amount
         )
         row.tax = this.totalsService_.rounded(row.net * fromOrder.tax_rate)
         row.quantity = item.quantity
@@ -530,9 +530,33 @@ class BrightpearlService extends BaseService {
         row.externalRef = item._id
         row.nominalCode = this.options.sales_account_code || "4000"
 
+        if (item.is_giftcard) {
+          row.nominalCode = this.options.gift_card_account_code || "4000"
+        }
+
         return row
       })
     )
+
+    // If a gift card was applied to the order we reduce the order amount 
+    // correspondingly. This reduces the amount payable, while debiting the
+    // gift card account that was previously credited, when the gift card was
+    // purchased.
+    if (discount && discount.is_giftcard) {
+      const discountTotal = await this.totalsService_.getDiscountTotal(
+        fromOrder
+      )
+      lines.push({
+        name: `Gift Card: ${discount.code}`,
+        net: -1 * discountTotal,
+        tax: this.totalsService_.rounded(
+          -1 * discountTotal * fromOrder.tax_rate
+        ),
+        quantity: 1,
+        taxCode: region.tax_code,
+        nominalCode: this.options.gift_card_account_code || "4000",
+      })
+    }
 
     const shippingTotal = this.totalsService_.getShippingTotal(fromOrder)
     const shippingMethods = fromOrder.shipping_methods

@@ -52,5 +52,21 @@ export default app => {
     middlewares.wrap(require("./remove-fulfillment-provider").default)
   )
 
+  /**
+   * Set metadata key / value pair.
+   */
+  route.post(
+    "/:id/metadata",
+    middlewares.wrap(require("./set-metadata").default)
+  )
+
+  /**
+   * Delete metadata key / value pair.
+   */
+  route.delete(
+    "/:id/metadata/:key",
+    middlewares.wrap(require("./delete-metadata").default)
+  )
+
   return app
 }

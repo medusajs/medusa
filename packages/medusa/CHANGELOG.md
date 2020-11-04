@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.37](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.36...@medusajs/medusa@1.0.37) (2020-11-04)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.36](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.35...@medusajs/medusa@1.0.36) (2020-11-04)
+
+
+### Features
+
+* **medusa:** Adds set and delete metadata endpoints for region and orders ([#131](https://github.com/medusajs/medusa/issues/131)) ([d67b6e6](https://github.com/medusajs/medusa/commit/d67b6e6ebe30ad18c0d1a012732a75e47a3f4a35))
+
+
+
+
+
+## [1.0.35](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.34...@medusajs/medusa@1.0.35) (2020-11-02)
+
+
+### Bug Fixes
+
+* add country code on preCartCreation ([e3faa64](https://github.com/medusajs/medusa/commit/e3faa646a7b91d2686b56718df46bea5b709731b))
+
+
+
+
+
+## [1.0.34](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.33...@medusajs/medusa@1.0.34) (2020-10-31)
+
+
+### Bug Fixes
+
+* adds field selection to list order endpoint ([#133](https://github.com/medusajs/medusa/issues/133)) ([b1786ce](https://github.com/medusajs/medusa/commit/b1786ce9d8684b1611c994380e39b25c3ac181a1))
+
+
+
+
+
+## [1.0.33](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.32...@medusajs/medusa@1.0.33) (2020-10-28)
+
+
+### Features
+
+* **medusa:** adds support for gift cards ([#132](https://github.com/medusajs/medusa/issues/132)) ([f2c62cd](https://github.com/medusajs/medusa/commit/f2c62cd2321c9013c15160a80598f912daef4647))
+
+
+
+
+
 ## [1.0.32](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.31...@medusajs/medusa@1.0.32) (2020-10-20)
 
 **Note:** Version bump only for package @medusajs/medusa

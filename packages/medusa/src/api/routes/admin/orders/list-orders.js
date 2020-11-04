@@ -18,8 +18,13 @@ export default async (req, res) => {
 
     let orders = await orderService.list(query, offset, limit)
 
+    let includeFields = []
+    if ("fields" in req.query) {
+      includeFields = req.query.fields.split(",")
+    }
+
     orders = await Promise.all(
-      orders.map(order => orderService.decorate(order))
+      orders.map(order => orderService.decorate(order, includeFields))
     )
 
     let numOrders = await orderService.count()
