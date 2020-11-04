@@ -370,6 +370,57 @@ class RegionService extends BaseService {
     const final = await this.runDecorators_(decorated)
     return final
   }
+
+  /**
+   * Dedicated method to set metadata for a region.
+   * To ensure that plugins does not overwrite each
+   * others metadata fields, setMetadata is provided.
+   * @param {string} regionId - the region to decorate.
+   * @param {string} key - key for metadata field
+   * @param {string} value - value for metadata field.
+   * @return {Promise} resolves to the updated result.
+   */
+  async setMetadata(regionId, key, value) {
+    const validatedId = this.validateId_(regionId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.regionModel_
+      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for an region.
+   * @param {string} regionId - the region to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(regionId, key) {
+    const validatedId = this.validateId_(regionId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.regionModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
 }
 
 export default RegionService
