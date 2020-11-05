@@ -287,6 +287,13 @@ class OrderService extends BaseService {
     // Create DB session for transaction
     const dbSession = await this.orderModel_.startSession()
 
+    if (cart.items.length === 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Cannot create order from empty cart"
+      )
+    }
+
     // Initialize DB transaction
     return dbSession
       .withTransaction(async () => {
@@ -308,7 +315,7 @@ class OrderService extends BaseService {
 
         // Would be the case if a discount code is applied that covers the item
         // total
-        if (total !== 0 && cart.items.length > 0) {
+        if (total !== 0) {
           // Throw if payment method does not exist
           if (!payment_method) {
             throw new MedusaError(
