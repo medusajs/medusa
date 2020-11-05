@@ -258,7 +258,7 @@ export const carts = {
   completeCart: {
     _id: IdMap.getId("complete-cart"),
     region_id: IdMap.getId("region-france"),
-    items: [],
+    items: [{ data: "items" }],
     email: "test",
     payment_sessions: [
       {

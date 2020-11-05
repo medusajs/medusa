@@ -56,6 +56,11 @@ describe("OrderService", () => {
       jest.clearAllMocks()
     })
 
+    it("fails when no items", async () => {
+      const res = orderService.createFromCart(carts.emptyCart)
+      expect(res).rejects.toThrow("Cannot create order from empty cart")
+    })
+
     it("calls order model functions", async () => {
       await orderService.createFromCart({
         ...carts.completeCart,
