@@ -13,10 +13,7 @@ export default new mongoose.Schema({
   return: { type: ReturnSchema },
   fulfillment: { type: FulfillmentSchema },
   additional_items: { type: [LineItemSchema], required: true },
-  payment_sessions: { type: [PaymentMethodSchema], default: [] },
-  payment_method: { type: PaymentMethodSchema },
-  shipping_address: { type: AddressSchema },
-  shipping_methods: { type: [ShippingMethodSchema] },
+  cart_id: { type: String },
   created: { type: String, default: Date.now },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
 })
