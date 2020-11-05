@@ -308,7 +308,7 @@ class OrderService extends BaseService {
 
         // Would be the case if a discount code is applied that covers the item
         // total
-        if (total !== 0) {
+        if (total !== 0 && cart.items.length > 0) {
           // Throw if payment method does not exist
           if (!payment_method) {
             throw new MedusaError(
