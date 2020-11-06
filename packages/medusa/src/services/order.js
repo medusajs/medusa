@@ -71,6 +71,26 @@ class OrderService extends BaseService {
     this.shippingOptionService_ = shippingOptionService
   }
 
+  withSession(session) {
+    const cloned = new OrderService({
+      orderModel: this.orderModel_,
+      eventBusService: this.eventBus_,
+      paymentProviderService: this.paymentProviderService_,
+      counterService: this.counterService_,
+      regionService: this.regionService_,
+      lineItemService: this.lineItemService_,
+      shippingOptionService: this.shippingOptionService_,
+      shippingProfileService: this.shippingProfileService_,
+      fulfillmentProviderService: this.fulfillmentProviderService_,
+      discountService: this.discountService_,
+      totalsService: this.totalsService_,
+      documentService: this.documentService_,
+    })
+
+    cloned.current_session = session
+    return cloned
+  }
+
   /**
    * Used to validate order ids. Throws an error if the cast fails
    * @param {string} rawId - the raw order id to validate.
@@ -200,6 +220,7 @@ class OrderService extends BaseService {
   async retrieveByCartId(cartId) {
     const order = await this.orderModel_
       .findOne({ cart_id: cartId })
+      .session(this.current_session)
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -284,116 +305,128 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   async createFromCart(cart) {
-    // Create DB session for transaction
-    const dbSession = await this.orderModel_.startSession()
+    const exists = await this.existsByCartId(cart._id)
+    if (exists) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Order from cart already exists"
+      )
+    }
 
-    // Initialize DB transaction
-    return dbSession
-      .withTransaction(async () => {
-        // Check if order from cart already exists
-        // If so, this function throws
-        const exists = await this.existsByCartId(cart._id)
-        if (exists) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Order from cart already exists"
-          )
-        }
+    const total = await this.totalsService_.getTotal(cart)
 
-        const total = await this.totalsService_.getTotal(cart)
+    let paymentSession = {}
+    let paymentData = {}
+    const { payment_method, payment_sessions } = cart
 
-        let paymentSession = {}
-        let paymentData = {}
-        const { payment_method, payment_sessions } = cart
+    // Would be the case if a discount code is applied that covers the item
+    // total
+    if (total !== 0) {
+      // Throw if payment method does not exist
+      if (!payment_method) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Cart does not contain a payment method"
+        )
+      }
 
-        // Would be the case if a discount code is applied that covers the item
-        // total
-        if (total !== 0) {
-          // Throw if payment method does not exist
-          if (!payment_method) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "Cart does not contain a payment method"
-            )
-          }
+      if (!payment_sessions || !payment_sessions.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "cart must have payment sessions"
+        )
+      }
 
-          if (!payment_sessions || !payment_sessions.length) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "cart must have payment sessions"
-            )
-          }
+      paymentSession = payment_sessions.find(
+        ps => ps.provider_id === payment_method.provider_id
+      )
 
-          paymentSession = payment_sessions.find(
-            ps => ps.provider_id === payment_method.provider_id
-          )
+      // Throw if payment method does not exist
+      if (!paymentSession) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Cart does not have an authorized payment session"
+        )
+      }
 
-          // Throw if payment method does not exist
-          if (!paymentSession) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "Cart does not have an authorized payment session"
-            )
-          }
+      const paymentProvider = this.paymentProviderService_.retrieveProvider(
+        paymentSession.provider_id
+      )
+      const paymentStatus = await paymentProvider.getStatus(paymentSession.data)
 
-          const paymentProvider = this.paymentProviderService_.retrieveProvider(
-            paymentSession.provider_id
-          )
-          const paymentStatus = await paymentProvider.getStatus(
-            paymentSession.data
-          )
+      // If payment status is not authorized, we throw
+      if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Payment method is not authorized"
+        )
+      }
 
-          // If payment status is not authorized, we throw
-          if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "Payment method is not authorized"
-            )
-          }
+      paymentData = await paymentProvider.retrievePayment(paymentSession.data)
+    }
 
-          paymentData = await paymentProvider.retrievePayment(
-            paymentSession.data
-          )
-        }
+    const region = await this.regionService_.retrieve(cart.region_id)
 
-        const region = await this.regionService_.retrieve(cart.region_id)
+    let payment = {}
+    if (paymentSession.provider_id) {
+      payment = {
+        provider_id: paymentSession.provider_id,
+        data: paymentData,
+      }
+    }
 
-        let payment = {}
-        if (paymentSession.provider_id) {
-          payment = {
-            provider_id: paymentSession.provider_id,
-            data: paymentData,
-          }
-        }
+    let displayId
+    if (this.current_session) {
+      displayId = await this.counterService_.getNext(
+        "orders",
+        this.current_session
+      )
+    } else {
+      displayId = await this.counterService_.getNext("orders")
+    }
 
-        const o = {
-          display_id: await this.counterService_.getNext("orders"),
-          payment_method: payment,
-          discounts: cart.discounts,
-          shipping_methods: cart.shipping_methods,
-          items: cart.items,
-          shipping_address: cart.shipping_address,
-          billing_address: cart.shipping_address,
-          region_id: cart.region_id,
-          email: cart.email,
-          customer_id: cart.customer_id,
-          cart_id: cart._id,
-          tax_rate: region.tax_rate,
-          currency_code: region.currency_code,
-          metadata: cart.metadata || {},
-        }
+    const o = {
+      display_id: displayId,
+      payment_method: payment,
+      discounts: cart.discounts,
+      shipping_methods: cart.shipping_methods,
+      items: cart.items,
+      shipping_address: cart.shipping_address,
+      billing_address: cart.shipping_address,
+      region_id: cart.region_id,
+      email: cart.email,
+      customer_id: cart.customer_id,
+      cart_id: cart._id,
+      tax_rate: region.tax_rate,
+      currency_code: region.currency_code,
+      metadata: cart.metadata || {},
+    }
 
-        const orderDocument = await this.orderModel_
-          .create([o], {
-            session: dbSession,
-          })
-          .catch(err => console.log(err))
+    if (this.current_session) {
+      await this.orderModel_
+        .create([o], {
+          session: this.current_session,
+        })
+        .then(async result => {
+          this.eventBus_
+            .withSession(this.current_session)
+            .emit(OrderService.Events.PLACED, result[0])
+        })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+    } else {
+      await this.orderModel_
+        .create(o)
+        .then(result => {
+          this.eventBus_.emit(OrderService.Events.PLACED, result)
+        })
+        .catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+    }
 
-        // Emit and return
-        this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
-        return orderDocument[0]
-      })
-      .then(() => this.orderModel_.findOne({ cart_id: cart._id }))
+    return this.retrieveByCartId(cart._id)
   }
 
   /**
