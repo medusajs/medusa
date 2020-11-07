@@ -93,6 +93,11 @@ export default async (req, res) => {
           break
         }
 
+        case "finished": {
+          inProgress = false
+          break
+        }
+
         default:
           idempotencyKey = await idempotencyKeyService.update(
             idempotencyKey.idempotency_key,

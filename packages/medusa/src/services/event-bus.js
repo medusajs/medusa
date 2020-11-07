@@ -148,7 +148,7 @@ class EventBusService {
             .then(() => this.stagedJobModel_.deleteOne({ _id: j._id }))
         })
       )
-      await this.sleep(1000)
+      await this.sleep(3000)
     }
   }
 
