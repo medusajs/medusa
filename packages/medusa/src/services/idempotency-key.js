@@ -48,6 +48,8 @@ class IdempotencyKeyService extends BaseService {
     } catch (error) {
       await dbSession.abortTransaction()
       throw error
+    } finally {
+      dbSession.endSession()
     }
   }
 
@@ -173,8 +175,9 @@ class IdempotencyKeyService extends BaseService {
       await session.abortTransaction()
 
       return { error: err }
+    } finally {
+      session.endSession()
     }
-
     return { key }
   }
 }

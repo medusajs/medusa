@@ -554,7 +554,14 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateCustomerId(cartId, customerId) {
-    const cart = await this.retrieve(cartId)
+    let cart
+
+    if (this.current_session) {
+      cart = await this.withSession(this.current_session).retrieve(cartId)
+    } else {
+      cart = await this.retrieve(cartId)
+    }
+
     const schema = Validator.objectId().required()
     const { value, error } = schema.validate(customerId.toString())
     if (error) {
@@ -601,13 +608,26 @@ class CartService extends BaseService {
         "The email is not valid"
       )
     }
+    let customer
+    if (this.current_session) {
+      customer = await this.customerService_
+        .withSession(this.current_session)
+        .retrieveByEmail(value)
+        .catch(err => undefined)
 
-    let customer = await this.customerService_
-      .retrieveByEmail(value)
-      .catch(err => undefined)
+      if (!customer) {
+        customer = await this.customerService_
+          .withSession(this.current_session)
+          .create({ email })
+      }
+    } else {
+      customer = await this.customerService_
+        .retrieveByEmail(value)
+        .catch(err => undefined)
 
-    if (!customer) {
-      customer = await this.customerService_.create({ email })
+      if (!customer) {
+        customer = await this.customerService_.create({ email })
+      }
     }
 
     const customerChanged = !customer._id.equals(cart.customer_id)
