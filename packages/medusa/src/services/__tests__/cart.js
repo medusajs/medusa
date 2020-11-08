@@ -821,6 +821,7 @@ describe("CartService", () => {
         },
         {
           $set: {
+            items: [],
             region_id: IdMap.getId("region-us"),
             shipping_methods: [],
             payment_sessions: [],
