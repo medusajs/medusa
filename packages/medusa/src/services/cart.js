@@ -69,7 +69,7 @@ class CartService extends BaseService {
   withSession(session) {
     const cloned = new CartService({
       cartModel: this.cartModel_,
-      eventBusService: this.eventBusService,
+      eventBusService: this.eventBus_,
       paymentProviderService: this.paymentProviderService_,
       productService: this.productService_,
       productVariantService: this.productVariantService_,
@@ -200,6 +200,7 @@ class CartService extends BaseService {
     const validatedId = this.validateId_(cartId)
     const cart = await this.cartModel_
       .findOne({ _id: validatedId })
+      .session(this.current_session)
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -575,7 +576,9 @@ class CartService extends BaseService {
       )
       .then(result => {
         // Notify subscribers
-        this.eventBus_.emit(CartService.Events.CUSTOMER_UPDATED, result)
+        this.eventBus_
+          .withSession(this.current_session)
+          .emit(CartService.Events.CUSTOMER_UPDATED, result)
         return result
       })
   }
@@ -625,9 +628,13 @@ class CartService extends BaseService {
       .then(result => {
         // Notify subscribers
         if (customerChanged) {
-          this.eventBus_.emit(CartService.Events.CUSTOMER_UPDATED, result)
+          this.eventBus_
+            .withSession(this.current_session)
+            .emit(CartService.Events.CUSTOMER_UPDATED, result)
         }
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
+        this.eventBus_
+          .withSession(this.current_session)
+          .emit(CartService.Events.UPDATED, result)
         return result
       })
   }
