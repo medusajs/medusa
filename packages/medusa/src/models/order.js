@@ -9,7 +9,7 @@ import DiscountSchema from "./schemas/discount"
 import ReturnSchema from "./schemas/return"
 import RefundSchema from "./schemas/refund"
 import FulfillmentSchema from "./schemas/fulfillment"
-import SwapOrderSchema from "./schemas/swap-order"
+import SwapOrderSchema from "./schemas/swap"
 
 class OrderModel extends BaseModel {
   static modelName = "Order"

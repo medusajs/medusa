@@ -3,6 +3,7 @@ import { OrderModelMock, orders } from "../../models/__mocks__/order"
 import { carts } from "../../models/__mocks__/cart"
 import OrderService from "../order"
 import ReturnService from "../return"
+import FulfillmentService from "../fulfillment"
 import {
   PaymentProviderServiceMock,
   DefaultProviderMock,
@@ -430,11 +431,15 @@ describe("OrderService", () => {
   })
 
   describe("createFulfillment", () => {
+    const fulfillmentService = new FulfillmentService({
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      shippingProfileService: ShippingProfileServiceMock,
+      totalsService: TotalsServiceMock,
+    })
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       paymentProviderService: PaymentProviderServiceMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      shippingProfileService: ShippingProfileServiceMock,
+      fulfillmentService,
       eventBusService: EventBusServiceMock,
     })
 
@@ -1119,9 +1124,15 @@ describe("OrderService", () => {
   })
 
   describe("createShipment", () => {
+    const fulfillmentService = new FulfillmentService({
+      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      shippingProfileService: ShippingProfileServiceMock,
+      totalsService: TotalsServiceMock,
+    })
     const orderService = new OrderService({
       orderModel: OrderModelMock,
       fulfillmentProviderService: FulfillmentProviderServiceMock,
+      fulfillmentService,
       eventBusService: EventBusServiceMock,
     })
 

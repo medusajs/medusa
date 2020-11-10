@@ -26,6 +26,7 @@ class OrderService extends BaseService {
     shippingProfileService,
     discountService,
     fulfillmentProviderService,
+    fulfillmentService,
     lineItemService,
     totalsService,
     regionService,
@@ -58,6 +59,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {ReturnService} */
     this.returnService_ = returnService
+
+    /** @private @constant {FulfillmentService} */
+    this.fulfillmentService_ = fulfillmentService
 
     /** @private @constant {DiscountService} */
     this.discountService_ = discountService
@@ -127,33 +131,6 @@ class OrderService extends BaseService {
     }
 
     return value
-  }
-
-  async partitionItems_(shipping_methods, items) {
-    let updatedMethods = []
-    // partition order items to their dedicated shipping method
-    await Promise.all(
-      shipping_methods.map(async method => {
-        const { profile_id } = method
-        const profile = await this.shippingProfileService_.retrieve(profile_id)
-        // for each method find the items in the order, that are associated
-        // with the profile on the current shipping method
-        if (shipping_methods.length === 1) {
-          method.items = items
-        } else {
-          method.items = items.filter(({ content }) => {
-            if (Array.isArray(content)) {
-              // we require bundles to have same shipping method, therefore:
-              return profile.products.includes(content[0].product._id)
-            } else {
-              return profile.products.includes(content.product._id)
-            }
-          })
-        }
-        updatedMethods.push(method)
-      })
-    )
-    return updatedMethods
   }
 
   /**
@@ -423,15 +400,12 @@ class OrderService extends BaseService {
       )
     }
 
-    const updated = {
-      ...shipment,
-      tracking_numbers: trackingNumbers,
-      shipped_at: Date.now(),
-      metadata: {
-        ...shipment.metadata,
-        ...metadata,
-      },
-    }
+    const updated = await this.fulfillmentService_.createShipment(
+      order,
+      shipment,
+      trackingNumbers,
+      metadata
+    )
 
     // Add the shipment to the order
     return this.orderModel_
@@ -694,56 +668,47 @@ class OrderService extends BaseService {
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
     const order = await this.retrieve(orderId)
 
-    const lineItems = await this.getFulfillmentItems_(
-      order,
-      itemsToFulfill,
-      this.validateFulfillmentLineItem_
-    )
-
-    const { shipping_methods } = order
-
-    // prepare update object
     const updateFields = { fulfillment_status: "fulfilled" }
     const completed = order.payment_status !== "awaiting"
     if (completed) {
       updateFields.status = "completed"
     }
 
-    // partition order items to their dedicated shipping method
-    const fulfillments = await this.partitionItems_(shipping_methods, lineItems)
+    const fulfillments = await this.fulfillmentService_.createFulfillment(
+      order,
+      itemsToFulfill,
+      metadata
+    )
 
     let successfullyFulfilled = []
-    const results = await Promise.all(
-      fulfillments.map(async method => {
-        const provider = this.fulfillmentProviderService_.retrieveProvider(
-          method.provider_id
-        )
-
-        const data = await provider
-          .createOrder(method.data, method.items, { ...order })
-          .then(res => {
-            successfullyFulfilled = [...successfullyFulfilled, ...method.items]
-            return res
-          })
-
-        return {
-          provider_id: method.provider_id,
-          items: method.items,
-          data,
-          metadata,
-        }
-      })
-    )
+    for (const f of fulfillments) {
+      successfullyFulfilled = [...successfullyFulfilled, ...f.items]
+    }
 
     // Reflect the fulfillments in the items
     updateFields.items = order.items.map(i => {
       const ful = successfullyFulfilled.find(f => i._id.equals(f._id))
       if (ful) {
+        // Find the new fulfilled total
+        const fulfilledQuantity = i.fulfilled_quantity + ful.quantity
+
+        // If the ordered quantity is not the same as the fulfilled quantity
+        // the order cannot be marked as fulfilled. We instead set it as
+        // partially_fulfilled.
+        if (i.quantity !== fulfilledQuantity) {
+          updateFields.fulfillment_status = "partially_fulfilled"
+        }
+
+        // Update the items
         return {
           ...i,
-          fulfilled: i.quantity === ful.quantity,
-          fulfilled_quantity: ful.quantity,
+          fulfilled: i.quantity === fulfilledQuantity,
+          fulfilled_quantity: fulfilledQuantity,
         }
+      }
+
+      if (!i.fulfilled) {
+        updateFields.fulfillment_status = "partially_fulfilled"
       }
 
       return i
@@ -755,12 +720,12 @@ class OrderService extends BaseService {
           _id: orderId,
         },
         {
-          $addToSet: { fulfillments: { $each: results } },
+          $addToSet: { fulfillments: { $each: fulfillments } },
           $set: updateFields,
         }
       )
       .then(result => {
-        for (const fulfillment of results) {
+        for (const fulfillment of fulfillments) {
           this.eventBus_.emit(OrderService.Events.FULFILLMENT_CREATED, {
             order_id: orderId,
             fulfillment,
