@@ -29,14 +29,14 @@ class EventBusService {
     /** @private {logger} */
     this.logger_ = logger
 
-    /** @private {BullQueue} */
-    this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
-
     this.stagedJobModel_ = stagedJobModel
 
     if (singleton) {
       /** @private {object} */
       this.observers_ = {}
+
+      /** @private {BullQueue} */
+      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
 
       /** @private {object} to handle cron jobs */
       this.cronHandlers_ = {}
@@ -71,6 +71,8 @@ class EventBusService {
     )
 
     cloned.current_session = session
+    cloned.queue_ = this.queue_
+
     return cloned
   }
 
