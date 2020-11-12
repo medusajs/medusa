@@ -268,6 +268,13 @@ class OrderService extends BaseService {
     // Create DB session for transaction
     const dbSession = await this.orderModel_.startSession()
 
+    if (cart.items.length === 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Cannot create order from empty cart"
+      )
+    }
+
     // Initialize DB transaction
     return dbSession
       .withTransaction(async () => {

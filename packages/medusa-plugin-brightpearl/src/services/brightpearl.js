@@ -538,7 +538,7 @@ class BrightpearlService extends BaseService {
       })
     )
 
-    // If a gift card was applied to the order we reduce the order amount 
+    // If a gift card was applied to the order we reduce the order amount
     // correspondingly. This reduces the amount payable, while debiting the
     // gift card account that was previously credited, when the gift card was
     // purchased.
@@ -649,6 +649,14 @@ class BrightpearlService extends BaseService {
     const customer = await client.customers.create({
       firstName: fromOrder.shipping_address.first_name,
       lastName: fromOrder.shipping_address.last_name,
+      telephones: {
+        PRI: fromOrder.shipping_address.phone,
+      },
+      emails: {
+        PRI: fromOrder.email,
+        SEC: fromOrder.email,
+        TER: fromOrder.email,
+      },
       postAddressIds: {
         DEF: address,
         BIL: address,
