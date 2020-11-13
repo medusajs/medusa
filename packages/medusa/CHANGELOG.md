@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.40](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.39...@medusajs/medusa@1.0.40) (2020-11-13)
+
+
+### Features
+
+* **medusa:** Adds shipped status to line items + Capture fails will give payment_status = requires_action ([6a3c545](https://github.com/medusajs/medusa/commit/6a3c5455371c33e47722c7ab433a48d1d9b5b511))
+
+
+
+
+
 ## [1.0.39](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.38...@medusajs/medusa@1.0.39) (2020-11-05)
 
 **Note:** Version bump only for package @medusajs/medusa
