@@ -1,14 +1,12 @@
 class WebshipperSubscriber {
-  constructor({ eventBusService, logger, webshipperFulfillmentService }) {
+  constructor({ eventBusService, webshipperFulfillmentService }) {
     this.webshipperService_ = webshipperFulfillmentService
 
     eventBusService.subscribe("webshipper.shipment", this.handleShipment)
   }
 
   handleShipment = async ({ headers, body }) => {
-    return this.webshipperService_.handleWebhook(headers, body).catch((err) => {
-      logger.warn(err)
-    })
+    return this.webshipperService_.handleWebhook(headers, body)
   }
 }
 
