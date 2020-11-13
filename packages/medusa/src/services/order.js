@@ -254,41 +254,6 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Registers a fully shipped order.
-   * @param {string} orderId - id of order to capture payment for.
-   * @param {string} details - detailed reason for the failed payment
-   * @return {Promise} result of the update operation.
-   */
-  async registerShipmentStatus(orderId, status) {
-    const order = await this.retrieve(orderId)
-
-    if (status !== "partially_shipped" && status !== "shipped") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Status must be partially_shipped or shipped"
-      )
-    }
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: order._id,
-        },
-        {
-          fulfillment_status: status,
-        }
-      )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
    * @param {string} orderId - id of the order to complete
    * @return {Promise} the result of the find operation
    */
@@ -480,12 +445,24 @@ class OrderService extends BaseService {
       return f
     })
 
+    let fulfillmentStatus = "shipped"
+    for (const item of order.items) {
+      if (item.quantity !== item.shipped_quantity) {
+        fulfillmentStatus = "partially_shipped"
+        break
+      }
+    }
+
     // Add the shipment to the order
     return this.orderModel_
       .updateOne(
         { _id: orderId, "fulfillments._id": fulfillmentId },
         {
-          $set: { "fulfillments.$": updated, items: order.items },
+          $set: {
+            "fulfillments.$": updated,
+            items: order.items,
+            fulfillment_status: fulfillmentStatus,
+          },
         }
       )
       .then(result => {
@@ -696,36 +673,6 @@ class OrderService extends BaseService {
       .then(result => {
         this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURED, result)
         return result
-      })
-  }
-
-  /**
-   * Registers a fully shipped order.
-   * @param {string} orderId - id of order to capture payment for.
-   * @param {string} details - detailed reason for the failed payment
-   * @return {Promise} result of the update operation.
-   */
-  async registerShipmentStatus(orderId, status) {
-    const order = await this.retrieve(orderId)
-
-    if (status !== "partially_shipped" && status !== "shipped") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Status must be partially_shipped or shipped"
-      )
-    }
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: order._id,
-        },
-        {
-          fulfillment_status: status,
-        }
-      )
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
 
