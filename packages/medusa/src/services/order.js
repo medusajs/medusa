@@ -429,7 +429,8 @@ class OrderService extends BaseService {
           // ensure consistency
           if (item !== -1) {
             item.shipped_quantity = item.quantity
-            order.items[itemIdx].shipped_quantity += item.quantity
+            order.items[itemIdx].shipped_quantity =
+              (order.items[itemIdx].shipped_quantity || 0) + item.quantity
           }
         })
         shipment = {
