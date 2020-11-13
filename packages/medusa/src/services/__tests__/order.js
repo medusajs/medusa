@@ -509,7 +509,8 @@ describe("OrderService", () => {
                         },
                         quantity: 1,
                       },
-                      fulfilled_quantity: 0,
+                      fulfilled_quantity: 10,
+                      fulfilled: true,
                       quantity: 10,
                     },
                   ],
@@ -1121,7 +1122,7 @@ describe("OrderService", () => {
 
     it("calls order model functions", async () => {
       await orderService.createShipment(
-        IdMap.getId("test-order"),
+        IdMap.getId("shippedOrder"),
         IdMap.getId("fulfillment"),
         ["1234", "2345"],
         {}
@@ -1130,19 +1131,64 @@ describe("OrderService", () => {
       expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
         {
-          _id: IdMap.getId("test-order"),
+          _id: IdMap.getId("shippedOrder"),
           "fulfillments._id": IdMap.getId("fulfillment"),
         },
         {
           $set: {
-            "fulfillments.$": {
-              _id: IdMap.getId("fulfillment"),
-              provider_id: "default_provider",
-              tracking_numbers: ["1234", "2345"],
-              data: {},
-              shipped_at: expect.anything(),
-              metadata: {},
-            },
+            "fulfillments.$": [
+              {
+                _id: IdMap.getId("fulfillment"),
+                provider_id: "default_provider",
+                tracking_numbers: ["1234", "2345"],
+                data: {},
+                items: [
+                  {
+                    _id: IdMap.getId("existingLine"),
+                    content: {
+                      product: {
+                        _id: IdMap.getId("validId"),
+                      },
+                      quantity: 1,
+                      unit_price: 123,
+                      variant: {
+                        _id: IdMap.getId("can-cover"),
+                      },
+                    },
+                    description: "This is a new line",
+                    fulfilled_quantity: 10,
+                    shipped_quantity: 10,
+                    quantity: 10,
+                    thumbnail: "test-img-yeah.com/thumb",
+                    title: "merge line",
+                  },
+                ],
+                shipped_at: expect.anything(),
+                metadata: {},
+              },
+            ],
+            items: [
+              {
+                _id: IdMap.getId("existingLine"),
+                content: {
+                  product: {
+                    _id: IdMap.getId("validId"),
+                  },
+                  quantity: 1,
+                  unit_price: 123,
+                  variant: {
+                    _id: IdMap.getId("can-cover"),
+                  },
+                },
+                description: "This is a new line",
+                fulfilled_quantity: 10,
+                shipped_quantity: 10,
+                quantity: 10,
+                thumbnail: "test-img-yeah.com/thumb",
+                title: "merge line",
+              },
+            ],
+            fulfillment_status: "shipped",
           },
         }
       )
