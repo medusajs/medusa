@@ -700,6 +700,36 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Registers a fully shipped order.
+   * @param {string} orderId - id of order to capture payment for.
+   * @param {string} details - detailed reason for the failed payment
+   * @return {Promise} result of the update operation.
+   */
+  async registerShipmentStatus(orderId, status) {
+    const order = await this.retrieve(orderId)
+
+    if (status !== "partially_shipped" && status !== "shipped") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Status must be partially_shipped or shipped"
+      )
+    }
+
+    return this.orderModel_
+      .updateOne(
+        {
+          _id: order._id,
+        },
+        {
+          fulfillment_status: status,
+        }
+      )
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
    * Checks that a given quantity of a line item can be fulfilled. Fails if the
    * fulfillable quantity is lower than the requested fulfillment quantity.
    * Fulfillable quantity is calculated by subtracting the already fulfilled
