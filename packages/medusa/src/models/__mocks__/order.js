@@ -368,6 +368,97 @@ export const orders = {
     ],
     discounts: [],
   },
+  shippedOrder: {
+    _id: IdMap.getId("shippedOrder"),
+    email: "oliver@test.dk",
+    billing_address: {
+      first_name: "Oli",
+      last_name: "Medusa",
+      address_1: "testaddress",
+      city: "LA",
+      country_code: "US",
+      postal_code: "90002",
+    },
+    shipping_address: {
+      first_name: "Oli",
+      last_name: "Medusa",
+      address_1: "testaddress",
+      city: "LA",
+      country_code: "US",
+      postal_code: "90002",
+    },
+    items: [
+      {
+        _id: IdMap.getId("existingLine"),
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("validId"),
+          },
+          quantity: 1,
+        },
+        fulfilled_quantity: 10,
+        shipped_quantity: 0,
+        quantity: 10,
+      },
+    ],
+    region_id: IdMap.getId("region-france"),
+    customer_id: IdMap.getId("test-customer"),
+    payment_method: {
+      provider_id: "default_provider",
+    },
+    shipping_methods: [
+      {
+        _id: IdMap.getId("expensiveShipping"),
+        name: "Expensive Shipping",
+        price: 100,
+        provider_id: "default_provider",
+        profile_id: IdMap.getId("default"),
+        data: {
+          extra: "hi",
+        },
+      },
+    ],
+    fulfillments: [
+      {
+        _id: IdMap.getId("fulfillment"),
+        provider_id: "default_provider",
+        data: {},
+        items: [
+          {
+            _id: IdMap.getId("existingLine"),
+            content: {
+              product: {
+                _id: IdMap.getId("validId"),
+              },
+              quantity: 1,
+              unit_price: 123,
+              variant: {
+                _id: IdMap.getId("can-cover"),
+              },
+            },
+            description: "This is a new line",
+            fulfilled_quantity: 10,
+            quantity: 10,
+            thumbnail: "test-img-yeah.com/thumb",
+            title: "merge line",
+          },
+        ],
+      },
+    ],
+    fulfillment_status: "not_fulfilled",
+    payment_status: "awaiting",
+    status: "pending",
+    metadata: {
+      cart_id: IdMap.getId("test-cart"),
+    },
+  },
 }
 
 export const OrderModelMock = {
@@ -419,6 +510,9 @@ export const OrderModelMock = {
     }
     if (query.cart_id === IdMap.getId("test-cart")) {
       return Promise.resolve(orders.testOrder)
+    }
+    if (query._id === IdMap.getId("shippedOrder")) {
+      return Promise.resolve(orders.shippedOrder)
     }
     return Promise.resolve(undefined)
   }),
