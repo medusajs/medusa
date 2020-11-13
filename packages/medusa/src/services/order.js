@@ -6,6 +6,7 @@ class OrderService extends BaseService {
   static Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
+    PAYMENT_CAPTURE_FAILED: "order.payment_capture_failed",
     SHIPMENT_CREATED: "order.shipment_created",
     FULFILLMENT_CREATED: "order.fulfillment_created",
     RETURN_REQUESTED: "order.return_requested",
@@ -659,7 +660,26 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    await paymentProvider.capturePayment(data)
+    try {
+      await paymentProvider.capturePayment(data)
+    } catch (error) {
+      return this.orderModel_
+        .updateOne(
+          {
+            _id: orderId,
+          },
+          {
+            $set: { payment_status: "requires_action" },
+          }
+        )
+        .then(result => {
+          this.eventBus_.emit(
+            OrderService.Events.PAYMENT_CAPTURE_FAILED,
+            result
+          )
+          return result
+        })
+    }
 
     return this.orderModel_
       .updateOne(
