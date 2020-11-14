@@ -95,6 +95,25 @@ class EventBusService {
   }
 
   /**
+   * Adds a function to a list of event subscribers.
+   * @param {string} event - the event that the subscriber will listen for.
+   * @param {func} subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
+   */
+  unsubscribe(event, subscriber) {
+    if (typeof subscriber !== "function") {
+      throw new Error("Subscriber must be a function")
+    }
+
+    if (this.observers_[event]) {
+      const index = this.observers_[event].findIndex(subscriber)
+      if (index !== -1) {
+        this.observers_[event] = this.observers_[event].splice(index, 1)
+      }
+    }
+  }
+
+  /**
    *
    */
   registerCronHandler_(event, subscriber) {
