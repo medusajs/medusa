@@ -4,8 +4,8 @@
 import mongoose from "mongoose"
 
 /**
- * REMEMBER: When updating this line you must also update the LineItemService's 
- * validate method too. Otherwise we cannot copy lines directly. 
+ * REMEMBER: When updating this line you must also update the LineItemService's
+ * validate method too. Otherwise we cannot copy lines directly.
  */
 export default new mongoose.Schema(
   {
@@ -45,6 +45,7 @@ export default new mongoose.Schema(
     fulfilled: { type: Boolean, default: false },
     fulfilled_quantity: { type: Number, default: 0 },
     returned_quantity: { type: Number, default: 0 },
+    shipped_quantity: { type: Number, default: 0 },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   },
   { minimize: false }

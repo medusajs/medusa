@@ -6,6 +6,7 @@ class OrderService extends BaseService {
   static Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
+    PAYMENT_CAPTURE_FAILED: "order.payment_capture_failed",
     SHIPMENT_CREATED: "order.shipment_created",
     FULFILLMENT_CREATED: "order.fulfillment_created",
     RETURN_REQUESTED: "order.return_requested",
@@ -403,7 +404,7 @@ class OrderService extends BaseService {
     if (!shipment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Could not find a fulfillment with the provided id`
+        "Could not find fulfillment"
       )
     }
 
@@ -414,12 +415,45 @@ class OrderService extends BaseService {
       metadata
     )
 
+    let fulfillmentStatus = "shipped"
+
+    const newItems = order.items.map(item => {
+      const shipped = updated.items.find(fi => item._id.equals(fi._id))
+      if (shipped) {
+        // Find the new fulfilled total
+        const shippedQuantity = (item.shipped_quantity || 0) + shipped.quantity
+
+        // If the ordered quantity is not the same as the fulfilled quantity
+        // the order cannot be marked as fulfilled. We instead set it as
+        // partially_fulfilled.
+        if (item.quantity !== shippedQuantity) {
+          fulfillmentStatus = "partially_shipped"
+        }
+
+        return {
+          ...item,
+          shipped: item.quantity === shippedQuantity,
+          shipped_quantity: shippedQuantity,
+        }
+      }
+
+      if (!item.shipped) {
+        fulfillmentStatus = "partially_shipped"
+      }
+
+      return item
+    })
+
     // Add the shipment to the order
     return this.orderModel_
       .updateOne(
         { _id: orderId, "fulfillments._id": fulfillmentId },
         {
-          $set: { "fulfillments.$": updated },
+          $set: {
+            "fulfillments.$": updated,
+            items: newItems,
+            fulfillment_status: fulfillmentStatus,
+          },
         }
       )
       .then(result => {
@@ -616,7 +650,26 @@ class OrderService extends BaseService {
       provider_id
     )
 
-    await paymentProvider.capturePayment(data)
+    try {
+      await paymentProvider.capturePayment(data)
+    } catch (error) {
+      return this.orderModel_
+        .updateOne(
+          {
+            _id: orderId,
+          },
+          {
+            $set: { payment_status: "requires_action" },
+          }
+        )
+        .then(result => {
+          this.eventBus_.emit(
+            OrderService.Events.PAYMENT_CAPTURE_FAILED,
+            result
+          )
+          return result
+        })
+    }
 
     return this.orderModel_
       .updateOne(
@@ -675,12 +728,6 @@ class OrderService extends BaseService {
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
     const order = await this.retrieve(orderId)
 
-    const updateFields = { fulfillment_status: "fulfilled" }
-    const completed = order.payment_status !== "awaiting"
-    if (completed) {
-      updateFields.status = "completed"
-    }
-
     const fulfillments = await this.fulfillmentService_.createFulfillment(
       order,
       itemsToFulfill,
@@ -691,6 +738,8 @@ class OrderService extends BaseService {
     for (const f of fulfillments) {
       successfullyFulfilled = [...successfullyFulfilled, ...f.items]
     }
+
+    const updateFields = {}
 
     // Reflect the fulfillments in the items
     updateFields.items = order.items.map(i => {
@@ -720,6 +769,8 @@ class OrderService extends BaseService {
 
       return i
     })
+
+    updateFields.fulfillment_status = "fulfilled"
 
     return this.orderModel_
       .updateOne(
