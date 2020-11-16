@@ -106,9 +106,9 @@ class EventBusService {
     }
 
     if (this.observers_[event]) {
-      const index = this.observers_[event].findIndex(subscriber)
+      const index = this.observers_[event].indexOf(subscriber)
       if (index !== -1) {
-        this.observers_[event] = this.observers_[event].splice(index, 1)
+        this.observers_[event].splice(index, 1)
       }
     }
   }
