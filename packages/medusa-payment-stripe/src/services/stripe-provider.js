@@ -97,33 +97,26 @@ class StripeProviderService extends PaymentService {
     const { customer_id, region_id } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
-    let stripeCustomerId
-    if (!customer_id) {
-      const { id } = await this.stripe_.customers.create({
-        email: cart.email,
-      })
-      stripeCustomerId = id
-    } else {
-      const customer = await this.customerService_.retrieve(customer_id)
-      if (!(customer.metadata && customer.metadata.stripe_id)) {
-        const { id } = await this.stripe_.customers.create({
-          email: customer.email,
-        })
-        await this.customerService_.setMetadata(customer._id, "stripe_id", id)
-      } else {
-        stripeCustomerId = customer.metadata.stripe_id
-      }
-    }
-
     const amount = await this.totalsService_.getTotal(cart)
-    const paymentIntent = await this.stripe_.paymentIntents.create({
-      customer: stripeCustomerId,
+
+    const intentRequest = {
       amount: parseInt(amount * 100), // Stripe amount is in cents
       currency: currency_code,
       setup_future_usage: "on_session",
       capture_method: "manual",
       metadata: { cart_id: `${cart._id}` },
-    })
+    }
+
+    if (customer_id) {
+      const customer = await this.customerService_.retrieve(customer_id)
+      if (customer.metadata?.stripe_id) {
+        intentRequest.customer = customer.metadata.stripe_id
+      }
+    }
+
+    const paymentIntent = await this.stripe_.paymentIntents.create(
+      intentRequest
+    )
 
     return paymentIntent
   }

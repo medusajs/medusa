@@ -1077,6 +1077,11 @@ class CartService extends BaseService {
   async updatePaymentSession(cartId, providerId, session) {
     const cart = await this.retrieve(cartId)
 
+    const newSession = {
+      provider_id: providerId,
+      data: session,
+    }
+
     return this.cartModel_
       .updateOne(
         {
@@ -1084,11 +1089,12 @@ class CartService extends BaseService {
           "payment_sessions.provider_id": providerId,
         },
         {
-          $set: { "payment_sessions.$": session },
+          $set: { "payment_sessions.$": newSession },
         },
         { session: this.current_session }
       )
       .then(result => {
+        console.log("Result: ", result)
         // Notify subscribers
         this.eventBus_.emit(CartService.Events.UPDATED, result)
         return result

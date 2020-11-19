@@ -49,10 +49,16 @@ export default (app, container) => {
     middlewares.wrap(require("./create-payment-sessions").default)
   )
 
+  route.post(
+    "/:id/payment-sessions/:provider_id",
+    middlewares.wrap(require("./update-payment-session").default)
+  )
+
   route.delete(
     "/:id/payment-sessions/:provider_id",
     middlewares.wrap(require("./delete-payment-session").default)
   )
+
   route.post(
     "/:id/payment-method",
     middlewares.wrap(require("./update-payment-method").default)
