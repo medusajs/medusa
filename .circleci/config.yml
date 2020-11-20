@@ -17,6 +17,8 @@ jobs:
     executor: node
     steps:
       - checkout
+      - run: yarn install
+      - run: lerna bootstrap
       - run: lerna run test -- --passWithNoTests
 
 workflows:
