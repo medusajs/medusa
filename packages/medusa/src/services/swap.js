@@ -536,6 +536,7 @@ class SwapService extends BaseService {
       })
     )
 
+    // Go through all the additional items in the swap
     const updatedItems = swap.additional_items.map(i => {
       let shipmentItem
       for (const fulfillment of updatedFulfillments) {

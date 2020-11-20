@@ -162,6 +162,7 @@ describe("SwapService", () => {
 
     describe("success", () => {
       const existing = {
+        _id: IdMap.getId("test-swap"),
         order_id: IdMap.getId("test"),
         return: {
           _id: IdMap.getId("return-swap"),
@@ -208,7 +209,6 @@ describe("SwapService", () => {
                 product: {
                   _id: IdMap.getId("product"),
                 },
-                quantity: 1,
                 unit_price: -100,
               },
               quantity: 1,
@@ -224,6 +224,7 @@ describe("SwapService", () => {
           customer_id: testOrder.customer_id,
           is_swap: true,
           metadata: {
+            swap_id: IdMap.getId("test-swap"),
             parent_order_id: IdMap.getId("test"),
           },
         })
@@ -511,7 +512,7 @@ describe("SwapService", () => {
       const swapService = new SwapService({ swapModel, fulfillmentService })
 
       it("creates a fulfillment", async () => {
-        await swapService.createFulfillment(IdMap.getId("swap"))
+        await swapService.createFulfillment(testOrder, IdMap.getId("swap"))
 
         expect(swapModel.updateOne).toHaveBeenCalledWith(
           {
@@ -519,7 +520,7 @@ describe("SwapService", () => {
           },
           {
             $set: {
-              status: "fulfilled",
+              fulfillment_status: "fulfilled",
               fulfillments: [{ data: "new" }],
             },
           }
@@ -527,6 +528,12 @@ describe("SwapService", () => {
 
         expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
           {
+            ...existing,
+            currency_code: testOrder.currency_code,
+            tax_rate: testOrder.tax_rate,
+            region_id: testOrder.region_id,
+            display_id: `S-${testOrder.display_id}`,
+            billing_address: testOrder.billing_address,
             items: existing.additional_items,
             shipping_methods: existing.shipping_methods,
           },
@@ -554,7 +561,7 @@ describe("SwapService", () => {
       const existing = {
         additional_items: [
           {
-            _id: IdMap.getId("1234"),
+            _id: IdMap.getId("1234-1"),
             quantity: 2,
             shipped_quantity: 0,
           },
@@ -564,7 +571,8 @@ describe("SwapService", () => {
             _id: IdMap.getId("f1"),
             items: [
               {
-                item_id: IdMap.getId("1234"),
+                _id: IdMap.getId("1234-1"),
+                item_id: IdMap.getId("1234-1"),
                 quantity: 2,
               },
             ],
@@ -573,7 +581,8 @@ describe("SwapService", () => {
             _id: IdMap.getId("f2"),
             items: [
               {
-                item_id: IdMap.getId("1234"),
+                _id: IdMap.getId("1234-2"),
+                item_id: IdMap.getId("1234-2"),
                 quantity: 2,
               },
             ],
@@ -606,19 +615,20 @@ describe("SwapService", () => {
             $set: {
               additional_items: [
                 {
-                  _id: IdMap.getId("1234"),
+                  _id: IdMap.getId("1234-1"),
                   quantity: 2,
                   shipped: true,
                   shipped_quantity: 2,
                 },
               ],
-              status: "shipped",
+              fulfillment_status: "shipped",
               fulfillments: [
                 {
                   _id: IdMap.getId("f1"),
                   items: [
                     {
-                      item_id: IdMap.getId("1234"),
+                      _id: IdMap.getId("1234-1"),
+                      item_id: IdMap.getId("1234-1"),
                       quantity: 2,
                     },
                   ],
@@ -628,7 +638,8 @@ describe("SwapService", () => {
                   _id: IdMap.getId("f2"),
                   items: [
                     {
-                      item_id: IdMap.getId("1234"),
+                      _id: IdMap.getId("1234-2"),
+                      item_id: IdMap.getId("1234-2"),
                       quantity: 2,
                     },
                   ],
@@ -647,7 +658,8 @@ describe("SwapService", () => {
             _id: IdMap.getId("f1"),
             items: [
               {
-                item_id: IdMap.getId("1234"),
+                _id: IdMap.getId("1234-1"),
+                item_id: IdMap.getId("1234-1"),
                 quantity: 2,
               },
             ],
