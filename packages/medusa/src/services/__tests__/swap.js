@@ -51,6 +51,8 @@ const testOrder = generateOrder(
     },
   ],
   {
+    fulfillment_status: "fulfilled",
+    payment_status: "captured",
     currency_code: "DKK",
     region_id: IdMap.getId("region"),
     tax_rate: 0,
@@ -166,6 +168,7 @@ describe("SwapService", () => {
           test: "notreceived",
           refund_amount: 11,
         },
+        return_items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
         additional_items: [{ data: "lines" }],
         other: "data",
       }
@@ -195,7 +198,28 @@ describe("SwapService", () => {
           email: testOrder.email,
           shipping_address: testOrder.shipping_address,
           billing_address: testOrder.billing_address,
-          items: existing.additional_items,
+          items: [
+            {
+              _id: IdMap.getId("line"),
+              content: {
+                variant: {
+                  _id: IdMap.getId("variant"),
+                },
+                product: {
+                  _id: IdMap.getId("product"),
+                },
+                quantity: 1,
+                unit_price: -100,
+              },
+              quantity: 1,
+              fulfilled_quantity: 1,
+              returned_quantity: 0,
+              metadata: {
+                is_return_line: true,
+              },
+            },
+            ...existing.additional_items,
+          ],
           region_id: testOrder.region_id,
           customer_id: testOrder.customer_id,
           is_swap: true,

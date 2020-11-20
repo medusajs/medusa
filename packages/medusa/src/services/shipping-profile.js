@@ -394,8 +394,11 @@ class ShippingProfileService extends BaseService {
           }
         })
       } else {
-        if (!acc.includes(next.content.product._id)) {
-          acc.push(next.content.product._id)
+        // We may have line items that are not associated with a product
+        if (next.content.product) {
+          if (!acc.includes(next.content.product._id)) {
+            acc.push(next.content.product._id)
+          }
         }
       }
 

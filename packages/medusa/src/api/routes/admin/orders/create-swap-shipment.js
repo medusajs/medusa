@@ -1,16 +1,13 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id } = req.params
+  const { id, swap_id } = req.params
 
   const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .required(),
-    metadata: Validator.object().optional(),
+    fulfillment_id: Validator.string().required(),
+    tracking_numbers: Validator.array()
+      .items(Validator.string())
+      .optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -20,13 +17,17 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
+    const swapService = req.scope.resolve("swapService")
 
-    let order = await orderService.createFulfillment(
-      id,
-      value.items,
-      value.metadata
+    const order = await orderService.retrieve(id)
+
+    await swapService.createShipment(
+      swap_id,
+      value.fulfillment_id,
+      value.tracking_numbers
     )
 
+    // Decorate the order
     const data = await orderService.decorate(
       order,
       [],

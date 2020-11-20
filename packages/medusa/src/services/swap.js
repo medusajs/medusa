@@ -14,6 +14,7 @@ class SwapService extends BaseService {
     returnService,
     lineItemService,
     paymentProviderService,
+    shippingOptionService,
     fulfillmentService,
   }) {
     super()
@@ -38,6 +39,9 @@ class SwapService extends BaseService {
 
     /** @private @const {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
+
+    /** @private @const {ShippingOptionService} */
+    this.shippingOptionService_ = shippingOptionService
   }
 
   /**
@@ -66,6 +70,21 @@ class SwapService extends BaseService {
   async retrieve(id) {
     const validatedId = this.validateId_(id)
     const swap = await this.swapModel_.findOne({ _id: validatedId })
+
+    if (!swap) {
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
+    }
+
+    return swap
+  }
+
+  /**
+   * Retrieves a swap based on its associated cart id
+   * @param {string} cartId - the cart id that the swap's cart has
+   * @return {Promise<Swap>} the swap
+   */
+  async retrieveByCartId(cartId) {
+    const swap = await this.swapModel_.findOne({ cart_id: cartId })
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
@@ -135,6 +154,16 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the newly created swap.
    */
   async create(order, returnItems, additionalItems, returnShipping) {
+    if (
+      order.fulfillment_status === "not_fulfilled" ||
+      order.payment_status !== "captured"
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Order cannot be swapped"
+      )
+    }
+
     const newItems = await Promise.all(
       additionalItems.map(({ variant_id, quantity }) => {
         return this.lineItemService_.generate(
@@ -153,6 +182,46 @@ class SwapService extends BaseService {
       return_shipping: returnShipping,
       additional_items: newItems,
     })
+  }
+
+  async capturePayment(swapId) {
+    const swap = await this.retrieve(swapId)
+
+    if (swap.payment_status !== "awaiting") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Payment already captured"
+      )
+    }
+
+    const updateFields = { payment_status: "captured" }
+
+    const { provider_id, data } = swap.payment_method
+    const paymentProvider = await this.paymentProviderService_.retrieveProvider(
+      provider_id
+    )
+
+    try {
+      await paymentProvider.capturePayment(data)
+    } catch (error) {
+      return this.swapModel_.updateOne(
+        {
+          _id: swapId,
+        },
+        {
+          $set: { payment_status: "requires_action" },
+        }
+      )
+    }
+
+    return this.swapModel_.updateOne(
+      {
+        _id: swapId,
+      },
+      {
+        $set: updateFields,
+      }
+    )
   }
 
   /**
@@ -182,15 +251,52 @@ class SwapService extends BaseService {
       )
     }
 
+    // Add return lines to the cart to ensure that the total calculation is
+    // correct.
+    const returnLines = swap.return_items.map(r => {
+      const lineItem = order.items.find(i => i._id.equals(r.item_id))
+
+      return {
+        ...lineItem,
+        content: {
+          ...lineItem.content,
+          unit_price: -1 * lineItem.content.unit_price,
+        },
+        quantity: r.quantity,
+        metadata: {
+          ...lineItem.metadata,
+          is_return_line: true,
+        },
+      }
+    })
+
+    // If the swap has a return shipping method the price has to be added to the
+    // cart.
+    if (swap.return_shipping) {
+      returnLines.push({
+        title: "Return shipping",
+        quantity: 1,
+        has_shipping: true,
+        content: {
+          unit_price: swap.return_shipping.price,
+          quantity: 1,
+        },
+        metadata: {
+          is_return_line: true,
+        },
+      })
+    }
+
     const cart = await this.cartService_.create({
       email: order.email,
       billing_address: order.billing_address,
       shipping_address: order.shipping_address,
-      items: swap.additional_items,
+      items: [...returnLines, ...swap.additional_items],
       region_id: order.region_id,
       customer_id: order.customer_id,
       is_swap: true,
       metadata: {
+        swap_id: swap._id,
         parent_order_id: order._id,
       },
     })
@@ -198,6 +304,88 @@ class SwapService extends BaseService {
     return this.swapModel_.updateOne(
       { _id: swapId },
       { $set: { cart_id: cart._id } }
+    )
+  }
+
+  /**
+   *
+   */
+  async registerCartCompletion(swapId, cartId) {
+    const swap = await this.retrieve(swapId)
+    const cart = await this.cartService_.retrieve(cartId)
+
+    // If we already registered the cart completion we just return
+    if (swap.is_paid) {
+      return swap
+    }
+
+    if (!cart._id.equals(swap.cart_id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Cart does not belong to swap"
+      )
+    }
+
+    let paymentSession = {}
+    let paymentData = {}
+    const { payment_method, payment_sessions } = cart
+
+    if (!payment_method) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Cart does not contain a payment method"
+      )
+    }
+
+    if (!payment_sessions || !payment_sessions.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "cart must have payment sessions"
+      )
+    }
+
+    paymentSession = payment_sessions.find(
+      ps => ps.provider_id === payment_method.provider_id
+    )
+
+    // Throw if payment method does not exist
+    if (!paymentSession) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Cart does not have an authorized payment session"
+      )
+    }
+
+    const paymentProvider = this.paymentProviderService_.retrieveProvider(
+      paymentSession.provider_id
+    )
+    const paymentStatus = await paymentProvider.getStatus(paymentSession.data)
+
+    // If payment status is not authorized, we throw
+    if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Payment method is not authorized"
+      )
+    }
+
+    paymentData = await paymentProvider.retrievePayment(paymentSession.data)
+
+    let payment = {}
+    if (paymentSession.provider_id) {
+      payment = {
+        provider_id: paymentSession.provider_id,
+        data: paymentData,
+      }
+    }
+
+    return this.swapModel_.updateOne(
+      { _id: swap._id },
+      {
+        shipping_address: cart.shipping_address,
+        shipping_methods: cart.shipping_methods,
+        payment_method: payment,
+      }
     )
   }
 
@@ -283,11 +471,17 @@ class SwapService extends BaseService {
    * @param {object} metadata - optional metadata to attach to the fulfillment.
    * @returns {Promise<Swap>} the updated swap with new status and fulfillments.
    */
-  async createFulfillment(swapId, metadata = {}) {
+  async createFulfillment(order, swapId, metadata = {}) {
     const swap = await this.retrieve(swapId)
 
     const fulfillments = await this.fulfillmentService_.createFulfillment(
       {
+        ...swap,
+        currency_code: order.currency_code,
+        tax_rate: order.tax_rate,
+        region_id: order.region_id,
+        display_id: `S-${order.display_id}`,
+        billing_address: order.billing_address,
         items: swap.additional_items,
         shipping_methods: swap.shipping_methods,
       },
@@ -304,7 +498,7 @@ class SwapService extends BaseService {
       },
       {
         $set: {
-          status: "fulfilled",
+          fulfillment_status: "fulfilled",
           fulfillments,
         },
       }
@@ -345,7 +539,7 @@ class SwapService extends BaseService {
     const updatedItems = swap.additional_items.map(i => {
       let shipmentItem
       for (const fulfillment of updatedFulfillments) {
-        const item = fulfillment.items.find(fi => i._id.equals(fi.item_id))
+        const item = fulfillment.items.find(fi => i._id.equals(fi._id))
         if (!!item) {
           shipmentItem = item
           break
@@ -364,7 +558,7 @@ class SwapService extends BaseService {
       return i
     })
 
-    const status = updatedItems.every(i => i.shipped)
+    const fulfillment_status = updatedItems.every(i => i.shipped)
       ? "shipped"
       : "partially_shipped"
 
@@ -372,7 +566,7 @@ class SwapService extends BaseService {
       { _id: swapId },
       {
         $set: {
-          status,
+          fulfillment_status,
           additional_items: updatedItems,
           fulfillments: updatedFulfillments,
         },

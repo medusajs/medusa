@@ -13,6 +13,8 @@ class OrderService extends BaseService {
     ITEMS_RETURNED: "order.items_returned",
     RETURN_ACTION_REQUIRED: "order.return_action_required",
     REFUND_CREATED: "order.refund_created",
+    SWAP_CREATED: "order.swap_created",
+    SWAP_RECEIVED: "order.swap_received",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELED: "order.canceled",
@@ -32,6 +34,7 @@ class OrderService extends BaseService {
     totalsService,
     regionService,
     returnService,
+    swapService,
     documentService,
     eventBusService,
   }) {
@@ -78,6 +81,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @constant {SwapService} */
+    this.swapService_ = swapService
   }
 
   /**
@@ -1177,6 +1183,14 @@ class OrderService extends BaseService {
 
     o.created = order._id.getTimestamp()
 
+    if (expandFields.includes("swaps")) {
+      o.swaps = await Promise.all(
+        order.swaps.map(sId => {
+          return this.swapService_.retrieve(sId)
+        })
+      )
+    }
+
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
@@ -1221,6 +1235,87 @@ class OrderService extends BaseService {
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Registers a swap to the order. The swap must belong to the order for it to
+   * be registered.
+   * @param {string} id - the id of the order to register the swap to.
+   * @param {string} swapId - the id of the swap to add to the order.
+   * @returns {Promise<Order>} the resulting order
+   */
+  async registerSwapCreated(id, swapId) {
+    const order = await this.retrieve(id)
+    const swap = await this.swapService_.retrieve(swapId)
+
+    if (!order._id.equals(swap.order_id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Swap must belong to the given order"
+      )
+    }
+
+    return this.orderModel_
+      .updateOne({ _id: order._id }, { $addToSet: { swaps: swapId } })
+      .then(result => {
+        this.eventBus_.emit(OrderService.Events.SWAP_CREATED, {
+          order: result,
+          swap_id: swapId,
+        })
+        return result
+      })
+  }
+
+  /**
+   * Registers the swap return items as received so that they cannot be used
+   * as a part of other swaps/returns.
+   * @param {string} id - the id of the order with the swap.
+   * @param {string} swapId - the id of the swap that has been received.
+   * @returns {Promise<Order>} the resulting order
+   */
+  async registerSwapReceived(id, swapId) {
+    const order = await this.retrieve(id)
+    const swap = await this.swapService_.retrieve(swapId)
+
+    if (!order._id.equals(swap.order_id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Swap must belong to the given order"
+      )
+    }
+
+    if (!swap.return.status === "received") {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Swap is not received"
+      )
+    }
+
+    const newItems = order.items.map(i => {
+      const isReturn = swap.return_items.find(ri => i._id.equals(ri.item_id))
+
+      if (isReturn) {
+        const returnedQuantity = i.returned_quantity + isReturn.quantity
+        const returned = returnedQuantity === i.quantity
+        return {
+          ...i,
+          returned_quantity: returnedQuantity,
+          returned,
+        }
+      }
+
+      return i
+    })
+
+    return this.orderModel_
+      .updateOne({ _id: order._id }, { $set: { items: newItems } })
+      .then(result => {
+        this.eventBus_.emit(OrderService.Events.SWAP_RECEIVED, {
+          order: result,
+          swap_id: swapId,
+        })
+        return result
       })
   }
 

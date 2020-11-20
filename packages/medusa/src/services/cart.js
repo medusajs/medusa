@@ -208,10 +208,12 @@ class CartService extends BaseService {
     }
 
     const region = await this.regionService_.retrieve(region_id)
-    if (region.countries.length === 1) {
-      // Preselect the country if the region only has 1
-      data.shipping_address = {
-        country_code: region.countries[0],
+    if (!data.shipping_address) {
+      if (region.countries.length === 1) {
+        // Preselect the country if the region only has 1
+        data.shipping_address = {
+          country_code: region.countries[0],
+        }
       }
     }
 
@@ -262,7 +264,9 @@ class CartService extends BaseService {
     if (Array.isArray(item.content)) {
       item.content.forEach(c => products.push(`${c.product._id}`))
     } else {
-      products.push(`${item.content.product._id}`)
+      if (item.content.product) {
+        products.push(`${item.content.product._id}`)
+      }
     }
 
     return products

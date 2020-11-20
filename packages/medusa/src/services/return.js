@@ -118,6 +118,12 @@ class ReturnService extends BaseService {
     // Throws if the order doesn't have the necessary status for return
     this.validateReturnStatuses_(order)
 
+    const returnLines = await this.getFulfillmentItems_(
+      order,
+      items,
+      this.validateReturnLineItem_
+    )
+
     let toRefund = refundAmount
     if (typeof refundAmount !== "undefined") {
       const total = await this.totalsService_.getTotal(order)
@@ -132,12 +138,6 @@ class ReturnService extends BaseService {
     } else {
       toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
     }
-
-    const returnLines = await this.getFulfillmentItems_(
-      order,
-      items,
-      this.validateReturnLineItem_
-    )
 
     let fulfillmentData = {}
     let shipping_method = {}
