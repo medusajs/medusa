@@ -18,8 +18,8 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: lerna bootstrap
-      - run: lerna run test -- --passWithNoTests
+      - run: yarn bootstrap
+      - run: yarn test 
 
 workflows:
   test_all:
