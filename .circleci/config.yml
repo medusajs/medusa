@@ -18,3 +18,8 @@ jobs:
     steps:
       - checkout
       - run: lerna run test -- --passWithNoTests
+
+workflows:
+  test_all:
+    jobs:
+      - unit_test
