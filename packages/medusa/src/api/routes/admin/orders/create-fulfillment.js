@@ -33,11 +33,6 @@ export default async (req, res) => {
       ["region", "customer", "swaps"]
     )
 
-    if (data.customer_id) {
-      const customerService = req.scope.resolve("customerService")
-      data.customer = await customerService.retrieve(order.customer_id)
-    }
-
     res.json({ order: data })
   } catch (error) {
     throw error

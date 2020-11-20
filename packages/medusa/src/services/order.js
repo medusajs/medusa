@@ -24,6 +24,7 @@ class OrderService extends BaseService {
   constructor({
     orderModel,
     counterService,
+    customerService,
     paymentProviderService,
     shippingOptionService,
     shippingProfileService,
@@ -40,8 +41,11 @@ class OrderService extends BaseService {
   }) {
     super()
 
-    /** @private @constantant {OrderModel} */
+    /** @private @constant {OrderModel} */
     this.orderModel_ = orderModel
+
+    /** @private @constant {CustomerService} */
+    this.customerService_ = customerService
 
     /** @private @constantant {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
@@ -1189,6 +1193,10 @@ class OrderService extends BaseService {
           return this.swapService_.retrieve(sId)
         })
       )
+    }
+
+    if (expandFields.includes("customer")) {
+      o.customer = await this.customerService_.retrieve(order.customer_id)
     }
 
     if (expandFields.includes("region")) {

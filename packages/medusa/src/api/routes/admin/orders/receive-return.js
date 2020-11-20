@@ -32,7 +32,11 @@ export default async (req, res) => {
       refundAmount,
       true
     )
-    order = await orderService.decorate(order, [], ["region", "swaps"])
+    order = await orderService.decorate(
+      order,
+      [],
+      ["region", "customer", "swaps"]
+    )
 
     res.status(200).json({ order })
   } catch (err) {

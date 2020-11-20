@@ -12,10 +12,6 @@ export default async (req, res) => {
       ["region", "customer", "swaps"]
     )
 
-    if (order.customer_id) {
-      order.customer = await customerService.retrieve(order.customer_id)
-    }
-
     res.json({ order })
   } catch (error) {
     throw error
