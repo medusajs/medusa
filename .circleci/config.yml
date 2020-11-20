@@ -4,4 +4,8 @@ orbs:
 workflows:
   node-tests:
     jobs:
-      - node/test
+      unit_test:
+        executor: node
+        steps:
+          - checkout
+          - run: lerna run test -- --passWithNoTests

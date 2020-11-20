@@ -30,6 +30,7 @@ describe("LineItemService", () => {
       expect(result).toEqual({
         title: "Product 1",
         thumbnail: undefined,
+        should_merge: false,
         content: {
           unit_price: 50,
           variant: {
@@ -62,6 +63,7 @@ describe("LineItemService", () => {
       expect(result).toEqual({
         title: "Product 1",
         thumbnail: undefined,
+        should_merge: false,
         content: {
           unit_price: 150,
           variant: {
