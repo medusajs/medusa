@@ -1,11 +1,20 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
-workflows:
-  node-tests:
-    jobs:
-      unit_test:
-        executor: node
-        steps:
-          - checkout
-          - run: lerna run test -- --passWithNoTests
+
+executors:
+    node:
+      parameters:
+        image:
+          type: string
+          # First 10.x LTS release, but old Yarn
+          default: "10.13"
+      docker:
+        - image: circleci/node:<< parameters.image >>
+
+jobs:
+  unit_test:
+    executor: node
+    steps:
+      - checkout
+      - run: lerna run test -- --passWithNoTests
