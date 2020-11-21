@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== `test`) {
 }
 
 module.exports = {
-  presets: [["babel-preset-medusa-package"]],
+  sourceMaps: true,
+  presets: ["babel-preset-medusa-package"],
   ignore,
 }
