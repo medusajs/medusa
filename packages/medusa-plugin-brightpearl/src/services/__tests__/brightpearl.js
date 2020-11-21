@@ -1,3 +1,5 @@
+jest.unmock("axios")
+
 import BrightpearlService from "../brightpearl"
 import { mockCreateOrder } from "../../utils/brightpearl"
 import MockAdapter from "axios-mock-adapter"
