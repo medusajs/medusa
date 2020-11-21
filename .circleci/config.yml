@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run: yarn install
       - run: yarn bootstrap
-      - run: yarn test 
+      - run: yarn jest 
 
 workflows:
   test_all:
