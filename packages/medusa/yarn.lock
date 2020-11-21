@@ -4628,10 +4628,10 @@ medusa-core-utils@^1.0.10:
     joi "^17.2.1"
     joi-objectid "^3.0.1"
 
-medusa-test-utils@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.0.10.tgz#8c1e9046a81cd3afa4c32c6d0d8af7e1f33bd039"
-  integrity sha512-CTzlVVTEOIFh3iRsjJqt4JYtEFP+2gVZF0jXGYdhCgAxd5mFKVuE+QzLLtvTCHlT7TI7rYgPfEWCcj9LPh2vVQ==
+medusa-test-utils@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.0.11.tgz#bae901efa90426fb64818de700dc6e163820160f"
+  integrity sha512-CSNb70sXOfKTndzxWtPMYq+KeYaFkSLAPUyhuwDNVvkbne0faOYF5OMCV8r3aLoQ3D1Tvjrb/XB9Qt17ycjuPw==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
     medusa-core-utils "^1.0.10"

@@ -151,14 +151,14 @@ var carts = {
     payment_sessions: [{
       provider_id: "stripe",
       data: {
-        id: "pi_123456789",
+        id: "pi_no",
         customer: _medusaTestUtils.IdMap.getId("not-lebron")
       }
     }],
     payment_method: {
       provider_id: "stripe",
       data: {
-        id: "pi_123456789",
+        id: "pi_no",
         customer: _medusaTestUtils.IdMap.getId("not-lebron")
       }
     },

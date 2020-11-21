@@ -23,6 +23,7 @@
     "jest": "^25.5.2"
   },
   "scripts": {
+    "test": "jest",
     "build": "babel src -d .",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__"

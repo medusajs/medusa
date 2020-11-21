@@ -94,6 +94,9 @@ class ContentfulService extends BaseService {
             variants: {
               "en-US": variantLinks,
             },
+            options: {
+              "en-US": product.options,
+            },
             objectId: {
               "en-US": product._id,
             },
@@ -126,6 +129,9 @@ class ContentfulService extends BaseService {
             },
             prices: {
               "en-US": variant.prices,
+            },
+            options: {
+              "en-US": variant.options,
             },
             objectId: {
               "en-US": variant._id,
@@ -267,15 +273,23 @@ class ContentfulService extends BaseService {
         this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
       }
 
-      // Get the thumbnail
-      const thumb = await environment.getAsset(
-        productEntry.fields.thumbnail["en-US"].sys.id
-      )
-
-      const updatedProduct = await this.productService_.update(productId, {
+      let update = {
         title: productEntry.fields.title["en-US"],
-        thumbnail: thumb.fields.file["en-US"].url,
-      })
+      }
+
+      // Get the thumbnail, if present
+      if (productEntry.fields.thumbnail) {
+        const thumb = await environment.getAsset(
+          productEntry.fields.thumbnail["en-US"].sys.id
+        )
+
+        update.thumbnail = thumb.fields.file["en-US"].url
+      }
+
+      const updatedProduct = await this.productService_.update(
+        productId,
+        update
+      )
 
       return updatedProduct
     } catch (error) {

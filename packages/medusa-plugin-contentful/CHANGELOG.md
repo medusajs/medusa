@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.12](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.0.11...medusa-plugin-contentful@1.0.12) (2020-11-17)
+
+
+### Bug Fixes
+
+* **medusa-plugin-contentful:** Fixes Medusa Contentful plugin ([34d3014](https://github.com/medusajs/medusa/commit/34d3014db0f1d6be3df0e2ff4b5ca11c505b245d))
+
+
+
+
+
 ## 1.0.11 (2020-10-19)
 
 

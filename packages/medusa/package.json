@@ -23,6 +23,7 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
+    "babel-preset-medusa-package": "^1.0.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
@@ -34,7 +35,7 @@
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "build": "babel src -d dist",
+    "build": "babel src -d dist --ignore **/__tests__",
     "serve": "node dist/app.js",
     "test": "jest"
   },
