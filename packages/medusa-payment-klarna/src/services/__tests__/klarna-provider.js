@@ -10,7 +10,6 @@ describe("KlarnaProviderService", () => {
   })
 
   describe("createPayment", () => {
-    let result
     const klarnaProviderService = new KlarnaProviderService(
       {
         totalsService: TotalsServiceMock,
@@ -28,19 +27,22 @@ describe("KlarnaProviderService", () => {
       }
     )
 
-    beforeEach(async () => {
+    beforeEach(() => {
       jest.clearAllMocks()
     })
 
     it("creates Klarna order", async () => {
-      mockAxios.post.mockImplementation(() => {
+      mockAxios.post = jest.fn().mockImplementation(() => {
         return Promise.resolve({
-          order_id: "123456789",
-          order_amount: 100,
+          data: {
+            order_id: "123456789",
+            order_amount: 100,
+          },
         })
       })
 
-      result = await klarnaProviderService.createPayment(carts.frCart)
+      const result = await klarnaProviderService.createPayment(carts.frCart)
+      expect(mockAxios.post).toHaveBeenCalledTimes(1)
       expect(result).toEqual({
         order_id: "123456789",
         order_amount: 100,
@@ -68,7 +70,9 @@ describe("KlarnaProviderService", () => {
     it("returns Klarna order", async () => {
       mockAxios.get.mockImplementation((data) => {
         return Promise.resolve({
-          order_id: "123456789",
+          data: {
+            order_id: "123456789",
+          },
         })
       })
 
@@ -133,19 +137,27 @@ describe("KlarnaProviderService", () => {
     const klarnaProviderService = new KlarnaProviderService(
       {
         totalsService: TotalsServiceMock,
+        regionService: RegionServiceMock,
       },
       {
         url: "medusajs/tests",
         user: "lebronjames",
         password: "123456789",
+        merchant_urls: {
+          terms: "terms",
+          checkout: "checkout",
+          confirmation: "confirmation",
+        },
       }
     )
 
     it("returns updated Klarna order", async () => {
       mockAxios.post.mockImplementation((data) => {
         return Promise.resolve({
-          order_id: "123456789",
-          order_amount: 1000,
+          data: {
+            order_id: "123456789",
+            order_amount: 1000,
+          },
         })
       })
 
@@ -157,9 +169,7 @@ describe("KlarnaProviderService", () => {
             },
           },
         },
-        {
-          order_amount: 1000,
-        }
+        carts.frCart
       )
 
       expect(result).toEqual({
@@ -191,7 +201,9 @@ describe("KlarnaProviderService", () => {
         return Promise.resolve()
       })
 
-      result = await klarnaProviderService.cancelPayment({ id: "123456789" })
+      result = await klarnaProviderService.cancelPayment({
+        order_id: "123456789",
+      })
 
       expect(result).toEqual("123456789")
     })
@@ -206,6 +218,7 @@ describe("KlarnaProviderService", () => {
     const klarnaProviderService = new KlarnaProviderService(
       {
         totalsService: TotalsServiceMock,
+        regionService: RegionServiceMock,
       },
       {
         url: "medusajs/tests",
@@ -234,6 +247,7 @@ describe("KlarnaProviderService", () => {
     const klarnaProviderService = new KlarnaProviderService(
       {
         totalsService: TotalsServiceMock,
+        regionService: RegionServiceMock,
       },
       {
         url: "medusajs/tests",
@@ -265,6 +279,7 @@ describe("KlarnaProviderService", () => {
     const klarnaProviderService = new KlarnaProviderService(
       {
         totalsService: TotalsServiceMock,
+        regionService: RegionServiceMock,
       },
       {
         url: "medusajs/tests",
@@ -276,7 +291,9 @@ describe("KlarnaProviderService", () => {
     it("returns order id", async () => {
       mockAxios.get.mockImplementation((data) => {
         return Promise.resolve({
-          order: { order_amount: 1000 },
+          data: {
+            order: { order_amount: 1000 },
+          },
         })
       })
 
@@ -285,7 +302,7 @@ describe("KlarnaProviderService", () => {
       })
 
       result = await klarnaProviderService.capturePayment({
-        id: "123456789",
+        order_id: "123456789",
       })
 
       expect(result).toEqual("123456789")
@@ -301,6 +318,7 @@ describe("KlarnaProviderService", () => {
     const klarnaProviderService = new KlarnaProviderService(
       {
         totalsService: TotalsServiceMock,
+        regionService: RegionServiceMock,
       },
       {
         url: "medusajs/tests",
@@ -314,9 +332,9 @@ describe("KlarnaProviderService", () => {
         return Promise.resolve()
       })
 
-      result = await klarnaProviderService.capturePayment(
+      result = await klarnaProviderService.refundPayment(
         {
-          id: "123456789",
+          order_id: "123456789",
         },
         1000
       )

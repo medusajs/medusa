@@ -4,6 +4,10 @@ import { CustomerServiceMock } from "../../__mocks__/customer"
 import { carts } from "../../__mocks__/cart"
 import { TotalsServiceMock } from "../../__mocks__/totals"
 
+const RegionServiceMock = {
+  retrieve: jest.fn().mockReturnValue(Promise.resolve({})),
+}
+
 describe("StripeProviderService", () => {
   describe("createCustomer", () => {
     let result
@@ -12,6 +16,7 @@ describe("StripeProviderService", () => {
       const stripeProviderService = new StripeProviderService(
         {
           customerService: CustomerServiceMock,
+          regionService: RegionServiceMock,
           totalsService: TotalsServiceMock,
         },
         {
@@ -42,6 +47,7 @@ describe("StripeProviderService", () => {
     const stripeProviderService = new StripeProviderService(
       {
         customerService: CustomerServiceMock,
+        regionService: RegionServiceMock,
         totalsService: TotalsServiceMock,
       },
       {
@@ -80,6 +86,7 @@ describe("StripeProviderService", () => {
       const stripeProviderService = new StripeProviderService(
         {
           customerService: CustomerServiceMock,
+          regionService: RegionServiceMock,
           totalsService: TotalsServiceMock,
         },
         {
@@ -111,6 +118,7 @@ describe("StripeProviderService", () => {
       const stripeProviderService = new StripeProviderService(
         {
           customerService: CustomerServiceMock,
+          regionService: RegionServiceMock,
           totalsService: TotalsServiceMock,
         },
         {
@@ -144,6 +152,7 @@ describe("StripeProviderService", () => {
       const stripeProviderService = new StripeProviderService(
         {
           customerService: CustomerServiceMock,
+          regionService: RegionServiceMock,
           totalsService: TotalsServiceMock,
         },
         {
