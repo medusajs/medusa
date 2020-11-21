@@ -22,6 +22,6 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "jest": "jest",
-    "test": "lerna run test -- --passWithNoTests"
+    "test": "jest"
   }
 }
