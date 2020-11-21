@@ -48,6 +48,6 @@ workflows:
   test_all:
     jobs:
       - bootstrap
-      - unit_test
+      - unit_test:
           requires:
-          - bootstrap
+            - bootstrap
