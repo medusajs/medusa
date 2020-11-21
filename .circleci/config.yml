@@ -49,3 +49,5 @@ workflows:
     jobs:
       - bootstrap
       - unit_test
+        requires:
+          - bootstrap
