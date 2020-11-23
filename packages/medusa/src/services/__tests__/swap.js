@@ -344,6 +344,8 @@ describe("SwapService", () => {
         expect(swapModel.create).toHaveBeenCalledWith({
           order_id: IdMap.getId("test"),
           return_items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
+          region_id: IdMap.getId("region"),
+          currency_code: "DKK",
           return_shipping: {
             id: IdMap.getId("return-shipping"),
             price: 20,
@@ -558,6 +560,10 @@ describe("SwapService", () => {
         }),
       }
 
+      const eventBusService = {
+        emit: jest.fn().mockReturnValue(Promise.resolve()),
+      }
+
       const existing = {
         additional_items: [
           {
@@ -596,8 +602,15 @@ describe("SwapService", () => {
         },
         other: "data",
       }
-      const swapModel = SwapModel({ findOne: () => existing })
-      const swapService = new SwapService({ swapModel, fulfillmentService })
+      const swapModel = SwapModel({
+        updateOne: () => Promise.resolve(existing),
+        findOne: () => existing,
+      })
+      const swapService = new SwapService({
+        swapModel,
+        eventBusService,
+        fulfillmentService,
+      })
 
       it("creates a shipment", async () => {
         await swapService.createShipment(

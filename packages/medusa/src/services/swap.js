@@ -7,8 +7,16 @@ import { Validator, MedusaError } from "medusa-core-utils"
  * @implements BaseService
  */
 class SwapService extends BaseService {
+  static Events = {
+    SHIPMENT_CREATED: "swap.shipment_created",
+    PAYMENT_COMPLETED: "swap.payment_completed",
+    PAYMENT_CAPTURED: "swap.payment_captured",
+    PAYMENT_CAPTURE_FAILED: "swap.payment_capture_failed",
+  }
+
   constructor({
     swapModel,
+    eventBusService,
     cartService,
     totalsService,
     returnService,
@@ -42,6 +50,9 @@ class SwapService extends BaseService {
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @const {EventBusService} */
+    this.eventBus_ = eventBusService
   }
 
   /**
@@ -178,6 +189,8 @@ class SwapService extends BaseService {
 
     return this.swapModel_.create({
       order_id: order._id,
+      region_id: order.region_id,
+      currency_code: order.currency_code,
       return_items: validatedReturnItems,
       return_shipping: returnShipping,
       additional_items: newItems,
@@ -204,24 +217,34 @@ class SwapService extends BaseService {
     try {
       await paymentProvider.capturePayment(data)
     } catch (error) {
-      return this.swapModel_.updateOne(
+      return this.swapModel_
+        .updateOne(
+          {
+            _id: swapId,
+          },
+          {
+            $set: { payment_status: "requires_action" },
+          }
+        )
+        .then(result => {
+          this.eventBus_.emit(SwapService.Events.PAYMENT_CAPTURE_FAILED, result)
+          return result
+        })
+    }
+
+    return this.swapModel_
+      .updateOne(
         {
           _id: swapId,
         },
         {
-          $set: { payment_status: "requires_action" },
+          $set: updateFields,
         }
       )
-    }
-
-    return this.swapModel_.updateOne(
-      {
-        _id: swapId,
-      },
-      {
-        $set: updateFields,
-      }
-    )
+      .then(result => {
+        this.eventBus_.emit(SwapService.Events.PAYMENT_CAPTURED, result)
+        return result
+      })
   }
 
   /**
@@ -379,14 +402,25 @@ class SwapService extends BaseService {
       }
     }
 
-    return this.swapModel_.updateOne(
-      { _id: swap._id },
-      {
-        shipping_address: cart.shipping_address,
-        shipping_methods: cart.shipping_methods,
-        payment_method: payment,
-      }
-    )
+    const total = await this.totalsService_.getTotal(cart)
+
+    return this.swapModel_
+      .updateOne(
+        { _id: swap._id },
+        {
+          shipping_address: cart.shipping_address,
+          shipping_methods: cart.shipping_methods,
+          is_paid: true,
+          amount_paid: total,
+          payment_method: payment,
+        }
+      )
+      .then(result => {
+        this.eventBus_.emit(SwapService.Events.PAYMENT_COMPLETED, {
+          swap: result,
+        })
+        return result
+      })
   }
 
   /**
@@ -563,16 +597,75 @@ class SwapService extends BaseService {
       ? "shipped"
       : "partially_shipped"
 
-    return this.swapModel_.updateOne(
-      { _id: swapId },
-      {
-        $set: {
-          fulfillment_status,
-          additional_items: updatedItems,
-          fulfillments: updatedFulfillments,
-        },
-      }
-    )
+    return this.swapModel_
+      .updateOne(
+        { _id: swapId },
+        {
+          $set: {
+            fulfillment_status,
+            additional_items: updatedItems,
+            fulfillments: updatedFulfillments,
+          },
+        }
+      )
+      .then(result => {
+        this.eventBus_.emit(SwapService.Events.SHIPMENT_CREATED, {
+          swap_id: swapId,
+          shipment: result.fulfillments.find(f => f._id.equals(fulfillmentId)),
+        })
+        return result
+      })
+  }
+
+  /**
+   * Dedicated method to set metadata for a swap.
+   * To ensure that plugins does not overwrite each
+   * others metadata fields, setMetadata is provided.
+   * @param {string} swapId - the swap to decorate.
+   * @param {string} key - key for metadata field
+   * @param {string} value - value for metadata field.
+   * @return {Promise<Swap>} resolves to the updated result.
+   */
+  async setMetadata(swapId, key, value) {
+    const validatedId = this.validateId_(swapId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.swapModel_
+      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Dedicated method to delete metadata for a swap.
+   * @param {string} swapId - the order to delete metadata from.
+   * @param {string} key - key for metadata field
+   * @return {Promise} resolves to the updated result.
+   */
+  async deleteMetadata(swapId, key) {
+    const validatedId = this.validateId_(swapId)
+
+    if (typeof key !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Key type is invalid. Metadata keys must be strings"
+      )
+    }
+
+    const keyPath = `metadata.${key}`
+    return this.swapModel_
+      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
   }
 }
 

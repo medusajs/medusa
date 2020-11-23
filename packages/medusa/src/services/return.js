@@ -166,7 +166,10 @@ class ReturnService extends BaseService {
         )
       }
 
-      toRefund = Math.max(0, toRefund - shipping_method.price)
+      toRefund = Math.max(
+        0,
+        toRefund - shipping_method.price * (1 + order.tax_rate)
+      )
     }
 
     return {
