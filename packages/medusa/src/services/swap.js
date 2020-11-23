@@ -514,10 +514,11 @@ class SwapService extends BaseService {
         currency_code: order.currency_code,
         tax_rate: order.tax_rate,
         region_id: order.region_id,
-        display_id: `S-${order.display_id}`,
+        display_id: order.display_id,
         billing_address: order.billing_address,
         items: swap.additional_items,
         shipping_methods: swap.shipping_methods,
+        is_swap: true,
       },
       swap.additional_items.map(i => ({
         item_id: i._id,

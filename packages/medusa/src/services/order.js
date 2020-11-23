@@ -1188,11 +1188,15 @@ class OrderService extends BaseService {
     o.created = order._id.getTimestamp()
 
     if (expandFields.includes("swaps")) {
-      o.swaps = await Promise.all(
-        order.swaps.map(sId => {
-          return this.swapService_.retrieve(sId)
-        })
-      )
+      if (order.swaps) {
+        o.swaps = await Promise.all(
+          order.swaps.map(sId => {
+            return this.swapService_.retrieve(sId)
+          })
+        )
+      } else {
+        o.swaps = []
+      }
     }
 
     if (expandFields.includes("customer")) {
