@@ -1293,7 +1293,7 @@ class OrderService extends BaseService {
       )
     }
 
-    if (!swap.return.status === "received") {
+    if (swap.return.status !== "received") {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Swap is not received"

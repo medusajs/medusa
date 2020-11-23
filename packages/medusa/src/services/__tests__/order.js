@@ -1226,6 +1226,191 @@ describe("OrderService", () => {
     })
   })
 
+  describe("registerSwapCreated", () => {
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+    const orderModel = {
+      findOne: jest
+        .fn()
+        .mockReturnValue(Promise.resolve({ _id: IdMap.getId("order") })),
+      updateOne: jest.fn().mockReturnValue(Promise.resolve()),
+    }
+
+    it("adds a swap to an order", async () => {
+      const swapService = {
+        retrieve: jest
+          .fn()
+          .mockReturnValue(
+            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order") })
+          ),
+      }
+      const orderService = new OrderService({
+        swapService,
+        orderModel,
+        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      })
+
+      const res = orderService.registerSwapCreated(IdMap.getId("order"), "1235")
+      expect(res).resolves
+
+      await res
+      expect(orderModel.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("order"),
+        },
+        {
+          $addToSet: { swaps: "1235" },
+        }
+      )
+    })
+
+    it("fails if order/swap relationship is not satisfied", async () => {
+      const swapService = {
+        retrieve: jest
+          .fn()
+          .mockReturnValue(
+            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order_1") })
+          ),
+      }
+      const orderService = new OrderService({
+        swapService,
+        orderModel,
+        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      })
+
+      const res = orderService.registerSwapCreated(IdMap.getId("order"), "1235")
+      expect(res).rejects.toThrow("Swap must belong to the given order")
+    })
+  })
+
+  describe("registerSwapReceived", () => {
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+    const orderModel = {
+      findOne: jest
+        .fn()
+        .mockReturnValue(Promise.resolve({ _id: IdMap.getId("order") })),
+      updateOne: jest.fn().mockReturnValue(Promise.resolve()),
+    }
+
+    it("fails if order/swap relationship not satisfied", async () => {
+      const swapService = {
+        retrieve: jest
+          .fn()
+          .mockReturnValue(
+            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order_1") })
+          ),
+      }
+      const orderService = new OrderService({
+        swapService,
+        orderModel,
+        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      })
+
+      const res = orderService.registerSwapReceived(
+        IdMap.getId("order"),
+        "1235"
+      )
+      await expect(res).rejects.toThrow("Swap must belong to the given order")
+    })
+
+    it("fails if swap doesn't have status received", async () => {
+      const swapService = {
+        retrieve: jest.fn().mockReturnValue(
+          Promise.resolve({
+            _id: "1235",
+            order_id: IdMap.getId("order"),
+            return: { status: "requested" },
+          })
+        ),
+      }
+      const orderService = new OrderService({
+        swapService,
+        orderModel,
+        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      })
+
+      const res = orderService.registerSwapReceived(
+        IdMap.getId("order"),
+        "1235"
+      )
+      await expect(res).rejects.toThrow("Swap is not received")
+    })
+
+    it("registers a swap as received", async () => {
+      const model = {
+        findOne: jest.fn().mockReturnValue(
+          Promise.resolve({
+            _id: IdMap.getId("order_123"),
+            items: [
+              {
+                _id: IdMap.getId("1234"),
+                returned_quantity: 0,
+                quantity: 1,
+              },
+            ],
+          })
+        ),
+        updateOne: jest.fn().mockReturnValue(Promise.resolve()),
+      }
+      const swapService = {
+        retrieve: jest.fn().mockReturnValue(
+          Promise.resolve({
+            _id: "1235",
+            order_id: IdMap.getId("order_123"),
+            return: { status: "received" },
+            return_items: [{ item_id: IdMap.getId("1234"), quantity: 1 }],
+          })
+        ),
+      }
+      const orderService = new OrderService({
+        swapService,
+        orderModel: model,
+        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      })
+
+      await orderService.registerSwapReceived(IdMap.getId("order"), "1235")
+
+      expect(model.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("order_123"),
+        },
+        {
+          $set: {
+            items: [
+              {
+                _id: IdMap.getId("1234"),
+                returned_quantity: 1,
+                returned: true,
+                quantity: 1,
+              },
+            ],
+          },
+        }
+      )
+    })
+
+    it("fails if order/swap relationship is not satisfied", async () => {
+      const swapService = {
+        retrieve: jest
+          .fn()
+          .mockReturnValue(
+            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order_1") })
+          ),
+      }
+      const orderService = new OrderService({
+        swapService,
+        orderModel,
+        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      })
+
+      const res = orderService.registerSwapCreated(IdMap.getId("order"), "1235")
+      expect(res).rejects.toThrow("Swap must belong to the given order")
+    })
+  })
+
   describe("archive", () => {
     const orderService = new OrderService({
       orderModel: OrderModelMock,

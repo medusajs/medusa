@@ -215,6 +215,13 @@ class CartService extends BaseService {
           country_code: region.countries[0],
         }
       }
+    } else {
+      if (!region.countries.includes(data.shipping_address.country_code)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Shipping country not in region"
+        )
+      }
     }
 
     return this.cartModel_

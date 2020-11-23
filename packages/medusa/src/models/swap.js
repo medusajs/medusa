@@ -11,7 +11,6 @@ import AddressSchema from "./schemas/address"
 class SwapModel extends BaseModel {
   static modelName = "Swap"
   static schema = {
-    status: { type: String, default: "pending" },
     fulfillment_status: { type: String, default: "not_fulfilled" },
     payment_status: { type: String, default: "awaiting" },
     is_paid: { type: Boolean, default: false },
