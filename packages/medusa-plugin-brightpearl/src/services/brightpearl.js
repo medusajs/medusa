@@ -518,7 +518,8 @@ class BrightpearlService extends BaseService {
       externalRef: `${fromOrder._id}.${fromSwap._id}`,
       channelId: this.options.channel_id || `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
-      statusId: this.options.default_status_id || `3`,
+      statusId:
+        this.options.swap_status_id || this.options.default_status_id || `3`,
       customer: {
         id: customer.contactId,
         address: {
