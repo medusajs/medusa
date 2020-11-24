@@ -44,6 +44,11 @@ export default app => {
     middlewares.wrap(require("./delete-option").default)
   )
 
+  route.post(
+    "/:id/metadata",
+    middlewares.wrap(require("./set-metadata").default)
+  )
+
   route.get("/:id", middlewares.wrap(require("./get-product").default))
   route.get("/", middlewares.wrap(require("./list-products").default))
 
