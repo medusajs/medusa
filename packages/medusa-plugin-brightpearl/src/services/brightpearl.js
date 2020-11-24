@@ -10,6 +10,7 @@ class BrightpearlService extends BaseService {
       productVariantService,
       regionService,
       orderService,
+      swapService,
       discountService,
     },
     options
@@ -23,6 +24,7 @@ class BrightpearlService extends BaseService {
     this.totalsService_ = totalsService
     this.discountService_ = discountService
     this.oauthService_ = oauthService
+    this.swapService_ = swapService
   }
 
   async getClient() {
@@ -456,10 +458,9 @@ class BrightpearlService extends BaseService {
       .create(order)
       .then(async (salesOrderId) => {
         const order = await client.orders.retrieve(salesOrderId)
-        const resResult = await client.warehouses.createReservation(
-          order,
-          this.options.warehouse
-        )
+        await client.warehouses
+          .createReservation(order, this.options.warehouse)
+          .catch(() => {})
         return salesOrderId
       })
       .then((salesOrderId) => {
@@ -469,6 +470,190 @@ class BrightpearlService extends BaseService {
           salesOrderId
         )
       })
+  }
+
+  async createSwapPayment(fromSwap) {
+    const client = await this.getClient()
+    const soId =
+      fromSwap.metadata && fromSwap.metadata.brightpearl_sales_order_id
+
+    if (!soId) {
+      return
+    }
+
+    const paymentType = "RECEIPT"
+    const paymentMethod = fromSwap.payment_method
+    const payment = {
+      transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
+      transactionCode: fromSwap._id,
+      paymentMethodCode: this.options.payment_method_code || "1220",
+      orderId: soId,
+      paymentDate: new Date(),
+      currencyIsoCode: fromSwap.currency_code,
+      amountPaid: fromSwap.amount_paid,
+      paymentType,
+    }
+
+    await client.payments.create(payment)
+  }
+
+  async createSwapOrder(fromOrder, fromSwap) {
+    const client = await this.getClient()
+    let customer = await this.retrieveCustomerByEmail(fromOrder.email)
+
+    if (!customer) {
+      customer = await this.createCustomer(fromOrder)
+    }
+
+    const authData = await this.getAuthData()
+
+    const sIndex = fromOrder.swaps.findIndex((s) => fromSwap._id.equals(s))
+
+    const { shipping_address } = fromSwap
+    const order = {
+      currency: {
+        code: fromOrder.currency_code,
+      },
+      ref: `${fromOrder.display_id}-S${sIndex + 1}`,
+      externalRef: `${fromOrder._id}.${fromSwap._id}`,
+      channelId: this.options.channel_id || `1`,
+      installedIntegrationInstanceId: authData.installation_instance_id,
+      statusId:
+        this.options.swap_status_id || this.options.default_status_id || `3`,
+      customer: {
+        id: customer.contactId,
+        address: {
+          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          addressLine1: shipping_address.address_1,
+          addressLine2: shipping_address.address_2,
+          postalCode: shipping_address.postal_code,
+          countryIsoCode: shipping_address.country_code,
+          telephone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+      },
+      delivery: {
+        shippingMethodId: 0,
+        address: {
+          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          addressLine1: shipping_address.address_1,
+          addressLine2: shipping_address.address_2,
+          postalCode: shipping_address.postal_code,
+          countryIsoCode: shipping_address.country_code,
+          telephone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+      },
+      rows: await this.getBrightpearlRows({
+        region_id: fromOrder.region_id,
+        discounts: [],
+        tax_rate: fromOrder.tax_rate,
+        items: fromSwap.additional_items,
+        shipping_methods: fromSwap.shipping_methods,
+        return_shipping: fromSwap.return_shipping,
+      }),
+    }
+
+    return client.orders.create(order).then(async (salesOrderId) => {
+      const order = await client.orders.retrieve(salesOrderId)
+      await client.warehouses.createReservation(order, this.options.warehouse)
+
+      const paymentMethod = fromOrder.payment_method
+      const paymentType = "RECEIPT"
+      const payment = {
+        transactionRef: `${paymentMethod._id}.${paymentType}-${fromSwap._id}`,
+        transactionCode: fromOrder._id,
+        paymentMethodCode: this.options.payment_method_code || "1220",
+        orderId: salesOrderId,
+        currencyIsoCode: fromOrder.currency_code,
+        amountPaid: fromSwap.return.refund_amount,
+        paymentDate: new Date(),
+        paymentType,
+      }
+
+      await client.payments.create(payment)
+
+      return this.swapService_.setMetadata(
+        fromSwap._id,
+        "brightpearl_sales_order_id",
+        salesOrderId
+      )
+    })
+  }
+
+  async createSwapCredit(fromOrder, fromSwap) {
+    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const client = await this.getClient()
+    const authData = await this.getAuthData()
+    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+    const sIndex = fromOrder.swaps.findIndex((s) => fromSwap._id.equals(s))
+
+    if (orderId) {
+      const parentSo = await client.orders.retrieve(orderId)
+      const order = {
+        currency: parentSo.currency,
+        ref: `${parentSo.ref}-S${sIndex + 1}`,
+        externalRef: `${parentSo.externalRef}.${fromSwap._id}`,
+        channelId: this.options.channel_id || `1`,
+        installedIntegrationInstanceId: authData.installation_instance_id,
+        customer: parentSo.customer,
+        delivery: parentSo.delivery,
+        parentId: orderId,
+        rows: fromSwap.return.items.map((i) => {
+          const parentRow = parentSo.rows.find((row) => {
+            return row.externalRef === i.item_id
+          })
+          return {
+            net: this.totalsService_.rounded(
+              (parentRow.net / parentRow.quantity) * i.quantity
+            ),
+            tax: this.totalsService_.rounded(
+              (parentRow.tax / parentRow.quantity) * i.quantity
+            ),
+            productId: parentRow.productId,
+            taxCode: parentRow.taxCode,
+            externalRef: parentRow.externalRef,
+            nominalCode: parentRow.nominalCode,
+            quantity: i.quantity,
+          }
+        }),
+      }
+
+      if (fromSwap.return_shipping && fromSwap.return_shipping.price) {
+        order.rows.push({
+          name: "Return Shipping",
+          quantity: 1,
+          taxCode: region.tax_code,
+          net: -1 * fromSwap.return_shipping.price,
+          tax: -1 * fromSwap.return_shipping.price * fromOrder.tax_rate,
+          nominalCode: this.options.shipping_account_code || "4040",
+        })
+      }
+
+      const total = order.rows.reduce((acc, next) => {
+        return acc + next.net + next.tax
+      }, 0)
+
+      return client.orders
+        .createCredit(order)
+        .then(async (creditId) => {
+          const paymentMethod = fromOrder.payment_method
+          const paymentType = "PAYMENT"
+          const payment = {
+            transactionRef: `${paymentMethod._id}.${paymentType}-${fromSwap._id}`,
+            transactionCode: fromSwap._id,
+            paymentMethodCode: this.options.payment_method_code || "1220",
+            orderId: creditId,
+            currencyIsoCode: fromSwap.currency_code,
+            amountPaid: total,
+            paymentDate: new Date(),
+            paymentType,
+          }
+
+          await client.payments.create(payment)
+        })
+        .catch((err) => console.log(err.response.data.errors))
+    }
   }
 
   async createPayment(fromOrder) {
@@ -484,7 +669,7 @@ class BrightpearlService extends BaseService {
     const payment = {
       transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
       transactionCode: fromOrder._id,
-      paymentMethodCode: "1220",
+      paymentMethodCode: this.options.payment_method_code || "1220",
       orderId: soId,
       paymentDate: new Date(),
       currencyIsoCode: fromOrder.currency_code,
@@ -570,6 +755,7 @@ class BrightpearlService extends BaseService {
         nominalCode: this.options.shipping_account_code || "4040",
       })
     }
+
     return lines
   }
 
@@ -629,6 +815,16 @@ class BrightpearlService extends BaseService {
         return null
       })
       .filter((i) => !!i)
+
+    // Orders with a concatenated externalReference are swap orders
+    const [orderId, swapId] = order.externalRef.split(".")
+
+    if (swapId) {
+      const order = await this.orderService_.retrieve(orderId)
+      return this.swapService_.createFulfillment(order, swapId, {
+        goods_out_note: id,
+      })
+    }
 
     return this.orderService_.createFulfillment(order.externalRef, lines, {
       goods_out_note: id,

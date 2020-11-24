@@ -74,6 +74,7 @@ export const orders = {
   processedOrder: {
     _id: IdMap.getId("processed-order"),
     email: "oliver@test.dk",
+    tax_rate: 0,
     billing_address: {
       first_name: "Oli",
       last_name: "Medusa",

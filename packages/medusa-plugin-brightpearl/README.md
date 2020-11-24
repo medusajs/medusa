@@ -11,6 +11,7 @@ Sends orders to Brightpearl, listens for stock movements, handles returns.
   event_owner: [the id of the user who will own goods out events] (required),
   warehouse: [the warehouse id to allocate orders from] (required)
   default_status_id: [the status id to assign new orders with] (optional: defaults to 1)
+  swap_status_id: [the status id to assign new swaps] (optional: defaults to 1)
   payment_method_code: [the method code to register payments with] (optional: defaults to 1220)
   sales_account_code: [nominal code to assign line items to] (optional: defaults to 4000)
   shipping_account_code: [nominal code to assign shipping line to] (optional: defaults to 4040)

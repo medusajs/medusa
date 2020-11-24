@@ -4,12 +4,13 @@ import Webshipper from "../utils/webshipper"
 class WebshipperFulfillmentService extends FulfillmentService {
   static identifier = "webshipper"
 
-  constructor({ logger, orderService }, options) {
+  constructor({ logger, swapService, orderService }, options) {
     super()
 
     this.logger_ = logger
     this.orderService_ = orderService
     this.options_ = options
+    this.swapService_ = swapService
     this.client_ = new Webshipper({
       account: this.options_.account,
       token: this.options_.api_token,
@@ -227,15 +228,23 @@ class WebshipperFulfillmentService extends FulfillmentService {
           })
       }
 
+      let visible_ref = `${fromOrder.display_id}-${
+        fromOrder.fulfillments.length + 1
+      }`
+      let ext_ref = `${fromOrder._id}.${fromOrder.fulfillments.length}`
+
+      if (fromOrder.is_swap) {
+        ext_ref = `S${fromOrder._id}.${fromOrder.fulfillments.length}`
+        visible_ref = `S-${fromOrder.display_id}`
+      }
+
       const { shipping_address } = fromOrder
       const newOrder = {
         type: "orders",
         attributes: {
           status: "pending",
-          ext_ref: `${fromOrder._id}.${fromOrder.fulfillments.length}`,
-          visible_ref: `${fromOrder.display_id}-${
-            fromOrder.fulfillments.length + 1
-          }`,
+          ext_ref,
+          visible_ref,
           order_lines: fulfillmentItems.map((item) => {
             return {
               ext_ref: item._id,
@@ -325,14 +334,24 @@ class WebshipperFulfillmentService extends FulfillmentService {
         "."
       )
 
-      const order = await this.orderService_.retrieve(orderId)
-      const fulfillment = order.fulfillments[fulfillmentIndex]
-      if (fulfillment) {
-        await this.orderService_.createShipment(
-          order._id,
+      if (orderId.charAt(0) === "S") {
+        const swap = await this.swapService_.retrieve(orderId.substring(1))
+        const fulfillment = swap.fulfillments[fulfillmentIndex]
+        await this.swapService_.createShipment(
+          swap._id,
           fulfillment._id,
           trackingNumbers
         )
+      } else {
+        const order = await this.orderService_.retrieve(orderId)
+        const fulfillment = order.fulfillments[fulfillmentIndex]
+        if (fulfillment) {
+          await this.orderService_.createShipment(
+            order._id,
+            fulfillment._id,
+            trackingNumbers
+          )
+        }
       }
     }
   }

@@ -6,11 +6,11 @@ export default async (req, res) => {
     const customerService = req.scope.resolve("customerService")
 
     let order = await orderService.retrieve(id)
-    order = await orderService.decorate(order, [], ["region", "customer"])
-
-    if (order.customer_id) {
-      order.customer = await customerService.retrieve(order.customer_id)
-    }
+    order = await orderService.decorate(
+      order,
+      [],
+      ["region", "customer", "swaps"]
+    )
 
     res.json({ order })
   } catch (error) {
