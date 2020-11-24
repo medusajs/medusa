@@ -311,6 +311,7 @@ class SwapService extends BaseService {
     }
 
     const cart = await this.cartService_.create({
+      discounts: order.discounts,
       email: order.email,
       billing_address: order.billing_address,
       shipping_address: order.shipping_address,
