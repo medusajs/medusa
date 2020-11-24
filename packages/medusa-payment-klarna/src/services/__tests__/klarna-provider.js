@@ -1,3 +1,4 @@
+jest.unmock("axios")
 import KlarnaProviderService from "../klarna-provider"
 import mockAxios from "../../__mocks__/axios"
 import { carts } from "../../__mocks__/cart"
