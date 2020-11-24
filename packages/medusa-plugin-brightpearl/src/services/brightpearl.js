@@ -486,7 +486,7 @@ class BrightpearlService extends BaseService {
     const payment = {
       transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
       transactionCode: fromSwap._id,
-      paymentMethodCode: "1220",
+      paymentMethodCode: this.options.payment_method_code || "1220",
       orderId: soId,
       paymentDate: new Date(),
       currencyIsoCode: fromSwap.currency_code,
@@ -669,7 +669,7 @@ class BrightpearlService extends BaseService {
     const payment = {
       transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
       transactionCode: fromOrder._id,
-      paymentMethodCode: "1220",
+      paymentMethodCode: this.options.payment_method_code || "1220",
       orderId: soId,
       paymentDate: new Date(),
       currencyIsoCode: fromOrder.currency_code,

@@ -184,25 +184,6 @@ class ReturnService extends BaseService {
       })),
       shipping_data: fulfillmentData,
     }
-
-    //return this.orderModel_
-    //  .updateOne(
-    //    {
-    //      _id: order._id,
-    //    },
-    //    {
-    //      $push: {
-    //        returns: newReturn,
-    //      },
-    //    }
-    //  )
-    //  .then(result => {
-    //    this.eventBus_.emit(OrderService.Events.RETURN_REQUESTED, {
-    //      order: result,
-    //      return: newReturn,
-    //    })
-    //    return result
-    //  })
   }
 
   /**
