@@ -6,7 +6,6 @@ import PaymentMethodSchema from "./schemas/payment-method"
 import ShippingMethodSchema from "./schemas/shipping-method"
 import AddressSchema from "./schemas/address"
 import DiscountSchema from "./schemas/discount"
-import ShipmentSchema from "./schemas/shipment"
 import ReturnSchema from "./schemas/return"
 import RefundSchema from "./schemas/refund"
 import FulfillmentSchema from "./schemas/fulfillment"
@@ -35,8 +34,9 @@ class OrderModel extends BaseModel {
     region_id: { type: String, required: true },
     discounts: { type: [DiscountSchema], default: [] },
     customer_id: { type: String },
-    payment_method: { type: PaymentMethodSchema, default: {} },
-    shipping_methods: { type: [ShippingMethodSchema], default: [] },
+    payment_method: { type: PaymentMethodSchema, required: true },
+    shipping_methods: { type: [ShippingMethodSchema], required: true },
+    swaps: { type: [String], default: [] },
     documents: { type: [String], default: [] },
     created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },

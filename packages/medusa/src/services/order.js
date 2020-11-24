@@ -13,6 +13,8 @@ class OrderService extends BaseService {
     ITEMS_RETURNED: "order.items_returned",
     RETURN_ACTION_REQUIRED: "order.return_action_required",
     REFUND_CREATED: "order.refund_created",
+    SWAP_CREATED: "order.swap_created",
+    SWAP_RECEIVED: "order.swap_received",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELED: "order.canceled",
@@ -22,21 +24,28 @@ class OrderService extends BaseService {
   constructor({
     orderModel,
     counterService,
+    customerService,
     paymentProviderService,
     shippingOptionService,
     shippingProfileService,
     discountService,
     fulfillmentProviderService,
+    fulfillmentService,
     lineItemService,
     totalsService,
     regionService,
+    returnService,
+    swapService,
     documentService,
     eventBusService,
   }) {
     super()
 
-    /** @private @constantant {OrderModel} */
+    /** @private @constant {OrderModel} */
     this.orderModel_ = orderModel
+
+    /** @private @constant {CustomerService} */
+    this.customerService_ = customerService
 
     /** @private @constantant {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
@@ -56,6 +65,12 @@ class OrderService extends BaseService {
     /** @private @constant {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @constant {ReturnService} */
+    this.returnService_ = returnService
+
+    /** @private @constant {FulfillmentService} */
+    this.fulfillmentService_ = fulfillmentService
+
     /** @private @constant {DiscountService} */
     this.discountService_ = discountService
 
@@ -70,6 +85,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @constant {SwapService} */
+    this.swapService_ = swapService
   }
 
   /**
@@ -124,33 +142,6 @@ class OrderService extends BaseService {
     }
 
     return value
-  }
-
-  async partitionItems_(shipping_methods, items) {
-    let updatedMethods = []
-    // partition order items to their dedicated shipping method
-    await Promise.all(
-      shipping_methods.map(async method => {
-        const { profile_id } = method
-        const profile = await this.shippingProfileService_.retrieve(profile_id)
-        // for each method find the items in the order, that are associated
-        // with the profile on the current shipping method
-        if (shipping_methods.length === 1) {
-          method.items = items
-        } else {
-          method.items = items.filter(({ content }) => {
-            if (Array.isArray(content)) {
-              // we require bundles to have same shipping method, therefore:
-              return profile.products.includes(content[0].product._id)
-            } else {
-              return profile.products.includes(content.product._id)
-            }
-          })
-        }
-        updatedMethods.push(method)
-      })
-    )
-    return updatedMethods
   }
 
   /**
@@ -419,41 +410,49 @@ class OrderService extends BaseService {
   async createShipment(orderId, fulfillmentId, trackingNumbers, metadata = {}) {
     const order = await this.retrieve(orderId)
 
-    let shipment
-    const updated = order.fulfillments.map(f => {
-      if (f._id.equals(fulfillmentId)) {
-        // For each item in the shipment, we set their status to shipped
-        f.items.map(item => {
-          const itemIdx = order.items.findIndex(el => el._id.equals(item._id))
-          // Update item in order.items and in fullfillment.items to
-          // ensure consistency
-          if (item !== -1) {
-            item.shipped_quantity = item.quantity
-            order.items[itemIdx].shipped_quantity =
-              (order.items[itemIdx].shipped_quantity || 0) + item.quantity
-          }
-        })
-        shipment = {
-          ...f,
-          tracking_numbers: trackingNumbers,
-          shipped_at: Date.now(),
-          metadata: {
-            ...f.metadata,
-            ...metadata,
-          },
-        }
-        return shipment
-      }
-      return f
-    })
+    const shipment = order.fulfillments.find(f => f._id.equals(fulfillmentId))
+    if (!shipment) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Could not find fulfillment"
+      )
+    }
+
+    const updated = await this.fulfillmentService_.createShipment(
+      order,
+      shipment,
+      trackingNumbers,
+      metadata
+    )
 
     let fulfillmentStatus = "shipped"
-    for (const item of order.items) {
-      if (item.quantity !== item.shipped_quantity) {
-        fulfillmentStatus = "partially_shipped"
-        break
+
+    const newItems = order.items.map(item => {
+      const shipped = updated.items.find(fi => item._id.equals(fi._id))
+      if (shipped) {
+        // Find the new fulfilled total
+        const shippedQuantity = (item.shipped_quantity || 0) + shipped.quantity
+
+        // If the ordered quantity is not the same as the fulfilled quantity
+        // the order cannot be marked as fulfilled. We instead set it as
+        // partially_fulfilled.
+        if (item.quantity !== shippedQuantity) {
+          fulfillmentStatus = "partially_shipped"
+        }
+
+        return {
+          ...item,
+          shipped: item.quantity === shippedQuantity,
+          shipped_quantity: shippedQuantity,
+        }
       }
-    }
+
+      if (!item.shipped) {
+        fulfillmentStatus = "partially_shipped"
+      }
+
+      return item
+    })
 
     // Add the shipment to the order
     return this.orderModel_
@@ -462,7 +461,7 @@ class OrderService extends BaseService {
         {
           $set: {
             "fulfillments.$": updated,
-            items: order.items,
+            items: newItems,
             fulfillment_status: fulfillmentStatus,
           },
         }
@@ -739,59 +738,43 @@ class OrderService extends BaseService {
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
     const order = await this.retrieve(orderId)
 
-    const lineItems = await this.getFulfillmentItems_(
+    const fulfillments = await this.fulfillmentService_.createFulfillment(
       order,
       itemsToFulfill,
-      this.validateFulfillmentLineItem_
+      metadata
     )
-
-    const { shipping_methods } = order
-
-    const updateFields = {}
-
-    // partition order items to their dedicated shipping method
-    const fulfillments = await this.partitionItems_(shipping_methods, lineItems)
 
     let successfullyFulfilled = []
-    const results = await Promise.all(
-      fulfillments.map(async method => {
-        const provider = this.fulfillmentProviderService_.retrieveProvider(
-          method.provider_id
-        )
+    for (const f of fulfillments) {
+      successfullyFulfilled = [...successfullyFulfilled, ...f.items]
+    }
 
-        const data = await provider
-          .createOrder(method.data, method.items, { ...order })
-          .then(res => {
-            successfullyFulfilled = [...successfullyFulfilled, ...method.items]
-            return res
-          })
-
-        method.items = method.items.map(el => {
-          return {
-            ...el,
-            fulfilled_quantity: el.quantity,
-            fulfilled: true,
-          }
-        })
-
-        return {
-          provider_id: method.provider_id,
-          items: method.items,
-          data,
-          metadata,
-        }
-      })
-    )
+    const updateFields = {}
 
     // Reflect the fulfillments in the items
     updateFields.items = order.items.map(i => {
       const ful = successfullyFulfilled.find(f => i._id.equals(f._id))
       if (ful) {
+        // Find the new fulfilled total
+        const fulfilledQuantity = i.fulfilled_quantity + ful.quantity
+
+        // If the ordered quantity is not the same as the fulfilled quantity
+        // the order cannot be marked as fulfilled. We instead set it as
+        // partially_fulfilled.
+        if (i.quantity !== fulfilledQuantity) {
+          updateFields.fulfillment_status = "partially_fulfilled"
+        }
+
+        // Update the items
         return {
           ...i,
-          fulfilled: i.quantity === ful.quantity,
-          fulfilled_quantity: i.fulfilled_quantity + ful.quantity,
+          fulfilled: i.quantity === fulfilledQuantity,
+          fulfilled_quantity: fulfilledQuantity,
         }
+      }
+
+      if (!i.fulfilled) {
+        updateFields.fulfillment_status = "partially_fulfilled"
       }
 
       return i
@@ -799,25 +782,18 @@ class OrderService extends BaseService {
 
     updateFields.fulfillment_status = "fulfilled"
 
-    for (const el of updateFields.items) {
-      if (el.quantity !== el.fulfilled_quantity) {
-        updateFields.fulfillment_status = "partially_fulfilled"
-        break
-      }
-    }
-
     return this.orderModel_
       .updateOne(
         {
           _id: orderId,
         },
         {
-          $addToSet: { fulfillments: { $each: results } },
+          $addToSet: { fulfillments: { $each: fulfillments } },
           $set: updateFields,
         }
       )
       .then(result => {
-        for (const fulfillment of results) {
+        for (const fulfillment of fulfillments) {
           this.eventBus_.emit(OrderService.Events.FULFILLMENT_CREATED, {
             order_id: orderId,
             fulfillment,
@@ -884,32 +860,6 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Checks that an order has the statuses necessary to complete a return.
-   * fulfillment_status cannot be not_fulfilled or returned.
-   * payment_status must be captured.
-   * @param {Order} order - the order to check statuses on
-   * @throws when statuses are not sufficient for returns.
-   */
-  validateReturnStatuses_(order) {
-    if (
-      order.fulfillment_status === "not_fulfilled" ||
-      order.fulfillment_status === "returned"
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't return an unfulfilled or already returned order"
-      )
-    }
-
-    if (order.payment_status !== "captured") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't return an order with payment unprocessed"
-      )
-    }
-  }
-
-  /**
    * Generates documents.
    * @param {Array<Document>} docs - documents to generate
    * @param {Function} transformer - a function to apply to the created document
@@ -941,72 +891,12 @@ class OrderService extends BaseService {
   async requestReturn(orderId, items, shippingMethod, refundAmount) {
     const order = await this.retrieve(orderId)
 
-    // Throws if the order doesn't have the necessary status for return
-    this.validateReturnStatuses_(order)
-
-    let toRefund = refundAmount
-    if (typeof refundAmount !== "undefined") {
-      const total = await this.totalsService_.getTotal(order)
-      const refunded = await this.totalsService_.getRefundedTotal(order)
-      const refundable = total - refunded
-      if (refundAmount > refundable) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Cannot refund more than the original payment"
-        )
-      }
-    } else {
-      toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
-    }
-
-    const returnLines = await this.getFulfillmentItems_(
+    const returnRequest = await this.returnService_.requestReturn(
       order,
       items,
-      this.validateReturnLineItem_
+      shippingMethod,
+      refundAmount
     )
-
-    let fulfillmentData = {}
-    let shipping_method = {}
-    if (typeof shippingMethod !== "undefined") {
-      shipping_method = await this.shippingOptionService_.retrieve(
-        shippingMethod.id
-      )
-      const provider = await this.fulfillmentProviderService_.retrieveProvider(
-        shipping_method.provider_id
-      )
-      fulfillmentData = await provider.createReturn(
-        shipping_method.data,
-        returnLines,
-        order
-      )
-
-      if (typeof shippingMethod.price !== "undefined") {
-        shipping_method.price = shippingMethod.price
-      } else {
-        shipping_method.price = await this.shippingOptionService_.getPrice(
-          shipping_method,
-          {
-            ...order,
-            items: returnLines,
-          }
-        )
-      }
-
-      toRefund = Math.max(0, toRefund - shipping_method.price)
-    }
-
-    const newReturn = {
-      shipping_method,
-      refund_amount: toRefund,
-      items: returnLines.map(i => ({
-        item_id: i._id,
-        content: i.content,
-        quantity: i.quantity,
-        is_requested: true,
-        metadata: i.metadata,
-      })),
-      shipping_data: fulfillmentData,
-    }
 
     return this.orderModel_
       .updateOne(
@@ -1015,14 +905,14 @@ class OrderService extends BaseService {
         },
         {
           $push: {
-            returns: newReturn,
+            returns: returnRequest,
           },
         }
       )
       .then(result => {
         this.eventBus_.emit(OrderService.Events.RETURN_REQUESTED, {
           order: result,
-          return: newReturn,
+          return: returnRequest,
         })
         return result
       })
@@ -1040,7 +930,13 @@ class OrderService extends BaseService {
    * @param {string[]} lineItems - the line items to return
    * @return {Promise} the result of the update operation
    */
-  async return(orderId, returnId, items, refundAmount, allowMismatch = false) {
+  async receiveReturn(
+    orderId,
+    returnId,
+    items,
+    refundAmount,
+    allowMismatch = false
+  ) {
     const order = await this.retrieve(orderId)
     const returnRequest = order.returns.find(r => r._id.equals(returnId))
     if (!returnRequest) {
@@ -1050,99 +946,24 @@ class OrderService extends BaseService {
       )
     }
 
-    if (returnRequest.status === "received") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Return with id ${returnId} has already been received`
-      )
-    }
-
-    const returnLines = await this.getFulfillmentItems_(
+    const updatedReturn = await this.returnService_.receiveReturn(
       order,
+      returnRequest,
       items,
-      this.validateReturnLineItem_
+      refundAmount,
+      allowMismatch
     )
 
-    const newLines = returnLines.map(l => {
-      const existing = returnRequest.items.find(i => l._id.equals(i.item_id))
-      if (existing) {
-        return {
-          ...existing,
-          quantity: l.quantity,
-          requested_quantity: existing.quantity,
-          is_requested: l.quantity === existing.quantity,
-          is_registered: true,
-        }
-      } else {
-        return {
-          item_id: l._id,
-          content: l.content,
-          quantity: l.quantity,
-          is_requested: false,
-          is_registered: true,
-          metadata: l.metadata,
-        }
-      }
-    })
-
-    const isMatching = newLines.every(l => l.is_requested)
-    if (!isMatching && !allowMismatch) {
-      // Should update status
-      const newReturns = order.returns.map(r => {
-        if (r._id.equals(returnId)) {
-          return {
-            ...r,
-            status: "requires_action",
-            items: newLines,
-          }
-        } else {
-          return r
-        }
-      })
+    if (updatedReturn.status === "requires_action") {
       return this.orderModel_
         .updateOne(
           {
             _id: orderId,
+            "returns._id": updatedReturn._id,
           },
           {
             $set: {
-              returns: newReturns,
-            },
-          }
-        )
-        .then(result => {
-          this.eventBus_.emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
-            order: result,
-            return: result.returns.find(r => r._id.equals(returnId)),
-          })
-          return result
-        })
-    }
-
-    const toRefund = refundAmount || returnRequest.refund_amount
-    const total = await this.totalsService_.getTotal(order)
-    const refunded = await this.totalsService_.getRefundedTotal(order)
-
-    if (toRefund > total - refunded) {
-      const newReturns = order.returns.map(r => {
-        if (r._id.equals(returnId)) {
-          return {
-            ...r,
-            status: "requires_action",
-            items: newLines,
-          }
-        } else {
-          return r
-        }
-      })
-      return this.orderModel_
-        .updateOne(
-          {
-            _id: orderId,
-          },
-          {
-            $set: {
-              returns: newReturns,
+              "returns.$": updatedReturn,
             },
           }
         )
@@ -1157,7 +978,7 @@ class OrderService extends BaseService {
 
     let isFullReturn = true
     const newItems = order.items.map(i => {
-      const isReturn = returnLines.find(r => r._id.equals(i._id))
+      const isReturn = updatedReturn.items.find(r => i._id.equals(r.item_id))
       if (isReturn) {
         const returnedQuantity = i.returned_quantity + isReturn.quantity
         let returned = i.quantity === returnedQuantity
@@ -1177,18 +998,9 @@ class OrderService extends BaseService {
       }
     })
 
-    const newReturns = order.returns.map(r => {
-      if (r._id.equals(returnId)) {
-        return {
-          ...r,
-          status: "received",
-          items: newLines,
-          refund_amount: toRefund,
-        }
-      } else {
-        return r
-      }
-    })
+    const newReturns = order.returns.map(r =>
+      r._id.equals(returnId) ? updatedReturn : r
+    )
 
     const update = {
       $set: {
@@ -1198,15 +1010,15 @@ class OrderService extends BaseService {
       },
     }
 
-    if (toRefund > 0) {
+    if (updatedReturn.refund_amount > 0) {
       const { provider_id, data } = order.payment_method
       const paymentProvider = this.paymentProviderService_.retrieveProvider(
         provider_id
       )
-      await paymentProvider.refundPayment(data, toRefund)
+      await paymentProvider.refundPayment(data, updatedReturn.refund_amount)
       update.$push = {
         refunds: {
-          amount: toRefund,
+          amount: updatedReturn.refund_amount,
         },
       }
     }
@@ -1214,7 +1026,7 @@ class OrderService extends BaseService {
     return this.orderModel_.updateOne({ _id: orderId }, update).then(result => {
       this.eventBus_.emit(OrderService.Events.ITEMS_RETURNED, {
         order: result,
-        return: result.returns.find(r => r._id.equals(returnId)),
+        return: updatedReturn,
       })
       return result
     })
@@ -1375,6 +1187,22 @@ class OrderService extends BaseService {
 
     o.created = order._id.getTimestamp()
 
+    if (expandFields.includes("swaps")) {
+      if (order.swaps) {
+        o.swaps = await Promise.all(
+          order.swaps.map(sId => {
+            return this.swapService_.retrieve(sId)
+          })
+        )
+      } else {
+        o.swaps = []
+      }
+    }
+
+    if (expandFields.includes("customer")) {
+      o.customer = await this.customerService_.retrieve(order.customer_id)
+    }
+
     if (expandFields.includes("region")) {
       o.region = await this.regionService_.retrieve(order.region_id)
     }
@@ -1419,6 +1247,87 @@ class OrderService extends BaseService {
       .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
+  }
+
+  /**
+   * Registers a swap to the order. The swap must belong to the order for it to
+   * be registered.
+   * @param {string} id - the id of the order to register the swap to.
+   * @param {string} swapId - the id of the swap to add to the order.
+   * @returns {Promise<Order>} the resulting order
+   */
+  async registerSwapCreated(id, swapId) {
+    const order = await this.retrieve(id)
+    const swap = await this.swapService_.retrieve(swapId)
+
+    if (!order._id.equals(swap.order_id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Swap must belong to the given order"
+      )
+    }
+
+    return this.orderModel_
+      .updateOne({ _id: order._id }, { $addToSet: { swaps: swapId } })
+      .then(result => {
+        this.eventBus_.emit(OrderService.Events.SWAP_CREATED, {
+          order: result,
+          swap_id: swapId,
+        })
+        return result
+      })
+  }
+
+  /**
+   * Registers the swap return items as received so that they cannot be used
+   * as a part of other swaps/returns.
+   * @param {string} id - the id of the order with the swap.
+   * @param {string} swapId - the id of the swap that has been received.
+   * @returns {Promise<Order>} the resulting order
+   */
+  async registerSwapReceived(id, swapId) {
+    const order = await this.retrieve(id)
+    const swap = await this.swapService_.retrieve(swapId)
+
+    if (!order._id.equals(swap.order_id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Swap must belong to the given order"
+      )
+    }
+
+    if (swap.return.status !== "received") {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Swap is not received"
+      )
+    }
+
+    const newItems = order.items.map(i => {
+      const isReturn = swap.return_items.find(ri => i._id.equals(ri.item_id))
+
+      if (isReturn) {
+        const returnedQuantity = i.returned_quantity + isReturn.quantity
+        const returned = returnedQuantity === i.quantity
+        return {
+          ...i,
+          returned_quantity: returnedQuantity,
+          returned,
+        }
+      }
+
+      return i
+    })
+
+    return this.orderModel_
+      .updateOne({ _id: order._id }, { $set: { items: newItems } })
+      .then(result => {
+        this.eventBus_.emit(OrderService.Events.SWAP_RECEIVED, {
+          order: result,
+          swap_id: swapId,
+        })
+        return result
       })
   }
 

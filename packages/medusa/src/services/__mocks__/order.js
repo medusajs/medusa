@@ -115,6 +115,7 @@ export const orders = {
         profile_id: IdMap.getId("profile1"),
       },
     ],
+    tax_rate: 0,
     fulfillment_status: "fulfilled",
     payment_status: "captured",
     status: "completed",
