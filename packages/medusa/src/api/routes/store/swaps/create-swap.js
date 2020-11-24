@@ -2,10 +2,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    name: Validator.string(),
-    swap_link_template: Validator.string(),
-    default_currency: Validator.string(),
-    currencies: Validator.array().items(Validator.string()),
+    cart_id: Validator.string().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -13,10 +10,16 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
+  const swapService = req.scope.resolve("swapService")
+
   try {
-    const storeService = req.scope.resolve("storeService")
-    const data = await storeService.update(value)
-    res.status(200).json({ store: data })
+    const swap = await swapService.retrieveByCartId(value.cart_id)
+    const data = await swapService.registerCartCompletion(
+      swap._id,
+      value.cart_id
+    )
+
+    res.status(200).json({ swap: data })
   } catch (err) {
     throw err
   }

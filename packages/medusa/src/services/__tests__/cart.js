@@ -148,6 +148,58 @@ describe("CartService", () => {
         region_id: IdMap.getId("testRegion"),
       })
     })
+
+    it("creates a cart with a prefilled shipping address", async () => {
+      const res = cartService.create({
+        region_id: IdMap.getId("testRegion"),
+        shipping_address: {
+          first_name: "LeBron",
+          last_name: "James",
+          address_1: "Dunk St",
+          city: "Dunkville",
+          province: "CA",
+          postal_code: "12345",
+          country_code: "PT",
+        },
+      })
+
+      await expect(res).rejects.toThrow("Shipping country not in region")
+    })
+
+    it("creates a cart with a prefilled shipping address", async () => {
+      await cartService.create({
+        region_id: IdMap.getId("testRegion"),
+        shipping_address: {
+          first_name: "LeBron",
+          last_name: "James",
+          address_1: "Dunk St",
+          city: "Dunkville",
+          province: "CA",
+          postal_code: "12345",
+          country_code: "US",
+        },
+      })
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.created",
+        expect.any(Object)
+      )
+
+      expect(CartModelMock.create).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.create).toHaveBeenCalledWith({
+        region_id: IdMap.getId("testRegion"),
+        shipping_address: {
+          first_name: "LeBron",
+          last_name: "James",
+          address_1: "Dunk St",
+          city: "Dunkville",
+          province: "CA",
+          postal_code: "12345",
+          country_code: "US",
+        },
+      })
+    })
   })
 
   describe("addLineItem", () => {

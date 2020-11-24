@@ -10,6 +10,7 @@ import orderRoutes from "./orders"
 import customerRoutes from "./customers"
 import shippingOptionRoutes from "./shipping-options"
 import regionRoutes from "./regions"
+import swapRoutes from "./swaps"
 
 const route = Router()
 
@@ -33,6 +34,7 @@ export default (app, container, config) => {
   cartRoutes(route, container)
   shippingOptionRoutes(route)
   regionRoutes(route)
+  swapRoutes(route)
 
   return app
 }

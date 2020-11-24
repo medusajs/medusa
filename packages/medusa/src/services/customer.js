@@ -13,7 +13,7 @@ class CustomerService extends BaseService {
     PASSWORD_RESET: "customer.password_reset",
   }
 
-  constructor({ customerModel, orderService, eventBusService }) {
+  constructor({ customerModel, eventBusService }) {
     super()
 
     /** @private @const {CustomerModel} */
@@ -21,9 +21,6 @@ class CustomerService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @const {EventBus} */
-    this.orderService_ = orderService
   }
 
   /**
@@ -371,15 +368,6 @@ class CustomerService extends BaseService {
   async decorate(customer, fields = [], expandFields = []) {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
-
-    if (expandFields.includes("orders")) {
-      decorated.orders = await Promise.all(
-        customer.orders.map(async o => {
-          const order = await this.orderService_.retrieve(o)
-          return this.orderService_.decorate(order)
-        })
-      )
-    }
 
     const final = await this.runDecorators_(decorated)
     return final

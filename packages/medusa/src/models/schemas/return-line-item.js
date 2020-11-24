@@ -13,7 +13,7 @@ import mongoose from "mongoose"
  * @property {Object} metadata
  */
 export default new mongoose.Schema({
-  item_id: { type: String, required: true, unique: true },
+  item_id: { type: String, required: true },
   content: { type: mongoose.Schema.Types.Mixed, required: true },
   quantity: { type: Number, required: true },
   is_requested: { type: Boolean, required: true },
