@@ -252,7 +252,7 @@ class ProductVariantService extends BaseService {
     })
 
     // Return the price if we found a suitable match
-    if (price) {
+    if (typeof price !== "undefined") {
       return price
     }
 
