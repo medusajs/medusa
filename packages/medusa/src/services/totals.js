@@ -35,7 +35,7 @@ class TotalsService extends BaseService {
    * @param {Cart || Order} object - cart or order to calculate subtotal for
    * @return {int} the calculated subtotal
    */
-  getSubtotal(object) {
+  getSubtotal(object, opts = {}) {
     let subtotal = 0
     if (!object.items) {
       return subtotal
@@ -46,8 +46,15 @@ class TotalsService extends BaseService {
         const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
         subtotal += temp * item.quantity
       } else {
-        subtotal +=
-          item.content.unit_price * item.content.quantity * item.quantity
+        if (opts.excludeNonDiscounts) {
+          if (!item.no_discount) {
+            subtotal +=
+              item.content.unit_price * item.content.quantity * item.quantity
+          }
+        } else {
+          subtotal +=
+            item.content.unit_price * item.content.quantity * item.quantity
+        }
       }
     })
     return this.rounded(subtotal)
@@ -135,6 +142,13 @@ class TotalsService extends BaseService {
    *    applied discount
    */
   calculateDiscount_(lineItem, variant, variantPrice, value, discountType) {
+    if (lineItem.no_discount) {
+      return {
+        lineItem,
+        variant,
+        amount: 0,
+      }
+    }
     if (discountType === "percentage") {
       return {
         lineItem,
@@ -240,7 +254,7 @@ class TotalsService extends BaseService {
    * @return {int} the total discounts amount
    */
   async getDiscountTotal(cart) {
-    let subtotal = this.getSubtotal(cart)
+    let subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
 
     if (!cart.discounts || !cart.discounts.length) {
       return 0
