@@ -300,6 +300,7 @@ class SwapService extends BaseService {
         title: "Return shipping",
         quantity: 1,
         has_shipping: true,
+        no_discount: true,
         content: {
           unit_price: swap.return_shipping.price,
           quantity: 1,
