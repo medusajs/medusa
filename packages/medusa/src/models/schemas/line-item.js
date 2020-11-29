@@ -15,6 +15,7 @@ export default new mongoose.Schema(
     is_giftcard: { type: Boolean, default: false },
     should_merge: { type: Boolean, default: true },
     has_shipping: { type: Boolean, default: false },
+    no_discount: { type: Boolean, default: false },
 
     // mongoose doesn't allow multi-type validation but this field allows both
     // an object containing:
