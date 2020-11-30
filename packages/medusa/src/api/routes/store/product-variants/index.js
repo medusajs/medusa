@@ -6,6 +6,7 @@ const route = Router()
 export default app => {
   app.use("/product-variants", route)
 
+  route.get("/", middlewares.wrap(require("./list-variants").default))
   route.get("/:id", middlewares.wrap(require("./get-variant").default))
 
   return app
