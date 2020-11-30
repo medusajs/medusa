@@ -29,6 +29,8 @@ class CartModel extends BaseModel {
     shipping_options: { type: [ShippingMethodSchema], default: [] },
     payment_method: { type: PaymentMethodSchema },
     shipping_methods: { type: [ShippingMethodSchema], default: [] },
+    is_swap: { type: Boolean, default: false },
+    created: { type: String, default: Date.now },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }

@@ -279,9 +279,9 @@ class KlarnaProviderService extends PaymentService {
    */
   async retrieveCompletedOrder(klarnaOrderId) {
     try {
-      return this.klarna_.get(
-        `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}`
-      )
+      return this.klarna_
+        .get(`${this.klarnaOrderManagementUrl_}/${klarnaOrderId}`)
+        .then(({ data }) => data)
     } catch (error) {
       throw error
     }

@@ -169,7 +169,7 @@ export const carts = {
       {
         provider_id: "stripe",
         data: {
-          id: "pi_123456789",
+          id: "pi_no",
           customer: IdMap.getId("not-lebron"),
         },
       },
@@ -177,7 +177,7 @@ export const carts = {
     payment_method: {
       provider_id: "stripe",
       data: {
-        id: "pi_123456789",
+        id: "pi_no",
         customer: IdMap.getId("not-lebron"),
       },
     },

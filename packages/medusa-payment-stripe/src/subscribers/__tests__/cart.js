@@ -34,11 +34,14 @@ describe("CartSubscriber", () => {
 
       expect(StripeProviderServiceMock.retrievePayment).toHaveBeenCalledTimes(1)
       expect(StripeProviderServiceMock.retrievePayment).toHaveBeenCalledWith(
-        carts.frCart
+        carts.frCart.payment_sessions[0].data
       )
 
       expect(StripeProviderServiceMock.cancelPayment).toHaveBeenCalledTimes(1)
-      expect(StripeProviderServiceMock.cancelPayment).toHaveBeenCalledWith("pi")
+      expect(StripeProviderServiceMock.cancelPayment).toHaveBeenCalledWith({
+        id: "pi",
+        customer: "cus_123456789",
+      })
 
       expect(StripeProviderServiceMock.createPayment).toHaveBeenCalledTimes(1)
       expect(StripeProviderServiceMock.createPayment).toHaveBeenCalledWith(
@@ -66,7 +69,7 @@ describe("CartSubscriber", () => {
 
       expect(StripeProviderServiceMock.retrievePayment).toHaveBeenCalledTimes(1)
       expect(StripeProviderServiceMock.retrievePayment).toHaveBeenCalledWith(
-        carts.frCartNoStripeCustomer
+        carts.frCartNoStripeCustomer.payment_sessions[0].data
       )
 
       expect(StripeProviderServiceMock.createCustomer).toHaveBeenCalledTimes(1)

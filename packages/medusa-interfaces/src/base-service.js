@@ -27,9 +27,9 @@ class BaseService {
    * @param {object} obj - the object to decorate.
    * @return {object} the decorated object.
    */
-  runDecorators_(obj) {
+  runDecorators_(obj, fields = [], expandFields = []) {
     return this.decorators_.reduce(async (acc, next) => {
-      return acc.then(res => next(res)).catch(() => acc)
+      return acc.then(res => next(res, fields, expandFields)).catch(() => acc)
     }, Promise.resolve(obj))
   }
 }

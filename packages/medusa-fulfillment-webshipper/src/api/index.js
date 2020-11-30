@@ -48,10 +48,13 @@ export default (rootDirectory) => {
     "/webshipper/shipments",
     bodyParser.raw({ type: "application/vnd.api+json" }),
     async (req, res) => {
+      const webshipperService = req.scope.resolve(
+        "webshipperFulfillmentService"
+      )
       const eventBus = req.scope.resolve("eventBusService")
       const logger = req.scope.resolve("logger")
 
-      const secret = `da791d87513eb091640f9fb6c4b94384`
+      const secret = webshipperService.options_.webhook_secret
       const hmac = crypto.createHmac("sha256", secret)
       const digest = hmac.update(req.body).digest("base64")
       const hash = req.header("x-webshipper-hmac-sha256")

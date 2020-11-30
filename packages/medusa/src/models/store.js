@@ -9,6 +9,7 @@ class StoreModel extends BaseModel {
     currencies: { type: [String], default: [] },
     payment_providers: { type: [String], default: [] },
     fulfillment_providers: { type: [String], default: [] },
+    swap_link_template: { type: String },
     metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-cli",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -15,6 +15,7 @@
     "access": "public"
   },
   "scripts": {
+    "test": "jest",
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"

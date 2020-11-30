@@ -26,8 +26,14 @@ export default async (req, res) => {
       value.items,
       value.metadata
     )
-    order = await orderService.decorate(order, [], ["region"])
-    res.json({ order })
+
+    const data = await orderService.decorate(
+      order,
+      [],
+      ["region", "customer", "swaps"]
+    )
+
+    res.json({ order: data })
   } catch (error) {
     throw error
   }

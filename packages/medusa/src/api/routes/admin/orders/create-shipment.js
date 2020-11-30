@@ -22,7 +22,11 @@ export default async (req, res) => {
       value.fulfillment_id,
       value.tracking_numbers
     )
-    order = await orderService.decorate(order, [], ["region"])
+    order = await orderService.decorate(
+      order,
+      [],
+      ["region", "customer", "swaps"]
+    )
     res.json({ order })
   } catch (error) {
     throw error
