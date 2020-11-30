@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.0.47",
+  "version": "1.0.33-alpha.23+4d2c3a3",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
-    "babel-preset-medusa-package": "^1.0.1",
+    "babel-preset-medusa-package": "^1.0.2-alpha.549+4d2c3a3",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
@@ -62,8 +62,8 @@
     "ioredis": "^4.17.3",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.0.11",
-    "medusa-test-utils": "^1.0.12",
+    "medusa-core-utils": "^1.0.12-alpha.549+4d2c3a3",
+    "medusa-test-utils": "^1.0.12-alpha.31+4d2c3a3",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
@@ -77,5 +77,5 @@
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "b54e28769a423c9285a1119535cfa1590d08a559"
+  "gitHead": "4d2c3a320d0612a075170e0d248d18709af80196"
 }
