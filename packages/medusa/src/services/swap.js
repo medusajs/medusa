@@ -12,6 +12,8 @@ class SwapService extends BaseService {
     PAYMENT_COMPLETED: "swap.payment_completed",
     PAYMENT_CAPTURED: "swap.payment_captured",
     PAYMENT_CAPTURE_FAILED: "swap.payment_capture_failed",
+    PROCESS_REFUND_FAILED: "swap.process_refund_failed",
+    REFUND_PROCESSED: "swap.refund_processed",
   }
 
   constructor({
@@ -189,12 +191,77 @@ class SwapService extends BaseService {
 
     return this.swapModel_.create({
       order_id: order._id,
+      order_payment: order.payment_method,
       region_id: order.region_id,
       currency_code: order.currency_code,
       return_items: validatedReturnItems,
       return_shipping: returnShipping,
       additional_items: newItems,
     })
+  }
+
+  async processDifference(swapId) {
+    const swap = await this.retrieve(swapId)
+
+    if (!swap.is_paid) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Cannot process a swap that hasn't been confirmed by the customer"
+      )
+    }
+
+    if (swap.amount_paid < 0) {
+      const { provider_id, data } = swap.order_payment
+      const paymentProvider = this.paymentProviderService_.retrieveProvider(
+        provider_id
+      )
+
+      try {
+        await paymentProvider.refundPayment(data, -1 * swap.amount_paid)
+      } catch (err) {
+        return this.swapModel_
+          .updateOne(
+            {
+              _id: swapId,
+            },
+            {
+              $set: { payment_status: "requires_action" },
+            }
+          )
+          .then(result => {
+            this.eventBus_.emit(
+              SwapService.Events.PROCESS_REFUND_FAILED,
+              result
+            )
+            return result
+          })
+      }
+
+      return this.swapModel_
+        .updateOne(
+          {
+            _id: swapId,
+          },
+          {
+            $set: { payment_status: "difference_refunded" },
+          }
+        )
+        .then(result => {
+          this.eventBus_.emit(SwapService.Events.REFUND_PROCESSED, result)
+          return result
+        })
+    } else if (swap.amount_paid === 0) {
+      return this.swapModel_.updateOne(
+        {
+          _id: swapId,
+        },
+        {
+          $set: { payment_status: "difference_refunded" },
+        }
+      )
+    }
+
+    return capturePayment(swapId)
   }
 
   async capturePayment(swapId) {
@@ -351,60 +418,63 @@ class SwapService extends BaseService {
       )
     }
 
-    let paymentSession = {}
-    let paymentData = {}
-    const { payment_method, payment_sessions } = cart
-
-    if (!payment_method) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Cart does not contain a payment method"
-      )
-    }
-
-    if (!payment_sessions || !payment_sessions.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "cart must have payment sessions"
-      )
-    }
-
-    paymentSession = payment_sessions.find(
-      ps => ps.provider_id === payment_method.provider_id
-    )
-
-    // Throw if payment method does not exist
-    if (!paymentSession) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Cart does not have an authorized payment session"
-      )
-    }
-
-    const paymentProvider = this.paymentProviderService_.retrieveProvider(
-      paymentSession.provider_id
-    )
-    const paymentStatus = await paymentProvider.getStatus(paymentSession.data)
-
-    // If payment status is not authorized, we throw
-    if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Payment method is not authorized"
-      )
-    }
-
-    paymentData = await paymentProvider.retrievePayment(paymentSession.data)
+    const total = await this.totalsService_.getTotal(cart)
 
     let payment = {}
-    if (paymentSession.provider_id) {
-      payment = {
-        provider_id: paymentSession.provider_id,
-        data: paymentData,
+
+    if (total > 0) {
+      let paymentSession = {}
+      let paymentData = {}
+      const { payment_method, payment_sessions } = cart
+
+      if (!payment_method) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Cart does not contain a payment method"
+        )
+      }
+
+      if (!payment_sessions || !payment_sessions.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "cart must have payment sessions"
+        )
+      }
+
+      paymentSession = payment_sessions.find(
+        ps => ps.provider_id === payment_method.provider_id
+      )
+
+      // Throw if payment method does not exist
+      if (!paymentSession) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Cart does not have an authorized payment session"
+        )
+      }
+
+      const paymentProvider = this.paymentProviderService_.retrieveProvider(
+        paymentSession.provider_id
+      )
+      const paymentStatus = await paymentProvider.getStatus(paymentSession.data)
+
+      // If payment status is not authorized, we throw
+      if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Payment method is not authorized"
+        )
+      }
+
+      paymentData = await paymentProvider.retrievePayment(paymentSession.data)
+
+      if (paymentSession.provider_id) {
+        payment = {
+          provider_id: paymentSession.provider_id,
+          data: paymentData,
+        }
       }
     }
-
-    const total = await this.totalsService_.getTotal(cart)
 
     return this.swapModel_
       .updateOne(

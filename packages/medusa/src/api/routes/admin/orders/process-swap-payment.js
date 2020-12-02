@@ -7,7 +7,7 @@ export default async (req, res) => {
 
     const order = await orderService.retrieve(id)
 
-    await swapService.capturePayment(swap_id)
+    await swapService.processDifference(swap_id)
 
     // Decorate the order
     const data = await orderService.decorate(
