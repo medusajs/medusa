@@ -25,6 +25,7 @@ class SwapModel extends BaseModel {
     amount_paid: { type: Number },
     region_id: { type: String },
     currency_code: { type: String },
+    order_payment: { type: PaymentMethodSchema },
     order_id: { type: String },
     cart_id: { type: String },
     created: { type: String, default: Date.now },

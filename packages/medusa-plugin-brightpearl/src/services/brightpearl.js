@@ -477,7 +477,7 @@ class BrightpearlService extends BaseService {
     const soId =
       fromSwap.metadata && fromSwap.metadata.brightpearl_sales_order_id
 
-    if (!soId) {
+    if (!soId || fromSwap.amount_paid <= 0) {
       return
     }
 
@@ -558,6 +558,10 @@ class BrightpearlService extends BaseService {
       const order = await client.orders.retrieve(salesOrderId)
       await client.warehouses.createReservation(order, this.options.warehouse)
 
+      const total = order.rows.reduce((acc, next) => {
+        return acc + parseFloat(next.net) + parseFloat(next.tax)
+      }, 0)
+
       const paymentMethod = fromOrder.payment_method
       const paymentType = "RECEIPT"
       const payment = {
@@ -566,7 +570,7 @@ class BrightpearlService extends BaseService {
         paymentMethodCode: this.options.payment_method_code || "1220",
         orderId: salesOrderId,
         currencyIsoCode: fromOrder.currency_code,
-        amountPaid: fromSwap.return.refund_amount,
+        amountPaid: total,
         paymentDate: new Date(),
         paymentType,
       }
