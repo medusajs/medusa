@@ -128,8 +128,8 @@ export default app => {
    * Captures the payment associated with a swap
    */
   route.post(
-    "/:id/swaps/:swap_id/capture",
-    middlewares.wrap(require("./capture-swap").default)
+    "/:id/swaps/:swap_id/process-payment",
+    middlewares.wrap(require("./process-swap-payment").default)
   )
 
   /**
