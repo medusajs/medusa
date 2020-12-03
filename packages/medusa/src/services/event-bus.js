@@ -7,16 +7,11 @@ import Redis from "ioredis"
  * @interface
  */
 class EventBusService {
-  constructor({ logger, redisClient, redisSubscriber }, config) {
-    /** @private {logger} */
-    this.logger_ = logger
-
-    /** @private {object} */
-    this.observers_ = {}
-
-    /** @private {object} to handle cron jobs */
-    this.cronHandlers_ = {}
-
+  constructor(
+    { logger, stagedJobModel, redisClient, redisSubscriber },
+    config,
+    singleton = true
+  ) {
     const opts = {
       createClient: type => {
         switch (type) {
@@ -30,17 +25,55 @@ class EventBusService {
       },
     }
 
-    /** @private {BullQueue} used for cron jobs */
-    this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
+    this.config_ = config
+    /** @private {logger} */
+    this.logger_ = logger
 
-    /** @private {BullQueue} */
-    this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
+    this.stagedJobModel_ = stagedJobModel
 
-    // Register our worker to handle emit calls
-    this.queue_.process(this.worker_)
+    if (singleton) {
+      /** @private {object} */
+      this.observers_ = {}
 
-    // Register cron worker
-    this.cronQueue_.process(this.cronWorker_)
+      /** @private {BullQueue} */
+      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
+
+      /** @private {object} to handle cron jobs */
+      this.cronHandlers_ = {}
+
+      this.redisClient_ = redisClient
+      this.redisSubscriber_ = redisSubscriber
+
+      /** @private {BullQueue} used for cron jobs */
+      this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
+
+      // Register our worker to handle emit calls
+      this.queue_.process(this.worker_)
+
+      // Register cron worker
+      this.cronQueue_.process(this.cronWorker_)
+
+      // setInterval(this.enqueuer_, 200)
+      this.enqueuer_()
+    }
+  }
+
+  withSession(session) {
+    const cloned = new EventBusService(
+      {
+        stagedJobModel: this.stagedJobModel_,
+        logger: this.logger_,
+        redisClient: this.redisClient_,
+        redisSubscriber: this.redisSubscriber_,
+      },
+      this.config_,
+      false
+    )
+
+    cloned.current_session = session
+    cloned.queue_ = this.queue_
+
+    return cloned
   }
 
   /**
@@ -58,6 +91,25 @@ class EventBusService {
       this.observers_[event].push(subscriber)
     } else {
       this.observers_[event] = [subscriber]
+    }
+  }
+
+  /**
+   * Adds a function to a list of event subscribers.
+   * @param {string} event - the event that the subscriber will listen for.
+   * @param {func} subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
+   */
+  unsubscribe(event, subscriber) {
+    if (typeof subscriber !== "function") {
+      throw new Error("Subscriber must be a function")
+    }
+
+    if (this.observers_[event]) {
+      const index = this.observers_[event].indexOf(subscriber)
+      if (index !== -1) {
+        this.observers_[event].splice(index, 1)
+      }
     }
   }
 
@@ -83,15 +135,42 @@ class EventBusService {
    * @return {BullJob} - the job from our queue
    */
   emit(eventName, data) {
-    return this.queue_.add(
-      {
-        eventName,
-        data,
-      },
-      {
-        removeOnComplete: true,
-      }
-    )
+    if (this.current_session) {
+      return this.stagedJobModel_.create(
+        [
+          {
+            event_name: eventName,
+            data,
+          },
+        ],
+        { session: this.current_session }
+      )
+    } else {
+      this.queue_.add({ eventName, data }, { removeOnComplete: true })
+    }
+  }
+
+  async sleep(ms) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms)
+    })
+  }
+
+  async enqueuer_() {
+    while (true) {
+      const jobs = await this.stagedJobModel_.find({}, {}, 0, 1000)
+      await Promise.all(
+        jobs.map(j => {
+          this.queue_
+            .add(
+              { eventName: j.event_name, data: j.data },
+              { removeOnComplete: true }
+            )
+            .then(() => this.stagedJobModel_.deleteOne({ _id: j._id }))
+        })
+      )
+      await this.sleep(3000)
+    }
   }
 
   /**

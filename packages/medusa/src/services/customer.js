@@ -11,9 +11,10 @@ import { BaseService } from "medusa-interfaces"
 class CustomerService extends BaseService {
   static Events = {
     PASSWORD_RESET: "customer.password_reset",
+    CREATED: "customer.created",
   }
 
-  constructor({ customerModel, orderService, eventBusService }) {
+  constructor({ customerModel, eventBusService }) {
     super()
 
     /** @private @const {CustomerModel} */
@@ -21,9 +22,17 @@ class CustomerService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
+  }
 
-    /** @private @const {EventBus} */
-    this.orderService_ = orderService
+  withSession(session) {
+    const cloned = new CustomerService({
+      eventBusService: this.eventBusService,
+      orderService: this.orderService_,
+      customerModel: this.customerModel_,
+    })
+
+    cloned.current_session = session
+    return cloned
   }
 
   /**
@@ -134,6 +143,7 @@ class CustomerService extends BaseService {
     const validatedId = this.validateId_(customerId)
     const customer = await this.customerModel_
       .findOne({ _id: validatedId })
+      .session(this.current_session)
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -154,9 +164,12 @@ class CustomerService extends BaseService {
    */
   async retrieveByEmail(email) {
     this.validateEmail_(email)
-    const customer = await this.customerModel_.findOne({ email }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+    const customer = await this.customerModel_
+      .findOne({ email })
+      .session(this.current_session)
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
 
     if (!customer) {
       throw new MedusaError(
@@ -174,9 +187,12 @@ class CustomerService extends BaseService {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByPhone(phone) {
-    const customer = await this.customerModel_.findOne({ phone }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+    const customer = await this.customerModel_
+      .findOne({ phone })
+      .session(this.current_session)
+      .catch(err => {
+        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      })
 
     if (!customer) {
       throw new MedusaError(
@@ -236,9 +252,20 @@ class CustomerService extends BaseService {
         delete customer.password
       }
 
-      return this.customerModel_.create(customer).catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      if (this.current_session) {
+        return this.customerModel_
+          .create([customer], { session: this.current_session })
+          .then(result => {
+            return result[0]
+          })
+          .catch(err => {
+            throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+          })
+      } else {
+        return this.customerModel_.create(customer).catch(err => {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+        })
+      }
     }
   }
 
@@ -280,7 +307,7 @@ class CustomerService extends BaseService {
       .updateOne(
         { _id: customer._id },
         { $set: update },
-        { runValidators: true }
+        { runValidators: true, session: this.current_session }
       )
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
@@ -328,7 +355,8 @@ class CustomerService extends BaseService {
 
     return this.customerModel_.updateOne(
       { _id: customer._id, "shipping_addresses._id": addressId },
-      { $set: { "shipping_addresses.$": address } }
+      { $set: { "shipping_addresses.$": address } },
+      { session: this.current_session }
     )
   }
 
@@ -337,7 +365,8 @@ class CustomerService extends BaseService {
 
     return this.customerModel_.updateOne(
       { _id: customer._id },
-      { $pull: { shipping_addresses: { _id: addressId } } }
+      { $pull: { shipping_addresses: { _id: addressId } } },
+      { session: this.current_session }
     )
   }
 
@@ -372,15 +401,6 @@ class CustomerService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
 
-    if (expandFields.includes("orders")) {
-      decorated.orders = await Promise.all(
-        customer.orders.map(async o => {
-          const order = await this.orderService_.retrieve(o)
-          return this.orderService_.decorate(order)
-        })
-      )
-    }
-
     const final = await this.runDecorators_(decorated)
     return final
   }
@@ -406,7 +426,11 @@ class CustomerService extends BaseService {
 
     const keyPath = `metadata.${key}`
     return this.customerModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .updateOne(
+        { _id: validatedId },
+        { $set: { [keyPath]: value } },
+        { session: this.current_session }
+      )
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -430,7 +454,11 @@ class CustomerService extends BaseService {
 
     const keyPath = `metadata.${key}`
     return this.customerModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
+      .updateOne(
+        { _id: validatedId },
+        { $unset: { [keyPath]: "" } },
+        { session: this.current_session }
+      )
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

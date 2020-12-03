@@ -3,6 +3,122 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.48](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.47...@medusajs/medusa@1.0.48) (2020-12-02)
+
+
+### Bug Fixes
+
+* allow swaps with total < 0 ([#143](https://github.com/medusajs/medusa/issues/143)) ([304431e](https://github.com/medusajs/medusa/commit/304431e7c35e73b5dcd3ad4f28574b7cda091355))
+
+
+
+
+
+## [1.0.47](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.46...@medusajs/medusa@1.0.47) (2020-11-29)
+
+
+### Bug Fixes
+
+* swaps with discounts ([#142](https://github.com/medusajs/medusa/issues/142)) ([aae8d5e](https://github.com/medusajs/medusa/commit/aae8d5e1128daa433b333483094cceeba4389c17))
+
+
+
+
+
+## [1.0.46](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.45...@medusajs/medusa@1.0.46) (2020-11-28)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.45](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.44...@medusajs/medusa@1.0.45) (2020-11-26)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.44](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.43...@medusajs/medusa@1.0.44) (2020-11-24)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.43](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.42...@medusajs/medusa@1.0.43) (2020-11-24)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.42](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.41...@medusajs/medusa@1.0.42) (2020-11-13)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.41](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.40...@medusajs/medusa@1.0.41) (2020-11-13)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.40](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.39...@medusajs/medusa@1.0.40) (2020-11-13)
+
+
+### Features
+
+* **medusa:** Adds shipped status to line items + Capture fails will give payment_status = requires_action ([6a3c545](https://github.com/medusajs/medusa/commit/6a3c5455371c33e47722c7ab433a48d1d9b5b511))
+
+
+
+
+
+## [1.0.39](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.38...@medusajs/medusa@1.0.39) (2020-11-05)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.38](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.37...@medusajs/medusa@1.0.38) (2020-11-05)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.37](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.36...@medusajs/medusa@1.0.37) (2020-11-04)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.36](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.35...@medusajs/medusa@1.0.36) (2020-11-04)
+
+
+### Features
+
+* **medusa:** Adds set and delete metadata endpoints for region and orders ([#131](https://github.com/medusajs/medusa/issues/131)) ([d67b6e6](https://github.com/medusajs/medusa/commit/d67b6e6ebe30ad18c0d1a012732a75e47a3f4a35))
+
+
+
+
+
 ## [1.0.35](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.34...@medusajs/medusa@1.0.35) (2020-11-02)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.0.10",
+  "version": "1.0.12-alpha.550+5fe9cd6",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -9,6 +9,7 @@
     "directory": "packages/medusa-core-utils"
   },
   "scripts": {
+    "test": "jest",
     "build": "babel src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
@@ -32,5 +33,5 @@
     "joi": "^17.2.1",
     "joi-objectid": "^3.0.1"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"
 }

@@ -21,11 +21,11 @@ class CounterService extends BaseService {
     }
   }
 
-  async getNext(id, dbSession) {
+  async getNext(id, session) {
     const counter = await this.counterModel_.updateOne(
       { _id: id },
       { $inc: { next: 1 } },
-      { session: dbSession }
+      { session }
     )
     return counter.next
   }

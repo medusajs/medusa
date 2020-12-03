@@ -115,6 +115,7 @@ export const orders = {
         profile_id: IdMap.getId("profile1"),
       },
     ],
+    tax_rate: 0,
     fulfillment_status: "fulfilled",
     payment_status: "captured",
     status: "completed",
@@ -134,6 +135,18 @@ export const OrderServiceMock = {
     }
     if (data === IdMap.getId("processed-order")) {
       return Promise.resolve(orders.processedOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
+  setMetadata: jest.fn().mockImplementation((id, key, value) => {
+    if (id === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
+  deleteMetadata: jest.fn().mockImplementation((id, key, value) => {
+    if (id === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)
   }),

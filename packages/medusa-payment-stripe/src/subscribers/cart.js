@@ -18,7 +18,7 @@ class CartSubscriber {
   async onCustomerUpdated(cart) {
     const { customer_id, payment_sessions } = cart
 
-    if (!payment_sessions) {
+    if (!payment_sessions.length) {
       return Promise.resolve()
     }
 
@@ -55,6 +55,7 @@ class CartSubscriber {
 
     if (!paymentIntent.customer) {
       return this.stripeProviderService_.updatePaymentIntentCustomer(
+        paymentIntent.id,
         stripeCustomer.id
       )
     }

@@ -95,5 +95,58 @@ export default app => {
     middlewares.wrap(require("./archive-order").default)
   )
 
+  /**
+   * Creates a swap, requests a return and prepares a cart for payment.
+   */
+  route.post("/:id/swaps", middlewares.wrap(require("./create-swap").default))
+
+  /**
+   * Receives the inventory to return from a swap
+   */
+  route.post(
+    "/:id/swaps/:swap_id/receive",
+    middlewares.wrap(require("./receive-swap").default)
+  )
+
+  /**
+   * Fulfills a swap.
+   */
+  route.post(
+    "/:id/swaps/:swap_id/fulfillments",
+    middlewares.wrap(require("./fulfill-swap").default)
+  )
+
+  /**
+   * Marks a swap fulfillment as shipped.
+   */
+  route.post(
+    "/:id/swaps/:swap_id/shipments",
+    middlewares.wrap(require("./create-swap-shipment").default)
+  )
+
+  /**
+   * Captures the payment associated with a swap
+   */
+  route.post(
+    "/:id/swaps/:swap_id/process-payment",
+    middlewares.wrap(require("./process-swap-payment").default)
+  )
+
+  /**
+   * Set metadata key / value pair.
+   */
+  route.post(
+    "/:id/metadata",
+    middlewares.wrap(require("./set-metadata").default)
+  )
+
+  /**
+   * Delete metadata key / value pair.
+   */
+  route.delete(
+    "/:id/metadata/:key",
+    middlewares.wrap(require("./delete-metadata").default)
+  )
+
   return app
 }

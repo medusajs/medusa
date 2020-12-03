@@ -49,7 +49,7 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/payment-sessions/update/:provider_id",
+    "/:id/payment-sessions/:provider_id",
     middlewares.wrap(require("./update-payment-session").default)
   )
 

@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-webshipper",
-  "version": "1.0.9",
+  "version": "1.0.10-alpha.22+5fe9cd6",
   "description": "Webshipper Fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -23,6 +23,7 @@
     "jest": "^25.5.2"
   },
   "scripts": {
+    "test": "jest",
     "build": "babel src -d .",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
@@ -35,7 +36,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.0.10"
+    "medusa-core-utils": "^1.0.12-alpha.550+5fe9cd6"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"
 }

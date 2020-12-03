@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.0.35",
+  "version": "1.0.48",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
@@ -23,6 +23,7 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.7.6",
+    "babel-preset-medusa-package": "^1.0.2-alpha.550+5fe9cd6",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
@@ -34,7 +35,7 @@
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "build": "babel src -d dist",
+    "build": "babel src -d dist --ignore **/__tests__",
     "serve": "node dist/app.js",
     "test": "jest"
   },
@@ -61,8 +62,8 @@
     "ioredis": "^4.17.3",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.0.10",
-    "medusa-test-utils": "^1.0.11",
+    "medusa-core-utils": "^1.0.12-alpha.550+5fe9cd6",
+    "medusa-test-utils": "^1.0.12-alpha.32+5fe9cd6",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
@@ -74,7 +75,8 @@
     "request-ip": "^2.1.3",
     "resolve-cwd": "^3.0.0",
     "scrypt-kdf": "^2.0.1",
+    "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "b54e28769a423c9285a1119535cfa1590d08a559"
+  "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"
 }

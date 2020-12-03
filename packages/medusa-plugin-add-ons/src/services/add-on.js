@@ -187,7 +187,7 @@ class AddOnService extends BaseService {
     })
 
     // Return the price if we found a suitable match
-    if (price) {
+    if (price !== undefined) {
       return price
     }
 
