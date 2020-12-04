@@ -22,14 +22,16 @@ export default async (req, res) => {
       value.details
     )
 
-    const cart = await cartService.retrieve(value.cart_id)
-
-    cart.payment_method.data = {
+    const updatedPaymentSession = {
       pspReference: result.pspReference,
       resultCode: result.resultCode,
     }
 
-    await cartService.setPaymentMethod(value.cart_id, cart.payment_method)
+    await cartService.updatePaymentSession(
+      value.cart_id,
+      value.provider_id,
+      updatedPaymentSession
+    )
 
     res.status(200).json({ data: result })
   } catch (err) {

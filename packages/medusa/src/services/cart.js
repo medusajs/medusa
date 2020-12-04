@@ -922,15 +922,19 @@ class CartService extends BaseService {
       context
     )
 
-    paymentMethod.data = authorizedPayment
+    const session = {
+      provider_id: providerId,
+      data: authorizedPayment,
+    }
 
     return this.cartModel_
       .updateOne(
         {
           _id: cart._id,
+          "payment_sessions.provider_id": providerId,
         },
         {
-          $set: { payment_method: paymentMethod },
+          $set: { "payment_sessions.$": session },
         }
       )
       .then(result => {
