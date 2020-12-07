@@ -11,6 +11,7 @@ import customerRoutes from "./customers"
 import shippingOptionRoutes from "./shipping-options"
 import regionRoutes from "./regions"
 import swapRoutes from "./swaps"
+import variantRoutes from "./variants"
 
 const route = Router()
 
@@ -35,6 +36,7 @@ export default (app, container, config) => {
   shippingOptionRoutes(route)
   regionRoutes(route)
   swapRoutes(route)
+  variantRoutes(route)
 
   return app
 }

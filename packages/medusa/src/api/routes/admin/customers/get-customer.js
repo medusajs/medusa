@@ -16,10 +16,7 @@ export default async (req, res) => {
       []
     )
 
-    customer.orders = await Promise.all(customer.orders.map(async oId => {
-      const order = await orderService.retrieve(oId)
-      return orderService.decorate(order, [], [])
-    }))
+    customer.orders = await orderService.list({ customer_id: customer._id })
 
     res.json({ customer })
   } catch (err) {
