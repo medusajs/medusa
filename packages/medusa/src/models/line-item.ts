@@ -5,7 +5,6 @@ import {
   UpdateDateColumn,
   Check,
   Index,
-  RelationId,
   Column,
   PrimaryColumn,
   ManyToOne,
@@ -29,35 +28,35 @@ export class LineItem {
 
   @Index()
   @Column({ nullable: true })
-  @RelationId((li: LineItem) => li.cart)
   cart_id: string
 
   @ManyToOne(
     () => Cart,
     cart => cart.items
   )
+  @JoinColumn({ name: "cart_id" })
   cart: Cart
 
   @Index()
   @Column({ nullable: true })
-  @RelationId((li: LineItem) => li.order)
   order_id: string
 
   @ManyToOne(
     () => Order,
     order => order.items
   )
+  @JoinColumn({ name: "order_id" })
   order: Order
 
   @Index()
   @Column({ nullable: true })
-  @RelationId((li: LineItem) => li.order)
   swap_id: string
 
   @ManyToOne(
     () => Swap,
     swap => swap.additional_items
   )
+  @JoinColumn({ name: "swap_id" })
   swap: Swap
 
   @Column()

@@ -78,6 +78,18 @@ export class Product {
   @JoinColumn({ name: "profile_id" })
   profile: ShippingProfile
 
+  @Column({ type: "int", nullable: true })
+  weight: number
+
+  @Column({ type: "int", nullable: true })
+  length: number
+
+  @Column({ type: "int", nullable: true })
+  height: number
+
+  @Column({ type: "int", nullable: true })
+  width: number
+
   @Column({ nullable: true })
   hs_code: string
 

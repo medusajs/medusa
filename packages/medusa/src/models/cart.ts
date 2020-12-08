@@ -1,6 +1,5 @@
 import {
   Entity,
-  RelationId,
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -33,8 +32,10 @@ export class Cart {
   @Column()
   email: string
 
+  @Column()
+  receiver_email: string
+
   @Column({ nullable: true })
-  @RelationId((c: Cart) => c.billing_address)
   billing_address_id: string
 
   @ManyToOne(() => Address)
@@ -42,7 +43,6 @@ export class Cart {
   billing_address: Address
 
   @Column({ nullable: true })
-  @RelationId((c: Cart) => c.shipping_address)
   shipping_address_id: string
 
   @ManyToOne(() => Address)
@@ -55,10 +55,8 @@ export class Cart {
   )
   items: LineItem[]
 
-  @RelationId((c: Cart) => c.region)
-  region_id: string
-
   @ManyToOne(() => Region)
+  @JoinColumn({ name: "region_id" })
   region: Region
 
   @ManyToMany(() => Discount)
@@ -76,10 +74,10 @@ export class Cart {
   discounts: Discount
 
   @Column({ nullable: true })
-  @RelationId((c: Cart) => c.customer)
   customer_id: string
 
   @ManyToOne(() => Customer)
+  @JoinColumn({ name: "customer_id" })
   customer: Customer
 
   @OneToMany(
@@ -89,10 +87,10 @@ export class Cart {
   payment_sessions: PaymentSession[]
 
   @Column({ nullable: true })
-  @RelationId((c: Cart) => c.payment)
   payment_id: string
 
   @OneToOne(() => Payment)
+  @JoinColumn({ name: "payment_id" })
   payment: Payment
 
   @OneToMany(

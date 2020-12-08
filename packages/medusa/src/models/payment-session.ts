@@ -4,7 +4,6 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   Column,
-  RelationId,
   PrimaryColumn,
   ManyToOne,
   JoinColumn,
@@ -18,13 +17,11 @@ export class PaymentSession {
   @PrimaryColumn()
   id: string
 
-  @RelationId((p: PaymentSession) => p.cart)
-  cart_id: string
-
   @ManyToOne(
     () => Cart,
     cart => cart.items
   )
+  @JoinColumn({ name: "cart_id" })
   cart: Cart
 
   @Column()

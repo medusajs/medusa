@@ -1,6 +1,5 @@
 import {
   Entity,
-  RelationId,
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -82,10 +81,10 @@ export class Swap {
   payment: Payment
 
   @Column({ nullable: true })
-  @RelationId((s: Swap) => s.shipping_address)
   shipping_address_id: string
 
   @ManyToOne(() => Address)
+  @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
   @OneToMany(

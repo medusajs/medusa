@@ -69,6 +69,18 @@ export class ProductVariant {
   @Column({ nullable: true })
   material: string
 
+  @Column({ type: "int", nullable: true })
+  weight: number
+
+  @Column({ type: "int", nullable: true })
+  length: number
+
+  @Column({ type: "int", nullable: true })
+  height: number
+
+  @Column({ type: "int", nullable: true })
+  width: number
+
   @OneToMany(
     () => ProductOptionValue,
     optionValue => optionValue.variant

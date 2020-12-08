@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryColumn,
-  RelationId,
   OneToOne,
   ManyToOne,
   JoinColumn,
@@ -24,13 +23,11 @@ export class Payment {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
-  @RelationId((p: Payment) => p.order)
-  order_id: string
-
   @ManyToOne(
     () => Order,
     order => order.payments
   )
+  @JoinColumn({ name: "order_id" })
   order: Order
 
   @Column({ type: "int" })

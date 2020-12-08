@@ -30,10 +30,11 @@ export class MoneyAmount {
   @Column({ type: "int" })
   amount: number
 
-  @RelationId((ma: MoneyAmount) => ma.product_variant)
+  @Column({ nullable: true })
   variant_id: string
 
   @ManyToOne(() => ProductVariant)
+  @JoinColumn({ name: "variant_id" })
   product_variant: ProductVariant
 
   @BeforeInsert()
