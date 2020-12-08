@@ -3,7 +3,8 @@ import Redis from "ioredis"
 import { getConfigFile } from "medusa-core-utils"
 
 import expressLoader from "./express"
-import mongooseLoader from "./mongoose"
+import databaseLoader from "./database"
+import repositoriesLoader from "./repositories"
 import apiLoader from "./api"
 import modelsLoader from "./models"
 import servicesLoader from "./services"
@@ -49,14 +50,21 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await modelsLoader({ container })
   Logger.info("Models initialized")
 
+  await repositoriesLoader({ container })
+  Logger.info("Repositories initialized")
+
+  const dbConnection = await databaseLoader({ container, configModule })
+  Logger.info("Database initialized")
+
+  container.register({
+    manager: asValue(dbConnection.manager),
+  })
+
   await servicesLoader({ container, configModule })
   Logger.info("Services initialized")
 
   await subscribersLoader({ container })
   Logger.info("Subscribers initialized")
-
-  const dbConnection = await mongooseLoader({ container, configModule })
-  Logger.info("MongoDB Intialized")
 
   await expressLoader({ app: expressApp, configModule })
   Logger.info("Express Intialized")

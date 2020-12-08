@@ -12,11 +12,19 @@ class ShippingProfileService extends BaseService {
    *    productService: (ProductService),
    *    shippingOptionService: (ProductService),
    *  } */
-  constructor({ shippingProfileModel, productService, shippingOptionService }) {
+  constructor({
+    manager,
+    shippingProfileRepository,
+    productService,
+    shippingOptionService,
+  }) {
     super()
 
+    /** @private @const {ShippingProfileRepository} */
+    this.repository_ = shippingProfileRepository
+
     /** @private @const {ShippingProfileModel} */
-    this.profileModel_ = shippingProfileModel
+    this.profileModel_ = manager.getCustomRepository(shippingProfileRepository)
 
     /** @private @const {ProductService} */
     this.productService_ = productService
@@ -106,11 +114,9 @@ class ShippingProfileService extends BaseService {
   }
 
   async retrieveDefault() {
-    return await this.profileModel_
-      .findOne({ name: "default_shipping_profile" })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return await this.profileModel_.findOne({ type: "default" }).catch(err => {
+      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    })
   }
 
   /**
@@ -118,9 +124,13 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createDefault() {
-    const profile = await this.retrieveDefault()
+    let profile = await this.retrieveDefault()
     if (!profile) {
-      return this.profileModel_.create({ name: "default_shipping_profile" })
+      const p = this.profileModel_.create({
+        type: "default",
+        name: "Default Shipping Profile",
+      })
+      profile = await this.profileModel_.save(p)
     }
 
     return profile
@@ -132,7 +142,7 @@ class ShippingProfileService extends BaseService {
    */
   async retrieveGiftCardDefault() {
     return await this.profileModel_
-      .findOne({ name: "default_gift_card_profile" })
+      .findOne({ name: "gift_card" })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -144,9 +154,13 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createGiftCardDefault() {
-    const profile = await this.retrieveGiftCardDefault()
+    let profile = await this.retrieveGiftCardDefault()
     if (!profile) {
-      return this.profileModel_.create({ name: "default_gift_card_profile" })
+      const p = this.profileModel_.create({
+        type: "gift_card",
+        name: "Gift Card Profile",
+      })
+      profile = await this.profileModel_.save(p)
     }
 
     return profile

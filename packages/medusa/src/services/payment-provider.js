@@ -9,6 +9,16 @@ class PaymentProviderService {
     this.container_ = container
   }
 
+  async registerInstalledProviders(providers) {
+    const { manager, paymentProviderRepository } = this.container_
+    const model = manager.getCustomRepository(paymentProviderRepository)
+    model.update({}, { is_installed: false })
+    for (const p of providers) {
+      const n = model.create({ id: p, is_installed: true })
+      await model.save(n)
+    }
+  }
+
   /**
    * Creates a payment session with the given provider.
    * @param {string} providerId - the id of the provider to create payment with

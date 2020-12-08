@@ -10,8 +10,10 @@ class Oauth extends OauthService {
 
   constructor(cradle) {
     super()
+    const manager = cradle.manager
+
     this.container_ = cradle
-    this.model_ = cradle.oauthModel
+    this.model_ = manager.getCustomRepository(cradle.oauthRepository)
     this.eventBus_ = cradle.eventBusService
   }
 
@@ -25,13 +27,15 @@ class Oauth extends OauthService {
     return this.model_.find(selector)
   }
 
-  create(data) {
-    return this.model_.create({
+  async create(data) {
+    const application = this.model_.create({
       display_name: data.display_name,
       application_name: data.application_name,
       install_url: data.install_url,
       uninstall_url: data.uninstall_url,
     })
+
+    return this.model_.save(application)
   }
 
   update(id, update) {

@@ -14,7 +14,8 @@ class CartService extends BaseService {
   }
 
   constructor({
-    cartModel,
+    manager,
+    cartRepository,
     eventBusService,
     paymentProviderService,
     productService,
@@ -30,7 +31,9 @@ class CartService extends BaseService {
     super()
 
     /** @private @const {CartModel} */
-    this.cartModel_ = cartModel
+    this.cartRepository_ = cartRepository
+
+    this.cartModel_ = manager.getCustomRepository(cartRepository)
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -66,9 +69,14 @@ class CartService extends BaseService {
     this.totalsService_ = totalsService
   }
 
-  withSession(session) {
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
     const cloned = new CartService({
-      cartModel: this.cartModel_,
+      manager: transactionManager,
+      cartRepository: this.cartRepository_,
       eventBusService: this.eventBus_,
       paymentProviderService: this.paymentProviderService_,
       productService: this.productService_,
@@ -82,7 +90,8 @@ class CartService extends BaseService {
       totalsService: this.totalsService_,
     })
 
-    cloned.current_session = session
+    cloned.transactionManager_ = transactionManager
+
     return cloned
   }
 
@@ -200,7 +209,6 @@ class CartService extends BaseService {
     const validatedId = this.validateId_(cartId)
     const cart = await this.cartModel_
       .findOne({ _id: validatedId })
-      .session(this.current_session)
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -250,27 +258,8 @@ class CartService extends BaseService {
       region_id: region._id,
     }
 
-    if (this.current_session) {
-      return this.cartModel_
-        .create([toCreate], { session: this.current_session })
-        .then(result => {
-          this.eventBus_.emit(CartService.Events.CREATED, result)
-          return result[0]
-        })
-        .catch(err => {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-        })
-    } else {
-      return this.cartModel_
-        .create(toCreate)
-        .then(result => {
-          this.eventBus_.emit(CartService.Events.CREATED, result)
-          return result
-        })
-        .catch(err => {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-        })
-    }
+    const inProgress = this.cartModel_.create(toCreate)
+    return this.cartModel_.save(inProgress)
   }
 
   /**
@@ -567,11 +556,7 @@ class CartService extends BaseService {
   async updateCustomerId(cartId, customerId) {
     let cart
 
-    if (this.current_session) {
-      cart = await this.withSession(this.current_session).retrieve(cartId)
-    } else {
-      cart = await this.retrieve(cartId)
-    }
+    cart = await this.retrieve(cartId)
 
     const schema = Validator.objectId().required()
     const { value, error } = schema.validate(customerId.toString())
@@ -583,19 +568,11 @@ class CartService extends BaseService {
     }
 
     return this.cartModel_
-      .updateOne(
-        {
-          _id: cart._id,
-        },
-        {
-          $set: { customer_id: value },
-        },
-        { session: this.current_session }
-      )
+      .update({ _id: cart._id }, { customer_id: value })
       .then(result => {
         // Notify subscribers
         this.eventBus_
-          .withSession(this.current_session)
+          .withTransaction(this.transactionManager_)
           .emit(CartService.Events.CUSTOMER_UPDATED, result)
         return result
       })

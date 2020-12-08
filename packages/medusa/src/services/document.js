@@ -10,7 +10,7 @@ class DocumentService extends BaseService {
     super()
 
     /** @private @const {DocumentModel} */
-    this.documentModel_ = documentModel
+    // this.documentModel_ = documentModel
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService

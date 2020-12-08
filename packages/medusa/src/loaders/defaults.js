@@ -1,30 +1,21 @@
 export default async ({ container }) => {
-  const counterService = container.resolve("counterService")
   const storeService = container.resolve("storeService")
   const profileService = container.resolve("shippingProfileService")
 
+  await storeService.create()
+
   let payIds
-  try {
-    const payProviders = container.resolve("paymentProviders")
-    payIds = payProviders.map(p => p.getIdentifier())
-  } catch (e) {
-    payIds = []
-  }
+  const pProviderService = container.resolve("paymentProviderService")
+  const payProviders = container.resolve("paymentProviders")
+  payIds = payProviders.map(p => p.getIdentifier())
+  await pProviderService.registerInstalledProviders(payIds)
 
   let fulfilIds
-  try {
-    const fulfilProviders = container.resolve("fulfillmentProviders")
-    fulfilIds = fulfilProviders.map(p => p.getIdentifier())
-  } catch (e) {
-    fulfilIds = []
-  }
+  const fProviderService = container.resolve("fulfillmentProviderService")
+  const fulfilProviders = container.resolve("fulfillmentProviders")
+  fulfilIds = fulfilProviders.map(p => p.getIdentifier())
+  await fProviderService.registerInstalledProviders(fulfilIds)
 
-  await storeService.create({
-    fulfillment_providers: fulfilIds,
-    payment_providers: payIds,
-  })
-
-  await counterService.createDefaults()
   await profileService.createDefault()
   await profileService.createGiftCardDefault()
 }

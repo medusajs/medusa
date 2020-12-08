@@ -54,11 +54,15 @@ class EventBusService {
       this.cronQueue_.process(this.cronWorker_)
 
       // setInterval(this.enqueuer_, 200)
-      this.enqueuer_()
+      // this.enqueuer_()
     }
   }
 
-  withSession(session) {
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
     const cloned = new EventBusService(
       {
         stagedJobModel: this.stagedJobModel_,
@@ -70,7 +74,7 @@ class EventBusService {
       false
     )
 
-    cloned.current_session = session
+    cloned.transactionManager_ = transactionManager
     cloned.queue_ = this.queue_
 
     return cloned

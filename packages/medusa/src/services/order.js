@@ -23,7 +23,6 @@ class OrderService extends BaseService {
 
   constructor({
     orderModel,
-    counterService,
     customerService,
     paymentProviderService,
     shippingOptionService,
@@ -36,7 +35,7 @@ class OrderService extends BaseService {
     regionService,
     returnService,
     swapService,
-    documentService,
+    // documentService,
     eventBusService,
   }) {
     super()
@@ -78,10 +77,7 @@ class OrderService extends BaseService {
     this.eventBus_ = eventBusService
 
     /** @private @constant {DocumentService} */
-    this.documentService_ = documentService
-
-    /** @private @constant {CounterService} */
-    this.counterService_ = counterService
+    // this.documentService_ = documentService
 
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
@@ -95,7 +91,6 @@ class OrderService extends BaseService {
       orderModel: this.orderModel_,
       eventBusService: this.eventBus_,
       paymentProviderService: this.paymentProviderService_,
-      counterService: this.counterService_,
       regionService: this.regionService_,
       lineItemService: this.lineItemService_,
       shippingOptionService: this.shippingOptionService_,
@@ -367,18 +362,7 @@ class OrderService extends BaseService {
       }
     }
 
-    let displayId
-    if (this.current_session) {
-      displayId = await this.counterService_.getNext(
-        "orders",
-        this.current_session
-      )
-    } else {
-      displayId = await this.counterService_.getNext("orders")
-    }
-
     const o = {
-      display_id: displayId,
       payment_method: payment,
       discounts: cart.discounts,
       shipping_methods: cart.shipping_methods,

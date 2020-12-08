@@ -9,15 +9,18 @@ import { countries } from "../utils/countries"
  */
 class RegionService extends BaseService {
   constructor({
-    regionModel,
+    manager,
+    regionRepository,
     storeService,
     paymentProviderService,
     fulfillmentProviderService,
   }) {
     super()
 
+    this.regionRepository_ = regionRepository
+
     /** @private @const {RegionModel} */
-    this.regionModel_ = regionModel
+    this.regionModel_ = manager.getCustomRepository(regionRepository)
 
     /** @private @const {StoreService} */
     this.storeService_ = storeService
@@ -129,7 +132,7 @@ class RegionService extends BaseService {
   async validateCurrency_(currencyCode) {
     const store = await this.storeService_.retrieve()
 
-    if (!store.currencies.includes(currencyCode.toUpperCase())) {
+    if (!store.currencies.includes(currencyCode.toLowerCase())) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Invalid currency code"

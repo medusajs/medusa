@@ -10,11 +10,11 @@ import { currencies } from "../utils/currencies"
  * @implements BaseService
  */
 class StoreService extends BaseService {
-  constructor({ storeModel, eventBusService }) {
+  constructor({ manager, storeRepository, eventBusService }) {
     super()
 
     /** @private @const {storeModel} */
-    this.storeModel_ = storeModel
+    this.storeModel_ = manager.getCustomRepository(storeRepository)
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -42,12 +42,11 @@ class StoreService extends BaseService {
    * Creates a store if it doesn't already exist.
    * @return {Promise<Store>} the store.
    */
-  async create(providers) {
+  async create() {
     let store = await this.retrieve()
     if (!store) {
-      return this.storeModel_.create(providers)
-    } else {
-      store = await this.update(providers)
+      const s = this.storeModel_.create()
+      store = await this.storeModel_.save(s)
     }
 
     return store
@@ -58,9 +57,7 @@ class StoreService extends BaseService {
    * @return {Promise<Store>} the customer document.
    */
   retrieve() {
-    return this.storeModel_.findOne().catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+    return this.storeModel_.findOne()
   }
 
   /**
@@ -83,7 +80,7 @@ class StoreService extends BaseService {
     }
 
     if (update.default_currency) {
-      update.default_currency = update.default_currency.toUpperCase()
+      update.default_currency = update.default_currency.toLowerCase()
       if (!currencies[update.default_currency]) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -93,7 +90,7 @@ class StoreService extends BaseService {
     }
 
     if (update.currencies) {
-      update.currencies = update.currencies.map(c => c.toUpperCase())
+      update.currencies = update.currencies.map(c => c.toLowerCase())
       update.currencies.forEach(c => {
         if (!currencies[c]) {
           throw new MedusaError(
@@ -117,7 +114,7 @@ class StoreService extends BaseService {
    * @return {Promise} result after update
    */
   async addCurrency(code) {
-    code = code.toUpperCase()
+    code = code.toLowerCase()
     const store = await this.retrieve()
 
     if (!currencies[code]) {
@@ -149,7 +146,7 @@ class StoreService extends BaseService {
    */
   async removeCurrency(code) {
     const store = await this.retrieve()
-    code = code.toUpperCase()
+    code = code.toLowerCase()
     return this.storeModel_.updateOne(
       {
         _id: store._id,
