@@ -231,7 +231,6 @@ class AdyenService extends BaseService {
 
       return authorized
     } catch (error) {
-      console.log(error)
       throw error
     }
   }

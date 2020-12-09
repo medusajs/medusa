@@ -7,17 +7,10 @@ import { PaymentService } from "medusa-interfaces"
 class ApplePayAdyenService extends PaymentService {
   static identifier = "applepay-adyen"
 
-  constructor(
-    { adyenService, shippingProfileService, regionService },
-    options
-  ) {
+  constructor({ adyenService }, options) {
     super()
 
     this.adyenService_ = adyenService
-
-    this.shippingProfileService_ = shippingProfileService
-
-    this.regionService_ = regionService
 
     this.options_ = options
   }
@@ -38,21 +31,8 @@ class ApplePayAdyenService extends PaymentService {
     return status
   }
 
-  async createPayment(cart) {
-    const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
-      cart
-    )
-
-    const region = await this.regionService_.retrieve(cart.region_id)
-
-    const shipping_options = shippingOptions.map((el) => ({
-      label: `${el.name}`,
-      detail: "",
-      amount: `${el.price * (1 + region.tax_rate)}`,
-      identifier: el._id,
-    }))
-
-    return { shipping_options }
+  async createPayment(_) {
+    return {}
   }
 
   async getApplePaySession(validationUrl) {
@@ -61,7 +41,6 @@ class ApplePayAdyenService extends PaymentService {
       // Place certificate in root folder
       certificate = fs.readFileSync("./apple-pay-cert.pem")
     } catch (error) {
-      console.log(error)
       throw new Error(
         "Could not find ApplePay certificate. Make sure to place it in root folder of your server"
       )
@@ -80,13 +59,9 @@ class ApplePayAdyenService extends PaymentService {
       initiativeContext: this.options_.applepay_initiative_context,
     }
 
-    try {
-      return axios.post(validationUrl, request, {
-        httpsAgent,
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    return axios.post(validationUrl, request, {
+      httpsAgent,
+    })
   }
 
   async authorizePayment(cart, paymentMethod, amount, shopperIp) {
