@@ -261,7 +261,7 @@ class SwapService extends BaseService {
       )
     }
 
-    return capturePayment(swapId)
+    return this.capturePayment(swapId)
   }
 
   async capturePayment(swapId) {
