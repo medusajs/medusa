@@ -7,12 +7,15 @@ import {
   UpdateDateColumn,
   PrimaryColumn,
   ManyToMany,
-  OneToOne,
+  ManyToOne,
+  OneToMany,
   JoinTable,
   JoinColumn,
 } from "typeorm"
 import randomize from "randomatic"
 
+import { Currency } from "./currency"
+import { Country } from "./country"
 import { PaymentProvider } from "./payment-provider"
 import { FulfillmentProvider } from "./fulfillment-provider"
 
@@ -22,7 +25,14 @@ export class Region {
   id: string
 
   @Column()
+  name: string
+
+  @Column()
   currency_code: string
+
+  @ManyToOne(() => Currency)
+  @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
+  currency: Currency
 
   @Column({ type: "int" })
   tax_rate: number
@@ -30,8 +40,11 @@ export class Region {
   @Column({ nullable: true })
   tax_code: string
 
-  @Column({ type: "jsonb" })
-  countries: string[]
+  @OneToMany(
+    () => Country,
+    c => c.region
+  )
+  countries: Country[]
 
   @ManyToMany(() => PaymentProvider)
   @JoinTable({

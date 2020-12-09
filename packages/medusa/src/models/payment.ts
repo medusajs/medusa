@@ -11,6 +11,7 @@ import {
 } from "typeorm"
 import randomize from "randomatic"
 
+import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
 
@@ -35,6 +36,10 @@ export class Payment {
 
   @Column()
   currency_code: string
+
+  @ManyToOne(() => Currency)
+  @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
+  currency: Currency
 
   @Column({ type: "int" })
   amount_refunded: number

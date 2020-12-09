@@ -12,6 +12,7 @@ import {
 import randomize from "randomatic"
 
 import { Customer } from "./customer"
+import { Country } from "./country"
 
 @Entity()
 export class Address {
@@ -25,31 +26,35 @@ export class Address {
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
-  @Column()
+  @Column({ nullable: true })
   first_name: string
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string
 
-  @Column()
+  @Column({ nullable: true })
   address_1: string
 
-  @Column()
+  @Column({ nullable: true })
   address_2: string
 
-  @Column()
+  @Column({ nullable: true })
   city: string
 
-  @Column()
+  @Column({ nullable: true })
   country_code: string
 
-  @Column()
+  @ManyToOne(() => Country)
+  @JoinColumn({ name: "country_code", referencedColumnName: "iso_2" })
+  country: Country
+
+  @Column({ nullable: true })
   province: string
 
-  @Column()
+  @Column({ nullable: true })
   postal_code: string
 
-  @Column()
+  @Column({ nullable: true })
   phone: string
 
   @CreateDateColumn({ type: "timestamp" })

@@ -136,6 +136,7 @@ const t = async function({ port, directory }) {
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     migrations: migrationDirs,
+    logging: true,
   })
 
   if (args[0] === "run") {

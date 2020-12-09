@@ -7,9 +7,7 @@ import {
   Index,
   Column,
   PrimaryColumn,
-  ManyToMany,
-  OneToOne,
-  JoinTable,
+  ManyToOne,
   JoinColumn,
 } from "typeorm"
 import randomize from "randomatic"
@@ -25,25 +23,18 @@ export class GiftCard {
   @Column()
   code: string
 
-  @Column()
+  @Column("int")
   value: number
 
-  @Column()
+  @Column("int")
   balance: number
 
-  @ManyToMany(() => Region)
-  @JoinTable({
-    name: "giftcard_regions",
-    joinColumn: {
-      name: "gift_card_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "region_id",
-      referencedColumnName: "id",
-    },
-  })
-  regions: Region[]
+  @Column()
+  region_id: string
+
+  @ManyToOne(() => Region)
+  @JoinColumn({ name: "region_id" })
+  region: Region
 
   @Column({ default: false })
   is_disabled: boolean
@@ -72,28 +63,3 @@ export class GiftCard {
     this.id = `gift_${id}`
   }
 }
-
-//import mongoose from "mongoose"
-//import { BaseModel } from "medusa-interfaces"
-//import DiscountRule from "./schemas/discount-rule"
-//
-//class DiscountModel extends BaseModel {
-//  static modelName = "Discount"
-//
-//  static schema = {
-//    code: { type: String, required: true, unique: true },
-//    is_dynamic: { type: Boolean, default: false },
-//    is_giftcard: { type: Boolean, default: false },
-//    discount_rule: { type: DiscountRule, required: true },
-//    usage_count: { type: Number, default: 0 },
-//    disabled: { type: Boolean, default: false },
-//    starts_at: { type: Date },
-//    ends_at: { type: Date },
-//    regions: { type: [String], default: [] },
-//    original_amount: { type: Number },
-//    created: { type: String, default: Date.now },
-//    metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
-//  }
-//}
-//
-//export default DiscountModel

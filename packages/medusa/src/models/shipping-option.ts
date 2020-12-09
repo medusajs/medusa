@@ -31,6 +31,9 @@ export class ShippingOption {
   @PrimaryColumn()
   id: string
 
+  @Column()
+  name: string
+
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region: Region
@@ -54,7 +57,8 @@ export class ShippingOption {
 
   @OneToMany(
     () => ShippingOptionRequirement,
-    req => req.shipping_option
+    req => req.shipping_option,
+    { cascade: true }
   )
   requirements: ShippingOptionRequirement[]
 

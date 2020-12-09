@@ -17,6 +17,9 @@ export class PaymentSession {
   @PrimaryColumn()
   id: string
 
+  @Column()
+  cart_id: number
+
   @ManyToOne(
     () => Cart,
     cart => cart.items

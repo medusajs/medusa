@@ -17,6 +17,7 @@ import randomize from "randomatic"
 
 import { Address } from "./address"
 import { LineItem } from "./line-item"
+import { Currency } from "./currency"
 import { Customer } from "./customer"
 import { Region } from "./region"
 import { Discount } from "./discount"
@@ -108,6 +109,10 @@ export class Order {
 
   @Column()
   currency_code: string
+
+  @ManyToOne(() => Currency)
+  @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
+  currency: Currency
 
   @Column({ type: "int" })
   tax_rate: number

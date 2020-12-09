@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class initialSchema1607440039327 implements MigrationInterface {
-  name = "initialSchema1607440039327"
+export class initial1607519393592 implements MigrationInterface {
+  name = "initial1607519393592"
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -17,10 +17,22 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE TABLE "return_item" ("return_id" character varying NOT NULL, "item_id" character varying NOT NULL, "quantity" integer NOT NULL, "requested_quantity" integer, "received_quantity" integer, CONSTRAINT "PK_46409dc1dd5f38509b9000c3069" PRIMARY KEY ("return_id", "item_id"))`
     )
     await queryRunner.query(
+      `CREATE TABLE "currency" ("id" SERIAL NOT NULL, "code" character varying NOT NULL, "symbol" character varying NOT NULL, "symbol_native" character varying NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_3cda65c731a6264f0e444cc9b91" PRIMARY KEY ("id"))`
+    )
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "IDX_723472e41cae44beb0763f4039" ON "currency" ("code") `
+    )
+    await queryRunner.query(
+      `CREATE TABLE "country" ("id" SERIAL NOT NULL, "iso_2" character varying NOT NULL, "iso_3" character varying NOT NULL, "num_code" integer NOT NULL, "name" character varying NOT NULL, "display_name" character varying NOT NULL, "region_id" character varying, CONSTRAINT "PK_bf6e37c231c4f4ea56dcd887269" PRIMARY KEY ("id"))`
+    )
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "IDX_e78901b1131eaf8203d9b1cb5f" ON "country" ("iso_2") `
+    )
+    await queryRunner.query(
       `CREATE TABLE "payment_provider" ("id" character varying NOT NULL, "is_installed" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_ea94f42b6c88e9191c3649d7522" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "region" ("id" character varying NOT NULL, "currency_code" character varying NOT NULL, "tax_rate" integer NOT NULL, "tax_code" character varying, "countries" jsonb NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_5f48ffc3af96bc486f5f3f3a6da" PRIMARY KEY ("id"))`
+      `CREATE TABLE "region" ("id" character varying NOT NULL, "name" character varying NOT NULL, "currency_code" character varying NOT NULL, "tax_rate" integer NOT NULL, "tax_code" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_5f48ffc3af96bc486f5f3f3a6da" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "image" ("id" character varying NOT NULL, "url" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_d6db1ab4ee9ad9dbe86c64e4cc3" PRIMARY KEY ("id"))`
@@ -38,7 +50,7 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE TABLE "product_option" ("id" character varying NOT NULL, "title" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, "product_id" character varying, CONSTRAINT "PK_4cf3c467e9bc764bdd32c4cd938" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "money_amount" ("id" character varying NOT NULL, "currency" character varying NOT NULL, "amount" integer NOT NULL, "variant_id" character varying, CONSTRAINT "PK_022e49a7e21a8dfb820f788778a" PRIMARY KEY ("id"))`
+      `CREATE TABLE "money_amount" ("id" character varying NOT NULL, "currency" character varying NOT NULL, "amount" integer NOT NULL, "variant_id" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, CONSTRAINT "PK_022e49a7e21a8dfb820f788778a" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "product_variant" ("id" character varying NOT NULL, "title" character varying NOT NULL, "sku" character varying, "barcode" character varying, "inventory_quantity" integer NOT NULL, "allow_backorder" boolean NOT NULL DEFAULT false, "manage_inventory" boolean NOT NULL DEFAULT true, "hs_code" character varying, "origin_country" character varying, "mid_code" character varying, "material" character varying, "weight" integer, "length" integer, "height" integer, "width" integer, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, "product_id" character varying, CONSTRAINT "PK_1ab69c9935c61f7c70791ae0a9f" PRIMARY KEY ("id"))`
@@ -89,13 +101,13 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE UNIQUE INDEX "IDX_087926f6fec32903be3c8eedfa" ON "discount" ("code") `
     )
     await queryRunner.query(
-      `CREATE TABLE "payment_session" ("id" character varying NOT NULL, "provider_id" character varying NOT NULL, "data" jsonb NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "cart_id" character varying, CONSTRAINT "PK_a1a91b20f7f3b1e5afb5485cbcd" PRIMARY KEY ("id"))`
+      `CREATE TABLE "payment_session" ("id" character varying NOT NULL, "cart_id" character varying NOT NULL, "provider_id" character varying NOT NULL, "data" jsonb NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_a1a91b20f7f3b1e5afb5485cbcd" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "payment" ("id" character varying NOT NULL, "amount" integer NOT NULL, "currency_code" character varying NOT NULL, "amount_refunded" integer NOT NULL, "provider_id" character varying NOT NULL, "data" jsonb NOT NULL, "captured_at" TIMESTAMP, "canceled_at" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "metadata" jsonb, "cart_id" character varying, "order_id" character varying, CONSTRAINT "REL_4665f17abc1e81dd58330e5854" UNIQUE ("cart_id"), CONSTRAINT "PK_fcaec7df5adf9cac408c686b2ab" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "cart" ("id" character varying NOT NULL, "email" character varying NOT NULL, "billing_address_id" character varying, "shipping_address_id" character varying, "customer_id" character varying, "payment_id" character varying, "is_swap" boolean NOT NULL, "completed_at" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, "region_id" character varying, CONSTRAINT "REL_9d1a161434c610aae7c3df2dc7" UNIQUE ("payment_id"), CONSTRAINT "PK_c524ec48751b9b5bcfbf6e59be7" PRIMARY KEY ("id"))`
+      `CREATE TABLE "cart" ("id" character varying NOT NULL, "email" character varying NOT NULL, "receiver_email" character varying NOT NULL, "billing_address_id" character varying, "shipping_address_id" character varying, "customer_id" character varying, "payment_id" character varying, "is_swap" boolean NOT NULL, "completed_at" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, "region_id" character varying, CONSTRAINT "REL_9d1a161434c610aae7c3df2dc7" UNIQUE ("payment_id"), CONSTRAINT "PK_c524ec48751b9b5bcfbf6e59be7" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "shipping_method" ("id" character varying NOT NULL, "shipping_option_id" character varying NOT NULL, "order_id" character varying, "cart_id" character varying, "swap_id" character varying, "return_id" character varying, "price" integer NOT NULL, "data" jsonb NOT NULL, CONSTRAINT "REL_1d9ad62038998c3a85c77a53cf" UNIQUE ("return_id"), CONSTRAINT "CHK_64c6812fe7815be30d688df513" CHECK ("price" >= 0), CONSTRAINT "CHK_3c00b878c1426d119cd70aa065" CHECK ("order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL), CONSTRAINT "PK_b9b0adfad3c6b99229c1e7d4865" PRIMARY KEY ("id"))`
@@ -164,7 +176,7 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE UNIQUE INDEX "IDX_fdb2f3ad8115da4c7718109a6e" ON "customer" ("email") `
     )
     await queryRunner.query(
-      `CREATE TABLE "address" ("id" character varying NOT NULL, "customer_id" character varying, "first_name" character varying NOT NULL, "last_name" character varying NOT NULL, "address_1" character varying NOT NULL, "address_2" character varying NOT NULL, "city" character varying NOT NULL, "country_code" character varying NOT NULL, "province" character varying NOT NULL, "postal_code" character varying NOT NULL, "phone" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`
+      `CREATE TABLE "address" ("id" character varying NOT NULL, "customer_id" character varying, "first_name" character varying, "last_name" character varying, "address_1" character varying, "address_2" character varying, "city" character varying, "country_code" character varying, "province" character varying, "postal_code" character varying, "phone" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "dynamic_discount" ("id" character varying NOT NULL, "code" character varying NOT NULL, "is_disabled" character varying NOT NULL, "discount_id" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_0b5298779da5d9249fe938ac049" PRIMARY KEY ("id"))`
@@ -176,7 +188,7 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE UNIQUE INDEX "IDX_bacd97dfd7195c228a92167726" ON "dynamic_discount" ("code", "discount_id") `
     )
     await queryRunner.query(
-      `CREATE TABLE "gift_card" ("id" character varying NOT NULL, "code" character varying NOT NULL, "value" integer NOT NULL, "balance" integer NOT NULL, "is_disabled" boolean NOT NULL DEFAULT false, "ends_at" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_af4e338d2d41035042843ad641f" PRIMARY KEY ("id"))`
+      `CREATE TABLE "gift_card" ("id" character varying NOT NULL, "code" character varying NOT NULL, "value" integer NOT NULL, "balance" integer NOT NULL, "region_id" character varying NOT NULL, "is_disabled" boolean NOT NULL DEFAULT false, "ends_at" TIMESTAMP, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "metadata" jsonb, CONSTRAINT "PK_af4e338d2d41035042843ad641f" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE UNIQUE INDEX "IDX_53cb5605fa42e82b4d47b47bda" ON "gift_card" ("code") `
@@ -197,7 +209,7 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE TABLE "staged_job" ("id" character varying NOT NULL, "event_name" character varying NOT NULL, "data" jsonb NOT NULL, CONSTRAINT "PK_9a28fb48c46c5509faf43ac8c8d" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "store" ("id" character varying NOT NULL, "name" character varying NOT NULL DEFAULT 'Medusa Store', "default_currency" character varying NOT NULL DEFAULT 'usd', "currencies" jsonb NOT NULL DEFAULT '[]', "swap_link_template" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "metadata" jsonb, CONSTRAINT "PK_f3172007d4de5ae8e7692759d79" PRIMARY KEY ("id"))`
+      `CREATE TABLE "store" ("id" character varying NOT NULL, "name" character varying NOT NULL DEFAULT 'Medusa Store', "default_currency_code" character varying NOT NULL DEFAULT 'usd', "swap_link_template" character varying, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "metadata" jsonb, CONSTRAINT "PK_f3172007d4de5ae8e7692759d79" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "region_payment_providers" ("region_id" character varying NOT NULL, "provider_id" character varying NOT NULL, CONSTRAINT "PK_9fa1e69914d3dd752de6b1da407" PRIMARY KEY ("region_id", "provider_id"))`
@@ -263,13 +275,13 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `CREATE INDEX "IDX_0fc1ec4e3db9001ad60c19daf1" ON "order_discounts" ("discount_id") `
     )
     await queryRunner.query(
-      `CREATE TABLE "giftcard_regions" ("gift_card_id" character varying NOT NULL, "region_id" character varying NOT NULL, CONSTRAINT "PK_d2c883403d15b3269e104038999" PRIMARY KEY ("gift_card_id", "region_id"))`
+      `CREATE TABLE "store_currencies" ("store_id" character varying NOT NULL, "currency_code" character varying NOT NULL, CONSTRAINT "PK_0f2bff3bccc785c320a4df836de" PRIMARY KEY ("store_id", "currency_code"))`
     )
     await queryRunner.query(
-      `CREATE INDEX "IDX_e5723365c16eea8bb78c832d26" ON "giftcard_regions" ("gift_card_id") `
+      `CREATE INDEX "IDX_b4f4b63d1736689b7008980394" ON "store_currencies" ("store_id") `
     )
     await queryRunner.query(
-      `CREATE INDEX "IDX_9a52a00fe8f9ab2b710b1c634f" ON "giftcard_regions" ("region_id") `
+      `CREATE INDEX "IDX_82a6bbb0b527c20a0002ddcbd6" ON "store_currencies" ("currency_code") `
     )
     await queryRunner.query(
       `ALTER TABLE "customer" DROP CONSTRAINT "REL_8abe81b9aac151ae60bf507ad1"`
@@ -316,6 +328,12 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `ALTER TABLE "return_item" ADD CONSTRAINT "FK_87774591f44564effd8039d7162" FOREIGN KEY ("item_id") REFERENCES "line_item"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
+      `ALTER TABLE "country" ADD CONSTRAINT "FK_b1aac8314662fa6b25569a575bb" FOREIGN KEY ("region_id") REFERENCES "region"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "region" ADD CONSTRAINT "FK_3bdd5896ec93be2f1c62a3309a5" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
       `ALTER TABLE "product_option_value" ADD CONSTRAINT "FK_cdf4388f294b30a25c627d69fe9" FOREIGN KEY ("option_id") REFERENCES "product_option"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
@@ -356,6 +374,9 @@ export class initialSchema1607440039327 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "payment" ADD CONSTRAINT "FK_f5221735ace059250daac9d9803" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "payment" ADD CONSTRAINT "FK_f41553459a4b1491c9893ebc921" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
       `ALTER TABLE "cart" ADD CONSTRAINT "FK_6b9c66b5e36f7c827dfaa092f94" FOREIGN KEY ("billing_address_id") REFERENCES "address"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
@@ -433,13 +454,25 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `ALTER TABLE "order" ADD CONSTRAINT "FK_e1fcce2b18dbcdbe0a5ba9a68b8" FOREIGN KEY ("region_id") REFERENCES "region"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
+      `ALTER TABLE "order" ADD CONSTRAINT "FK_717a141f96b76d794d409f38129" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
       `ALTER TABLE "customer" ADD CONSTRAINT "FK_8abe81b9aac151ae60bf507ad15" FOREIGN KEY ("billing_address_id") REFERENCES "address"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
       `ALTER TABLE "address" ADD CONSTRAINT "FK_9c9614b2f9d01665800ea8dbff7" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
+      `ALTER TABLE "address" ADD CONSTRAINT "FK_6df8c6bf969a51d24c1980c4ff4" FOREIGN KEY ("country_code") REFERENCES "country"("iso_2") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
       `ALTER TABLE "dynamic_discount" ADD CONSTRAINT "FK_beca97d70f1695477f33833a0d2" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "gift_card" ADD CONSTRAINT "FK_b6bcf8c3903097b84e85154eed3" FOREIGN KEY ("region_id") REFERENCES "region"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "store" ADD CONSTRAINT "FK_55beebaa09e947cccca554af222" FOREIGN KEY ("default_currency_code") REFERENCES "currency"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
       `ALTER TABLE "region_payment_providers" ADD CONSTRAINT "FK_8aaa78ba90d3802edac317df869" FOREIGN KEY ("region_id") REFERENCES "region"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
@@ -484,19 +517,19 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `ALTER TABLE "order_discounts" ADD CONSTRAINT "FK_0fc1ec4e3db9001ad60c19daf16" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
     await queryRunner.query(
-      `ALTER TABLE "giftcard_regions" ADD CONSTRAINT "FK_e5723365c16eea8bb78c832d26a" FOREIGN KEY ("gift_card_id") REFERENCES "gift_card"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
+      `ALTER TABLE "store_currencies" ADD CONSTRAINT "FK_b4f4b63d1736689b7008980394c" FOREIGN KEY ("store_id") REFERENCES "store"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
     await queryRunner.query(
-      `ALTER TABLE "giftcard_regions" ADD CONSTRAINT "FK_9a52a00fe8f9ab2b710b1c634f4" FOREIGN KEY ("region_id") REFERENCES "region"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
+      `ALTER TABLE "store_currencies" ADD CONSTRAINT "FK_82a6bbb0b527c20a0002ddcbd60" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "giftcard_regions" DROP CONSTRAINT "FK_9a52a00fe8f9ab2b710b1c634f4"`
+      `ALTER TABLE "store_currencies" DROP CONSTRAINT "FK_82a6bbb0b527c20a0002ddcbd60"`
     )
     await queryRunner.query(
-      `ALTER TABLE "giftcard_regions" DROP CONSTRAINT "FK_e5723365c16eea8bb78c832d26a"`
+      `ALTER TABLE "store_currencies" DROP CONSTRAINT "FK_b4f4b63d1736689b7008980394c"`
     )
     await queryRunner.query(
       `ALTER TABLE "order_discounts" DROP CONSTRAINT "FK_0fc1ec4e3db9001ad60c19daf16"`
@@ -541,13 +574,25 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `ALTER TABLE "region_payment_providers" DROP CONSTRAINT "FK_8aaa78ba90d3802edac317df869"`
     )
     await queryRunner.query(
+      `ALTER TABLE "store" DROP CONSTRAINT "FK_55beebaa09e947cccca554af222"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "gift_card" DROP CONSTRAINT "FK_b6bcf8c3903097b84e85154eed3"`
+    )
+    await queryRunner.query(
       `ALTER TABLE "dynamic_discount" DROP CONSTRAINT "FK_beca97d70f1695477f33833a0d2"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "address" DROP CONSTRAINT "FK_6df8c6bf969a51d24c1980c4ff4"`
     )
     await queryRunner.query(
       `ALTER TABLE "address" DROP CONSTRAINT "FK_9c9614b2f9d01665800ea8dbff7"`
     )
     await queryRunner.query(
       `ALTER TABLE "customer" DROP CONSTRAINT "FK_8abe81b9aac151ae60bf507ad15"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "order" DROP CONSTRAINT "FK_717a141f96b76d794d409f38129"`
     )
     await queryRunner.query(
       `ALTER TABLE "order" DROP CONSTRAINT "FK_e1fcce2b18dbcdbe0a5ba9a68b8"`
@@ -625,6 +670,9 @@ export class initialSchema1607440039327 implements MigrationInterface {
       `ALTER TABLE "cart" DROP CONSTRAINT "FK_6b9c66b5e36f7c827dfaa092f94"`
     )
     await queryRunner.query(
+      `ALTER TABLE "payment" DROP CONSTRAINT "FK_f41553459a4b1491c9893ebc921"`
+    )
+    await queryRunner.query(
       `ALTER TABLE "payment" DROP CONSTRAINT "FK_f5221735ace059250daac9d9803"`
     )
     await queryRunner.query(
@@ -665,6 +713,12 @@ export class initialSchema1607440039327 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "product_option_value" DROP CONSTRAINT "FK_cdf4388f294b30a25c627d69fe9"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "region" DROP CONSTRAINT "FK_3bdd5896ec93be2f1c62a3309a5"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "country" DROP CONSTRAINT "FK_b1aac8314662fa6b25569a575bb"`
     )
     await queryRunner.query(
       `ALTER TABLE "return_item" DROP CONSTRAINT "FK_87774591f44564effd8039d7162"`
@@ -708,9 +762,9 @@ export class initialSchema1607440039327 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "customer" ADD CONSTRAINT "REL_8abe81b9aac151ae60bf507ad1" UNIQUE ("billing_address_id")`
     )
-    await queryRunner.query(`DROP INDEX "IDX_9a52a00fe8f9ab2b710b1c634f"`)
-    await queryRunner.query(`DROP INDEX "IDX_e5723365c16eea8bb78c832d26"`)
-    await queryRunner.query(`DROP TABLE "giftcard_regions"`)
+    await queryRunner.query(`DROP INDEX "IDX_82a6bbb0b527c20a0002ddcbd6"`)
+    await queryRunner.query(`DROP INDEX "IDX_b4f4b63d1736689b7008980394"`)
+    await queryRunner.query(`DROP TABLE "store_currencies"`)
     await queryRunner.query(`DROP INDEX "IDX_0fc1ec4e3db9001ad60c19daf1"`)
     await queryRunner.query(`DROP INDEX "IDX_e7b488cebe333f449398769b2c"`)
     await queryRunner.query(`DROP TABLE "order_discounts"`)
@@ -793,6 +847,10 @@ export class initialSchema1607440039327 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "image"`)
     await queryRunner.query(`DROP TABLE "region"`)
     await queryRunner.query(`DROP TABLE "payment_provider"`)
+    await queryRunner.query(`DROP INDEX "IDX_e78901b1131eaf8203d9b1cb5f"`)
+    await queryRunner.query(`DROP TABLE "country"`)
+    await queryRunner.query(`DROP INDEX "IDX_723472e41cae44beb0763f4039"`)
+    await queryRunner.query(`DROP TABLE "currency"`)
     await queryRunner.query(`DROP TABLE "return_item"`)
     await queryRunner.query(`DROP TABLE "fulfillment"`)
     await queryRunner.query(`DROP TABLE "fulfillment_item"`)

@@ -16,6 +16,8 @@ import {
 } from "typeorm"
 import randomize from "randomatic"
 
+import { Currency } from "./currency"
+
 @Entity()
 export class Store {
   @PrimaryColumn()
@@ -25,10 +27,25 @@ export class Store {
   name: string
 
   @Column({ default: "usd" })
-  default_currency: string
+  default_currency_code: string
 
-  @Column({ type: "jsonb", default: [] })
-  currencies: string[]
+  @ManyToOne(() => Currency)
+  @JoinColumn({ name: "default_currency_code", referencedColumnName: "code" })
+  default_currency: Currency
+
+  @ManyToMany(() => Currency)
+  @JoinTable({
+    name: "store_currencies",
+    joinColumn: {
+      name: "store_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "currency_code",
+      referencedColumnName: "code",
+    },
+  })
+  currencies: Currency[]
 
   @Column({ nullable: true })
   swap_link_template: string

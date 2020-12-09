@@ -17,7 +17,6 @@ import {
 import randomize from "randomatic"
 
 import { ProductVariant } from "./product-variant"
-import { ShippingOption } from "./shipping-option"
 
 @Entity()
 export class MoneyAmount {
@@ -36,6 +35,15 @@ export class MoneyAmount {
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
   product_variant: ProductVariant
+
+  @CreateDateColumn({ type: "timestamp" })
+  created_at: Date
+
+  @UpdateDateColumn({ type: "timestamp" })
+  updated_at: Date
+
+  @DeleteDateColumn({ type: "timestamp" })
+  deleted_at: Date
 
   @BeforeInsert()
   private beforeInsert() {
