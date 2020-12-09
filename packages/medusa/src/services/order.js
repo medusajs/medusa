@@ -353,7 +353,7 @@ class OrderService extends BaseService {
       if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
         throw new MedusaError(
           MedusaError.Types.INVALID_ARGUMENT,
-          "Payment method is not authorized"
+          "Payment is not authorized"
         )
       }
 

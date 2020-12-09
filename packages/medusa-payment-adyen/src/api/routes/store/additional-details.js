@@ -4,7 +4,6 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     payment_data: Validator.any().required(),
     details: Validator.any().required(),
-    provider_id: Validator.string().required(),
     cart_id: Validator.string().required(),
   })
 
@@ -27,9 +26,11 @@ export default async (req, res) => {
       resultCode: result.resultCode,
     }
 
+    const cart = await cartService.retrieve(value.cart_id)
+
     await cartService.updatePaymentSession(
-      value.cart_id,
-      value.provider_id,
+      cart._id,
+      cart.payment_method.provider_id,
       updatedPaymentSession
     )
 
