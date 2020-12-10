@@ -78,7 +78,7 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Retrieve stored payment methods from Ayden.
+   * Retrieve stored payment methods from Adyen.
    * @param {Customer} customer - customer to retrieve methods for
    * @returns {Promise} result containing the stored payment methods from Adyen
    */
@@ -98,7 +98,7 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Retrieve payment methods from Ayden.
+   * Retrieve payment methods from Adyen.
    * @param {Cart} cart - cart to retrieve payment methods for
    * @param {[string]} allowedMethods - the allowed methods based on region
    * @param {number} total - the total amount to be paid with payment methods
@@ -170,7 +170,7 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Creates and authorizes an Ayden payment
+   * Creates and authorizes an Adyen payment
    * @param {Cart} cart - cart to authorize payment for
    * @param {Object} paymentData - method used for the payment
    * @param {Object} context - properties neeed in current context
@@ -265,7 +265,7 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Captures an Ayden payment
+   * Captures an Adyen payment
    * @param {Object} data - payment data to capture
    * @returns {string} status = processing_captures
    */
@@ -297,7 +297,7 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Refunds an Ayden payment
+   * Refunds an Adyen payment
    * @param {Object} paymentData - payment data to refund
    * @param {number} amountToRefund - amount to refund
    * @returns {Object} payment data result of refund
@@ -323,26 +323,14 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Cancels an Ayden payment. In the context of Adyen, we cancel the payment
-   * since they don't have support for deleting it.
-   * @param {Object} paymentData - payment data to delete
-   * @returns {Object} payment data result of delete
+   * Adyen does not have a way of deleting payments, hence the empty impl.
    */
   async deletePayment(paymentData) {
-    const { pspReference } = paymentData
-
-    try {
-      return this.adyenPaymentApi.post("/cancel", {
-        originalReference: pspReference,
-        merchantAccount: this.options_.merchant_account,
-      })
-    } catch (error) {
-      throw error
-    }
+    return {}
   }
 
   /**
-   * Cancels an Ayden payment.
+   * Cancels an Adyen payment.
    * @param {Object} paymentData - payment data to cancel
    * @returns {Object} payment data result of cancel
    */
