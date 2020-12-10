@@ -195,6 +195,7 @@ class AdyenService extends BaseService {
       returnUrl: this.options_.return_url,
       origin: this.options_.origin,
       channel: "Web",
+      redirectFromIssuerMethod: "GET",
       browserInfo: paymentData.data.browserInfo || {},
       billingAddress: {
         city: cart.shipping_address.city,
