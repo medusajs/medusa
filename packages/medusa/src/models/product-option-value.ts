@@ -35,20 +35,23 @@ export class ProductOptionValue {
   @JoinColumn({ name: "option_id" })
   option: ProductOption
 
+  @Column()
+  variant_id: string
+
   @ManyToOne(
-    () => ProductOption,
-    option => option.values
+    () => ProductVariant,
+    variant => variant.options
   )
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

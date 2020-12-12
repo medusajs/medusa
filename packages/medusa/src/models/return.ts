@@ -37,7 +37,8 @@ export class Return {
 
   @OneToMany(
     () => ReturnItem,
-    item => item.return_order
+    item => item.return_order,
+    { cascade: true }
   )
   items: ReturnItem[]
 
@@ -62,20 +63,24 @@ export class Return {
 
   @OneToOne(
     () => ShippingMethod,
-    method => method.return_order
+    method => method.return_order,
+    { cascade: true }
   )
   shipping_method: ShippingMethod
+
+  @Column({ type: "jsonb", nullable: true })
+  shipping_data: any
 
   @Column({ type: "int" })
   refund_amount: number
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamptz", nullable: true })
   received_at: Date
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
   @Column({ type: "jsonb", nullable: true })

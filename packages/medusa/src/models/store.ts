@@ -50,10 +50,10 @@ export class Store {
   @Column({ nullable: true })
   swap_link_template: string
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
   @Column({ type: "jsonb", nullable: true })

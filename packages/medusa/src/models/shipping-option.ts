@@ -34,13 +34,22 @@ export class ShippingOption {
   @Column()
   name: string
 
+  @Column()
+  region_id: string
+
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region: Region
 
+  @Column()
+  profile_id: string
+
   @ManyToOne(() => ShippingProfile)
   @JoinColumn({ name: "profile_id" })
   profile: ShippingProfile
+
+  @Column()
+  provider_id: string
 
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
@@ -65,13 +74,13 @@ export class ShippingOption {
   @Column({ type: "jsonb" })
   data: any
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

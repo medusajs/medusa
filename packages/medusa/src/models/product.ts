@@ -32,14 +32,14 @@ export class Product {
   @Column({ nullable: true })
   subtitle: string
 
-  @Column()
+  @Column({ nullable: true })
   description: string
 
-  @Column()
+  @Column({ nullable: true })
   tags: string
 
   @Index({ unique: true })
-  @Column()
+  @Column({ nullable: true })
   handle: string
 
   @Column({ default: false })
@@ -59,7 +59,7 @@ export class Product {
   })
   images: Image[]
 
-  @Column()
+  @Column({ nullable: true })
   thumbnail: string
 
   @OneToMany(
@@ -70,9 +70,13 @@ export class Product {
 
   @OneToMany(
     () => ProductVariant,
-    variant => variant.product
+    variant => variant.product,
+    { cascade: true }
   )
   variants: ProductVariant[]
+
+  @Column()
+  profile_id: string
 
   @ManyToOne(() => ShippingProfile)
   @JoinColumn({ name: "profile_id" })
@@ -102,13 +106,13 @@ export class Product {
   @Column({ nullable: true })
   material: string
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

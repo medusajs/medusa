@@ -28,6 +28,9 @@ export class ShippingOptionRequirement {
   @PrimaryColumn()
   id: string
 
+  @Column()
+  shipping_option_id: string
+
   @ManyToOne(() => ShippingOption)
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption

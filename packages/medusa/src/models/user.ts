@@ -11,7 +11,7 @@ import {
 import randomize from "randomatic"
 
 @Entity()
-export class Customer {
+export class User {
   @PrimaryColumn()
   id: string
 
@@ -31,13 +31,13 @@ export class Customer {
   @Column()
   api_token: string
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

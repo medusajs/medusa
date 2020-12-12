@@ -21,10 +21,12 @@ import { Currency } from "./currency"
 import { Customer } from "./customer"
 import { Region } from "./region"
 import { Discount } from "./discount"
+import { GiftCard } from "./gift-card"
 import { Payment } from "./payment"
 import { Cart } from "./cart"
 import { Fulfillment } from "./fulfillment"
 import { Return } from "./return"
+import { Refund } from "./refund"
 import { Swap } from "./swap"
 import { ShippingMethod } from "./shipping-method"
 
@@ -40,8 +42,11 @@ export enum FulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   PARTIALLY_FULFILLED = "partially_fulfilled",
   FULFILLED = "fulfilled",
+  PARTIALLY_SHIPPED = "partially_shipped",
+  SHIPPED = "shipped",
   PARTIALLY_RETURNED = "partially_returned",
   RETURNED = "returned",
+  CANCELED = "canceled",
   REQUIRES_ACTION = "requires_action",
 }
 
@@ -51,6 +56,7 @@ export enum PaymentStatus {
   CAPTURED = "captured",
   PARTIALLY_REFUNDED = "partially_refunded",
   REFUNDED = "refunded",
+  CANCELED = "canceled",
   REQUIRES_ACTION = "requires_action",
 }
 
@@ -89,14 +95,14 @@ export class Order {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { cascade: true })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { cascade: true })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
@@ -131,49 +137,76 @@ export class Order {
   })
   discounts: Discount
 
+  @ManyToMany(() => GiftCard)
+  @JoinTable({
+    name: "order_gift_cards",
+    joinColumn: {
+      name: "order_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "gift_card_id",
+      referencedColumnName: "id",
+    },
+  })
+  gift_cards: GiftCard
+
   @OneToMany(
     () => ShippingMethod,
-    method => method.order
+    method => method.order,
+    { cascade: true }
   )
   shipping_methods: ShippingMethod[]
 
   @OneToMany(
     () => Payment,
-    payment => payment.order
+    payment => payment.order,
+    { cascade: true }
   )
   payments: Payment[]
 
   @OneToMany(
     () => Fulfillment,
-    fulfillment => fulfillment.order
+    fulfillment => fulfillment.order,
+    { cascade: true }
   )
-  fulfillment: Fulfillment[]
+  fulfillments: Fulfillment[]
 
   @OneToMany(
     () => Return,
-    ret => ret.order
+    ret => ret.order,
+    { cascade: true }
   )
   returns: Return[]
 
   @OneToMany(
+    () => Refund,
+    ref => ref.order,
+    { cascade: true }
+  )
+  refunds: Refund[]
+
+  @OneToMany(
     () => Swap,
-    swap => swap.order
+    swap => swap.order,
+    { cascade: true }
   )
   swaps: Swap[]
 
   @OneToMany(
     () => LineItem,
-    lineItem => lineItem.order
+    lineItem => lineItem.order,
+    { cascade: true }
   )
   items: LineItem[]
 
   @Column({ nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
   @Column({ type: "jsonb", nullable: true })

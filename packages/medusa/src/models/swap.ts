@@ -27,6 +27,7 @@ import { ShippingMethod } from "./shipping-method"
 export enum FulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   FULFILLED = "fulfilled",
+  CANCELED = "canceled",
   REQUIRES_ACTION = "requires_action",
 }
 
@@ -34,6 +35,7 @@ export enum PaymentStatus {
   NOT_PAID = "not_paid",
   AWAITING = "awaiting",
   CAPTURED = "captured",
+  CANCELED = "canceled",
   PARTIALLY_REFUNDED = "partially_refunded",
   REFUNDED = "refunded",
   REQUIRES_ACTION = "requires_action",
@@ -97,13 +99,13 @@ export class Swap {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

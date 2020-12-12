@@ -10,7 +10,6 @@ import { Validator, MedusaError } from "medusa-core-utils"
 class DiscountService extends BaseService {
   constructor({
     discountModel,
-    dynamicDiscountCodeModel,
     totalsService,
     productVariantService,
     productService,
@@ -21,9 +20,6 @@ class DiscountService extends BaseService {
 
     /** @private @const {DiscountModel} */
     this.discountModel_ = discountModel
-
-    /** @private @const {DynamicDiscountCodeModel} */
-    this.dynamicCodeModel_ = dynamicDiscountCodeModel
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService

@@ -15,19 +15,18 @@ import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
 
+export enum RefundReason {
+  DISCOUNT = "discount",
+  RETURN = "return",
+  OTHER = "other",
+}
+
 @Entity()
-export class Payment {
+export class Refund {
   @PrimaryColumn()
   id: string
 
-  @Column({ nullable: true })
-  cart_id: string
-
-  @OneToOne(() => Cart)
-  @JoinColumn({ name: "cart_id" })
-  cart: Cart
-
-  @Column({ nullable: true })
+  @Column()
   order_id: string
 
   @ManyToOne(
@@ -37,9 +36,6 @@ export class Payment {
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @Column({ type: "int" })
-  amount: number
-
   @Column()
   currency_code: string
 
@@ -48,19 +44,13 @@ export class Payment {
   currency: Currency
 
   @Column({ type: "int" })
-  amount_refunded: number
-
-  @Column()
-  provider_id: string
-
-  @Column({ type: "jsonb" })
-  data: any
+  amount: number
 
   @Column({ nullable: true })
-  captured_at: Date
+  note: string
 
-  @Column({ nullable: true })
-  canceled_at: Date
+  @Column({ type: "enum", enum: RefundReason })
+  reason: string
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
@@ -74,6 +64,6 @@ export class Payment {
   @BeforeInsert()
   private beforeInsert() {
     const id = randomize("Aa0", 16)
-    this.id = `pay_${id}`
+    this.id = `ref_${id}`
   }
 }

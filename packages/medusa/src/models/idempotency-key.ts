@@ -17,7 +17,7 @@ export class IdempotencyKey {
   @Column()
   idempotency_key: string
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
   @Column({ nullable: true })

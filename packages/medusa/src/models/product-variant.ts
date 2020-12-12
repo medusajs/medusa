@@ -36,7 +36,8 @@ export class ProductVariant {
 
   @OneToMany(
     () => MoneyAmount,
-    ma => ma.product_variant
+    ma => ma.variant,
+    { cascade: true }
   )
   prices: MoneyAmount[]
 
@@ -47,6 +48,14 @@ export class ProductVariant {
   @Index({ unique: true })
   @Column({ nullable: true })
   barcode: string
+
+  @Index({ unique: true })
+  @Column({ nullable: true })
+  ean: string
+
+  @Index({ unique: true })
+  @Column({ nullable: true })
+  upc: string
 
   @Column({ type: "int" })
   inventory_quantity: number
@@ -83,17 +92,18 @@ export class ProductVariant {
 
   @OneToMany(
     () => ProductOptionValue,
-    optionValue => optionValue.variant
+    optionValue => optionValue.variant,
+    { cascade: true }
   )
   options: ProductOptionValue[]
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

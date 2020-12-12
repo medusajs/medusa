@@ -100,10 +100,10 @@ export class LineItem {
   @Column({ nullable: true, type: "int" })
   shipped_quantity: number
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
   @Column({ type: "jsonb", nullable: true })

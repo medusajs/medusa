@@ -40,18 +40,18 @@ export class GiftCard {
   is_disabled: boolean
 
   @Column({
-    type: "timestamp",
+    type: "timestamptz",
     nullable: true,
   })
   ends_at: Date
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

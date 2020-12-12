@@ -16,6 +16,7 @@ import {
 } from "typeorm"
 import randomize from "randomatic"
 
+import { Currency } from "./currency"
 import { ProductVariant } from "./product-variant"
 
 @Entity()
@@ -24,7 +25,11 @@ export class MoneyAmount {
   id: string
 
   @Column()
-  currency: string
+  currency_code: string
+
+  @ManyToOne(() => Currency)
+  @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
+  currency: Currency
 
   @Column({ type: "int" })
   amount: number
@@ -34,15 +39,15 @@ export class MoneyAmount {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  product_variant: ProductVariant
+  variant: ProductVariant
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @BeforeInsert()

@@ -8,6 +8,7 @@ import {
   Column,
   PrimaryColumn,
   ManyToMany,
+  ManyToOne,
   OneToOne,
   JoinTable,
   JoinColumn,
@@ -29,12 +30,22 @@ export class Discount {
   @Column()
   is_dynamic: boolean
 
-  @OneToOne(() => DiscountRule)
+  @Column({ nullable: true })
+  discount_rule_id: string
+
+  @ManyToOne(() => DiscountRule, { cascade: true })
   @JoinColumn({ name: "discount_rule_id" })
   discount_rule: DiscountRule
 
   @Column()
   is_disabled: boolean
+
+  @Column({ nullable: true })
+  parent_discount_id: string
+
+  @ManyToOne(() => Discount)
+  @JoinColumn({ name: "parent_discount_id" })
+  parent_discount: Discount
 
   @Column({ type: "timestamp", default: "now()" })
   starts_at: Date

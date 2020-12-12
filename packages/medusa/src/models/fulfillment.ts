@@ -52,7 +52,8 @@ export class Fulfillment {
 
   @OneToMany(
     () => FulfillmentItem,
-    i => i.fulfillment
+    i => i.fulfillment,
+    { cascade: true }
   )
   items: FulfillmentItem[]
 
@@ -62,16 +63,16 @@ export class Fulfillment {
   @Column({ type: "jsonb" })
   data: any
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   shipped_at: Date
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
   @Column({ type: "jsonb", nullable: true })

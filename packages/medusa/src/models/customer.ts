@@ -25,10 +25,10 @@ export class Customer {
   @Column()
   email: string
 
-  @Column()
+  @Column({ nullable: true })
   first_name: string
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string
 
   @Column({ nullable: true })
@@ -44,13 +44,13 @@ export class Customer {
   )
   shipping_addresses: Address[]
 
-  @Column()
+  @Column({ nullable: true })
   password_hash: string
 
-  @Column()
+  @Column({ nullable: true })
   phone: string
 
-  @Column()
+  @Column({ default: false })
   has_account: boolean
 
   @OneToMany(
@@ -59,13 +59,13 @@ export class Customer {
   )
   orders: Order[]
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })
