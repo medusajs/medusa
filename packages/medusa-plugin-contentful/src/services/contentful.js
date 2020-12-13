@@ -78,28 +78,116 @@ class ContentfulService extends BaseService {
     }))
   }
 
+  async createImageAssets(product) {
+    const environment = await this.getContentfulEnvironment_()
+
+    let assets = []
+    await Promise.all(
+      product.images
+        .filter((image) => image !== product.thumbnail)
+        .map(async (image, i) => {
+          const asset = await environment.createAsset({
+            fields: {
+              title: {
+                "en-US": `${product.title} - ${i}`,
+              },
+              description: {
+                "en-US": "",
+              },
+              file: {
+                "en-US": {
+                  contentType: "image/xyz",
+                  fileName: image,
+                  upload: image,
+                },
+              },
+            },
+          })
+
+          await asset.processForAllLocales()
+
+          assets.push({
+            sys: {
+              type: "Link",
+              linkType: "Asset",
+              id: asset.sys.id,
+            },
+          })
+        })
+    )
+
+    return assets
+  }
+
   async createProductInContentful(product) {
     try {
       const environment = await this.getContentfulEnvironment_()
       const variantEntries = await this.getVariantEntries_(product._id)
       const variantLinks = this.getVariantLinks_(variantEntries)
+
+      const fieldsObject = {
+        title: {
+          "en-US": product.title,
+        },
+        variants: {
+          "en-US": variantLinks,
+        },
+        options: {
+          "en-US": product.options,
+        },
+        objectId: {
+          "en-US": product._id,
+        },
+      }
+
+      if (product.images.length > 0) {
+        const imageLinks = await this.createImageAssets(product)
+
+        const thumbnailAsset = await environment.createAsset({
+          fields: {
+            title: {
+              "en-US": `${product.title}`,
+            },
+            description: {
+              "en-US": "",
+            },
+            file: {
+              "en-US": {
+                contentType: "image/xyz",
+                fileName: product.thumbnail,
+                upload: product.thumbnail,
+              },
+            },
+          },
+        })
+
+        await thumbnailAsset.processForAllLocales()
+
+        const thumbnailLink = {
+          sys: {
+            type: "Link",
+            linkType: "Asset",
+            id: thumbnailAsset.sys.id,
+          },
+        }
+
+        fieldsObject.thumbnail = {
+          "en-US": thumbnailLink,
+        }
+
+        if (imageLinks) {
+          fieldsObject.images = {
+            "en-US": imageLinks,
+          }
+        }
+      }
+
       const result = await environment.createEntryWithId(
         "product",
         product._id,
         {
           fields: {
-            title: {
-              "en-US": product.title,
-            },
-            variants: {
-              "en-US": variantLinks,
-            },
-            options: {
-              "en-US": product.options,
-            },
-            objectId: {
-              "en-US": product._id,
-            },
+            ...fieldsObject,
           },
         }
       )
@@ -168,7 +256,6 @@ class ContentfulService extends BaseService {
       try {
         productEntry = await environment.getEntry(product._id)
       } catch (error) {
-        console.log(error)
         return this.createProductInContentful(product)
       }
 
