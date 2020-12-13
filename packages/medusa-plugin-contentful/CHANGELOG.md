@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.14](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.0.13...medusa-plugin-contentful@1.0.14) (2020-12-13)
+
+
+### Bug Fixes
+
+* **medusa-plugin-contentful:** Adds correct thumbnail and images sync. ([#145](https://github.com/medusajs/medusa/issues/145)) ([725241d](https://github.com/medusajs/medusa/commit/725241df6624daddf1aea28817eaeb652e325f0d))
+
+
+
+
+
 ## [1.0.13](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.0.12...medusa-plugin-contentful@1.0.13) (2020-11-24)
 
 **Note:** Version bump only for package medusa-plugin-contentful
