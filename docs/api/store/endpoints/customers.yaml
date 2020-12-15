@@ -1,13 +1,30 @@
 title: Customers
 domain: store
+routes:
+  - method: POST
+    path: /customers
+  - method: GET
+    path: /customers/:id
+  - method: POST
+    path: /customers/:id
+  - method: POST
+    path: /customers/:id/addresses
+  - method: POST
+    path: /customers/:id/:address_id
+  - method: POST
+    path: /customers/:id/payment-methods
+  - method: POST
+    path: /customers/:id/reset-password
+  - method: POST
+    path: /customers/:id/reset-password-token
 route: /customers
 description: >
   Customers can create a login to view Order history and manage details. 
   Customers must have unique emails.
-endpoints: 
+endpoints:
   - path: /
     method: POST
-    title: Create a Customer Login
+    title: Create customer
     body:
       - name: email
         type: String
@@ -32,48 +49,10 @@ endpoints:
       Creates a customer profile with the given details. If the email has been
       used on previous orders the newly created Customer profile will be able to
       view the order history associated with this email.
-
-  - path: /password-reset
-    method: POST
-    title: Reset Customer password
-    body:
-      - name: email
-        type: String
-        required: true
-        description: The email of the Customer.
-      - name: token
-        type: String
-        required: true
-        description: > 
-          The token that will be used to reset the password. Should be generated
-          with a prior call to `/password-token`.
-      - name: password
-        type: String
-        required: true
-        description: > 
-          The new password to authenticate the user with.
-    description: >
-      Resets a customer's password. The reset call requires a valid token 
-
-  - path: /password-token
-    method: POST
-    title: Request Customer password reset token
-    body:
-      - name: email
-        type: String
-        required: true
-        description: The email of the Customer profile to reset password for.
-    description: >
-      Generates a reset password token. The token should be sent to the customer
-      via an email provider. Note that this doesn't send any emails it only 
-      generates the token and informs listeners to
-      `customer.password_token_generated` that the token was created.
-
-
   - path: /:id
     method: GET
-    title: Retrieve Customer
-    params: 
+    title: Retrieve customer
+    params:
       - name: id
         type: String
         description: The id of the Customer to retrieve.
@@ -83,8 +62,8 @@ endpoints:
 
   - path: /:id
     method: POST
-    title: Update Customer details
-    params: 
+    title: Update customer
+    params:
       - name: id
         type: String
         description: The id of the customer.
@@ -105,10 +84,9 @@ endpoints:
     description: >
       Updates the customer's details. The customer identified by `id` must be
       authenticated in order to call this endpoint.
-
   - path: /:id/addresses
     method: POST
-    title: Create a new Customer address
+    title: Create customer shipping address
     params:
       - name: id
         type: String
@@ -123,7 +101,7 @@ endpoints:
 
   - path: /:id/addresses/:address_id
     method: POST
-    title: Update a Customer address
+    title: Update customer shipping address
     params:
       - name: id
         type: String
@@ -141,8 +119,8 @@ endpoints:
 
   - path: /:id/payment-methods
     method: GET
-    title: Retrieve Customer's saved payment methods
-    params: 
+    title: Retrieve saved payment methods
+    params:
       - name: id
         type: String
         description: The id of the customer.
@@ -151,16 +129,98 @@ endpoints:
       will only return in methods in the case where the payment provider allows
       payment methods to be saved. The customer must be authenticated in order 
       to call this endpoint.
+  - path: /password-reset
+    method: POST
+    title: Reset password
+    body:
+      - name: email
+        type: String
+        required: true
+        description: The email of the Customer.
+      - name: token
+        type: String
+        required: true
+        description: >
+          The token that will be used to reset the password. Should be generated
+          with a prior call to `/password-token`.
+      - name: password
+        type: String
+        required: true
+        description: >
+          The new password to authenticate the user with.
+    description: >
+      Resets a customer's password. The reset call requires a valid token
+
+  - path: /password-token
+    method: POST
+    title: Generate password reset token
+    body:
+      - name: email
+        type: String
+        required: true
+        description: The email of the Customer profile to reset password for.
+    description: >
+      Generates a reset password token. The token should be sent to the customer
+      via an email provider. Note that this doesn't send any emails it only 
+      generates the token and informs listeners to
+      `customer.password_token_generated` that the token was created.
 
 response: |
   {
     "customer": {
-      "_id": "5ea80c76d9549d0006c21da7",
-      "email": "mrs@potato.com",
-      "orders": [],
-      "shipping_addresses": [],
-      "first_name": "Potato",
-      "last_name": "Head",
+      "id": "cus_4eThzYSuGv",
+      "email": "iron@man.com",
+      "first_name": "Tony",
+      "last_name": "Stark",
+      "billing_address": {
+        "id": "addr_WgNn0BSfIu",
+        "customer_id": "cus_4eThzYSuGv",
+        "company": "Stark Industries",
+        "first_name": "Tony",
+        "last_name": "Stark",
+        "address_1": "Hollywood Boulevard 1",
+        "address_2": null,
+        "city": "Los Angeles",
+        "country_code": "US",
+        "province": "CA",
+        "postal_code": "90046",
+        "phone": null,
+        "created_at": "2020-12-11T17:03:54.458Z",
+        "updated_at": "2020-12-11T17:03:54.458Z",
+        "deleted_at": null,
+        "metadata": null
+      },
+      "shipping_addresses": [{
+        "id": "addr_WgNn0BSfIu",
+        "customer_id": "cus_4eThzYSuGv",
+        "company": "Stark Industries",
+        "first_name": "Tony",
+        "last_name": "Stark",
+        "address_1": "Hollywood Boulevard 1",
+        "address_2": null,
+        "city": "Los Angeles",
+        "country_code": "US",
+        "province": "CA",
+        "postal_code": "90046",
+        "phone": null,
+        "created_at": "2020-12-11T17:03:54.458Z",
+        "updated_at": "2020-12-11T17:03:54.458Z",
+        "deleted_at": null,
+        "metadata": null
+      }],
+      "phone": "4242424242",
+      "has_account": false,
+      "orders": [{
+        "id": "order_fi13oadpo2r3vc2g4592",
+        "status": "pending",
+        "fulfillment_status": "shipped",
+        "payment_status": "captured",
+        "display_id": 50433,
+        "total": 4004000,
+        "metadata": null
+      }],
+      "created_at": "2020-12-11T17:03:54.458Z",
+      "updated_at": "2020-12-11T17:03:54.458Z",
       "metadata": {}
     }
   }
