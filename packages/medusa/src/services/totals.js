@@ -47,13 +47,11 @@ class TotalsService extends BaseService {
         subtotal += temp * item.quantity
       } else {
         if (opts.excludeNonDiscounts) {
-          if (!item.no_discount) {
-            subtotal +=
-              item.content.unit_price * item.content.quantity * item.quantity
+          if (item.allow_discounts) {
+            subtotal += item.unit_price * item.quantity
           }
         } else {
-          subtotal +=
-            item.content.unit_price * item.content.quantity * item.quantity
+          subtotal += item.unit_price * item.quantity
         }
       }
     })
@@ -84,7 +82,9 @@ class TotalsService extends BaseService {
     const discountTotal = await this.getDiscountTotal(object)
     const region = await this.regionService_.retrieve(object.region_id)
     const { tax_rate } = region
-    return this.rounded((subtotal - discountTotal + shippingTotal) * tax_rate)
+    return this.rounded(
+      (subtotal - discountTotal + shippingTotal) * (tax_rate / 100)
+    )
   }
 
   getRefundedTotal(object) {
@@ -182,22 +182,17 @@ class TotalsService extends BaseService {
     const discounts = []
     for (const item of cart.items) {
       if (discount.discount_rule.valid_for.length > 0) {
-        discount.discount_rule.valid_for.map(variant => {
-          // Discounts do not apply to bundles, hence:
-          if (Array.isArray(item.content)) {
-            return discounts
-          } else {
-            if (item.content.variant._id === variant) {
-              discounts.push(
-                this.calculateDiscount_(
-                  item,
-                  variant,
-                  item.content.unit_price,
-                  discount.discount_rule.value,
-                  discount.discount_rule.type
-                )
+        discount.discount_rule.valid_for.map(({ id }) => {
+          if (item.variant_id === id) {
+            discounts.push(
+              this.calculateDiscount_(
+                item,
+                id,
+                item.unit_price,
+                discount.discount_rule.value,
+                discount.discount_rule.type
               )
-            }
+            )
           }
         })
       }
@@ -259,22 +254,6 @@ class TotalsService extends BaseService {
     if (!cart.discounts || !cart.discounts.length) {
       return 0
     }
-
-    // filter out invalid discounts
-    cart.discounts = cart.discounts.filter(d => {
-      // !ends_at implies that the discount never expires
-      // therefore, we do the check following check
-      if (d.ends_at) {
-        const parsedEnd = new Date(d.ends_at)
-        const now = new Date()
-        return (
-          parsedEnd.getTime() > now.getTime() &&
-          d.regions.includes(cart.region_id)
-        )
-      } else {
-        return d.regions && d.regions.includes(cart.region_id)
-      }
-    })
 
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.

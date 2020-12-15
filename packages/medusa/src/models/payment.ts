@@ -11,6 +11,7 @@ import {
 } from "typeorm"
 import randomize from "randomatic"
 
+import { Swap } from "./swap"
 import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
@@ -19,6 +20,13 @@ import { Order } from "./order"
 export class Payment {
   @PrimaryColumn()
   id: string
+
+  @Column({ nullable: true })
+  swap_id: string
+
+  @OneToOne(() => Swap)
+  @JoinColumn({ name: "swap_id" })
+  swap: Swap
 
   @Column({ nullable: true })
   cart_id: string

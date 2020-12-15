@@ -423,7 +423,7 @@ const migrateCustomers = async (mongodb, queryRunner) => {
 
   const toSave = []
   for (const c of customers) {
-    if (toSave.find(s => s.email === c.email.toLowerCase)) {
+    if (toSave.find(s => s.email === c.email.toLowerCase())) {
       continue
     }
 
@@ -447,6 +447,7 @@ const migrateCustomers = async (mongodb, queryRunner) => {
  * @param {QueryRunner} queryRunner
  */
 const migrateOrders = async (mongodb, queryRunner) => {
+  const swapCol = mongodb.collection("swaps")
   const rcol = mongodb.collection("regions")
   const rcur = rcol.find({})
   const regions = await rcur.toArray()
@@ -483,8 +484,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * SHIPPING METHODS
      *************************************************************************/
-    let shippingMethods = []
-    for (const m of o.shipping_methods) {
+    const createShippingMethod = async m => {
       let shippingOption = await optionRepo.findOne({
         name: m.name,
         region_id: region.id,
@@ -513,11 +513,16 @@ const migrateOrders = async (mongodb, queryRunner) => {
         shippingOption = await optionRepo.save(newly)
       }
 
-      const method = methodRepo.create({
+      return methodRepo.create({
         shipping_option_id: shippingOption.id,
         price: Math.round(m.price * 100),
         data: m.data,
       })
+    }
+
+    let shippingMethods = []
+    for (const m of o.shipping_methods) {
+      const method = await createShippingMethod(m)
       shippingMethods.push(method)
     }
 
@@ -535,8 +540,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * LINE ITEMS
      *************************************************************************/
-    const lineItems = []
-    for (const li of o.items) {
+    const createLineItem = async li => {
       let variant = await variantRepo.findOne({ sku: li.content.variant.sku })
       if (!variant) {
         variant = await variantRepo.findOne({ title: li.content.variant.title })
@@ -552,23 +556,27 @@ const migrateOrders = async (mongodb, queryRunner) => {
         li.returned_quantity || 0
       )
 
-      lineItems.push(
-        lineItemRepo.create({
-          title: li.title,
-          description: li.description,
-          quantity: li.quantity,
-          is_giftcard: !!li.is_giftcard,
-          should_merge: !!li.should_merge,
-          allow_discounts: !li.no_discount,
-          thumbnail: li.thumbnail,
-          unit_price: Math.round(li.content.unit_price * 100),
-          variant,
-          fulfilled_quantity,
-          shipped_quantity,
-          returned_quantity,
-          metadata: li.metadata,
-        })
-      )
+      return lineItemRepo.create({
+        title: li.title,
+        description: li.description,
+        quantity: li.quantity,
+        is_giftcard: !!li.is_giftcard,
+        should_merge: !!li.should_merge,
+        allow_discounts: !li.no_discount,
+        thumbnail: li.thumbnail,
+        unit_price: Math.round(li.content.unit_price * 100),
+        variant,
+        fulfilled_quantity,
+        shipped_quantity,
+        returned_quantity,
+        metadata: li.metadata,
+      })
+    }
+
+    const lineItems = []
+    for (const li of o.items) {
+      const lineitem = await createLineItem(li)
+      lineItems.push(lineitem)
     }
 
     /*************************************************************************
@@ -636,17 +644,19 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * FULFILLMENTS
      *************************************************************************/
-    const fulfillments = []
-    for (const f of o.fulfillments) {
-      const seen = {}
-
+    const createFulfillment = async (f, parent_items, seen) => {
       const items = f.items.map(fi => {
-        const original = or.items.find(
+        const original = parent_items.find(
           li =>
             li.title === fi.title &&
             li.description === fi.description &&
             !seen[li.id]
         )
+
+        if (!original) {
+          console.log(f)
+          console.log(parent_items)
+        }
 
         seen[original.id] = true
 
@@ -673,7 +683,14 @@ const migrateOrders = async (mongodb, queryRunner) => {
         toCreate.created_at = new Date(parseInt(f.created))
       }
 
-      fulfillments.push(fulfillmentRepo.create(toCreate))
+      return fulfillmentRepo.create(toCreate)
+    }
+
+    const fulfillments = []
+    for (const f of o.fulfillments) {
+      const seen = {}
+      const ful = await createFulfillment(f, or.items, seen)
+      fulfillments.push(ful)
     }
     or.fulfillments = fulfillments
 
@@ -698,15 +715,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
     }
     or.refunds = refunds
 
-    /*************************************************************************
-     * RETURNS
-     *************************************************************************/
-    const returns = []
-    for (const r of o.returns) {
-      if (r.items.length === 0) {
-        continue
-      }
-
+    const createReturn = async r => {
       const m = r.shipping_method
       let method
       if (m && m.name) {
@@ -759,19 +768,30 @@ const migrateOrders = async (mongodb, queryRunner) => {
         })
       })
 
-      returns.push(
-        returnRepo.create({
-          status: r.status || "received",
-          order: or,
-          refund_amount: Math.round(r.refund_amount * 100),
-          shipping_method: method,
-          shipping_data: r.shipping_data,
-          items,
-          received_at: r.status === "received" ? new Date() : null,
-          created_at: new Date(parseInt(r.created)),
-          metadata: r.metadata,
-        })
-      )
+      return returnRepo.create({
+        status: r.status || "received",
+        order: or,
+        refund_amount: Math.round(r.refund_amount * 100),
+        shipping_method: method,
+        shipping_data: r.shipping_data,
+        items,
+        received_at: r.status === "received" ? new Date() : null,
+        created_at: new Date(parseInt(r.created)),
+        metadata: r.metadata,
+      })
+    }
+
+    /*************************************************************************
+     * RETURNS
+     *************************************************************************/
+    const returns = []
+    for (const r of o.returns) {
+      if (r.items.length === 0) {
+        continue
+      }
+
+      const ret = await createReturn(r)
+      returns.push(ret)
     }
 
     or.returns = returns
@@ -779,10 +799,78 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * SWAPS
      *************************************************************************/
-    // if (o.swaps) {
-    //   const swaps = []
-    //   for (const s of o.swaps) { }
-    // }
+    if (o.swaps) {
+      const swapCur = swapCol.find({
+        _id: { $in: o.swaps.map(i => mongo.ObjectID(i)) },
+      })
+      const oSwaps = await swapCur.toArray()
+      if (oSwaps.length) {
+        let swaps = []
+        for (const s of oSwaps) {
+          const toCreate = {
+            fulfillment_status: s.fulfillment_status,
+            payment_status: s.payment_status,
+            additional_items: await Promise.all(
+              s.additional_items.map(createLineItem)
+            ),
+            shipping_methods: await Promise.all(
+              s.shipping_methods.map(createShippingMethod)
+            ),
+            created_at: new Date(parseInt(s.created)),
+          }
+
+          if (s.shipping_address) {
+            const address = addressRepo.create({
+              customer,
+              first_name: s.shipping_address.first_name,
+              last_name: s.shipping_address.last_name,
+              address_1: s.shipping_address.address_1,
+              address_2: s.shipping_address.address_2,
+              city: s.shipping_address.city,
+              country_code: s.shipping_address.country_code.toLowerCase(),
+              province: s.shipping_address.province,
+              postal_code: s.shipping_address.postal_code,
+              phone: s.shipping_address.phone,
+            })
+            toCreate.shipping_address = address
+          }
+
+          if (s.return) {
+            toCreate.return_order = await createReturn(s.return)
+          }
+
+          if (s.payment_method) {
+            toCreate.payment = paymentRepo.create({
+              amount:
+                (s.payment_method.data && s.payment_method.data.amount) || 0,
+              currency_code: s.currency_code.toLowerCase(),
+              amount_refunded: 0,
+              provider_id: o.payment_method.provider_id,
+              data: o.payment_method.data,
+              canceled_at: or.payment_status === "canceled" ? new Date() : null,
+              captured_at:
+                or.payment_status === "captured" ||
+                or.payment_status === "refunded" ||
+                or.payment_status === "partially"
+                  ? new Date()
+                  : null,
+            })
+          }
+
+          const newly = swapRepo.create(toCreate)
+          const sw = await swapRepo.save(newly)
+          const seen = {}
+          sw.fulfillments = await Promise.all(
+            s.fulfillments.map(f =>
+              createFulfillment(f, sw.additional_items, seen)
+            )
+          )
+          swaps.push(sw)
+        }
+
+        or.swaps = swaps
+      }
+    }
 
     /*************************************************************************
      * PAYMENTS
@@ -901,8 +989,9 @@ const migrate = async () => {
     await queryRunner.query(
       `DELETE FROM order_discounts WHERE order_id IS NOT NULL`
     )
-    await queryRunner.query(`DELETE FROM return WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM fulfillment WHERE id IS NOT NULL`)
+    await queryRunner.query(`DELETE FROM swap WHERE id IS NOT NULL`)
+    await queryRunner.query(`DELETE FROM return WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM payment WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM refund WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM "order" WHERE id IS NOT NULL`)

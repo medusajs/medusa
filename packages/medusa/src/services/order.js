@@ -22,7 +22,8 @@ class OrderService extends BaseService {
   }
 
   constructor({
-    orderModel,
+    manager,
+    orderRepository,
     customerService,
     paymentProviderService,
     shippingOptionService,
@@ -40,8 +41,10 @@ class OrderService extends BaseService {
   }) {
     super()
 
+    this.orderRepository_ = orderRepository
+
     /** @private @constant {OrderModel} */
-    this.orderModel_ = orderModel
+    this.orderModel_ = manager.getCustomRepository(orderRepository)
 
     /** @private @constant {CustomerService} */
     this.customerService_ = customerService
@@ -111,16 +114,7 @@ class OrderService extends BaseService {
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The order id could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -184,11 +178,7 @@ class OrderService extends BaseService {
    */
   async retrieve(orderId) {
     const validatedId = this.validateId_(orderId)
-    const order = await this.orderModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const order = await this.orderModel_.findOne({ id: validatedId })
 
     if (!order) {
       throw new MedusaError(
@@ -1195,39 +1185,37 @@ class OrderService extends BaseService {
       o.refundable_amount = o.total - o.refunded_total
     }
 
-    o.created = order._id.getTimestamp()
+    //if (expandFields.includes("swaps")) {
+    //  if (order.swaps) {
+    //    o.swaps = await Promise.all(
+    //      order.swaps.map(sId => {
+    //        return this.swapService_.retrieve(sId)
+    //      })
+    //    )
+    //  } else {
+    //    o.swaps = []
+    //  }
+    //}
 
-    if (expandFields.includes("swaps")) {
-      if (order.swaps) {
-        o.swaps = await Promise.all(
-          order.swaps.map(sId => {
-            return this.swapService_.retrieve(sId)
-          })
-        )
-      } else {
-        o.swaps = []
-      }
-    }
+    //if (expandFields.includes("customer")) {
+    //  o.customer = await this.customerService_.retrieve(order.customer_id)
+    //}
 
-    if (expandFields.includes("customer")) {
-      o.customer = await this.customerService_.retrieve(order.customer_id)
-    }
+    //if (expandFields.includes("region")) {
+    //  o.region = await this.regionService_.retrieve(order.region_id)
+    //}
 
-    if (expandFields.includes("region")) {
-      o.region = await this.regionService_.retrieve(order.region_id)
-    }
-
-    if (fields.includes("items")) {
-      o.items = order.items.map(i => {
-        return {
-          ...i,
-          refundable: this.totalsService_.getLineItemRefund(o, {
-            ...i,
-            quantity: i.quantity - i.returned_quantity,
-          }),
-        }
-      })
-    }
+    //if (fields.includes("items")) {
+    //  o.items = order.items.map(i => {
+    //    return {
+    //      ...i,
+    //      refundable: this.totalsService_.getLineItemRefund(o, {
+    //        ...i,
+    //        quantity: i.quantity - i.returned_quantity,
+    //      }),
+    //    }
+    //  })
+    //}
 
     const data = await this.runDecorators_(o)
     return data

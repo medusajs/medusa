@@ -33,7 +33,7 @@ export class Discount {
   @Column({ nullable: true })
   discount_rule_id: string
 
-  @ManyToOne(() => DiscountRule, { cascade: true })
+  @ManyToOne(() => DiscountRule, { cascade: true, eager: true })
   @JoinColumn({ name: "discount_rule_id" })
   discount_rule: DiscountRule
 

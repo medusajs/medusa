@@ -95,14 +95,14 @@ export class Order {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address, { cascade: true })
+  @ManyToOne(() => Address, { cascade: true, eager: true })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address, { cascade: true })
+  @ManyToOne(() => Address, { cascade: true, eager: true })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
@@ -110,7 +110,7 @@ export class Order {
   region_id: string
 
   @ManyToOne(() => Region)
-  @JoinColumn({ name: "region_id" })
+  @JoinColumn({ name: "region_id", eager: true })
   region: Region
 
   @Column()
@@ -123,7 +123,7 @@ export class Order {
   @Column({ type: "int" })
   tax_rate: number
 
-  @ManyToMany(() => Discount)
+  @ManyToMany(() => Discount, { eager: true })
   @JoinTable({
     name: "order_discounts",
     joinColumn: {
@@ -137,7 +137,7 @@ export class Order {
   })
   discounts: Discount
 
-  @ManyToMany(() => GiftCard)
+  @ManyToMany(() => GiftCard, { eager: true })
   @JoinTable({
     name: "order_gift_cards",
     joinColumn: {
@@ -154,42 +154,42 @@ export class Order {
   @OneToMany(
     () => ShippingMethod,
     method => method.order,
-    { cascade: true }
+    { cascade: true, eager: true }
   )
   shipping_methods: ShippingMethod[]
 
   @OneToMany(
     () => Payment,
     payment => payment.order,
-    { cascade: true }
+    { cascade: true, eager: true }
   )
   payments: Payment[]
 
   @OneToMany(
     () => Fulfillment,
     fulfillment => fulfillment.order,
-    { cascade: true }
+    { cascade: true, eager: true }
   )
   fulfillments: Fulfillment[]
 
   @OneToMany(
     () => Return,
     ret => ret.order,
-    { cascade: true }
+    { cascade: true, eager: true }
   )
   returns: Return[]
 
   @OneToMany(
     () => Refund,
     ref => ref.order,
-    { cascade: true }
+    { cascade: true, eager: true }
   )
   refunds: Refund[]
 
   @OneToMany(
     () => Swap,
     swap => swap.order,
-    { cascade: true }
+    { cascade: true, eager: true }
   )
   swaps: Swap[]
 
@@ -200,7 +200,7 @@ export class Order {
   )
   items: LineItem[]
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "timestamptz" })
   canceled_at: Date
 
   @CreateDateColumn({ type: "timestamptz" })

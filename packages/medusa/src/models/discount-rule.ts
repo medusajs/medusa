@@ -50,7 +50,7 @@ export class DiscountRule {
   })
   allocation: AllocationType
 
-  @ManyToMany(() => Product)
+  @ManyToMany(() => Product, { eager: true })
   @JoinTable({
     name: "discount_rule_products",
     joinColumn: {

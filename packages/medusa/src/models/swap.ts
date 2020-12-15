@@ -27,6 +27,7 @@ import { ShippingMethod } from "./shipping-method"
 export enum FulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   FULFILLED = "fulfilled",
+  SHIPPED = "shipped",
   CANCELED = "canceled",
   REQUIRES_ACTION = "requires_action",
 }
@@ -36,6 +37,7 @@ export enum PaymentStatus {
   AWAITING = "awaiting",
   CAPTURED = "captured",
   CANCELED = "canceled",
+  DIFFERENCE_REFUNDED = "difference_refunded",
   PARTIALLY_REFUNDED = "partially_refunded",
   REFUNDED = "refunded",
   REQUIRES_ACTION = "requires_action",
@@ -61,39 +63,49 @@ export class Swap {
 
   @OneToMany(
     () => LineItem,
-    item => item.swap
+    item => item.swap,
+    { cascade: true }
   )
   additional_items: LineItem
 
   @OneToOne(
     () => Return,
-    ret => ret.swap
+    ret => ret.swap,
+    { cascade: true }
   )
   @JoinColumn({ name: "return_id" })
   return_order: Return
 
-  @OneToOne(
+  @OneToMany(
     () => Fulfillment,
-    fulfillment => fulfillment.swap
+    fulfillment => fulfillment.swap,
+    { cascade: true }
   )
-  fulfillment: Fulfillment
+  fulfillments: Fulfillment
 
-  @OneToOne(() => Payment)
-  @JoinColumn({ name: "payment_id" })
+  @OneToOne(
+    () => Payment,
+    p => p.swap,
+    { cascade: true }
+  )
   payment: Payment
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { cascade: true })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
   @OneToMany(
     () => ShippingMethod,
-    method => method.swap
+    method => method.swap,
+    { cascade: true }
   )
   shipping_methods: ShippingMethod[]
+
+  @Column({ nullable: true })
+  cart_id: string
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
