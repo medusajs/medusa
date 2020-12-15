@@ -53,7 +53,7 @@ class RegionService extends BaseService {
     const region = await this.validateFields_(update, regionId)
     return this.regionModel_.updateOne(
       {
-        _id: regionId,
+        id: regionId,
       },
       {
         $set: region,
@@ -117,7 +117,7 @@ class RegionService extends BaseService {
    * @param {number} taxRate - a number representing the tax rate of the region
    */
   validateTaxRate_(taxRate) {
-    if (taxRate > 1 || taxRate < 0) {
+    if (taxRate > 100 || taxRate < 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The tax_rate must be between 0 and 1"
@@ -157,7 +157,7 @@ class RegionService extends BaseService {
     }
 
     const existing = await this.regionModel_.findOne({ countries: countryCode })
-    if (existing && !existing._id.equals(id)) {
+    if (existing && !existing.id.equals(id)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         `${country.name} already exists in ${existing.name}, delete it in that region before adding it`
@@ -173,16 +173,7 @@ class RegionService extends BaseService {
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The regionId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -190,9 +181,12 @@ class RegionService extends BaseService {
    * @param {string} regionId - the id of the region to retrieve
    * @return {Region} the region
    */
-  async retrieve(regionId) {
+  async retrieve(regionId, relations = []) {
     const validatedId = this.validateId_(regionId)
-    const region = await this.regionModel_.findOne({ _id: validatedId })
+    const region = await this.regionModel_.findOne({
+      id: validatedId,
+      relations,
+    })
 
     if (!region) {
       throw new MedusaError(
@@ -220,7 +214,7 @@ class RegionService extends BaseService {
    */
   delete(regionId) {
     return this.regionModel_.deleteOne({
-      _id: regionId,
+      id: regionId,
     })
   }
 
@@ -240,7 +234,7 @@ class RegionService extends BaseService {
 
     return this.regionModel_.updateOne(
       {
-        _id: region._id,
+        id: region.id,
       },
       {
         $push: { countries: countryCode },
@@ -259,7 +253,7 @@ class RegionService extends BaseService {
     const region = await this.retrieve(regionId)
 
     return this.regionModel_.updateOne(
-      { _id: region._id },
+      { id: region.id },
       {
         $pull: {
           countries: countryCode,
@@ -287,7 +281,7 @@ class RegionService extends BaseService {
 
     return this.regionModel_.updateOne(
       {
-        _id: region._id,
+        id: region.id,
       },
       {
         $push: { payment_providers: providerId },
@@ -314,7 +308,7 @@ class RegionService extends BaseService {
 
     return this.regionModel_.updateOne(
       {
-        _id: region._id,
+        id: region.id,
       },
       {
         $push: { fulfillment_providers: providerId },
@@ -332,7 +326,7 @@ class RegionService extends BaseService {
     const region = await this.retrieve(regionId)
 
     return this.regionModel_.updateOne(
-      { _id: region._id },
+      { id: region.id },
       {
         $pull: {
           payment_providers: providerId,
@@ -351,7 +345,7 @@ class RegionService extends BaseService {
     const region = await this.retrieve(regionId)
 
     return this.regionModel_.updateOne(
-      { _id: region._id },
+      { id: region.id },
       {
         $pull: {
           fulfillment_providers: providerId,
@@ -368,7 +362,7 @@ class RegionService extends BaseService {
    * @return {Region} the region
    */
   async decorate(region, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
+    const requiredFields = ["id", "metadata"]
     const decorated = _.pick(region, fields.concat(requiredFields))
     const final = await this.runDecorators_(decorated)
     return final
@@ -395,7 +389,7 @@ class RegionService extends BaseService {
 
     const keyPath = `metadata.${key}`
     return this.regionModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
+      .updateOne({ id: validatedId }, { $set: { [keyPath]: value } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -419,7 +413,7 @@ class RegionService extends BaseService {
 
     const keyPath = `metadata.${key}`
     return this.regionModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
+      .updateOne({ id: validatedId }, { $unset: { [keyPath]: "" } })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })

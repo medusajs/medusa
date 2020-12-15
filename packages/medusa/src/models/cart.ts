@@ -29,37 +29,35 @@ export class Cart {
   @PrimaryColumn()
   id: string
 
-  @Column()
+  @Column({ nullable: true })
   email: string
-
-  @Column()
-  receiver_email: string
 
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { eager: true })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { eager: true })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
   @OneToMany(
     () => LineItem,
-    lineItem => lineItem.cart
+    lineItem => lineItem.cart,
+    { cascade: true, eager: true }
   )
   items: LineItem[]
 
-  @ManyToOne(() => Region)
+  @ManyToOne(() => Region, { eager: true })
   @JoinColumn({ name: "region_id" })
   region: Region
 
-  @ManyToMany(() => Discount)
+  @ManyToMany(() => Discount, { eager: true })
   @JoinTable({
     name: "cart_discounts",
     joinColumn: {
@@ -76,30 +74,32 @@ export class Cart {
   @Column({ nullable: true })
   customer_id: string
 
-  @ManyToOne(() => Customer)
+  @ManyToOne(() => Customer, { eager: true })
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
   @OneToMany(
     () => PaymentSession,
-    paymentSession => paymentSession.cart
+    paymentSession => paymentSession.cart,
+    { eager: true }
   )
   payment_sessions: PaymentSession[]
 
   @Column({ nullable: true })
   payment_id: string
 
-  @OneToOne(() => Payment)
+  @OneToOne(() => Payment, { eager: true })
   @JoinColumn({ name: "payment_id" })
   payment: Payment
 
   @OneToMany(
     () => ShippingMethod,
-    method => method.cart
+    method => method.cart,
+    { eager: true }
   )
   shipping_methods: ShippingMethod[]
 
-  @Column()
+  @Column({ default: false })
   is_swap: boolean
 
   @Column({ nullable: true })

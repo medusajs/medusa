@@ -101,16 +101,7 @@ class CartService extends BaseService {
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The cartId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -144,7 +135,7 @@ class CartService extends BaseService {
       const coverage = await Promise.all(
         content.map(({ variant, quantity }) => {
           return this.productVariantService_.canCoverQuantity(
-            variant._id,
+            variant.id,
             lineQuantity * quantity
           )
         })
@@ -155,7 +146,7 @@ class CartService extends BaseService {
 
     const { variant, quantity } = content
     return this.productVariantService_.canCoverQuantity(
-      variant._id,
+      variant.id,
       lineQuantity * quantity
     )
   }
@@ -175,7 +166,7 @@ class CartService extends BaseService {
       return await Promise.all(
         content.map(async c => {
           const unitPrice = await this.productVariantService_.getRegionPrice(
-            c.variant._id,
+            c.variant.id,
             regionId
           )
           c.unit_price = unitPrice
@@ -185,7 +176,7 @@ class CartService extends BaseService {
     }
 
     const unitPrice = await this.productVariantService_.getRegionPrice(
-      content.variant._id,
+      content.variant.id,
       regionId
     )
     content.unit_price = unitPrice
@@ -208,7 +199,7 @@ class CartService extends BaseService {
   async retrieve(cartId) {
     const validatedId = this.validateId_(cartId)
     const cart = await this.cartModel_
-      .findOne({ _id: validatedId })
+      .findOne({ id: validatedId })
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
@@ -236,7 +227,7 @@ class CartService extends BaseService {
       )
     }
 
-    const region = await this.regionService_.retrieve(region_id)
+    const region = await this.regionService_.retrieve(region_id, ["countries"])
     if (!data.shipping_address) {
       if (region.countries.length === 1) {
         // Preselect the country if the region only has 1
@@ -255,7 +246,7 @@ class CartService extends BaseService {
 
     const toCreate = {
       ...data,
-      region_id: region._id,
+      region_id: region.id,
     }
 
     const inProgress = this.cartModel_.create(toCreate)
@@ -276,9 +267,6 @@ class CartService extends BaseService {
     c.tax_total = await this.totalsService_.getTaxTotal(cart)
     c.subtotal = await this.totalsService_.getSubtotal(cart)
     c.total = await this.totalsService_.getTotal(cart)
-    if (expandFields.includes("region")) {
-      c.region = await this.regionService_.retrieve(cart.region_id)
-    }
 
     const final = await this.runDecorators_(c)
     return final
@@ -293,10 +281,10 @@ class CartService extends BaseService {
     // Find all the products in the line item
     const products = []
     if (Array.isArray(item.content)) {
-      item.content.forEach(c => products.push(`${c.product._id}`))
+      item.content.forEach(c => products.push(`${c.product.id}`))
     } else {
       if (item.content.product) {
-        products.push(`${item.content.product._id}`)
+        products.push(`${item.content.product.id}`)
       }
     }
 
@@ -311,18 +299,18 @@ class CartService extends BaseService {
    */
   async removeLineItem(cartId, lineItemId) {
     const cart = await this.retrieve(cartId)
-    const itemToRemove = cart.items.find(line => line._id.equals(lineItemId))
+    const itemToRemove = cart.items.find(line => line.id.equals(lineItemId))
     if (!itemToRemove) {
       return Promise.resolve(cart)
     }
 
     const update = {
-      $pull: { items: { _id: itemToRemove._id } },
+      $pull: { items: { id: itemToRemove.id } },
     }
 
     // Remove shipping methods if they are not needed
     if (cart.shipping_methods && cart.shipping_methods.length) {
-      const filteredItems = cart.items.filter(i => !i._id.equals(lineItemId))
+      const filteredItems = cart.items.filter(i => !i.id.equals(lineItemId))
 
       let newShippingMethods = await Promise.all(
         cart.shipping_methods.map(async m => {
@@ -353,7 +341,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cartId,
+          id: cartId,
         },
         update,
         { session: this.current_session }
@@ -432,8 +420,8 @@ class CartService extends BaseService {
       return this.cartModel_
         .updateOne(
           {
-            _id: cartId,
-            "items._id": currentItem._id,
+            id: cartId,
+            "items.id": currentItem.id,
           },
           {
             $set: {
@@ -467,7 +455,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cartId,
+          id: cartId,
         },
         {
           $push: {
@@ -490,7 +478,7 @@ class CartService extends BaseService {
    * Updates a cart's existing line item.
    * @param {string} cartId - the id of the cart to update
    * @param {string} lineItemId - the id of the line item to update.
-   * @param {LineItem} lineItem - the line item to update. Must include an _id
+   * @param {LineItem} lineItem - the line item to update. Must include an id
    *    field.
    * @return {Promise} the result of the update operation
    */
@@ -501,12 +489,12 @@ class CartService extends BaseService {
     if (!lineItemId) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Line Item must have an _id corresponding to an existing line item id"
+        "Line Item must have an id corresponding to an existing line item id"
       )
     }
 
     // Ensure that the line item exists in the cart
-    const lineItemExists = cart.items.find(i => i._id.equals(lineItemId))
+    const lineItemExists = cart.items.find(i => i.id.equals(lineItemId))
     if (!lineItemExists) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -531,8 +519,8 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cartId,
-          "items._id": lineItemId,
+          id: cartId,
+          "items.id": lineItemId,
         },
         {
           $set: {
@@ -554,9 +542,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateCustomerId(cartId, customerId) {
-    let cart
-
-    cart = await this.retrieve(cartId)
+    const cart = await this.retrieve(cartId)
 
     const schema = Validator.objectId().required()
     const { value, error } = schema.validate(customerId.toString())
@@ -568,7 +554,7 @@ class CartService extends BaseService {
     }
 
     return this.cartModel_
-      .update({ _id: cart._id }, { customer_id: value })
+      .update({ id: cart.id }, { customer_id: value })
       .then(result => {
         // Notify subscribers
         this.eventBus_
@@ -618,17 +604,17 @@ class CartService extends BaseService {
       }
     }
 
-    const customerChanged = !customer._id.equals(cart.customer_id)
+    const customerChanged = !customer.id.equals(cart.customer_id)
 
     return this.cartModel_
       .updateOne(
         {
-          _id: cart._id,
+          id: cart.id,
         },
         {
           $set: {
             email: value,
-            customer_id: customer._id,
+            customer_id: customer.id,
           },
         },
         { session: this.current_session }
@@ -665,7 +651,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cart._id,
+          id: cart.id,
         },
         {
           $set: { billing_address: value },
@@ -705,7 +691,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cartId,
+          id: cartId,
         },
         {
           $set: { shipping_address: value },
@@ -746,7 +732,7 @@ class CartService extends BaseService {
     }
 
     // if discount is already there, we simply resolve
-    if (cart.discounts.includes(discount._id)) {
+    if (cart.discounts.includes(discount.id)) {
       return Promise.resolve()
     }
 
@@ -766,7 +752,7 @@ class CartService extends BaseService {
       return this.cartModel_
         .updateOne(
           {
-            _id: cart._id,
+            id: cart.id,
           },
           {
             $push: { discounts: discount },
@@ -785,10 +771,10 @@ class CartService extends BaseService {
       return this.cartModel_
         .updateOne(
           {
-            _id: cart._id,
+            id: cart.id,
           },
           {
-            $pull: { discounts: { _id: shippingDisc[0]._id } },
+            $pull: { discounts: { id: shippingDisc[0].id } },
             $push: { discounts: discount },
           },
           { session: this.current_session }
@@ -805,7 +791,7 @@ class CartService extends BaseService {
       return this.cartModel_
         .updateOne(
           {
-            _id: cart._id,
+            id: cart.id,
           },
           {
             $push: { discounts: discount },
@@ -821,10 +807,10 @@ class CartService extends BaseService {
       return this.cartModel_
         .updateOne(
           {
-            _id: cart._id,
+            id: cart.id,
           },
           {
-            $pull: { discounts: { _id: otherDisc[0]._id } },
+            $pull: { discounts: { id: otherDisc[0].id } },
             $push: { discounts: discount },
           },
           { session: this.current_session }
@@ -840,7 +826,7 @@ class CartService extends BaseService {
   async removeDiscount(cartId, discountCode) {
     const cart = await this.retrieve(cartId)
     return this.cartModel_.updateOne(
-      { _id: cart._id },
+      { id: cart.id },
       {
         $pull: { discounts: { code: discountCode } },
       },
@@ -907,7 +893,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cart._id,
+          id: cart.id,
         },
         {
           $set: { payment_method: paymentMethod },
@@ -940,7 +926,7 @@ class CartService extends BaseService {
       return this.cartModel_
         .updateOne(
           {
-            _id: cart._id,
+            id: cart.id,
           },
           {
             $set: { payment_sessions: [] },
@@ -1011,7 +997,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cart._id,
+          id: cart.id,
         },
         {
           $set: { payment_sessions: sessions.concat(newSessions) },
@@ -1048,7 +1034,7 @@ class CartService extends BaseService {
         }
 
         return this.cartModel_
-          .updateOne({ _id: cart._id }, selector, {
+          .updateOne({ id: cart.id }, selector, {
             session: this.current_session,
           })
           .then(result => {
@@ -1073,7 +1059,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cart._id,
+          id: cart.id,
           "payment_sessions.provider_id": providerId,
         },
         {
@@ -1116,7 +1102,7 @@ class CartService extends BaseService {
     )
 
     const profile = await this.shippingProfileService_.list({
-      shipping_options: option._id,
+      shipping_options: option.id,
     })
     if (profile.length !== 1) {
       throw new MedusaError(
@@ -1125,7 +1111,7 @@ class CartService extends BaseService {
       )
     }
 
-    option.profile_id = profile[0]._id
+    option.profile_id = profile[0].id
 
     // Go through all existing selected shipping methods and update the one
     // that has the same profile as the selected shipping method.
@@ -1163,7 +1149,7 @@ class CartService extends BaseService {
     return this.cartModel_
       .updateOne(
         {
-          _id: cart._id,
+          id: cart.id,
         },
         {
           $set: { shipping_methods: newMethods, items: newItems },
@@ -1188,7 +1174,7 @@ class CartService extends BaseService {
     const region = await this.regionService_.retrieve(regionId)
 
     let update = {
-      region_id: region._id,
+      region_id: region.id,
     }
 
     // If the cart contains items we want to change the unit_price field of each
@@ -1200,7 +1186,7 @@ class CartService extends BaseService {
             lineItem.has_shipping = false
             lineItem.content = await this.updateContentPrice_(
               lineItem.content,
-              region._id
+              region.id
             )
           } catch (err) {
             return null
@@ -1264,7 +1250,7 @@ class CartService extends BaseService {
 
     return this.cartModel_
       .updateOne(
-        { _id: cart._id },
+        { id: cart.id },
         { $set: update },
         { session: this.current_session }
       )
@@ -1278,7 +1264,7 @@ class CartService extends BaseService {
   async delete(cartId) {
     const cart = await this.retrieve(cartId)
     return this.cartModel_.deleteOne(
-      { _id: cart._id },
+      { id: cart.id },
       { session: this.current_session }
     )
   }
@@ -1305,7 +1291,7 @@ class CartService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.cartModel_
       .updateOne(
-        { _id: validatedId },
+        { id: validatedId },
         { $set: { [keyPath]: value } },
         { session: this.current_session }
       )
@@ -1338,7 +1324,7 @@ class CartService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.cartModel_
       .updateOne(
-        { _id: validatedId },
+        { id: validatedId },
         { $unset: { [keyPath]: "" } },
         { session: this.current_session }
       )

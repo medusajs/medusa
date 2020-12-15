@@ -26,27 +26,23 @@ export default async (req, res) => {
     if (!value.region_id) {
       const regionService = req.scope.resolve("regionService")
       const regions = await regionService.list()
-      regionId = regions[0]._id
-    }
-
-    let customerId = ""
-    let email = ""
-    if (req.user && req.user.customer_id) {
-      const customerService = req.scope.resolve("customerService")
-      const customer = await customerService.retrieve(req.user.customer_id)
-      customerId = customer._id
-      email = customer.email
+      regionId = regions[0].id
     }
 
     const toCreate = {
       region_id: regionId,
-      customer_id: customerId,
-      email,
+    }
+
+    if (req.user && req.user.customer_id) {
+      const customerService = req.scope.resolve("customerService")
+      const customer = await customerService.retrieve(req.user.customer_id)
+      toCreate.customer_id = customer.id
+      toCreate.email = customer.email
     }
 
     if (value.country_code) {
       toCreate.shipping_address = {
-        country_code: value.country_code.toUpperCase(),
+        country_code: value.country_code.toLowerCase(),
       }
     }
 
@@ -59,12 +55,12 @@ export default async (req, res) => {
             i.quantity,
             value.region_id
           )
-          await cartService.addLineItem(cart._id, lineItem)
+          await cartService.addLineItem(cart.id, lineItem)
         })
       )
     }
 
-    cart = await cartService.retrieve(cart._id)
+    cart = await cartService.retrieve(cart.id)
     cart = await cartService.decorate(cart, [], ["region"])
     res.status(200).json({ cart })
   } catch (err) {
