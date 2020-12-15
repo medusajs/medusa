@@ -7,7 +7,6 @@ import Markdown from "react-markdown"
 import Highlight from "react-highlight.js"
 import { Helmet } from "react-helmet"
 import Collapsible from "react-collapsible"
-import logo from "../../images/logo.png"
 
 import Layout from "../../components/layout"
 import "highlight.js/styles/a11y-light.css"
