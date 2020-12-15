@@ -8,6 +8,25 @@ class BaseService {
   }
 
   /**
+   * Wraps some work within a transactional block. If the service already has
+   * a transaction manager attached this will be reused, otherwise a new
+   * transaction manager is created.
+   * @param {function} work - the transactional work to be done
+   * @param {string} isolation - the isolation level to be used for the work.
+   * @return {any} the result of the transactional work
+   */
+  atomicPhase_(work, isolation) {
+    if (this.transactionManager_) {
+      return work(this.transactionManager_)
+    } else {
+      if (isolation) {
+        return this.manager.transaction(isolation, m => work(m))
+      }
+      return this.manager.transaction(m => work(m))
+    }
+  }
+
+  /**
    * Adds a decorator to a service. The decorator must be a function and should
    * return a decorated object.
    * @param {function} fn - the decorator to add to the service

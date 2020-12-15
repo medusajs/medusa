@@ -30,10 +30,11 @@ class CartService extends BaseService {
   }) {
     super()
 
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
     /** @private @const {CartModel} */
     this.cartRepository_ = cartRepository
-
-    this.cartModel_ = manager.getCustomRepository(cartRepository)
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -219,38 +220,47 @@ class CartService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(data) {
-    const { region_id } = data
-    if (!region_id) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `A region_id must be provided when creating a cart`
-      )
-    }
-
-    const region = await this.regionService_.retrieve(region_id, ["countries"])
-    if (!data.shipping_address) {
-      if (region.countries.length === 1) {
-        // Preselect the country if the region only has 1
-        data.shipping_address = {
-          country_code: region.countries[0],
-        }
-      }
-    } else {
-      if (!region.countries.includes(data.shipping_address.country_code)) {
+    return this.atomicPhase_(async manager => {
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const { region_id } = data
+      if (!region_id) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Shipping country not in region"
+          MedusaError.Types.INVALID_DATA,
+          `A region_id must be provided when creating a cart`
         )
       }
-    }
 
-    const toCreate = {
-      ...data,
-      region_id: region.id,
-    }
+      const region = await this.regionService_.retrieve(region_id, [
+        "countries",
+      ])
+      if (!data.shipping_address) {
+        if (region.countries.length === 1) {
+          // Preselect the country if the region only has 1
+          data.shipping_address = {
+            country_code: region.countries[0],
+          }
+        }
+      } else {
+        if (!region.countries.includes(data.shipping_address.country_code)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Shipping country not in region"
+          )
+        }
+      }
 
-    const inProgress = this.cartModel_.create(toCreate)
-    return this.cartModel_.save(inProgress)
+      const toCreate = {
+        ...data,
+        region_id: region.id,
+      }
+
+      const inProgress = cartRepo.create(toCreate)
+      const result = cartRepo.save(inProgress)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.CREATED, result)
+      return result
+    })
   }
 
   /**
@@ -273,84 +283,55 @@ class CartService extends BaseService {
   }
 
   /**
-   * Returns an array of product ids in a line item.
-   * @param {LineItem} item - the line item to fetch products from
-   * @return {[string]} an array of product ids
-   */
-  getItemProducts_(item) {
-    // Find all the products in the line item
-    const products = []
-    if (Array.isArray(item.content)) {
-      item.content.forEach(c => products.push(`${c.product.id}`))
-    } else {
-      if (item.content.product) {
-        products.push(`${item.content.product.id}`)
-      }
-    }
-
-    return products
-  }
-
-  /**
    * Removes a line item from the cart.
    * @param {string} cartId - the id of the cart that we will remove from
    * @param {LineItem} lineItemId - the line item to remove.
    * @retur {Promise} the result of the update operation
    */
   async removeLineItem(cartId, lineItemId) {
-    const cart = await this.retrieve(cartId)
-    const itemToRemove = cart.items.find(line => line.id.equals(lineItemId))
-    if (!itemToRemove) {
-      return Promise.resolve(cart)
-    }
+    return this.atomicPhase_(async manager => {
+      const smRepo = manager.getCustomRepository(this.shippingMethodRepository_)
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const liRepo = manager.getCustomRepository(this.lineItemRepository_)
 
-    const update = {
-      $pull: { items: { id: itemToRemove.id } },
-    }
+      const lineItem = await liRepo.findOne({ id: lineItemId, cart_id: cartId })
 
-    // Remove shipping methods if they are not needed
-    if (cart.shipping_methods && cart.shipping_methods.length) {
-      const filteredItems = cart.items.filter(i => !i.id.equals(lineItemId))
+      const cart = await cartRepo.findOne({
+        id: cartId,
+        relations: ["items", "items.variant", "items.variant.product"],
+      })
 
-      let newShippingMethods = await Promise.all(
-        cart.shipping_methods.map(async m => {
-          const profile = await this.shippingProfileService_.retrieve(
-            m.profile_id
+      // Remove shipping methods if they are not needed
+      if (cart.shipping_methods && cart.shipping_methods.length) {
+        const filteredItems = cart.items.filter(i => !i.id.equals(lineItemId))
+
+        let toDelete = cart.shipping_methods.map(m => {
+          const hasItem = filteredItems.find(
+            item => item.variant.product.profile_id === m.profile_id
           )
-          const hasItem = filteredItems.find(item => {
-            const products = this.getItemProducts_(item)
-            return products.some(p => profile.products.includes(p))
-          })
 
           if (hasItem) {
-            return m
+            return null
           }
 
-          return null
+          return m
         })
-      )
-      newShippingMethods = newShippingMethods.filter(n => !!n)
+        toDelete = toDelete.filter(n => !!n)
 
-      if (newShippingMethods.length !== cart.shipping_methods.length) {
-        update.$set = {
-          shipping_methods: newShippingMethods,
+        if (toDelete.length > 0) {
+          await smRepo.remove(toDelete)
         }
       }
-    }
 
-    return this.cartModel_
-      .updateOne(
-        {
-          id: cartId,
-        },
-        update,
-        { session: this.current_session }
-      )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
-        return result
-      })
+      await liRepo.remove(lineItem)
+
+      const result = cartRepo.findOne({ id: cartId })
+      // Notify subscribers
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**

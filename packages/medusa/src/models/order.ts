@@ -196,7 +196,7 @@ export class Order {
   @OneToMany(
     () => LineItem,
     lineItem => lineItem.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   items: LineItem[]
 

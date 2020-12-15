@@ -7,6 +7,7 @@ export default async ({ container, configModule }) => {
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     entities,
+    logging: true,
   })
 
   return connection
