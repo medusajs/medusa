@@ -14,17 +14,22 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "@emotion/react": "^11.1.2",
+    "@emotion/styled": "^11.0.0",
     "emotion-theming": "^10.0.27",
     "gatsby": "^2.24.66",
     "gatsby-plugin-anchor-links": "^1.1.1",
+    "gatsby-plugin-emotion": "^5.0.0",
     "gatsby-plugin-react-helmet": "^3.3.12",
     "gatsby-source-filesystem": "^2.3.31",
     "gatsby-transformer-yaml": "^2.4.13",
     "react": "^16.12.0",
+    "react-collapsible": "^2.8.1",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.1.0",
     "react-highlight.js": "^1.0.7",
     "react-intersection-observer": "^8.29.0",
+    "react-markdown": "^5.0.3",
     "rebass": "^4.0.7"
   },
   "devDependencies": {
