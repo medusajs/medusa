@@ -20,6 +20,12 @@ import { RegionServiceMock } from "../__mocks__/region"
 import { CounterServiceMock } from "../__mocks__/counter"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 
+const manager = {
+  getCustomRepository(repo) {
+    return repo
+  },
+}
+
 describe("OrderService", () => {
   describe("create", () => {
     const orderService = new OrderService({

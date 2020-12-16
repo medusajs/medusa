@@ -20,9 +20,9 @@ class BaseService {
       return work(this.transactionManager_)
     } else {
       if (isolation) {
-        return this.manager.transaction(isolation, m => work(m))
+        return this.manager_.transaction(isolation, m => work(m))
       }
-      return this.manager.transaction(m => work(m))
+      return this.manager_.transaction(m => work(m))
     }
   }
 
