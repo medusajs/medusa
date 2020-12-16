@@ -150,9 +150,10 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the variant to set prices for
    * @param {string} currencyCode - the currency to set prices for
    * @param {number} amount - the amount to set the price to
+   * @param {number} saleAmount - the sale amount to set the price to
    * @return {Promise} the result of the update operation
    */
-  async setCurrencyPrice(variantId, currencyCode, amount) {
+  async setCurrencyPrice(variantId, currencyCode, amount, saleAmount) {
     const variant = await this.retrieve(variantId)
 
     // If prices already exist we need to update all prices with the same
@@ -162,6 +163,7 @@ class ProductVariantService extends BaseService {
       const newPrices = variant.prices.map(moneyAmount => {
         if (moneyAmount.currency_code === currencyCode) {
           moneyAmount.amount = amount
+          moneyAmount.sale_amount = saleAmount
 
           if (!moneyAmount.region_id) {
             foundDefault = true
@@ -176,6 +178,7 @@ class ProductVariantService extends BaseService {
       if (!foundDefault) {
         newPrices.push({
           currency_code: currencyCode,
+          sale_amount: saleAmount,
           amount,
         })
       }
@@ -210,6 +213,7 @@ class ProductVariantService extends BaseService {
             prices: [
               {
                 currency_code: currencyCode,
+                sale_amount: saleAmount,
                 amount,
               },
             ],
@@ -238,18 +242,28 @@ class ProductVariantService extends BaseService {
     const region = await this.regionService_.retrieve(regionId)
 
     let price
-    variant.prices.forEach(({ region_id, amount, currency_code }) => {
-      if (!price && !region_id && currency_code === region.currency_code) {
-        // If we haven't yet found a price and the current money amount is
-        // the default money amount for the currency of the region we have found
-        // a possible price match
-        price = amount
-      } else if (region_id === region._id) {
-        // If the region matches directly with the money amount this is the best
-        // price
-        price = amount
+    variant.prices.forEach(
+      ({ region_id, amount, sale_amount, currency_code }) => {
+        if (!price && !region_id && currency_code === region.currency_code) {
+          // If we haven't yet found a price and the current money amount is
+          // the default money amount for the currency of the region we have found
+          // a possible price match
+          if (sale_amount) {
+            price = sale_amount
+          } else {
+            price = amount
+          }
+        } else if (region_id === region._id) {
+          // If the region matches directly with the money amount this is the best
+          // price
+          if (sale_amount) {
+            price = sale_amount
+          } else {
+            price = amount
+          }
+        }
       }
-    })
+    )
 
     // Return the price if we found a suitable match
     if (typeof price !== "undefined") {
@@ -268,9 +282,10 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the variant to update
    * @param {string} regionId - the id of the region to set price for
    * @param {number} amount - the amount to set the price to
+   * @param {number} saleAmount - the amount to set the price to
    * @return {Promise} the result of the update operation
    */
-  async setRegionPrice(variantId, regionId, amount) {
+  async setRegionPrice(variantId, regionId, amount, saleAmount) {
     const variant = await this.retrieve(variantId)
     const region = await this.regionService_.retrieve(regionId)
 
@@ -280,6 +295,7 @@ class ProductVariantService extends BaseService {
       const newPrices = variant.prices.map(moneyAmount => {
         if (moneyAmount.region_id === region._id) {
           moneyAmount.amount = amount
+          moneyAmount.sale_amount = amount
           foundRegion = true
         }
 
@@ -291,6 +307,7 @@ class ProductVariantService extends BaseService {
         newPrices.push({
           region_id: region._id,
           currency_code: region.currency_code,
+          sale_amount: saleAmount,
           amount,
         })
       }
@@ -327,10 +344,12 @@ class ProductVariantService extends BaseService {
               {
                 region_id: region._id,
                 currency_code: region.currency_code,
+                sale_amount: saleAmount,
                 amount,
               },
               {
                 currency_code: region.currency_code,
+                sale_amount: saleAmount,
                 amount,
               },
             ],

@@ -31,6 +31,7 @@ export default async (req, res) => {
               region_id: Validator.string(),
               currency_code: Validator.string(),
               amount: Validator.number().required(),
+              sale_amount: Validator.number().optional(),
             })
             .xor("region_id", "currency_code")
         ),
