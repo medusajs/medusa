@@ -271,8 +271,17 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async setRegionPrice(variantId, regionId, amount) {
+    return this.atomicPhase_(async manager => {
+      const variantRepo = manager.getCustomRepository(this.productVariantRepository_)
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepository_)
+      
+      const priceToUpdate = 
+    })
+    
+    
     const variant = await this.retrieve(variantId)
     const region = await this.regionService_.retrieve(regionId)
+    
 
     // If prices already exist we need to update all prices with the same currency
     if (variant.prices.length) {
@@ -355,6 +364,10 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation.
    */
   async updateOptionValue(variantId, optionId, optionValue) {
+    // Find option based on variant and option id
+    // uodae value
+    // save
+    
     if (typeof optionValue !== "string" && typeof optionValue !== "number") {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
