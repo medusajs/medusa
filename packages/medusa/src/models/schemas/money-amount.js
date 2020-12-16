@@ -8,4 +8,5 @@ export default new mongoose.Schema({
   region_id: { type: String },
   currency_code: { type: String, required: true },
   amount: { type: Number, required: true, min: 0 },
+  sale_amount: { type: Number, min: 0 },
 })

@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.52](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.51...@medusajs/medusa@1.0.52) (2020-12-09)
+
+
+### Bug Fixes
+
+* .gitignore ([ed4d2b4](https://github.com/medusajs/medusa/commit/ed4d2b4b3d7ae4dce834e83d776781f2dbbccb52))
+
+
+
+
+
+## [1.0.51](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.50...@medusajs/medusa@1.0.51) (2020-12-09)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.50](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.49...@medusajs/medusa@1.0.50) (2020-12-08)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.49](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.48...@medusajs/medusa@1.0.49) (2020-12-04)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.48](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.47...@medusajs/medusa@1.0.48) (2020-12-02)
+
+
+### Bug Fixes
+
+* allow swaps with total < 0 ([#143](https://github.com/medusajs/medusa/issues/143)) ([304431e](https://github.com/medusajs/medusa/commit/304431e7c35e73b5dcd3ad4f28574b7cda091355))
+
+
+
+
+
 ## [1.0.47](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.46...@medusajs/medusa@1.0.47) (2020-11-29)
 
 
