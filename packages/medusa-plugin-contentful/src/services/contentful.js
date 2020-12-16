@@ -315,7 +315,7 @@ class ContentfulService extends BaseService {
         return this.createProductVariantInContentful(variant)
       }
 
-      const cleanPrices = variants.prices.map((price) => ({
+      const cleanPrices = variant.prices.map((price) => ({
         ...price,
         sale_amount: price.sale_amount || undefined,
       }))
