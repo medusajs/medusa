@@ -1,11 +1,10 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { createClient } from "contentful-management"
-import redis from "redis"
 
 class ContentfulService extends BaseService {
   constructor(
-    { productService, productVariantService, eventBusService },
+    { productService, redisClient, productVariantService, eventBusService },
     options
   ) {
     super()
@@ -22,9 +21,7 @@ class ContentfulService extends BaseService {
       accessToken: options.access_token,
     })
 
-    this.redis_ = redis.createClient({
-      url: options.redis_url,
-    })
+    this.redis_ = redisClient
   }
 
   async getIgnoreIds_(type) {
