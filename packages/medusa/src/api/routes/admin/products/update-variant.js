@@ -13,6 +13,7 @@ export default async (req, res) => {
           region_id: Validator.string(),
           currency_code: Validator.string(),
           amount: Validator.number().required(),
+          sale_amount: Validator.number().optional(),
         })
         .xor("region_id", "currency_code")
     ),
@@ -45,13 +46,15 @@ export default async (req, res) => {
           await productVariantService.setRegionPrice(
             variant_id,
             price.region_id,
-            price.amount
+            price.amount,
+            price.sale_amount || undefined
           )
         } else {
           await productVariantService.setCurrencyPrice(
             variant_id,
             price.currency_code,
-            price.amount
+            price.amount,
+            price.sale_amount || undefined
           )
         }
       }

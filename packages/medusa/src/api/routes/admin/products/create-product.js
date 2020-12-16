@@ -20,6 +20,7 @@ export default async (req, res) => {
         .items({
           currency_code: Validator.string().required(),
           amount: Validator.number().required(),
+          sale_amount: Validator.number().optional(),
         })
         .required(),
       options: Validator.array()
