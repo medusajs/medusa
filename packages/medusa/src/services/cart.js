@@ -198,12 +198,9 @@ class CartService extends BaseService {
    * @return {Promise<Cart>} the cart document.
    */
   async retrieve(cartId) {
+    const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
     const validatedId = this.validateId_(cartId)
-    const cart = await this.cartModel_
-      .findOne({ id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const cart = await cartRepo.findOne({ where: { id: validatedId } })
 
     if (!cart) {
       throw new MedusaError(
@@ -211,6 +208,7 @@ class CartService extends BaseService {
         `Cart with ${cartId} was not found`
       )
     }
+
     return cart
   }
 
@@ -233,15 +231,20 @@ class CartService extends BaseService {
       const region = await this.regionService_.retrieve(region_id, [
         "countries",
       ])
+
+      const regCountries = region.countries.map(
+        ({ country_code }) => country_code
+      )
+
       if (!data.shipping_address) {
         if (region.countries.length === 1) {
           // Preselect the country if the region only has 1
           data.shipping_address = {
-            country_code: region.countries[0],
+            country_code: regCountries[0],
           }
         }
       } else {
-        if (!region.countries.includes(data.shipping_address.country_code)) {
+        if (!regCountries.includes(data.shipping_address.country_code)) {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             "Shipping country not in region"

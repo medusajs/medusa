@@ -30,7 +30,7 @@
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
     "medusa-core-utils": "^1.0.12-alpha.550+5fe9cd6",
-    "mongoose": "^5.8.0"
+    "randomatic": "^3.1.1"
   },
   "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"
 }
