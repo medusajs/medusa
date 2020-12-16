@@ -178,13 +178,15 @@ class ProductService extends BaseService {
                     await this.productVariantService_.setRegionPrice(
                       variant._id,
                       price.region_id,
-                      price.amount
+                      price.amount,
+                      price.sale_amount || undefined
                     )
                   } else {
                     await this.productVariantService_.setCurrencyPrice(
                       variant._id,
                       price.currency_code,
-                      price.amount
+                      price.amount,
+                      price.sale_amount || undefined
                     )
                   }
                 }
