@@ -315,6 +315,11 @@ class ContentfulService extends BaseService {
         return this.createProductVariantInContentful(variant)
       }
 
+      const cleanPrices = variants.prices.map((price) => ({
+        ...price,
+        sale_amount: price.sale_amount || undefined,
+      }))
+
       const variantEntryFields = {
         ...variantEntry.fields,
         title: {
@@ -327,7 +332,7 @@ class ContentfulService extends BaseService {
           "en-US": variant.options,
         },
         prices: {
-          "en-US": variant.prices,
+          "en-US": cleanPrices,
         },
         objectId: {
           "en-US": variant._id,
