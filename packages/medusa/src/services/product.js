@@ -95,14 +95,9 @@ class ProductService extends BaseService {
       this.productRepository_
     )
 
-    const product = await productRepo.findOne(validatedId)
-
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with id: ${productId} was not found`
-      )
-    }
+    const product = await productRepo.findOneOrFail({
+      where: { id: validatedId },
+    })
 
     return product
   }
@@ -170,9 +165,9 @@ class ProductService extends BaseService {
   }
 
   /**
-   * Updates a product. Metadata updates and product variant updates should
-   * use dedicated methods, e.g. `setMetadata`, `addVariant`, etc. The function
-   * will throw errors if metadata or product variant updates are attempted.
+   * Updates a product. Product variant updates should use dedicated methods,
+   * e.g. `addVariant`, etc. The function will throw errors if metadata or
+   * product variant updates are attempted.
    * @param {string} productId - the id of the product. Must be a string that
    *   can be casted to an ObjectId
    * @param {object} update - an object with the update values.
@@ -184,145 +179,57 @@ class ProductService extends BaseService {
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_
       )
-      const optionValueRepo = manager.getCustomRepository(
-        this.optionValueRepository_
-      )
 
-      const product = await productRepo.findOne({
+      const product = await productRepo.findOneOrFail({
         where: { id: productId },
         relations: ["variants"],
       })
 
-      if (update.metadata) {
-        // SET METADATA
+      const { variants, metadata, options, ...rest } = update
+
+      if (metadata) {
+        product.metadata = this.setMetadata_(product, metadata)
       }
 
-      if (update.variants) {
+      if (variants) {
         // Iterate product variants and update their properties accordingly
         for (const variant of product.variants) {
-          const exists = !update.variants.find(v => v.id && variant.id === v.id)
+          const exists = variants.find(v => v.id && variant.id === v.id)
           if (!exists) {
             await productVariantRepo.remove(variant)
           }
         }
 
-        for (const newVariant of update.variants) {
+        for (const newVariant of variants) {
           if (newVariant.id) {
             const variant = product.variants.find(v => v.id === newVariant.id)
 
             if (!variant) {
               throw new MedusaError(
                 MedusaError.Types.NOT_FOUND,
-                `Variant with id ${newVariant.id} deos not exist`
+                `Variant with id ${newVariant.id} is not associated with this product`
               )
             }
 
-            if (variant.prices) {
-              const equalPrices = compareObjectsByProp(
-                newVariant,
-                variant,
-                "prices"
-              )
-
-              if (!equalPrices) {
-                for (const price of newVariant.prices) {
-                  if (price.region_id) {
-                    await this.productVariantService_.setRegionPrice(
-                      variant.id,
-                      price.region_id,
-                      price.amount
-                    )
-                  } else {
-                    await this.productVariantService_.setCurrencyPrice(
-                      variant.id,
-                      price.currency_code,
-                      price.amount
-                    )
-                  }
-                }
-              }
-            }
-
-            if (variant.options) {
-              const equalOptions = compareObjectsByProp(
-                newVariant,
-                variant,
-                "options"
-              )
-
-              if (!equalOptions) {
-                for (const option of newVariant.options) {
-                  await this.productVariantService_.updateOptionValue(
-                    variantId,
-                    option.option_id,
-                    value
-                  )
-                }
-              }
-            }
+            await this.productVariantService_.update(variant, newVariant)
           } else {
-            // create variant
+            // If the provided variant does not have an id, we assume that it
+            // should be created
+            await this.productVariantService_.create(product.id, variant)
           }
         }
       }
+
+      for (const [key, value] of Object.entries(rest)) {
+        product[key] = value
+      }
+
+      const result = await productRepo.save(product)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, result)
+      return result
     })
-
-    if (update.variants) {
-      await Promise.all(
-        update.variants.map(async variant => {
-          if (variant._id) {
-            const variantFromDb = existingVariants.find(v =>
-              v._id.equals(variant._id)
-            )
-
-            if (variant.options && variant.options.length) {
-              // if equal we dont want to update
-              const isOptionsEqual = compareObjectsByProp(
-                variant,
-                variantFromDb,
-                "options"
-              )
-
-              if (!isOptionsEqual) {
-                for (const option of variant.options) {
-                  await this.updateOptionValue(
-                    productId,
-                    variant._id,
-                    option.option_id,
-                    option.value
-                  )
-                }
-              }
-            }
-
-            delete variant.prices
-            delete variant.options
-
-            if (!_.isEmpty(variant)) {
-              await this.productVariantService_.update(variant._id, variant)
-            }
-          } else {
-            await this.createVariant(productId, variant).then(res => res._id)
-          }
-        })
-      )
-
-      delete update.variants
-    }
-
-    return this.productModel_
-      .updateOne(
-        { _id: validatedId },
-        { $set: update },
-        { runValidators: true }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 
   /**
@@ -330,88 +237,21 @@ class ProductService extends BaseService {
    * variants will also be deleted.
    * @param {string} productId - the id of the product to delete. Must be
    *   castable as an ObjectId
-   * @return {Promise} the result of the delete operation.
+   * @return {Promise} empty promise
    */
   async delete(productId) {
-    let product
-    try {
-      product = await this.retrieve(productId)
-    } catch (error) {
-      // Delete is idempotent, but we return a promise to allow then-chaining
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      // Should not fail, if product does not exist, since delete is idempotent
+      const product = await productRepo.findOne({ where: { id: productId } })
+
+      if (!product) return Promise.resolve()
+
+      await productRepo.softRemove(product)
+
       return Promise.resolve()
-    }
-
-    await Promise.all(
-      product.variants.map(id => this.productVariantService_.delete(id))
-    ).catch(err => {
-      throw err
     })
-
-    return this.productModel_.deleteOne({ _id: product._id }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
-  }
-
-  /**
-   * Adds a product variant to a product. Will check that the given product
-   * variant has correct option values.
-   * @param {string} productId - the product the variant will be added to
-   * @param {string} variantId - the variant to add to the product
-   * @return {Promise} the result of update
-   */
-  async createVariant(productId, variant) {
-    const product = await this.retrieve(productId)
-
-    if (product.options.length !== variant.options.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
-      )
-    }
-
-    product.options.forEach(option => {
-      if (!variant.options.find(vo => option._id.equals(vo.option_id))) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Variant options do not contain value for ${option.title}`
-        )
-      }
-    })
-
-    let combinationExists = false
-    if (product.variants && product.variants.length) {
-      const variants = await this.retrieveVariants(productId)
-      // Check if option value of the variant to add already exists. Go through
-      // each existing variant. Check if this variants option values are
-      // identical to the option values of the variant being added.
-      combinationExists = variants.some(v => {
-        return v.options.every(option => {
-          const variantOption = variant.options.find(o =>
-            option.option_id.equals(o.option_id)
-          )
-          return option.value === variantOption.value
-        })
-      })
-    }
-
-    if (combinationExists) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Variant with provided options already exists`
-      )
-    }
-
-    const newVariant = await this.productVariantService_.createDraft(variant)
-
-    return this.productModel_
-      .updateOne({ _id: product._id }, { $push: { variants: newVariant._id } })
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 
   /**
@@ -423,108 +263,80 @@ class ProductService extends BaseService {
    * @return {Promise} the result of the model update operation
    */
   async addOption(productId, optionTitle) {
-    const product = await this.retrieve(productId)
-
-    // Make sure that option doesn't already exist
-    if (product.options.find(o => o.title === optionTitle)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `An option with the title: ${optionTitle} already exists`
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productOptionRepo = manager.getCustomRepository(
+        this.productOptionRepository_
       )
-    }
 
-    const optionId = mongoose.Types.ObjectId()
-
-    // All product variants must have at least a dummy value for the new option
-    if (product.variants) {
-      await Promise.all(
-        product.variants.map(async variantId =>
-          this.productVariantService_.addOptionValue(
-            variantId,
-            optionId,
-            "Default Value"
-          )
-        )
-      ).catch(async err => {
-        // If any of the variants failed to add the new option value we clean up
-        return Promise.all(
-          product.variants.map(async variantId =>
-            this.productVariantService_.deleteOptionValue(variantId, optionId)
-          )
-        ).then(() => {
-          throw err
-        })
+      const product = await productRepo.findOneOrFail({
+        where: { id: productId },
+        relations: ["options", "variants"],
       })
-    }
 
-    // Everything went well add the product option
-    return this.productModel_
-      .updateOne(
-        { _id: productId },
-        {
-          $push: {
-            options: {
-              _id: optionId,
-              title: optionTitle,
-              product_id: productId,
-            },
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(async err => {
-        // If we failed to update the product clean up its variants
-        return Promise.all(
-          product.variants.map(async variantId =>
-            this.productVariantService_.deleteOptionValue(variantId, optionId)
-          )
-        ).then(() => {
-          throw err
-        })
-      })
-  }
-
-  async reorderVariants(productId, variantOrder) {
-    const product = await this.retrieve(productId)
-
-    if (product.variants.length !== variantOrder.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Product variants and new variant order differ in length. To delete or add variants use removeVariant or addVariant`
-      )
-    }
-
-    const newOrder = variantOrder.map(vId => {
-      const variant = product.variants.find(id => id === vId)
-      if (!variant) {
+      if (product.options.find(o => o.title === optionTitle)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product has no variant with id: ${vId}`
+          `An option with the title: ${optionTitle} already exists`
         )
       }
 
-      return variant
-    })
+      const option = await productOptionRepo.create({
+        title: optionTitle,
+        product_id: productId,
+      })
 
-    return this.productModel_
-      .updateOne(
-        {
-          _id: productId,
-        },
-        {
-          $set: { variants: newOrder },
+      const result = await productOptionRepo.save(option)
+
+      for (const variant of product.variants) {
+        this.productVariantService_.addOptionValue(
+          variant.id,
+          option.id,
+          "Default Value"
+        )
+      }
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, result)
+      return result
+    })
+  }
+
+  async reorderVariants(productId, variantOrder) {
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const product = await productRepo.findOneOrFail({
+        where: { id: productId },
+        relations: ["variants"],
+      })
+
+      if (product.variants.length !== variantOrder.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product variants and new variant order differ in length.`
+        )
+      }
+
+      product.variants = variantOrder.map(vId => {
+        const variant = product.variants.find(id => id === vId)
+        if (!variant) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Product has no variant with id: ${vId}`
+          )
         }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
+
+        return variant
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      const result = productRepo.save(product)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**
@@ -537,43 +349,39 @@ class ProductService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async reorderOptions(productId, optionOrder) {
-    const product = await this.retrieve(productId)
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    if (product.options.length !== optionOrder.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Product options and new options order differ in length. To delete or add options use removeOption or addOption`
-      )
-    }
+      const product = await productRepo.findOneOrFail({
+        where: { id: productId },
+        relations: ["options"],
+      })
 
-    const newOrder = optionOrder.map(oId => {
-      const option = product.options.find(o => o._id === oId)
-      if (!option) {
+      if (product.options.length !== optionOrder.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product has no option with id: ${oId}`
+          `Product options and new options order differ in length.`
         )
       }
 
-      return option
-    })
-
-    return this.productModel_
-      .updateOne(
-        {
-          _id: productId,
-        },
-        {
-          $set: { options: newOrder },
+      product.options = optionOrder.map(oId => {
+        const option = product.options.find(o => o._id === oId)
+        if (!option) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Product has no option with id: ${oId}`
+          )
         }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
+
+        return option
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      const result = productRepo.save(product)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**
@@ -582,68 +390,71 @@ class ProductService extends BaseService {
    * @param {string} productId - the product whose option we are updating
    * @param {string} optionId - the id of the option we are updating
    * @param {object} data - the data to update the option with
-   * @return {Promise} the result of the update operation
+   * @return {Promise} the updated product
    */
   async updateOption(productId, optionId, data) {
-    const product = await this.retrieve(productId)
-
-    const option = product.options.find(o => o._id.equals(optionId))
-    if (!option) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product has no option with id: ${optionId}`
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productOptionsRepo = manager.getCustomRepository(
+        this.productOptionRepository_
       )
-    }
 
-    const { title, values } = data
-    const titleExists = product.options.some(
-      o =>
-        o.title.toUpperCase() === title.toUpperCase() && !o._id.equals(optionId)
-    )
-
-    if (titleExists) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `An option with title ${title} already exists`
-      )
-    }
-
-    const update = {}
-    update["options.$.title"] = title
-
-    return this.productModel_
-      .updateOne(
-        {
-          _id: productId,
-          "options._id": optionId,
-        },
-        {
-          $set: update,
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
+      const product = await productRepo.findOneOrFail({
+        where: { id: productId },
+        relations: ["options"],
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+
+      const { title, values } = data
+
+      const optionExists = product.options.some(
+        o => o.title.toUpperCase() === title.toUpperCase() && o.id !== optionId
+      )
+      if (optionExists) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `An option with title ${title} already exists`
+        )
+      }
+
+      const productOption = await productOptionsRepo.findOneOrFail({
+        where: { product_id: productId },
+        relations: ["product"],
       })
+
+      productOption.title = title
+      productOption.values = values
+
+      await productOptionsRepo.save(productOption)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, product)
+      return product
+    })
   }
 
   /**
    * Delete an option from a product.
    * @param {string} productId - the product to delete an option from
    * @param {string} optionId - the option to delete
-   * @return {Promise} return the result of update
+   * @return {Promise} the updated product
    */
   async deleteOption(productId, optionId) {
-    const product = await this.retrieve(productId)
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productOptionsRepo = manager.getCustomRepository(
+        this.productOptionRepository_
+      )
 
-    if (!product.options.find(o => o._id.equals(optionId))) {
-      return Promise.resolve()
-    }
+      const product = await productRepo.findOneOrFail({
+        where: { id: productId },
+        relations: ["variants", "variants.options"],
+      })
 
-    if (product.variants.length) {
+      const productOption = await productOptionsRepo.findOneOrFail({
+        where: { product_id: productId },
+      })
+
       // For the option we want to delete, make sure that all variants have the
       // same option values. The reason for doing is, that we want to avoid
       // duplicate variants. For example, if we have a product with size and
@@ -652,17 +463,15 @@ class ProductService extends BaseService {
       // we would end up with four variants: (black), (black), (blue), (blue).
       // We now have two duplicate variants. To ensure that this does not
       // happen, we will force the user to select which variants to keep.
-      const firstVariant = await this.productVariantService_.retrieve(
-        product.variants[0]
-      )
+      const firstVariant = product.variants[0]
+
       const valueToMatch = firstVariant.options.find(o =>
         o.option_id.equals(optionId)
       ).value
 
       const equalsFirst = await Promise.all(
-        product.variants.map(async vId => {
-          const v = await this.productVariantService_.retrieve(vId)
-          const option = v.options.find(o => o.option_id.equals(optionId))
+        product.variants.map(async v => {
+          const option = v.options.find(o => o.option_id === optionId)
           return option.value === valueToMatch
         })
       )
@@ -670,69 +479,18 @@ class ProductService extends BaseService {
       if (!equalsFirst.every(v => v)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `To delete an option, first delete all variants, such that when option is deleted, no duplicate variants will exist. For more info check MEDUSA.com`
+          `To delete an option, first delete all variants, such that when option is deleted, no duplicate variants will exist.`
         )
       }
-    }
 
-    const result = await this.productModel_
-      .updateOne(
-        { _id: productId },
-        {
-          $pull: {
-            options: {
-              _id: optionId,
-            },
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      // If we reach this point, we can safely delete the product option
+      await productOptionsRepo.softRemove(productOption)
 
-    // If we reached this point, we can delete option value from variants
-    if (product.variants.length) {
-      await Promise.all(
-        product.variants.map(async variantId =>
-          this.productVariantService_.deleteOptionValue(variantId, optionId)
-        )
-      )
-    }
-
-    return result
-  }
-
-  /**
-   * Removes variant from product
-   * @param {string} productId - the product to remove the variant from
-   * @param {string} variantId - the variant to remove from product
-   * @return {Promise} the result of update
-   */
-  async deleteVariant(productId, variantId) {
-    const product = await this.retrieve(productId)
-
-    await this.productVariantService_.delete(variantId)
-
-    return this.productModel_
-      .updateOne(
-        { _id: product._id },
-        {
-          $pull: {
-            variants: variantId,
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, product)
+      return product
+    })
   }
 
   /**
@@ -754,57 +512,30 @@ class ProductService extends BaseService {
 
   /**
    * Dedicated method to set metadata for a product.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} productId - the product to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
+   * @param {string} product - the product to set metadata for.
+   * @param {Object} metadata - the metadata to set
+   * @return {Object} updated metadata object
    */
-  async setMetadata(productId, key, value) {
-    const validatedId = this.validateId_(productId)
+  async setMetadata_(product, metadata) {
+    const existing = product.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+      newData[key] = value
     }
 
-    const keyPath = `metadata.${key}`
-    return this.productModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a product.
-   * @param {string} productId - the product to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(productId, key) {
-    const validatedId = this.validateId_(productId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+    const updated = {
+      ...existing,
+      ...newData,
     }
 
-    const keyPath = `metadata.${key}`
-    return this.productModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return updated
   }
 }
 

@@ -18,6 +18,7 @@ import randomize from "randomatic"
 
 import { Currency } from "./currency"
 import { ProductVariant } from "./product-variant"
+import { Region } from "./region"
 
 @Entity()
 export class MoneyAmount {
@@ -34,12 +35,22 @@ export class MoneyAmount {
   @Column({ type: "int" })
   amount: number
 
+  @Column({ type: "int" })
+  sale_amount: number
+
   @Column({ nullable: true })
   variant_id: string
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
+
+  @Column({ nullable: true })
+  region_id: string
+
+  @ManyToOne(() => Region)
+  @JoinColumn({ name: "region_id" })
+  region: Region
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date

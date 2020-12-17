@@ -15,7 +15,6 @@ import randomize from "randomatic"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
 
-@Index(["option_id", "value"], { unique: true })
 @Entity()
 export class ProductOptionValue {
   @PrimaryColumn()
