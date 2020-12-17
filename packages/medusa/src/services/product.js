@@ -13,12 +13,23 @@ class ProductService extends BaseService {
     CREATED: "product.created",
   }
 
-  /** @param { productModel: (ProductModel) } */
-  constructor({ productModel, eventBusService, productVariantService }) {
+  constructor({
+    manager,
+    productRepository,
+    productVariantRepository,
+    eventBusService,
+    productVariantService,
+  }) {
     super()
 
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
     /** @private @const {ProductModel} */
-    this.productModel_ = productModel
+    this.productRepository_ = productRepository
+
+    /** @private @const {ProductModel} */
+    this.productVariantRepository_ = productVariantRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -27,22 +38,30 @@ class ProductService extends BaseService {
     this.productVariantService_ = productVariantService
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ProductService({
+      manager: transactionManager,
+      productRepository: this.cartRepository_,
+      eventBusService: this.eventBus_,
+      productVariantService: this.productVariantService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Used to validate product ids. Throws an error if the cast fails
    * @param {string} rawId - the raw product id to validate.
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The productId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -58,29 +77,33 @@ class ProductService extends BaseService {
    * @return {Promise} the result of the count operation
    */
   count() {
-    return this.productModel_.count()
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+    return productRepo.count()
   }
 
   /**
    * Gets a product by id.
    * Throws in case of DB Error and if product was not found.
-   * @param {string} productId - the id of the product to get.
-   * @return {Promise<Product>} the product document.
+   * @param {string} productId - id of the product to get.
+   * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieve(productId) {
     const validatedId = this.validateId_(productId)
-    const product = await this.productModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    const product = await productRepo.findOne(validatedId)
 
     if (!product) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product with ${productId} was not found`
+        `Product with id: ${productId} was not found`
       )
     }
+
     return product
   }
 
@@ -90,28 +113,39 @@ class ProductService extends BaseService {
    * @return {Promise} an array of variants
    */
   async retrieveVariants(productId) {
-    const product = await this.retrieve(productId)
-    return this.productVariantService_.list({ _id: { $in: product.variants } })
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    const product = await productRepo.findOne({
+      where: { id: productId },
+      relations: ["variants"],
+    })
+
+    return product.variants
   }
 
   /**
    * Creates an unpublished product.
-   * @param {object} product - the product to create
+   * @param {object} productObject - the product to create
    * @return {Promise} resolves to the creation result.
    */
-  async createDraft(product) {
-    return this.productModel_
-      .create({
-        ...product,
+  async createDraft(productObject) {
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const product = await productRepo.create({
+        ...productObject,
         published: false,
       })
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.CREATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      const result = await productRepo.save(product)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.CREATED, result)
+      return result
+    })
   }
 
   /**
@@ -120,15 +154,19 @@ class ProductService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   async publish(productId) {
-    return this.productModel_
-      .updateOne({ _id: productId }, { $set: { published: true } })
-      .then(result => {
-        this.eventBus_.emit(ProductService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const product = await this.retrieve(productId)
+
+      product.published = true
+
+      const result = await productRepo.save(product)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**
@@ -141,48 +179,62 @@ class ProductService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(productId, update) {
-    const validatedId = this.validateId_(productId)
-
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productVariantRepo = manager.getCustomRepository(
+        this.productVariantRepository_
       )
-    }
+      const optionValueRepo = manager.getCustomRepository(
+        this.optionValueRepository_
+      )
 
-    if (update.variants) {
-      const existingVariants = await this.retrieveVariants(validatedId)
-      for (const existing of existingVariants) {
-        if (!update.variants.find(v => v._id && existing._id.equals(v._id))) {
-          await this.deleteVariant(productId, existing._id)
-        }
+      const product = await productRepo.findOne({
+        where: { id: productId },
+        relations: ["variants"],
+      })
+
+      if (update.metadata) {
+        // SET METADATA
       }
 
-      await Promise.all(
-        update.variants.map(async variant => {
-          if (variant._id) {
-            const variantFromDb = existingVariants.find(v =>
-              v._id.equals(variant._id)
-            )
-            if (variant.prices && variant.prices.length) {
-              // if equal we dont want to update
-              const isPricesEqual = compareObjectsByProp(
+      if (update.variants) {
+        // Iterate product variants and update their properties accordingly
+        for (const variant of product.variants) {
+          const exists = !update.variants.find(v => v.id && variant.id === v.id)
+          if (!exists) {
+            await productVariantRepo.remove(variant)
+          }
+        }
+
+        for (const newVariant of update.variants) {
+          if (newVariant.id) {
+            const variant = product.variants.find(v => v.id === newVariant.id)
+
+            if (!variant) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_FOUND,
+                `Variant with id ${newVariant.id} deos not exist`
+              )
+            }
+
+            if (variant.prices) {
+              const equalPrices = compareObjectsByProp(
+                newVariant,
                 variant,
-                variantFromDb,
                 "prices"
               )
 
-              if (!isPricesEqual) {
-                for (const price of variant.prices) {
+              if (!equalPrices) {
+                for (const price of newVariant.prices) {
                   if (price.region_id) {
                     await this.productVariantService_.setRegionPrice(
-                      variant._id,
+                      variant.id,
                       price.region_id,
                       price.amount
                     )
                   } else {
                     await this.productVariantService_.setCurrencyPrice(
-                      variant._id,
+                      variant.id,
                       price.currency_code,
                       price.amount
                     )
@@ -190,6 +242,38 @@ class ProductService extends BaseService {
                 }
               }
             }
+
+            if (variant.options) {
+              const equalOptions = compareObjectsByProp(
+                newVariant,
+                variant,
+                "options"
+              )
+
+              if (!equalOptions) {
+                for (const option of newVariant.options) {
+                  await this.productVariantService_.updateOptionValue(
+                    variantId,
+                    option.option_id,
+                    value
+                  )
+                }
+              }
+            }
+          } else {
+            // create variant
+          }
+        }
+      }
+    })
+
+    if (update.variants) {
+      await Promise.all(
+        update.variants.map(async variant => {
+          if (variant._id) {
+            const variantFromDb = existingVariants.find(v =>
+              v._id.equals(variant._id)
+            )
 
             if (variant.options && variant.options.length) {
               // if equal we dont want to update
@@ -649,58 +733,6 @@ class ProductService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
-  }
-
-  async updateOptionValue(productId, variantId, optionId, value) {
-    const product = await this.retrieve(productId)
-
-    // Check if the product-to-variant relationship holds
-    if (!product.variants.includes(variantId)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The variant could not be found in the product"
-      )
-    }
-
-    // Retrieve all variants
-    const variants = await this.retrieveVariants(productId)
-    const toUpdate = variants.find(v => v._id.equals(variantId))
-
-    // Check if an update would create duplicate variants
-    const canUpdate = variants.every(v => {
-      // The variant we update is irrelevant
-      if (v._id.equals(variantId)) {
-        return true
-      }
-
-      // Check if the variant's options are identical to the variant we
-      // are updating
-      const hasMatchingOptions = v.options.every(option => {
-        if (option.option_id.equals(optionId)) {
-          return option.value === value
-        }
-
-        const toUpdateOption = toUpdate.options.find(o =>
-          option.option_id.equals(o.option_id)
-        )
-        return toUpdateOption.value === option.value
-      })
-
-      return !hasMatchingOptions
-    })
-
-    if (!canUpdate) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "A variant with the given option value combination already exist"
-      )
-    }
-
-    return this.productVariantService_.updateOptionValue(
-      variantId,
-      optionId,
-      value
-    )
   }
 
   /**
