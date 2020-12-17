@@ -1263,30 +1263,31 @@ class CartService extends BaseService {
    * @return {Promise} resolves to the updated result.
    */
   async setMetadata(cartId, key, value) {
-    const validatedId = this.validateId_(cartId)
+    return this.atomicPhase_(async manager => {
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
+      const validatedId = this.validateId_(cartId)
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    const keyPath = `metadata.${key}`
-    return this.cartModel_
-      .updateOne(
-        { id: validatedId },
-        { $set: { [keyPath]: value } },
-        { session: this.current_session }
-      )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      const cart = await cartRepo.findOne(validatedId)
+
+      const existing = cart.metadata || {}
+      cart.metadata = {
+        ...existing,
+        [key]: value,
+      }
+
+      const result = await cartRepo.save(cart)
+      this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**
@@ -1296,30 +1297,35 @@ class CartService extends BaseService {
    * @return {Promise} resolves to the updated result.
    */
   async deleteMetadata(cartId, key) {
-    const validatedId = this.validateId_(cartId)
+    return this.atomicPhase_(async manager => {
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const validatedId = this.validateId_(cartId)
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    const keyPath = `metadata.${key}`
-    return this.cartModel_
-      .updateOne(
-        { id: validatedId },
-        { $unset: { [keyPath]: "" } },
-        { session: this.current_session }
-      )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      const cart = await cartRepo.findOne(validatedId)
+      if (!cart) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Cart with id: ${validatedId} was not found`
+        )
+      }
+
+      const updated = cart.metadata || {}
+      delete updated[key]
+      cart.metadata = updated
+
+      const result = await cartRepo.save(cart)
+      this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+      return result
+    })
   }
 }
 
