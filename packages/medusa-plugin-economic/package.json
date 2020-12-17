@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-economic",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "E-conomic financial reporting",
   "main": "index.js",
   "repository": {
@@ -40,7 +40,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "medusa-core-utils": "^1.0.11",
-    "medusa-test-utils": "^1.0.12",
+    "medusa-test-utils": "^1.0.13",
     "moment": "^2.27.0"
   },
   "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
