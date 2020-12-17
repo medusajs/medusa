@@ -31,85 +31,133 @@ describe("CartService", () => {
     })
   })
 
-  //describe("setMetadata", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
+  describe("setMetadata", () => {
+    const cartRepository = MockRepository({
+      findOne: () => {
+        return Promise.resolve({
+          metadata: {
+            existing: "something",
+          },
+        })
+      },
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      eventBusService,
+    })
 
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
 
-  //  it("calls updateOne with correct params", async () => {
-  //    const id = mongoose.Types.ObjectId()
-  //    await cartService.setMetadata(`${id}`, "metadata", "testMetadata")
+    it("calls updateOne with correct params", async () => {
+      const id = "testCart"
+      await cartService.setMetadata(id, "metadata", "testMetadata")
 
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
-  //    expect(CartModelMock.updateOne).toBeCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toBeCalledWith(
-  //      { _id: `${id}` },
-  //      { $set: { "metadata.metadata": "testMetadata" } }
-  //    )
-  //  })
+      expect(cartRepository.findOne).toBeCalledTimes(1)
+      expect(cartRepository.findOne).toBeCalledWith(id)
 
-  //  it("throw error on invalid key type", async () => {
-  //    const id = mongoose.Types.ObjectId()
+      expect(cartRepository.save).toBeCalledTimes(1)
+      expect(cartRepository.save).toBeCalledWith({
+        metadata: {
+          existing: "something",
+          metadata: "testMetadata",
+        },
+      })
+    })
 
-  //    try {
-  //      await cartService.setMetadata(`${id}`, 1234, "nono")
-  //    } catch (err) {
-  //      expect(err.message).toEqual(
-  //        "Key type is invalid. Metadata keys must be strings"
-  //      )
-  //    }
-  //  })
-  //})
+    it("throw error on invalid key type", async () => {
+      const id = "testCart"
+      try {
+        await cartService.setMetadata(id, 1234, "nono")
+      } catch (err) {
+        expect(err.message).toEqual(
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+    })
+  })
 
-  //describe("deleteMetadata", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
+  describe("deleteMetadata", () => {
+    const cartRepository = MockRepository({
+      findOne: id => {
+        if (id === "empty") {
+          return Promise.resolve({
+            metadata: {},
+          })
+        }
+        return Promise.resolve({
+          metadata: {
+            existing: "something",
+          },
+        })
+      },
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      eventBusService,
+    })
 
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
 
-  //  it("calls updateOne with correct params", async () => {
-  //    const id = mongoose.Types.ObjectId()
-  //    await cartService.deleteMetadata(`${id}`, "metadata")
+    it("calls updateOne with correct params", async () => {
+      const id = "testCart"
+      await cartService.deleteMetadata(id, "existing")
 
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
-  //    expect(CartModelMock.updateOne).toBeCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toBeCalledWith(
-  //      { _id: `${id}` },
-  //      { $unset: { "metadata.metadata": "" } }
-  //    )
-  //  })
+      expect(cartRepository.findOne).toBeCalledTimes(1)
+      expect(cartRepository.findOne).toBeCalledWith(id)
 
-  //  it("throw error on invalid key type", async () => {
-  //    const id = mongoose.Types.ObjectId()
+      expect(cartRepository.save).toBeCalledTimes(1)
+      expect(cartRepository.save).toBeCalledWith({
+        metadata: {},
+      })
+    })
 
-  //    try {
-  //      await cartService.deleteMetadata(`${id}`, 1234)
-  //    } catch (err) {
-  //      expect(err.message).toEqual(
-  //        "Key type is invalid. Metadata keys must be strings"
-  //      )
-  //    }
-  //  })
-  //})
+    it("works when metadata is empty", async () => {
+      const id = "empty"
+      await cartService.deleteMetadata(id, "existing")
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.findOne).toBeCalledTimes(1)
+      expect(cartRepository.findOne).toBeCalledWith(id)
+
+      expect(cartRepository.save).toBeCalledTimes(1)
+      expect(cartRepository.save).toBeCalledWith({
+        metadata: {},
+      })
+    })
+
+    it("throw error on invalid key type", async () => {
+      try {
+        await cartService.deleteMetadata("testCart", 1234)
+      } catch (err) {
+        expect(err.message).toEqual(
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+    })
+  })
 
   describe("create", () => {
     const regionService = {
@@ -210,222 +258,230 @@ describe("CartService", () => {
     })
   })
 
-  //describe("addLineItem", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    productVariantService: ProductVariantServiceMock,
-  //    lineItemService: LineItemServiceMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
+  describe("addLineItem", () => {
+    const cartRepository = MockRepository()
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      regionService,
+      eventBusService,
+    })
 
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
+    const cartService = new CartService({
+      cartRepository,
+      productVariantService: {},
+      lineItemService: {},
+      eventBusService: eventBusService,
+    })
 
-  //  it("successfully creates new line item", async () => {
-  //    const lineItem = {
-  //      title: "New Line",
-  //      description: "This is a new line",
-  //      thumbnail: "test-img-yeah.com/thumb",
-  //      content: {
-  //        unit_price: 123,
-  //        variant: {
-  //          _id: IdMap.getId("can-cover"),
-  //        },
-  //        product: {
-  //          _id: IdMap.getId("product"),
-  //        },
-  //        quantity: 1,
-  //      },
-  //      quantity: 10,
-  //    }
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
 
-  //    await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
+    it("successfully creates new line item", async () => {
+      const lineItem = {
+        title: "New Line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        content: {
+          unit_price: 123,
+          variant: {
+            _id: IdMap.getId("can-cover"),
+          },
+          product: {
+            _id: IdMap.getId("product"),
+          },
+          quantity: 1,
+        },
+        quantity: 10,
+      }
 
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
+      await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
 
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("emptyCart"),
-  //      },
-  //      {
-  //        $push: {
-  //          items: {
-  //            ...lineItem,
-  //            has_shipping: false,
-  //          },
-  //        },
-  //      }
-  //    )
-  //  })
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
 
-  //  it("successfully merges existing line item", async () => {
-  //    const lineItem = {
-  //      title: "merge line",
-  //      description: "This is a new line",
-  //      thumbnail: "test-img-yeah.com/thumb",
-  //      content: {
-  //        unit_price: 123,
-  //        variant: {
-  //          _id: IdMap.getId("can-cover"),
-  //        },
-  //        product: {
-  //          _id: IdMap.getId("product"),
-  //        },
-  //        quantity: 1,
-  //      },
-  //      quantity: 10,
-  //    }
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("emptyCart"),
+        },
+        {
+          $push: {
+            items: {
+              ...lineItem,
+              has_shipping: false,
+            },
+          },
+        }
+      )
+    })
 
-  //    await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+    //  it("successfully merges existing line item", async () => {
+    //    const lineItem = {
+    //      title: "merge line",
+    //      description: "This is a new line",
+    //      thumbnail: "test-img-yeah.com/thumb",
+    //      content: {
+    //        unit_price: 123,
+    //        variant: {
+    //          _id: IdMap.getId("can-cover"),
+    //        },
+    //        product: {
+    //          _id: IdMap.getId("product"),
+    //        },
+    //        quantity: 1,
+    //      },
+    //      quantity: 10,
+    //    }
 
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $push: {
-  //          items: {
-  //            title: "merge line",
-  //            description: "This is a new line",
-  //            thumbnail: "test-img-yeah.com/thumb",
-  //            has_shipping: false,
-  //            content: {
-  //              unit_price: 123,
-  //              variant: {
-  //                _id: IdMap.getId("can-cover"),
-  //              },
-  //              product: {
-  //                _id: IdMap.getId("product"),
-  //              },
-  //              quantity: 1,
-  //            },
-  //            quantity: 10,
-  //          },
-  //        },
-  //      }
-  //    )
-  //  })
+    //    await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-  //  it("successfully adds multi-content line", async () => {
-  //    const lineItem = {
-  //      title: "merge line",
-  //      description: "This is a new line",
-  //      thumbnail: "test-img-yeah.com/thumb",
-  //      content: [
-  //        {
-  //          unit_price: 123,
-  //          variant: {
-  //            _id: IdMap.getId("can-cover"),
-  //          },
-  //          product: {
-  //            _id: IdMap.getId("product"),
-  //          },
-  //          quantity: 1,
-  //        },
-  //        {
-  //          unit_price: 123,
-  //          variant: {
-  //            _id: IdMap.getId("can-cover"),
-  //          },
-  //          product: {
-  //            _id: IdMap.getId("product"),
-  //          },
-  //          quantity: 1,
-  //        },
-  //      ],
-  //      quantity: 10,
-  //    }
+    //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+    //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+    //      {
+    //        _id: IdMap.getId("cartWithLine"),
+    //      },
+    //      {
+    //        $push: {
+    //          items: {
+    //            title: "merge line",
+    //            description: "This is a new line",
+    //            thumbnail: "test-img-yeah.com/thumb",
+    //            has_shipping: false,
+    //            content: {
+    //              unit_price: 123,
+    //              variant: {
+    //                _id: IdMap.getId("can-cover"),
+    //              },
+    //              product: {
+    //                _id: IdMap.getId("product"),
+    //              },
+    //              quantity: 1,
+    //            },
+    //            quantity: 10,
+    //          },
+    //        },
+    //      }
+    //    )
+    //  })
 
-  //    await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+    //  it("successfully adds multi-content line", async () => {
+    //    const lineItem = {
+    //      title: "merge line",
+    //      description: "This is a new line",
+    //      thumbnail: "test-img-yeah.com/thumb",
+    //      content: [
+    //        {
+    //          unit_price: 123,
+    //          variant: {
+    //            _id: IdMap.getId("can-cover"),
+    //          },
+    //          product: {
+    //            _id: IdMap.getId("product"),
+    //          },
+    //          quantity: 1,
+    //        },
+    //        {
+    //          unit_price: 123,
+    //          variant: {
+    //            _id: IdMap.getId("can-cover"),
+    //          },
+    //          product: {
+    //            _id: IdMap.getId("product"),
+    //          },
+    //          quantity: 1,
+    //        },
+    //      ],
+    //      quantity: 10,
+    //    }
 
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $push: {
-  //          items: {
-  //            ...lineItem,
-  //            has_shipping: false,
-  //          },
-  //        },
-  //      }
-  //    )
-  //  })
+    //    await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-  //  it("throws if inventory isn't covered", async () => {
-  //    const lineItem = {
-  //      title: "merge line",
-  //      description: "This is a new line",
-  //      thumbnail: "test-img-yeah.com/thumb",
-  //      quantity: 1,
-  //      content: {
-  //        variant: {
-  //          _id: IdMap.getId("cannot-cover"),
-  //        },
-  //        product: {
-  //          _id: IdMap.getId("product"),
-  //        },
-  //        quantity: 1,
-  //        unit_price: 1234,
-  //      },
-  //    }
+    //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+    //      {
+    //        _id: IdMap.getId("cartWithLine"),
+    //      },
+    //      {
+    //        $push: {
+    //          items: {
+    //            ...lineItem,
+    //            has_shipping: false,
+    //          },
+    //        },
+    //      }
+    //    )
+    //  })
 
-  //    try {
-  //      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-  //    } catch (err) {
-  //      expect(err.message).toEqual(
-  //        `Inventory doesn't cover the desired quantity`
-  //      )
-  //    }
-  //  })
+    //  it("throws if inventory isn't covered", async () => {
+    //    const lineItem = {
+    //      title: "merge line",
+    //      description: "This is a new line",
+    //      thumbnail: "test-img-yeah.com/thumb",
+    //      quantity: 1,
+    //      content: {
+    //        variant: {
+    //          _id: IdMap.getId("cannot-cover"),
+    //        },
+    //        product: {
+    //          _id: IdMap.getId("product"),
+    //        },
+    //        quantity: 1,
+    //        unit_price: 1234,
+    //      },
+    //    }
 
-  //  it("throws if inventory isn't covered multi-line", async () => {
-  //    const lineItem = {
-  //      title: "merge line",
-  //      description: "This is a new line",
-  //      thumbnail: "test-img-yeah.com/thumb",
-  //      quantity: 1,
-  //      content: [
-  //        {
-  //          variant: {
-  //            _id: IdMap.getId("can-cover"),
-  //          },
-  //          product: {
-  //            _id: IdMap.getId("product"),
-  //          },
-  //          quantity: 1,
-  //          unit_price: 1234,
-  //        },
-  //        {
-  //          variant: {
-  //            _id: IdMap.getId("cannot-cover"),
-  //          },
-  //          product: {
-  //            _id: IdMap.getId("product"),
-  //          },
-  //          quantity: 1,
-  //          unit_price: 1234,
-  //        },
-  //      ],
-  //    }
+    //    try {
+    //      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+    //    } catch (err) {
+    //      expect(err.message).toEqual(
+    //        `Inventory doesn't cover the desired quantity`
+    //      )
+    //    }
+    //  })
 
-  //    try {
-  //      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-  //    } catch (err) {
-  //      expect(err.message).toEqual(
-  //        `Inventory doesn't cover the desired quantity`
-  //      )
-  //    }
-  //  })
-  //})
+    //  it("throws if inventory isn't covered multi-line", async () => {
+    //    const lineItem = {
+    //      title: "merge line",
+    //      description: "This is a new line",
+    //      thumbnail: "test-img-yeah.com/thumb",
+    //      quantity: 1,
+    //      content: [
+    //        {
+    //          variant: {
+    //            _id: IdMap.getId("can-cover"),
+    //          },
+    //          product: {
+    //            _id: IdMap.getId("product"),
+    //          },
+    //          quantity: 1,
+    //          unit_price: 1234,
+    //        },
+    //        {
+    //          variant: {
+    //            _id: IdMap.getId("cannot-cover"),
+    //          },
+    //          product: {
+    //            _id: IdMap.getId("product"),
+    //          },
+    //          quantity: 1,
+    //          unit_price: 1234,
+    //        },
+    //      ],
+    //    }
+
+    //    try {
+    //      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+    //    } catch (err) {
+    //      expect(err.message).toEqual(
+    //        `Inventory doesn't cover the desired quantity`
+    //      )
+    //    }
+    //  })
+  })
 
   //describe("removeLineItem", () => {
   //  const cartService = new CartService({
