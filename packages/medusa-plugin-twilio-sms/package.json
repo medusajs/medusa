@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-twilio-sms",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Twilio SMS service",
   "main": "index.js",
   "repository": {
@@ -37,7 +37,7 @@
     "@babel/plugin-transform-classes": "^7.9.5",
     "body-parser": "^1.19.0",
     "medusa-core-utils": "^1.0.11",
-    "medusa-test-utils": "^1.0.12",
+    "medusa-test-utils": "^1.0.13",
     "twilio": "^3.49.1"
   },
   "gitHead": "e1c465d244b20e68dd88bcb12db0a061f25581ec"
