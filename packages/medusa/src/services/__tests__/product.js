@@ -18,7 +18,7 @@ describe("ProductService", () => {
       productRepository: productRepo,
     })
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
@@ -46,7 +46,7 @@ describe("ProductService", () => {
       eventBusService,
     })
 
-    beforeAll(() => {
+    beforeEach(() => {
       jest.clearAllMocks()
     })
 
@@ -82,7 +82,7 @@ describe("ProductService", () => {
       eventBusService,
     })
 
-    beforeAll(() => {
+    beforeEach(() => {
       jest.clearAllMocks()
     })
 

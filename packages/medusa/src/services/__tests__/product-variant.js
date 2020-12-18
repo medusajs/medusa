@@ -127,7 +127,7 @@ describe("ProductVariantService", () => {
       productRepository,
     })
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 

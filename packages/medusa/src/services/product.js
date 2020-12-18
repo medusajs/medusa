@@ -514,8 +514,8 @@ class ProductService extends BaseService {
   /**
    * Dedicated method to set metadata for a product.
    * @param {string} product - the product to set metadata for.
-   * @param {Object} metadata - the metadata to set
-   * @return {Object} updated metadata object
+   * @param {object} metadata - the metadata to set
+   * @return {object} updated metadata object
    */
   setMetadata_(product, metadata) {
     const existing = product.metadata || {}

@@ -19,16 +19,16 @@ export class User {
   @Column()
   email: string
 
-  @Column()
+  @Column({ nullable: true })
   first_name: string
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string
 
   @Column()
   password_hash: string
 
-  @Column()
+  @Column({ nullable: true })
   api_token: string
 
   @CreateDateColumn({ type: "timestamptz" })

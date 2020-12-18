@@ -35,7 +35,7 @@ export class MoneyAmount {
   @Column({ type: "int" })
   amount: number
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: true, default: null })
   sale_amount: number
 
   @Column({ nullable: true })

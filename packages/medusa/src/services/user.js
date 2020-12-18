@@ -163,38 +163,39 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   async update(userId, update) {
-    const validatedId = this.validateId_(userId)
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const validatedId = this.validateId_(userId)
 
-    if (update.password_hash) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
-      )
-    }
+      const user = await this.retrieve(validatedId)
 
-    if (update.email) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "You are not allowed to update email"
-      )
-    }
+      const { email, password_hash, metadata, ...rest } = update
 
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
-      )
-    }
+      if (email) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "You are not allowed to update email"
+        )
+      }
 
-    return this.userModel_
-      .updateOne(
-        { _id: validatedId },
-        { $set: update },
-        { runValidators: true }
-      )
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      if (password_hash) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
+        )
+      }
+
+      if (metadata) {
+        user.metadata = this.setMetadata(user, metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        user[key] = value
+      }
+
+      const result = await userRepo.save(user)
+      return result
+    })
   }
 
   /**
@@ -204,16 +205,17 @@ class UserService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(userId) {
-    let user
-    try {
-      user = await this.retrieve(userId)
-    } catch (error) {
-      // delete is idempotent, but we return a promise to allow then-chaining
-      return Promise.resolve()
-    }
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
 
-    return this.userModel_.deleteOne({ _id: user._id }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      // Should not fail, if user does not exist, since delete is idempotent
+      const user = await userRepo.findOne({ where: { id: userId } })
+
+      if (!user) return Promise.resolve()
+
+      await userRepo.softRemove(user)
+
+      return Promise.resolve()
     })
   }
 
@@ -225,21 +227,25 @@ class UserService extends BaseService {
    * @param {string} password - the old password to set
    * @returns {Promise} the result of the update operation
    */
-  async setPassword(userId, password) {
-    const user = await this.retrieve(userId)
+  async setPassword_(userId, password) {
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
 
-    const hashedPassword = await this.hashPassword_(password)
-    if (!hashedPassword) {
-      throw new MedusaError(
-        MedusaError.Types.DB_ERROR,
-        `An error occured while hashing password`
-      )
-    }
+      const user = await this.retrieve(userId)
 
-    return this.userModel_.updateOne(
-      { _id: user._id },
-      { $set: { password_hash: hashedPassword } }
-    )
+      const hashedPassword = await this.hashPassword_(password)
+      if (!hashedPassword) {
+        throw new MedusaError(
+          MedusaError.Types.DB_ERROR,
+          `An error occured while hashing password`
+        )
+      }
+
+      user.password_hash = hashedPassword
+
+      const result = await userRepo.save(user)
+      return result
+    })
   }
 
   /**
@@ -255,7 +261,7 @@ class UserService extends BaseService {
     const user = await this.retrieve(userId)
     const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-    const payload = { user_id: user._id, exp: expiry }
+    const payload = { user_id: user.id, exp: expiry }
     const token = jwt.sign(payload, secret)
     // Notify subscribers
     this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
@@ -273,7 +279,7 @@ class UserService extends BaseService {
    * @return {User} return the decorated user.
    */
   async decorate(user, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
+    const requiredFields = ["id", "metadata"]
     const decorated = _.pick(user, fields.concat(requiredFields))
     const final = await this.runDecorators_(decorated)
     return final
@@ -281,53 +287,29 @@ class UserService extends BaseService {
 
   /**
    * Dedicated method to set metadata for a user.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
    * @param {string} userId - the user to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
+   * @param {object} metadata - the metadata to set
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(userId, key, value) {
-    const validatedId = this.validateId_(userId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+  setMetadata(user, metadata) {
+    const existing = user.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+      newData[key] = value
     }
 
-    const keyPath = `metadata.${key}`
-    return this.userModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a user.
-   * @param {string} userId - the user to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(userId, key) {
-    const validatedId = this.validateId_(userId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+    const updated = {
+      ...existing,
+      ...newData,
     }
 
-    const keyPath = `metadata.${key}`
-    return this.userModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return updated
   }
 }
 
