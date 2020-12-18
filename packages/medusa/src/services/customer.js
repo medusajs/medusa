@@ -24,14 +24,20 @@ class CustomerService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
-  withSession(session) {
-    const cloned = new CustomerService({
-      eventBusService: this.eventBusService,
-      orderService: this.orderService_,
-      customerModel: this.customerModel_,
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ProductService({
+      manager: transactionManager,
+      productRepository: this.cartRepository_,
+      eventBusService: this.eventBus_,
+      productVariantService: this.productVariantService_,
     })
 
-    cloned.current_session = session
+    cloned.transactionManager_ = transactionManager
+
     return cloned
   }
 

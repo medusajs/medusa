@@ -13,14 +13,17 @@ class UserService extends BaseService {
     PASSWORD_RESET: "user.password_reset",
   }
 
-  constructor({ userModel, eventBusService }) {
+  constructor({ userRepository, eventBusService, manager }) {
     super()
 
-    /** @private @const {UserModel} */
-    this.userModel_ = userModel
+    /** @private @const {UserRepository} */
+    this.userRepository_ = userRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
   }
 
   /**
@@ -29,16 +32,7 @@ class UserService extends BaseService {
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The userId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -47,18 +41,7 @@ class UserService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
-    const { value, error } = schema.validate(email)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The email is not valid"
-      )
-    }
-
-    return value
+    return email
   }
 
   /**
@@ -75,13 +58,14 @@ class UserService extends BaseService {
    * @param {string} userId - the id of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId) {
+  async retrieve(userId, relations = []) {
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
     const validatedId = this.validateId_(userId)
-    const user = await this.userModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+    const user = await userRepo.findOne({
+      where: { id: validatedId },
+      relations,
+    })
 
     if (!user) {
       throw new MedusaError(
@@ -89,6 +73,7 @@ class UserService extends BaseService {
         `User with id: ${userId} was not found`
       )
     }
+
     return user
   }
 
@@ -99,11 +84,12 @@ class UserService extends BaseService {
    * @return {Promise<User>} the user document.
    */
   async retrieveByApiToken(apiToken) {
-    const user = await this.userModel_
-      .findOne({ api_token: apiToken })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+
+    const user = await userRepo.findOne({
+      where: { api_token: apiToken },
+      relations,
+    })
 
     if (!user) {
       throw new MedusaError(
@@ -111,6 +97,7 @@ class UserService extends BaseService {
         `User with api token: ${apiToken} was not found`
       )
     }
+
     return user
   }
 
@@ -121,8 +108,11 @@ class UserService extends BaseService {
    * @return {Promise<User>} the user document.
    */
   async retrieveByEmail(email) {
-    const user = await this.userModel_.findOne({ email }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+
+    const user = await userRepo.findOne({
+      where: { email },
+      relations,
     })
 
     if (!user) {
@@ -131,6 +121,7 @@ class UserService extends BaseService {
         `User with email: ${email} was not found`
       )
     }
+
     return user
   }
 
@@ -151,12 +142,18 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   async create(user, password) {
-    const validatedEmail = this.validateEmail_(user.email)
-    const hashedPassword = await this.hashPassword_(password)
-    user.email = validatedEmail
-    user.password_hash = hashedPassword
-    return this.userModel_.create(user).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
+
+      const validatedEmail = this.validateEmail_(user.email)
+      const hashedPassword = await this.hashPassword_(password)
+      user.email = validatedEmail
+      user.password_hash = hashedPassword
+
+      const created = await userRepo.create(user)
+
+      const result = await userRepo.save(created)
+      return result
     })
   }
 
