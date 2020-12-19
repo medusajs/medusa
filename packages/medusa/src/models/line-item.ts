@@ -81,7 +81,7 @@ export class LineItem {
   unit_price: number
 
   @Index()
-  @Column()
+  @Column({ nullable: true })
   variant_id: string
 
   @ManyToOne(() => ProductVariant)

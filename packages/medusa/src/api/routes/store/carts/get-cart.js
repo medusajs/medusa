@@ -11,11 +11,9 @@ export default async (req, res) => {
         !cart.email ||
         cart.customer_id !== req.user.customer_id
       ) {
-        const customerService = req.scope.resolve("customerService")
-        const customer = await customerService.retrieve(req.user.customer_id)
-
-        cart = await cartService.updateCustomerId(id, customer._id)
-        cart = await cartService.updateEmail(id, customer.email)
+        cart = await cartService.update(id, {
+          customer_id: req.user.customer_id,
+        })
       }
     }
 

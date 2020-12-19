@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 /**
  * Common functionality for Services
  * @interface
@@ -5,6 +6,43 @@
 class BaseService {
   constructor() {
     this.decorators_ = []
+  }
+
+  /**
+   * Confirms whether a given raw id is valid. Fails if the provided
+   * id is null or undefined. The validate function takes an optional config
+   * param, to support checking id prefix and length.
+   * @param {string} rawId - the id to validate.
+   * @param {object?} config - optional config
+   * @returns {string} the rawId given that nothing failed
+   */
+  validateId_(rawId, config = {}) {
+    const { prefix, length } = config
+    if (!rawId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Failed to validate id: ${rawId}`
+      )
+    }
+
+    if (prefix || length) {
+      const [pre, rand] = rawId.split("_")
+      if (prefix && pre !== prefix) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The provided id: ${rawId} does not adhere to prefix constraint: ${prefix}`
+        )
+      }
+
+      if (length && length !== rand.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The provided id: ${rawId} does not adhere to length constraint: ${length}`
+        )
+      }
+    }
+
+    return rawId
   }
 
   /**
@@ -19,10 +57,20 @@ class BaseService {
     if (this.transactionManager_) {
       return work(this.transactionManager_)
     } else {
-      if (isolation) {
-        return this.manager_.transaction(isolation, m => work(m))
+      const temp = this.manager_
+      const doWork = async m => {
+        this.manager_ = m
+        this.transactionManager_ = m
+        const result = await work(m)
+        this.manager = temp
+        this.transactionManager_ = undefined
+        return result
       }
-      return this.manager_.transaction(m => work(m))
+
+      if (isolation) {
+        return this.manager_.transaction(isolation, m => doWork(m))
+      }
+      return this.manager_.transaction(m => doWork(m))
     }
   }
 

@@ -1,3 +1,4 @@
+import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import CartService from "../cart"
 
@@ -27,6 +28,7 @@ describe("CartService", () => {
       expect(cartRepository.findOne).toHaveBeenCalledTimes(1)
       expect(cartRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("emptyCart") },
+        relations: [],
       })
     })
   })
@@ -259,19 +261,52 @@ describe("CartService", () => {
   })
 
   describe("addLineItem", () => {
-    const cartRepository = MockRepository()
+    const lineItemService = {
+      update: jest.fn(),
+      create: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const productVariantService = {
+      canCoverQuantity: jest
+        .fn()
+        .mockImplementation(id => id !== IdMap.getId("cannot-cover")),
+    }
+
+    const cartRepository = MockRepository({
+      findOne: q => {
+        if (q.where.id === IdMap.getId("cartWithLine")) {
+          return Promise.resolve({
+            items: [
+              {
+                id: IdMap.getId("merger"),
+                title: "will merge",
+                variant_id: IdMap.getId("existing"),
+                should_merge: true,
+                quantity: 1,
+              },
+            ],
+          })
+        }
+        return Promise.resolve({
+          shipping_methods: [
+            {
+              shipping_option: {
+                profile_id: IdMap.getId("testProfile"),
+              },
+            },
+          ],
+          items: [],
+        })
+      },
+    })
     const cartService = new CartService({
       manager: MockManager,
       cartRepository,
-      regionService,
+      lineItemService,
+      productVariantService,
       eventBusService,
-    })
-
-    const cartService = new CartService({
-      cartRepository,
-      productVariantService: {},
-      lineItemService: {},
-      eventBusService: eventBusService,
     })
 
     beforeEach(() => {
@@ -283,937 +318,884 @@ describe("CartService", () => {
         title: "New Line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
-        content: {
-          unit_price: 123,
-          variant: {
-            _id: IdMap.getId("can-cover"),
-          },
-          product: {
-            _id: IdMap.getId("product"),
-          },
-          quantity: 1,
-        },
+        variant_id: IdMap.getId("can-cover"),
+        unit_price: 123,
         quantity: 10,
       }
 
-      await cartService.addLineItem(IdMap.getId("emptyCart"), lineItem)
+      await cartService.addLineItem(IdMap.getId("emptyCart"), _.clone(lineItem))
 
-      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
         expect.any(Object)
+      )
+
+      expect(lineItemService.create).toHaveBeenCalledTimes(1)
+      expect(lineItemService.create).toHaveBeenCalledWith({
+        ...lineItem,
+        has_shipping: false,
+        cart_id: IdMap.getId("emptyCart"),
+      })
+    })
+
+    it("successfully creates new line item with shipping", async () => {
+      const lineItem = {
+        title: "New Line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        should_merge: true,
+        variant_id: IdMap.getId("can-cover"),
+        variant: {
+          product: {
+            profile_id: IdMap.getId("testProfile"),
+          },
+        },
+        unit_price: 123,
+        quantity: 10,
+      }
+
+      await cartService.addLineItem(IdMap.getId("emptyCart"), _.clone(lineItem))
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(lineItemService.create).toHaveBeenCalledTimes(1)
+      expect(lineItemService.create).toHaveBeenCalledWith({
+        ...lineItem,
+        has_shipping: true,
+        cart_id: IdMap.getId("emptyCart"),
+      })
+    })
+
+    it("successfully merges existing line item", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        unit_price: 123,
+        variant_id: IdMap.getId("existing"),
+        should_merge: true,
+        quantity: 1,
+      }
+
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith(
+        IdMap.getId("merger"),
+        {
+          quantity: 2,
+        }
+      )
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        variant_id: IdMap.getId("cannot-cover"),
+      }
+
+      await expect(
+        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      ).rejects.toThrow(`Inventory doesn't cover the desired quantity`)
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        variant_id: IdMap.getId("cannot-cover"),
+      }
+
+      await expect(
+        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      ).rejects.toThrow(`Inventory doesn't cover the desired quantity`)
+    })
+  })
+
+  describe("removeLineItem", () => {
+    const shippingMethodRepository = MockRepository()
+    const lineItemService = {
+      delete: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const cartRepository = MockRepository({
+      findOne: q => {
+        if (q.where.id === IdMap.getId("withShipping")) {
+          return Promise.resolve({
+            shipping_methods: [
+              {
+                shipping_option: {
+                  profile_id: IdMap.getId("prevPro"),
+                },
+              },
+            ],
+            items: [
+              {
+                id: IdMap.getId("itemToRemove"),
+                variant_id: IdMap.getId("existing"),
+                variant: {
+                  product: {
+                    profile_id: IdMap.getId("prevPro"),
+                  },
+                },
+              },
+            ],
+          })
+        }
+        return Promise.resolve({
+          shipping_methods: [],
+          items: [
+            {
+              id: IdMap.getId("itemToRemove"),
+            },
+          ],
+        })
+      },
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      lineItemService,
+      shippingMethodRepository,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully removes a line item", async () => {
+      await cartService.removeLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("itemToRemove")
+      )
+
+      expect(lineItemService.delete).toHaveBeenCalledTimes(1)
+      expect(lineItemService.delete).toHaveBeenCalledWith(
+        IdMap.getId("itemToRemove")
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+    })
+
+    it("removes shipping method if not necessary", async () => {
+      await cartService.removeLineItem(
+        IdMap.getId("withShipping"),
+        IdMap.getId("itemToRemove")
+      )
+
+      expect(shippingMethodRepository.remove).toHaveBeenCalledTimes(1)
+      expect(shippingMethodRepository.remove).toHaveBeenCalledWith({
+        shipping_option: {
+          profile_id: IdMap.getId("prevPro"),
+        },
+      })
+    })
+
+    it("resolves if line item is not in cart", async () => {
+      await cartService.removeLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("nonExisting")
+      )
+
+      expect(lineItemService.delete).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("updateLineItem", () => {
+    const lineItemService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const productVariantService = {
+      canCoverQuantity: jest
+        .fn()
+        .mockImplementation(id => id !== IdMap.getId("cannot-cover")),
+    }
+
+    const cartRepository = MockRepository({
+      findOne: q => {
+        if (q.where.id === IdMap.getId("cannot")) {
+          return Promise.resolve({
+            items: [
+              {
+                id: IdMap.getId("existing"),
+                variant_id: IdMap.getId("cannot-cover"),
+                quantity: 1,
+              },
+            ],
+          })
+        }
+        return Promise.resolve({
+          items: [
+            {
+              id: IdMap.getId("existing"),
+              variant_id: IdMap.getId("good"),
+              quantity: 1,
+            },
+          ],
+        })
+      },
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      productVariantService,
+      lineItemService,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates existing line item", async () => {
+      await cartService.updateLineItem(
+        IdMap.getId("cartWithLine"),
+        IdMap.getId("existing"),
+        { quantity: 2 }
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith(
+        IdMap.getId("existing"),
+        { quantity: 2 }
+      )
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      await expect(
+        cartService.updateLineItem(
+          IdMap.getId("cannot"),
+          IdMap.getId("existing"),
+          { quantity: 2 }
+        )
+      ).rejects.toThrow(`Inventory doesn't cover the desired quantity`)
+    })
+  })
+
+  describe("updateEmail", () => {
+    const customerService = {
+      retrieveByEmail: jest.fn().mockImplementation(email => {
+        if (email === "no@mail.com") {
+          return Promise.reject()
+        }
+        return Promise.resolve({ id: IdMap.getId("existing") })
+      }),
+      create: jest
+        .fn()
+        .mockReturnValue(Promise.resolve({ id: IdMap.getId("newCus") })),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const cartRepository = MockRepository({
+      findOne: () => Promise.resolve({}),
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      eventBusService,
+      customerService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates an email", async () => {
+      await cartService.update(IdMap.getId("emptyCart"), {
+        email: "test@testDom.com",
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(2)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.customer_updated",
+        expect.any(Object)
+      )
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        customer_id: IdMap.getId("existing"),
+        email: "test@testdom.com",
+      })
+    })
+
+    it("creates a new customer", async () => {
+      await cartService.update(IdMap.getId("emptyCart"), {
+        email: "no@Mail.com",
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(2)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.customer_updated",
+        expect.any(Object)
+      )
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        customer_id: IdMap.getId("newCus"),
+        email: "no@mail.com",
+      })
+    })
+
+    it("throws on invalid email", async () => {
+      await expect(
+        cartService.update(IdMap.getId("emptyCart"), { email: "test@test" })
+      ).rejects.toThrow("The email is not valid")
+    })
+  })
+
+  describe("updateBillingAddress", () => {
+    const cartRepository = MockRepository({
+      findOne: () => Promise.resolve({}),
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates billing address", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+        phone: "+1 (222) 333 4444",
+      }
+
+      await cartService.update(IdMap.getId("emptyCart"), {
+        billing_address: address,
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        billing_address: { ...address, country_code: "us" },
+      })
+    })
+
+    it("throws on invalid address", async () => {
+      const address = {
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      await expect(
+        cartService.update(IdMap.getId("emptyCart"), {
+          billing_address: address,
+        })
+      ).rejects.toThrow(`"first_name" is required`)
+    })
+  })
+
+  describe("updateShippingAddress", () => {
+    const cartRepository = MockRepository({
+      findOne: () => Promise.resolve({}),
+    })
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("testRegion"),
+          countries: [{ country_code: "us" }],
+        }
+      },
+    }
+
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      eventBusService,
+      regionService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates shipping address", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "us",
+        province: "CA",
+        postal_code: "93011",
+        phone: "+1 (222) 333 4444",
+      }
+
+      await cartService.update(IdMap.getId("emptyCart"), {
+        shipping_address: address,
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        shipping_address: address,
+      })
+    })
+
+    it("throws if country not in region", async () => {
+      const address = {
+        first_name: "LeBron",
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "ru",
+        province: "CA",
+        postal_code: "93011",
+        phone: "+1 (222) 333 4444",
+      }
+
+      await expect(
+        cartService.update(IdMap.getId("emptyCart"), {
+          shipping_address: address,
+        })
+      ).rejects.toThrow("Shipping country must be in the cart region")
+    })
+
+    it("throws on invalid address", async () => {
+      const address = {
+        // Missing first_name
+        last_name: "James",
+        address_1: "24 Dunks Drive",
+        city: "Los Angeles",
+        country_code: "US",
+        province: "CA",
+        postal_code: "93011",
+      }
+
+      await expect(
+        cartService.update(IdMap.getId("emptyCart"), {
+          shipping_address: address,
+        })
+      ).rejects.toThrow(`"first_name" is required`)
+    })
+  })
+
+  describe("setRegion", () => {
+    const lineItemService = {
+      update: jest.fn(),
+      delete: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const productVariantService = {
+      getRegionPrice: jest.fn().mockImplementation(id => {
+        if (id === IdMap.getId("fail")) {
+          return Promise.reject()
+        }
+        return Promise.resolve(100)
+      }),
+    }
+    const regionService = {
+      retrieve: jest.fn().mockReturnValue(
+        Promise.resolve({
+          countries: [{ country_code: "us" }],
+        })
+      ),
+    }
+    const cartRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          items: [
+            {
+              id: IdMap.getId("testitem"),
+            },
+            {
+              id: IdMap.getId("fail"),
+              variant_id: IdMap.getId("fail"),
+            },
+          ],
+          payment_sessions: [{ id: IdMap.getId("removes") }],
+          discounts: [
+            {
+              id: IdMap.getId("stays"),
+              regions: [{ id: IdMap.getId("region-us") }],
+            },
+            {
+              id: IdMap.getId("removes"),
+              regions: [],
+            },
+          ],
+        }),
+    })
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      regionService,
+      lineItemService,
+      productVariantService,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully set new region", async () => {
+      await cartService.update(IdMap.getId("fr-cart"), {
+        region_id: IdMap.getId("region-us"),
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(lineItemService.delete).toHaveBeenCalledTimes(1)
+      expect(lineItemService.delete).toHaveBeenCalledWith(IdMap.getId("fail"))
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith(
+        IdMap.getId("testitem"),
+        {
+          unit_price: 100,
+          has_shipping: false,
+        }
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        region_id: IdMap.getId("region-us"),
+        shipping_address: {
+          country_code: "us",
+        },
+        items: [
+          {
+            id: IdMap.getId("testitem"),
+          },
+          {
+            id: IdMap.getId("fail"),
+            variant_id: IdMap.getId("fail"),
+          },
+        ],
+        payment_sessions: [],
+        discounts: [
+          {
+            id: IdMap.getId("stays"),
+            regions: [{ id: IdMap.getId("region-us") }],
+          },
+        ],
+      })
+    })
+  })
+
+  describe("setPaymentSession", () => {
+    const cartRepository = MockRepository({
+      findOne: () => {
+        return Promise.resolve({
+          region: {
+            payment_providers: [
+              {
+                id: "test-provider",
+              },
+            ],
+          },
+          payment_sessions: [
+            {
+              id: IdMap.getId("test-session"),
+              provider_id: "test-provider",
+            },
+          ],
+        })
+      },
+    })
+
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully sets a payment method", async () => {
+      await cartService.setPaymentSession(
+        IdMap.getId("cartWithLine"),
+        "test-provider"
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        region: {
+          payment_providers: [
+            {
+              id: "test-provider",
+            },
+          ],
+        },
+        payment_sessions: [
+          {
+            id: IdMap.getId("test-session"),
+            provider_id: "test-provider",
+          },
+        ],
+        payment_session_id: IdMap.getId("test-session"),
+      })
+    })
+
+    it("fails if the region does not contain the provider_id", async () => {
+      await expect(
+        cartService.setPaymentSession(IdMap.getId("cartWithLine"), "unknown")
+      ).rejects.toThrow(`The payment method is not available in this region`)
+    })
+  })
+
+  describe("setPaymentSessions", () => {
+    const cart1 = {
+      payment_sessions: [],
+      region: {
+        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+      },
+    }
+    const cartRepository = MockRepository({
+      findOne: () => {
+        return Promise.resolve(cart1)
+      },
+    })
+
+    const paymentProviderService = {
+      deleteSession: jest.fn(),
+      updateSession: jest.fn(),
+      createSession: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const totalsService = {
+      getTotal: cart => (cart.id === IdMap.getId("free") ? 0 : 100),
+    }
+
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      paymentProviderService,
+      totalsService,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("initializes payment sessions for each of the providers", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService.createSession).toHaveBeenCalledWith(
+        "provider_1",
+        cart1
+      )
+      expect(paymentProviderService.createSession).toHaveBeenCalledWith(
+        "provider_2",
+        cart1
       )
 
       expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
       expect(CartModelMock.updateOne).toHaveBeenCalledWith(
         {
-          _id: IdMap.getId("emptyCart"),
+          _id: IdMap.getId("cartWithLine"),
         },
         {
-          $push: {
-            items: {
-              ...lineItem,
-              has_shipping: false,
-            },
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session",
+                  cartId: IdMap.getId("cartWithLine"),
+                },
+              },
+              {
+                provider_id: "unregistered",
+                data: {
+                  id: "unregistered_session",
+                  cartId: IdMap.getId("cartWithLine"),
+                },
+              },
+            ],
           },
         }
       )
     })
 
-    //  it("successfully merges existing line item", async () => {
-    //    const lineItem = {
-    //      title: "merge line",
-    //      description: "This is a new line",
-    //      thumbnail: "test-img-yeah.com/thumb",
-    //      content: {
-    //        unit_price: 123,
-    //        variant: {
-    //          _id: IdMap.getId("can-cover"),
-    //        },
-    //        product: {
-    //          _id: IdMap.getId("product"),
-    //        },
-    //        quantity: 1,
-    //      },
-    //      quantity: 10,
-    //    }
+    it("updates payment sessions for existing sessions", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cartWithPaySessions"))
 
-    //    await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(0)
 
-    //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-    //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-    //      {
-    //        _id: IdMap.getId("cartWithLine"),
-    //      },
-    //      {
-    //        $push: {
-    //          items: {
-    //            title: "merge line",
-    //            description: "This is a new line",
-    //            thumbnail: "test-img-yeah.com/thumb",
-    //            has_shipping: false,
-    //            content: {
-    //              unit_price: 123,
-    //              variant: {
-    //                _id: IdMap.getId("can-cover"),
-    //              },
-    //              product: {
-    //                _id: IdMap.getId("product"),
-    //              },
-    //              quantity: 1,
-    //            },
-    //            quantity: 10,
-    //          },
-    //        },
-    //      }
-    //    )
-    //  })
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(2)
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "default_provider",
+          data: {
+            id: "default_provider_session",
+          },
+        },
+        carts.cartWithPaySessions
+      )
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "unregistered",
+          data: {
+            id: "unregistered_session",
+          },
+        },
+        carts.cartWithPaySessions
+      )
 
-    //  it("successfully adds multi-content line", async () => {
-    //    const lineItem = {
-    //      title: "merge line",
-    //      description: "This is a new line",
-    //      thumbnail: "test-img-yeah.com/thumb",
-    //      content: [
-    //        {
-    //          unit_price: 123,
-    //          variant: {
-    //            _id: IdMap.getId("can-cover"),
-    //          },
-    //          product: {
-    //            _id: IdMap.getId("product"),
-    //          },
-    //          quantity: 1,
-    //        },
-    //        {
-    //          unit_price: 123,
-    //          variant: {
-    //            _id: IdMap.getId("can-cover"),
-    //          },
-    //          product: {
-    //            _id: IdMap.getId("product"),
-    //          },
-    //          quantity: 1,
-    //        },
-    //      ],
-    //      quantity: 10,
-    //    }
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithPaySessions"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session_updated",
+                },
+              },
+              {
+                provider_id: "unregistered",
+                data: {
+                  id: "unregistered_session_updated",
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
 
-    //    await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+    it("filters sessions not available in the region", async () => {
+      await cartService.setPaymentSessions(
+        IdMap.getId("cartWithPaySessionsDifRegion")
+      )
 
-    //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-    //      {
-    //        _id: IdMap.getId("cartWithLine"),
-    //      },
-    //      {
-    //        $push: {
-    //          items: {
-    //            ...lineItem,
-    //            has_shipping: false,
-    //          },
-    //        },
-    //      }
-    //    )
-    //  })
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(1)
 
-    //  it("throws if inventory isn't covered", async () => {
-    //    const lineItem = {
-    //      title: "merge line",
-    //      description: "This is a new line",
-    //      thumbnail: "test-img-yeah.com/thumb",
-    //      quantity: 1,
-    //      content: {
-    //        variant: {
-    //          _id: IdMap.getId("cannot-cover"),
-    //        },
-    //        product: {
-    //          _id: IdMap.getId("product"),
-    //        },
-    //        quantity: 1,
-    //        unit_price: 1234,
-    //      },
-    //    }
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(1)
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+        {
+          provider_id: "default_provider",
+          data: {
+            id: "default_provider_session",
+          },
+        },
+        carts.cartWithPaySessionsDifRegion
+      )
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
+        "france-provider",
+        carts.cartWithPaySessionsDifRegion
+      )
 
-    //    try {
-    //      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-    //    } catch (err) {
-    //      expect(err.message).toEqual(
-    //        `Inventory doesn't cover the desired quantity`
-    //      )
-    //    }
-    //  })
-
-    //  it("throws if inventory isn't covered multi-line", async () => {
-    //    const lineItem = {
-    //      title: "merge line",
-    //      description: "This is a new line",
-    //      thumbnail: "test-img-yeah.com/thumb",
-    //      quantity: 1,
-    //      content: [
-    //        {
-    //          variant: {
-    //            _id: IdMap.getId("can-cover"),
-    //          },
-    //          product: {
-    //            _id: IdMap.getId("product"),
-    //          },
-    //          quantity: 1,
-    //          unit_price: 1234,
-    //        },
-    //        {
-    //          variant: {
-    //            _id: IdMap.getId("cannot-cover"),
-    //          },
-    //          product: {
-    //            _id: IdMap.getId("product"),
-    //          },
-    //          quantity: 1,
-    //          unit_price: 1234,
-    //        },
-    //      ],
-    //    }
-
-    //    try {
-    //      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-    //    } catch (err) {
-    //      expect(err.message).toEqual(
-    //        `Inventory doesn't cover the desired quantity`
-    //      )
-    //    }
-    //  })
+      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
+      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
+        {
+          _id: IdMap.getId("cartWithPaySessionsDifRegion"),
+        },
+        {
+          $set: {
+            payment_sessions: [
+              {
+                provider_id: "default_provider",
+                data: {
+                  id: "default_provider_session_updated",
+                },
+              },
+              {
+                provider_id: "france-provider",
+                data: {
+                  id: "france-provider_session",
+                  cartId: IdMap.getId("cartWithPaySessionsDifRegion"),
+                },
+              },
+            ],
+          },
+        }
+      )
+    })
   })
-
-  //describe("removeLineItem", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    productVariantService: ProductVariantServiceMock,
-  //    lineItemService: LineItemServiceMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully removes a line item", async () => {
-  //    await cartService.removeLineItem(
-  //      IdMap.getId("cartWithLine"),
-  //      IdMap.getId("itemToRemove")
-  //    )
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $pull: { items: { _id: IdMap.getId("itemToRemove") } },
-  //      }
-  //    )
-  //  })
-
-  //  it("successfully decrements quantity if more than 1", async () => {
-  //    await cartService.removeLineItem(
-  //      IdMap.getId("cartWithLine"),
-  //      IdMap.getId("existingLine")
-  //    )
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $pull: { items: { _id: IdMap.getId("existingLine") } },
-  //      }
-  //    )
-  //  })
-
-  //  it("resolves if line item is not in cart", async () => {
-  //    await cartService.removeLineItem(
-  //      IdMap.getId("cartWithLine"),
-  //      IdMap.getId("nonExisting")
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
-  //  })
-  //})
-
-  //describe("updateLineItem", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    productVariantService: ProductVariantServiceMock,
-  //    lineItemService: LineItemServiceMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully updates existing line item", async () => {
-  //    const lineItem = {
-  //      title: "update line",
-  //      description: "This is a new line",
-  //      thumbnail: "https://test-img-yeah.com/thumb",
-  //      content: {
-  //        unit_price: 123,
-  //        variant: {
-  //          _id: IdMap.getId("can-cover"),
-  //        },
-  //        product: {
-  //          _id: IdMap.getId("product"),
-  //        },
-  //        quantity: 1,
-  //      },
-  //      quantity: 2,
-  //    }
-
-  //    await cartService.updateLineItem(
-  //      IdMap.getId("cartWithLine"),
-  //      IdMap.getId("existingLine"),
-  //      lineItem
-  //    )
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //        "items._id": IdMap.getId("existingLine"),
-  //      },
-  //      {
-  //        $set: { "items.$": lineItem },
-  //      }
-  //    )
-  //  })
-
-  //  it("throws if inventory isn't covered", async () => {
-  //    const lineItem = {
-  //      title: "merge line",
-  //      description: "This is a new line",
-  //      thumbnail: "test-img-yeah.com/thumb",
-  //      quantity: 1,
-  //      content: {
-  //        variant: {
-  //          _id: IdMap.getId("cannot-cover"),
-  //        },
-  //        product: {
-  //          _id: IdMap.getId("product"),
-  //        },
-  //        quantity: 1,
-  //        unit_price: 1234,
-  //      },
-  //    }
-
-  //    try {
-  //      await cartService.updateLineItem(
-  //        IdMap.getId("cartWithLine"),
-  //        IdMap.getId("existingLine"),
-  //        lineItem
-  //      )
-  //    } catch (err) {
-  //      expect(err.message).toEqual(
-  //        `Inventory doesn't cover the desired quantity`
-  //      )
-  //    }
-  //  })
-  //})
-
-  //describe("updateEmail", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    eventBusService: EventBusServiceMock,
-  //    customerService: CustomerServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully updates an email", async () => {
-  //    await cartService.updateEmail(
-  //      IdMap.getId("emptyCart"),
-  //      "test@testdom.com"
-  //    )
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(2)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.customer_updated",
-  //      expect.any(Object)
-  //    )
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("emptyCart"),
-  //      },
-  //      {
-  //        $set: {
-  //          email: "test@testdom.com",
-  //          customer_id: IdMap.getId("testdom"),
-  //        },
-  //      }
-  //    )
-  //  })
-
-  //  it("throws on invalid email", async () => {
-  //    try {
-  //      await cartService.updateEmail(IdMap.getId("emptyCart"), "test@test")
-  //    } catch (err) {
-  //      expect(err.message).toEqual("The email is not valid")
-  //    }
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
-  //  })
-  //})
-
-  //describe("updateBillingAddress", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully updates billing address", async () => {
-  //    const address = {
-  //      first_name: "LeBron",
-  //      last_name: "James",
-  //      address_1: "24 Dunks Drive",
-  //      city: "Los Angeles",
-  //      country_code: "US",
-  //      province: "CA",
-  //      postal_code: "93011",
-  //      phone: "+1 (222) 333 4444",
-  //    }
-
-  //    await cartService.updateBillingAddress(IdMap.getId("emptyCart"), address)
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("emptyCart"),
-  //      },
-  //      {
-  //        $set: { billing_address: address },
-  //      }
-  //    )
-  //  })
-
-  //  it("throws on invalid address", async () => {
-  //    const address = {
-  //      last_name: "James",
-  //      address_1: "24 Dunks Drive",
-  //      city: "Los Angeles",
-  //      country_code: "US",
-  //      province: "CA",
-  //      postal_code: "93011",
-  //    }
-
-  //    try {
-  //      await cartService.updateBillingAddress(
-  //        IdMap.getId("emptyCart"),
-  //        address
-  //      )
-  //    } catch (err) {
-  //      expect(err.message).toEqual(`"first_name" is required`)
-  //    }
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
-  //  })
-  //})
-
-  //describe("updateShippingAddress", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    eventBusService: EventBusServiceMock,
-  //    regionService: RegionServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully updates billing address", async () => {
-  //    const address = {
-  //      first_name: "LeBron",
-  //      last_name: "James",
-  //      address_1: "24 Dunks Drive",
-  //      city: "Los Angeles",
-  //      country_code: "US",
-  //      province: "CA",
-  //      postal_code: "93011",
-  //      phone: "+1 (222) 333 4444",
-  //    }
-
-  //    await cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("emptyCart"),
-  //      },
-  //      {
-  //        $set: { shipping_address: address },
-  //      }
-  //    )
-  //  })
-
-  //  it("throws if country not in region", async () => {
-  //    const address = {
-  //      first_name: "LeBron",
-  //      last_name: "James",
-  //      address_1: "24 Dunks Drive",
-  //      city: "Los Angeles",
-  //      country_code: "ru",
-  //      province: "CA",
-  //      postal_code: "93011",
-  //      phone: "+1 (222) 333 4444",
-  //    }
-
-  //    await expect(
-  //      cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
-  //    ).rejects.toThrow("Shipping country must be in the cart region")
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
-  //  })
-
-  //  it("throws on invalid address", async () => {
-  //    const address = {
-  //      // Missing first_name
-  //      last_name: "James",
-  //      address_1: "24 Dunks Drive",
-  //      city: "Los Angeles",
-  //      country_code: "US",
-  //      province: "CA",
-  //      postal_code: "93011",
-  //    }
-
-  //    await expect(
-  //      cartService.updateShippingAddress(IdMap.getId("emptyCart"), address)
-  //    ).rejects.toThrow(`"first_name" is required`)
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(0)
-  //  })
-  //})
-
-  //describe("setRegion", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    regionService: RegionServiceMock,
-  //    productVariantService: ProductVariantServiceMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully set new region", async () => {
-  //    await cartService.setRegion(
-  //      IdMap.getId("fr-cart"),
-  //      IdMap.getId("region-us")
-  //    )
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("fr-cart"),
-  //      },
-  //      {
-  //        $set: {
-  //          region_id: IdMap.getId("region-us"),
-  //          shipping_methods: [],
-  //          shipping_address: {
-  //            country_code: "US",
-  //          },
-  //          items: [
-  //            {
-  //              _id: IdMap.getId("line"),
-  //              title: "merge line",
-  //              description: "This is a new line",
-  //              thumbnail: "test-img-yeah.com/thumb",
-  //              has_shipping: false,
-  //              content: [
-  //                {
-  //                  unit_price: 10,
-  //                  variant: {
-  //                    _id: IdMap.getId("eur-8-us-10"),
-  //                  },
-  //                  product: {
-  //                    _id: IdMap.getId("product1"),
-  //                  },
-  //                  quantity: 1,
-  //                },
-  //                {
-  //                  unit_price: 12,
-  //                  variant: {
-  //                    _id: IdMap.getId("eur-10-us-12"),
-  //                  },
-  //                  product: {
-  //                    _id: IdMap.getId("product1"),
-  //                  },
-  //                  quantity: 1,
-  //                },
-  //              ],
-  //              quantity: 10,
-  //            },
-  //            {
-  //              _id: IdMap.getId("existingLine"),
-  //              title: "merge line",
-  //              description: "This is a new line",
-  //              thumbnail: "test-img-yeah.com/thumb",
-  //              has_shipping: false,
-  //              content: {
-  //                unit_price: 12,
-  //                variant: {
-  //                  _id: IdMap.getId("eur-10-us-12"),
-  //                },
-  //                product: {
-  //                  _id: IdMap.getId("product2"),
-  //                },
-  //                quantity: 1,
-  //              },
-  //              quantity: 10,
-  //            },
-  //          ],
-  //        },
-  //      }
-  //    )
-  //  })
-
-  //  it("successfully set new region", async () => {
-  //    await cartService.setRegion(
-  //      IdMap.getId("complete-cart"),
-  //      IdMap.getId("region-us")
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("complete-cart"),
-  //      },
-  //      {
-  //        $set: {
-  //          items: [],
-  //          region_id: IdMap.getId("region-us"),
-  //          shipping_methods: [],
-  //          payment_sessions: [],
-  //          payment_method: undefined,
-  //          shipping_address: {
-  //            first_name: "hi",
-  //            last_name: "you",
-  //            country_code: "US",
-  //            city: "of lights",
-  //            address_1: "You bet street",
-  //            postal_code: "4242",
-  //          },
-  //        },
-  //      }
-  //    )
-  //  })
-
-  //  it("filters items that don't have region prices", async () => {
-  //    await cartService.setRegion(
-  //      IdMap.getId("cartWithLine"),
-  //      IdMap.getId("testRegion")
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $set: {
-  //          region_id: IdMap.getId("testRegion"),
-  //          items: [],
-  //        },
-  //      }
-  //    )
-  //  })
-  //})
-
-  //describe("setPaymentMethod", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    regionService: RegionServiceMock,
-  //    paymentProviderService: PaymentProviderServiceMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("successfully sets a payment method", async () => {
-  //    const paymentMethod = {
-  //      provider_id: "default_provider",
-  //      data: {
-  //        money_id: "success",
-  //      },
-  //    }
-
-  //    await cartService.setPaymentMethod(
-  //      IdMap.getId("cartWithLine"),
-  //      paymentMethod
-  //    )
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
-  //    expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
-  //      IdMap.getId("testRegion")
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $set: { payment_method: paymentMethod },
-  //      }
-  //    )
-  //  })
-
-  //  it("fails if the region does not contain the provider_id", async () => {
-  //    const paymentMethod = {
-  //      provider_id: "unknown_provider",
-  //      data: {
-  //        money_id: "success",
-  //      },
-  //    }
-
-  //    try {
-  //      await cartService.setPaymentMethod(
-  //        IdMap.getId("cartWithLine"),
-  //        paymentMethod
-  //      )
-  //    } catch (err) {
-  //      expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
-  //      expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
-  //        IdMap.getId("testRegion")
-  //      )
-
-  //      expect(err.message).toEqual(
-  //        `The payment method is not available in this region`
-  //      )
-  //    }
-  //  })
-  //})
-
-  //describe("setPaymentSessions", () => {
-  //  const cartService = new CartService({
-  //    cartModel: CartModelMock,
-  //    regionService: RegionServiceMock,
-  //    paymentProviderService: PaymentProviderServiceMock,
-  //    totalsService: TotalsServiceMock,
-  //    eventBusService: EventBusServiceMock,
-  //  })
-
-  //  beforeEach(() => {
-  //    jest.clearAllMocks()
-  //  })
-
-  //  it("initializes payment sessions for each of the providers", async () => {
-  //    await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
-
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-  //      "cart.updated",
-  //      expect.any(Object)
-  //    )
-
-  //    expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(2)
-  //    expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
-  //      "default_provider",
-  //      carts.cartWithLine
-  //    )
-  //    expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
-  //      "unregistered",
-  //      carts.cartWithLine
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithLine"),
-  //      },
-  //      {
-  //        $set: {
-  //          payment_sessions: [
-  //            {
-  //              provider_id: "default_provider",
-  //              data: {
-  //                id: "default_provider_session",
-  //                cartId: IdMap.getId("cartWithLine"),
-  //              },
-  //            },
-  //            {
-  //              provider_id: "unregistered",
-  //              data: {
-  //                id: "unregistered_session",
-  //                cartId: IdMap.getId("cartWithLine"),
-  //              },
-  //            },
-  //          ],
-  //        },
-  //      }
-  //    )
-  //  })
-
-  //  it("updates payment sessions for existing sessions", async () => {
-  //    await cartService.setPaymentSessions(IdMap.getId("cartWithPaySessions"))
-
-  //    expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(0)
-
-  //    expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(2)
-  //    expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
-  //      {
-  //        provider_id: "default_provider",
-  //        data: {
-  //          id: "default_provider_session",
-  //        },
-  //      },
-  //      carts.cartWithPaySessions
-  //    )
-  //    expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
-  //      {
-  //        provider_id: "unregistered",
-  //        data: {
-  //          id: "unregistered_session",
-  //        },
-  //      },
-  //      carts.cartWithPaySessions
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithPaySessions"),
-  //      },
-  //      {
-  //        $set: {
-  //          payment_sessions: [
-  //            {
-  //              provider_id: "default_provider",
-  //              data: {
-  //                id: "default_provider_session_updated",
-  //              },
-  //            },
-  //            {
-  //              provider_id: "unregistered",
-  //              data: {
-  //                id: "unregistered_session_updated",
-  //              },
-  //            },
-  //          ],
-  //        },
-  //      }
-  //    )
-  //  })
-
-  //  it("filters sessions not available in the region", async () => {
-  //    await cartService.setPaymentSessions(
-  //      IdMap.getId("cartWithPaySessionsDifRegion")
-  //    )
-
-  //    expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(1)
-
-  //    expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(1)
-  //    expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
-  //      {
-  //        provider_id: "default_provider",
-  //        data: {
-  //          id: "default_provider_session",
-  //        },
-  //      },
-  //      carts.cartWithPaySessionsDifRegion
-  //    )
-  //    expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledWith(
-  //      "france-provider",
-  //      carts.cartWithPaySessionsDifRegion
-  //    )
-
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-  //    expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-  //      {
-  //        _id: IdMap.getId("cartWithPaySessionsDifRegion"),
-  //      },
-  //      {
-  //        $set: {
-  //          payment_sessions: [
-  //            {
-  //              provider_id: "default_provider",
-  //              data: {
-  //                id: "default_provider_session_updated",
-  //              },
-  //            },
-  //            {
-  //              provider_id: "france-provider",
-  //              data: {
-  //                id: "france-provider_session",
-  //                cartId: IdMap.getId("cartWithPaySessionsDifRegion"),
-  //              },
-  //            },
-  //          ],
-  //        },
-  //      }
-  //    )
-  //  })
-  //})
 
   //describe("retrievePaymentSession", () => {
   //  const cartService = new CartService({
   //    cartModel: CartModelMock,
-  //    eventBusService: EventBusServiceMock,
+  //    eventBusService,
   //  })
 
   //  let res
@@ -1275,7 +1257,7 @@ describe("CartService", () => {
   //    cartModel: CartModelMock,
   //    shippingProfileService: ShippingProfileServiceMock,
   //    shippingOptionService: ShippingOptionServiceMock,
-  //    eventBusService: EventBusServiceMock,
+  //    eventBusService,
   //  })
 
   //  describe("successfully adds the shipping method", () => {
@@ -1320,8 +1302,8 @@ describe("CartService", () => {
   //    })
 
   //    it("updates cart", () => {
-  //      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+  //      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+  //      expect(eventBusService.emit).toHaveBeenCalledWith(
   //        "cart.updated",
   //        expect.any(Object)
   //      )
@@ -1482,7 +1464,7 @@ describe("CartService", () => {
   //  const cartService = new CartService({
   //    cartModel: CartModelMock,
   //    discountService: DiscountServiceMock,
-  //    eventBusService: EventBusServiceMock,
+  //    eventBusService,
   //  })
   //  beforeEach(async () => {
   //    jest.clearAllMocks()
@@ -1495,8 +1477,8 @@ describe("CartService", () => {
   //      _id: IdMap.getId("fr-cart"),
   //    })
 
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-  //    expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+  //    expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+  //    expect(eventBusService.emit).toHaveBeenCalledWith(
   //      "cart.updated",
   //      expect.any(Object)
   //    )

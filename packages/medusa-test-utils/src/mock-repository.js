@@ -1,4 +1,13 @@
-export default ({ create, update, find, findOne, save } = {}) => {
+export default ({
+  create,
+  update,
+  remove,
+  softRemove,
+  find,
+  findOne,
+  findOneOrFail,
+  save,
+} = {}) => {
   return {
     create: jest.fn().mockImplementation((...args) => {
       if (create) {
@@ -6,9 +15,26 @@ export default ({ create, update, find, findOne, save } = {}) => {
       }
       return {};
     }),
+    softRemove: jest.fn().mockImplementation((...args) => {
+      if (softRemove) {
+        return softRemove(...args);
+      }
+      return {};
+    }),
+    remove: jest.fn().mockImplementation((...args) => {
+      if (remove) {
+        return remove(...args);
+      }
+      return {};
+    }),
     update: jest.fn().mockImplementation((...args) => {
       if (update) {
         return update(...args);
+      }
+    }),
+    findOneOrFail: jest.fn().mockImplementation((...args) => {
+      if (findOneOrFail) {
+        return findOneOrFail(...args);
       }
     }),
     findOne: jest.fn().mockImplementation((...args) => {
