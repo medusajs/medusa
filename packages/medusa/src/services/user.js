@@ -26,6 +26,22 @@ class UserService extends BaseService {
     this.manager_ = manager
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new UserService({
+      manager: transactionManager,
+      userRepository: this.userRepository_,
+      eventBusService: this.eventBus_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Used to validate user ids. Throws an error if the cast fails
    * @param {string} rawId - the raw user id to validate.
@@ -48,8 +64,9 @@ class UserService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.userModel_.find(selector)
+  async list(selector) {
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+    return userRepo.find({ where: selector })
   }
 
   /**
@@ -152,8 +169,7 @@ class UserService extends BaseService {
 
       const created = await userRepo.create(user)
 
-      const result = await userRepo.save(created)
-      return result
+      return userRepo.save(created)
     })
   }
 
@@ -193,8 +209,7 @@ class UserService extends BaseService {
         user[key] = value
       }
 
-      const result = await userRepo.save(user)
-      return result
+      return userRepo.save(user)
     })
   }
 
@@ -243,8 +258,7 @@ class UserService extends BaseService {
 
       user.password_hash = hashedPassword
 
-      const result = await userRepo.save(user)
-      return result
+      return userRepo.save(user)
     })
   }
 
@@ -283,33 +297,6 @@ class UserService extends BaseService {
     const decorated = _.pick(user, fields.concat(requiredFields))
     const final = await this.runDecorators_(decorated)
     return final
-  }
-
-  /**
-   * Dedicated method to set metadata for a user.
-   * @param {string} userId - the user to apply metadata to.
-   * @param {object} metadata - the metadata to set
-   * @return {Promise} resolves to the updated result.
-   */
-  setMetadata(user, metadata) {
-    const existing = user.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
   }
 }
 

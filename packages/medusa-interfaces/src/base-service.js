@@ -27,6 +27,33 @@ class BaseService {
   }
 
   /**
+   * Dedicated method to set metadata.
+   * @param {string} obj - the entity to apply metadata to.
+   * @param {object} metadata - the metadata to set
+   * @return {Promise} resolves to the updated result.
+   */
+  setMetadata_(obj, metadata) {
+    const existing = obj.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+      newData[key] = value
+    }
+
+    const updated = {
+      ...existing,
+      ...newData,
+    }
+
+    return updated
+  }
+
+  /**
    * Adds a decorator to a service. The decorator must be a function and should
    * return a decorated object.
    * @param {function} fn - the decorator to add to the service

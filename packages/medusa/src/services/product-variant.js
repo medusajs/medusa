@@ -45,6 +45,26 @@ class ProductVariantService extends BaseService {
     this.productOptionValueRepository_ = productOptionValueRepository
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ProductVariantService({
+      manager: transactionManager,
+      productVariantRepository: this.productVariantRepository_,
+      productRepository: this.productRepository_,
+      eventBusService: this.eventBus_,
+      regionService: this.regionService_,
+      moneyAmountRepository: this.moneyAmountRepository_,
+      productOptionValueRepository: this.productOptionValueRepository_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Used to validate product ids. Throws an error if the cast fails
    * @param {string} rawId - the raw product id to validate.
