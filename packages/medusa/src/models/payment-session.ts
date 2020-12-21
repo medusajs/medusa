@@ -22,7 +22,7 @@ export class PaymentSession {
 
   @ManyToOne(
     () => Cart,
-    cart => cart.items
+    cart => cart.payment_sessions
   )
   @JoinColumn({ name: "cart_id" })
   cart: Cart

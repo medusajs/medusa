@@ -78,6 +78,13 @@ export class Cart {
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
+  @Column({ nullable: true })
+  payment_session_id: string
+
+  @OneToOne(() => PaymentSession)
+  @JoinColumn({ name: "payment_session_id" })
+  payment_session: PaymentSession
+
   @OneToMany(
     () => PaymentSession,
     paymentSession => paymentSession.cart,

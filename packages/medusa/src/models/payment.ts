@@ -55,7 +55,7 @@ export class Payment {
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
   currency: Currency
 
-  @Column({ type: "int" })
+  @Column({ type: "int", default: 0 })
   amount_refunded: number
 
   @Column()
