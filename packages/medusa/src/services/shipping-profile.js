@@ -20,11 +20,11 @@ class ShippingProfileService extends BaseService {
   }) {
     super()
 
-    /** @private @const {ShippingProfileRepository} */
-    this.repository_ = shippingProfileRepository
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
 
-    /** @private @const {ShippingProfileModel} */
-    this.profileModel_ = manager.getCustomRepository(shippingProfileRepository)
+    /** @private @const {ShippingProfileRepository} */
+    this.shippingProfileRepository_ = shippingProfileRepository
 
     /** @private @const {ProductService} */
     this.productService_ = productService
@@ -33,22 +33,30 @@ class ShippingProfileService extends BaseService {
     this.shippingOptionService_ = shippingOptionService
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ShippingProfileService({
+      manager: transactionManager,
+      shippingProfileRepository: this.shippingProfileRepository_,
+      productService: this.productService_,
+      shippingOptionService: this.shippingOptionService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Used to validate product ids. Throws an error if the cast fails
    * @param {string} rawId - the raw product id to validate.
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The profileId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -95,18 +103,21 @@ class ShippingProfileService extends BaseService {
    * @param {string} profileId - the id of the profile to get.
    * @return {Promise<Product>} the profile document.
    */
-  async retrieve(profileId) {
+  async retrieve(profileId, relations = []) {
+    const profileRepository = this.manager_.getCustomRepository(
+      this.shippingProfileRepository_
+    )
     const validatedId = this.validateId_(profileId)
-    const profile = await this.profileModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+    const profile = await profileRepository.findOne({
+      where: { id: validatedId },
+      relations,
+    })
 
     if (!profile) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Shipping Profile with ${profileId} was not found`
+        `Profile with id: ${profileId} was not found`
       )
     }
 
@@ -114,9 +125,15 @@ class ShippingProfileService extends BaseService {
   }
 
   async retrieveDefault() {
-    return await this.profileModel_.findOne({ type: "default" }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    const profileRepository = this.manager_.getCustomRepository(
+      this.shippingProfileRepository_
+    )
+
+    const profile = await profileRepository.findOne({
+      where: { type: "default" },
     })
+
+    return profile
   }
 
   /**
@@ -125,12 +142,18 @@ class ShippingProfileService extends BaseService {
    */
   async createDefault() {
     let profile = await this.retrieveDefault()
+
     if (!profile) {
-      const p = this.profileModel_.create({
+      const profileRepository = this.manager_.getCustomRepository(
+        this.shippingProfileRepository_
+      )
+
+      const p = await profileRepository.create({
         type: "default",
         name: "Default Shipping Profile",
       })
-      profile = await this.profileModel_.save(p)
+
+      profile = await profileRepository.save(p)
     }
 
     return profile
@@ -141,11 +164,15 @@ class ShippingProfileService extends BaseService {
    * @return the shipping profile for gift cards
    */
   async retrieveGiftCardDefault() {
-    return await this.profileModel_
-      .findOne({ name: "gift_card" })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const profileRepository = this.manager_.getCustomRepository(
+      this.shippingProfileRepository_
+    )
+
+    const giftCardProfile = await profileRepository.findOne({
+      where: { type: "gift_card" },
+    })
+
+    return giftCardProfile
   }
 
   /**
@@ -155,12 +182,18 @@ class ShippingProfileService extends BaseService {
    */
   async createGiftCardDefault() {
     let profile = await this.retrieveGiftCardDefault()
+
     if (!profile) {
-      const p = this.profileModel_.create({
+      const profileRepository = this.manager_.getCustomRepository(
+        this.shippingProfileRepository_
+      )
+
+      const p = await profileRepository.create({
         type: "gift_card",
         name: "Gift Card Profile",
       })
-      profile = await this.profileModel_.save(p)
+
+      profile = await profileRepository.save(p)
     }
 
     return profile
@@ -172,13 +205,22 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(profile) {
-    if (profile.products || profile.shipping_options) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Please add products and shipping_options after creating Shipping Profiles"
+    return this.atomicPhase_(async manager => {
+      const profileRepository = manager.getCustomRepository(
+        this.shippingProfileRepository_
       )
-    }
-    return this.profileModel_.create(profile)
+
+      if (profile.products || profile.shipping_options) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Please add products and shipping_options after creating Shipping Profiles"
+        )
+      }
+
+      const created = await profileRepository.create(profile)
+      const result = await profileRepository.save(created)
+      return result
+    })
   }
 
   /**
@@ -284,19 +326,27 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of update
    */
   async addProduct(profileId, productId) {
-    const profile = await this.retrieve(profileId)
-    const product = await this.productService_.retrieve(productId)
+    return this.atomicPhase_(async manager => {
+      const profileRepository = manager.getCustomRepository(
+        this.shippingProfileRepository_
+      )
 
-    if (profile.products.find(p => p === product._id)) {
-      // If the product already exists in the profile we just return an
-      // empty promise for then-chaining
-      return Promise.resolve()
-    }
+      const profile = await this.retrieve(profileId, ["products"])
 
-    return this.profileModel_.updateOne(
-      { _id: profile._id },
-      { $push: { products: product._id } }
-    )
+      // If profile already has given product, we return an empty promise
+      if (profile.products.find(p => p.id === profileId)) {
+        return Promise.resolve()
+      }
+
+      const product = await this.productService_
+        .withTransaction(manager)
+        .retrieve(productId)
+
+      profile.products = [...profile.products, product]
+
+      const updated = await profileRepository.save(profile)
+      return updated
+    })
   }
 
   /**

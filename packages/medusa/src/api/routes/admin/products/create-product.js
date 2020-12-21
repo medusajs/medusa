@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { getConnection, getEntityManager } from "typeorm"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -42,60 +43,60 @@ export default async (req, res) => {
   }
 
   try {
-    const { variants } = value
-    delete value.variants
-
     const productService = req.scope.resolve("productService")
+    const productVariantService = req.scope.resolve("productVariantService")
     const shippingProfileService = req.scope.resolve("shippingProfileService")
 
-    if (!value.thumbnail && value.images && value.images.length) {
-      value.thumbnail = value.images[0]
-    }
-    let newProduct = await productService.createDraft(value)
+    const entityManager = req.scope.resolve("manager")
 
-    if (variants) {
-      const optionIds = value.options.map(
-        o => newProduct.options.find(newO => newO.title === o.title)._id
-      )
+    await entityManager.transaction(async manager => {
+      const { variants } = value
+      delete value.variants
 
-      await Promise.all(
-        variants.map(v => {
-          const variant = {
-            ...v,
-            options: v.options.map((o, index) => ({
-              ...o,
-              option_id: optionIds[index],
-            })),
-          }
-          return productService.createVariant(newProduct._id, variant)
-        })
-      )
-    }
+      if (!value.thumbnail && value.images && value.images.length) {
+        value.thumbnail = value.images[0]
+      }
 
-    // Add to default shipping profile
-    if (value.is_giftcard) {
-      const { _id } = await shippingProfileService.retrieveGiftCardDefault()
-      await shippingProfileService.addProduct(_id, newProduct._id)
-    } else {
-      const { _id } = await shippingProfileService.retrieveDefault()
-      await shippingProfileService.addProduct(_id, newProduct._id)
-    }
+      let shippingProfile
+      // Add to default shipping profile
+      if (value.is_giftcard) {
+        shippingProfile = await shippingProfileService.retrieveGiftCardDefault()
+      } else {
+        shippingProfile = await shippingProfileService.retrieveDefault()
+      }
 
-    newProduct = await productService.decorate(
-      newProduct,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "images",
-        "thumbnail",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
-    res.json({ product: newProduct })
+      let newProduct = await productService
+        .withTransaction(manager)
+        .create({ ...value, profile_id: shippingProfile.id })
+
+      if (variants) {
+        const optionIds = value.options.map(
+          o => newProduct.options.find(newO => newO.title === o.title).id
+        )
+
+        await Promise.all(
+          variants.map(v => {
+            const variant = {
+              ...v,
+              options: v.options.map((o, index) => ({
+                ...o,
+                option_id: optionIds[index],
+              })),
+            }
+            return productVariantService
+              .withTransaction(manager)
+              .create(newProduct.id, variant)
+          })
+        )
+      }
+
+      // Add to default shipping profile
+      await shippingProfileService
+        .withTransaction(manager)
+        .addProduct(shippingProfile.id, newProduct.id)
+
+      res.json({ product: newProduct })
+    })
   } catch (err) {
     console.log(err)
     throw err

@@ -103,21 +103,30 @@ class ProductVariantService extends BaseService {
   /**
    * Creates an unpublished product variant. Will validate against parent product
    * to ensure that the variant can in fact be created.
-   * @param {string} productId - the product the variant will be added to
+   * @param {string} productOrProductId - the product the variant will be added to
    * @param {object} variant - the variant to create
    * @return {Promise} resolves to the creation result.
    */
-  async create(productId, variant) {
+  async create(productOrProductId, variant) {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const variantRepo = manager.getCustomRepository(
         this.productVariantRepository_
       )
 
-      const product = await productRepo.findOne({
-        where: { id: productId },
-        relations: ["variants", "options"],
-      })
+      let product = productOrProductId
+
+      if (typeof product === `string`) {
+        product = await productRepo.findOne({
+          where: { id: productOrProductId },
+          relations: ["variants", "options"],
+        })
+      } else if (!product.id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product id missing`
+        )
+      }
 
       if (product.options.length !== variant.options.length) {
         throw new MedusaError(
@@ -155,7 +164,7 @@ class ProductVariantService extends BaseService {
 
       const toCreate = {
         ...variant,
-        product_id: productId,
+        product_id: product.id,
       }
 
       const productVariant = await variantRepo.create(toCreate)

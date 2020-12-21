@@ -10,11 +10,22 @@ import { currencies } from "../utils/currencies"
  * @implements BaseService
  */
 class StoreService extends BaseService {
-  constructor({ manager, storeRepository, eventBusService }) {
+  constructor({
+    manager,
+    storeRepository,
+    currencyRepository,
+    eventBusService,
+  }) {
     super()
 
-    /** @private @const {storeModel} */
-    this.storeModel_ = manager.getCustomRepository(storeRepository)
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {StoreRepository} */
+    this.storeRepository_ = storeRepository
+
+    /** @private @const {CurrencyRepository} */
+    this.currencyRepository_ = currencyRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -43,21 +54,40 @@ class StoreService extends BaseService {
    * @return {Promise<Store>} the store.
    */
   async create() {
-    let store = await this.retrieve()
-    if (!store) {
-      const s = this.storeModel_.create()
-      store = await this.storeModel_.save(s)
-    }
+    return this.atomicPhase_(async manager => {
+      const storeRepository = manager.getCustomRepository(this.storeRepository_)
 
-    return store
+      let store = await this.retrieve()
+
+      if (!store) {
+        const s = storeRepository.create()
+        store = await storeRepository.save(s)
+      }
+
+      return store
+    })
   }
 
   /**
    * Retrieve the store settings. There is always a maximum of one store.
    * @return {Promise<Store>} the customer document.
    */
-  retrieve() {
-    return this.storeModel_.findOne()
+  retrieve(relations = ["default_currency", "currencies"]) {
+    const storeRepository = this.manager_.getCustomRepository(
+      this.storeRepository_
+    )
+    return storeRepository.findOne({ relations })
+  }
+
+  getDefaultCurrency_(code) {
+    const currencyObject = currencies[code.toUpperCase()]
+
+    return {
+      code: currencyObject.code.toLowerCase(),
+      symbol: currencyObject.symbol,
+      symbol_native: currencyObject.symbol_native,
+      name: currencyObject.name,
+    }
   }
 
   /**
@@ -70,42 +100,64 @@ class StoreService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(update) {
-    const store = await this.retrieve()
-
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
+    return this.atomicPhase_(async manager => {
+      const storeRepository = manager.getCustomRepository(this.storeRepository_)
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
       )
-    }
 
-    if (update.default_currency) {
-      update.default_currency = update.default_currency.toLowerCase()
-      if (!currencies[update.default_currency]) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Invalid currency ${update.default_currency}`
-        )
+      const store = await this.retrieve()
+
+      const {
+        metadata,
+        default_currency,
+        default_currency_code,
+        currencies: storeCurrencies,
+        ...rest
+      } = update
+
+      if (metadata) {
+        store.metadata = this.setMetadata_(store, metadata)
       }
-    }
 
-    if (update.currencies) {
-      update.currencies = update.currencies.map(c => c.toLowerCase())
-      update.currencies.forEach(c => {
-        if (!currencies[c]) {
+      if (default_currency_code) {
+        const curr = await currencyRepository.findOne({
+          code: default_currency_code.toLowerCase(),
+        })
+
+        if (!curr) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Invalid currency ${c}`
+            `Currency ${default_currency_code} not found`
           )
         }
-      })
-    }
 
-    return this.storeModel_
-      .updateOne({ _id: store._id }, { $set: update }, { runValidators: true })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+        store.default_currency = curr
+        store.default_currency_code = curr.code
+      }
+
+      if (storeCurrencies) {
+        store.currencies = storeCurrencies.map(curr => {
+          if (!currencies[curr.toUpperCase()]) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Invalid currency ${curr.code}`
+            )
+          }
+
+          return this.getDefaultCurrency_(curr)
+        })
+      }
+
+      console.log(store)
+
+      for (const [key, value] of Object.entries(rest)) {
+        store[key] = value
+      }
+
+      const result = storeRepository.save(store)
+      return result
+    })
   }
 
   /**

@@ -1,7 +1,7 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class initial1608038805269 implements MigrationInterface {
-    name = 'initial1608038805269'
+export class init1608027667255 implements MigrationInterface {
+    name = 'init1608027667255'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "fulfillment_provider" ("id" character varying NOT NULL, "is_installed" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_beb35a6de60a6c4f91d5ae57e44" PRIMARY KEY ("id"))`);
@@ -15,7 +15,7 @@ export class initial1608038805269 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "payment_provider" ("id" character varying NOT NULL, "is_installed" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_ea94f42b6c88e9191c3649d7522" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "region" ("id" character varying NOT NULL, "name" character varying NOT NULL, "currency_code" character varying NOT NULL, "tax_rate" numeric NOT NULL, "tax_code" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_5f48ffc3af96bc486f5f3f3a6da" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "image" ("id" character varying NOT NULL, "url" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_d6db1ab4ee9ad9dbe86c64e4cc3" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "money_amount" ("id" character varying NOT NULL, "currency_code" character varying NOT NULL, "amount" integer NOT NULL, "variant_id" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, CONSTRAINT "PK_022e49a7e21a8dfb820f788778a" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "money_amount" ("id" character varying NOT NULL, "currency_code" character varying NOT NULL, "amount" integer NOT NULL, "sale_amount" integer DEFAULT null, "variant_id" character varying, "region_id" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, CONSTRAINT "PK_022e49a7e21a8dfb820f788778a" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "product_variant" ("id" character varying NOT NULL, "title" character varying NOT NULL, "sku" character varying, "barcode" character varying, "ean" character varying, "upc" character varying, "inventory_quantity" integer NOT NULL, "allow_backorder" boolean NOT NULL DEFAULT false, "manage_inventory" boolean NOT NULL DEFAULT true, "hs_code" character varying, "origin_country" character varying, "mid_code" character varying, "material" character varying, "weight" integer, "length" integer, "height" integer, "width" integer, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, "product_id" character varying, CONSTRAINT "PK_1ab69c9935c61f7c70791ae0a9f" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_f4dc2c0888b66d547c175f090e" ON "product_variant" ("sku") `);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_9db95c4b71f632fc93ecbc3d8b" ON "product_variant" ("barcode") `);
@@ -23,7 +23,6 @@ export class initial1608038805269 implements MigrationInterface {
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_a0a3f124dc5b167622217fee02" ON "product_variant" ("upc") `);
         await queryRunner.query(`CREATE TABLE "product_option_value" ("id" character varying NOT NULL, "value" character varying NOT NULL, "option_id" character varying NOT NULL, "variant_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_2ab71ed3b21be5800905c621535" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_cdf4388f294b30a25c627d69fe" ON "product_option_value" ("option_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_b222db89e432f07f33ceff8441" ON "product_option_value" ("option_id", "value") `);
         await queryRunner.query(`CREATE TABLE "product_option" ("id" character varying NOT NULL, "title" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, "product_id" character varying, CONSTRAINT "PK_4cf3c467e9bc764bdd32c4cd938" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "shipping_option_requirement_type_enum" AS ENUM('min_subtotal', 'max_subtotal')`);
         await queryRunner.query(`CREATE TABLE "shipping_option_requirement" ("id" character varying NOT NULL, "shipping_option_id" character varying NOT NULL, "type" "shipping_option_requirement_type_enum" NOT NULL, "amount" integer NOT NULL, CONSTRAINT "PK_a0ff15442606d9f783602cb23a7" PRIMARY KEY ("id"))`);
@@ -74,7 +73,7 @@ export class initial1608038805269 implements MigrationInterface {
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_c49c061b1a686843c5d673506f" ON "oauth" ("application_name") `);
         await queryRunner.query(`CREATE TABLE "staged_job" ("id" character varying NOT NULL, "event_name" character varying NOT NULL, "data" jsonb NOT NULL, CONSTRAINT "PK_9a28fb48c46c5509faf43ac8c8d" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "store" ("id" character varying NOT NULL, "name" character varying NOT NULL DEFAULT 'Medusa Store', "default_currency_code" character varying NOT NULL DEFAULT 'usd', "swap_link_template" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "metadata" jsonb, CONSTRAINT "PK_f3172007d4de5ae8e7692759d79" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "user" ("id" character varying NOT NULL, "email" character varying NOT NULL, "first_name" character varying NOT NULL, "last_name" character varying NOT NULL, "password_hash" character varying NOT NULL, "api_token" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "user" ("id" character varying NOT NULL, "email" character varying NOT NULL, "first_name" character varying, "last_name" character varying, "password_hash" character varying NOT NULL, "api_token" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_e12875dfb3b1d92d7d7c5377e2" ON "user" ("email") `);
         await queryRunner.query(`CREATE TABLE "region_payment_providers" ("region_id" character varying NOT NULL, "provider_id" character varying NOT NULL, CONSTRAINT "PK_9fa1e69914d3dd752de6b1da407" PRIMARY KEY ("region_id", "provider_id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_8aaa78ba90d3802edac317df86" ON "region_payment_providers" ("region_id") `);
@@ -114,6 +113,7 @@ export class initial1608038805269 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "region" ADD CONSTRAINT "FK_3bdd5896ec93be2f1c62a3309a5" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "money_amount" ADD CONSTRAINT "FK_e15811f81339e4bd8c440aebe1c" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "money_amount" ADD CONSTRAINT "FK_17a06d728e4cfbc5bd2ddb70af0" FOREIGN KEY ("variant_id") REFERENCES "product_variant"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "money_amount" ADD CONSTRAINT "FK_b433e27b7a83e6d12ab26b15b03" FOREIGN KEY ("region_id") REFERENCES "region"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "product_variant" ADD CONSTRAINT "FK_ca67dd080aac5ecf99609960cd2" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "product_option_value" ADD CONSTRAINT "FK_cdf4388f294b30a25c627d69fe9" FOREIGN KEY ("option_id") REFERENCES "product_option"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "product_option_value" ADD CONSTRAINT "FK_7234ed737ff4eb1b6ae6e6d7b01" FOREIGN KEY ("variant_id") REFERENCES "product_variant"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -249,6 +249,7 @@ export class initial1608038805269 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "product_option_value" DROP CONSTRAINT "FK_7234ed737ff4eb1b6ae6e6d7b01"`);
         await queryRunner.query(`ALTER TABLE "product_option_value" DROP CONSTRAINT "FK_cdf4388f294b30a25c627d69fe9"`);
         await queryRunner.query(`ALTER TABLE "product_variant" DROP CONSTRAINT "FK_ca67dd080aac5ecf99609960cd2"`);
+        await queryRunner.query(`ALTER TABLE "money_amount" DROP CONSTRAINT "FK_b433e27b7a83e6d12ab26b15b03"`);
         await queryRunner.query(`ALTER TABLE "money_amount" DROP CONSTRAINT "FK_17a06d728e4cfbc5bd2ddb70af0"`);
         await queryRunner.query(`ALTER TABLE "money_amount" DROP CONSTRAINT "FK_e15811f81339e4bd8c440aebe1c"`);
         await queryRunner.query(`ALTER TABLE "region" DROP CONSTRAINT "FK_3bdd5896ec93be2f1c62a3309a5"`);
@@ -339,7 +340,6 @@ export class initial1608038805269 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "shipping_option_requirement"`);
         await queryRunner.query(`DROP TYPE "shipping_option_requirement_type_enum"`);
         await queryRunner.query(`DROP TABLE "product_option"`);
-        await queryRunner.query(`DROP INDEX "IDX_b222db89e432f07f33ceff8441"`);
         await queryRunner.query(`DROP INDEX "IDX_cdf4388f294b30a25c627d69fe"`);
         await queryRunner.query(`DROP TABLE "product_option_value"`);
         await queryRunner.query(`DROP INDEX "IDX_a0a3f124dc5b167622217fee02"`);

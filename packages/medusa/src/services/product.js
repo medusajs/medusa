@@ -49,7 +49,8 @@ class ProductService extends BaseService {
 
     const cloned = new ProductService({
       manager: transactionManager,
-      productRepository: this.cartRepository_,
+      productRepository: this.productRepository_,
+      productOptionRepository: this.productOptionRepository_,
       eventBusService: this.eventBus_,
       productVariantService: this.productVariantService_,
     })
@@ -72,8 +73,12 @@ class ProductService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, offset, limit) {
-    return this.productModel_.find(selector, {}, offset, limit)
+  list(selector, relations = [], skip, take) {
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    return productRepo.find({ where: selector, skip, take, relations })
   }
 
   /**
@@ -94,24 +99,24 @@ class ProductService extends BaseService {
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieve(productId, relations = []) {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
-    const validatedId = this.validateId_(productId)
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const validatedId = this.validateId_(productId)
 
-    const product = await productRepo.findOne({
-      where: { id: validatedId },
-      relations,
+      const product = await productRepo.findOne({
+        where: { id: validatedId },
+        relations,
+      })
+
+      if (!product) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product with id: ${productId} was not found`
+        )
+      }
+
+      return product
     })
-
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with id: ${productId} was not found`
-      )
-    }
-
-    return product
   }
 
   /**
@@ -140,8 +145,19 @@ class ProductService extends BaseService {
   async create(productObject) {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
+      const optionRepo = manager.getCustomRepository(
+        this.productOptionRepository_
+      )
 
       const product = await productRepo.create(productObject)
+
+      product.options = await Promise.all(
+        productObject.options.map(async o => {
+          const res = await optionRepo.create({ ...o, product_id: product.id })
+          await optionRepo.save(res)
+          return res
+        })
+      )
 
       const result = await productRepo.save(product)
 

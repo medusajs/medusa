@@ -83,6 +83,7 @@ class AuthService extends BaseService {
         }
       }
     } catch (error) {
+      console.log(error)
       return {
         success: false,
         error: "Invalid email or password",

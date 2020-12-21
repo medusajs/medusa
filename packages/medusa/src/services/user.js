@@ -100,7 +100,7 @@ class UserService extends BaseService {
    * @param {string} apiToken - the token of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieveByApiToken(apiToken) {
+  async retrieveByApiToken(apiToken, relations = []) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
     const user = await userRepo.findOne({
@@ -124,7 +124,7 @@ class UserService extends BaseService {
    * @param {string} email - the email of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieveByEmail(email) {
+  async retrieveByEmail(email, relations = []) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
     const user = await userRepo.findOne({
