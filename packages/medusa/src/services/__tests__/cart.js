@@ -1013,8 +1013,19 @@ describe("CartService", () => {
         payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
       },
     }
+
+    const cart2 = {
+      payment_sessions: [{ provider_id: "provider_1" }],
+      region: {
+        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+      },
+    }
+
     const cartRepository = MockRepository({
-      findOne: () => {
+      findOne: q => {
+        if (q.where.id === IdMap.getId("cart-with-session")) {
+          return Promise.resolve(cart2)
+        }
         return Promise.resolve(cart1)
       },
     })
@@ -1062,83 +1073,19 @@ describe("CartService", () => {
         "provider_2",
         cart1
       )
-
-      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("cartWithLine"),
-        },
-        {
-          $set: {
-            payment_sessions: [
-              {
-                provider_id: "default_provider",
-                data: {
-                  id: "default_provider_session",
-                  cartId: IdMap.getId("cartWithLine"),
-                },
-              },
-              {
-                provider_id: "unregistered",
-                data: {
-                  id: "unregistered_session",
-                  cartId: IdMap.getId("cartWithLine"),
-                },
-              },
-            ],
-          },
-        }
-      )
     })
 
     it("updates payment sessions for existing sessions", async () => {
-      await cartService.setPaymentSessions(IdMap.getId("cartWithPaySessions"))
+      await cartService.setPaymentSessions(IdMap.getId("cart-with-session"))
 
-      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(0)
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
 
-      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(2)
-      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updateSession).toHaveBeenCalledWith(
         {
-          provider_id: "default_provider",
-          data: {
-            id: "default_provider_session",
-          },
+          provider_id: "provider_1",
         },
-        carts.cartWithPaySessions
-      )
-      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledWith(
-        {
-          provider_id: "unregistered",
-          data: {
-            id: "unregistered_session",
-          },
-        },
-        carts.cartWithPaySessions
-      )
-
-      expect(CartModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(CartModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("cartWithPaySessions"),
-        },
-        {
-          $set: {
-            payment_sessions: [
-              {
-                provider_id: "default_provider",
-                data: {
-                  id: "default_provider_session_updated",
-                },
-              },
-              {
-                provider_id: "unregistered",
-                data: {
-                  id: "unregistered_session_updated",
-                },
-              },
-            ],
-          },
-        }
+        cart2
       )
     })
 

@@ -871,6 +871,7 @@ class CartService extends BaseService {
         }
       }
 
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const result = await cartRepo.save(cart)
       await this.eventBus_
         .withTransaction(this.manager_)
