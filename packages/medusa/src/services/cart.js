@@ -136,6 +136,7 @@ class CartService extends BaseService {
     if (!variantId) {
       return true
     }
+
     return this.productVariantService_.canCoverQuantity(variantId, quantity)
   }
 
@@ -143,8 +144,22 @@ class CartService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.cartModel_.find(selector)
+  list(selector, config = {}) {
+    const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+
+    const query = {
+      where: selector,
+    }
+
+    if (config.select) {
+      query.select = config.select
+    }
+
+    if (config.relations) {
+      query.relations = config.relations
+    }
+
+    return cartRepo.find(query)
   }
 
   /**
@@ -152,13 +167,23 @@ class CartService extends BaseService {
    * @param {string} cartId - the id of the cart to get.
    * @return {Promise<Cart>} the cart document.
    */
-  async retrieve(cartId, relations = []) {
+  async retrieve(cartId, options = {}) {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
     const validatedId = this.validateId_(cartId)
-    const cart = await cartRepo.findOne({
+
+    const query = {
       where: { id: validatedId },
-      relations,
-    })
+    }
+
+    if (options.select) {
+      query.select = options.select
+    }
+
+    if (options.relations) {
+      query.relations = options.relations
+    }
+
+    const cart = await cartRepo.findOne(query)
 
     if (!cart) {
       throw new MedusaError(
@@ -186,9 +211,9 @@ class CartService extends BaseService {
         )
       }
 
-      const region = await this.regionService_.retrieve(region_id, [
-        "countries",
-      ])
+      const region = await this.regionService_.retrieve(region_id, {
+        relations: ["countries"],
+      })
 
       const regCountries = region.countries.map(
         ({ country_code }) => country_code
@@ -251,13 +276,9 @@ class CartService extends BaseService {
    */
   async removeLineItem(cartId, lineItemId) {
     return this.atomicPhase_(async manager => {
-      const smRepo = manager.getCustomRepository(this.shippingMethodRepository_)
-
-      const cart = await this.retrieve(cartId, [
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: ["items", "items.variant", "items.variant.product"],
+      })
 
       const lineItem = cart.items.find(li => li.id === lineItemId)
       if (!lineItem) {
@@ -280,7 +301,9 @@ class CartService extends BaseService {
           )
 
           if (!hasItem) {
-            await smRepo.remove(method)
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .deleteShippingMethod(method.id)
           }
         }
       }
@@ -304,7 +327,7 @@ class CartService extends BaseService {
    * @param {LineItem} lineItem - the line item
    * @return {boolean}
    */
-  async validateLineItemShipping_(shippingMethods, lineItem) {
+  validateLineItemShipping_(shippingMethods, lineItem) {
     if (!lineItem.variant_id) {
       return true
     }
@@ -333,14 +356,15 @@ class CartService extends BaseService {
    */
   async addLineItem(cartId, lineItem) {
     return this.atomicPhase_(async manager => {
-      const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const cart = await this.retrieve(cartId, [
-        "shipping_methods",
-        "shipping_methods.shipping_option",
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: [
+          "shipping_methods",
+          "shipping_methods.shipping_option",
+          "items",
+          "items.variant",
+          "items.variant.product",
+        ],
+      })
 
       let currentItem
       if (lineItem.should_merge) {
@@ -388,7 +412,7 @@ class CartService extends BaseService {
           )
         }
 
-        lineItem.has_shipping = await this.validateLineItemShipping_(
+        lineItem.has_shipping = this.validateLineItemShipping_(
           cart.shipping_methods,
           lineItem
         )
@@ -417,7 +441,7 @@ class CartService extends BaseService {
    */
   async updateLineItem(cartId, lineItemId, lineItemUpdate) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, ["items"])
+      const cart = await this.retrieve(cartId, { relations: ["items"] })
 
       // Ensure that the line item exists in the cart
       const lineItemExists = cart.items.find(i => i.id === lineItemId)
@@ -458,12 +482,15 @@ class CartService extends BaseService {
   async update(cartId, update) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const cart = await this.retrieve(cartId, [
-        "shipping_address",
-        "billing_address",
-        "discounts",
-        "discounts.regions",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: [
+          "shipping_address",
+          "billing_address",
+          "discounts",
+          "discounts.discount_rule",
+          "discounts.regions",
+        ],
+      })
 
       if ("region_id" in update) {
         await this.setRegion_(cart, update.region_id, update.country_code)
@@ -490,6 +517,7 @@ class CartService extends BaseService {
       }
 
       if ("discounts" in update) {
+        cart.discounts = []
         for (const { code } of update.discounts) {
           await this.applyDiscount_(cart, code)
         }
@@ -588,9 +616,9 @@ class CartService extends BaseService {
 
     value.country_code = value.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(cart.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(cart.region_id, {
+      relations: ["countries"],
+    })
     if (
       !region.countries.find(
         ({ country_code }) => value.country_code === country_code
@@ -613,9 +641,10 @@ class CartService extends BaseService {
    * @param {string} discountCode - the discount code
    * @return {Promise} the result of the update operation
    */
-  async applyDiscount(cartId, discountCode) {
-    const cart = await this.retrieve(cartId)
-    const discount = await this.discountService_.retrieveByCode(discountCode)
+  async applyDiscount_(cart, discountCode) {
+    const discount = await this.discountService_.retrieveByCode(discountCode, {
+      relations: ["regions"],
+    })
 
     if (discount.disabled) {
       throw new MedusaError(
@@ -624,7 +653,7 @@ class CartService extends BaseService {
       )
     }
 
-    if (!discount.regions.includes(cart.region_id)) {
+    if (!discount.regions.find(({ id }) => id === cart.region_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The discount is not available in current region"
@@ -632,106 +661,55 @@ class CartService extends BaseService {
     }
 
     // if discount is already there, we simply resolve
-    if (cart.discounts.includes(discount.id)) {
+    if (cart.discounts.find(({ id }) => id === discount.id)) {
       return Promise.resolve()
     }
 
-    // find the current discounts (if there)
-    // partition them into shipping and other
-    const [shippingDisc, otherDisc] = _.partition(
-      cart.discounts,
-      d => d.discount_rule.type === "free_shipping"
-    )
+    const toParse = [...cart.discounts, discount]
 
-    // if no shipping exists and the one to apply is shipping, we simply add it
-    // else we remove the current shipping and add the other one
-    if (
-      shippingDisc.length === 0 &&
-      discount.discount_rule.type === "free_shipping"
-    ) {
-      return this.cartModel_
-        .updateOne(
-          {
-            id: cart.id,
-          },
-          {
-            $push: { discounts: discount },
-          },
-          { session: this.current_session }
-        )
-        .then(result => {
-          // Notify subscribers
-          this.eventBus_.emit(CartService.Events.UPDATED, result)
-          return result
-        })
-    } else if (
-      shippingDisc.length > 0 &&
-      discount.discount_rule.type === "free_shipping"
-    ) {
-      return this.cartModel_
-        .updateOne(
-          {
-            id: cart.id,
-          },
-          {
-            $pull: { discounts: { id: shippingDisc[0].id } },
-            $push: { discounts: discount },
-          },
-          { session: this.current_session }
-        )
-        .then(result => {
-          // Notify subscribers
-          this.eventBus_.emit(CartService.Events.UPDATED, result)
-          return result
-        })
-    }
+    let sawNotShipping = false
+    const newDiscounts = toParse.map(d => {
+      switch (d.discount_rule.type) {
+        case "free_shipping":
+          if (d.discount_rule.type === discount.discount_rule.type) {
+            return discount
+          }
+          return d
+        default:
+          if (!sawNotShipping) {
+            sawNotShipping = true
+            if (discount.discount_rule.type !== "free_shipping") {
+              return discount
+            }
+            return d
+          }
+          return null
+      }
+    })
 
-    // replace the current discount if there, else add the new one
-    if (otherDisc.length === 0) {
-      return this.cartModel_
-        .updateOne(
-          {
-            id: cart.id,
-          },
-          {
-            $push: { discounts: discount },
-          },
-          { session: this.current_session }
-        )
-        .then(result => {
-          // Notify subscribers
-          this.eventBus_.emit(CartService.Events.UPDATED, result)
-          return result
-        })
-    } else {
-      return this.cartModel_
-        .updateOne(
-          {
-            id: cart.id,
-          },
-          {
-            $pull: { discounts: { id: otherDisc[0].id } },
-            $push: { discounts: discount },
-          },
-          { session: this.current_session }
-        )
-        .then(result => {
-          // Notify subscribers
-          this.eventBus_.emit(CartService.Events.UPDATED, result)
-          return result
-        })
-    }
+    cart.discounts = newDiscounts.filter(Boolean)
   }
 
+  /**
+   * Removes a discount based on a discount code.
+   * @param {string} cartId - the id of the cart to remove from
+   * @param {string} code - the discount code to remove
+   * @return {Promise<Cart>} the resulting cart
+   */
   async removeDiscount(cartId, discountCode) {
-    const cart = await this.retrieve(cartId)
-    return this.cartModel_.updateOne(
-      { id: cart.id },
-      {
-        $pull: { discounts: { code: discountCode } },
-      },
-      { session: this.current_session }
-    )
+    return this.atomicPhase_(async manager => {
+      const cart = await this.retrieve(cartId, { relations: ["discounts"] })
+      cart.discounts = cart.discounts.filter(d => d.code !== discountCode)
+
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const result = await cartRepo.save(cart)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+
+      return result
+    })
   }
 
   /**
@@ -744,40 +722,20 @@ class CartService extends BaseService {
    */
 
   /**
-   * Retrieves an open payment session from the list of payment sessions
-   * stored in the cart. If none is an INVALID_DATA error is thrown.
-   * @param {string} cartId - the id of the cart to retrieve the session from
-   * @param {string} providerId - the id of the provider the session belongs to
-   * @return {PaymentMethod} the session
-   */
-  async retrievePaymentSession(cartId, providerId) {
-    const cart = await this.retrieve(cartId)
-    const session = cart.payment_sessions.find(
-      ({ provider_id }) => provider_id === providerId
-    )
-
-    if (!session) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `The provider_id did not match any open payment sessions`
-      )
-    }
-
-    return session
-  }
-
-  /**
    * Updates the currently selected payment session.
    */
   async updatePaymentSession(cartId, update) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, ["payment_session"])
+      const cart = await this.retrieve(cartId, {
+        relations: ["payment_session"],
+      })
 
       await this.paymentProviderService_.updateSessionData(
         cart.payment_session,
         update
       )
 
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const result = await cartRepo.save(cart)
       await this.eventBus_
         .withTransaction(this.manager_)
@@ -795,11 +753,9 @@ class CartService extends BaseService {
   async setPaymentSession(cartId, providerId) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const cart = await this.retrieve(cartId, [
-        "region",
-        "region.payment_providers",
-        "payment_sessions",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: ["region", "region.payment_providers", "payment_sessions"],
+      })
 
       // The region must have the provider id in its providers array
       if (
@@ -839,11 +795,9 @@ class CartService extends BaseService {
    */
   async setPaymentSessions(cartId) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, [
-        "region",
-        "region.payment_providers",
-        "payment_sessions",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: ["region", "region.payment_providers", "payment_sessions"],
+      })
       const region = cart.region
       const total = await this.totalsService_.getTotal(cart)
 
@@ -880,76 +834,45 @@ class CartService extends BaseService {
     })
   }
 
+  /**
+   * Removes a payment session from the cart.
+   * @param {string} cartId - the id of the cart to remove from
+   * @param {string} providerId - the id of the provider whoose payment session
+   *    should be removed.
+   * @returns {Promise<Cart>} the resulting cart.
+   */
   async deletePaymentSession(cartId, providerId) {
-    const cart = await this.retrieve(cartId)
-    if (cart.payment_sessions) {
-      const session = cart.payment_sessions.find(
-        s => s.provider_id === providerId
-      )
-
-      if (session) {
-        // Delete the session with the provider
-        await this.paymentProviderService_.deleteSession(session)
-
-        const selector = {
-          $pull: { payment_sessions: { provider_id: providerId } },
-        }
-
-        if (
-          cart.payment_method &&
-          cart.payment_method.provider_id === providerId
-        ) {
-          selector["$set"] = { payment_method: null }
-        }
-
-        return this.cartModel_
-          .updateOne({ id: cart.id }, selector, {
-            session: this.current_session,
-          })
-          .then(result => {
-            // Notify subscribers
-            this.eventBus_.emit(CartService.Events.UPDATED, result)
-            return result
-          })
-      }
-    }
-
-    return cart
-  }
-
-  async updatePaymentSession(cartId, providerId, data) {
-    const cart = await this.retrieve(cartId)
-
-    const provider = retrieveProvider()
-    const newData = await provider.updatePayment(data)
-
-    const newSession = {
-      provider_id: providerId,
-      data: session,
-    }
-
-    return this.cartModel_
-      .updateOne(
-        {
-          id: cart.id,
-          "payment_sessions.provider_id": providerId,
-        },
-        {
-          $set: {
-            "payment_sessions.$": {
-              provider_id: providerId,
-              data: newData,
-            },
-          },
-        },
-        { session: this.current_session }
-      )
-      .then(result => {
-        console.log("Result: ", result)
-        // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
-        return result
+    return this.atomicPhase_(async manager => {
+      const cart = await this.retrieve(cartId, {
+        relations: ["payment_session", "payment_sessions"],
       })
+
+      if (cart.payment_sessions) {
+        const session = cart.payment_sessions.find(
+          s => s.provider_id === providerId
+        )
+
+        if (session) {
+          if (
+            cart.payment_session &&
+            cart.payment_session.provider_id === providerId
+          ) {
+            cart.payment_session_id = null
+          }
+
+          // Delete the session with the provider
+          await this.paymentProviderService_.deleteSession(session)
+        }
+      }
+
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const result = await cartRepo.save(cart)
+
+      await this.eventBus_
+        .withTransaction(this.manager_)
+        .emit(CartService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**
@@ -964,80 +887,47 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addShippingMethod(cartId, optionId, data) {
-    const cart = await this.retrieve(cartId)
-    const { shipping_methods } = cart
+    return this.atomicPhase_(async manager => {
+      const cart = await this.retrieve(cartId, {
+        relations: [
+          "shipping_methods",
+          "shipping_methods.shipping_option",
+          "items",
+          "items.variant",
+          "items.variant.product",
+        ],
+      })
+      const { shipping_methods } = cart
 
-    const option = await this.shippingOptionService_.validateCartOption(
-      optionId,
-      cart
-    )
+      const newMethod = await this.shippingOptionService_
+        .withTransaction(manager)
+        .createShippingMethod(optionId, data, cart)
 
-    option.data = await this.shippingOptionService_.validateFulfillmentData(
-      optionId,
-      data,
-      cart
-    )
-
-    const profile = await this.shippingProfileService_.list({
-      shipping_options: option.id,
-    })
-    if (profile.length !== 1) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Shipping Method must belong to a shipping profile"
-      )
-    }
-
-    option.profile_id = profile[0].id
-
-    // Go through all existing selected shipping methods and update the one
-    // that has the same profile as the selected shipping method.
-    let exists = false
-    const newMethods = shipping_methods.map(sm => {
-      if (option.profile_id.equals(sm.profile_id)) {
-        exists = true
-        return option
+      const methods = [newMethod]
+      for (const sm of shipping_methods) {
+        if (
+          sm.shipping_option.profile_id === newMethod.shipping_option.profile_id
+        ) {
+          await this.shippingOptionService_
+            .withTransaction(manager)
+            .deleteShippingMethod(sm.id)
+        } else {
+          methods.push(sm)
+        }
       }
 
-      return sm
+      for (const item of cart.items) {
+        await this.lineItemService_.update(item.id, {
+          has_shipping: this.validateLineItemShipping_(methods, item),
+        })
+      }
+
+      const result = await this.retrieve(cartId)
+      await this.eventBus_
+        .withTransaction(this.manager_)
+        .emit(CartService.Events.UPDATED, result)
+      return result
     })
-
-    // If none of the selected methods are for the same profile as the new
-    // shipping method the exists flag will be false. Therefore we push the new
-    // method.
-    if (!exists) {
-      newMethods.push(option)
-    }
-
-    const newItems = await Promise.all(
-      cart.items.map(async item => {
-        const hasShipping = await this.validateLineItemShipping_(
-          newMethods,
-          item
-        )
-
-        return {
-          ...item,
-          has_shipping: hasShipping,
-        }
-      })
-    )
-
-    return this.cartModel_
-      .updateOne(
-        {
-          id: cart.id,
-        },
-        {
-          $set: { shipping_methods: newMethods, items: newItems },
-        },
-        { session: this.current_session }
-      )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(CartService.Events.UPDATED, result)
-        return result
-      })
   }
 
   /**
@@ -1074,7 +964,9 @@ class CartService extends BaseService {
     }
 
     let shippingAddress = cart.shipping_address || {}
-    const region = await this.regionService_.retrieve(regionId, ["countries"])
+    const region = await this.regionService_.retrieve(regionId, {
+      relations: ["countries"],
+    })
     if (countryCode !== undefined) {
       if (
         !region.countries.find(
@@ -1138,12 +1030,30 @@ class CartService extends BaseService {
     }
   }
 
+  /**
+   * Deletes a cart from the database. Completed carts cannot be deleted.
+   * @param {string} cartId - the id of the cart to delete
+   * @returns {Promise<Cart?>} the deleted cart or undefined if the cart was
+   *    not found.
+   */
   async delete(cartId) {
-    const cart = await this.retrieve(cartId)
-    return this.cartModel_.deleteOne(
-      { id: cart.id },
-      { session: this.current_session }
-    )
+    return this.atomicPhase_(async manager => {
+      const cart = await this.retrieve(cartId, [
+        "items",
+        "discounts",
+        "payment_sessions",
+      ])
+
+      if (cart.completed_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Completed carts cannot be deleted"
+        )
+      }
+
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      return cartRepo.remove(cartId)
+    })
   }
 
   /**
