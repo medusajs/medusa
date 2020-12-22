@@ -3,6 +3,34 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
+export const defaultFields = [
+  "title",
+  "subtitle",
+  "description",
+  "tags",
+  "handle",
+  "is_giftcard",
+  "thumbnail",
+  "weight",
+  "height",
+  "length",
+  "width",
+  "profile_id",
+  "hs_code",
+  "mid_code",
+  "origin_country",
+  "material",
+  "created_at",
+  "updated_at",
+]
+export const defaultExpandFields = [
+  "variants",
+  "variants.options",
+  "variants.prices",
+  "options",
+  "images",
+]
+
 export default app => {
   app.use("/products", route)
 

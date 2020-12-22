@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError, compareObjectsByProp } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import listProducts from "../api/routes/admin/products/list-products"
 
 /**
  * Provides layer to manipulate products.
@@ -50,6 +51,7 @@ class ProductService extends BaseService {
     const cloned = new ProductService({
       manager: transactionManager,
       productRepository: this.productRepository_,
+      productVariantRepository: this.productVariantRepository_,
       productOptionRepository: this.productOptionRepository_,
       eventBusService: this.eventBus_,
       productVariantService: this.productVariantService_,
@@ -70,15 +72,25 @@ class ProductService extends BaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
+   * @param {Object} listOptions - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, relations = [], skip, take) {
+  list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
 
-    return productRepo.find({ where: selector, skip, take, relations })
+    const query = {
+      where: listOptions.where,
+      skip: listOptions.skip,
+      take: listOptions.take,
+    }
+
+    if (listOptions.relations) {
+      query.relations = listOptions.relations
+    }
+
+    return productRepo.find(query)
   }
 
   /**
@@ -98,15 +110,24 @@ class ProductService extends BaseService {
    * @param {string} productId - id of the product to get.
    * @return {Promise<Product>} the result of the find one operation.
    */
-  async retrieve(productId, relations = []) {
+  async retrieve(productId, findOptions = {}) {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const validatedId = this.validateId_(productId)
 
-      const product = await productRepo.findOne({
+      const query = {
         where: { id: validatedId },
-        relations,
-      })
+      }
+
+      if (findOptions.select) {
+        query.select = findOptions.select
+      }
+
+      if (findOptions.relations) {
+        query.relations = findOptions.relations
+      }
+
+      const product = await productRepo.findOne(query)
 
       if (!product) {
         throw new MedusaError(
@@ -205,15 +226,22 @@ class ProductService extends BaseService {
         this.productVariantRepository_
       )
 
-      const product = await this.retrieve(productId, ["variants"])
+      const product = await this.retrieve(productId, {
+        relations: ["variants"],
+      })
 
-      const { variants, metadata, options, ...rest } = update
+      const { variants, metadata, options, images, thumbnail, ...rest } = update
+
+      if (!product.thumbnail && !thumbnail && images && images.length) {
+        product.thumbnail = images[0]
+      }
 
       if (metadata) {
         product.metadata = this.setMetadata_(product, metadata)
       }
 
       if (variants) {
+        console.log(product)
         // Iterate product variants and update their properties accordingly
         for (const variant of product.variants) {
           const exists = variants.find(v => v.id && variant.id === v.id)
@@ -517,14 +545,18 @@ class ProductService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Product} return the decorated product.
    */
-  async decorate(product, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(product, fields.concat(requiredFields))
-    if (expandFields.includes("variants")) {
-      decorated.variants = await this.retrieveVariants(product._id)
-    }
-    const final = await this.runDecorators_(decorated)
-    return final
+  async decorate(productId, fields = [], expandFields = []) {
+    const requiredFields = ["id", "metadata"]
+
+    fields = fields.concat(requiredFields)
+
+    const product = await this.retrieve(productId, {
+      select: fields,
+      relations: expandFields,
+    })
+
+    // const final = await this.runDecorators_(decorated)
+    return product
   }
 
   /**

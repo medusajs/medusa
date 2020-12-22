@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultExpandFields, defaultFields } from "."
 
 export default async (req, res) => {
   const { id } = req.params
@@ -14,7 +15,7 @@ export default async (req, res) => {
     thumbnail: Validator.string().optional(),
     variants: Validator.array()
       .items({
-        _id: Validator.string(),
+        id: Validator.string(),
         title: Validator.string().optional(),
         sku: Validator.string().optional(),
         ean: Validator.string().optional(),
@@ -35,7 +36,7 @@ export default async (req, res) => {
             .xor("region_id", "currency_code")
         ),
         options: Validator.array().items({
-          option_id: Validator.objectId().required(),
+          option_id: Validator.string().required(),
           value: Validator.alternatives(
             Validator.string(),
             Validator.number()
@@ -57,33 +58,22 @@ export default async (req, res) => {
 
   try {
     const productService = req.scope.resolve("productService")
-    const oldProduct = await productService.retrieve(id)
 
-    if (
-      !oldProduct.thumbnail &&
-      !value.thumbnail &&
-      value.images &&
-      value.images.length
-    ) {
-      value.thumbnail = value.images[0]
-    }
+    const entityManager = req.scope.resolve("manager")
 
-    const product = await productService.update(oldProduct._id, value)
-    const data = await productService.decorate(
-      product,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "images",
-        "thumbnail",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
-    res.json({ product: data })
+    await entityManager.transaction(async manager => {
+      const product = await productService
+        .withTransaction(manager)
+        .update(id, value)
+
+      const data = await productService.decorate(
+        product.id,
+        defaultFields,
+        defaultExpandFields
+      )
+
+      res.json({ product: data })
+    })
   } catch (err) {
     throw err
   }

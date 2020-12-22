@@ -58,7 +58,7 @@ export default async (req, res) => {
       }
 
       let shippingProfile
-      // Add to default shipping profile
+      // Get default shipping profile
       if (value.is_giftcard) {
         shippingProfile = await shippingProfileService.retrieveGiftCardDefault()
       } else {
@@ -75,7 +75,7 @@ export default async (req, res) => {
         )
 
         await Promise.all(
-          variants.map(v => {
+          variants.map(async v => {
             const variant = {
               ...v,
               options: v.options.map((o, index) => ({
@@ -83,7 +83,7 @@ export default async (req, res) => {
                 option_id: optionIds[index],
               })),
             }
-            return productVariantService
+            await productVariantService
               .withTransaction(manager)
               .create(newProduct.id, variant)
           })

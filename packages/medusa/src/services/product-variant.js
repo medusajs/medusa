@@ -164,7 +164,7 @@ class ProductVariantService extends BaseService {
 
       const toCreate = {
         ...variant,
-        product_id: product.id,
+        product: product,
       }
 
       const productVariant = await variantRepo.create(toCreate)
