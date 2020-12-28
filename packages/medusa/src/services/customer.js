@@ -54,15 +54,6 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * Used to validate customer ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw customer id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    return rawId
-  }
-
-  /**
    * Used to validate customer email.
    * @param {string} email - email to validate
    * @return {string} the validated email

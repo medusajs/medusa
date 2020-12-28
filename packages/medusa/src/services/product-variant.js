@@ -66,15 +66,6 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * Used to validate product ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw product id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    return rawId
-  }
-
-  /**
    * Gets a product variant by id.
    * @param {string} variantId - the id of the product to get.
    * @return {Promise<Product>} the product document.

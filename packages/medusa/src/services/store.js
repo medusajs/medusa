@@ -32,24 +32,6 @@ class StoreService extends BaseService {
   }
 
   /**
-   * Used to validate customer ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw customer id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The customerId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
-  }
-
-  /**
    * Creates a store if it doesn't already exist.
    * @return {Promise<Store>} the store.
    */
@@ -72,11 +54,14 @@ class StoreService extends BaseService {
    * Retrieve the store settings. There is always a maximum of one store.
    * @return {Promise<Store>} the customer document.
    */
-  retrieve(relations = ["default_currency", "currencies"]) {
+  async retrieve(relations = ["default_currency", "currencies"]) {
     const storeRepository = this.manager_.getCustomRepository(
       this.storeRepository_
     )
-    return storeRepository.findOne({ relations })
+
+    const store = await storeRepository.findOne({ relations })
+
+    return store
   }
 
   getDefaultCurrency_(code) {

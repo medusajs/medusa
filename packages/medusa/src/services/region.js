@@ -11,7 +11,10 @@ class RegionService extends BaseService {
   constructor({
     manager,
     regionRepository,
+    countryRepository,
     storeService,
+    paymentProviderRepository,
+    fulfillmentProviderRepository,
     paymentProviderService,
     fulfillmentProviderService,
   }) {
@@ -19,11 +22,23 @@ class RegionService extends BaseService {
 
     this.regionRepository_ = regionRepository
 
-    /** @private @const {RegionModel} */
-    this.regionModel_ = manager.getCustomRepository(regionRepository)
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {RegionRepository} */
+    this.regionRepository_ = regionRepository
+
+    /** @private @const {CountryRepository} */
+    this.countryRepository_ = countryRepository
 
     /** @private @const {StoreService} */
     this.storeService_ = storeService
+
+    /** @private @const {PaymentProviderRepository} */
+    this.paymentProviderRepository_ = paymentProviderRepository
+
+    /** @private @const {FulfillmentProviderRepository} */
+    this.fulfillmentProviderRepository_ = fulfillmentProviderRepository
 
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
@@ -37,28 +52,59 @@ class RegionService extends BaseService {
    * @param {Region} rawRegion - the unvalidated region
    * @return {Region} the newly created region
    */
-  async create(rawRegion) {
-    const region = await this.validateFields_(rawRegion)
-    return this.regionModel_.create(region)
+  async create(regionObject) {
+    return this.atomicPhase_(async manager => {
+      const regionRepository = manager.getCustomRepository(
+        this.regionRepository_
+      )
+
+      const { metadata, ...toValidate } = regionObject
+
+      const validated = await this.validateFields_(toValidate)
+
+      if (metadata) {
+        regionObject.metadata = this.setMetadata_(region, metadata)
+      }
+
+      for (const [key, value] of Object.entries(validated)) {
+        regionObject[key] = value
+      }
+
+      const created = await regionRepository.create(regionObject)
+      const result = await regionRepository.save(created)
+      return result
+    })
   }
 
   /**
-   * Updates a region. Note metadata cannot be set with the update function, use
-   * setMetadata instead.
+   * Updates a region
    * @param {string} regionId - the region to update
    * @param {object} update - the data to update the region with
    * @return {Promise} the result of the update operation
    */
   async update(regionId, update) {
-    const region = await this.validateFields_(update, regionId)
-    return this.regionModel_.updateOne(
-      {
-        id: regionId,
-      },
-      {
-        $set: region,
+    return this.atomicPhase_(async manager => {
+      const regionRepository = manager.getCustomRepository(
+        this.regionRepository_
+      )
+
+      const region = await this.retrieve(regionId)
+
+      const { metadata, ...toValidate } = update
+
+      const validated = await this.validateFields_(toValidate)
+
+      if (metadata) {
+        region.metadata = this.setMetadata_(region, metadata)
       }
-    )
+
+      for (const [key, value] of Object.entries(validated)) {
+        region[key] = value
+      }
+
+      const result = await regionRepository.save(region)
+      return result
+    })
   }
 
   /**
@@ -69,6 +115,13 @@ class RegionService extends BaseService {
    * @return {object} the validated region data
    */
   async validateFields_(region, id = undefined) {
+    const ppRepository = this.manager_.getCustomRepository(
+      this.paymentProviderRepository_
+    )
+    const fpRepository = this.manager_.getCustomRepository(
+      this.fulfillmentProviderRepository_
+    )
+
     if (region.tax_rate) {
       this.validateTaxRate_(region.tax_rate)
     }
@@ -88,25 +141,36 @@ class RegionService extends BaseService {
       })
     }
 
-    if (region.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Please use setMetadata"
+    if (region.payment_providers) {
+      region.payment_providers = await Promise.all(
+        region.payment_providers.map(async pId => {
+          const pp = await ppRepository.findOne({ where: { id: pId } })
+          if (!pp) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Payment provider not found"
+            )
+          }
+
+          return pp
+        })
       )
     }
 
     if (region.fulfillment_providers) {
-      // Will throw if we do not find the provider
-      region.fulfillment_providers.forEach(pId => {
-        this.fulfillmentProviderService_.retrieveProvider(pId)
-      })
-    }
+      region.fulfillment_providers = await Promise.all(
+        region.fulfillment_providers.map(async fId => {
+          const fp = await fpRepository.findOne({ where: { id: fId } })
+          if (!fp) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Fulfillment provider not found"
+            )
+          }
 
-    if (region.payment_providers) {
-      // Will throw if we do not find the provider
-      region.payment_providers.forEach(pId => {
-        this.paymentProviderService_.retrieveProvider(pId)
-      })
+          return fp
+        })
+      )
     }
 
     return region
@@ -117,7 +181,7 @@ class RegionService extends BaseService {
    * @param {number} taxRate - a number representing the tax rate of the region
    */
   validateTaxRate_(taxRate) {
-    if (taxRate > 100 || taxRate < 0) {
+    if (taxRate > 1 || taxRate < 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The tax_rate must be between 0 and 1"
@@ -132,7 +196,9 @@ class RegionService extends BaseService {
   async validateCurrency_(currencyCode) {
     const store = await this.storeService_.retrieve()
 
-    if (!store.currencies.includes(currencyCode.toLowerCase())) {
+    const storeCurrencies = store.currencies.map(curr => curr.code)
+
+    if (!storeCurrencies.includes(currencyCode.toLowerCase())) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Invalid currency code"
@@ -144,36 +210,43 @@ class RegionService extends BaseService {
    * Validates a country code. Will normalize the code before checking for
    * existence.
    * @param {string} code - a 2 digit alphanumeric ISO country code
-   * @param {string} id - the id of the current region to check against
+   * @param {string} regionId - the id of the current region to check against
    */
-  async validateCountry_(code, id) {
+  async validateCountry_(code, regionId) {
+    const countryRepository = this.manager_.getCustomRepository(
+      this.countryRepository_
+    )
+
     const countryCode = code.toUpperCase()
-    const country = countries.find(c => c.alpha2 === countryCode)
-    if (!country) {
+    const validCountry = countries.find(c => c.alpha2 === countryCode)
+    if (!validCountry) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Invalid country code"
       )
     }
 
-    const existing = await this.regionModel_.findOne({ countries: countryCode })
-    if (existing && !existing.id.equals(id)) {
+    const country = await countryRepository.findOne({
+      where: {
+        iso_2: code.toLowerCase(),
+      },
+    })
+
+    if (!country) {
       throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `${country.name} already exists in ${existing.name}, delete it in that region before adding it`
+        MedusaError.Types.INVALID_DATA,
+        `Country with code ${code} not found`
       )
     }
 
-    return countryCode
-  }
+    if (country.region_id && country.region_id !== regionId) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `${country.name} already exists in ${country.name}, delete it in that region before adding it`
+      )
+    }
 
-  /**
-   * Used to validate region ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw region id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    return rawId
+    return country
   }
 
   /**
@@ -182,10 +255,17 @@ class RegionService extends BaseService {
    * @return {Region} the region
    */
   async retrieve(regionId, relations = []) {
+    const regionRepository = this.manager_.getCustomRepository(
+      this.regionRepository_
+    )
+
     const validatedId = this.validateId_(regionId)
-    const region = await this.regionModel_.findOne({
-      id: validatedId,
-      relations,
+
+    const region = await regionRepository.findOne({
+      where: {
+        id: validatedId,
+        relations,
+      },
     })
 
     if (!region) {
@@ -199,12 +279,23 @@ class RegionService extends BaseService {
 
   /**
    * Lists all regions based on a query
-   * @param {string} regionId - the id of the region to retrieve
-   * @return {Region} the region
+   * @param {object} listOptions - query object for find
+   * @return {Promise} result of the find operation
    */
-  async list(query) {
-    const regions = await this.regionModel_.find(query)
-    return regions
+  list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
+    const regionRepo = this.manager_.getCustomRepository(this.regionRepository_)
+
+    const query = {
+      where: listOptions.where,
+      skip: listOptions.skip,
+      take: listOptions.take,
+    }
+
+    if (listOptions.relations) {
+      query.relations = listOptions.relations
+    }
+
+    return regionRepo.find(query)
   }
 
   /**
@@ -212,9 +303,17 @@ class RegionService extends BaseService {
    * @param {string} regionId - the region to delete
    * @return {Promise} the result of the delete operation
    */
-  delete(regionId) {
-    return this.regionModel_.deleteOne({
-      id: regionId,
+  async delete(regionId) {
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
+
+      const region = await regionRepo.findOne({ where: { id: regionId } })
+
+      if (!region) return Promise.resolve()
+
+      await regionRepo.softRemove(region)
+
+      return Promise.resolve()
     })
   }
 
@@ -225,21 +324,26 @@ class RegionService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addCountry(regionId, code) {
-    const region = await this.retrieve(regionId)
-    const countryCode = await this.validateCountry_(code, regionId)
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-    if (region.countries.includes(countryCode)) {
-      return Promise.resolve()
-    }
+      const country = await this.validateCountry_(code, regionId)
 
-    return this.regionModel_.updateOne(
-      {
-        id: region.id,
-      },
-      {
-        $push: { countries: countryCode },
+      const region = await this.retrieve(regionId, ["countries"])
+
+      // Check if region already has country
+      if (
+        region.countries &&
+        region.countries.map(c => c.iso_2).includes(country.iso_2)
+      ) {
+        return region
       }
-    )
+
+      region.countries = [...(region.countries || []), country]
+
+      const updated = await regionRepo.save(region)
+      return updated
+    })
   }
 
   /**
@@ -249,17 +353,26 @@ class RegionService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async removeCountry(regionId, code) {
-    const countryCode = code.toUpperCase()
-    const region = await this.retrieve(regionId)
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-    return this.regionModel_.updateOne(
-      { id: region.id },
-      {
-        $pull: {
-          countries: countryCode,
-        },
+      const region = await this.retrieve(regionId, ["countries"])
+
+      // Check if region contains country. If not, we simpy resolve
+      if (
+        region.countries &&
+        !region.countries.map(c => c.iso_2).includes(code)
+      ) {
+        return region
       }
-    )
+
+      region.countries = region.countries.filter(
+        country => country.iso_2 !== code
+      )
+
+      const updated = await regionRepo.save(region)
+      return updated
+    })
   }
 
   /**
@@ -270,23 +383,33 @@ class RegionService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addPaymentProvider(regionId, providerId) {
-    const region = await this.retrieve(regionId)
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
+      const ppRepo = manager.getCustomRepository(
+        this.paymentProviderRepository_
+      )
 
-    if (region.payment_providers.includes(providerId)) {
-      return Promise.resolve()
-    }
+      const region = await this.retrieve(regionId, ["payment_providers"])
 
-    // Will throw if we do not find the provider
-    this.paymentProviderService_.retrieveProvider(providerId)
-
-    return this.regionModel_.updateOne(
-      {
-        id: region.id,
-      },
-      {
-        $push: { payment_providers: providerId },
+      // Check if region already has payment provider
+      if (region.payment_providers.find(({ id }) => id === providerId)) {
+        return region
       }
-    )
+
+      const pp = await ppRepo.findOne({ where: { id: providerId } })
+
+      if (!pp) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Payment provider ${providerId} was not found`
+        )
+      }
+
+      region.payment_providers = [...region.payment_providers, pp]
+
+      const updated = await regionRepo.save(region)
+      return updated
+    })
   }
 
   /**
@@ -297,23 +420,33 @@ class RegionService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addFulfillmentProvider(regionId, providerId) {
-    const region = await this.retrieve(regionId)
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
+      const fpRepo = manager.getCustomRepository(
+        this.fulfillmentProviderRepository_
+      )
 
-    if (region.fulfillment_providers.includes(providerId)) {
-      return Promise.resolve()
-    }
+      const region = await this.retrieve(regionId, ["fulfillment_providers"])
 
-    // Will throw if we do not find the provider
-    this.fulfillmentProviderService_.retrieveProvider(providerId)
-
-    return this.regionModel_.updateOne(
-      {
-        id: region.id,
-      },
-      {
-        $push: { fulfillment_providers: providerId },
+      // Check if region already has payment provider
+      if (region.fulfillment_providers.find(({ id }) => id === providerId)) {
+        return Promise.resolve()
       }
-    )
+
+      const fp = await fpRepo.findOne({ where: { id: providerId } })
+
+      if (!fp) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Fulfillment provider ${providerId} was not found`
+        )
+      }
+
+      region.fulfillment_providers = [...region.fulfillment_providers, fp]
+
+      const updated = await regionRepo.save(region)
+      return updated
+    })
   }
 
   /**
@@ -323,16 +456,23 @@ class RegionService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async removePaymentProvider(regionId, providerId) {
-    const region = await this.retrieve(regionId)
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-    return this.regionModel_.updateOne(
-      { id: region.id },
-      {
-        $pull: {
-          payment_providers: providerId,
-        },
+      const region = await this.retrieve(regionId, ["payment_providers"])
+
+      // Check if region already has payment provider
+      if (!region.payment_providers.find(({ id }) => id === providerId)) {
+        return Promise.resolve()
       }
-    )
+
+      region.payment_providers = region.payment_providers.filter(
+        ({ id }) => id !== providerId
+      )
+
+      const updated = await regionRepo.save(region)
+      return updated
+    })
   }
 
   /**
@@ -342,16 +482,23 @@ class RegionService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async removeFulfillmentProvider(regionId, providerId) {
-    const region = await this.retrieve(regionId)
+    return this.atomicPhase_(async manager => {
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-    return this.regionModel_.updateOne(
-      { id: region.id },
-      {
-        $pull: {
-          fulfillment_providers: providerId,
-        },
+      const region = await this.retrieve(regionId, ["fulfillment_providers"])
+
+      // Check if region already has payment provider
+      if (!region.fulfillment_providers.find(({ id }) => id === providerId)) {
+        return Promise.resolve()
       }
-    )
+
+      region.fulfillment_providers = region.fulfillment_providers.filter(
+        ({ id }) => id !== providerId
+      )
+
+      const updated = await regionRepo.save(region)
+      return updated
+    })
   }
 
   /**
@@ -366,57 +513,6 @@ class RegionService extends BaseService {
     const decorated = _.pick(region, fields.concat(requiredFields))
     const final = await this.runDecorators_(decorated)
     return final
-  }
-
-  /**
-   * Dedicated method to set metadata for a region.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} regionId - the region to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  async setMetadata(regionId, key, value) {
-    const validatedId = this.validateId_(regionId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.regionModel_
-      .updateOne({ id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for an region.
-   * @param {string} regionId - the region to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(regionId, key) {
-    const validatedId = this.validateId_(regionId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.regionModel_
-      .updateOne({ id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

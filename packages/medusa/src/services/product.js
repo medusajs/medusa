@@ -63,15 +63,6 @@ class ProductService extends BaseService {
   }
 
   /**
-   * Used to validate product ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw product id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    return rawId
-  }
-
-  /**
    * @param {Object} listOptions - the query object for find
    * @return {Promise} the result of the find operation
    */
