@@ -9,7 +9,9 @@ import { Validator, MedusaError } from "medusa-core-utils"
  */
 class DiscountService extends BaseService {
   constructor({
-    discountModel,
+    manager,
+    discountRepository,
+    discountRuleRepository,
     totalsService,
     productVariantService,
     productService,
@@ -18,8 +20,14 @@ class DiscountService extends BaseService {
   }) {
     super()
 
-    /** @private @const {DiscountModel} */
-    this.discountModel_ = discountModel
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {DiscountRepository} */
+    this.discountRepository_ = discountRepository
+
+    /** @private @const {DiscountRuleRepository} */
+    this.discountRuleRepository_ = discountRuleRepository
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -38,24 +46,6 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * Validates discount id
-   * @param {string} rawId - the raw id to validate
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The discount id could not be casted to an ObjectId"
-      )
-    }
-
-    return value
-  }
-
-  /**
    * Creates a discount rule with provided data given that the data is validated.
    * @param {DiscountRule} discountRule - the discount rule to create
    * @return {Promise} the result of the create operation
@@ -68,9 +58,8 @@ class DiscountService extends BaseService {
         .min(0)
         .required(),
       allocation: Validator.string().required(),
-      valid_for: Validator.array().items(Validator.string()),
-      user_limit: Validator.number(),
-      total_limit: Validator.number(),
+      valid_for: Validator.array(),
+      user_limit: Validator.number().optional(),
     })
 
     const { value, error } = schema.validate(discountRule)
@@ -104,8 +93,22 @@ class DiscountService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.discountModel_.find(selector)
+  async list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
+    const discountRepo = this.manager_.getCustomRepository(
+      this.discountRepository_
+    )
+
+    const query = {
+      where: listOptions.where,
+      skip: listOptions.skip,
+      take: listOptions.take,
+    }
+
+    if (listOptions.relations) {
+      query.relations = listOptions.relations
+    }
+
+    return discountRepo.find(query)
   }
 
   /**
@@ -115,27 +118,39 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(discount) {
-    discount.discount_rule = this.validateDiscountRule_(discount.discount_rule)
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-    discount.code = this.normalizeDiscountCode_(discount.code)
+      const validatedRule = this.validateDiscountRule_(discount.discount_rule)
 
-    return this.discountModel_.create(discount).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      const discountRule = await ruleRepo.create(validatedRule)
+
+      discount.discount_rule = discountRule
+      discount.code = discount.code.toUpperCase()
+
+      const created = await discountRepo.create(discount)
+      const result = await discountRepo.save(created)
+      return result
     })
   }
 
   /**
    * Gets a discount by id.
    * @param {string} discountId - id of discount to retrieve
-   * @return {Promise<Discount>} the discount document
+   * @return {Promise<Discount>} the discount
    */
-  async retrieve(discountId) {
+  async retrieve(discountId, relations = []) {
+    const discountRepo = this.manager_.getCustomRepository(
+      this.discountRepository_
+    )
+
     const validatedId = this.validateId_(discountId)
-    const discount = await this.discountModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+    const discount = await discountRepo.findOne({
+      where: { id: validatedId },
+      relations,
+    })
 
     if (!discount) {
       throw new MedusaError(
@@ -143,6 +158,7 @@ class DiscountService extends BaseService {
         `Discount with ${discountId} was not found`
       )
     }
+
     return discount
   }
 
@@ -152,7 +168,6 @@ class DiscountService extends BaseService {
    * @return {Promise<Discount>} the discount document
    */
   async retrieveByCode(discountCode) {
-    discountCode = this.normalizeDiscountCode_(discountCode)
     let discount = await this.discountModel_
       .findOne({ code: discountCode })
       .catch(err => {
