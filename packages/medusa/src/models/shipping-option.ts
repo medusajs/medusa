@@ -1,5 +1,6 @@
 import {
   Entity,
+  Check,
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -26,6 +27,7 @@ export enum ShippingOptionPriceType {
   CALCULATED = "calculated",
 }
 
+@Check(`"amount" >= 0`)
 @Entity()
 export class ShippingOption {
   @PrimaryColumn()
@@ -58,7 +60,7 @@ export class ShippingOption {
   @Column({ type: "enum", enum: ShippingOptionPriceType })
   price_type: ShippingOptionPriceType
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: true })
   amount: number
 
   @Column({ default: false })
