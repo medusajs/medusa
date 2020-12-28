@@ -48,14 +48,16 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
       expect(ProductVariantServiceMock.setCurrencyPrice).toHaveBeenCalledWith(
         IdMap.getId("variant1"),
         "DKK",
-        100
+        100,
+        undefined
       )
 
       expect(ProductVariantServiceMock.setRegionPrice).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.setRegionPrice).toHaveBeenCalledWith(
         IdMap.getId("variant1"),
         IdMap.getId("region-fr"),
-        100
+        100,
+        undefined
       )
     })
 
