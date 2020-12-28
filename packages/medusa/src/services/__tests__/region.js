@@ -166,7 +166,8 @@ describe("RegionService", () => {
 
       expect(regionRepository.findOne).toHaveBeenCalledTimes(1)
       expect(regionRepository.findOne).toHaveBeenCalledWith({
-        where: { id: IdMap.getId("region"), relations: [] },
+        where: { id: IdMap.getId("region") },
+        relations: [],
       })
     })
   })
@@ -429,7 +430,8 @@ describe("RegionService", () => {
 
       expect(regionRepository.findOne).toHaveBeenCalledTimes(1)
       expect(regionRepository.findOne).toHaveBeenCalledWith({
-        where: { id: IdMap.getId("region"), relations: ["countries"] },
+        where: { id: IdMap.getId("region") },
+        relations: ["countries"],
       })
 
       expect(regionRepository.save).toHaveBeenCalledTimes(1)

@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -31,6 +30,23 @@ class StoreService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new StoreService({
+      manager: transactionManager,
+      storeRepository: this.storeRepository_,
+      currencyRepository: this.currencyRepository_,
+      eventBusService: this.eventBus_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Creates a store if it doesn't already exist.
    * @return {Promise<Store>} the store.
@@ -52,14 +68,12 @@ class StoreService extends BaseService {
 
   /**
    * Retrieve the store settings. There is always a maximum of one store.
-   * @return {Promise<Store>} the customer document.
+   * @return {Promise<Store>} the store
    */
   async retrieve(relations = ["default_currency", "currencies"]) {
-    const storeRepository = this.manager_.getCustomRepository(
-      this.storeRepository_
-    )
+    const storeRepo = this.manager_.getCustomRepository(this.storeRepository_)
 
-    const store = await storeRepository.findOne({ relations })
+    const store = await storeRepo.findOne({ relations })
 
     return store
   }
@@ -133,8 +147,6 @@ class StoreService extends BaseService {
           return this.getDefaultCurrency_(curr)
         })
       }
-
-      console.log(store)
 
       for (const [key, value] of Object.entries(rest)) {
         store[key] = value

@@ -59,7 +59,7 @@ class ShippingProfileService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
+  async list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
     const shippingProfileRepo = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )

@@ -20,8 +20,6 @@ class RegionService extends BaseService {
   }) {
     super()
 
-    this.regionRepository_ = regionRepository
-
     /** @private @const {EntityManager} */
     this.manager_ = manager
 
@@ -45,6 +43,27 @@ class RegionService extends BaseService {
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new RegionService({
+      manager: transactionManager,
+      regionRepository: this.regionRepository_,
+      countryRepository: this.countryRepository_,
+      storeService: this.storeService_,
+      paymentProviderRepository: this.paymentProviderRepository_,
+      paymentProviderService: this.paymentProviderService_,
+      fulfillmentProviderRepository: this.fulfillmentProviderRepository_,
+      fulfillmentProviderService: this.fulfillmentProviderService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -264,8 +283,8 @@ class RegionService extends BaseService {
     const region = await regionRepository.findOne({
       where: {
         id: validatedId,
-        relations,
       },
+      relations,
     })
 
     if (!region) {
