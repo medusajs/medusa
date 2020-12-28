@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.54](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.53...@medusajs/medusa@1.0.54) (2020-12-28)
+
+
+### Features
+
+* **medusa:** Adds filtering to order listing for use in admin ([#149](https://github.com/medusajs/medusa/issues/149)) ([09d7ed2](https://github.com/medusajs/medusa/commit/09d7ed232bb07e9dab3d7535ec98f5fd88ad8ca2))
+
+
+
+
+
 ## [1.0.53](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.52...@medusajs/medusa@1.0.53) (2020-12-17)
 
 
