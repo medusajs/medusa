@@ -84,4 +84,9 @@ export class Discount {
     const id = randomize("Aa0", 16)
     this.id = `disc_${id}`
   }
+
+  @BeforeInsert()
+  private nameToUpperCase() {
+    this.code = this.code.toUpperCase();
+  }
 }
