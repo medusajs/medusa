@@ -41,6 +41,26 @@ class ShippingOptionService extends BaseService {
     this.totalsService_ = totalsService
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ShippingOptionService({
+      manager: transactionManager,
+      shippingOptionRepository: this.optionRepository_,
+      shippingMethodRepository: this.methodRepository_,
+      shippingOptionRequirementRepository: this.requirementRepository_,
+      fulfillmentProviderService: this.providerService_,
+      regionService: this.regionService_,
+      totalsService: this.totalsService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Validates a requirement
    * @param {ShippingRequirement} requirement - the requirement to validate
@@ -74,21 +94,9 @@ class ShippingOptionService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, config = {}) {
+  list(selector, config = { skip: 0, take: 50 }) {
     const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
-
-    const query = {
-      where: selector,
-    }
-
-    if (config.select) {
-      query.select = config.select
-    }
-
-    if (config.relations) {
-      query.relations = config.relations
-    }
-
+    const query = this.buildQuery_(selector, config)
     return optRepo.find(query)
   }
 
@@ -174,7 +182,7 @@ class ShippingOptionService extends BaseService {
         relations: ["requirements"],
       })
 
-      await this.validateCartOption_(option, cart)
+      await this.validateCartOption(option, cart)
 
       const validatedData = await this.providerService_.validateFulfillmentData(
         option.data,
@@ -203,7 +211,7 @@ class ShippingOptionService extends BaseService {
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  async validateCartOption_(option, cart) {
+  async validateCartOption(option, cart) {
     if (option.is_return) {
       return null
     }

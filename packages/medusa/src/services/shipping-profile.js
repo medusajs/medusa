@@ -8,11 +8,6 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class ShippingProfileService extends BaseService {
-  /** @param {
-   *    shippingProfileModel: (ShippingProfileModel),
-   *    productService: (ProductService),
-   *    shippingOptionService: (ProductService),
-   *  } */
   constructor({
     manager,
     shippingProfileRepository,
@@ -59,21 +54,12 @@ class ShippingProfileService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  async list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
+  async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
     const shippingProfileRepo = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
-    const query = {
-      where: listOptions?.where || {},
-      skip: listOptions?.skip || 0,
-      take: listOptions?.take || 10,
-    }
-
-    if (listOptions.relations) {
-      query.relations = listOptions.relations
-    }
-
+    const query = this.buildQuery_(selector, config)
     return shippingProfileRepo.find(query)
   }
 
@@ -459,20 +445,12 @@ class ShippingProfileService extends BaseService {
    * @param {Cart} cart - the cart to extract products from
    * @return {[string]} a list of product ids
    */
-  getProductsInCart_(cart) {
+  getProfilesInCart_(cart) {
     return cart.items.reduce((acc, next) => {
-      if (Array.isArray(next.content)) {
-        next.content.forEach(({ product }) => {
-          if (!acc.includes(product._id)) {
-            acc.push(product._id)
-          }
-        })
-      } else {
-        // We may have line items that are not associated with a product
-        if (next.content.product) {
-          if (!acc.includes(next.content.product._id)) {
-            acc.push(next.content.product._id)
-          }
+      // We may have line items that are not associated with a product
+      if (next.variant && next.variant.product) {
+        if (!acc.includes(next.variant.product.profile_id)) {
+          acc.push(next.variant.product.profile_id)
         }
       }
 
@@ -487,27 +465,33 @@ class ShippingProfileService extends BaseService {
    * @return {[ShippingOptions]} a list of the available shipping options
    */
   async fetchCartOptions(cart) {
-    const products = this.getProductsInCart_(cart)
-    const profiles = await this.list({ products: { $in: products } })
-    const optionIds = profiles.reduce(
+    const profileIds = this.getProfilesInCart_(cart)
+    const profiles = await this.list(
+      { id: profileIds },
+      {
+        relations: [
+          "shipping_options",
+          "shipping_options.requirements",
+          "shipping_options.profile",
+        ],
+      }
+    )
+    const rawOpts = profiles.reduce(
       (acc, next) => acc.concat(next.shipping_options),
       []
     )
 
     const options = await Promise.all(
-      optionIds.map(async oId => {
+      rawOpts.map(async o => {
         const option = await this.shippingOptionService_
-          .validateCartOption(oId, cart)
+          .validateCartOption(o, cart)
           .catch(_ => {
             // If validation failed we skip the option
             return null
           })
 
         if (option) {
-          return {
-            ...option,
-            profile: profiles.find(p => p._id.equals(option.profile_id)),
-          }
+          return option
         }
         return null
       })

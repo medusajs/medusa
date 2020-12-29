@@ -1,4 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
+import { In, FindOperator } from "typeorm"
+
 /**
  * Common functionality for Services
  * @interface
@@ -6,6 +8,56 @@ import { MedusaError } from "medusa-core-utils"
 class BaseService {
   constructor() {
     this.decorators_ = []
+  }
+
+  /**
+   * Used to build TypeORM queries.
+   */
+  buildQuery_(selector, config = {}) {
+    const build = obj => {
+      const where = Object.entries(obj).reduce((acc, [key, value]) => {
+        switch (true) {
+          case value instanceof FindOperator:
+            acc[key] = value
+            break
+          case Array.isArray(value):
+            acc[key] = In(value)
+            break
+          case value !== null && typeof value === "object":
+            acc[key] = build(value)
+            break
+          default:
+            acc[key] = value
+            break
+        }
+
+        return acc
+      }, {})
+
+      return where
+    }
+
+    const query = {
+      where: build(selector),
+    }
+
+    if ("skip" in config) {
+      query.skip = config.skip
+    }
+
+    if ("take" in config) {
+      query.take = config.take
+    }
+
+    if ("relations" in config) {
+      query.relations = config.relations
+    }
+
+    if ("order" in config) {
+      query.order = config.order
+    }
+
+    return query
   }
 
   /**
