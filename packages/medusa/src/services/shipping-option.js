@@ -8,7 +8,6 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class ShippingOptionService extends BaseService {
-  /** @param { shippingOptionModel: (ShippingOptionModel) } */
   constructor({
     manager,
     shippingOptionRepository,
@@ -40,6 +39,26 @@ class ShippingOptionService extends BaseService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ShippingOptionService({
+      manager: transactionManager,
+      shippingOptionRepository: this.optionRepository_,
+      shippingMethodRepository: this.methodRepository_,
+      shippingOptionRequirementRepository: this.requirementRepository_,
+      fulfillmentProviderService: this.providerService_,
+      regionService: this.regionService_,
+      totalsService: this.totalsService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -75,21 +94,9 @@ class ShippingOptionService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, config = {}) {
+  list(selector, config = { skip: 0, take: 50 }) {
     const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
-
-    const query = {
-      where: selector,
-    }
-
-    if (config.select) {
-      query.select = config.select
-    }
-
-    if (config.relations) {
-      query.relations = config.relations
-    }
-
+    const query = this.buildQuery_(selector, config)
     return optRepo.find(query)
   }
 
@@ -128,7 +135,11 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
-   * Updates a shipping method.
+   * Updates a shipping method's associations. Useful when a cart is completed
+   * and its methods should be copied to an order/swap entity.
+   * @param {string} id - the id of the shipping method to update
+   * @param {object} update - the values to update the method with
+   * @returns {Promise<ShippingMethod>} the resulting shipping method
    */
   async updateShippingMethod(id, update) {
     return this.atomicPhase_(async manager => {
@@ -142,6 +153,8 @@ class ShippingOptionService extends BaseService {
       if ("order_id" in update) {
         method.order_id = update.order_id
       }
+
+      return methodRepo.save(method)
     })
   }
 
@@ -169,7 +182,7 @@ class ShippingOptionService extends BaseService {
         relations: ["requirements"],
       })
 
-      await this.validateCartOption_(option, cart)
+      await this.validateCartOption(option, cart)
 
       const validatedData = await this.providerService_.validateFulfillmentData(
         option.data,
@@ -198,7 +211,7 @@ class ShippingOptionService extends BaseService {
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  async validateCartOption_(option, cart) {
+  async validateCartOption(option, cart) {
     if (option.is_return) {
       return null
     }

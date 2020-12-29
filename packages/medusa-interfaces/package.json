@@ -28,10 +28,11 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "typeorm": "^0.2.29"
   },
   "peerDependencies": {
-    "mongoose": "5.x"
+    "typeorm": "0.x"
   },
   "dependencies": {
     "medusa-core-utils": "^1.0.12-alpha.550+5fe9cd6"
