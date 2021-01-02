@@ -13,6 +13,7 @@ class RegionService extends BaseService {
     regionRepository,
     countryRepository,
     storeService,
+    currencyRepository,
     paymentProviderRepository,
     fulfillmentProviderRepository,
     paymentProviderService,
@@ -31,6 +32,9 @@ class RegionService extends BaseService {
 
     /** @private @const {StoreService} */
     this.storeService_ = storeService
+
+    /** @private @const {CurrencyRepository} */
+    this.currencyRepository_ = currencyRepository
 
     /** @private @const {PaymentProviderRepository} */
     this.paymentProviderRepository_ = paymentProviderRepository
@@ -76,10 +80,30 @@ class RegionService extends BaseService {
       const regionRepository = manager.getCustomRepository(
         this.regionRepository_
       )
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
+      )
 
-      const { metadata, ...toValidate } = regionObject
+      const { metadata, currency_code, ...toValidate } = regionObject
 
       const validated = await this.validateFields_(toValidate)
+
+      if (currency_code) {
+        // will throw if currency is not added to store currencies
+        await this.validateCurrency_(currency_code)
+        const currency = await currencyRepository.findOne({
+          where: { code: currency_code.toLowerCase() },
+        })
+
+        if (!currency) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Could not find currency with code ${currency_code}`
+          )
+        }
+
+        regionObject.currency = currency
+      }
 
       if (metadata) {
         regionObject.metadata = this.setMetadata_(region, metadata)
@@ -106,12 +130,32 @@ class RegionService extends BaseService {
       const regionRepository = manager.getCustomRepository(
         this.regionRepository_
       )
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
+      )
 
       const region = await this.retrieve(regionId)
 
-      const { metadata, ...toValidate } = update
+      const { metadata, currency_code, ...toValidate } = update
 
-      const validated = await this.validateFields_(toValidate)
+      const validated = await this.validateFields_(toValidate, region.id)
+
+      if (currency_code) {
+        // will throw if currency is not added to store currencies
+        await this.validateCurrency_(currency_code)
+        const currency = await currencyRepository.findOne({
+          where: { code: currency_code.toLowerCase() },
+        })
+
+        if (!currency) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Could not find currency with code ${currency_code}`
+          )
+        }
+
+        region.currency = currency
+      }
 
       if (metadata) {
         region.metadata = this.setMetadata_(region, metadata)
@@ -143,11 +187,6 @@ class RegionService extends BaseService {
 
     if (region.tax_rate) {
       this.validateTaxRate_(region.tax_rate)
-    }
-
-    if (region.currency_code) {
-      region.currency_code = region.currency_code.toUpperCase()
-      await this.validateCurrency_(region.currency_code)
     }
 
     if (region.countries) {
@@ -301,19 +340,10 @@ class RegionService extends BaseService {
    * @param {object} listOptions - query object for find
    * @return {Promise} result of the find operation
    */
-  list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
+  async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
     const regionRepo = this.manager_.getCustomRepository(this.regionRepository_)
 
-    const query = {
-      where: listOptions.where,
-      skip: listOptions.skip,
-      take: listOptions.take,
-    }
-
-    if (listOptions.relations) {
-      query.relations = listOptions.relations
-    }
-
+    const query = this.buildQuery_(selector, config)
     return regionRepo.find(query)
   }
 

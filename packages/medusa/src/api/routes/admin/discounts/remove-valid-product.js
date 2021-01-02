@@ -6,8 +6,13 @@ export default async (req, res) => {
 
     await discountService.removeValidVariant(discount_id, variant_id)
 
-    const data = discountService.retrieve(discount_id)
-    res.status(200).json({ discounts: data })
+    const discount = await discountService.retrieve(discount_id, [
+      "discount_rule",
+      "discount_rule.valid_for",
+      "regions",
+    ])
+
+    res.status(200).json({ discount })
   } catch (err) {
     throw err
   }

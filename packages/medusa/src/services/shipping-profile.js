@@ -135,22 +135,24 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createDefault() {
-    let profile = await this.retrieveDefault()
+    return this.atomicPhase_(async manager => {
+      let profile = await this.retrieveDefault()
 
-    if (!profile) {
-      const profileRepository = this.manager_.getCustomRepository(
-        this.shippingProfileRepository_
-      )
+      if (!profile) {
+        const profileRepository = manager.getCustomRepository(
+          this.shippingProfileRepository_
+        )
 
-      const p = await profileRepository.create({
-        type: "default",
-        name: "Default Shipping Profile",
-      })
+        const p = await profileRepository.create({
+          type: "default",
+          name: "Default Shipping Profile",
+        })
 
-      profile = await profileRepository.save(p)
-    }
+        profile = await profileRepository.save(p)
+      }
 
-    return profile
+      return profile
+    })
   }
 
   /**
@@ -175,22 +177,24 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createGiftCardDefault() {
-    let profile = await this.retrieveGiftCardDefault()
+    return this.atomicPhase_(async manager => {
+      let profile = await this.retrieveGiftCardDefault()
 
-    if (!profile) {
-      const profileRepository = this.manager_.getCustomRepository(
-        this.shippingProfileRepository_
-      )
+      if (!profile) {
+        const profileRepository = manager.getCustomRepository(
+          this.shippingProfileRepository_
+        )
 
-      const p = await profileRepository.create({
-        type: "gift_card",
-        name: "Gift Card Profile",
-      })
+        const p = await profileRepository.create({
+          type: "gift_card",
+          name: "Gift Card Profile",
+        })
 
-      profile = await profileRepository.save(p)
-    }
+        profile = await profileRepository.save(p)
+      }
 
-    return profile
+      return profile
+    })
   }
 
   /**
@@ -350,30 +354,33 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of the model update operation
    */
   async addShippingOption(profileId, optionId) {
-    const profile = await this.retrieve(profileId, ["shipping_options"])
-    const shippingOption = await this.shippingOptionService_.retrieve(optionId)
+    return this.atomicPhase_(async manager => {
+      const profileRepository = manager.getCustomRepository(
+        this.shippingProfileRepository_
+      )
+      const profile = await this.retrieve(profileId, ["shipping_options"])
+      const shippingOption = await this.shippingOptionService_
+        .withTransaction(manager)
+        .retrieve(optionId)
 
-    // Make sure that option doesn't already exist
-    if (profile.shipping_options.find(o => o === shippingOption.id)) {
-      // If the option already exists in the profile we just return an
-      // empty promise for then-chaining
-      return Promise.resolve()
-    }
+      // Make sure that option doesn't already exist
+      if (profile.shipping_options.find(o => o === shippingOption.id)) {
+        // If the option already exists in the profile we just return an
+        // empty promise for then-chaining
+        return Promise.resolve()
+      }
 
-    // If the shipping method exists in a different profile remove it
+      // If the shipping method exists in a different profile remove it
+      // const profiles = await this.list({ shipping_options: shippingOption._id })
+      // if (profiles.length > 0) {
+      //   await this.removeShippingOption(profiles[0]._id, shippingOption._id)
+      // }
 
-    // DET ER HER JEG NÅEDE TIL SEB
-
-    const profiles = await this.list({ shipping_options: shippingOption._id })
-    if (profiles.length > 0) {
-      await this.removeShippingOption(profiles[0]._id, shippingOption._id)
-    }
-
-    // Everything went well add the shipping option
-    return this.profileModel_.updateOne(
-      { _id: profileId },
-      { $push: { shipping_options: shippingOption._id } }
-    )
+      // Everything went well add the shipping option
+      profile.shipping_options = [...profile.shipping_options, shippingOption]
+      const updated = await profileRepository.save(profile)
+      return updated
+    })
   }
 
   /**

@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { getManager } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
@@ -66,7 +67,7 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingRequirement} requirement - the requirement to validate
    * @return {ShippingRequirement} a validated shipping requirement
    */
-  validateRequirement_(requirement) {
+  async validateRequirement_(requirement, optionId) {
     if (!requirement.type) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -87,7 +88,7 @@ class ShippingOptionService extends BaseService {
     const reqRepo = this.manager_.getCustomRepository(
       this.requirementRepository_
     )
-    return reqRepo.create(requirement)
+    return reqRepo.create({ shipping_option_id: optionId, ...requirement })
   }
 
   /**
@@ -255,11 +256,11 @@ class ShippingOptionService extends BaseService {
   async create(data) {
     return this.atomicPhase_(async manager => {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const option = optionRepo.create(data)
+      const option = await optionRepo.create(data)
 
-      const region = await this.regionService_.retrieve(option.region_id, {
-        relations: ["fulfillment_providers"],
-      })
+      const region = await this.regionService_.retrieve(option.region_id, [
+        "fulfillment_providers",
+      ])
 
       if (
         !region.fulfillment_providers.find(
@@ -275,10 +276,15 @@ class ShippingOptionService extends BaseService {
       option.price_type = await this.validatePriceType_(data.price_type, option)
       option.amount = data.price_type === "calculated" ? null : data.amount
 
-      const isValid = await this.providerService_.validateOption(
+      const fpProvider = this.providerService_.retrieveProvider(
+        data.provider_id
+      )
+
+      const isValid = await fpProvider.validateOption(
         data.provider_id,
         data.data
       )
+
       if (!isValid) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -420,13 +426,12 @@ class ShippingOptionService extends BaseService {
    */
   async delete(optionId) {
     try {
-      let option = await this.retrieve(optionId, {
-        relations: ["requirements"],
-      })
+      let option = await this.retrieve(optionId)
 
       const optionRepo = this.manager_.getCustomRepository(
         this.optionRepository_
       )
+
       return optionRepo.softRemove(option)
     } catch (error) {
       // Delete is idempotent, but we return a promise to allow then-chaining

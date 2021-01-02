@@ -5,9 +5,13 @@ export default async (req, res) => {
     const discountService = req.scope.resolve("discountService")
 
     await discountService.removeRegion(discount_id, region_id)
+    const discount = await discountService.retrieve(discount_id, [
+      "discount_rule",
+      "discount_rule.valid_for",
+      "regions",
+    ])
 
-    const data = discountService.retrieve(discount_id)
-    res.status(200).json({ discounts: data })
+    res.status(200).json({ discount })
   } catch (err) {
     throw err
   }

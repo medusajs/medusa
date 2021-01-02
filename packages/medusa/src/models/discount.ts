@@ -47,7 +47,7 @@ export class Discount {
   @JoinColumn({ name: "parent_discount_id" })
   parent_discount: Discount
 
-  @Column({ type: "timestamp", default: "now()" })
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   starts_at: Date
 
   @Column({ nullable: true })
@@ -67,13 +67,13 @@ export class Discount {
   })
   regions: Region[]
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamp" })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
   @Column({ type: "jsonb", nullable: true })

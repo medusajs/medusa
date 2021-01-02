@@ -646,7 +646,7 @@ class CartService extends BaseService {
       relations: ["regions"],
     })
 
-    if (discount.disabled) {
+    if (discount.is_disabled) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "The discount code is disabled"

@@ -19,6 +19,13 @@ class PaymentProviderService {
     }
   }
 
+  async list() {
+    const { manager, paymentProviderRepository } = this.container_
+    const ppRepo = manager.getCustomRepository(paymentProviderRepository)
+
+    return ppRepo.find({})
+  }
+
   /**
    * Creates a payment session with the given provider.
    * @param {string} providerId - the id of the provider to create payment with

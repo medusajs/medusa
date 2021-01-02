@@ -15,8 +15,8 @@ export default async (req, res) => {
 
   try {
     const storeService = req.scope.resolve("storeService")
-    const data = await storeService.update(value)
-    res.status(200).json({ store: data })
+    const store = await storeService.update(value)
+    res.status(200).json({ store })
   } catch (err) {
     throw err
   }
