@@ -232,7 +232,6 @@ class ProductService extends BaseService {
       }
 
       if (variants) {
-        console.log(product)
         // Iterate product variants and update their properties accordingly
         for (const variant of product.variants) {
           const exists = variants.find(v => v.id && variant.id === v.id)
