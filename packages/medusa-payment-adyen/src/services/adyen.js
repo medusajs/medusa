@@ -91,7 +91,8 @@ class AdyenService extends BaseService {
 
     try {
       const checkout = new CheckoutAPI(this.adyenClient_)
-      return checkout.paymentMethods(request)
+      const methods = await checkout.paymentMethods(request)
+      return methods.storedPaymentMethods || []
     } catch (error) {
       throw error
     }
@@ -105,7 +106,7 @@ class AdyenService extends BaseService {
    * @param {string} currency - the currency code to use for the payment
    * @returns {Promise} result containing the payment methods from Adyen
    */
-  async retrievePaymentMethods(allowedMethods, total, currency) {
+  async retrievePaymentMethods(allowedMethods, total, currency, customerId) {
     let request = {
       allowedPaymentMethods: allowedMethods,
       amount: {
@@ -114,6 +115,7 @@ class AdyenService extends BaseService {
       },
       merchantAccount: this.options_.merchant_account,
       channel: "Web",
+      shopperReference: customerId,
     }
 
     try {

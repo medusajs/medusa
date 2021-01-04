@@ -34,7 +34,8 @@ export default async (req, res) => {
     const pmMethods = await adyenService.retrievePaymentMethods(
       allowedMethods,
       total,
-      region.currency_code
+      region.currency_code,
+      cart.customer_id || ""
     )
 
     // Adyen does not behave 100% correctly in regards to allowed methods
