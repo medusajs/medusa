@@ -78,7 +78,6 @@ class DiscountService extends BaseService {
    */
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
-      id: Validator.string().required(),
       description: Validator.string().optional(),
       type: Validator.string().required(),
       value: Validator.number()

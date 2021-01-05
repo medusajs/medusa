@@ -148,7 +148,28 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.create).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.create).toHaveBeenCalledWith({
         id: IdMap.getId("v2"),
-        product_id: IdMap.getId("ironman"),
+        product: {
+          id: IdMap.getId("ironman"),
+          options: [
+            {
+              id: IdMap.getId("color"),
+              title: "red",
+            },
+          ],
+          variants: [
+            {
+              id: IdMap.getId("v1"),
+              title: "V1",
+              options: [
+                {
+                  id: IdMap.getId("test"),
+                  option_id: IdMap.getId("color"),
+                  value: "blue",
+                },
+              ],
+            },
+          ],
+        },
         options: [
           {
             id: IdMap.getId("test"),
