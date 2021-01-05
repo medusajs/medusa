@@ -42,19 +42,15 @@ class TotalsService extends BaseService {
     }
 
     object.items.map(item => {
-      if (Array.isArray(item.content)) {
-        const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
-        subtotal += temp * item.quantity
-      } else {
-        if (opts.excludeNonDiscounts) {
-          if (item.allow_discounts) {
-            subtotal += item.unit_price * item.quantity
-          }
-        } else {
+      if (opts.excludeNonDiscounts) {
+        if (item.allow_discounts) {
           subtotal += item.unit_price * item.quantity
         }
+      } else {
+        subtotal += item.unit_price * item.quantity
       }
     })
+
     return this.rounded(subtotal)
   }
 
@@ -101,20 +97,19 @@ class TotalsService extends BaseService {
     )
 
     if (!discount) {
-      return lineItem.content.unit_price * lineItem.quantity * (1 + taxRate)
+      return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
     }
 
     const lineDiscounts = this.getLineDiscounts(order, discount)
-    const discountedLine = lineDiscounts.find(line =>
-      line.item._id.equals(lineItem._id)
+    const discountedLine = lineDiscounts.find(
+      line => line.item_id === lineItem.id
     )
 
     const discountAmount =
       (discountedLine.amount / discountedLine.item.quantity) * lineItem.quantity
 
     return this.rounded(
-      (lineItem.content.unit_price * lineItem.quantity - discountAmount) *
-        (1 + taxRate)
+      (lineItem.unit_price * lineItem.quantity - discountAmount) * (1 + taxRate)
     )
   }
 
@@ -142,7 +137,7 @@ class TotalsService extends BaseService {
    *    applied discount
    */
   calculateDiscount_(lineItem, variant, variantPrice, value, discountType) {
-    if (lineItem.no_discount) {
+    if (!lineItem.allow_discounts) {
       return {
         lineItem,
         variant,
@@ -215,7 +210,7 @@ class TotalsService extends BaseService {
       }
 
       return cart.items.map(item => {
-        const lineTotal = item.content.unit_price * item.quantity
+        const lineTotal = item.unit_price * item.quantity
 
         return {
           item,
@@ -229,8 +224,8 @@ class TotalsService extends BaseService {
         type
       )
       return cart.items.map(item => {
-        const discounted = allocationDiscounts.find(a =>
-          a.lineItem._id.equals(item._id)
+        const discounted = allocationDiscounts.find(
+          a => a.lineItem.id === item._id
         )
         return {
           item,
