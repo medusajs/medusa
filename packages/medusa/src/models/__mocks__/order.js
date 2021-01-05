@@ -360,12 +360,6 @@ export const orders = {
         data: {},
         items: {},
       },
-      {
-        provider_id: "default_provider",
-        profile_id: IdMap.getId("default"),
-        data: {},
-        items: {},
-      },
     ],
     discounts: [],
   },

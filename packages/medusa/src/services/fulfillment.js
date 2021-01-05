@@ -39,7 +39,7 @@ class FulfillmentService extends BaseService {
               // we require bundles to have same shipping method, therefore:
               return profile.products.includes(content[0].product._id)
             } else {
-              return profile.products.includes(content.product._id)
+              return profile.products.includes(`${content.product._id}`)
             }
           })
         }

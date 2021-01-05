@@ -58,6 +58,16 @@ class SwapService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(selector, offset, limit) {
+    return this.swapModel_
+      .find(selector, {}, offset, limit)
+      .sort({ created: -1 })
+  }
+
+  /**
    * Used to validate user ids. Throws an error if the cast fails
    * @param {string} rawId - the raw user id to validate.
    * @return {string} the validated id
