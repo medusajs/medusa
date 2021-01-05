@@ -138,11 +138,6 @@ class StoreService extends BaseService {
       }
 
       if (storeCurrencies) {
-        // const newCurrencies = storeCurrencies.filter(
-        // sc => !store.currencies.map(c => c.code).includes(sc.toLowerCase())
-        // )
-        // if (newCurrencies) {
-        console.log("To Update: ", storeCurrencies)
         store.currencies = await Promise.all(
           storeCurrencies.map(async curr => {
             const currency = await currencyRepository.findOne({
@@ -159,7 +154,6 @@ class StoreService extends BaseService {
             return currency
           })
         )
-        // }
       }
 
       console.log("Updated: ", store.currencies)

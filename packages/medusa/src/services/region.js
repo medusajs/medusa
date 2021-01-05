@@ -252,7 +252,9 @@ class RegionService extends BaseService {
    * @param {string} currencyCode - an ISO currency code
    */
   async validateCurrency_(currencyCode) {
-    const store = await this.storeService_.retrieve()
+    const store = await this.storeService_.retrieve(["currencies"])
+
+    console.log(store)
 
     const storeCurrencies = store.currencies.map(curr => curr.code)
 

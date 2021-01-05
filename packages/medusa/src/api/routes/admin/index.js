@@ -9,6 +9,7 @@ import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 import discountRoutes from "./discounts"
+import giftCardRoutes from "./gift-cards"
 import orderRoutes from "./orders"
 import storeRoutes from "./store"
 import uploadRoutes from "./uploads"
@@ -48,6 +49,7 @@ export default (app, container, config) => {
   shippingOptionRoutes(route)
   shippingProfileRoutes(route)
   discountRoutes(route)
+  giftCardRoutes(route)
   orderRoutes(route)
   storeRoutes(route)
   uploadRoutes(route)

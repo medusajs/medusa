@@ -1,8 +1,6 @@
-import mongoose from "mongoose"
 import _ from "lodash"
-import { Validator, MedusaError, compareObjectsByProp } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import listProducts from "../api/routes/admin/products/list-products"
 
 /**
  * Provides layer to manipulate products.
@@ -66,21 +64,12 @@ class ProductService extends BaseService {
    * @param {Object} listOptions - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(listOptions = { where: {}, relations: [], skip: 0, take: 10 }) {
+  list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
 
-    const query = {
-      where: listOptions.where,
-      skip: listOptions.skip,
-      take: listOptions.take,
-    }
-
-    if (listOptions.relations) {
-      query.relations = listOptions.relations
-    }
-
+    const query = this.buildQuery_(selector, config)
     return productRepo.find(query)
   }
 
