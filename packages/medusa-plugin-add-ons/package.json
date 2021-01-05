@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-add-ons",
-  "version": "1.0.8",
+  "version": "1.0.7-alpha.35+7f27d5c",
   "description": "Add-on plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,7 @@
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.0.13"
+    "medusa-test-utils": "^1.0.12-alpha.35+7f27d5c"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__",
@@ -40,5 +40,5 @@
     "medusa-core-utils": "^1.0.12-alpha.550+5fe9cd6",
     "redis": "^3.0.2"
   },
-  "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"
+  "gitHead": "7f27d5c1ea2b5445c2dbac6645e2343af6ccf863"
 }
