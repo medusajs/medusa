@@ -5,12 +5,7 @@ export default async (req, res) => {
   const { option_id } = req.params
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
-    price: Validator.object()
-      .keys({
-        type: Validator.string().required(),
-        amount: Validator.number().optional(),
-      })
-      .optional(),
+    amount: Validator.number().optional(),
     requirements: Validator.array()
       .items(
         Validator.object({
@@ -29,13 +24,6 @@ export default async (req, res) => {
 
   try {
     const optionService = req.scope.resolve("shippingOptionService")
-    if (!_.isEmpty(value.metadata)) {
-      for (let key of Object.keys(value.metadata)) {
-        await optionService.setMetadata(option_id, key, value.metadata[key])
-      }
-
-      delete value.metadata
-    }
 
     const data = await optionService.update(option_id, value)
 

@@ -143,22 +143,24 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createDefault() {
-    let profile = await this.retrieveDefault()
+    return this.atomicPhase_(async manager => {
+      let profile = await this.retrieveDefault()
 
-    if (!profile) {
-      const profileRepository = this.manager_.getCustomRepository(
-        this.shippingProfileRepository_
-      )
+      if (!profile) {
+        const profileRepository = manager.getCustomRepository(
+          this.shippingProfileRepository_
+        )
 
-      const p = await profileRepository.create({
-        type: "default",
-        name: "Default Shipping Profile",
-      })
+        const p = await profileRepository.create({
+          type: "default",
+          name: "Default Shipping Profile",
+        })
 
-      profile = await profileRepository.save(p)
-    }
+        profile = await profileRepository.save(p)
+      }
 
-    return profile
+      return profile
+    })
   }
 
   /**
@@ -183,22 +185,24 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createGiftCardDefault() {
-    let profile = await this.retrieveGiftCardDefault()
+    return this.atomicPhase_(async manager => {
+      let profile = await this.retrieveGiftCardDefault()
 
-    if (!profile) {
-      const profileRepository = this.manager_.getCustomRepository(
-        this.shippingProfileRepository_
-      )
+      if (!profile) {
+        const profileRepository = manager.getCustomRepository(
+          this.shippingProfileRepository_
+        )
 
-      const p = await profileRepository.create({
-        type: "gift_card",
-        name: "Gift Card Profile",
-      })
+        const p = await profileRepository.create({
+          type: "gift_card",
+          name: "Gift Card Profile",
+        })
 
-      profile = await profileRepository.save(p)
-    }
+        profile = await profileRepository.save(p)
+      }
 
-    return profile
+      return profile
+    })
   }
 
   /**
@@ -425,30 +429,6 @@ class ShippingProfileService extends BaseService {
     }
 
     return options
-  }
-
-  /**
-   * Dedicated method to delete metadata for a shipping profile.
-   * @param {string} profileId - the shipping profile to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(profileId, key) {
-    const validatedId = this.validateId_(profileId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.profileModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

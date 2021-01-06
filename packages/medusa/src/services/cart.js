@@ -352,7 +352,7 @@ class CartService extends BaseService {
    * Adds a line item to the cart.
    * @param {string} cartId - the id of the cart that we will add to
    * @param {LineItem} lineItem - the line item to add.
-   * @retur {Promise} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async addLineItem(cartId, lineItem) {
     return this.atomicPhase_(async manager => {
@@ -646,7 +646,7 @@ class CartService extends BaseService {
       relations: ["regions"],
     })
 
-    if (discount.disabled) {
+    if (discount.is_disabled) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "The discount code is disabled"

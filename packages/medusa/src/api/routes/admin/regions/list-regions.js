@@ -5,13 +5,18 @@ export default async (req, res) => {
     const limit = parseInt(req.query.limit) || 10
     const offset = parseInt(req.query.offset) || 0
 
-    const listOptions = {
-      selector: {},
+    const listConfig = {
+      relations: [
+        "countries",
+        "currency",
+        "payment_providers",
+        "fulfillment_providers",
+      ],
       skip: offset,
       take: limit,
     }
 
-    let regions = await regionService.list(listOptions)
+    let regions = await regionService.list({}, listConfig)
 
     res.json({ regions, count: regions.length, offset, limit })
   } catch (err) {

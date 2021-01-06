@@ -19,6 +19,13 @@ class FulfillmentProviderService {
     }
   }
 
+  async list() {
+    const { manager, fulfillmentProviderRepository } = this.container_
+    const fpRepo = manager.getCustomRepository(fulfillmentProviderRepository)
+
+    return fpRepo.find({})
+  }
+
   async listFulfillmentOptions(providers) {
     const result = await Promise.all(
       providers.map(async p => {

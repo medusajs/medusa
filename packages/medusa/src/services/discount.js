@@ -78,13 +78,13 @@ class DiscountService extends BaseService {
    */
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
-      description: Validator.string(),
+      description: Validator.string().optional(),
       type: Validator.string().required(),
       value: Validator.number()
         .min(0)
         .required(),
       allocation: Validator.string().required(),
-      valid_for: Validator.array(),
+      valid_for: Validator.array().optional(),
       user_limit: Validator.number().optional(),
     })
 
@@ -117,6 +117,22 @@ class DiscountService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
     return discountRepo.find(query)
+  }
+
+  /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  async listGiftCards(
+    selector = {},
+    config = { relations: [], skip: 0, take: 10 }
+  ) {
+    const giftCardRepo = this.manager_.getCustomRepository(
+      this.giftCardRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return giftCardRepo.find(query)
   }
 
   /**

@@ -77,6 +77,9 @@ export class LineItem {
   @Column({ default: true })
   allow_discounts: boolean
 
+  @Column({ nullable: true })
+  has_shipping: boolean
+
   @Column({ type: "int" })
   unit_price: number
 

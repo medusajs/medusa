@@ -13,6 +13,7 @@ import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
 import defaultsLoader from "./defaults"
 import Logger from "./logger"
+import { getManager } from "typeorm"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule, configFilePath } = getConfigFile(

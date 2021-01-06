@@ -28,7 +28,6 @@ describe("ProductService", () => {
       expect(productRepo.findOne).toHaveBeenCalledTimes(1)
       expect(productRepo.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
-        relations: [],
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -53,6 +52,7 @@ describe("ProductService", () => {
     it("successfully create a product", async () => {
       const result = await productService.create({
         title: "Suit",
+        options: [],
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
@@ -64,11 +64,16 @@ describe("ProductService", () => {
       expect(productRepository.create).toHaveBeenCalledTimes(1)
       expect(productRepository.create).toHaveBeenCalledWith({
         title: "Suit",
+        options: [],
       })
 
       expect(productRepository.save).toHaveBeenCalledTimes(1)
 
-      expect(result).toEqual({ id: IdMap.getId("ironman"), title: "Suit" })
+      expect(result).toEqual({
+        id: IdMap.getId("ironman"),
+        title: "Suit",
+        options: [],
+      })
     })
   })
 

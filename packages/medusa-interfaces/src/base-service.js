@@ -114,7 +114,7 @@ class BaseService {
         this.manager_ = m
         this.transactionManager_ = m
         const result = await work(m)
-        this.manager = temp
+        this.manager_ = temp
         this.transactionManager_ = undefined
         return result
       }

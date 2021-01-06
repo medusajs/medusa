@@ -9,6 +9,7 @@ export default async (req, res) => {
     tax_rate: Validator.number(),
     payment_providers: Validator.array().items(Validator.string()),
     fulfillment_providers: Validator.array().items(Validator.string()),
+    // iso_2 country codes
     countries: Validator.array().items(Validator.string()),
   })
 

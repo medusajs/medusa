@@ -7,8 +7,21 @@ import _ from "lodash"
  * @implements BaseService
  */
 class LineItemService extends BaseService {
-  constructor({ productVariantService, productService, regionService }) {
+  constructor({
+    manager,
+    lineItemRepository,
+    productVariantService,
+    productService,
+    regionService,
+    cartRepository,
+  }) {
     super()
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {LineItemRepository} */
+    this.lineItemRepository_ = lineItemRepository
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
@@ -18,155 +31,167 @@ class LineItemService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    /** @private @const {CartRepository} */
+    this.cartRepository_ = cartRepository
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new LineItemService({
+      manager: transactionManager,
+      lineItemRepository: this.lineItemRepository_,
+      productVariantService: this.productVariantService_,
+      productService: this.productService_,
+      regionService: this.regionService_,
+      cartRepository: this.cartRepository_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
-   * Used to validate line items.
-   * @param {object} rawLineItem - the raw line item to validate.
-   * @return {object} the validated id
+   * Retrieves a line item by its id.
+   * @param {string} id - the id of the line item to retrieve
+   * @return {LineItem} the line item
    */
-  validate(rawLineItem) {
-    const content = Validator.object({
-      unit_price: Validator.number().required(),
-      variant: Validator.object().required(),
-      product: Validator.object().required(),
-      quantity: Validator.number()
-        .integer()
-        .min(1)
-        .default(1),
-    })
-
-    const lineItemSchema = Validator.object({
-      _id: Validator.any().optional(),
-      title: Validator.string().required(),
-      description: Validator.string()
-        .allow("")
-        .optional(),
-      thumbnail: Validator.string()
-        .allow("")
-        .optional(),
-      is_giftcard: Validator.bool().optional(),
-      should_merge: Validator.bool().optional(),
-      has_shipping: Validator.bool().optional(),
-      content: Validator.alternatives()
-        .try(content, Validator.array().items(content))
-        .required(),
-      quantity: Validator.number()
-        .integer()
-        .min(1)
-        .required(),
-      returned: Validator.bool().optional(),
-      fulfilled: Validator.bool().optional(),
-      shipped: Validator.bool().optional(),
-      fulfilled_quantity: Validator.number()
-        .integer()
-        .optional(),
-      returned_quantity: Validator.number()
-        .integer()
-        .optional(),
-      shipped_quantity: Validator.number()
-        .integer()
-        .optional(),
-      metadata: Validator.object().default({}),
-    })
-
-    const { value, error } = lineItemSchema.validate(rawLineItem)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        error.details[0].message
-      )
-    }
-
-    return value
-  }
-
-  /**
-   * Contents of a line item
-   * @typedef {(object | array)} LineItemContent
-   * @property {number} unit_price - the price of the content
-   * @property {object} variant - the product variant of the content
-   * @property {object} product - the product of the content
-   * @property {number} quantity - the quantity of the content
-   */
-
-  /**
-   * A collection of contents grouped in the same line item
-   * @typedef {LineItemContent[]} LineItemContentArray
-   */
-
-  /**
-   * Generates a line item.
-   * @param {string} variantId - id of the line item variant
-   * @param {*} regionId - id of the cart region
-   * @param {*} quantity - number of items
-   * @param {object} metadata - metadata for the line item
-   */
-  async generate(variantId, regionId, quantity, metadata = {}) {
-    const variant = await this.productVariantService_.retrieve(variantId)
-    const region = await this.regionService_.retrieve(regionId)
-
-    const products = await this.productService_.list({ variants: variantId })
-    // this should never fail, since a variant must have a product associated
-    // with it to exists, but better safe than sorry
-    if (!products.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Could not find product for variant with id: ${variantId}`
-      )
-    }
-
-    const product = products[0]
-    const unit_price = await this.productVariantService_.getRegionPrice(
-      variant._id,
-      region._id
+  async retrieve(id, relations = []) {
+    const lineItemRepository = this.manager_.getCustomRepository(
+      this.lineItemRepository_
     )
 
-    const line = {
-      title: product.title,
-      description: variant.title,
-      quantity,
-      should_merge: true,
-      thumbnail: product.thumbnail,
-      content: {
-        unit_price,
-        variant,
-        product,
-        quantity: 1,
+    const validatedId = this.validateId_(id)
+
+    const lineItem = await lineItemRepository.findOne({
+      where: {
+        id: validatedId,
       },
-      metadata: {
-        ...metadata,
-      },
-    }
+      relations,
+    })
 
-    if (product.is_giftcard) {
-      line.is_giftcard = true
-    }
-
-    return line
-  }
-
-  isEqual(line, match) {
-    if (Array.isArray(line.content)) {
-      if (
-        Array.isArray(match.content) &&
-        match.content.length === line.content.length
-      ) {
-        return line.content.every(
-          (c, index) =>
-            c.variant._id.equals(match[index].variant._id) &&
-            c.quantity === match[index].quantity
-        )
-      }
-    } else if (!Array.isArray(match.content)) {
-      return (
-        line.content.variant._id.equals(match.content.variant._id) &&
-        line.content.quantity === match.content.quantity &&
-        _.isEqual(line.metadata, match.metadata)
+    if (!lineItem) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Line item with ${id} was not found`
       )
     }
 
-    return false
+    return lineItem
+  }
+
+  /**
+   * Create a line item
+   * @param {LineItem} lineItem - the line item object to create
+   * @return {LineItem} the created line item
+   */
+  async create(lineItem) {
+    return this.atomicPhase_(async manager => {
+      const lineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
+      const cartRepository = manager.getCustomRepository(this.cartRepository_)
+
+      const variant = await this.productVariantService_.retrieve(
+        lineItem.variant_id,
+        ["product"]
+      )
+      const cart = await cartRepository.findOne({
+        where: { id: lineItem.cart_id },
+      })
+      const region = await this.regionService_.retrieve(cart.region_id)
+
+      const { metadata, unit_price, ...rest } = lineItem
+
+      let price
+      if (unit_price) {
+        price = unit_price
+      } else {
+        price = await this.productVariantService_.getRegionPrice(
+          variant.id,
+          region.id
+        )
+      }
+
+      const toCreate = {
+        unit_price: price,
+        title: variant.product.title,
+        description: variant.title,
+        thumbnail: variant.product.thumbnail,
+        variant_id: variant.id,
+        quantity: lineItem.quantity || 1,
+      }
+
+      if (metadata) {
+        toCreate.metadata = this.setMetadata_(toCreate, metadata)
+      }
+
+      if (variant.product.is_giftcard) {
+        toCreate.is_giftcard = true
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        toCreate[key] = value
+      }
+
+      const created = await lineItemRepository.create(toCreate)
+      const result = await lineItemRepository.save(created)
+      return result
+    })
+  }
+
+  /**
+   * Updates a line item
+   * @param {string} id - the id of the line item to update
+   * @param {object} update - the properties to update on line item
+   * @return {LineItem} the update line item
+   */
+  async update(id, update) {
+    return this.atomicPhase_(async manager => {
+      const lineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
+
+      const lineItem = await this.retrieve(id, ["variant"])
+
+      const { metadata, ...rest } = update
+
+      if (metadata) {
+        lineItem.metadata = this.setMetadata_(lineItem, metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        lineItem[key] = value
+      }
+
+      const result = await lineItemRepository.save(lineItem)
+      return result
+    })
+  }
+
+  /**
+   * Deletes a line item.
+   * @param {string} id - the id of the line item to delete
+   * @return {Promise} the result of the delete operation
+   */
+  async delete(id) {
+    return this.atomicPhase_(async manager => {
+      const lineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
+
+      const lineItem = await lineItemRepository.findOne({ where: { id } })
+
+      if (!lineItem) return Promise.resolve()
+
+      await lineItemRepository.remove(lineItem)
+
+      return Promise.resolve()
+    })
   }
 }
 

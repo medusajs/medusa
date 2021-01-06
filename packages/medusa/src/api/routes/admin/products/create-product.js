@@ -1,22 +1,38 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { getConnection, getEntityManager } from "typeorm"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
     title: Validator.string().required(),
+    subtitle: Validator.string().allow(""),
     description: Validator.string().allow(""),
-    tags: Validator.string(),
+    tags: Validator.string().optional(),
     is_giftcard: Validator.boolean().default(false),
+    images: Validator.array()
+      .items(Validator.string())
+      .optional(),
+    thumbnail: Validator.string().optional(),
+    handle: Validator.string().optional(),
     options: Validator.array().items({
       title: Validator.string().required(),
     }),
-    images: Validator.array().items(Validator.string()),
-    thumbnail: Validator.string().optional(),
     variants: Validator.array().items({
       title: Validator.string().required(),
-      sku: Validator.string(),
-      ean: Validator.string(),
-      barcode: Validator.string(),
+      sku: Validator.string().allow(""),
+      ean: Validator.string().allow(""),
+      upc: Validator.string().allow(""),
+      barcode: Validator.string().allow(""),
+      hs_code: Validator.string().allow(""),
+      inventory_quantity: Validator.number().default(0),
+      allow_backorder: Validator.boolean().optional(),
+      manage_inventory: Validator.boolean().optional(),
+      weight: Validator.number().optional(),
+      length: Validator.number().optional(),
+      height: Validator.number().optional(),
+      width: Validator.number().optional(),
+      origin_country: Validator.string().allow(""),
+      mid_code: Validator.string().allow(""),
+      material: Validator.string().allow(""),
+      metadata: Validator.object().optional(),
       prices: Validator.array()
         .items({
           currency_code: Validator.string().required(),
@@ -28,13 +44,16 @@ export default async (req, res) => {
           value: Validator.string().required(),
         })
         .default([]),
-      inventory_quantity: Validator.number().optional(),
-      allow_backorder: Validator.boolean().optional(),
-      manage_inventory: Validator.boolean().optional(),
-      metadata: Validator.object().optional(),
     }),
-    metadata: Validator.object(),
-    handle: Validator.string(),
+    weight: Validator.number().optional(),
+    length: Validator.number().optional(),
+    height: Validator.number().optional(),
+    width: Validator.number().optional(),
+    hs_code: Validator.string().allow(""),
+    origin_country: Validator.string().allow(""),
+    mid_code: Validator.string().allow(""),
+    material: Validator.string().allow(""),
+    metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)

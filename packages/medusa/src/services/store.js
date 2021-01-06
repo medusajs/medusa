@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { getManager } from "typeorm"
 
 import { currencies } from "../utils/currencies"
 
@@ -58,7 +59,7 @@ class StoreService extends BaseService {
       let store = await this.retrieve()
 
       if (!store) {
-        const s = storeRepository.create()
+        const s = await storeRepository.create()
         store = await storeRepository.save(s)
       }
 
@@ -70,8 +71,9 @@ class StoreService extends BaseService {
    * Retrieve the store settings. There is always a maximum of one store.
    * @return {Promise<Store>} the store
    */
-  async retrieve(relations = ["default_currency", "currencies"]) {
-    const storeRepo = this.manager_.getCustomRepository(this.storeRepository_)
+  async retrieve(relations = []) {
+    const manager = await getManager()
+    const storeRepo = manager.getCustomRepository(this.storeRepository_)
 
     const store = await storeRepo.findOne({ relations })
 
@@ -105,7 +107,7 @@ class StoreService extends BaseService {
         this.currencyRepository_
       )
 
-      const store = await this.retrieve()
+      const store = await this.retrieve(["currencies"])
 
       const {
         metadata,
@@ -116,7 +118,7 @@ class StoreService extends BaseService {
       } = update
 
       if (metadata) {
-        store.metadata = this.setMetadata_(store, metadata)
+        store.metadata = this.setMetadata_(store.id, metadata)
       }
 
       if (default_currency_code) {
@@ -136,23 +138,31 @@ class StoreService extends BaseService {
       }
 
       if (storeCurrencies) {
-        store.currencies = storeCurrencies.map(curr => {
-          if (!currencies[curr.toUpperCase()]) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Invalid currency ${curr.code}`
-            )
-          }
+        store.currencies = await Promise.all(
+          storeCurrencies.map(async curr => {
+            const currency = await currencyRepository.findOne({
+              where: { code: curr.toLowerCase() },
+            })
 
-          return this.getDefaultCurrency_(curr)
-        })
+            if (!currency) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Invalid currency ${curr}`
+              )
+            }
+
+            return currency
+          })
+        )
       }
+
+      console.log("Updated: ", store.currencies)
 
       for (const [key, value] of Object.entries(rest)) {
         store[key] = value
       }
 
-      const result = storeRepository.save(store)
+      const result = await storeRepository.save(store)
       return result
     })
   }
@@ -163,29 +173,32 @@ class StoreService extends BaseService {
    * @return {Promise} result after update
    */
   async addCurrency(code) {
-    code = code.toLowerCase()
-    const store = await this.retrieve()
+    return this.atomicPhase_(async manager => {
+      const storeRepo = manager.getCustomRepository()
+      const store = await this.retrieve(["currencies"])
 
-    if (!currencies[code]) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Invalid currency ${code}`
-      )
-    }
+      const curr = await currencyRepository.findOne({
+        code: code.toLowerCase(),
+      })
 
-    if (store.currencies.includes(code)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Currency already added`
-      )
-    }
+      if (!curr) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Currency ${code} not found`
+        )
+      }
 
-    return this.storeModel_.updateOne(
-      {
-        _id: store._id,
-      },
-      { $push: { currencies: code } }
-    )
+      if (store.currencies.map(c => c.code).includes(code)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Currency already added`
+        )
+      }
+
+      store.currencies = [...store.currencies, curr]
+      const updated = await storeRepo.save(store)
+      return updated
+    })
   }
 
   /**
@@ -194,14 +207,20 @@ class StoreService extends BaseService {
    * @return {Promise} result after update
    */
   async removeCurrency(code) {
-    const store = await this.retrieve()
-    code = code.toLowerCase()
-    return this.storeModel_.updateOne(
-      {
-        _id: store._id,
-      },
-      { $pull: { currencies: code } }
-    )
+    return this.atomicPhase_(async manager => {
+      const storeRepo = manager.getCustomRepository()
+      const store = await this.retrieve(["currencies"])
+
+      const exists = store.currencies.find(c => c.code === code.toLowerCase())
+      // If currency does not exist, return early
+      if (!exists) {
+        return store
+      }
+
+      store.currencies = store.currencies.filter(c => c.code !== code)
+      const updated = await storeRepo.save(store)
+      return updated
+    })
   }
 
   /**
@@ -213,32 +232,6 @@ class StoreService extends BaseService {
    */
   async decorate(store, fields, expandFields = []) {
     return store
-  }
-
-  /**
-   * Dedicated method to set metadata for a store.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} customerId - the customer to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  async setMetadata(key, value) {
-    const store = await this.retrieve()
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.storeModel_
-      .updateOne({ _id: store._id }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 
