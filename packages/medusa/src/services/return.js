@@ -8,12 +8,16 @@ import { MedusaError } from "medusa-core-utils"
  */
 class ReturnService extends BaseService {
   constructor({
+    manager,
     totalsService,
     returnRepository,
     shippingOptionService,
     fulfillmentProviderService,
   }) {
     super()
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -26,6 +30,24 @@ class ReturnService extends BaseService {
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ReturnService({
+      manager: transactionManager,
+      totalsService: this.totalsService_,
+      returnRepository: this.returnRepository_,
+      shippingOptionService: this.shippingOptionService_,
+      fulfillmentProviderService: this.fulfillmentProviderService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -179,23 +201,25 @@ class ReturnService extends BaseService {
       }
 
       let returnFulfillmentData = {}
-      let returnShippingMethod = {}
+      let returnShippingOption = {}
 
       if (typeof shippingMethod !== "undefined") {
-        returnShippingMethod = await this.shippingOptionService_.retrieve(
+        returnShippingOption = await this.shippingOptionService_.retrieve(
           shippingMethod.id
         )
 
-        returnFulfillmentData = await this.fulfillmentProviderService_
-          .withTransaction(manager)
-          .createReturn(returnShippingMethod, returnLines, order)
+        returnFulfillmentData = await this.fulfillmentProviderService_.createReturn(
+          returnShippingOption,
+          returnLines,
+          order
+        )
 
         if (typeof shippingMethod.price !== "undefined") {
-          returnShippingMethod.price = shippingMethod.price
+          returnShippingOption.amount = shippingMethod.price
         } else {
-          returnShippingMethod.price = await this.shippingOptionService_
+          returnShippingOption.amount = await this.shippingOptionService_
             .withTransaction(manager)
-            .getPrice(returnShippingMethod, {
+            .getPrice(returnShippingOption, {
               ...order,
               items: returnLines,
             })
@@ -203,7 +227,7 @@ class ReturnService extends BaseService {
 
         toRefund = Math.max(
           0,
-          toRefund - shipping_method.price * (1 + order.tax_rate)
+          toRefund - returnShippingOption.amount * (1 + order.tax_rate)
         )
       }
 
@@ -211,7 +235,7 @@ class ReturnService extends BaseService {
         status: "requested",
         items: [],
         order_id: order.id,
-        shipping_method: returnShippingMethod,
+        shipping_method: returnShippingOption,
         shipping_data: returnFulfillmentData,
         refund_amount: toRefund,
       }
@@ -251,10 +275,11 @@ class ReturnService extends BaseService {
     allowMismatch = false
   ) {
     return this.atomicPhase_(async manager => {
-      const returnRepository = manager.getCustomManager(this.returnRepository_)
+      const returnRepository = manager.getCustomRepository(
+        this.returnRepository_
+      )
 
       const returnObj = await this.retrieve(returnId, [
-        "shipping_method",
         "items",
         "order",
         "order.items",
@@ -285,13 +310,12 @@ class ReturnService extends BaseService {
           }
         } else {
           return {
-            ...l,
             return_id: returnObj.id,
-            item_id: l._id,
+            item_id: l.id,
             quantity: l.quantity,
             is_requested: false,
             received_quantity: l.quantity,
-            metadata: l.metadata,
+            metadata: l.metadata || {},
           }
         }
       })
