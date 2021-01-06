@@ -41,7 +41,7 @@ export class Fulfillment {
 
   @ManyToOne(
     () => Order,
-    o => o.returns
+    o => o.fulfillments
   )
   @JoinColumn({ name: "order_id" })
   order: Order

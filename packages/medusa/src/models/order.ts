@@ -109,8 +109,8 @@ export class Order {
   @Column()
   region_id: string
 
-  @ManyToOne(() => Region)
-  @JoinColumn({ name: "region_id", eager: true })
+  @ManyToOne(() => Region, { eager: true })
+  @JoinColumn({ name: "region_id" })
   region: Region
 
   @Column()
