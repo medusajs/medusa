@@ -736,7 +736,11 @@ class OrderService extends BaseService {
    * @return {Promise} result of the update operation.
    */
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
-    const order = await this.retrieve(orderId)
+    const order = await this.retrieve(orderId, [
+      "items",
+      "items.variant",
+      "items.variant.product",
+    ])
 
     const fulfillments = await this.fulfillmentService_.createFulfillment(
       order,

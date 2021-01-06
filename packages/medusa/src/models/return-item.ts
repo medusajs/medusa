@@ -38,9 +38,15 @@ export class ReturnItem {
   @Column({ type: "int" })
   quantity: number
 
+  @Column({ type: "boolean" })
+  is_requested: boolean
+
   @Column({ type: "int", nullable: true })
   requested_quantity: number
 
   @Column({ type: "int", nullable: true })
   received_quantity: number
+
+  @Column({ type: "jsonb", nullable: true })
+  metadata: any
 }
