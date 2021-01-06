@@ -602,7 +602,11 @@ class OrderService extends BaseService {
    */
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, ["items", "fulfillments"])
+      const order = await this.retrieve(orderId, [
+        "items",
+        "items.variant",
+        "items.variant.product",
+      ])
 
       const fulfillments = await this.fulfillmentService_.createFulfillment(
         order,

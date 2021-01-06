@@ -29,9 +29,9 @@ export class Fulfillment {
   @Column({ nullable: true })
   swap_id: string
 
-  @OneToOne(
+  @OneToMany(
     () => Swap,
-    swap => swap.fulfillment
+    swap => swap.fulfillments
   )
   @JoinColumn({ name: "swap_id" })
   swap: Swap

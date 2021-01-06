@@ -8,45 +8,81 @@ import { MedusaError } from "medusa-core-utils"
  */
 class FulfillmentService extends BaseService {
   constructor({
+    manager,
     totalsService,
+    fulfillmentRepository,
     shippingProfileService,
+    lineItemService,
     fulfillmentProviderService,
   }) {
     super()
 
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
 
+    /** @private @const {FulfillmentRepository} */
+    this.fulfillmentRepository_ = fulfillmentRepository
+
+    /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
 
+    /** @private @const {LineItemService} */
+    this.lineItemService_ = lineItemService
+
+    /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
   }
 
-  async partitionItems_(shipping_methods, items) {
-    let updatedMethods = []
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new FulfillmentService({
+      manager: transactionManager,
+      totalsService: this.totalsService_,
+      fulfillmentRepository: this.fulfillmentRepository_,
+      shippingProfileService: this.shippingProfileService_,
+      lineItemService: this.lineItemService_,
+      fulfillmentProviderService: this.fulfillmentProviderService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
+  async partitionItems_(shippingMethods, items) {
+    let partitioned = []
     // partition order items to their dedicated shipping method
     await Promise.all(
-      shipping_methods.map(async method => {
-        const { profile_id } = method
-        const profile = await this.shippingProfileService_.retrieve(profile_id)
+      shippingMethods.map(async method => {
+        const temp = { shipping_method: method }
         // for each method find the items in the order, that are associated
         // with the profile on the current shipping method
-        if (shipping_methods.length === 1) {
-          method.items = items
+        if (shippingMethods.length === 1) {
+          temp.items = items
         } else {
-          method.items = items.filter(({ content }) => {
-            if (Array.isArray(content)) {
-              // we require bundles to have same shipping method, therefore:
-              return profile.products.includes(content[0].product._id)
-            } else {
-              return profile.products.includes(content.product._id)
-            }
-          })
+          const { profile_id } = method
+          const profile = await this.shippingProfileService_.retrieve(
+            profile_id,
+            ["products"]
+          )
+
+          temp.items = await Promise.all(
+            items.filter(async ({ variant }) => {
+              const { id: productId } = variant.product
+              return profile.products.includes(productId)
+            })
+          )
         }
-        updatedMethods.push(method)
+        partitioned.push(temp)
       })
     )
-    return updatedMethods
+    return partitioned
   }
 
   /**
@@ -62,7 +98,7 @@ class FulfillmentService extends BaseService {
   async getFulfillmentItems_(order, items, transformer) {
     const toReturn = await Promise.all(
       items.map(async ({ item_id, quantity }) => {
-        const item = order.items.find(i => i._id.equals(item_id))
+        const item = order.items.find(i => i.id === item_id)
         return transformer(item, quantity)
       })
     )
@@ -102,55 +138,112 @@ class FulfillmentService extends BaseService {
   }
 
   /**
-   * Creates fulfillments for an order.
-   * In a situation where the order has more than one shipping method,
-   * we need to partition the order items, such that they can be sent
-   * to their respective fulfillment provider.
-   * @param {string} orderId - id of order to cancel.
-   * @return {Promise} result of the update operation.
+   * Retrieves a fulfillment by its id.
+   * @param {string} id - the id of the fulfillment to retrieve
+   * @return {Fulfillment} the fulfillment
    */
-  async createFulfillment(order, itemsToFulfill, metadata = {}) {
-    const lineItems = await this.getFulfillmentItems_(
-      order,
-      itemsToFulfill,
-      this.validateFulfillmentLineItem_
+  async retrieve(id, relations = []) {
+    const fulfillmentRepository = this.manager_.getCustomRepository(
+      this.fulfillmentRepository_
     )
 
-    const { shipping_methods } = order
+    const validatedId = this.validateId_(id)
 
-    // partition order items to their dedicated shipping method
-    const fulfillments = await this.partitionItems_(shipping_methods, lineItems)
+    const fulfillment = await fulfillmentRepository.findOne({
+      where: {
+        id: validatedId,
+      },
+      relations,
+    })
 
-    return Promise.all(
-      fulfillments.map(async method => {
-        const provider = this.fulfillmentProviderService_.retrieveProvider(
-          method.provider_id
-        )
-
-        const data = await provider.createOrder(method.data, method.items, {
-          ...order,
-        })
-
-        return {
-          provider_id: method.provider_id,
-          items: method.items,
-          data,
-          metadata,
-        }
-      })
-    )
+    if (!fulfillment) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Fulfillment with id: ${id} was not found`
+      )
+    }
+    return fulfillment
   }
 
-  async createShipment(order, fulfillment, trackingNumbers, metadata) {
-    return {
-      ...fulfillment,
-      tracking_numbers: trackingNumbers,
-      shipped_at: Date.now(),
-      metadata: {
+  /**
+   * Creates an order fulfillment
+   * If items needs to be fulfilled by different provider, we make
+   * sure to partition those items, and create fulfillment for
+   * those partitions.
+   * @param {Order} order - order to create fulfillment for
+   * @param {{ item_id: string, quantity: number}[]} itemsToFulfill - the items in the order to fulfill
+   * @param {object} metadata - potential metadata to add
+   * @return {Fulfillment[]} the created fulfillments
+   */
+  async createFulfillment(order, itemsToFulfill, metadata = {}) {
+    return this.atomicPhase_(async manager => {
+      const fulfillmentRepository = manager.getCustomRepository(
+        this.fulfillmentRepository_
+      )
+
+      const lineItems = await this.getFulfillmentItems_(
+        order,
+        itemsToFulfill,
+        this.validateFulfillmentLineItem_
+      )
+
+      const { shipping_methods } = order
+
+      // partition order items to their dedicated shipping method
+      const fulfillments = await this.partitionItems_(
+        shipping_methods,
+        lineItems
+      )
+
+      const created = await Promise.all(
+        fulfillments.map(async ({ shipping_method, items }) => {
+          const data = await this.fulfillmentProviderService_.createOrder(
+            shipping_method,
+            items,
+            {
+              ...order,
+            }
+          )
+
+          return fulfillmentRepository.create({
+            provider: shipping_method.provider_id,
+            items,
+            data,
+            metadata,
+          })
+        })
+      )
+
+      return Promise.all(created.map(ff => fulfillmentRepository.save(ff)))
+    })
+  }
+
+  /**
+   * Creates a shipment by marking a fulfillment as shipped. Adds
+   * tracking numbers and potentially more metadata.
+   * @param {Order} fulfillmentId - the fulfillment to ship
+   * @param {string[]} trackingNumbers - tracking numbers for the shipment
+   * @param {object} metadata - potential metadata to add
+   * @return {Fulfillment} the shipped fulfillment
+   */
+  async createShipment(fulfillmentId, trackingNumbers, metadata) {
+    return this.atomicPhase_(async manager => {
+      const fulfillmentRepository = manager.getCustomRepository(
+        this.fulfillmentRepository_
+      )
+
+      const fulfillment = await this.retrieve(fulfillmentId)
+
+      fulfillment.shipped_at = Date.now()
+      fulfillment.tracking_numbers = trackingNumbers
+      fulfillment.metadata = {
         ...fulfillment.metadata,
         ...metadata,
-      },
-    }
+      }
+
+      const updated = fulfillmentRepository.save(fulfillment)
+      return updated
+    })
   }
 }
 

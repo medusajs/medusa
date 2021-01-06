@@ -33,8 +33,8 @@ export default async (req, res) => {
   try {
     const discountService = req.scope.resolve("discountService")
 
-    await discountService.create(value)
-    const discount = await discountService.retrieve(discount_id, [
+    const created = await discountService.create(value)
+    const discount = await discountService.retrieve(created.id, [
       "discount_rule",
       "discount_rule.valid_for",
       "regions",
