@@ -109,11 +109,6 @@ export default async (req, res) => {
         )
       }
 
-      // Add to default shipping profile
-      await shippingProfileService
-        .withTransaction(manager)
-        .addProduct(shippingProfile.id, newProduct.id)
-
       res.json({ product: newProduct })
     })
   } catch (err) {

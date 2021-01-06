@@ -314,11 +314,9 @@ class ProductService extends BaseService {
       const result = await productOptionRepo.save(option)
 
       for (const variant of product.variants) {
-        this.productVariantService_.addOptionValue(
-          variant.id,
-          option.id,
-          "Default Value"
-        )
+        this.productVariantService_
+          .withTransaction(manager)
+          .addOptionValue(variant.id, option.id, "Default Value")
       }
 
       await this.eventBus_
@@ -536,34 +534,6 @@ class ProductService extends BaseService {
 
     // const final = await this.runDecorators_(decorated)
     return product
-  }
-
-  /**
-   * Dedicated method to set metadata for a product.
-   * @param {string} product - the product to set metadata for.
-   * @param {object} metadata - the metadata to set
-   * @return {object} updated metadata object
-   */
-  setMetadata_(product, metadata) {
-    const existing = product.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
   }
 }
 

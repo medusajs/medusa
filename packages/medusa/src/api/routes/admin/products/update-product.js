@@ -5,27 +5,22 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    title: Validator.string(),
+    title: Validator.string().optional(),
     description: Validator.string().optional(),
     tags: Validator.string().optional(),
-    handle: Validator.string(),
+    handle: Validator.string().optional(),
     images: Validator.array()
       .items(Validator.string())
+      .optional()
       .optional(),
     thumbnail: Validator.string().optional(),
     variants: Validator.array()
       .items({
-        id: Validator.string(),
+        id: Validator.string().required(),
         title: Validator.string().optional(),
         sku: Validator.string().optional(),
         ean: Validator.string().optional(),
-        published: Validator.boolean(),
-        image: Validator.string()
-          .allow("")
-          .optional(),
-        barcode: Validator.string()
-          .allow("")
-          .optional(),
+        barcode: Validator.string().optional(),
         prices: Validator.array().items(
           Validator.object()
             .keys({
@@ -45,6 +40,13 @@ export default async (req, res) => {
         inventory_quantity: Validator.number().optional(),
         allow_backorder: Validator.boolean().optional(),
         manage_inventory: Validator.boolean().optional(),
+        weight: Validator.number().optional(),
+        length: Validator.number().optional(),
+        height: Validator.number().optional(),
+        width: Validator.number().optional(),
+        origin_country: Validator.string().allow(""),
+        mid_code: Validator.string().allow(""),
+        material: Validator.string().allow(""),
         metadata: Validator.object().optional(),
       })
       .optional(),
@@ -62,17 +64,15 @@ export default async (req, res) => {
     const entityManager = req.scope.resolve("manager")
 
     await entityManager.transaction(async manager => {
-      const product = await productService
+      let product = await productService
         .withTransaction(manager)
         .update(id, value)
 
-      const data = await productService.decorate(
-        product.id,
-        defaultFields,
-        defaultExpandFields
-      )
+      product = await productService
+        .withTransaction(manager)
+        .decorate(product.id, defaultFields, defaultExpandFields)
 
-      res.json({ product: data })
+      res.json({ product })
     })
   } catch (err) {
     throw err

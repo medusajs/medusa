@@ -4,7 +4,7 @@ export default async (req, res) => {
   const { id, option_id } = req.params
 
   const schema = Validator.object().keys({
-    title: Validator.string(),
+    title: Validator.string().required,
   })
 
   const { value, error } = schema.validate(req.body)
@@ -17,22 +17,7 @@ export default async (req, res) => {
 
     const product = await productService.updateOption(id, option_id, value)
 
-    const data = await productService.decorate(
-      product,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "images",
-        "thumbnail",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
-
-    res.json({ product: data })
+    res.json({ product })
   } catch (err) {
     throw err
   }

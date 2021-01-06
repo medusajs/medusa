@@ -3,24 +3,9 @@ export default async (req, res) => {
 
   try {
     const productService = req.scope.resolve("productService")
-    const product = await productService.retrieve(id)
-    await productService.publish(product._id)
-    let publishedProduct = await productService.retrieve(product._id)
-    publishedProduct = await productService.decorate(
-      publishedProduct,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "thumbnail",
-        "images",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
-    res.json({ product: publishedProduct })
+    const product = await productService.publish(id)
+
+    res.json({ product })
   } catch (error) {
     throw error
   }

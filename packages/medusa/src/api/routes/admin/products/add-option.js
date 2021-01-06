@@ -13,23 +13,16 @@ export default async (req, res) => {
 
   try {
     const productService = req.scope.resolve("productService")
-    const newProduct = await productService.addOption(id, value.title)
 
-    const data = await productService.decorate(
-      newProduct,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "images",
-        "thumbnail",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
-    res.json({ product: data })
+    const entityManager = req.scope.resolve("manager")
+
+    await entityManager(async manager => {
+      const product = await productService
+        .withTransaction(manager)
+        .addOption(id, value.title)
+
+      res.json({ product })
+    })
   } catch (err) {
     throw err
   }
