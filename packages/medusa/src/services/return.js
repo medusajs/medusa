@@ -201,25 +201,23 @@ class ReturnService extends BaseService {
       }
 
       let returnFulfillmentData = {}
-      let returnShippingOption = {}
+      let returnShippingMethod = {}
 
       if (typeof shippingMethod !== "undefined") {
-        returnShippingOption = await this.shippingOptionService_.retrieve(
-          shippingMethod.id
-        )
+        returnShippingMethod = shippingMethod
 
         returnFulfillmentData = await this.fulfillmentProviderService_.createReturn(
-          returnShippingOption,
+          returnShippingMethod,
           returnLines,
           order
         )
 
         if (typeof shippingMethod.price !== "undefined") {
-          returnShippingOption.amount = shippingMethod.price
+          returnShippingMethod.amount = shippingMethod.price
         } else {
-          returnShippingOption.amount = await this.shippingOptionService_
+          returnShippingMethod.amount = await this.shippingOptionService_
             .withTransaction(manager)
-            .getPrice(returnShippingOption, {
+            .getPrice(returnShippingMethod, {
               ...order,
               items: returnLines,
             })
@@ -227,7 +225,7 @@ class ReturnService extends BaseService {
 
         toRefund = Math.max(
           0,
-          toRefund - returnShippingOption.amount * (1 + order.tax_rate)
+          toRefund - returnShippingMethod.amount * (1 + order.tax_rate)
         )
       }
 
@@ -235,7 +233,7 @@ class ReturnService extends BaseService {
         status: "requested",
         items: [],
         order_id: order.id,
-        shipping_method: returnShippingOption,
+        shipping_method: returnShippingMethod,
         shipping_data: returnFulfillmentData,
         refund_amount: toRefund,
       }
