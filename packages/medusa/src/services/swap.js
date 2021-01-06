@@ -593,6 +593,7 @@ class SwapService extends BaseService {
     const fulfillments = await this.fulfillmentService_.createFulfillment(
       {
         ...swap,
+        email: order.email,
         currency_code: order.currency_code,
         tax_rate: order.tax_rate,
         region_id: order.region_id,
