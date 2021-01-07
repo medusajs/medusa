@@ -6,11 +6,14 @@ import IdempotencyKeyModel from "../models/idempotency-key"
 const KEY_LOCKED_TIMEOUT = 1000
 
 class IdempotencyKeyService extends BaseService {
-  constructor({ idempotencyKeyModel, transactionService }) {
+  constructor({ idempotencyKeyRepository, transactionService }) {
     super()
 
-    /** @private @constant {IdempotencyKeyModel} */
-    this.idempotencyKeyModel_ = idempotencyKeyModel
+    /** @private @constant {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @constant {IdempotencyKeyRepository} */
+    this.idempotencyKeyRepository_ = idempotencyKeyRepository
 
     /** @private @constant {TransactionService} */
     this.transactionService_ = transactionService
@@ -25,32 +28,22 @@ class IdempotencyKeyService extends BaseService {
    * @return {Promise<IdempotencyKeyModel>} the existing or created idempotency key
    */
   async initializeRequest(headerKey, reqMethod, reqParams, reqPath) {
-    // If idempotency key exists, return it
-    let key = await this.retrieve(headerKey)
-    if (key) {
-      return key
-    }
+    return this.atomicPhase_(async manager => {
+      // If idempotency key exists, return it
+      let key = await this.retrieve(headerKey)
 
-    const dbSession = await this.transactionService_.createSession()
-    await dbSession.startTransaction()
+      if (key) {
+        return key
+      }
 
-    try {
-      key = await this.create(
-        {
-          request_method: reqMethod,
-          request_params: reqParams,
-          request_path: reqPath,
-        },
-        dbSession
-      )
-      await dbSession.commitTransaction()
+      key = await this.create({
+        request_method: reqMethod,
+        request_params: reqParams,
+        request_path: reqPath,
+      })
+
       return key
-    } catch (error) {
-      await dbSession.abortTransaction()
-      throw error
-    } finally {
-      dbSession.endSession()
-    }
+    })
   }
 
   /**
@@ -58,39 +51,39 @@ class IdempotencyKeyService extends BaseService {
    * If no idempotency key is provided in request, we will create a unique
    * identifier.
    * @param {object} payload - payload of request to create idempotency key for
-   * @param {object} session - mongoose transaction session
    * @return {Promise<IdempotencyKeyModel>} the created idempotency key
    */
-  async create(payload, session) {
-    if (!payload.idempotency_key) {
-      payload.idempotency_key = v4()
-    }
+  async create(payload) {
+    return this.atomicPhase_(async manager => {
+      const idempotencyKeyRepo = manager.getCustomRepository(
+        this.idempotencyKeyRepository_
+      )
 
-    return this.idempotencyKeyModel_
-      .create([payload], { session })
-      .then(result => result[0])
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      if (!payload.idempotency_key) {
+        payload.idempotency_key = v4()
+      }
+
+      const created = await idempotencyKeyRepo.create(payload)
+      const result = await idempotencyKeyRepo.save(created)
+      return result
+    })
   }
 
   /**
    * Retrieves an idempotency key
    * @param {string} idempotencyKey - key to retrieve
-   * @param {object} session - mongoose transaction session
    * @return {Promise<IdempotencyKeyModel>} idempotency key
    */
-  async retrieve(idempotencyKey, session) {
-    if (session) {
-      return this.idempotencyKeyModel_.findOne(
-        { idempotency_key: idempotencyKey },
-        { session }
-      )
-    } else {
-      return this.idempotencyKeyModel_.findOne({
-        idempotency_key: idempotencyKey,
-      })
-    }
+  async retrieve(idempotencyKey) {
+    const idempotencyKeyRepo = this.manager_.getCustomRepository(
+      this.idempotencyKeyRepository_
+    )
+
+    const key = await idempotencyKeyRepo.findOne({
+      where: { idempotency_key: idempotencyKey },
+    })
+
+    return key
   }
 
   /**
@@ -99,41 +92,53 @@ class IdempotencyKeyService extends BaseService {
    * @param {object} session - mongoose transaction session
    * @return {Promise} result of the update operation
    */
-  async lock(idempotencyKey, session) {
-    const key = await this.idempotencyKeyModel_.findOne(
-      { idempotency_key: idempotencyKey },
-      { session }
-    )
+  async lock(idempotencyKey) {
+    return this.atomicPhase_(async manager => {
+      const idempotencyKeyRepo = manager.getCustomRepository(
+        this.idempotencyKeyRepository_
+      )
 
-    if (key.locked_at && key.locked_at > Date.now() - KEY_LOCKED_TIMEOUT) {
-      throw new MedusaError("conflict", "Key already locked")
-    }
+      const key = this.retrieve(idempotencyKey)
 
-    return this.idempotencyKeyModel_.updateOne(
-      { idempotency_key: idempotencyKey },
-      { locked_at: Date.now() },
-      { session }
-    )
+      if (key.locked_at && key.locked_at > Date.now() - KEY_LOCKED_TIMEOUT) {
+        throw new MedusaError("conflict", "Key already locked")
+      }
+
+      const updated = await idempotencyKeyRepo.save({
+        ...key,
+        locked_at: Date.now(),
+      })
+
+      return updated
+    })
   }
 
   /**
    * Locks an idempotency.
    * @param {string} idempotencyKey - key to update
    * @param {object} update - update object
-   * @param {object} session - mongoose transaction session
    * @return {Promise} result of the update operation
    */
-  async update(idempotencyKey, update, session) {
-    return this.idempotencyKeyModel_.updateOne(
-      { idempotency_key: idempotencyKey },
-      { $set: update },
-      { session }
-    )
+  async update(idempotencyKey, update) {
+    return this.atomicPhase_(async manager => {
+      const idempotencyKeyRepo = manager.getCustomRepository(
+        this.idempotencyKeyRepository_
+      )
+
+      const key = this.retrieve(idempotencyKey)
+
+      for (const [key, value] of Object.entries(update)) {
+        key[key] = value
+      }
+
+      const updated = await idempotencyKeyRepo.save(key)
+      return updated
+    })
   }
 
   /**
-   * Performs an atomic phase.
-   * An atomic phase contains some related functionality, that needs to be
+   * Performs an atomic work stage.
+   * An atomic work stage contains some related functionality, that needs to be
    * transactionally executed in isolation. An idempotent request will
    * always consist of 2 or more of these phases. The required phases are
    * "started" and "finished".
@@ -141,44 +146,32 @@ class IdempotencyKeyService extends BaseService {
    * @param {Function} func - functionality to execute within the phase
    * @return {IdempotencyKeyModel} new updated idempotency key
    */
-  async atomicPhase(idempotencyKey, func) {
-    let key
-    const session = await this.transactionService_.createSession()
-    await session.startTransaction()
+  async workStage(idempotencyKey, func) {
+    return this.atomicPhase_(async manager => {
+      let key
 
-    try {
-      const { recovery_point, response_code, response_body } = await func(
-        session
-      )
-
-      if (recovery_point) {
-        key = await this.update(
-          idempotencyKey,
-          {
-            recovery_point,
-          },
-          session
+      try {
+        const { recovery_point, response_code, response_body } = await func(
+          manager
         )
-      } else {
-        key = await this.update(
-          idempotencyKey,
-          {
+
+        if (recovery_point) {
+          key = await this.update(idempotencyKey, {
+            recovery_point,
+          })
+        } else {
+          key = await this.update(idempotencyKey, {
             recovery_point: "finished",
             response_body,
             response_code,
-          },
-          session
-        )
+          })
+        }
+      } catch (err) {
+        return { error: err }
       }
-      await session.commitTransaction()
-    } catch (err) {
-      await session.abortTransaction()
 
-      return { error: err }
-    } finally {
-      session.endSession()
-    }
-    return { key }
+      return { key }
+    }, "SERIALIZABLE")
   }
 }
 
