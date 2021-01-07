@@ -2,10 +2,10 @@ import { Entity, Column, Index, PrimaryGeneratedColumn, PrimaryColumn } from "ty
 
 @Entity()
 export class Currency {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number
 
-  @PrimaryColumn()
+  @Column()
   code: string
 
   @Column()

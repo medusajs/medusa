@@ -33,7 +33,7 @@ export class Store {
   @JoinColumn({ name: "default_currency_code", referencedColumnName: "code" })
   default_currency: Currency
 
-  @ManyToMany(() => Currency, { cascade: true })
+  @ManyToMany(() => Currency)
   @JoinTable({
     name: "store_currencies",
     joinColumn: {
@@ -42,7 +42,7 @@ export class Store {
     },
     inverseJoinColumn: {
       name: "currency_code",
-      referencedColumnName: "code",
+      referencedColumnName: "id",
     },
   })
   currencies: Currency[]

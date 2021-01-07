@@ -107,7 +107,7 @@ class StoreService extends BaseService {
         this.currencyRepository_
       )
 
-      const store = await this.retrieve(["currencies"])
+      const store = await this.retrieve()
 
       const {
         metadata,
@@ -155,8 +155,6 @@ class StoreService extends BaseService {
           })
         )
       }
-
-      console.log("Updated: ", store.currencies)
 
       for (const [key, value] of Object.entries(rest)) {
         store[key] = value
