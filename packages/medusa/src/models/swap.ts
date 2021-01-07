@@ -81,7 +81,7 @@ export class Swap {
     fulfillment => fulfillment.swap,
     { cascade: true }
   )
-  fulfillments: Fulfillment
+  fulfillment: Fulfillment
 
   @OneToOne(
     () => Payment,
