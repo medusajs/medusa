@@ -21,8 +21,8 @@ export default async (req, res) => {
 
     await cartService.addShippingMethod(id, value.option_id, value.data)
 
-    let cart = await cartService.retrieve(id)
-    cart = await cartService.decorate(cart, [], ["region"])
+    let cart = await cartService.retrieve(id, ["region"])
+    // cart = await cartService.decorate(cart, [], ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {

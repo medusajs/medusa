@@ -21,7 +21,7 @@ export default async (req, res) => {
       value.data
     )
 
-    cart = await cartService.decorate(cart, [], ["region"])
+    cart = await cartService.retrieve(cart, ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {

@@ -106,7 +106,7 @@ class CustomerService extends BaseService {
 
     const secret = customer.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
-    const payload = { customer_id: customer._id, exp: expiry }
+    const payload = { customer_id: customer.id, exp: expiry }
     const token = jwt.sign(payload, secret)
     // Notify subscribers
     this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
@@ -360,6 +360,41 @@ class CustomerService extends BaseService {
       await addressRepo.softRemove(address)
 
       return Promise.resolve()
+    })
+  }
+
+  async addAddress(customerId, address) {
+    return this.atomicPhase_(async manager => {
+      const addressRepository = manager.getCustomRepository(
+        this.addressRepository_
+      )
+
+      const customer = await this.retrieve(customerId, ["shipping_addresses"])
+      this.validateBillingAddress_(address)
+
+      let shouldAdd = !customer.shipping_addresses.find(
+        a =>
+          a.country_code === address.country_code &&
+          a.address_1 === address.address_1 &&
+          a.address_2 === address.address_2 &&
+          a.city === address.city &&
+          a.phone === address.phone &&
+          a.postal_code === address.postal_code &&
+          a.province === address.province &&
+          a.first_name === address.first_name &&
+          a.last_name === address.last_name
+      )
+
+      if (shouldAdd) {
+        const created = await addressRepository.create({
+          customer_id: customerId,
+          ...address,
+        })
+        const result = await addressRepository.save(created)
+        return result
+      } else {
+        return customer
+      }
     })
   }
 

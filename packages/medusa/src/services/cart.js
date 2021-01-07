@@ -504,10 +504,6 @@ class CartService extends BaseService {
         }
       }
 
-      if ("customer_id" in update) {
-        await this.updateCustomerId_(cart, update.email)
-      }
-
       if ("shipping_address" in update) {
         await this.updateShippingAddress_(cart, update.shipping_address)
       }

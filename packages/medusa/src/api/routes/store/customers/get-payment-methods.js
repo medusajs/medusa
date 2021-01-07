@@ -7,7 +7,7 @@ export default async (req, res) => {
 
     let customer = await customerService.retrieve(id)
 
-    const store = await storeService.retrieve()
+    const store = await storeService.retrieve(["payment_providers"])
 
     const methods = await Promise.all(
       store.payment_providers.map(async next => {

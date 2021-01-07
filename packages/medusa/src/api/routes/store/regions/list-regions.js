@@ -1,23 +1,22 @@
-import { Validator } from "medusa-core-utils"
-
 export default async (req, res) => {
+  const regionService = req.scope.resolve("productService")
+
+  const limit = parseInt(req.query.limit) || 100
+  const offset = parseInt(req.query.offset) || 0
+
   const selector = {}
 
-  const regionService = req.scope.resolve("regionService")
-  const regions = await regionService.list(selector)
+  if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
+    selector.is_giftcard = req.query.is_giftcard === "true"
+  }
 
-  const data = await Promise.all(
-    regions.map(r =>
-      regionService.decorate(r, [
-        "name",
-        "currency_code",
-        "tax_rate",
-        "countries",
-        "payment_providers",
-        "fulfillment_providers",
-      ])
-    )
-  )
+  const listConfig = {
+    relations: ["countries", "payment_providers", "fulfillment_providers"],
+    skip: offset,
+    take: limit,
+  }
 
-  res.json({ regions: data })
+  const regions = await regionService.list(selector, listConfig)
+
+  res.json({ regions })
 }

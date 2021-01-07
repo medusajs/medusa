@@ -1,7 +1,7 @@
 import { Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { productId } = req.params
+  const { id } = req.params
 
   const schema = Validator.objectId()
   const { value, error } = schema.validate(productId)
@@ -11,22 +11,11 @@ export default async (req, res) => {
   }
 
   const productService = req.scope.resolve("productService")
-  let product = await productService.retrieve(value)
-
-  product = await productService.decorate(
-    product,
-    [
-      "title",
-      "description",
-      "tags",
-      "handle",
-      "images",
-      "options",
-      "variants",
-      "published",
-    ],
-    ["variants"]
-  )
+  let product = await productService.retrieve(value, [
+    "images",
+    "variants",
+    "options",
+  ])
 
   res.json({ product })
 }

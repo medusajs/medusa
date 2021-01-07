@@ -11,16 +11,11 @@ export default async (req, res) => {
   }
 
   const regionService = req.scope.resolve("regionService")
-  const region = await regionService.retrieve(value)
-
-  const data = await regionService.decorate(region, [
-    "name",
-    "currency_code",
-    "tax_rate",
+  const region = await regionService.retrieve(value, [
     "countries",
     "payment_providers",
     "fulfillment_providers",
   ])
 
-  res.json({ region: data })
+  res.json({ region })
 }

@@ -156,7 +156,7 @@ class LineItemService extends BaseService {
         this.lineItemRepository_
       )
 
-      const lineItem = await this.retrieve(id, ["variant"])
+      const lineItem = await this.retrieve(id)
 
       const { metadata, ...rest } = update
 

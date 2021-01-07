@@ -8,8 +8,7 @@ export default async (req, res) => {
     await cartService.setPaymentSessions(id)
 
     // return the updated cart
-    let cart = await cartService.retrieve(id)
-    cart = await cartService.decorate(cart, [], ["region"])
+    const cart = await cartService.retrieve(id, ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {
