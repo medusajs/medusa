@@ -17,7 +17,7 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
 
     let cart = await cartService.setPaymentMethod(id, value)
-    cart = await cartService.decorate(cart, [], ["region"])
+    cart = await cartService.retrieve(cart, ["region"])
 
     res.status(200).json({ cart })
   } catch (err) {

@@ -17,20 +17,23 @@ export default async (req, res) => {
   try {
     const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
-    let cart = await cartService.retrieve(id)
 
-    const lineItem = await lineItemService.generate(
-      value.variant_id,
-      cart.region_id,
-      value.quantity,
-      value.metadata
-    )
-    await cartService.addLineItem(cart._id, lineItem)
+    const entityManager = req.scope.resolve("manager")
 
-    cart = await cartService.retrieve(cart._id)
-    cart = await cartService.decorate(cart, [], ["region"])
+    await entityManager.transaction(async manager => {
+      let cart = await cartService.withTransaction(manager).retrieve(id)
 
-    res.status(200).json({ cart })
+      await lineItemService.withTransaction(manager).generate({
+        cart_id: cart.id,
+        variant_id: value.variant_id,
+        region_id: cart.region_id,
+        quantity: value.quantity,
+        metadata: value.metadata,
+      })
+
+      cart = await cartService.retrieve(cart._id, ["region"])
+      res.status(200).json({ cart })
+    })
   } catch (err) {
     throw err
   }

@@ -5,7 +5,6 @@ import middlewares from "../../middlewares"
 
 import authRoutes from "./auth"
 import productRoutes from "./products"
-import productVariantRoutes from "./product-variants"
 import cartRoutes from "./carts"
 import orderRoutes from "./orders"
 import customerRoutes from "./customers"
@@ -32,7 +31,6 @@ export default (app, container, config) => {
   authRoutes(route)
   customerRoutes(route, container)
   productRoutes(route)
-  productVariantRoutes(route)
   orderRoutes(route)
   cartRoutes(route, container)
   shippingOptionRoutes(route)

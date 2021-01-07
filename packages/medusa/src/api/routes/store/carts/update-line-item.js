@@ -17,33 +17,39 @@ export default async (req, res) => {
     const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
 
-    let cart
-    if (value.quantity === 0) {
-      cart = await cartService.removeLineItem(id, line_id)
-    } else {
-      cart = await cartService.retrieve(id)
+    const entityManager = req.scope.resolve("manager")
 
-      const existing = cart.items.find(i => i._id.equals(line_id))
-      if (!existing) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Could not find the line item"
-        )
+    await entityManager.transaction(async manager => {
+      let cart
+      if (value.quantity === 0) {
+        cart = await cartService
+          .withTransaction(manager)
+          .removeLineItem(id, line_id)
+      } else {
+        cart = await cartService.withTransaction(manager).retrieve(id)
+
+        const existing = cart.items.find(i => i.id === line_id)
+        if (!existing) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Could not find the line item"
+          )
+        }
+
+        await lineItemService.withTransaction(manager).update(line_id, {
+          variant: existing.variant.id,
+          region_id: cart.region_id,
+          quantity: value.quantity,
+          metadata: existing.metadata || {},
+        })
       }
 
-      const lineItem = await lineItemService.generate(
-        existing.content.variant._id,
-        cart.region_id,
-        value.quantity,
-        existing.metadata || {}
-      )
+      cart = await cartService
+        .withTransaction(manager)
+        .retrieve(cart.id, ["region"])
 
-      cart = await cartService.updateLineItem(cart._id, line_id, lineItem)
-    }
-
-    cart = await cartService.decorate(cart, [], ["region"])
-
-    res.status(200).json({ cart })
+      res.status(200).json({ cart })
+    })
   } catch (err) {
     throw err
   }

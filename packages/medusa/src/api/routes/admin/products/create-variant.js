@@ -2,10 +2,25 @@ import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
   const { id } = req.params
+
   const schema = Validator.object().keys({
     title: Validator.string().required(),
-    sku: Validator.string().optional(),
-    ean: Validator.string().optional(),
+    sku: Validator.string().allow(""),
+    ean: Validator.string().allow(""),
+    upc: Validator.string().allow(""),
+    barcode: Validator.string().allow(""),
+    hs_code: Validator.string().allow(""),
+    inventory_quantity: Validator.number().default(0),
+    allow_backorder: Validator.boolean().optional(),
+    manage_inventory: Validator.boolean().optional(),
+    weight: Validator.number().optional(),
+    length: Validator.number().optional(),
+    height: Validator.number().optional(),
+    width: Validator.number().optional(),
+    origin_country: Validator.string().allow(""),
+    mid_code: Validator.string().allow(""),
+    material: Validator.string().allow(""),
+    metadata: Validator.object().optional(),
     prices: Validator.array()
       .items({
         currency_code: Validator.string().required(),
@@ -14,15 +29,9 @@ export default async (req, res) => {
       .required(),
     options: Validator.array()
       .items({
-        option_id: Validator.objectId().required(),
         value: Validator.string().required(),
       })
       .default([]),
-    image: Validator.string().optional(),
-    inventory_quantity: Validator.number().optional(),
-    allow_backorder: Validator.boolean().optional(),
-    manage_inventory: Validator.boolean().optional(),
-    metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -31,24 +40,10 @@ export default async (req, res) => {
   }
 
   try {
-    const productService = req.scope.resolve("productService")
-    const product = await productService.createVariant(id, value)
-    const data = await productService.decorate(
-      product,
-      [
-        "title",
-        "description",
-        "is_giftcard",
-        "tags",
-        "thumbnail",
-        "handle",
-        "images",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
-    res.json({ product: data })
+    const productVariantService = req.scope.resolve("productVariantService")
+    const productVariant = await productVariantService.create(id, value)
+
+    res.json({ product_variant: productVariant })
   } catch (err) {
     throw err
   }

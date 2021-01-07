@@ -1,31 +1,23 @@
-import { Validator } from "medusa-core-utils"
+import { Any } from "typeorm"
 
 export default async (req, res) => {
+  const limit = parseInt(req.query.limit) || 100
+  const offset = parseInt(req.query.offset) || 0
+
   const selector = {}
 
+  const listConfig = {
+    relations: [],
+    skip: offset,
+    take: limit,
+  }
+
   if ("ids" in req.query) {
-    selector["_id"] = { $in: req.query.ids.split(",") }
+    selector["id"] = { id: Any(req.query.ids.split(",")) }
   }
 
   const variantService = req.scope.resolve("productVariantService")
-  const variants = await variantService.list(selector)
+  const variants = await variantService.list(selector, listConfig)
 
-  let includeFields = [
-    "title",
-    "prices",
-    "sku",
-    "ean",
-    "image",
-    "inventory_quantity",
-    "allow_backorder",
-    "manage_inventory",
-  ]
-  if ("fields" in req.query) {
-    includeFields = req.query.fields.split(",")
-  }
-
-  const data = await Promise.all(
-    variants.map(v => variantService.decorate(v, includeFields))
-  )
-  res.json({ variants: data })
+  res.json({ variants })
 }

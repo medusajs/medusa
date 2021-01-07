@@ -15,22 +15,9 @@ export default async (req, res) => {
 
   try {
     const productService = req.scope.resolve("productService")
-    let product = await productService.setMetadata(id, value.key, value.value)
-    product = await productService.decorate(
-      product,
-      [
-        "title",
-        "description",
-        "is_giftcard",
-        "tags",
-        "thumbnail",
-        "handle",
-        "images",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
+    const product = await productService.update(id, {
+      metadata: { [value.key]: value.value },
+    })
 
     res.status(200).json({ product })
   } catch (err) {

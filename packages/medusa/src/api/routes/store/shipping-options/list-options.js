@@ -1,5 +1,3 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-
 export default async (req, res) => {
   const productIds =
     (req.query.product_ids && req.query.product_ids.split(",")) || []

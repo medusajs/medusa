@@ -7,7 +7,7 @@ export default app => {
   app.use("/products", route)
 
   route.get("/", middlewares.wrap(require("./list-products").default))
-  route.get("/:productId", middlewares.wrap(require("./get-product").default))
+  route.get("/:id", middlewares.wrap(require("./get-product").default))
 
   return app
 }

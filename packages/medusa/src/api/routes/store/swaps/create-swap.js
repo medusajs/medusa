@@ -15,7 +15,7 @@ export default async (req, res) => {
   try {
     const swap = await swapService.retrieveByCartId(value.cart_id)
     const data = await swapService.registerCartCompletion(
-      swap._id,
+      swap.id,
       value.cart_id
     )
 
