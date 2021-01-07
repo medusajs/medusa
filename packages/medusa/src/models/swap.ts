@@ -54,6 +54,12 @@ export class Swap {
   @Column({ type: "enum", enum: PaymentStatus })
   payment_status: PaymentStatus
 
+  @Column({ type: "string" })
+  order_id: string
+
+  @Column({ type: "string" })
+  return_id: string
+
   @ManyToOne(
     () => Order,
     o => o.swaps
@@ -81,7 +87,7 @@ export class Swap {
     fulfillment => fulfillment.swap,
     { cascade: true }
   )
-  fulfillment: Fulfillment
+  fulfillments: Fulfillment[]
 
   @OneToOne(
     () => Payment,

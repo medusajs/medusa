@@ -32,7 +32,7 @@ export class Return {
   @PrimaryColumn()
   id: string
 
-  @Column({ type: "enum", enum: ReturnStatus })
+  @Column({ type: "enum", enum: ReturnStatus, default: ReturnStatus.REQUESTED })
   status: ReturnStatus
 
   @OneToMany(

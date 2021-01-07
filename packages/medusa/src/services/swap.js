@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * Handles swaps
@@ -17,7 +17,8 @@ class SwapService extends BaseService {
   }
 
   constructor({
-    swapModel,
+    manager,
+    swapRepository,
     eventBusService,
     cartService,
     totalsService,
@@ -29,8 +30,11 @@ class SwapService extends BaseService {
   }) {
     super()
 
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
     /** @private @const {SwapModel} */
-    this.swapModel_ = swapModel
+    this.swapRepository_ = swapRepository
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -58,31 +62,21 @@ class SwapService extends BaseService {
   }
 
   /**
-   * Used to validate user ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw user id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The swapId could not be casted to an ObjectId"
-      )
-    }
-
-    return value
-  }
-
-  /**
    * Retrieves a swap with the given id.
    * @param {string} id - the id of the swap to retrieve
    * @return {Promise<Swap>} the swap
    */
-  async retrieve(id) {
+  async retrieve(id, relations = []) {
+    const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
+
     const validatedId = this.validateId_(id)
-    const swap = await this.swapModel_.findOne({ _id: validatedId })
+
+    const swap = await swapRepo.findOne({
+      where: {
+        id: validatedId,
+      },
+      relations,
+    })
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
@@ -96,8 +90,15 @@ class SwapService extends BaseService {
    * @param {string} cartId - the cart id that the swap's cart has
    * @return {Promise<Swap>} the swap
    */
-  async retrieveByCartId(cartId) {
-    const swap = await this.swapModel_.findOne({ cart_id: cartId })
+  async retrieveByCartId(cartId, relations = []) {
+    const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
+
+    const swap = await swapRepo.findOne({
+      where: {
+        cart_id: cartId,
+      },
+      relations,
+    })
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
@@ -127,7 +128,7 @@ class SwapService extends BaseService {
    */
   validateReturnItems_(order, returnItems) {
     return returnItems.map(({ item_id, quantity }) => {
-      const item = order.items.find(i => i._id.equals(item_id))
+      const item = order.items.find(i => i.id === item_id)
 
       // The item must exist in the order
       if (!item) {
@@ -167,36 +168,44 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the newly created swap.
    */
   async create(order, returnItems, additionalItems, returnShipping) {
-    if (
-      order.fulfillment_status === "not_fulfilled" ||
-      order.payment_status !== "captured"
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Order cannot be swapped"
-      )
-    }
-
-    const newItems = await Promise.all(
-      additionalItems.map(({ variant_id, quantity }) => {
-        return this.lineItemService_.generate(
-          variant_id,
-          order.region_id,
-          quantity
+    return this.atomicPhase_(async manager => {
+      if (
+        order.fulfillment_status === "not_fulfilled" ||
+        order.payment_status !== "captured"
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Order cannot be swapped"
         )
+      }
+
+      const newItems = await Promise.all(
+        additionalItems.map(({ variant_id, quantity }) => {
+          return this.lineItemService_.generate(
+            variant_id,
+            order.region_id,
+            quantity
+          )
+        })
+      )
+
+      const returnOrder = await this.returnService_.create(
+        {
+          items: returnItems,
+          shipping_method: returnShipping,
+        },
+        order
+      )
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const created = swapRepo.create({
+        order_id: order.id,
+        return_order: returnOrder,
+        additional_items: newItems,
       })
-    )
 
-    const validatedReturnItems = this.validateReturnItems_(order, returnItems)
-
-    return this.swapModel_.create({
-      order_id: order._id,
-      order_payment: order.payment_method,
-      region_id: order.region_id,
-      currency_code: order.currency_code,
-      return_items: validatedReturnItems,
-      return_shipping: returnShipping,
-      additional_items: newItems,
+      const result = await swapRepo.save(created)
+      return result
     })
   }
 
@@ -324,79 +333,83 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
    */
-  async createCart(order, swapId) {
-    const swap = await this.retrieve(swapId)
+  async createCart(swapId) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId, [
+        "order",
+        "return_order",
+        "return_order.items",
+        "return_order.shipping_method",
+      ])
 
-    if (!order._id.equals(swap.order_id)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The swap does not belong to the order"
-      )
-    }
-
-    if (swap.cart_id) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "A cart has already been created for the swap"
-      )
-    }
-
-    // Add return lines to the cart to ensure that the total calculation is
-    // correct.
-    const returnLines = swap.return_items.map(r => {
-      const lineItem = order.items.find(i => i._id.equals(r.item_id))
-
-      return {
-        ...lineItem,
-        content: {
-          ...lineItem.content,
-          unit_price: -1 * lineItem.content.unit_price,
-        },
-        quantity: r.quantity,
-        metadata: {
-          ...lineItem.metadata,
-          is_return_line: true,
-        },
+      if (swap.cart_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A cart has already been created for the swap"
+        )
       }
-    })
 
-    // If the swap has a return shipping method the price has to be added to the
-    // cart.
-    if (swap.return_shipping) {
-      returnLines.push({
-        title: "Return shipping",
-        quantity: 1,
-        has_shipping: true,
-        no_discount: true,
-        content: {
-          unit_price: swap.return_shipping.price,
-          quantity: 1,
-        },
+      const order = swap.order
+
+      // Add return lines to the cart to ensure that the total calculation is
+      // correct.
+      const returnLines = await Promise.all(
+        swap.return_order.items.map(r => {
+          const lineItem = order.items.find(i => i.id === r.item_id)
+
+          const toCreate = {
+            variant_id: lineItem.variant_id,
+            unit_price: -1 * lineItem.unit_price,
+            quantity: r.quantity,
+            metadata: {
+              ...lineItem.metadata,
+              is_return_line: true,
+            },
+          }
+
+          return this.lineItemService_.withTransaction(manager).create(toCreate)
+        })
+      )
+
+      // If the swap has a return shipping method the price has to be added to the
+      // cart.
+      if (swap.return && swap.return_order.shipping_method) {
+        const shippingLine = await this.lineItemService_
+          .withTransaction(manager)
+          .create({
+            title: "Return shipping",
+            quantity: 1,
+            has_shipping: true,
+            allow_discount: false,
+            unit_price: swap.return_order.shipping_method.price,
+            metadata: {
+              is_return_line: true,
+            },
+          })
+        returnLines.push(shippingLine)
+      }
+
+      const cart = await this.cartService_.withTransaction(manager).create({
+        discounts: order.discounts,
+        email: order.email,
+        billing_address: order.billing_address,
+        shipping_address: order.shipping_address,
+        items: [...returnLines, ...swap.additional_items],
+        region_id: order.region_id,
+        customer_id: order.customer_id,
+        is_swap: true,
         metadata: {
-          is_return_line: true,
+          swap_id: swap.id,
+          parent_order_id: order.id,
         },
       })
-    }
 
-    const cart = await this.cartService_.create({
-      discounts: order.discounts,
-      email: order.email,
-      billing_address: order.billing_address,
-      shipping_address: order.shipping_address,
-      items: [...returnLines, ...swap.additional_items],
-      region_id: order.region_id,
-      customer_id: order.customer_id,
-      is_swap: true,
-      metadata: {
-        swap_id: swap._id,
-        parent_order_id: order._id,
-      },
+      swap.cart_id = cart.id
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const result = await swapRepo.save(swap)
+      return result
     })
-
-    return this.swapModel_.updateOne(
-      { _id: swapId },
-      { $set: { cart_id: cart._id } }
-    )
   }
 
   /**
@@ -496,27 +509,6 @@ class SwapService extends BaseService {
   }
 
   /**
-   * Requests a return based off an order and a swap.
-   * @param {Order} order - the order to create the return from.
-   * @param {string} swapId - the id to create the return from
-   * @returns {Promise<Swap>} the swap
-   */
-  async requestReturn(order, swapId) {
-    const swap = await this.retrieve(swapId)
-
-    const newReturn = await this.returnService_.requestReturn(
-      order,
-      swap.return_items,
-      swap.return_shipping
-    )
-
-    return this.swapModel_.updateOne(
-      { _id: swapId },
-      { $set: { return: newReturn } }
-    )
-  }
-
-  /**
    * Registers the return associated with a swap as received. If the return
    * is received with mismatching return items the swap's status will be updated
    * to requires_action.
@@ -526,48 +518,31 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the resulting swap, with an updated return and
    *   status.
    */
-  async receiveReturn(order, swapId, returnItems) {
-    const swap = await this.retrieve(swapId)
+  async receiveReturn(swapId, returnItems) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId)
 
-    const returnRequest = swap.return
-    if (!returnRequest || !returnRequest._id) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Swap has no return request"
-      )
-    }
-
-    if (!order._id.equals(swap.order_id)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The swap does not belong to the order"
-      )
-    }
-
-    const updatedReturn = await this.returnService_.receiveReturn(
-      order,
-      returnRequest,
-      returnItems,
-      returnRequest.refund_amount,
-      false
-    )
-
-    let status = "received"
-    if (updatedReturn.status === "requires_action") {
-      status = "requires_action"
-    }
-
-    return this.swapModel_.updateOne(
-      {
-        _id: swapId,
-      },
-      {
-        $set: {
-          status,
-          return: updatedReturn,
-        },
+      const returnId = swap.return_id
+      if (!returnId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Swap has no return request"
+        )
       }
-    )
+
+      const updatedRet = await this.returnService_
+        .withTransaction(manager)
+        .receiveReturn(swap.return_id, returnItems, undefined, false)
+
+      if (updatedRet.status === "requires_action") {
+        const swapRepo = manager.getCustomRepository(this.swapRepository_)
+        swap.fulfillment_status = "requires_action"
+        const result = await swapRepo.save(swap)
+        return result
+      }
+
+      return this.retrieve(swapId)
+    })
   }
 
   /**
@@ -577,39 +552,47 @@ class SwapService extends BaseService {
    * @param {object} metadata - optional metadata to attach to the fulfillment.
    * @returns {Promise<Swap>} the updated swap with new status and fulfillments.
    */
-  async createFulfillment(order, swapId, metadata = {}) {
-    const swap = await this.retrieve(swapId)
+  async createFulfillment(swapId, metadata = {}) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId, [
+        "shipping_address",
+        "additional_items",
+        "shipping_methods",
+        "order",
+        "order.billing_address",
+        "order.discounts",
+      ])
+      const order = swap.order
 
-    const fulfillments = await this.fulfillmentService_.createFulfillment(
-      {
-        ...swap,
-        currency_code: order.currency_code,
-        tax_rate: order.tax_rate,
-        region_id: order.region_id,
-        display_id: order.display_id,
-        billing_address: order.billing_address,
-        items: swap.additional_items,
-        shipping_methods: swap.shipping_methods,
-        is_swap: true,
-      },
-      swap.additional_items.map(i => ({
-        item_id: i._id,
-        quantity: i.quantity,
-      })),
-      metadata
-    )
+      swap.fulfillments = await this.fulfillmentService_
+        .withTransaction(manager)
+        .createFulfillment(
+          {
+            ...swap,
+            email: order.email,
+            discounts: order.discounts,
+            currency_code: order.currency_code,
+            tax_rate: order.tax_rate,
+            region_id: order.region_id,
+            display_id: order.display_id,
+            billing_address: order.billing_address,
+            items: swap.additional_items,
+            shipping_methods: swap.shipping_methods,
+            is_swap: true,
+          },
+          swap.additional_items.map(i => ({
+            item_id: i.id,
+            quantity: i.quantity,
+          })),
+          metadata
+        )
 
-    return this.swapModel_.updateOne(
-      {
-        _id: swapId,
-      },
-      {
-        $set: {
-          fulfillment_status: "fulfilled",
-          fulfillments,
-        },
-      }
-    )
+      swap.fulfillment_status = "fulfilled"
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const result = await swapRepo.save(swap)
+      return result
+    })
   }
 
   /**
@@ -623,71 +606,45 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the updated swap with new fulfillments and status.
    */
   async createShipment(swapId, fulfillmentId, trackingNumbers, metadata = {}) {
-    const swap = await this.retrieve(swapId)
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId, ["additional_items"])
 
-    // Update the fulfillment to register
-    const updatedFulfillments = await Promise.all(
-      swap.fulfillments.map(f => {
-        if (f._id.equals(fulfillmentId)) {
-          return this.fulfillmentService_.createShipment(
-            {
-              items: swap.additional_items,
-              shipping_methods: swap.shipping_methods,
-            },
-            f,
-            trackingNumbers,
-            metadata
-          )
-        }
-        return f
-      })
-    )
+      // Update the fulfillment to register
+      const shipment = await this.fulfillmentService_
+        .withTransaction(manager)
+        .createShipment(fulfillmentId, trackingNumbers, metadata)
 
-    // Go through all the additional items in the swap
-    const updatedItems = swap.additional_items.map(i => {
-      let shipmentItem
-      for (const fulfillment of updatedFulfillments) {
-        const item = fulfillment.items.find(fi => i._id.equals(fi._id))
-        if (!!item) {
-          shipmentItem = item
-          break
+      swap.fulfillment_status = "shipped"
+
+      // Go through all the additional items in the swap
+      for (const i of swap.additional_items) {
+        const shipped = shipment.items.find(si => si.item_id === i.id)
+        if (shipped) {
+          const shippedQty = (i.shipped_quantity || 0) + shipped.quantity
+          await this.lineItemService_.withTransaction(manager).update(i.id, {
+            shipped_quantity: shippedQty,
+          })
+
+          if (shippedQty !== i.quantity) {
+            swap.fulfillment_status = "partially_shipped"
+          }
+        } else {
+          if (i.shipped_quantity !== i.quantity) {
+            swap.fulfillment_status = "partially_shipped"
+          }
         }
       }
 
-      if (shipmentItem) {
-        const shippedQuantity = i.shipped_quantity + shipmentItem.quantity
-        return {
-          ...i,
-          shipped: i.quantity === shippedQuantity,
-          shipped_quantity: shippedQuantity,
-        }
-      }
-
-      return i
-    })
-
-    const fulfillment_status = updatedItems.every(i => i.shipped)
-      ? "shipped"
-      : "partially_shipped"
-
-    return this.swapModel_
-      .updateOne(
-        { _id: swapId },
-        {
-          $set: {
-            fulfillment_status,
-            additional_items: updatedItems,
-            fulfillments: updatedFulfillments,
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(SwapService.Events.SHIPMENT_CREATED, {
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const result = await swapRepo.save(swap)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(SwapService.Events.SHIPMENT_CREATED, {
           swap_id: swapId,
-          shipment: result.fulfillments.find(f => f._id.equals(fulfillmentId)),
+          shipment,
         })
-        return result
-      })
+      return result
+    })
   }
 
   /**

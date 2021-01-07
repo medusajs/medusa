@@ -1,14 +1,9 @@
-import { IdMap } from "medusa-test-utils"
-import { ProductVariantServiceMock } from "../__mocks__/product-variant"
-import {
-  // FulfillmentProviderServiceMock,
-  DefaultProviderMock as FulfillmentProviderMock,
-} from "../__mocks__/fulfillment-provider"
+import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import SwapService from "../swap"
 
 const generateOrder = (orderId, items, additional = {}) => {
   return {
-    _id: IdMap.getId(orderId),
+    id: IdMap.getId(orderId),
     items: items.map(
       ({
         id,
@@ -19,16 +14,15 @@ const generateOrder = (orderId, items, additional = {}) => {
         quantity,
         price,
       }) => ({
-        _id: IdMap.getId(id),
-        content: {
+        id: IdMap.getId(id),
+        variant_id: IdMap.getId(variant_id),
+        variant: {
+          id: IdMap.getId(variant_id),
           product: {
-            _id: IdMap.getId(product_id),
+            id: IdMap.getId(product_id),
           },
-          variant: {
-            _id: IdMap.getId(variant_id),
-          },
-          unit_price: price,
         },
+        unit_price: price,
         quantity,
         fulfilled_quantity: fulfilled || 0,
         returned_quantity: returned || 0,
@@ -53,7 +47,7 @@ const testOrder = generateOrder(
   {
     fulfillment_status: "fulfilled",
     payment_status: "captured",
-    currency_code: "DKK",
+    currency_code: "dkk",
     region_id: IdMap.getId("region"),
     tax_rate: 0,
     shipping_address: {
@@ -69,29 +63,6 @@ const testOrder = generateOrder(
   }
 )
 
-const SwapModel = ({ create, updateOne, findOne } = {}) => {
-  return {
-    create: jest.fn().mockImplementation((...args) => {
-      if (create) {
-        return create(...args)
-      }
-      return Promise.resolve({ data: "swap" })
-    }),
-    updateOne: jest.fn().mockImplementation((...args) => {
-      if (updateOne) {
-        return updateOne(...args)
-      }
-      return Promise.resolve({ data: "swap" })
-    }),
-    findOne: jest.fn().mockImplementation((...args) => {
-      if (findOne) {
-        return findOne(...args)
-      }
-      return Promise.resolve({ data: "swap" })
-    }),
-  }
-}
-
 describe("SwapService", () => {
   describe("validateReturnItems_", () => {
     beforeEach(() => {
@@ -105,7 +76,7 @@ describe("SwapService", () => {
           {
             items: [
               {
-                _id: IdMap.getId("line1"),
+                id: IdMap.getId("line1"),
                 quantity: 1,
                 returned_quantity: 1,
               },
@@ -124,7 +95,7 @@ describe("SwapService", () => {
           {
             items: [
               {
-                _id: IdMap.getId("line1"),
+                id: IdMap.getId("line1"),
                 quantity: 1,
                 returned_quantity: 1,
               },
@@ -142,7 +113,7 @@ describe("SwapService", () => {
         {
           items: [
             {
-              _id: IdMap.getId("line1"),
+              id: IdMap.getId("line1"),
               quantity: 1,
               returned_quantity: 0,
             },
@@ -162,58 +133,69 @@ describe("SwapService", () => {
 
     describe("success", () => {
       const existing = {
-        _id: IdMap.getId("test-swap"),
+        id: IdMap.getId("test-swap"),
         order_id: IdMap.getId("test"),
-        return: {
-          _id: IdMap.getId("return-swap"),
+        order: testOrder,
+        return_order: {
+          id: IdMap.getId("return-swap"),
           test: "notreceived",
           refund_amount: 11,
+          items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
         },
-        return_items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
         additional_items: [{ data: "lines" }],
         other: "data",
       }
 
       const cartService = {
-        create: jest
-          .fn()
-          .mockReturnValue(Promise.resolve({ _id: IdMap.getId("swap-cart") })),
+        create: jest.fn().mockReturnValue(Promise.resolve({ id: "cart" })),
+        withTransaction: function() {
+          return this
+        },
       }
-      const swapModel = SwapModel({ findOne: () => Promise.resolve(existing) })
+
+      const swapRepo = MockRepository({
+        findOne: () => Promise.resolve(existing),
+      })
+
+      const lineItemService = {
+        create: jest.fn().mockImplementation(d => Promise.resolve(d)),
+        withTransaction: function() {
+          return this
+        },
+      }
+
       const swapService = new SwapService({
-        productVariantService: ProductVariantServiceMock,
-        swapModel,
+        manager: MockManager,
+        swapRepository: swapRepo,
         cartService,
+        lineItemService,
       })
 
       it("finds swap and calls return create cart", async () => {
-        await swapService.createCart(testOrder, IdMap.getId("swap-1"))
+        await swapService.createCart(IdMap.getId("swap-1"))
 
-        expect(swapModel.findOne).toHaveBeenCalledTimes(1)
-        expect(swapModel.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("swap-1"),
+        expect(swapRepo.findOne).toHaveBeenCalledTimes(1)
+        expect(swapRepo.findOne).toHaveBeenCalledWith({
+          where: { id: IdMap.getId("swap-1") },
+          relations: [
+            "order",
+            "return_order",
+            "return_order.items",
+            "return_order.shipping_method",
+          ],
         })
 
         expect(cartService.create).toHaveBeenCalledTimes(1)
         expect(cartService.create).toHaveBeenCalledWith({
           email: testOrder.email,
+          discounts: testOrder.discounts,
           shipping_address: testOrder.shipping_address,
           billing_address: testOrder.billing_address,
           items: [
             {
-              _id: IdMap.getId("line"),
-              content: {
-                variant: {
-                  _id: IdMap.getId("variant"),
-                },
-                product: {
-                  _id: IdMap.getId("product"),
-                },
-                unit_price: -100,
-              },
+              variant_id: IdMap.getId("variant"),
+              unit_price: -100,
               quantity: 1,
-              fulfilled_quantity: 1,
-              returned_quantity: 0,
               metadata: {
                 is_return_line: true,
               },
@@ -229,18 +211,18 @@ describe("SwapService", () => {
           },
         })
 
-        expect(swapModel.updateOne).toHaveBeenCalledTimes(1)
-        expect(swapModel.updateOne).toHaveBeenCalledWith(
-          { _id: IdMap.getId("swap-1") },
-          { $set: { cart_id: IdMap.getId("swap-cart") } }
-        )
+        expect(swapRepo.save).toHaveBeenCalledTimes(1)
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing,
+          cart_id: "cart",
+        })
       })
     })
 
     describe("failure", () => {
       const existing = {
-        return: {
-          _id: IdMap.getId("return-swap"),
+        return_order: {
+          id: IdMap.getId("return-swap"),
           test: "notreceived",
           refund_amount: 11,
         },
@@ -248,20 +230,8 @@ describe("SwapService", () => {
         other: "data",
       }
 
-      it("fails if swap doesn't belong to order", async () => {
-        const swapModel = SwapModel({
-          findOne: () => Promise.resolve(existing),
-        })
-        const swapService = new SwapService({ swapModel })
-        const res = swapService.createCart(testOrder, IdMap.getId("swap-1"))
-
-        await expect(res).rejects.toThrow(
-          "The swap does not belong to the order"
-        )
-      })
-
       it("fails if cart already created", async () => {
-        const swapModel = SwapModel({
+        const swapRepo = MockRepository({
           findOne: () =>
             Promise.resolve({
               ...existing,
@@ -269,8 +239,11 @@ describe("SwapService", () => {
               cart_id: IdMap.getId("swap-cart"),
             }),
         })
-        const swapService = new SwapService({ swapModel })
-        const res = swapService.createCart(testOrder, IdMap.getId("swap-1"))
+        const swapService = new SwapService({
+          manager: MockManager,
+          swapRepository: swapRepo,
+        })
+        const res = swapService.createCart(IdMap.getId("swap-1"))
 
         await expect(res).rejects.toThrow(
           "A cart has already been created for the swap"
@@ -290,24 +263,25 @@ describe("SwapService", () => {
           .fn()
           .mockImplementation((variantId, regionId, quantity, metadata) => {
             return {
-              content: {
-                unit_price: 100,
-                variant: {
-                  _id: variantId,
-                },
-                product: {
-                  _id: IdMap.getId("product"),
-                },
-                quantity: 1,
-              },
+              unit_price: 100,
+              variant_id: variantId,
               quantity,
+              metadata,
             }
           }),
       }
-      const swapModel = SwapModel()
+      const swapRepo = MockRepository()
+      const returnService = {
+        create: jest.fn().mockReturnValue(Promise.resolve({ id: "ret" })),
+        withTransaction: function() {
+          return this
+        },
+      }
+
       const swapService = new SwapService({
-        swapModel,
-        productVariantService: ProductVariantServiceMock,
+        manager: MockManager,
+        swapRepository: swapRepo,
+        returnService,
         lineItemService,
       })
 
@@ -341,27 +315,13 @@ describe("SwapService", () => {
           }
         )
 
-        expect(swapModel.create).toHaveBeenCalledWith({
+        expect(swapRepo.create).toHaveBeenCalledWith({
           order_id: IdMap.getId("test"),
-          return_items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
-          region_id: IdMap.getId("region"),
-          currency_code: "DKK",
-          return_shipping: {
-            id: IdMap.getId("return-shipping"),
-            price: 20,
-          },
+          return_order: { id: "ret" },
           additional_items: [
             {
-              content: {
-                unit_price: 100,
-                variant: {
-                  _id: IdMap.getId("new-variant"),
-                },
-                product: {
-                  _id: IdMap.getId("product"),
-                },
-                quantity: 1,
-              },
+              unit_price: 100,
+              variant_id: IdMap.getId("new-variant"),
               quantity: 1,
             },
           ],
@@ -380,42 +340,41 @@ describe("SwapService", () => {
         receiveReturn: jest
           .fn()
           .mockReturnValue(Promise.resolve({ test: "received" })),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const existing = {
         order_id: IdMap.getId("test"),
-        return: {
-          _id: IdMap.getId("return-swap"),
+        return_id: "test",
+        return_order: {
+          id: IdMap.getId("return-swap"),
           test: "notreceived",
           refund_amount: 11,
         },
         other: "data",
       }
 
-      const swapModel = SwapModel({ findOne: () => Promise.resolve(existing) })
-      const swapService = new SwapService({ swapModel, returnService })
+      const swapRepo = MockRepository({
+        findOne: () => Promise.resolve(existing),
+      })
+      const swapService = new SwapService({
+        manager: MockManager,
+        swapRepository: swapRepo,
+        returnService,
+      })
 
       it("calls register return and updates return value", async () => {
-        await swapService.receiveReturn(testOrder, IdMap.getId("swap"), [
-          { variant_id: IdMap.getId("1234"), quantity: 1 },
+        await swapService.receiveReturn(IdMap.getId("swap"), [
+          { item_id: IdMap.getId("1234"), quantity: 1 },
         ])
-
-        expect(swapModel.updateOne).toHaveBeenCalledWith(
-          { _id: IdMap.getId("swap") },
-          {
-            $set: {
-              status: "received",
-              return: { test: "received" },
-            },
-          }
-        )
 
         expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
         expect(returnService.receiveReturn).toHaveBeenCalledWith(
-          testOrder,
-          existing.return,
-          [{ variant_id: IdMap.getId("1234"), quantity: 1 }],
-          11,
+          "test",
+          [{ item_id: IdMap.getId("1234"), quantity: 1 }],
+          undefined,
           false
         )
       })
@@ -426,56 +385,47 @@ describe("SwapService", () => {
         receiveReturn: jest
           .fn()
           .mockReturnValue(Promise.resolve({ status: "requires_action" })),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const existing = {
         order_id: IdMap.getId("test"),
-        return: {
-          _id: IdMap.getId("return-swap"),
-          test: "notreceived",
-          refund_amount: 11,
-        },
+        return_id: IdMap.getId("return-swap"),
         other: "data",
       }
 
-      const swapModel = SwapModel({
-        findOne: t =>
-          Promise.resolve(t._id.equals(IdMap.getId("empty")) ? {} : existing),
+      const swapRepo = MockRepository({
+        findOne: q =>
+          Promise.resolve(q.where.id === IdMap.getId("empty") ? {} : existing),
       })
-      const swapService = new SwapService({ swapModel, returnService })
+      const swapService = new SwapService({
+        manager: MockManager,
+        swapRepository: swapRepo,
+        returnService,
+      })
 
       it("fails if swap has no return request", async () => {
-        const res = swapService.receiveReturn(
-          testOrder,
-          IdMap.getId("empty"),
-          []
-        )
+        const res = swapService.receiveReturn(IdMap.getId("empty"), [])
         await expect(res).rejects.toThrow("Swap has no return request")
       })
 
       it("sets requires action if return fails", async () => {
-        await swapService.receiveReturn(testOrder, IdMap.getId("swap"), [
+        await swapService.receiveReturn(IdMap.getId("swap"), [
           { variant_id: IdMap.getId("1234"), quantity: 1 },
         ])
 
-        expect(swapModel.updateOne).toHaveBeenCalledWith(
-          {
-            _id: IdMap.getId("swap"),
-          },
-          {
-            $set: {
-              status: "requires_action",
-              return: { status: "requires_action" },
-            },
-          }
-        )
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing,
+          fulfillment_status: "requires_action",
+        })
 
         expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
         expect(returnService.receiveReturn).toHaveBeenCalledWith(
-          testOrder,
-          existing.return,
+          IdMap.getId("return-swap"),
           [{ variant_id: IdMap.getId("1234"), quantity: 1 }],
-          11,
+          undefined,
           false
         )
       })
@@ -492,45 +442,46 @@ describe("SwapService", () => {
         createFulfillment: jest
           .fn()
           .mockReturnValue(Promise.resolve([{ data: "new" }])),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const existing = {
+        order: testOrder,
         additional_items: [
           {
-            _id: IdMap.getId("1234"),
+            id: IdMap.getId("1234"),
             quantity: 2,
           },
         ],
         shipping_methods: [{ method: "1" }],
-        return: {
-          _id: IdMap.getId("return-swap"),
-          test: "notreceived",
-          refund_amount: 11,
-        },
         other: "data",
       }
 
-      const swapModel = SwapModel({ findOne: () => existing })
-      const swapService = new SwapService({ swapModel, fulfillmentService })
+      const swapRepo = MockRepository({
+        findOne: () => Promise.resolve({ ...existing }),
+      })
+      const swapService = new SwapService({
+        manager: MockManager,
+        swapRepository: swapRepo,
+        fulfillmentService,
+      })
 
       it("creates a fulfillment", async () => {
-        await swapService.createFulfillment(testOrder, IdMap.getId("swap"))
+        await swapService.createFulfillment(IdMap.getId("swap"))
 
-        expect(swapModel.updateOne).toHaveBeenCalledWith(
-          {
-            _id: IdMap.getId("swap"),
-          },
-          {
-            $set: {
-              fulfillment_status: "fulfilled",
-              fulfillments: [{ data: "new" }],
-            },
-          }
-        )
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing,
+          fulfillment_status: "fulfilled",
+          fulfillments: [{ data: "new" }],
+        })
 
         expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
           {
             ...existing,
+            email: testOrder.email,
+            discounts: testOrder.discounts,
             currency_code: testOrder.currency_code,
             tax_rate: testOrder.tax_rate,
             region_id: testOrder.region_id,
@@ -557,38 +508,50 @@ describe("SwapService", () => {
     describe("success", () => {
       const fulfillmentService = {
         createShipment: jest.fn().mockImplementation((o, f) => {
-          return Promise.resolve({ ...f, data: "new" })
+          return Promise.resolve({
+            items: [
+              {
+                item_id: IdMap.getId("1234-1"),
+                quantity: 2,
+              },
+            ],
+            data: "new",
+          })
         }),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const eventBusService = {
         emit: jest.fn().mockReturnValue(Promise.resolve()),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const existing = {
         additional_items: [
           {
-            _id: IdMap.getId("1234-1"),
+            id: IdMap.getId("1234-1"),
             quantity: 2,
             shipped_quantity: 0,
           },
         ],
         fulfillments: [
           {
-            _id: IdMap.getId("f1"),
+            id: IdMap.getId("f1"),
             items: [
               {
-                _id: IdMap.getId("1234-1"),
                 item_id: IdMap.getId("1234-1"),
                 quantity: 2,
               },
             ],
           },
           {
-            _id: IdMap.getId("f2"),
+            id: IdMap.getId("f2"),
             items: [
               {
-                _id: IdMap.getId("1234-2"),
                 item_id: IdMap.getId("1234-2"),
                 quantity: 2,
               },
@@ -596,19 +559,24 @@ describe("SwapService", () => {
           },
         ],
         shipping_methods: [{ method: "1" }],
-        return: {
-          _id: IdMap.getId("return-swap"),
-          test: "notreceived",
-          refund_amount: 11,
-        },
         other: "data",
       }
-      const swapModel = SwapModel({
-        updateOne: () => Promise.resolve(existing),
-        findOne: () => existing,
+
+      const lineItemService = {
+        update: jest.fn(),
+        withTransaction: function() {
+          return this
+        },
+      }
+
+      const swapRepo = MockRepository({
+        findOne: () => Promise.resolve(existing),
       })
+
       const swapService = new SwapService({
-        swapModel,
+        manager: MockManager,
+        swapRepository: swapRepo,
+        lineItemService,
         eventBusService,
         fulfillmentService,
       })
@@ -621,63 +589,20 @@ describe("SwapService", () => {
           {}
         )
 
-        expect(swapModel.updateOne).toHaveBeenCalledWith(
+        expect(lineItemService.update).toHaveBeenCalledWith(
+          IdMap.getId("1234-1"),
           {
-            _id: IdMap.getId("swap"),
-          },
-          {
-            $set: {
-              additional_items: [
-                {
-                  _id: IdMap.getId("1234-1"),
-                  quantity: 2,
-                  shipped: true,
-                  shipped_quantity: 2,
-                },
-              ],
-              fulfillment_status: "shipped",
-              fulfillments: [
-                {
-                  _id: IdMap.getId("f1"),
-                  items: [
-                    {
-                      _id: IdMap.getId("1234-1"),
-                      item_id: IdMap.getId("1234-1"),
-                      quantity: 2,
-                    },
-                  ],
-                  data: "new",
-                },
-                {
-                  _id: IdMap.getId("f2"),
-                  items: [
-                    {
-                      _id: IdMap.getId("1234-2"),
-                      item_id: IdMap.getId("1234-2"),
-                      quantity: 2,
-                    },
-                  ],
-                },
-              ],
-            },
+            shipped_quantity: 2,
           }
         )
 
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing,
+          fulfillment_status: "shipped",
+        })
+
         expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
-          {
-            items: existing.additional_items,
-            shipping_methods: existing.shipping_methods,
-          },
-          {
-            _id: IdMap.getId("f1"),
-            items: [
-              {
-                _id: IdMap.getId("1234-1"),
-                item_id: IdMap.getId("1234-1"),
-                quantity: 2,
-              },
-            ],
-          },
+          IdMap.getId("f1"),
           ["1234"],
           {}
         )
@@ -685,47 +610,5 @@ describe("SwapService", () => {
     })
 
     describe("failure", () => {})
-  })
-
-  describe("requestReturn", () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    describe("success", () => {
-      const existing = {
-        return_items: [{ data: "returnline" }],
-        return_shipping: { shipping: "return" },
-      }
-
-      const returnService = {
-        requestReturn: jest
-          .fn()
-          .mockReturnValue(Promise.resolve({ return: "data" })),
-      }
-      const swapModel = SwapModel({ findOne: () => existing })
-      const swapService = new SwapService({
-        swapModel,
-        returnService,
-      })
-
-      it("calls requestReturn and updates", async () => {
-        await swapService.requestReturn(testOrder, IdMap.getId("swap"))
-
-        expect(returnService.requestReturn).toHaveBeenCalledTimes(1)
-        expect(returnService.requestReturn).toHaveBeenCalledWith(
-          testOrder,
-          existing.return_items,
-          existing.return_shipping
-        )
-
-        expect(swapModel.updateOne).toHaveBeenCalledWith(
-          {
-            _id: IdMap.getId("swap"),
-          },
-          { $set: { return: { return: "data" } } }
-        )
-      })
-    })
   })
 })
