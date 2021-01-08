@@ -1,10 +1,13 @@
+import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Helps retrive payment providers
  */
-class PaymentProviderService {
+class PaymentProviderService extends BaseService {
   constructor(container) {
+    super()
+
     /** @private {logger} */
     this.container_ = container
 
