@@ -36,6 +36,7 @@ class OrderService extends BaseService {
     regionService,
     returnService,
     swapService,
+    cartService,
     // documentService,
     eventBusService,
   }) {
@@ -85,6 +86,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @constant {CartService} */
+    this.cartService_ = cartService
 
     /** @private @constant {SwapService} */
     this.swapService_ = swapService

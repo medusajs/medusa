@@ -49,6 +49,13 @@ describe("OrderService", () => {
         return Promise.resolve(cart.total || 0)
       },
     }
+    const cartService = {
+      retrieve: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const discountService = {}
     const regionService = {}
     const orderService = new OrderService({
@@ -59,6 +66,7 @@ describe("OrderService", () => {
       discountService,
       regionService,
       eventBusService,
+      cartService,
     })
 
     beforeEach(async () => {

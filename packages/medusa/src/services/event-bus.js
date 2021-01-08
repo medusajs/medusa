@@ -140,9 +140,9 @@ class EventBusService {
    * @param {?any} data - the data to send to the subscriber.
    * @return {BullJob} - the job from our queue
    */
-  emit(eventName, data) {
-    return this.atomicPhase_(async manager => {
-      const stagedJobRepository = manager.getCustomRepository(
+  async emit(eventName, data) {
+    if (this.transactionManager_) {
+      const stagedJobRepository = this.transactionManager_.getCustomRepository(
         this.stagedJobRepository_
       )
 
@@ -153,10 +153,9 @@ class EventBusService {
 
       const updated = await stagedJobRepository.save(created)
       return updated
-    })
-    // } else {
-    //   this.queue_.add({ eventName, data }, { removeOnComplete: true })
-    // }
+    } else {
+      this.queue_.add({ eventName, data }, { removeOnComplete: true })
+    }
   }
 
   async sleep(ms) {

@@ -82,10 +82,6 @@ describe("EventBusService", () => {
       it("calls queue.add", () => {
         expect(eventBus.queue_.add).toHaveBeenCalled()
       })
-
-      it("returns the job", () => {
-        expect(job).toEqual("hi")
-      })
     })
   })
 
