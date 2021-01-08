@@ -25,6 +25,7 @@ describe("LineItemService", () => {
 
     const productVariantService = {
       retrieve: query => {
+        console.log(query)
         if (query === IdMap.getId("test-giftcard")) {
           return {
             id: IdMap.getId("test-giftcard"),
@@ -64,6 +65,11 @@ describe("LineItemService", () => {
       await lineItemService.create({
         variant_id: IdMap.getId("test-variant"),
         cart_id: IdMap.getId("test-cart"),
+        title: "Test product",
+        description: "Test variant",
+        thumbnail: "",
+        unit_price: 100,
+        quantity: 1,
       })
 
       expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
@@ -90,17 +96,19 @@ describe("LineItemService", () => {
       expect(lineItemRepository.create).toHaveBeenCalledWith({
         variant_id: IdMap.getId("test-variant"),
         cart_id: IdMap.getId("test-cart"),
-        title: "Test product",
-        description: "Test variant",
-        thumbnail: "",
         unit_price: 50,
         quantity: 2,
       })
     })
 
     it("successfully create a line item giftcard", async () => {
+      const line = await await lineItemService.generate(
+        IdMap.getId("test-giftcard"),
+        IdMap.getId("test-region")
+      )
+
       await lineItemService.create({
-        variant_id: IdMap.getId("test-giftcard"),
+        ...line,
         cart_id: IdMap.getId("test-cart"),
       })
 
@@ -114,6 +122,7 @@ describe("LineItemService", () => {
         unit_price: 100,
         quantity: 1,
         is_giftcard: true,
+        metadata: {},
       })
     })
   })
