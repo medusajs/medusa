@@ -84,6 +84,32 @@ class LineItemService extends BaseService {
     return lineItem
   }
 
+  async generate(variantId, regionId, quantity, metadata = {}) {
+    const variant = await this.productVariantService_.retrieve(variantId, [
+      "product",
+    ])
+
+    const region = await this.regionService_.retrieve(regionId)
+
+    const price = await this.productVariantService_.getRegionPrice(
+      variant.id,
+      region.id
+    )
+
+    const toCreate = {
+      unit_price: price,
+      title: variant.product.title,
+      description: variant.title,
+      thumbnail: variant.product.thumbnail,
+      variant_id: variant.id,
+      quantity: quantity || 1,
+      is_giftcard: variant.product.is_giftcard,
+      metadata,
+    }
+
+    return toCreate
+  }
+
   /**
    * Create a line item
    * @param {LineItem} lineItem - the line item object to create
@@ -94,51 +120,8 @@ class LineItemService extends BaseService {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
-      const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
-      const variant = await this.productVariantService_.retrieve(
-        lineItem.variant_id,
-        ["product"]
-      )
-      const cart = await cartRepository.findOne({
-        where: { id: lineItem.cart_id },
-      })
-      const region = await this.regionService_.retrieve(cart.region_id)
-
-      const { metadata, unit_price, ...rest } = lineItem
-
-      let price
-      if (unit_price) {
-        price = unit_price
-      } else {
-        price = await this.productVariantService_.getRegionPrice(
-          variant.id,
-          region.id
-        )
-      }
-
-      const toCreate = {
-        unit_price: price,
-        title: variant.product.title,
-        description: variant.title,
-        thumbnail: variant.product.thumbnail,
-        variant_id: variant.id,
-        quantity: lineItem.quantity || 1,
-      }
-
-      if (metadata) {
-        toCreate.metadata = this.setMetadata_(toCreate, metadata)
-      }
-
-      if (variant.product.is_giftcard) {
-        toCreate.is_giftcard = true
-      }
-
-      for (const [key, value] of Object.entries(rest)) {
-        toCreate[key] = value
-      }
-
-      const created = await lineItemRepository.create(toCreate)
+      const created = await lineItemRepository.create(lineItem)
       const result = await lineItemRepository.save(created)
       return result
     })

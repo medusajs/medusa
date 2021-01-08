@@ -11,6 +11,7 @@ class ReturnService extends BaseService {
     manager,
     totalsService,
     returnRepository,
+    returnItemRepository,
     shippingOptionService,
     fulfillmentProviderService,
   }) {
@@ -24,6 +25,9 @@ class ReturnService extends BaseService {
 
     /** @private @const {ReturnRepository} */
     this.returnRepository_ = returnRepository
+
+    /** @private @const {ReturnItemRepository} */
+    this.returnItemRepository_ = returnItemRepository
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
@@ -158,6 +162,97 @@ class ReturnService extends BaseService {
   }
 
   /**
+   * Creates a return.
+   */
+  async create(data, orderLike) {
+    return this.atomicPhase_(async manager => {
+      const returnRepository = manager.getCustomRepository(
+        this.returnRepository_
+      )
+
+      const returnLines = await this.getFulfillmentItems_(
+        orderLike,
+        data.items,
+        this.validateReturnLineItem_
+      )
+
+      let toRefund = data.refund_amount
+      if (typeof toRefund !== "undefined") {
+        const total = await this.totalsService_.getTotal(orderLike)
+        const refunded = await this.totalsService_.getRefundedTotal(orderLike)
+        const refundable = total - refunded
+        if (toRefund > refundable) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Cannot refund more than the original payment"
+          )
+        }
+      } else {
+        toRefund = await this.totalsService_.getRefundTotal(
+          orderLike,
+          returnLines
+        )
+
+        if ("shipping_method" in data) {
+          toRefund = Math.max(
+            0,
+            toRefund - data.shipping_method.price * (1 + orderLike.tax_rate)
+          )
+        }
+      }
+
+      const returnObject = {
+        ...data,
+        refund_amount: toRefund,
+      }
+
+      const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
+      returnObject.items = returnLines.map(i =>
+        rItemRepo.create({
+          item_id: i.item_id,
+          quantity: i.quantity,
+          requested_quantity: i.quantity,
+          metadata: i.metadata,
+        })
+      )
+
+      const created = await returnRepository.create(returnObject)
+      const result = await returnRepository.save(created)
+      return result
+    })
+  }
+
+  fulfill(returnId) {
+    return this.atomicPhase_(async manager => {
+      const returnOrder = await this.retreive(returnId, ["shipping_method"])
+
+      if (returnOrder.shipping_data) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Return has already been fulfilled"
+        )
+      }
+
+      if (returnOrder.shipping_method === null) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Return has no associated shipping method"
+        )
+      }
+
+      const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
+        returnOrder.shipping_method
+      )
+
+      returnOrder.shipping_data = fulfillmentData
+
+      const returnRepo = manager.getCustomRepository(this.returnRepository_)
+      const result = await returnRepo.save(returnOrder)
+      return result
+    })
+  }
+
+  /**
    * Creates a return request for an order, with given items, and a shipping
    * method. If no refundAmount is provided the refund amount is calculated from
    * the return lines and the shipping cost.
@@ -212,10 +307,8 @@ class ReturnService extends BaseService {
           order
         )
 
-        if (typeof shippingMethod.price !== "undefined") {
-          returnShippingMethod.amount = shippingMethod.price
-        } else {
-          returnShippingMethod.amount = await this.shippingOptionService_
+        if (typeof shippingMethod.price === "undefined") {
+          returnShippingMethod.price = await this.shippingOptionService_
             .withTransaction(manager)
             .getPrice(returnShippingMethod, {
               ...order,
@@ -225,7 +318,7 @@ class ReturnService extends BaseService {
 
         toRefund = Math.max(
           0,
-          toRefund - returnShippingMethod.amount * (1 + order.tax_rate)
+          toRefund - returnShippingMethod.price * (1 + order.tax_rate)
         )
       }
 
@@ -281,7 +374,12 @@ class ReturnService extends BaseService {
         "items",
         "order",
         "order.items",
+        "swap",
+        "swap.order",
+        "swap.order.items",
       ])
+
+      const order = returnObj.order || (returnObj.swap && returnObj.swap.order)
 
       if (returnObj.status === "received") {
         throw new MedusaError(
@@ -291,7 +389,7 @@ class ReturnService extends BaseService {
       }
 
       const returnLines = await this.getFulfillmentItems_(
-        returnObj.order,
+        order,
         receivedItems,
         this.validateReturnLineItem_
       )

@@ -99,6 +99,7 @@ describe("FulfillmentService", () => {
 
     beforeEach(async () => {
       jest.clearAllMocks()
+      Date.now = jest.fn(() => 1572393600000)
     })
 
     it("calls order model functions", async () => {
@@ -113,7 +114,7 @@ describe("FulfillmentService", () => {
         id: IdMap.getId("fulfillment"),
         tracking_numbers: ["1234", "2345"],
         metadata: {},
-        shipped_at: Date.now(),
+        shipped_at: 1572393600000,
       })
     })
   })

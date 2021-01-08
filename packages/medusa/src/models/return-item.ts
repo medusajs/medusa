@@ -38,7 +38,7 @@ export class ReturnItem {
   @Column({ type: "int" })
   quantity: number
 
-  @Column({ type: "boolean" })
+  @Column({ type: "boolean", default: true })
   is_requested: boolean
 
   @Column({ type: "int", nullable: true })

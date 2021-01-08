@@ -72,12 +72,13 @@ describe("ReturnService", () => {
         items: [],
         order_id: IdMap.getId("test-order"),
         shipping_method: {
-          id: IdMap.getId("default"),
-          name: "default_profile",
-          provider_id: "default",
-          amount: 150,
+          id: "some-shipping-method",
+          price: 150,
         },
-        shipping_data: expect.anything(),
+        shipping_data: {
+          id: "some-shipping-method",
+          price: 150,
+        },
         refund_amount: 1000 - 150 * (1 + 0.25),
       })
     })
@@ -106,10 +107,8 @@ describe("ReturnService", () => {
         items: [],
         order_id: IdMap.getId("test-order"),
         shipping_method: {
-          id: IdMap.getId("default"),
-          name: "default_profile",
-          provider_id: "default",
-          amount: 150,
+          id: "some-shipping-method",
+          price: 150,
         },
         shipping_data: expect.anything(),
         refund_amount: 500 - 150 * (1 + 0.25),

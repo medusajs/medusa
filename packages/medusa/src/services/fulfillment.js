@@ -214,7 +214,7 @@ class FulfillmentService extends BaseService {
         })
       )
 
-      return Promise.all(created.map(ff => fulfillmentRepository.save(ff)))
+      return created
     })
   }
 
@@ -232,7 +232,7 @@ class FulfillmentService extends BaseService {
         this.fulfillmentRepository_
       )
 
-      const fulfillment = await this.retrieve(fulfillmentId)
+      const fulfillment = await this.retrieve(fulfillmentId, ["items"])
 
       fulfillment.shipped_at = Date.now()
       fulfillment.tracking_numbers = trackingNumbers
