@@ -1,8 +1,6 @@
-import mongoose from "mongoose"
 import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { getManager } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
@@ -67,7 +65,7 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingRequirement} requirement - the requirement to validate
    * @return {ShippingRequirement} a validated shipping requirement
    */
-  async validateRequirement_(requirement, optionId) {
+  validateRequirement_(requirement, optionId) {
     if (!requirement.type) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -276,12 +274,8 @@ class ShippingOptionService extends BaseService {
       option.price_type = await this.validatePriceType_(data.price_type, option)
       option.amount = data.price_type === "calculated" ? null : data.amount
 
-      const fpProvider = this.providerService_.retrieveProvider(
-        data.provider_id
-      )
-
-      const isValid = await fpProvider.validateOption(
-        data.provider_id,
+      const isValid = await this.providerService_.validateOption(
+        option,
         data.data
       )
 
@@ -561,10 +555,7 @@ class ShippingOptionService extends BaseService {
    */
   async getPrice_(option, data, cart) {
     if (option.price_type === "calculated") {
-      const provider = this.providerService_.retrieveProvider(
-        option.provider_id
-      )
-      return provider.calculatePrice(data, cart)
+      return this.providerService_.calculatePrice(option, data, cart)
     }
     return option.amount
   }

@@ -403,7 +403,7 @@ describe("ShippingOptionService", () => {
 
       expect(fulfillmentProviderService.validateOption).toHaveBeenCalledTimes(1)
       expect(fulfillmentProviderService.validateOption).toHaveBeenCalledWith(
-        "provider",
+        option,
         {
           res: true,
         }
