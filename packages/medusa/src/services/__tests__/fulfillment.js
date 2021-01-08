@@ -6,7 +6,7 @@ describe("FulfillmentService", () => {
     const fulfillmentRepository = MockRepository({})
 
     const fulfillmentProviderService = {
-      createOrder: jest.fn().mockImplementation(data => {
+      createFulfillment: jest.fn().mockImplementation(data => {
         return Promise.resolve(data)
       }),
     }
