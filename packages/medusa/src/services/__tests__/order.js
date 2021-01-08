@@ -50,7 +50,31 @@ describe("OrderService", () => {
       },
     }
     const cartService = {
-      retrieve: jest.fn(),
+      retrieve: jest.fn().mockImplementation(query => {
+        return Promise.resolve({
+          id: "cart_id",
+          email: "test@test.com",
+          customer_id: "cus_1234",
+          payment: {
+            id: "testpayment",
+            amount: 100,
+            status: "authorized",
+          },
+          region_id: "test",
+          region: {
+            id: "test",
+            currency_code: "eur",
+            name: "test",
+            tax_rate: 25,
+          },
+          shipping_address_id: "1234",
+          billing_address_id: "1234",
+          discounts: [],
+          shipping_methods: [{ id: "method_1" }],
+          items: [{ id: "item_1" }, { id: "item_2" }],
+          total: 100,
+        })
+      }),
       withTransaction: function() {
         return this
       },
@@ -107,7 +131,7 @@ describe("OrderService", () => {
         total: 100,
       }
 
-      await orderService.createFromCart(cart)
+      await orderService.createFromCart("cart_id")
       const order = {
         email: cart.email,
         customer_id: cart.customer_id,

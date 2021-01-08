@@ -89,8 +89,6 @@ class LineItemService extends BaseService {
       "product",
     ])
 
-    console.log(variant)
-
     const region = await this.regionService_.retrieve(regionId)
 
     const price = await this.productVariantService_.getRegionPrice(

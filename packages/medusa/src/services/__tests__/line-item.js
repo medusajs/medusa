@@ -25,7 +25,6 @@ describe("LineItemService", () => {
 
     const productVariantService = {
       retrieve: query => {
-        console.log(query)
         if (query === IdMap.getId("test-giftcard")) {
           return {
             id: IdMap.getId("test-giftcard"),
