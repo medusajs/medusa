@@ -758,14 +758,14 @@ class CartService extends BaseService {
 
       const cart = await this.retrieve(cartId, ["payment_session"])
 
-      const paymentStatus = await this.paymentProviderService_.authorizePayment(
+      const session = await this.paymentProviderService_.authorizePayment(
         cart,
         context
       )
 
-      cart.payment_session.status = paymentStatus
-      // Should this update not only happen, if payment is successfully authorized
-      cart.payment = cart.payment_session
+      if (session.status === "authorized") {
+        cart.payment = await this.paymentProviderService_.createPayment(session)
+      }
 
       const updated = await cartRepository.save(cart)
       await this.eventBus_
@@ -842,17 +842,23 @@ class CartService extends BaseService {
               ({ id }) => id === session.provider_id
             )
           ) {
-            await this.paymentProviderService_.deleteSession(session)
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .deleteSession(session)
           } else {
             seen.push(session.provider_id)
-            await this.paymentProviderService_.updateSession(session, cart)
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .updateSession(session, cart)
           }
         }
       }
 
       for (const provider of region.payment_providers) {
         if (!seen.includes(provider.id)) {
-          await this.paymentProviderService_.createSession(provider.id, cart)
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .createSession(provider.id, cart)
         }
       }
 

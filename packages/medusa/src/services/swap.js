@@ -279,56 +279,6 @@ class SwapService extends BaseService {
     })
   }
 
-  async capturePayment(swapId) {
-    const swap = await this.retrieve(swapId)
-
-    if (swap.payment_status !== "awaiting") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Payment already captured"
-      )
-    }
-
-    const updateFields = { payment_status: "captured" }
-
-    const { provider_id, data } = swap.payment_method
-    const paymentProvider = await this.paymentProviderService_.retrieveProvider(
-      provider_id
-    )
-
-    try {
-      await paymentProvider.capturePayment(data)
-    } catch (error) {
-      return this.swapModel_
-        .updateOne(
-          {
-            _id: swapId,
-          },
-          {
-            $set: { payment_status: "requires_action" },
-          }
-        )
-        .then(result => {
-          this.eventBus_.emit(SwapService.Events.PAYMENT_CAPTURE_FAILED, result)
-          return result
-        })
-    }
-
-    return this.swapModel_
-      .updateOne(
-        {
-          _id: swapId,
-        },
-        {
-          $set: updateFields,
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(SwapService.Events.PAYMENT_CAPTURED, result)
-        return result
-      })
-  }
-
   /**
    * Creates a cart from the given swap and order. The cart can be used to pay
    * for differences associated with the swap. The swap represented by the
