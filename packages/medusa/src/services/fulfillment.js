@@ -55,29 +55,23 @@ class FulfillmentService extends BaseService {
     return cloned
   }
 
-  async partitionItems_(shippingMethods, items) {
+  partitionItems_(shippingMethods, items) {
     let partitioned = []
     // partition order items to their dedicated shipping method
     await Promise.all(
       shippingMethods.map(async method => {
         const temp = { shipping_method: method }
+
         // for each method find the items in the order, that are associated
         // with the profile on the current shipping method
         if (shippingMethods.length === 1) {
           temp.items = items
         } else {
-          const { profile_id } = method
-          const profile = await this.shippingProfileService_.retrieve(
-            profile_id,
-            ["products"]
-          )
+          const methodProfile = method.shipping_option.profile_id
 
-          temp.items = await Promise.all(
-            items.filter(async ({ variant }) => {
-              const { id: productId } = variant.product
-              return profile.products.includes(productId)
-            })
-          )
+          temp.items = items.filter(({ variant }) => {
+            variant.product.profile_id === methodProfile
+          })
         }
         partitioned.push(temp)
       })
@@ -197,7 +191,7 @@ class FulfillmentService extends BaseService {
 
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
-          const data = await this.fulfillmentProviderService_.createOrder(
+          const data = await this.fulfillmentProviderService_.createFulfillment(
             shipping_method,
             items,
             {
@@ -215,6 +209,22 @@ class FulfillmentService extends BaseService {
       )
 
       return created
+    })
+  }
+
+  cancelFulfillment(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const fulfillment = await this.retrieve(fulfillmentId)
+
+      await this.fulfillmentProviderService_.cancelFulfillment(fulfillment)
+
+      fulfillment.status = "canceled"
+
+      const fulfillmentRepo = manager.getCustomRepository(
+        this.fulfillmentRepository_
+      )
+      const result = await fulfillmentRepo.save(fulfillment)
+      return result
     })
   }
 

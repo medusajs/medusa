@@ -352,8 +352,8 @@ describe("ShippingOptionService", () => {
     })
 
     const fulfillmentProviderService = {
-      validateOption: jest.fn().mockImplementation((_, data) => {
-        return Promise.resolve(data.res)
+      validateOption: jest.fn().mockImplementation(o => {
+        return Promise.resolve(o.data.res)
       }),
     }
 
@@ -403,10 +403,7 @@ describe("ShippingOptionService", () => {
 
       expect(fulfillmentProviderService.validateOption).toHaveBeenCalledTimes(1)
       expect(fulfillmentProviderService.validateOption).toHaveBeenCalledWith(
-        option,
-        {
-          res: true,
-        }
+        option
       )
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
@@ -495,25 +492,26 @@ describe("ShippingOptionService", () => {
   })
 
   describe("createShippingMethod", () => {
+    const option = id => ({
+      id,
+      region_id: IdMap.getId("region"),
+      price_type: "flat_rate",
+      amount: 10,
+      data: {
+        something: "yes",
+      },
+      requirements: [
+        {
+          type: "min_subtotal",
+          amount: 100,
+        },
+      ],
+    })
     const shippingOptionRepository = MockRepository({
       findOne: q => {
         switch (q.where.id) {
           default:
-            return Promise.resolve({
-              id: q.where.id,
-              region_id: IdMap.getId("region"),
-              price_type: "flat_rate",
-              amount: 10,
-              data: {
-                something: "yes",
-              },
-              requirements: [
-                {
-                  type: "min_subtotal",
-                  amount: 100,
-                },
-              ],
-            })
+            return Promise.resolve(option(q.where.id))
         }
       },
     })
@@ -527,7 +525,7 @@ describe("ShippingOptionService", () => {
     const providerService = {
       validateFulfillmentData: jest
         .fn()
-        .mockImplementation(r => Promise.resolve(r)),
+        .mockImplementation(r => Promise.resolve(r.data)),
       getPrice: d => d.price,
     }
 
@@ -558,7 +556,7 @@ describe("ShippingOptionService", () => {
 
       expect(providerService.validateFulfillmentData).toHaveBeenCalledTimes(1)
       expect(providerService.validateFulfillmentData).toHaveBeenCalledWith(
-        { something: "yes" },
+        option(IdMap.getId("option")),
         { provider_data: "dat" },
         cart
       )
