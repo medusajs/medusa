@@ -96,6 +96,9 @@ export class Swap {
   )
   payment: Payment
 
+  @Column({ type: "int", nullable: true })
+  difference_due: number
+
   @Column({ nullable: true })
   shipping_address_id: string
 
@@ -116,6 +119,9 @@ export class Swap {
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
+
+  @Column({ type: "timestamptz", nullable: true })
+  confirmed_at: Date
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date

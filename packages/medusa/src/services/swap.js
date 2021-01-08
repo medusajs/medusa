@@ -210,67 +210,73 @@ class SwapService extends BaseService {
   }
 
   async processDifference(swapId) {
-    const swap = await this.retrieve(swapId)
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId, [
+        "payment",
+        "order",
+        "order.payments",
+      ])
 
-    if (!swap.is_paid) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Cannot process a swap that hasn't been confirmed by the customer"
-      )
-    }
-
-    if (swap.amount_paid < 0) {
-      const { provider_id, data } = swap.order_payment
-      const paymentProvider = this.paymentProviderService_.retrieveProvider(
-        provider_id
-      )
-
-      try {
-        await paymentProvider.refundPayment(data, -1 * swap.amount_paid)
-      } catch (err) {
-        return this.swapModel_
-          .updateOne(
-            {
-              _id: swapId,
-            },
-            {
-              $set: { payment_status: "requires_action" },
-            }
-          )
-          .then(result => {
-            this.eventBus_.emit(
-              SwapService.Events.PROCESS_REFUND_FAILED,
-              result
-            )
-            return result
-          })
+      if (!swap.confirmed_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot process a swap that hasn't been confirmed by the customer"
+        )
       }
 
-      return this.swapModel_
-        .updateOne(
-          {
-            _id: swapId,
-          },
-          {
-            $set: { payment_status: "difference_refunded" },
-          }
-        )
-        .then(result => {
-          this.eventBus_.emit(SwapService.Events.REFUND_PROCESSED, result)
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      if (swap.difference_due < 0) {
+        try {
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .refundPayment(swap.order.payments, -1 * swap.difference_due)
+        } catch (err) {
+          swap.payment_status = "requires_action"
+          const result = await swapRepo.save(swap)
+          await this.eventBus_
+            .withTransaction(manager)
+            .emit(SwapService.Events.PROCESS_REFUND_FAILED, result)
           return result
-        })
-    } else if (swap.amount_paid === 0) {
-      return this.swapModel_.updateOne(
-        {
-          _id: swapId,
-        },
-        {
-          $set: { payment_status: "difference_refunded" },
         }
-      )
-    }
 
-    return capturePayment(swapId)
+        swap.payment_status = "difference_refunded"
+
+        const result = await swapRepo.save(swap)
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(SwapService.Events.REFUND_PROCESSED, result)
+        return result
+      } else if (swap.difference_due === 0) {
+        swap.payment_status = "difference_refunded"
+
+        const result = await swapRepo.save(swap)
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(SwapService.Events.REFUND_PROCESSED, result)
+        return result
+      }
+
+      try {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .capturePayment(swap.payment)
+      } catch (err) {
+        swap.payment_status = "requires_action"
+        const result = await swapRepo.save(swap)
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(SwapService.Events.PAYMENT_CAPTURE_FAILED, result)
+        return result
+      }
+
+      swap.payment_status = "captured"
+
+      const result = await swapRepo.save(swap)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(SwapService.Events.PAYMENT_CAPTURED, result)
+      return result
+    })
   }
 
   async capturePayment(swapId) {
@@ -415,97 +421,65 @@ class SwapService extends BaseService {
   /**
    *
    */
-  async registerCartCompletion(swapId, cartId) {
-    const swap = await this.retrieve(swapId)
-    const cart = await this.cartService_.retrieve(cartId)
+  async registerCartCompletion(swapId) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId, [
+        "cart",
+        "cart.items",
+        "cart.discounts",
+        "cart.payment",
+      ])
 
-    // If we already registered the cart completion we just return
-    if (swap.is_paid) {
-      return swap
-    }
-
-    if (!cart._id.equals(swap.cart_id)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Cart does not belong to swap"
-      )
-    }
-
-    const total = await this.totalsService_.getTotal(cart)
-
-    let payment = {}
-
-    if (total > 0) {
-      let paymentSession = {}
-      let paymentData = {}
-      const { payment_method, payment_sessions } = cart
-
-      if (!payment_method) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Cart does not contain a payment method"
-        )
+      // If we already registered the cart completion we just return
+      if (swap.confirmed_at) {
+        return swap
       }
 
-      if (!payment_sessions || !payment_sessions.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "cart must have payment sessions"
-        )
-      }
+      const cart = swap.cart
 
-      paymentSession = payment_sessions.find(
-        ps => ps.provider_id === payment_method.provider_id
-      )
+      const total = await this.totalsService_.getTotal(cart)
 
-      // Throw if payment method does not exist
-      if (!paymentSession) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Cart does not have an authorized payment session"
-        )
-      }
+      if (total > 0) {
+        const { payment } = cart
 
-      const paymentProvider = this.paymentProviderService_.retrieveProvider(
-        paymentSession.provider_id
-      )
-      const paymentStatus = await paymentProvider.getStatus(paymentSession.data)
-
-      // If payment status is not authorized, we throw
-      if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Payment method is not authorized"
-        )
-      }
-
-      paymentData = await paymentProvider.retrievePayment(paymentSession.data)
-
-      if (paymentSession.provider_id) {
-        payment = {
-          provider_id: paymentSession.provider_id,
-          data: paymentData,
+        if (!payment) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Cart does not contain a payment"
+          )
         }
-      }
-    }
 
-    return this.swapModel_
-      .updateOne(
-        { _id: swap._id },
-        {
-          shipping_address: cart.shipping_address,
-          shipping_methods: cart.shipping_methods,
-          is_paid: true,
-          amount_paid: total,
-          payment_method: payment,
+        const paymentStatus = await this.paymentProviderService_
+          .withTransaction(manager)
+          .getStatus(payment)
+
+        // If payment status is not authorized, we throw
+        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Payment method is not authorized"
+          )
         }
-      )
-      .then(result => {
-        this.eventBus_.emit(SwapService.Events.PAYMENT_COMPLETED, {
+
+        swap.payment = payment
+      }
+
+      swap.difference_due = total
+      swap.shipping_address_id = cart.shipping_address_id
+      swap.shipping_methods = cart.shipping_methods
+      swap.confirmed_at = Date.now()
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const result = await swapRepo.save(swap)
+
+      this.eventBus_
+        .withTransaction(manager)
+        .emit(SwapService.Events.PAYMENT_COMPLETED, {
           swap: result,
         })
-        return result
-      })
+
+      return result
+    })
   }
 
   /**

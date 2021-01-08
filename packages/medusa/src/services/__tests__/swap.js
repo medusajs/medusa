@@ -611,4 +611,206 @@ describe("SwapService", () => {
 
     describe("failure", () => {})
   })
+
+  describe("registerCartCompletion", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+      Date.now = jest.fn(() => 1572393600000)
+    })
+
+    describe("success", () => {
+      const eventBusService = {
+        emit: jest.fn().mockReturnValue(Promise.resolve()),
+        withTransaction: function() {
+          return this
+        },
+      }
+
+      const totalsService = {
+        getTotal: () => {
+          return Promise.resolve(100)
+        },
+      }
+
+      const paymentProviderService = {
+        getStatus: jest.fn(() => {
+          return Promise.resolve("authorized")
+        }),
+        withTransaction: function() {
+          return this
+        },
+      }
+
+      const existing = {
+        cart: {
+          items: [{ id: "1" }],
+          shipping_methods: [{ id: "method_1" }],
+          payment: {
+            good: "yes",
+          },
+          shipping_address_id: 1234,
+        },
+        other: "data",
+      }
+
+      const swapRepo = MockRepository({
+        findOne: () => Promise.resolve(existing),
+      })
+
+      const swapService = new SwapService({
+        manager: MockManager,
+        swapRepository: swapRepo,
+        totalsService,
+        paymentProviderService,
+        eventBusService,
+      })
+
+      it("creates a shipment", async () => {
+        await swapService.registerCartCompletion(IdMap.getId("swap"))
+
+        expect(paymentProviderService.getStatus).toHaveBeenCalledWith({
+          good: "yes",
+        })
+
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing,
+          payment: existing.cart.payment,
+          difference_due: 100,
+          shipping_address_id: 1234,
+          confirmed_at: 1572393600000,
+        })
+      })
+    })
+  })
+
+  describe("processDifference", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    describe("success", () => {
+      const eventBusService = {
+        emit: jest.fn().mockReturnValue(Promise.resolve()),
+        withTransaction: function() {
+          return this
+        },
+      }
+
+      const paymentProviderService = {
+        capturePayment: jest.fn(g =>
+          g.id === "good" ? Promise.resolve() : Promise.reject()
+        ),
+        refundPayment: jest.fn(g =>
+          g[0].id === "good" ? Promise.resolve() : Promise.reject()
+        ),
+        withTransaction: function() {
+          return this
+        },
+      }
+
+      const existing = (dif, fail, conf = true) => ({
+        confirmed_at: conf ? "1234" : null,
+        difference_due: dif,
+        payment: { id: fail ? "f" : "good" },
+        order: {
+          payments: [{ id: fail ? "f" : "good" }],
+        },
+      })
+
+      const swapRepo = MockRepository({
+        findOne: q => {
+          switch (q.where.id) {
+            case "refund":
+              return Promise.resolve(existing(-1, false))
+            case "refund_fail":
+              return Promise.resolve(existing(-1, true))
+            case "capture_fail":
+              return Promise.resolve(existing(1, true))
+            case "0":
+              return Promise.resolve(existing(0, false))
+            case "not_conf":
+              return Promise.resolve(existing(1, false, false))
+            default:
+              return Promise.resolve(existing(1, false))
+          }
+        },
+      })
+
+      const swapService = new SwapService({
+        manager: MockManager,
+        swapRepository: swapRepo,
+        paymentProviderService,
+        eventBusService,
+      })
+
+      it("capture success", async () => {
+        await swapService.processDifference(IdMap.getId("swap"))
+        expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
+          id: "good",
+        })
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing(1, false),
+          payment_status: "captured",
+        })
+      })
+
+      it("capture fail", async () => {
+        await swapService.processDifference("capture_fail")
+        expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
+          id: "f",
+        })
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing(1, true),
+          payment_status: "requires_action",
+        })
+      })
+
+      it("refund success", async () => {
+        await swapService.processDifference("refund")
+        expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(
+          [
+            {
+              id: "good",
+            },
+          ],
+          1
+        )
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing(-1, false),
+          payment_status: "difference_refunded",
+        })
+      })
+
+      it("refund fail", async () => {
+        await swapService.processDifference("refund_fail")
+
+        expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(
+          [
+            {
+              id: "f",
+            },
+          ],
+          1
+        )
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing(-1, true),
+          payment_status: "requires_action",
+        })
+      })
+
+      it("zero", async () => {
+        await swapService.processDifference("0")
+        expect(swapRepo.save).toHaveBeenCalledWith({
+          ...existing(0, false),
+          payment_status: "difference_refunded",
+        })
+      })
+
+      it("not confirmed", async () => {
+        await expect(swapService.processDifference("not_conf")).rejects.toThrow(
+          "Cannot process a swap that hasn't been confirmed by the customer"
+        )
+      })
+    })
+  })
 })
