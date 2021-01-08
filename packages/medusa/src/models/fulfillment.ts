@@ -78,22 +78,12 @@ export class Fulfillment {
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
+  @Column({ nullable: true })
+  idempotency_key: string
+
   @BeforeInsert()
   private beforeInsert() {
     const id = randomize("Aa0", 16)
     this.id = `ful_${id}`
   }
 }
-//import mongoose from "mongoose"
-//
-//export default new mongoose.Schema({
-//  created: { type: String, default: Date.now },
-//  provider_id: { type: String, required: true },
-//  items: { type: [mongoose.Schema.Types.Mixed], required: true },
-//  data: { type: mongoose.Schema.Types.Mixed, default: {} },
-//  tracking_numbers: { type: [String], default: [] },
-//  shipped_at: { type: String },
-//  is_canceled: { type: Boolean, default: false },
-//  documents: { type: [String], default: [] },
-//  metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
-//})

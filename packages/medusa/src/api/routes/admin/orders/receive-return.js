@@ -22,9 +22,11 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
 
     let refundAmount = value.refund
+
     if (typeof value.refund !== "undefined" && value.refund < 0) {
       refundAmount = 0
     }
+
     let order = await orderService.receiveReturn(
       id,
       return_id,
@@ -32,11 +34,8 @@ export default async (req, res) => {
       refundAmount,
       true
     )
-    order = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+
+    order = await orderService.retrieve(id, ["region", "customer", "swaps"])
 
     res.status(200).json({ order })
   } catch (err) {

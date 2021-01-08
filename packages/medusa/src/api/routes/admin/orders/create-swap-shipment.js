@@ -19,22 +19,19 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
     const swapService = req.scope.resolve("swapService")
 
-    const order = await orderService.retrieve(id)
-
     await swapService.createShipment(
       swap_id,
       value.fulfillment_id,
       value.tracking_numbers
     )
 
-    // Decorate the order
-    const data = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+    const order = await orderService.retrieve(id, [
+      "region",
+      "customer",
+      "swaps",
+    ])
 
-    res.json({ order: data })
+    res.json({ order })
   } catch (error) {
     throw error
   }

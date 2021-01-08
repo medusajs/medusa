@@ -23,22 +23,22 @@ export class IdempotencyKey {
   @Column({ nullable: true })
   locked_at: Date
 
-  @Column()
+  @Column({ type: "string" })
   request_method: string
 
   @Column({ type: "jsonb" })
   request_params: any
 
-  @Column()
+  @Column({ type: "string" })
   request_path: string
 
-  @Column()
+  @Column({ type: "number" })
   response_code: number
 
   @Column({ type: "jsonb" })
   response_body: any
 
-  @Column({ default: "string" })
+  @Column({ type: "string", default: "started" })
   recovery_point: string
 
   @BeforeInsert()

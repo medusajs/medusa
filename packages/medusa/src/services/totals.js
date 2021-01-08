@@ -1,6 +1,5 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * A service that calculates total and subtotals for orders, carts etc..

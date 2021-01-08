@@ -21,56 +21,146 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
+  const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+
+  const headerKey = req.get("Idempotency-Key") || ""
+
+  let idempotencyKey
+  try {
+    idempotencyKey = await idempotencyKeyService.initializeRequest(
+      headerKey,
+      req.method,
+      req.params,
+      req.path
+    )
+  } catch (error) {
+    res.status(409).send("Failed to create idempotency key")
+    return
+  }
+
+  res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
+  res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
+
   try {
     const orderService = req.scope.resolve("orderService")
+    const returnService = req.scope.resolve("returnService")
 
-    let oldOrder
-    let existingReturns = []
-    if (value.receive_now) {
-      oldOrder = await orderService.retrieve(id)
-      existingReturns = oldOrder.returns.map(r => r._id)
-    }
+    let inProgress = true
+    let err = false
 
-    let shippingMethod
-    if (value.shipping_method) {
-      shippingMethod = {
-        id: value.shipping_method,
-        price: value.shipping_price,
+    while (inProgress) {
+      switch (idempotencyKey.recovery_point) {
+        case "started": {
+          const { key, error } = await idempotencyKeyService.workStage(
+            idempotencyKey.idempotency_key,
+            async manager => {
+              let oldOrder
+              let existingReturns = []
+
+              if (value.receive_now) {
+                oldOrder = await orderService
+                  .withTransction(manager)
+                  .retrieve(id, ["returns"])
+                existingReturns = oldOrder.returns.map(r => r.id)
+              }
+
+              let shippingMethod
+              if (value.shipping_method) {
+                shippingMethod = {
+                  id: value.shipping_method,
+                  price: value.shipping_price,
+                }
+              }
+
+              let refundAmount = value.refund
+              if (typeof value.refund !== "undefined" && value.refund < 0) {
+                refundAmount = 0
+              }
+
+              let order = await returnService.requestReturn(
+                id,
+                value.items,
+                shippingMethod,
+                refundAmount
+              )
+
+              return {
+                recovery_point: "return_requested",
+              }
+            }
+          )
+
+          if (error) {
+            inProgress = false
+            err = error
+          } else {
+            idempotencyKey = key
+          }
+          break
+        }
+
+        case "return_requested": {
+          const { key, error } = await idempotencyKeyService.workStage(
+            idempotencyKey.idempotency_key,
+            async manager => {
+              let order = await orderService
+                .withTransction(manager)
+                .retrieve(id)
+              /**
+               * If we are ready to receive immediately, we find the newly created return
+               * and register it as received.
+               */
+              if (value.receive_now) {
+                const newReturn = order.returns.find(
+                  r => !existingReturns.includes(r.id)
+                )
+                order = await orderService.return(
+                  id,
+                  newReturn.id,
+                  value.items,
+                  value.refund
+                )
+              }
+
+              order = await orderService.retrieve(id, [
+                "region",
+                "customer",
+                "swaps",
+              ])
+
+              return {
+                response_code: 200,
+                response_body: { order },
+              }
+            }
+          )
+
+          if (error) {
+            inProgress = false
+            err = error
+          } else {
+            idempotencyKey = key
+          }
+          break
+        }
+
+        case "finished": {
+          inProgress = false
+          break
+        }
+
+        default:
+          idempotencyKey = await idempotencyKeyService.update(
+            idempotencyKey.idempotency_key,
+            {
+              recovery_point: "finished",
+              response_code: 500,
+              response_body: { message: "Unknown recovery point" },
+            }
+          )
+          break
       }
     }
-
-    let refundAmount = value.refund
-    if (typeof value.refund !== "undefined" && value.refund < 0) {
-      refundAmount = 0
-    }
-    let order = await orderService.requestReturn(
-      id,
-      value.items,
-      shippingMethod,
-      refundAmount
-    )
-
-    /**
-     * If we are ready to receive immediately, we find the newly created return
-     * and register it as received.
-     */
-    if (value.receive_now) {
-      const newReturn = order.returns.find(
-        r => !existingReturns.includes(r._id)
-      )
-      order = await orderService.return(
-        id,
-        newReturn._id,
-        value.items,
-        value.refund
-      )
-    }
-
-    order = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
 
     res.status(200).json({ order })
   } catch (err) {

@@ -5,18 +5,14 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
     const swapService = req.scope.resolve("swapService")
 
-    const order = await orderService.retrieve(id)
+    let order = await orderService.retrieve(id)
 
     await swapService.processDifference(swap_id)
 
     // Decorate the order
-    const data = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+    order = await orderService.retrieve(id, ["region", "customer", "swaps"])
 
-    res.json({ order: data })
+    res.json({ order })
   } catch (error) {
     throw error
   }

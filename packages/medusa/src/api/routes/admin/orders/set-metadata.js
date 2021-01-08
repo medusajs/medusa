@@ -15,12 +15,14 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-    let order = await orderService.setMetadata(id, value.key, value.value)
-    order = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+
+    await orderService.update(id, { metadata: { [value.key]: value.value } })
+
+    const order = await orderService.retrieve(id, [
+      "region",
+      "customer",
+      "swaps",
+    ])
 
     res.status(200).json({ order })
   } catch (err) {

@@ -28,14 +28,9 @@ export default async (req, res) => {
     await swapService.receiveReturn(order, swap_id, value.items)
 
     // Register swap reception
-    order = await orderService.registerSwapReceived(id, swap_id)
+    await orderService.registerSwapReceived(id, swap_id)
 
-    // Decorate the order
-    const data = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+    let order = await orderService.retrieve(id, ["region", "customer", "swaps"])
 
     res.status(200).json({ order: data })
   } catch (err) {
