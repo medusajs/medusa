@@ -19,17 +19,22 @@ class StripeProviderService extends PaymentService {
      */
     this.options_ = options
 
+    /** @private @const {Stripe} */
     this.stripe_ = Stripe(options.api_key)
 
+    /** @private @const {CustomerService} */
     this.customerService_ = customerService
 
+    /** @private @const {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
   }
 
   /**
-   * Status for Stripe payment intent.
+   * Fetches Stripe payment intent. Check its status and returns the
+   * corresponding Medusa status.
    * @param {Object} paymentData - payment method data from cart
    * @returns {string} the status of the payment intent
    */
@@ -38,10 +43,26 @@ class StripeProviderService extends PaymentService {
 
     const paymentIntent = await this.stripe_.paymentIntents.retrieve(id)
 
-    let status = "initial"
+    let status = "pending"
 
     if (paymentIntent.status === "requires_payment_method") {
       return status
+    }
+
+    if (paymentIntent.status === "requires_confirmation") {
+      return status
+    }
+
+    if (paymentIntent.status === "processing") {
+      return status
+    }
+
+    if (paymentIntent.status === "requires_action") {
+      status = "requires_more"
+    }
+
+    if (paymentIntent.status === "canceled") {
+      status = "canceled"
     }
 
     if (paymentIntent.status === "requires_capture") {
@@ -49,11 +70,7 @@ class StripeProviderService extends PaymentService {
     }
 
     if (paymentIntent.status === "succeeded") {
-      status = "succeeded"
-    }
-
-    if (paymentIntent.status === "canceled") {
-      status = "canceled"
+      status = "authorized"
     }
 
     return status
@@ -100,13 +117,12 @@ class StripeProviderService extends PaymentService {
         email: customer.email,
       })
 
-      if (customer._id) {
-        await this.customerService_.setMetadata(
-          customer._id,
-          "stripe_id",
-          stripeCustomer.id
-        )
+      if (customer.id) {
+        await this.customerService_.update(customer.id, {
+          metadata: { stripe_id: stripeCustomer.id },
+        })
       }
+
       return stripeCustomer
     } catch (error) {
       throw error
@@ -120,7 +136,7 @@ class StripeProviderService extends PaymentService {
    * @returns {Object} Stripe payment intent
    */
   async createPayment(cart) {
-    const { customer_id, region_id } = cart
+    const { customer_id, region_id, email } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
     const amount = await this.totalsService_.getTotal(cart)
@@ -130,14 +146,18 @@ class StripeProviderService extends PaymentService {
       currency: currency_code,
       setup_future_usage: "on_session",
       capture_method: this.options_.capture ? "automatic" : "manual",
-      metadata: { cart_id: `${cart._id}` },
+      metadata: { cart_id: `${cart.id}` },
     }
 
     if (customer_id) {
       const customer = await this.customerService_.retrieve(customer_id)
+
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
       }
+    } else {
+      const stripeCustomer = await this.stripe_.customers.create({ email })
+      intentRequest.customer = stripeCustomer.id
     }
 
     const paymentIntent = await this.stripe_.paymentIntents.create(
@@ -162,6 +182,7 @@ class StripeProviderService extends PaymentService {
 
   /**
    * Updates Stripe payment intent.
+   * Currently, only amount updates are allowed.
    * @param {Object} data - The payment session data.
    * @param {Object} cart - cart to use for updating
    * @returns {Object} Stripe payment intent

@@ -12,6 +12,13 @@ import randomize from "randomatic"
 
 import { Cart } from "./cart"
 
+export enum PaymentSessionStatus {
+  AUTHORIZED = "authorized",
+  PENDING = "pending",
+  REQUIRES_MORE = "requires_more",
+  CANCELED = "canceled",
+}
+
 @Entity()
 export class PaymentSession {
   @PrimaryColumn()
@@ -30,6 +37,9 @@ export class PaymentSession {
   @Column()
   provider_id: string
 
+  @Column({ type: "enum", enum: PaymentSessionStatus })
+  status: string
+
   @Column({ type: "jsonb" })
   data: any
 
@@ -38,6 +48,9 @@ export class PaymentSession {
 
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
+
+  @Column({ nullable: true })
+  idempotency_key: string
 
   @BeforeInsert()
   private beforeInsert() {

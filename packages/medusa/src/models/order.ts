@@ -212,6 +212,9 @@ export class Order {
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
+  @Column({ nullable: true })
+  idempotency_key: string
+
   @BeforeInsert()
   private beforeInsert() {
     const id = randomize("Aa0", 24)

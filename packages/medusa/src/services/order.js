@@ -272,8 +272,20 @@ class OrderService extends BaseService {
    * @param {object} order - the order to create
    * @return {Promise} resolves to the creation result.
    */
-  async createFromCart(cart) {
+  async createFromCart(cartId) {
     return this.atomicPhase_(async manager => {
+      const cart = await this.cartService
+        .withTransaction(manager)
+        .retrieve(cartId, [
+          "region",
+          "payment",
+          "items",
+          "discounts",
+          "shipping_methods",
+          "billing_adress",
+          "shipping_address",
+        ])
+
       if (cart.items.length === 0) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -281,7 +293,7 @@ class OrderService extends BaseService {
         )
       }
 
-      const exists = await this.existsByCartId(cart._id)
+      const exists = await this.existsByCartId(cart.id)
       if (exists) {
         throw new MedusaError(
           MedusaError.Types.INVALID_ARGUMENT,
@@ -317,7 +329,7 @@ class OrderService extends BaseService {
       }
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      const o = orderRepo.create({
+      const o = await orderRepo.create({
         payments: payment ? [payment] : [],
         discounts: cart.discounts,
         shipping_methods: cart.shipping_methods,

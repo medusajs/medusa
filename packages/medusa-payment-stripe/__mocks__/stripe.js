@@ -32,6 +32,8 @@ var StripeMock = {
         });
       }
 
+      console.log(data);
+
       if (data.customer === "cus_lebron") {
         return Promise.resolve({
           id: "pi_lebron",

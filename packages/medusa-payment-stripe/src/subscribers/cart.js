@@ -5,9 +5,16 @@ class CartSubscriber {
     stripeProviderService,
     eventBusService,
   }) {
+    /** @private @const {CartService} */
     this.cartService_ = cartService
+
+    /** @private @const {CustomerService} */
     this.customerService_ = customerService
+
+    /** @private @const {StripeProviderService} */
     this.stripeProviderService_ = stripeProviderService
+
+    /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
 
     this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
@@ -15,6 +22,13 @@ class CartSubscriber {
     })
   }
 
+  /**
+   * Subscriber function that listens for cart.customer updates.
+   * We need to ensure, that the customer on the cart is corresponds
+   * with a customer in Stripe.
+   * @param {Object} cart - cart on which customer is updated
+   * @returns {Promise} empty promise
+   */
   async onCustomerUpdated(cart) {
     const { customer_id, payment_sessions } = cart
 
@@ -37,12 +51,15 @@ class CartSubscriber {
     )
 
     let stripeCustomer
-    if (customer.metadata && customer.metadata.stripe_id) {
+
+    // If customer is already registered with Stripe, we fetch that customer
+    if (customer.metadata?.stripe_id) {
       stripeCustomer = await this.stripeProviderService_.retrieveCustomer(
         customer.metadata.stripe_id
       )
     }
 
+    // Else, we create a customer at Stripe
     if (!stripeCustomer) {
       stripeCustomer = await this.stripeProviderService_.createCustomer(
         customer
@@ -67,7 +84,7 @@ class CartSubscriber {
       )
 
       await this.cartService_.updatePaymentSession(
-        cart._id,
+        cart.id,
         "stripe",
         newPaymentIntent
       )

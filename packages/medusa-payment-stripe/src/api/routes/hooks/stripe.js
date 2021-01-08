@@ -24,7 +24,7 @@ export default async (req, res) => {
   switch (event.type) {
     case "payment_intent.succeeded":
       if (order) {
-        await orderService.update(order._id, {
+        await orderService.update(order.id, {
           payment_status: "captured",
         })
       }

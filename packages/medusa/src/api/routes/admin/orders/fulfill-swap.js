@@ -17,19 +17,15 @@ export default async (req, res) => {
     const swapService = req.scope.resolve("swapService")
 
     // Fetch the order
-    const order = await orderService.retrieve(id)
+    let order = await orderService.retrieve(id)
 
     // Receive the return
     await swapService.createFulfillment(order, swap_id, value.metadata)
 
     // Decorate the order
-    const data = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+    order = await orderService.retrieve(id, ["region", "customer", "swaps"])
 
-    res.status(200).json({ order: data })
+    res.status(200).json({ order })
   } catch (err) {
     throw err
   }

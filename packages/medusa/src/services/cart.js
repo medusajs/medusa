@@ -523,7 +523,7 @@ class CartService extends BaseService {
 
       if ("email" in update || "customer_id" in update) {
         await this.eventBus_
-          .withTransaction(this.transactionManager_)
+          .withTransaction(manager)
           .emit(CartService.Events.CUSTOMER_UPDATED, result)
       }
 
@@ -734,9 +734,44 @@ class CartService extends BaseService {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const result = await cartRepo.save(cart)
       await this.eventBus_
-        .withTransaction(this.manager_)
+        .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
+    })
+  }
+
+  /**
+   * Authorizes a payment for a cart.
+   * Will authorize with chose payment provider. This will return
+   * a payment status, that we will use to update our payment session with.
+   * Additionally, if the payment does not require more or fails, we will
+   * set the payment on the cart.
+   * @param {string} cartId - the id of the cart to authorize payment for
+   * @param {object} context - object containing whatever is relevant for
+   *    authorizing the payment with the payment provider. As an example,
+   *    this could be IP address or similar for fraud handling.
+   * @return {Promise<Cart>} the resulting cart
+   */
+  async authorizePayment(cartId, context = {}) {
+    return this.atomicPhase_(async manager => {
+      const cartRepository = manager.getCustomRepository(this.cartRepository_)
+
+      const cart = await this.retrieve(cartId, ["payment_session"])
+
+      const paymentStatus = await this.paymentProviderService_.authorizePayment(
+        cart,
+        context
+      )
+
+      cart.payment_session.status = paymentStatus
+      // Should this update not only happen, if payment is successfully authorized
+      cart.payment = cart.payment_session
+
+      const updated = await cartRepository.save(cart)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+      return updated
     })
   }
 
@@ -774,7 +809,7 @@ class CartService extends BaseService {
 
       const result = await cartRepo.save(cart)
       await this.eventBus_
-        .withTransaction(this.manager_)
+        .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
     })
@@ -824,7 +859,7 @@ class CartService extends BaseService {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const result = await cartRepo.save(cart)
       await this.eventBus_
-        .withTransaction(this.manager_)
+        .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
     })
@@ -865,7 +900,7 @@ class CartService extends BaseService {
       const result = await cartRepo.save(cart)
 
       await this.eventBus_
-        .withTransaction(this.manager_)
+        .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
     })
@@ -920,7 +955,7 @@ class CartService extends BaseService {
 
       const result = await this.retrieve(cartId)
       await this.eventBus_
-        .withTransaction(this.manager_)
+        .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
     })

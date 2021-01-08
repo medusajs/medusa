@@ -28,7 +28,7 @@ class IdempotencyKeyService extends BaseService {
    * @return {Promise<IdempotencyKeyModel>} the existing or created idempotency key
    */
   async initializeRequest(headerKey, reqMethod, reqParams, reqPath) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async _ => {
       // If idempotency key exists, return it
       let key = await this.retrieve(headerKey)
 
@@ -43,7 +43,7 @@ class IdempotencyKeyService extends BaseService {
       })
 
       return key
-    })
+    }, "SERIALIZABLE")
   }
 
   /**
