@@ -73,9 +73,9 @@ export default async (req, res) => {
                   value.return_shipping
                 )
 
-              await orderService
-                .withTransaction(manager)
-                .registerSwapCreated(id, swap.id)
+              await swapService.update(swap.id, {
+                idempotency_key: key.idempotency_key,
+              })
 
               return {
                 recovery_point: "swap_created",
@@ -100,7 +100,19 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id)
 
-              // FETCH SWAP BY ID
+              let swap = await swapService.list({
+                idempotency_key: key.idempotency_key,
+              })
+
+              if (!swap.length) {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  "An error occured while attempting to create a swap"
+                )
+              }
+
+              swap = swap[0]
+
               await swapService
                 .withTransaction(manager)
                 .requestReturn(order, swap.id)
@@ -128,7 +140,19 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id)
 
-              // FETCH SWAP BY ID
+              let swap = await swapService.list({
+                idempotency_key: key.idempotency_key,
+              })
+
+              if (!swap.length) {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  "An error occured while attempting to create a swap"
+                )
+              }
+
+              swap = swap[0]
+
               await swapService
                 .withTransaction(manager)
                 .createCart(order, swap.id)

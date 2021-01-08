@@ -72,8 +72,7 @@ class StoreService extends BaseService {
    * @return {Promise<Store>} the store
    */
   async retrieve(relations = []) {
-    const manager = await getManager()
-    const storeRepo = manager.getCustomRepository(this.storeRepository_)
+    const storeRepo = this.manager_.getCustomRepository(this.storeRepository_)
 
     const store = await storeRepo.findOne({ relations })
 
@@ -172,11 +171,14 @@ class StoreService extends BaseService {
    */
   async addCurrency(code) {
     return this.atomicPhase_(async manager => {
-      const storeRepo = manager.getCustomRepository()
+      const storeRepo = manager.getCustomRepository(this.storeRepository_)
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
+      )
       const store = await this.retrieve(["currencies"])
 
       const curr = await currencyRepository.findOne({
-        code: code.toLowerCase(),
+        where: { code: code.toLowerCase() },
       })
 
       if (!curr) {
@@ -186,7 +188,7 @@ class StoreService extends BaseService {
         )
       }
 
-      if (store.currencies.map(c => c.code).includes(code)) {
+      if (store.currencies.map(c => c.code).includes(curr.code.toLowerCase())) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Currency already added`
@@ -206,7 +208,7 @@ class StoreService extends BaseService {
    */
   async removeCurrency(code) {
     return this.atomicPhase_(async manager => {
-      const storeRepo = manager.getCustomRepository()
+      const storeRepo = manager.getCustomRepository(this.storeRepository_)
       const store = await this.retrieve(["currencies"])
 
       const exists = store.currencies.find(c => c.code === code.toLowerCase())

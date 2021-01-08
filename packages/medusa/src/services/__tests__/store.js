@@ -1,127 +1,176 @@
 import StoreService from "../store"
-import { StoreModelMock } from "../../models/__mocks__/store"
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
 describe("StoreService", () => {
   describe("retrieve", () => {
+    const storeRepository = MockRepository({})
+
     const storeService = new StoreService({
-      storeModel: StoreModelMock,
+      manager: MockManager,
+      storeRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("retrieves store", async () => {
+    it("successfully retrieve store", async () => {
       await storeService.retrieve()
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(StoreModelMock.findOne).toHaveBeenCalledWith()
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("update", () => {
+    const storeRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({ id: IdMap.getId("store"), name: "Medusa" }),
+    })
+
+    const currencyRepository = MockRepository({})
+
     const storeService = new StoreService({
-      storeModel: StoreModelMock,
+      manager: MockManager,
+      storeRepository,
+      currencyRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("retrieves store", async () => {
+    it("successfully updates store", async () => {
       await storeService.update({
-        name: "New Name",
-        currencies: ["DKK", "sek", "uSd"],
+        name: "Medusa Commerce",
       })
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
 
-      expect(StoreModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(StoreModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("store") },
-        {
-          $set: {
-            name: "New Name",
-            currencies: ["DKK", "SEK", "USD"],
-          },
-        },
-        { runValidators: true }
-      )
+      expect(storeRepository.save).toHaveBeenCalledTimes(1)
+      expect(storeRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("store"),
+        name: "Medusa Commerce",
+      })
     })
 
     it("fails if currency not ok", async () => {
       await expect(
         storeService.update({
-          currencies: ["notacurrence"],
+          currencies: ["1cd"],
         })
-      ).rejects.toThrow("Invalid currency NOTACURRENCE")
+      ).rejects.toThrow("Invalid currency 1cd")
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("addCurrency", () => {
+    const storeRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("store"),
+          name: "Medusa",
+          currencies: [{ code: "dkk" }],
+        }),
+    })
+
+    const currencyRepository = MockRepository({
+      findOne: query => {
+        if (query.where.code === "sek") {
+          return Promise.resolve({ code: "sek" })
+        }
+
+        if (query.where.code === "dkk") {
+          return Promise.resolve({ code: "dkk" })
+        }
+        return Promise.resolve()
+      },
+    })
+
     const storeService = new StoreService({
-      storeModel: StoreModelMock,
+      manager: MockManager,
+      storeRepository,
+      currencyRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("retrieves store", async () => {
+    it("successfully adds currency", async () => {
       await storeService.addCurrency("sek")
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
 
-      expect(StoreModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(StoreModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("store") },
-        {
-          $push: { currencies: "SEK" },
-        }
-      )
+      expect(storeRepository.save).toHaveBeenCalledTimes(1)
+      expect(storeRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("store"),
+        name: "Medusa",
+        currencies: [{ code: "dkk" }, { code: "sek" }],
+      })
     })
 
     it("fails if currency not ok", async () => {
-      await expect(storeService.addCurrency("notacurrence")).rejects.toThrow(
-        "Invalid currency NOTACURRENCE"
+      await expect(storeService.addCurrency("1cd")).rejects.toThrow(
+        "Currency 1cd not found"
       )
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
 
     it("fails if currency already existis", async () => {
-      await expect(storeService.addCurrency("DKK")).rejects.toThrow(
+      await expect(storeService.addCurrency("dkk")).rejects.toThrow(
         "Currency already added"
       )
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("removeCurrency", () => {
+    const storeRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("store"),
+          name: "Medusa",
+          currencies: [{ code: "dkk" }],
+        }),
+    })
+
+    const currencyRepository = MockRepository({
+      findOne: query => {
+        if (query.where.code === "sek") {
+          return Promise.resolve({ code: "sek" })
+        }
+
+        if (query.where.code === "dkk") {
+          return Promise.resolve({ code: "dkk" })
+        }
+        return Promise.resolve()
+      },
+    })
+
     const storeService = new StoreService({
-      storeModel: StoreModelMock,
+      manager: MockManager,
+      storeRepository,
+      currencyRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("retrieves store", async () => {
-      await storeService.removeCurrency("sek")
+    it("successfully removes currency", async () => {
+      await storeService.removeCurrency("dkk")
 
-      expect(StoreModelMock.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
 
-      expect(StoreModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(StoreModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("store") },
-        {
-          $pull: { currencies: "SEK" },
-        }
-      )
+      expect(storeRepository.save).toHaveBeenCalledTimes(1)
+      expect(storeRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("store"),
+        currencies: [],
+        name: "Medusa",
+      })
     })
   })
 })

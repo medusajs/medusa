@@ -193,7 +193,7 @@ class UserService extends BaseService {
       }
 
       if (metadata) {
-        user.metadata = this.setMetadata(user, metadata)
+        user.metadata = this.setMetadata_(user, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {

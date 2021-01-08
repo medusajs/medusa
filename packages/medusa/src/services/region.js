@@ -103,6 +103,7 @@ class RegionService extends BaseService {
         }
 
         regionObject.currency = currency
+        regionObject.currency_code = currency_code.toLowerCase()
       }
 
       if (metadata) {
@@ -155,6 +156,7 @@ class RegionService extends BaseService {
         }
 
         region.currency = currency
+        region.currency_code = currency_code.toLowerCase()
       }
 
       if (metadata) {
@@ -253,8 +255,6 @@ class RegionService extends BaseService {
    */
   async validateCurrency_(currencyCode) {
     const store = await this.storeService_.retrieve(["currencies"])
-
-    console.log(store)
 
     const storeCurrencies = store.currencies.map(curr => curr.code)
 
