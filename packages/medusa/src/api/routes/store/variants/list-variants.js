@@ -13,7 +13,7 @@ export default async (req, res) => {
   }
 
   if ("ids" in req.query) {
-    selector["id"] = { id: Any(req.query.ids.split(",")) }
+    selector["id"] = { id: req.query.ids.split(",") }
   }
 
   const variantService = req.scope.resolve("productVariantService")

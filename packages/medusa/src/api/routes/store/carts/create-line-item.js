@@ -23,15 +23,20 @@ export default async (req, res) => {
     await entityManager.transaction(async manager => {
       let cart = await cartService.withTransaction(manager).retrieve(id)
 
-      await lineItemService.withTransaction(manager).generate({
-        cart_id: cart.id,
-        variant_id: value.variant_id,
-        region_id: cart.region_id,
-        quantity: value.quantity,
-        metadata: value.metadata,
-      })
+      const line = await lineItemService
+        .withTransaction(manager)
+        .generate(
+          value.variant_id,
+          cart.region_id,
+          value.quantity,
+          value.metadata
+        )
 
-      cart = await cartService.retrieve(cart._id, ["region"])
+      await lineItemService
+        .withTransaction(manager)
+        .create({ ...line, cart_id: id })
+
+      cart = await cartService.retrieve(cart.id, ["region"])
       res.status(200).json({ cart })
     })
   } catch (err) {

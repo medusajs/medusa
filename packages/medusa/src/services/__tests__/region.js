@@ -40,6 +40,10 @@ describe("RegionService", () => {
       },
     })
 
+    const currencyRepository = MockRepository({
+      findOne: () => Promise.resolve({ code: "usd" }),
+    })
+
     const storeService = {
       retrieve: () => {
         return {
@@ -53,6 +57,7 @@ describe("RegionService", () => {
       manager: MockManager,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
+      currencyRepository,
       regionRepository,
       countryRepository,
       storeService,
@@ -73,7 +78,10 @@ describe("RegionService", () => {
       expect(regionRepository.create).toHaveBeenCalledTimes(1)
       expect(regionRepository.create).toHaveBeenCalledWith({
         name: "World",
-        currency_code: "USD",
+        currency_code: "usd",
+        currency: {
+          code: "usd",
+        },
         tax_rate: 0.25,
         countries: [{ id: IdMap.getId("test-country"), name: "World" }],
       })
@@ -110,8 +118,11 @@ describe("RegionService", () => {
       expect(regionRepository.create).toHaveBeenCalledTimes(1)
       expect(regionRepository.create).toHaveBeenCalledWith({
         name: "World",
-        currency_code: "USD",
         tax_rate: 0.25,
+        currency_code: "usd",
+        currency: {
+          code: "usd",
+        },
         countries: [{ id: IdMap.getId("test-country"), name: "World" }],
         payment_providers: [{ id: "default_provider" }],
         fulfillment_providers: [{ id: "default_provider" }],
@@ -232,12 +243,6 @@ describe("RegionService", () => {
       jest.clearAllMocks()
     })
 
-    it("throws on invalid currency code", async () => {
-      await expect(
-        regionService.validateFields_({ currency_code: "1cw" })
-      ).rejects.toThrow("Invalid currency code")
-    })
-
     it("throws on invalid country code", async () => {
       await expect(
         regionService.validateFields_({ countries: ["ddd"] })
@@ -322,12 +327,17 @@ describe("RegionService", () => {
       },
     }
 
+    const currencyRepository = MockRepository({
+      findOne: () => Promise.resolve({ code: "eur" }),
+    })
+
     const regionService = new RegionService({
       manager: MockManager,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       regionRepository,
       countryRepository,
+      currencyRepository,
       storeService,
     })
 
@@ -352,7 +362,10 @@ describe("RegionService", () => {
       expect(regionRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("test-region"),
         name: "New Name",
-        currency_code: "EUR",
+        currency_code: "eur",
+        currency: {
+          code: "eur",
+        },
         tax_rate: 0.25,
         countries: [{ id: IdMap.getId("test-country"), name: "World" }],
         payment_providers: [{ id: "default_provider" }],

@@ -36,6 +36,7 @@ class OrderService extends BaseService {
     regionService,
     returnService,
     swapService,
+    cartService,
     // documentService,
     eventBusService,
   }) {
@@ -85,6 +86,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @constant {CartService} */
+    this.cartService_ = cartService
 
     /** @private @constant {SwapService} */
     this.swapService_ = swapService
@@ -269,12 +273,12 @@ class OrderService extends BaseService {
 
   /**
    * Creates an order from a cart
-   * @param {object} order - the order to create
+   * @param {string} cartId - id of the cart to create an order from
    * @return {Promise} resolves to the creation result.
    */
   async createFromCart(cartId) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.cartService
+      const cart = await this.cartService_
         .withTransaction(manager)
         .retrieve(cartId, [
           "region",

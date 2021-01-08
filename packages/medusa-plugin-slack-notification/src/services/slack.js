@@ -1,5 +1,4 @@
 import axios from "axios"
-import moment from "moment"
 import { BaseService } from "medusa-interfaces"
 
 class SlackService extends BaseService {
@@ -23,7 +22,12 @@ class SlackService extends BaseService {
   }
 
   async orderNotification(orderId) {
-    const order = await this.orderService_.retrieve(orderId)
+    const order = await this.orderService_.retrieve(
+      orderId,
+      "items",
+      "discounts",
+      "shipping_address"
+    )
 
     const subtotal = await this.totalsService_.getSubtotal(order)
     const shippingTotal = await this.totalsService_.getShippingTotal(order)
@@ -36,7 +40,7 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `Order *<${this.options_.admin_orders_url}/${order._id}|#${order.display_id}>* has been processed.`,
+          text: `Order *<${this.options_.admin_orders_url}/${order.id}|#${order.display_id}>* has been processed.`,
         },
       },
       {
@@ -74,7 +78,11 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Promo Code*\t${d.code} ${d.discount_rule.value}${d.discount_rule.type === "percentage" ? "%" : ` ${order.currency_code}`}`,
+          text: `*Promo Code*\t${d.code} ${d.discount_rule.value}${
+            d.discount_rule.type === "percentage"
+              ? "%"
+              : ` ${order.currency_code}`
+          }`,
         },
       })
     })
@@ -88,12 +96,13 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*${lineItem.title}*\n${lineItem.quantity} x ${
-            !Array.isArray(lineItem.content) &&
-            (lineItem.content.unit_price * (1 + order.tax_rate)).toFixed(2)
-          } ${order.currency_code}`,
+          text: `*${lineItem.title}*\n${lineItem.quantity} x ${(
+            lineItem.unit_price *
+            (1 + order.tax_rate)
+          ).toFixed(2)} ${order.currency_code}`,
         },
       }
+
       if (lineItem.thumbnail) {
         let url = lineItem.thumbnail
         if (
@@ -106,9 +115,8 @@ class SlackService extends BaseService {
         line.accessory = {
           type: "image",
           alt_text: "Item",
-          image_url: url
+          image_url: url,
         }
-
       }
 
       blocks.push(line)

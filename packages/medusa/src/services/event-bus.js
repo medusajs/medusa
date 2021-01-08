@@ -8,7 +8,7 @@ import Redis from "ioredis"
  */
 class EventBusService {
   constructor(
-    { logger, stagedJobModel, redisClient, redisSubscriber },
+    { manager, logger, stagedJobRepository, redisClient, redisSubscriber },
     config,
     singleton = true
   ) {
@@ -26,10 +26,14 @@ class EventBusService {
     }
 
     this.config_ = config
+
+    /** @private {EntityManager} */
+    this.manager_ = manager
+
     /** @private {logger} */
     this.logger_ = logger
 
-    this.stagedJobModel_ = stagedJobModel
+    this.stagedJobRepository_ = stagedJobRepository
 
     if (singleton) {
       /** @private {object} */
@@ -52,9 +56,6 @@ class EventBusService {
 
       // Register cron worker
       this.cronQueue_.process(this.cronWorker_)
-
-      // setInterval(this.enqueuer_, 200)
-      // this.enqueuer_()
     }
   }
 
@@ -65,7 +66,8 @@ class EventBusService {
 
     const cloned = new EventBusService(
       {
-        stagedJobModel: this.stagedJobModel_,
+        manager: transactionManager,
+        stagedJobRepository: this.stagedJobRepository,
         logger: this.logger_,
         redisClient: this.redisClient_,
         redisSubscriber: this.redisSubscriber_,
@@ -138,17 +140,19 @@ class EventBusService {
    * @param {?any} data - the data to send to the subscriber.
    * @return {BullJob} - the job from our queue
    */
-  emit(eventName, data) {
-    if (this.current_session) {
-      return this.stagedJobModel_.create(
-        [
-          {
-            event_name: eventName,
-            data,
-          },
-        ],
-        { session: this.current_session }
+  async emit(eventName, data) {
+    if (this.transactionManager_) {
+      const stagedJobRepository = this.transactionManager_.getCustomRepository(
+        this.stagedJobRepository_
       )
+
+      const created = await stagedJobRepository.create({
+        event_name: eventName,
+        data,
+      })
+
+      const updated = await stagedJobRepository.save(created)
+      return updated
     } else {
       this.queue_.add({ eventName, data }, { removeOnComplete: true })
     }
@@ -162,17 +166,27 @@ class EventBusService {
 
   async enqueuer_() {
     while (true) {
-      const jobs = await this.stagedJobModel_.find({}, {}, 0, 1000)
+      const listConfig = {
+        relations: [],
+        skip: 0,
+        take: 1000,
+      }
+
+      const jobs = await this.stagedJobRepository_.find({}, listConfig)
+
       await Promise.all(
-        jobs.map(j => {
+        jobs.map(job => {
           this.queue_
             .add(
-              { eventName: j.event_name, data: j.data },
+              { eventName: job.event_name, data: job.data },
               { removeOnComplete: true }
             )
-            .then(() => this.stagedJobModel_.deleteOne({ _id: j._id }))
+            .then(async () => {
+              await this.stagedJobRepository_.remove(job)
+            })
         })
       )
+
       await this.sleep(3000)
     }
   }

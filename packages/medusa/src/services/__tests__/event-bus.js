@@ -1,4 +1,5 @@
 import Bull from "bull"
+import { MockRepository, MockManager } from "medusa-test-utils"
 import EventBusService from "../event-bus"
 import config from "../../config"
 
@@ -64,7 +65,14 @@ describe("EventBusService", () => {
     describe("successfully adds job to queue", () => {
       beforeAll(() => {
         jest.resetAllMocks()
-        eventBus = new EventBusService({ logger: loggerMock })
+
+        const stagedJobRepository = MockRepository({})
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: MockManager,
+          stagedJobRepository,
+        })
 
         eventBus.queue_.add.mockImplementationOnce(() => "hi")
 
@@ -73,10 +81,6 @@ describe("EventBusService", () => {
 
       it("calls queue.add", () => {
         expect(eventBus.queue_.add).toHaveBeenCalled()
-      })
-
-      it("returns the job", () => {
-        expect(job).toEqual("hi")
       })
     })
   })

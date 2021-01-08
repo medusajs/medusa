@@ -253,7 +253,10 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      addOptionValue: jest.fn().mockReturnValue(() => Promise.resolve()),
+      withTransaction: function() {
+        return this
+      },
+      addOptionValue: jest.fn(),
     }
 
     const productOptionRepository = MockRepository({

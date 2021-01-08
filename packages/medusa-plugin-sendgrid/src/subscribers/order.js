@@ -13,7 +13,12 @@ class OrderSubscriber {
     this.eventBus_.subscribe(
       "order.shipment_created",
       async ({ order_id, shipment }) => {
-        const order = await this.orderService_.retrieve(order_id)
+        const order = await this.orderService_.retrieve(order_id, [
+          "items",
+          "discounts",
+          "region",
+        ])
+
         const data = {
           ...order,
           tracking_number: shipment.tracking_numbers.join(", "),
@@ -41,28 +46,43 @@ class OrderSubscriber {
       const total = await this.totalsService_.getTotal(order)
 
       const date = new Date(parseInt(order.created))
+
+      const items = order.items.map((i) => {
+        return {
+          ...i,
+          price: `${(i.unit_price * (1 + order.tax_rate)).toFixed(2)} ${
+            order.currency_code
+          }`,
+        }
+      })
+
+      const discounts = order.discounts.map((discount) => {
+        return {
+          is_giftcard: false,
+          code: discount.code,
+          descriptor: `${discount.discount_rule.value}${
+            discount.discount_rule.type === "percentage"
+              ? "%"
+              : ` ${order.currency_code}`
+          }`,
+        }
+      })
+
+      const giftCards = order.giftCards.map((gc) => {
+        return {
+          is_giftcard: true,
+          code: gc.code,
+          descriptor: `${gc.value} ${order.currency_code}`,
+        }
+      })
+
+      discounts.concat(giftCards)
+
       const data = {
         ...order,
         date: date.toDateString(),
-        items: order.items.map((i) => {
-          return {
-            ...i,
-            price: `${(i.content.unit_price * (1 + order.tax_rate)).toFixed(
-              2
-            )} ${order.currency_code}`,
-          }
-        }),
-        discounts: order.discounts.map((discount) => {
-          return {
-            is_giftcard: discount.is_giftcard,
-            code: discount.code,
-            descriptor: `${discount.discount_rule.value}${
-              discount.discount_rule.type === "percentage"
-                ? "%"
-                : ` ${order.currency_code}`
-            }`,
-          }
-        }),
+        items,
+        discounts,
         subtotal: `${(subtotal * (1 + order.tax_rate)).toFixed(2)} ${
           order.currency_code
         }`,
