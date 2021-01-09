@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner } from "typeorm"
 import { countries } from "../utils/countries"
 import { currencies } from "../utils/currencies"
 
-export class countriesCurrencies1608038817870 implements MigrationInterface {
+export class countriesCurrencies1610189505722 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     for (const c of countries) {
       const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name") VALUES ($1, $2, $3, $4, $5)`

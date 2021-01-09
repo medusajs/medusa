@@ -6,11 +6,8 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class TotalsService extends BaseService {
-  constructor({ container, productVariantService, regionService }) {
+  constructor({ productVariantService, regionService }) {
     super()
-
-    /** @private @const {Container} */
-    this.container_ = container
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService

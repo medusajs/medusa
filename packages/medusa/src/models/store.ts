@@ -42,7 +42,7 @@ export class Store {
     },
     inverseJoinColumn: {
       name: "currency_code",
-      referencedColumnName: "id",
+      referencedColumnName: "code",
     },
   })
   currencies: Currency[]

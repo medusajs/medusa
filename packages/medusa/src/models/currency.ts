@@ -1,11 +1,8 @@
-import { Entity, Column, Index, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm"
+import { Entity, Column, PrimaryColumn } from "typeorm"
 
 @Entity()
 export class Currency {
   @PrimaryColumn()
-  id: number
-
-  @Column()
   code: string
 
   @Column()

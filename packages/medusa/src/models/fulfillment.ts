@@ -29,7 +29,7 @@ export class Fulfillment {
   @Column({ nullable: true })
   swap_id: string
 
-  @OneToMany(
+  @ManyToOne(
     () => Swap,
     swap => swap.fulfillments
   )

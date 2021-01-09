@@ -644,7 +644,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * FULFILLMENTS
      *************************************************************************/
-    const createFulfillment = async (f, parent_items, seen) => {
+    const createFulfillment = async (f, parent_items, seen, custom = {}) => {
       const items = f.items.map(fi => {
         const original = parent_items.find(
           li =>
@@ -669,9 +669,9 @@ const migrateOrders = async (mongodb, queryRunner) => {
       let provider = await fulProvRepo.findOne({ id: f.provider_id })
 
       const toCreate = {
+        ...custom,
         items,
         provider,
-        order: or,
         tracking_numbers: f.tracking_numbers,
         data: {},
         metadata: f.metadata,
@@ -692,6 +692,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       const ful = await createFulfillment(f, or.items, seen)
       fulfillments.push(ful)
     }
+    // fulfillmentRepo.save(fulfillments)
     or.fulfillments = fulfillments
 
     /*************************************************************************
@@ -807,7 +808,9 @@ const migrateOrders = async (mongodb, queryRunner) => {
       if (oSwaps.length) {
         let swaps = []
         for (const s of oSwaps) {
+          if (!s.return) continue
           const toCreate = {
+            order_id: or.id,
             fulfillment_status: s.fulfillment_status,
             payment_status: s.payment_status,
             additional_items: await Promise.all(
@@ -860,11 +863,14 @@ const migrateOrders = async (mongodb, queryRunner) => {
           const newly = swapRepo.create(toCreate)
           const sw = await swapRepo.save(newly)
           const seen = {}
-          sw.fulfillments = await Promise.all(
-            s.fulfillments.map(f =>
-              createFulfillment(f, sw.additional_items, seen)
+          if ((s.fulfillments && s.fulfillments.length) > 0) {
+            sw.fulfillments = await Promise.all(
+              s.fulfillments.map(f =>
+                createFulfillment(f, sw.additional_items, seen)
+              )
             )
-          )
+          }
+          console.log(sw.return_order)
           swaps.push(sw)
         }
 
