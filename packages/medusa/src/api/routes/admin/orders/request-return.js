@@ -54,35 +54,46 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              let oldOrder
-              let existingReturns = []
+              const order = await orderService
+                .withTransaction(manager)
+                .retrieve(id)
 
-              if (value.receive_now) {
-                oldOrder = await orderService
-                  .withTransction(manager)
-                  .retrieve(id, ["returns"])
-                existingReturns = oldOrder.returns.map(r => r.id)
+              const returnObj = {
+                items: value.items,
               }
 
-              let shippingMethod
               if (value.shipping_method) {
-                shippingMethod = {
+                returnObj.shipping_method = {
                   id: value.shipping_method,
                   price: value.shipping_price,
                 }
               }
 
-              let refundAmount = value.refund
               if (typeof value.refund !== "undefined" && value.refund < 0) {
-                refundAmount = 0
+                returnObj.refund_amount = 0
+              } else {
+                returnObj.refund_amount = value.refund
               }
 
-              let order = await returnService.requestReturn(
-                id,
-                value.items,
-                shippingMethod,
-                refundAmount
-              )
+              if (value.refund) {
+                returnObj.refund_amount = value.refund
+              }
+
+              const createdReturn = await returnService
+                .withTransaction(manager)
+                .create(returnObj, order)
+
+              if (value.shipping_method) {
+                await returnService
+                  .withTransaction(manager)
+                  .fulfill(createdReturn.id)
+              }
+
+              await returnService
+                .withTransaction(manager)
+                .update(createdReturn.id, {
+                  idempotency_key: idempotencyKey.idempotency_key,
+                })
 
               return {
                 recovery_point: "return_requested",
@@ -105,28 +116,34 @@ export default async (req, res) => {
             async manager => {
               let order = await orderService
                 .withTransction(manager)
-                .retrieve(id)
+                .retrieve(id, "returns")
+
               /**
                * If we are ready to receive immediately, we find the newly created return
                * and register it as received.
                */
               if (value.receive_now) {
-                const newReturn = order.returns.find(
-                  r => !existingReturns.includes(r.id)
-                )
-                order = await orderService.return(
-                  id,
-                  newReturn.id,
-                  value.items,
-                  value.refund
-                )
+                let ret = await returnService.withTransaction(manager).list({
+                  idempotency_key: idempotencyKey.idempotency_key,
+                })
+
+                if (!ret.length) {
+                  throw new MedusaError(
+                    MedusaError.Types.INVALID_DATA,
+                    `Return not found`
+                  )
+                }
+
+                ret = ret[0]
+
+                order = await returnService
+                  .withTransaction(manager)
+                  .receiveReturn(order.id, ret.id, value.items, value.refund)
               }
 
-              order = await orderService.retrieve(id, [
-                "region",
-                "customer",
-                "swaps",
-              ])
+              order = await orderService
+                .withTransaction(manager)
+                .retrieve(id, ["region", "customer", "swaps"])
 
               return {
                 response_code: 200,
@@ -162,7 +179,11 @@ export default async (req, res) => {
       }
     }
 
-    res.status(200).json({ order })
+    if (err) {
+      throw err
+    }
+
+    res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (err) {
     throw err
   }

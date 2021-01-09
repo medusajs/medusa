@@ -776,9 +776,19 @@ class OrderService extends BaseService {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId)
 
+      const returnObj = {
+        items,
+        shipping_method: shippingMethod,
+        refund_amount: refundAmount,
+      }
+
       const returnRequest = await this.returnService_
         .withTransaction(manager)
-        .requestReturn(order, items, shippingMethod, refundAmount)
+        .create(returnObj, order)
+
+      const fulfilledReturn = await this.returnService_
+        .withTransaction(manager)
+        .fulfill(returnRequest.id)
 
       const result = await this.retrieve(orderId)
 
@@ -786,7 +796,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.RETURN_REQUESTED, {
           order: result,
-          return: returnRequest,
+          return: fulfilledReturn,
         })
       return result
     })

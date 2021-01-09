@@ -76,6 +76,19 @@ class ReturnService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
+    const query = this.buildQuery_(selector, config)
+    return returnRepo.find(query)
+  }
+
+  /**
    * Checks that an order has the statuses necessary to complete a return.
    * fulfillment_status cannot be not_fulfilled or returned.
    * payment_status must be captured.
@@ -161,8 +174,34 @@ class ReturnService extends BaseService {
     return returnObj
   }
 
+  async update(returnId, update) {
+    return this.atomicPhase_(async manager => {
+      const ret = await this.retrieve(returnId)
+
+      const { metadata, ...rest } = update
+
+      if ("metadata" in update) {
+        ret.metadata = this.setMetadata_(ret, update.metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        ret[key] = value
+      }
+
+      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const result = await retRepo.save(ret)
+      return result
+    })
+  }
+
   /**
-   * Creates a return.
+   * Creates a return request for an order, with given items, and a shipping
+   * method. If no refund amount is provided the refund amount is calculated from
+   * the return lines and the shipping cost.
+   * @param {object} data - data to use for the return e.g. shipping_method,
+   *    items or refund_amount
+   * @param {object} orderLike - order object
+   * @returns {Promise<Return>} the resulting order.
    */
   async create(data, orderLike) {
     return this.atomicPhase_(async manager => {
@@ -203,6 +242,8 @@ class ReturnService extends BaseService {
 
       const returnObject = {
         ...data,
+        order_id: orderLike.id,
+        status: "requested",
         refund_amount: toRefund,
       }
 
@@ -248,101 +289,6 @@ class ReturnService extends BaseService {
 
       const returnRepo = manager.getCustomRepository(this.returnRepository_)
       const result = await returnRepo.save(returnOrder)
-      return result
-    })
-  }
-
-  /**
-   * Creates a return request for an order, with given items, and a shipping
-   * method. If no refundAmount is provided the refund amount is calculated from
-   * the return lines and the shipping cost.
-   * @param {String} orderId - the id of the order to create a return for.
-   * @param {Array<{item_id: String, quantity: Int}>} returnItems - the line items to
-   *   return
-   * @param {ShippingMethod?} shippingMethod - the shipping method used for the
-   *   return
-   * @param {Number?} refundAmount - the amount to refund when the return is
-   *   received.
-   * @returns {Promise<Return>} the resulting order.
-   */
-  async requestReturn(order, returnItems, shippingMethod, refundAmount) {
-    return this.atomicPhase_(async manager => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
-
-      // Throws if the order doesn't have the necessary status for return
-      this.validateReturnStatuses_(order)
-
-      const returnLines = await this.getFulfillmentItems_(
-        order,
-        returnItems,
-        this.validateReturnLineItem_
-      )
-
-      let toRefund = refundAmount
-      if (typeof refundAmount !== "undefined") {
-        const total = await this.totalsService_.getTotal(order)
-        const refunded = await this.totalsService_.getRefundedTotal(order)
-        const refundable = total - refunded
-        if (refundAmount > refundable) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Cannot refund more than the original payment"
-          )
-        }
-      } else {
-        toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
-      }
-
-      let returnFulfillmentData = {}
-      let returnShippingMethod = {}
-
-      if (typeof shippingMethod !== "undefined") {
-        returnShippingMethod = shippingMethod
-
-        returnFulfillmentData = await this.fulfillmentProviderService_.createReturn(
-          returnShippingMethod,
-          returnLines,
-          order
-        )
-
-        if (typeof shippingMethod.price === "undefined") {
-          returnShippingMethod.price = await this.shippingOptionService_
-            .withTransaction(manager)
-            .getPrice(returnShippingMethod, {
-              ...order,
-              items: returnLines,
-            })
-        }
-
-        toRefund = Math.max(
-          0,
-          toRefund - returnShippingMethod.price * (1 + order.tax_rate)
-        )
-      }
-
-      const returnObject = {
-        status: "requested",
-        items: [],
-        order_id: order.id,
-        shipping_method: returnShippingMethod,
-        shipping_data: returnFulfillmentData,
-        refund_amount: toRefund,
-      }
-
-      const created = await returnRepository.create(returnObject)
-
-      const items = returnLines.map(i => ({
-        return_id: created.id,
-        item_id: i.id,
-        requested_quantity: i.quantity,
-        metadata: i.metadata,
-      }))
-
-      created.items = items
-
-      const result = await returnRepository.save(created)
       return result
     })
   }

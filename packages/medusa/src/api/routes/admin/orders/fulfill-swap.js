@@ -15,17 +15,19 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
     const swapService = req.scope.resolve("swapService")
+    const entityManager = req.scope.resolve("manager")
 
-    // Fetch the order
-    let order = await orderService.retrieve(id)
+    await entityManager.transaction(async manager => {
+      await swapService
+        .withTransaction(manager)
+        .createFulfillment(swap_id, value.metadata)
 
-    // Receive the return
-    await swapService.createFulfillment(order, swap_id, value.metadata)
+      const order = await orderService
+        .withTransaction(manager)
+        .retrieve(id, ["region", "customer", "swaps"])
 
-    // Decorate the order
-    order = await orderService.retrieve(id, ["region", "customer", "swaps"])
-
-    res.status(200).json({ order })
+      res.status(200).json({ order })
+    })
   } catch (err) {
     throw err
   }

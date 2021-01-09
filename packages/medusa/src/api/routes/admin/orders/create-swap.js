@@ -62,7 +62,7 @@ export default async (req, res) => {
             async manager => {
               const order = await orderService
                 .withTransaction(manager)
-                .retrieve(id)
+                .retrieve(id, ["region", "customer", "swaps"])
 
               const swap = await swapService
                 .withTransaction(manager)
@@ -74,7 +74,7 @@ export default async (req, res) => {
                 )
 
               await swapService.update(swap.id, {
-                idempotency_key: key.idempotency_key,
+                idempotency_key: idempotencyKey.idempotency_key,
               })
 
               return {
@@ -100,14 +100,14 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id)
 
-              let swap = await swapService.list({
-                idempotency_key: key.idempotency_key,
+              let swap = await swapService.withTransaction(manager).list({
+                idempotency_key: idempotencyKey.idempotency_key,
               })
 
               if (!swap.length) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,
-                  "An error occured while attempting to create a swap"
+                  "Swap not found"
                 )
               }
 
@@ -140,26 +140,24 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id)
 
-              let swap = await swapService.list({
-                idempotency_key: key.idempotency_key,
+              let swap = await swapService.withTransaction(manager).list({
+                idempotency_key: idempotencyKey.idempotency_key,
               })
 
               if (!swap.length) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,
-                  "An error occured while attempting to create a swap"
+                  "Swap not found"
                 )
               }
 
               swap = swap[0]
 
-              await swapService
-                .withTransaction(manager)
-                .createCart(order, swap.id)
+              await swapService.withTransaction(manager).createCart(swap.id)
 
               order = await orderService
                 .withTransaction(manager)
-                .retrieve(id, ["region", "customer", "swaps"])
+                .retrieve(order.id, ["region", "customer", "swaps"])
 
               return {
                 response_code: 200,
