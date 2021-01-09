@@ -22,12 +22,7 @@ class SlackService extends BaseService {
   }
 
   async orderNotification(orderId) {
-    const order = await this.orderService_.retrieve(
-      orderId,
-      "items",
-      "discounts",
-      "shipping_address"
-    )
+    const order = await this.orderService_.retrieve(orderId, ["all"])
 
     const subtotal = await this.totalsService_.getSubtotal(order)
     const shippingTotal = await this.totalsService_.getShippingTotal(order)

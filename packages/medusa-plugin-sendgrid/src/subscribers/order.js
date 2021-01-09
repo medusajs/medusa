@@ -13,11 +13,7 @@ class OrderSubscriber {
     this.eventBus_.subscribe(
       "order.shipment_created",
       async ({ order_id, shipment }) => {
-        const order = await this.orderService_.retrieve(order_id, [
-          "items",
-          "discounts",
-          "region",
-        ])
+        const order = await this.orderService_.retrieve(order_id, ["all"])
 
         const data = {
           ...order,
@@ -38,7 +34,9 @@ class OrderSubscriber {
       )
     })
 
-    this.eventBus_.subscribe("order.placed", async (order) => {
+    this.eventBus_.subscribe("order.placed", async (orderObj) => {
+      const order = await this.orderService_.retrieve(orderObj.id, ["all"])
+
       const subtotal = await this.totalsService_.getSubtotal(order)
       const tax_total = await this.totalsService_.getTaxTotal(order)
       const discount_total = await this.totalsService_.getDiscountTotal(order)

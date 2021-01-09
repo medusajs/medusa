@@ -7,10 +7,18 @@ class WebshipperFulfillmentService extends FulfillmentService {
   constructor({ logger, swapService, orderService }, options) {
     super()
 
-    this.logger_ = logger
-    this.orderService_ = orderService
     this.options_ = options
+
+    /** @private @const {logger} */
+    this.logger_ = logger
+
+    /** @private @const {OrderService} */
+    this.orderService_ = orderService
+
+    /** @private @const {SwapService} */
     this.swapService_ = swapService
+
+    /** @private @const {AxiosClient} */
     this.client_ = new Webshipper({
       account: this.options_.account,
       token: this.options_.api_token,
@@ -70,6 +78,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
    * return lines.
    */
   async createReturn(methodData, returnLines, fromOrder) {
+    const order = await this.orderService_.retrieve(fromOrder.id, ["all"])
+
     const relationships = {
       shipping_rate: {
         data: {
@@ -95,6 +105,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
         fromOrder,
         returnLines
       )
+
       docs.push({
         document_size: "A4",
         document_format: "PDF",
@@ -108,7 +119,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       type: "shipments",
       attributes: {
         reference: `R${fromOrder.display_id}-${fromOrder.returns.length + 1}`,
-        ext_ref: `${fromOrder._id}.${fromOrder.returns.length}`,
+        ext_ref: `${fromOrder.id}.${fromOrder.returns.length}`,
         is_return: true,
         included_documents: docs,
         packages: [

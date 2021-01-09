@@ -2,6 +2,19 @@ import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
+const entityFields = [
+  "cart",
+  "customer",
+  "billing_address",
+  "shipping_address",
+  "region",
+  "currency",
+  "fulfillments",
+  "items",
+  "items.variant",
+  "items.variant.product",
+]
+
 class OrderService extends BaseService {
   static Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
@@ -81,9 +94,6 @@ class OrderService extends BaseService {
     /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
 
-    /** @private @constant {DocumentService} */
-    // this.documentService_ = documentService
-
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
@@ -111,7 +121,7 @@ class OrderService extends BaseService {
       fulfillmentProviderService: this.fulfillmentProviderService_,
       discountService: this.discountService_,
       totalsService: this.totalsService_,
-      documentService: this.documentService_,
+      cartService: this.cartService_,
     })
 
     this.transactionManager_ = manager
@@ -193,6 +203,10 @@ class OrderService extends BaseService {
   async retrieve(orderId, relations = []) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
+
+    if (relations.includes("all")) {
+      relations = entityFields
+    }
 
     const order = await orderRepo.findOne({
       where: { id: validatedId },

@@ -234,8 +234,8 @@ class StripeProviderService extends PaymentService {
    * @param {Object} paymentData - payment method data from cart
    * @returns {Object} Stripe payment intent
    */
-  async capturePayment(paymentData) {
-    const { id } = paymentData
+  async capturePayment(data) {
+    const { id } = data
     try {
       return this.stripe_.paymentIntents.capture(id)
     } catch (error) {
@@ -246,13 +246,14 @@ class StripeProviderService extends PaymentService {
   /**
    * Refunds payment for Stripe payment intent.
    * @param {Object} paymentData - payment method data from cart
+   * @param {number} amountToRefund - amount to refund
    * @returns {string} refunded payment intent
    */
-  async refundPayment(paymentData, amount) {
+  async refundPayment(paymentData, amountToRefund) {
     const { id } = paymentData
     try {
       return this.stripe_.refunds.create({
-        amount: parseInt(amount * 100),
+        amount: parseInt(amountToRefund * 100),
         payment_intent: id,
       })
     } catch (error) {

@@ -6,8 +6,12 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class TotalsService extends BaseService {
-  constructor({ productVariantService, regionService }) {
+  constructor({ container, productVariantService, regionService }) {
     super()
+
+    /** @private @const {Container} */
+    this.container_ = container
+
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
 
@@ -20,7 +24,15 @@ class TotalsService extends BaseService {
    * @param {Cart || Order} object - cart or order to calculate subtotal for
    * @return {int} the calculated subtotal
    */
-  async getTotal(object) {
+  async getTotal(id, type) {
+    const service = this.container_[`${type}Service`]
+    const object = await service.retrieve(id, [
+      "items",
+      "discounts",
+      "region",
+      "shipping_methods",
+    ])
+
     const subtotal = await this.getSubtotal(object)
     const taxTotal = await this.getTaxTotal(object)
     const discountTotal = await this.getDiscountTotal(object)
@@ -58,8 +70,8 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} shipping total
    */
-  getShippingTotal(order) {
-    const { shipping_methods } = order
+  getShippingTotal(object) {
+    const { shipping_methods } = object
     return shipping_methods.reduce((acc, next) => {
       return acc + next.price
     }, 0)
@@ -177,7 +189,7 @@ class TotalsService extends BaseService {
     for (const item of cart.items) {
       if (discount.discount_rule.valid_for.length > 0) {
         discount.discount_rule.valid_for.map(({ id }) => {
-          if (item.variant_id === id) {
+          if (item.variant.product_id === id) {
             discounts.push(
               this.calculateDiscount_(
                 item,
@@ -224,7 +236,7 @@ class TotalsService extends BaseService {
       )
       return cart.items.map(item => {
         const discounted = allocationDiscounts.find(
-          a => a.lineItem.id === item._id
+          a => a.lineItem.id === item.id
         )
         return {
           item,
