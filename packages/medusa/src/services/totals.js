@@ -21,18 +21,10 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates subtotal of a given cart or order.
-   * @param {Cart || Order} object - cart or order to calculate subtotal for
+   * @param {object} object - object to calculate total for
    * @return {int} the calculated subtotal
    */
-  async getTotal(id, type) {
-    const service = this.container_[`${type}Service`]
-    const object = await service.retrieve(id, [
-      "items",
-      "discounts",
-      "region",
-      "shipping_methods",
-    ])
-
+  async getTotal(object) {
     const subtotal = await this.getSubtotal(object)
     const taxTotal = await this.getTaxTotal(object)
     const discountTotal = await this.getDiscountTotal(object)
@@ -83,7 +75,15 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} tax total
    */
-  async getTaxTotal(object) {
+  async getTaxTotal(id, type) {
+    const service = this.container_[`${type}Service`]
+    const object = await service.retrieve(id, [
+      "items",
+      "discounts",
+      "region",
+      "shipping_methods",
+    ])
+
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
     const discountTotal = await this.getDiscountTotal(object)
@@ -95,12 +95,16 @@ class TotalsService extends BaseService {
   }
 
   getRefundedTotal(object) {
+    if (!object.refunds) {
+      return 0
+    }
+
     const total = object.refunds.reduce((acc, next) => acc + next.amount, 0)
     return this.rounded(total)
   }
 
-  getLineItemRefund(order, lineItem) {
-    const { tax_rate, discounts } = order
+  getLineItemRefund(object, lineItem) {
+    const { tax_rate, discounts } = object
     const taxRate = tax_rate || 0
 
     const discount = discounts.find(
@@ -111,7 +115,7 @@ class TotalsService extends BaseService {
       return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
     }
 
-    const lineDiscounts = this.getLineDiscounts(order, discount)
+    const lineDiscounts = this.getLineDiscounts(object, discount)
     const discountedLine = lineDiscounts.find(
       line => line.item_id === lineItem.id
     )
