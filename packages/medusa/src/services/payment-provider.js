@@ -220,10 +220,12 @@ class PaymentProviderService extends BaseService {
       }
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
-      session.status = await provider.authorizePayment(
-        paymentSession.data,
-        context
-      )
+      const { status, data } = await provider
+        .withTransaction(manager)
+        .authorizePayment(session.data, context)
+
+      session.data = data
+      session.status = status
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
@@ -237,7 +239,7 @@ class PaymentProviderService extends BaseService {
       const session = await this.retrieveSession(pasSession.id)
 
       const provider = this.retrieveProvider(paySession.provider_id)
-      session.data = await provider.updatePaymentData(paySession.data, update)
+      session.data = await provider.updatePayment(paySession.data, update)
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_

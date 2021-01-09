@@ -742,8 +742,8 @@ class CartService extends BaseService {
 
   /**
    * Authorizes a payment for a cart.
-   * Will authorize with chose payment provider. This will return
-   * a payment status, that we will use to update our payment session with.
+   * Will authorize with chosen payment provider. This will return
+   * a payment object, that we will use to update our cart payment with.
    * Additionally, if the payment does not require more or fails, we will
    * set the payment on the cart.
    * @param {string} cartId - the id of the cart to authorize payment for
@@ -758,13 +758,14 @@ class CartService extends BaseService {
 
       const cart = await this.retrieve(cartId, ["payment_session"])
 
-      const session = await this.paymentProviderService_.authorizePayment(
-        cart,
-        context
-      )
+      const session = await this.paymentProviderService_
+        .withTransaction(manager)
+        .authorizePayment(cart, context)
 
       if (session.status === "authorized") {
-        cart.payment = await this.paymentProviderService_.createPayment(session)
+        cart.payment = await this.paymentProviderService_
+          .withTransaction(manager)
+          .createPayment(session)
       }
 
       const updated = await cartRepository.save(cart)

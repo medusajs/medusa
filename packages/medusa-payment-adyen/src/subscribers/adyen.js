@@ -101,6 +101,15 @@ class AdyenSubscriber {
 
       const paymentMethod = order.payment_method
 
+      const updatedPayment = {
+        ...orderPayment,
+        status: "error",
+        data: {
+          ...payment_session.data,
+          pspReference: notification.pspReference,
+        },
+      }
+
       paymentMethod.data = {
         ...paymentMethod.data,
         pspReference: notification.pspReference,

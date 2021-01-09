@@ -10,6 +10,10 @@ class BaseService {
     this.decorators_ = []
   }
 
+  withTransaction() {
+    return this
+  }
+
   /**
    * Used to build TypeORM queries.
    */

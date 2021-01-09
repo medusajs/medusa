@@ -1,15 +1,12 @@
 import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
-import { BaseService } from "medusa-interfaces"
+import { PaymentService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
 class AdyenService extends BaseService {
   constructor({ regionService, totalsService }, options) {
     super()
-
-    /** @private @constant {RegionService} */
-    this.regionService_ = regionService
 
     /** @private @constant {CartService} */
     this.cartService_ = cartService
@@ -36,6 +33,21 @@ class AdyenService extends BaseService {
 
     /** @private @constant {AdyenClient} */
     this.adyenPaymentApi = this.initPaymentClient()
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new AdyenService({
+      cartService: this.cartService_,
+      totalsService: this.totalsService_,
+    })
+
+    this.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   getOptions() {
@@ -71,7 +83,7 @@ class AdyenService extends BaseService {
 
   /**
    * Validates an Adyen webhook notification
-   * @param {Object} notification - notification to validate
+   * @param {object} notification - notification to validate
    * @returns {string} the status of the payment
    */
   validateNotification(notification) {
@@ -135,7 +147,7 @@ class AdyenService extends BaseService {
 
   /**
    * Status for Adyen payment.
-   * @param {Object} paymentData - payment method data from cart
+   * @param {object} paymentData - payment method data from cart
    * @returns {string} the status of the payment
    */
   async getStatus(paymentData) {
@@ -179,26 +191,102 @@ class AdyenService extends BaseService {
 
   /**
    * Creates Adyen payment object.
-   * @param {any} _ - placeholder object
-   * @returns {Object} empty payment data
+   * @param {Cart} cart - cart to initiate payment for
+   * @returns {object} empty payment data
    */
-  async createPayment(_) {
-    return {}
+  async createPayment(cart) {
+    return { cart_id: cart.id }
   }
 
   /**
    * Retrieves Adyen payment. This is not supported by adyen, so we simply
    * return the current payment method data
-   * @param {any} _ - placeholder object
-   * @returns {Object} payment method data
+   * @param {object} data - payment session
+   * @returns {object} payment method data
    */
-  async retrievePayment(data) {
+  async getPaymentData(data) {
     return data
   }
 
   /**
+   * Creates and authorizes an Adyen payment.
+   * Requires cart_id in context for authorization.
+   * Return status of authorization result.
+   * @param {object} sessionData - payment session data
+   * @param {object} context - properties relevant to current context
+   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   */
+  async authorizePayment(sessionData, context) {
+    return this.atomicPhase_(async (manager) => {
+      if (!sessionData.cart_id) {
+        return { data: {}, status: "error" }
+      }
+
+      const cart = await this.cartService_
+        .withTransaction(manager)
+        .retrieve(sessionData.cart_id)
+
+      const total = await this.totalsService_
+        .withTransaction(manager)
+        .getTotal(cart)
+
+      const amount = {
+        currency: cart.region.currency_code,
+        value: total * 100,
+      }
+
+      let request = {
+        amount,
+        shopperIP: context.ip_address || "",
+        shopperReference: cart.customer_id,
+        paymentMethod: sessionData.paymentMethod,
+        reference: cart.id,
+        merchantAccount: this.options_.merchant_account,
+        returnUrl: this.options_.return_url,
+        origin: this.options_.origin,
+        channel: "Web",
+        redirectFromIssuerMethod: "GET",
+        browserInfo: sessionData.browserInfo || {},
+        billingAddress: {
+          city: cart.shipping_address.city,
+          country: cart.shipping_address.country_code,
+          houseNumberOrName: cart.shipping_address.address_2 || "",
+          postalCode: cart.shipping_address.postal_code,
+          stateOrProvice: cart.shipping_address.province || "",
+          street: cart.shipping_address.address_1,
+        },
+        metadata: {
+          cart_id: cart.id,
+        },
+      }
+
+      // If customer chose to save the payment method
+      if (sessionData.storePaymentMethod) {
+        request.storePaymentMethod = "true"
+        request.shopperInteraction = "Ecommerce"
+        request.recurringProcessingModel = "CardOnFile"
+      }
+
+      const checkout = new CheckoutAPI(this.adyenClient_)
+
+      try {
+        const authorizedPayment = checkout.payments(request, {
+          idempotencyKey: context.idempotency_key || "",
+        })
+
+        return {
+          data: authorizedPayment,
+          status: this.getOptions(authorizedPayment),
+        }
+      } catch (error) {
+        throw error
+      }
+    })
+  }
+
+  /**
    * Updates an Adyen payment.
-   * @param {Object} paymentData - payment data to update
+   * @param {object} paymentData - payment data to update
    * @param {details} details - details to update
    * @returns {Promise} result of the update operation
    */
@@ -213,68 +301,9 @@ class AdyenService extends BaseService {
   }
 
   /**
-   * Creates and authorizes an Adyen payment
-   * @param {Cart} cart - cart to authorize payment for
-   * @param {Object} paymentData - method used for the payment
-   * @param {Object} context - properties relevant to current context
-   * @returns {Promise} result of the payment authorization
-   */
-  async authorizePayment(cartObj, paymentData, context) {
-    const cart = await this.cartService_.retrieve(cartObj)
-    const total = await this.totalsService_.getTotal(cart)
-
-    const amount = {
-      currency: cart.region.currency_code,
-      value: total * 100,
-    }
-
-    let request = {
-      amount,
-      shopperIP: context.ip_address || "",
-      shopperReference: cart.customer_id,
-      paymentMethod: paymentData.data.paymentMethod,
-      reference: cart.id,
-      merchantAccount: this.options_.merchant_account,
-      returnUrl: this.options_.return_url,
-      origin: this.options_.origin,
-      channel: "Web",
-      redirectFromIssuerMethod: "GET",
-      browserInfo: paymentData.data.browserInfo || {},
-      billingAddress: {
-        city: cart.shipping_address.city,
-        country: cart.shipping_address.country_code,
-        houseNumberOrName: cart.shipping_address.address_2 || "",
-        postalCode: cart.shipping_address.postal_code,
-        stateOrProvice: cart.shipping_address.province || "",
-        street: cart.shipping_address.address_1,
-      },
-      metadata: {
-        cart_id: cart.id,
-      },
-    }
-
-    // If customer chose to save the payment method
-    if (paymentData.data.storePaymentMethod) {
-      request.storePaymentMethod = "true"
-      request.shopperInteraction = "Ecommerce"
-      request.recurringProcessingModel = "CardOnFile"
-    }
-
-    const checkout = new CheckoutAPI(this.adyenClient_, {
-      idempotencyKey: context.idempotency_key || "",
-    })
-
-    try {
-      return checkout.payments(request)
-    } catch (error) {
-      throw error
-    }
-  }
-
-  /**
    * Checks payment result
-   * @param {Object} paymentData - payment data to check status for
-   * @param {Object} payload - payload needed for checking the status
+   * @param {object} paymentData - payment data to check status for
+   * @param {object} payload - payload needed for checking the status
    * @returns {Promise} current payment result
    */
   async checkPaymentResult(paymentData, payload) {
@@ -290,8 +319,8 @@ class AdyenService extends BaseService {
 
   /**
    * Additional details
-   * @param {Object} paymentData - payment data
-   * @param {Object} details - payment details
+   * @param {object} paymentData - payment data
+   * @param {object} details - payment details
    * @returns {Promise} current payment result
    */
   async additionalDetails(paymentData, details) {
@@ -306,7 +335,7 @@ class AdyenService extends BaseService {
 
   /**
    * Captures an Adyen payment
-   * @param {Object} data - payment data to capture
+   * @param {object} data - payment data to capture
    * @returns {string} status = processing_captures
    */
   async capturePayment(data) {
@@ -338,9 +367,9 @@ class AdyenService extends BaseService {
 
   /**
    * Refunds an Adyen payment
-   * @param {Object} paymentData - payment data to refund
+   * @param {object} paymentData - payment data to refund
    * @param {number} amountToRefund - amount to refund
-   * @returns {Object} payment data result of refund
+   * @returns {object} payment data result of refund
    */
   async refundPayment(data, amountToRefund) {
     const { originalReference, amount, merchantReference } = data
@@ -372,8 +401,8 @@ class AdyenService extends BaseService {
 
   /**
    * Cancels an Adyen payment.
-   * @param {Object} paymentData - payment data to cancel
-   * @returns {Object} payment data result of cancel
+   * @param {object} paymentData - payment data to cancel
+   * @returns {object} payment data result of cancel
    */
   async cancelPayment(paymentData) {
     const { pspReference } = paymentData

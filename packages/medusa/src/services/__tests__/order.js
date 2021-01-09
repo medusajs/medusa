@@ -359,6 +359,13 @@ describe("OrderService", () => {
       },
     }
 
+    const fulfillmentService = {
+      cancelFulfillment: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const paymentProviderService = {
       cancelPayment: jest.fn(),
       withTransaction: function() {
@@ -371,6 +378,7 @@ describe("OrderService", () => {
       orderRepository: orderRepo,
       paymentProviderService,
       fulfillmentProviderService,
+      fulfillmentService,
       eventBusService,
     })
 
@@ -386,14 +394,10 @@ describe("OrderService", () => {
         id: "payment_test",
       })
 
-      expect(
-        fulfillmentProviderService.cancelFulfillment
-      ).toHaveBeenCalledTimes(1)
-      expect(fulfillmentProviderService.cancelFulfillment).toHaveBeenCalledWith(
-        {
-          id: "fulfillment_test",
-        }
-      )
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
+        id: "fulfillment_test",
+      })
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
       expect(orderRepo.save).toHaveBeenCalledWith({
