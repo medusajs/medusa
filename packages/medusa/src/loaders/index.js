@@ -1,6 +1,7 @@
 import { createContainer, asValue } from "awilix"
 import Redis from "ioredis"
 import { getConfigFile } from "medusa-core-utils"
+import requestIp from "request-ip"
 
 import expressLoader from "./express"
 import databaseLoader from "./database"
@@ -41,6 +42,18 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   // Economical way of dealing with redis clients
   const client = new Redis(configModule.projectConfig.redis_url)
   const subscriber = new Redis(configModule.projectConfig.redis_url)
+
+  // Add additional information to context of request
+  expressApp.use((req, res, next) => {
+    const ipAddress = requestIp.getClientIp(req)
+
+    const context = {
+      ip_address: ipAddress,
+    }
+
+    req.request_context = context
+    next()
+  })
 
   container.register({
     redisClient: asValue(client),

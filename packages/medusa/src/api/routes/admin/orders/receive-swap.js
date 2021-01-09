@@ -30,7 +30,7 @@ export default async (req, res) => {
     // Register swap reception
     await orderService.registerSwapReceived(id, swap_id)
 
-    let order = await orderService.retrieve(id, ["region", "customer", "swaps"])
+    order = await orderService.retrieve(id, ["region", "customer", "swaps"])
 
     res.status(200).json({ order: data })
   } catch (err) {
