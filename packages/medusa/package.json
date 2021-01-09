@@ -76,6 +76,7 @@
     "randomatic": "^3.1.1",
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
+    "request-ip": "^2.1.3",
     "resolve-cwd": "^3.0.0",
     "scrypt-kdf": "^2.0.1",
     "typeorm": "^0.2.29",

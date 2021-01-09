@@ -34,7 +34,10 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              await cartService.withTransaction(manager).authorizePayment(id)
+              await cartService.withTransaction(manager).authorizePayment(id, {
+                ...req.request_context,
+                idempotency_key: idempotencyKey.idempotency_key,
+              })
 
               return {
                 recovery_point: "payment_authorized",
@@ -55,43 +58,44 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              // Recovery: Started
               const cart = await cartService
                 .withTransaction(manager)
                 .retrieve(id, ["payment_session"])
 
+              if (!cart.payment) {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  `Cart payment not authorized`
+                )
+              }
+
               let order
 
-              //  if (error) return error
-              //  if (requires_action) return { status: requires_action, data: {} }
-
-              if (cart.payment_session.status === "authorized") {
-                try {
-                  order = await orderService
-                    .withTransaction(manager)
-                    .createFromCart(cart.id)
-                } catch (error) {
-                  if (
-                    error &&
-                    error.message === "Order from cart already exists"
-                  ) {
-                    order = await orderService
-                      .withTransaction(manager)
-                      .retrieveByCartId(value.cart_id)
-
-                    return {
-                      response_code: 200,
-                      response_body: { order },
-                    }
-                  } else {
-                    throw error
-                  }
-                }
-
+              try {
                 order = await orderService
                   .withTransaction(manager)
-                  .retrieve(order.id)
+                  .createFromCart(cart.id)
+              } catch (error) {
+                if (
+                  error &&
+                  error.message === "Order from cart already exists"
+                ) {
+                  order = await orderService
+                    .withTransaction(manager)
+                    .retrieveByCartId(id)
+
+                  return {
+                    response_code: 200,
+                    response_body: { order },
+                  }
+                } else {
+                  throw error
+                }
               }
+
+              order = await orderService
+                .withTransaction(manager)
+                .retrieve(order.id)
 
               return {
                 response_code: 200,
