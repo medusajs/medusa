@@ -1,8 +1,11 @@
+import { MockManager, MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
 
 describe("ProductService", () => {
   describe("retrieveProvider", () => {
     const container = {
+      manager: MockManager,
+      paymentSessionRepository: MockRepository(),
       pp_default_provider: "good",
     }
 
@@ -27,6 +30,8 @@ describe("ProductService", () => {
   describe("createSession", () => {
     const createPayment = jest.fn().mockReturnValue(Promise.resolve())
     const container = {
+      manager: MockManager,
+      paymentSessionRepository: MockRepository(),
       pp_default_provider: {
         createPayment,
       },
@@ -50,6 +55,17 @@ describe("ProductService", () => {
     const updatePayment = jest.fn().mockReturnValue(Promise.resolve())
 
     const container = {
+      manager: MockManager,
+      paymentSessionRepository: MockRepository({
+        findOne: () =>
+          Promise.resolve({
+            id: "session",
+            provider_id: "default_provider",
+            data: {
+              id: "1234",
+            },
+          }),
+      }),
       pp_default_provider: {
         updatePayment,
       },
@@ -60,6 +76,7 @@ describe("ProductService", () => {
     it("successfully creates session", async () => {
       await providerService.updateSession(
         {
+          id: "session",
           provider_id: "default_provider",
           data: {
             id: "1234",

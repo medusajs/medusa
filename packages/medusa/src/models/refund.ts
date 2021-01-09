@@ -36,13 +36,6 @@ export class Refund {
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @Column()
-  currency_code: string
-
-  @ManyToOne(() => Currency)
-  @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
-
   @Column({ type: "int" })
   amount: number
 

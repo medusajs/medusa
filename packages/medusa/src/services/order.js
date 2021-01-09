@@ -530,7 +530,7 @@ class OrderService extends BaseService {
 
       await Promise.all(
         order.fulfillments.map(fulfillment =>
-          this.fulfillmentProviderService_
+          this.fulfillmentService_
             .withTransaction(manager)
             .cancelFulfillment(fulfillment)
         )
@@ -638,11 +638,9 @@ class OrderService extends BaseService {
         "items.variant.product",
       ])
 
-      const fulfillments = await this.fulfillmentService_.createFulfillment(
-        order,
-        itemsToFulfill,
-        metadata
-      )
+      const fulfillments = await this.fulfillmentService_
+        .withTransaction(manager)
+        .createFulfillment(order, itemsToFulfill, metadata)
 
       let successfullyFulfilled = []
       for (const f of fulfillments) {

@@ -46,15 +46,19 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }))
   }
 
-  async validateFulfillmentData(data, _) {
-    if (data.require_drop_point) {
+  async validateFulfillmentData(optionData, data, _) {
+    if (optionData.require_drop_point) {
       if (!data.drop_point_id) {
         throw new Error("Must have drop point id")
       } else {
         // TODO: validate that the drop point exists
       }
     }
-    return data
+
+    return {
+      ...optionData,
+      ...data,
+    }
   }
 
   async validateOption(data) {
@@ -207,7 +211,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
     return toReturn
   }
 
-  async createOrder(methodData, fulfillmentItems, fromOrder) {
+  async createFulfillment(methodData, fulfillmentItems, fromOrder) {
     const existing =
       fromOrder.metadata && fromOrder.metadata.webshipper_order_id
 
@@ -245,7 +249,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       let ext_ref = `${fromOrder._id}.${fromOrder.fulfillments.length}`
 
       if (fromOrder.is_swap) {
-        ext_ref = `S${fromOrder._id}.${fromOrder.fulfillments.length}`
+        ext_ref = `S${fromOrder.id}.${fromOrder.fulfillments.length}`
         visible_ref = `S-${fromOrder.display_id}`
       }
 
@@ -258,17 +262,16 @@ class WebshipperFulfillmentService extends FulfillmentService {
           visible_ref,
           order_lines: fulfillmentItems.map((item) => {
             return {
-              ext_ref: item._id,
-              sku: item.content.variant.sku,
+              ext_ref: item.id,
+              sku: item.variant.sku,
               description: item.title,
               quantity: item.quantity,
               country_of_origin:
-                item.content.variant.metadata &&
-                item.content.variant.metadata.origin_country,
+                item.variant.origin_country ||
+                item.variant.product.origin_country,
               tarif_number:
-                item.content.variant.metadata &&
-                item.content.variant.metadata.hs_code,
-              unit_price: item.content.unit_price,
+                item.variant.hs_code || item.variant.product.hs_code,
+              unit_price: item.unit_price,
             }
           }),
           delivery_address: {

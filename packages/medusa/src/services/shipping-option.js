@@ -184,7 +184,7 @@ class ShippingOptionService extends BaseService {
       await this.validateCartOption(option, cart)
 
       const validatedData = await this.providerService_.validateFulfillmentData(
-        option.data,
+        option,
         data,
         cart
       )
@@ -274,10 +274,7 @@ class ShippingOptionService extends BaseService {
       option.price_type = await this.validatePriceType_(data.price_type, option)
       option.amount = data.price_type === "calculated" ? null : data.amount
 
-      const isValid = await this.providerService_.validateOption(
-        option,
-        data.data
-      )
+      const isValid = await this.providerService_.validateOption(option)
 
       if (!isValid) {
         throw new MedusaError(
