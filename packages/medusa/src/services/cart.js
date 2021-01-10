@@ -145,6 +145,62 @@ class CartService extends BaseService {
     return this.productVariantService_.canCoverQuantity(variantId, quantity)
   }
 
+  transformQueryForTotals_(config) {
+    let { select, relations } = config
+
+    if (!select) {
+      return {
+        select,
+        relations,
+        totalsToSelect: [],
+      }
+    }
+
+    const totalFields = [
+      "subtotal",
+      "tax_total",
+      "shipping_total",
+      "discount_total",
+      "total",
+    ]
+
+    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    if (totalsToSelect.length > 0) {
+      const relationSet = new Set(relations)
+      relationSet.add("items")
+      relationSet.add("discounts")
+      relationSet.add("refunds")
+      relations = [...relationSet]
+
+      select = select.filter(v => !totalFields.includes(v))
+    }
+
+    return {
+      relations,
+      select,
+      totalsToSelect,
+    }
+  }
+
+  async decorateTotals_(cart, totalsFields = []) {
+    if (totalsFields.includes("shipping_total")) {
+      cart.shipping_total = await this.totalsService_.getShippingTotal(cart)
+    }
+    if (totalsFields.includes("discount_total")) {
+      cart.discount_total = await this.totalsService_.getDiscountTotal(cart)
+    }
+    if (totalsFields.includes("tax_total")) {
+      cart.tax_total = await this.totalsService_.getTaxTotal(cart)
+    }
+    if (totalsFields.includes("subtotal")) {
+      cart.subtotal = await this.totalsService_.getSubtotal(cart)
+    }
+    if (totalsFields.includes("total")) {
+      cart.total = await this.totalsService_.getTotal(cart)
+    }
+    return cart
+  }
+
   /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
@@ -176,27 +232,32 @@ class CartService extends BaseService {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
     const validatedId = this.validateId_(cartId)
 
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      options
+    )
+
     const query = {
       where: { id: validatedId },
     }
 
-    if (options.select) {
-      query.select = options.select
+    if (relations && relations.length > 0) {
+      query.relations = relations
     }
 
-    if (options.relations) {
-      query.relations = options.relations
+    if (select && select.length > 0) {
+      query.select = select
     }
 
-    const cart = await cartRepo.findOne(query)
+    const raw = await cartRepo.findOne(query)
 
-    if (!cart) {
+    if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Cart with ${cartId} was not found`
       )
     }
 
+    const cart = await this.decorateTotals_(raw, totalsToSelect)
     return cart
   }
 
@@ -252,25 +313,6 @@ class CartService extends BaseService {
         .emit(CartService.Events.CREATED, result)
       return result
     })
-  }
-
-  /**
-   * Decorates a cart.
-   * @param {Cart} cart - the cart to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {Cart} return the decorated cart.
-   */
-  async decorate(cart, fields, expandFields = []) {
-    const c = cart
-    c.shipping_total = await this.totalsService_.getShippingTotal(cart)
-    c.discount_total = await this.totalsService_.getDiscountTotal(cart)
-    c.tax_total = await this.totalsService_.getTaxTotal(cart)
-    c.subtotal = await this.totalsService_.getSubtotal(cart)
-    c.total = await this.totalsService_.getTotal(cart)
-
-    const final = await this.runDecorators_(c)
-    return final
   }
 
   /**

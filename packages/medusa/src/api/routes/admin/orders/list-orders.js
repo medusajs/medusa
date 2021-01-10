@@ -10,13 +10,18 @@ export default async (req, res) => {
     const selector = {}
 
     const listConfig = {
+      select: ["total"],
+      relations: [],
       skip: offset,
       take: limit,
     }
 
-    const orders = await orderService.list(selector)
+    const [orders, count] = await orderService.listAndCount(
+      selector,
+      listConfig
+    )
 
-    res.json({ orders, count: orders.length, offset, limit })
+    res.json({ orders, count, offset, limit })
   } catch (error) {
     throw error
   }

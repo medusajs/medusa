@@ -72,15 +72,7 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} tax total
    */
-  async getTaxTotal(id, type) {
-    const service = this.container_[`${type}Service`]
-    const object = await service.retrieve(id, [
-      "items",
-      "discounts",
-      "region",
-      "shipping_methods",
-    ])
-
+  async getTaxTotal(object) {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
     const discountTotal = await this.getDiscountTotal(object)
