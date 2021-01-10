@@ -36,7 +36,7 @@ export default async (req, res) => {
         .withTransaction(manager)
         .create({ ...line, cart_id: id })
 
-      cart = await cartService.retrieve(cart.id, ["region"])
+      cart = await cartService.retrieve(cart.id, ["region", "items"])
       res.status(200).json({ cart })
     })
   } catch (err) {

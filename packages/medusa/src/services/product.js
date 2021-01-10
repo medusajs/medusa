@@ -90,24 +90,17 @@ class ProductService extends BaseService {
    * @param {string} productId - id of the product to get.
    * @return {Promise<Product>} the result of the find one operation.
    */
-  async retrieve(productId, findOptions = {}) {
+  async retrieve(productId, relations = []) {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const validatedId = this.validateId_(productId)
 
-      const query = {
-        where: { id: validatedId },
-      }
-
-      if (findOptions.select) {
-        query.select = findOptions.select
-      }
-
-      if (findOptions.relations) {
-        query.relations = findOptions.relations
-      }
-
-      const product = await productRepo.findOne(query)
+      const product = await productRepo.findOne({
+        where: {
+          id: validatedId,
+        },
+        relations,
+      })
 
       if (!product) {
         throw new MedusaError(
@@ -126,15 +119,7 @@ class ProductService extends BaseService {
    * @return {Promise} an array of variants
    */
   async retrieveVariants(productId) {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
-
-    const product = await productRepo.findOne({
-      where: { id: productId },
-      relations: ["variants"],
-    })
-
+    const product = await this.retrieve(productId, ["variants"])
     return product.variants
   }
 

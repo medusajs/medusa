@@ -186,8 +186,6 @@ class EventBusService {
 
       const jobs = await stagedJobRepo.find({}, listConfig)
 
-      console.log("Jobs: ", jobs)
-
       await Promise.all(
         jobs.map(job => {
           this.queue_
@@ -196,7 +194,7 @@ class EventBusService {
               { removeOnComplete: true }
             )
             .then(async () => {
-              await this.stagedJobRepository_.remove(job)
+              await stagedJobRepo.remove(job)
             })
         })
       )

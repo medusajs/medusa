@@ -49,14 +49,10 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async getVariantEntries_(productId) {
+  async getVariantEntries_(variants) {
     try {
-      const productVariants = await this.productService_.retrieveVariants(
-        productId
-      )
-
       const contentfulVariants = await Promise.all(
-        productVariants.map((variant) =>
+        variants.map((variant) =>
           this.updateProductVariantInContentful(variant)
         )
       )
@@ -84,8 +80,10 @@ class ContentfulService extends BaseService {
         "options",
       ])
 
+      console.log(p)
+
       const environment = await this.getContentfulEnvironment_()
-      const variantEntries = await this.getVariantEntries_(p.id)
+      const variantEntries = await this.getVariantEntries_(p.variants)
       const variantLinks = this.getVariantLinks_(variantEntries)
       const result = await environment.createEntryWithId("product", p.id, {
         fields: {
@@ -182,7 +180,7 @@ class ContentfulService extends BaseService {
         "variants",
       ])
 
-      const variantEntries = await this.getVariantEntries_(p.id)
+      const variantEntries = await this.getVariantEntries_(p.variants)
       const variantLinks = this.getVariantLinks_(variantEntries)
 
       const productEntryFields = {

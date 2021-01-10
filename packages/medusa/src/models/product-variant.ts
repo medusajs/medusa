@@ -42,7 +42,7 @@ export class ProductVariant {
   prices: MoneyAmount[]
 
   @Column({ nullable: true })
-  @Index({ unique: true, where: "sku IS NOT NULL" })
+  @Index({ unique: true })
   sku: string
 
   @Index({ unique: true })
