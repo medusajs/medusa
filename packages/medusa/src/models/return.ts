@@ -38,7 +38,7 @@ export class Return {
   @OneToMany(
     () => ReturnItem,
     item => item.return_order,
-    { cascade: true }
+    { eager: true, cascade: true }
   )
   items: ReturnItem[]
 
@@ -64,7 +64,7 @@ export class Return {
   @OneToOne(
     () => ShippingMethod,
     method => method.return_order,
-    { cascade: true }
+    { eager: true, cascade: true }
   )
   shipping_method: ShippingMethod
 

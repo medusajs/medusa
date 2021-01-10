@@ -6,14 +6,8 @@ import { BaseService } from "medusa-interfaces"
  * @implements BaseService
  */
 class TotalsService extends BaseService {
-  constructor({ productVariantService, regionService }) {
+  constructor({}) {
     super()
-
-    /** @private @const {ProductVariantService} */
-    this.productVariantService_ = productVariantService
-
-    /** @private @const {RegionService} */
-    this.regionService_ = regionService
   }
 
   /**
@@ -21,11 +15,11 @@ class TotalsService extends BaseService {
    * @param {object} object - object to calculate total for
    * @return {int} the calculated subtotal
    */
-  async getTotal(object) {
-    const subtotal = await this.getSubtotal(object)
-    const taxTotal = await this.getTaxTotal(object)
-    const discountTotal = await this.getDiscountTotal(object)
-    const shippingTotal = await this.getShippingTotal(object)
+  getTotal(object) {
+    const subtotal = this.getSubtotal(object)
+    const taxTotal = this.getTaxTotal(object)
+    const discountTotal = this.getDiscountTotal(object)
+    const shippingTotal = this.getShippingTotal(object)
 
     return subtotal + taxTotal + shippingTotal - discountTotal
   }
@@ -72,12 +66,11 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} tax total
    */
-  async getTaxTotal(object) {
+  getTaxTotal(object) {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
-    const discountTotal = await this.getDiscountTotal(object)
-    const region = await this.regionService_.retrieve(object.region_id)
-    const { tax_rate } = region
+    const discountTotal = this.getDiscountTotal(object)
+    const { tax_rate } = object.region
     return this.rounded(
       (subtotal - discountTotal + shippingTotal) * (tax_rate / 100)
     )
@@ -93,27 +86,28 @@ class TotalsService extends BaseService {
   }
 
   getLineItemRefund(object, lineItem) {
+    const returnableQty = lineItem.quantity - (lineItem.returned_quantity || 0)
     const { tax_rate, discounts } = object
-    const taxRate = tax_rate || 0
+    const taxRate = (tax_rate || 0) / 100
 
     const discount = discounts.find(
       ({ discount_rule }) => discount_rule.type !== "free_shipping"
     )
 
     if (!discount) {
-      return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
+      return lineItem.unit_price * returnableQty * (1 + taxRate)
     }
 
     const lineDiscounts = this.getLineDiscounts(object, discount)
     const discountedLine = lineDiscounts.find(
-      line => line.item_id === lineItem.id
+      line => line.item.id === lineItem.id
     )
 
     const discountAmount =
-      (discountedLine.amount / discountedLine.item.quantity) * lineItem.quantity
+      (discountedLine.amount / discountedLine.item.quantity) * returnableQty
 
     return this.rounded(
-      (lineItem.unit_price * lineItem.quantity - discountAmount) * (1 + taxRate)
+      (lineItem.unit_price * returnableQty - discountAmount) * (1 + taxRate)
     )
   }
 
@@ -247,7 +241,7 @@ class TotalsService extends BaseService {
    * @param {Cart} Cart - the cart to calculate discounts for
    * @return {int} the total discounts amount
    */
-  async getDiscountTotal(cart) {
+  getDiscountTotal(cart) {
     let subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
 
     if (!cart.discounts || !cart.discounts.length) {

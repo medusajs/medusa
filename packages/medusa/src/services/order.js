@@ -199,7 +199,7 @@ class OrderService extends BaseService {
 
     const raw = await orderRepo.find(query)
 
-    return Promise.all(raw.map(r => this.decorateTotals_(r, totalsToSelect)))
+    return raw.map(r => this.decorateTotals_(r, totalsToSelect))
   }
 
   async listAndCount(
@@ -221,9 +221,7 @@ class OrderService extends BaseService {
     }
 
     const [raw, count] = await orderRepo.findAndCount(query)
-    const orders = await Promise.all(
-      raw.map(r => this.decorateTotals_(r, totalsToSelect))
-    )
+    const orders = raw.map(r => this.decorateTotals_(r, totalsToSelect))
 
     return [orders, count]
   }
@@ -255,6 +253,8 @@ class OrderService extends BaseService {
       relationSet.add("items")
       relationSet.add("discounts")
       relationSet.add("refunds")
+      relationSet.add("shipping_methods")
+      relationSet.add("region")
       relations = [...relationSet]
 
       select = select.filter(v => !totalFields.includes(v))
@@ -301,7 +301,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = await this.decorateTotals_(raw, totalsToSelect)
+    const order = this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -1033,30 +1033,38 @@ class OrderService extends BaseService {
     })
   }
 
-  async decorateTotals_(order, totalsFields = []) {
+  decorateTotals_(order, totalsFields = []) {
     if (totalsFields.includes("shipping_total")) {
-      order.shipping_total = await this.totalsService_.getShippingTotal(order)
+      order.shipping_total = this.totalsService_.getShippingTotal(order)
     }
     if (totalsFields.includes("discount_total")) {
-      order.discount_total = await this.totalsService_.getDiscountTotal(order)
+      order.discount_total = this.totalsService_.getDiscountTotal(order)
     }
     if (totalsFields.includes("tax_total")) {
-      order.tax_total = await this.totalsService_.getTaxTotal(order)
+      order.tax_total = this.totalsService_.getTaxTotal(order)
     }
     if (totalsFields.includes("subtotal")) {
-      order.subtotal = await this.totalsService_.getSubtotal(order)
+      order.subtotal = this.totalsService_.getSubtotal(order)
     }
     if (totalsFields.includes("total")) {
-      order.total = await this.totalsService_.getTotal(order)
+      order.total = this.totalsService_.getTotal(order)
     }
     if (totalsFields.includes("refunded_total")) {
-      order.refunded_total = await this.totalsService_.getRefundedTotal(order)
+      order.refunded_total = this.totalsService_.getRefundedTotal(order)
     }
     if (totalsFields.includes("refundable_amount")) {
-      const total = await this.totalsService_.getTotal(order)
-      const refunded_total = await this.totalsService_.getRefundedTotal(order)
+      const total = this.totalsService_.getTotal(order)
+      const refunded_total = this.totalsService_.getRefundedTotal(order)
       order.refundable_amount = total - refunded_total
     }
+
+    if ("items" in order) {
+      order.items = order.items.map(i => ({
+        ...i,
+        refundable: this.totalsService_.getLineItemRefund(order, i),
+      }))
+    }
+
     return order
   }
 

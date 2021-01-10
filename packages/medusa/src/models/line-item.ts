@@ -112,6 +112,8 @@ export class LineItem {
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
+  refundable: number | null
+
   @BeforeInsert()
   private beforeInsert() {
     const id = randomize("Aa0", 24)

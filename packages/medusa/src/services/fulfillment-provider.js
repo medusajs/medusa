@@ -43,7 +43,7 @@ class FulfillmentProviderService {
   /**
    * @returns {FulfillmentService} the payment fulfillment provider
    */
-  retrieveProvider_(provider_id) {
+  retrieveProvider(provider_id) {
     try {
       return this.container_[`fp_${provider_id}`]
     } catch (err) {
@@ -55,32 +55,32 @@ class FulfillmentProviderService {
   }
 
   async createFulfillment(method, items, order) {
-    const provider = this.retrieveProvider_(method.shipping_option.provider_id)
+    const provider = this.retrieveProvider(method.shipping_option.provider_id)
     return provider.createFulfillment(method.data, items, order)
   }
 
   async canCalculate(option) {
-    const provider = this.retrieveProvider_(option.provider_id)
+    const provider = this.retrieveProvider(option.provider_id)
     return provider.canCalculate(option.data)
   }
 
   async validateFulfillmentData(option, data, cart) {
-    const provider = this.retrieveProvider_(option.provider_id)
+    const provider = this.retrieveProvider(option.provider_id)
     return provider.validateFulfillmentData(option.data, data, cart)
   }
 
   async cancelFulfillment(fulfillment) {
-    const provider = this.retrieveProvider_(fulfillment.provider_id)
+    const provider = this.retrieveProvider(fulfillment.provider_id)
     return provider.cancelFulfillment(fulfillment.data)
   }
 
   async calculatePrice(option, data, cart) {
-    const provider = this.retrieveProvider_(option.provider_id)
+    const provider = this.retrieveProvider(option.provider_id)
     return provider.calculatePrice(option.data, data, cart)
   }
 
   async validateOption(option) {
-    const provider = this.retrieveProvider_(option.provider_id)
+    const provider = this.retrieveProvider(option.provider_id)
     return provider.validateOption(option.data)
   }
 }

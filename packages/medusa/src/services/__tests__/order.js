@@ -2,6 +2,15 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
 
 describe("OrderService", () => {
+  const totalsService = {
+    getLineItemRefund: () => {},
+    getTotal: o => {
+      return Promise.resolve(o.total || 0)
+    },
+    getRefundedTotal: o => {
+      return o.refunded || 0
+    },
+  }
   const eventBusService = {
     emit: jest.fn(),
     withTransaction: function() {
@@ -14,6 +23,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
+      totalsService,
       eventBusService,
     })
 
@@ -44,13 +54,16 @@ describe("OrderService", () => {
         return Promise.resolve(payment.status || "authorized")
       },
     }
-    const totalsService = {
-      getTotal: cart => {
-        return Promise.resolve(cart.total || 0)
-      },
+    const emptyCart = {
+      region: {},
+      items: [],
+      total: 0,
     }
     const cartService = {
       retrieve: jest.fn().mockImplementation(query => {
+        if (query === "empty") {
+          return Promise.resolve(emptyCart)
+        }
         return Promise.resolve({
           id: "cart_id",
           email: "test@test.com",
@@ -98,12 +111,8 @@ describe("OrderService", () => {
     })
 
     it("fails when no items", async () => {
-      const cart = {
-        region: {},
-        items: [],
-      }
-      const res = orderService.createFromCart(cart)
-      expect(res).rejects.toThrow("Cannot create order from empty cart")
+      const res = orderService.createFromCart("empty")
+      await expect(res).rejects.toThrow("Cannot create order from empty cart")
     })
 
     it("calls order model functions", async () => {
@@ -209,6 +218,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
+      totalsService,
     })
 
     beforeAll(async () => {
@@ -231,6 +241,7 @@ describe("OrderService", () => {
       },
     })
     const orderService = new OrderService({
+      totalsService,
       manager: MockManager,
       orderRepository: orderRepo,
     })
@@ -269,6 +280,7 @@ describe("OrderService", () => {
       },
     })
     const orderService = new OrderService({
+      totalsService,
       manager: MockManager,
       orderRepository: orderRepo,
       eventBusService,
@@ -373,6 +385,7 @@ describe("OrderService", () => {
     }
 
     const orderService = new OrderService({
+      totalsService,
       manager: MockManager,
       orderRepository: orderRepo,
       paymentProviderService,
@@ -452,6 +465,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       paymentProviderService,
+      totalsService,
       eventBusService,
     })
 
@@ -555,6 +569,7 @@ describe("OrderService", () => {
       orderRepository: orderRepo,
       fulfillmentService,
       lineItemService,
+      totalsService,
       eventBusService,
     })
 
@@ -719,6 +734,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       paymentProviderService,
+      totalsService,
       returnService,
       lineItemService,
       eventBusService,
@@ -862,6 +878,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
+      totalsService,
       returnService,
       eventBusService,
     })
@@ -966,6 +983,7 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
+      totalsService,
       fulfillmentService,
       lineItemService,
       eventBusService,
@@ -1020,6 +1038,7 @@ describe("OrderService", () => {
       const orderService = new OrderService({
         manager: MockManager,
         orderRepository: orderRepo,
+        totalsService,
         swapService,
         eventBusService,
       })
@@ -1045,6 +1064,7 @@ describe("OrderService", () => {
         manager: MockManager,
         orderRepository: orderRepo,
         swapService,
+        totalsService,
         eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
       })
 
@@ -1094,6 +1114,7 @@ describe("OrderService", () => {
       const orderService = new OrderService({
         manager: MockManager,
         orderRepository: orderRepo,
+        totalsService,
         swapService,
         lineItemService,
         eventBusService,
@@ -1143,18 +1164,6 @@ describe("OrderService", () => {
 
     const paymentProviderService = {
       refundPayment: jest.fn().mockImplementation(p => Promise.resolve()),
-      withTransaction: function() {
-        return this
-      },
-    }
-
-    const totalsService = {
-      getTotal: o => {
-        return Promise.resolve(o.total || 100)
-      },
-      getRefundedTotal: o => {
-        return o.refunded || 0
-      },
       withTransaction: function() {
         return this
       },
