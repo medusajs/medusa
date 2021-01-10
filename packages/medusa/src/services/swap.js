@@ -108,6 +108,19 @@ class SwapService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
+    const query = this.buildQuery_(selector, config)
+    return swapRepo.find(query)
+  }
+
+  /**
    * @typedef OrderLike
    * @property {Array<LineItem>} items - the items on the order
    */
