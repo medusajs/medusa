@@ -1,5 +1,5 @@
 export default async (req, res) => {
-  const regionService = req.scope.resolve("productService")
+  const regionService = req.scope.resolve("regionService")
 
   const limit = parseInt(req.query.limit) || 100
   const offset = parseInt(req.query.offset) || 0

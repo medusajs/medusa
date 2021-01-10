@@ -56,6 +56,8 @@ class EventBusService {
 
       // Register cron worker
       this.cronQueue_.process(this.cronWorker_)
+
+      this.enqueuer_()
     }
   }
 
@@ -67,7 +69,7 @@ class EventBusService {
     const cloned = new EventBusService(
       {
         manager: transactionManager,
-        stagedJobRepository: this.stagedJobRepository,
+        stagedJobRepository: this.stagedJobRepository_,
         logger: this.logger_,
         redisClient: this.redisClient_,
         redisSubscriber: this.redisSubscriber_,
@@ -151,8 +153,7 @@ class EventBusService {
         data,
       })
 
-      const updated = await stagedJobRepository.save(created)
-      return updated
+      return stagedJobRepository.save(created)
     } else {
       this.queue_.add({ eventName, data }, { removeOnComplete: true })
     }
@@ -172,7 +173,20 @@ class EventBusService {
         take: 1000,
       }
 
-      const jobs = await this.stagedJobRepository_.find({}, listConfig)
+      let stagedJobRepo
+      if (this.transactionManager_) {
+        stagedJobRepo = this.transactionManager_.getCustomRepository(
+          this.stagedJobRepository_
+        )
+      } else {
+        stagedJobRepo = this.manager_.getCustomRepository(
+          this.stagedJobRepository_
+        )
+      }
+
+      const jobs = await stagedJobRepo.find({}, listConfig)
+
+      console.log("Jobs: ", jobs)
 
       await Promise.all(
         jobs.map(job => {

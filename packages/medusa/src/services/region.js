@@ -155,7 +155,6 @@ class RegionService extends BaseService {
           )
         }
 
-        region.currency = currency
         region.currency_code = currency_code.toLowerCase()
       }
 

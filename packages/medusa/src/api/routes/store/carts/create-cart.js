@@ -2,7 +2,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    region_id: Validator.string().required(),
+    region_id: Validator.string().optional(),
     country_code: Validator.string().optional(),
     items: Validator.array()
       .items({
@@ -28,7 +28,7 @@ export default async (req, res) => {
       let regionId = value.region_id
       if (!value.region_id) {
         const regionService = req.scope.resolve("regionService")
-        const regions = await regionService.withTransaction(manager).list()
+        const regions = await regionService.withTransaction(manager).list({})
         regionId = regions[0].id
       }
 

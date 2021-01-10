@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { Any } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
@@ -63,10 +64,12 @@ class ShippingProfileService extends BaseService {
   }
 
   async fetchOptionsByProductIds(productIds, filter) {
-    const products = await this.productService_.list({
-      where: { id: Any(productIds) },
-      relations: ["profile", "profile.shipping_options"],
-    })
+    const products = await this.productService_.list(
+      {
+        id: Any(productIds),
+      },
+      { relations: ["profile", "profile.shipping_options"] }
+    )
 
     const profiles = products.map(p => p.profile)
 

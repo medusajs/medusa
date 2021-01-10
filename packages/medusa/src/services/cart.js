@@ -28,6 +28,7 @@ class CartService extends BaseService {
     customerService,
     discountService,
     totalsService,
+    addressRepository,
   }) {
     super()
 
@@ -70,8 +71,11 @@ class CartService extends BaseService {
     /** @private @const {DiscountService} */
     this.discountService_ = discountService
 
-    /** @private @const {DiscountService} */
+    /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    /** @private @const {AddressRepository} */
+    this.addressRepository_ = addressRepository
   }
 
   withTransaction(transactionManager) {
@@ -93,6 +97,7 @@ class CartService extends BaseService {
       customerService: this.customerService_,
       discountService: this.discountService_,
       totalsService: this.totalsService_,
+      addressRepository: this.addressRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -203,6 +208,7 @@ class CartService extends BaseService {
   async create(data) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const addressRepo = manager.getCustomRepository(this.addressRepository_)
       const { region_id } = data
       if (!region_id) {
         throw new MedusaError(
@@ -211,20 +217,19 @@ class CartService extends BaseService {
         )
       }
 
-      const region = await this.regionService_.retrieve(region_id, {
-        relations: ["countries"],
-      })
+      const region = await this.regionService_.retrieve(region_id, [
+        "countries",
+      ])
 
-      const regCountries = region.countries.map(
-        ({ country_code }) => country_code
-      )
+      const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
       if (!data.shipping_address) {
         if (region.countries.length === 1) {
           // Preselect the country if the region only has 1
-          data.shipping_address = {
+          // and create address entity
+          data.shipping_address = await addressRepo.create({
             country_code: regCountries[0],
-          }
+          })
         }
       } else {
         if (!regCountries.includes(data.shipping_address.country_code)) {
@@ -240,8 +245,8 @@ class CartService extends BaseService {
         region_id: region.id,
       }
 
-      const inProgress = cartRepo.create(toCreate)
-      const result = cartRepo.save(inProgress)
+      const inProgress = await cartRepo.create(toCreate)
+      const result = await cartRepo.save(inProgress)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.CREATED, result)
@@ -482,15 +487,13 @@ class CartService extends BaseService {
   async update(cartId, update) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const cart = await this.retrieve(cartId, {
-        relations: [
-          "shipping_address",
-          "billing_address",
-          "discounts",
-          "discounts.discount_rule",
-          "discounts.regions",
-        ],
-      })
+      const cart = await this.retrieve(cartId, [
+        "shipping_address",
+        "billing_address",
+        "discounts",
+        "discounts.discount_rule",
+        "discounts.regions",
+      ])
 
       if ("region_id" in update) {
         await this.setRegion_(cart, update.region_id, update.country_code)
@@ -976,7 +979,8 @@ class CartService extends BaseService {
    */
   async setRegion_(cart, regionId, countryCode) {
     // Set the new region for the cart
-    cart.region_id = regionId
+    const region = await this.regionService_.retrieve(regionId, ["countries"])
+    cart.region = region
 
     // If the cart contains items we want to change the unit_price field of each
     // item to correspond to the price given in the region
@@ -1002,13 +1006,10 @@ class CartService extends BaseService {
     }
 
     let shippingAddress = cart.shipping_address || {}
-    const region = await this.regionService_.retrieve(regionId, {
-      relations: ["countries"],
-    })
     if (countryCode !== undefined) {
       if (
         !region.countries.find(
-          ({ country_code }) => country_code === countryCode
+          ({ iso_2 }) => iso_2 === countryCode.toLowerCase()
         )
       ) {
         throw new MedusaError(
@@ -1018,7 +1019,7 @@ class CartService extends BaseService {
       }
       cart.shipping_address = {
         ...shippingAddress,
-        country_code: countryCode,
+        country_code: countryCode.toLowerCase(),
       }
     } else {
       // If the country code of a shipping address is set we need to clear it
@@ -1033,7 +1034,7 @@ class CartService extends BaseService {
       if (region.countries.length === 1) {
         cart.shipping_address = {
           ...shippingAddress,
-          country_code: region.countries[0].country_code,
+          country_code: region.countries[0].iso_2,
         }
       }
     }

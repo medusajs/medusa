@@ -35,14 +35,14 @@ export class Cart {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address, { eager: true })
+  @ManyToOne(() => Address, { eager: true, cascade: true })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address, { eager: true })
+  @ManyToOne(() => Address, { eager: true, cascade: true })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
@@ -53,7 +53,10 @@ export class Cart {
   )
   items: LineItem[]
 
-  @ManyToOne(() => Region, { eager: true })
+  @Column()
+  region_id: string
+
+  @ManyToOne(() => Region, { eager: true, cascade: true })
   @JoinColumn({ name: "region_id" })
   region: Region
 

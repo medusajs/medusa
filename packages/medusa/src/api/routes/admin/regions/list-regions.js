@@ -5,6 +5,8 @@ export default async (req, res) => {
     const limit = parseInt(req.query.limit) || 10
     const offset = parseInt(req.query.offset) || 0
 
+    const selector = {}
+
     const listConfig = {
       relations: [
         "countries",
@@ -16,7 +18,7 @@ export default async (req, res) => {
       take: limit,
     }
 
-    let regions = await regionService.list({}, listConfig)
+    let regions = await regionService.list(selector, listConfig)
 
     res.json({ regions, count: regions.length, offset, limit })
   } catch (err) {
