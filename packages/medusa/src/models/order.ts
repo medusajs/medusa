@@ -215,6 +215,15 @@ export class Order {
   @Column({ nullable: true })
   idempotency_key: string
 
+  // Total fields
+  shipping_total: number
+  discount_total: number
+  tax_total: number
+  refunded_total: number
+  total: number
+  subtotal: number
+  refundable_amount: number
+
   @BeforeInsert()
   private beforeInsert() {
     const id = randomize("Aa0", 24)

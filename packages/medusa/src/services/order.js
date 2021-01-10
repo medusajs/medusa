@@ -178,21 +178,93 @@ class OrderService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(
+  async list(
     selector,
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = this.buildQuery_(selector, config)
-    return orderRepo.find(query)
+
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    if (select && select.length) {
+      query.select = select
+    }
+
+    if (relations && relations.length) {
+      query.relations = relations
+    }
+
+    const raw = await orderRepo.find(query)
+
+    return Promise.all(raw.map(r => this.decorateTotals_(r, totalsToSelect)))
   }
 
-  /**
-   * Return the total number of documents in database
-   * @return {Promise} the result of the count operation
-   */
-  count() {
-    return this.orderModel_.count()
+  async listAndCount(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const query = this.buildQuery_(selector, config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    if (select && select.length) {
+      query.select = select
+    }
+
+    if (relations && relations.length) {
+      query.relations = relations
+    }
+
+    const [raw, count] = await orderRepo.findAndCount(query)
+    const orders = await Promise.all(
+      raw.map(r => this.decorateTotals_(r, totalsToSelect))
+    )
+
+    return [orders, count]
+  }
+
+  transformQueryForTotals_(config) {
+    let { select, relations } = config
+
+    if (!select) {
+      return {
+        select,
+        relations,
+        totalsToSelect: [],
+      }
+    }
+
+    const totalFields = [
+      "subtotal",
+      "tax_total",
+      "shipping_total",
+      "discount_total",
+      "total",
+      "refunded_total",
+      "refundable_amount",
+    ]
+
+    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    if (totalsToSelect.length > 0) {
+      const relationSet = new Set(relations)
+      relationSet.add("items")
+      relationSet.add("discounts")
+      relationSet.add("refunds")
+      relations = [...relationSet]
+
+      select = select.filter(v => !totalFields.includes(v))
+    }
+
+    return {
+      relations,
+      select,
+      totalsToSelect,
+    }
   }
 
   /**
@@ -200,25 +272,36 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of order to retrieve
    * @return {Promise<Order>} the order document
    */
-  async retrieve(orderId, relations = []) {
+  async retrieve(orderId, config = { select: [], relations: [] }) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
-    if (relations.includes("all")) {
-      relations = entityFields
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    const query = {
+      where: { id: validatedId },
     }
 
-    const order = await orderRepo.findOne({
-      where: { id: validatedId },
-      relations,
-    })
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
 
-    if (!order) {
+    if (select && select.length > 0) {
+      query.select = select
+    }
+
+    const raw = await orderRepo.findOne(query)
+
+    if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Order with ${orderId} was not found`
       )
     }
+
+    const order = await this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -294,15 +377,17 @@ class OrderService extends BaseService {
     return this.atomicPhase_(async manager => {
       const cart = await this.cartService_
         .withTransaction(manager)
-        .retrieve(cartId, [
-          "region",
-          "payment",
-          "items",
-          "discounts",
-          "shipping_methods",
-          "billing_adress",
-          "shipping_address",
-        ])
+        .retrieve(cartId, {
+          relations: [
+            "region",
+            "payment",
+            "items",
+            "discounts",
+            "shipping_methods",
+            "billing_adress",
+            "shipping_address",
+          ],
+        })
 
       if (cart.items.length === 0) {
         throw new MedusaError(
@@ -385,7 +470,7 @@ class OrderService extends BaseService {
    */
   async createShipment(orderId, fulfillmentId, trackingNumbers, metadata = {}) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, ["items"])
+      const order = await this.retrieve(orderId, { relations: ["items"] })
       const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
 
       if (!shipment || shipment.order_id !== orderId) {
@@ -519,7 +604,9 @@ class OrderService extends BaseService {
    */
   async cancel(orderId) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, ["fulfillments", "payments"])
+      const order = await this.retrieve(orderId, {
+        relations: ["fulfillments", "payments"],
+      })
 
       if (order.payment_status !== "awaiting") {
         throw new MedusaError(
@@ -563,7 +650,7 @@ class OrderService extends BaseService {
    */
   async capturePayment(orderId) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, ["payments"])
+      const order = await this.retrieve(orderId, { relations: ["payments"] })
 
       order.payment_status = "captured"
 
@@ -632,11 +719,9 @@ class OrderService extends BaseService {
    */
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, [
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ])
+      const order = await this.retrieve(orderId, {
+        relations: ["items", "items.variant", "items.variant.product"],
+      })
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
@@ -822,7 +907,9 @@ class OrderService extends BaseService {
     allowMismatch = false
   ) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, ["items", "returns"])
+      const order = await this.retrieve(orderId, {
+        relations: ["items", "returns"],
+      })
       const returnRequest = await this.returnService_.retrieve(returnId)
 
       if (!returnRequest || returnRequest.order_id !== orderId) {
@@ -922,7 +1009,7 @@ class OrderService extends BaseService {
    */
   async createRefund(orderId, refundAmount, reason, note) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, ["payments"])
+      const order = await this.retrieve(orderId, { relations: ["payments"] })
       const total = await this.totalsService_.getTotal(order)
       const refunded = await this.totalsService_.getRefundedTotal(order)
 
@@ -946,117 +1033,31 @@ class OrderService extends BaseService {
     })
   }
 
-  /**
-   * Decorates an order.
-   * @param {Order} order - the order to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {Order} return the decorated order.
-   */
-  async decorate(order, fields = [], expandFields = []) {
-    if (fields.length === 0) {
-      // Default to include all fields
-      fields = [
-        "_id",
-        "display_id",
-        "status",
-        "fulfillment_status",
-        "payment_status",
-        "email",
-        "cart_id",
-        "billing_address",
-        "shipping_address",
-        "items",
-        "currency_code",
-        "tax_rate",
-        "fulfillments",
-        "returns",
-        "refunds",
-        "region_id",
-        "discounts",
-        "customer_id",
-        "payment_method",
-        "shipping_methods",
-        "documents",
-        "created",
-        "metadata",
-        "shipping_total",
-        "discount_total",
-        "tax_total",
-        "subtotal",
-        "total",
-        "refunded_total",
-        "refundable_amount",
-      ]
+  async decorateTotals_(order, totalsFields = []) {
+    if (totalsFields.includes("shipping_total")) {
+      order.shipping_total = await this.totalsService_.getShippingTotal(order)
     }
-    const requiredFields = [
-      "_id",
-      "display_id",
-      "fulfillment_status",
-      "payment_status",
-      "status",
-      "currency_code",
-      "region_id",
-      "metadata",
-    ]
-    const o = _.pick(order, fields.concat(requiredFields))
-
-    if (fields.includes("shipping_total")) {
-      o.shipping_total = await this.totalsService_.getShippingTotal(order)
+    if (totalsFields.includes("discount_total")) {
+      order.discount_total = await this.totalsService_.getDiscountTotal(order)
     }
-    if (fields.includes("discount_total")) {
-      o.discount_total = await this.totalsService_.getDiscountTotal(order)
+    if (totalsFields.includes("tax_total")) {
+      order.tax_total = await this.totalsService_.getTaxTotal(order)
     }
-    if (fields.includes("tax_total")) {
-      o.tax_total = await this.totalsService_.getTaxTotal(order)
+    if (totalsFields.includes("subtotal")) {
+      order.subtotal = await this.totalsService_.getSubtotal(order)
     }
-    if (fields.includes("subtotal")) {
-      o.subtotal = await this.totalsService_.getSubtotal(order)
+    if (totalsFields.includes("total")) {
+      order.total = await this.totalsService_.getTotal(order)
     }
-    if (fields.includes("total")) {
-      o.total = await this.totalsService_.getTotal(order)
+    if (totalsFields.includes("refunded_total")) {
+      order.refunded_total = await this.totalsService_.getRefundedTotal(order)
     }
-    if (fields.includes("refunded_total")) {
-      o.refunded_total = await this.totalsService_.getRefundedTotal(order)
+    if (totalsFields.includes("refundable_amount")) {
+      const total = await this.totalsService_.getTotal(order)
+      const refunded_total = await this.totalsService_.getRefundedTotal(order)
+      order.refundable_amount = total - refunded_total
     }
-    if (fields.includes("refundable_amount")) {
-      o.refundable_amount = o.total - o.refunded_total
-    }
-
-    //if (expandFields.includes("swaps")) {
-    //  if (order.swaps) {
-    //    o.swaps = await Promise.all(
-    //      order.swaps.map(sId => {
-    //        return this.swapService_.retrieve(sId)
-    //      })
-    //    )
-    //  } else {
-    //    o.swaps = []
-    //  }
-    //}
-
-    //if (expandFields.includes("customer")) {
-    //  o.customer = await this.customerService_.retrieve(order.customer_id)
-    //}
-
-    //if (expandFields.includes("region")) {
-    //  o.region = await this.regionService_.retrieve(order.region_id)
-    //}
-
-    //if (fields.includes("items")) {
-    //  o.items = order.items.map(i => {
-    //    return {
-    //      ...i,
-    //      refundable: this.totalsService_.getLineItemRefund(o, {
-    //        ...i,
-    //        quantity: i.quantity - i.returned_quantity,
-    //      }),
-    //    }
-    //  })
-    //}
-
-    const data = await this.runDecorators_(o)
-    return data
+    return order
   }
 
   /**
@@ -1099,7 +1100,7 @@ class OrderService extends BaseService {
    */
   async registerSwapReceived(id, swapId) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(id, ["items"])
+      const order = await this.retrieve(id, { relations: ["items"] })
       const swap = await this.swapService_.retrieve(swapId, [
         "return",
         "return.items",

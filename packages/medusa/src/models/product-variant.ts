@@ -27,6 +27,9 @@ export class ProductVariant {
   @Column()
   title: string
 
+  @Column()
+  product_id: string
+
   @ManyToOne(
     () => Product,
     product => product.variants

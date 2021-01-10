@@ -220,7 +220,6 @@ describe("OrderService", () => {
       expect(orderRepo.findOne).toHaveBeenCalledTimes(1)
       expect(orderRepo.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("test-order") },
-        relations: [],
       })
     })
   })
@@ -853,7 +852,8 @@ describe("OrderService", () => {
     })
 
     const returnService = {
-      requestReturn: jest.fn(),
+      create: jest.fn(() => Promise.resolve({ id: "ret" })),
+      fulfill: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -887,13 +887,16 @@ describe("OrderService", () => {
         shipping_method
       )
 
-      expect(returnService.requestReturn).toHaveBeenCalledTimes(1)
-      expect(returnService.requestReturn).toHaveBeenCalledWith(
-        order,
-        items,
-        shipping_method,
-        undefined
+      expect(returnService.create).toHaveBeenCalledTimes(1)
+      expect(returnService.create).toHaveBeenCalledWith(
+        {
+          items,
+          shipping_method,
+          refund_amount: undefined,
+        },
+        order
       )
+      expect(returnService.fulfill).toHaveBeenCalledWith("ret")
     })
   })
 

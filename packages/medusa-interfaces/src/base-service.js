@@ -57,6 +57,10 @@ class BaseService {
       query.relations = config.relations
     }
 
+    if ("select" in config) {
+      query.select = config.select
+    }
+
     if ("order" in config) {
       query.order = config.order
     }
