@@ -1,19 +1,14 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements BaseService
  */
 class TotalsService extends BaseService {
-  constructor({ productVariantService, regionService }) {
+  constructor() {
     super()
-
-    /** @private @const {ProductVariantService} */
-    this.productVariantService_ = productVariantService
-
-    /** @private @const {RegionService} */
-    this.regionService_ = regionService
   }
 
   /**
@@ -21,11 +16,11 @@ class TotalsService extends BaseService {
    * @param {object} object - object to calculate total for
    * @return {int} the calculated subtotal
    */
-  async getTotal(object) {
-    const subtotal = await this.getSubtotal(object)
-    const taxTotal = await this.getTaxTotal(object)
-    const discountTotal = await this.getDiscountTotal(object)
-    const shippingTotal = await this.getShippingTotal(object)
+  getTotal(object) {
+    const subtotal = this.getSubtotal(object)
+    const taxTotal = this.getTaxTotal(object)
+    const discountTotal = this.getDiscountTotal(object)
+    const shippingTotal = this.getShippingTotal(object)
 
     return subtotal + taxTotal + shippingTotal - discountTotal
   }
@@ -72,12 +67,11 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} tax total
    */
-  async getTaxTotal(object) {
+  getTaxTotal(object) {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
-    const discountTotal = await this.getDiscountTotal(object)
-    const region = await this.regionService_.retrieve(object.region_id)
-    const { tax_rate } = region
+    const discountTotal = this.getDiscountTotal(object)
+    const { tax_rate } = object.region
     return this.rounded(
       (subtotal - discountTotal + shippingTotal) * (tax_rate / 100)
     )
@@ -94,7 +88,7 @@ class TotalsService extends BaseService {
 
   getLineItemRefund(object, lineItem) {
     const { tax_rate, discounts } = object
-    const taxRate = tax_rate || 0
+    const taxRate = (tax_rate || 0) / 100
 
     const discount = discounts.find(
       ({ discount_rule }) => discount_rule.type !== "free_shipping"
@@ -106,7 +100,7 @@ class TotalsService extends BaseService {
 
     const lineDiscounts = this.getLineDiscounts(object, discount)
     const discountedLine = lineDiscounts.find(
-      line => line.item_id === lineItem.id
+      line => line.item.id === lineItem.id
     )
 
     const discountAmount =
@@ -126,7 +120,17 @@ class TotalsService extends BaseService {
    * @return {int} the calculated subtotal
    */
   getRefundTotal(order, lineItems) {
-    const refunds = lineItems.map(i => this.getLineItemRefund(order, i))
+    const itemIds = order.items.map(i => i.id)
+    const refunds = lineItems.map(i => {
+      if (!itemIds.includes(i.id)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Line item does not exist on order"
+        )
+      }
+
+      return this.getLineItemRefund(order, i)
+    })
     return this.rounded(refunds.reduce((acc, next) => acc + next, 0))
   }
 
@@ -186,7 +190,7 @@ class TotalsService extends BaseService {
             discounts.push(
               this.calculateDiscount_(
                 item,
-                id,
+                item.variant.id,
                 item.unit_price,
                 discount.discount_rule.value,
                 discount.discount_rule.type
@@ -200,7 +204,7 @@ class TotalsService extends BaseService {
   }
 
   getLineDiscounts(cart, discount) {
-    const subtotal = this.getSubtotal(cart)
+    const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
     const { type, allocation, value } = discount.discount_rule
     if (allocation === "total") {
       let percentage = 0
@@ -247,7 +251,7 @@ class TotalsService extends BaseService {
    * @param {Cart} Cart - the cart to calculate discounts for
    * @return {int} the total discounts amount
    */
-  async getDiscountTotal(cart) {
+  getDiscountTotal(cart) {
     let subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
 
     if (!cart.discounts || !cart.discounts.length) {

@@ -10,6 +10,7 @@ class EventBusService {
   constructor(
     { manager, logger, stagedJobRepository, redisClient, redisSubscriber },
     config,
+    enqueue = true,
     singleton = true
   ) {
     const opts = {
@@ -57,7 +58,9 @@ class EventBusService {
       // Register cron worker
       this.cronQueue_.process(this.cronWorker_)
 
-      this.enqueuer_()
+      if (process.env.NODE_ENV !== "test") {
+        this.startEnqueuer(enqueue)
+      }
     }
   }
 
@@ -165,26 +168,28 @@ class EventBusService {
     })
   }
 
+  async startEnqueuer() {
+    this.enRun_ = true
+    this.enqueue_ = this.enqueuer_()
+  }
+
+  async stopEnqueuer() {
+    this.enRun_ = false
+    await this.enqueue_
+  }
+
   async enqueuer_() {
-    while (true) {
+    while (this.enRun_) {
       const listConfig = {
         relations: [],
         skip: 0,
         take: 1000,
       }
 
-      let stagedJobRepo
-      if (this.transactionManager_) {
-        stagedJobRepo = this.transactionManager_.getCustomRepository(
-          this.stagedJobRepository_
-        )
-      } else {
-        stagedJobRepo = this.manager_.getCustomRepository(
-          this.stagedJobRepository_
-        )
-      }
-
-      const jobs = await stagedJobRepo.find({}, listConfig)
+      const sjRepo = this.manager_.getCustomRepository(
+        this.stagedJobRepository_
+      )
+      const jobs = await sjRepo.find({}, listConfig)
 
       await Promise.all(
         jobs.map(job => {
@@ -194,7 +199,7 @@ class EventBusService {
               { removeOnComplete: true }
             )
             .then(async () => {
-              await stagedJobRepo.remove(job)
+              await sjRepo.remove(job)
             })
         })
       )

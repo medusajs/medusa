@@ -78,6 +78,9 @@ export class Order {
   @Generated("increment")
   display_id: number
 
+  @Column()
+  cart_id: string
+
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
   cart: Cart

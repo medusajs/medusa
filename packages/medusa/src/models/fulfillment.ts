@@ -53,7 +53,7 @@ export class Fulfillment {
   @OneToMany(
     () => FulfillmentItem,
     i => i.fulfillment,
-    { cascade: true }
+    { eager: true, cascade: true }
   )
   items: FulfillmentItem[]
 
