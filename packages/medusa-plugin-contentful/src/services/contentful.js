@@ -80,8 +80,6 @@ class ContentfulService extends BaseService {
         "options",
       ])
 
-      console.log(p)
-
       const environment = await this.getContentfulEnvironment_()
       const variantEntries = await this.getVariantEntries_(p.variants)
       const variantLinks = this.getVariantLinks_(variantEntries)

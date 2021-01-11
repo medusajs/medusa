@@ -6,7 +6,7 @@ import IdempotencyKeyModel from "../models/idempotency-key"
 const KEY_LOCKED_TIMEOUT = 1000
 
 class IdempotencyKeyService extends BaseService {
-  constructor({ idempotencyKeyRepository, transactionService }) {
+  constructor({ manager, idempotencyKeyRepository, transactionService }) {
     super()
 
     /** @private @constant {EntityManager} */
@@ -125,13 +125,14 @@ class IdempotencyKeyService extends BaseService {
         this.idempotencyKeyRepository_
       )
 
-      const key = this.retrieve(idempotencyKey)
+      const iKey = await this.retrieve(idempotencyKey)
+      console.log(update)
 
       for (const [key, value] of Object.entries(update)) {
-        key[key] = value
+        iKey[key] = value
       }
 
-      const updated = await idempotencyKeyRepo.save(key)
+      const updated = await idempotencyKeyRepo.save(iKey)
       return updated
     })
   }

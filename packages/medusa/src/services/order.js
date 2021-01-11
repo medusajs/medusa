@@ -124,7 +124,7 @@ class OrderService extends BaseService {
       cartService: this.cartService_,
     })
 
-    this.transactionManager_ = manager
+    cloned.transactionManager_ = manager
 
     return cloned
   }
@@ -378,14 +378,13 @@ class OrderService extends BaseService {
       const cart = await this.cartService_
         .withTransaction(manager)
         .retrieve(cartId, {
+          select: ["total"],
           relations: [
             "region",
             "payment",
             "items",
             "discounts",
             "shipping_methods",
-            "billing_adress",
-            "shipping_address",
           ],
         })
 
@@ -404,9 +403,7 @@ class OrderService extends BaseService {
         )
       }
 
-      const total = await this.totalsService_.getTotal(cart)
-
-      const { payment, region } = cart
+      const { payment, region, total } = cart
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {

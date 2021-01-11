@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Any } from "typeorm"
+import { Any, In } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
@@ -401,19 +401,12 @@ class ShippingProfileService extends BaseService {
    */
   async fetchCartOptions(cart) {
     const profileIds = this.getProfilesInCart_(cart)
-    const profiles = await this.list(
-      { id: profileIds },
+
+    const rawOpts = await this.shippingOptionService_.list(
       {
-        relations: [
-          "shipping_options",
-          "shipping_options.requirements",
-          "shipping_options.profile",
-        ],
-      }
-    )
-    const rawOpts = profiles.reduce(
-      (acc, next) => acc.concat(next.shipping_options),
-      []
+        profile_id: profileIds,
+      },
+      { relations: ["requirements", "profile"] }
     )
 
     const options = []

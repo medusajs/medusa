@@ -22,10 +22,12 @@ class BaseService {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
         switch (true) {
           case value instanceof FindOperator:
+            console.log("Find: ", value)
             acc[key] = value
             break
           case Array.isArray(value):
-            acc[key] = In(value)
+            console.log("Array: ", value)
+            acc[key] = In([...value])
             break
           case value !== null && typeof value === "object":
             acc[key] = build(value)

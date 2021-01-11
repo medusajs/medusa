@@ -10,8 +10,8 @@ export default async (req, res) => {
     email: Validator.string()
       .email()
       .optional(),
-    billing_address: Validator.address().optional(),
-    shipping_address: Validator.address().optional(),
+    billing_address: Validator.object().optional(),
+    shipping_address: Validator.object().optional(),
     discounts: Validator.array()
       .items({
         code: Validator.string(),
@@ -29,7 +29,16 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
 
     let cart = await cartService.update(id, value)
-    cart = await cartService.retrieve(id, ["region"])
+    cart = await cartService.retrieve(id, {
+      select: [
+        "subtotal",
+        "tax_total",
+        "shipping_total",
+        "discount_total",
+        "total",
+      ],
+      relations: ["region", "items"],
+    })
     res.json({ cart })
   } catch (err) {
     throw err

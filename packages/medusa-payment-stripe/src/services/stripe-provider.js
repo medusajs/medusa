@@ -141,7 +141,7 @@ class StripeProviderService extends PaymentService {
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
-      amount: parseInt(amount * 100), // Stripe amount is in cents
+      amount: amount, // Stripe amount is in cents
       currency: currency_code,
       setup_future_usage: "on_session",
       capture_method: this.options_.capture ? "automatic" : "manual",
@@ -153,6 +153,9 @@ class StripeProviderService extends PaymentService {
 
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
+      } else {
+        const stripeCustomer = await this.stripe_.customers.create({ email })
+        intentRequest.customer = stripeCustomer.id
       }
     } else {
       const stripeCustomer = await this.stripe_.customers.create({ email })
@@ -181,12 +184,12 @@ class StripeProviderService extends PaymentService {
 
   /**
    * Gets a Stripe payment intent and returns it.
-   * @param {object} data - the data of the payment to retrieve
+   * @param {object} sessionData - the data of the payment to retrieve
    * @returns {Promise<object>} Stripe payment intent
    */
-  async getPaymentData(data) {
+  async getPaymentData(sessionData) {
     try {
-      return this.stripe_.paymentIntents.retrieve(data.id)
+      return this.stripe_.paymentIntents.retrieve(sessionData.data.id)
     } catch (error) {
       throw error
     }
@@ -200,8 +203,21 @@ class StripeProviderService extends PaymentService {
    * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment(sessionData, context = {}) {
+    const stat = await this.getStatus(sessionData)
+
     try {
-      return { data: sessionData, status: this.getStatus(stripeSessionData) }
+      return { data: sessionData, status: stat }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updatePaymentData(sessionData, update) {
+    try {
+      const updated = await this.stripe_.paymentIntents.update(sessionData.id, {
+        ...update.data,
+      })
+      return { ...updated }
     } catch (error) {
       throw error
     }
@@ -213,9 +229,18 @@ class StripeProviderService extends PaymentService {
    * @param {object} update - objec to update intent with
    * @returns {object} Stripe payment intent
    */
-  async updatePayment(sessionData, update) {
+  async updatePayment(sessionData, cart) {
     try {
-      return this.stripe_.paymentIntents.update(sessionData.id, update)
+      const amount = await this.totalsService_.getTotal(cart)
+
+      if (sessionData.amount === amount) {
+        return sessionData
+      }
+
+      const updated = await this.stripe_.paymentIntents.update(sessionData.id, {
+        amount,
+      })
+      return { ...updated }
     } catch (error) {
       throw error
     }

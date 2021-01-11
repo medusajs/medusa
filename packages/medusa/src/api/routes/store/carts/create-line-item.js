@@ -36,7 +36,16 @@ export default async (req, res) => {
         .withTransaction(manager)
         .create({ ...line, cart_id: id })
 
-      cart = await cartService.retrieve(cart.id, ["region", "items"])
+      cart = await cartService.withTransaction(manager).retrieve(cart.id, {
+        select: [
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
+        relations: ["region", "items"],
+      })
       res.status(200).json({ cart })
     })
   } catch (err) {

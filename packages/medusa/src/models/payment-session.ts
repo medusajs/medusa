@@ -26,12 +26,12 @@ export class PaymentSession {
   id: string
 
   @Column()
-  cart_id: number
+  cart_id: string
 
   @ManyToOne(
     () => Cart,
     cart => cart.payment_sessions
-  )
+    , { cascade: true })
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 

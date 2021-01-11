@@ -65,13 +65,13 @@ export class Order {
   @PrimaryColumn()
   id: string
 
-  @Column({ type: "enum", enum: OrderStatus })
+  @Column({ type: "enum", enum: OrderStatus, default: "pending" })
   status: OrderStatus
 
-  @Column({ type: "enum", enum: FulfillmentStatus })
+  @Column({ type: "enum", enum: FulfillmentStatus, default: "not_fulfilled" })
   fulfillment_status: FulfillmentStatus
 
-  @Column({ type: "enum", enum: PaymentStatus })
+  @Column({ type: "enum", enum: PaymentStatus, default: "not_paid" })
   payment_status: PaymentStatus
 
   @Column()

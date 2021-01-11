@@ -24,6 +24,11 @@ export default (app, container) => {
 
   route.post("/:id", middlewares.wrap(require("./update-cart").default))
 
+  route.post(
+    "/:id/complete-cart",
+    middlewares.wrap(require("./complete-cart").default)
+  )
+
   // Line items
   route.post(
     "/:id/line-items",
@@ -50,13 +55,18 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/payment-sessions/:provider_id",
+    "/:id/payment-session/update",
     middlewares.wrap(require("./update-payment-session").default)
   )
 
   route.delete(
     "/:id/payment-sessions/:provider_id",
     middlewares.wrap(require("./delete-payment-session").default)
+  )
+
+  route.post(
+    "/:id/payment-session",
+    middlewares.wrap(require("./set-payment-session").default)
   )
 
   route.post(

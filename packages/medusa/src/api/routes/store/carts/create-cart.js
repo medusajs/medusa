@@ -65,9 +65,17 @@ export default async (req, res) => {
         )
       }
 
-      cart = await cartService
-        .withTransaction(manager)
-        .retrieve(cart.id, ["region"])
+      cart = await cartService.withTransaction(manager).retrieve(cart.id, {
+        select: [
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
+        relations: ["region"],
+      })
+
       res.status(200).json({ cart })
     })
   } catch (err) {

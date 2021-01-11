@@ -191,9 +191,7 @@ class ProductService extends BaseService {
         this.productVariantRepository_
       )
 
-      const product = await this.retrieve(productId, {
-        relations: ["variants"],
-      })
+      const product = await this.retrieve(productId, ["variants"])
 
       const { variants, metadata, options, images, thumbnail, ...rest } = update
 

@@ -65,7 +65,7 @@ export class ShippingMethod {
   @JoinColumn({ name: "return_id" })
   return_order: Return
 
-  @ManyToOne(() => ShippingOption)
+  @ManyToOne(() => ShippingOption, { eager: true })
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption
 

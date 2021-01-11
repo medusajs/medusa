@@ -1,3 +1,5 @@
+import { MedusaError } from "medusa-core-utils"
+
 export default async (req, res) => {
   const { id } = req.params
 
@@ -14,6 +16,7 @@ export default async (req, res) => {
       req.path
     )
   } catch (error) {
+    console.log(error)
     res.status(409).send("Failed to create idempotency key")
     return
   }
@@ -60,7 +63,7 @@ export default async (req, res) => {
             async manager => {
               const cart = await cartService
                 .withTransaction(manager)
-                .retrieve(id, ["payment_session"])
+                .retrieve(id, ["payment", "payment_session"])
 
               if (!cart.payment) {
                 throw new MedusaError(

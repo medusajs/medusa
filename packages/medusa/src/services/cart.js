@@ -169,7 +169,6 @@ class CartService extends BaseService {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("discounts")
-      relationSet.add("refunds")
       relations = [...relationSet]
 
       select = select.filter(v => !totalFields.includes(v))
@@ -535,6 +534,7 @@ class CartService extends BaseService {
         "discounts",
         "discounts.discount_rule",
         "discounts.regions",
+        "payment_session",
       ])
 
       if ("region_id" in update) {
@@ -624,7 +624,7 @@ class CartService extends BaseService {
     }
 
     cart.email = value
-    cart.customer_id = customer.id
+    cart.customer = customer
   }
 
   /**
@@ -650,27 +650,20 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateShippingAddress_(cart, address) {
-    const { value, error } = Validator.address().validate(address)
-    if (error) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.message)
-    }
+    address.country_code = address.country_code.toLowerCase()
 
-    value.country_code = value.country_code.toLowerCase()
+    const region = await this.regionService_.retrieve(cart.region_id, [
+      "countries",
+    ])
 
-    const region = await this.regionService_.retrieve(cart.region_id, {
-      relations: ["countries"],
-    })
-    if (
-      !region.countries.find(
-        ({ country_code }) => value.country_code === country_code
-      )
-    ) {
+    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Shipping country must be in the cart region"
       )
     }
-    cart.shipping_address = value
+
+    cart.shipping_address = address
   }
 
   /**
@@ -776,8 +769,16 @@ class CartService extends BaseService {
         update
       )
 
-      const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const result = await cartRepo.save(cart)
+      const result = await this.retrieve(cart.id, {
+        select: [
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
+        relations: ["payment_session"],
+      })
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
@@ -801,22 +802,26 @@ class CartService extends BaseService {
     return this.atomicPhase_(async manager => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
-      const cart = await this.retrieve(cartId, ["payment_session"])
+      const cart = await this.retrieve(cartId, {
+        relations: ["payment_session", "region"],
+      })
 
       const session = await this.paymentProviderService_
         .withTransaction(manager)
-        .authorizePayment(cart, context)
+        .authorizePayment(cart.payment_session, context)
 
       if (session.status === "authorized") {
-        cart.payment = await this.paymentProviderService_
+        const payment = await this.paymentProviderService_
           .withTransaction(manager)
-          .createPayment(session)
+          .createPayment(cart)
+
+        cart.payment = payment
       }
 
       const updated = await cartRepository.save(cart)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(CartService.Events.UPDATED, result)
+        .emit(CartService.Events.UPDATED, updated)
       return updated
     })
   }
@@ -900,16 +905,31 @@ class CartService extends BaseService {
         }
       }
 
-      for (const provider of region.payment_providers) {
-        if (!seen.includes(provider.id)) {
-          await this.paymentProviderService_
+      console.log(seen)
+
+      if (region.payment_providers.length === 1) {
+        const p = region.payment_providers[0]
+        if (!seen.includes(p.id)) {
+          const sess = await this.paymentProviderService_
             .withTransaction(manager)
-            .createSession(provider.id, cart)
+            .createSession(p.id, cart)
+
+          cart.payment_session = sess
+          cart.payment_sessions = [sess]
+        }
+      } else {
+        for (const provider of region.payment_providers) {
+          if (!seen.includes(provider.id)) {
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .createSession(provider.id, cart)
+          }
         }
       }
 
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const result = await cartRepo.save(cart)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
@@ -987,25 +1007,29 @@ class CartService extends BaseService {
         .createShippingMethod(optionId, data, cart)
 
       const methods = [newMethod]
-      for (const sm of shipping_methods) {
-        if (
-          sm.shipping_option.profile_id === newMethod.shipping_option.profile_id
-        ) {
-          await this.shippingOptionService_
-            .withTransaction(manager)
-            .deleteShippingMethod(sm.id)
-        } else {
-          methods.push(sm)
+      if (shipping_methods.length) {
+        for (const sm of shipping_methods) {
+          if (
+            sm.shipping_option.profile_id ===
+            newMethod.shipping_option.profile_id
+          ) {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .deleteShippingMethod(sm)
+          } else {
+            methods.push(sm)
+          }
         }
       }
 
       for (const item of cart.items) {
-        await this.lineItemService_.update(item.id, {
+        await this.lineItemService_.withTransaction(manager).update(item.id, {
           has_shipping: this.validateLineItemShipping_(methods, item),
         })
       }
 
       const result = await this.retrieve(cartId)
+      console.log("Cart: ", result)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
@@ -1109,6 +1133,11 @@ class CartService extends BaseService {
     if (cart.payment_sessions && cart.payment_sessions.length) {
       cart.payment_sessions = []
     }
+
+    console.log(cart)
+    // if (!_.isEmpty(cart.payment)) {
+    //   cart.payment = undefined
+    // }
   }
 
   /**

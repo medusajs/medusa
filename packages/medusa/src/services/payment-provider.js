@@ -26,7 +26,7 @@ class PaymentProviderService extends BaseService {
     }
 
     const cloned = new PaymentProviderService(this.container_)
-    this.transactionManager_ = manager
+    cloned.transactionManager_ = manager
 
     return cloned
   }
@@ -123,14 +123,18 @@ class PaymentProviderService extends BaseService {
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
       )
-      const created = sessionRepo.create({
+
+      const toCreate = {
         cart_id: cart.id,
         provider_id: providerId,
         data: sessionData,
         status: "pending",
-      })
+      }
 
-      return sessionRepo.save(created)
+      const created = await sessionRepo.create(toCreate)
+      const result = await sessionRepo.save(created)
+
+      return result
     })
   }
 
@@ -192,17 +196,19 @@ class PaymentProviderService extends BaseService {
     }
   }
 
-  async createPayment(paymentSession) {
+  async createPayment(cart) {
     return this.atomicPhase_(async manager => {
+      const { payment_session: paymentSession, region } = cart
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const paymentData = await provider.getPaymentData(paymentSession)
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
+
       const created = paymentRepo.create({
         provider_id: paymentSession.provider_id,
         amount: paymentData.amount,
-        currency_code: paymentData.currency_code,
-        data: paymentData.data,
+        currency_code: region.currency_code,
+        data: paymentData,
       })
 
       return paymentRepo.save(created)
@@ -236,10 +242,12 @@ class PaymentProviderService extends BaseService {
 
   async updateSessionData(paySession, update) {
     return this.atomicPhase_(async manager => {
-      const session = await this.retrieveSession(pasSession.id)
+      const session = await this.retrieveSession(paySession.id)
 
       const provider = this.retrieveProvider(paySession.provider_id)
-      session.data = await provider.updatePayment(paySession.data, update)
+
+      session.data = await provider.updatePaymentData(paySession.data, update)
+      console.log("SESSION: ", session)
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_

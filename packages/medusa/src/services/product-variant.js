@@ -505,7 +505,7 @@ class ProductVariantService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
+  async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
     const productVariantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )

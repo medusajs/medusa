@@ -70,7 +70,7 @@ export default async (req, res) => {
 
       product = await productService
         .withTransaction(manager)
-        .decorate(product.id, defaultFields, defaultExpandFields)
+        .retrieve(product.id, [...defaultExpandFields])
 
       res.json({ product })
     })

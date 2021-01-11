@@ -17,9 +17,9 @@ class CartSubscriber {
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
 
-    this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
-      await this.onCustomerUpdated(cart)
-    })
+    // this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
+    //   await this.onCustomerUpdated(cart)
+    // })
   }
 
   /**

@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { In } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
@@ -93,7 +94,7 @@ class ShippingOptionService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, config = { skip: 0, take: 50 }) {
+  async list(selector, config = { skip: 0, take: 50 }) {
     const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
     const query = this.buildQuery_(selector, config)
     return optRepo.find(query)
@@ -161,10 +162,10 @@ class ShippingOptionService extends BaseService {
    * Removes a given shipping method
    * @param {string} id - the id of the option to use for the method.
    */
-  async deleteShippingMethod(id) {
+  async deleteShippingMethod(sm) {
     return this.atomicPhase_(async manager => {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
-      return methodRepo.remove(id)
+      return methodRepo.remove(sm)
     })
   }
 
@@ -190,15 +191,19 @@ class ShippingOptionService extends BaseService {
       )
 
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
-      const method = methodRepo.create({
+      const method = await methodRepo.create({
         cart_id: cart.id,
         shipping_option_id: option.id,
         data: validatedData,
         price: await this.getPrice_(option, validatedData, cart),
       })
 
-      const result = await methodRepo.save(method)
-      return result
+      const created = await methodRepo.save(method)
+
+      return methodRepo.findOne({
+        where: { id: created.id },
+        relations: ["shipping_option"],
+      })
     })
   }
 

@@ -32,7 +32,7 @@ export class ProductVariant {
 
   @ManyToOne(
     () => Product,
-    product => product.variants
+    product => product.variants, { eager: true }
   )
   @JoinColumn({ name: "product_id" })
   product: Product

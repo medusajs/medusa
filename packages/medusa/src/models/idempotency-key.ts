@@ -23,19 +23,19 @@ export class IdempotencyKey {
   @Column({ nullable: true })
   locked_at: Date
 
-  @Column()
+  @Column({ nullable: true })
   request_method: string
 
-  @Column({ type: "jsonb" })
+  @Column({ type: "jsonb", nullable: true })
   request_params: any
 
-  @Column()
+  @Column({ nullable: true })
   request_path: string
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: true })
   response_code: number
 
-  @Column({ type: "jsonb" })
+  @Column({ type: "jsonb", nullable: true })
   response_body: any
 
   @Column({ default: "started" })
