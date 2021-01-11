@@ -78,7 +78,7 @@ export class Order {
   @Generated("increment")
   display_id: number
 
-  @Column()
+  @Column({ nullable: true })
   cart_id: string
 
   @OneToOne(() => Cart)
