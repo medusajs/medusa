@@ -74,6 +74,7 @@ export class Address {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 10)
     this.id = `addr_${id}`
   }

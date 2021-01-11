@@ -77,6 +77,7 @@ export class ShippingMethod {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 24)
     this.id = `sm_${id}`
   }

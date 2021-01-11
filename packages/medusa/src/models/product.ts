@@ -120,6 +120,7 @@ export class Product {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 16)
     this.id = `prod_${id}`
   }

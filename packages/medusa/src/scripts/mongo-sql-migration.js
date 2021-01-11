@@ -96,6 +96,7 @@ const migrateRegions = async (mongodb, queryRunner) => {
     })
 
     const newRegion = regionRepository.create({
+      id: `${reg._id}`,
       name: reg.name,
       currency_code: reg.currency_code.toLowerCase(),
       tax_rate: reg.tax_rate * 100,
@@ -145,18 +146,18 @@ const migrateShippingOptions = async (mongodb, queryRunner) => {
   const cursor = col.find({})
   const options = await cursor.toArray()
 
-  const rCol = mongodb.collection("regions")
-  const rCursor = rCol.find({})
-  const regions = await rCursor.toArray()
+  // const rCol = mongodb.collection("regions")
+  // const rCursor = rCol.find({})
+  // const regions = await rCursor.toArray()
 
   const pCol = mongodb.collection("shippingprofiles")
   const pCursor = pCol.find({})
   const profiles = await pCursor.toArray()
 
   const reqRepo = queryRunner.manager.getRepository(ShippingOptionRequirement)
-  const regionRepository = queryRunner.manager.getCustomRepository(
-    RegionRepository
-  )
+  //const regionRepository = queryRunner.manager.getCustomRepository(
+  //  RegionRepository
+  //)
   const optionRepository = queryRunner.manager.getCustomRepository(
     ShippingOptionRepository
   )
@@ -165,8 +166,8 @@ const migrateShippingOptions = async (mongodb, queryRunner) => {
   )
 
   for (const option of options) {
-    const mongoReg = regions.find(r => r._id.equals(option.region_id))
-    const region = await regionRepository.findOne({ name: mongoReg.name })
+    // const mongoReg = regions.find(r => r._id.equals(option.region_id))
+    // const region = await regionRepository.findOne({ name: mongoReg.name })
 
     const mongoProfile = profiles.find(p => p._id.equals(option.profile_id))
     let profile
@@ -177,8 +178,9 @@ const migrateShippingOptions = async (mongodb, queryRunner) => {
     }
 
     const newOption = optionRepository.create({
+      id: `${option._id}`,
       name: option.name,
-      region,
+      region_id: option.region_id,
       profile,
       provider_id: option.provider_id,
       price_type: option.price.type,
@@ -226,6 +228,7 @@ const migrateProducts = async (mongodb, queryRunner) => {
     const newOptions = await Promise.all(
       p.options.map(o => {
         const newO = optRepo.create({
+          id: `${o._id}`,
           title: o.title,
         })
         return optRepo.save(newO)
@@ -240,6 +243,7 @@ const migrateProducts = async (mongodb, queryRunner) => {
     const newVariants = await Promise.all(
       mongoVariants.map(v => {
         const newV = varRepo.create({
+          id: `${v._id}`,
           title: v.title,
           barcode: v.ean,
           ean: v.ean,
@@ -267,11 +271,12 @@ const migrateProducts = async (mongodb, queryRunner) => {
             color: v.metadata.color,
           },
         })
-        return varRepo.save(newV)
+        return newV
       })
     )
 
     const newProd = prodRepo.create({
+      id: `${p._id}`,
       title: p.title,
       tags: p.tags || null,
       description: p.description,
@@ -304,6 +309,7 @@ const createDiscount = async (mongodb, queryRunner, d) => {
     const region = await regRepo.findOne({ name: mongoRegs[0].name })
 
     const newD = gcRepo.create({
+      id: `${d._id}`,
       code: d.code,
       is_disabled: d.disabled,
       value: !!d.original_amount ? Math.round(d.original_amount * 100) : 0,
@@ -320,6 +326,7 @@ const createDiscount = async (mongodb, queryRunner, d) => {
     const regions = regRepo.find({ name: In(mongoRegs.map(r => r.name)) })
 
     const newD = discountRepo.create({
+      id: `${d._id}`,
       code: d.code,
       is_dynamic: !!d.is_dynamic,
       discount_rule: ruleRepo.create({
@@ -428,6 +435,7 @@ const migrateCustomers = async (mongodb, queryRunner) => {
     }
 
     const newC = customerRepo.create({
+      id: `${c._id}`,
       email: c.email.toLowerCase(),
       first_name: c.first_name,
       last_name: c.last_name,
@@ -541,10 +549,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
      * LINE ITEMS
      *************************************************************************/
     const createLineItem = async li => {
-      let variant = await variantRepo.findOne({ sku: li.content.variant.sku })
-      if (!variant) {
-        variant = await variantRepo.findOne({ title: li.content.variant.title })
-      }
+      let variant = await variantRepo.findOne({ id: li.content.variant._id })
 
       let fulfilled_quantity = Math.min(li.fulfilled_quantity || 0, li.quantity)
       let shipped_quantity = Math.min(
@@ -557,6 +562,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       )
 
       return lineItemRepo.create({
+        id: `${li._id}`,
         title: li.title,
         description: li.description,
         quantity: li.quantity,
@@ -620,6 +626,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
      * CREATE ORDER
      *************************************************************************/
     const nOrder = orderRepo.create({
+      id: `${o._id}`,
       tax_rate: o.tax_rate * 100,
       currency_code: o.currency_code.toLowerCase(),
       email: o.email.toLowerCase(),
@@ -669,6 +676,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       let provider = await fulProvRepo.findOne({ id: f.provider_id })
 
       const toCreate = {
+        id: `${f._id}`,
         ...custom,
         items,
         provider,
@@ -770,6 +778,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       })
 
       return returnRepo.create({
+        id: `${r._id}`,
         status: r.status || "received",
         order: or,
         refund_amount: Math.round(r.refund_amount * 100),
@@ -810,6 +819,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
         for (const s of oSwaps) {
           if (!s.return) continue
           const toCreate = {
+            id: `${s._id}`,
             order_id: or.id,
             fulfillment_status: s.fulfillment_status,
             payment_status: s.payment_status,
@@ -870,7 +880,6 @@ const migrateOrders = async (mongodb, queryRunner) => {
               )
             )
           }
-          console.log(sw.return_order)
           swaps.push(sw)
         }
 

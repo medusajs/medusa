@@ -140,6 +140,7 @@ export class Swap {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 24)
     this.id = `swap_${id}`
   }

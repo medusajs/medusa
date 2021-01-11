@@ -62,6 +62,7 @@ export class ShippingProfile {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 10)
     this.id = `sp_${id}`
   }
