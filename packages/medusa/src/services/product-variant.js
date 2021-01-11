@@ -295,9 +295,6 @@ class ProductVariantService extends BaseService {
       }
 
       const result = await moneyAmountRepo.save(moneyAmount)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.UPDATED, result)
       return result
     })
   }
@@ -383,9 +380,6 @@ class ProductVariantService extends BaseService {
       }
 
       const result = await moneyAmountRepo.save(moneyAmount)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.UPDATED, result)
       return result
     })
   }
@@ -418,9 +412,6 @@ class ProductVariantService extends BaseService {
       productOptionValue.value = optionValue
 
       const result = await productOptionValueRepo.save(productOptionValue)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.UPDATED, result)
       return result
     })
   }
@@ -449,9 +440,6 @@ class ProductVariantService extends BaseService {
       })
 
       const result = await productOptionValueRepo.save(productOptionValue)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.UPDATED, result)
       return result
     })
   }
