@@ -1,5 +1,6 @@
 import Bull from "bull"
 import Redis from "ioredis"
+import { getManager } from "typeorm"
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -10,7 +11,6 @@ class EventBusService {
   constructor(
     { manager, logger, stagedJobRepository, redisClient, redisSubscriber },
     config,
-    enqueue = true,
     singleton = true
   ) {
     const opts = {
@@ -59,7 +59,7 @@ class EventBusService {
       this.cronQueue_.process(this.cronWorker_)
 
       if (process.env.NODE_ENV !== "test") {
-        this.startEnqueuer(enqueue)
+        this.startEnqueuer()
       }
     }
   }

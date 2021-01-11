@@ -191,12 +191,17 @@ class ShippingOptionService extends BaseService {
       )
 
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
-      const method = await methodRepo.create({
+
+      const methodPrice = await this.getPrice_(option, validatedData, cart)
+
+      const toCreate = {
         cart_id: cart.id,
         shipping_option_id: option.id,
         data: validatedData,
-        price: await this.getPrice_(option, validatedData, cart),
-      })
+        price: methodPrice,
+      }
+
+      const method = await methodRepo.create(toCreate)
 
       const created = await methodRepo.save(method)
 

@@ -98,7 +98,7 @@ export default async (req, res) => {
 
               order = await orderService
                 .withTransaction(manager)
-                .retrieve(order.id)
+                .retrieve(order.id, { relations: ["items"] })
 
               return {
                 response_code: 200,

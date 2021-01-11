@@ -88,6 +88,9 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
   // Add the registered services to the request scope
   expressApp.use((req, res, next) => {
+    container.register({
+      manager: asValue(getManager()),
+    })
     req.scope = container.createScope()
     next()
   })

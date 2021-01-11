@@ -880,6 +880,7 @@ class CartService extends BaseService {
       const cart = await this.retrieve(cartId, {
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
+
       const region = cart.region
       const total = await this.totalsService_.getTotal(cart)
 
@@ -904,8 +905,6 @@ class CartService extends BaseService {
           }
         }
       }
-
-      console.log(seen)
 
       if (region.payment_providers.length === 1) {
         const p = region.payment_providers[0]
@@ -1029,7 +1028,6 @@ class CartService extends BaseService {
       }
 
       const result = await this.retrieve(cartId)
-      console.log("Cart: ", result)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
@@ -1133,11 +1131,6 @@ class CartService extends BaseService {
     if (cart.payment_sessions && cart.payment_sessions.length) {
       cart.payment_sessions = []
     }
-
-    console.log(cart)
-    // if (!_.isEmpty(cart.payment)) {
-    //   cart.payment = undefined
-    // }
   }
 
   /**

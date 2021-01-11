@@ -292,6 +292,8 @@ class OrderService extends BaseService {
       query.select = select
     }
 
+    console.log(query)
+
     const raw = await orderRepo.findOne(query)
 
     if (!raw) {
@@ -300,6 +302,8 @@ class OrderService extends BaseService {
         `Order with ${orderId} was not found`
       )
     }
+
+    console.log(raw)
 
     const order = this.decorateTotals_(raw, totalsToSelect)
     return order
