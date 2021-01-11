@@ -33,7 +33,8 @@ export default async (req, res) => {
       listConfig
     )
 
-    const data = orders.map(o => _.pick(o, [...includeFields, ...expandFields]))
+    const fields = [...includeFields, ...expandFields]
+    const data = orders.map(o => _.pick(o, fields))
 
     res.json({ orders: data, count, offset, limit })
   } catch (error) {

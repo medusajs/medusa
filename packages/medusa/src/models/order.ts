@@ -98,21 +98,21 @@ export class Order {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address, { cascade: true, eager: true })
+  @ManyToOne(() => Address, { cascade: true })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address, { cascade: true, eager: true })
+  @ManyToOne(() => Address, { cascade: true })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
   @Column()
   region_id: string
 
-  @ManyToOne(() => Region, { eager: true })
+  @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region: Region
 
@@ -126,7 +126,7 @@ export class Order {
   @Column({ type: "int" })
   tax_rate: number
 
-  @ManyToMany(() => Discount, { eager: true })
+  @ManyToMany(() => Discount)
   @JoinTable({
     name: "order_discounts",
     joinColumn: {
@@ -140,7 +140,7 @@ export class Order {
   })
   discounts: Discount
 
-  @ManyToMany(() => GiftCard, { eager: true })
+  @ManyToMany(() => GiftCard)
   @JoinTable({
     name: "order_gift_cards",
     joinColumn: {
@@ -157,42 +157,42 @@ export class Order {
   @OneToMany(
     () => ShippingMethod,
     method => method.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   shipping_methods: ShippingMethod[]
 
   @OneToMany(
     () => Payment,
     payment => payment.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   payments: Payment[]
 
   @OneToMany(
     () => Fulfillment,
     fulfillment => fulfillment.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   fulfillments: Fulfillment[]
 
   @OneToMany(
     () => Return,
     ret => ret.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   returns: Return[]
 
   @OneToMany(
     () => Refund,
     ref => ref.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   refunds: Refund[]
 
   @OneToMany(
     () => Swap,
     swap => swap.order,
-    { cascade: true, eager: true }
+    { cascade: true }
   )
   swaps: Swap[]
 
