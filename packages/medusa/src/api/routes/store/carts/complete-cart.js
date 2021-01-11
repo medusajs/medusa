@@ -85,7 +85,7 @@ export default async (req, res) => {
                 ) {
                   order = await orderService
                     .withTransaction(manager)
-                    .retrieveByCartId(id)
+                    .retrieveByCartId(id, ["items"])
 
                   return {
                     response_code: 200,
@@ -98,7 +98,26 @@ export default async (req, res) => {
 
               order = await orderService
                 .withTransaction(manager)
-                .retrieve(order.id, { relations: ["items"] })
+                .retrieve(order.id, {
+                  select: [
+                    "subtotal",
+                    "tax_total",
+                    "shipping_total",
+                    "discount_total",
+                    "total",
+                  ],
+                  relations: [
+                    "shipping_address",
+                    "items",
+                    "items.variant",
+                    "items.variant.product",
+                    "shipping_methods",
+                    "discounts",
+                    "customer",
+                    "payments",
+                    "region",
+                  ],
+                })
 
               return {
                 response_code: 200,

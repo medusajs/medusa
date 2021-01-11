@@ -272,7 +272,7 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of order to retrieve
    * @return {Promise<Order>} the order document
    */
-  async retrieve(orderId, config = { select: [], relations: [] }) {
+  async retrieve(orderId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
@@ -292,8 +292,6 @@ class OrderService extends BaseService {
       query.select = select
     }
 
-    console.log(query)
-
     const raw = await orderRepo.findOne(query)
 
     if (!raw) {
@@ -302,8 +300,6 @@ class OrderService extends BaseService {
         `Order with ${orderId} was not found`
       )
     }
-
-    console.log(raw)
 
     const order = this.decorateTotals_(raw, totalsToSelect)
     return order

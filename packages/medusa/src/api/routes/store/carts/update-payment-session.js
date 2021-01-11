@@ -15,7 +15,25 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
-    const cart = await cartService.updatePaymentSession(id, value.session)
+    await cartService.updatePaymentSession(id, value.session)
+
+    const cart = await cartService.retrieve(id, {
+      select: [
+        "subtotal",
+        "tax_total",
+        "shipping_total",
+        "discount_total",
+        "total",
+      ],
+      relations: [
+        "region",
+        "region.countries",
+        "region.payment_providers",
+        "shipping_methods",
+        "payment_session",
+        "shipping_methods.shipping_option",
+      ],
+    })
 
     res.status(200).json({ cart })
   } catch (err) {
