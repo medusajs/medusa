@@ -1061,7 +1061,10 @@ class OrderService extends BaseService {
     if ("items" in order) {
       order.items = order.items.map(i => ({
         ...i,
-        refundable: this.totalsService_.getLineItemRefund(order, i),
+        refundable: this.totalsService_.getLineItemRefund(order, {
+          ...i,
+          quantity: i.quantity - (i.returned_quantity || 0),
+        }),
       }))
     }
 

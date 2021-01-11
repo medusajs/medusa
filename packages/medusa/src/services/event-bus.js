@@ -10,6 +10,7 @@ class EventBusService {
   constructor(
     { manager, logger, stagedJobRepository, redisClient, redisSubscriber },
     config,
+    enqueue = true,
     singleton = true
   ) {
     const opts = {
@@ -57,7 +58,9 @@ class EventBusService {
       // Register cron worker
       this.cronQueue_.process(this.cronWorker_)
 
-      this.enqueuer_()
+      if (process.env.NODE_ENV !== "test") {
+        this.startEnqueuer(enqueue)
+      }
     }
   }
 
@@ -166,8 +169,18 @@ class EventBusService {
     })
   }
 
+  async startEnqueuer() {
+    this.enRun_ = true
+    this.enqueue_ = this.enqueuer_()
+  }
+
+  async stopEnqueuer() {
+    this.enRun_ = false
+    await this.enqueue_
+  }
+
   async enqueuer_() {
-    while (true) {
+    while (this.enRun_) {
       const listConfig = {
         relations: [],
         skip: 0,
