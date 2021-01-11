@@ -276,12 +276,16 @@ class AdyenService extends BaseService {
 
         return {
           data: authorizedPayment,
-          status: this.getOptions(authorizedPayment),
+          status: this.getStatus(authorizedPayment),
         }
       } catch (error) {
         throw error
       }
     })
+  }
+
+  async updatePaymentData(sessionData, update) {
+    return sessionData
   }
 
   /**

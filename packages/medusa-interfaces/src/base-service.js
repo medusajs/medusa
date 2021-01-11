@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { In, FindOperator } from "typeorm"
+import { In, FindOperator, getManager } from "typeorm"
 
 /**
  * Common functionality for Services
@@ -123,10 +123,16 @@ class BaseService {
       const doWork = async m => {
         this.manager_ = m
         this.transactionManager_ = m
-        const result = await work(m)
-        this.manager_ = temp
-        this.transactionManager_ = undefined
-        return result
+        try {
+          const result = await work(m)
+          this.manager_ = temp
+          this.transactionManager_ = undefined
+          return result
+        } catch (error) {
+          console.log("HERE: ", error)
+          this.manager_ = temp
+          this.transactionManager_ = undefined
+        }
       }
 
       if (isolation) {

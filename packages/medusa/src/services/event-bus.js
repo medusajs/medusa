@@ -1,6 +1,5 @@
 import Bull from "bull"
 import Redis from "ioredis"
-import { getManager } from "typeorm"
 
 /**
  * Can keep track of multiple subscribers to different events and run the

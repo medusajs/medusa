@@ -1,7 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { getManager } from "typeorm"
 
 import { currencies } from "../utils/currencies"
 
