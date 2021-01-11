@@ -43,6 +43,7 @@ export class ShippingOptionRequirement {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 10)
     this.id = `sor_${id}`
   }

@@ -88,6 +88,7 @@ export class Region {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 24)
     this.id = `reg_${id}`
   }

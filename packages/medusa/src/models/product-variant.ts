@@ -32,7 +32,8 @@ export class ProductVariant {
 
   @ManyToOne(
     () => Product,
-    product => product.variants, { eager: true }
+    product => product.variants,
+    { eager: true }
   )
   @JoinColumn({ name: "product_id" })
   product: Product
@@ -114,6 +115,7 @@ export class ProductVariant {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 16)
     this.id = `variant_${id}`
   }

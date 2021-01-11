@@ -31,6 +31,7 @@ export class Image {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 16)
     this.id = `img_${id}`
   }

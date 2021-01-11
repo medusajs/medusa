@@ -58,6 +58,7 @@ export class ProductOptionValue {
 
   @BeforeInsert()
   private beforeInsert() {
+    if (this.id) return
     const id = randomize("Aa0", 16)
     this.id = `optval_${id}`
   }
