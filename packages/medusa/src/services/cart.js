@@ -1111,8 +1111,10 @@ class CartService extends BaseService {
     // Shipping methods are determined by region so the user needs to find a
     // new shipping method
     if (cart.shipping_methods && cart.shipping_methods.length) {
-      const smRepo = manager.getCustomRepository(this.shippingMethodRepository_)
-      await smRepo.remove({ where: { cart_id: cart.id } })
+      const smRepo = this.manager_.getCustomRepository(
+        this.shippingMethodRepository_
+      )
+      await smRepo.remove(cart.shipping_methods)
     }
 
     if (cart.discounts && cart.discounts.length) {
