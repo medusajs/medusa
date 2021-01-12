@@ -12,9 +12,9 @@ import {
   ManyToMany,
   JoinColumn,
   JoinTable,
+  AfterLoad,
 } from "typeorm"
 import randomize from "randomatic"
-
 import { Region } from "./region"
 import { Address } from "./address"
 import { LineItem } from "./line-item"
@@ -81,17 +81,11 @@ export class Cart {
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
-  @Column({ nullable: true })
-  payment_session_id: string
-
-  @OneToOne(() => PaymentSession)
-  @JoinColumn({ name: "payment_session_id" })
   payment_session: PaymentSession
 
   @OneToMany(
     () => PaymentSession,
-    paymentSession => paymentSession.cart,
-    { eager: true }
+    paymentSession => paymentSession.cart
   )
   payment_sessions: PaymentSession[]
 
@@ -135,5 +129,10 @@ export class Cart {
     if (this.id) return
     const id = randomize("Aa0", 24)
     this.id = `cart_${id}`
+  }
+
+  @AfterLoad()
+  private afterLoad() {
+    this.payment_session = this.payment_sessions.find(p => p.is_selected)
   }
 }

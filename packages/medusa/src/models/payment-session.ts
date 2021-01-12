@@ -7,9 +7,9 @@ import {
   PrimaryColumn,
   ManyToOne,
   JoinColumn,
+  Unique,
 } from "typeorm"
 import randomize from "randomatic"
-
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
@@ -20,6 +20,7 @@ export enum PaymentSessionStatus {
   CANCELED = "canceled",
 }
 
+@Unique("OneSelected", ["cart_id", "is_selected"])
 @Entity()
 export class PaymentSession {
   @PrimaryColumn()
@@ -31,12 +32,15 @@ export class PaymentSession {
   @ManyToOne(
     () => Cart,
     cart => cart.payment_sessions
-    , { cascade: true })
+  )
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
   @Column()
   provider_id: string
+
+  @Column({ nullable: true })
+  is_selected: boolean
 
   @Column({ type: "enum", enum: PaymentSessionStatus })
   status: string
