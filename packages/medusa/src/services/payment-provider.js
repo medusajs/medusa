@@ -245,6 +245,7 @@ class PaymentProviderService extends BaseService {
 
   async updateSessionData(paySession, update) {
     return this.atomicPhase_(async manager => {
+      console.log("Test: ", paySession)
       const session = await this.retrieveSession(paySession.id)
 
       const provider = this.retrieveProvider(paySession.provider_id)
