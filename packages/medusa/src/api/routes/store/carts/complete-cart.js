@@ -45,7 +45,7 @@ export default async (req, res) => {
               const cart = await cartService
                 .withTransaction(manager)
                 .retrieve(id, {
-                  relations: ["payment", "payment_session"],
+                  relations: ["payment", "payment_sessions"],
                 })
 
               if (!cart.payment) {
@@ -78,7 +78,7 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id, {
                   select: ["total"],
-                  relations: ["payment", "payment_session"],
+                  relations: ["payment", "payment_sessions"],
                 })
 
               if (!cart.payment) {

@@ -234,8 +234,6 @@ class PaymentProviderService extends BaseService {
       session.data = data
       session.status = status
 
-      console.log("This is the session: ", session)
-
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
       )
@@ -245,7 +243,6 @@ class PaymentProviderService extends BaseService {
 
   async updateSessionData(paySession, update) {
     return this.atomicPhase_(async manager => {
-      console.log("Test: ", paySession)
       const session = await this.retrieveSession(paySession.id)
 
       const provider = this.retrieveProvider(paySession.provider_id)

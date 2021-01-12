@@ -37,7 +37,7 @@ export default async (req, res) => {
         "discount_total",
         "total",
       ],
-      relations: ["region", "items"],
+      relations: ["region", "items", "payment_sessions"],
     })
     res.json({ cart })
   } catch (err) {

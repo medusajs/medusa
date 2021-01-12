@@ -29,6 +29,7 @@ class CartService extends BaseService {
     discountService,
     totalsService,
     addressRepository,
+    paymentSessionRepository,
   }) {
     super()
 
@@ -76,6 +77,9 @@ class CartService extends BaseService {
 
     /** @private @const {AddressRepository} */
     this.addressRepository_ = addressRepository
+
+    /** @private @const {PaymentSessionRepository} */
+    this.paymentSessionRepository_ = paymentSessionRepository
   }
 
   withTransaction(transactionManager) {
@@ -759,7 +763,9 @@ class CartService extends BaseService {
    */
   async updatePaymentSession(cartId, update) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId)
+      const cart = await this.retrieve(cartId, {
+        relations: ["payment_sessions"],
+      })
 
       if (cart.payment_session) {
         await this.paymentProviderService_.updateSessionData(
@@ -805,15 +811,13 @@ class CartService extends BaseService {
         relations: ["region", "payment_sessions"],
       })
 
-      console.log(cart)
-
       const session = await this.paymentProviderService_
         .withTransaction(manager)
         .authorizePayment(cart.payment_session, context)
 
       const freshCart = await this.retrieve(cart.id, {
         select: ["total"],
-        relations: [],
+        relations: ["payment_sessions"],
       })
 
       if (session.status === "authorized") {
@@ -887,6 +891,8 @@ class CartService extends BaseService {
    */
   async setPaymentSessions(cartId) {
     return this.atomicPhase_(async manager => {
+      const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
+
       const cart = await this.retrieve(cartId, {
         select: ["total"],
         relations: ["region", "region.payment_providers", "payment_sessions"],
@@ -916,12 +922,17 @@ class CartService extends BaseService {
         }
       }
 
+      // If only one payment session exists, we preselect it
       if (region.payment_providers.length === 1) {
         const p = region.payment_providers[0]
         if (!seen.includes(p.id)) {
-          await this.paymentProviderService_
+          const sess = await this.paymentProviderService_
             .withTransaction(manager)
             .createSession(p.id, cart)
+
+          sess.is_selected = true
+
+          await psRepo.save(sess)
         }
       } else {
         for (const provider of region.payment_providers) {
@@ -1055,25 +1066,27 @@ class CartService extends BaseService {
     // If the cart contains items we want to change the unit_price field of each
     // item to correspond to the price given in the region
     if (cart.items.length) {
-      cart.items = await Promise.all(cart.items.map(item => {
-        const availablePrice = await this.productVariantService_
-          .getRegionPrice(item.variant_id, regionId)
-          .catch(() => undefined)
+      cart.items = await Promise.all(
+        cart.items.map(async item => {
+          const availablePrice = await this.productVariantService_
+            .getRegionPrice(item.variant_id, regionId)
+            .catch(() => undefined)
 
-        if (availablePrice !== undefined) {
-          return this.lineItemService_
-            .withTransaction(this.transactionManager_)
-            .update(item.id, {
-              has_shipping: false,
-              unit_price: availablePrice,
-            })
-        } else {
-          await this.lineItemService_
-            .withTransaction(this.transactionManager_)
-            .delete(item.id)
-        return null
-        }
-      })).filter(Boolean)
+          if (availablePrice !== undefined) {
+            return this.lineItemService_
+              .withTransaction(this.transactionManager_)
+              .update(item.id, {
+                has_shipping: false,
+                unit_price: availablePrice,
+              })
+          } else {
+            await this.lineItemService_
+              .withTransaction(this.transactionManager_)
+              .delete(item.id)
+            return null
+          }
+        })
+      ).filter(Boolean)
     }
 
     let shippingAddress = cart.shipping_address || {}

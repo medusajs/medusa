@@ -27,6 +27,7 @@ export default async (req, res) => {
       ],
       relations: [
         "region",
+        "payment_sessions",
         "region.countries",
         "region.payment_providers",
         "shipping_methods",
