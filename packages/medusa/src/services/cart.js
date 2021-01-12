@@ -862,7 +862,7 @@ class CartService extends BaseService {
         if (s.provider_id === providerId) {
           s.is_selected = true
         } else {
-          s.is_selected = false
+          s.is_selected = null
         }
         return s
       })

@@ -240,7 +240,7 @@ class RegionService extends BaseService {
    * @param {number} taxRate - a number representing the tax rate of the region
    */
   validateTaxRate_(taxRate) {
-    if (taxRate > 1 || taxRate < 0) {
+    if (taxRate > 100 || taxRate < 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The tax_rate must be between 0 and 1"
