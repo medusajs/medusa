@@ -434,7 +434,7 @@ class OrderService extends BaseService {
         payments: payment ? [payment] : [],
         discounts: cart.discounts,
         shipping_methods: cart.shipping_methods,
-        items: cart.items,
+        // items: cart.items,
         shipping_address_id: cart.shipping_address_id,
         billing_address_id: cart.billing_address_id,
         region_id: cart.region_id,
@@ -447,6 +447,13 @@ class OrderService extends BaseService {
       })
 
       const result = await orderRepo.save(o)
+
+      for (const item of cart.items) {
+        await this.lineItemService_
+          .withTransaction(manager)
+          .update(item.id, { order_id: result.id })
+      }
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, result)
