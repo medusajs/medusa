@@ -76,6 +76,10 @@ class ApplePayAdyenService extends PaymentService {
     return this.adyenService_.retrievePayment(data)
   }
 
+  async updatePaymentData(sessionData, update) {
+    return this.adyenService_.updatePaymentData(sessionData, update)
+  }
+
   async updatePayment(data, _) {
     return this.adyenService_.updatePayment(data)
   }

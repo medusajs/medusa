@@ -42,6 +42,19 @@ export default async (req, res) => {
                 idempotency_key: idempotencyKey.idempotency_key,
               })
 
+              const cart = await cartService
+                .withTransaction(manager)
+                .retrieve(id, {
+                  relations: ["payment", "payment_session"],
+                })
+
+              if (!cart.payment) {
+                return {
+                  response_code: 200,
+                  response_body: { data: cart },
+                }
+              }
+
               return {
                 recovery_point: "payment_authorized",
               }
@@ -63,7 +76,10 @@ export default async (req, res) => {
             async manager => {
               const cart = await cartService
                 .withTransaction(manager)
-                .retrieve(id, ["payment", "payment_session"])
+                .retrieve(id, {
+                  select: ["total"],
+                  relations: ["payment", "payment_session"],
+                })
 
               if (!cart.payment) {
                 throw new MedusaError(
@@ -89,7 +105,7 @@ export default async (req, res) => {
 
                   return {
                     response_code: 200,
-                    response_body: { order },
+                    response_body: { data: order },
                   }
                 } else {
                   throw error
@@ -121,7 +137,7 @@ export default async (req, res) => {
 
               return {
                 response_code: 200,
-                response_body: { order },
+                response_body: { data: order },
               }
             }
           )

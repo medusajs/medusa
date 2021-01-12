@@ -349,7 +349,7 @@ class CartService extends BaseService {
           if (!hasItem) {
             await this.shippingOptionService_
               .withTransaction(manager)
-              .deleteShippingMethod(method.id)
+              .deleteShippingMethod(method)
           }
         }
       }
@@ -810,15 +810,20 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .authorizePayment(cart.payment_session, context)
 
+      const freshCart = await this.retrieve(cart.id, {
+        select: ["total"],
+        relations: ["payment_session"],
+      })
+
       if (session.status === "authorized") {
         const payment = await this.paymentProviderService_
           .withTransaction(manager)
-          .createPayment(cart)
+          .createPayment(freshCart)
 
-        cart.payment = payment
+        freshCart.payment = payment
       }
 
-      const updated = await cartRepository.save(cart)
+      const updated = await cartRepository.save(freshCart)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, updated)

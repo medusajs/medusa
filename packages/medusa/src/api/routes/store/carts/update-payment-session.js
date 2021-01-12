@@ -4,7 +4,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    session: Validator.object().optional(),
+    session: Validator.object().required(),
   })
 
   const { value, error } = schema.validate(req.body)

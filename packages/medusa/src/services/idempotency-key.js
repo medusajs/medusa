@@ -126,7 +126,6 @@ class IdempotencyKeyService extends BaseService {
       )
 
       const iKey = await this.retrieve(idempotencyKey)
-      console.log(update)
 
       for (const [key, value] of Object.entries(update)) {
         iKey[key] = value
