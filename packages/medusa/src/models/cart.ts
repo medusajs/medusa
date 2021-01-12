@@ -15,7 +15,6 @@ import {
   AfterLoad,
 } from "typeorm"
 import randomize from "randomatic"
-
 import { Region } from "./region"
 import { Address } from "./address"
 import { LineItem } from "./line-item"

@@ -7,10 +7,9 @@ import {
   PrimaryColumn,
   ManyToOne,
   JoinColumn,
-  Unique
+  Unique,
 } from "typeorm"
 import randomize from "randomatic"
-
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
