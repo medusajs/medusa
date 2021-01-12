@@ -50,7 +50,7 @@ export class Cart {
   @OneToMany(
     () => LineItem,
     lineItem => lineItem.cart,
-    { cascade: true, eager: true }
+    { cascade: ["insert", "remove"], eager: true }
   )
   items: LineItem[]
 
@@ -86,7 +86,8 @@ export class Cart {
 
   @OneToMany(
     () => PaymentSession,
-    paymentSession => paymentSession.cart, { cascade: true }
+    paymentSession => paymentSession.cart,
+    { cascade: true }
   )
   payment_sessions: PaymentSession[]
 

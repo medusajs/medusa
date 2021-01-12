@@ -1055,13 +1055,13 @@ class CartService extends BaseService {
     // If the cart contains items we want to change the unit_price field of each
     // item to correspond to the price given in the region
     if (cart.items.length) {
-      for (const item of cart.items) {
+      cart.items = await Promise.all(cart.items.map(item => {
         const availablePrice = await this.productVariantService_
           .getRegionPrice(item.variant_id, regionId)
           .catch(() => undefined)
 
         if (availablePrice !== undefined) {
-          await this.lineItemService_
+          return this.lineItemService_
             .withTransaction(this.transactionManager_)
             .update(item.id, {
               has_shipping: false,
@@ -1071,8 +1071,9 @@ class CartService extends BaseService {
           await this.lineItemService_
             .withTransaction(this.transactionManager_)
             .delete(item.id)
+        return null
         }
-      }
+      })).filter(Boolean)
     }
 
     let shippingAddress = cart.shipping_address || {}
