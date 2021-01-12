@@ -184,8 +184,6 @@ class FulfillmentService extends BaseService {
       // partition order items to their dedicated shipping method
       const fulfillments = this.partitionItems_(shipping_methods, lineItems)
 
-      console.log("Partitioned: ", fulfillments)
-
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
           const data = await this.fulfillmentProviderService_.createFulfillment(
@@ -241,7 +239,8 @@ class FulfillmentService extends BaseService {
 
       const fulfillment = await this.retrieve(fulfillmentId, ["items"])
 
-      fulfillment.shipped_at = Date.now()
+      const now = new Date()
+      fulfillment.shipped_at = now.toUTCString()
       fulfillment.tracking_numbers = trackingNumbers
       fulfillment.metadata = {
         ...fulfillment.metadata,

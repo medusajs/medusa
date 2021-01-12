@@ -281,7 +281,8 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(payment.provider_id)
       payment.data = await provider.capturePayment(payment.data)
 
-      payment.captured_at = new Date()
+      const now = new Date()
+      payment.captured_at = now.toUTCString()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
       return paymentRepo.save(payment)
@@ -292,7 +293,9 @@ class PaymentProviderService extends BaseService {
     return this.atomicPhase_(async manager => {
       const payments = await this.listPayments({ id: payObjs.map(p => p.id) })
 
+      let order_id
       const refundable = payments.reduce((acc, next) => {
+        order_id = next.order_id
         if (next.captured_at) {
           return (acc += next.amount - next.amount_refunded)
         }
@@ -302,7 +305,7 @@ class PaymentProviderService extends BaseService {
 
       if (refundable < amount) {
         throw new MedusaError(
-          MedusaErrorTypes.NOT_ALLOWED,
+          MedusaError.Types.NOT_ALLOWED,
           "Refund amount is too high"
         )
       }
@@ -319,7 +322,10 @@ class PaymentProviderService extends BaseService {
         const refundAmount = Math.min(currentRefundable, balance)
 
         const provider = this.retrieveProvider(toRefund.provider_id)
-        toRefund.data = await provider.refundPayment(payment.data, refundAmount)
+        toRefund.data = await provider.refundPayment(
+          toRefund.data,
+          refundAmount
+        )
         toRefund.amount_refunded += refundAmount
         await paymentRepo.save(toRefund)
 
@@ -331,11 +337,14 @@ class PaymentProviderService extends BaseService {
           toRefund = payments.find(
             p => p.amount - p.amount_refunded > 0 && !used.includes(p.id)
           )
+        } else {
+          toRefund = null
         }
       }
 
       const refundRepo = manager.getCustomRepository(this.refundRepository_)
       const created = refundRepo.create({
+        order_id,
         amount,
         reason,
         note,

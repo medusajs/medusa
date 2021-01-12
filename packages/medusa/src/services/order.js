@@ -739,8 +739,6 @@ class OrderService extends BaseService {
         ],
       })
 
-      console.log(order)
-
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(order, itemsToFulfill, metadata)
@@ -778,7 +776,6 @@ class OrderService extends BaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
-      order.fulfillments = [...order.fulfillments, ...fulfillments]
       const result = await orderRepo.save(order)
 
       for (const fulfillment of fulfillments) {
@@ -1029,11 +1026,11 @@ class OrderService extends BaseService {
    */
   async createRefund(orderId, refundAmount, reason, note) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, { relations: ["payments"] })
-      const total = await this.totalsService_.getTotal(order)
-      const refunded = await this.totalsService_.getRefundedTotal(order)
-
-      if (refundAmount > total - refunded) {
+      const order = await this.retrieve(orderId, {
+        select: ["refundable_amount", "total", "refunded_total"],
+        relations: ["payments"],
+      })
+      if (refundAmount > order.refundable_amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot refund more than the original order amount"
