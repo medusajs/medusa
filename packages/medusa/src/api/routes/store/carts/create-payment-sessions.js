@@ -22,6 +22,7 @@ export default async (req, res) => {
         "region.payment_providers",
         "shipping_methods",
         "payment_session",
+        "payment_sessions",
         "shipping_methods.shipping_option",
       ],
     })

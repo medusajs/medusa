@@ -223,23 +223,25 @@ class AdyenService extends BaseService {
    * @param {object} context - properties relevant to current context
    * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
-  async authorizePayment(sessionData, context) {
-    if (!sessionData.cart_id) {
-      return { data: {}, status: "error" }
-    }
+  async authorizePayment(session, context) {
+    const sessionData = session.data
 
     // If session data is present, we already called authorize once.
     // Therefore, this is most likely a call for getting additional details
-    if (sessionData.status === "requires_more") {
+    if (session.status === "requires_more") {
       const updated = await this.updatePaymentData(sessionData, {
-        details: sessionData.data.details,
-        paymentData: sessionData.data.paymentData,
+        details: sessionData.details,
+        paymentData: sessionData.paymentData,
       })
 
-      return { data: update, status: this.getStatus(updated) }
+      return { data: updated, status: this.getStatus(updated) }
     }
 
-    const cart = await this.cartService_.retrieve(sessionData.cart_id, {
+    if (session.status === "authorized") {
+      return { data: sessionData, status: "authorized" }
+    }
+
+    const cart = await this.cartService_.retrieve(session.cart_id, {
       select: ["total"],
       relations: ["region", "shipping_address"],
     })
@@ -305,7 +307,7 @@ class AdyenService extends BaseService {
     const checkout = new CheckoutAPI(this.adyenClient_)
     const updated = await checkout.paymentsDetails(update)
 
-    return { ...sessionData, ...updated }
+    return updated
   }
 
   /**

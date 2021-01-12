@@ -88,11 +88,7 @@ export class Cart {
   @JoinColumn({ name: "payment_session_id" })
   payment_session: PaymentSession
 
-  @OneToMany(
-    () => PaymentSession,
-    paymentSession => paymentSession.cart,
-    { eager: true }
-  )
+  @OneToMany(() => PaymentSession, paymentSession => paymentSession.cart)
   payment_sessions: PaymentSession[]
 
   @Column({ nullable: true })

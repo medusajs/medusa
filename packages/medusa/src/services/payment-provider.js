@@ -125,7 +125,8 @@ class PaymentProviderService extends BaseService {
       )
 
       const toCreate = {
-        cart_id: cart.id,
+        // cart_id: cart.id,
+        cart: cart,
         provider_id: providerId,
         data: sessionData,
         status: "pending",
@@ -133,6 +134,8 @@ class PaymentProviderService extends BaseService {
 
       const created = await sessionRepo.create(toCreate)
       const result = await sessionRepo.save(created)
+
+      console.log(result)
 
       return result
     })
@@ -228,10 +231,12 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const { status, data } = await provider
         .withTransaction(manager)
-        .authorizePayment(session.data, context)
+        .authorizePayment(session, context)
 
       session.data = data
       session.status = status
+
+      console.log("This is the session: ", session)
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
@@ -247,7 +252,6 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(paySession.provider_id)
 
       session.data = await provider.updatePaymentData(paySession.data, update)
-      console.log("SESSION: ", session)
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_

@@ -918,8 +918,7 @@ class CartService extends BaseService {
             .withTransaction(manager)
             .createSession(p.id, cart)
 
-          cart.payment_session = sess
-          cart.payment_sessions = [sess]
+          // cart.payment_sessions = [sess]
         }
       } else {
         for (const provider of region.payment_providers) {

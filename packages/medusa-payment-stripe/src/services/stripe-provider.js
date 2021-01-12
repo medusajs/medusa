@@ -203,10 +203,10 @@ class StripeProviderService extends PaymentService {
    * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment(sessionData, context = {}) {
-    const stat = await this.getStatus(sessionData)
+    const stat = await this.getStatus(sessionData.data)
 
     try {
-      return { data: sessionData, status: stat }
+      return { data: sessionData.data, status: stat }
     } catch (error) {
       throw error
     }

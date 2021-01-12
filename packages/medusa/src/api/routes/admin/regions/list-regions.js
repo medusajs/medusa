@@ -2,7 +2,7 @@ export default async (req, res) => {
   try {
     const regionService = req.scope.resolve("regionService")
 
-    const limit = parseInt(req.query.limit) || 10
+    const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
 
     const selector = {}
