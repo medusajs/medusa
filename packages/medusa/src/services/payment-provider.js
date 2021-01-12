@@ -125,17 +125,14 @@ class PaymentProviderService extends BaseService {
       )
 
       const toCreate = {
-        // cart_id: cart.id,
-        cart: cart,
+        cart_id: cart.id,
         provider_id: providerId,
         data: sessionData,
         status: "pending",
       }
 
-      const created = await sessionRepo.create(toCreate)
+      const created = sessionRepo.create(toCreate)
       const result = await sessionRepo.save(created)
-
-      console.log(result)
 
       return result
     })
@@ -164,7 +161,7 @@ class PaymentProviderService extends BaseService {
 
   deleteSession(paymentSession) {
     return this.atomicPhase_(async manager => {
-      const session = this.retrieveSession(paymentSession.id).catch(
+      const session = await this.retrieveSession(paymentSession.id).catch(
         _ => undefined
       )
 
@@ -178,6 +175,7 @@ class PaymentProviderService extends BaseService {
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
       )
+
       return sessionRepo.remove(session)
     })
   }

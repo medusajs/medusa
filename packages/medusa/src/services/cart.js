@@ -840,6 +840,7 @@ class CartService extends BaseService {
   async setPaymentSession(cartId, providerId) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
+
       const cart = await this.retrieve(cartId, {
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
@@ -857,11 +858,14 @@ class CartService extends BaseService {
         )
       }
 
-      const session = cart.payment_sessions.find(
-        s => s.provider_id === providerId
-      )
-
-      cart.payment_session_id = session.id
+      cart.payment_sessions = cart.payment_sessions.map(s => {
+        if (s.provider_id === providerId) {
+          s.is_selected = true
+        } else {
+          s.is_selected = false
+        }
+        return s
+      })
 
       const result = await cartRepo.save(cart)
       await this.eventBus_
@@ -883,18 +887,18 @@ class CartService extends BaseService {
   async setPaymentSessions(cartId) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
+        select: ["total"],
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
 
       const region = cart.region
-      const total = await this.totalsService_.getTotal(cart)
 
       // If there are existing payment sessions ensure that these are up to date
       let seen = []
       if (cart.payment_sessions && cart.payment_sessions.length) {
         for (const session of cart.payment_sessions) {
           if (
-            total === 0 ||
+            cart.total === 0 ||
             !region.payment_providers.find(
               ({ id }) => id === session.provider_id
             )
@@ -914,11 +918,9 @@ class CartService extends BaseService {
       if (region.payment_providers.length === 1) {
         const p = region.payment_providers[0]
         if (!seen.includes(p.id)) {
-          const sess = await this.paymentProviderService_
+          await this.paymentProviderService_
             .withTransaction(manager)
             .createSession(p.id, cart)
-
-          // cart.payment_sessions = [sess]
         }
       } else {
         for (const provider of region.payment_providers) {
@@ -930,8 +932,7 @@ class CartService extends BaseService {
         }
       }
 
-      const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const result = await cartRepo.save(cart)
+      const result = await this.retrieve(cart.id)
 
       await this.eventBus_
         .withTransaction(manager)
@@ -953,31 +954,31 @@ class CartService extends BaseService {
         relations: ["payment_session", "payment_sessions"],
       })
 
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+
       if (cart.payment_sessions) {
         const session = cart.payment_sessions.find(
-          s => s.provider_id === providerId
+          ({ provider_id }) => provider_id === providerId
+        )
+
+        cart.payment_sessions = cart.payment_sessions.filter(
+          ({ provider_id }) => provider_id !== providerId
         )
 
         if (session) {
-          if (
-            cart.payment_session &&
-            cart.payment_session.provider_id === providerId
-          ) {
-            cart.payment_session_id = null
-          }
-
           // Delete the session with the provider
-          await this.paymentProviderService_.deleteSession(session)
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .deleteSession(session)
         }
       }
 
-      const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const result = await cartRepo.save(cart)
+      await cartRepo.save(cart)
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(CartService.Events.UPDATED, result)
-      return result
+        .emit(CartService.Events.UPDATED, cart)
+      return cart
     })
   }
 

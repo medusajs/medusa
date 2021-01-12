@@ -24,7 +24,15 @@ export default async (req, res) => {
         "discount_total",
         "total",
       ],
-      relations: ["region"],
+      relations: [
+        "region",
+        "region.countries",
+        "region.payment_providers",
+        "shipping_methods",
+        "payment_session",
+        "payment_sessions",
+        "shipping_methods.shipping_option",
+      ],
     })
 
     res.status(200).json({ cart })

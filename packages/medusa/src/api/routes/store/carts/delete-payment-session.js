@@ -5,7 +5,24 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
 
     await cartService.deletePaymentSession(id, provider_id)
-    const cart = await cartService.retrieve(id, ["region"])
+    const cart = await cartService.retrieve(id, {
+      select: [
+        "subtotal",
+        "tax_total",
+        "shipping_total",
+        "discount_total",
+        "total",
+      ],
+      relations: [
+        "region",
+        "region.countries",
+        "region.payment_providers",
+        "shipping_methods",
+        "payment_session",
+        "payment_sessions",
+        "shipping_methods.shipping_option",
+      ],
+    })
 
     res.status(200).json({ cart })
   } catch (err) {

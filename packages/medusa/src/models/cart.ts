@@ -12,6 +12,7 @@ import {
   ManyToMany,
   JoinColumn,
   JoinTable,
+  AfterLoad,
 } from "typeorm"
 import randomize from "randomatic"
 
@@ -81,14 +82,12 @@ export class Cart {
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
-  @Column({ nullable: true })
-  payment_session_id: string
-
-  @OneToOne(() => PaymentSession)
-  @JoinColumn({ name: "payment_session_id" })
   payment_session: PaymentSession
 
-  @OneToMany(() => PaymentSession, paymentSession => paymentSession.cart)
+  @OneToMany(
+    () => PaymentSession,
+    paymentSession => paymentSession.cart
+  )
   payment_sessions: PaymentSession[]
 
   @Column({ nullable: true })
@@ -131,5 +130,10 @@ export class Cart {
     if (this.id) return
     const id = randomize("Aa0", 24)
     this.id = `cart_${id}`
+  }
+
+  @AfterLoad()
+  private afterLoad() {
+    this.payment_session = this.payment_sessions.find(p => p.is_selected)
   }
 }
