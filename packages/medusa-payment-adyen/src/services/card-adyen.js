@@ -38,6 +38,10 @@ class CardAdyenService extends PaymentService {
     return this.adyenService_.updatePayment(data)
   }
 
+  async updatePaymentData(sessionData, update) {
+    return this.adyenService_.updatePaymentData(sessionData, update)
+  }
+
   async deletePayment(data) {
     return this.adyenService_.deletePayment(data)
   }

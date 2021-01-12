@@ -1,5 +1,3 @@
-import { Any } from "typeorm"
-
 export default async (req, res) => {
   const limit = parseInt(req.query.limit) || 100
   const offset = parseInt(req.query.offset) || 0

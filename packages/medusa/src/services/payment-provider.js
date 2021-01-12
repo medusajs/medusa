@@ -198,7 +198,7 @@ class PaymentProviderService extends BaseService {
 
   async createPayment(cart) {
     return this.atomicPhase_(async manager => {
-      const { payment_session: paymentSession, region } = cart
+      const { payment_session: paymentSession, region, total } = cart
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const paymentData = await provider.getPaymentData(paymentSession)
 
@@ -206,7 +206,7 @@ class PaymentProviderService extends BaseService {
 
       const created = paymentRepo.create({
         provider_id: paymentSession.provider_id,
-        amount: paymentData.amount,
+        amount: total,
         currency_code: region.currency_code,
         data: paymentData,
       })

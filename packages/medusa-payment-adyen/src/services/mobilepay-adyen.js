@@ -30,6 +30,10 @@ class MobilePayAdyenService extends PaymentService {
     return this.adyenService_.updatePayment(data)
   }
 
+  async updatePaymentData(sessionData, update) {
+    return this.adyenService_.updatePaymentData(sessionData, update)
+  }
+
   async getPaymentData(data) {
     return this.adyenService_.getPaymentData(data)
   }

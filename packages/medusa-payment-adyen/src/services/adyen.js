@@ -1,18 +1,15 @@
 import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
-import { PaymentService } from "medusa-interfaces"
+import { BaseService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
 class AdyenService extends BaseService {
-  constructor({ regionService, totalsService }, options) {
+  constructor({ cartService }, options) {
     super()
 
     /** @private @constant {CartService} */
     this.cartService_ = cartService
-
-    /** @private @constant {TotalsService} */
-    this.totalsService_ = totalsService
 
     /**
      * {
@@ -150,7 +147,7 @@ class AdyenService extends BaseService {
    * @param {object} paymentData - payment method data from cart
    * @returns {string} the status of the payment
    */
-  async getStatus(paymentData) {
+  getStatus(paymentData) {
     const { resultCode } = paymentData
     let status = "pending"
 
@@ -204,8 +201,18 @@ class AdyenService extends BaseService {
    * @param {object} data - payment session
    * @returns {object} payment method data
    */
-  async getPaymentData(data) {
-    return data
+  async getPaymentData(paymentSession) {
+    return { ...paymentSession.data }
+  }
+
+  /**
+   * Retrieves Adyen payment. This is not supported by adyen, so we simply
+   * return the current payment method data
+   * @param {object} sessionData - the data of the payment to retrieve
+   * @returns {Promise<object>} Stripe payment intent
+   */
+  async retrieve(sessionData) {
+    return sessionData
   }
 
   /**
@@ -217,75 +224,88 @@ class AdyenService extends BaseService {
    * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment(sessionData, context) {
-    return this.atomicPhase_(async (manager) => {
-      if (!sessionData.cart_id) {
-        return { data: {}, status: "error" }
-      }
+    if (!sessionData.cart_id) {
+      return { data: {}, status: "error" }
+    }
 
-      const cart = await this.cartService_
-        .withTransaction(manager)
-        .retrieve(sessionData.cart_id)
+    // If session data is present, we already called authorize once.
+    // Therefore, this is most likely a call for getting additional details
+    if (sessionData.status === "requires_more") {
+      const updated = await this.updatePaymentData(sessionData, {
+        details: sessionData.data.details,
+        paymentData: sessionData.data.paymentData,
+      })
 
-      const total = await this.totalsService_
-        .withTransaction(manager)
-        .getTotal(cart)
+      return { data: update, status: this.getStatus(updated) }
+    }
 
-      const amount = {
-        currency: cart.region.currency_code,
-        value: total * 100,
-      }
-
-      let request = {
-        amount,
-        shopperIP: context.ip_address || "",
-        shopperReference: cart.customer_id,
-        paymentMethod: sessionData.paymentMethod,
-        reference: cart.id,
-        merchantAccount: this.options_.merchant_account,
-        returnUrl: this.options_.return_url,
-        origin: this.options_.origin,
-        channel: "Web",
-        redirectFromIssuerMethod: "GET",
-        browserInfo: sessionData.browserInfo || {},
-        billingAddress: {
-          city: cart.shipping_address.city,
-          country: cart.shipping_address.country_code,
-          houseNumberOrName: cart.shipping_address.address_2 || "",
-          postalCode: cart.shipping_address.postal_code,
-          stateOrProvice: cart.shipping_address.province || "",
-          street: cart.shipping_address.address_1,
-        },
-        metadata: {
-          cart_id: cart.id,
-        },
-      }
-
-      // If customer chose to save the payment method
-      if (sessionData.storePaymentMethod) {
-        request.storePaymentMethod = "true"
-        request.shopperInteraction = "Ecommerce"
-        request.recurringProcessingModel = "CardOnFile"
-      }
-
-      const checkout = new CheckoutAPI(this.adyenClient_)
-
-      try {
-        const authorizedPayment = checkout.payments(request, {
-          idempotencyKey: context.idempotency_key || "",
-        })
-
-        return {
-          data: authorizedPayment,
-          status: this.getStatus(authorizedPayment),
-        }
-      } catch (error) {
-        throw error
-      }
+    const cart = await this.cartService_.retrieve(sessionData.cart_id, {
+      select: ["total"],
+      relations: ["region", "shipping_address"],
     })
+
+    const amount = {
+      currency: cart.region.currency_code.toUpperCase(),
+      value: cart.total,
+    }
+
+    let request = {
+      amount,
+      shopperIP: context.ip_address || "",
+      shopperReference: cart.customer_id,
+      paymentMethod: sessionData.paymentData.paymentMethod,
+      reference: cart.id,
+      merchantAccount: this.options_.merchant_account,
+      returnUrl: this.options_.return_url,
+      origin: this.options_.origin,
+      channel: "Web",
+      redirectFromIssuerMethod: "GET",
+      browserInfo: sessionData.browserInfo || {},
+      billingAddress: {
+        city: cart.shipping_address.city,
+        country: cart.shipping_address.country_code,
+        houseNumberOrName: cart.shipping_address.address_2 || "",
+        postalCode: cart.shipping_address.postal_code,
+        stateOrProvice: cart.shipping_address.province || "",
+        street: cart.shipping_address.address_1,
+      },
+      metadata: {
+        cart_id: cart.id,
+      },
+    }
+
+    // If customer chose to save the payment method
+    if (sessionData.storePaymentMethod) {
+      request.storePaymentMethod = "true"
+      request.shopperInteraction = "Ecommerce"
+      request.recurringProcessingModel = "CardOnFile"
+    }
+
+    const checkout = new CheckoutAPI(this.adyenClient_)
+
+    try {
+      const authorizedPayment = await checkout.payments(request, {
+        idempotencyKey: context.idempotency_key || "",
+      })
+
+      return {
+        data: authorizedPayment,
+        status: this.getStatus(authorizedPayment),
+      }
+    } catch (error) {
+      throw error
+    }
   }
 
   async updatePaymentData(sessionData, update) {
-    return sessionData
+    if (!update.details) {
+      return { ...sessionData, ...update }
+    }
+
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    const updated = await checkout.paymentsDetails(update)
+
+    return { ...sessionData, ...updated }
   }
 
   /**
@@ -295,30 +315,7 @@ class AdyenService extends BaseService {
    * @returns {Promise} result of the update operation
    */
   async updatePayment(paymentData, details) {
-    const request = {
-      paymentData,
-      details,
-    }
-
-    const checkout = new CheckoutAPI(this.adyenClient_)
-    return checkout.paymentsDetails(request)
-  }
-
-  /**
-   * Checks payment result
-   * @param {object} paymentData - payment data to check status for
-   * @param {object} payload - payload needed for checking the status
-   * @returns {Promise} current payment result
-   */
-  async checkPaymentResult(paymentData, payload) {
-    const request = {
-      paymentData,
-      details: {
-        payload,
-      },
-    }
-    const checkout = new CheckoutAPI(this.adyenClient_)
-    return checkout.paymentsDetails(request)
+    return paymentData
   }
 
   /**
