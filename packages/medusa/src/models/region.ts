@@ -46,7 +46,7 @@ export class Region {
   )
   countries: Country[]
 
-  @ManyToMany(() => PaymentProvider, { eager: true })
+  @ManyToMany(() => PaymentProvider, { eager: true, cascade: true })
   @JoinTable({
     name: "region_payment_providers",
     joinColumn: {
@@ -60,7 +60,7 @@ export class Region {
   })
   payment_providers: PaymentProvider[]
 
-  @ManyToMany(() => FulfillmentProvider, { eager: true })
+  @ManyToMany(() => FulfillmentProvider, { eager: true, cascade: true })
   @JoinTable({
     name: "region_fulfillment_providers",
     joinColumn: {

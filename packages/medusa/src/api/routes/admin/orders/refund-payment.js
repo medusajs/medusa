@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -19,11 +20,10 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
     await orderService.createRefund(id, value.amount, value.reason, value.note)
 
-    const order = await orderService.retrieve(id, [
-      "region",
-      "customer",
-      "swaps",
-    ])
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ order })
   } catch (err) {

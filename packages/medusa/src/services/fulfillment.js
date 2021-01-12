@@ -196,7 +196,7 @@ class FulfillmentService extends BaseService {
 
           return fulfillmentRepository.create({
             provider: shipping_method.provider_id,
-            items,
+            items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
             data,
             metadata,
           })
@@ -239,7 +239,8 @@ class FulfillmentService extends BaseService {
 
       const fulfillment = await this.retrieve(fulfillmentId, ["items"])
 
-      fulfillment.shipped_at = Date.now()
+      const now = new Date()
+      fulfillment.shipped_at = now.toUTCString()
       fulfillment.tracking_numbers = trackingNumbers
       fulfillment.metadata = {
         ...fulfillment.metadata,

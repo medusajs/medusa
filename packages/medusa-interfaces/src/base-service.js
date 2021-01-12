@@ -129,6 +129,7 @@ class BaseService {
         } catch (error) {
           this.manager_ = temp
           this.transactionManager_ = undefined
+          throw error
         }
       }
 

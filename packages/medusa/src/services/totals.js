@@ -71,7 +71,7 @@ class TotalsService extends BaseService {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
     const discountTotal = this.getDiscountTotal(object)
-    const { tax_rate } = object.region
+    const tax_rate = object.tax_rate || object.region.tax_rate
     return this.rounded(
       (subtotal - discountTotal + shippingTotal) * (tax_rate / 100)
     )
@@ -87,7 +87,8 @@ class TotalsService extends BaseService {
   }
 
   getLineItemRefund(object, lineItem) {
-    const { tax_rate, discounts } = object
+    const { discounts } = object
+    const tax_rate = object.tax_rate || object.region.tax_rate
     const taxRate = (tax_rate || 0) / 100
 
     const discount = discounts.find(

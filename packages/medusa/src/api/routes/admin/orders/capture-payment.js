@@ -1,3 +1,5 @@
+import { defaultRelations, defaultFields } from "./"
+
 export default async (req, res) => {
   const { id } = req.params
 
@@ -6,11 +8,10 @@ export default async (req, res) => {
 
     await orderService.capturePayment(id)
 
-    const order = await orderService.retrieve(id, [
-      "region",
-      "customer",
-      "swaps",
-    ])
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.json({ order })
   } catch (error) {

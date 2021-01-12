@@ -245,6 +245,7 @@ class OrderService extends BaseService {
       "total",
       "refunded_total",
       "refundable_amount",
+      "items.refundable",
     ]
 
     const totalsToSelect = select.filter(v => totalFields.includes(v))
@@ -647,25 +648,33 @@ class OrderService extends BaseService {
    */
   async capturePayment(orderId) {
     return this.atomicPhase_(async manager => {
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
 
-      order.payment_status = "captured"
-
+      const payments = []
       for (const p of order.payments) {
         if (p.caputred_at !== null) {
-          await this.paymentProviderService_.capturePayment(p).catch(err => {
-            order.payment_status = "requires_action"
-            this.eventBus_
-              .withTransaction(manager)
-              .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
-                order,
-                error: err,
-              })
-          })
+          const result = await this.paymentProviderService_
+            .capturePayment(p)
+            .catch(err => {
+              this.eventBus_
+                .withTransaction(manager)
+                .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
+                  order,
+                  error: err,
+                })
+            })
+
+          payments.push(result)
+        } else {
+          payments.push(p)
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      order.payment_status = payments.every(p => p.captured_at !== null)
+        ? "captured"
+        : "requires_action"
+
       const result = await orderRepo.save(order)
 
       this.eventBus_
@@ -717,13 +726,22 @@ class OrderService extends BaseService {
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: ["items", "items.variant", "items.variant.product"],
+        relations: [
+          "fulfillments",
+          "shipping_address",
+          "billing_address",
+          "shipping_methods",
+          "shipping_methods.shipping_option",
+          "items",
+          "items.variant",
+          "items.variant.product",
+          "payments",
+        ],
       })
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(order, itemsToFulfill, metadata)
-
       let successfullyFulfilled = []
       for (const f of fulfillments) {
         successfullyFulfilled = [...successfullyFulfilled, ...f.items]
@@ -739,7 +757,7 @@ class OrderService extends BaseService {
 
         if (fulfillmentItem) {
           const fulfilledQuantity =
-            item.fulfilled_quantity + fulfillmentItem.quantity
+            (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
 
           // Update the fulfilled quantity
           await this.lineItemService_.withTransaction(manager).update(item.id, {
@@ -757,6 +775,7 @@ class OrderService extends BaseService {
       }
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
+
       const result = await orderRepo.save(order)
 
       for (const fulfillment of fulfillments) {
@@ -811,7 +830,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const returnable = item.quantity - item.returned_quantity
+    const returnable = item.quantity - (item.returned_quantity || 0)
     if (quantity > returnable) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -937,7 +956,8 @@ class OrderService extends BaseService {
       for (const i of order.items) {
         const isReturn = updatedReturn.items.find(r => i.id === r.item_id)
         if (isReturn) {
-          const returnedQuantity = i.returned_quantity + isReturn.quantity
+          const returnedQuantity =
+            (i.returned_quantity || 0) + isReturn.quantity
           if (i.quantity !== returnedQuantity) {
             isFullReturn = false
           }
@@ -1006,11 +1026,11 @@ class OrderService extends BaseService {
    */
   async createRefund(orderId, refundAmount, reason, note) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, { relations: ["payments"] })
-      const total = await this.totalsService_.getTotal(order)
-      const refunded = await this.totalsService_.getRefundedTotal(order)
-
-      if (refundAmount > total - refunded) {
+      const order = await this.retrieve(orderId, {
+        select: ["refundable_amount", "total", "refunded_total"],
+        relations: ["payments"],
+      })
+      if (refundAmount > order.refundable_amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot refund more than the original order amount"
@@ -1055,7 +1075,7 @@ class OrderService extends BaseService {
       order.refundable_amount = total - refunded_total
     }
 
-    if ("items" in order) {
+    if (totalsFields.includes("items.refundable")) {
       order.items = order.items.map(i => ({
         ...i,
         refundable: this.totalsService_.getLineItemRefund(order, {
@@ -1132,7 +1152,8 @@ class OrderService extends BaseService {
         const isReturn = swap.return.items.find(ri => i.id === ri.item_id)
 
         if (isReturn) {
-          const returnedQuantity = i.returned_quantity + isReturn.quantity
+          const returnedQuantity =
+            (i.returned_quantity || 0) + isReturn.quantity
           await this.lineItemService_.update(i.id, {
             returned_quantity: returnedQuantity,
           })

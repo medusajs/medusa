@@ -171,35 +171,35 @@ export class Order {
   @OneToMany(
     () => Fulfillment,
     fulfillment => fulfillment.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   fulfillments: Fulfillment[]
 
   @OneToMany(
     () => Return,
     ret => ret.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   returns: Return[]
 
   @OneToMany(
     () => Refund,
     ref => ref.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   refunds: Refund[]
 
   @OneToMany(
     () => Swap,
     swap => swap.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   swaps: Swap[]
 
   @OneToMany(
     () => LineItem,
     lineItem => lineItem.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   items: LineItem[]
 
