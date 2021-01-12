@@ -138,18 +138,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
             },
             customs_lines: returnLines.map((item) => {
               return {
-                ext_ref: item._id,
+                ext_ref: item.id,
                 sku: item.content.variant.sku,
                 description: item.title,
                 quantity: item.quantity,
                 country_of_origin:
-                  item.content.variant.metadata &&
-                  item.content.variant.metadata.origin_country,
+                  item.variant.origin_country ||
+                  item.variant.product.origin_country,
                 tarif_number:
-                  item.content.variant.metadata &&
-                  item.content.variant.metadata.hs_code,
-                unit_price: item.content.unit_price,
-                vat_percent: fromOrder.tax_rate * 100,
+                  item.variant.hs_code || item.variant.product.hs_code,
+                unit_price: item.unit_price / 100,
+                vat_percent: fromOrder.tax_rate,
                 currency: fromOrder.currency_code,
               }
             }),
@@ -246,7 +245,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       let visible_ref = `${fromOrder.display_id}-${
         fromOrder.fulfillments.length + 1
       }`
-      let ext_ref = `${fromOrder._id}.${fromOrder.fulfillments.length}`
+      let ext_ref = `${fromOrder.id}.${fromOrder.fulfillments.length}`
 
       if (fromOrder.is_swap) {
         ext_ref = `S${fromOrder.id}.${fromOrder.fulfillments.length}`
@@ -271,7 +270,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
                 item.variant.product.origin_country,
               tarif_number:
                 item.variant.hs_code || item.variant.product.hs_code,
-              unit_price: item.unit_price,
+              unit_price: item.unit_price / 100,
+              vat_percent: fromOrder.tax_rate,
             }
           }),
           delivery_address: {
@@ -352,8 +352,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
         const swap = await this.swapService_.retrieve(orderId.substring(1))
         const fulfillment = swap.fulfillments[fulfillmentIndex]
         await this.swapService_.createShipment(
-          swap._id,
-          fulfillment._id,
+          swap.id,
+          fulfillment.id,
           trackingNumbers
         )
       } else {
@@ -361,8 +361,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
         const fulfillment = order.fulfillments[fulfillmentIndex]
         if (fulfillment) {
           await this.orderService_.createShipment(
-            order._id,
-            fulfillment._id,
+            order.id,
+            fulfillment.id,
             trackingNumbers
           )
         }

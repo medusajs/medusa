@@ -247,7 +247,6 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(paySession.provider_id)
 
       session.data = await provider.updatePaymentData(paySession.data, update)
-      console.log("SESSION: ", session)
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
@@ -263,7 +262,7 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(payment.provider_id)
       payment.data = await provider.cancelPayment(payment.data)
 
-      payment.canceled_at = Date.now()
+      payment.canceled_at = new Date()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
       return paymentRepo.save(payment)
@@ -282,7 +281,7 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(payment.provider_id)
       payment.data = await provider.capturePayment(payment.data)
 
-      payment.captured_at = Date.now()
+      payment.captured_at = new Date()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
       return paymentRepo.save(payment)

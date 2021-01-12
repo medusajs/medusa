@@ -184,6 +184,8 @@ class FulfillmentService extends BaseService {
       // partition order items to their dedicated shipping method
       const fulfillments = this.partitionItems_(shipping_methods, lineItems)
 
+      console.log("Partitioned: ", fulfillments)
+
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
           const data = await this.fulfillmentProviderService_.createFulfillment(
@@ -196,7 +198,7 @@ class FulfillmentService extends BaseService {
 
           return fulfillmentRepository.create({
             provider: shipping_method.provider_id,
-            items,
+            items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
             data,
             metadata,
           })

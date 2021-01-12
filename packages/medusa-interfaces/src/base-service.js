@@ -22,11 +22,9 @@ class BaseService {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
         switch (true) {
           case value instanceof FindOperator:
-            console.log("Find: ", value)
             acc[key] = value
             break
           case Array.isArray(value):
-            console.log("Array: ", value)
             acc[key] = In([...value])
             break
           case value !== null && typeof value === "object":
@@ -129,9 +127,9 @@ class BaseService {
           this.transactionManager_ = undefined
           return result
         } catch (error) {
-          console.log("HERE: ", error)
           this.manager_ = temp
           this.transactionManager_ = undefined
+          throw error
         }
       }
 

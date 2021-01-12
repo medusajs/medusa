@@ -179,6 +179,7 @@ export const defaultFields = [
   "created_at",
   "updated_at",
   "metadata",
+  "items.refundable",
   "shipping_total",
   "discount_total",
   "tax_total",
