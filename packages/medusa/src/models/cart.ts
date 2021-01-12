@@ -136,10 +136,7 @@ export class Cart {
   @AfterLoad()
   private afterLoad() {
     if (this.payment_sessions) {
-      const paySes = this.payment_sessions.find(p => p.is_selected)
-      if (paySes) {
-        this.payment_session = this.payment_sessions.find(p => p.is_selected)
-      }
+      this.payment_session = this.payment_sessions.find(p => p.is_selected)
     }
   }
 }

@@ -534,7 +534,6 @@ class CartService extends BaseService {
         "discounts",
         "discounts.discount_rule",
         "discounts.regions",
-        "payment_session",
       ])
 
       if ("region_id" in update) {
@@ -760,14 +759,14 @@ class CartService extends BaseService {
    */
   async updatePaymentSession(cartId, update) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, {
-        relations: ["payment_session"],
-      })
+      const cart = await this.retrieve(cartId)
 
-      await this.paymentProviderService_.updateSessionData(
-        cart.payment_session,
-        update
-      )
+      if (cart.payment_session) {
+        await this.paymentProviderService_.updateSessionData(
+          cart.payment_session,
+          update
+        )
+      }
 
       const result = await this.retrieve(cart.id, {
         select: [
@@ -777,7 +776,7 @@ class CartService extends BaseService {
           "discount_total",
           "total",
         ],
-        relations: ["payment_session"],
+        relations: [],
       })
       await this.eventBus_
         .withTransaction(manager)
@@ -803,8 +802,10 @@ class CartService extends BaseService {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
       const cart = await this.retrieve(cartId, {
-        relations: ["payment_session", "region"],
+        relations: ["region", "payment_sessions"],
       })
+
+      console.log(cart)
 
       const session = await this.paymentProviderService_
         .withTransaction(manager)
@@ -812,7 +813,7 @@ class CartService extends BaseService {
 
       const freshCart = await this.retrieve(cart.id, {
         select: ["total"],
-        relations: ["payment_session"],
+        relations: [],
       })
 
       if (session.status === "authorized") {
@@ -951,7 +952,7 @@ class CartService extends BaseService {
   async deletePaymentSession(cartId, providerId) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
-        relations: ["payment_session", "payment_sessions"],
+        relations: ["payment_sessions"],
       })
 
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
