@@ -390,13 +390,14 @@ class AdyenService extends BaseService {
     }
 
     try {
-      await this.adyenPaymentApi.post("/refund", {
+      const refunded = await this.adyenPaymentApi.post("/refund", {
         originalReference,
         merchantAccount: this.options_.merchant_account,
         modificationAmount: refundAmount,
         reference: merchantReference,
       })
-      return "processing_refund"
+
+      return { originalReference, ...refunded.data }
     } catch (error) {
       throw error
     }

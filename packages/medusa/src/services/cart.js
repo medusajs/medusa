@@ -709,9 +709,9 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async applyDiscount_(cart, discountCode) {
-    const discount = await this.discountService_.retrieveByCode(discountCode, {
-      relations: ["regions"],
-    })
+    const discount = await this.discountService_.retrieveByCode(discountCode, [
+      "regions",
+    ])
 
     if (discount.is_disabled) {
       throw new MedusaError(
