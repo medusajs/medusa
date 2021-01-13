@@ -3,15 +3,15 @@ import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   try {
-    const productService = req.scope.resolve("productService")
+    const variantService = req.scope.resolve("productVariantService")
 
     const limit = parseInt(req.query.limit) || 20
     const offset = parseInt(req.query.offset) || 0
 
     const selector = {}
 
-    if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
-      selector.is_giftcard = req.query.is_giftcard === "true"
+    if ("q" in req.query) {
+      selector.q = req.query.q
     }
 
     const listConfig = {
@@ -21,9 +21,9 @@ export default async (req, res) => {
       take: limit,
     }
 
-    let products = await productService.list(selector, listConfig)
+    let variants = await variantService.list(selector, listConfig)
 
-    res.json({ products, count: products.length, offset, limit })
+    res.json({ variants, count: variants.length, offset, limit })
   } catch (error) {
     throw error
   }

@@ -16,6 +16,7 @@ import uploadRoutes from "./uploads"
 import customerRoutes from "./customers"
 import appRoutes from "./apps"
 import swapRoutes from "./swaps"
+import variantRoutes from "./variants"
 
 const route = Router()
 
@@ -56,6 +57,7 @@ export default (app, container, config) => {
   uploadRoutes(route)
   customerRoutes(route)
   swapRoutes(route)
+  variantRoutes(route)
 
   return app
 }
