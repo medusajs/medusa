@@ -240,7 +240,7 @@ class FulfillmentService extends BaseService {
       const fulfillment = await this.retrieve(fulfillmentId, ["items"])
 
       const now = new Date()
-      fulfillment.shipped_at = now.toUTCString()
+      fulfillment.shipped_at = now
       fulfillment.tracking_numbers = trackingNumbers
       fulfillment.metadata = {
         ...fulfillment.metadata,

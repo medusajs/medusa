@@ -20,7 +20,7 @@ export class IdempotencyKey {
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @Column({ nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   locked_at: Date
 
   @Column({ nullable: true })

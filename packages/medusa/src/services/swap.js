@@ -427,10 +427,11 @@ class SwapService extends BaseService {
         swap.payment = payment
       }
 
+      const now = new Date()
       swap.difference_due = total
       swap.shipping_address_id = cart.shipping_address_id
       swap.shipping_methods = cart.shipping_methods
-      swap.confirmed_at = Date.now()
+      swap.confirmed_at = now.toISOString()
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)

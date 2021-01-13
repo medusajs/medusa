@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -56,7 +57,10 @@ export default async (req, res) => {
             async manager => {
               const order = await orderService
                 .withTransaction(manager)
-                .retrieve(id)
+                .retrieve(id, {
+                  select: ["refunded_total", "total"],
+                  relations: ["items"],
+                })
 
               const returnObj = {
                 items: value.items,
@@ -115,8 +119,8 @@ export default async (req, res) => {
             idempotencyKey.idempotency_key,
             async manager => {
               let order = await orderService
-                .withTransction(manager)
-                .retrieve(id, "returns")
+                .withTransaction(manager)
+                .retrieve(id, { relations: ["returns"] })
 
               /**
                * If we are ready to receive immediately, we find the newly created return
@@ -141,9 +145,10 @@ export default async (req, res) => {
                   .receiveReturn(order.id, ret.id, value.items, value.refund)
               }
 
-              order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, ["region", "customer", "swaps"])
+              order = await orderService.withTransaction(manager).retrieve(id, {
+                select: defaultFields,
+                relations: defaultRelations,
+              })
 
               return {
                 response_code: 200,

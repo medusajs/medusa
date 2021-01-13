@@ -216,6 +216,23 @@ class PaymentProviderService extends BaseService {
     })
   }
 
+  async updatePayment(paymentId, update) {
+    return this.atomicPhase_(async manager => {
+      const payment = await this.retrievePayment(paymentId)
+
+      if ("order_id" in update) {
+        payment.order_id = update.order_id
+      }
+
+      if ("swap_id" in update) {
+        payment.swap_id = update.swap_id
+      }
+
+      const payRepo = manager.getCustomRepository(this.paymentRepository_)
+      return payRepo.save(payment)
+    })
+  }
+
   async authorizePayment(paymentSession, context) {
     return this.atomicPhase_(async manager => {
       const session = await this.retrieveSession(paymentSession.id).catch(
@@ -263,7 +280,8 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(payment.provider_id)
       payment.data = await provider.cancelPayment(payment.data)
 
-      payment.canceled_at = new Date()
+      const now = new Date()
+      payment.canceled_at = now.toISOString()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
       return paymentRepo.save(payment)
@@ -283,7 +301,7 @@ class PaymentProviderService extends BaseService {
       payment.data = await provider.capturePayment(payment.data)
 
       const now = new Date()
-      payment.captured_at = now.toUTCString()
+      payment.captured_at = now.toISOString()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
       return paymentRepo.save(payment)

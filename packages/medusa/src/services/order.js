@@ -431,10 +431,9 @@ class OrderService extends BaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const o = await orderRepo.create({
-        payments: payment ? [payment] : [],
+        payment_status: "awaiting",
         discounts: cart.discounts,
         shipping_methods: cart.shipping_methods,
-        // items: cart.items,
         shipping_address_id: cart.shipping_address_id,
         billing_address_id: cart.billing_address_id,
         region_id: cart.region_id,
@@ -447,6 +446,18 @@ class OrderService extends BaseService {
       })
 
       const result = await orderRepo.save(o)
+
+      await this.paymentProviderService_
+        .withTransaction(manager)
+        .updatePayment(payment.id, {
+          order_id: result.id,
+        })
+
+      for (const method of cart.shipping_methods) {
+        await this.shippingOptionService_
+          .withTransaction(manager)
+          .updateShippingMethod(method.id, { order_id: result.id })
+      }
 
       for (const item of cart.items) {
         await this.lineItemService_
@@ -660,7 +671,7 @@ class OrderService extends BaseService {
 
       const payments = []
       for (const p of order.payments) {
-        if (p.caputred_at !== null) {
+        if (p.captured_at === null) {
           const result = await this.paymentProviderService_
             .capturePayment(p)
             .catch(err => {
@@ -678,6 +689,7 @@ class OrderService extends BaseService {
         }
       }
 
+      order.payments = payments
       order.payment_status = payments.every(p => p.captured_at !== null)
         ? "captured"
         : "requires_action"
@@ -783,6 +795,7 @@ class OrderService extends BaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
+      order.fulfillments = [...order.fulfillments, ...fulfillments]
       const result = await orderRepo.save(order)
 
       for (const fulfillment of fulfillments) {
@@ -882,7 +895,10 @@ class OrderService extends BaseService {
    */
   async requestReturn(orderId, items, shippingMethod, refundAmount) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId)
+      const order = await this.retrieve(orderId, {
+        select: ["refunded_total", "total"],
+        relations: ["items"],
+      })
 
       const returnObj = {
         items,
@@ -931,7 +947,7 @@ class OrderService extends BaseService {
   ) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: ["items", "returns"],
+        relations: ["items", "returns", "payments"],
       })
       const returnRequest = await this.returnService_.retrieve(returnId)
 
@@ -969,7 +985,7 @@ class OrderService extends BaseService {
             isFullReturn = false
           }
 
-          await this.lineItemService_.update(i.id, {
+          await this.lineItemService_.withTransaction(manager).update(i.id, {
             returned_quantity: returnedQuantity,
           })
         } else {
@@ -980,11 +996,9 @@ class OrderService extends BaseService {
       }
 
       if (updatedReturn.refund_amount > 0) {
-        await this.paymentProviderService_.refundPayment(
-          order.payments,
-          updatedReturn.refund_amount,
-          "return"
-        )
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .refundPayment(order.payments, updatedReturn.refund_amount, "return")
       }
 
       if (isFullReturn) {
