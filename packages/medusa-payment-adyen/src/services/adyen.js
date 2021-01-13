@@ -302,7 +302,7 @@ class AdyenService extends BaseService {
   }
 
   async updatePaymentData(sessionData, update) {
-    if (!update.details) {
+    if (_.isEmpty(update.details)) {
       return { ...sessionData, ...update }
     }
 
