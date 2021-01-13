@@ -14,6 +14,7 @@ import {
   JoinTable,
   AfterLoad,
   Timestamp,
+  BeforeUpdate,
 } from "typeorm"
 import randomize from "randomatic"
 import { Region } from "./region"
