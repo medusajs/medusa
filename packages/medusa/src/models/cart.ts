@@ -58,7 +58,7 @@ export class Cart {
   @Column()
   region_id: string
 
-  @ManyToOne(() => Region, { eager: true, cascade: true })
+  @ManyToOne(() => Region, { eager: true })
   @JoinColumn({ name: "region_id" })
   region: Region
 
@@ -109,7 +109,7 @@ export class Cart {
   @Column({ default: false })
   is_swap: boolean
 
-  @Column({ nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   completed_at: Date
 
   @CreateDateColumn({ type: "timestamptz" })

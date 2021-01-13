@@ -47,10 +47,10 @@ export class Discount {
   @JoinColumn({ name: "parent_discount_id" })
   parent_discount: Discount
 
-  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
   starts_at: Date
 
-  @Column({ nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   ends_at: Date
 
   @ManyToMany(() => Region)

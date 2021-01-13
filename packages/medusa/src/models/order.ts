@@ -98,14 +98,14 @@ export class Order {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address, { cascade: true })
+  @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address, { cascade: true })
+  @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
@@ -157,14 +157,14 @@ export class Order {
   @OneToMany(
     () => ShippingMethod,
     method => method.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   shipping_methods: ShippingMethod[]
 
   @OneToMany(
     () => Payment,
     payment => payment.order,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   payments: Payment[]
 

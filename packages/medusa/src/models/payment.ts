@@ -64,10 +64,10 @@ export class Payment {
   @Column({ type: "jsonb" })
   data: any
 
-  @Column({ nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   captured_at: Date
 
-  @Column({ nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   canceled_at: Date
 
   @CreateDateColumn({ type: "timestamptz" })

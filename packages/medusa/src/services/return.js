@@ -45,6 +45,7 @@ class ReturnService extends BaseService {
       manager: transactionManager,
       totalsService: this.totalsService_,
       returnRepository: this.returnRepository_,
+      returnItemRepository: this.returnItemRepository_,
       shippingOptionService: this.shippingOptionService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
     })
@@ -133,6 +134,8 @@ class ReturnService extends BaseService {
     }
 
     const returnable = item.quantity - item.returned_quantity
+    console.log(item)
+    console.log(returnable)
     if (quantity > returnable) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -217,9 +220,7 @@ class ReturnService extends BaseService {
 
       let toRefund = data.refund_amount
       if (typeof toRefund !== "undefined") {
-        const total = await this.totalsService_.getTotal(orderLike)
-        const refunded = await this.totalsService_.getRefundedTotal(orderLike)
-        const refundable = total - refunded
+        const refundable = orderLike.total - orderLike.refunded_total
         if (toRefund > refundable) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
@@ -250,7 +251,7 @@ class ReturnService extends BaseService {
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map(i =>
         rItemRepo.create({
-          item_id: i.item_id,
+          item_id: i.id,
           quantity: i.quantity,
           requested_quantity: i.quantity,
           metadata: i.metadata,
@@ -320,9 +321,16 @@ class ReturnService extends BaseService {
         "items",
         "order",
         "order.items",
+        "order.discounts",
+        "order.refunds",
+        "order.shipping_methods",
+        "order.region",
         "swap",
         "swap.order",
         "swap.order.items",
+        "swap.order.refunds",
+        "swap.order.shipping_methods",
+        "swap.order.region",
       ])
 
       const order = returnObj.order || (returnObj.swap && returnObj.swap.order)
@@ -380,12 +388,13 @@ class ReturnService extends BaseService {
         returnStatus = "requires_action"
       }
 
+      const now = new Date()
       const updateObj = {
         ...returnObj,
         status: returnStatus,
         items: newLines,
         refund_amount: toRefund,
-        received_at: Date.now(),
+        received_at: now.toISOString(),
       }
 
       const result = await returnRepository.save(updateObj)
