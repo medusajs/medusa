@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -50,6 +51,7 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
     const swapService = req.scope.resolve("swapService")
+    const returnService = req.scope.resolve("returnService")
 
     let inProgress = true
     let err = false
@@ -62,7 +64,10 @@ export default async (req, res) => {
             async manager => {
               const order = await orderService
                 .withTransaction(manager)
-                .retrieve(id, ["region", "customer", "swaps"])
+                .retrieve(id, {
+                  select: ["refunded_total", "total"],
+                  relations: ["items", "swaps"],
+                })
 
               const swap = await swapService
                 .withTransaction(manager)
@@ -70,12 +75,18 @@ export default async (req, res) => {
                   order,
                   value.return_items,
                   value.additional_items,
-                  value.return_shipping
+                  value.return_shipping,
+                  { idempotency_key: idempotencyKey.idempotency_key }
                 )
 
-              await swapService.update(swap.id, {
-                idempotency_key: idempotencyKey.idempotency_key,
-              })
+              await swapService.withTransaction(manager).createCart(swap.id)
+              const returnOrder = await returnService
+                .withTransaction(manager)
+                .retrieveBySwap(swap.id)
+
+              await returnService
+                .withTransaction(manager)
+                .fulfill(returnOrder.id)
 
               return {
                 recovery_point: "swap_created",
@@ -96,72 +107,27 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
+              const swaps = await swapService.withTransaction(manager).list({
+                idempotency_key: idempotencyKey.idempotency_key,
+              })
+
+              if (!swaps.length) {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  "Swap not found"
+                )
+              }
+
               const order = await orderService
                 .withTransaction(manager)
-                .retrieve(id)
-
-              let swap = await swapService.withTransaction(manager).list({
-                idempotency_key: idempotencyKey.idempotency_key,
-              })
-
-              if (!swap.length) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  "Swap not found"
-                )
-              }
-
-              swap = swap[0]
-
-              await swapService
-                .withTransaction(manager)
-                .requestReturn(order, swap.id)
-
-              return {
-                recovery_point: "return_request_created",
-              }
-            }
-          )
-
-          if (error) {
-            inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
-          break
-        }
-
-        case "return_request_created": {
-          const { key, error } = await idempotencyKeyService.workStage(
-            idempotencyKey.idempotency_key,
-            async manager => {
-              let order = await orderService
-                .withTransaction(manager)
-                .retrieve(id)
-
-              let swap = await swapService.withTransaction(manager).list({
-                idempotency_key: idempotencyKey.idempotency_key,
-              })
-
-              if (!swap.length) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  "Swap not found"
-                )
-              }
-
-              swap = swap[0]
-
-              await swapService.withTransaction(manager).createCart(swap.id)
-
-              order = await orderService
-                .withTransaction(manager)
-                .retrieve(order.id, ["region", "customer", "swaps"])
+                .retrieve(id, {
+                  select: defaultFields,
+                  relations: defaultRelations,
+                })
 
               return {
                 response_code: 200,
-                response_body: { order },
+                response_body: order,
               }
             }
           )

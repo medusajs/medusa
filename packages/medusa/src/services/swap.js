@@ -61,6 +61,29 @@ class SwapService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new SwapService({
+      manager: transactionManager,
+      swapRepository: this.swapRepository_,
+      eventBusService: this.eventBus_,
+      cartService: this.cartService_,
+      totalsService: this.totalsService_,
+      returnService: this.returnService_,
+      lineItemService: this.lineItemService_,
+      paymentProviderService: this.paymentProviderService_,
+      shippingOptionService: this.shippingOptionService_,
+      fulfillmentService: this.fulfillmentService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   /**
    * Retrieves a swap with the given id.
    * @param {string} id - the id of the swap to retrieve
@@ -180,7 +203,13 @@ class SwapService extends BaseService {
    *  returning the returnItems.
    * @returns {Promise<Swap>} the newly created swap.
    */
-  async create(order, returnItems, additionalItems, returnShipping) {
+  async create(
+    order,
+    returnItems,
+    additionalItems,
+    returnShipping,
+    custom = {}
+  ) {
     return this.atomicPhase_(async manager => {
       if (
         order.fulfillment_status === "not_fulfilled" ||
@@ -202,22 +231,26 @@ class SwapService extends BaseService {
         })
       )
 
-      const returnOrder = await this.returnService_.create(
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const created = swapRepo.create({
+        ...custom,
+        fulfillment_status: "not_fulfilled",
+        payment_status: "not_paid",
+        order_id: order.id,
+        additional_items: newItems,
+      })
+
+      const result = await swapRepo.save(created)
+
+      await this.returnService_.withTransaction(manager).create(
         {
+          swap_id: result.id,
           items: returnItems,
           shipping_method: returnShipping,
         },
         order
       )
 
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
-      const created = swapRepo.create({
-        order_id: order.id,
-        return_order: returnOrder,
-        additional_items: newItems,
-      })
-
-      const result = await swapRepo.save(created)
       return result
     })
   }
@@ -306,6 +339,8 @@ class SwapService extends BaseService {
     return this.atomicPhase_(async manager => {
       const swap = await this.retrieve(swapId, [
         "order",
+        "order.items",
+        "additional_items",
         "return_order",
         "return_order.items",
         "return_order.shipping_method",
@@ -319,26 +354,6 @@ class SwapService extends BaseService {
       }
 
       const order = swap.order
-
-      // Add return lines to the cart to ensure that the total calculation is
-      // correct.
-      const returnLines = await Promise.all(
-        swap.return_order.items.map(r => {
-          const lineItem = order.items.find(i => i.id === r.item_id)
-
-          const toCreate = {
-            variant_id: lineItem.variant_id,
-            unit_price: -1 * lineItem.unit_price,
-            quantity: r.quantity,
-            metadata: {
-              ...lineItem.metadata,
-              is_return_line: true,
-            },
-          }
-
-          return this.lineItemService_.withTransaction(manager).create(toCreate)
-        })
-      )
 
       // If the swap has a return shipping method the price has to be added to the
       // cart.
@@ -361,9 +376,8 @@ class SwapService extends BaseService {
       const cart = await this.cartService_.withTransaction(manager).create({
         discounts: order.discounts,
         email: order.email,
-        billing_address: order.billing_address,
-        shipping_address: order.shipping_address,
-        items: [...returnLines, ...swap.additional_items],
+        billing_address_id: order.billing_address_id,
+        shipping_address_id: order.shipping_address_id,
         region_id: order.region_id,
         customer_id: order.customer_id,
         is_swap: true,
@@ -372,6 +386,30 @@ class SwapService extends BaseService {
           parent_order_id: order.id,
         },
       })
+
+      for (const item of swap.additional_items) {
+        await this.lineItemService_.withTransaction(manager).update(item.id, {
+          cart_id: cart.id,
+        })
+      }
+
+      for (const r of swap.return_order.items) {
+        const lineItem = order.items.find(i => i.id === r.item_id)
+
+        const toCreate = {
+          cart_id: cart.id,
+          title: lineItem.title,
+          variant_id: lineItem.variant_id,
+          unit_price: -1 * lineItem.unit_price,
+          quantity: r.quantity,
+          metadata: {
+            ...lineItem.metadata,
+            is_return_line: true,
+          },
+        }
+
+        await this.lineItemService_.withTransaction(manager).create(toCreate)
+      }
 
       swap.cart_id = cart.id
 

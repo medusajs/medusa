@@ -287,7 +287,7 @@ class CartService extends BaseService {
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
-      if (!data.shipping_address) {
+      if (!data.shipping_address && !data.shipping_address_id) {
         if (region.countries.length === 1) {
           // Preselect the country if the region only has 1
           // and create address entity
@@ -296,11 +296,22 @@ class CartService extends BaseService {
           })
         }
       } else {
-        if (!regCountries.includes(data.shipping_address.country_code)) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Shipping country not in region"
-          )
+        if (data.shipping_address) {
+          if (!regCountries.includes(data.shipping_address.country_code)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "Shipping country not in region"
+            )
+          }
+        }
+        if (data.shipping_address_id) {
+          const addr = await addressRepo.findOne(data.shipping_address_id)
+          if (!regCountries.includes(addr.country_code)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "Shipping country not in region"
+            )
+          }
         }
       }
 

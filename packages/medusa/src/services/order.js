@@ -907,6 +907,7 @@ class OrderService extends BaseService {
       })
 
       const returnObj = {
+        order_id: orderId,
         items,
         shipping_method: shippingMethod,
         refund_amount: refundAmount,

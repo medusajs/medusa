@@ -63,6 +63,7 @@ export default async (req, res) => {
                 })
 
               const returnObj = {
+                order_id: id,
                 items: value.items,
               }
 

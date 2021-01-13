@@ -177,6 +177,29 @@ class ReturnService extends BaseService {
     return returnObj
   }
 
+  async retrieveBySwap(swapId, relations = []) {
+    const returnRepository = this.manager_.getCustomRepository(
+      this.returnRepository_
+    )
+
+    const validatedId = this.validateId_(swapId)
+
+    const returnObj = await returnRepository.findOne({
+      where: {
+        swap_id: validatedId,
+      },
+      relations,
+    })
+
+    if (!returnObj) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Return with swa_id: ${swapId} was not found`
+      )
+    }
+    return returnObj
+  }
+
   async update(returnId, update) {
     return this.atomicPhase_(async manager => {
       const ret = await this.retrieve(returnId)
@@ -233,7 +256,7 @@ class ReturnService extends BaseService {
           returnLines
         )
 
-        if ("shipping_method" in data) {
+        if (data.shipping_method) {
           toRefund = Math.max(
             0,
             toRefund - data.shipping_method.price * (1 + orderLike.tax_rate)
@@ -243,7 +266,6 @@ class ReturnService extends BaseService {
 
       const returnObject = {
         ...data,
-        order_id: orderLike.id,
         status: "requested",
         refund_amount: toRefund,
       }
@@ -266,7 +288,7 @@ class ReturnService extends BaseService {
 
   fulfill(returnId) {
     return this.atomicPhase_(async manager => {
-      const returnOrder = await this.retreive(returnId, ["shipping_method"])
+      const returnOrder = await this.retrieve(returnId, ["shipping_method"])
 
       if (returnOrder.shipping_data) {
         throw new MedusaError(
@@ -276,10 +298,7 @@ class ReturnService extends BaseService {
       }
 
       if (returnOrder.shipping_method === null) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Return has no associated shipping method"
-        )
+        return returnOrder
       }
 
       const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
