@@ -161,6 +161,8 @@ export const defaultRelations = [
   "fulfillments",
   "returns",
   "swaps",
+  "swaps.return_order",
+  "swaps.additional_items",
 ]
 
 export const defaultFields = [
@@ -225,4 +227,6 @@ export const allowedRelations = [
   "fulfillments",
   "returns",
   "swaps",
+  "swaps.return_order",
+  "swaps.additional_items",
 ]

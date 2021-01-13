@@ -49,6 +49,7 @@ export class Return {
     () => Swap,
     swap => swap.return_order
   )
+  @JoinColumn({ name: "swap_id" })
   swap: Swap
 
   @Column({ nullable: true })
