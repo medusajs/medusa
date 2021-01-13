@@ -302,7 +302,7 @@ class AdyenService extends BaseService {
   }
 
   async updatePaymentData(sessionData, update) {
-    if (!update.details) {
+    if (_.isEmpty(update.details)) {
       return { ...sessionData, ...update }
     }
 
@@ -390,13 +390,14 @@ class AdyenService extends BaseService {
     }
 
     try {
-      await this.adyenPaymentApi.post("/refund", {
+      const refunded = await this.adyenPaymentApi.post("/refund", {
         originalReference,
         merchantAccount: this.options_.merchant_account,
         modificationAmount: refundAmount,
         reference: merchantReference,
       })
-      return "processing_refund"
+
+      return { originalReference, ...refunded.data }
     } catch (error) {
       throw error
     }

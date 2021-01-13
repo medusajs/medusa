@@ -543,13 +543,15 @@ class CartService extends BaseService {
   async update(cartId, update) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const cart = await this.retrieve(cartId, [
-        "shipping_address",
-        "billing_address",
-        "discounts",
-        "discounts.discount_rule",
-        "discounts.regions",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: [
+          "shipping_address",
+          "billing_address",
+          "discounts",
+          "discounts.discount_rule",
+          "discounts.regions",
+        ],
+      })
 
       if ("region_id" in update) {
         await this.setRegion_(cart, update.region_id, update.country_code)
@@ -604,6 +606,7 @@ class CartService extends BaseService {
     const customer = await this.customerService_
       .withTransaction(this.transactionManager_)
       .retrieve(customerId)
+
     cart.customer_id = customer.id
     cart.email = customer.email
   }
@@ -648,22 +651,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateBillingAddress_(cart, address) {
-    const { value, error } = Validator.address().validate(address)
-    if (error) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.message)
-    }
-
-    value.country_code = address.country_code.toLowerCase()
-    cart.billing_address = value
-  }
-
-  /**
-   * Updates the cart's shipping address.
-   * @param {string} cartId - the id of the cart to update
-   * @param {object} address - the value to set the shipping address to
-   * @return {Promise} the result of the update operation
-   */
-  async updateShippingAddress_(cart, address) {
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
     const region = await this.regionService_.retrieve(cart.region_id, [
@@ -677,7 +665,49 @@ class CartService extends BaseService {
       )
     }
 
-    cart.shipping_address = address
+    address.country_code = address.country_code.toLowerCase()
+
+    if (cart.billing_address_id) {
+      const addr = await addrRepo.findOne({
+        where: { id: cart.billing_address_id },
+      })
+
+      await addrRepo.save({ ...addr, ...address })
+    } else {
+      cart.billing_address = address
+    }
+  }
+
+  /**
+   * Updates the cart's shipping address.
+   * @param {string} cartId - the id of the cart to update
+   * @param {object} address - the value to set the shipping address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateShippingAddress_(cart, address) {
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    address.country_code = address.country_code.toLowerCase()
+
+    const region = await this.regionService_.retrieve(cart.region_id, [
+      "countries",
+    ])
+
+    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the cart region"
+      )
+    }
+
+    if (cart.shipping_address_id) {
+      const addr = await addrRepo.findOne({
+        where: { id: cart.shipping_address_id },
+      })
+
+      await addrRepo.save({ ...addr, ...address })
+    } else {
+      cart.shipping_address = address
+    }
   }
 
   /**
@@ -690,9 +720,9 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async applyDiscount_(cart, discountCode) {
-    const discount = await this.discountService_.retrieveByCode(discountCode, {
-      relations: ["regions"],
-    })
+    const discount = await this.discountService_.retrieveByCode(discountCode, [
+      "regions",
+    ])
 
     if (discount.is_disabled) {
       throw new MedusaError(

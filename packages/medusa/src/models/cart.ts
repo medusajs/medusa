@@ -37,14 +37,14 @@ export class Cart {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address, { eager: true, cascade: true })
+  @ManyToOne(() => Address, { eager: true, cascade: ["insert", "remove", "soft-remove"] })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address, { eager: true, cascade: true })
+  @ManyToOne(() => Address, { eager: true, cascade: ["insert", "remove", "soft-remove"] })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
