@@ -1096,6 +1096,7 @@ class CartService extends BaseService {
   async setRegion_(cart, regionId, countryCode) {
     // Set the new region for the cart
     const region = await this.regionService_.retrieve(regionId, ["countries"])
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     cart.region = region
 
     // If the cart contains items we want to change the unit_price field of each
@@ -1126,7 +1127,13 @@ class CartService extends BaseService {
       )
     }
 
-    let shippingAddress = cart.shipping_address || {}
+    let shippingAddress = {}
+    if (cart.shipping_address_id) {
+      shippingAddress = await addrRepo.findOne({
+        where: { id: cart.shipping_address_id },
+      })
+    }
+
     if (countryCode !== undefined) {
       if (
         !region.countries.find(
@@ -1138,26 +1145,32 @@ class CartService extends BaseService {
           `Country not available in region`
         )
       }
-      cart.shipping_address = {
+
+      const updated = {
         ...shippingAddress,
         country_code: countryCode.toLowerCase(),
       }
+
+      await addrRepo.save(updated)
     } else {
+      let updated = { ...shippingAddress }
       // If the country code of a shipping address is set we need to clear it
       if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
-        cart.shipping_address = {
-          ...shippingAddress,
+        updated = {
+          ...updated,
           country_code: null,
         }
       }
 
       // If there is only one country in the region preset it
       if (region.countries.length === 1) {
-        cart.shipping_address = {
-          ...shippingAddress,
+        updated = {
+          ...updated,
           country_code: region.countries[0].iso_2,
         }
       }
+
+      await addrRepo.save(updated)
     }
 
     // Shipping methods are determined by region so the user needs to find a
