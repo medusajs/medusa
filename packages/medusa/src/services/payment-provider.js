@@ -248,6 +248,7 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(paySession.provider_id)
 
       session.data = await provider.updatePaymentData(paySession.data, update)
+      session.status = paySession.status
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
@@ -280,10 +281,9 @@ class PaymentProviderService extends BaseService {
       const payment = await this.retrievePayment(paymentObj.id)
 
       const provider = this.retrieveProvider(payment.provider_id)
-      payment.data = await provider.capturePayment(payment.data)
+      payment.data = await provider.capturePayment(payment)
 
-      const now = new Date()
-      payment.captured_at = now.toUTCString()
+      payment.captured_at = new Date()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
       return paymentRepo.save(payment)
@@ -293,6 +293,7 @@ class PaymentProviderService extends BaseService {
   async refundPayment(payObjs, amount, reason, note) {
     return this.atomicPhase_(async manager => {
       const payments = await this.listPayments({ id: payObjs.map(p => p.id) })
+      console.log(payments)
 
       let order_id
       const refundable = payments.reduce((acc, next) => {
@@ -303,6 +304,8 @@ class PaymentProviderService extends BaseService {
 
         return acc
       }, 0)
+
+      console.log()
 
       if (refundable < amount) {
         throw new MedusaError(

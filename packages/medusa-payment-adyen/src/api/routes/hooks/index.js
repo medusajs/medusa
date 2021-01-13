@@ -18,12 +18,12 @@ export default (app, rootDirectory) => {
     })
   )
 
-  app.use("/adyen", route)
+  app.use("/adyen/webhooks", route)
 
   route.post(
     "/notification",
     bodyParser.json(),
-    middlewares.wrap(require("./adyen").default)
+    middlewares.wrap(require("./adyen-notification").default)
   )
 
   return app

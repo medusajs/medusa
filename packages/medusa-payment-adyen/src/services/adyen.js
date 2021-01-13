@@ -226,9 +226,11 @@ class AdyenService extends BaseService {
   async authorizePayment(session, context) {
     const sessionData = session.data
 
+    const status = this.getStatus(sessionData)
+
     // If session data is present, we already called authorize once.
     // Therefore, this is most likely a call for getting additional details
-    if (session.status === "requires_more") {
+    if (status === "requires_more") {
       const updated = await this.updatePaymentData(sessionData, {
         details: sessionData.details,
         paymentData: sessionData.paymentData,
@@ -237,7 +239,7 @@ class AdyenService extends BaseService {
       return { data: updated, status: this.getStatus(updated) }
     }
 
-    if (session.status === "authorized") {
+    if (status === "authorized") {
       return { data: sessionData, status: "authorized" }
     }
 
@@ -338,16 +340,20 @@ class AdyenService extends BaseService {
 
   /**
    * Captures an Adyen payment
-   * @param {object} data - payment data to capture
+   * @param {object} payment - payment to capture
    * @returns {string} status = processing_captures
    */
-  async capturePayment(data) {
-    const { pspReference, amount, merchantReference } = data
+  async capturePayment(payment) {
+    const { pspReference, merchantReference } = payment.data
+    const { amount, currency_code } = payment
 
     try {
       const captured = await this.adyenPaymentApi.post("/capture", {
         originalReference: pspReference,
-        modificationAmount: amount,
+        modificationAmount: {
+          value: amount,
+          currency: currency_code.toUpperCase(),
+        },
         merchantAccount: this.options_.merchant_account,
         reference: merchantReference,
       })
@@ -362,7 +368,7 @@ class AdyenService extends BaseService {
         )
       }
 
-      return "processing_capture"
+      return captured
     } catch (error) {
       throw error
     }
@@ -370,15 +376,16 @@ class AdyenService extends BaseService {
 
   /**
    * Refunds an Adyen payment
-   * @param {object} paymentData - payment data to refund
+   * @param {object} payment - payment to refund
    * @param {number} amountToRefund - amount to refund
    * @returns {object} payment data result of refund
    */
-  async refundPayment(data, amountToRefund) {
-    const { originalReference, amount, merchantReference } = data
+  async refundPayment(payment, amountToRefund) {
+    const { originalReference, merchantReference } = payment.data
+    const { currency_code } = payment
 
     const refundAmount = {
-      currency: amount.currency,
+      currency: currency_code,
       value: amountToRefund * 100,
     }
 
@@ -404,11 +411,11 @@ class AdyenService extends BaseService {
 
   /**
    * Cancels an Adyen payment.
-   * @param {object} paymentData - payment data to cancel
+   * @param {object} payment - payment to cancel
    * @returns {object} payment data result of cancel
    */
-  async cancelPayment(paymentData) {
-    const { pspReference } = paymentData
+  async cancelPayment(payment) {
+    const { pspReference } = payment.data
 
     try {
       return this.adyenPaymentApi.post("/cancel", {

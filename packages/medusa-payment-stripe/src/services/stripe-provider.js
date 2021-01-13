@@ -246,9 +246,9 @@ class StripeProviderService extends PaymentService {
     }
   }
 
-  async deletePayment(data) {
+  async deletePayment(payment) {
     try {
-      const { id } = data
+      const { id } = payment.data
       return this.stripe_.paymentIntents.cancel(id).catch((err) => {
         if (err.statusCode === 400) {
           return
@@ -281,8 +281,8 @@ class StripeProviderService extends PaymentService {
    * @param {object} paymentData - payment method data from cart
    * @returns {object} Stripe payment intent
    */
-  async capturePayment(data) {
-    const { id } = data
+  async capturePayment(payment) {
+    const { id } = payment.data
     try {
       return this.stripe_.paymentIntents.capture(id)
     } catch (error) {
@@ -296,8 +296,8 @@ class StripeProviderService extends PaymentService {
    * @param {number} amountToRefund - amount to refund
    * @returns {string} refunded payment intent
    */
-  async refundPayment(paymentData, amountToRefund) {
-    const { id } = paymentData
+  async refundPayment(payment, amountToRefund) {
+    const { id } = payment.data
     try {
       return this.stripe_.refunds
         .create({
@@ -317,8 +317,8 @@ class StripeProviderService extends PaymentService {
    * @param {object} paymentData - payment method data from cart
    * @returns {object} canceled payment intent
    */
-  async cancelPayment(paymentData) {
-    const { id } = paymentData
+  async cancelPayment(payment) {
+    const { id } = payment.data
     try {
       return this.stripe_.paymentIntents.cancel(id)
     } catch (error) {

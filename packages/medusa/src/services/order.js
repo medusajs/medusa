@@ -26,6 +26,7 @@ class OrderService extends BaseService {
     ITEMS_RETURNED: "order.items_returned",
     RETURN_ACTION_REQUIRED: "order.return_action_required",
     REFUND_CREATED: "order.refund_created",
+    REFUND_FAILED: "order.refund_failed",
     SWAP_CREATED: "order.swap_created",
     SWAP_RECEIVED: "order.swap_received",
     PLACED: "order.placed",
@@ -433,8 +434,8 @@ class OrderService extends BaseService {
       const o = await orderRepo.create({
         payments: payment ? [payment] : [],
         discounts: cart.discounts,
+        payment_status: "awaiting",
         shipping_methods: cart.shipping_methods,
-        // items: cart.items,
         shipping_address_id: cart.shipping_address_id,
         billing_address_id: cart.billing_address_id,
         region_id: cart.region_id,
@@ -660,8 +661,9 @@ class OrderService extends BaseService {
 
       const payments = []
       for (const p of order.payments) {
-        if (p.caputred_at !== null) {
+        if (p.captured_at === null) {
           const result = await this.paymentProviderService_
+            .withTransaction(manager)
             .capturePayment(p)
             .catch(err => {
               this.eventBus_
