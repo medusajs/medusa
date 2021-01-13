@@ -37,7 +37,8 @@ export default async (req, res) => {
 
   const customer = await customerService.retrieve(result.customer.id, [
     "orders",
+    "orders.items",
   ])
 
-  res.json({ customer: data })
+  res.json({ customer })
 }
