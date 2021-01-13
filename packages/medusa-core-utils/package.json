@@ -30,7 +30,7 @@
     "prettier": "^1.19.1"
   },
   "dependencies": {
-    "joi": "^17.2.1",
+    "joi": "^17.3.0",
     "joi-objectid": "^3.0.1"
   },
   "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"

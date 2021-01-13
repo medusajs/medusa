@@ -3,34 +3,6 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export const defaultFields = [
-  "title",
-  "subtitle",
-  "description",
-  "tags",
-  "handle",
-  "is_giftcard",
-  "thumbnail",
-  "weight",
-  "height",
-  "length",
-  "width",
-  "profile_id",
-  "hs_code",
-  "mid_code",
-  "origin_country",
-  "material",
-  "created_at",
-  "updated_at",
-]
-export const defaultExpandFields = [
-  "variants",
-  "variants.options",
-  "variants.prices",
-  "options",
-  "images",
-]
-
 export default app => {
   app.use("/products", route)
 
@@ -82,3 +54,63 @@ export default app => {
 
   return app
 }
+
+export const defaultRelations = [
+  "variants",
+  "variants.prices",
+  "images",
+  "options",
+]
+
+export const defaultFields = [
+  "id",
+  "title",
+  "subtitle",
+  "description",
+  "tags",
+  "handle",
+  "is_giftcard",
+  "thumbnail",
+  "profile_id",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "created_at",
+  "updated_at",
+  "metadata",
+]
+
+export const allowedFields = [
+  "id",
+  "title",
+  "subtitle",
+  "description",
+  "tags",
+  "handle",
+  "is_giftcard",
+  "thumbnail",
+  "profile_id",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "created_at",
+  "updated_at",
+  "metadata",
+]
+
+export const allowedRelations = [
+  "variants",
+  "variants.prices",
+  "images",
+  "options",
+]

@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { IsNull } from "typeorm"
+import { Brackets, Raw, IsNull } from "typeorm"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 /**
@@ -498,7 +498,39 @@ class ProductVariantService extends BaseService {
       this.productVariantRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.sku
+      delete where.title
+
+      query.join = {
+        alias: "variant",
+        innerJoin: {
+          product: "variant.product",
+        },
+      }
+
+      query.where = qb => {
+        qb.where(where).andWhere(
+          new Brackets(qb => {
+            qb.where([
+              { sku: Raw(a => `${a} ILIKE :q`, { q: `%${q}%` }) },
+              { title: Raw(a => `${a} ILIKE :q`, { q: `%${q}%` }) },
+            ]).orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+      }
+    }
+
     return productVariantRepo.find(query)
   }
 
