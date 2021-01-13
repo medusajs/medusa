@@ -845,6 +845,7 @@ class CartService extends BaseService {
   async setPaymentSession(cartId, providerId) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
       const cart = await this.retrieve(cartId, {
         relations: ["region", "region.payment_providers", "payment_sessions"],
@@ -862,6 +863,12 @@ class CartService extends BaseService {
           `The payment method is not available in this region`
         )
       }
+
+      await Promise.all(
+        cart.payment_sessions.map(ps =>
+          psRepo.save({ ...ps, is_selected: null })
+        )
+      )
 
       cart.payment_sessions = cart.payment_sessions.map(s => {
         if (s.provider_id === providerId) {
