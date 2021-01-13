@@ -678,6 +678,7 @@ class OrderService extends BaseService {
             .withTransaction(manager)
             .capturePayment(p)
             .catch(err => {
+              console.log(err)
               this.eventBus_
                 .withTransaction(manager)
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
@@ -685,13 +686,15 @@ class OrderService extends BaseService {
                   error: err,
                 })
             })
-
-          payments.push(result)
+          if (result) {
+            payments.push(result)
+          }
         } else {
           payments.push(p)
         }
       }
 
+      console.log()
       order.payments = payments
       order.payment_status = payments.every(p => p.captured_at !== null)
         ? "captured"

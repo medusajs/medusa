@@ -126,7 +126,7 @@ class AdyenService extends BaseService {
     let request = {
       allowedPaymentMethods: allowedMethods,
       amount: {
-        value: total * 100,
+        value: total,
         currency: currency,
       },
       merchantAccount: this.options_.merchant_account,
@@ -368,7 +368,7 @@ class AdyenService extends BaseService {
         )
       }
 
-      return captured
+      return { originalReference: pspReference, ...captured.data }
     } catch (error) {
       throw error
     }
@@ -385,8 +385,8 @@ class AdyenService extends BaseService {
     const { currency_code } = payment
 
     const refundAmount = {
-      currency: currency_code,
-      value: amountToRefund * 100,
+      currency: currency_code.toUpperCase(),
+      value: amountToRefund,
     }
 
     try {
