@@ -1,5 +1,6 @@
 export default async (req, res) => {
   const adyenService = req.scope.resolve("adyenService")
+  const eventBus = req.scope.resolve("eventBusService")
 
   const notification = req.body
   const event = notification.notificationItems[0].NotificationRequestItem
@@ -11,7 +12,6 @@ export default async (req, res) => {
     return
   }
 
-  const eventBus = req.scope.resolve("eventBusService")
   eventBus.emit("adyen.notification_received", event)
   res.status(200).send("[accepted]")
 }

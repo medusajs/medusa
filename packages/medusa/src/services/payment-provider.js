@@ -170,7 +170,7 @@ class PaymentProviderService extends BaseService {
       }
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
-      await provider.deletePayment(paymentSession.data)
+      await provider.deletePayment(paymentSession)
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
@@ -265,6 +265,7 @@ class PaymentProviderService extends BaseService {
       const provider = this.retrieveProvider(paySession.provider_id)
 
       session.data = await provider.updatePaymentData(paySession.data, update)
+      session.status = paySession.status
 
       const sessionRepo = manager.getCustomRepository(
         this.paymentSessionRepository_
@@ -298,7 +299,7 @@ class PaymentProviderService extends BaseService {
       const payment = await this.retrievePayment(paymentObj.id)
 
       const provider = this.retrieveProvider(payment.provider_id)
-      payment.data = await provider.capturePayment(payment.data)
+      payment.data = await provider.capturePayment(payment)
 
       const now = new Date()
       payment.captured_at = now.toISOString()
@@ -341,10 +342,7 @@ class PaymentProviderService extends BaseService {
         const refundAmount = Math.min(currentRefundable, balance)
 
         const provider = this.retrieveProvider(toRefund.provider_id)
-        toRefund.data = await provider.refundPayment(
-          toRefund.data,
-          refundAmount
-        )
+        toRefund.data = await provider.refundPayment(toRefund, refundAmount)
         toRefund.amount_refunded += refundAmount
         await paymentRepo.save(toRefund)
 

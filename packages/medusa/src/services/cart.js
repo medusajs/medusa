@@ -774,16 +774,8 @@ class CartService extends BaseService {
         )
       }
 
-      const result = await this.retrieve(cart.id, {
-        select: [
-          "subtotal",
-          "tax_total",
-          "shipping_total",
-          "discount_total",
-          "total",
-        ],
-        relations: [],
-      })
+      const result = await this.retrieve(cart.id)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
@@ -844,7 +836,6 @@ class CartService extends BaseService {
    */
   async setPaymentSession(cartId, providerId) {
     return this.atomicPhase_(async manager => {
-      const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
       const cart = await this.retrieve(cartId, {
@@ -865,21 +856,17 @@ class CartService extends BaseService {
       }
 
       await Promise.all(
-        cart.payment_sessions.map(ps =>
-          psRepo.save({ ...ps, is_selected: null })
-        )
+        cart.payment_sessions.map(ps => {
+          if (ps.provider_id === providerId) {
+            return psRepo.save({ ...ps, is_selected: true })
+          } else {
+            return psRepo.save({ ...ps, is_selected: null })
+          }
+        })
       )
 
-      cart.payment_sessions = cart.payment_sessions.map(s => {
-        if (s.provider_id === providerId) {
-          s.is_selected = true
-        } else {
-          s.is_selected = null
-        }
-        return s
-      })
+      const result = await this.retrieve(cartId)
 
-      const result = await cartRepo.save(cart)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
