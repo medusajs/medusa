@@ -13,7 +13,7 @@ export default async (req, res) => {
       .required(),
     return_shipping: Validator.object()
       .keys({
-        id: Validator.string().optional(),
+        option_id: Validator.string().optional(),
         price: Validator.number().optional(),
       })
       .optional(),
@@ -107,7 +107,7 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              const swaps = await swapService.withTransaction(manager).list({
+              const swaps = await swapService.list({
                 idempotency_key: idempotencyKey.idempotency_key,
               })
 
@@ -118,16 +118,14 @@ export default async (req, res) => {
                 )
               }
 
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  select: defaultFields,
-                  relations: defaultRelations,
-                })
+              const order = await orderService.retrieve(id, {
+                select: defaultFields,
+                relations: defaultRelations,
+              })
 
               return {
                 response_code: 200,
-                response_body: order,
+                response_body: { order },
               }
             }
           )

@@ -10,6 +10,7 @@ class ReturnService extends BaseService {
   constructor({
     manager,
     totalsService,
+    lineItemService,
     returnRepository,
     returnItemRepository,
     shippingOptionService,
@@ -29,6 +30,9 @@ class ReturnService extends BaseService {
     /** @private @const {ReturnItemRepository} */
     this.returnItemRepository_ = returnItemRepository
 
+    /** @private @const {ReturnItemRepository} */
+    this.lineItemService_ = lineItemService
+
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
@@ -44,6 +48,7 @@ class ReturnService extends BaseService {
     const cloned = new ReturnService({
       manager: transactionManager,
       totalsService: this.totalsService_,
+      lineItemService: this.lineItemService_,
       returnRepository: this.returnRepository_,
       returnItemRepository: this.returnItemRepository_,
       shippingOptionService: this.shippingOptionService_,
@@ -134,8 +139,6 @@ class ReturnService extends BaseService {
     }
 
     const returnable = item.quantity - item.returned_quantity
-    console.log(item)
-    console.log(returnable)
     if (quantity > returnable) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -264,6 +267,9 @@ class ReturnService extends BaseService {
         }
       }
 
+      const method = data.shipping_method
+      delete data.shipping_method
+
       const returnObject = {
         ...data,
         status: "requested",
@@ -282,13 +288,44 @@ class ReturnService extends BaseService {
 
       const created = await returnRepository.create(returnObject)
       const result = await returnRepository.save(created)
+
+      if (method) {
+        await this.shippingOptionService_
+          .withTransaction(manager)
+          .createShippingMethod(
+            method.option_id,
+            {},
+            {
+              price: method.price,
+              return_id: result.id,
+            }
+          )
+      }
+
       return result
     })
   }
 
   fulfill(returnId) {
     return this.atomicPhase_(async manager => {
-      const returnOrder = await this.retrieve(returnId, ["shipping_method"])
+      const returnOrder = await this.retrieve(returnId, [
+        "items",
+        "shipping_method",
+        "shipping_method.shipping_option",
+        "swap",
+      ])
+
+      const items = await this.lineItemService_.list({
+        id: returnOrder.items.map(({ item_id }) => item_id),
+      })
+
+      returnOrder.items = returnOrder.items.map(item => {
+        const found = items.find(i => i.id === item.item_id)
+        return {
+          ...item,
+          item: found,
+        }
+      })
 
       if (returnOrder.shipping_data) {
         throw new MedusaError(
@@ -302,7 +339,7 @@ class ReturnService extends BaseService {
       }
 
       const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
-        returnOrder.shipping_method
+        returnOrder
       )
 
       returnOrder.shipping_data = fulfillmentData
@@ -398,10 +435,8 @@ class ReturnService extends BaseService {
       }
 
       const toRefund = refundAmount || returnObj.refund_amount
-      const total = await this.totalsService_.getTotal(returnObj.order)
-      const refunded = await this.totalsService_.getRefundedTotal(
-        returnObj.order
-      )
+      const total = await this.totalsService_.getTotal(order)
+      const refunded = await this.totalsService_.getRefundedTotal(order)
 
       if (toRefund > total - refunded) {
         returnStatus = "requires_action"

@@ -83,6 +83,12 @@ class FulfillmentProviderService {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.validateOption(option.data)
   }
+
+  async createReturn(returnOrder) {
+    const option = returnOrder.shipping_method.shipping_option
+    const provider = this.retrieveProvider(option.provider_id)
+    return provider.createReturn(returnOrder)
+  }
 }
 
 export default FulfillmentProviderService

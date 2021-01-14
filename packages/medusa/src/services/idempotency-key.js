@@ -147,10 +147,10 @@ class IdempotencyKeyService extends BaseService {
    * @return {IdempotencyKeyModel} new updated idempotency key
    */
   async workStage(idempotencyKey, func) {
-    return this.atomicPhase_(async manager => {
-      let key
+    try {
+      return this.atomicPhase_(async manager => {
+        let key
 
-      try {
         const { recovery_point, response_code, response_body } = await func(
           manager
         )
@@ -166,12 +166,12 @@ class IdempotencyKeyService extends BaseService {
             response_code,
           })
         }
-      } catch (err) {
-        return { error: err }
-      }
 
-      return { key }
-    }, "SERIALIZABLE")
+        return { key }
+      }, "SERIALIZABLE")
+    } catch (err) {
+      return { error: err }
+    }
   }
 }
 

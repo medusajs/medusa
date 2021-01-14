@@ -81,8 +81,21 @@ class WebshipperFulfillmentService extends FulfillmentService {
    * Creates a return shipment in webshipper using the given method data, and
    * return lines.
    */
-  async createReturn(methodData, returnLines, fromOrder) {
-    const order = await this.orderService_.retrieve(fromOrder.id, ["all"])
+  async createReturn(returnOrder) {
+    let fromOrder
+    if (returnOrder.order_id) {
+      fromOrder = await this.orderService_.retrieve(returnOrder.order_id, {
+        select: ["total"],
+        relations: ["shipping_address", "returns"],
+      })
+    } else if (returnOrder.swap) {
+      fromOrder = await this.orderService_.retrieve(returnOrder.swap.order_id, {
+        select: ["total"],
+        relations: ["shipping_address", "returns"],
+      })
+    }
+
+    const methodData = returnOrder.shipping_method.data
 
     const relationships = {
       shipping_rate: {
@@ -93,7 +106,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
       },
     }
 
-    const existing = fromOrder.metadata.webshipper_order_id
+    const existing =
+      fromOrder.metadata && fromOrder.metadata.webshipper_order_id
     if (existing) {
       relationships.order = {
         data: {
@@ -107,7 +121,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
     if (this.invoiceGenerator_) {
       const base64Invoice = await this.invoiceGenerator_.createReturnInvoice(
         fromOrder,
-        returnLines
+        returnOrder.items
       )
 
       docs.push({
@@ -123,7 +137,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       type: "shipments",
       attributes: {
         reference: `R${fromOrder.display_id}-${fromOrder.returns.length + 1}`,
-        ext_ref: `${fromOrder.id}.${fromOrder.returns.length}`,
+        ext_ref: `${fromOrder.id}.${returnOrder.id}`,
         is_return: true,
         included_documents: docs,
         packages: [
@@ -136,12 +150,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
               width: 15,
               length: 15,
             },
-            customs_lines: returnLines.map((item) => {
+            customs_lines: returnOrder.items.map(({ item, quantity }) => {
               return {
                 ext_ref: item.id,
-                sku: item.content.variant.sku,
+                sku: item.variant.sku,
                 description: item.title,
-                quantity: item.quantity,
+                quantity: quantity,
                 country_of_origin:
                   item.variant.origin_country ||
                   item.variant.product.origin_country,

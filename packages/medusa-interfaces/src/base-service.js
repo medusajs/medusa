@@ -11,6 +11,7 @@ class BaseService {
   }
 
   withTransaction() {
+    console.log("WARN: withTransaction called without custom implementation")
     return this
   }
 

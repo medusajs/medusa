@@ -1043,6 +1043,7 @@ class CartService extends BaseService {
   async addShippingMethod(cartId, optionId, data) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
+        select: ["subtotal"],
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
@@ -1055,7 +1056,7 @@ class CartService extends BaseService {
 
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
-        .createShippingMethod(optionId, data, cart)
+        .createShippingMethod(optionId, data, { cart })
 
       const methods = [newMethod]
       if (shipping_methods.length) {

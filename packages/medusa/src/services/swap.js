@@ -496,9 +496,9 @@ class SwapService extends BaseService {
    */
   async receiveReturn(swapId, returnItems) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId)
+      const swap = await this.retrieve(swapId, ["return_order"])
 
-      const returnId = swap.return_id
+      const returnId = swap.return_order && swap.return_order.id
       if (!returnId) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -508,7 +508,7 @@ class SwapService extends BaseService {
 
       const updatedRet = await this.returnService_
         .withTransaction(manager)
-        .receiveReturn(swap.return_id, returnItems, undefined, false)
+        .receiveReturn(returnId, returnItems, undefined, false)
 
       if (updatedRet.status === "requires_action") {
         const swapRepo = manager.getCustomRepository(this.swapRepository_)

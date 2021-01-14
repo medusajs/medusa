@@ -55,6 +55,15 @@ class LineItemService extends BaseService {
     return cloned
   }
 
+  async list(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const liRepo = this.manager_.getCustomRepository(this.lineItemRepository_)
+    const query = this.buildQuery_(selector, config)
+    return liRepo.find(query)
+  }
+
   /**
    * Retrieves a line item by its id.
    * @param {string} id - the id of the line item to retrieve

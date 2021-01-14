@@ -11,8 +11,12 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .required(),
-    shipping_method: Validator.string().optional(),
-    shipping_price: Validator.number().optional(),
+    return_shipping: Validator.object()
+      .keys({
+        option_id: Validator.string().optional(),
+        price: Validator.number().optional(),
+      })
+      .optional(),
     receive_now: Validator.boolean().default(false),
     refund: Validator.number().optional(),
   })
@@ -67,11 +71,8 @@ export default async (req, res) => {
                 items: value.items,
               }
 
-              if (value.shipping_method) {
-                returnObj.shipping_method = {
-                  id: value.shipping_method,
-                  price: value.shipping_price,
-                }
+              if (value.return_shipping) {
+                returnObj.shipping_method = value.return_shipping
               }
 
               if (typeof value.refund !== "undefined" && value.refund < 0) {
@@ -88,7 +89,7 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .create(returnObj, order)
 
-              if (value.shipping_method) {
+              if (value.return_shipping) {
                 await returnService
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)

@@ -146,6 +146,10 @@ class ShippingOptionService extends BaseService {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
       const method = await methodRepo.findOne({ where: { id } })
 
+      if ("return_id" in update) {
+        method.return_id = update.return_id
+      }
+
       if ("swap_id" in update) {
         method.swap_id = update.swap_id
       }
@@ -173,32 +177,50 @@ class ShippingOptionService extends BaseService {
    * Creates a shipping method for a given cart.
    * @param {string} optionId - the id of the option to use for the method.
    * @param {object} data - the optional provider data to use.
-   * @param {Cart} cart - the cart to create the shipping method for.
+   * @param {object} config - the cart to create the shipping method for.
    * @returns {ShippingMethod} the resulting shipping method.
    */
-  async createShippingMethod(optionId, data, cart) {
+  async createShippingMethod(optionId, data, config) {
     return this.atomicPhase_(async manager => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
 
-      await this.validateCartOption(option, cart)
+      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+
+      if ("cart" in config) {
+        this.validateCartOption(option, config.cart || {})
+      }
 
       const validatedData = await this.providerService_.validateFulfillmentData(
         option,
         data,
-        cart
+        config.cart || {}
       )
 
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
-
-      const methodPrice = await this.getPrice_(option, validatedData, cart)
+      let methodPrice
+      if ("price" in config) {
+        methodPrice = config.price
+      } else {
+        methodPrice = await this.getPrice_(option, validatedData, config.cart)
+      }
 
       const toCreate = {
-        cart_id: cart.id,
         shipping_option_id: option.id,
         data: validatedData,
         price: methodPrice,
+      }
+
+      if (config.cart) {
+        toCreate.cart_id = config.cart.id
+      }
+
+      if (config.return_id) {
+        toCreate.return_id = config.return_id
+      }
+
+      if (config.order_id) {
+        toCreate.order_id = config.order_id
       }
 
       const method = await methodRepo.create(toCreate)
@@ -220,9 +242,9 @@ class ShippingOptionService extends BaseService {
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  async validateCartOption(option, cart) {
+  validateCartOption(option, cart) {
     if (option.is_return) {
-      return null
+      return option
     }
 
     if (cart.region_id !== option.region_id) {
@@ -232,7 +254,7 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    const subtotal = this.totalsService_.getSubtotal(cart)
+    const subtotal = cart.subtotal
     const requirementResults = option.requirements.map(requirement => {
       switch (requirement.type) {
         case "max_subtotal":

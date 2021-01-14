@@ -123,6 +123,7 @@ class OrderService extends BaseService {
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       cartService: this.cartService_,
+      swapService: this.swapService_,
     })
 
     cloned.transactionManager_ = manager
@@ -678,7 +679,6 @@ class OrderService extends BaseService {
             .withTransaction(manager)
             .capturePayment(p)
             .catch(err => {
-              console.log(err)
               this.eventBus_
                 .withTransaction(manager)
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
@@ -694,7 +694,6 @@ class OrderService extends BaseService {
         }
       }
 
-      console.log()
       order.payments = payments
       order.payment_status = payments.every(p => p.captured_at !== null)
         ? "captured"
@@ -1157,10 +1156,9 @@ class OrderService extends BaseService {
   async registerSwapReceived(id, swapId) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(id, { relations: ["items"] })
-      const swap = await this.swapService_.retrieve(swapId, [
-        "return",
-        "return.items",
-      ])
+      const swap = await this.swapService_
+        .withTransaction(manager)
+        .retrieve(swapId, ["return_order", "return_order.items"])
 
       if (!swap || swap.order_id !== id) {
         throw new MedusaError(
@@ -1169,7 +1167,9 @@ class OrderService extends BaseService {
         )
       }
 
-      if (swap.return.status !== "received") {
+      console.log(swap.return_order)
+
+      if (swap.return_order.status !== "received") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Swap is not received"
@@ -1177,12 +1177,12 @@ class OrderService extends BaseService {
       }
 
       for (const i of order.items) {
-        const isReturn = swap.return.items.find(ri => i.id === ri.item_id)
+        const isReturn = swap.return_order.items.find(ri => i.id === ri.item_id)
 
         if (isReturn) {
           const returnedQuantity =
             (i.returned_quantity || 0) + isReturn.quantity
-          await this.lineItemService_.update(i.id, {
+          await this.lineItemService_.withTransaction(manager).update(i.id, {
             returned_quantity: returnedQuantity,
           })
         }
