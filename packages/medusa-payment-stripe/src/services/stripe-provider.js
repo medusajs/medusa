@@ -299,14 +299,10 @@ class StripeProviderService extends PaymentService {
   async refundPayment(payment, amountToRefund) {
     const { id } = payment.data
     try {
-      return this.stripe_.refunds
-        .create({
-          amount: amountToRefund,
-          payment_intent: id,
-        })
-        .then(() => {
-          return paymentData
-        })
+      return this.stripe_.refunds.create({
+        amount: amountToRefund,
+        payment_intent: id,
+      })
     } catch (error) {
       throw error
     }

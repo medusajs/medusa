@@ -18,6 +18,7 @@ import { Order } from "./order"
 export enum RefundReason {
   DISCOUNT = "discount",
   RETURN = "return",
+  SWAP = "swap",
   OTHER = "other",
 }
 

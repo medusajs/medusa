@@ -162,7 +162,9 @@ export const defaultRelations = [
   "returns",
   "swaps",
   "swaps.return_order",
+  "swaps.shipping_methods",
   "swaps.additional_items",
+  "swaps.fulfillments",
 ]
 
 export const defaultFields = [

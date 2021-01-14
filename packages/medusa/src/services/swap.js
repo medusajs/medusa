@@ -275,7 +275,11 @@ class SwapService extends BaseService {
         try {
           await this.paymentProviderService_
             .withTransaction(manager)
-            .refundPayment(swap.order.payments, -1 * swap.difference_due)
+            .refundPayment(
+              swap.order.payments,
+              -1 * swap.difference_due,
+              "swap"
+            )
         } catch (err) {
           swap.payment_status = "requires_action"
           const result = await swapRepo.save(swap)
@@ -288,6 +292,7 @@ class SwapService extends BaseService {
         swap.payment_status = "difference_refunded"
 
         const result = await swapRepo.save(swap)
+
         await this.eventBus_
           .withTransaction(manager)
           .emit(SwapService.Events.REFUND_PROCESSED, result)
