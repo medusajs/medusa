@@ -54,9 +54,9 @@ class FulfillmentProviderService {
     }
   }
 
-  async createFulfillment(method, items, order) {
+  async createFulfillment(method, items, order, fulfillment) {
     const provider = this.retrieveProvider(method.shipping_option.provider_id)
-    return provider.createFulfillment(method.data, items, order)
+    return provider.createFulfillment(method.data, items, order, fulfillment)
   }
 
   async canCalculate(option) {

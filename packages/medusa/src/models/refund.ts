@@ -9,7 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Currency } from "./currency"
 import { Cart } from "./cart"
@@ -60,7 +60,7 @@ export class Refund {
 
   @BeforeInsert()
   private beforeInsert() {
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `ref_${id}`
   }
 }

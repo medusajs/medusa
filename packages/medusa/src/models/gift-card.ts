@@ -10,7 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Region } from "./region"
 
@@ -60,7 +60,7 @@ export class GiftCard {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `gift_${id}`
   }
 }

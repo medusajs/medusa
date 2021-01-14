@@ -224,7 +224,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
     return toReturn
   }
 
-  async createFulfillment(methodData, fulfillmentItems, fromOrder) {
+  async createFulfillment(
+    methodData,
+    fulfillmentItems,
+    fromOrder,
+    fulfillment
+  ) {
     const existing =
       fromOrder.metadata && fromOrder.metadata.webshipper_order_id
 
@@ -256,13 +261,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
           })
       }
 
-      let visible_ref = `${fromOrder.display_id}-${
-        fromOrder.fulfillments.length + 1
-      }`
-      let ext_ref = `${fromOrder.id}.${fromOrder.fulfillments.length}`
+      let id = fulfillment.id
+      let visible_ref = `${fromOrder.display_id}-${id.substr(id.length - 4)}`
+      let ext_ref = `${fromOrder.id}.${fulfillment.id}`
 
       if (fromOrder.is_swap) {
-        ext_ref = `S${fromOrder.id}.${fromOrder.fulfillments.length}`
+        ext_ref = `S${fromOrder.id}.${fulfillment.id}`
         visible_ref = `S-${fromOrder.display_id}`
       }
 

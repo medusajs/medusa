@@ -6,7 +6,7 @@ import {
   Column,
   PrimaryColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 @Entity()
 export class IdempotencyKey {
@@ -43,7 +43,7 @@ export class IdempotencyKey {
 
   @BeforeInsert()
   private beforeInsert() {
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `ikey_${id}`
   }
 }

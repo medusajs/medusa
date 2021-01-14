@@ -9,7 +9,7 @@ import {
   JoinColumn,
   Index,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Order } from "./order"
 import { Cart } from "./cart"
@@ -78,7 +78,7 @@ export class ShippingMethod {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 24)
+    const id = ulid()
     this.id = `sm_${id}`
   }
 }

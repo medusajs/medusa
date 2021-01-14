@@ -14,7 +14,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Image } from "./image"
 import { ProductOption } from "./product-option"
@@ -121,7 +121,7 @@ export class Product {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `prod_${id}`
   }
 }

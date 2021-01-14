@@ -13,7 +13,7 @@ import {
   JoinTable,
   JoinColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
@@ -82,7 +82,7 @@ export class Discount {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `disc_${id}`
     this.code = this.code.toUpperCase()
   }

@@ -14,7 +14,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Currency } from "./currency"
 
@@ -61,7 +61,7 @@ export class Store {
 
   @BeforeInsert()
   private beforeInsert() {
-    const id = randomize("Aa0", 10)
+    const id = ulid()
     this.id = `store_${id}`
   }
 }

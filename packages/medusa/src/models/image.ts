@@ -7,7 +7,7 @@ import {
   Column,
   PrimaryColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 @Entity()
 export class Image {
@@ -32,7 +32,7 @@ export class Image {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `img_${id}`
   }
 }

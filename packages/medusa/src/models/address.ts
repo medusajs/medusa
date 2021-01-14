@@ -9,7 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Customer } from "./customer"
 import { Country } from "./country"
@@ -75,7 +75,7 @@ export class Address {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 10)
+    const id = ulid()
     this.id = `addr_${id}`
   }
 }

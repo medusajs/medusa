@@ -186,20 +186,22 @@ class FulfillmentService extends BaseService {
 
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
-          const data = await this.fulfillmentProviderService_.createFulfillment(
-            shipping_method,
-            items,
-            {
-              ...order,
-            }
-          )
-
-          return fulfillmentRepository.create({
+          const ful = fulfillmentRepository.create({
             provider: shipping_method.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
-            data,
+            data: {},
             metadata,
           })
+
+          let result = await fulfillmentRepository.save(ful)
+          result.data = await this.fulfillmentProviderService_.createFulfillment(
+            shipping_method,
+            items,
+            { ...order },
+            { ...result }
+          )
+
+          return fulfillmentRepository.save(result)
         })
       )
 

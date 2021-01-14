@@ -546,12 +546,14 @@ class SwapService extends BaseService {
   async createFulfillment(swapId, metadata = {}) {
     return this.atomicPhase_(async manager => {
       const swap = await this.retrieve(swapId, [
+        "payment",
         "shipping_address",
         "additional_items",
         "shipping_methods",
         "order",
         "order.billing_address",
         "order.discounts",
+        "order.payments",
       ])
       const order = swap.order
 
@@ -560,6 +562,7 @@ class SwapService extends BaseService {
         .createFulfillment(
           {
             ...swap,
+            payments: swap.payment ? [swap.payment] : order.payments,
             email: order.email,
             discounts: order.discounts,
             currency_code: order.currency_code,

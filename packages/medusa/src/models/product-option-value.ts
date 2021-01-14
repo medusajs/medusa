@@ -10,7 +10,7 @@ import {
   Column,
   PrimaryColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
@@ -59,7 +59,7 @@ export class ProductOptionValue {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `optval_${id}`
   }
 }
