@@ -163,6 +163,7 @@ export const defaultRelations = [
   "swaps",
   "swaps.return_order",
   "swaps.shipping_methods",
+  "swaps.shipping_address",
   "swaps.additional_items",
   "swaps.fulfillments",
 ]
