@@ -112,9 +112,6 @@ export class Cart {
   )
   shipping_methods: ShippingMethod[]
 
-  @Column({ default: false })
-  is_swap: boolean
-
   @Column({ type: "enum", enum: CartType, default: "default" })
   type: boolean
 
