@@ -49,13 +49,6 @@ export default async (req, res) => {
                   relations: ["payment", "payment_sessions"],
                 })
 
-              if (!cart.payment) {
-                return {
-                  response_code: 200,
-                  response_body: { data: cart },
-                }
-              }
-
               return {
                 recovery_point: "payment_authorized",
               }
@@ -82,18 +75,11 @@ export default async (req, res) => {
                   relations: ["payment", "payment_sessions"],
                 })
 
-              if (!cart.payment) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  `Cart payment not authorized`
-                )
-              }
-
               let order
 
               // If cart is part of swap, we register swap as complete
-              if (cart.type === "swap") {
-                try {
+              switch (cart.type) {
+                case "swap": {
                   const swapId = cart.metadata?.swap_id
                   order = await swapService
                     .withTransaction(manager)
@@ -107,30 +93,37 @@ export default async (req, res) => {
                     response_code: 200,
                     response_body: { data: order },
                   }
-                } catch (error) {
-                  throw error
                 }
-              }
-
-              try {
-                order = await orderService
-                  .withTransaction(manager)
-                  .createFromCart(cart.id)
-              } catch (error) {
-                if (
-                  error &&
-                  error.message === "Order from cart already exists"
-                ) {
-                  order = await orderService
-                    .withTransaction(manager)
-                    .retrieveByCartId(id, ["items"])
-
-                  return {
-                    response_code: 200,
-                    response_body: { data: order },
+                // case "payment_link":
+                default: {
+                  if (!cart.payment && cart.total > 0) {
+                    throw new MedusaError(
+                      MedusaError.Types.INVALID_DATA,
+                      `Cart payment not authorized`
+                    )
                   }
-                } else {
-                  throw error
+
+                  try {
+                    order = await orderService
+                      .withTransaction(manager)
+                      .createFromCart(cart.id)
+                  } catch (error) {
+                    if (
+                      error &&
+                      error.message === "Order from cart already exists"
+                    ) {
+                      order = await orderService
+                        .withTransaction(manager)
+                        .retrieveByCartId(id, ["items", "shipping_address"])
+
+                      return {
+                        response_code: 200,
+                        response_body: { data: order },
+                      }
+                    } else {
+                      throw error
+                    }
+                  }
                 }
               }
 
@@ -144,17 +137,7 @@ export default async (req, res) => {
                     "discount_total",
                     "total",
                   ],
-                  relations: [
-                    "shipping_address",
-                    "items",
-                    "items.variant",
-                    "items.variant.product",
-                    "shipping_methods",
-                    "discounts",
-                    "customer",
-                    "payments",
-                    "region",
-                  ],
+                  relations: ["shipping_address", "items"],
                 })
 
               return {

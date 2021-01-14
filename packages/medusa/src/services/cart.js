@@ -966,15 +966,13 @@ class CartService extends BaseService {
       // If only one payment session exists, we preselect it
       if (region.payment_providers.length === 1) {
         const p = region.payment_providers[0]
-        if (!seen.includes(p.id)) {
-          const sess = await this.paymentProviderService_
-            .withTransaction(manager)
-            .createSession(p.id, cart)
+        const sess = await this.paymentProviderService_
+          .withTransaction(manager)
+          .createSession(p.id, cart)
 
-          sess.is_selected = true
+        sess.is_selected = true
 
-          await psRepo.save(sess)
-        }
+        await psRepo.save(sess)
       } else {
         for (const provider of region.payment_providers) {
           if (!seen.includes(provider.id)) {

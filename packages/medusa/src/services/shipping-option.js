@@ -244,7 +244,7 @@ class ShippingOptionService extends BaseService {
    */
   validateCartOption(option, cart) {
     if (option.is_return) {
-      return option
+      return null
     }
 
     if (cart.region_id !== option.region_id) {
