@@ -26,6 +26,12 @@ import { PaymentSession } from "./payment-session"
 import { Payment } from "./payment"
 import { ShippingMethod } from "./shipping-method"
 
+export enum CartType {
+  DEFAULT = "default",
+  SWAP = "swap",
+  PAYMENT_LINK = "payment_link",
+}
+
 @Entity()
 export class Cart {
   @PrimaryColumn()
@@ -108,6 +114,9 @@ export class Cart {
 
   @Column({ default: false })
   is_swap: boolean
+
+  @Column({ type: "enum", enum: CartType, default: "default" })
+  type: boolean
 
   @Column({ type: "timestamptz", nullable: true })
   completed_at: Date

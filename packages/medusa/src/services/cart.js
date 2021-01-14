@@ -841,8 +841,14 @@ class CartService extends BaseService {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
       const cart = await this.retrieve(cartId, {
+        select: ["total"],
         relations: ["region", "payment_sessions"],
       })
+
+      // If cart total is 0, we don't perform anything payment related
+      if (cart.total <= 0) {
+        return cart
+      }
 
       const session = await this.paymentProviderService_
         .withTransaction(manager)
