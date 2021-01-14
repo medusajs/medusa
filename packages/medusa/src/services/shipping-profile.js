@@ -412,16 +412,12 @@ class ShippingProfileService extends BaseService {
     const options = []
 
     for (const o of rawOpts) {
-      const option = await this.shippingOptionService_
-        .validateCartOption(o, cart)
-        .catch(_ => {
-          // If validation failed we skip the option
-          return null
-        })
-
-      if (option) {
-        options.push(option)
-      }
+      try {
+        const option = this.shippingOptionService_.validateCartOption(o, cart)
+        if (option) {
+          options.push(option)
+        }
+      } catch (error) {}
     }
 
     return options
