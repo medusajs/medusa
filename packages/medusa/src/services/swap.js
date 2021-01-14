@@ -398,6 +398,7 @@ class SwapService extends BaseService {
 
         const toCreate = {
           cart_id: cart.id,
+          thumbnail: lineItem.thumbnail,
           title: lineItem.title,
           variant_id: lineItem.variant_id,
           unit_price: -1 * lineItem.unit_price,
@@ -470,9 +471,18 @@ class SwapService extends BaseService {
       swap.shipping_address_id = cart.shipping_address_id
       swap.shipping_methods = cart.shipping_methods
       swap.confirmed_at = now.toISOString()
+      swap.payment_status = "awaiting"
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
+
+      for (const method of cart.shipping_methods) {
+        await this.shippingOptionService_
+          .withTransaction(manager)
+          .updateShippingMethod(method.id, {
+            swap_id: result.id,
+          })
+      }
 
       this.eventBus_
         .withTransaction(manager)
