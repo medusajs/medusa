@@ -380,7 +380,7 @@ class SwapService extends BaseService {
         shipping_address_id: order.shipping_address_id,
         region_id: order.region_id,
         customer_id: order.customer_id,
-        is_swap: true,
+        type: "swap",
         metadata: {
           swap_id: swap.id,
           parent_order_id: order.id,

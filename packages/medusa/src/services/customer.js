@@ -257,7 +257,8 @@ class CustomerService extends BaseService {
         customer.has_account = true
         delete customer.password
 
-        const updated = await customerRepository.save(customer)
+        const toUpdate = { ...existing, ...customer }
+        const updated = await customerRepository.save(toUpdate)
         await this.eventBus_
           .withTransaction(manager)
           .emit(CustomerService.Events.UPDATED, updated)
@@ -269,6 +270,8 @@ class CustomerService extends BaseService {
           customer.has_account = true
           delete customer.password
         }
+
+        console.log("Non-existing: ", customer)
 
         const created = await customerRepository.create(customer)
         const result = await customerRepository.save(created)

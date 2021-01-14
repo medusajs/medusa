@@ -5,6 +5,7 @@ export default async (req, res) => {
       const customer = await customerService.retrieve(req.user.customer_id, [
         "shipping_addresses",
         "orders",
+        "orders.items",
       ])
       res.json({ customer })
     } else {

@@ -204,7 +204,7 @@ describe("SwapService", () => {
           ],
           region_id: testOrder.region_id,
           customer_id: testOrder.customer_id,
-          is_swap: true,
+          type: "swap",
           metadata: {
             swap_id: IdMap.getId("test-swap"),
             parent_order_id: IdMap.getId("test"),

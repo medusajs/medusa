@@ -27,6 +27,7 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
     const orderService = req.scope.resolve("orderService")
+    const swapService = req.scope.resolve("swapService")
 
     let inProgress = true
     let err = false
@@ -89,6 +90,27 @@ export default async (req, res) => {
               }
 
               let order
+
+              // If cart is part of swap, we register swap as complete
+              if (cart.type === "swap") {
+                try {
+                  const swapId = cart.metadata?.swap_id
+                  order = await swapService
+                    .withTransaction(manager)
+                    .registerCartCompletion(swapId)
+
+                  order = await swapService
+                    .withTransaction(manager)
+                    .retrieve(order.id, ["shipping_address"])
+
+                  return {
+                    response_code: 200,
+                    response_body: { data: order },
+                  }
+                } catch (error) {
+                  throw error
+                }
+              }
 
               try {
                 order = await orderService
