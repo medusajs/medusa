@@ -1042,6 +1042,41 @@ class CartService extends BaseService {
   }
 
   /**
+   * Refreshes a payment session on a cart
+   * @param {string} cartId - the id of the cart to remove from
+   * @param {string} providerId - the id of the provider whoose payment session
+   *    should be removed.
+   * @returns {Promise<Cart>} the resulting cart.
+   */
+  async refreshPaymentSession(cartId, providerId) {
+    return this.atomicPhase_(async manager => {
+      const cart = await this.retrieve(cartId, {
+        relations: ["payment_sessions"],
+      })
+
+      if (cart.payment_sessions) {
+        const session = cart.payment_sessions.find(
+          ({ provider_id }) => provider_id === providerId
+        )
+
+        if (session) {
+          // Delete the session with the provider
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .refreshSession(session, cart)
+        }
+      }
+
+      const result = await this.retrieve(cartId)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+      return result
+    })
+  }
+
+  /**
    * Adds the shipping method to the list of shipping methods associated with
    * the cart. Shipping Methods are the ways that an order is shipped, whereas a
    * Shipping Option is a possible way to ship an order. Shipping Methods may
