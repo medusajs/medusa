@@ -5,10 +5,10 @@ describe("OrderService", () => {
   const totalsService = {
     getLineItemRefund: () => {},
     getTotal: o => {
-      return Promise.resolve(o.total || 0)
+      return o.total || 0
     },
     getRefundedTotal: o => {
-      return o.refunded || 0
+      return o.refunded_total || 0
     },
   }
   const eventBusService = {
@@ -48,10 +48,29 @@ describe("OrderService", () => {
   })
 
   describe("createFromCart", () => {
-    const orderRepo = MockRepository({ create: p => p })
+    const orderRepo = MockRepository({
+      create: p => p,
+      save: p => ({ ...p, id: "id" }),
+    })
+    const lineItemService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const shippingOptionService = {
+      updateShippingMethod: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
     const paymentProviderService = {
       getStatus: payment => {
         return Promise.resolve(payment.status || "authorized")
+      },
+      updatePayment: jest.fn(),
+      withTransaction: function() {
+        return this
       },
     }
     const emptyCart = {
@@ -98,7 +117,9 @@ describe("OrderService", () => {
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
+      lineItemService,
       paymentProviderService,
+      shippingOptionService,
       totalsService,
       discountService,
       regionService,
@@ -140,15 +161,18 @@ describe("OrderService", () => {
         total: 100,
       }
 
+      orderService.cartService_.retrieve = () => {
+        return Promise.resolve(cart)
+      }
+
       await orderService.createFromCart("cart_id")
       const order = {
+        payment_status: "awaiting",
         email: cart.email,
         customer_id: cart.customer_id,
         shipping_methods: cart.shipping_methods,
-        payments: [cart.payment],
         customer_id: "cus_1234",
         discounts: cart.discounts,
-        items: cart.items,
         billing_address_id: cart.billing_address_id,
         shipping_address_id: cart.shipping_address_id,
         region_id: cart.region_id,
@@ -157,6 +181,23 @@ describe("OrderService", () => {
         tax_rate: 25,
         metadata: {},
       }
+
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledWith(
+        "testpayment",
+        {
+          order_id: "id",
+        }
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        order_id: "id",
+      })
+      expect(lineItemService.update).toHaveBeenCalledWith("item_2", {
+        order_id: "id",
+      })
+
       expect(orderRepo.create).toHaveBeenCalledTimes(1)
       expect(orderRepo.create).toHaveBeenCalledWith(order)
       expect(orderRepo.save).toHaveBeenCalledWith(order)
@@ -188,13 +229,12 @@ describe("OrderService", () => {
       }
       await orderService.createFromCart(cart)
       const order = {
+        payment_status: "awaiting",
         email: cart.email,
         customer_id: cart.customer_id,
         shipping_methods: cart.shipping_methods,
-        payments: [cart.payment],
         customer_id: "cus_1234",
         discounts: cart.discounts,
-        items: cart.items,
         billing_address_id: cart.billing_address_id,
         shipping_address_id: cart.shipping_address_id,
         region_id: cart.region_id,
@@ -205,6 +245,15 @@ describe("OrderService", () => {
       }
       expect(orderRepo.create).toHaveBeenCalledTimes(1)
       expect(orderRepo.create).toHaveBeenCalledWith(order)
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        order_id: "id",
+      })
+      expect(lineItemService.update).toHaveBeenCalledWith("item_2", {
+        order_id: "id",
+      })
+
       expect(orderRepo.save).toHaveBeenCalledWith(order)
     })
   })
@@ -435,7 +484,7 @@ describe("OrderService", () => {
           case IdMap.getId("fail"):
             return Promise.resolve({
               payment_status: "awaiting",
-              payments: [{ id: "payment_fail" }],
+              payments: [{ id: "payment_fail", captured_at: null }],
             })
 
           default:
@@ -444,7 +493,7 @@ describe("OrderService", () => {
               payment_status: "awaiting",
               status: "pending",
               fulfillments: [{ id: "fulfillment_test" }],
-              payments: [{ id: "payment_test" }],
+              payments: [{ id: "payment_test", captured_at: null }],
             })
         }
       },
@@ -454,7 +503,9 @@ describe("OrderService", () => {
       capturePayment: jest
         .fn()
         .mockImplementation(p =>
-          p.id === "payment_fail" ? Promise.reject() : Promise.resolve()
+          p.id === "payment_fail"
+            ? Promise.reject()
+            : Promise.resolve({ ...p, captured_at: "notnull" })
         ),
       withTransaction: function() {
         return this
@@ -474,11 +525,12 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.capturePayment(IdMap.getId("test-order"))
+      await orderService.capturePayment("test-order")
 
       expect(paymentProviderService.capturePayment).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
         id: "payment_test",
+        captured_at: null,
       })
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
@@ -487,7 +539,7 @@ describe("OrderService", () => {
         payment_status: "captured",
         status: "pending",
         fulfillments: [{ id: "fulfillment_test" }],
-        payments: [{ id: "payment_test" }],
+        payments: [{ id: "payment_test", captured_at: "notnull" }],
       })
     })
 
@@ -497,18 +549,20 @@ describe("OrderService", () => {
       expect(paymentProviderService.capturePayment).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
         id: "payment_fail",
+        captured_at: null,
       })
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
       expect(orderRepo.save).toHaveBeenCalledWith({
         payment_status: "requires_action",
-        payments: [{ id: "payment_fail" }],
+        payments: [{ id: "payment_fail", captured_at: null }],
       })
     })
   })
 
   describe("createFulfillment", () => {
     const partialOrder = {
+      fulfillments: [],
       items: [
         {
           id: "item_1",
@@ -524,6 +578,7 @@ describe("OrderService", () => {
     }
 
     const order = {
+      fulfillments: [],
       items: [
         {
           id: "item_1",
@@ -536,7 +591,7 @@ describe("OrderService", () => {
     const orderRepo = MockRepository({
       findOne: q => {
         switch (q.where.id) {
-          case IdMap.getId("partial"):
+          case "partial":
             return Promise.resolve(partialOrder)
           default:
             return Promise.resolve(order)
@@ -578,7 +633,7 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.createFulfillment(IdMap.getId("test-order"), [
+      await orderService.createFulfillment("test-order", [
         {
           item_id: "item_1",
           quantity: 2,
@@ -594,7 +649,8 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        {}
+        {},
+        { order_id: "test-order" }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -610,7 +666,7 @@ describe("OrderService", () => {
     })
 
     it("sets partially fulfilled", async () => {
-      await orderService.createFulfillment(IdMap.getId("partial"), [
+      await orderService.createFulfillment("partial", [
         {
           item_id: "item_1",
           quantity: 2,
@@ -626,7 +682,8 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        {}
+        {},
+        { order_id: "partial" }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -642,7 +699,7 @@ describe("OrderService", () => {
     })
 
     it("sets partially fulfilled", async () => {
-      await orderService.createFulfillment(IdMap.getId("test"), [
+      await orderService.createFulfillment("test", [
         {
           item_id: "item_1",
           quantity: 1,
@@ -658,7 +715,8 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        {}
+        {},
+        { order_id: "test" }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -899,7 +957,7 @@ describe("OrderService", () => {
         price: 2,
       }
       await orderService.requestReturn(
-        IdMap.getId("processed-order"),
+        "processed-order",
         items,
         shipping_method
       )
@@ -910,6 +968,7 @@ describe("OrderService", () => {
           items,
           shipping_method,
           refund_amount: undefined,
+          order_id: "processed-order",
         },
         order
       )
@@ -1033,6 +1092,9 @@ describe("OrderService", () => {
           .mockReturnValue(
             Promise.resolve({ id: "1235", order_id: IdMap.getId("order_1") })
           ),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const orderService = new OrderService({
@@ -1054,11 +1116,14 @@ describe("OrderService", () => {
       const swapService = {
         retrieve: jest.fn().mockReturnValue(
           Promise.resolve({
-            _id: "1235",
+            id: "1235",
             order_id: IdMap.getId("order"),
-            return: { status: "requested" },
+            return_order: { status: "requested" },
           })
         ),
+        withTransaction: function() {
+          return this
+        },
       }
       const orderService = new OrderService({
         manager: MockManager,
@@ -1096,12 +1161,15 @@ describe("OrderService", () => {
           Promise.resolve({
             id: "1235",
             order_id: IdMap.getId("order_123"),
-            return: {
+            return_order: {
               status: "received",
               items: [{ item_id: IdMap.getId("1234"), quantity: 1 }],
             },
           })
         ),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const lineItemService = {
@@ -1145,7 +1213,7 @@ describe("OrderService", () => {
               },
             ],
             total: 100,
-            refunded: 100,
+            refunded_total: 100,
           })
         }
 
@@ -1157,7 +1225,7 @@ describe("OrderService", () => {
             },
           ],
           total: 100,
-          refuneded: 0,
+          refunded_total: 0,
         })
       }),
     })

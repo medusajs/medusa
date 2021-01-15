@@ -893,7 +893,8 @@ class CartService extends BaseService {
 
       // If cart total is 0, we don't perform anything payment related
       if (cart.total <= 0) {
-        return cart
+        cart.completed_at = new Date()
+        return cartRepository.save(cart)
       }
 
       const session = await this.paymentProviderService_
@@ -911,6 +912,7 @@ class CartService extends BaseService {
           .createPayment(freshCart)
 
         freshCart.payment = payment
+        freshCart.completed_at = new Date()
       }
 
       const updated = await cartRepository.save(freshCart)

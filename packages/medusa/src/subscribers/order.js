@@ -33,7 +33,7 @@ class OrderSubscriber {
     await Promise.all(
       order.items.map(async i => {
         if (i.is_giftcard) {
-          for (const qty = 0; qty < i.quantity; qty++) {
+          for (let qty = 0; qty < i.quantity; qty++) {
             await this.giftCardService_.create({
               region_id: order.region_id,
               order_id: order.id,

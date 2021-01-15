@@ -4,7 +4,8 @@ import {
   CreateDateColumn,
   Column,
   PrimaryColumn,
-  OneToOne,
+  ManyToOne,
+  Unique,
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
@@ -12,6 +13,7 @@ import { ulid } from "ulid"
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
 
+@Unique("gcuniq", ["gift_card_id", "order_id"])
 @Entity()
 export class GiftCardTransaction {
   @PrimaryColumn()
@@ -20,14 +22,14 @@ export class GiftCardTransaction {
   @Column()
   gift_card_id: string
 
-  @OneToOne(() => GiftCard)
+  @ManyToOne(() => GiftCard)
   @JoinColumn({ name: "gift_card_id" })
   gift_card: GiftCard
 
   @Column()
   order_id: string
 
-  @OneToOne(() => Order)
+  @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
   order: Order
 
