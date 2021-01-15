@@ -38,10 +38,19 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              await cartService.withTransaction(manager).authorizePayment(id, {
-                ...req.request_context,
-                idempotency_key: idempotencyKey.idempotency_key,
-              })
+              const cart = await cartService
+                .withTransaction(manager)
+                .authorizePayment(id, {
+                  ...req.request_context,
+                  idempotency_key: idempotencyKey.idempotency_key,
+                })
+
+              if (cart.payment_session.status === "requires_more") {
+                return {
+                  response_code: 200,
+                  response_body: { data: cart },
+                }
+              }
 
               return {
                 recovery_point: "payment_authorized",

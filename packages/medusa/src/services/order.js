@@ -869,6 +869,13 @@ class OrderService extends BaseService {
         ],
       })
 
+      if (!order.shipping_methods?.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot fulfill an order that lacks shipping methods"
+        )
+      }
+
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(order, itemsToFulfill, metadata, {

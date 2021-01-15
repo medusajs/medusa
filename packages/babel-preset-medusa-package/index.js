@@ -16,6 +16,7 @@ function preset(context, options = {}) {
     presets: [r(`@babel/preset-env`)],
     plugins: [
       r(`babel-plugin-transform-typescript-metadata`),
+      r(`@babel/plugin-proposal-optional-chaining`),
       [r(`@babel/plugin-proposal-decorators`), { legacy: true }],
       [r(`@babel/plugin-proposal-class-properties`), { loose: true }],
       r(`@babel/plugin-transform-classes`),
