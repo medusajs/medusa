@@ -18,7 +18,11 @@ export default async (req, res) => {
         "items.variant.product",
       ],
     })
-    const shippingOptions = await shippingProfileService.fetchCartOptions(cart)
+    let shippingOptions = await shippingProfileService.fetchCartOptions(cart)
+
+    shippingOptions = shippingOptions.filter(
+      (so) => !so.data?.require_drop_point
+    )
 
     const ids = selected_shipping_option.id.split(".")
     await Promise.all(

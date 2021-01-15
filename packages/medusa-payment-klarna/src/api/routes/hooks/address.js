@@ -59,10 +59,8 @@ export default async (req, res) => {
       const shippingOptions = await shippingProfileService.fetchCartOptions(
         cart
       )
-      if (shippingOptions.length === 1) {
-        const option = shippingOptions[0]
-        await cartService.addShippingMethod(cart.id, option.id, option.data)
-      }
+      const option = shippingOptions[0]
+      await cartService.addShippingMethod(cart.id, option.id, option.data)
 
       // Fetch and return updated Klarna order
       const updatedCart = await cartService.retrieve(cart.id, {

@@ -86,6 +86,9 @@ class KlarnaProviderService extends PaymentService {
       })
     }
 
+    if (!cart.shipping_methods.length) {
+    }
+
     return order_lines
   }
 
@@ -150,8 +153,12 @@ class KlarnaProviderService extends PaymentService {
     }
 
     if (cart.shipping_address && cart.shipping_address.first_name) {
-      const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      let shippingOptions = await this.shippingProfileService_.fetchCartOptions(
         cart
+      )
+
+      shippingOptions = shippingOptions.filter(
+        (so) => !so.data?.require_drop_point
       )
 
       // If the cart does not have shipping methods yet, preselect one from
