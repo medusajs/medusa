@@ -964,7 +964,7 @@ class CartService extends BaseService {
       }
 
       // If only one payment session exists, we preselect it
-      if (region.payment_providers.length === 1) {
+      if (region.payment_providers.length === 1 && !cart.payment_session) {
         const p = region.payment_providers[0]
         const sess = await this.paymentProviderService_
           .withTransaction(manager)

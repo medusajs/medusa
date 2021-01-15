@@ -5,8 +5,7 @@ export default async (req, res) => {
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
-  const headerKey =
-    req.get("Idempotency-Key") || "0f6421c9-4748-4349-b422-bf870b5fef86"
+  const headerKey = req.get("Idempotency-Key") || ""
 
   let idempotencyKey
   try {
