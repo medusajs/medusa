@@ -142,12 +142,13 @@ describe("SwapService", () => {
           refund_amount: 11,
           items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
         },
-        additional_items: [{ data: "lines" }],
+        additional_items: [{ data: "lines", id: "test" }],
         other: "data",
       }
 
       const cartService = {
         create: jest.fn().mockReturnValue(Promise.resolve({ id: "cart" })),
+        update: jest.fn().mockReturnValue(Promise.resolve()),
         withTransaction: function() {
           return this
         },
@@ -159,6 +160,7 @@ describe("SwapService", () => {
 
       const lineItemService = {
         create: jest.fn().mockImplementation(d => Promise.resolve(d)),
+        update: jest.fn().mockImplementation(d => Promise.resolve(d)),
         withTransaction: function() {
           return this
         },
@@ -179,6 +181,8 @@ describe("SwapService", () => {
           where: { id: IdMap.getId("swap-1") },
           relations: [
             "order",
+            "order.items",
+            "additional_items",
             "return_order",
             "return_order.items",
             "return_order.shipping_method",
@@ -189,19 +193,6 @@ describe("SwapService", () => {
         expect(cartService.create).toHaveBeenCalledWith({
           email: testOrder.email,
           discounts: testOrder.discounts,
-          shipping_address: testOrder.shipping_address,
-          billing_address: testOrder.billing_address,
-          items: [
-            {
-              variant_id: IdMap.getId("variant"),
-              unit_price: -100,
-              quantity: 1,
-              metadata: {
-                is_return_line: true,
-              },
-            },
-            ...existing.additional_items,
-          ],
           region_id: testOrder.region_id,
           customer_id: testOrder.customer_id,
           type: "swap",
@@ -210,6 +201,9 @@ describe("SwapService", () => {
             parent_order_id: IdMap.getId("test"),
           },
         })
+
+        expect(cartService.create).toHaveBeenCalledTimes(1)
+        // expect(cartService.update).toHaveBeenCalledTimes(1)
 
         expect(swapRepo.save).toHaveBeenCalledTimes(1)
         expect(swapRepo.save).toHaveBeenCalledWith({
@@ -261,12 +255,11 @@ describe("SwapService", () => {
       const lineItemService = {
         generate: jest
           .fn()
-          .mockImplementation((variantId, regionId, quantity, metadata) => {
+          .mockImplementation((variantId, regionId, quantity) => {
             return {
               unit_price: 100,
               variant_id: variantId,
               quantity,
-              metadata,
             }
           }),
       }
@@ -317,7 +310,8 @@ describe("SwapService", () => {
 
         expect(swapRepo.create).toHaveBeenCalledWith({
           order_id: IdMap.getId("test"),
-          return_order: { id: "ret" },
+          fulfillment_status: "not_fulfilled",
+          payment_status: "not_paid",
           additional_items: [
             {
               unit_price: 100,
@@ -326,6 +320,8 @@ describe("SwapService", () => {
             },
           ],
         })
+
+        expect(returnService.create).toHaveBeenCalledTimes(1)
       })
     })
   })
@@ -347,7 +343,7 @@ describe("SwapService", () => {
 
       const existing = {
         order_id: IdMap.getId("test"),
-        return_id: "test",
+        return_id: IdMap.getId("test"),
         return_order: {
           id: IdMap.getId("return-swap"),
           test: "notreceived",
@@ -372,7 +368,7 @@ describe("SwapService", () => {
 
         expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
         expect(returnService.receiveReturn).toHaveBeenCalledWith(
-          "test",
+          IdMap.getId("return-swap"),
           [{ item_id: IdMap.getId("1234"), quantity: 1 }],
           undefined,
           false
@@ -393,6 +389,8 @@ describe("SwapService", () => {
       const existing = {
         order_id: IdMap.getId("test"),
         return_id: IdMap.getId("return-swap"),
+        return_order_id: IdMap.getId("return-swap"),
+        return_order: { id: IdMap.getId("return-swap") },
         other: "data",
       }
 
@@ -492,7 +490,8 @@ describe("SwapService", () => {
             shipping_methods: existing.shipping_methods,
           },
           [{ item_id: IdMap.getId("1234"), quantity: 2 }],
-          {}
+          {},
+          { swap_id: IdMap.getId("swap") }
         )
       })
     })
@@ -632,9 +631,21 @@ describe("SwapService", () => {
         },
       }
 
+      const shippingOptionService = {
+        updateShippingMethod: () => {
+          return Promise.resolve()
+        },
+        withTransaction: function() {
+          return this
+        },
+      }
+
       const paymentProviderService = {
         getStatus: jest.fn(() => {
           return Promise.resolve("authorized")
+        }),
+        updatePayment: jest.fn(() => {
+          return Promise.resolve()
         }),
         withTransaction: function() {
           return this
@@ -663,6 +674,7 @@ describe("SwapService", () => {
         totalsService,
         paymentProviderService,
         eventBusService,
+        shippingOptionService,
       })
 
       it("creates a shipment", async () => {
@@ -674,10 +686,9 @@ describe("SwapService", () => {
 
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing,
-          payment: existing.cart.payment,
           difference_due: 100,
           shipping_address_id: 1234,
-          confirmed_at: 1572393600000,
+          confirmed_at: expect.anything(),
         })
       })
     })
@@ -773,7 +784,8 @@ describe("SwapService", () => {
               id: "good",
             },
           ],
-          1
+          1,
+          "swap"
         )
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(-1, false),
@@ -790,7 +802,8 @@ describe("SwapService", () => {
               id: "f",
             },
           ],
-          1
+          1,
+          "swap"
         )
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(-1, true),

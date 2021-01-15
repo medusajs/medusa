@@ -114,7 +114,7 @@ class LineItemService extends BaseService {
       quantity: quantity || 1,
       allow_discounts: !variant.product.is_giftcard,
       is_giftcard: variant.product.is_giftcard,
-      metadata,
+      metadata: metadata || {},
     }
 
     return toCreate
