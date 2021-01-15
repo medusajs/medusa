@@ -27,6 +27,7 @@ describe("ProductService", () => {
 
       expect(productRepo.findOne).toHaveBeenCalledTimes(1)
       expect(productRepo.findOne).toHaveBeenCalledWith({
+        relations: [],
         where: { id: IdMap.getId("ironman") },
       })
 
