@@ -9,8 +9,9 @@ export default async (req, res) => {
     requirements: Validator.array()
       .items(
         Validator.object({
+          id: Validator.string().required(),
           type: Validator.string().required(),
-          value: Validator.number().required(),
+          amount: Validator.number().required(),
         })
       )
       .optional(),

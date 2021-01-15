@@ -69,7 +69,7 @@ export class ShippingOption {
   @OneToMany(
     () => ShippingOptionRequirement,
     req => req.shipping_option,
-    { cascade: true }
+    { cascade: ["insert"] }
   )
   requirements: ShippingOptionRequirement[]
 

@@ -5,7 +5,9 @@ export default async (req, res) => {
     const query = _.pick(req.query, ["region_id", "is_return"])
 
     const optionService = req.scope.resolve("shippingOptionService")
-    const data = await optionService.list(query)
+    const data = await optionService.list(query, {
+      relations: ["requirements"],
+    })
 
     res.status(200).json({ shipping_options: data })
   } catch (err) {

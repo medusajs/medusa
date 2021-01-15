@@ -66,7 +66,7 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingRequirement} requirement - the requirement to validate
    * @return {ShippingRequirement} a validated shipping requirement
    */
-  validateRequirement_(requirement, optionId) {
+  async validateRequirement_(requirement, optionId) {
     if (!requirement.type) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -87,7 +87,25 @@ class ShippingOptionService extends BaseService {
     const reqRepo = this.manager_.getCustomRepository(
       this.requirementRepository_
     )
-    return reqRepo.create({ shipping_option_id: optionId, ...requirement })
+
+    const existingReq = await reqRepo.findOne({
+      where: { id: requirement.id },
+    })
+
+    let req
+    if (existingReq) {
+      req = await reqRepo.save({
+        ...existingReq,
+        ...requirement,
+      })
+    } else {
+      req = await reqRepo.create({
+        shipping_option_id: optionId,
+        ...requirement,
+      })
+    }
+
+    return req
   }
 
   /**
@@ -318,7 +336,7 @@ class ShippingOptionService extends BaseService {
       if ("requirements" in data) {
         option.requirements = await Promise.all(
           data.requirements.map(r => {
-            return this.validateRequirement_(r)
+            return this.validateRequirement_(r, option.id)
           })
         )
       }
@@ -401,8 +419,8 @@ class ShippingOptionService extends BaseService {
       }
 
       if ("requirements" in update) {
-        option.requirements = update.requirements.reduce((acc, r) => {
-          const validated = this.validateRequirement_(r)
+        update.requirements.reduce(async (acc, r) => {
+          const validated = await this.validateRequirement_(r, optionId)
 
           if (acc.find(raw => raw.type === validated.type)) {
             throw new MedusaError(
