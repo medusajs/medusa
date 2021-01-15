@@ -65,6 +65,11 @@ export default (app, container) => {
   )
 
   route.post(
+    "/:id/payment-sessions/:provider_id/refresh",
+    middlewares.wrap(require("./refresh-payment-session").default)
+  )
+
+  route.post(
     "/:id/payment-session",
     middlewares.wrap(require("./set-payment-session").default)
   )

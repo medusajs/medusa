@@ -139,6 +139,42 @@ class PaymentProviderService extends BaseService {
   }
 
   /**
+   * Refreshes a payment session with the given provider.
+   * This means, that we delete the current one and create a new.
+   * @param {string} providerId - the id of the provider to refresh payment for
+   * @param {Cart} cart - a cart object used to calculate the amount, etc. from
+   * @return {Promise} the payment session
+   */
+  async refreshSession(paymentSession, cart) {
+    return this.atomicPhase_(async manager => {
+      const session = await this.retrieveSession(paymentSession.id)
+
+      const provider = this.retrieveProvider(paymentSession.provider_id)
+      await provider.deletePayment(session)
+
+      const sessionRepo = manager.getCustomRepository(
+        this.paymentSessionRepository_
+      )
+
+      await sessionRepo.remove(session)
+
+      const sessionData = await provider.createPayment(cart)
+      const toCreate = {
+        cart_id: cart.id,
+        provider_id: session.provider_id,
+        data: sessionData,
+        is_selected: true,
+        status: "pending",
+      }
+
+      const created = sessionRepo.create(toCreate)
+      const result = await sessionRepo.save(created)
+
+      return result
+    })
+  }
+
+  /**
    * Updates an existing payment session.
    * @param {PaymentSession} paymentSession - the payment session object to
    *    update

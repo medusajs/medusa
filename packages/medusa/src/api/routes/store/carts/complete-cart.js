@@ -43,12 +43,6 @@ export default async (req, res) => {
                 idempotency_key: idempotencyKey.idempotency_key,
               })
 
-              const cart = await cartService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  relations: ["payment", "payment_sessions"],
-                })
-
               return {
                 recovery_point: "payment_authorized",
               }
@@ -114,7 +108,11 @@ export default async (req, res) => {
                     ) {
                       order = await orderService
                         .withTransaction(manager)
-                        .retrieveByCartId(id, ["items", "shipping_address"])
+                        .retrieveByCartId(id, [
+                          "items",
+                          "shipping_address",
+                          "payments",
+                        ])
 
                       return {
                         response_code: 200,
@@ -137,7 +135,7 @@ export default async (req, res) => {
                     "discount_total",
                     "total",
                   ],
-                  relations: ["shipping_address", "items"],
+                  relations: ["shipping_address", "items", "payments"],
                 })
 
               return {

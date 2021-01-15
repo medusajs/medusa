@@ -214,10 +214,9 @@ class StripeProviderService extends PaymentService {
 
   async updatePaymentData(sessionData, update) {
     try {
-      const updated = await this.stripe_.paymentIntents.update(sessionData.id, {
+      return this.stripe_.paymentIntents.update(sessionData.id, {
         ...update.data,
       })
-      return { ...updated }
     } catch (error) {
       throw error
     }
@@ -237,10 +236,9 @@ class StripeProviderService extends PaymentService {
         return sessionData
       }
 
-      const updated = await this.stripe_.paymentIntents.update(sessionData.id, {
+      return this.stripe_.paymentIntents.update(sessionData.id, {
         amount,
       })
-      return { ...updated }
     } catch (error) {
       throw error
     }

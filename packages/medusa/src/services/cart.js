@@ -693,7 +693,8 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      cart.billing_address = address
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
     }
   }
 
@@ -725,7 +726,8 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      cart.shipping_address = address
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
     }
   }
 
@@ -979,7 +981,13 @@ class CartService extends BaseService {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
       const cart = await this.retrieve(cartId, {
-        select: ["total"],
+        select: [
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
 
@@ -1074,6 +1082,41 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, cart)
       return cart
+    })
+  }
+
+  /**
+   * Refreshes a payment session on a cart
+   * @param {string} cartId - the id of the cart to remove from
+   * @param {string} providerId - the id of the provider whoose payment session
+   *    should be removed.
+   * @returns {Promise<Cart>} the resulting cart.
+   */
+  async refreshPaymentSession(cartId, providerId) {
+    return this.atomicPhase_(async manager => {
+      const cart = await this.retrieve(cartId, {
+        relations: ["payment_sessions"],
+      })
+
+      if (cart.payment_sessions) {
+        const session = cart.payment_sessions.find(
+          ({ provider_id }) => provider_id === providerId
+        )
+
+        if (session) {
+          // Delete the session with the provider
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .refreshSession(session, cart)
+        }
+      }
+
+      const result = await this.retrieve(cartId)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
+      return result
     })
   }
 
