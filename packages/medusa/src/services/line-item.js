@@ -112,6 +112,7 @@ class LineItemService extends BaseService {
       thumbnail: variant.product.thumbnail,
       variant_id: variant.id,
       quantity: quantity || 1,
+      allow_discounts: !variant.product.is_giftcard,
       is_giftcard: variant.product.is_giftcard,
       metadata,
     }

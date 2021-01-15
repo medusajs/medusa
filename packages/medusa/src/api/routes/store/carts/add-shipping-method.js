@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -22,20 +23,8 @@ export default async (req, res) => {
     await cartService.addShippingMethod(id, value.option_id, value.data)
 
     const cart = await cartService.retrieve(id, {
-      select: [
-        "subtotal",
-        "tax_total",
-        "shipping_total",
-        "discount_total",
-        "total",
-      ],
-      relations: [
-        "region",
-        "region.countries",
-        "region.payment_providers",
-        "shipping_methods",
-        "shipping_methods.shipping_option",
-      ],
+      select: defaultFields,
+      relations: defaultRelations,
     })
 
     res.status(200).json({ cart })

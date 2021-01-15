@@ -1,10 +1,15 @@
+import { defaultFields, defaultRelations } from "./"
+
 export default async (req, res) => {
   try {
     const selector = {}
 
     const giftCardService = req.scope.resolve("giftCardService")
 
-    const giftCards = await giftCardService.list(selector)
+    const giftCards = await giftCardService.list(selector, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ gift_cards: giftCards })
   } catch (err) {

@@ -22,6 +22,7 @@ import { Customer } from "./customer"
 import { Region } from "./region"
 import { Discount } from "./discount"
 import { GiftCard } from "./gift-card"
+import { GiftCardTransaction } from "./gift-card-transaction"
 import { Payment } from "./payment"
 import { Cart } from "./cart"
 import { Fulfillment } from "./fulfillment"
@@ -138,7 +139,7 @@ export class Order {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount
+  discounts: Discount[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -152,7 +153,7 @@ export class Order {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard
+  gift_cards: GiftCard[]
 
   @OneToMany(
     () => ShippingMethod,
@@ -203,6 +204,12 @@ export class Order {
   )
   items: LineItem[]
 
+  @OneToMany(
+    () => GiftCardTransaction,
+    gc => gc.order
+  )
+  gift_card_transactions: GiftCardTransaction[]
+
   @Column({ nullable: true, type: "timestamptz" })
   canceled_at: Date
 
@@ -226,6 +233,7 @@ export class Order {
   total: number
   subtotal: number
   refundable_amount: number
+  gift_card_total: number
 
   @BeforeInsert()
   private beforeInsert() {

@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -19,7 +20,10 @@ export default async (req, res) => {
 
     await giftCardService.create(value)
 
-    const giftCard = await giftCardService.retrieve(id, ["region"])
+    const giftCard = await giftCardService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ gift_card: giftCard })
   } catch (err) {

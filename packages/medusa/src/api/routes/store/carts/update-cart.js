@@ -1,6 +1,8 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 
+import { defaultFields, defaultRelations } from "./"
+
 export default async (req, res) => {
   const { id } = req.params
 
@@ -12,6 +14,11 @@ export default async (req, res) => {
       .optional(),
     billing_address: Validator.object().optional(),
     shipping_address: Validator.object().optional(),
+    gift_cards: Validator.array()
+      .items({
+        code: Validator.string(),
+      })
+      .optional(),
     discounts: Validator.array()
       .items({
         code: Validator.string(),
@@ -30,14 +37,8 @@ export default async (req, res) => {
 
     let cart = await cartService.update(id, value)
     cart = await cartService.retrieve(id, {
-      select: [
-        "subtotal",
-        "tax_total",
-        "shipping_total",
-        "discount_total",
-        "total",
-      ],
-      relations: ["region", "items", "payment_sessions"],
+      select: defaultFields,
+      relations: defaultRelations,
     })
     res.json({ cart })
   } catch (err) {

@@ -8,7 +8,17 @@ import { Validator, MedusaError } from "medusa-core-utils"
  * @implements BaseService
  */
 class GiftCardService extends BaseService {
-  constructor({ manager, giftCardRepository, regionService, eventBusService }) {
+  static Events = {
+    CREATED: "created",
+  }
+
+  constructor({
+    manager,
+    giftCardRepository,
+    giftCardTransactionRepository,
+    regionService,
+    eventBusService,
+  }) {
     super()
 
     /** @private @const {EntityManager} */
@@ -16,6 +26,9 @@ class GiftCardService extends BaseService {
 
     /** @private @const {GiftCardRepository} */
     this.giftCardRepository_ = giftCardRepository
+
+    /** @private @const {GiftCardRepository} */
+    this.giftCardTransactionRepo_ = giftCardTransactionRepository
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
@@ -32,6 +45,7 @@ class GiftCardService extends BaseService {
     const cloned = new GiftCardService({
       manager: transactionManager,
       giftCardRepository: this.giftCardRepository_,
+      giftCardTransactionRepository: this.giftCardTransactionRepo_,
       regionService: this.regionService_,
       eventBusService: this.eventBus_,
     })
@@ -69,6 +83,15 @@ class GiftCardService extends BaseService {
     return giftCardRepo.find(query)
   }
 
+  async createTransaction(data) {
+    return this.atomicPhase_(async manager => {
+      const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
+      const created = gctRepo.create(data)
+      const saved = await gctRepo.save(created)
+      return saved.id
+    })
+  }
+
   /**
    * Creates a gift card with provided data given that the data is validated.
    * @param {GiftCard} giftCard - the gift card data to create
@@ -85,6 +108,13 @@ class GiftCardService extends BaseService {
         )
       }
 
+      if (!giftCard.order_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Gift card is missing order_id`
+        )
+      }
+
       // Will throw if region does not exist
       const region = await this.regionService_.retrieve(giftCard.region_id)
 
@@ -98,6 +128,13 @@ class GiftCardService extends BaseService {
 
       const created = await giftCardRepo.create(toCreate)
       const result = await giftCardRepo.save(created)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(GiftCardService.Events.CREATED, {
+          id: result.id,
+        })
+
       return result
     })
   }
@@ -107,22 +144,60 @@ class GiftCardService extends BaseService {
    * @param {string} giftCardId - id of gift card to retrieve
    * @return {Promise<GiftCard>} the gift card
    */
-  async retrieve(giftCardId, relations = []) {
+  async retrieve(giftCardId, config = {}) {
     const giftCardRepo = this.manager_.getCustomRepository(
       this.giftCardRepository_
     )
 
     const validatedId = this.validateId_(giftCardId)
 
-    const giftCard = await giftCardRepo.findOne({
+    const query = {
       where: { id: validatedId },
-      relations,
-    })
+    }
+
+    if (config.select) {
+      query.select = config.select
+    }
+
+    if (config.relations) {
+      query.relations = config.relations
+    }
+
+    const giftCard = await giftCardRepo.findOne(query)
 
     if (!giftCard) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Gift card with ${giftCardId} was not found`
+      )
+    }
+
+    return giftCard
+  }
+
+  async retrieveByCode(code, config = {}) {
+    const giftCardRepo = this.manager_.getCustomRepository(
+      this.giftCardRepository_
+    )
+
+    const query = {
+      where: { code },
+    }
+
+    if (config.select) {
+      query.select = config.select
+    }
+
+    if (config.relations) {
+      query.relations = config.relations
+    }
+
+    const giftCard = await giftCardRepo.findOne(query)
+
+    if (!giftCard) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Gift card with ${code} was not found`
       )
     }
 
@@ -141,7 +216,7 @@ class GiftCardService extends BaseService {
 
       const giftCard = await this.retrieve(giftCardId)
 
-      const { region_id, ...rest } = update
+      const { region_id, metadata, ...rest } = update
 
       if (region_id && region_id !== giftCard.region_id) {
         const region = await this.regionService_.retrieve(region_id)

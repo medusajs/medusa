@@ -25,6 +25,7 @@ import { Discount } from "./discount"
 import { Customer } from "./customer"
 import { PaymentSession } from "./payment-session"
 import { Payment } from "./payment"
+import { GiftCard } from "./gift-card"
 import { ShippingMethod } from "./shipping-method"
 
 export enum CartType {
@@ -89,6 +90,20 @@ export class Cart {
   })
   discounts: Discount
 
+  @ManyToMany(() => GiftCard)
+  @JoinTable({
+    name: "cart_gift_cards",
+    joinColumn: {
+      name: "cart_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "gift_card_id",
+      referencedColumnName: "id",
+    },
+  })
+  gift_cards: GiftCard
+
   @Column({ nullable: true })
   customer_id: string
 
@@ -139,6 +154,16 @@ export class Cart {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  // Total fields
+  shipping_total: number
+  discount_total: number
+  tax_total: number
+  refunded_total: number
+  total: number
+  subtotal: number
+  refundable_amount: number
+  gift_card_total: number
 
   @BeforeInsert()
   private beforeInsert() {

@@ -27,6 +27,7 @@ class CartService extends BaseService {
     shippingProfileService,
     customerService,
     discountService,
+    giftCardService,
     totalsService,
     addressRepository,
     paymentSessionRepository,
@@ -71,6 +72,9 @@ class CartService extends BaseService {
 
     /** @private @const {DiscountService} */
     this.discountService_ = discountService
+
+    /** @private @const {GiftCardService} */
+    this.giftCardService_ = giftCardService
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -165,6 +169,7 @@ class CartService extends BaseService {
       "tax_total",
       "shipping_total",
       "discount_total",
+      "gift_card_total",
       "total",
     ]
 
@@ -172,7 +177,10 @@ class CartService extends BaseService {
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
+      relationSet.add("gift_cards")
       relationSet.add("discounts")
+      relationSet.add("shipping_methods")
+      relationSet.add("region")
       relations = [...relationSet]
 
       select = select.filter(v => !totalFields.includes(v))
@@ -194,6 +202,9 @@ class CartService extends BaseService {
     }
     if (totalsFields.includes("tax_total")) {
       cart.tax_total = await this.totalsService_.getTaxTotal(cart)
+    }
+    if (totalsFields.includes("gift_card_total")) {
+      cart.gift_card_total = await this.totalsService_.getGiftCardTotal(cart)
     }
     if (totalsFields.includes("subtotal")) {
       cart.subtotal = await this.totalsService_.getSubtotal(cart)
@@ -547,6 +558,7 @@ class CartService extends BaseService {
         relations: [
           "shipping_address",
           "billing_address",
+          "gift_cards",
           "discounts",
           "discounts.discount_rule",
           "discounts.regions",
@@ -577,6 +589,13 @@ class CartService extends BaseService {
         cart.discounts = []
         for (const { code } of update.discounts) {
           await this.applyDiscount_(cart, code)
+        }
+      }
+
+      if ("gift_cards" in update) {
+        cart.gift_cards = []
+        for (const { code } of update.gift_cards) {
+          await this.applyGiftCard_(cart, code)
         }
       }
 
@@ -710,6 +729,31 @@ class CartService extends BaseService {
       const created = await addrRepo.create({ ...address })
       await addrRepo.save(created)
     }
+  }
+
+  async applyGiftCard_(cart, code) {
+    const giftCard = await this.giftCardService_.retrieveByCode(code)
+
+    if (giftCard.is_disabled) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The gift card is disabled"
+      )
+    }
+
+    if (giftCard.region_id !== cart.region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The gift card cannot be used in the current region"
+      )
+    }
+
+    // if discount is already there, we simply resolve
+    if (cart.gift_cards.find(({ id }) => id === giftCard.id)) {
+      return Promise.resolve()
+    }
+
+    cart.gift_cards = [...cart.gift_cards, giftCard]
   }
 
   /**
