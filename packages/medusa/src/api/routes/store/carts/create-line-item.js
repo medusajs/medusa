@@ -21,8 +21,9 @@ export default async (req, res) => {
 
     const entityManager = req.scope.resolve("manager")
 
+    let cart
     await entityManager.transaction(async manager => {
-      let cart = await cartService.withTransaction(manager).retrieve(id)
+      cart = await cartService.withTransaction(manager).retrieve(id)
 
       const line = await lineItemService
         .withTransaction(manager)

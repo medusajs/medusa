@@ -950,13 +950,17 @@ class CartService extends BaseService {
 
       await Promise.all(
         cart.payment_sessions.map(ps => {
-          if (ps.provider_id === providerId) {
-            return psRepo.save({ ...ps, is_selected: true })
-          } else {
-            return psRepo.save({ ...ps, is_selected: null })
-          }
+          return psRepo.save({ ...ps, is_selected: null })
         })
       )
+
+      const sess = cart.payment_sessions.find(
+        ps => ps.provider_id === providerId
+      )
+
+      sess.is_selected = true
+
+      await psRepo.save(sess)
 
       const result = await this.retrieve(cartId)
 

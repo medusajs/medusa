@@ -26,6 +26,10 @@ class IdealAdyenService extends PaymentService {
     return this.adyenService_.retrievePayment(data)
   }
 
+  async getPaymentData(data) {
+    return this.adyenService_.getPaymentData(data)
+  }
+
   async updatePayment(data, _) {
     return this.adyenService_.updatePayment(data)
   }
