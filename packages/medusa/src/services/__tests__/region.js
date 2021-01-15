@@ -257,12 +257,6 @@ describe("RegionService", () => {
       )
     })
 
-    it("throws on invalid tax_rate", async () => {
-      await expect(
-        regionService.validateFields_({ tax_rate: 12 })
-      ).rejects.toThrow("The tax_rate must be between 0 and 1")
-    })
-
     it("throws on unknown payment providers", async () => {
       await expect(
         regionService.validateFields_({ payment_providers: ["should_fail"] })
@@ -363,9 +357,6 @@ describe("RegionService", () => {
         id: IdMap.getId("test-region"),
         name: "New Name",
         currency_code: "eur",
-        currency: {
-          code: "eur",
-        },
         tax_rate: 0.25,
         countries: [{ id: IdMap.getId("test-country"), name: "World" }],
         payment_providers: [{ id: "default_provider" }],
