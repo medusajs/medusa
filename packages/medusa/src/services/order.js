@@ -51,6 +51,7 @@ class OrderService extends BaseService {
     returnService,
     swapService,
     cartService,
+    addressRepository,
     // documentService,
     eventBusService,
   }) {
@@ -100,6 +101,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {CartService} */
     this.cartService_ = cartService
+
+    /** @private @constant {AddressRepository} */
+    this.addressRepository_ = addressRepository
 
     /** @private @constant {SwapService} */
     this.swapService_ = swapService
@@ -554,6 +558,74 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Updates the order's billing address.
+   * @param {string} orderId - the id of the order to update
+   * @param {object} address - the value to set the billing address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateBillingAddress_(order, address) {
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    address.country_code = address.country_code.toLowerCase()
+
+    const region = await this.regionService_.retrieve(order.region_id, [
+      "countries",
+    ])
+
+    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the order region"
+      )
+    }
+
+    address.country_code = address.country_code.toLowerCase()
+
+    if (order.billing_address_id) {
+      const addr = await addrRepo.findOne({
+        where: { id: order.billing_address_id },
+      })
+
+      await addrRepo.save({ ...addr, ...address })
+    } else {
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
+    }
+  }
+
+  /**
+   * Updates the order's shipping address.
+   * @param {string} orderId - the id of the order to update
+   * @param {object} address - the value to set the shipping address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateShippingAddress_(order, address) {
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    address.country_code = address.country_code.toLowerCase()
+
+    const region = await this.regionService_.retrieve(order.region_id, [
+      "countries",
+    ])
+
+    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the order region"
+      )
+    }
+
+    if (order.shipping_address_id) {
+      const addr = await addrRepo.findOne({
+        where: { id: order.shipping_address_id },
+      })
+
+      await addrRepo.save({ ...addr, ...address })
+    } else {
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
+    }
+  }
+
+  /**
    * Updates an order. Metadata updates should
    * use dedicated method, e.g. `setMetadata` etc. The function
    * will throw errors if metadata updates are attempted.
@@ -585,10 +657,24 @@ class OrderService extends BaseService {
         )
       }
 
-      const { metadata, items, ...rest } = update
+      const {
+        metadata,
+        items,
+        billing_address,
+        shipping_address,
+        ...rest
+      } = update
 
       if ("metadata" in update) {
         order.metadata = this.setMetadata_(order, update.metadata)
+      }
+
+      if ("shipping_address" in update) {
+        await this.updateShippingAddress_(order, update.shipping_address)
+      }
+
+      if ("billing_address" in update) {
+        await this.updateBillingAddress_(order, update.billing_address)
       }
 
       if ("items" in update) {

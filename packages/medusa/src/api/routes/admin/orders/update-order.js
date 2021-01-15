@@ -1,12 +1,13 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "."
 
 export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
     email: Validator.string().email(),
-    billing_address: Validator.address(),
-    shipping_address: Validator.address(),
+    billing_address: Validator.object(),
+    shipping_address: Validator.object(),
     items: Validator.array(),
     region: Validator.string(),
     discounts: Validator.array(),
@@ -32,9 +33,12 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
 
-    let order = await orderService.update(id, value)
+    await orderService.update(id, value)
 
-    order = await orderService.retrieve(id, ["region", "customer", "swaps"])
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ order })
   } catch (err) {
