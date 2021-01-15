@@ -563,6 +563,7 @@ describe("OrderService", () => {
   describe("createFulfillment", () => {
     const partialOrder = {
       fulfillments: [],
+      shipping_methods: [{ id: "ship" }],
       items: [
         {
           id: "item_1",
@@ -579,6 +580,7 @@ describe("OrderService", () => {
 
     const order = {
       fulfillments: [],
+      shipping_methods: [{ id: "ship" }],
       items: [
         {
           id: "item_1",
@@ -927,7 +929,7 @@ describe("OrderService", () => {
 
     const returnService = {
       create: jest.fn(() => Promise.resolve({ id: "ret" })),
-      fulfill: jest.fn(),
+      fulfill: jest.fn(() => Promise.resolve({ id: "ret" })),
       withTransaction: function() {
         return this
       },
@@ -1231,7 +1233,9 @@ describe("OrderService", () => {
     })
 
     const paymentProviderService = {
-      refundPayment: jest.fn().mockImplementation(p => Promise.resolve()),
+      refundPayment: jest
+        .fn()
+        .mockImplementation(p => Promise.resolve({ id: "ref" })),
       withTransaction: function() {
         return this
       },

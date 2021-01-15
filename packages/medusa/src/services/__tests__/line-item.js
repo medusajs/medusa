@@ -113,6 +113,7 @@ describe("LineItemService", () => {
 
       expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
       expect(lineItemRepository.create).toHaveBeenCalledWith({
+        allow_discounts: false,
         variant_id: IdMap.getId("test-giftcard"),
         cart_id: IdMap.getId("test-cart"),
         title: "Test product",
