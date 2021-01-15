@@ -38,7 +38,7 @@ export default async (req, res) => {
         .create({ ...line, cart_id: id })
     })
 
-    cart = await cartService.retrieve(id, {
+    const cart = await cartService.retrieve(id, {
       select: defaultFields,
       relations: defaultRelations,
     })

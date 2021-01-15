@@ -776,12 +776,16 @@ class OrderService extends BaseService {
               this.eventBus_
                 .withTransaction(manager)
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
-                  order,
+                  id: orderId,
+                  payment_id: p.id,
                   error: err,
                 })
             })
+
           if (result) {
             payments.push(result)
+          } else {
+            payments.push(p)
           }
         } else {
           payments.push(p)
@@ -797,7 +801,10 @@ class OrderService extends BaseService {
 
       this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.PAYMENT_CAPTURED, result)
+        .emit(OrderService.Events.PAYMENT_CAPTURED, {
+          id: result.id,
+        })
+
       return result
     })
   }
@@ -1153,6 +1160,7 @@ class OrderService extends BaseService {
         select: ["refundable_amount", "total", "refunded_total"],
         relations: ["payments"],
       })
+
       if (refundAmount > order.refundable_amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
