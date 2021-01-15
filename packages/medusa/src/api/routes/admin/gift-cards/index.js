@@ -18,3 +18,35 @@ export default app => {
 
   return app
 }
+
+export const defaultFields = [
+  "id",
+  "code",
+  "value",
+  "balance",
+  "region_id",
+  "is_disabled",
+  "ends_at",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const defaultRelations = ["region"]
+
+export const allowedFields = [
+  "id",
+  "code",
+  "value",
+  "balance",
+  "region_id",
+  "is_disabled",
+  "ends_at",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const allowedRelations = ["region"]

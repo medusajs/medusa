@@ -82,3 +82,24 @@ export default (app, container) => {
 
   return app
 }
+
+export const defaultFields = [
+  "subtotal",
+  "tax_total",
+  "shipping_total",
+  "discount_total",
+  "gift_card_total",
+  "total",
+]
+
+export const defaultRelations = [
+  "gift_cards",
+  "discounts",
+  "region",
+  "items",
+  "region.countries",
+  "region.payment_providers",
+  "shipping_methods",
+  "payment_sessions",
+  "shipping_methods.shipping_option",
+]

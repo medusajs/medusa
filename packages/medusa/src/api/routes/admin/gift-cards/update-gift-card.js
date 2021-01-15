@@ -21,7 +21,10 @@ export default async (req, res) => {
 
     await giftCardService.update(id, value)
 
-    const giftCard = await giftCardService.retrieve(id, ["region"])
+    const giftCard = await giftCardService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ gift_card: giftCard })
   } catch (err) {

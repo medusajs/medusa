@@ -20,9 +20,10 @@ class TotalsService extends BaseService {
     const subtotal = this.getSubtotal(object)
     const taxTotal = this.getTaxTotal(object)
     const discountTotal = this.getDiscountTotal(object)
+    const giftCardTotal = this.getGiftCardTotal(object)
     const shippingTotal = this.getShippingTotal(object)
 
-    return subtotal + taxTotal + shippingTotal - discountTotal
+    return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
   }
 
   /**
@@ -71,9 +72,11 @@ class TotalsService extends BaseService {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
     const discountTotal = this.getDiscountTotal(object)
+    const giftCardTotal = this.getGiftCardTotal(object)
     const tax_rate = object.tax_rate || object.region.tax_rate
     return this.rounded(
-      (subtotal - discountTotal + shippingTotal) * (tax_rate / 100)
+      (subtotal - discountTotal - giftCardTotal + shippingTotal) *
+        (tax_rate / 100)
     )
   }
 
@@ -244,6 +247,27 @@ class TotalsService extends BaseService {
     }
 
     return cart.items.map(i => ({ item: i, amount: 0 }))
+  }
+
+  getGiftCardTotal(cart) {
+    const giftCardable = this.getSubtotal(cart) - this.getDiscountTotal(cart)
+
+    if (cart.gift_card_transactions) {
+      return cart.gift_card_transactions.reduce(
+        (acc, next) => acc + next.amount,
+        0
+      )
+    }
+
+    if (!cart.gift_cards || !cart.gift_cards.length) {
+      return 0
+    }
+
+    const toReturn = cart.gift_cards.reduce(
+      (acc, next) => acc + next.balance,
+      0
+    )
+    return Math.min(giftCardable, toReturn)
   }
 
   /**

@@ -8,11 +8,13 @@ import {
   Column,
   PrimaryColumn,
   ManyToOne,
+  OneToOne,
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 
 import { Region } from "./region"
+import { Order } from "./order"
 
 @Entity()
 export class GiftCard {
@@ -35,6 +37,13 @@ export class GiftCard {
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region: Region
+
+  @Column({ nullable: true })
+  order_id: string
+
+  @OneToOne(() => Order)
+  @JoinColumn({ name: "order_id" })
+  order: Order
 
   @Column({ default: false })
   is_disabled: boolean

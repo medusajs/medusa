@@ -244,6 +244,7 @@ class OrderService extends BaseService {
       "tax_total",
       "shipping_total",
       "discount_total",
+      "gift_card_total",
       "total",
       "refunded_total",
       "refundable_amount",
@@ -255,6 +256,8 @@ class OrderService extends BaseService {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("discounts")
+      relationSet.add("gift_cards")
+      relationSet.add("gift_card_transactions")
       relationSet.add("refunds")
       relationSet.add("shipping_methods")
       relationSet.add("region")
@@ -387,6 +390,7 @@ class OrderService extends BaseService {
             "payment",
             "items",
             "discounts",
+            "gift_cards",
             "shipping_methods",
           ],
         })
@@ -435,6 +439,7 @@ class OrderService extends BaseService {
       const o = await orderRepo.create({
         payment_status: "awaiting",
         discounts: cart.discounts,
+        gift_cards: cart.gift_cards,
         payment_status: "awaiting",
         shipping_methods: cart.shipping_methods,
         shipping_address_id: cart.shipping_address_id,
@@ -470,7 +475,10 @@ class OrderService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.PLACED, result)
+        .emit(OrderService.Events.PLACED, {
+          id: result.id,
+        })
+
       return result
     })
   }
@@ -1083,6 +1091,9 @@ class OrderService extends BaseService {
     if (totalsFields.includes("shipping_total")) {
       order.shipping_total = this.totalsService_.getShippingTotal(order)
     }
+    if (totalsFields.includes("gift_card_total")) {
+      order.gift_card_total = this.totalsService_.getGiftCardTotal(order)
+    }
     if (totalsFields.includes("discount_total")) {
       order.discount_total = this.totalsService_.getDiscountTotal(order)
     }
@@ -1168,8 +1179,6 @@ class OrderService extends BaseService {
           "Swap must belong to the given order"
         )
       }
-
-      console.log(swap.return_order)
 
       if (swap.return_order.status !== "received") {
         throw new MedusaError(

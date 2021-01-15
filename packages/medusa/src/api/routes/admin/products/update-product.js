@@ -17,10 +17,10 @@ export default async (req, res) => {
     variants: Validator.array()
       .items({
         id: Validator.string().required(),
-        title: Validator.string().optional(),
-        sku: Validator.string().optional(),
-        ean: Validator.string().optional(),
-        barcode: Validator.string().optional(),
+        title: Validator.string().allow(null),
+        sku: Validator.string().allow(null),
+        ean: Validator.string().allow(null),
+        barcode: Validator.string().allow(null),
         prices: Validator.array().items(
           Validator.object()
             .keys({
@@ -37,16 +37,16 @@ export default async (req, res) => {
             Validator.number()
           ).required(),
         }),
-        inventory_quantity: Validator.number().optional(),
-        allow_backorder: Validator.boolean().optional(),
-        manage_inventory: Validator.boolean().optional(),
+        inventory_quantity: Validator.number().allow(null),
+        allow_backorder: Validator.boolean().allow(null),
+        manage_inventory: Validator.boolean().allow(null),
         weight: Validator.number().optional(),
         length: Validator.number().optional(),
         height: Validator.number().optional(),
         width: Validator.number().optional(),
-        origin_country: Validator.string().allow(""),
-        mid_code: Validator.string().allow(""),
-        material: Validator.string().allow(""),
+        origin_country: Validator.string().allow(null, ""),
+        mid_code: Validator.string().allow(null, ""),
+        material: Validator.string().allow(null, ""),
         metadata: Validator.object().optional(),
       })
       .optional(),
