@@ -43,12 +43,6 @@ export default async (req, res) => {
                 idempotency_key: idempotencyKey.idempotency_key,
               })
 
-              const cart = await cartService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  relations: ["payment", "payment_sessions"],
-                })
-
               return {
                 recovery_point: "payment_authorized",
               }

@@ -674,7 +674,8 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      cart.billing_address = address
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
     }
   }
 
@@ -706,7 +707,8 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      cart.shipping_address = address
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
     }
   }
 
@@ -935,7 +937,13 @@ class CartService extends BaseService {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
       const cart = await this.retrieve(cartId, {
-        select: ["total"],
+        select: [
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
 
@@ -964,7 +972,7 @@ class CartService extends BaseService {
       }
 
       // If only one payment session exists, we preselect it
-      if (region.payment_providers.length === 1) {
+      if (region.payment_providers.length === 1 && !cart.payment_session) {
         const p = region.payment_providers[0]
         const sess = await this.paymentProviderService_
           .withTransaction(manager)
