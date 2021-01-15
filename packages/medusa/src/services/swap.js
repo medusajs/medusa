@@ -360,24 +360,6 @@ class SwapService extends BaseService {
 
       const order = swap.order
 
-      // If the swap has a return shipping method the price has to be added to the
-      // cart.
-      if (swap.return && swap.return_order.shipping_method) {
-        const shippingLine = await this.lineItemService_
-          .withTransaction(manager)
-          .create({
-            title: "Return shipping",
-            quantity: 1,
-            has_shipping: true,
-            allow_discount: false,
-            unit_price: swap.return_order.shipping_method.price,
-            metadata: {
-              is_return_line: true,
-            },
-          })
-        returnLines.push(shippingLine)
-      }
-
       const cart = await this.cartService_.withTransaction(manager).create({
         discounts: order.discounts,
         email: order.email,
@@ -395,6 +377,22 @@ class SwapService extends BaseService {
       for (const item of swap.additional_items) {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           cart_id: cart.id,
+        })
+      }
+
+      // If the swap has a return shipping method the price has to be added to the
+      // cart.
+      if (swap.return_order && swap.return_order.shipping_method) {
+        await this.lineItemService_.withTransaction(manager).create({
+          cart_id: cart.id,
+          title: "Return shipping",
+          quantity: 1,
+          has_shipping: true,
+          allow_discount: false,
+          unit_price: swap.return_order.shipping_method.price,
+          metadata: {
+            is_return_line: true,
+          },
         })
       }
 
@@ -468,7 +466,11 @@ class SwapService extends BaseService {
           )
         }
 
-        swap.payment = payment
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .updatePayment(payment.id, {
+            swap_id: swapId,
+          })
       }
 
       const now = new Date()
@@ -476,7 +478,7 @@ class SwapService extends BaseService {
       swap.shipping_address_id = cart.shipping_address_id
       swap.shipping_methods = cart.shipping_methods
       swap.confirmed_at = now.toISOString()
-      swap.payment_status = "awaiting"
+      swap.payment_status = total === 0 ? "difference_refunded" : "awaiting"
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
@@ -578,7 +580,8 @@ class SwapService extends BaseService {
             item_id: i.id,
             quantity: i.quantity,
           })),
-          metadata
+          metadata,
+          { swap_id: swapId }
         )
 
       swap.fulfillment_status = "fulfilled"

@@ -167,7 +167,7 @@ class FulfillmentService extends BaseService {
    * @param {object} metadata - potential metadata to add
    * @return {Fulfillment[]} the created fulfillments
    */
-  async createFulfillment(order, itemsToFulfill, metadata = {}) {
+  async createFulfillment(order, itemsToFulfill, metadata = {}, custom) {
     return this.atomicPhase_(async manager => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
@@ -187,6 +187,7 @@ class FulfillmentService extends BaseService {
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
           const ful = fulfillmentRepository.create({
+            ...custom,
             provider: shipping_method.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
             data: {},
