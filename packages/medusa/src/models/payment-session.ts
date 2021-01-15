@@ -9,7 +9,7 @@ import {
   JoinColumn,
   Unique,
 } from "typeorm"
-import randomize from "randomatic"
+import {ulid } from "ulid"
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
@@ -60,7 +60,7 @@ export class PaymentSession {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 24)
+    const id = ulid()
     this.id = `ps_${id}`
   }
 }

@@ -14,7 +14,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 @Entity()
 export class StagedJob {
@@ -29,7 +29,7 @@ export class StagedJob {
 
   @BeforeInsert()
   private beforeInsert() {
-    const id = randomize("Aa0", 10)
+    const id = ulid()
     this.id = `job_${id}`
   }
 }

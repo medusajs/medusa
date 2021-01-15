@@ -16,7 +16,8 @@ import {
   Timestamp,
   BeforeUpdate,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
+
 import { Region } from "./region"
 import { Address } from "./address"
 import { LineItem } from "./line-item"
@@ -43,14 +44,20 @@ export class Cart {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @ManyToOne(() => Address, { eager: true, cascade: ["insert", "remove", "soft-remove"] })
+  @ManyToOne(() => Address, {
+    eager: true,
+    cascade: ["insert", "remove", "soft-remove"],
+  })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
   @Column({ nullable: true })
   shipping_address_id: string
 
-  @ManyToOne(() => Address, { eager: true, cascade: ["insert", "remove", "soft-remove"] })
+  @ManyToOne(() => Address, {
+    eager: true,
+    cascade: ["insert", "remove", "soft-remove"],
+  })
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
@@ -136,7 +143,7 @@ export class Cart {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 24)
+    const id = ulid()
     this.id = `cart_${id}`
   }
 

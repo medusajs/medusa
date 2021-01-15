@@ -13,7 +13,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Order } from "./order"
 import { Fulfillment } from "./fulfillment"
@@ -137,7 +137,7 @@ export class Swap {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 24)
+    const id = ulid()
     this.id = `swap_${id}`
   }
 }

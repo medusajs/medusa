@@ -14,7 +14,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Order } from "./order"
 import { FulfillmentProvider } from "./fulfillment-provider"
@@ -84,7 +84,7 @@ export class Fulfillment {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `ful_${id}`
   }
 }

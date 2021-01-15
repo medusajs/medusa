@@ -12,7 +12,7 @@ import {
   JoinTable,
   JoinColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Currency } from "./currency"
 import { Country } from "./country"
@@ -89,7 +89,7 @@ export class Region {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 24)
+    const id = ulid()
     this.id = `reg_${id}`
   }
 }

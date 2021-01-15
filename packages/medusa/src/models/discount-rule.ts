@@ -11,7 +11,7 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Product } from "./product"
 
@@ -81,7 +81,7 @@ export class DiscountRule {
 
   @BeforeInsert()
   private beforeInsert() {
-    const id = randomize("Aa0", 16)
+    const id = ulid()
     this.id = `dru_${id}`
   }
 }

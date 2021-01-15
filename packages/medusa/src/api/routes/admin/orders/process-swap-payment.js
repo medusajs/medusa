@@ -1,3 +1,4 @@
+import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
@@ -9,9 +10,10 @@ export default async (req, res) => {
     await entityManager.transaction(async manager => {
       await swapService.withTransaction(manager).processDifference(swap_id)
 
-      const order = await orderService
-        .withTransaction(manager)
-        .retrieve(id, ["region", "customer", "swaps"])
+      const order = await orderService.withTransaction(manager).retrieve(id, {
+        select: defaultFields,
+        relations: defaultRelations,
+      })
 
       res.json({ order })
     })

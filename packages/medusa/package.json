@@ -81,6 +81,7 @@
     "resolve-cwd": "^3.0.0",
     "scrypt-kdf": "^2.0.1",
     "typeorm": "^0.2.29",
+    "ulid": "^2.3.0",
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },

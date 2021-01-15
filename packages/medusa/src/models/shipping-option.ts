@@ -15,7 +15,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { ShippingProfile } from "./shipping-profile"
 import { Region } from "./region"
@@ -91,7 +91,7 @@ export class ShippingOption {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 10)
+    const id = ulid()
     this.id = `so_${id}`
   }
 }

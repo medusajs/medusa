@@ -10,7 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 import { Swap } from "./swap"
 import { Cart } from "./cart"
@@ -117,7 +117,7 @@ export class LineItem {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 24)
+    const id = ulid()
     this.id = `item_${id}`
   }
 }

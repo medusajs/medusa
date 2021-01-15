@@ -15,7 +15,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
-import randomize from "randomatic"
+import { ulid } from "ulid"
 
 @Entity()
 export class Oauth {
@@ -41,7 +41,7 @@ export class Oauth {
   @BeforeInsert()
   private beforeInsert() {
     if (this.id) return
-    const id = randomize("Aa0", 10)
+    const id = ulid()
     this.id = `oauth_${id}`
   }
 }
