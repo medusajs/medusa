@@ -302,7 +302,7 @@ class CartService extends BaseService {
         if (region.countries.length === 1) {
           // Preselect the country if the region only has 1
           // and create address entity
-          data.shipping_address = await addressRepo.create({
+          data.shipping_address = addressRepo.create({
             country_code: regCountries[0],
           })
         }
@@ -335,7 +335,9 @@ class CartService extends BaseService {
       const result = await cartRepo.save(inProgress)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(CartService.Events.CREATED, result)
+        .emit(CartService.Events.CREATED, {
+          id: result.id,
+        })
       return result
     })
   }
@@ -386,7 +388,9 @@ class CartService extends BaseService {
       // Notify subscribers
       await this.eventBus_
         .withTransaction(manager)
-        .emit(CartService.Events.UPDATED, result)
+        .emit(CartService.Events.UPDATED, {
+          id: result.id,
+        })
       return result
     })
   }
@@ -661,6 +665,7 @@ class CartService extends BaseService {
 
     cart.email = value
     cart.customer = customer
+    cart.customer_id = customer.id
   }
 
   /**
@@ -693,7 +698,7 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = await addrRepo.create({ ...address })
+      const created = await addrRepo.create({ ...address, cart_id: cart.id })
       await addrRepo.save(created)
     }
   }
@@ -1041,11 +1046,12 @@ class CartService extends BaseService {
         }
       }
 
-      const result = await this.retrieve(cart.id)
+      const result = await this.retrieve(cartId)
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
+
       return result
     })
   }
@@ -1192,10 +1198,18 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async setRegion_(cart, regionId, countryCode) {
+    if (cart.completed_at) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Cannot change the region of a completed cart"
+      )
+    }
+
     // Set the new region for the cart
     const region = await this.regionService_.retrieve(regionId, ["countries"])
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     cart.region = region
+    cart.region_id = region.id
 
     // If the cart contains items we want to change the unit_price field of each
     // item to correspond to the price given in the region
@@ -1288,12 +1302,6 @@ class CartService extends BaseService {
       })
 
       cart.discounts = newDiscounts.filter(d => !!d)
-    }
-
-    // Payment methods are region specific so the user needs to find a
-    // new payment method
-    if (!_.isEmpty(cart.payment)) {
-      cart.payment = undefined
     }
 
     if (cart.payment_sessions && cart.payment_sessions.length) {

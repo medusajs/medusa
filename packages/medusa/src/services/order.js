@@ -362,8 +362,7 @@ class OrderService extends BaseService {
       const completeOrderJob = await this.eventBus_.emit(
         OrderService.Events.COMPLETED,
         {
-          order,
-          transaction_manager: manager,
+          id: orderId,
         }
       )
 
@@ -540,8 +539,8 @@ class OrderService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.SHIPMENT_CREATED, {
-          order_id: orderId,
-          shipment: shipmentRes,
+          id: orderId,
+          shipment_id: shipmentRes.id,
         })
 
       return result
@@ -560,7 +559,9 @@ class OrderService extends BaseService {
       const result = await orderRepo.save(order)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.PLACED, result)
+        .emit(OrderService.Events.PLACED, {
+          id: result.id,
+        })
       return result
     })
   }
@@ -703,7 +704,9 @@ class OrderService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.UPDATED, result)
+        .emit(OrderService.Events.UPDATED, {
+          id: orderId,
+        })
       return result
     })
   }
@@ -751,7 +754,9 @@ class OrderService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.CANCELED, result)
+        .emit(OrderService.Events.CANCELED, {
+          id: order.id,
+        })
       return result
     })
   }
@@ -917,8 +922,8 @@ class OrderService extends BaseService {
         await this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.FULFILLMENT_CREATED, {
-            order_id: orderId,
-            fulfillment,
+            id: orderId,
+            fulfillment_id: fulfillment.id,
           })
       }
 
@@ -1035,8 +1040,8 @@ class OrderService extends BaseService {
       this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.RETURN_REQUESTED, {
-          order: result,
-          return: fulfilledReturn,
+          id: result.id,
+          return_id: fulfilledReturn.id,
         })
       return result
     })
@@ -1085,8 +1090,8 @@ class OrderService extends BaseService {
         this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
-            order: result,
-            return: updatedReturn,
+            id: result.id,
+            return_id: updatedReturn.id,
           })
         return result
       }
@@ -1127,8 +1132,8 @@ class OrderService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.ITEMS_RETURNED, {
-          order: result,
-          return: updatedReturn,
+          id: result.id,
+          return_id: updatedReturn.id,
         })
       return result
     })
@@ -1181,8 +1186,8 @@ class OrderService extends BaseService {
 
       const result = await this.retrieve(orderId)
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-        order: result,
-        refund,
+        id: result.id,
+        refund_id: refund.id,
       })
       return result
     })
@@ -1304,7 +1309,7 @@ class OrderService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.SWAP_RECEIVED, {
-          order: result,
+          id: result.id,
           swap_id: swapId,
         })
       return result

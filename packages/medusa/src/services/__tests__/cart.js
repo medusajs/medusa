@@ -10,6 +10,27 @@ const eventBusService = {
 }
 
 describe("CartService", () => {
+  const totalsService = {
+    getTotal: o => {
+      return o.total || 0
+    },
+    getSubtotal: o => {
+      return o.subtotal || 0
+    },
+    getTaxTotal: o => {
+      return o.tax_total || 0
+    },
+    getDiscountTotal: o => {
+      return o.discount_total || 0
+    },
+    getShippingTotal: o => {
+      return o.shipping_total || 0
+    },
+    getGiftCardTotal: o => {
+      return o.gift_card_total || 0
+    },
+  }
+
   describe("retrieve", () => {
     let result
     const cartRepository = MockRepository({
@@ -19,6 +40,7 @@ describe("CartService", () => {
       jest.clearAllMocks()
       const cartService = new CartService({
         manager: MockManager,
+        totalsService,
         cartRepository,
       })
       result = await cartService.retrieve(IdMap.getId("emptyCart"))
@@ -44,6 +66,7 @@ describe("CartService", () => {
     })
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       eventBusService,
     })
@@ -103,6 +126,7 @@ describe("CartService", () => {
     })
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       eventBusService,
     })
@@ -165,14 +189,17 @@ describe("CartService", () => {
       retrieve: () => {
         return {
           id: IdMap.getId("testRegion"),
-          countries: [{ country_code: "us" }],
+          countries: [{ iso_2: "us" }],
         }
       },
     }
 
+    const addressRepository = MockRepository({ create: c => c })
     const cartRepository = MockRepository()
     const cartService = new CartService({
       manager: MockManager,
+      addressRepository,
+      totalsService,
       cartRepository,
       regionService,
       eventBusService,
@@ -192,6 +219,11 @@ describe("CartService", () => {
         "cart.created",
         expect.any(Object)
       )
+
+      expect(addressRepository.create).toHaveBeenCalledTimes(1)
+      expect(addressRepository.create).toHaveBeenCalledWith({
+        country_code: "us",
+      })
 
       expect(cartRepository.create).toHaveBeenCalledTimes(1)
       expect(cartRepository.create).toHaveBeenCalledWith({
@@ -302,6 +334,7 @@ describe("CartService", () => {
     })
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       lineItemService,
       productVariantService,
@@ -473,6 +506,7 @@ describe("CartService", () => {
 
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       lineItemService,
       shippingOptionService,
@@ -510,9 +544,12 @@ describe("CartService", () => {
       expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("ship-method")
-      )
+      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
+        id: IdMap.getId("ship-method"),
+        shipping_option: {
+          profile_id: IdMap.getId("prevPro"),
+        },
+      })
     })
 
     it("resolves if line item is not in cart", async () => {
@@ -564,6 +601,7 @@ describe("CartService", () => {
     })
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       productVariantService,
       lineItemService,
@@ -625,6 +663,7 @@ describe("CartService", () => {
     })
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       eventBusService,
       customerService,
@@ -652,6 +691,9 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith({
         customer_id: IdMap.getId("existing"),
+        customer: {
+          id: IdMap.getId("existing"),
+        },
         email: "test@testdom.com",
       })
     })
@@ -674,6 +716,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith({
         customer_id: IdMap.getId("newCus"),
+        customer: { id: IdMap.getId("newCus") },
         email: "no@mail.com",
       })
     })
@@ -689,9 +732,24 @@ describe("CartService", () => {
     const cartRepository = MockRepository({
       findOne: () => Promise.resolve({}),
     })
+
+    const regionService = {
+      retrieve: jest.fn(() =>
+        Promise.resolve({ countries: [{ iso_2: "us" }] })
+      ),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const addressRepository = MockRepository({ create: c => c })
+
     const cartService = new CartService({
       manager: MockManager,
+      regionService,
+      totalsService,
       cartRepository,
+      addressRepository,
       eventBusService,
     })
 
@@ -721,27 +779,11 @@ describe("CartService", () => {
         expect.any(Object)
       )
 
-      expect(cartRepository.save).toHaveBeenCalledTimes(1)
-      expect(cartRepository.save).toHaveBeenCalledWith({
-        billing_address: { ...address, country_code: "us" },
+      expect(addressRepository.save).toHaveBeenCalledTimes(1)
+      expect(addressRepository.save).toHaveBeenCalledWith({
+        ...address,
+        country_code: "us",
       })
-    })
-
-    it("throws on invalid address", async () => {
-      const address = {
-        last_name: "James",
-        address_1: "24 Dunks Drive",
-        city: "Los Angeles",
-        country_code: "US",
-        province: "CA",
-        postal_code: "93011",
-      }
-
-      await expect(
-        cartService.update(IdMap.getId("emptyCart"), {
-          billing_address: address,
-        })
-      ).rejects.toThrow(`"first_name" is required`)
     })
   })
 
@@ -749,17 +791,20 @@ describe("CartService", () => {
     const cartRepository = MockRepository({
       findOne: () => Promise.resolve({}),
     })
+    const addressRepository = MockRepository({ create: c => c })
     const regionService = {
       retrieve: () => {
         return {
           id: IdMap.getId("testRegion"),
-          countries: [{ country_code: "us" }],
+          countries: [{ iso_2: "us" }],
         }
       },
     }
 
     const cartService = new CartService({
       manager: MockManager,
+      addressRepository,
+      totalsService,
       cartRepository,
       eventBusService,
       regionService,
@@ -791,9 +836,9 @@ describe("CartService", () => {
         expect.any(Object)
       )
 
-      expect(cartRepository.save).toHaveBeenCalledTimes(1)
-      expect(cartRepository.save).toHaveBeenCalledWith({
-        shipping_address: address,
+      expect(addressRepository.save).toHaveBeenCalledTimes(1)
+      expect(addressRepository.save).toHaveBeenCalledWith({
+        ...address,
       })
     })
 
@@ -815,34 +860,17 @@ describe("CartService", () => {
         })
       ).rejects.toThrow("Shipping country must be in the cart region")
     })
-
-    it("throws on invalid address", async () => {
-      const address = {
-        // Missing first_name
-        last_name: "James",
-        address_1: "24 Dunks Drive",
-        city: "Los Angeles",
-        country_code: "US",
-        province: "CA",
-        postal_code: "93011",
-      }
-
-      await expect(
-        cartService.update(IdMap.getId("emptyCart"), {
-          shipping_address: address,
-        })
-      ).rejects.toThrow(`"first_name" is required`)
-    })
   })
 
   describe("setRegion", () => {
     const lineItemService = {
-      update: jest.fn(),
+      update: jest.fn(r => r),
       delete: jest.fn(),
       withTransaction: function() {
         return this
       },
     }
+    const addressRepository = MockRepository({ create: c => c })
     const productVariantService = {
       getRegionPrice: jest.fn().mockImplementation(id => {
         if (id === IdMap.getId("fail")) {
@@ -854,7 +882,8 @@ describe("CartService", () => {
     const regionService = {
       retrieve: jest.fn().mockReturnValue(
         Promise.resolve({
-          countries: [{ country_code: "us" }],
+          id: "region",
+          countries: [{ iso_2: "us" }],
         })
       ),
     }
@@ -885,6 +914,8 @@ describe("CartService", () => {
     })
     const cartService = new CartService({
       manager: MockManager,
+      addressRepository,
+      totalsService,
       cartRepository,
       regionService,
       lineItemService,
@@ -921,19 +952,12 @@ describe("CartService", () => {
 
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith({
-        region_id: IdMap.getId("region-us"),
-        shipping_address: {
-          country_code: "us",
+        region_id: "region",
+        region: {
+          id: "region",
+          countries: [{ iso_2: "us" }],
         },
-        items: [
-          {
-            id: IdMap.getId("testitem"),
-          },
-          {
-            id: IdMap.getId("fail"),
-            variant_id: IdMap.getId("fail"),
-          },
-        ],
+        items: [IdMap.getId("testitem"), null],
         payment_sessions: [],
         discounts: [
           {
@@ -966,8 +990,12 @@ describe("CartService", () => {
       },
     })
 
+    const paymentSessionRepository = MockRepository({})
+
     const cartService = new CartService({
       manager: MockManager,
+      paymentSessionRepository,
+      totalsService,
       cartRepository,
       eventBusService,
     })
@@ -987,22 +1015,10 @@ describe("CartService", () => {
         "cart.updated",
         expect.any(Object)
       )
-      expect(cartRepository.save).toHaveBeenCalledTimes(1)
-      expect(cartRepository.save).toHaveBeenCalledWith({
-        region: {
-          payment_providers: [
-            {
-              id: "test-provider",
-            },
-          ],
-        },
-        payment_sessions: [
-          {
-            id: IdMap.getId("test-session"),
-            provider_id: "test-provider",
-          },
-        ],
-        payment_session_id: IdMap.getId("test-session"),
+      expect(paymentSessionRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("test-session"),
+        provider_id: "test-provider",
+        is_selected: true,
       })
     })
 
@@ -1059,15 +1075,11 @@ describe("CartService", () => {
       },
     }
 
-    const totalsService = {
-      getTotal: cart => (cart.id === IdMap.getId("free") ? 0 : 100),
-    }
-
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       paymentProviderService,
-      totalsService,
       eventBusService,
     })
 
@@ -1098,29 +1110,14 @@ describe("CartService", () => {
     it("updates payment sessions for existing sessions", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-with-session"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
-
-      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.updateSession).toHaveBeenCalledWith(
-        {
-          provider_id: "provider_1",
-        },
-        cart2
-      )
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
     })
 
     it("filters sessions not available in the region", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-to-filter"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.updateSession).toHaveBeenCalledWith(
-        {
-          provider_id: "provider_1",
-        },
-        cart3
-      )
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
       expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
         provider_id: "not_in_region",
       })
@@ -1191,6 +1188,7 @@ describe("CartService", () => {
 
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       shippingOptionService,
       lineItemService,
@@ -1212,11 +1210,9 @@ describe("CartService", () => {
         IdMap.getId("option"),
         data
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("option"),
-        data,
-        cart1
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("option"), data, { cart: cart1 })
     })
 
     it("successfully overrides existing profile shipping method", async () => {
@@ -1228,14 +1224,15 @@ describe("CartService", () => {
         IdMap.getId("profile1"),
         data
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("profile1"),
-        data,
-        cart2
-      )
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("ship1")
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart2 })
+      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
+        id: IdMap.getId("ship1"),
+        shipping_option: {
+          profile_id: IdMap.getId("profile1"),
+        },
+      })
     })
 
     it("successfully adds additional shipping method", async () => {
@@ -1255,11 +1252,9 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("additional"),
-        data,
-        cart2
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("additional"), data, { cart: cart2 })
     })
 
     it("updates item shipping", async () => {
@@ -1279,11 +1274,9 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("profile1"),
-        data,
-        cart3
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart3 })
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
       expect(lineItemService.update).toHaveBeenCalledWith(IdMap.getId("line"), {
@@ -1353,6 +1346,7 @@ describe("CartService", () => {
 
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       discountService,
       eventBusService,
@@ -1481,6 +1475,7 @@ describe("CartService", () => {
 
     const cartService = new CartService({
       manager: MockManager,
+      totalsService,
       cartRepository,
       eventBusService,
     })
