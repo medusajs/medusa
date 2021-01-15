@@ -13,7 +13,7 @@ export default async (req, res) => {
       .items(
         Validator.object({
           type: Validator.string().required(),
-          value: Validator.number().required(),
+          amount: Validator.number().required(),
         })
       )
       .optional(),
