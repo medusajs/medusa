@@ -19,13 +19,13 @@ describe("CartSubscriber", () => {
     })
 
     it("resolves on non-existing payment data", async () => {
-      await cartSubcriber.onCustomerUpdated(carts.emptyCart)
+      await cartSubcriber.onCustomerUpdated(IdMap.getId("emptyCart"))
 
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(0)
     })
 
     it("cancels old and creates new payment intent with the updated existing customer", async () => {
-      await cartSubcriber.onCustomerUpdated(carts.frCart)
+      await cartSubcriber.onCustomerUpdated(IdMap.getId("fr-cart"))
 
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
@@ -60,7 +60,7 @@ describe("CartSubscriber", () => {
     })
 
     it("cancels old and creates new payment intent and creates new stripe customer", async () => {
-      await cartSubcriber.onCustomerUpdated(carts.frCartNoStripeCustomer)
+      await cartSubcriber.onCustomerUpdated(IdMap.getId("fr-cart-no-customer"))
 
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
@@ -87,7 +87,7 @@ describe("CartSubscriber", () => {
       ).toHaveBeenCalledTimes(1)
       expect(
         StripeProviderServiceMock.updatePaymentIntentCustomer
-      ).toHaveBeenCalledWith("cus_123456789_new_vvd")
+      ).toHaveBeenCalledWith("pi_no", "cus_123456789_new_vvd")
     })
   })
 })

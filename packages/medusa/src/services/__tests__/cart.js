@@ -680,10 +680,6 @@ describe("CartService", () => {
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(2)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "cart.customer_updated",
-        expect.any(Object)
-      )
-      expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
         expect.any(Object)
       )
@@ -704,10 +700,6 @@ describe("CartService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(2)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "cart.customer_updated",
-        expect.any(Object)
-      )
       expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
         expect.any(Object)

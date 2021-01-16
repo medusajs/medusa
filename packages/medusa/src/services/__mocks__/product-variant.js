@@ -215,25 +215,6 @@ export const ProductVariantServiceMock = {
     return Promise.resolve({})
   }),
   list: jest.fn().mockImplementation(data => {
-    if (data.id && data.id.$in) {
-      return Promise.resolve(
-        data.id.$in.map(id => {
-          if (id === "1") {
-            return variant1
-          }
-          if (id === "2") {
-            return variant2
-          }
-          if (id === "3") {
-            return variant3
-          }
-          if (id === "4") {
-            return variant4
-          }
-        })
-      )
-    }
-
     return Promise.resolve([testVariant])
   }),
   deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {

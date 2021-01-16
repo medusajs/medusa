@@ -5,6 +5,8 @@ export const carts = {
     id: IdMap.getId("emptyCart"),
     items: [],
     region_id: IdMap.getId("testRegion"),
+    customer_id: "test-customer",
+    payment_sessions: [],
     shipping_options: [
       {
         id: IdMap.getId("freeShipping"),
@@ -186,6 +188,9 @@ export const CartServiceMock = {
   retrieve: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("fr-cart-no-customer")) {
+      return Promise.resolve(carts.frCartNoStripeCustomer)
     }
     if (cartId === IdMap.getId("emptyCart")) {
       return Promise.resolve(carts.emptyCart)

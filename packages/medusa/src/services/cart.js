@@ -608,7 +608,7 @@ class CartService extends BaseService {
       if ("email" in update || "customer_id" in update) {
         await this.eventBus_
           .withTransaction(manager)
-          .emit(CartService.Events.CUSTOMER_UPDATED, result)
+          .emit(CartService.Events.CUSTOMER_UPDATED, result.id)
       }
 
       await this.eventBus_
