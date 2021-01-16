@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { option_id } = req.params
@@ -26,7 +27,12 @@ export default async (req, res) => {
   try {
     const optionService = req.scope.resolve("shippingOptionService")
 
-    const data = await optionService.update(option_id, value)
+    await optionService.update(option_id, value)
+
+    const data = await optionService.retrieve(option_id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ shipping_option: data })
   } catch (err) {

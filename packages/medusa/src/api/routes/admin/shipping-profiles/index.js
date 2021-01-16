@@ -25,25 +25,17 @@ export default app => {
     middlewares.wrap(require("./delete-shipping-profile").default)
   )
 
-  // Product management
-  route.post(
-    "/:profile_id/products",
-    middlewares.wrap(require("./add-product").default)
-  )
-  route.delete(
-    "/:profile_id/products/:product_id",
-    middlewares.wrap(require("./remove-product").default)
-  )
-
-  // Shipping Option management
-  route.post(
-    "/:profile_id/shipping-options",
-    middlewares.wrap(require("./add-shipping-option").default)
-  )
-  route.delete(
-    "/:profile_id/shipping-options/:option_id",
-    middlewares.wrap(require("./remove-shipping-option").default)
-  )
-
   return app
 }
+
+export const defaultFields = [
+  "id",
+  "name",
+  "type",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const defaultRelations = ["products", "shipping_options"]

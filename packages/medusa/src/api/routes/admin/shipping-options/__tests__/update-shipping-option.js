@@ -13,14 +13,12 @@ describe("POST /admin/shipping-options", () => {
         {
           payload: {
             name: "Test option",
-            price: {
-              type: "flat_rate",
-              amount: 100,
-            },
+            amount: 100,
             requirements: [
               {
+                id: "yes",
                 type: "min_subtotal",
-                value: 1,
+                amount: 1,
               },
             ],
           },
@@ -43,14 +41,12 @@ describe("POST /admin/shipping-options", () => {
         IdMap.getId("validId"),
         {
           name: "Test option",
-          price: {
-            type: "flat_rate",
-            amount: 100,
-          },
+          amount: 100,
           requirements: [
             {
+              id: "yes",
               type: "min_subtotal",
-              value: 1,
+              amount: 1,
             },
           ],
         }

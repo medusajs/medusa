@@ -39,6 +39,7 @@ describe("POST /admin/products", () => {
         tags: "hi,med,dig",
         handle: "test-product",
         is_giftcard: false,
+        profile_id: IdMap.getId("default_shipping_profile"),
       })
     })
 
@@ -95,6 +96,7 @@ describe("POST /admin/products", () => {
         options: [{ title: "Denominations" }],
         handle: "test-gift-card",
         is_giftcard: true,
+        profile_id: IdMap.getId("giftCardProfile"),
       })
     })
 
