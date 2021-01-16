@@ -105,6 +105,8 @@ class ProductVariantService extends BaseService {
         this.productVariantRepository_
       )
 
+      const { prices, ...rest } = variant
+
       let product = productOrProductId
 
       if (typeof product === `string`) {
@@ -154,13 +156,28 @@ class ProductVariantService extends BaseService {
       }
 
       const toCreate = {
-        ...variant,
-        product: product,
+        ...rest,
+        product_id: product.id,
       }
 
       const productVariant = await variantRepo.create(toCreate)
 
       const result = await variantRepo.save(productVariant)
+
+      if (prices) {
+        for (const price of prices) {
+          if (price.region_id) {
+            await this.setRegionPrice(
+              result.id,
+              price.region_id,
+              price.amount,
+              price.sale_amount || undefined
+            )
+          } else {
+            await this.setCurrencyPrice(result.id, price)
+          }
+        }
+      }
 
       await this.eventBus_
         .withTransaction(manager)
