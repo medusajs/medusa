@@ -9,7 +9,7 @@ describe("POST /admin/discounts/:discount_id/variants/:variant_id", () => {
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/discounts/${IdMap.getId("total10")}/variants/${IdMap.getId(
+        `/admin/discounts/${IdMap.getId("total10")}/products/${IdMap.getId(
           "testVariant"
         )}`,
         {
@@ -29,11 +29,32 @@ describe("POST /admin/discounts/:discount_id/variants/:variant_id", () => {
     it("calls service retrieve", () => {
       expect(DiscountServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("total10")
+        IdMap.getId("total10"),
+        {
+          select: [
+            "id",
+            "code",
+            "is_dynamic",
+            "discount_rule_id",
+            "parent_discount_id",
+            "starts_at",
+            "ends_at",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+            "metadata",
+          ],
+          relations: [
+            "discount_rule",
+            "parent_discount",
+            "regions",
+            "discount_rule.valid_for",
+          ],
+        }
       )
 
-      expect(DiscountServiceMock.addValidVariant).toHaveBeenCalledTimes(1)
-      expect(DiscountServiceMock.addValidVariant).toHaveBeenCalledWith(
+      expect(DiscountServiceMock.addValidProduct).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.addValidProduct).toHaveBeenCalledWith(
         IdMap.getId("total10"),
         IdMap.getId("testVariant")
       )

@@ -34,11 +34,11 @@ export default app => {
 
   // Discount valid variants management
   route.post(
-    "/:discount_id/variants/:variant_id",
+    "/:discount_id/products/:variant_id",
     middlewares.wrap(require("./add-valid-product").default)
   )
   route.delete(
-    "/:discount_id/variants/:variant_id",
+    "/:discount_id/products/:variant_id",
     middlewares.wrap(require("./remove-valid-product").default)
   )
 
@@ -54,3 +54,24 @@ export default app => {
 
   return app
 }
+
+export const defaultFields = [
+  "id",
+  "code",
+  "is_dynamic",
+  "discount_rule_id",
+  "parent_discount_id",
+  "starts_at",
+  "ends_at",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const defaultRelations = [
+  "discount_rule",
+  "parent_discount",
+  "regions",
+  "discount_rule.valid_for",
+]
