@@ -10,7 +10,7 @@ export default async (req, res) => {
 
     const selector = {}
 
-    if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
+    if ("is_giftcard" in req.query) {
       selector.is_giftcard = req.query.is_giftcard === "true"
     }
 

@@ -1,5 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultExpandFields, defaultFields } from "."
+import { defaultRelations, defaultFields } from "."
 
 export default async (req, res) => {
   const { id } = req.params
@@ -61,19 +61,14 @@ export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
 
-    const entityManager = req.scope.resolve("manager")
+    await productService.update(id, value)
 
-    await entityManager.transaction(async manager => {
-      let product = await productService
-        .withTransaction(manager)
-        .update(id, value)
-
-      product = await productService
-        .withTransaction(manager)
-        .retrieve(product.id, [...defaultExpandFields])
-
-      res.json({ product })
+    const product = productService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
     })
+
+    res.json({ product })
   } catch (err) {
     throw err
   }

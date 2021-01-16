@@ -575,20 +575,6 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * Decorates a variant with variant variants.
-   * @param {ProductVariant} variant - the variant to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {ProductVariant} return the decorated variant.
-   */
-  async decorate(variant, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(variant, fields.concat(requiredFields))
-    const final = await this.runDecorators_(decorated)
-    return final
-  }
-
-  /**
    * Dedicated method to set metadata for a variant.
    * @param {string} variant - the variant to set metadata for.
    * @param {Object} metadata - the metadata to set

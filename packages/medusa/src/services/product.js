@@ -90,18 +90,12 @@ class ProductService extends BaseService {
    * @param {string} productId - id of the product to get.
    * @return {Promise<Product>} the result of the find one operation.
    */
-  async retrieve(productId, relations = []) {
+  async retrieve(productId, config = {}) {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const validatedId = this.validateId_(productId)
-
-      const product = await productRepo.findOne({
-        where: {
-          id: validatedId,
-        },
-        relations,
-      })
-
+      const query = this.buildQuery_({ id: validatedId }, config)
+      const product = await productRepo.findOne(query)
       if (!product) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
@@ -150,27 +144,6 @@ class ProductService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductService.Events.CREATED, result)
-      return result
-    })
-  }
-
-  /**
-   * Creates an publishes product.
-   * @param {string} productId - ID of the product to publish.
-   * @return {Promise} resolves to the creation result.
-   */
-  async publish(productId) {
-    return this.atomicPhase_(async manager => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-      const product = await this.retrieve(productId)
-
-      product.published = true
-
-      const result = await productRepo.save(product)
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, result)
       return result
     })
   }

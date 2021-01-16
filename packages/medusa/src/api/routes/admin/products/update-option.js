@@ -1,10 +1,11 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id, option_id } = req.params
 
   const schema = Validator.object().keys({
-    title: Validator.string().required,
+    title: Validator.string().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -15,7 +16,12 @@ export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
 
-    const product = await productService.updateOption(id, option_id, value)
+    await productService.updateOption(id, option_id, value)
+
+    const product = productService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.json({ product })
   } catch (err) {

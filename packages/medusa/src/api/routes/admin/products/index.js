@@ -8,10 +8,6 @@ export default app => {
 
   route.post("/", middlewares.wrap(require("./create-product").default))
   route.post("/:id", middlewares.wrap(require("./update-product").default))
-  route.post(
-    "/:id/publish",
-    middlewares.wrap(require("./publish-product").default)
-  )
 
   route.post(
     "/:id/variants",
