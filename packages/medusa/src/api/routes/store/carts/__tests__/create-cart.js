@@ -22,10 +22,12 @@ describe("POST /store/carts", () => {
     it("calls CartService create", () => {
       expect(CartServiceMock.create).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.create).toHaveBeenCalledWith({
-        email: "",
-        customer_id: "",
         region_id: IdMap.getId("testRegion"),
       })
+    })
+
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {
@@ -33,8 +35,7 @@ describe("POST /store/carts", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("regionCart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("regionCart"))
     })
   })
 
@@ -89,22 +90,23 @@ describe("POST /store/carts", () => {
     })
 
     it("calls line item generate", () => {
-      expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(2)
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant"),
-        3,
-        IdMap.getId("testRegion")
-      )
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant1"),
-        1,
-        IdMap.getId("testRegion")
-      )
+      expect(LineItemServiceMock.create).toHaveBeenCalledTimes(2)
+      expect(LineItemServiceMock.create).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("testVariant"),
+        quantity: 3,
+        region_id: IdMap.getId("testRegion"),
+        cart_id: IdMap.getId("regionCart"),
+      })
+      expect(LineItemServiceMock.create).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("testVariant1"),
+        quantity: 1,
+        region_id: IdMap.getId("testRegion"),
+        cart_id: IdMap.getId("regionCart"),
+      })
     })
 
     it("returns cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("regionCart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("regionCart"))
     })
   })
 

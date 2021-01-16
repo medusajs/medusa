@@ -187,6 +187,7 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (error) {
+    console.log(error)
     throw error
   }
 }

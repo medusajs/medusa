@@ -24,8 +24,8 @@ describe("POST /store/carts/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService create", () => {
-      expect(CartServiceMock.addLineItem).toHaveBeenCalledTimes(1)
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
     })
 
     it("calls LineItemService generate", () => {
@@ -38,13 +38,23 @@ describe("POST /store/carts/:id", () => {
       )
     })
 
+    it("calls LineItemService create", () => {
+      expect(LineItemServiceMock.create).toHaveBeenCalledTimes(1)
+      expect(LineItemServiceMock.create).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("testVariant"),
+        quantity: 3,
+        unit_price: 100,
+        metadata: {},
+        cart_id: IdMap.getId("emptyCart"),
+      })
+    })
+
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("emptyCart"))
     })
   })
 
