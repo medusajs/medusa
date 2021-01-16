@@ -16,6 +16,34 @@ export const carts = {
       },
     ],
   },
+  testCart: {
+    id: IdMap.getId("test-cart"),
+    items: [],
+    payment: {
+      data: "some-data",
+    },
+    payment_session: {
+      status: "authorized",
+    },
+    total: 1000,
+    region_id: IdMap.getId("testRegion"),
+  },
+  testSwapCart: {
+    id: IdMap.getId("test-swap"),
+    items: [],
+    type: "swap",
+    payment: {
+      data: "some-data",
+    },
+    payment_session: {
+      status: "authorized",
+    },
+    metadata: {
+      swap_id: "test-swap",
+    },
+    total: 1000,
+    region_id: IdMap.getId("testRegion"),
+  },
   regionCart: {
     id: IdMap.getId("regionCart"),
     name: "Product 1",
@@ -185,6 +213,16 @@ export const CartServiceMock = {
   updatePaymentSession: jest.fn().mockImplementation(data => {
     return Promise.resolve()
   }),
+  authorizePayment: jest.fn().mockImplementation((id, data) => {
+    if (id === IdMap.getId("test-cart2")) {
+      return Promise.resolve({
+        ...carts.testCart,
+        payment_session: { status: "requires_more" },
+        id: IdMap.getId("test-cart2"),
+      })
+    }
+    return Promise.resolve(carts.testCart)
+  }),
   refreshPaymentSession: jest.fn().mockImplementation(data => {
     return Promise.resolve()
   }),
@@ -203,6 +241,12 @@ export const CartServiceMock = {
   retrieve: jest.fn().mockImplementation(cartId => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("swap-cart")) {
+      return Promise.resolve(carts.testSwapCart)
+    }
+    if (cartId === IdMap.getId("test-cart")) {
+      return Promise.resolve(carts.testCart)
     }
     if (cartId === IdMap.getId("cartLineItemMetadata")) {
       return Promise.resolve(carts.cartWithMetadataLineItem)
