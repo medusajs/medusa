@@ -123,6 +123,9 @@ export const orders = {
 }
 
 export const OrderServiceMock = {
+  withTransaction: function() {
+    return this
+  },
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(orders.testOrder)
   }),
