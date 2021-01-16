@@ -33,7 +33,7 @@ describe("POST /admin/orders/:id/archive", () => {
 
     it("returns order with status = archived", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body.order._id).toEqual(IdMap.getId("processed-order"))
+      expect(subject.body.order.id).toEqual(IdMap.getId("processed-order"))
       expect(subject.body.order.status).toEqual("archived")
     })
   })

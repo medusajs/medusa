@@ -133,14 +133,6 @@ export default app => {
   )
 
   /**
-   * Set metadata key / value pair.
-   */
-  route.post(
-    "/:id/metadata",
-    middlewares.wrap(require("./set-metadata").default)
-  )
-
-  /**
    * Delete metadata key / value pair.
    */
   route.delete(

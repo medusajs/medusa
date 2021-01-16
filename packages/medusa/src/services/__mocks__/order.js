@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 
 export const orders = {
   testOrder: {
-    _id: IdMap.getId("test-order"),
+    id: IdMap.getId("test-order"),
     email: "virgil@vandijk.dk",
     billing_address: {
       first_name: "Virgil",
@@ -24,17 +24,17 @@ export const orders = {
     },
     items: [
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
         content: {
           unit_price: 123,
           variant: {
-            _id: IdMap.getId("can-cover"),
+            id: IdMap.getId("can-cover"),
           },
           product: {
-            _id: IdMap.getId("validId"),
+            id: IdMap.getId("validId"),
           },
           quantity: 1,
         },
@@ -57,7 +57,7 @@ export const orders = {
     ],
   },
   processedOrder: {
-    _id: IdMap.getId("processed-order"),
+    id: IdMap.getId("processed-order"),
     email: "oliver@test.dk",
     billing_address: {
       first_name: "Oli",
@@ -77,17 +77,17 @@ export const orders = {
     },
     items: [
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
         content: {
           unit_price: 123,
           variant: {
-            _id: IdMap.getId("can-cover"),
+            id: IdMap.getId("can-cover"),
           },
           product: {
-            _id: IdMap.getId("validId"),
+            id: IdMap.getId("validId"),
           },
           quantity: 1,
         },
@@ -101,14 +101,14 @@ export const orders = {
     },
     shipping_methods: [
       {
-        _id: IdMap.getId("expensiveShipping"),
+        id: IdMap.getId("expensiveShipping"),
         name: "Expensive Shipping",
         price: 100,
         provider_id: "default_provider",
         profile_id: IdMap.getId("default"),
       },
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         name: "Free Shipping",
         price: 10,
         provider_id: "default_provider",
@@ -123,6 +123,9 @@ export const orders = {
 }
 
 export const OrderServiceMock = {
+  withTransaction: function() {
+    return this
+  },
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(orders.testOrder)
   }),

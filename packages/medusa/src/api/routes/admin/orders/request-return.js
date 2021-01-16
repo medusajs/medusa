@@ -68,6 +68,7 @@ export default async (req, res) => {
 
               const returnObj = {
                 order_id: id,
+                idempotency_key: idempotencyKey.idempotency_key,
                 items: value.items,
               }
 
@@ -78,11 +79,9 @@ export default async (req, res) => {
               if (typeof value.refund !== "undefined" && value.refund < 0) {
                 returnObj.refund_amount = 0
               } else {
-                returnObj.refund_amount = value.refund
-              }
-
-              if (value.refund) {
-                returnObj.refund_amount = value.refund
+                if (value.refund) {
+                  returnObj.refund_amount = value.refund
+                }
               }
 
               const createdReturn = await returnService
@@ -94,12 +93,6 @@ export default async (req, res) => {
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)
               }
-
-              await returnService
-                .withTransaction(manager)
-                .update(createdReturn.id, {
-                  idempotency_key: idempotencyKey.idempotency_key,
-                })
 
               return {
                 recovery_point: "return_requested",
@@ -192,6 +185,7 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (err) {
+    console.log(err)
     throw err
   }
 }
