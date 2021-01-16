@@ -13,8 +13,6 @@ describe("POST /admin/shipping-profile", () => {
         {
           payload: {
             name: "Test option",
-            products: [IdMap.getId("product1")],
-            shipping_options: [IdMap.getId("shipping1")],
           },
           adminSession: {
             jwt: {
@@ -35,8 +33,6 @@ describe("POST /admin/shipping-profile", () => {
         IdMap.getId("validId"),
         {
           name: "Test option",
-          products: [IdMap.getId("product1")],
-          shipping_options: [IdMap.getId("shipping1")],
         }
       )
     })

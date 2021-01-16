@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -28,24 +29,20 @@ export default async (req, res) => {
   try {
     const optionService = req.scope.resolve("shippingOptionService")
     const shippingProfileService = req.scope.resolve("shippingProfileService")
-    const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
-      // Add to default shipping profile
-      if (!value.profile_id) {
-        const { id } = await shippingProfileService
-          .withTransaction(manager)
-          .retrieveDefault()
-        value.profile_id = id
-      }
+    // Add to default shipping profile
+    if (!value.profile_id) {
+      const { id } = await shippingProfileService.retrieveDefault()
+      value.profile_id = id
+    }
 
-      const data = await optionService.withTransaction(manager).create(value)
-
-      await shippingProfileService
-        .withTransaction(manager)
-        .addShippingOption(value.profile_id, data.id)
-      res.status(200).json({ shipping_option: data })
+    const result = await optionService.create(value)
+    const data = await optionService.retrieve(result.id, {
+      select: defaultFields,
+      relations: defaultRelations,
     })
+
+    res.status(200).json({ shipping_option: data })
   } catch (err) {
     throw err
   }

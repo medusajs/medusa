@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   try {
@@ -6,7 +7,8 @@ export default async (req, res) => {
 
     const optionService = req.scope.resolve("shippingOptionService")
     const data = await optionService.list(query, {
-      relations: ["requirements"],
+      select: defaultFields,
+      relations: defaultRelations,
     })
 
     res.status(200).json({ shipping_options: data })

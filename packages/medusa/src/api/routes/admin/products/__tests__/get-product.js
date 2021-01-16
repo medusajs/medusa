@@ -51,7 +51,13 @@ describe("GET /admin/products/:id", () => {
             "updated_at",
             "metadata",
           ],
-          relations: ["variants", "variants.prices", "images", "options"],
+          relations: [
+            "variants",
+            "variants.prices",
+            "variants.options",
+            "images",
+            "options",
+          ],
         }
       )
     })
