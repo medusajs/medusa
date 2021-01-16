@@ -10,7 +10,6 @@ export default async (req, res) => {
 
   const { value, error } = schema.validate(req.body)
   if (error) {
-    console.log(error)
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
@@ -20,8 +19,8 @@ export default async (req, res) => {
 
     const entityManager = req.scope.resolve("manager")
 
+    let cart
     await entityManager.transaction(async manager => {
-      let cart
       if (value.quantity === 0) {
         cart = await cartService
           .withTransaction(manager)
@@ -38,7 +37,7 @@ export default async (req, res) => {
         }
 
         await lineItemService.withTransaction(manager).update(line_id, {
-          variant: existing.variant.id,
+          variant_id: existing.variant.id,
           region_id: cart.region_id,
           quantity: value.quantity,
           metadata: existing.metadata || {},
@@ -53,6 +52,7 @@ export default async (req, res) => {
 
     res.status(200).json({ cart })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }
