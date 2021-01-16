@@ -83,7 +83,6 @@ describe("DiscountService", () => {
         where: {
           id: IdMap.getId("total10"),
         },
-        relations: [],
       })
     })
 

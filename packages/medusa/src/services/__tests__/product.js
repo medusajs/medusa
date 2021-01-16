@@ -27,7 +27,6 @@ describe("ProductService", () => {
 
       expect(productRepo.findOne).toHaveBeenCalledTimes(1)
       expect(productRepo.findOne).toHaveBeenCalledWith({
-        relations: [],
         where: { id: IdMap.getId("ironman") },
       })
 
@@ -78,41 +77,6 @@ describe("ProductService", () => {
     })
   })
 
-  describe("publishProduct", () => {
-    const productRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
-    })
-    const productService = new ProductService({
-      manager: MockManager,
-      productRepository,
-      eventBusService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully publishes a product", async () => {
-      const result = await productService.publish(IdMap.getId("ironman"))
-
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product.updated",
-        expect.any(Object)
-      )
-
-      expect(productRepository.save).toHaveBeenCalledTimes(1)
-      expect(productRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        published: true,
-      })
-
-      expect(result).toEqual({
-        id: IdMap.getId("ironman"),
-        published: true,
-      })
-    })
-  })
   describe("update", () => {
     const productRepository = MockRepository({
       findOne: query => {
