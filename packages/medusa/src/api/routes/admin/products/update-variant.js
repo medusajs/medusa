@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id, variant_id } = req.params
@@ -14,6 +15,7 @@ export default async (req, res) => {
           region_id: Validator.string(),
           currency_code: Validator.string(),
           amount: Validator.number().required(),
+          sale_amount: Validator.number().optional(),
         })
         .xor("region_id", "currency_code")
     ),
@@ -46,43 +48,13 @@ export default async (req, res) => {
     const productService = req.scope.resolve("productService")
     const productVariantService = req.scope.resolve("productVariantService")
 
-    const entityManager = req.scope.resolve("manager")
+    await productVariantService.update(variant_id, value)
 
-    await entityManager.transaction(async manager => {
-      if (value.prices && value.prices.length) {
-        for (const price of value.prices) {
-          if (price.region_id) {
-            await productVariantService
-              .withTransaction(manager)
-              .setRegionPrice(variant_id, price.region_id, price.amount)
-          } else {
-            await productVariantService
-              .withTransaction(manager)
-              .setCurrencyPrice(variant_id, price.currency_code, price.amount)
-          }
-        }
-      }
-
-      if (value.options && value.options.length) {
-        for (const option of value.options) {
-          await productService
-            .withTransaction(manager)
-            .updateOptionValue(id, variant_id, option.option_id, option.value)
-        }
-      }
-
-      delete value.prices
-      delete value.options
-
-      if (!_.isEmpty(value)) {
-        await productVariantService
-          .withTransaction(manager)
-          .update(variant_id, value)
-      }
-
-      const product = await productService.withTransaction(manager).retrieve(id)
-      res.json({ product })
+    const product = await productService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
     })
+    res.json({ product })
   } catch (err) {
     throw err
   }

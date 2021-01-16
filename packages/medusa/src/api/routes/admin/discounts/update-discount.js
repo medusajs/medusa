@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { discount_id } = req.params
@@ -32,11 +33,11 @@ export default async (req, res) => {
     const discountService = req.scope.resolve("discountService")
 
     await discountService.update(discount_id, value)
-    const discount = await discountService.retrieve(discount_id, [
-      "discount_rule",
-      "discount_rule.valid_for",
-      "regions",
-    ])
+
+    const discount = await discountService.retrieve(discount_id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ discount })
   } catch (err) {

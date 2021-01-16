@@ -32,8 +32,8 @@ describe("GET /admin/products/:id/variants", () => {
     })
 
     it("returns variants", () => {
-      expect(subject.body.variants[0]._id).toEqual(IdMap.getId("1"))
-      expect(subject.body.variants[1]._id).toEqual(IdMap.getId("2"))
+      expect(subject.body.variants[0].id).toEqual(IdMap.getId("1"))
+      expect(subject.body.variants[1].id).toEqual(IdMap.getId("2"))
     })
   })
 })

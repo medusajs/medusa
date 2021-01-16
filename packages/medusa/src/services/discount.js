@@ -120,22 +120,6 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @return {Promise} the result of the find operation
-   */
-  async listGiftCards(
-    selector = {},
-    config = { relations: [], skip: 0, take: 10 }
-  ) {
-    const giftCardRepo = this.manager_.getCustomRepository(
-      this.giftCardRepository_
-    )
-
-    const query = this.buildQuery_(selector, config)
-    return giftCardRepo.find(query)
-  }
-
-  /**
    * Creates a discount with provided data given that the data is validated.
    * Normalizes discount code to uppercase.
    * @param {Discount} discount - the discount data to create
@@ -172,17 +156,14 @@ class DiscountService extends BaseService {
    * @param {string} discountId - id of discount to retrieve
    * @return {Promise<Discount>} the discount
    */
-  async retrieve(discountId, relations = []) {
+  async retrieve(discountId, config = {}) {
     const discountRepo = this.manager_.getCustomRepository(
       this.discountRepository_
     )
 
     const validatedId = this.validateId_(discountId)
-
-    const discount = await discountRepo.findOne({
-      where: { id: validatedId },
-      relations,
-    })
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const discount = await discountRepo.findOne(query)
 
     if (!discount) {
       throw new MedusaError(

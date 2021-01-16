@@ -2,14 +2,35 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
-describe("DELETE /admin/discounts/:discount_id/variants/:variant_id", () => {
+const defaultFields = [
+  "id",
+  "code",
+  "is_dynamic",
+  "discount_rule_id",
+  "parent_discount_id",
+  "starts_at",
+  "ends_at",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+const defaultRelations = [
+  "discount_rule",
+  "parent_discount",
+  "regions",
+  "discount_rule.valid_for",
+]
+
+describe("DELETE /admin/discounts/:discount_id/products/:variant_id", () => {
   describe("successful addition", () => {
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "DELETE",
-        `/admin/discounts/${IdMap.getId("total10")}/variants/${IdMap.getId(
+        `/admin/discounts/${IdMap.getId("total10")}/products/${IdMap.getId(
           "testVariant"
         )}`,
         {
@@ -29,11 +50,15 @@ describe("DELETE /admin/discounts/:discount_id/variants/:variant_id", () => {
     it("calls service retrieve", () => {
       expect(DiscountServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("total10")
+        IdMap.getId("total10"),
+        {
+          select: defaultFields,
+          relations: defaultRelations,
+        }
       )
 
-      expect(DiscountServiceMock.removeValidVariant).toHaveBeenCalledTimes(1)
-      expect(DiscountServiceMock.removeValidVariant).toHaveBeenCalledWith(
+      expect(DiscountServiceMock.removeValidProduct).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.removeValidProduct).toHaveBeenCalledWith(
         IdMap.getId("total10"),
         IdMap.getId("testVariant")
       )

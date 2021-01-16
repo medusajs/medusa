@@ -37,7 +37,8 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
-        is_dynamic: false
+        is_disabled: false,
+        is_dynamic: false,
       })
     })
   })

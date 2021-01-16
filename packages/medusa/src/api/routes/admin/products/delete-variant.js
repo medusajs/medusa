@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   try {
     const productVariantService = req.scope.resolve("productVariantService")
-    await productVariantService.deleteVariant(variant_id)
+    await productVariantService.delete(variant_id)
 
     res.json({
       variant_id,

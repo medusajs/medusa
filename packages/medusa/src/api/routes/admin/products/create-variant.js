@@ -23,10 +23,16 @@ export default async (req, res) => {
     material: Validator.string().allow(""),
     metadata: Validator.object().optional(),
     prices: Validator.array()
-      .items({
-        currency_code: Validator.string().required(),
-        amount: Validator.number().required(),
-      })
+      .items(
+        Validator.object()
+          .keys({
+            region_id: Validator.string(),
+            currency_code: Validator.string().required(),
+            amount: Validator.number().required(),
+            sale_amount: Validator.number().optional(),
+          })
+          .xor("region_id", "currency_code")
+      )
       .required(),
     options: Validator.array()
       .items({
@@ -50,7 +56,8 @@ export default async (req, res) => {
       select: defaultFields,
       relations: defaultRelations,
     })
-    res.json({ product: product })
+
+    res.json({ product })
   } catch (err) {
     throw err
   }
