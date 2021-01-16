@@ -1,5 +1,3 @@
-import { Validator } from "medusa-core-utils"
-
 export default async (req, res) => {
   const { id } = req.params
 

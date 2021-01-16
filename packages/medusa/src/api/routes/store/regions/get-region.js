@@ -1,5 +1,3 @@
-import { Validator } from "medusa-core-utils"
-
 export default async (req, res) => {
   const { region_id } = req.params
   const regionService = req.scope.resolve("regionService")

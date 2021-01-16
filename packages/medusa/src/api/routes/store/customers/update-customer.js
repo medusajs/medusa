@@ -19,7 +19,7 @@ export default async (req, res) => {
     const customerService = req.scope.resolve("customerService")
     let customer = await customerService.update(id, value)
 
-    customer = await customerService.retrieve(customer, [
+    customer = await customerService.retrieve(customer.id, [
       "orders",
       "shipping_addresses",
     ])

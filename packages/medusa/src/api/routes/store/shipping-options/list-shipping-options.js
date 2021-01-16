@@ -18,6 +18,7 @@ export default async (req, res) => {
       select: ["subtotal"],
       relations: ["region", "items", "items.variant", "items.variant.product"],
     })
+
     const options = await shippingProfileService.fetchCartOptions(cart)
 
     res.status(200).json({ shipping_options: options })

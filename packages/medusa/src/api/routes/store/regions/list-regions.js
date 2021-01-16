@@ -6,10 +6,6 @@ export default async (req, res) => {
 
   const selector = {}
 
-  if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
-    selector.is_giftcard = req.query.is_giftcard === "true"
-  }
-
   const listConfig = {
     relations: ["countries", "payment_providers", "fulfillment_providers"],
     skip: offset,

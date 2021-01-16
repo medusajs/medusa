@@ -21,7 +21,16 @@ describe("GET /store/shipping-options", () => {
     it("calls CartService retrieve", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("emptyCart")
+        IdMap.getId("emptyCart"),
+        {
+          select: ["subtotal"],
+          relations: [
+            "region",
+            "items",
+            "items.variant",
+            "items.variant.product",
+          ],
+        }
       )
     })
 
@@ -38,8 +47,8 @@ describe("GET /store/shipping-options", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("returns the cart", () => {
-      expect(subject.body.shipping_options[0]._id).toEqual(
+    it("returns the shippingOptions", () => {
+      expect(subject.body.shipping_options[0].id).toEqual(
         IdMap.getId("cartShippingOption")
       )
     })
