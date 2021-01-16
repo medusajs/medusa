@@ -24,9 +24,12 @@ export default async (req, res) => {
     metadata: Validator.object().optional(),
     prices: Validator.array()
       .items({
+        region_id: Validator.string(),
         currency_code: Validator.string().required(),
         amount: Validator.number().required(),
+        sale_amount: Validator.number().optional(),
       })
+      .xor("region_id", "currency_code")
       .required(),
     options: Validator.array()
       .items({
