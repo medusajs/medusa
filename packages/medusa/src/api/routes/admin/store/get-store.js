@@ -15,6 +15,7 @@ export default async (req, res) => {
 
     res.status(200).json({ store: data })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }
