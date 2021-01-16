@@ -64,6 +64,9 @@ export const FulfillmentProviderServiceMock = {
     }
     throw new Error("Provider Not Found")
   }),
+  list: jest.fn().mockImplementation(() => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
