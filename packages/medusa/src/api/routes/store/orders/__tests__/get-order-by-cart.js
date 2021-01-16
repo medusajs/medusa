@@ -10,7 +10,7 @@ describe("GET /store/orders", () => {
     beforeAll(async () => {
       subject = await request(
         "GET",
-        `/store/orders/${IdMap.getId("test-order")}`
+        `/store/orders/cart/${IdMap.getId("test-cart")}`
       )
     })
 
@@ -19,11 +19,13 @@ describe("GET /store/orders", () => {
     })
 
     it("calls orderService retrieve", () => {
-      expect(OrderServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(OrderServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("test-order"),
-        { select: defaultFields, relations: defaultRelations }
-      )
+      expect(OrderServiceMock.retrieveByCartId).toHaveBeenCalledTimes(1)
+      expect(
+        OrderServiceMock.retrieveByCartId
+      ).toHaveBeenCalledWith(IdMap.getId("test-cart"), {
+        select: defaultFields,
+        relations: defaultRelations,
+      })
     })
 
     it("returns order", () => {

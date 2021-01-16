@@ -1,3 +1,4 @@
+import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
@@ -29,9 +30,16 @@ describe("POST /store/customers", () => {
       })
     })
 
-    it("returns customer decorated", () => {
+    it("calls CustomerService retrieve", () => {
+      expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("lebron"),
+        ["orders", "shipping_addresses"]
+      )
+    })
+
+    it("returns customer", () => {
       expect(subject.body.customer.email).toEqual("lebron@james.com")
-      expect(subject.body.customer.decorated).toEqual(true)
     })
   })
 

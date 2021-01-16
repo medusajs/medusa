@@ -41,16 +41,16 @@ export const orders = {
         quantity: 10,
       },
     ],
-    region_id: IdMap.getId("testRegion"),
-    customer_id: IdMap.getId("testCustomer"),
+    regionid: IdMap.getId("testRegion"),
+    customerid: IdMap.getId("testCustomer"),
     payment_method: {
-      provider_id: "default_provider",
+      providerid: "default_provider",
       data: {},
     },
     shipping_method: [
       {
-        provider_id: "default_provider",
-        profile_id: IdMap.getId("validId"),
+        providerid: "default_provider",
+        profileid: IdMap.getId("validId"),
         data: {},
         items: {},
       },
@@ -94,25 +94,25 @@ export const orders = {
         quantity: 10,
       },
     ],
-    region_id: IdMap.getId("region-france"),
-    customer_id: IdMap.getId("test-customer"),
+    regionid: IdMap.getId("region-france"),
+    customerid: IdMap.getId("test-customer"),
     payment_method: {
-      provider_id: "default_provider",
+      providerid: "default_provider",
     },
     shipping_methods: [
       {
         id: IdMap.getId("expensiveShipping"),
         name: "Expensive Shipping",
         price: 100,
-        provider_id: "default_provider",
-        profile_id: IdMap.getId("default"),
+        providerid: "default_provider",
+        profileid: IdMap.getId("default"),
       },
       {
         id: IdMap.getId("freeShipping"),
         name: "Free Shipping",
         price: 10,
-        provider_id: "default_provider",
-        profile_id: IdMap.getId("profile1"),
+        providerid: "default_provider",
+        profileid: IdMap.getId("profile1"),
       },
     ],
     tax_rate: 0,
@@ -163,7 +163,7 @@ export const OrderServiceMock = {
     return Promise.resolve(undefined)
   }),
   retrieveByCartId: jest.fn().mockImplementation(cartId => {
-    return Promise.resolve()
+    return Promise.resolve({ id: IdMap.getId("test-order") })
   }),
   decorate: jest.fn().mockImplementation(order => {
     order.decorated = true
