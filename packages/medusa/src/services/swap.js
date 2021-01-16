@@ -580,8 +580,7 @@ class SwapService extends BaseService {
             item_id: i.id,
             quantity: i.quantity,
           })),
-          metadata,
-          { swap_id: swapId }
+          { swap_id: swapId, metadata }
         )
 
       swap.fulfillment_status = "fulfilled"

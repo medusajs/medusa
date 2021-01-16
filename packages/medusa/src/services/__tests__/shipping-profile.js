@@ -168,14 +168,7 @@ describe("ShippingProfileService", () => {
           default:
             return Promise.resolve([
               {
-                shipping_options: [
-                  {
-                    id: "ship_1",
-                  },
-                  {
-                    id: "ship_2",
-                  },
-                ],
+                shipping_options: [],
               },
             ])
         }
@@ -183,7 +176,20 @@ describe("ShippingProfileService", () => {
     })
 
     const shippingOptionService = {
-      validateCartOption: jest.fn().mockImplementation(s => Promise.resolve(s)),
+      list: jest.fn().mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: "ship_1",
+          },
+          {
+            id: "ship_2",
+          },
+        ])
+      ),
+      validateCartOption: jest.fn().mockImplementation(s => s),
+      withTransaction: function() {
+        return this
+      },
     }
 
     const profileService = new ShippingProfileService({
@@ -222,16 +228,6 @@ describe("ShippingProfileService", () => {
         { id: "ship_1" },
         { id: "ship_2" },
       ])
-
-      expect(profRepo.find).toBeCalledTimes(1)
-      expect(profRepo.find).toBeCalledWith({
-        where: { id: In([IdMap.getId("profile")]) },
-        relations: [
-          "shipping_options",
-          "shipping_options.requirements",
-          "shipping_options.profile",
-        ],
-      })
 
       expect(shippingOptionService.validateCartOption).toBeCalledTimes(2)
       expect(shippingOptionService.validateCartOption).toBeCalledWith(

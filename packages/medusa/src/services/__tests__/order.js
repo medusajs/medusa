@@ -412,13 +412,6 @@ describe("OrderService", () => {
       },
     })
 
-    const fulfillmentProviderService = {
-      cancelFulfillment: jest.fn(),
-      withTransaction: function() {
-        return this
-      },
-    }
-
     const fulfillmentService = {
       cancelFulfillment: jest.fn(),
       withTransaction: function() {
@@ -438,7 +431,6 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       paymentProviderService,
-      fulfillmentProviderService,
       fulfillmentService,
       eventBusService,
     })
@@ -651,8 +643,7 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        {},
-        { order_id: "test-order" }
+        { metadata: {}, order_id: "test-order" }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -684,8 +675,7 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        {},
-        { order_id: "partial" }
+        { metadata: {}, order_id: "partial" }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -717,8 +707,7 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        {},
-        { order_id: "test" }
+        { metadata: {}, order_id: "test" }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)

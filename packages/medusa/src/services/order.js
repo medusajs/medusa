@@ -878,7 +878,8 @@ class OrderService extends BaseService {
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
-        .createFulfillment(order, itemsToFulfill, metadata, {
+        .createFulfillment(order, itemsToFulfill, {
+          metadata,
           order_id: orderId,
         })
       let successfullyFulfilled = []

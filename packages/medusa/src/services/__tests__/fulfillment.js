@@ -46,13 +46,15 @@ describe("FulfillmentService", () => {
             item_id: IdMap.getId("test-line"),
             quantity: 10,
           },
-        ]
+        ],
+        { order_id: "test", metadata: {} }
       )
 
       expect(fulfillmentRepository.create).toHaveBeenCalledTimes(1)
       expect(fulfillmentRepository.create).toHaveBeenCalledWith({
+        order_id: "test",
         provider: "GLS Express",
-        items: [{ id: IdMap.getId("test-line"), quantity: 10 }],
+        items: [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
         data: expect.anything(),
         metadata: {},
       })
@@ -97,9 +99,10 @@ describe("FulfillmentService", () => {
       fulfillmentRepository,
     })
 
+    const now = new Date()
     beforeEach(async () => {
       jest.clearAllMocks()
-      Date.now = jest.fn(() => 1572393600000)
+      jest.spyOn(global, "Date").mockImplementationOnce(() => now)
     })
 
     it("calls order model functions", async () => {
@@ -114,7 +117,7 @@ describe("FulfillmentService", () => {
         id: IdMap.getId("fulfillment"),
         tracking_numbers: ["1234", "2345"],
         metadata: {},
-        shipped_at: 1572393600000,
+        shipped_at: now,
       })
     })
   })

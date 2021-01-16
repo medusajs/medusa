@@ -271,8 +271,6 @@ class CustomerService extends BaseService {
           delete customer.password
         }
 
-        console.log("Non-existing: ", customer)
-
         const created = await customerRepository.create(customer)
         const result = await customerRepository.save(created)
         await this.eventBus_

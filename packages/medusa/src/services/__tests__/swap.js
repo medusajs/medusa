@@ -490,8 +490,7 @@ describe("SwapService", () => {
             shipping_methods: existing.shipping_methods,
           },
           [{ item_id: IdMap.getId("1234"), quantity: 2 }],
-          {},
-          { swap_id: IdMap.getId("swap") }
+          { swap_id: IdMap.getId("swap"), metadata: {} }
         )
       })
     })

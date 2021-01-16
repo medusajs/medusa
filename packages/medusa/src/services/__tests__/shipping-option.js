@@ -87,6 +87,7 @@ describe("ShippingOptionService", () => {
       expect(shippingOptionRepository.save).toHaveBeenCalledWith({
         requirements: [
           {
+            shipping_option_id: IdMap.getId("option"),
             type: "min_subtotal",
             amount: 1,
           },
@@ -551,7 +552,7 @@ describe("ShippingOptionService", () => {
       await optionService.createShippingMethod(
         IdMap.getId("option"),
         { provider_data: "dat" },
-        cart
+        { cart }
       )
 
       expect(providerService.validateFulfillmentData).toHaveBeenCalledTimes(1)
@@ -576,7 +577,7 @@ describe("ShippingOptionService", () => {
       const c = { region_id: IdMap.getId("nomatch") }
 
       await expect(
-        optionService.createShippingMethod(id, d, c)
+        optionService.createShippingMethod(id, d, { cart: c })
       ).rejects.toThrow(
         "The shipping option is not available in the cart's region"
       )
@@ -590,7 +591,9 @@ describe("ShippingOptionService", () => {
       }
 
       await expect(
-        optionService.createShippingMethod(IdMap.getId("validId"), data, cart)
+        optionService.createShippingMethod(IdMap.getId("validId"), data, {
+          cart,
+        })
       ).rejects.toThrow(
         "The Cart does not satisfy the shipping option's requirements"
       )

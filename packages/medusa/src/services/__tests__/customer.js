@@ -135,6 +135,7 @@ describe("CustomerService", () => {
 
       expect(customerRepository.save).toBeCalledTimes(1)
       expect(customerRepository.save).toBeCalledWith({
+        id: IdMap.getId("exists"),
         email: "tony@stark.com",
         password_hash: expect.anything(),
         has_account: true,

@@ -396,9 +396,7 @@ class ShippingOptionService extends BaseService {
    */
   async update(optionId, update) {
     return this.atomicPhase_(async manager => {
-      const option = await this.retrieve(optionId, {
-        relations: ["requirements"],
-      })
+      const option = await this.retrieve(optionId)
 
       if ("metadata" in update) {
         option.metadata = await this.setMetadata_(option, update.metadata)
@@ -419,7 +417,8 @@ class ShippingOptionService extends BaseService {
       }
 
       if ("requirements" in update) {
-        update.requirements.reduce(async (acc, r) => {
+        const acc = []
+        for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
 
           if (acc.find(raw => raw.type === validated.type)) {
@@ -430,9 +429,8 @@ class ShippingOptionService extends BaseService {
           }
 
           acc.push(validated)
-
-          return acc
-        }, [])
+        }
+        option.requirements = acc
       }
 
       if ("price_type" in update) {
@@ -498,7 +496,7 @@ class ShippingOptionService extends BaseService {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
-      const validatedReq = this.validateRequirement_(requirement)
+      const validatedReq = await this.validateRequirement_(requirement)
 
       if (option.requirements.find(r => r.type === validatedReq.type)) {
         throw new MedusaError(
