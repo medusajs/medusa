@@ -59,10 +59,12 @@ export const RegionServiceMock = {
     if (regionId === IdMap.getId("region-se")) {
       return Promise.resolve(regions.regionSweden)
     }
-    throw Error(regionId + "not found")
+    return Promise.resolve(regions.testRegion)
   }),
   delete: jest.fn().mockImplementation(data => Promise.resolve()),
-  create: jest.fn().mockImplementation(data => Promise.resolve()),
+  create: jest
+    .fn()
+    .mockImplementation(data => Promise.resolve({ id: "region" })),
   addCountry: jest.fn().mockImplementation(data => Promise.resolve()),
   addFulfillmentProvider: jest
     .fn()

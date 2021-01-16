@@ -1,5 +1,6 @@
 export default async (req, res) => {
   const { region_id } = req.params
+
   try {
     const fulfillmentProviderService = req.scope.resolve(
       "fulfillmentProviderService"

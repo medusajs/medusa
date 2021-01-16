@@ -1,3 +1,5 @@
+import { defaultFields, defaultRelations } from "./"
+
 export default async (req, res) => {
   try {
     const regionService = req.scope.resolve("regionService")
@@ -8,12 +10,8 @@ export default async (req, res) => {
     const selector = {}
 
     const listConfig = {
-      relations: [
-        "countries",
-        "currency",
-        "payment_providers",
-        "fulfillment_providers",
-      ],
+      select: defaultFields,
+      relations: defaultRelations,
       skip: offset,
       take: limit,
     }
