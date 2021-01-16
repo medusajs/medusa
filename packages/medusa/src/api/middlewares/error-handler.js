@@ -4,7 +4,6 @@ export default () => {
   return (err, req, res, next) => {
     const logger = req.scope.resolve("logger")
     logger.error(err.message)
-    console.log(err)
 
     let statusCode = 500
     switch (err.name) {

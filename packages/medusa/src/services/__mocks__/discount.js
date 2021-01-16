@@ -1,5 +1,125 @@
 import { IdMap } from "medusa-test-utils"
-import { discounts } from "../../models/__mocks__/discount"
+
+export const discounts = {
+  dynamic: {
+    _id: IdMap.getId("dynamic"),
+    code: "Something",
+    is_dynamic: true,
+    discount_rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  total10Percent: {
+    _id: IdMap.getId("total10"),
+    code: "10%OFF",
+    discount_rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item10Percent: {
+    _id: IdMap.getId("item10Percent"),
+    code: "MEDUSA",
+    discount_rule: {
+      type: "percentage",
+      allocation: "item",
+      value: 10,
+      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  total10Fixed: {
+    _id: IdMap.getId("total10Fixed"),
+    code: "MEDUSA",
+    discount_rule: {
+      type: "fixed",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item9Fixed: {
+    _id: IdMap.getId("item9Fixed"),
+    code: "MEDUSA",
+    discount_rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 9,
+      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item2Fixed: {
+    _id: IdMap.getId("item2Fixed"),
+    code: "MEDUSA",
+    discount_rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 2,
+      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item10FixedNoVariants: {
+    _id: IdMap.getId("item10FixedNoVariants"),
+    code: "MEDUSA",
+    discount_rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  expiredDiscount: {
+    _id: IdMap.getId("expired"),
+    code: "MEDUSA",
+    ends_at: new Date("December 17, 1995 03:24:00"),
+    discount_rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  freeShipping: {
+    _id: IdMap.getId("freeshipping"),
+    code: "FREESHIPPING",
+    discount_rule: {
+      type: "free_shipping",
+      allocation: "total",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  USDiscount: {
+    _id: IdMap.getId("us-discount"),
+    code: "US10",
+    discount_rule: {
+      type: "free_shipping",
+      allocation: "total",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("us")],
+  },
+  alreadyExists: {
+    code: "ALREADYEXISTS",
+    discount_rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 20,
+    },
+    regions: [IdMap.getId("fr-cart")],
+  },
+}
 
 export const DiscountServiceMock = {
   create: jest.fn().mockImplementation(data => {

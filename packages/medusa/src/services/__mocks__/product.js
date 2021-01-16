@@ -1,27 +1,26 @@
 import { IdMap } from "medusa-test-utils"
-import { MedusaError } from "medusa-core-utils"
 
 export const products = {
   product1: {
-    _id: IdMap.getId("product1"),
+    id: IdMap.getId("product1"),
     title: "Product 1",
   },
   publishProduct: {
-    _id: IdMap.getId("publish"),
+    id: IdMap.getId("publish"),
     title: "Product 1",
     published: true,
   },
   product2: {
-    _id: IdMap.getId("product2"),
+    id: IdMap.getId("product2"),
     title: "Product 2",
   },
   productWithOptions: {
-    _id: IdMap.getId("productWithOptions"),
+    id: IdMap.getId("productWithOptions"),
     title: "Test",
     variants: [IdMap.getId("variant1")],
     options: [
       {
-        _id: IdMap.getId("option1"),
+        id: IdMap.getId("option1"),
         title: "Test",
         values: [IdMap.getId("optionValue1")],
       },
@@ -30,7 +29,10 @@ export const products = {
 }
 
 export const ProductServiceMock = {
-  createDraft: jest.fn().mockImplementation(data => {
+  withTransaction: function() {
+    return this
+  },
+  create: jest.fn().mockImplementation(data => {
     if (data.title === "Test Product") {
       return Promise.resolve(products.product1)
     }
@@ -40,7 +42,7 @@ export const ProductServiceMock = {
   count: jest.fn().mockReturnValue(4),
   publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
-      _id: IdMap.getId("publish"),
+      id: IdMap.getId("publish"),
       name: "Product 1",
       published: true,
     })
@@ -71,7 +73,7 @@ export const ProductServiceMock = {
   retrieveVariants: jest
     .fn()
     .mockReturnValue(
-      Promise.resolve([{ _id: IdMap.getId("1") }, { _id: IdMap.getId("2") }])
+      Promise.resolve([{ id: IdMap.getId("1") }, { id: IdMap.getId("2") }])
     ),
   retrieve: jest.fn().mockImplementation(productId => {
     if (productId === IdMap.getId("product1")) {
@@ -81,7 +83,7 @@ export const ProductServiceMock = {
       return Promise.resolve(products.product2)
     }
     if (productId === IdMap.getId("validId")) {
-      return Promise.resolve({ _id: IdMap.getId("validId") })
+      return Promise.resolve({ id: IdMap.getId("validId") })
     }
     if (productId === IdMap.getId("publish")) {
       return Promise.resolve(products.publishProduct)
@@ -100,7 +102,7 @@ export const ProductServiceMock = {
     if (data.variants === IdMap.getId("giftCardVar")) {
       return Promise.resolve([
         {
-          _id: IdMap.getId("giftCardProd"),
+          id: IdMap.getId("giftCardProd"),
           title: "Gift Card",
           is_giftcard: true,
           thumbnail: "1234",
@@ -110,11 +112,11 @@ export const ProductServiceMock = {
     if (data.variants === IdMap.getId("testVariant")) {
       return Promise.resolve([
         {
-          _id: "1234",
+          id: "1234",
           title: "test",
           options: [
             {
-              _id: IdMap.getId("testOptionId"),
+              id: IdMap.getId("testOptionId"),
               title: "testOption",
             },
           ],
@@ -124,7 +126,7 @@ export const ProductServiceMock = {
     if (data.variants === IdMap.getId("eur-10-us-12")) {
       return Promise.resolve([
         {
-          _id: "1234",
+          id: "1234",
           title: "test",
           thumbnail: "test.1234",
         },

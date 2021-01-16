@@ -28,13 +28,12 @@ describe("POST /admin/products", () => {
     })
 
     it("returns created product draft", () => {
-      expect(subject.body.product._id).toEqual(IdMap.getId("product1"))
-      expect(subject.body.product.decorated).toEqual(true)
+      expect(subject.body.product.id).toEqual(IdMap.getId("product1"))
     })
 
     it("calls service createDraft", () => {
-      expect(ProductServiceMock.createDraft).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.createDraft).toHaveBeenCalledWith({
+      expect(ProductServiceMock.create).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.create).toHaveBeenCalledWith({
         title: "Test Product",
         description: "Test Description",
         tags: "hi,med,dig",
@@ -89,8 +88,8 @@ describe("POST /admin/products", () => {
     })
 
     it("calls service createDraft", () => {
-      expect(ProductServiceMock.createDraft).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.createDraft).toHaveBeenCalledWith({
+      expect(ProductServiceMock.create).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.create).toHaveBeenCalledWith({
         title: "Gift Card",
         description: "make someone happy",
         options: [{ title: "Denominations" }],
@@ -106,12 +105,6 @@ describe("POST /admin/products", () => {
       expect(
         ShippingProfileServiceMock.retrieveGiftCardDefault
       ).toHaveBeenCalledWith()
-
-      expect(ShippingProfileServiceMock.addProduct).toHaveBeenCalledTimes(1)
-      expect(ShippingProfileServiceMock.addProduct).toHaveBeenCalledWith(
-        IdMap.getId("giftCardProfile"),
-        undefined
-      )
     })
   })
 

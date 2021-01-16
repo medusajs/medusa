@@ -112,7 +112,6 @@ export default async (req, res) => {
       res.json({ product: newProduct })
     })
   } catch (err) {
-    console.log(err)
     throw err
   }
 }
