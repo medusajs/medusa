@@ -228,6 +228,7 @@ class EventBusService {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
+          console.log(err)
           return err
         })
       })

@@ -157,19 +157,15 @@ class ReturnService extends BaseService {
    * @param {string} id - the id of the return to retrieve
    * @return {Return} the return
    */
-  async retrieve(id, relations = []) {
+  async retrieve(id, config = {}) {
     const returnRepository = this.manager_.getCustomRepository(
       this.returnRepository_
     )
 
     const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
 
-    const returnObj = await returnRepository.findOne({
-      where: {
-        id: validatedId,
-      },
-      relations,
-    })
+    const returnObj = await returnRepository.findOne(query)
 
     if (!returnObj) {
       throw new MedusaError(
@@ -308,12 +304,14 @@ class ReturnService extends BaseService {
 
   fulfill(returnId) {
     return this.atomicPhase_(async manager => {
-      const returnOrder = await this.retrieve(returnId, [
-        "items",
-        "shipping_method",
-        "shipping_method.shipping_option",
-        "swap",
-      ])
+      const returnOrder = await this.retrieve(returnId, {
+        relations: [
+          "items",
+          "shipping_method",
+          "shipping_method.shipping_option",
+          "swap",
+        ],
+      })
 
       const items = await this.lineItemService_.list({
         id: returnOrder.items.map(({ item_id }) => item_id),
@@ -373,21 +371,23 @@ class ReturnService extends BaseService {
         this.returnRepository_
       )
 
-      const returnObj = await this.retrieve(returnId, [
-        "items",
-        "order",
-        "order.items",
-        "order.discounts",
-        "order.refunds",
-        "order.shipping_methods",
-        "order.region",
-        "swap",
-        "swap.order",
-        "swap.order.items",
-        "swap.order.refunds",
-        "swap.order.shipping_methods",
-        "swap.order.region",
-      ])
+      const returnObj = await this.retrieve(returnId, {
+        relations: [
+          "items",
+          "order",
+          "order.items",
+          "order.discounts",
+          "order.refunds",
+          "order.shipping_methods",
+          "order.region",
+          "swap",
+          "swap.order",
+          "swap.order.items",
+          "swap.order.refunds",
+          "swap.order.shipping_methods",
+          "swap.order.region",
+        ],
+      })
 
       const order = returnObj.order || (returnObj.swap && returnObj.swap.order)
 

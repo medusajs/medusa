@@ -134,19 +134,15 @@ class FulfillmentService extends BaseService {
    * @param {string} id - the id of the fulfillment to retrieve
    * @return {Fulfillment} the fulfillment
    */
-  async retrieve(id, relations = []) {
+  async retrieve(id, config = {}) {
     const fulfillmentRepository = this.manager_.getCustomRepository(
       this.fulfillmentRepository_
     )
 
     const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
 
-    const fulfillment = await fulfillmentRepository.findOne({
-      where: {
-        id: validatedId,
-      },
-      relations,
-    })
+    const fulfillment = await fulfillmentRepository.findOne(query)
 
     if (!fulfillment) {
       throw new MedusaError(
@@ -239,7 +235,9 @@ class FulfillmentService extends BaseService {
         this.fulfillmentRepository_
       )
 
-      const fulfillment = await this.retrieve(fulfillmentId, ["items"])
+      const fulfillment = await this.retrieve(fulfillmentId, {
+        relations: ["items"],
+      })
 
       const now = new Date()
       fulfillment.shipped_at = now
