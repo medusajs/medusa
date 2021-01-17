@@ -160,7 +160,7 @@ class BrightpearlService extends BaseService {
 
             // Only update if the inventory levels have changed
             if (parseInt(v.inventory_quantity) !== parseInt(onHand)) {
-              return this.productVariantService_.update(v._id, {
+              return this.productVariantService_.update(v.id, {
                 inventory_quantity: onHand,
               })
             }
@@ -181,10 +181,13 @@ class BrightpearlService extends BaseService {
       const onHand = availability[productId].total.onHand
 
       const sku = brightpearlProduct.identity.sku
-      const [variant] = await this.productVariantService_.list({ sku })
+      if (!sku) return
 
+      const variant = await this.productVariantService_
+        .retrieveBySKU(sku)
+        .catch((_) => undefined)
       if (variant && variant.manage_inventory) {
-        await this.productVariantService_.update(variant._id, {
+        await this.productVariantService_.update(variant.id, {
           inventory_quantity: onHand,
         })
       }
@@ -598,7 +601,7 @@ class BrightpearlService extends BaseService {
 
       await client.payments.create(payment)
 
-      return this.swapService_.update(fromSwap._id, {
+      return this.swapService_.update(fromSwap.id, {
         metadata: {
           brightpearl_sales_order_id: salesOrderId,
         },
@@ -728,7 +731,7 @@ class BrightpearlService extends BaseService {
       fromOrder.items.map(async (item) => {
         const bpProduct = await this.retrieveProductBySKU(item.variant.sku)
 
-        const ld = lineDiscounts.find((l) => item.id === l.item._id) || {
+        const ld = lineDiscounts.find((l) => item.id === l.item.id) || {
           amount: 0,
         }
 
@@ -848,11 +851,10 @@ class BrightpearlService extends BaseService {
       .filter((i) => !!i)
 
     // Orders with a concatenated externalReference are swap orders
-    const [orderId, swapId] = order.externalRef.split(".")
+    const [_, swapId] = order.externalRef.split(".")
 
     if (swapId) {
-      const order = await this.orderService_.retrieve(orderId)
-      return this.swapService_.createFulfillment(order, swapId, {
+      return this.swapService_.createFulfillment(swapId, {
         goods_out_note: id,
       })
     }

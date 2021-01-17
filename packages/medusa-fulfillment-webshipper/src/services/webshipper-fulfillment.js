@@ -176,7 +176,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
           address_2: shipping_address.address_2,
           zip: shipping_address.postal_code,
           city: shipping_address.city,
-          country_code: shipping_address.country_code,
+          country_code: shipping_address.country_code.toUpperCase(),
           state: shipping_address.province,
           phone: shipping_address.phone,
           email: fromOrder.email,
@@ -298,7 +298,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
             address_2: shipping_address.address_2,
             zip: shipping_address.postal_code,
             city: shipping_address.city,
-            country_code: shipping_address.country_code,
+            country_code: shipping_address.country_code.toUpperCase(),
             state: shipping_address.province,
             phone: shipping_address.phone,
             email: fromOrder.email,
@@ -328,7 +328,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
           zip: methodData.drop_point_zip,
           address_1: methodData.drop_point_address_1,
           city: methodData.drop_point_city,
-          country_code: methodData.drop_point_country_code,
+          country_code: methodData.drop_point_country_code.toUpperCase(),
         }
       }
       if (invoice) {
@@ -366,23 +366,44 @@ class WebshipperFulfillmentService extends FulfillmentService {
         "."
       )
 
-      if (orderId.charAt(0) === "S") {
-        const swap = await this.swapService_.retrieve(orderId.substring(1))
-        const fulfillment = swap.fulfillments[fulfillmentIndex]
-        await this.swapService_.createShipment(
-          swap.id,
-          fulfillment.id,
-          trackingNumbers
-        )
-      } else {
-        const order = await this.orderService_.retrieve(orderId)
-        const fulfillment = order.fulfillments[fulfillmentIndex]
-        if (fulfillment) {
-          await this.orderService_.createShipment(
-            order.id,
+      if (orderId.charAt(0).toLowerCase() === "s") {
+        if (fulfillmentIndex.startsWith("ful")) {
+          return this.swapService_.createShipment(
+            orderId,
+            fulfillmentIndex,
+            trackingNumbers
+          )
+        } else {
+          const swap = await this.swapService_.retrieve(orderId.substring(1), {
+            relations: ["fulfillments"],
+          })
+          const fulfillment = swap.fulfillments[fulfillmentIndex]
+          return this.swapService_.createShipment(
+            swap.id,
             fulfillment.id,
             trackingNumbers
           )
+        }
+      } else {
+        if (fulfillmentIndex.startsWith("ful")) {
+          return this.orderService_.createShipment(
+            orderId,
+            fulfillmentIndex,
+            trackingNumbers
+          )
+        } else {
+          const order = await this.orderService_.retrieve(orderId, {
+            relations: ["fulfillments"],
+          })
+
+          const fulfillment = order.fulfillments[fulfillmentIndex]
+          if (fulfillment) {
+            return this.orderService_.createShipment(
+              order.id,
+              fulfillment.id,
+              trackingNumbers
+            )
+          }
         }
       }
     }
@@ -424,7 +445,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
               shipping_rate_id: id,
               delivery_address: {
                 zip,
-                country_code: countryCode,
+                country_code: countryCode.toUpperCase(),
                 address_1: address1,
               },
             },
