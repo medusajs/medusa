@@ -576,9 +576,9 @@ class OrderService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(order.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(order.region_id, {
+      relations: ["countries"],
+    })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
@@ -611,9 +611,9 @@ class OrderService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(order.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(order.region_id, {
+      relations: ["countries"],
+    })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(

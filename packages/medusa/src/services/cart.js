@@ -292,9 +292,9 @@ class CartService extends BaseService {
         )
       }
 
-      const region = await this.regionService_.retrieve(region_id, [
-        "countries",
-      ])
+      const region = await this.regionService_.retrieve(region_id, {
+        relations: ["countries"],
+      })
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
@@ -678,9 +678,9 @@ class CartService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(cart.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(cart.region_id, {
+      relations: ["countries"],
+    })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
@@ -713,9 +713,9 @@ class CartService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(cart.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(cart.region_id, {
+      relations: ["countries"],
+    })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
@@ -1206,7 +1206,9 @@ class CartService extends BaseService {
     }
 
     // Set the new region for the cart
-    const region = await this.regionService_.retrieve(regionId, ["countries"])
+    const region = await this.regionService_.retrieve(regionId, {
+      relations: ["countries"],
+    })
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     cart.region = region
     cart.region_id = region.id
@@ -1317,11 +1319,9 @@ class CartService extends BaseService {
    */
   async delete(cartId) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, [
-        "items",
-        "discounts",
-        "payment_sessions",
-      ])
+      const cart = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "payment_sessions"],
+      })
 
       if (cart.completed_at) {
         throw new MedusaError(

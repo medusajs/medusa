@@ -42,6 +42,7 @@ export default async (req, res) => {
     })
     res.json({ cart })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }
