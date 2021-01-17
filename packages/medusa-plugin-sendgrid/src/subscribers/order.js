@@ -4,11 +4,13 @@ class OrderSubscriber {
     orderService,
     sendgridService,
     eventBusService,
+    fulfillmentService,
   }) {
     this.orderService_ = orderService
     this.totalsService_ = totalsService
     this.sendgridService_ = sendgridService
     this.eventBus_ = eventBusService
+    this.fulfillmentService_ = fulfillmentService
 
     this.eventBus_.subscribe(
       "order.shipment_created",
@@ -44,6 +46,8 @@ class OrderSubscriber {
             "swaps.fulfillments",
           ],
         })
+
+        const shipment = await this.fulfillmentService_.retrieve(shipment_id)
 
         const data = {
           ...order,

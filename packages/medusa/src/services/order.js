@@ -283,7 +283,6 @@ class OrderService extends BaseService {
    * @return {Promise<Order>} the order document
    */
   async retrieve(orderId, config = {}) {
-    console.log("Order id: ", orderId)
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
