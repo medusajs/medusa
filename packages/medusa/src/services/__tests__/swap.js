@@ -182,6 +182,7 @@ describe("SwapService", () => {
           relations: [
             "order",
             "order.items",
+            "order.discounts",
             "additional_items",
             "return_order",
             "return_order.items",

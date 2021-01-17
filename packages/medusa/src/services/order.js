@@ -555,7 +555,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.SHIPMENT_CREATED, {
           id: orderId,
-          shipment_id: shipmentRes.id,
+          fulfillment_id: shipmentRes.id,
         })
 
       return result
@@ -1144,11 +1144,11 @@ class OrderService extends BaseService {
         order.fulfillment_status = "partially_returned"
       }
 
-      const result = orderRepo.save(order)
+      const result = await orderRepo.save(order)
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.ITEMS_RETURNED, {
-          id: result.id,
+          id: order.id,
           return_id: updatedReturn.id,
         })
       return result
@@ -1293,7 +1293,7 @@ class OrderService extends BaseService {
       const order = await this.retrieve(id, { relations: ["items"] })
       const swap = await this.swapService_
         .withTransaction(manager)
-        .retrieve(swapId, ["return_order", "return_order.items"])
+        .retrieve(swapId, { relations: ["return_order", "return_order.items"] })
 
       if (!swap || swap.order_id !== id) {
         throw new MedusaError(

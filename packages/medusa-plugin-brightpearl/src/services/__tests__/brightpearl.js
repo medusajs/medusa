@@ -6,8 +6,52 @@ import MockAdapter from "axios-mock-adapter"
 
 jest.mock("../../utils/brightpearl")
 
+const order = {
+  region: {
+    tax_code: "1234",
+  },
+  items: [
+    {
+      title: "Test",
+      variant: {
+        sku: "TEST",
+      },
+      unit_price: 1100,
+      quantity: 2,
+    },
+  ],
+  shipping_total: 12399,
+  shipping_methods: [
+    {
+      name: "standard",
+      price: 12399,
+    },
+  ],
+  payment_method: {
+    id: "123",
+  },
+  tax_rate: 23.1,
+  currency_code: "DKK",
+  display_id: "1234",
+  id: "12355",
+  discounts: [],
+  shipping_address: {
+    first_name: "Test",
+    last_name: "Testson",
+    address_1: "Test",
+    address_2: "TEst",
+    postal_code: "1234",
+    country_code: "DK",
+    phone: "12345678",
+  },
+  email: "test@example.com",
+}
+
 const OrderService = {
-  setMetadata: () => {
+  retrieve: () => {
+    return Promise.resolve(order)
+  },
+  update: () => {
     return Promise.resolve()
   },
 }
@@ -20,7 +64,7 @@ const TotalsService = {
     return Promise.resolve([])
   },
   getShippingTotal: () => {
-    return 123.9999929393293
+    return 12399
   },
   rounded: (value) => {
     const decimalPlaces = 4
@@ -91,45 +135,6 @@ describe("BrightpearlService", () => {
   })
 
   describe("createSalesOrder", () => {
-    const order = {
-      items: [
-        {
-          title: "Test",
-          content: {
-            variant: {
-              sku: "TEST",
-            },
-            unit_price: 11,
-          },
-          quantity: 2,
-        },
-      ],
-      shipping_methods: [
-        {
-          name: "standard",
-          price: 123.9999929393293,
-        },
-      ],
-      payment_method: {
-        _id: "123",
-      },
-      tax_rate: 0.231,
-      currency_code: "DKK",
-      display_id: "1234",
-      _id: "12355",
-      discounts: [],
-      shipping_address: {
-        first_name: "Test",
-        last_name: "Testson",
-        address_1: "Test",
-        address_2: "TEst",
-        postal_code: "1234",
-        country_code: "DK",
-        phone: "12345678",
-      },
-      email: "test@example.com",
-    }
-
     const bpService = new BrightpearlService(
       {
         orderService: OrderService,
@@ -187,8 +192,8 @@ describe("BrightpearlService", () => {
           {
             name: "Shipping: standard",
             quantity: 1,
-            net: 124,
-            tax: 28.644,
+            net: 123.99,
+            tax: 28.6417,
             taxCode: "1234",
             nominalCode: "4040",
           },

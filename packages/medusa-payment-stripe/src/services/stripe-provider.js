@@ -300,7 +300,7 @@ class StripeProviderService extends PaymentService {
         payment_intent: id,
       })
 
-      return payment
+      return payment.data
     } catch (error) {
       throw error
     }

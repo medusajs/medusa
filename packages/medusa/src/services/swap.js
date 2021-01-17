@@ -89,18 +89,14 @@ class SwapService extends BaseService {
    * @param {string} id - the id of the swap to retrieve
    * @return {Promise<Swap>} the swap
    */
-  async retrieve(id, relations = []) {
+  async retrieve(id, config = {}) {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
     const validatedId = this.validateId_(id)
 
-    const swap = await swapRepo.findOne({
-      where: {
-        id: validatedId,
-      },
-      relations,
-    })
+    const query = this.buildQuery_({ id: validatedId }, config)
 
+    const swap = await swapRepo.findOne(query)
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
     }
@@ -257,11 +253,9 @@ class SwapService extends BaseService {
 
   async processDifference(swapId) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId, [
-        "payment",
-        "order",
-        "order.payments",
-      ])
+      const swap = await this.retrieve(swapId, {
+        relations: ["payment", "order", "order.payments"],
+      })
 
       if (!swap.confirmed_at) {
         throw new MedusaError(
@@ -330,6 +324,24 @@ class SwapService extends BaseService {
     })
   }
 
+  async update(swapId, update) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId)
+
+      if ("metadata" in update) {
+        swap.metadata = this.setMetadata_(swap, update.metadata)
+      }
+
+      if ("shipping_address" in update) {
+        await this.updateShippingAddress_(swap, update.shipping_address)
+      }
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const result = await swapRepo.save(swap)
+      return result
+    })
+  }
+
   /**
    * Creates a cart from the given swap and order. The cart can be used to pay
    * for differences associated with the swap. The swap represented by the
@@ -342,14 +354,17 @@ class SwapService extends BaseService {
    */
   async createCart(swapId) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId, [
-        "order",
-        "order.items",
-        "additional_items",
-        "return_order",
-        "return_order.items",
-        "return_order.shipping_method",
-      ])
+      const swap = await this.retrieve(swapId, {
+        relations: [
+          "order",
+          "order.items",
+          "order.discounts",
+          "additional_items",
+          "return_order",
+          "return_order.items",
+          "return_order.shipping_method",
+        ],
+      })
 
       if (swap.cart_id) {
         throw new MedusaError(
@@ -428,12 +443,9 @@ class SwapService extends BaseService {
    */
   async registerCartCompletion(swapId) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId, [
-        "cart",
-        "cart.items",
-        "cart.discounts",
-        "cart.payment",
-      ])
+      const swap = await this.retrieve(swapId, {
+        relations: ["cart", "cart.items", "cart.discounts", "cart.payment"],
+      })
 
       // If we already registered the cart completion we just return
       if (swap.confirmed_at) {
@@ -513,7 +525,7 @@ class SwapService extends BaseService {
    */
   async receiveReturn(swapId, returnItems) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId, ["return_order"])
+      const swap = await this.retrieve(swapId, { relations: ["return_order"] })
 
       const returnId = swap.return_order && swap.return_order.id
       if (!returnId) {
@@ -547,16 +559,18 @@ class SwapService extends BaseService {
    */
   async createFulfillment(swapId, metadata = {}) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId, [
-        "payment",
-        "shipping_address",
-        "additional_items",
-        "shipping_methods",
-        "order",
-        "order.billing_address",
-        "order.discounts",
-        "order.payments",
-      ])
+      const swap = await this.retrieve(swapId, {
+        relations: [
+          "payment",
+          "shipping_address",
+          "additional_items",
+          "shipping_methods",
+          "order",
+          "order.billing_address",
+          "order.discounts",
+          "order.payments",
+        ],
+      })
       const order = swap.order
 
       swap.fulfillments = await this.fulfillmentService_
@@ -603,7 +617,9 @@ class SwapService extends BaseService {
    */
   async createShipment(swapId, fulfillmentId, trackingNumbers, metadata = {}) {
     return this.atomicPhase_(async manager => {
-      const swap = await this.retrieve(swapId, ["additional_items"])
+      const swap = await this.retrieve(swapId, {
+        relations: ["additional_items"],
+      })
 
       // Update the fulfillment to register
       const shipment = await this.fulfillmentService_
@@ -644,30 +660,34 @@ class SwapService extends BaseService {
   }
 
   /**
-   * Dedicated method to set metadata for a swap.
+   * Dedicated method to set metadata for an order.
    * To ensure that plugins does not overwrite each
    * others metadata fields, setMetadata is provided.
-   * @param {string} swapId - the swap to decorate.
+   * @param {string} orderId - the order to decorate.
    * @param {string} key - key for metadata field
    * @param {string} value - value for metadata field.
-   * @return {Promise<Swap>} resolves to the updated result.
+   * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(swapId, key, value) {
-    const validatedId = this.validateId_(swapId)
+  setMetadata_(swap, metadata) {
+    const existing = swap.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+      newData[key] = value
     }
 
-    const keyPath = `metadata.${key}`
-    return this.swapModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const updated = {
+      ...existing,
+      ...newData,
+    }
+
+    return updated
   }
 
   /**

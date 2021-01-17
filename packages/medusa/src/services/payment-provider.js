@@ -406,6 +406,21 @@ class PaymentProviderService extends BaseService {
       return refundRepo.save(created)
     })
   }
+
+  async retrieveRefund(id, config = {}) {
+    const refRepo = this.manager_.getCustomRepository(this.refundRepository_)
+    const query = this.buildQuery_({ id }, config)
+    const refund = await refRepo.findOne(query)
+
+    if (!refund) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `A refund with ${id} was not found`
+      )
+    }
+
+    return refund
+  }
 }
 
 export default PaymentProviderService
