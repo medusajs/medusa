@@ -20,7 +20,13 @@ describe("Get region by id", () => {
       expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("testRegion"),
-        ["countries", "payment_providers", "fulfillment_providers"]
+        {
+          relations: [
+            "countries",
+            "payment_providers",
+            "fulfillment_providers",
+          ],
+        }
       )
     })
 
