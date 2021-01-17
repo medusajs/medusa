@@ -19,8 +19,7 @@ describe("Get product by id", () => {
     it("calls get product from productSerice", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("product1"),
-        ["images", "variants", "options"]
+        IdMap.getId("product1")
       )
     })
 
