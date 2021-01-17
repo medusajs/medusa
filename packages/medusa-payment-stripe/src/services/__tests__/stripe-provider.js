@@ -232,12 +232,10 @@ describe("StripeProviderService", () => {
 
     it("returns refunded stripe payment intent", () => {
       expect(result).toEqual({
-        data: {
-          id: "re_123",
-          payment_intent: "pi_lebron",
-          amount: 1000,
-          status: "succeeded",
-        },
+        id: "re_123",
+        payment_intent: "pi_lebron",
+        amount: 1000,
+        status: "succeeded",
       })
     })
   })
