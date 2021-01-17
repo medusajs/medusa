@@ -10,11 +10,10 @@ class SegmentService extends BaseService {
    *      write_key: Segment write key given in Segment dashboard
    *    }
    */
-  constructor({ totalsService }, options) {
+  constructor({}, options) {
     super()
 
     this.options_ = options
-    this.totalsService_ = totalsService
 
     this.analytics_ = new Analytics(options.write_key)
   }
@@ -51,11 +50,11 @@ class SegmentService extends BaseService {
   }
 
   async buildOrder(order) {
-    const subtotal = await this.totalsService_.getSubtotal(order)
-    const total = await this.totalsService_.getTotal(order)
-    const tax = await this.totalsService_.getTaxTotal(order)
-    const discount = await this.totalsService_.getDiscountTotal(order)
-    const shipping = await this.totalsService_.getShippingTotal(order)
+    const subtotal = order.subtotal / 100
+    const total = order.total / 100
+    const tax = order.tax_total / 100
+    const discount = discount_total / 100
+    const shipping = shipping_total / 100
     const revenue = total - tax
 
     let coupon

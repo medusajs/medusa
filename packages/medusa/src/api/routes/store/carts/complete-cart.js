@@ -117,11 +117,16 @@ export default async (req, res) => {
                     ) {
                       order = await orderService
                         .withTransaction(manager)
-                        .retrieveByCartId(id, [
-                          "items",
-                          "shipping_address",
-                          "payments",
-                        ])
+                        .retrieveByCartId(id, {
+                          select: [
+                            "subtotal",
+                            "tax_total",
+                            "shipping_total",
+                            "discount_total",
+                            "total",
+                          ],
+                          relations: ["shipping_address", "items", "payments"],
+                        })
 
                       return {
                         response_code: 200,

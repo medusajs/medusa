@@ -22,13 +22,41 @@ class SlackService extends BaseService {
   }
 
   async orderNotification(orderId) {
-    const order = await this.orderService_.retrieve(orderId, ["all"])
+    const order = await this.orderService_.retrieve(orderId, {
+      select: [
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "gift_card_total",
+        "subtotal",
+        "total",
+      ],
+      relations: [
+        "customer",
+        "billing_address",
+        "shipping_address",
+        "discounts",
+        "shipping_methods",
+        "payments",
+        "fulfillments",
+        "returns",
+        "gift_cards",
+        "gift_card_transactions",
+        "swaps",
+        "swaps.return_order",
+        "swaps.payment",
+        "swaps.shipping_methods",
+        "swaps.shipping_address",
+        "swaps.additional_items",
+        "swaps.fulfillments",
+      ],
+    })
 
-    const subtotal = await this.totalsService_.getSubtotal(order)
-    const shippingTotal = await this.totalsService_.getShippingTotal(order)
-    const taxTotal = await this.totalsService_.getTaxTotal(order)
-    const discountTotal = await this.totalsService_.getDiscountTotal(order)
-    const total = await this.totalsService_.getTotal(order)
+    const { subtotal, tax_total, discount_total, shipping_total, total } = order
+
+    const currencyCode = order.currency_code.toUpperCase()
+    const taxRate = order.tax_rate / 100
 
     let blocks = [
       {
@@ -55,15 +83,17 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Subtotal*\t${subtotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Shipping*\t${shippingTotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Discount Total*\t${discountTotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Tax*\t${taxTotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Total*\t${total.toFixed(2)} ${order.currency_code}`,
+          text: `*Subtotal*\t${(subtotal / 100).toFixed(
+            2
+          )} ${currencyCode}\n*Shipping*\t${(shipping_total / 100).toFixed(
+            2
+          )} ${currencyCode}\n*Discount Total*\t${discountTotal.toFixed(
+            2
+          )} ${currencyCode}\n*Tax*\t${(tax_total / 100).toFixed(
+            2
+          )} ${currencyCode}\n*Total*\t${(total / 100).toFixed(
+            2
+          )} ${currencyCode}`,
         },
       },
     ]
@@ -74,9 +104,7 @@ class SlackService extends BaseService {
         text: {
           type: "mrkdwn",
           text: `*Promo Code*\t${d.code} ${d.discount_rule.value}${
-            d.discount_rule.type === "percentage"
-              ? "%"
-              : ` ${order.currency_code}`
+            d.discount_rule.type === "percentage" ? "%" : ` ${currencyCode}`
           }`,
         },
       })
@@ -92,9 +120,9 @@ class SlackService extends BaseService {
         text: {
           type: "mrkdwn",
           text: `*${lineItem.title}*\n${lineItem.quantity} x ${(
-            lineItem.unit_price *
-            (1 + order.tax_rate)
-          ).toFixed(2)} ${order.currency_code}`,
+            (lineItem.unit_price / 100) *
+            (1 + taxRate)
+          ).toFixed(2)} ${currencyCode}`,
         },
       }
 
