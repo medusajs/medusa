@@ -17,8 +17,8 @@ class CartSubscriber {
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
 
-    // this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
-    //   await this.onCustomerUpdated(cart)
+    // this.eventBus_.subscribe("cart.customer_updated", async (cartId) => {
+    //   await this.onCustomerUpdated(cartId)
     // })
   }
 
@@ -26,10 +26,14 @@ class CartSubscriber {
    * Subscriber function that listens for cart.customer updates.
    * We need to ensure, that the customer on the cart is corresponds
    * with a customer in Stripe.
-   * @param {Object} cart - cart on which customer is updated
+   * @param {Object} cartId - cartId on which customer is updated
    * @returns {Promise} empty promise
    */
-  async onCustomerUpdated(cart) {
+  async onCustomerUpdated(cartId) {
+    const cart = await this.cartService_.retrieve(cartId, {
+      relations: ["payment_sessions", "customer"],
+    })
+
     const { customer_id, payment_sessions } = cart
 
     if (!payment_sessions.length) {

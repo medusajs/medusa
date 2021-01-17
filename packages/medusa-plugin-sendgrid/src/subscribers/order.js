@@ -4,16 +4,50 @@ class OrderSubscriber {
     orderService,
     sendgridService,
     eventBusService,
+    fulfillmentService,
   }) {
     this.orderService_ = orderService
     this.totalsService_ = totalsService
     this.sendgridService_ = sendgridService
     this.eventBus_ = eventBusService
+    this.fulfillmentService_ = fulfillmentService
 
     this.eventBus_.subscribe(
       "order.shipment_created",
-      async ({ order_id, shipment }) => {
-        const order = await this.orderService_.retrieve(order_id, ["all"])
+      async ({ id, shipment_id }) => {
+        const order = await this.orderService_.retrieve(id, {
+          select: [
+            "shipping_total",
+            "discount_total",
+            "tax_total",
+            "refunded_total",
+            "gift_card_total",
+            "subtotal",
+            "total",
+            "refundable_amount",
+          ],
+          relations: [
+            "customer",
+            "billing_address",
+            "shipping_address",
+            "discounts",
+            "shipping_methods",
+            "payments",
+            "fulfillments",
+            "returns",
+            "gift_cards",
+            "gift_card_transactions",
+            "swaps",
+            "swaps.return_order",
+            "swaps.payment",
+            "swaps.shipping_methods",
+            "swaps.shipping_address",
+            "swaps.additional_items",
+            "swaps.fulfillments",
+          ],
+        })
+
+        const shipment = await this.fulfillmentService_.retrieve(shipment_id)
 
         const data = {
           ...order,
@@ -35,63 +69,101 @@ class OrderSubscriber {
     })
 
     this.eventBus_.subscribe("order.placed", async (orderObj) => {
-      const order = await this.orderService_.retrieve(orderObj.id, ["all"])
+      const order = await this.orderService_.retrieve(orderObj.id, {
+        select: [
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "gift_card_total",
+          "subtotal",
+          "total",
+        ],
+        relations: [
+          "customer",
+          "billing_address",
+          "shipping_address",
+          "discounts",
+          "shipping_methods",
+          "payments",
+          "fulfillments",
+          "returns",
+          "gift_cards",
+          "gift_card_transactions",
+          "swaps",
+          "swaps.return_order",
+          "swaps.payment",
+          "swaps.shipping_methods",
+          "swaps.shipping_address",
+          "swaps.additional_items",
+          "swaps.fulfillments",
+        ],
+      })
 
-      const subtotal = await this.totalsService_.getSubtotal(order)
-      const tax_total = await this.totalsService_.getTaxTotal(order)
-      const discount_total = await this.totalsService_.getDiscountTotal(order)
-      const shipping_total = await this.totalsService_.getShippingTotal(order)
-      const total = await this.totalsService_.getTotal(order)
+      const {
+        subtotal,
+        tax_total,
+        discount_total,
+        shipping_total,
+        total,
+      } = order
 
-      const date = new Date(parseInt(order.created))
+      const taxRate = order.tax_rate / 100
+      const currencyCode = order.currency_code.toUpperCase()
 
       const items = order.items.map((i) => {
         return {
           ...i,
-          price: `${(i.unit_price * (1 + order.tax_rate)).toFixed(2)} ${
-            order.currency_code
-          }`,
+          price: `${((i.unit_price / 100) * (1 + taxRate)).toFixed(
+            2
+          )} ${currencyCode}`,
         }
       })
 
-      const discounts = order.discounts.map((discount) => {
-        return {
-          is_giftcard: false,
-          code: discount.code,
-          descriptor: `${discount.discount_rule.value}${
-            discount.discount_rule.type === "percentage"
-              ? "%"
-              : ` ${order.currency_code}`
-          }`,
-        }
-      })
+      let discounts = []
+      if (order.discounts) {
+        discounts = order.discounts.map((discount) => {
+          return {
+            is_giftcard: false,
+            code: discount.code,
+            descriptor: `${discount.discount_rule.value}${
+              discount.discount_rule.type === "percentage"
+                ? "%"
+                : ` ${currencyCode}`
+            }`,
+          }
+        })
+      }
 
-      const giftCards = order.giftCards.map((gc) => {
-        return {
-          is_giftcard: true,
-          code: gc.code,
-          descriptor: `${gc.value} ${order.currency_code}`,
-        }
-      })
+      let giftCards = []
+      if (order.giftCards) {
+        giftCards = order.giftCards.map((gc) => {
+          return {
+            is_giftcard: true,
+            code: gc.code,
+            descriptor: `${gc.value} ${currencyCode}`,
+          }
+        })
 
-      discounts.concat(giftCards)
+        discounts.concat(giftCards)
+      }
 
       const data = {
         ...order,
-        date: date.toDateString(),
+        date: order.created_at.toDateString(),
         items,
         discounts,
-        subtotal: `${(subtotal * (1 + order.tax_rate)).toFixed(2)} ${
-          order.currency_code
-        }`,
-        tax_total: `${tax_total.toFixed(2)} ${order.currency_code}`,
-        discount_total: `${(discount_total * (1 + order.tax_rate)).toFixed(
+        subtotal: `${((subtotal / 100) * (1 + taxRate)).toFixed(
           2
-        )} ${order.currency_code}`,
-        shipping_total: `${(shipping_total * (1 + order.tax_rate)).toFixed(
+        )} ${currencyCode}`,
+        tax_total: `${(tax_total / 100).toFixed(2)} ${currencyCode}`,
+        discount_total: `${((discount_total / 100) * (1 + taxRate)).toFixed(
           2
-        )} ${order.currency_code}`,
-        total: `${total.toFixed(2)} ${order.currency_code}`,
+        )} ${currencyCode}`,
+        shipping_total: `${((shipping_total / 100) * (1 + taxRate)).toFixed(
+          2
+        )} ${currencyCode}`,
+        total: `${(total / 100).toFixed(2)} ${currencyCode}`,
       }
 
       await this.sendgridService_.transactionalEmail("order.placed", data)

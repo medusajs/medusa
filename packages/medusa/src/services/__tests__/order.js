@@ -304,7 +304,6 @@ describe("OrderService", () => {
       expect(orderRepo.findOne).toHaveBeenCalledTimes(1)
       expect(orderRepo.findOne).toHaveBeenCalledWith({
         where: { cart_id: IdMap.getId("test-cart") },
-        relations: [],
       })
     })
   })

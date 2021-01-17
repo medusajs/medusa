@@ -320,20 +320,35 @@ class OrderService extends BaseService {
    * @param {string} cartId - cart id to find order
    * @return {Promise<Order>} the order document
    */
-  async retrieveByCartId(cartId, relations = []) {
+  async retrieveByCartId(cartId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const order = await orderRepo.findOne({
-      where: { cart_id: cartId },
-      relations,
-    })
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
-    if (!order) {
+    const query = {
+      where: { cart_id: cartId },
+    }
+
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
+
+    if (select && select.length > 0) {
+      query.select = select
+    }
+
+    const raw = await orderRepo.findOne(query)
+
+    if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with cart id ${cartId} was not found`
+        `Order with cart id: ${cartId} was not found`
       )
     }
+
+    const order = this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -576,9 +591,9 @@ class OrderService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(order.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(order.region_id, {
+      relations: ["countries"],
+    })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
@@ -611,9 +626,9 @@ class OrderService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(order.region_id, [
-      "countries",
-    ])
+    const region = await this.regionService_.retrieve(order.region_id, {
+      relations: ["countries"],
+    })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(

@@ -652,8 +652,8 @@ class SwapService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(SwapService.Events.SHIPMENT_CREATED, {
-          swap_id: swapId,
-          shipment,
+          id: swapId,
+          shipment_id: shipment.id,
         })
       return result
     })

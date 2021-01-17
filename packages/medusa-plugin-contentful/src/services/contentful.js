@@ -75,10 +75,9 @@ class ContentfulService extends BaseService {
 
   async createProductInContentful(product) {
     try {
-      const p = await this.productService_.retrieve(product.id, [
-        "variants",
-        "options",
-      ])
+      const p = await this.productService_.retrieve(product.id, {
+        relations: ["variants", "options"],
+      })
 
       const environment = await this.getContentfulEnvironment_()
       const variantEntries = await this.getVariantEntries_(p.variants)
@@ -173,10 +172,9 @@ class ContentfulService extends BaseService {
         return this.createProductInContentful(product)
       }
 
-      const p = await this.productService_.retrieve(product.id, [
-        "options",
-        "variants",
-      ])
+      const p = await this.productService_.retrieve(product.id, {
+        relations: ["options", "variants"],
+      })
 
       const variantEntries = await this.getVariantEntries_(p.variants)
       const variantLinks = this.getVariantLinks_(variantEntries)

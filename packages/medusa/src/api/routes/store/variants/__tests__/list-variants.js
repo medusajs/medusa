@@ -3,7 +3,7 @@ import { request } from "../../../../../helpers/test-request"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("List variants", () => {
-  describe("list variants successfull", async () => {
+  describe("list variants successfull", () => {
     let subject
 
     beforeAll(async () => {
@@ -12,14 +12,6 @@ describe("List variants", () => {
 
     beforeEach(async () => {
       jest.clearAllMocks()
-    })
-
-    it("calls list from variantSerice", () => {
-      expect(ProductVariantServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(ProductVariantServiceMock.list).toHaveBeenCalledWith(
-        {},
-        { relations: [], skip: 0, take: 100 }
-      )
     })
 
     it("returns variants", () => {

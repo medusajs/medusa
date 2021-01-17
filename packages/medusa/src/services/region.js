@@ -313,19 +313,14 @@ class RegionService extends BaseService {
    * @param {string} regionId - the id of the region to retrieve
    * @return {Region} the region
    */
-  async retrieve(regionId, relations = []) {
+  async retrieve(regionId, config = {}) {
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
     )
 
     const validatedId = this.validateId_(regionId)
-
-    const region = await regionRepository.findOne({
-      where: {
-        id: validatedId,
-      },
-      relations,
-    })
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const region = await regionRepository.findOne(query)
 
     if (!region) {
       throw new MedusaError(
@@ -379,7 +374,7 @@ class RegionService extends BaseService {
 
       const country = await this.validateCountry_(code, regionId)
 
-      const region = await this.retrieve(regionId, ["countries"])
+      const region = await this.retrieve(regionId, { relations: ["countries"] })
 
       // Check if region already has country
       if (
@@ -406,7 +401,7 @@ class RegionService extends BaseService {
     return this.atomicPhase_(async manager => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-      const region = await this.retrieve(regionId, ["countries"])
+      const region = await this.retrieve(regionId, { relations: ["countries"] })
 
       // Check if region contains country. If not, we simpy resolve
       if (
@@ -439,7 +434,9 @@ class RegionService extends BaseService {
         this.paymentProviderRepository_
       )
 
-      const region = await this.retrieve(regionId, ["payment_providers"])
+      const region = await this.retrieve(regionId, {
+        relations: ["payment_providers"],
+      })
 
       // Check if region already has payment provider
       if (region.payment_providers.find(({ id }) => id === providerId)) {
@@ -476,7 +473,9 @@ class RegionService extends BaseService {
         this.fulfillmentProviderRepository_
       )
 
-      const region = await this.retrieve(regionId, ["fulfillment_providers"])
+      const region = await this.retrieve(regionId, {
+        relations: ["fulfillment_providers"],
+      })
 
       // Check if region already has payment provider
       if (region.fulfillment_providers.find(({ id }) => id === providerId)) {
@@ -509,7 +508,9 @@ class RegionService extends BaseService {
     return this.atomicPhase_(async manager => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-      const region = await this.retrieve(regionId, ["payment_providers"])
+      const region = await this.retrieve(regionId, {
+        relations: ["payment_providers"],
+      })
 
       // Check if region already has payment provider
       if (!region.payment_providers.find(({ id }) => id === providerId)) {
@@ -535,7 +536,9 @@ class RegionService extends BaseService {
     return this.atomicPhase_(async manager => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-      const region = await this.retrieve(regionId, ["fulfillment_providers"])
+      const region = await this.retrieve(regionId, {
+        relations: ["fulfillment_providers"],
+      })
 
       // Check if region already has payment provider
       if (!region.fulfillment_providers.find(({ id }) => id === providerId)) {

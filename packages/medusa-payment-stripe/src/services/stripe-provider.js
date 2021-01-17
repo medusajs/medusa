@@ -230,14 +230,12 @@ class StripeProviderService extends PaymentService {
    */
   async updatePayment(sessionData, cart) {
     try {
-      const amount = await this.totalsService_.getTotal(cart)
-
-      if (sessionData.amount === amount) {
+      if (cart.total && sessionData.amount === cart.total) {
         return sessionData
       }
 
       return this.stripe_.paymentIntents.update(sessionData.id, {
-        amount,
+        amount: cart.total,
       })
     } catch (error) {
       throw error
