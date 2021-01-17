@@ -313,19 +313,14 @@ class RegionService extends BaseService {
    * @param {string} regionId - the id of the region to retrieve
    * @return {Region} the region
    */
-  async retrieve(regionId, relations = []) {
+  async retrieve(regionId, config = {}) {
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
     )
 
     const validatedId = this.validateId_(regionId)
-
-    const region = await regionRepository.findOne({
-      where: {
-        id: validatedId,
-      },
-      relations,
-    })
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const region = await regionRepository.findOne(query)
 
     if (!region) {
       throw new MedusaError(
