@@ -2,7 +2,7 @@ import _ from "lodash"
 
 export default async (req, res) => {
   try {
-    const swapService = req.scope.resolve("swapService")
+    const returnService = req.scope.resolve("returnService")
 
     const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
@@ -10,14 +10,15 @@ export default async (req, res) => {
     const selector = {}
 
     const listConfig = {
+      relations: ["swap", "order"],
       skip: offset,
       take: limit,
       order: { created_at: "DESC" },
     }
 
-    const swaps = await swapService.list(selector, { ...listConfig })
+    const returns = await returnService.list(selector, { ...listConfig })
 
-    res.json({ swaps, count: swaps.length, offset, limit })
+    res.json({ returns, count: returns.length, offset, limit })
   } catch (error) {
     throw error
   }

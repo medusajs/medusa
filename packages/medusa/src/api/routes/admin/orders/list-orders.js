@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { Not } from "typeorm"
 import { defaultRelations, defaultFields } from "./"
 
 export default async (req, res) => {
@@ -8,7 +9,7 @@ export default async (req, res) => {
     const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
 
-    const selector = {}
+    let selector = {}
 
     let includeFields = []
     if ("fields" in req.query) {
@@ -18,6 +19,20 @@ export default async (req, res) => {
     let expandFields = []
     if ("expand" in req.query) {
       expandFields = req.query.expand.split(",")
+    }
+
+    if ("new" in req.query) {
+      selector = {
+        payment_status: Not("captured"),
+        fulfillment_status: Not("shipped"),
+      }
+    }
+
+    if ("requires_more" in req.query) {
+      selector = {
+        payment_status: Not("captured"),
+        fulfillment_status: Not("shipped"),
+      }
     }
 
     const listConfig = {
