@@ -361,25 +361,17 @@ class CartService extends BaseService {
 
       // Remove shipping methods if they are not needed
       if (cart.shipping_methods && cart.shipping_methods.length) {
-        const method = cart.shipping_methods.find(
-          m =>
-            m.shipping_option.profile_id ===
-            (lineItem.variant &&
-              lineItem.variant.product &&
-              lineItem.variant.product.profile_id)
-        )
-        if (method) {
-          const filteredItems = cart.items.filter(i => i.id !== lineItemId)
-          const hasItem = filteredItems.find(
-            item => item.variant.product.profile_id === m.profile_id
-          )
-
-          if (!hasItem) {
-            await this.shippingOptionService_
-              .withTransaction(manager)
-              .deleteShippingMethod(method)
-          }
+        for (const method of cart.shipping_methods) {
+          await this.shippingOptionService_
+            .withTransaction(manager)
+            .deleteShippingMethod(method)
         }
+      }
+
+      for (const itm of cart.items) {
+        await this.lineItemService_.withTransaction(manager).update(itm.id, {
+          has_shipping: false,
+        })
       }
 
       await this.lineItemService_.withTransaction(manager).delete(lineItem.id)
@@ -435,7 +427,6 @@ class CartService extends BaseService {
       const cart = await this.retrieve(cartId, {
         relations: [
           "shipping_methods",
-          "shipping_methods.shipping_option",
           "items",
           "items.variant",
           "items.variant.product",
@@ -488,15 +479,26 @@ class CartService extends BaseService {
           )
         }
 
-        lineItem.has_shipping = this.validateLineItemShipping_(
-          cart.shipping_methods,
-          lineItem
-        )
-
         await this.lineItemService_.withTransaction(manager).create({
           ...lineItem,
+          has_shipping: false,
           cart_id: cartId,
         })
+      }
+
+      for (const itm of cart.items) {
+        await this.lineItemService_.withTransaction(manager).update(itm.id, {
+          has_shipping: false,
+        })
+      }
+
+      // Remove shipping methods
+      if (cart.shipping_methods && cart.shipping_methods.length) {
+        for (const method of cart.shipping_methods) {
+          await this.shippingOptionService_
+            .withTransaction(manager)
+            .deleteShippingMethod(method)
+        }
       }
 
       const result = await this.retrieve(cartId)

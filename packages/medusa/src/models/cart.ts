@@ -46,7 +46,6 @@ export class Cart {
   billing_address_id: string
 
   @ManyToOne(() => Address, {
-    eager: true,
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "billing_address_id" })
@@ -56,7 +55,6 @@ export class Cart {
   shipping_address_id: string
 
   @ManyToOne(() => Address, {
-    eager: true,
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "shipping_address_id" })
@@ -65,18 +63,18 @@ export class Cart {
   @OneToMany(
     () => LineItem,
     lineItem => lineItem.cart,
-    { cascade: ["insert", "remove"], eager: true }
+    { cascade: ["insert", "remove"] }
   )
   items: LineItem[]
 
   @Column()
   region_id: string
 
-  @ManyToOne(() => Region, { eager: true })
+  @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region: Region
 
-  @ManyToMany(() => Discount, { eager: true })
+  @ManyToMany(() => Discount)
   @JoinTable({
     name: "cart_discounts",
     joinColumn: {
@@ -107,7 +105,7 @@ export class Cart {
   @Column({ nullable: true })
   customer_id: string
 
-  @ManyToOne(() => Customer, { eager: true })
+  @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
@@ -123,14 +121,14 @@ export class Cart {
   @Column({ nullable: true })
   payment_id: string
 
-  @OneToOne(() => Payment, { eager: true })
+  @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
   payment: Payment
 
   @OneToMany(
     () => ShippingMethod,
     method => method.cart,
-    { eager: true }
+    { cascade: ["soft-remove", "remove"] }
   )
   shipping_methods: ShippingMethod[]
 
