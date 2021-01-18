@@ -90,7 +90,7 @@ export default async (req, res) => {
 
                   order = await swapService
                     .withTransaction(manager)
-                    .retrieve(order.id, ["shipping_address"])
+                    .retrieve(order.id, { relations: ["shipping_address"] })
 
                   return {
                     response_code: 200,

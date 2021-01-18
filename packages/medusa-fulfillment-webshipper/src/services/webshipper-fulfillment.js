@@ -266,7 +266,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       let ext_ref = `${fromOrder.id}.${fulfillment.id}`
 
       if (fromOrder.is_swap) {
-        ext_ref = `S${fromOrder.id}.${fulfillment.id}`
+        ext_ref = `${fromOrder.id}.${fulfillment.id}`
         visible_ref = `S-${fromOrder.display_id}`
       }
 
@@ -358,7 +358,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
     const wsOrder = await this.retrieveRelationship(
       body.data.relationships.order
     )
-    if (wsOrder.data.attributes.ext_ref) {
+    if (wsOrder.data && wsOrder.data.attributes.ext_ref) {
       const trackingNumbers = body.data.attributes.tracking_links.map(
         (l) => l.number
       )

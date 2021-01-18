@@ -549,8 +549,6 @@ const migrateOrders = async (mongodb, queryRunner) => {
      * LINE ITEMS
      *************************************************************************/
     const createLineItem = async li => {
-      let variant = await variantRepo.findOne({ id: li.content.variant._id })
-
       let fulfilled_quantity = Math.min(li.fulfilled_quantity || 0, li.quantity)
       let shipped_quantity = Math.min(
         li.fulfilled_quantity || 0,
@@ -571,7 +569,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
         allow_discounts: !li.no_discount,
         thumbnail: li.thumbnail,
         unit_price: Math.round(li.content.unit_price * 100),
-        variant,
+        variant_id: li.content.variant._id,
         fulfilled_quantity,
         shipped_quantity,
         returned_quantity,

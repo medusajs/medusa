@@ -14,7 +14,7 @@ class OrderSubscriber {
 
     this.eventBus_.subscribe(
       "order.shipment_created",
-      async ({ id, shipment_id }) => {
+      async ({ id, fulfillment_id }) => {
         const order = await this.orderService_.retrieve(id, {
           select: [
             "shipping_total",
@@ -47,7 +47,7 @@ class OrderSubscriber {
           ],
         })
 
-        const shipment = await this.fulfillmentService_.retrieve(shipment_id)
+        const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
 
         const data = {
           ...order,

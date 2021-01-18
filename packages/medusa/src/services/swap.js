@@ -403,7 +403,7 @@ class SwapService extends BaseService {
           title: "Return shipping",
           quantity: 1,
           has_shipping: true,
-          allow_discount: false,
+          allow_discounts: false,
           unit_price: swap.return_order.shipping_method.price,
           metadata: {
             is_return_line: true,
@@ -653,7 +653,7 @@ class SwapService extends BaseService {
         .withTransaction(manager)
         .emit(SwapService.Events.SHIPMENT_CREATED, {
           id: swapId,
-          shipment_id: shipment.id,
+          fulfillment_id: shipment.id,
         })
       return result
     })

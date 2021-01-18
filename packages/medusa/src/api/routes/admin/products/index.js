@@ -14,11 +14,6 @@ export default app => {
     middlewares.wrap(require("./create-variant").default)
   )
 
-  route.get(
-    "/:id/variants",
-    middlewares.wrap(require("./get-variants").default)
-  )
-
   route.post(
     "/:id/variants/:variant_id",
     middlewares.wrap(require("./update-variant").default)

@@ -16,7 +16,7 @@ export default async (req, res) => {
     thumbnail: Validator.string().optional(),
     variants: Validator.array()
       .items({
-        id: Validator.string().required(),
+        id: Validator.string().optional(),
         title: Validator.string().allow(null),
         sku: Validator.string().allow(null),
         ean: Validator.string().allow(null),
@@ -63,7 +63,7 @@ export default async (req, res) => {
 
     await productService.update(id, value)
 
-    const product = productService.retrieve(id, {
+    const product = await productService.retrieve(id, {
       select: defaultFields,
       relations: defaultRelations,
     })

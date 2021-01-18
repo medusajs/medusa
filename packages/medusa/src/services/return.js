@@ -258,7 +258,8 @@ class ReturnService extends BaseService {
         if (data.shipping_method) {
           toRefund = Math.max(
             0,
-            toRefund - data.shipping_method.price * (1 + orderLike.tax_rate)
+            toRefund -
+              data.shipping_method.price * (1 + orderLike.tax_rate / 100)
           )
         }
       }
@@ -269,7 +270,7 @@ class ReturnService extends BaseService {
       const returnObject = {
         ...data,
         status: "requested",
-        refund_amount: toRefund,
+        refund_amount: Math.floor(toRefund),
       }
 
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
