@@ -179,6 +179,9 @@ class CartService extends BaseService {
       relationSet.add("items")
       relationSet.add("gift_cards")
       relationSet.add("discounts")
+      //relationSet.add("discounts.parent_discount")
+      //relationSet.add("discounts.parent_discount.discount_rule")
+      //relationSet.add("discounts.parent_discount.regions")
       relationSet.add("shipping_methods")
       relationSet.add("region")
       relations = [...relationSet]
@@ -775,8 +778,22 @@ class CartService extends BaseService {
    */
   async applyDiscount_(cart, discountCode) {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
+      "discount_rule",
       "regions",
     ])
+
+    const rule = discount.discount_rule
+    let regions = discount.regions
+    if (discount.parent_discount_id) {
+      const parent = await this.discountService_.retrieve(
+        discount.parent_discount_id,
+        {
+          relations: ["discount_rule", "regions"],
+        }
+      )
+
+      regions = parent.regions
+    }
 
     if (discount.is_disabled) {
       throw new MedusaError(
@@ -785,7 +802,7 @@ class CartService extends BaseService {
       )
     }
 
-    if (!discount.regions.find(({ id }) => id === cart.region_id)) {
+    if (!regions.find(({ id }) => id === cart.region_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "The discount is not available in current region"
@@ -801,16 +818,17 @@ class CartService extends BaseService {
 
     let sawNotShipping = false
     const newDiscounts = toParse.map(d => {
-      switch (d.discount_rule.type) {
+      const drule = d.discount_rule
+      switch (drule.type) {
         case "free_shipping":
-          if (d.discount_rule.type === discount.discount_rule.type) {
+          if (d.discount_rule.type === rule.type) {
             return discount
           }
           return d
         default:
           if (!sawNotShipping) {
             sawNotShipping = true
-            if (discount.discount_rule.type !== "free_shipping") {
+            if (rule.type !== "free_shipping") {
               return discount
             }
             return d

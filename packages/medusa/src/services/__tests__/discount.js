@@ -48,7 +48,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "test",
+        code: "TEST",
         discount_rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
       })
@@ -368,6 +368,54 @@ describe("DiscountService", () => {
     })
   })
 
+  describe("createDynamicDiscount", () => {
+    const discountRepository = MockRepository({
+      create: d => d,
+      findOne: () =>
+        Promise.resolve({
+          id: "parent",
+          is_dynamic: true,
+          discount_rule_id: "parent_rule",
+        }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("test-region"),
+        }
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      regionService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully removes a region", async () => {
+      await discountService.createDynamicCode("former", {
+        code: "hi",
+      })
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        is_dynamic: true,
+        is_disabled: false,
+        discount_rule_id: "parent_rule",
+        parent_discount_id: "parent",
+        code: "HI",
+      })
+    })
+  })
+
   describe("removeRegion", () => {
     const discountRepository = MockRepository({
       findOne: () =>
@@ -418,40 +466,6 @@ describe("DiscountService", () => {
       )
 
       expect(discountRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
-  describe("generateGiftCard", () => {
-    const giftCardRepository = MockRepository({})
-
-    const regionService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-region"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      giftCardRepository,
-      regionService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully create gift card", async () => {
-      await discountService.generateGiftCard(100, IdMap.getId("test-region"))
-
-      expect(giftCardRepository.create).toHaveBeenCalledTimes(1)
-      expect(giftCardRepository.create).toHaveBeenCalledWith({
-        code: expect.stringMatching(/(([A-Z0-9]){4}(-?)){4}/),
-        value: 100,
-        balance: 100,
-        region_id: IdMap.getId("test-region"),
-      })
     })
   })
 })

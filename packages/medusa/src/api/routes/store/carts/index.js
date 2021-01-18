@@ -99,12 +99,15 @@ export const defaultFields = [
 
 export const defaultRelations = [
   "gift_cards",
-  "discounts",
   "region",
   "items",
+  "payment",
+  "shipping_address",
+  "billing_address",
   "region.countries",
   "region.payment_providers",
   "shipping_methods",
   "payment_sessions",
   "shipping_methods.shipping_option",
+  "discounts",
 ]
