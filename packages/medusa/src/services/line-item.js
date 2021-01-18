@@ -94,9 +94,9 @@ class LineItemService extends BaseService {
   }
 
   async generate(variantId, regionId, quantity, metadata = {}) {
-    const variant = await this.productVariantService_.retrieve(variantId, [
-      "product",
-    ])
+    const variant = await this.productVariantService_.retrieve(variantId, {
+      relations: ["product"],
+    })
 
     const region = await this.regionService_.retrieve(regionId)
 

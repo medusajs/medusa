@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   try {
     const variantService = req.scope.resolve("productVariantService")
-    let variant = await variantService.retrieve(id, "prices")
+    let variant = await variantService.retrieve(id, { relations: ["prices"] })
     res.json({ variant })
   } catch (error) {
     throw error

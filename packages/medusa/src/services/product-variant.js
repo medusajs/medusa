@@ -70,16 +70,13 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the product to get.
    * @return {Promise<Product>} the product document.
    */
-  async retrieve(variantId, relations = []) {
+  async retrieve(variantId, config = {}) {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
     const validatedId = this.validateId_(variantId)
-
-    const variant = await variantRepo.findOne({
-      where: { id: validatedId },
-      relations,
-    })
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const variant = await variantRepo.findOne(query)
 
     if (!variant) {
       throw new MedusaError(
@@ -203,7 +200,10 @@ class ProductVariantService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductVariantService.Events.CREATED, result)
+        .emit(ProductVariantService.Events.CREATED, {
+          id: result.id,
+        })
+
       return result
     })
   }
@@ -227,7 +227,10 @@ class ProductVariantService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductVariantService.Events.UPDATED, result)
+        .emit(ProductVariantService.Events.UPDATED, {
+          id: result.id,
+        })
+
       return result
     })
   }

@@ -36,9 +36,6 @@ class DiscountService extends BaseService {
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
 
-    /** @private @const {ProductVariantService} */
-    this.productVariantService_ = productVariantService
-
     /** @private @const {ProductService} */
     this.productService_ = productService
 
@@ -60,7 +57,6 @@ class DiscountService extends BaseService {
       discountRuleRepository: this.discountRuleRepository_,
       giftCardRepository: this.giftCardRepository_,
       totalsService: this.totalsService_,
-      productVariantService: this.productVariantService_,
       productService: this.productService_,
       regionService: this.regionService_,
       eventBusService: this.eventBus_,

@@ -113,7 +113,7 @@ class ProductService extends BaseService {
    * @return {Promise} an array of variants
    */
   async retrieveVariants(productId) {
-    const product = await this.retrieve(productId, ["variants"])
+    const product = await this.retrieve(productId, { relations: ["variants"] })
     return product.variants
   }
 
@@ -143,7 +143,9 @@ class ProductService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.CREATED, result)
+        .emit(ProductService.Events.CREATED, {
+          id: result.id,
+        })
       return result
     })
   }
@@ -225,7 +227,9 @@ class ProductService extends BaseService {
       const result = await productRepo.save(product)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, result)
+        .emit(ProductService.Events.UPDATED, {
+          id: result.id,
+        })
       return result
     })
   }
@@ -266,7 +270,9 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, ["options", "variants"])
+      const product = await this.retrieve(productId, {
+        relations: ["options", "variants"],
+      })
 
       if (product.options.find(o => o.title === optionTitle)) {
         throw new MedusaError(
@@ -299,7 +305,9 @@ class ProductService extends BaseService {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      const product = await this.retrieve(productId, ["variants"])
+      const product = await this.retrieve(productId, {
+        relations: ["variants"],
+      })
 
       if (product.variants.length !== variantOrder.length) {
         throw new MedusaError(
@@ -341,7 +349,7 @@ class ProductService extends BaseService {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      const product = await this.retrieve(productId, ["options"])
+      const product = await this.retrieve(productId, { relations: ["options"] })
 
       if (product.options.length !== optionOrder.length) {
         throw new MedusaError(
@@ -384,7 +392,7 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, ["options"])
+      const product = await this.retrieve(productId, { relations: ["options"] })
 
       const { title, values } = data
 
@@ -433,10 +441,9 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, [
-        "variants",
-        "variants.options",
-      ])
+      const product = await this.retrieve(productId, {
+        relations: ["variants", "variants.options"],
+      })
 
       const productOption = await productOptionRepo.findOne({
         where: { id: optionId, product_id: productId },
