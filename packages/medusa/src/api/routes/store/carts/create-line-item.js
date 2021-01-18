@@ -19,30 +19,21 @@ export default async (req, res) => {
     const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
 
-    const entityManager = req.scope.resolve("manager")
+    let cart = await cartService.retrieve(id)
 
-    let cart
-    await entityManager.transaction(async manager => {
-      cart = await cartService.withTransaction(manager).retrieve(id)
-
-      const line = await lineItemService
-        .withTransaction(manager)
-        .generate(
-          value.variant_id,
-          cart.region_id,
-          value.quantity,
-          value.metadata
-        )
-
-      await lineItemService
-        .withTransaction(manager)
-        .create({ ...line, cart_id: id })
-    })
+    const line = await lineItemService.generate(
+      value.variant_id,
+      cart.region_id,
+      value.quantity,
+      value.metadata
+    )
+    await cartService.addLineItem(id, line)
 
     cart = await cartService.retrieve(id, {
       select: defaultFields,
       relations: defaultRelations,
     })
+
     res.status(200).json({ cart })
   } catch (err) {
     throw err
