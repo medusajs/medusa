@@ -164,7 +164,9 @@ class ProductService extends BaseService {
         this.productVariantRepository_
       )
 
-      const product = await this.retrieve(productId, ["variants"])
+      const product = await this.retrieve(productId, {
+        relations: ["variants"],
+      })
 
       const { variants, metadata, options, images, thumbnail, ...rest } = update
 
@@ -185,6 +187,7 @@ class ProductService extends BaseService {
           }
         }
 
+        const newVariants = []
         for (const newVariant of variants) {
           if (newVariant.id) {
             const variant = product.variants.find(v => v.id === newVariant.id)
@@ -196,13 +199,23 @@ class ProductService extends BaseService {
               )
             }
 
-            await this.productVariantService_.update(variant, newVariant)
+            const saved = await this.productVariantService_
+              .withTransaction(manager)
+              .update(variant, newVariant)
+
+            newVariants.push(saved)
           } else {
             // If the provided variant does not have an id, we assume that it
             // should be created
-            await this.productVariantService_.create(product.id, variant)
+            const created = await this.productVariantService_
+              .withTransaction(manager)
+              .create(product.id, newVariant)
+
+            newVariants.push(created)
           }
         }
+
+        product.variants = newVariants
       }
 
       for (const [key, value] of Object.entries(rest)) {

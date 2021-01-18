@@ -134,7 +134,7 @@ class ProductVariantService extends BaseService {
       if (typeof product === `string`) {
         product = await productRepo.findOne({
           where: { id: productOrProductId },
-          relations: ["variants", "options"],
+          relations: ["variants", "variants.options", "options"],
         })
       } else if (!product.id) {
         throw new MedusaError(

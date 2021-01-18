@@ -20,7 +20,7 @@ export default async (req, res) => {
       metadata: { [value.key]: value.value },
     })
 
-    const product = productService.retrieve(id, {
+    const product = await productService.retrieve(id, {
       select: defaultFields,
       relations: defaultRelations,
     })

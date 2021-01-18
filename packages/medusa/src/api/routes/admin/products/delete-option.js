@@ -1,23 +1,15 @@
+import { defaultRelations, defaultFields } from "."
+
 export default async (req, res) => {
   const { id, option_id } = req.params
 
   try {
     const productService = req.scope.resolve("productService")
-    const product = await productService.deleteOption(id, option_id)
-    const data = await productService.decorate(
-      product,
-      [
-        "title",
-        "description",
-        "tags",
-        "handle",
-        "thumbnail",
-        "images",
-        "options",
-        "published",
-      ],
-      ["variants"]
-    )
+    await productService.deleteOption(id, option_id)
+    const data = await productService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.json({
       option_id,
