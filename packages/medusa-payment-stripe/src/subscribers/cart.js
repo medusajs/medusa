@@ -24,10 +24,13 @@ class CartSubscriber {
       return Promise.resolve()
     }
 
-    return this.paymentProviderService_.updateSession(
-      cart.payment_session,
-      cart
+    const session = cart.payment_sessions.find(
+      (ps) => ps.provider_id === "stripe"
     )
+
+    if (session) {
+      return this.paymentProviderService_.updateSession(session, cart)
+    }
   }
 }
 
