@@ -92,6 +92,28 @@ class ProductVariantService extends BaseService {
   }
 
   /**
+   * Gets a product variant by id.
+   * @param {string} variantId - the id of the product to get.
+   * @return {Promise<Product>} the product document.
+   */
+  async retrieveBySKU(sku, config = {}) {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+    const query = this.buildQuery_({ sku }, config)
+    const variant = await variantRepo.findOne(query)
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with sku: ${sku} was not found`
+      )
+    }
+
+    return variant
+  }
+
+  /**
    * Creates an unpublished product variant. Will validate against parent product
    * to ensure that the variant can in fact be created.
    * @param {string} productOrProductId - the product the variant will be added to
