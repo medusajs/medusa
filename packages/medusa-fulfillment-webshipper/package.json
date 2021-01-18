@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-webshipper",
-  "version": "1.0.10-alpha.22+5fe9cd6",
+  "version": "1.0.10-alpha.165+b1ef315",
   "description": "Webshipper Fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -36,7 +36,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.0.12-alpha.550+5fe9cd6"
+    "medusa-core-utils": "^1.0.12-alpha.786+b1ef315"
   },
-  "gitHead": "5fe9cd691f0d71a263177b87adb7e99ac49ca75a"
+  "gitHead": "b1ef315fb61cb0dba290f9d17a7922ae4e0eec0b"
 }
