@@ -75,6 +75,7 @@ export default async (req, res) => {
 
     const entityManager = req.scope.resolve("manager")
 
+    let newProduct
     await entityManager.transaction(async manager => {
       const { variants } = value
       delete value.variants
@@ -91,7 +92,7 @@ export default async (req, res) => {
         shippingProfile = await shippingProfileService.retrieveDefault()
       }
 
-      let newProduct = await productService
+      newProduct = await productService
         .withTransaction(manager)
         .create({ ...value, profile_id: shippingProfile.id })
 
@@ -117,7 +118,7 @@ export default async (req, res) => {
       }
     })
 
-    const product = await productService.retrieve(id, {
+    const product = await productService.retrieve(newProduct.id, {
       select: defaultFields,
       relations: defaultRelations,
     })

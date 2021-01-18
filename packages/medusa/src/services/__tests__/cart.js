@@ -299,6 +299,14 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const shippingOptionService = {
+      deleteShippingMethod: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const productVariantService = {
       canCoverQuantity: jest
         .fn()
@@ -339,6 +347,7 @@ describe("CartService", () => {
       lineItemService,
       productVariantService,
       eventBusService,
+      shippingOptionService,
     })
 
     beforeEach(() => {
@@ -398,7 +407,7 @@ describe("CartService", () => {
       expect(lineItemService.create).toHaveBeenCalledTimes(1)
       expect(lineItemService.create).toHaveBeenCalledWith({
         ...lineItem,
-        has_shipping: true,
+        has_shipping: false,
         cart_id: IdMap.getId("emptyCart"),
       })
     })
@@ -416,7 +425,7 @@ describe("CartService", () => {
 
       await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
       expect(lineItemService.update).toHaveBeenCalledWith(
         IdMap.getId("merger"),
         {
@@ -457,6 +466,7 @@ describe("CartService", () => {
   describe("removeLineItem", () => {
     const lineItemService = {
       delete: jest.fn(),
+      update: jest.fn(),
       withTransaction: function() {
         return this
       },

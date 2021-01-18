@@ -1,8 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import LineItemService from "../line-item"
-import { ProductVariantServiceMock } from "../__mocks__/product-variant"
-import { ProductServiceMock } from "../__mocks__/product"
-import { RegionServiceMock } from "../__mocks__/region"
 
 describe("LineItemService", () => {
   describe("create", () => {
@@ -122,6 +119,7 @@ describe("LineItemService", () => {
         unit_price: 100,
         quantity: 1,
         is_giftcard: true,
+        should_merge: true,
         metadata: {},
       })
     })
