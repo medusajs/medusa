@@ -3,7 +3,6 @@ export default async (req, res) => {
   const { id } = req.params
   try {
     const cartService = req.scope.resolve("cartService")
-    const regionService = req.scope.resolve("regionService")
 
     let cart = await cartService.retrieve(id, {
       relations: ["customer"],

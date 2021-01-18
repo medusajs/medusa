@@ -139,6 +139,7 @@ class DiscountService extends BaseService {
       const discountRule = await ruleRepo.create(validatedRule)
       const createdDiscountRule = await ruleRepo.save(discountRule)
 
+      discount.code = discount.code.toUpperCase()
       discount.discount_rule = createdDiscountRule
 
       const created = await discountRepo.create(discount)
@@ -182,13 +183,20 @@ class DiscountService extends BaseService {
     )
 
     let discount = await discountRepo.findOne({
-      where: { code: discountCode, is_dynamic: false },
+      join: {
+        alias: "d",
+        parent_discount: { alias: "parent", eager: true },
+      },
+      where: { code: discountCode.toUpperCase(), is_dynamic: false },
       relations,
     })
 
     if (!discount) {
       discount = await discountRepo.findOne({
-        where: { code: discountCode, is_dynamic: true },
+        join: {
+          alias: "d",
+        },
+        where: { code: discountCode.toUpperCase(), is_dynamic: true },
         relations,
       })
 
@@ -241,40 +249,6 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * Generates a gift card with the specified value which is valid in the
-   * specified region.
-   * @param {number} value - the value that the gift card represents
-   * @param {string} regionId - the id of the region in which the gift card can
-   *    be used
-   * @return {Discount} the newly created gift card
-   */
-  async generateGiftCard(value, regionId) {
-    return this.atomicPhase_(async manager => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
-
-      const region = await this.regionService_.retrieve(regionId)
-
-      const code = [
-        randomize("A0", 4),
-        randomize("A0", 4),
-        randomize("A0", 4),
-        randomize("A0", 4),
-      ].join("-")
-
-      const toCreate = {
-        code,
-        value,
-        balance: value,
-        region_id: region.id,
-      }
-
-      const created = await giftCardRepo.create(toCreate)
-      const result = await giftCardRepo.save(created)
-      return result
-    })
-  }
-
-  /**
    * Creates a dynamic code for a discount id.
    * @param {string} discountId - the id of the discount to create a code for
    * @param {string} code - the code to identify the discount by
@@ -285,6 +259,7 @@ class DiscountService extends BaseService {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
       const discount = await this.retrieve(discountId)
+
       if (!discount.is_dynamic) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
@@ -292,9 +267,19 @@ class DiscountService extends BaseService {
         )
       }
 
+      if (!data.code) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Discount must have a code"
+        )
+      }
+
       const toCreate = {
         ...data,
-        code,
+        discount_rule_id: discount.discount_rule_id,
+        is_dynamic: true,
+        is_disabled: false,
+        code: data.code.toUpperCase(),
         parent_discount_id: discount.id,
       }
 
