@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { Brackets, Raw } from "typeorm"
 
 const entityFields = [
   "cart",
@@ -213,7 +214,41 @@ class OrderService extends BaseService {
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.display_id
+      delete where.email
+
+      query.join = {
+        alias: "order",
+        innerJoin: {
+          shipping_address: "order.shipping_address",
+        },
+      }
+
+      query.where = qb => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`shipping_address.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+          })
+        )
+      }
+    }
+
     const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
       config
     )

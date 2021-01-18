@@ -11,6 +11,10 @@ export default async (req, res) => {
 
     let selector = {}
 
+    if ("q" in req.query) {
+      selector.q = req.query.q
+    }
+
     let includeFields = []
     if ("fields" in req.query) {
       includeFields = req.query.fields.split(",")
