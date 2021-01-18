@@ -564,6 +564,7 @@ class CartService extends BaseService {
           "billing_address",
           "gift_cards",
           "discounts",
+          "customer",
           "discounts.discount_rule",
           "discounts.regions",
         ],
@@ -999,7 +1000,12 @@ class CartService extends BaseService {
           "discount_total",
           "total",
         ],
-        relations: ["region", "region.payment_providers", "payment_sessions"],
+        relations: [
+          "region",
+          "region.payment_providers",
+          "payment_sessions",
+          "customer",
+        ],
       })
 
       const region = cart.region

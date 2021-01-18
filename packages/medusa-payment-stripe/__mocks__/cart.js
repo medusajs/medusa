@@ -14,6 +14,8 @@ var carts = {
     id: _medusaTestUtils.IdMap.getId("emptyCart"),
     items: [],
     region_id: _medusaTestUtils.IdMap.getId("testRegion"),
+    customer_id: "test-customer",
+    payment_sessions: [],
     shipping_options: [{
       id: _medusaTestUtils.IdMap.getId("freeShipping"),
       profile_id: "default_profile",
@@ -170,6 +172,10 @@ var CartServiceMock = {
   retrieve: jest.fn().mockImplementation(function (cartId) {
     if (cartId === _medusaTestUtils.IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart);
+    }
+
+    if (cartId === _medusaTestUtils.IdMap.getId("fr-cart-no-customer")) {
+      return Promise.resolve(carts.frCartNoStripeCustomer);
     }
 
     if (cartId === _medusaTestUtils.IdMap.getId("emptyCart")) {

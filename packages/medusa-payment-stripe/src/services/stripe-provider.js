@@ -141,7 +141,7 @@ class StripeProviderService extends PaymentService {
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
-      amount: amount, // Stripe amount is in cents
+      amount: amount,
       currency: currency_code,
       setup_future_usage: "on_session",
       capture_method: this.options_.capture ? "automatic" : "manual",
@@ -154,11 +154,18 @@ class StripeProviderService extends PaymentService {
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
       } else {
-        const stripeCustomer = await this.stripe_.customers.create({ email })
+        const stripeCustomer = await this.createCustomer({
+          email,
+          id: customer_id,
+        })
+
         intentRequest.customer = stripeCustomer.id
       }
     } else {
-      const stripeCustomer = await this.stripe_.customers.create({ email })
+      const stripeCustomer = await this.createCustomer({
+        email,
+      })
+
       intentRequest.customer = stripeCustomer.id
     }
 
@@ -230,13 +237,19 @@ class StripeProviderService extends PaymentService {
    */
   async updatePayment(sessionData, cart) {
     try {
-      if (cart.total && sessionData.amount === cart.total) {
-        return sessionData
-      }
+      const stripeId = cart.customer?.metadata?.stripe_id || undefined
 
-      return this.stripe_.paymentIntents.update(sessionData.id, {
-        amount: cart.total,
-      })
+      if (stripeId !== sessionData.customer) {
+        return this.createPayment(cart)
+      } else {
+        if (cart.total && sessionData.amount === cart.total) {
+          return sessionData
+        }
+
+        return this.stripe_.paymentIntents.update(sessionData.id, {
+          amount: cart.total,
+        })
+      }
     } catch (error) {
       throw error
     }
