@@ -6,11 +6,9 @@ export default async (req, res) => {
 
     await orderService.deleteMetadata(id, key)
 
-    const order = await orderService.retrieve(id, [
-      "region",
-      "customer",
-      "swaps",
-    ])
+    const order = await orderService.retrieve(id, {
+      relations: ["region", "customer", "swaps"],
+    })
 
     res.status(200).json({ order })
   } catch (err) {

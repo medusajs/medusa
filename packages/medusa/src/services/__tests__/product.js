@@ -96,6 +96,9 @@ describe("ProductService", () => {
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
+      withTransaction: function() {
+        return this
+      },
       update: () => Promise.resolve(),
     }
 

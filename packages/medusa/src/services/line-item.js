@@ -69,19 +69,15 @@ class LineItemService extends BaseService {
    * @param {string} id - the id of the line item to retrieve
    * @return {LineItem} the line item
    */
-  async retrieve(id, relations = []) {
+  async retrieve(id, config = {}) {
     const lineItemRepository = this.manager_.getCustomRepository(
       this.lineItemRepository_
     )
 
     const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
 
-    const lineItem = await lineItemRepository.findOne({
-      where: {
-        id: validatedId,
-      },
-      relations,
-    })
+    const lineItem = await lineItemRepository.findOne(query)
 
     if (!lineItem) {
       throw new MedusaError(

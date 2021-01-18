@@ -20,10 +20,9 @@ export default async (req, res) => {
       value.address
     )
 
-    customer = await customerService.retrieve(id, [
-      "orders",
-      "shipping_addresses",
-    ])
+    customer = await customerService.retrieve(id, {
+      relations: ["orders", "shipping_addresses"],
+    })
 
     res.json({ customer })
   } catch (err) {

@@ -147,16 +147,14 @@ class CustomerService extends BaseService {
    * @param {string} customerId - the id of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieve(customerId, relations = []) {
+  async retrieve(customerId, config = {}) {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
     const validatedId = this.validateId_(customerId)
+    const query = this.buildQuery_({ id: validatedId }, config)
 
-    const customer = await customerRepo.findOne({
-      where: { id: validatedId },
-      relations,
-    })
+    const customer = await customerRepo.findOne(query)
 
     if (!customer) {
       throw new MedusaError(
@@ -173,15 +171,13 @@ class CustomerService extends BaseService {
    * @param {string} email - the email of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByEmail(email, relations = []) {
+  async retrieveByEmail(email, config = {}) {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
 
-    const customer = await customerRepo.findOne({
-      where: { email },
-      relations,
-    })
+    const query = this.buildQuery_({ email }, config)
+    const customer = await customerRepo.findOne(query)
 
     if (!customer) {
       throw new MedusaError(
@@ -198,15 +194,13 @@ class CustomerService extends BaseService {
    * @param {string} phone - the phone of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByPhone(phone, relations = []) {
+  async retrieveByPhone(phone, config = {}) {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
 
-    const customer = await customerRepo.findOne({
-      where: { phone },
-      relations,
-    })
+    const query = this.buildQuery_({ phone }, config)
+    const customer = await customerRepo.findOne(query)
 
     if (!customer) {
       throw new MedusaError(
@@ -370,7 +364,9 @@ class CustomerService extends BaseService {
         this.addressRepository_
       )
 
-      const customer = await this.retrieve(customerId, ["shipping_addresses"])
+      const customer = await this.retrieve(customerId, {
+        relations: ["shipping_addresses"],
+      })
       this.validateBillingAddress_(address)
 
       let shouldAdd = !customer.shipping_addresses.find(

@@ -247,12 +247,14 @@ class ShippingProfileService extends BaseService {
         this.shippingProfileRepository_
       )
 
-      const profile = await this.retrieve(profileId, [
-        "products",
-        "products.profile",
-        "shipping_options",
-        "shipping_options.profile",
-      ])
+      const profile = await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
 
       const { metadata, products, shipping_options, ...rest } = update
 

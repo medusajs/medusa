@@ -4,16 +4,18 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
 
-    const order = await orderService.retrieve(id, [
-      "order",
-      "additional_items",
-      "return_order",
-      "fulfillments",
-      "payment",
-      "shipping_address",
-      "shipping_methods",
-      "cart",
-    ])
+    const order = await orderService.retrieve(id, {
+      relations: [
+        "order",
+        "additional_items",
+        "return_order",
+        "fulfillments",
+        "payment",
+        "shipping_address",
+        "shipping_methods",
+        "cart",
+      ],
+    })
 
     res.json({ order })
   } catch (error) {

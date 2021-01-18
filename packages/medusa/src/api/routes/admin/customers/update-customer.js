@@ -20,7 +20,9 @@ export default async (req, res) => {
     const customerService = req.scope.resolve("customerService")
     await customerService.update(id, value)
 
-    const customer = await customerService.retrieve(id, ["orders"])
+    const customer = await customerService.retrieve(id, {
+      relations: ["orders"],
+    })
     res.status(200).json({ customer })
   } catch (err) {
     throw err

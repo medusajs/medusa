@@ -36,7 +36,6 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.findOne).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
-        relations: [],
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -250,7 +249,6 @@ describe("ProductVariantService", () => {
         "product-variant.updated",
         {
           id: IdMap.getId("ironman"),
-          published: true,
         }
       )
 

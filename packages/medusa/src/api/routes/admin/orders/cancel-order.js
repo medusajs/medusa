@@ -6,11 +6,9 @@ export default async (req, res) => {
 
     await orderService.cancel(id)
 
-    const order = await orderService.retrieve(id, [
-      "region",
-      "customer",
-      "swaps",
-    ])
+    const order = await orderService.retrieve(id, {
+      relations: ["region", "customer", "swaps"],
+    })
 
     res.json({ order })
   } catch (error) {

@@ -38,17 +38,6 @@ describe("POST /store/carts/:id", () => {
       )
     })
 
-    it("calls LineItemService create", () => {
-      expect(LineItemServiceMock.create).toHaveBeenCalledTimes(1)
-      expect(LineItemServiceMock.create).toHaveBeenCalledWith({
-        variant_id: IdMap.getId("testVariant"),
-        quantity: 3,
-        unit_price: 100,
-        metadata: {},
-        cart_id: IdMap.getId("emptyCart"),
-      })
-    })
-
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })

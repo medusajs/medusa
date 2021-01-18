@@ -38,6 +38,7 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
         variant_id: IdMap.getId("variant1"),
         object: "product-variant",
         deleted: true,
+        product: expect.any(Object),
       })
     })
   })

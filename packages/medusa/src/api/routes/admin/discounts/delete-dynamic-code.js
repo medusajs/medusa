@@ -5,11 +5,9 @@ export default async (req, res) => {
     const discountService = req.scope.resolve("discountService")
     await discountService.deleteDynamicCode(discount_id, code)
 
-    const discount = await discountService.retrieve(discount_id, [
-      "discount_rule",
-      "discount_rule.valid_for",
-      "regions",
-    ])
+    const discount = await discountService.retrieve(discount_id, {
+      relations: ["discount_rule", "discount_rule.valid_for", "regions"],
+    })
 
     res.status(200).json({ discount })
   } catch (err) {
