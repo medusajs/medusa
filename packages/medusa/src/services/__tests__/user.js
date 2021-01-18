@@ -28,7 +28,6 @@ describe("UserService", () => {
       expect(userRepository.findOne).toHaveBeenCalledTimes(1)
       expect(userRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
-        relations: [],
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))

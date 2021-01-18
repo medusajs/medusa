@@ -66,14 +66,13 @@ class UserService extends BaseService {
    * @param {string} userId - the id of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId, relations = []) {
+  async retrieve(userId, config = {}) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
-    const validatedId = this.validateId_(userId)
 
-    const user = await userRepo.findOne({
-      where: { id: validatedId },
-      relations,
-    })
+    const validatedId = this.validateId_(userId)
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const user = await userRepo.findOne(query)
 
     if (!user) {
       throw new MedusaError(

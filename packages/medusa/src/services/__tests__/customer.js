@@ -29,7 +29,6 @@ describe("CustomerService", () => {
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
-        relations: [],
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -55,7 +54,6 @@ describe("CustomerService", () => {
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
         where: { email: "tony@stark.com" },
-        relations: [],
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -81,7 +79,6 @@ describe("CustomerService", () => {
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
         where: { phone: "12341234" },
-        relations: [],
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))

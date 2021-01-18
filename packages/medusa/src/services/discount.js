@@ -337,10 +337,9 @@ class DiscountService extends BaseService {
         this.discountRuleRepository_
       )
 
-      const discount = await this.retrieve(discountId, [
-        "discount_rule",
-        "discount_rule.valid_for",
-      ])
+      const discount = await this.retrieve(discountId, {
+        relations: ["discount_rule", "discount_rule.valid_for"],
+      })
 
       const { discount_rule } = discount
 
@@ -371,10 +370,9 @@ class DiscountService extends BaseService {
         this.discountRuleRepository_
       )
 
-      const discount = await this.retrieve(discountId, [
-        "discount_rule",
-        "discount_rule.valid_for",
-      ])
+      const discount = await this.retrieve(discountId, {
+        relations: ["discount_rule", "discount_rule.valid_for"],
+      })
 
       const { discount_rule } = discount
 
@@ -403,7 +401,9 @@ class DiscountService extends BaseService {
     return this.atomicPhase_(async manager => {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-      const discount = await this.retrieve(discountId, ["regions"])
+      const discount = await this.retrieve(discountId, {
+        relations: ["regions"],
+      })
 
       const exists = discount.regions.find(r => r.id === regionId)
       // If region is already present, we return early
@@ -430,7 +430,9 @@ class DiscountService extends BaseService {
     return this.atomicPhase_(async manager => {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-      const discount = await this.retrieve(discountId, ["regions"])
+      const discount = await this.retrieve(discountId, {
+        relations: ["regions"],
+      })
 
       const exists = discount.regions.find(r => r.id === regionId)
       // If region is not present, we return early

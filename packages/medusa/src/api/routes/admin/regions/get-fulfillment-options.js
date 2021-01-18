@@ -6,9 +6,9 @@ export default async (req, res) => {
       "fulfillmentProviderService"
     )
     const regionService = req.scope.resolve("regionService")
-    const region = await regionService.retrieve(region_id, [
-      "fulfillment_providers",
-    ])
+    const region = await regionService.retrieve(region_id, {
+      relations: ["fulfillment_providers"],
+    })
 
     const fpsIds = region.fulfillment_providers.map(fp => fp.id) || []
 
