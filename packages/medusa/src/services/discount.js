@@ -183,19 +183,12 @@ class DiscountService extends BaseService {
     )
 
     let discount = await discountRepo.findOne({
-      join: {
-        alias: "d",
-        parent_discount: { alias: "parent", eager: true },
-      },
       where: { code: discountCode.toUpperCase(), is_dynamic: false },
       relations,
     })
 
     if (!discount) {
       discount = await discountRepo.findOne({
-        join: {
-          alias: "d",
-        },
         where: { code: discountCode.toUpperCase(), is_dynamic: true },
         relations,
       })
