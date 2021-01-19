@@ -720,7 +720,7 @@ class BrightpearlService extends BaseService {
   async getBrightpearlRows(fromOrder) {
     const { region } = fromOrder
     const discount = fromOrder.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== "free_shipping"
     )
     let lineDiscounts = []
     if (discount) {

@@ -103,8 +103,8 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Promo Code*\t${d.code} ${d.discount_rule.value}${
-            d.discount_rule.type === "percentage" ? "%" : ` ${currencyCode}`
+          text: `*Promo Code*\t${d.code} ${d.rule.value}${
+            d.rule.type === "percentage" ? "%" : ` ${currencyCode}`
           }`,
         },
       })

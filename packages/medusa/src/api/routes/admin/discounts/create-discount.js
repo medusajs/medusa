@@ -4,7 +4,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     code: Validator.string().required(),
     is_dynamic: Validator.boolean().default(false),
-    discount_rule: Validator.object()
+    rule: Validator.object()
       .keys({
         description: Validator.string().optional(),
         type: Validator.string().required(),
@@ -35,8 +35,8 @@ export default async (req, res) => {
 
     const created = await discountService.create(value)
     const discount = await discountService.retrieve(created.id, [
-      "discount_rule",
-      "discount_rule.valid_for",
+      "rule",
+      "rule.valid_for",
       "regions",
     ])
 

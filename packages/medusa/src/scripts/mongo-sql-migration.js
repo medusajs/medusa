@@ -329,7 +329,7 @@ const createDiscount = async (mongodb, queryRunner, d) => {
       id: `${d._id}`,
       code: d.code,
       is_dynamic: !!d.is_dynamic,
-      discount_rule: ruleRepo.create({
+      rule: ruleRepo.create({
         description: d.discount_rule.description,
         type: d.discount_rule.type,
         allocation: d.discount_rule.allocation,
@@ -407,8 +407,9 @@ const migrateDynamicDiscounts = async (mongodb, queryRunner) => {
       is_dynamic: true,
       is_disabled: d.disabled,
       parent_discount: discount,
-      discount_rule_id: discount.discount_rule_id,
+      rule_id: discount.rule_id,
     })
+
     toSave.push(newD)
   }
 

@@ -94,7 +94,7 @@ export const carts = {
     discounts: [
       {
         code: "MEDUSA_FREE",
-        discount_rule: {
+        rule: {
           type: "percent",
           value: 20,
           allocation: "item",

@@ -5,7 +5,7 @@ const discounts = {
   total10Percent: {
     id: "total10",
     code: "10%OFF",
-    discount_rule: {
+    rule: {
       type: "percentage",
       allocation: "total",
       value: 10,
@@ -15,7 +15,7 @@ const discounts = {
   item2Fixed: {
     id: "item2Fixed",
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "item",
       value: 2,
@@ -26,7 +26,7 @@ const discounts = {
   item10Percent: {
     id: "item10Percent",
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "percentage",
       allocation: "item",
       value: 10,
@@ -37,7 +37,7 @@ const discounts = {
   total10Fixed: {
     id: "total10Fixed",
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "total",
       value: 10,
@@ -49,7 +49,7 @@ const discounts = {
     id: "expired",
     code: "MEDUSA",
     ends_at: new Date("December 17, 1995 03:24:00"),
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "item",
       value: 10,
@@ -85,7 +85,7 @@ describe("TotalsService", () => {
       }
 
       const discount = {
-        discount_rule: {
+        rule: {
           type: "percentage",
           value: 10,
           valid_for: [{ id: "testp" }],
@@ -129,7 +129,7 @@ describe("TotalsService", () => {
       }
 
       const discount = {
-        discount_rule: {
+        rule: {
           type: "fixed",
           value: 9,
           valid_for: [{ id: "testp" }],
@@ -173,7 +173,7 @@ describe("TotalsService", () => {
       }
 
       const discount = {
-        discount_rule: {
+        rule: {
           type: "fixed",
           value: 9,
           valid_for: [],

@@ -35,7 +35,7 @@ describe("POST /admin/discounts/:discount_id/regions/:region_id", () => {
             "id",
             "code",
             "is_dynamic",
-            "discount_rule_id",
+            "rule_id",
             "parent_discount_id",
             "starts_at",
             "ends_at",
@@ -44,12 +44,7 @@ describe("POST /admin/discounts/:discount_id/regions/:region_id", () => {
             "deleted_at",
             "metadata",
           ],
-          relations: [
-            "discount_rule",
-            "parent_discount",
-            "regions",
-            "discount_rule.valid_for",
-          ],
+          relations: ["rule", "parent_discount", "regions", "rule.valid_for"],
         }
       )
 

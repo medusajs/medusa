@@ -180,7 +180,7 @@ class CartService extends BaseService {
       relationSet.add("gift_cards")
       relationSet.add("discounts")
       //relationSet.add("discounts.parent_discount")
-      //relationSet.add("discounts.parent_discount.discount_rule")
+      //relationSet.add("discounts.parent_discount.rule")
       //relationSet.add("discounts.parent_discount.regions")
       relationSet.add("shipping_methods")
       relationSet.add("region")
@@ -570,7 +570,7 @@ class CartService extends BaseService {
           "gift_cards",
           "discounts",
           "customer",
-          "discounts.discount_rule",
+          "discounts.rule",
           "discounts.regions",
         ],
       })
@@ -778,17 +778,17 @@ class CartService extends BaseService {
    */
   async applyDiscount_(cart, discountCode) {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
-      "discount_rule",
+      "rule",
       "regions",
     ])
 
-    const rule = discount.discount_rule
+    const rule = discount.rule
     let regions = discount.regions
     if (discount.parent_discount_id) {
       const parent = await this.discountService_.retrieve(
         discount.parent_discount_id,
         {
-          relations: ["discount_rule", "regions"],
+          relations: ["rule", "regions"],
         }
       )
 
@@ -818,10 +818,10 @@ class CartService extends BaseService {
 
     let sawNotShipping = false
     const newDiscounts = toParse.map(d => {
-      const drule = d.discount_rule
+      const drule = d.rule
       switch (drule.type) {
         case "free_shipping":
-          if (d.discount_rule.type === rule.type) {
+          if (d.rule.type === rule.type) {
             return discount
           }
           return d

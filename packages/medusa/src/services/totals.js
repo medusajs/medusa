@@ -94,9 +94,7 @@ class TotalsService extends BaseService {
     const tax_rate = object.tax_rate || object.region.tax_rate
     const taxRate = (tax_rate || 0) / 100
 
-    const discount = discounts.find(
-      ({ rule }) => rule.type !== "free_shipping"
-    )
+    const discount = discounts.find(({ rule }) => rule.type !== "free_shipping")
 
     if (!discount) {
       return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
@@ -175,7 +173,7 @@ class TotalsService extends BaseService {
   }
 
   /**
-   * If the discount_rule of a discount has allocation="item", then we need
+   * If the rule of a discount has allocation="item", then we need
    * to calculate discount on each item in the cart. Furthermore, we need to
    * make sure to only apply the discount on valid variants. And finally we
    * return ether an array of percentages discounts or fixed discounts
@@ -188,8 +186,8 @@ class TotalsService extends BaseService {
   getAllocationItemDiscounts(discount, cart) {
     const discounts = []
     for (const item of cart.items) {
-      if (discount.discount_rule.valid_for.length > 0) {
-        discount.discount_rule.valid_for.map(({ id }) => {
+      if (discount.rule.valid_for.length > 0) {
+        discount.rule.valid_for.map(({ id }) => {
           if (item.variant.product_id === id) {
             discounts.push(
               this.calculateDiscount_(

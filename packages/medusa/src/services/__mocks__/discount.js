@@ -5,7 +5,7 @@ export const discounts = {
     id: IdMap.getId("dynamic"),
     code: "Something",
     is_dynamic: true,
-    discount_rule: {
+    rule: {
       type: "percentage",
       allocation: "total",
       value: 10,
@@ -15,7 +15,7 @@ export const discounts = {
   total10Percent: {
     id: IdMap.getId("total10"),
     code: "10%OFF",
-    discount_rule: {
+    rule: {
       type: "percentage",
       allocation: "total",
       value: 10,
@@ -25,7 +25,7 @@ export const discounts = {
   item10Percent: {
     id: IdMap.getId("item10Percent"),
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "percentage",
       allocation: "item",
       value: 10,
@@ -36,7 +36,7 @@ export const discounts = {
   total10Fixed: {
     id: IdMap.getId("total10Fixed"),
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "total",
       value: 10,
@@ -46,7 +46,7 @@ export const discounts = {
   item9Fixed: {
     id: IdMap.getId("item9Fixed"),
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "item",
       value: 9,
@@ -57,7 +57,7 @@ export const discounts = {
   item2Fixed: {
     id: IdMap.getId("item2Fixed"),
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "item",
       value: 2,
@@ -68,7 +68,7 @@ export const discounts = {
   item10FixedNoVariants: {
     id: IdMap.getId("item10FixedNoVariants"),
     code: "MEDUSA",
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "item",
       value: 10,
@@ -80,7 +80,7 @@ export const discounts = {
     id: IdMap.getId("expired"),
     code: "MEDUSA",
     ends_at: new Date("December 17, 1995 03:24:00"),
-    discount_rule: {
+    rule: {
       type: "fixed",
       allocation: "item",
       value: 10,
@@ -91,7 +91,7 @@ export const discounts = {
   freeShipping: {
     id: IdMap.getId("freeshipping"),
     code: "FREESHIPPING",
-    discount_rule: {
+    rule: {
       type: "free_shipping",
       allocation: "total",
       value: 10,
@@ -102,7 +102,7 @@ export const discounts = {
   USDiscount: {
     id: IdMap.getId("us-discount"),
     code: "US10",
-    discount_rule: {
+    rule: {
       type: "free_shipping",
       allocation: "total",
       value: 10,
@@ -112,7 +112,7 @@ export const discounts = {
   },
   alreadyExists: {
     code: "ALREADYEXISTS",
-    discount_rule: {
+    rule: {
       type: "percentage",
       allocation: "total",
       value: 20,

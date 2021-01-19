@@ -6,7 +6,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     code: Validator.string().optional(),
     is_dynamic: Validator.boolean().default(false),
-    discount_rule: Validator.object()
+    rule: Validator.object()
       .keys({
         id: Validator.string().required(),
         description: Validator.string().optional(),

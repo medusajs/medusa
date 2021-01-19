@@ -59,7 +59,7 @@ export const defaultFields = [
   "id",
   "code",
   "is_dynamic",
-  "discount_rule_id",
+  "rule_id",
   "parent_discount_id",
   "starts_at",
   "ends_at",
@@ -70,8 +70,8 @@ export const defaultFields = [
 ]
 
 export const defaultRelations = [
-  "discount_rule",
+  "rule",
   "parent_discount",
   "regions",
-  "discount_rule.valid_for",
+  "rule.valid_for",
 ]

@@ -29,7 +29,7 @@ describe("DiscountService", () => {
     it("successfully creates discount", async () => {
       await discountService.create({
         code: "test",
-        discount_rule: {
+        rule: {
           type: "percentage",
           allocation: "total",
           value: 20,
@@ -49,7 +49,7 @@ describe("DiscountService", () => {
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
         code: "TEST",
-        discount_rule: expect.anything(),
+        rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
       })
 
@@ -174,13 +174,13 @@ describe("DiscountService", () => {
 
     it("successfully updates discount rule", async () => {
       await discountService.update(IdMap.getId("total10"), {
-        discount_rule: { type: "fixed", value: 10, allocation: "total" },
+        rule: { type: "fixed", value: 10, allocation: "total" },
       })
       expect(discountRepository.save).toHaveBeenCalledTimes(1)
       expect(discountRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("total10"),
         code: "10%OFF",
-        discount_rule: { type: "fixed", value: 10, allocation: "total" },
+        rule: { type: "fixed", value: 10, allocation: "total" },
       })
     })
 
@@ -202,7 +202,7 @@ describe("DiscountService", () => {
       findOne: () =>
         Promise.resolve({
           id: IdMap.getId("total10"),
-          discount_rule: {
+          rule: {
             id: IdMap.getId("test-rule"),
             valid_for: [{ id: IdMap.getId("test-product") }],
           },
@@ -261,7 +261,7 @@ describe("DiscountService", () => {
       findOne: () =>
         Promise.resolve({
           id: IdMap.getId("total10"),
-          discount_rule: {
+          rule: {
             id: IdMap.getId("test-rule"),
             valid_for: [{ id: IdMap.getId("test-product") }],
           },
@@ -375,7 +375,7 @@ describe("DiscountService", () => {
         Promise.resolve({
           id: "parent",
           is_dynamic: true,
-          discount_rule_id: "parent_rule",
+          rule_id: "parent_rule",
         }),
     })
 
@@ -409,7 +409,7 @@ describe("DiscountService", () => {
       expect(discountRepository.save).toHaveBeenCalledWith({
         is_dynamic: true,
         is_disabled: false,
-        discount_rule_id: "parent_rule",
+        rule_id: "parent_rule",
         parent_discount_id: "parent",
         code: "HI",
       })

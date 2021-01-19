@@ -1296,13 +1296,13 @@ describe("CartService", () => {
             discounts: [
               {
                 code: "1234",
-                discount_rule: {
+                rule: {
                   type: "fixed",
                 },
               },
               {
                 code: "FS1234",
-                discount_rule: {
+                rule: {
                   type: "free_shipping",
                 },
               },
@@ -1330,7 +1330,7 @@ describe("CartService", () => {
             id: IdMap.getId("freeship"),
             code: "FREESHIPPING",
             regions: [{ id: IdMap.getId("good") }],
-            discount_rule: {
+            rule: {
               type: "free_shipping",
             },
           })
@@ -1339,7 +1339,7 @@ describe("CartService", () => {
           id: IdMap.getId("10off"),
           code: "10%OFF",
           regions: [{ id: IdMap.getId("good") }],
-          discount_rule: {
+          rule: {
             type: "percentage",
           },
         })
@@ -1381,7 +1381,7 @@ describe("CartService", () => {
             id: IdMap.getId("10off"),
             code: "10%OFF",
             regions: [{ id: IdMap.getId("good") }],
-            discount_rule: {
+            rule: {
               type: "percentage",
             },
           },
@@ -1403,7 +1403,7 @@ describe("CartService", () => {
             id: IdMap.getId("10off"),
             code: "10%OFF",
             regions: [{ id: IdMap.getId("good") }],
-            discount_rule: {
+            rule: {
               type: "percentage",
             },
           },
@@ -1425,7 +1425,7 @@ describe("CartService", () => {
             id: IdMap.getId("10off"),
             code: "10%OFF",
             regions: [{ id: IdMap.getId("good") }],
-            discount_rule: {
+            rule: {
               type: "percentage",
             },
           },
@@ -1433,7 +1433,7 @@ describe("CartService", () => {
             id: IdMap.getId("freeship"),
             code: "FREESHIPPING",
             regions: [{ id: IdMap.getId("good") }],
-            discount_rule: {
+            rule: {
               type: "free_shipping",
             },
           },
@@ -1459,13 +1459,13 @@ describe("CartService", () => {
           discounts: [
             {
               code: "1234",
-              discount_rule: {
+              rule: {
                 type: "fixed",
               },
             },
             {
               code: "FS1234",
-              discount_rule: {
+              rule: {
                 type: "free_shipping",
               },
             },
@@ -1502,7 +1502,7 @@ describe("CartService", () => {
         discounts: [
           {
             code: "FS1234",
-            discount_rule: {
+            rule: {
               type: "free_shipping",
             },
           },

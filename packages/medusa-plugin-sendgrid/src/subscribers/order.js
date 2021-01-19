@@ -126,10 +126,8 @@ class OrderSubscriber {
           return {
             is_giftcard: false,
             code: discount.code,
-            descriptor: `${discount.discount_rule.value}${
-              discount.discount_rule.type === "percentage"
-                ? "%"
-                : ` ${currencyCode}`
+            descriptor: `${discount.rule.value}${
+              discount.rule.type === "percentage" ? "%" : ` ${currencyCode}`
             }`,
           }
         })

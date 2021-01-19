@@ -126,7 +126,7 @@ class DiscountService extends BaseService {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
       const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-      const validatedRule = this.validateDiscountRule_(discount.discount_rule)
+      const validatedRule = this.validateDiscountRule_(discount.rule)
 
       if (discount.regions) {
         discount.regions = await Promise.all(
@@ -140,7 +140,7 @@ class DiscountService extends BaseService {
       const createdDiscountRule = await ruleRepo.save(discountRule)
 
       discount.code = discount.code.toUpperCase()
-      discount.discount_rule = createdDiscountRule
+      discount.rule = createdDiscountRule
 
       const created = await discountRepo.create(discount)
       const result = await discountRepo.save(created)
@@ -216,7 +216,7 @@ class DiscountService extends BaseService {
 
       const discount = await this.retrieve(discountId)
 
-      const { discount_rule, metadata, regions, ...rest } = update
+      const { rule, metadata, regions, ...rest } = update
 
       if (regions) {
         discount.regions = await Promise.all(
@@ -228,8 +228,8 @@ class DiscountService extends BaseService {
         discount.metadata = await this.setMetadata_(discount.id, metadata)
       }
 
-      if (discount_rule) {
-        discount.discount_rule = this.validateDiscountRule_(discount_rule)
+      if (rule) {
+        discount.rule = this.validateDiscountRule_(rule)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -269,7 +269,7 @@ class DiscountService extends BaseService {
 
       const toCreate = {
         ...data,
-        discount_rule_id: discount.discount_rule_id,
+        rule_id: discount.rule_id,
         is_dynamic: true,
         is_disabled: false,
         code: data.code.toUpperCase(),
@@ -316,22 +316,22 @@ class DiscountService extends BaseService {
       )
 
       const discount = await this.retrieve(discountId, {
-        relations: ["discount_rule", "discount_rule.valid_for"],
+        relations: ["rule", "rule.valid_for"],
       })
 
-      const { discount_rule } = discount
+      const { rule } = discount
 
-      const exists = discount_rule.valid_for.find(p => p.id === productId)
+      const exists = rule.valid_for.find(p => p.id === productId)
       // If product is already present, we return early
       if (exists) {
-        return discount_rule
+        return rule
       }
 
       const product = await this.productService_.retrieve(productId)
 
-      discount_rule.valid_for = [...discount_rule.valid_for, product]
+      rule.valid_for = [...rule.valid_for, product]
 
-      const updated = await discountRuleRepo.save(discount_rule)
+      const updated = await discountRuleRepo.save(rule)
       return updated
     })
   }
@@ -349,22 +349,20 @@ class DiscountService extends BaseService {
       )
 
       const discount = await this.retrieve(discountId, {
-        relations: ["discount_rule", "discount_rule.valid_for"],
+        relations: ["rule", "rule.valid_for"],
       })
 
-      const { discount_rule } = discount
+      const { rule } = discount
 
-      const exists = discount_rule.valid_for.find(p => p.id === productId)
+      const exists = rule.valid_for.find(p => p.id === productId)
       // If product is not present, we return early
       if (!exists) {
-        return discount_rule
+        return rule
       }
 
-      discount_rule.valid_for = discount_rule.valid_for.filter(
-        p => p.id !== productId
-      )
+      rule.valid_for = rule.valid_for.filter(p => p.id !== productId)
 
-      const updated = await discountRuleRepo.save(discount_rule)
+      const updated = await discountRuleRepo.save(rule)
       return updated
     })
   }

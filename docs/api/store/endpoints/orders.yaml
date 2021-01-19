@@ -3,17 +3,17 @@ domain: store
 route: /orders
 description: >
   An Order represents a selection of items purchased and holds information about
-  how the items have been purchased and will be fulfilled. 
+  how the items have been purchased and will be fulfilled.
 endpoints:
   - path: /:id
     method: GET
     title: Retrieve an Order
-    params: 
+    params:
       - name: id
         type: String
         description: The id of the order.
     description: >
-      Retrieves an order. 
+      Retrieves an order.
   - path: /
     method: POST
     title: Creates an Order
@@ -51,7 +51,7 @@ response: |
         "usage_count": 6,
         "disabled": false,
         "code": "TEST",
-        "discount_rule": {
+        "rule": {
           "valid_for": [],
           "_id": "5f626102bd79500021ea17a4",
           "description": "TEST",
