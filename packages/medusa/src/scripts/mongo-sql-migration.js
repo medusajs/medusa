@@ -1058,13 +1058,13 @@ const migrate = async () => {
       console.log(chalk.green("SUCCESS: "), "Discounts migrated")
     })
 
-    //await migrateCustomers(db, queryRunner).then(() => {
-    //  console.log(chalk.green("SUCCESS: "), "Customers migrated")
-    //})
+    await migrateCustomers(db, queryRunner).then(() => {
+      console.log(chalk.green("SUCCESS: "), "Customers migrated")
+    })
 
-    //await migrateOrders(db, queryRunner).then(() => {
-    //  console.log(chalk.green("SUCCESS: "), "Orders migrated")
-    //})
+    await migrateOrders(db, queryRunner).then(() => {
+      console.log(chalk.green("SUCCESS: "), "Orders migrated")
+    })
 
     await queryRunner.commitTransaction()
   } catch (err) {
