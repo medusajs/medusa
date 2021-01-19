@@ -87,9 +87,9 @@ class SlackService extends BaseService {
             2
           )} ${currencyCode}\n*Shipping*\t${(shipping_total / 100).toFixed(
             2
-          )} ${currencyCode}\n*Discount Total*\t${discountTotal.toFixed(
-            2
-          )} ${currencyCode}\n*Tax*\t${(tax_total / 100).toFixed(
+          )} ${currencyCode}\n*Discount Total*\t${(
+            discount_total / 100
+          ).toFixed(2)} ${currencyCode}\n*Tax*\t${(tax_total / 100).toFixed(
             2
           )} ${currencyCode}\n*Total*\t${(total / 100).toFixed(
             2
