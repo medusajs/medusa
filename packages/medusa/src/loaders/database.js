@@ -1,4 +1,6 @@
-import { createConnection, Connection } from "typeorm"
+import { createConnection, Connection, DefaultNamingStrategy } from "typeorm"
+
+import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 
 export default async ({ container, configModule }) => {
   const entities = container.resolve("db_entities")
@@ -8,6 +10,7 @@ export default async ({ container, configModule }) => {
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
     entities,
+    namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
   })
 
