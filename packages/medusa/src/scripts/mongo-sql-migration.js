@@ -926,7 +926,12 @@ const migrateOrders = async (mongodb, queryRunner) => {
 const migrate = async () => {
   const root = path.resolve(".")
   const { configModule } = getConfigFile(root, "medusa-config")
-  const { mongo_url, database_type, database_url } = configModule.projectConfig
+  const {
+    mongo_url,
+    database_type,
+    database_url,
+    database_extra,
+  } = configModule.projectConfig
 
   if (!mongo_url) {
     throw new Error(
@@ -955,6 +960,7 @@ const migrate = async () => {
   const sqlConnection = await createConnection({
     type: database_type,
     url: database_url,
+    extra: database_extra || {},
     entities: [`${mPath}/*.js`],
     // logging: true,
   })
