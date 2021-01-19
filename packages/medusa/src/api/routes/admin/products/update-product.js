@@ -9,6 +9,13 @@ export default async (req, res) => {
     description: Validator.string().optional(),
     tags: Validator.string().optional(),
     handle: Validator.string().optional(),
+    weight: Validator.number().optional(),
+    length: Validator.number().optional(),
+    height: Validator.number().optional(),
+    width: Validator.number().optional(),
+    origin_country: Validator.string().allow(null, ""),
+    mid_code: Validator.string().allow(null, ""),
+    material: Validator.string().allow(null, ""),
     images: Validator.array()
       .items(Validator.string())
       .optional()
