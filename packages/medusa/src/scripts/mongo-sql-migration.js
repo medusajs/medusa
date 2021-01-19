@@ -326,8 +326,6 @@ const createDiscount = async (mongodb, queryRunner, d) => {
     const regions = await regRepo.find({
       id: In(mongoRegs.map(r => `${r._id}`)),
     })
-    console.log(regions)
-
     const newD = discountRepo.create({
       id: `${d._id}`,
       code: d.code,
