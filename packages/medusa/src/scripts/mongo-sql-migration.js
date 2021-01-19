@@ -919,26 +919,36 @@ const migrateOrders = async (mongodb, queryRunner) => {
 
     // await orderRepo.save(or)
 
-    //await queryRunner.query(
-    //  `ALTER SEQUENCE order_display_id_seq RESTART WITH ${parseInt(
-    //    o.display_id
-    //  ) + 1}`
-    //)
     if (o.display_id % 100 === 0) {
       console.log(o.display_id)
     }
   }
 
-  await orderRepo.save(ordersToSave, { chunk: 1000 })
+  const newOs = await orderRepo.save(ordersToSave, { chunk: 1000 })
   await swapRepo.save(swapsToSave, { chunk: 1000 })
   await lineItemRepo.save(lineItemsToSave, { chunk: 1000 })
   await methodRepo.save(shippingMethodsToSave, { chunk: 1000 })
   await refundRepo.save(refundsToSave, { chunk: 1000 })
   await returnRepo.save(returnsToSave, { chunk: 1000 })
   await gcRepo.save(giftCardsToSave, { chunk: 1000 })
+  console.log("done with gcs")
   await discountRepo.save(discountsToSave, { chunk: 1000 })
   console.log("done with discounts")
   await fulfillmentRepo.save(fulfillToSave, { chunk: 1000 })
+
+  for (const o of orders) {
+    await queryRunner.query(`UPDATE "order" SET display_id=$1 WHERE id=$2`, [
+      o.display_id,
+      `${o._id}`,
+    ])
+  }
+
+  const last = orders[orders.length - 1]
+  await queryRunner.query(
+    `ALTER SEQUENCE order_display_id_seq RESTART WITH ${parseInt(
+      last.display_id
+    ) + 1}`
+  )
 }
 
 const migrate = async () => {
