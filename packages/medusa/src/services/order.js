@@ -907,6 +907,7 @@ class OrderService extends BaseService {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "region",
           "fulfillments",
           "shipping_address",
           "billing_address",
