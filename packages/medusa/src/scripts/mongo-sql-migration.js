@@ -323,7 +323,10 @@ const createDiscount = async (mongodb, queryRunner, d) => {
       _id: { $in: d.regions.map(id => mongo.ObjectID(id)) },
     })
     const mongoRegs = await rcur.toArray()
-    const regions = regRepo.find({ id: In(mongoRegs.map(r => `${r._id}`)) })
+    const regions = await regRepo.find({
+      id: In(mongoRegs.map(r => `${r._id}`)),
+    })
+    console.log(regions)
 
     const newD = discountRepo.create({
       id: `${d._id}`,
@@ -457,16 +460,12 @@ const migrateCustomers = async (mongodb, queryRunner) => {
  */
 const migrateOrders = async (mongodb, queryRunner) => {
   const swapCol = mongodb.collection("swaps")
-  const rcol = mongodb.collection("regions")
-  const rcur = rcol.find({})
-  const regions = await rcur.toArray()
 
   const col = mongodb.collection("orders")
 
   const cur = col.find({})
   const orders = await cur.toArray()
 
-  const regionRepo = queryRunner.manager.getRepository(Region)
   const customerRepo = queryRunner.manager.getRepository(Customer)
   const orderRepo = queryRunner.manager.getRepository(Order)
   const lineItemRepo = queryRunner.manager.getRepository(LineItem)
@@ -1059,13 +1058,13 @@ const migrate = async () => {
       console.log(chalk.green("SUCCESS: "), "Discounts migrated")
     })
 
-    await migrateCustomers(db, queryRunner).then(() => {
-      console.log(chalk.green("SUCCESS: "), "Customers migrated")
-    })
+    //await migrateCustomers(db, queryRunner).then(() => {
+    //  console.log(chalk.green("SUCCESS: "), "Customers migrated")
+    //})
 
-    await migrateOrders(db, queryRunner).then(() => {
-      console.log(chalk.green("SUCCESS: "), "Orders migrated")
-    })
+    //await migrateOrders(db, queryRunner).then(() => {
+    //  console.log(chalk.green("SUCCESS: "), "Orders migrated")
+    //})
 
     await queryRunner.commitTransaction()
   } catch (err) {
