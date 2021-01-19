@@ -565,6 +565,7 @@ class CartService extends BaseService {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const cart = await this.retrieve(cartId, {
         relations: [
+          "shipping_methods",
           "shipping_address",
           "billing_address",
           "gift_cards",

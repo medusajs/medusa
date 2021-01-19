@@ -53,8 +53,8 @@ class SegmentService extends BaseService {
     const subtotal = order.subtotal / 100
     const total = order.total / 100
     const tax = order.tax_total / 100
-    const discount = discount_total / 100
-    const shipping = shipping_total / 100
+    const discount = order.discount_total / 100
+    const shipping = order.shipping_total / 100
     const revenue = total - tax
 
     let coupon
@@ -64,10 +64,10 @@ class SegmentService extends BaseService {
 
     const orderData = {
       checkout_id: order.cart_id,
-      order_id: order._id,
+      order_id: order.id,
       email: order.email,
       region_id: order.region_id,
-      payment_provider: order.payment_method.provider_id,
+      payment_provider: order.payments.map(p => p.provider_id).join(","),
       shipping_methods: order.shipping_methods,
       shipping_country: order.shipping_address.country_code,
       shipping_city: order.shipping_address.city,
@@ -102,8 +102,8 @@ class SegmentService extends BaseService {
           let name = item.title
           let variant = item.description
 
-          const unit_price = item.content.unit_price
-          const line_total = unit_price * item.content.quantity * item.quantity
+          const unit_price = item.unit_price
+          const line_total = unit_price * item.quantity / 100
           const revenue = await this.getReportingValue(
             order.currency_code,
             line_total
@@ -113,8 +113,8 @@ class SegmentService extends BaseService {
             variant,
             price: unit_price,
             reporting_revenue: revenue,
-            product_id: `${item.content.product._id}`,
-            sku: item.content.variant.sku,
+            product_id: item.variant.product_id,
+            sku: item.variant.sku,
             quantity: item.quantity,
           }
         })
