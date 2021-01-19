@@ -496,16 +496,15 @@ const migrateOrders = async (mongodb, queryRunner) => {
   const fulfillToSave = []
 
   for (const o of orders) {
-    const mongoreg = regions.find(r => r._id.equals(o.region_id))
-    const region = await regionRepo.findOne({ name: mongoreg.name })
+    // const mongoreg = regions.find(r => r._id.equals(o.region_id))
+    // const region = await regionRepo.findOne({ name: mongoreg.name })
 
     /*************************************************************************
      * SHIPPING METHODS
      *************************************************************************/
     const createShippingMethod = async m => {
       let shippingOption = await optionRepo.findOne({
-        name: m.name,
-        region_id: region.id,
+        id: `${m._id}`,
       })
       if (!shippingOption) {
         const profile = await profileRepo.findOne({ type: "default" })
@@ -519,7 +518,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
         }
         const newly = optionRepo.create({
           name: m.name,
-          region_id: region.id,
+          region_id: o.region_id,
           profile_id: profile.id,
           price_type: "flat_rate",
           amount: Math.round(m.price * 100),
@@ -580,7 +579,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
         allow_discounts: !li.no_discount,
         thumbnail: li.thumbnail,
         unit_price: Math.round(li.content.unit_price * 100),
-        variant_id: `${li.content.variant._id}`,
+        variant_id: li.content.variant._id ? `${li.content.variant._id}` : null,
         fulfilled_quantity,
         shipped_quantity,
         returned_quantity,
@@ -729,7 +728,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       if (m && m.name) {
         let shippingOption = await optionRepo.findOne({
           name: m.name,
-          region_id: region.id,
+          region_id: o.region_id,
         })
         if (!shippingOption) {
           const profile = await profileRepo.findOne({ type: "default" })
@@ -743,7 +742,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
           }
           const newly = optionRepo.create({
             name: m.name,
-            region_id: region.id,
+            region_id: o.region_id,
             profile_id: profile.id,
             price_type: "flat_rate",
             amount: Math.round(m.price * 100),
@@ -1023,10 +1022,10 @@ const migrate = async () => {
     await queryRunner.query(
       `DELETE FROM order_discounts WHERE order_id IS NOT NULL`
     )
-    await queryRunner.query(`DELETE FROM fulfillment WHERE id IS NOT NULL`)
-    await queryRunner.query(`DELETE FROM swap WHERE id IS NOT NULL`)
-    await queryRunner.query(`DELETE FROM return WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM payment WHERE id IS NOT NULL`)
+    await queryRunner.query(`DELETE FROM fulfillment WHERE id IS NOT NULL`)
+    await queryRunner.query(`DELETE FROM return WHERE id IS NOT NULL`)
+    await queryRunner.query(`DELETE FROM swap WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM refund WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM "order" WHERE id IS NOT NULL`)
     await queryRunner.query(`DELETE FROM address WHERE id IS NOT NULL`)
