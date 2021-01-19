@@ -36,6 +36,7 @@ export default async (req, res) => {
       .required(),
     options: Validator.array()
       .items({
+        option_id: Validator.string().required(),
         value: Validator.string().required(),
       })
       .default([]),
