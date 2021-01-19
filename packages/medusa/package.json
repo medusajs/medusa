@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.0.33-alpha.171+6e035e7",
+  "version": "1.0.33-alpha.172+0471b67",
   "description": "E-commerce for JAMstack",
   "main": "dist/app.js",
   "repository": {
@@ -85,5 +85,5 @@
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "6e035e754740311be848d968f5d41819adc4a320"
+  "gitHead": "0471b67bc77aaa7ca57d353bde6dc16c6ff1675e"
 }
