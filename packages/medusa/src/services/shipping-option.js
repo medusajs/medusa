@@ -229,6 +229,10 @@ class ShippingOptionService extends BaseService {
         price: methodPrice,
       }
 
+      if (config.order) {
+        toCreate.order_id = config.order.id
+      }
+
       if (config.cart) {
         toCreate.cart_id = config.cart.id
       }

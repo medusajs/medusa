@@ -88,6 +88,14 @@ export default app => {
   route.post("/:id/cancel", middlewares.wrap(require("./cancel-order").default))
 
   /**
+   * Add a shipping method
+   */
+  route.post(
+    "/:id/shipping-methods",
+    middlewares.wrap(require("./add-shipping-method").default)
+  )
+
+  /**
    * Archive an order.
    */
   route.post(
