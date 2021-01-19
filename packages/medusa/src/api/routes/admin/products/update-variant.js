@@ -33,15 +33,18 @@ export default async (req, res) => {
     length: Validator.number().optional(),
     height: Validator.number().optional(),
     width: Validator.number().optional(),
+    hs_code: Validator.string()
+      .optional()
+      .allow(null, ""),
     origin_country: Validator.string()
       .optional()
-      .allow(""),
+      .allow(null, ""),
     mid_code: Validator.string()
       .optional()
-      .allow(""),
+      .allow(null, ""),
     material: Validator.string()
       .optional()
-      .allow(""),
+      .allow(null, ""),
     metadata: Validator.object().optional(),
   })
 

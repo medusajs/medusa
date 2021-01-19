@@ -32,12 +32,15 @@ export default async (req, res) => {
       width: Validator.number().optional(),
       origin_country: Validator.string()
         .optional()
+        .allow("")
         .allow(null),
       mid_code: Validator.string()
         .optional()
+        .allow("")
         .allow(null),
       material: Validator.string()
         .optional()
+        .allow("")
         .allow(null),
       metadata: Validator.object().optional(),
       prices: Validator.array()
