@@ -53,7 +53,7 @@ export class Discount {
   @Column({ type: "timestamptz", nullable: true })
   ends_at: Date
 
-  @ManyToMany(() => Region)
+  @ManyToMany(() => Region, { cascade: true })
   @JoinTable({
     name: "discount_regions",
     joinColumn: {

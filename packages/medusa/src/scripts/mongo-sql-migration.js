@@ -323,7 +323,7 @@ const createDiscount = async (mongodb, queryRunner, d) => {
       _id: { $in: d.regions.map(id => mongo.ObjectID(id)) },
     })
     const mongoRegs = await rcur.toArray()
-    const regions = regRepo.find({ name: In(mongoRegs.map(r => r.name)) })
+    const regions = regRepo.find({ id: In(mongoRegs.map(r => `${r._id}`)) })
 
     const newD = discountRepo.create({
       id: `${d._id}`,
