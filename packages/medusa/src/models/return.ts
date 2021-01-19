@@ -24,7 +24,7 @@ import { ShippingMethod } from "./shipping-method"
 export enum ReturnStatus {
   REQUESTED = "requested",
   RECEIVED = "received",
-  REQUIRES_ACTION = " requires_action",
+  REQUIRES_ACTION = "requires_action",
 }
 
 @Entity()

@@ -446,7 +446,7 @@ const migrateCustomers = async (mongodb, queryRunner) => {
     })
     toSave.push(newC)
   }
-  return customerRepo.save(toSave)
+  return customerRepo.save(toSave, { chunk: 1000 })
 }
 
 /**
@@ -480,10 +480,20 @@ const migrateOrders = async (mongodb, queryRunner) => {
   const discountRepo = queryRunner.manager.getRepository(Discount)
   const methodRepo = queryRunner.manager.getRepository(ShippingMethod)
   const optionRepo = queryRunner.manager.getRepository(ShippingOption)
-  const variantRepo = queryRunner.manager.getRepository(ProductVariant)
   const addressRepo = queryRunner.manager.getRepository(Address)
   const profileRepo = queryRunner.manager.getRepository(ShippingProfile)
   const fulProvRepo = queryRunner.manager.getRepository(FulfillmentProvider)
+
+  const paymentsToSave = []
+  const refundsToSave = []
+  const returnsToSave = []
+  const swapsToSave = []
+  const shippingMethodsToSave = []
+  const lineItemsToSave = []
+  const ordersToSave = []
+  const giftCardsToSave = []
+  const discountsToSave = []
+  const fulfillToSave = []
 
   for (const o of orders) {
     const mongoreg = regions.find(r => r._id.equals(o.region_id))
@@ -522,16 +532,16 @@ const migrateOrders = async (mongodb, queryRunner) => {
       }
 
       return methodRepo.create({
+        order_id: `${o._id}`,
         shipping_option_id: shippingOption.id,
         price: Math.round(m.price * 100),
         data: m.data,
       })
     }
 
-    let shippingMethods = []
     for (const m of o.shipping_methods) {
       const method = await createShippingMethod(m)
-      shippingMethods.push(method)
+      shippingMethodsToSave.push(method)
     }
 
     /*************************************************************************
@@ -548,7 +558,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * LINE ITEMS
      *************************************************************************/
-    const createLineItem = async li => {
+    const createLineItem = (li, custom = {}) => {
       let fulfilled_quantity = Math.min(li.fulfilled_quantity || 0, li.quantity)
       let shipped_quantity = Math.min(
         li.fulfilled_quantity || 0,
@@ -560,6 +570,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       )
 
       return lineItemRepo.create({
+        ...custom,
         id: `${li._id}`,
         title: li.title,
         description: li.description,
@@ -569,7 +580,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
         allow_discounts: !li.no_discount,
         thumbnail: li.thumbnail,
         unit_price: Math.round(li.content.unit_price * 100),
-        variant_id: li.content.variant._id,
+        variant_id: `${li.content.variant._id}`,
         fulfilled_quantity,
         shipped_quantity,
         returned_quantity,
@@ -577,17 +588,18 @@ const migrateOrders = async (mongodb, queryRunner) => {
       })
     }
 
-    const lineItems = []
     for (const li of o.items) {
-      const lineitem = await createLineItem(li)
-      lineItems.push(lineitem)
+      const lineitem = createLineItem(li, {
+        order_id: `${o._id}`,
+      })
+      lineItemsToSave.push(lineitem)
     }
 
     /*************************************************************************
      * DISCOUNT
      *************************************************************************/
-    const discounts = []
     const giftCards = []
+    const discounts = []
     for (const d of o.discounts) {
       if (d.is_giftcard) {
         let gc = await gcRepo.findOne({ code: d.code })
@@ -625,6 +637,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
      *************************************************************************/
     const nOrder = orderRepo.create({
       id: `${o._id}`,
+      display_id: o.display_id,
       tax_rate: o.tax_rate * 100,
       currency_code: o.currency_code.toLowerCase(),
       email: o.email.toLowerCase(),
@@ -633,51 +646,40 @@ const migrateOrders = async (mongodb, queryRunner) => {
       payment_status: o.payment_status,
       shipping_address: address,
       billing_address: address,
-      shipping_methods: shippingMethods,
-      items: lineItems,
+      // shipping_methods: shippingMethods,
+      // items: lineItems,
       gift_cards: giftCards,
-      region,
+      region_id: `${o.region_id}`,
       customer,
       discounts,
       created_at: new Date(parseInt(o.created)),
       canceled_at: o.status === "canceled" ? new Date() : null,
     })
 
-    let or = await orderRepo.save(nOrder)
-    or.display_id = o.display_id
+    ordersToSave.push(nOrder)
+    //let or = await orderRepo.save(nOrder)
+    //or.display_id = o.display_id
 
     /*************************************************************************
      * FULFILLMENTS
      *************************************************************************/
-    const createFulfillment = async (f, parent_items, seen, custom = {}) => {
+    const createFulfillment = (f, custom = {}) => {
+      if (!f || !f._id) {
+        console.log("found empty")
+      }
+
       const items = f.items.map(fi => {
-        const original = parent_items.find(
-          li =>
-            li.title === fi.title &&
-            li.description === fi.description &&
-            !seen[li.id]
-        )
-
-        if (!original) {
-          console.log(f)
-          console.log(parent_items)
-        }
-
-        seen[original.id] = true
-
         return fulItemRepo.create({
-          item: original,
+          item_id: `${fi._id}`,
           quantity: fi.quantity,
         })
       })
-
-      let provider = await fulProvRepo.findOne({ id: f.provider_id })
 
       const toCreate = {
         id: `${f._id}`,
         ...custom,
         items,
-        provider,
+        provider_id: f.provider_id,
         tracking_numbers: f.tracking_numbers,
         data: {},
         metadata: f.metadata,
@@ -692,14 +694,13 @@ const migrateOrders = async (mongodb, queryRunner) => {
       return fulfillmentRepo.create(toCreate)
     }
 
-    const fulfillments = []
     for (const f of o.fulfillments) {
-      const seen = {}
-      const ful = await createFulfillment(f, or.items, seen)
-      fulfillments.push(ful)
+      if (!f || !f._id) {
+        continue
+      }
+      const ful = createFulfillment(f, { order_id: `${o._id}` })
+      fulfillToSave.push(ful)
     }
-    // fulfillmentRepo.save(fulfillments)
-    or.fulfillments = fulfillments
 
     /*************************************************************************
      * REFUNDS
@@ -709,10 +710,10 @@ const migrateOrders = async (mongodb, queryRunner) => {
     for (const r of o.refunds) {
       const reason = r.reason || "return"
       totalRefund += r.amount
-      refunds.push(
+      refundsToSave.push(
         refundRepo.create({
-          order: or,
-          currency_code: or.currency_code,
+          order_id: `${o._id}`,
+          currency_code: o.currency_code.toLowerCase(),
           amount: Math.round(r.amount * 100),
           reason,
           note: r.note,
@@ -720,9 +721,9 @@ const migrateOrders = async (mongodb, queryRunner) => {
         })
       )
     }
-    or.refunds = refunds
+    // or.refunds = refunds
 
-    const createReturn = async r => {
+    const createReturn = async (r, custom = {}) => {
       const m = r.shipping_method
       let method
       if (m && m.name) {
@@ -762,13 +763,13 @@ const migrateOrders = async (mongodb, queryRunner) => {
       }
 
       const items = r.items.map(raw => {
-        const ri = o.items.find(i => i._id.equals(raw.item_id))
-        const original = or.items.find(
-          li => li.title === ri.title && li.description === ri.description
-        )
+        //const ri = o.items.find(i => i._id.equals(raw.item_id))
+        //const original = or.items.find(
+        //  li => li.title === ri.title && li.description === ri.description
+        //)
 
         return retItemRepo.create({
-          item: original,
+          item_id: raw.item_id,
           quantity: raw.quantity,
           requested_quantity: raw.is_requested ? raw.quantity : null,
           received_quantity: raw.is_registered ? raw.quantity : null,
@@ -778,7 +779,7 @@ const migrateOrders = async (mongodb, queryRunner) => {
       return returnRepo.create({
         id: `${r._id}`,
         status: r.status || "received",
-        order: or,
+        ...custom,
         refund_amount: Math.round(r.refund_amount * 100),
         shipping_method: method,
         shipping_data: r.shipping_data,
@@ -792,17 +793,16 @@ const migrateOrders = async (mongodb, queryRunner) => {
     /*************************************************************************
      * RETURNS
      *************************************************************************/
-    const returns = []
     for (const r of o.returns) {
       if (r.items.length === 0) {
         continue
       }
 
-      const ret = await createReturn(r)
-      returns.push(ret)
+      const ret = await createReturn(r, { order_id: `${o._id}` })
+      returnsToSave.push(ret)
     }
 
-    or.returns = returns
+    // or.returns = returns
 
     /*************************************************************************
      * SWAPS
@@ -813,17 +813,20 @@ const migrateOrders = async (mongodb, queryRunner) => {
       })
       const oSwaps = await swapCur.toArray()
       if (oSwaps.length) {
-        let swaps = []
+        // let swaps = []
         for (const s of oSwaps) {
           if (!s.return) continue
+
+          for (const li of s.additional_items) {
+            lineItemsToSave.push(createLineItem(li, { swap_id: `${s._id}` }))
+          }
+
           const toCreate = {
             id: `${s._id}`,
-            order_id: or.id,
-            fulfillment_status: s.fulfillment_status,
+            order_id: `${o._id}`,
+            fulfillment_status:
+              s.fulfillment_status === "shipped" ? "shipped" : "not_fulfilled",
             payment_status: s.payment_status,
-            additional_items: await Promise.all(
-              s.additional_items.map(createLineItem)
-            ),
             shipping_methods: await Promise.all(
               s.shipping_methods.map(createShippingMethod)
             ),
@@ -847,7 +850,11 @@ const migrateOrders = async (mongodb, queryRunner) => {
           }
 
           if (s.return) {
-            toCreate.return_order = await createReturn(s.return)
+            returnsToSave.push(
+              await createReturn(s.return, {
+                swap_id: `${s._id}`,
+              })
+            )
           }
 
           if (s.payment_method) {
@@ -858,30 +865,30 @@ const migrateOrders = async (mongodb, queryRunner) => {
               amount_refunded: 0,
               provider_id: o.payment_method.provider_id,
               data: o.payment_method.data,
-              canceled_at: or.payment_status === "canceled" ? new Date() : null,
+              canceled_at: o.payment_status === "canceled" ? new Date() : null,
               captured_at:
-                or.payment_status === "captured" ||
-                or.payment_status === "refunded" ||
-                or.payment_status === "partially"
+                o.payment_status === "captured" ||
+                o.payment_status === "refunded" ||
+                o.payment_status === "partially"
                   ? new Date()
                   : null,
             })
           }
 
-          const newly = swapRepo.create(toCreate)
-          const sw = await swapRepo.save(newly)
-          const seen = {}
           if ((s.fulfillments && s.fulfillments.length) > 0) {
-            sw.fulfillments = await Promise.all(
-              s.fulfillments.map(f =>
-                createFulfillment(f, sw.additional_items, seen)
-              )
-            )
+            for (const f of s.fulfillments) {
+              if (!f || !f._id) {
+                continue
+              }
+              fulfillToSave.push(createFulfillment(f, { swap_id: `${s._id}` }))
+            }
           }
-          swaps.push(sw)
+
+          const newly = swapRepo.create(toCreate)
+          swapsToSave.push(newly)
         }
 
-        or.swaps = swaps
+        // or.swaps = swaps
       }
     }
 
@@ -895,32 +902,46 @@ const migrateOrders = async (mongodb, queryRunner) => {
           (o.payment_method.data.amount &&
             o.payment_method.data.amount.value) ||
           0
-    or.payments = [
+    paymentsToSave.push(
       paymentRepo.create({
-        order: or,
+        order_id: `${o._id}`,
         amount,
-        currency_code: or.currency_code,
+        currency_code: o.currency_code.toLowerCase(),
         amount_refunded: Math.round(totalRefund * 100),
         provider_id: o.payment_method.provider_id,
         data: o.payment_method.data,
-        canceled_at: or.payment_status === "canceled" ? new Date() : null,
+        canceled_at: o.payment_status === "canceled" ? new Date() : null,
         captured_at:
-          or.payment_status === "captured" ||
-          or.payment_status === "refunded" ||
-          or.payment_status === "partially"
+          o.payment_status === "captured" ||
+          o.payment_status === "refunded" ||
+          o.payment_status === "partially_refunded"
             ? new Date()
             : null,
-      }),
-    ]
-
-    await orderRepo.save(or)
-
-    await queryRunner.query(
-      `ALTER SEQUENCE order_display_id_seq RESTART WITH ${parseInt(
-        o.display_id
-      ) + 1}`
+      })
     )
+
+    // await orderRepo.save(or)
+
+    //await queryRunner.query(
+    //  `ALTER SEQUENCE order_display_id_seq RESTART WITH ${parseInt(
+    //    o.display_id
+    //  ) + 1}`
+    //)
+    if (o.display_id % 100 === 0) {
+      console.log(o.display_id)
+    }
   }
+
+  await orderRepo.save(ordersToSave, { chunk: 1000 })
+  await swapRepo.save(swapsToSave, { chunk: 1000 })
+  await lineItemRepo.save(lineItemsToSave, { chunk: 1000 })
+  await methodRepo.save(shippingMethodsToSave, { chunk: 1000 })
+  await refundRepo.save(refundsToSave, { chunk: 1000 })
+  await returnRepo.save(returnsToSave, { chunk: 1000 })
+  await gcRepo.save(giftCardsToSave, { chunk: 1000 })
+  await discountRepo.save(discountsToSave, { chunk: 1000 })
+  console.log("done with discounts")
+  await fulfillmentRepo.save(fulfillToSave, { chunk: 1000 })
 }
 
 const migrate = async () => {

@@ -89,7 +89,7 @@ export class Order {
   @Column()
   customer_id: string
 
-  @ManyToOne(() => Customer)
+  @ManyToOne(() => Customer, { cascade: ["insert"] })
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
@@ -127,7 +127,7 @@ export class Order {
   @Column({ type: "int" })
   tax_rate: number
 
-  @ManyToMany(() => Discount)
+  @ManyToMany(() => Discount, { cascade: ["insert"] })
   @JoinTable({
     name: "order_discounts",
     joinColumn: {
@@ -141,7 +141,7 @@ export class Order {
   })
   discounts: Discount[]
 
-  @ManyToMany(() => GiftCard)
+  @ManyToMany(() => GiftCard, { cascade: ["insert"] })
   @JoinTable({
     name: "order_gift_cards",
     joinColumn: {
