@@ -17,7 +17,22 @@ class CartSubscriber {
 
   async onCustomerUpdated(cartId) {
     const cart = await this.cartService_.retrieve(cartId, {
-      relations: ["payment_sessions", "customer"],
+      select: [
+        "subtotal",
+        "tax_total",
+        "shipping_total",
+        "discount_total",
+        "total",
+      ],
+      relations: [
+        "items",
+        "billing_address",
+        "shipping_address",
+        "region",
+        "region.payment_providers",
+        "payment_sessions",
+        "customer",
+      ],
     })
 
     if (!cart.payment_sessions?.length) {
