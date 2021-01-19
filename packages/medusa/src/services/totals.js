@@ -95,7 +95,7 @@ class TotalsService extends BaseService {
     const taxRate = (tax_rate || 0) / 100
 
     const discount = discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== "free_shipping"
     )
 
     if (!discount) {
@@ -196,8 +196,8 @@ class TotalsService extends BaseService {
                 item,
                 item.variant.id,
                 item.unit_price,
-                discount.discount_rule.value,
-                discount.discount_rule.type
+                discount.rule.value,
+                discount.rule.type
               )
             )
           }
@@ -209,7 +209,7 @@ class TotalsService extends BaseService {
 
   getLineDiscounts(cart, discount) {
     const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
-    const { type, allocation, value } = discount.discount_rule
+    const { type, allocation, value } = discount.rule
     if (allocation === "total") {
       let percentage = 0
       if (type === "percentage") {
@@ -286,14 +286,14 @@ class TotalsService extends BaseService {
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
     const discount = cart.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== "free_shipping"
     )
 
     if (!discount) {
       return 0
     }
 
-    const { type, allocation, value } = discount.discount_rule
+    const { type, allocation, value } = discount.rule
     let toReturn = 0
 
     if (type === "percentage" && allocation === "total") {

@@ -31,11 +31,11 @@ export class Discount {
   is_dynamic: boolean
 
   @Column({ nullable: true })
-  discount_rule_id: string
+  rule_id: string
 
   @ManyToOne(() => DiscountRule, { cascade: true, eager: true })
-  @JoinColumn({ name: "discount_rule_id" })
-  discount_rule: DiscountRule
+  @JoinColumn({ name: "rule_id" })
+  rule: DiscountRule
 
   @Column()
   is_disabled: boolean
@@ -53,7 +53,7 @@ export class Discount {
   @Column({ type: "timestamptz", nullable: true })
   ends_at: Date
 
-  @ManyToMany(() => Region, { eager: true })
+  @ManyToMany(() => Region)
   @JoinTable({
     name: "discount_regions",
     joinColumn: {
