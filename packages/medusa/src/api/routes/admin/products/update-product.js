@@ -51,6 +51,7 @@ export default async (req, res) => {
         length: Validator.number().optional(),
         height: Validator.number().optional(),
         width: Validator.number().optional(),
+        hs_code: Validator.string().optional().allow(null, ""),
         origin_country: Validator.string().allow(null, ""),
         mid_code: Validator.string().allow(null, ""),
         material: Validator.string().allow(null, ""),
