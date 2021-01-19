@@ -1023,6 +1023,9 @@ class CartService extends BaseService {
           "total",
         ],
         relations: [
+          "items",
+          "billing_address",
+          "shipping_address",
           "region",
           "region.payment_providers",
           "payment_sessions",
