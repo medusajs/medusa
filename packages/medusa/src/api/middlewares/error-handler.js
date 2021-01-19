@@ -5,6 +5,8 @@ export default () => {
     const logger = req.scope.resolve("logger")
     logger.error(err.message)
 
+    console.log(err)
+
     let statusCode = 500
     switch (err.name) {
       case MedusaError.Types.NOT_ALLOWED:
