@@ -12,6 +12,7 @@ class Oauth extends OauthService {
     super()
     const manager = cradle.manager
 
+    this.manager = manager
     this.container_ = cradle
     this.oauthRepository_ = cradle.oauthRepository
     this.eventBus_ = cradle.eventBusService
