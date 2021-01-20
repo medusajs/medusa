@@ -184,7 +184,7 @@ class FulfillmentService extends BaseService {
         fulfillments.map(async ({ shipping_method, items }) => {
           const ful = fulfillmentRepository.create({
             ...custom,
-            provider_id: shipping_method.provider_id,
+            provider_id: shipping_method.shipping_option.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
             data: {},
           })
