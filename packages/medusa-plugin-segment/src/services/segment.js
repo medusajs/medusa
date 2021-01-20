@@ -10,9 +10,10 @@ class SegmentService extends BaseService {
    *      write_key: Segment write key given in Segment dashboard
    *    }
    */
-  constructor({}, options) {
+  constructor({ totalsService }, options) {
     super()
 
+    this.totalsService_ = totalsService
     this.options_ = options
 
     this.analytics_ = new Analytics(options.write_key)
@@ -37,7 +38,9 @@ class SegmentService extends BaseService {
         this.options_.reporting_currency.toUpperCase()) ||
       "EUR"
 
-    if (fromCurrency === toCurrency) return value.toFixed(2)
+    if (fromCurrency === toCurrency) {
+      return this.totalsService_.rounded(value)
+    }
 
     const exchangeRate = await axios
       .get(
@@ -47,7 +50,7 @@ class SegmentService extends BaseService {
         return data.rates[fromCurrency]
       })
 
-    return (value / exchangeRate).toFixed(2)
+    return this.totalsService_.rounded(value / exchangeRate)
   }
 
   async buildOrder(order) {
