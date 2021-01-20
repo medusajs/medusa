@@ -31,6 +31,7 @@ export default async (req, res) => {
         })
 
         const existing = cart.items.find(i => i.id === line_id)
+
         if (!existing) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
