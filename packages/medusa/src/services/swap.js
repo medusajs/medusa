@@ -516,7 +516,7 @@ class SwapService extends BaseService {
       this.eventBus_
         .withTransaction(manager)
         .emit(SwapService.Events.PAYMENT_COMPLETED, {
-          swap: result,
+          id: swap.id,
         })
 
       return result

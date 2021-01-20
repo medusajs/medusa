@@ -30,7 +30,10 @@ class OrderSubscriber {
     eventBusService.subscribe("swap.shipment_created", this.registerShipment)
 
     // Before we initiate a swap we wait for the payment and the return
-    eventBusService.subscribe("swap.payment_completed", this.registerSwap)
+    eventBusService.subscribe(
+      "swap.payment_completed",
+      this.registerSwapPayment
+    )
     eventBusService.subscribe("order.swap_received", this.registerSwap)
   }
 
@@ -40,6 +43,10 @@ class OrderSubscriber {
 
   registerCapturedPayment = ({ id }) => {
     return this.brightpearlService_.createPayment(id)
+  }
+
+  registerSwapPayment = async (data) => {
+    return this.registerSwap({ id: data.id, swap_id: data.id })
   }
 
   registerSwap = async (data) => {
