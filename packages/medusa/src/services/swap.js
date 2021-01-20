@@ -444,7 +444,17 @@ class SwapService extends BaseService {
   async registerCartCompletion(swapId) {
     return this.atomicPhase_(async manager => {
       const swap = await this.retrieve(swapId, {
-        relations: ["cart", "cart.items", "cart.discounts", "cart.payment"],
+        relations: [
+          "cart",
+          "cart.region",
+          "cart.shipping_methods",
+          "cart.shipping_address",
+          "cart.items",
+          "cart.discounts",
+          "cart.discounts.rule",
+          "cart.payment",
+          "cart.gift_cards",
+        ],
       })
 
       // If we already registered the cart completion we just return
