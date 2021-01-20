@@ -29,7 +29,8 @@ class SegmentService extends BaseService {
     return this.analytics_.track(data)
   }
 
-  async getReportingValue(fromCurrency, value) {
+  async getReportingValue(rawCurrency, value) {
+    const fromCurrency = rawCurrency.toUpperCase()
     const date = "latest"
     const toCurrency =
       (this.options_.reporting_currency &&
@@ -40,7 +41,7 @@ class SegmentService extends BaseService {
 
     const exchangeRate = await axios
       .get(
-        `https://api.exchangeratesapi.io/${date}?symbols=${fromCurrency.toUpperCase()}&base=${toCurrency}`
+        `https://api.exchangeratesapi.io/${date}?symbols=${fromCurrency}&base=${toCurrency}`
       )
       .then(({ data }) => {
         return data.rates[fromCurrency]
@@ -59,7 +60,7 @@ class SegmentService extends BaseService {
 
     let coupon
     if (order.discounts && order.discounts.length) {
-      coupon = order.discounts[0].code
+      coupon = order.discounts[0] && order.discounts[0].code
     }
 
     const orderData = {
@@ -67,7 +68,7 @@ class SegmentService extends BaseService {
       order_id: order.id,
       email: order.email,
       region_id: order.region_id,
-      payment_provider: order.payments.map(p => p.provider_id).join(","),
+      payment_provider: order.payments.map((p) => p.provider_id).join(","),
       shipping_methods: order.shipping_methods,
       shipping_country: order.shipping_address.country_code,
       shipping_city: order.shipping_address.city,
@@ -103,7 +104,7 @@ class SegmentService extends BaseService {
           let variant = item.description
 
           const unit_price = item.unit_price
-          const line_total = unit_price * item.quantity / 100
+          const line_total = (unit_price * item.quantity) / 100
           const revenue = await this.getReportingValue(
             order.currency_code,
             line_total
@@ -111,7 +112,7 @@ class SegmentService extends BaseService {
           return {
             name,
             variant,
-            price: unit_price,
+            price: unit_price / 100,
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
             sku: item.variant.sku,

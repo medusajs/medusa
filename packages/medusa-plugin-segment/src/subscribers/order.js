@@ -73,7 +73,19 @@ class OrderSubscriber {
       }
     )
 
-    eventBusService.subscribe("order.canceled", async (order) => {
+    eventBusService.subscribe("order.canceled", async ({ id }) => {
+      const order = await this.orderService_.retrieve(id, {
+        select: [
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "gift_card_total",
+          "subtotal",
+          "total",
+        ],
+      })
+
       const date = new Date()
       const orderData = await segmentService.buildOrder(order)
       const orderEvent = {
