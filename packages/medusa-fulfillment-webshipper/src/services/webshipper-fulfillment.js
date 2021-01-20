@@ -163,7 +163,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
                   item.variant.hs_code || item.variant.product.hs_code,
                 unit_price: item.unit_price / 100,
                 vat_percent: fromOrder.tax_rate,
-                currency: fromOrder.currency_code,
+                currency: fromOrder.currency_code.toUpperCase(),
               }
             }),
           },
@@ -303,7 +303,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
             phone: shipping_address.phone,
             email: fromOrder.email,
           },
-          currency: fromOrder.currency_code,
+          currency: fromOrder.currency_code.toUpperCase(),
         },
         relationships: {
           order_channel: {
