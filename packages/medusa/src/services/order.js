@@ -684,6 +684,48 @@ class OrderService extends BaseService {
     }
   }
 
+  async addShippingMethod(orderId, optionId, data, config = {}) {
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        select: ["subtotal"],
+        relations: [
+          "shipping_methods",
+          "shipping_methods.shipping_option",
+          "items",
+          "items.variant",
+          "items.variant.product",
+        ],
+      })
+      const { shipping_methods } = order
+
+      const newMethod = await this.shippingOptionService_
+        .withTransaction(manager)
+        .createShippingMethod(optionId, data, { order, ...config })
+
+      const methods = [newMethod]
+      if (shipping_methods.length) {
+        for (const sm of shipping_methods) {
+          if (
+            sm.shipping_option.profile_id ===
+            newMethod.shipping_option.profile_id
+          ) {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .deleteShippingMethod(sm)
+          } else {
+            methods.push(sm)
+          }
+        }
+      }
+
+      const result = await this.retrieve(orderId)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.UPDATED, { id: result.id })
+      return result
+    })
+  }
+
   /**
    * Updates an order. Metadata updates should
    * use dedicated method, e.g. `setMetadata` etc. The function
