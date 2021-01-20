@@ -184,7 +184,7 @@ class FulfillmentService extends BaseService {
         fulfillments.map(async ({ shipping_method, items }) => {
           const ful = fulfillmentRepository.create({
             ...custom,
-            provider: shipping_method.provider_id,
+            provider_id: shipping_method.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
             data: {},
           })
@@ -214,7 +214,7 @@ class FulfillmentService extends BaseService {
   cancelFulfillment(fulfillmentOrId) {
     return this.atomicPhase_(async manager => {
       let id = fulfillmentOrId
-      if (typeof fulfilmentOrId === "object") {
+      if (typeof fulfillmentOrId === "object") {
         id = fulfillmentOrId.id
       }
       const fulfillment = await this.retrieve(id)

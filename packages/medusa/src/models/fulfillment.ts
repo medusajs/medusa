@@ -46,6 +46,9 @@ export class Fulfillment {
   @JoinColumn({ name: "order_id" })
   order: Order
 
+  @Column()
+  provider_id: string
+
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
   provider: FulfillmentProvider
