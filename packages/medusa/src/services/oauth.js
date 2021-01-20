@@ -42,7 +42,7 @@ class Oauth extends OauthService {
     return repo.save(application)
   }
 
-  update(id, update) {
+  async update(id, update) {
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
     const oauth = await repo.findOne({ where: { id } })
 
