@@ -205,9 +205,13 @@ class FulfillmentService extends BaseService {
     })
   }
 
-  cancelFulfillment(fulfillmentId) {
+  cancelFulfillment(fulfillmentOrId) {
     return this.atomicPhase_(async manager => {
-      const fulfillment = await this.retrieve(fulfillmentId)
+      let id = fulfillmentOrId
+      if (typeof fulfilmentOrId === "object") {
+        id = fulfillmentOrId.id
+      }
+      const fulfillment = await this.retrieve(id)
 
       await this.fulfillmentProviderService_.cancelFulfillment(fulfillment)
 
