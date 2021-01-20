@@ -320,7 +320,7 @@ class ProductVariantService extends BaseService {
       let moneyAmount
       moneyAmount = await moneyAmountRepo.findOne({
         where: {
-          currency_code: price.currency_code,
+          currency_code: price.currency_code.toLowerCase(),
           variant_id: variantId,
           region_id: IsNull(),
         },
@@ -329,6 +329,7 @@ class ProductVariantService extends BaseService {
       if (!moneyAmount) {
         moneyAmount = await moneyAmountRepo.create({
           ...price,
+          currency_code: price.currency_code.toUpperCase(),
           variant_id: variantId,
         })
       } else {
