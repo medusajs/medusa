@@ -205,6 +205,12 @@ class FulfillmentService extends BaseService {
     })
   }
 
+  /**
+   * Cancels a fulfillment with the fulfillment provider.
+   * @param {Fulfillment|string} fulfillmentOrId - the fulfillment object or id.
+   * @return {Promise} the result of the save operation
+   *
+   */
   cancelFulfillment(fulfillmentOrId) {
     return this.atomicPhase_(async manager => {
       let id = fulfillmentOrId
