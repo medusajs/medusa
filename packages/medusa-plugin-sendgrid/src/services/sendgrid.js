@@ -66,7 +66,6 @@ class SendGridService extends BaseService {
     }
     try {
       if (templateId) {
-        console.log("Sendgrid data: ", data)
         return SendGrid.send({
           template_id: templateId,
           from: this.options_.from,
