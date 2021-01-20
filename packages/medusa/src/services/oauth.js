@@ -13,38 +13,44 @@ class Oauth extends OauthService {
     const manager = cradle.manager
 
     this.container_ = cradle
-    this.model_ = manager.getCustomRepository(cradle.oauthRepository)
+    this.oauthRepository_ = cradle.oauthRepository
     this.eventBus_ = cradle.eventBusService
   }
 
   retrieveByName(appName) {
-    return this.model_.findOne({
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    return repo.findOne({
       application_name: appName,
     })
   }
 
   list(selector) {
-    return this.model_.find(selector)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    return repo.find(selector)
   }
 
   async create(data) {
-    const application = this.model_.create({
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+
+    const application = repo.create({
       display_name: data.display_name,
       application_name: data.application_name,
       install_url: data.install_url,
       uninstall_url: data.uninstall_url,
     })
 
-    return this.model_.save(application)
+    return repo.save(application)
   }
 
   update(id, update) {
-    return this.model_.updateOne(
-      {
-        _id: id,
-      },
-      update
-    )
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const oauth = await repo.findOne({ where: { id } })
+
+    if ("data" in update) {
+      oauth.data = update.data
+    }
+
+    return repo.save(oauth)
   }
 
   async registerOauthApp(appDetails) {
@@ -76,7 +82,7 @@ class Oauth extends OauthService {
 
     const authData = await service.generateToken(code)
 
-    return this.update(app._id, {
+    return this.update(app.id, {
       data: authData,
     }).then(result => {
       this.eventBus_.emit(
@@ -100,7 +106,7 @@ class Oauth extends OauthService {
 
     const authData = await service.refreshToken(refreshToken)
 
-    return this.update(app._id, {
+    return this.update(app.id, {
       data: authData,
     }).then(result => {
       this.eventBus_.emit(
