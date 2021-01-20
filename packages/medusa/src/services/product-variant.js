@@ -329,7 +329,7 @@ class ProductVariantService extends BaseService {
       if (!moneyAmount) {
         moneyAmount = await moneyAmountRepo.create({
           ...price,
-          currency_code: price.currency_code.toUpperCase(),
+          currency_code: price.currency_code.toLowerCase(),
           variant_id: variantId,
         })
       } else {
