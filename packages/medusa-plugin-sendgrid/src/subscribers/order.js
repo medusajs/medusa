@@ -32,6 +32,7 @@ class OrderSubscriber {
             "shipping_address",
             "discounts",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "payments",
             "fulfillments",
             "returns",
@@ -147,8 +148,6 @@ class OrderSubscriber {
 
           discounts.concat(giftCards)
         }
-
-        console.log("Sendgrid order email: ", order.email)
 
         const data = {
           ...order,
