@@ -70,7 +70,7 @@ class CustomerService extends BaseService {
       )
     }
 
-    return value
+    return value.toLowerCase()
   }
 
   validateBillingAddress_(address) {
@@ -176,7 +176,7 @@ class CustomerService extends BaseService {
       this.customerRepository_
     )
 
-    const query = this.buildQuery_({ email }, config)
+    const query = this.buildQuery_({ email: email.toLowerCase() }, config)
     const customer = await customerRepo.findOne(query)
 
     if (!customer) {

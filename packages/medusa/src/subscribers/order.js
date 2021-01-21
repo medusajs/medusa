@@ -46,26 +46,6 @@ class OrderSubscriber {
       })
     )
 
-    await this.manager_.transaction(async m => {
-      let gcBalance = order.subtotal
-      for (const g of order.gift_cards) {
-        const newBalance = Math.max(0, g.balance - gcBalance)
-        const usage = g.balance - newBalance
-        await this.giftCardService_.withTransaction(m).update(g.id, {
-          balance: newBalance,
-          disabled: newBalance === 0,
-        })
-
-        await this.giftCardService_.withTransaction(m).createTransaction({
-          gift_card_id: g.id,
-          order_id: order.id,
-          amount: usage,
-        })
-
-        gcBalance = gcBalance - usage
-      }
-    })
-
     await Promise.all(
       order.discounts.map(async d => {
         return this.discountService_.update(d.id, {

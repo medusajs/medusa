@@ -1,20 +1,7 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, Raw } from "typeorm"
-
-const entityFields = [
-  "cart",
-  "customer",
-  "billing_address",
-  "shipping_address",
-  "region",
-  "currency",
-  "fulfillments",
-  "items",
-  "items.variant",
-  "items.variant.product",
-]
+import { Brackets } from "typeorm"
 
 class OrderService extends BaseService {
   static Events = {
@@ -53,6 +40,7 @@ class OrderService extends BaseService {
     swapService,
     cartService,
     addressRepository,
+    giftCardService,
     // documentService,
     eventBusService,
   }) {
@@ -94,6 +82,9 @@ class OrderService extends BaseService {
     /** @private @constant {DiscountService} */
     this.discountService_ = discountService
 
+    /** @private @constant {DiscountService} */
+    this.giftCardService_ = giftCardService
+
     /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
 
@@ -129,6 +120,7 @@ class OrderService extends BaseService {
       totalsService: this.totalsService_,
       cartService: this.cartService_,
       swapService: this.swapService_,
+      giftCardService: this.giftCardService_,
     })
 
     cloned.transactionManager_ = manager
@@ -437,7 +429,7 @@ class OrderService extends BaseService {
       const cart = await this.cartService_
         .withTransaction(manager)
         .retrieve(cartId, {
-          select: ["total"],
+          select: ["subtotal", "total"],
           relations: [
             "region",
             "payment",
@@ -513,6 +505,24 @@ class OrderService extends BaseService {
         .updatePayment(payment.id, {
           order_id: result.id,
         })
+
+      let gcBalance = cart.subtotal
+      for (const g of cart.gift_cards) {
+        const newBalance = Math.max(0, g.balance - gcBalance)
+        const usage = g.balance - newBalance
+        await this.giftCardService_.withTransaction(manager).update(g.id, {
+          balance: newBalance,
+          disabled: newBalance === 0,
+        })
+
+        await this.giftCardService_.withTransaction(manager).createTransaction({
+          gift_card_id: g.id,
+          order_id: result.id,
+          amount: usage,
+        })
+
+        gcBalance = gcBalance - usage
+      }
 
       for (const method of cart.shipping_methods) {
         await this.shippingOptionService_
