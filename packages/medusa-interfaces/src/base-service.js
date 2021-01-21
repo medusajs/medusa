@@ -106,6 +106,11 @@ class BaseService {
     return rawId
   }
 
+  shouldRetryTransaction(err) {
+    const code = typeof err === "object" ? String(err.code) : null
+    return code === "40001" || code === "40P01"
+  }
+
   /**
    * Wraps some work within a transactional block. If the service already has
    * a transaction manager attached this will be reused, otherwise a new
@@ -114,7 +119,7 @@ class BaseService {
    * @param {string} isolation - the isolation level to be used for the work.
    * @return {any} the result of the transactional work
    */
-  atomicPhase_(work, isolation) {
+  async atomicPhase_(work, isolation) {
     if (this.transactionManager_) {
       return work(this.transactionManager_)
     } else {
@@ -135,7 +140,17 @@ class BaseService {
       }
 
       if (isolation) {
-        return this.manager_.transaction(isolation, m => doWork(m))
+        let result
+        try {
+          result = await this.manager_.transaction(isolation, m => doWork(m))
+          return result
+        } catch (error) {
+          if (this.shouldRetryTransaction(error)) {
+            return this.manager_.transaction(isolation, m => doWork(m))
+          } else {
+            throw error
+          }
+        }
       }
       return this.manager_.transaction(m => doWork(m))
     }

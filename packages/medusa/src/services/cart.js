@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { defaultFields, defaultRelations } from "../api/routes/store/carts"
 
 /**
  * Provides layer to manipulate carts.
@@ -564,6 +565,13 @@ class CartService extends BaseService {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const cart = await this.retrieve(cartId, {
+        select: [
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
         relations: [
           "items",
           "shipping_methods",
@@ -572,6 +580,9 @@ class CartService extends BaseService {
           "gift_cards",
           "discounts",
           "customer",
+          "region",
+          "payment_sessions",
+          "region.countries",
           "discounts.rule",
           "discounts.regions",
         ],
@@ -589,12 +600,17 @@ class CartService extends BaseService {
         }
       }
 
+      const addrRepo = manager.getCustomRepository(this.addressRepository_)
       if ("shipping_address" in update) {
-        await this.updateShippingAddress_(cart, update.shipping_address)
+        await this.updateShippingAddress_(
+          cart,
+          update.shipping_address,
+          addrRepo
+        )
       }
 
       if ("billing_address" in update) {
-        await this.updateBillingAddress_(cart, update.billing_address)
+        await this.updateBillingAddress_(cart, update.billing_address, addrRepo)
       }
 
       if ("discounts" in update) {
@@ -611,6 +627,10 @@ class CartService extends BaseService {
         }
       }
 
+      if (cart.payment_session?.length) {
+        await this.setPaymentSessions(cart)
+      }
+
       const result = await cartRepo.save(cart)
 
       if ("email" in update || "customer_id" in update) {
@@ -624,7 +644,7 @@ class CartService extends BaseService {
         .emit(CartService.Events.UPDATED, result)
 
       return result
-    })
+    }, "REPEATABLE READ")
   }
 
   /**
@@ -661,13 +681,12 @@ class CartService extends BaseService {
     }
 
     let customer = await this.customerService_
-      .withTransaction(this.transactionManager_)
       .retrieveByEmail(value)
       .catch(() => undefined)
 
     if (!customer) {
       customer = await this.customerService_
-        .withTransaction(this.transactionManager_)
+        .withTransaction(this.manager_)
         .create({ email })
     }
 
@@ -682,22 +701,17 @@ class CartService extends BaseService {
    * @param {object} address - the value to set the billing address to
    * @return {Promise} the result of the update operation
    */
-  async updateBillingAddress_(cart, address) {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+  async updateBillingAddress_(cart, address, addrRepo) {
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(cart.region_id, {
-      relations: ["countries"],
-    })
-
-    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+    if (
+      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Shipping country must be in the cart region"
       )
     }
-
-    address.country_code = address.country_code.toLowerCase()
 
     if (cart.billing_address_id) {
       const addr = await addrRepo.findOne({
@@ -706,8 +720,11 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = await addrRepo.create({ ...address, cart_id: cart.id })
-      await addrRepo.save(created)
+      const created = addrRepo.create({
+        ...address,
+      })
+
+      cart.billing_address = created
     }
   }
 
@@ -717,15 +734,12 @@ class CartService extends BaseService {
    * @param {object} address - the value to set the shipping address to
    * @return {Promise} the result of the update operation
    */
-  async updateShippingAddress_(cart, address) {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+  async updateShippingAddress_(cart, address, addrRepo) {
     address.country_code = address.country_code.toLowerCase()
 
-    const region = await this.regionService_.retrieve(cart.region_id, {
-      relations: ["countries"],
-    })
-
-    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+    if (
+      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Shipping country must be in the cart region"
@@ -739,8 +753,11 @@ class CartService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = await addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      const created = addrRepo.create({
+        ...address,
+      })
+
+      cart.shipping_address = created
     }
   }
 
@@ -998,7 +1015,7 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
-    })
+    }, "SERIALIZABLE")
   }
 
   /**
@@ -1010,28 +1027,53 @@ class CartService extends BaseService {
    * @param {string} cartId - the id of the cart to set payment session for
    * @returns {Promise} the result of the update operation.
    */
-  async setPaymentSessions(cartId) {
+  async setPaymentSessions(cartOrCartId) {
     return this.atomicPhase_(async manager => {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
-      const cart = await this.retrieve(cartId, {
-        select: [
-          "subtotal",
-          "tax_total",
-          "shipping_total",
-          "discount_total",
-          "total",
-        ],
-        relations: [
-          "items",
-          "billing_address",
-          "shipping_address",
-          "region",
-          "region.payment_providers",
-          "payment_sessions",
-          "customer",
-        ],
-      })
+      let cart = cartOrCartId
+      const requiredProps = [
+        "subtotal",
+        "tax_total",
+        "shipping_total",
+        "discount_total",
+        "total",
+        "items",
+        "billing_address",
+        "shipping_address",
+        "region",
+        "region.payment_providers",
+        "payment_sessions",
+        "customer",
+      ]
+
+      let shouldLoad = false
+      if (typeof cartOrCartId === `string`) {
+        shouldLoad = true
+      } else {
+        shouldLoad = !requiredProps.every(prop => cart.hasOwnProperty(prop))
+      }
+
+      if (shouldLoad) {
+        cart = await this.retrieve(cart.id, {
+          select: [
+            "subtotal",
+            "tax_total",
+            "shipping_total",
+            "discount_total",
+            "total",
+          ],
+          relations: [
+            "items",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        })
+      }
 
       const region = cart.region
 
@@ -1076,15 +1118,7 @@ class CartService extends BaseService {
           }
         }
       }
-
-      const result = await this.retrieve(cartId)
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(CartService.Events.UPDATED, result)
-
-      return result
-    })
+    }, "SERIALIZABLE")
   }
 
   /**

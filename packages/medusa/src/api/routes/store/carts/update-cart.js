@@ -35,11 +35,13 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
-    let cart = await cartService.update(id, value)
-    cart = await cartService.retrieve(id, {
+    await cartService.update(id, value)
+
+    const cart = await cartService.retrieve(id, {
       select: defaultFields,
       relations: defaultRelations,
     })
+
     res.json({ cart })
   } catch (err) {
     console.log(err)
