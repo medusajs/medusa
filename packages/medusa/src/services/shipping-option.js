@@ -114,6 +114,7 @@ class ShippingOptionService extends BaseService {
    */
   async list(selector, config = { skip: 0, take: 50 }) {
     const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
+
     const query = this.buildQuery_(selector, config)
     return optRepo.find(query)
   }
