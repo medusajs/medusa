@@ -59,7 +59,9 @@ class AdyenSubscriber {
 
   async handleFailedAuthorization_(notification) {
     const cartId = notification.additionalData["metadata.cart_id"]
-    const cart = await this.cartService_.retrieve(cartId)
+    const cart = await this.cartService_.retrieve(cartId, {
+      relations: ["payment_sessions"],
+    })
 
     const { payment_session } = cart
 
