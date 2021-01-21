@@ -41,7 +41,6 @@ class OrderService extends BaseService {
     cartService,
     addressRepository,
     giftCardService,
-    // documentService,
     eventBusService,
   }) {
     super()
@@ -1086,22 +1085,6 @@ class OrderService extends BaseService {
       ...item,
       quantity,
     }
-  }
-
-  /**
-   * Generates documents.
-   * @param {Array<Document>} docs - documents to generate
-   * @param {Function} transformer - a function to apply to the created document
-   *   before returning.
-   * @return {Promise<Array<_>>} returns the created documents
-   */
-  createDocuments_(docs, transformer) {
-    return Promise.all(
-      docs.map(async d => {
-        const doc = await this.documentService_.create(d)
-        return transformer(doc)
-      })
-    )
   }
 
   /**
