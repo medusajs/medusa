@@ -14,6 +14,8 @@ export default async (req, res) => {
         "billing_address",
         "region",
         "items",
+        "shipping_methods",
+        "shipping_methods.shipping_option",
         "items.variant",
         "items.variant.product",
       ],
@@ -59,8 +61,11 @@ export default async (req, res) => {
       const shippingOptions = await shippingProfileService.fetchCartOptions(
         cart
       )
-      const option = shippingOptions[0]
-      await cartService.addShippingMethod(cart.id, option.id, option.data)
+
+      if (shippingOptions?.length) {
+        const option = shippingOptions[0]
+        await cartService.addShippingMethod(cart.id, option.id, option.data)
+      }
 
       // Fetch and return updated Klarna order
       const updatedCart = await cartService.retrieve(cart.id, {
@@ -75,6 +80,8 @@ export default async (req, res) => {
           "shipping_address",
           "billing_address",
           "region",
+          "shipping_methods",
+          "shipping_methods.shipping_option",
           "items",
           "items.variant",
           "items.variant.product",
