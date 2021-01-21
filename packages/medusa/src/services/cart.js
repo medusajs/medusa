@@ -1047,15 +1047,8 @@ class CartService extends BaseService {
         "customer",
       ]
 
-      let shouldLoad = false
       if (typeof cartOrCartId === `string`) {
-        shouldLoad = true
-      } else {
-        shouldLoad = !requiredProps.every(prop => cart.hasOwnProperty(prop))
-      }
-
-      if (shouldLoad) {
-        cart = await this.retrieve(cart.id, {
+        cart = await this.retrieve(cartOrCartId, {
           select: [
             "subtotal",
             "tax_total",
@@ -1073,6 +1066,27 @@ class CartService extends BaseService {
             "customer",
           ],
         })
+      } else {
+        if (!requiredProps.every(prop => cart.hasOwnProperty(prop))) {
+          cart = await this.retrieve(cart.id, {
+            select: [
+              "subtotal",
+              "tax_total",
+              "shipping_total",
+              "discount_total",
+              "total",
+            ],
+            relations: [
+              "items",
+              "billing_address",
+              "shipping_address",
+              "region",
+              "region.payment_providers",
+              "payment_sessions",
+              "customer",
+            ],
+          })
+        }
       }
 
       const region = cart.region
