@@ -381,7 +381,6 @@ class KlarnaProviderService extends PaymentService {
   async updatePayment(paymentData, cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart, true)
-
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)
@@ -410,7 +409,7 @@ class KlarnaProviderService extends PaymentService {
         }
       )
 
-      return this.retrievePayment(payment.data)
+      return this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
@@ -431,7 +430,7 @@ class KlarnaProviderService extends PaymentService {
         }
       )
 
-      return this.retrievePayment(payment.data)
+      return this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
@@ -449,7 +448,7 @@ class KlarnaProviderService extends PaymentService {
         `${this.klarnaOrderManagementUrl_}/${order_id}/cancel`
       )
 
-      return this.retrievePayment(payment.data)
+      return this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }

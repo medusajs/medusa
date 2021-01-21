@@ -13,6 +13,8 @@ export default async (req, res) => {
         "shipping_address",
         "billing_address",
         "region",
+        "shipping_methods",
+        "shipping_methods.shipping_option",
         "items",
         "items.variant",
         "items.variant.product",
@@ -40,6 +42,8 @@ export default async (req, res) => {
       relations: [
         "shipping_address",
         "billing_address",
+        "shipping_methods",
+        "shipping_methods.shipping_option",
         "region",
         "items",
         "items.variant",
