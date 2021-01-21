@@ -86,9 +86,6 @@ class KlarnaProviderService extends PaymentService {
       })
     }
 
-    if (!cart.shipping_methods.length) {
-    }
-
     return order_lines
   }
 
@@ -187,7 +184,7 @@ class KlarnaProviderService extends PaymentService {
       // Don't touch :D
       // From: https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
       const cartesian = (...a) =>
-        a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())))
+        a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())), [])
 
       const methods = Object.keys(partitioned).map((k) => partitioned[k])
       const combinations = cartesian(...methods)
@@ -458,15 +455,8 @@ class KlarnaProviderService extends PaymentService {
     }
   }
 
-  async deletePayment(payment) {
-    const { order_id } = payment.data
-    try {
-      return this.klarna_.post(
-        `${this.klarnaOrderManagementUrl_}/${order_id}/cancel`
-      )
-    } catch (error) {
-      throw error
-    }
+  async deletePayment(_) {
+    return Promise.resolve()
   }
 }
 
