@@ -68,7 +68,13 @@ class ShippingProfileService extends BaseService {
       {
         id: Any(productIds),
       },
-      { relations: ["profile", "profile.shipping_options"] }
+      {
+        relations: [
+          "profile",
+          "profile.shipping_options",
+          "profile.shipping_options.requirements",
+        ],
+      }
     )
 
     const profiles = products.map(p => p.profile)
@@ -86,6 +92,11 @@ class ShippingProfileService extends BaseService {
             canSend = false
           }
         }
+
+        if (option.deleted_at !== null) {
+          canSend = false
+        }
+
         return canSend ? option : null
       })
     )

@@ -1,15 +1,15 @@
 export default async (req, res) => {
-  const productIds =
-    (req.query.product_ids && req.query.product_ids.split(",")) || []
   const regionId = req.query.region_id
 
   try {
-    const shippingProfileService = req.scope.resolve("shippingProfileService")
+    const shippingOptionService = req.scope.resolve("shippingOptionService")
 
-    const options = await shippingProfileService.fetchOptionsByProductIds(
-      productIds,
+    const options = await shippingOptionService.list(
       {
         region_id: regionId,
+      },
+      {
+        relations: ["requirements"],
       }
     )
 
