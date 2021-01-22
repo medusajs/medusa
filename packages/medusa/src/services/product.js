@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate products.
@@ -69,7 +70,41 @@ class ProductService extends BaseService {
       this.productRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.description
+      delete where.title
+
+      query.join = {
+        alias: "product",
+        leftJoinAndSelect: {
+          variant: "product.variants",
+        },
+      }
+
+      query.where = qb => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`product.title ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`product.description ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+      }
+    }
+
     return productRepo.find(query)
   }
 
@@ -170,9 +205,9 @@ class ProductService extends BaseService {
         relations: ["variants"],
       })
 
-      const { variants, metadata, options, images, thumbnail, ...rest } = update
+      const { variants, metadata, options, images, ...rest } = update
 
-      if (!product.thumbnail && !thumbnail && images && images.length) {
+      if (!product.thumbnail && !update.thumbnail && images && images.length) {
         product.thumbnail = images[0]
       }
 
