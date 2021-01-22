@@ -25,9 +25,10 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls LineItemService update", () => {
-      expect(LineItemServiceMock.update).toHaveBeenCalledTimes(1)
-      expect(LineItemServiceMock.update).toHaveBeenCalledWith(
+    it("calls cartService.updateLineItem", () => {
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
+        IdMap.getId("fr-cart"),
         IdMap.getId("existingLine"),
         {
           variant_id: IdMap.getId("eur-10-us-12"),
@@ -48,53 +49,6 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
 
     it("returns the cart", () => {
       expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
-    })
-  })
-
-  describe("successfully updates a line item with metadata", () => {
-    let subject
-
-    beforeAll(async () => {
-      const cartId = IdMap.getId("cartLineItemMetadata")
-      const lineId = IdMap.getId("lineWithMetadata")
-      subject = await request(
-        "POST",
-        `/store/carts/${cartId}/line-items/${lineId}`,
-        {
-          payload: {
-            quantity: 3,
-          },
-        }
-      )
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls CartService retrieve", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
-    })
-
-    it("calls LineItemService update", () => {
-      expect(LineItemServiceMock.update).toHaveBeenCalledTimes(1)
-      expect(LineItemServiceMock.update).toHaveBeenCalledWith(
-        IdMap.getId("lineWithMetadata"),
-        {
-          variant_id: IdMap.getId("eur-10-us-12"),
-          region_id: IdMap.getId("region-france"),
-          quantity: 3,
-          metadata: { status: "confirmed" },
-        }
-      )
-    })
-
-    it("returns 200", () => {
-      expect(subject.status).toEqual(200)
-    })
-
-    it("returns the cart", () => {
-      expect(subject.body.cart.id).toEqual(IdMap.getId("cartLineItemMetadata"))
     })
   })
 

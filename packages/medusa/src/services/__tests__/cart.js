@@ -572,6 +572,63 @@ describe("CartService", () => {
     })
   })
 
+  describe("update", () => {
+    const cartRepository = MockRepository({
+      findOne: q => {
+        if (q.where.id === "withpays") {
+          return Promise.resolve({
+            payment_sessions: [
+              {
+                id: "test",
+              },
+            ],
+          })
+        }
+      },
+    })
+
+    const cartService = new CartService({
+      manager: MockManager,
+      cartRepository,
+      totalsService,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("retrieves correctly", async () => {
+      cartService.setPaymentSessions = jest.fn()
+      await cartService.update("withpays", {})
+
+      expect(cartRepository.findOne).toHaveBeenCalledWith({
+        relations: [
+          "items",
+          "shipping_methods",
+          "shipping_address",
+          "billing_address",
+          "gift_cards",
+          "discounts",
+          "customer",
+          "region",
+          "payment_sessions",
+          "region.countries",
+          "discounts.rule",
+          "discounts.regions",
+        ],
+        where: { id: "withpays" },
+      })
+    })
+
+    it("updates payment sessions", async () => {
+      cartService.setPaymentSessions = jest.fn()
+      await cartService.update("withpays", {})
+
+      expect(cartService.setPaymentSessions).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe("updateLineItem", () => {
     const lineItemService = {
       update: jest.fn(),
@@ -701,6 +758,11 @@ describe("CartService", () => {
           id: IdMap.getId("existing"),
         },
         email: "test@testdom.com",
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
       })
     })
 
@@ -720,6 +782,11 @@ describe("CartService", () => {
         customer_id: IdMap.getId("newCus"),
         customer: { id: IdMap.getId("newCus") },
         email: "no@mail.com",
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
       })
     })
 
@@ -732,23 +799,16 @@ describe("CartService", () => {
 
   describe("updateBillingAddress", () => {
     const cartRepository = MockRepository({
-      findOne: () => Promise.resolve({}),
+      findOne: () =>
+        Promise.resolve({
+          region: { countries: [{ iso_2: "us" }] },
+        }),
     })
-
-    const regionService = {
-      retrieve: jest.fn(() =>
-        Promise.resolve({ countries: [{ iso_2: "us" }] })
-      ),
-      withTransaction: function() {
-        return this
-      },
-    }
 
     const addressRepository = MockRepository({ create: c => c })
 
     const cartService = new CartService({
       manager: MockManager,
-      regionService,
       totalsService,
       cartRepository,
       addressRepository,
@@ -781,27 +841,32 @@ describe("CartService", () => {
         expect.any(Object)
       )
 
-      expect(addressRepository.save).toHaveBeenCalledTimes(1)
-      expect(addressRepository.save).toHaveBeenCalledWith({
+      expect(addressRepository.create).toHaveBeenCalledTimes(1)
+      expect(addressRepository.create).toHaveBeenCalledWith({
         ...address,
         country_code: "us",
+      })
+
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        region: { countries: [{ iso_2: "us" }] },
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        billing_address: address,
       })
     })
   })
 
   describe("updateShippingAddress", () => {
     const cartRepository = MockRepository({
-      findOne: () => Promise.resolve({}),
+      findOne: () =>
+        Promise.resolve({
+          region: { countries: [{ iso_2: "us" }] },
+        }),
     })
     const addressRepository = MockRepository({ create: c => c })
-    const regionService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("testRegion"),
-          countries: [{ iso_2: "us" }],
-        }
-      },
-    }
 
     const cartService = new CartService({
       manager: MockManager,
@@ -809,7 +874,6 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
-      regionService,
     })
 
     beforeEach(() => {
@@ -838,9 +902,19 @@ describe("CartService", () => {
         expect.any(Object)
       )
 
-      expect(addressRepository.save).toHaveBeenCalledTimes(1)
-      expect(addressRepository.save).toHaveBeenCalledWith({
+      expect(addressRepository.create).toHaveBeenCalledTimes(1)
+      expect(addressRepository.create).toHaveBeenCalledWith({
         ...address,
+      })
+
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        region: { countries: [{ iso_2: "us" }] },
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        shipping_address: address,
       })
     })
 
@@ -914,8 +988,17 @@ describe("CartService", () => {
           ],
         }),
     })
+    const paymentProviderService = {
+      deleteSession: jest.fn(),
+      updateSession: jest.fn(),
+      createSession: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
     const cartService = new CartService({
       manager: MockManager,
+      paymentProviderService,
       addressRepository,
       totalsService,
       cartRepository,
@@ -960,7 +1043,13 @@ describe("CartService", () => {
           countries: [{ iso_2: "us" }],
         },
         items: [IdMap.getId("testitem"), null],
+        payment_session: null,
         payment_sessions: [],
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
         discounts: [
           {
             id: IdMap.getId("stays"),
@@ -1033,6 +1122,7 @@ describe("CartService", () => {
 
   describe("setPaymentSessions", () => {
     const cart1 = {
+      total: 100,
       payment_sessions: [],
       region: {
         payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
@@ -1040,6 +1130,7 @@ describe("CartService", () => {
     }
 
     const cart2 = {
+      total: 100,
       payment_sessions: [{ provider_id: "provider_1" }],
       region: {
         payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
@@ -1047,9 +1138,32 @@ describe("CartService", () => {
     }
 
     const cart3 = {
+      total: 100,
       payment_sessions: [
         { provider_id: "provider_1" },
         { provider_id: "not_in_region" },
+      ],
+      region: {
+        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+      },
+    }
+
+    const cart4 = {
+      total: 0,
+      payment_sessions: [
+        { provider_id: "provider_1" },
+        { provider_id: "provider_2" },
+      ],
+      region: {
+        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+      },
+    }
+
+    const cart5 = {
+      total: -1,
+      payment_sessions: [
+        { provider_id: "provider_1" },
+        { provider_id: "provider_2" },
       ],
       region: {
         payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
@@ -1063,6 +1177,12 @@ describe("CartService", () => {
         }
         if (q.where.id === IdMap.getId("cart-with-session")) {
           return Promise.resolve(cart2)
+        }
+        if (q.where.id === IdMap.getId("cart-remove")) {
+          return Promise.resolve(cart4)
+        }
+        if (q.where.id === IdMap.getId("cart-negative")) {
+          return Promise.resolve(cart4)
         }
         return Promise.resolve(cart1)
       },
@@ -1092,12 +1212,6 @@ describe("CartService", () => {
     it("initializes payment sessions for each of the providers", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
 
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "cart.updated",
-        expect.any(Object)
-      )
-
       expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
       expect(paymentProviderService.createSession).toHaveBeenCalledWith(
         "provider_1",
@@ -1112,16 +1226,46 @@ describe("CartService", () => {
     it("updates payment sessions for existing sessions", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-with-session"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
     })
 
     it("filters sessions not available in the region", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-to-filter"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
         provider_id: "not_in_region",
+      })
+    })
+
+    it("removes if cart total === 0", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cart-remove"))
+
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(0)
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(0)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
+        provider_id: "provider_1",
+      })
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
+        provider_id: "provider_2",
+      })
+    })
+
+    it("removes if cart total < 0", async () => {
+      await cartService.setPaymentSessions(IdMap.getId("cart-negative"))
+
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(0)
+      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(0)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
+        provider_id: "provider_1",
+      })
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
+        provider_id: "provider_2",
       })
     })
   })
@@ -1376,6 +1520,11 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("cart"),
         region_id: IdMap.getId("good"),
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
         discounts: [
           {
             id: IdMap.getId("10off"),
@@ -1398,6 +1547,11 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("cart"),
         region_id: IdMap.getId("good"),
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
         discounts: [
           {
             id: IdMap.getId("10off"),
@@ -1438,6 +1592,11 @@ describe("CartService", () => {
             },
           },
         ],
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
         region_id: IdMap.getId("good"),
       })
     })

@@ -3,7 +3,11 @@ export default {
     return repo;
   },
 
-  transaction: function (cb) {
-    return cb(this);
+  transaction: function (isolationOrCb, cb) {
+    if (typeof isolationOrCb === "string") {
+      return cb(this);
+    } else {
+      return isolationOrCb(this);
+    }
   },
 };

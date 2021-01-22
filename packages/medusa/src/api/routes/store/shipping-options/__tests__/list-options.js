@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { carts, CartServiceMock } from "../../../../../services/__mocks__/cart"
-import { ShippingProfileServiceMock } from "../../../../../services/__mocks__/shipping-profile"
+import { ShippingOptionServiceMock } from "../../../../../services/__mocks__/shipping-option"
+import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
 describe("GET /store/shipping-options", () => {
   describe("retrieves shipping options by product ids", () => {
@@ -19,22 +19,22 @@ describe("GET /store/shipping-options", () => {
     })
 
     it("calls ShippingProfileService fetchOptionsByProductIds", () => {
-      expect(
-        ShippingProfileServiceMock.fetchOptionsByProductIds
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        ShippingProfileServiceMock.fetchOptionsByProductIds
-      ).toHaveBeenCalledWith(["1", "2", "3"], { region_id: "test-region" })
+      expect(ProductServiceMock.list).toHaveBeenCalledTimes(1)
+      expect(ProductServiceMock.list).toHaveBeenCalledWith({
+        id: ["1", "2", "3"],
+      })
+      expect(ShippingOptionServiceMock.list).toHaveBeenCalledTimes(1)
+      expect(ShippingOptionServiceMock.list).toHaveBeenCalledWith(
+        {
+          profile_id: [undefined, undefined],
+          region_id: "test-region",
+        },
+        { relations: ["requirements"] }
+      )
     })
 
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
-    })
-
-    it("returns the shippingOptions", () => {
-      expect(subject.body.shipping_options[0].id).toEqual(
-        IdMap.getId("cartShippingOption")
-      )
     })
   })
 })

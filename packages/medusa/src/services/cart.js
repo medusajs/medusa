@@ -724,16 +724,6 @@ class CartService extends BaseService {
    */
   async updateBillingAddress_(cart, address, addrRepo) {
     address.country_code = address.country_code.toLowerCase()
-
-    if (
-      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Shipping country must be in the cart region"
-      )
-    }
-
     if (cart.billing_address_id) {
       const addr = await addrRepo.findOne({
         where: { id: cart.billing_address_id },
@@ -1117,7 +1107,7 @@ class CartService extends BaseService {
       if (cart.payment_sessions && cart.payment_sessions.length) {
         for (const session of cart.payment_sessions) {
           if (
-            cart.total < 0 ||
+            cart.total <= 0 ||
             !region.payment_providers.find(
               ({ id }) => id === session.provider_id
             )

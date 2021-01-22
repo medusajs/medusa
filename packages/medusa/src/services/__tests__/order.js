@@ -64,6 +64,13 @@ describe("OrderService", () => {
         return this
       },
     }
+    const giftCardService = {
+      update: jest.fn(),
+      createTransaction: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
     const paymentProviderService = {
       getStatus: payment => {
         return Promise.resolve(payment.status || "authorized")
@@ -102,6 +109,7 @@ describe("OrderService", () => {
           shipping_address_id: "1234",
           billing_address_id: "1234",
           discounts: [],
+          gift_cards: [],
           shipping_methods: [{ id: "method_1" }],
           items: [{ id: "item_1" }, { id: "item_2" }],
           total: 100,
@@ -118,6 +126,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       lineItemService,
+      giftCardService,
       paymentProviderService,
       shippingOptionService,
       totalsService,
@@ -155,9 +164,97 @@ describe("OrderService", () => {
         },
         shipping_address_id: "1234",
         billing_address_id: "1234",
+        gift_cards: [],
         discounts: [],
         shipping_methods: [{ id: "method_1" }],
         items: [{ id: "item_1" }, { id: "item_2" }],
+        total: 100,
+      }
+
+      orderService.cartService_.retrieve = jest.fn(() => Promise.resolve(cart))
+
+      await orderService.createFromCart("cart_id")
+      const order = {
+        payment_status: "awaiting",
+        email: cart.email,
+        customer_id: cart.customer_id,
+        shipping_methods: cart.shipping_methods,
+        customer_id: "cus_1234",
+        discounts: cart.discounts,
+        billing_address_id: cart.billing_address_id,
+        shipping_address_id: cart.shipping_address_id,
+        region_id: cart.region_id,
+        currency_code: "eur",
+        cart_id: "cart_id",
+        tax_rate: 25,
+        gift_cards: [],
+        metadata: {},
+      }
+
+      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
+      expect(cartService.retrieve).toHaveBeenCalledWith("cart_id", {
+        select: ["subtotal", "total"],
+        relations: [
+          "region",
+          "payment",
+          "items",
+          "discounts",
+          "gift_cards",
+          "shipping_methods",
+        ],
+      })
+
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledWith(
+        "testpayment",
+        {
+          order_id: "id",
+        }
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        order_id: "id",
+      })
+      expect(lineItemService.update).toHaveBeenCalledWith("item_2", {
+        order_id: "id",
+      })
+
+      expect(orderRepo.create).toHaveBeenCalledTimes(1)
+      expect(orderRepo.create).toHaveBeenCalledWith(order)
+      expect(orderRepo.save).toHaveBeenCalledWith(order)
+    })
+
+    it("creates gift card transactions", async () => {
+      const cart = {
+        id: "cart_id",
+        email: "test@test.com",
+        customer_id: "cus_1234",
+        payment: {
+          id: "testpayment",
+          amount: 100,
+          status: "authorized",
+        },
+        region_id: "test",
+        region: {
+          id: "test",
+          currency_code: "eur",
+          name: "test",
+          tax_rate: 25,
+        },
+        shipping_address_id: "1234",
+        billing_address_id: "1234",
+        gift_cards: [
+          {
+            id: "gid",
+            code: "GC",
+            balance: 80,
+          },
+        ],
+        discounts: [],
+        shipping_methods: [{ id: "method_1" }],
+        items: [{ id: "item_1" }, { id: "item_2" }],
+        subtotal: 100,
         total: 100,
       }
 
@@ -179,8 +276,28 @@ describe("OrderService", () => {
         currency_code: "eur",
         cart_id: "cart_id",
         tax_rate: 25,
+        gift_cards: [
+          {
+            id: "gid",
+            code: "GC",
+            balance: 80,
+          },
+        ],
         metadata: {},
       }
+
+      expect(giftCardService.update).toHaveBeenCalledTimes(1)
+      expect(giftCardService.update).toHaveBeenCalledWith("gid", {
+        balance: 0,
+        disabled: true,
+      })
+
+      expect(giftCardService.createTransaction).toHaveBeenCalledTimes(1)
+      expect(giftCardService.createTransaction).toHaveBeenCalledWith({
+        gift_card_id: "gid",
+        order_id: "id",
+        amount: 80,
+      })
 
       expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.updatePayment).toHaveBeenCalledWith(
@@ -220,6 +337,7 @@ describe("OrderService", () => {
           name: "test",
           tax_rate: 25,
         },
+        gift_cards: [],
         shipping_address_id: "1234",
         billing_address_id: "1234",
         discounts: [],
@@ -227,6 +345,7 @@ describe("OrderService", () => {
         items: [{ id: "item_1" }, { id: "item_2" }],
         total: 0,
       }
+      orderService.cartService_.retrieve = () => Promise.resolve(cart)
       await orderService.createFromCart(cart)
       const order = {
         payment_status: "awaiting",
@@ -237,6 +356,7 @@ describe("OrderService", () => {
         discounts: cart.discounts,
         billing_address_id: cart.billing_address_id,
         shipping_address_id: cart.shipping_address_id,
+        gift_cards: [],
         region_id: cart.region_id,
         currency_code: "eur",
         cart_id: "cart_id",

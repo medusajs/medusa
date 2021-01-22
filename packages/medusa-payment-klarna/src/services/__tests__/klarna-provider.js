@@ -181,7 +181,7 @@ describe("KlarnaProviderService", () => {
         return [200, { order_id: "123456789" }]
       })
 
-    mockServer.onGet("/checkout/v3/orders/123456789").reply(() => {
+    mockServer.onGet("/ordermanagement/v1/orders/123456789").reply(() => {
       return [200, { order_id: "123456789" }]
     })
 
@@ -298,7 +298,7 @@ describe("KlarnaProviderService", () => {
         return [200, { order_id: "123456789" }]
       })
 
-    mockServer.onGet("/checkout/v3/orders/123456789").reply(() => {
+    mockServer.onGet("/ordermanagement/v1/orders/123456789").reply(() => {
       return [200, { order_id: "123456789" }]
     })
 
@@ -335,7 +335,7 @@ describe("KlarnaProviderService", () => {
         return [200, { order_id: "123456789" }]
       })
 
-    mockServer.onGet("/checkout/v3/orders/123456789").reply(() => {
+    mockServer.onGet("/ordermanagement/v1/orders/123456789").reply(() => {
       return [200, { order_id: "123456789" }]
     })
 

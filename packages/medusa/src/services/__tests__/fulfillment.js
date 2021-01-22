@@ -37,7 +37,12 @@ describe("FulfillmentService", () => {
       await fulfillmentService.createFulfillment(
         {
           shipping_methods: [
-            { profile_id: IdMap.getId("default"), provider_id: "GLS Express" },
+            {
+              shipping_option: {
+                profile_id: IdMap.getId("default"),
+                provider_id: "GLS Express",
+              },
+            },
           ],
           items: [{ id: IdMap.getId("test-line"), quantity: 10 }],
         },
@@ -53,7 +58,7 @@ describe("FulfillmentService", () => {
       expect(fulfillmentRepository.create).toHaveBeenCalledTimes(1)
       expect(fulfillmentRepository.create).toHaveBeenCalledWith({
         order_id: "test",
-        provider: "GLS Express",
+        provider_id: "GLS Express",
         items: [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
         data: expect.anything(),
         metadata: {},

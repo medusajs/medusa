@@ -440,22 +440,34 @@ describe("SwapService", () => {
       const fulfillmentService = {
         createFulfillment: jest
           .fn()
-          .mockReturnValue(Promise.resolve([{ data: "new" }])),
+          .mockReturnValue(
+            Promise.resolve([
+              { items: [{ item_id: "1234", quantity: 2 }], data: "new" },
+            ])
+          ),
         withTransaction: function() {
           return this
         },
       }
 
       const existing = {
+        fulfillment_status: "not_fulfilled",
         order: testOrder,
         additional_items: [
           {
-            id: IdMap.getId("1234"),
+            id: "1234",
             quantity: 2,
           },
         ],
         shipping_methods: [{ method: "1" }],
         other: "data",
+      }
+
+      const lineItemService = {
+        update: jest.fn(),
+        withTransaction: function() {
+          return this
+        },
       }
 
       const swapRepo = MockRepository({
@@ -465,15 +477,23 @@ describe("SwapService", () => {
         manager: MockManager,
         swapRepository: swapRepo,
         fulfillmentService,
+        lineItemService,
       })
 
       it("creates a fulfillment", async () => {
         await swapService.createFulfillment(IdMap.getId("swap"))
 
+        expect(lineItemService.update).toHaveBeenCalledTimes(1)
+        expect(lineItemService.update).toHaveBeenCalledWith("1234", {
+          fulfilled_quantity: 2,
+        })
+
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing,
           fulfillment_status: "fulfilled",
-          fulfillments: [{ data: "new" }],
+          fulfillments: [
+            { items: [{ item_id: "1234", quantity: 2 }], data: "new" },
+          ],
         })
 
         expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
@@ -490,7 +510,7 @@ describe("SwapService", () => {
             items: existing.additional_items,
             shipping_methods: existing.shipping_methods,
           },
-          [{ item_id: IdMap.getId("1234"), quantity: 2 }],
+          [{ item_id: "1234", quantity: 2 }],
           { swap_id: IdMap.getId("swap"), metadata: {} }
         )
       })
@@ -530,6 +550,7 @@ describe("SwapService", () => {
       }
 
       const existing = {
+        fulfillment_status: "not_fulfilled",
         additional_items: [
           {
             id: IdMap.getId("1234-1"),

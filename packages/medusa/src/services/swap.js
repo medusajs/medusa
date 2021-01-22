@@ -584,7 +584,7 @@ class SwapService extends BaseService {
       const order = swap.order
 
       if (swap.fulfillment_status !== "not_fulfilled") {
-        throw new MeudsaError(
+        throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "The swap was already fulfilled"
         )
