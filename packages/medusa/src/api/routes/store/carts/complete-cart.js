@@ -45,13 +45,15 @@ export default async (req, res) => {
                   idempotency_key: idempotencyKey.idempotency_key,
                 })
 
-              if (
-                cart.payment_session.status === "requires_more" ||
-                cart.payment_session.status === "pending"
-              ) {
-                return {
-                  response_code: 200,
-                  response_body: { data: cart },
+              if (cart.payment_session) {
+                if (
+                  cart.payment_session.status === "requires_more" ||
+                  cart.payment_session.status === "pending"
+                ) {
+                  return {
+                    response_code: 200,
+                    response_body: { data: cart },
+                  }
                 }
               }
 
