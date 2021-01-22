@@ -31,14 +31,14 @@ export default async (req, res) => {
       await orderService
         .withTransaction(manager)
         .registerSwapReceived(id, swap_id)
-
-      const order = await orderService.retrieve(id, {
-        select: defaultFields,
-        relations: defaultRelations,
-      })
-
-      res.status(200).json({ order })
     })
+
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
+
+    res.status(200).json({ order })
   } catch (err) {
     throw err
   }

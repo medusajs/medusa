@@ -1117,7 +1117,7 @@ class CartService extends BaseService {
       if (cart.payment_sessions && cart.payment_sessions.length) {
         for (const session of cart.payment_sessions) {
           if (
-            cart.total === 0 ||
+            cart.total < 0 ||
             !region.payment_providers.find(
               ({ id }) => id === session.provider_id
             )
