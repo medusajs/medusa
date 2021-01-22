@@ -314,6 +314,10 @@ class TotalsService extends BaseService {
       toReturn = _.sumBy(itemFixedDiscounts, d => d.amount)
     }
 
+    if (subtotal < 0) {
+      return this.rounded(Math.max(subtotal, toReturn))
+    }
+
     return this.rounded(Math.min(subtotal, toReturn))
   }
 
