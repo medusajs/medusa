@@ -642,6 +642,7 @@ class CartService extends BaseService {
 
       if ("gift_cards" in update) {
         cart.gift_cards = []
+
         for (const { code } of update.gift_cards) {
           await this.applyGiftCard_(cart, code)
         }
