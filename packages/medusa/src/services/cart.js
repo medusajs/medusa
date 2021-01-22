@@ -647,7 +647,7 @@ class CartService extends BaseService {
         }
       }
 
-      if (cart.payment_sessions?.length) {
+      if (cart.payment_sessions?.length && !update.region_id) {
         await this.setPaymentSessions(cart)
       }
 
@@ -1411,7 +1411,15 @@ class CartService extends BaseService {
     }
 
     if (cart.payment_sessions && cart.payment_sessions.length) {
+      await Promise.all(
+        cart.payment_sessions.map(ps =>
+          this.paymentProviderService_
+            .withTransaction(this.manager_)
+            .deleteSession(ps)
+        )
+      )
       cart.payment_sessions = []
+      cart.payment_session = null
     }
   }
 
