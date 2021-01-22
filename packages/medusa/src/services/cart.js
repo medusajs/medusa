@@ -355,7 +355,12 @@ class CartService extends BaseService {
   async removeLineItem(cartId, lineItemId) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
-        relations: ["items", "items.variant", "items.variant.product"],
+        relations: [
+          "items",
+          "items.variant",
+          "items.variant.product",
+          "payment_sessions",
+        ],
       })
 
       const lineItem = cart.items.find(li => li.id === lineItemId)
@@ -379,6 +384,10 @@ class CartService extends BaseService {
       }
 
       await this.lineItemService_.withTransaction(manager).delete(lineItem.id)
+
+      if (cart.payment_sessions?.length) {
+        await this.setPaymentSessions(cart)
+      }
 
       const result = await this.retrieve(cartId)
       // Notify subscribers
@@ -432,6 +441,7 @@ class CartService extends BaseService {
         relations: [
           "shipping_methods",
           "items",
+          "payment_sessions",
           "items.variant",
           "items.variant.product",
         ],
@@ -505,6 +515,10 @@ class CartService extends BaseService {
         }
       }
 
+      if (cart.payment_sessions?.length) {
+        await this.setPaymentSessions(cart)
+      }
+
       const result = await this.retrieve(cartId)
       await this.eventBus_
         .withTransaction(manager)
@@ -523,7 +537,9 @@ class CartService extends BaseService {
    */
   async updateLineItem(cartId, lineItemId, lineItemUpdate) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, { relations: ["items"] })
+      const cart = await this.retrieve(cartId, {
+        relations: ["items", "payment_sessions"],
+      })
 
       // Ensure that the line item exists in the cart
       const lineItemExists = cart.items.find(i => i.id === lineItemId)
@@ -551,6 +567,10 @@ class CartService extends BaseService {
       await this.lineItemService_
         .withTransaction(manager)
         .update(lineItemId, lineItemUpdate)
+
+      if (cart.payment_sessions?.length) {
+        await this.setPaymentSessions(cart)
+      }
 
       // Update the line item
       const result = await this.retrieve(cartId)
@@ -627,7 +647,7 @@ class CartService extends BaseService {
         }
       }
 
-      if (cart.payment_session?.length) {
+      if (cart.payment_sessions?.length) {
         await this.setPaymentSessions(cart)
       }
 
@@ -1231,6 +1251,7 @@ class CartService extends BaseService {
           "shipping_methods.shipping_option",
           "items",
           "items.variant",
+          "payment_sessions",
           "items.variant.product",
         ],
       })
@@ -1260,6 +1281,10 @@ class CartService extends BaseService {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           has_shipping: this.validateLineItemShipping_(methods, item),
         })
+      }
+
+      if (cart.payment_sessions?.length) {
+        await this.setPaymentSessions(cart)
       }
 
       const result = await this.retrieve(cartId)

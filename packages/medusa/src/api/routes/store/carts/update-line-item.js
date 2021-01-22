@@ -14,39 +14,32 @@ export default async (req, res) => {
   }
 
   try {
-    const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
 
-    const entityManager = req.scope.resolve("manager")
-
     let cart
-    await entityManager.transaction(async manager => {
-      if (value.quantity === 0) {
-        cart = await cartService
-          .withTransaction(manager)
-          .removeLineItem(id, line_id)
-      } else {
-        cart = await cartService.retrieve(id, {
-          relations: ["items"],
-        })
+    if (value.quantity === 0) {
+      cart = await cartService.removeLineItem(id, line_id)
+    } else {
+      cart = await cartService.retrieve(id, { relations: ["items"] })
 
-        const existing = cart.items.find(i => i.id === line_id)
+      const existing = cart.items.find(i => i.id === line_id)
 
-        if (!existing) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Could not find the line item"
-          )
-        }
-
-        await lineItemService.withTransaction(manager).update(line_id, {
-          variant_id: existing.variant.id,
-          region_id: cart.region_id,
-          quantity: value.quantity,
-          metadata: existing.metadata || {},
-        })
+      if (!existing) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Could not find the line item"
+        )
       }
-    })
+
+      const lineItemUpdate = {
+        variant_id: existing.variant.id,
+        region_id: cart.region_id,
+        quantity: value.quantity,
+        metadata: existing.metadata || {},
+      }
+
+      await cartService.updateLineItem(id, line_id, lineItemUpdate)
+    }
 
     cart = await cartService.retrieve(id, {
       select: defaultFields,
@@ -54,7 +47,6 @@ export default async (req, res) => {
     })
     res.status(200).json({ cart })
   } catch (err) {
-    console.log(err)
     throw err
   }
 }
