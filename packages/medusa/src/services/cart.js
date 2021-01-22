@@ -385,7 +385,7 @@ class CartService extends BaseService {
 
       await this.lineItemService_.withTransaction(manager).delete(lineItem.id)
 
-      if (cart.payment_sessions?.length) {
+      if (cart.payment_sessions?.length && cart.items?.length > 1) {
         await this.setPaymentSessions(cart)
       }
 
