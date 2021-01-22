@@ -583,6 +583,20 @@ class SwapService extends BaseService {
       })
       const order = swap.order
 
+      if (swap.fulfillment_status !== "not_fulfilled") {
+        throw new MeudsaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "The swap was already fulfilled"
+        )
+      }
+
+      if (!swap.shipping_methods?.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot fulfill an swap that doesn't have shipping methods"
+        )
+      }
+
       swap.fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(
@@ -607,7 +621,37 @@ class SwapService extends BaseService {
           { swap_id: swapId, metadata }
         )
 
+      let successfullyFulfilled = []
+      for (const f of swap.fulfillments) {
+        successfullyFulfilled = successfullyFulfilled.concat(f.items)
+      }
+
       swap.fulfillment_status = "fulfilled"
+
+      // Update all line items to reflect fulfillment
+      for (const item of swap.additional_items) {
+        const fulfillmentItem = successfullyFulfilled.find(
+          f => item.id === f.item_id
+        )
+
+        if (fulfillmentItem) {
+          const fulfilledQuantity =
+            (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
+
+          // Update the fulfilled quantity
+          await this.lineItemService_.withTransaction(manager).update(item.id, {
+            fulfilled_quantity: fulfilledQuantity,
+          })
+
+          if (item.quantity !== fulfilledQuantity) {
+            swap.fulfillment_status = "requires_action"
+          }
+        } else {
+          if (item.quantity !== item.fulfilled_quantity) {
+            swap.fulfillment_status = "requires_action"
+          }
+        }
+      }
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
