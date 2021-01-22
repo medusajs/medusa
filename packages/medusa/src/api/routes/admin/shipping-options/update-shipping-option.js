@@ -6,13 +6,17 @@ export default async (req, res) => {
   const { option_id } = req.params
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
-    amount: Validator.number().optional(),
+    amount: Validator.number()
+      .integer()
+      .optional(),
     requirements: Validator.array()
       .items(
         Validator.object({
           id: Validator.string().required(),
           type: Validator.string().required(),
-          amount: Validator.number().required(),
+          amount: Validator.number()
+            .integer()
+            .required(),
         })
       )
       .optional(),

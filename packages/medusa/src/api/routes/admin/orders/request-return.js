@@ -14,11 +14,15 @@ export default async (req, res) => {
     return_shipping: Validator.object()
       .keys({
         option_id: Validator.string().optional(),
-        price: Validator.number().optional(),
+        price: Validator.number()
+          .integer()
+          .optional(),
       })
       .optional(),
     receive_now: Validator.boolean().default(false),
-    refund: Validator.number().optional(),
+    refund: Validator.number()
+      .integer()
+      .optional(),
   })
 
   const { value, error } = schema.validate(req.body)

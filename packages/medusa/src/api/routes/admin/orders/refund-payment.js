@@ -4,7 +4,9 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
   const schema = Validator.object().keys({
-    amount: Validator.number().required(),
+    amount: Validator.number()
+      .integer()
+      .required(),
     reason: Validator.string().required(),
     note: Validator.string()
       .allow("")
@@ -18,6 +20,7 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
+
     await orderService.createRefund(id, value.amount, value.reason, value.note)
 
     const order = await orderService.retrieve(id, {

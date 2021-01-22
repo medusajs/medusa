@@ -11,7 +11,9 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .required(),
-    refund: Validator.number().optional(),
+    refund: Validator.number()
+      .integer()
+      .optional(),
   })
 
   const { value, error } = schema.validate(req.body)

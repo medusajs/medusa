@@ -8,6 +8,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     price: Validator.number()
       .integer()
+      .integer()
       .allow(0)
       .required(),
     option_id: Validator.string().required(),

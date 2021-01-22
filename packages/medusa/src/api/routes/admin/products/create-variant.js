@@ -28,7 +28,9 @@ export default async (req, res) => {
           .keys({
             region_id: Validator.string(),
             currency_code: Validator.string().required(),
-            amount: Validator.number().required(),
+            amount: Validator.number()
+              .integer()
+              .required(),
             sale_amount: Validator.number().optional(),
           })
           .xor("region_id", "currency_code")

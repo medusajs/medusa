@@ -9,12 +9,16 @@ export default async (req, res) => {
     profile_id: Validator.string(),
     data: Validator.object().required(),
     price_type: Validator.string().required(),
-    amount: Validator.number().optional(),
+    amount: Validator.number()
+      .integer()
+      .optional(),
     requirements: Validator.array()
       .items(
         Validator.object({
           type: Validator.string().required(),
-          amount: Validator.number().required(),
+          amount: Validator.number()
+            .integer()
+            .required(),
         })
       )
       .optional(),

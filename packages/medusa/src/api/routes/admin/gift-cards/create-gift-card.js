@@ -3,7 +3,9 @@ import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    value: Validator.number().optional(),
+    value: Validator.number()
+      .integer()
+      .optional(),
     ends_at: Validator.date().optional(),
     is_disabled: Validator.boolean().optional(),
     region_id: Validator.string().optional(),

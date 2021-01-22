@@ -14,7 +14,9 @@ export default async (req, res) => {
     return_shipping: Validator.object()
       .keys({
         option_id: Validator.string().optional(),
-        price: Validator.number().optional(),
+        price: Validator.number()
+          .integer()
+          .optional(),
       })
       .optional(),
     additional_items: Validator.array().items({
