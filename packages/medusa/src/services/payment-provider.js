@@ -315,7 +315,7 @@ class PaymentProviderService extends BaseService {
       const payment = await this.retrievePayment(paymentObj.id)
 
       const provider = this.retrieveProvider(payment.provider_id)
-      payment.data = await provider.cancelPayment(payment.data)
+      payment.data = await provider.cancelPayment(payment)
 
       const now = new Date()
       payment.canceled_at = now.toISOString()
