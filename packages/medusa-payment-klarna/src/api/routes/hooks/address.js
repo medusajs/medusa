@@ -65,7 +65,9 @@ export default async (req, res) => {
         )
 
         if (shippingOptions?.length) {
-          const option = shippingOptions[0]
+          const option = shippingOptions.find(
+            (o) => o.data && !o.data.require_drop_point
+          )
           await cartService
             .withTransaction(m)
             .addShippingMethod(cart.id, option.id, option.data)
