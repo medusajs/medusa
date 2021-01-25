@@ -18,9 +18,21 @@ export default async (req, res) => {
   }
 
   try {
+    const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
 
-    await cartService.addShippingMethod(id, value.option_id, value.data)
+    await manager.transaction(async m => {
+      await cartService
+        .withTransaction(m)
+        .addShippingMethod(id, value.option_id, value.data)
+      const updated = await cartService.withTransaction(m).retrieve(id, {
+        relations: ["payment_sessions"],
+      })
+
+      if (updated.payment_sessions?.length) {
+        await cartService.withTransaction(m).setPaymentSessions(id)
+      }
+    })
 
     const cart = await cartService.retrieve(id, {
       select: defaultFields,

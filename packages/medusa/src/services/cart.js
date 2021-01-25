@@ -97,6 +97,8 @@ class CartService extends BaseService {
       cartRepository: this.cartRepository_,
       eventBusService: this.eventBus_,
       paymentProviderService: this.paymentProviderService_,
+      paymentSessionRepository: this.paymentSessionRepository_,
+      shippingMethodRepository: this.shippingMethodRepository_,
       productService: this.productService_,
       productVariantService: this.productVariantService_,
       regionService: this.regionService_,
@@ -107,6 +109,7 @@ class CartService extends BaseService {
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       addressRepository: this.addressRepository_,
+      giftCardService: this.giftCardService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -385,10 +388,6 @@ class CartService extends BaseService {
 
       await this.lineItemService_.withTransaction(manager).delete(lineItem.id)
 
-      if (cart.payment_sessions?.length && cart.items?.length > 1) {
-        await this.setPaymentSessions(cart)
-      }
-
       const result = await this.retrieve(cartId)
       // Notify subscribers
       await this.eventBus_
@@ -515,10 +514,6 @@ class CartService extends BaseService {
         }
       }
 
-      if (cart.payment_sessions?.length) {
-        await this.setPaymentSessions(cart)
-      }
-
       const result = await this.retrieve(cartId)
       await this.eventBus_
         .withTransaction(manager)
@@ -567,10 +562,6 @@ class CartService extends BaseService {
       await this.lineItemService_
         .withTransaction(manager)
         .update(lineItemId, lineItemUpdate)
-
-      if (cart.payment_sessions?.length) {
-        await this.setPaymentSessions(cart)
-      }
 
       // Update the line item
       const result = await this.retrieve(cartId)
@@ -648,10 +639,6 @@ class CartService extends BaseService {
         }
       }
 
-      if (cart.payment_sessions?.length && !update.region_id) {
-        await this.setPaymentSessions(cart)
-      }
-
       const result = await cartRepo.save(cart)
 
       if ("email" in update || "customer_id" in update) {
@@ -665,7 +652,7 @@ class CartService extends BaseService {
         .emit(CartService.Events.UPDATED, result)
 
       return result
-    }, "REPEATABLE READ")
+    })
   }
 
   /**
@@ -878,11 +865,18 @@ class CartService extends BaseService {
    */
   async removeDiscount(cartId, discountCode) {
     return this.atomicPhase_(async manager => {
-      const cart = await this.retrieve(cartId, { relations: ["discounts"] })
+      const cart = await this.retrieve(cartId, {
+        relations: ["discounts", "payment_sessions"],
+      })
       cart.discounts = cart.discounts.filter(d => d.code !== discountCode)
 
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
+
       const result = await cartRepo.save(cart)
+
+      if (cart.payment_sessions?.length) {
+        await this.setPaymentSessions(cartId)
+      }
 
       await this.eventBus_
         .withTransaction(manager)
@@ -990,6 +984,13 @@ class CartService extends BaseService {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
       const cart = await this.retrieve(cartId, {
+        select: [
+          "total",
+          "subtotal",
+          "tax_total",
+          "discount_total",
+          "gift_card_total",
+        ],
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
 
@@ -1042,63 +1043,29 @@ class CartService extends BaseService {
     return this.atomicPhase_(async manager => {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
-      let cart = cartOrCartId
-      const requiredProps = [
-        "subtotal",
-        "tax_total",
-        "shipping_total",
-        "discount_total",
-        "total",
-        "items",
-        "billing_address",
-        "shipping_address",
-        "region",
-        "region.payment_providers",
-        "payment_sessions",
-        "customer",
-      ]
-
-      if (typeof cartOrCartId === `string`) {
-        cart = await this.retrieve(cartOrCartId, {
-          select: [
-            "subtotal",
-            "tax_total",
-            "shipping_total",
-            "discount_total",
-            "total",
-          ],
-          relations: [
-            "items",
-            "billing_address",
-            "shipping_address",
-            "region",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ],
-        })
-      } else {
-        if (!requiredProps.every(prop => cart.hasOwnProperty(prop))) {
-          cart = await this.retrieve(cart.id, {
-            select: [
-              "subtotal",
-              "tax_total",
-              "shipping_total",
-              "discount_total",
-              "total",
-            ],
-            relations: [
-              "items",
-              "billing_address",
-              "shipping_address",
-              "region",
-              "region.payment_providers",
-              "payment_sessions",
-              "customer",
-            ],
-          })
-        }
-      }
+      let cartId =
+        typeof cartOrCartId === `string` ? cartOrCartId : cartOrCartId.id
+      const cart = await this.retrieve(cartId, {
+        select: [
+          "gift_card_total",
+          "subtotal",
+          "tax_total",
+          "shipping_total",
+          "discount_total",
+          "total",
+        ],
+        relations: [
+          "items",
+          "discounts",
+          "gift_cards",
+          "billing_address",
+          "shipping_address",
+          "region",
+          "region.payment_providers",
+          "payment_sessions",
+          "customer",
+        ],
+      })
 
       const region = cart.region
 
@@ -1276,10 +1243,6 @@ class CartService extends BaseService {
         })
       }
 
-      if (cart.payment_sessions?.length) {
-        await this.setPaymentSessions(cart)
-      }
-
       const result = await this.retrieve(cartId)
       await this.eventBus_
         .withTransaction(manager)
@@ -1402,6 +1365,8 @@ class CartService extends BaseService {
 
       cart.discounts = newDiscounts.filter(d => !!d)
     }
+
+    cart.gift_cards = []
 
     if (cart.payment_sessions && cart.payment_sessions.length) {
       await Promise.all(

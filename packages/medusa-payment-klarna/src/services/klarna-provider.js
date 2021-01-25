@@ -96,7 +96,7 @@ class KlarnaProviderService extends PaymentService {
       locale: "en-US",
     }
 
-    const { region, discount_total, tax_total, total } = cart
+    const { region, gift_card_total, discount_total, tax_total, total } = cart
 
     const taxRate = region.tax_rate / 100
 
@@ -112,6 +112,19 @@ class KlarnaProviderService extends PaymentService {
         tax_rate: taxRate * 10000,
         total_amount: -discount_total * (1 + taxRate),
         total_tax_amount: -discount_total * taxRate,
+      })
+    }
+
+    if (gift_card_total) {
+      order.order_lines.push({
+        name: `Gift Card`,
+        quantity: 1,
+        type: "gift_card",
+        unit_price: 0,
+        total_discount_amount: gift_card_total * (1 + taxRate),
+        tax_rate: taxRate * 10000,
+        total_amount: -gift_card_total * (1 + taxRate),
+        total_tax_amount: -gift_card_total * taxRate,
       })
     }
 
@@ -183,8 +196,9 @@ class KlarnaProviderService extends PaymentService {
       // Helper function that calculates the cartesian product of multiple arrays
       // Don't touch :D
       // From: https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
-      const cartesian = (...a) =>
-        a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())), [])
+      const f = (a, b) =>
+        [].concat(...a.map((d) => b.map((e) => [].concat(d, e))))
+      const cartesian = (a, b, ...c) => (b ? cartesian(f(a, b), ...c) : a)
 
       const methods = Object.keys(partitioned).map((k) => partitioned[k])
       const combinations = cartesian(...methods)
@@ -209,7 +223,6 @@ class KlarnaProviderService extends PaymentService {
           price: details.price * (1 + taxRate),
           tax_amount: details.price * taxRate,
           tax_rate: taxRate * 10000,
-          preselected: combinations.length === 1,
         }
       })
     }
@@ -379,14 +392,14 @@ class KlarnaProviderService extends PaymentService {
    * @returns {Object} updated order
    */
   async updatePayment(paymentData, cart) {
-    try {
-      const order = await this.cartToKlarnaOrder(cart, true)
+    if (cart.total !== paymentData.order_amount) {
+      const order = await this.cartToKlarnaOrder(cart)
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)
-    } catch (error) {
-      throw error
     }
+
+    return paymentData
   }
 
   /**

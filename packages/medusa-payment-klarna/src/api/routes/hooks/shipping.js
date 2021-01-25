@@ -38,7 +38,14 @@ export default async (req, res) => {
     )
 
     const newCart = await cartService.retrieve(cart.id, {
-      select: ["subtotal", "total", "tax_total", "discount_total", "subtotal"],
+      select: [
+        "gift_card_total",
+        "subtotal",
+        "total",
+        "tax_total",
+        "discount_total",
+        "subtotal",
+      ],
       relations: [
         "shipping_address",
         "billing_address",
