@@ -1047,7 +1047,7 @@ class OrderService extends BaseService {
   async getFulfillmentItems_(order, items, transformer) {
     const toReturn = await Promise.all(
       items.map(async ({ item_id, quantity }) => {
-        const item = order.items.find(i => i._id.equals(item_id))
+        const item = order.items.find(i => i.id.equals(item_id))
         return transformer(item, quantity)
       })
     )
