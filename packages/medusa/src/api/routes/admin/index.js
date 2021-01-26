@@ -9,11 +9,15 @@ import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 import discountRoutes from "./discounts"
+import giftCardRoutes from "./gift-cards"
 import orderRoutes from "./orders"
 import storeRoutes from "./store"
 import uploadRoutes from "./uploads"
 import customerRoutes from "./customers"
 import appRoutes from "./apps"
+import swapRoutes from "./swaps"
+import returnRoutes from "./returns"
+import variantRoutes from "./variants"
 
 const route = Router()
 
@@ -48,10 +52,14 @@ export default (app, container, config) => {
   shippingOptionRoutes(route)
   shippingProfileRoutes(route)
   discountRoutes(route)
+  giftCardRoutes(route)
   orderRoutes(route)
   storeRoutes(route)
   uploadRoutes(route)
   customerRoutes(route)
+  swapRoutes(route)
+  returnRoutes(route)
+  variantRoutes(route)
 
   return app
 }

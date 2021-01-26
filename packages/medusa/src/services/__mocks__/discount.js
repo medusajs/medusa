@@ -1,7 +1,130 @@
 import { IdMap } from "medusa-test-utils"
-import { discounts } from "../../models/__mocks__/discount"
+
+export const discounts = {
+  dynamic: {
+    id: IdMap.getId("dynamic"),
+    code: "Something",
+    is_dynamic: true,
+    rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  total10Percent: {
+    id: IdMap.getId("total10"),
+    code: "10%OFF",
+    rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item10Percent: {
+    id: IdMap.getId("item10Percent"),
+    code: "MEDUSA",
+    rule: {
+      type: "percentage",
+      allocation: "item",
+      value: 10,
+      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  total10Fixed: {
+    id: IdMap.getId("total10Fixed"),
+    code: "MEDUSA",
+    rule: {
+      type: "fixed",
+      allocation: "total",
+      value: 10,
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item9Fixed: {
+    id: IdMap.getId("item9Fixed"),
+    code: "MEDUSA",
+    rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 9,
+      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item2Fixed: {
+    id: IdMap.getId("item2Fixed"),
+    code: "MEDUSA",
+    rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 2,
+      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  item10FixedNoVariants: {
+    id: IdMap.getId("item10FixedNoVariants"),
+    code: "MEDUSA",
+    rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  expiredDiscount: {
+    id: IdMap.getId("expired"),
+    code: "MEDUSA",
+    ends_at: new Date("December 17, 1995 03:24:00"),
+    rule: {
+      type: "fixed",
+      allocation: "item",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  freeShipping: {
+    id: IdMap.getId("freeshipping"),
+    code: "FREESHIPPING",
+    rule: {
+      type: "free_shipping",
+      allocation: "total",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("region-france")],
+  },
+  USDiscount: {
+    id: IdMap.getId("us-discount"),
+    code: "US10",
+    rule: {
+      type: "free_shipping",
+      allocation: "total",
+      value: 10,
+      valid_for: [],
+    },
+    regions: [IdMap.getId("us")],
+  },
+  alreadyExists: {
+    code: "ALREADYEXISTS",
+    rule: {
+      type: "percentage",
+      allocation: "total",
+      value: 20,
+    },
+    regions: [IdMap.getId("fr-cart")],
+  },
+}
 
 export const DiscountServiceMock = {
+  withTransaction: function() {
+    return this
+  },
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
   }),
@@ -34,7 +157,7 @@ export const DiscountServiceMock = {
   }),
   delete: jest.fn().mockImplementation(data => {
     return Promise.resolve({
-      _id: IdMap.getId("total10"),
+      id: IdMap.getId("total10"),
       object: "discount",
       deleted: true,
     })
@@ -42,16 +165,13 @@ export const DiscountServiceMock = {
   list: jest.fn().mockImplementation(data => {
     return Promise.resolve([{}])
   }),
-  decorate: jest.fn().mockImplementation(data => {
-    return Promise.resolve(data)
-  }),
   addRegion: jest.fn().mockReturnValue(Promise.resolve()),
   removeRegion: jest.fn().mockReturnValue(Promise.resolve()),
-  addValidVariant: jest.fn().mockReturnValue(Promise.resolve()),
-  removeValidVariant: jest.fn().mockReturnValue(Promise.resolve()),
+  addValidProduct: jest.fn().mockReturnValue(Promise.resolve()),
+  removeValidProduct: jest.fn().mockReturnValue(Promise.resolve()),
   generateGiftCard: jest.fn().mockReturnValue(
     Promise.resolve({
-      _id: IdMap.getId("gift_card_id"),
+      id: IdMap.getId("gift_card_id"),
     })
   ),
 }

@@ -1,11 +1,16 @@
+import { defaultFields, defaultRelations } from "./"
+
 export default async (req, res) => {
   const { id, provider_id } = req.params
 
   try {
     const cartService = req.scope.resolve("cartService")
 
-    let cart = await cartService.deletePaymentSession(id, provider_id)
-    cart = await cartService.decorate(cart, [], ["region"])
+    await cartService.deletePaymentSession(id, provider_id)
+    const cart = await cartService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ cart })
   } catch (err) {

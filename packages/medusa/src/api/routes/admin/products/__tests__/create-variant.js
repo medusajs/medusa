@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("POST /admin/products/:id/variants", () => {
   describe("successful add variant", () => {
@@ -34,10 +34,11 @@ describe("POST /admin/products/:id/variants", () => {
     })
 
     it("calls service addVariant", () => {
-      expect(ProductServiceMock.createVariant).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.createVariant).toHaveBeenCalledWith(
+      expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(1)
+      expect(ProductVariantServiceMock.create).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
         {
+          inventory_quantity: 0,
           title: "Test Product Variant",
           options: [],
           prices: [
@@ -51,10 +52,7 @@ describe("POST /admin/products/:id/variants", () => {
     })
 
     it("returns the updated product decorated", () => {
-      expect(subject.body.product._id).toEqual(
-        IdMap.getId("productWithOptions")
-      )
-      expect(subject.body.product.decorated).toEqual(true)
+      expect(subject.body.product.id).toEqual(IdMap.getId("productWithOptions"))
     })
   })
 })

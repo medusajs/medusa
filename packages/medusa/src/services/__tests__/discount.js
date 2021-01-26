@@ -1,307 +1,471 @@
 import DiscountService from "../discount"
-import { DiscountModelMock, discounts } from "../../models/__mocks__/discount"
-import {
-  DynamicDiscountCodeModelMock,
-  dynamicDiscounts,
-} from "../../models/__mocks__/dynamic-discount-code"
-import { IdMap } from "medusa-test-utils"
-import { ProductVariantServiceMock } from "../__mocks__/product-variant"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { RegionServiceMock } from "../__mocks__/region"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
 describe("DiscountService", () => {
   describe("create", () => {
+    const discountRepository = MockRepository({})
+
+    const discountRuleRepository = MockRepository({})
+
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("france"),
+        }
+      },
+    }
+
     const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      regionService,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer create and normalizes code", async () => {
+    it("successfully creates discount", async () => {
       await discountService.create({
         code: "test",
-        discount_rule: {
+        rule: {
           type: "percentage",
           allocation: "total",
           value: 20,
         },
-        regions: [IdMap.getId("fr-cart")],
+        regions: [IdMap.getId("france")],
       })
 
-      expect(DiscountModelMock.create).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.create).toHaveBeenCalledWith({
-        code: "TEST",
-        discount_rule: {
-          type: "percentage",
-          allocation: "total",
-          value: 20,
-        },
-        regions: [IdMap.getId("fr-cart")],
+      expect(discountRuleRepository.create).toHaveBeenCalledTimes(1)
+      expect(discountRuleRepository.create).toHaveBeenCalledWith({
+        type: "percentage",
+        allocation: "total",
+        value: 20,
       })
+
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
+
+      expect(discountRepository.create).toHaveBeenCalledTimes(1)
+      expect(discountRepository.create).toHaveBeenCalledWith({
+        code: "TEST",
+        rule: expect.anything(),
+        regions: [{ id: IdMap.getId("france") }],
+      })
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("retrieve", () => {
-    let res
+    const discountRepository = MockRepository({
+      findOne: query => {
+        if (query.where.id) {
+          return Promise.resolve({ id: IdMap.getId("total10") })
+        }
+        return Promise.resolve(undefined)
+      },
+    })
+
     const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
+      manager: MockManager,
+      discountRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer findOne", async () => {
-      res = await discountService.retrieve(IdMap.getId("total10"))
-      expect(DiscountModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
-        _id: IdMap.getId("total10"),
-      })
-    })
-
-    it("successfully returns cart", () => {
-      expect(res).toEqual(discounts.total10Percent)
-    })
-  })
-
-  describe("retrieveByCode", () => {
-    let res
-    const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-      dynamicDiscountCodeModel: DynamicDiscountCodeModelMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls model layer findOne", async () => {
-      res = await discountService.retrieveByCode("10%off")
-      expect(DiscountModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
-        code: "10%OFF",
-      })
-      expect(res).toEqual(discounts.total10Percent)
-    })
-
-    it("finds dynamic code", async () => {
-      res = await discountService.retrieveByCode("dynamicoff")
-      expect(DiscountModelMock.findOne).toHaveBeenCalledTimes(2)
-      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
-        _id: IdMap.getId("dynamic"),
-      })
-      expect(DiscountModelMock.findOne).toHaveBeenCalledWith({
-        code: "DYNAMICOFF",
-      })
-      expect(DynamicDiscountCodeModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(DynamicDiscountCodeModelMock.findOne).toHaveBeenCalledWith({
-        code: "DYNAMICOFF",
-      })
-      expect(res).toEqual({
-        ...discounts.dynamic,
-        code: "DYNAMICOFF",
-      })
-    })
-  })
-
-  describe("update", () => {
-    const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls model layer updateOne", async () => {
-      await discountService.update(IdMap.getId("total10"), {
-        code: "test",
-      })
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("total10") },
-        {
-          $set: { code: "test" },
+    it("successfully retrieves discount", async () => {
+      await discountService.retrieve(IdMap.getId("total10"))
+      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          id: IdMap.getId("total10"),
         },
-        { runValidators: true }
-      )
-    })
-
-    it("successfully calls model layer with discount_rule", async () => {
-      await discountService.update(IdMap.getId("total10"), {
-        discount_rule: { type: "fixed", value: 10, allocation: "total" },
       })
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("total10"),
-        },
-        {
-          $set: {
-            discount_rule: { type: "fixed", value: 10, allocation: "total" },
-          },
-        },
-        { runValidators: true }
-      )
     })
 
-    it("throws if metadata update is attempted", async () => {
+    it("throws on invalid discount id", async () => {
       try {
-        await discountService.update(IdMap.getId("total10"), {
-          metadata: { test: "test" },
-        })
+        await discountService.retrieve(IdMap.getId("invalid"))
       } catch (error) {
-        expect(error.message).toEqual(
-          "Use setMetadata to update discount metadata"
+        expect(error.message).toBe(
+          `Discount with ${IdMap.getId("invalid")} was not found`
         )
       }
     })
   })
 
-  describe("addValidVariant", () => {
+  describe("retrieveByCode", () => {
+    const discountRepository = MockRepository({
+      findOne: query => {
+        if (query.where.code === "10%OFF") {
+          return Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" })
+        }
+        if (query.where.code === "DYNAMIC") {
+          return Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" })
+        }
+        return Promise.resolve(undefined)
+      },
+    })
+
     const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-      productVariantService: ProductVariantServiceMock,
+      manager: MockManager,
+      discountRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer updateOne", async () => {
-      await discountService.addValidVariant(
+    it("successfully finds discount by code", async () => {
+      await discountService.retrieveByCode("10%OFF")
+      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          code: "10%OFF",
+          is_dynamic: false,
+        },
+        relations: [],
+      })
+    })
+  })
+
+  describe("update", () => {
+    const discountRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("france"),
+        }
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      regionService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates discount", async () => {
+      await discountService.update(IdMap.getId("total10"), {
+        code: "test",
+        regions: [IdMap.getId("france")],
+      })
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("total10"),
+        code: "test",
+        regions: [{ id: IdMap.getId("france") }],
+      })
+    })
+
+    it("successfully updates discount rule", async () => {
+      await discountService.update(IdMap.getId("total10"), {
+        rule: { type: "fixed", value: 10, allocation: "total" },
+      })
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("total10"),
+        code: "10%OFF",
+        rule: { type: "fixed", value: 10, allocation: "total" },
+      })
+    })
+
+    it("successfully updates metadata", async () => {
+      await discountService.update(IdMap.getId("total10"), {
+        metadata: { testKey: "testValue" },
+      })
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("total10"),
+        code: "10%OFF",
+        metadata: { testKey: "testValue" },
+      })
+    })
+  })
+
+  describe("addValidProduct", () => {
+    const discountRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("total10"),
+          rule: {
+            id: IdMap.getId("test-rule"),
+            valid_for: [{ id: IdMap.getId("test-product") }],
+          },
+        }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const productService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("test-product-2"),
+        }
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      productService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully adds a product", async () => {
+      await discountService.addValidProduct(
         IdMap.getId("total10"),
-        IdMap.getId("testVariant")
+        IdMap.getId("test-product-2")
       )
 
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("total10"),
-        },
-        {
-          $push: { discount_rule: { valid_for: IdMap.getId("testVariant") } },
-        },
-        { runValidators: true }
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRuleRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("test-rule"),
+        valid_for: [
+          { id: IdMap.getId("test-product") },
+          { id: IdMap.getId("test-product-2") },
+        ],
+      })
+    })
+
+    it("successfully resolves if product already exists", async () => {
+      await discountService.addValidProduct(
+        IdMap.getId("total10"),
+        IdMap.getId("test-product")
       )
+
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
     })
   })
 
   describe("removeValidVariant", () => {
+    const discountRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("total10"),
+          rule: {
+            id: IdMap.getId("test-rule"),
+            valid_for: [{ id: IdMap.getId("test-product") }],
+          },
+        }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const productService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("test-product"),
+        }
+      },
+    }
+
     const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-      productVariantService: ProductVariantServiceMock,
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      productService,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer updateOne", async () => {
-      await discountService.removeValidVariant(
+    it("successfully removes a product", async () => {
+      await discountService.removeValidProduct(
         IdMap.getId("total10"),
-        IdMap.getId("testVariant")
+        IdMap.getId("test-product")
       )
 
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("total10"),
-        },
-        {
-          $pull: { discount_rule: { valid_for: IdMap.getId("testVariant") } },
-        },
-        { runValidators: true }
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRuleRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("test-rule"),
+        valid_for: [],
+      })
+    })
+
+    it("successfully resolve if product does not exist", async () => {
+      await discountService.removeValidProduct(
+        IdMap.getId("total10"),
+        IdMap.getId("test-product-2")
       )
+
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
     })
   })
 
   describe("addRegion", () => {
+    const discountRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("total10"),
+          regions: [{ id: IdMap.getId("test-region") }],
+        }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("test-region-2"),
+        }
+      },
+    }
+
     const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-      regionService: RegionServiceMock,
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      regionService,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer updateOne", async () => {
+    it("successfully adds a region", async () => {
       await discountService.addRegion(
         IdMap.getId("total10"),
-        IdMap.getId("testRegion")
+        IdMap.getId("test-region-2")
       )
 
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("total10"),
-        },
-        {
-          $push: { regions: IdMap.getId("testRegion") },
-        },
-        { runValidators: true }
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("total10"),
+        regions: [
+          { id: IdMap.getId("test-region") },
+          { id: IdMap.getId("test-region-2") },
+        ],
+      })
+    })
+
+    it("successfully resolves if region already exists", async () => {
+      await discountService.addRegion(
+        IdMap.getId("total10"),
+        IdMap.getId("test-region")
       )
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("createDynamicDiscount", () => {
+    const discountRepository = MockRepository({
+      create: d => d,
+      findOne: () =>
+        Promise.resolve({
+          id: "parent",
+          is_dynamic: true,
+          rule_id: "parent_rule",
+        }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("test-region"),
+        }
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      regionService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully removes a region", async () => {
+      await discountService.createDynamicCode("former", {
+        code: "hi",
+      })
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        is_dynamic: true,
+        is_disabled: false,
+        rule_id: "parent_rule",
+        parent_discount_id: "parent",
+        code: "HI",
+      })
     })
   })
 
   describe("removeRegion", () => {
+    const discountRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("total10"),
+          regions: [{ id: IdMap.getId("test-region") }],
+        }),
+    })
+
+    const discountRuleRepository = MockRepository({})
+
+    const regionService = {
+      retrieve: () => {
+        return {
+          id: IdMap.getId("test-region"),
+        }
+      },
+    }
+
     const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-      regionService: RegionServiceMock,
+      manager: MockManager,
+      discountRepository,
+      discountRuleRepository,
+      regionService,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("calls model layer updateOne", async () => {
+    it("successfully removes a region", async () => {
       await discountService.removeRegion(
         IdMap.getId("total10"),
-        IdMap.getId("testRegion")
+        IdMap.getId("test-region")
       )
 
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("total10"),
-        },
-        {
-          $pull: { regions: IdMap.getId("testRegion") },
-        },
-        { runValidators: true }
-      )
-    })
-  })
-
-  describe("generateGiftCard", () => {
-    const discountService = new DiscountService({
-      discountModel: DiscountModelMock,
-      regionService: RegionServiceMock,
-      eventBusService: EventBusServiceMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls model layer create", async () => {
-      await discountService.generateGiftCard(100, IdMap.getId("testRegion"))
-
-      expect(DiscountModelMock.create).toHaveBeenCalledTimes(1)
-      expect(DiscountModelMock.create).toHaveBeenCalledWith({
-        code: expect.stringMatching(/(([A-Z0-9]){4}(-?)){4}/),
-        is_giftcard: true,
-        original_amount: 100,
-        discount_rule: {
-          type: "fixed",
-          allocation: "total",
-          value: 100,
-        },
-        regions: [IdMap.getId("testRegion")],
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(discountRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("total10"),
+        regions: [],
       })
+    })
+
+    it("successfully resolve if region does not exist", async () => {
+      await discountService.removeRegion(
+        IdMap.getId("total10"),
+        IdMap.getId("test-region-2")
+      )
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(0)
     })
   })
 })

@@ -2,12 +2,12 @@ class CartSubscriber {
   constructor({
     cartService,
     customerService,
-    stripeProviderService,
+    paymentProviderService,
     eventBusService,
   }) {
     this.cartService_ = cartService
     this.customerService_ = customerService
-    this.stripeProviderService_ = stripeProviderService
+    this.paymentProviderService_ = paymentProviderService
     this.eventBus_ = eventBusService
 
     this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
@@ -15,64 +15,37 @@ class CartSubscriber {
     })
   }
 
-  async onCustomerUpdated(cart) {
-    const { customer_id, payment_sessions } = cart
+  async onCustomerUpdated(cartId) {
+    const cart = await this.cartService_.retrieve(cartId, {
+      select: [
+        "subtotal",
+        "tax_total",
+        "shipping_total",
+        "discount_total",
+        "total",
+      ],
+      relations: [
+        "items",
+        "billing_address",
+        "shipping_address",
+        "region",
+        "region.payment_providers",
+        "payment_sessions",
+        "customer",
+      ],
+    })
 
-    if (!payment_sessions) {
+    if (!cart.payment_sessions?.length) {
       return Promise.resolve()
     }
 
-    const customer = await this.customerService_.retrieve(customer_id)
-
-    const stripeSession = payment_sessions.find(
-      (s) => s.provider_id === "stripe"
+    const session = cart.payment_sessions.find(
+      (ps) => ps.provider_id === "stripe"
     )
 
-    if (!stripeSession) {
-      return Promise.resolve()
+    if (session) {
+      return this.paymentProviderService_.updateSession(session, cart)
     }
-
-    const paymentIntent = await this.stripeProviderService_.retrievePayment(
-      stripeSession.data
-    )
-
-    let stripeCustomer
-    if (customer.metadata && customer.metadata.stripe_id) {
-      stripeCustomer = await this.stripeProviderService_.retrieveCustomer(
-        customer.metadata.stripe_id
-      )
-    }
-
-    if (!stripeCustomer) {
-      stripeCustomer = await this.stripeProviderService_.createCustomer(
-        customer
-      )
-    }
-
-    if (stripeCustomer.id === paymentIntent.customer) {
-      return Promise.resolve()
-    }
-
-    if (!paymentIntent.customer) {
-      return this.stripeProviderService_.updatePaymentIntentCustomer(
-        stripeCustomer.id
-      )
-    }
-
-    if (stripeCustomer.id !== paymentIntent.customer) {
-      await this.stripeProviderService_.cancelPayment(paymentIntent)
-      const newPaymentIntent = await this.stripeProviderService_.createPayment(
-        cart
-      )
-
-      await this.cartService_.updatePaymentSession(
-        cart._id,
-        "stripe",
-        newPaymentIntent
-      )
-    }
-
-    return Promise.resolve()
   }
 }
 

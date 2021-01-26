@@ -1,18 +1,30 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 
+import { defaultFields, defaultRelations } from "./"
+
 export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    region_id: Validator.string(),
+    region_id: Validator.string().optional(),
     country_code: Validator.string().optional(),
-    email: Validator.string().email(),
-    billing_address: Validator.address(),
-    shipping_address: Validator.address(),
-    discounts: Validator.array().items({
-      code: Validator.string(),
-    }),
+    email: Validator.string()
+      .email()
+      .optional(),
+    billing_address: Validator.object().optional(),
+    shipping_address: Validator.object().optional(),
+    gift_cards: Validator.array()
+      .items({
+        code: Validator.string(),
+      })
+      .optional(),
+    discounts: Validator.array()
+      .items({
+        code: Validator.string(),
+      })
+      .optional(),
+    customer_id: Validator.string().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -20,42 +32,32 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const cartService = req.scope.resolve("cartService")
-  const oldCart = await cartService.retrieve(id)
-  if (!oldCart) {
-    res.sendStatus(404)
-    return
-  }
-
   try {
-    if (value.region_id) {
-      await cartService.setRegion(id, value.region_id, value.country_code)
-    }
+    const manager = req.scope.resolve("manager")
+    const cartService = req.scope.resolve("cartService")
 
-    if (value.email) {
-      await cartService.updateEmail(id, value.email)
-    }
+    await manager.transaction(async m => {
+      // Update the cart
+      await cartService.withTransaction(m).update(id, value)
 
-    if (!_.isEmpty(value.shipping_address)) {
-      await cartService.updateShippingAddress(id, value.shipping_address)
-    }
+      // If the cart has payment sessions update these
+      const updated = await cartService.withTransaction(m).retrieve(id, {
+        relations: ["payment_sessions"],
+      })
 
-    if (!_.isEmpty(value.billing_address)) {
-      await cartService.updateBillingAddress(id, value.billing_address)
-    }
+      if (updated.payment_sessions?.length && !value.region_id) {
+        await cartService.withTransaction(m).setPaymentSessions(id)
+      }
+    })
 
-    if (value.discounts && value.discounts.length) {
-      await Promise.all(
-        value.discounts.map(async ({ code }) =>
-          cartService.applyDiscount(id, code)
-        )
-      )
-    }
+    const cart = await cartService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
-    let newCart = await cartService.retrieve(id)
-    const data = await cartService.decorate(newCart, [], ["region"])
-    res.json({ cart: data })
+    res.json({ cart })
   } catch (err) {
+    console.log(err)
     throw err
   }
 }

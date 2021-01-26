@@ -13,32 +13,33 @@ class UserService extends BaseService {
     PASSWORD_RESET: "user.password_reset",
   }
 
-  constructor({ userModel, eventBusService }) {
+  constructor({ userRepository, eventBusService, manager }) {
     super()
 
-    /** @private @const {UserModel} */
-    this.userModel_ = userModel
+    /** @private @const {UserRepository} */
+    this.userRepository_ = userRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
   }
 
-  /**
-   * Used to validate user ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw user id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The userId could not be casted to an ObjectId"
-      )
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
     }
 
-    return value
+    const cloned = new UserService({
+      manager: transactionManager,
+      userRepository: this.userRepository_,
+      eventBusService: this.eventBus_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -47,26 +48,16 @@ class UserService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
-    const { value, error } = schema.validate(email)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The email is not valid"
-      )
-    }
-
-    return value
+    return email
   }
 
   /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.userModel_.find(selector)
+  async list(selector) {
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+    return userRepo.find({ where: selector })
   }
 
   /**
@@ -75,13 +66,13 @@ class UserService extends BaseService {
    * @param {string} userId - the id of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId) {
+  async retrieve(userId, config = {}) {
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+
     const validatedId = this.validateId_(userId)
-    const user = await this.userModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const user = await userRepo.findOne(query)
 
     if (!user) {
       throw new MedusaError(
@@ -89,6 +80,7 @@ class UserService extends BaseService {
         `User with id: ${userId} was not found`
       )
     }
+
     return user
   }
 
@@ -98,12 +90,13 @@ class UserService extends BaseService {
    * @param {string} apiToken - the token of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieveByApiToken(apiToken) {
-    const user = await this.userModel_
-      .findOne({ api_token: apiToken })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+  async retrieveByApiToken(apiToken, relations = []) {
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+
+    const user = await userRepo.findOne({
+      where: { api_token: apiToken },
+      relations,
+    })
 
     if (!user) {
       throw new MedusaError(
@@ -111,6 +104,7 @@ class UserService extends BaseService {
         `User with api token: ${apiToken} was not found`
       )
     }
+
     return user
   }
 
@@ -120,9 +114,12 @@ class UserService extends BaseService {
    * @param {string} email - the email of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieveByEmail(email) {
-    const user = await this.userModel_.findOne({ email }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+  async retrieveByEmail(email, relations = []) {
+    const userRepo = this.manager_.getCustomRepository(this.userRepository_)
+
+    const user = await userRepo.findOne({
+      where: { email },
+      relations,
     })
 
     if (!user) {
@@ -131,6 +128,7 @@ class UserService extends BaseService {
         `User with email: ${email} was not found`
       )
     }
+
     return user
   }
 
@@ -151,12 +149,17 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   async create(user, password) {
-    const validatedEmail = this.validateEmail_(user.email)
-    const hashedPassword = await this.hashPassword_(password)
-    user.email = validatedEmail
-    user.password_hash = hashedPassword
-    return this.userModel_.create(user).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
+
+      const validatedEmail = this.validateEmail_(user.email)
+      const hashedPassword = await this.hashPassword_(password)
+      user.email = validatedEmail
+      user.password_hash = hashedPassword
+
+      const created = await userRepo.create(user)
+
+      return userRepo.save(created)
     })
   }
 
@@ -166,38 +169,38 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   async update(userId, update) {
-    const validatedId = this.validateId_(userId)
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const validatedId = this.validateId_(userId)
 
-    if (update.password_hash) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
-      )
-    }
+      const user = await this.retrieve(validatedId)
 
-    if (update.email) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "You are not allowed to update email"
-      )
-    }
+      const { email, password_hash, metadata, ...rest } = update
 
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
-      )
-    }
+      if (email) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "You are not allowed to update email"
+        )
+      }
 
-    return this.userModel_
-      .updateOne(
-        { _id: validatedId },
-        { $set: update },
-        { runValidators: true }
-      )
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      if (password_hash) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
+        )
+      }
+
+      if (metadata) {
+        user.metadata = this.setMetadata_(user, metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        user[key] = value
+      }
+
+      return userRepo.save(user)
+    })
   }
 
   /**
@@ -207,16 +210,17 @@ class UserService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(userId) {
-    let user
-    try {
-      user = await this.retrieve(userId)
-    } catch (error) {
-      // delete is idempotent, but we return a promise to allow then-chaining
-      return Promise.resolve()
-    }
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
 
-    return this.userModel_.deleteOne({ _id: user._id }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      // Should not fail, if user does not exist, since delete is idempotent
+      const user = await userRepo.findOne({ where: { id: userId } })
+
+      if (!user) return Promise.resolve()
+
+      await userRepo.softRemove(user)
+
+      return Promise.resolve()
     })
   }
 
@@ -228,21 +232,24 @@ class UserService extends BaseService {
    * @param {string} password - the old password to set
    * @returns {Promise} the result of the update operation
    */
-  async setPassword(userId, password) {
-    const user = await this.retrieve(userId)
+  async setPassword_(userId, password) {
+    return this.atomicPhase_(async manager => {
+      const userRepo = manager.getCustomRepository(this.userRepository_)
 
-    const hashedPassword = await this.hashPassword_(password)
-    if (!hashedPassword) {
-      throw new MedusaError(
-        MedusaError.Types.DB_ERROR,
-        `An error occured while hashing password`
-      )
-    }
+      const user = await this.retrieve(userId)
 
-    return this.userModel_.updateOne(
-      { _id: user._id },
-      { $set: { password_hash: hashedPassword } }
-    )
+      const hashedPassword = await this.hashPassword_(password)
+      if (!hashedPassword) {
+        throw new MedusaError(
+          MedusaError.Types.DB_ERROR,
+          `An error occured while hashing password`
+        )
+      }
+
+      user.password_hash = hashedPassword
+
+      return userRepo.save(user)
+    })
   }
 
   /**
@@ -258,7 +265,7 @@ class UserService extends BaseService {
     const user = await this.retrieve(userId)
     const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-    const payload = { user_id: user._id, exp: expiry }
+    const payload = { user_id: user.id, exp: expiry }
     const token = jwt.sign(payload, secret)
     // Notify subscribers
     this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
@@ -276,61 +283,10 @@ class UserService extends BaseService {
    * @return {User} return the decorated user.
    */
   async decorate(user, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
+    const requiredFields = ["id", "metadata"]
     const decorated = _.pick(user, fields.concat(requiredFields))
     const final = await this.runDecorators_(decorated)
     return final
-  }
-
-  /**
-   * Dedicated method to set metadata for a user.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} userId - the user to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  async setMetadata(userId, key, value) {
-    const validatedId = this.validateId_(userId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.userModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a user.
-   * @param {string} userId - the user to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(userId, key) {
-    const validatedId = this.validateId_(userId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.userModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

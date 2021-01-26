@@ -70,3 +70,21 @@ export default app => {
 
   return app
 }
+
+export const defaultFields = [
+  "id",
+  "name",
+  "currency_code",
+  "tax_rate",
+  "tax_code",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const defaultRelations = [
+  "countries",
+  "payment_providers",
+  "fulfillment_providers",
+]

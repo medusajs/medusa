@@ -1,22 +1,22 @@
+import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
   try {
     const orderService = req.scope.resolve("orderService")
     const swapService = req.scope.resolve("swapService")
+    const entityManager = req.scope.resolve("manager")
 
-    const order = await orderService.retrieve(id)
+    await entityManager.transaction(async manager => {
+      await swapService.withTransaction(manager).processDifference(swap_id)
 
-    await swapService.processDifference(swap_id)
+      const order = await orderService.withTransaction(manager).retrieve(id, {
+        select: defaultFields,
+        relations: defaultRelations,
+      })
 
-    // Decorate the order
-    const data = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
-
-    res.json({ order: data })
+      res.json({ order })
+    })
   } catch (error) {
     throw error
   }

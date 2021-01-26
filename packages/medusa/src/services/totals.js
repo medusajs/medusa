@@ -7,27 +7,23 @@ import { MedusaError } from "medusa-core-utils"
  * @implements BaseService
  */
 class TotalsService extends BaseService {
-  constructor({ productVariantService, regionService }) {
+  constructor() {
     super()
-    /** @private @const {ProductVariantService} */
-    this.productVariantService_ = productVariantService
-
-    /** @private @const {RegionService} */
-    this.regionService_ = regionService
   }
 
   /**
    * Calculates subtotal of a given cart or order.
-   * @param {Cart || Order} object - cart or order to calculate subtotal for
+   * @param {object} object - object to calculate total for
    * @return {int} the calculated subtotal
    */
-  async getTotal(object) {
-    const subtotal = await this.getSubtotal(object)
-    const taxTotal = await this.getTaxTotal(object)
-    const discountTotal = await this.getDiscountTotal(object)
-    const shippingTotal = await this.getShippingTotal(object)
+  getTotal(object) {
+    const subtotal = this.getSubtotal(object)
+    const taxTotal = this.getTaxTotal(object)
+    const discountTotal = this.getDiscountTotal(object)
+    const giftCardTotal = this.getGiftCardTotal(object)
+    const shippingTotal = this.getShippingTotal(object)
 
-    return subtotal + taxTotal + shippingTotal - discountTotal
+    return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
   }
 
   /**
@@ -42,21 +38,15 @@ class TotalsService extends BaseService {
     }
 
     object.items.map(item => {
-      if (Array.isArray(item.content)) {
-        const temp = _.sumBy(item.content, c => c.unit_price * c.quantity)
-        subtotal += temp * item.quantity
-      } else {
-        if (opts.excludeNonDiscounts) {
-          if (!item.no_discount) {
-            subtotal +=
-              item.content.unit_price * item.content.quantity * item.quantity
-          }
-        } else {
-          subtotal +=
-            item.content.unit_price * item.content.quantity * item.quantity
+      if (opts.excludeNonDiscounts) {
+        if (item.allow_discounts) {
+          subtotal += item.unit_price * item.quantity
         }
+      } else {
+        subtotal += item.unit_price * item.quantity
       }
     })
+
     return this.rounded(subtotal)
   }
 
@@ -65,8 +55,8 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} shipping total
    */
-  getShippingTotal(order) {
-    const { shipping_methods } = order
+  getShippingTotal(object) {
+    const { shipping_methods } = object
     return shipping_methods.reduce((acc, next) => {
       return acc + next.price
     }, 0)
@@ -78,43 +68,48 @@ class TotalsService extends BaseService {
    * @param {Cart | Object} object - cart or order to calculate subtotal for
    * @return {int} tax total
    */
-  async getTaxTotal(object) {
+  getTaxTotal(object) {
     const subtotal = this.getSubtotal(object)
     const shippingTotal = this.getShippingTotal(object)
-    const discountTotal = await this.getDiscountTotal(object)
-    const region = await this.regionService_.retrieve(object.region_id)
-    const { tax_rate } = region
-    return this.rounded((subtotal - discountTotal + shippingTotal) * tax_rate)
+    const discountTotal = this.getDiscountTotal(object)
+    const giftCardTotal = this.getGiftCardTotal(object)
+    const tax_rate = object.tax_rate || object.region.tax_rate
+    return this.rounded(
+      (subtotal - discountTotal - giftCardTotal + shippingTotal) *
+        (tax_rate / 100)
+    )
   }
 
   getRefundedTotal(object) {
+    if (!object.refunds) {
+      return 0
+    }
+
     const total = object.refunds.reduce((acc, next) => acc + next.amount, 0)
     return this.rounded(total)
   }
 
-  getLineItemRefund(order, lineItem) {
-    const { tax_rate, discounts } = order
-    const taxRate = tax_rate || 0
+  getLineItemRefund(object, lineItem) {
+    const { discounts } = object
+    const tax_rate = object.tax_rate || object.region.tax_rate
+    const taxRate = (tax_rate || 0) / 100
 
-    const discount = discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
-    )
+    const discount = discounts.find(({ rule }) => rule.type !== "free_shipping")
 
     if (!discount) {
-      return lineItem.content.unit_price * lineItem.quantity * (1 + taxRate)
+      return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
     }
 
-    const lineDiscounts = this.getLineDiscounts(order, discount)
-    const discountedLine = lineDiscounts.find(line =>
-      line.item._id.equals(lineItem._id)
+    const lineDiscounts = this.getLineDiscounts(object, discount)
+    const discountedLine = lineDiscounts.find(
+      line => line.item.id === lineItem.id
     )
 
     const discountAmount =
       (discountedLine.amount / discountedLine.item.quantity) * lineItem.quantity
 
     return this.rounded(
-      (lineItem.content.unit_price * lineItem.quantity - discountAmount) *
-        (1 + taxRate)
+      (lineItem.unit_price * lineItem.quantity - discountAmount) * (1 + taxRate)
     )
   }
 
@@ -127,7 +122,17 @@ class TotalsService extends BaseService {
    * @return {int} the calculated subtotal
    */
   getRefundTotal(order, lineItems) {
-    const refunds = lineItems.map(i => this.getLineItemRefund(order, i))
+    const itemIds = order.items.map(i => i.id)
+    const refunds = lineItems.map(i => {
+      if (!itemIds.includes(i.id)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Line item does not exist on order"
+        )
+      }
+
+      return this.getLineItemRefund(order, i)
+    })
     return this.rounded(refunds.reduce((acc, next) => acc + next, 0))
   }
 
@@ -142,7 +147,7 @@ class TotalsService extends BaseService {
    *    applied discount
    */
   calculateDiscount_(lineItem, variant, variantPrice, value, discountType) {
-    if (lineItem.no_discount) {
+    if (!lineItem.allow_discounts) {
       return {
         lineItem,
         variant,
@@ -168,7 +173,7 @@ class TotalsService extends BaseService {
   }
 
   /**
-   * If the discount_rule of a discount has allocation="item", then we need
+   * If the rule of a discount has allocation="item", then we need
    * to calculate discount on each item in the cart. Furthermore, we need to
    * make sure to only apply the discount on valid variants. And finally we
    * return ether an array of percentages discounts or fixed discounts
@@ -181,23 +186,18 @@ class TotalsService extends BaseService {
   getAllocationItemDiscounts(discount, cart) {
     const discounts = []
     for (const item of cart.items) {
-      if (discount.discount_rule.valid_for.length > 0) {
-        discount.discount_rule.valid_for.map(variant => {
-          // Discounts do not apply to bundles, hence:
-          if (Array.isArray(item.content)) {
-            return discounts
-          } else {
-            if (item.content.variant._id === variant) {
-              discounts.push(
-                this.calculateDiscount_(
-                  item,
-                  variant,
-                  item.content.unit_price,
-                  discount.discount_rule.value,
-                  discount.discount_rule.type
-                )
+      if (discount.rule.valid_for.length > 0) {
+        discount.rule.valid_for.map(({ id }) => {
+          if (item.variant.product_id === id) {
+            discounts.push(
+              this.calculateDiscount_(
+                item,
+                item.variant.id,
+                item.unit_price,
+                discount.rule.value,
+                discount.rule.type
               )
-            }
+            )
           }
         })
       }
@@ -206,8 +206,8 @@ class TotalsService extends BaseService {
   }
 
   getLineDiscounts(cart, discount) {
-    const subtotal = this.getSubtotal(cart)
-    const { type, allocation, value } = discount.discount_rule
+    const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
+    const { type, allocation, value } = discount.rule
     if (allocation === "total") {
       let percentage = 0
       if (type === "percentage") {
@@ -220,7 +220,7 @@ class TotalsService extends BaseService {
       }
 
       return cart.items.map(item => {
-        const lineTotal = item.content.unit_price * item.quantity
+        const lineTotal = item.unit_price * item.quantity
 
         return {
           item,
@@ -234,8 +234,8 @@ class TotalsService extends BaseService {
         type
       )
       return cart.items.map(item => {
-        const discounted = allocationDiscounts.find(a =>
-          a.lineItem._id.equals(item._id)
+        const discounted = allocationDiscounts.find(
+          a => a.lineItem.id === item.id
         )
         return {
           item,
@@ -247,46 +247,51 @@ class TotalsService extends BaseService {
     return cart.items.map(i => ({ item: i, amount: 0 }))
   }
 
+  getGiftCardTotal(cart) {
+    const giftCardable = this.getSubtotal(cart) - this.getDiscountTotal(cart)
+
+    if (cart.gift_card_transactions) {
+      return cart.gift_card_transactions.reduce(
+        (acc, next) => acc + next.amount,
+        0
+      )
+    }
+
+    if (!cart.gift_cards || !cart.gift_cards.length) {
+      return 0
+    }
+
+    const toReturn = cart.gift_cards.reduce(
+      (acc, next) => acc + next.balance,
+      0
+    )
+    return Math.min(giftCardable, toReturn)
+  }
+
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
    * @param {Cart} Cart - the cart to calculate discounts for
    * @return {int} the total discounts amount
    */
-  async getDiscountTotal(cart) {
+  getDiscountTotal(cart) {
     let subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
 
     if (!cart.discounts || !cart.discounts.length) {
       return 0
     }
 
-    // filter out invalid discounts
-    cart.discounts = cart.discounts.filter(d => {
-      // !ends_at implies that the discount never expires
-      // therefore, we do the check following check
-      if (d.ends_at) {
-        const parsedEnd = new Date(d.ends_at)
-        const now = new Date()
-        return (
-          parsedEnd.getTime() > now.getTime() &&
-          d.regions.includes(cart.region_id)
-        )
-      } else {
-        return d.regions && d.regions.includes(cart.region_id)
-      }
-    })
-
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
     const discount = cart.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== "free_shipping"
     )
 
     if (!discount) {
       return 0
     }
 
-    const { type, allocation, value } = discount.discount_rule
+    const { type, allocation, value } = discount.rule
     let toReturn = 0
 
     if (type === "percentage" && allocation === "total") {
@@ -307,6 +312,10 @@ class TotalsService extends BaseService {
         "fixed"
       )
       toReturn = _.sumBy(itemFixedDiscounts, d => d.amount)
+    }
+
+    if (subtotal < 0) {
+      return this.rounded(Math.max(subtotal, toReturn))
     }
 
     return this.rounded(Math.min(subtotal, toReturn))

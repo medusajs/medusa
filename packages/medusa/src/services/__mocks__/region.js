@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 
 export const regions = {
   testRegion: {
-    _id: IdMap.getId("testRegion"),
+    id: IdMap.getId("testRegion"),
     name: "Test Region",
     countries: ["DK", "US", "DE"],
     tax_rate: 0.25,
@@ -11,7 +11,7 @@ export const regions = {
     currency_code: "usd",
   },
   regionFrance: {
-    _id: IdMap.getId("region-france"),
+    id: IdMap.getId("region-france"),
     name: "France",
     countries: ["FR"],
     payment_providers: ["default_provider", "france-provider"],
@@ -20,21 +20,21 @@ export const regions = {
     tax_rate: 0.25,
   },
   regionUs: {
-    _id: IdMap.getId("region-us"),
+    id: IdMap.getId("region-us"),
     tax_rate: 0.25,
     name: "USA",
     countries: ["US"],
     currency_code: "usd",
   },
   regionGermany: {
-    _id: IdMap.getId("region-de"),
+    id: IdMap.getId("region-de"),
     tax_rate: 0.25,
     name: "Germany",
     countries: ["DE"],
     currency_code: "eur",
   },
   regionSweden: {
-    _id: IdMap.getId("region-se"),
+    id: IdMap.getId("region-se"),
     tax_rate: 0.25,
     name: "Sweden",
     countries: ["SE"],
@@ -59,10 +59,12 @@ export const RegionServiceMock = {
     if (regionId === IdMap.getId("region-se")) {
       return Promise.resolve(regions.regionSweden)
     }
-    throw Error(regionId + "not found")
+    return Promise.resolve(regions.testRegion)
   }),
   delete: jest.fn().mockImplementation(data => Promise.resolve()),
-  create: jest.fn().mockImplementation(data => Promise.resolve()),
+  create: jest
+    .fn()
+    .mockImplementation(data => Promise.resolve({ id: "region" })),
   addCountry: jest.fn().mockImplementation(data => Promise.resolve()),
   addFulfillmentProvider: jest
     .fn()

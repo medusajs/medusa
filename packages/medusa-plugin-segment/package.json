@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-segment",
-  "version": "1.0.16",
+  "version": "1.0.14-alpha.176+0646bd3",
   "description": "Segment Analytics",
   "main": "index.js",
   "repository": {
@@ -39,8 +39,8 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.0.11",
-    "medusa-test-utils": "^1.0.13"
+    "medusa-core-utils": "^1.0.12-alpha.787+0646bd3",
+    "medusa-test-utils": "^1.0.12-alpha.176+0646bd3"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
 }

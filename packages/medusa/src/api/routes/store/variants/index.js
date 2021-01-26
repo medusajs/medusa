@@ -7,7 +7,7 @@ export default app => {
   app.use("/variants", route)
 
   route.get("/", middlewares.wrap(require("./list-variants").default))
-  route.get("/:variant_id", middlewares.wrap(require("./get-variant").default))
+  route.get("/:id", middlewares.wrap(require("./get-variant").default))
 
   return app
 }

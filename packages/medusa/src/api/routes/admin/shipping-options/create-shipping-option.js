@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -7,17 +8,17 @@ export default async (req, res) => {
     provider_id: Validator.string().required(),
     profile_id: Validator.string(),
     data: Validator.object().required(),
-    price: Validator.object()
-      .keys({
-        type: Validator.string().required(),
-        amount: Validator.number().optional(),
-      })
-      .required(),
+    price_type: Validator.string().required(),
+    amount: Validator.number()
+      .integer()
+      .optional(),
     requirements: Validator.array()
       .items(
         Validator.object({
           type: Validator.string().required(),
-          value: Validator.number().required(),
+          amount: Validator.number()
+            .integer()
+            .required(),
         })
       )
       .optional(),
@@ -35,13 +36,15 @@ export default async (req, res) => {
 
     // Add to default shipping profile
     if (!value.profile_id) {
-      const { _id } = await shippingProfileService.retrieveDefault()
-      value.profile_id = _id
+      const { id } = await shippingProfileService.retrieveDefault()
+      value.profile_id = id
     }
 
-    const data = await optionService.create(value)
-
-    await shippingProfileService.addShippingOption(value.profile_id, data._id)
+    const result = await optionService.create(value)
+    const data = await optionService.retrieve(result.id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ shipping_option: data })
   } catch (err) {

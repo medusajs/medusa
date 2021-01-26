@@ -26,29 +26,5 @@ export default (app, rootDirectory) => {
     middlewares.wrap(require("./retrieve-payment-methods").default)
   )
 
-  route.post(
-    "/authorize",
-    bodyParser.json(),
-    middlewares.wrap(require("./authorize-payment").default)
-  )
-
-  route.post(
-    "/update",
-    bodyParser.json(),
-    middlewares.wrap(require("./update-payment").default)
-  )
-
-  route.post(
-    "/payment-status",
-    bodyParser.json(),
-    middlewares.wrap(require("./check-payment-status").default)
-  )
-
-  route.get(
-    "/payment-status",
-    bodyParser.json(),
-    middlewares.wrap(require("./check-payment-status").default)
-  )
-
   return app
 }

@@ -20,15 +20,10 @@ export default async (req, res) => {
     const customerService = req.scope.resolve("customerService")
     await customerService.update(id, value)
 
-    const customer = await customerService.retrieve(id)
-    const data = await customerService.decorate(customer)
-    data.orders = await Promise.all(
-      customer.orders.map(async oId => {
-        const order = await orderService.retrieve(oId)
-        return orderService.decorate(order, [], [])
-      })
-    )
-    res.status(200).json({ customer: data })
+    const customer = await customerService.retrieve(id, {
+      relations: ["orders"],
+    })
+    res.status(200).json({ customer })
   } catch (err) {
     throw err
   }

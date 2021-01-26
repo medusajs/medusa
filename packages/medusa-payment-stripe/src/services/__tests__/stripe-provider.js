@@ -129,6 +129,7 @@ describe("StripeProviderService", () => {
       result = await stripeProviderService.updatePayment(
         {
           id: "pi_lebron",
+          amount: 800,
         },
         {
           total: 1000,
@@ -136,7 +137,7 @@ describe("StripeProviderService", () => {
       )
     })
 
-    it("returns cancelled stripe payment intent", () => {
+    it("returns updated stripe payment intent", () => {
       expect(result).toEqual({
         id: "pi_lebron",
         customer: "cus_lebron",
@@ -186,7 +187,13 @@ describe("StripeProviderService", () => {
         }
       )
 
-      result = await stripeProviderService.capturePayment("pi_lebron")
+      result = await stripeProviderService.capturePayment({
+        data: {
+          id: "pi_lebron",
+          customer: "cus_lebron",
+          amount: 1000,
+        },
+      })
     })
 
     it("returns captured stripe payment intent", () => {
@@ -210,7 +217,17 @@ describe("StripeProviderService", () => {
         }
       )
 
-      result = await stripeProviderService.refundPayment("pi_lebron", 1000)
+      result = await stripeProviderService.refundPayment(
+        {
+          data: {
+            id: "re_123",
+            payment_intent: "pi_lebron",
+            amount: 1000,
+            status: "succeeded",
+          },
+        },
+        1000
+      )
     })
 
     it("returns refunded stripe payment intent", () => {
@@ -234,7 +251,13 @@ describe("StripeProviderService", () => {
         }
       )
 
-      result = await stripeProviderService.cancelPayment("pi_lebron")
+      result = await stripeProviderService.cancelPayment({
+        data: {
+          id: "pi_lebron",
+          customer: "cus_lebron",
+          status: "cancelled",
+        },
+      })
     })
 
     it("returns cancelled stripe payment intent", () => {

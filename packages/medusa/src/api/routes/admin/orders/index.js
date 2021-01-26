@@ -88,6 +88,14 @@ export default app => {
   route.post("/:id/cancel", middlewares.wrap(require("./cancel-order").default))
 
   /**
+   * Add a shipping method
+   */
+  route.post(
+    "/:id/shipping-methods",
+    middlewares.wrap(require("./add-shipping-method").default)
+  )
+
+  /**
    * Archive an order.
    */
   route.post(
@@ -133,14 +141,6 @@ export default app => {
   )
 
   /**
-   * Set metadata key / value pair.
-   */
-  route.post(
-    "/:id/metadata",
-    middlewares.wrap(require("./set-metadata").default)
-  )
-
-  /**
    * Delete metadata key / value pair.
    */
   route.delete(
@@ -150,3 +150,91 @@ export default app => {
 
   return app
 }
+
+export const defaultRelations = [
+  "customer",
+  "billing_address",
+  "shipping_address",
+  "discounts",
+  "shipping_methods",
+  "payments",
+  "fulfillments",
+  "returns",
+  "gift_cards",
+  "gift_card_transactions",
+  "swaps",
+  "swaps.return_order",
+  "swaps.payment",
+  "swaps.shipping_methods",
+  "swaps.shipping_address",
+  "swaps.additional_items",
+  "swaps.fulfillments",
+]
+
+export const defaultFields = [
+  "id",
+  "status",
+  "fulfillment_status",
+  "payment_status",
+  "display_id",
+  "cart_id",
+  "customer_id",
+  "email",
+  "region_id",
+  "currency_code",
+  "tax_rate",
+  "canceled_at",
+  "created_at",
+  "updated_at",
+  "metadata",
+  "items.refundable",
+  "shipping_total",
+  "discount_total",
+  "tax_total",
+  "refunded_total",
+  "gift_card_total",
+  "subtotal",
+  "total",
+  "refundable_amount",
+]
+
+export const allowedFields = [
+  "id",
+  "status",
+  "fulfillment_status",
+  "payment_status",
+  "display_id",
+  "cart_id",
+  "customer_id",
+  "email",
+  "region_id",
+  "currency_code",
+  "tax_rate",
+  "canceled_at",
+  "created_at",
+  "updated_at",
+  "metadata",
+  "shipping_total",
+  "discount_total",
+  "tax_total",
+  "refunded_total",
+  "subtotal",
+  "gift_card_total",
+  "total",
+  "refundable_amount",
+]
+
+export const allowedRelations = [
+  "customer",
+  "region",
+  "billing_address",
+  "shipping_address",
+  "discounts",
+  "shipping_methods",
+  "payments",
+  "fulfillments",
+  "returns",
+  "swaps",
+  "swaps.return_order",
+  "swaps.additional_items",
+]

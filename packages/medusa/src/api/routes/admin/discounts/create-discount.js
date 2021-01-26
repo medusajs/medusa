@@ -4,7 +4,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     code: Validator.string().required(),
     is_dynamic: Validator.boolean().default(false),
-    discount_rule: Validator.object()
+    rule: Validator.object()
       .keys({
         description: Validator.string().optional(),
         type: Validator.string().required(),
@@ -14,11 +14,9 @@ export default async (req, res) => {
         allocation: Validator.string().required(),
         valid_for: Validator.array().items(Validator.string()),
         usage_limit: Validator.number().optional(),
-        total_limit: Validator.number().optional(),
       })
       .required(),
-    usage_count: Validator.number().optional(),
-    disabled: Validator.boolean().optional(),
+    is_disabled: Validator.boolean().default(false),
     starts_at: Validator.date().optional(),
     ends_at: Validator.date().optional(),
     regions: Validator.array()
@@ -34,9 +32,15 @@ export default async (req, res) => {
 
   try {
     const discountService = req.scope.resolve("discountService")
-    const data = await discountService.create(value)
 
-    res.status(200).json({ discount: data })
+    const created = await discountService.create(value)
+    const discount = await discountService.retrieve(created.id, [
+      "rule",
+      "rule.valid_for",
+      "regions",
+    ])
+
+    res.status(200).json({ discount })
   } catch (err) {
     throw err
   }

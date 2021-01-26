@@ -1,3 +1,4 @@
+import { MockManager } from "medusa-test-utils"
 import { createContainer, asValue } from "awilix"
 import express from "express"
 import cookieParser from "cookie-parser"
@@ -28,6 +29,7 @@ container.register({
   logger: asValue({
     error: () => {},
   }),
+  manager: asValue(MockManager),
 })
 
 testApp.set("trust proxy", 1)

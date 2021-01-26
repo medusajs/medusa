@@ -4,7 +4,7 @@ export default async (req, res) => {
   const { id, address_id } = req.params
 
   const schema = Validator.object().keys({
-    address: Validator.address(),
+    address: Validator.address().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -14,17 +14,17 @@ export default async (req, res) => {
 
   const customerService = req.scope.resolve("customerService")
   try {
-    const customer = await customerService.updateAddress(
+    let customer = await customerService.updateAddress(
       id,
       address_id,
       value.address
     )
-    const data = await customerService.decorate(
-      customer,
-      ["email", "first_name", "last_name", "shipping_addresses"],
-      ["orders"]
-    )
-    res.json({ customer: data })
+
+    customer = await customerService.retrieve(id, {
+      relations: ["orders", "shipping_addresses"],
+    })
+
+    res.json({ customer })
   } catch (err) {
     throw err
   }
