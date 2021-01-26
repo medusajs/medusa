@@ -3,6 +3,79 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.56](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.55...@medusajs/medusa@1.0.56) (2021-01-06)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.55](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.54...@medusajs/medusa@1.0.55) (2021-01-06)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.54](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.53...@medusajs/medusa@1.0.54) (2020-12-28)
+
+
+### Features
+
+* **medusa:** Adds filtering to order listing for use in admin ([#149](https://github.com/medusajs/medusa/issues/149)) ([09d7ed2](https://github.com/medusajs/medusa/commit/09d7ed232bb07e9dab3d7535ec98f5fd88ad8ca2))
+
+
+
+
+
+## [1.0.53](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.52...@medusajs/medusa@1.0.53) (2020-12-17)
+
+
+### Features
+
+* **medusa:** Adds product variant sale price ([#148](https://github.com/medusajs/medusa/issues/148)) ([451451a](https://github.com/medusajs/medusa/commit/451451a38eeffa88e04f1992c4026882cd2be66f))
+
+
+
+
+
+## [1.0.52](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.51...@medusajs/medusa@1.0.52) (2020-12-09)
+
+
+### Bug Fixes
+
+* .gitignore ([ed4d2b4](https://github.com/medusajs/medusa/commit/ed4d2b4b3d7ae4dce834e83d776781f2dbbccb52))
+
+
+
+
+
+## [1.0.51](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.50...@medusajs/medusa@1.0.51) (2020-12-09)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.50](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.49...@medusajs/medusa@1.0.50) (2020-12-08)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.0.49](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.48...@medusajs/medusa@1.0.49) (2020-12-04)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
 ## [1.0.48](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.47...@medusajs/medusa@1.0.48) (2020-12-02)
 
 

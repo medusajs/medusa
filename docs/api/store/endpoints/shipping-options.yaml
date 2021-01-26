@@ -1,30 +1,25 @@
-title: Regions
+title: Shipping options
 domain: store
 routes:
-  - method: POST
-    path: /regions
   - method: GET
-    path: /regions/:id
-route: /regions
+    path: /shipping-options
+route: /shipping-options
 description: >
-  A region represents a collection of countries that have common pricing 
-  schemes, shipping options, tax schemes, etc. Carts must have a region
-  associated.
+  A shipping option represents a delivery method for products and belongs to a region.
 endpoints:
-  - path: /:id
-    method: GET
-    title: Retrieve region
-    params:
-      - name: id
-        type: String
-        description: Id of the region.
-    description: >
-      Retrieves a region
   - path: /
     method: GET
-    title: List regions
+    title: List shipping options
+    params:
+      - name: product_ids
+        optional: true
+        type: String
+        description: String of product ids. Id's needs to be separated by comma.
+      - name: region_id
+        type: String
+        description: Id of region
     description: >
-      Retrieves the regions configured for the store.
+      Retrieves shipping options in a given region. Shipping options for specific products can be retrieved using the `product_ids` query param.
 
 response: |
   {

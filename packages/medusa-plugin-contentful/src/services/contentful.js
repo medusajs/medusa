@@ -1,11 +1,10 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { createClient } from "contentful-management"
-import redis from "redis"
 
 class ContentfulService extends BaseService {
   constructor(
-    { productService, productVariantService, eventBusService },
+    { productService, redisClient, productVariantService, eventBusService },
     options
   ) {
     super()
@@ -22,9 +21,7 @@ class ContentfulService extends BaseService {
       accessToken: options.access_token,
     })
 
-    this.redis_ = redis.createClient({
-      url: options.redis_url,
-    })
+    this.redis_ = redisClient
   }
 
   async getIgnoreIds_(type) {
@@ -71,6 +68,47 @@ class ContentfulService extends BaseService {
         id: v.sys.id,
       },
     }))
+  }
+
+  async createImageAssets(product) {
+    const environment = await this.getContentfulEnvironment_()
+
+    let assets = []
+    await Promise.all(
+      product.images
+        .filter((image) => image !== product.thumbnail)
+        .map(async (image, i) => {
+          const asset = await environment.createAsset({
+            fields: {
+              title: {
+                "en-US": `${product.title} - ${i}`,
+              },
+              description: {
+                "en-US": "",
+              },
+              file: {
+                "en-US": {
+                  contentType: "image/xyz",
+                  fileName: image,
+                  upload: image,
+                },
+              },
+            },
+          })
+
+          await asset.processForAllLocales()
+
+          assets.push({
+            sys: {
+              type: "Link",
+              linkType: "Asset",
+              id: asset.sys.id,
+            },
+          })
+        })
+    )
+
+    return assets
   }
 
   async createProductInContentful(product) {
@@ -168,7 +206,6 @@ class ContentfulService extends BaseService {
       try {
         productEntry = await environment.getEntry(product.id)
       } catch (error) {
-        console.log(error)
         return this.createProductInContentful(product)
       }
 

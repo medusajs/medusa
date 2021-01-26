@@ -12,7 +12,6 @@ export default async (req, res) => {
 
     res.json({ order })
   } catch (error) {
-    console.log(error)
     throw error
   }
 }

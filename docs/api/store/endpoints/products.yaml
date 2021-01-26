@@ -1,30 +1,28 @@
-title: Regions
+title: Products
 domain: store
 routes:
   - method: POST
-    path: /regions
+    path: /products
   - method: GET
-    path: /regions/:id
-route: /regions
+    path: /products/:id
+route: /products
 description: >
-  A region represents a collection of countries that have common pricing 
-  schemes, shipping options, tax schemes, etc. Carts must have a region
-  associated.
+  A product represents the object, that are to be sold on the website. A product can have variants, that differ by e.g. size and color.
 endpoints:
   - path: /:id
     method: GET
-    title: Retrieve region
+    title: Retrieve product
     params:
       - name: id
         type: String
-        description: Id of the region.
+        description: Id of the product.
     description: >
-      Retrieves a region
+      Retrieves a product
   - path: /
     method: GET
-    title: List regions
+    title: List products
     description: >
-      Retrieves the regions configured for the store.
+      Retrieves the products for the configured store.
 
 response: |
   {

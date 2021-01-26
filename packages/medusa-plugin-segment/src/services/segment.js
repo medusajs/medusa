@@ -104,7 +104,6 @@ class SegmentService extends BaseService {
       products: await Promise.all(
         order.items.map(async (item) => {
           let name = item.title
-          let variant = item.description
 
           const unit_price = item.unit_price
           const line_total = (unit_price * item.quantity) / 100
@@ -112,6 +111,10 @@ class SegmentService extends BaseService {
             order.currency_code,
             line_total
           )
+
+          const skuParts = item.content.variant.sku.split("-")
+          skuParts.pop()
+
           return {
             name,
             variant,

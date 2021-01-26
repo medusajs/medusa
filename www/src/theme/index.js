@@ -1,6 +1,8 @@
 import React from "react"
 import { ThemeProvider as Provider } from "emotion-theming"
 
+import "../fonts/index.css"
+
 import breakpoints from "./breakpoints"
 import buttons from "./buttons"
 import spacing from "./spacing"

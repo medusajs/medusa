@@ -1,30 +1,33 @@
-title: Regions
+title: Product variants
 domain: store
 routes:
-  - method: POST
-    path: /regions
   - method: GET
-    path: /regions/:id
-route: /regions
+    path: /product-variants
+  - method: GET
+    path: /product-variants/:id
+route: /product-variants
 description: >
-  A region represents a collection of countries that have common pricing 
-  schemes, shipping options, tax schemes, etc. Carts must have a region
-  associated.
+  A product variant represents a specific type of product. E.g. a variant can differ from other variants based on size and color. A variant will always belong to a product.
 endpoints:
   - path: /:id
     method: GET
-    title: Retrieve region
+    title: Retrieve product variant
     params:
       - name: id
         type: String
-        description: Id of the region.
+        description: Id of the product variant.
     description: >
-      Retrieves a region
+      Retrieves product variant
   - path: /
     method: GET
-    title: List regions
+    title: List product variants
+    params:
+      - name: ids
+        optional: true
+        type: String
+        description: String of product variant ids. Id's needs to be separated by comma.
     description: >
-      Retrieves the regions configured for the store.
+      Retrieves product variants. Specific variants can be retrieved using `ids` query param in the request.
 
 response: |
   {
