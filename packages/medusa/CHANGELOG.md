@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.0...@medusajs/medusa@1.1.1) (2021-01-26)
+
+
+### Bug Fixes
+
+* customer not found ([#152](https://github.com/medusajs/medusa/issues/152)) ([282eaae](https://github.com/medusajs/medusa/commit/282eaae67555f9989fa90c0aa3acf7de84957b46))
+
+
+
+
+
 # [1.1.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.0.56...@medusajs/medusa@1.1.0) (2021-01-26)
 
 **Note:** Version bump only for package @medusajs/medusa
