@@ -4,22 +4,22 @@ import _ from "lodash"
 
 export const users = {
   testUser: {
-    _id: IdMap.getId("test-user"),
+    id: IdMap.getId("test-user"),
     email: "oliver@test.dk",
     password_hash: "hashed123456789",
   },
   vanDijk: {
-    _id: IdMap.getId("vandijk"),
+    id: IdMap.getId("vandijk"),
     email: "vandijk@test.dk",
     password_hash: "hashed123456789",
   },
   jwtUser: {
-    _id: "test-user-id",
+    id: "test-user-id",
     email: "oliver@test.dk",
     password_hash: "123456789hash",
   },
   deleteUser: {
-    _id: IdMap.getId("delete-user"),
+    id: IdMap.getId("delete-user"),
     email: "oliver@deletetest.dk",
     password_hash: "hashed123456789",
   },
@@ -86,7 +86,7 @@ export const UserServiceMock = {
   retrieveByEmail: jest.fn().mockImplementation(email => {
     if (email === "vandijk@test.dk") {
       return Promise.resolve({
-        _id: IdMap.getId("vandijk"),
+        id: IdMap.getId("vandijk"),
         email,
         password_hash: "1234",
       })
