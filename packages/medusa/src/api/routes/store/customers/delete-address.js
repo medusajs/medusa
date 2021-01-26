@@ -3,12 +3,12 @@ export default async (req, res) => {
 
   const customerService = req.scope.resolve("customerService")
   try {
-    const customer = await customerService.removeAddress(id, address_id)
-    const data = await customerService.decorate(
-      customer,
-      ["email", "first_name", "last_name", "shipping_addresses"],
-      ["orders"]
-    )
+    let customer = await customerService.removeAddress(id, address_id)
+
+    customer = await customerService.retrieve(id, {
+      relations: ["orders", "shipping_addresses"],
+    })
+
     res.json({ customer: data })
   } catch (err) {
     throw err

@@ -10,7 +10,7 @@ export const StripeProviderServiceMock = {
     }
     if (payData.id === "pi_no") {
       return Promise.resolve({
-        id: "pi",
+        id: "pi_no",
       })
     }
     return Promise.resolve(undefined)

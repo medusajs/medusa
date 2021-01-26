@@ -1,5 +1,6 @@
 import "core-js/stable"
 import "regenerator-runtime/runtime"
+import "reflect-metadata"
 import express from "express"
 import loaders from "./loaders"
 import Logger from "./loaders/logger"

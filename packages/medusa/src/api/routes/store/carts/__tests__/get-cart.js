@@ -15,15 +15,11 @@ describe("GET /store/carts", () => {
     })
 
     it("calls retrieve from CartService", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("emptyCart")
-      )
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
     })
 
     it("returns cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("emptyCart"))
     })
 
     it("returns 200 status", () => {
@@ -44,7 +40,9 @@ describe("GET /store/carts", () => {
 
     it("calls get product from productSerice", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none")
+      expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none", {
+        relations: ["customer"],
+      })
     })
 
     it("returns 404 status", () => {

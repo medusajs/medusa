@@ -4,7 +4,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     name: Validator.string(),
     swap_link_template: Validator.string(),
-    default_currency: Validator.string(),
+    default_currency_code: Validator.string(),
     currencies: Validator.array().items(Validator.string()),
   })
 
@@ -15,8 +15,8 @@ export default async (req, res) => {
 
   try {
     const storeService = req.scope.resolve("storeService")
-    const data = await storeService.update(value)
-    res.status(200).json({ store: data })
+    const store = await storeService.update(value)
+    res.status(200).json({ store })
   } catch (err) {
     throw err
   }

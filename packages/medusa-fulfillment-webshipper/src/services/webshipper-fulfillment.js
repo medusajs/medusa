@@ -7,10 +7,18 @@ class WebshipperFulfillmentService extends FulfillmentService {
   constructor({ logger, swapService, orderService }, options) {
     super()
 
-    this.logger_ = logger
-    this.orderService_ = orderService
     this.options_ = options
+
+    /** @private @const {logger} */
+    this.logger_ = logger
+
+    /** @private @const {OrderService} */
+    this.orderService_ = orderService
+
+    /** @private @const {SwapService} */
     this.swapService_ = swapService
+
+    /** @private @const {AxiosClient} */
     this.client_ = new Webshipper({
       account: this.options_.account,
       token: this.options_.api_token,
@@ -38,15 +46,19 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }))
   }
 
-  async validateFulfillmentData(data, _) {
-    if (data.require_drop_point) {
+  async validateFulfillmentData(optionData, data, _) {
+    if (optionData.require_drop_point) {
       if (!data.drop_point_id) {
         throw new Error("Must have drop point id")
       } else {
         // TODO: validate that the drop point exists
       }
     }
-    return data
+
+    return {
+      ...optionData,
+      ...data,
+    }
   }
 
   async validateOption(data) {
@@ -69,7 +81,22 @@ class WebshipperFulfillmentService extends FulfillmentService {
    * Creates a return shipment in webshipper using the given method data, and
    * return lines.
    */
-  async createReturn(methodData, returnLines, fromOrder) {
+  async createReturn(returnOrder) {
+    let fromOrder
+    if (returnOrder.order_id) {
+      fromOrder = await this.orderService_.retrieve(returnOrder.order_id, {
+        select: ["total"],
+        relations: ["shipping_address", "returns"],
+      })
+    } else if (returnOrder.swap) {
+      fromOrder = await this.orderService_.retrieve(returnOrder.swap.order_id, {
+        select: ["total"],
+        relations: ["shipping_address", "returns"],
+      })
+    }
+
+    const methodData = returnOrder.shipping_method.data
+
     const relationships = {
       shipping_rate: {
         data: {
@@ -79,7 +106,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
       },
     }
 
-    const existing = fromOrder.metadata.webshipper_order_id
+    const existing =
+      fromOrder.metadata && fromOrder.metadata.webshipper_order_id
     if (existing) {
       relationships.order = {
         data: {
@@ -93,8 +121,9 @@ class WebshipperFulfillmentService extends FulfillmentService {
     if (this.invoiceGenerator_) {
       const base64Invoice = await this.invoiceGenerator_.createReturnInvoice(
         fromOrder,
-        returnLines
+        returnOrder.items
       )
+
       docs.push({
         document_size: "A4",
         document_format: "PDF",
@@ -108,7 +137,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       type: "shipments",
       attributes: {
         reference: `R${fromOrder.display_id}-${fromOrder.returns.length + 1}`,
-        ext_ref: `${fromOrder._id}.${fromOrder.returns.length}`,
+        ext_ref: `${fromOrder.id}.${returnOrder.id}`,
         is_return: true,
         included_documents: docs,
         packages: [
@@ -121,21 +150,20 @@ class WebshipperFulfillmentService extends FulfillmentService {
               width: 15,
               length: 15,
             },
-            customs_lines: returnLines.map((item) => {
+            customs_lines: returnOrder.items.map(({ item, quantity }) => {
               return {
-                ext_ref: item._id,
-                sku: item.content.variant.sku,
+                ext_ref: item.id,
+                sku: item.variant.sku,
                 description: item.title,
-                quantity: item.quantity,
+                quantity: quantity,
                 country_of_origin:
-                  item.content.variant.metadata &&
-                  item.content.variant.metadata.origin_country,
+                  item.variant.origin_country ||
+                  item.variant.product.origin_country,
                 tarif_number:
-                  item.content.variant.metadata &&
-                  item.content.variant.metadata.hs_code,
-                unit_price: item.content.unit_price,
-                vat_percent: fromOrder.tax_rate * 100,
-                currency: fromOrder.currency_code,
+                  item.variant.hs_code || item.variant.product.hs_code,
+                unit_price: item.unit_price / 100,
+                vat_percent: fromOrder.tax_rate,
+                currency: fromOrder.currency_code.toUpperCase(),
               }
             }),
           },
@@ -148,7 +176,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
           address_2: shipping_address.address_2,
           zip: shipping_address.postal_code,
           city: shipping_address.city,
-          country_code: shipping_address.country_code,
+          country_code: shipping_address.country_code.toUpperCase(),
           state: shipping_address.province,
           phone: shipping_address.phone,
           email: fromOrder.email,
@@ -196,7 +224,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
     return toReturn
   }
 
-  async createOrder(methodData, fulfillmentItems, fromOrder) {
+  async createFulfillment(
+    methodData,
+    fulfillmentItems,
+    fromOrder,
+    fulfillment
+  ) {
     const existing =
       fromOrder.metadata && fromOrder.metadata.webshipper_order_id
 
@@ -228,13 +261,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
           })
       }
 
-      let visible_ref = `${fromOrder.display_id}-${
-        fromOrder.fulfillments.length + 1
-      }`
-      let ext_ref = `${fromOrder._id}.${fromOrder.fulfillments.length}`
+      let id = fulfillment.id
+      let visible_ref = `${fromOrder.display_id}-${id.substr(id.length - 4)}`
+      let ext_ref = `${fromOrder.id}.${fulfillment.id}`
 
       if (fromOrder.is_swap) {
-        ext_ref = `S${fromOrder._id}.${fromOrder.fulfillments.length}`
+        ext_ref = `${fromOrder.id}.${fulfillment.id}`
         visible_ref = `S-${fromOrder.display_id}`
       }
 
@@ -247,17 +279,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
           visible_ref,
           order_lines: fulfillmentItems.map((item) => {
             return {
-              ext_ref: item._id,
-              sku: item.content.variant.sku,
+              ext_ref: item.id,
+              sku: item.variant.sku,
               description: item.title,
               quantity: item.quantity,
               country_of_origin:
-                item.content.variant.metadata &&
-                item.content.variant.metadata.origin_country,
+                item.variant.origin_country ||
+                item.variant.product.origin_country,
               tarif_number:
-                item.content.variant.metadata &&
-                item.content.variant.metadata.hs_code,
-              unit_price: item.content.unit_price,
+                item.variant.hs_code || item.variant.product.hs_code,
+              unit_price: item.unit_price / 100,
+              vat_percent: fromOrder.tax_rate,
             }
           }),
           delivery_address: {
@@ -266,12 +298,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
             address_2: shipping_address.address_2,
             zip: shipping_address.postal_code,
             city: shipping_address.city,
-            country_code: shipping_address.country_code,
+            country_code: shipping_address.country_code.toUpperCase(),
             state: shipping_address.province,
             phone: shipping_address.phone,
             email: fromOrder.email,
           },
-          currency: fromOrder.currency_code,
+          currency: fromOrder.currency_code.toUpperCase(),
         },
         relationships: {
           order_channel: {
@@ -296,7 +328,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
           zip: methodData.drop_point_zip,
           address_1: methodData.drop_point_address_1,
           city: methodData.drop_point_city,
-          country_code: methodData.drop_point_country_code,
+          country_code: methodData.drop_point_country_code.toUpperCase(),
         }
       }
       if (invoice) {
@@ -326,7 +358,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
     const wsOrder = await this.retrieveRelationship(
       body.data.relationships.order
     )
-    if (wsOrder.data.attributes.ext_ref) {
+    if (wsOrder.data && wsOrder.data.attributes.ext_ref) {
       const trackingNumbers = body.data.attributes.tracking_links.map(
         (l) => l.number
       )
@@ -334,23 +366,44 @@ class WebshipperFulfillmentService extends FulfillmentService {
         "."
       )
 
-      if (orderId.charAt(0) === "S") {
-        const swap = await this.swapService_.retrieve(orderId.substring(1))
-        const fulfillment = swap.fulfillments[fulfillmentIndex]
-        await this.swapService_.createShipment(
-          swap._id,
-          fulfillment._id,
-          trackingNumbers
-        )
-      } else {
-        const order = await this.orderService_.retrieve(orderId)
-        const fulfillment = order.fulfillments[fulfillmentIndex]
-        if (fulfillment) {
-          await this.orderService_.createShipment(
-            order._id,
-            fulfillment._id,
+      if (orderId.charAt(0).toLowerCase() === "s") {
+        if (fulfillmentIndex.startsWith("ful")) {
+          return this.swapService_.createShipment(
+            orderId,
+            fulfillmentIndex,
             trackingNumbers
           )
+        } else {
+          const swap = await this.swapService_.retrieve(orderId.substring(1), {
+            relations: ["fulfillments"],
+          })
+          const fulfillment = swap.fulfillments[fulfillmentIndex]
+          return this.swapService_.createShipment(
+            swap.id,
+            fulfillment.id,
+            trackingNumbers
+          )
+        }
+      } else {
+        if (fulfillmentIndex.startsWith("ful")) {
+          return this.orderService_.createShipment(
+            orderId,
+            fulfillmentIndex,
+            trackingNumbers
+          )
+        } else {
+          const order = await this.orderService_.retrieve(orderId, {
+            relations: ["fulfillments"],
+          })
+
+          const fulfillment = order.fulfillments[fulfillmentIndex]
+          if (fulfillment) {
+            return this.orderService_.createShipment(
+              order.id,
+              fulfillment.id,
+              trackingNumbers
+            )
+          }
         }
       }
     }
@@ -392,7 +445,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
               shipping_rate_id: id,
               delivery_address: {
                 zip,
-                country_code: countryCode,
+                country_code: countryCode.toUpperCase(),
                 address_1: address1,
               },
             },

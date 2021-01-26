@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "./"
 
 export default async (req, res) => {
   const { region_id } = req.params
@@ -9,6 +10,7 @@ export default async (req, res) => {
     tax_rate: Validator.number(),
     payment_providers: Validator.array().items(Validator.string()),
     fulfillment_providers: Validator.array().items(Validator.string()),
+    // iso_2 country codes
     countries: Validator.array().items(Validator.string()),
   })
 
@@ -19,8 +21,13 @@ export default async (req, res) => {
 
   try {
     const regionService = req.scope.resolve("regionService")
-    const data = await regionService.update(region_id, value)
-    res.status(200).json({ region: data })
+    await regionService.update(region_id, value)
+    const region = await regionService.retrieve(region_id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
+
+    res.status(200).json({ region })
   } catch (err) {
     throw err
   }

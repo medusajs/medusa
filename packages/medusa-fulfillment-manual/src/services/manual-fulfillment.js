@@ -36,6 +36,11 @@ class ManualFulfillmentService extends FulfillmentService {
     return Promise.resolve({})
   }
 
+  createFulfillment() {
+    // No data is being sent anywhere
+    return Promise.resolve({})
+  }
+
   cancelFulfillment() {
     return Promise.resolve({})
   }

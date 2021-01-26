@@ -2,12 +2,14 @@ import { IdMap } from "medusa-test-utils"
 
 export const carts = {
   emptyCart: {
-    _id: IdMap.getId("emptyCart"),
+    id: IdMap.getId("emptyCart"),
     items: [],
     region_id: IdMap.getId("testRegion"),
+    customer_id: "test-customer",
+    payment_sessions: [],
     shipping_options: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
         data: {
           some_data: "yes",
@@ -16,67 +18,61 @@ export const carts = {
     ],
   },
   frCart: {
-    _id: IdMap.getId("fr-cart"),
+    id: IdMap.getId("fr-cart"),
     email: "lebron@james.com",
     title: "test",
     region_id: IdMap.getId("region-france"),
     items: [
       {
-        _id: IdMap.getId("line"),
+        id: IdMap.getId("line"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
-        content: [
-          {
-            unit_price: 8,
-            variant: {
-              _id: IdMap.getId("eur-8-us-10"),
-            },
-            product: {
-              _id: IdMap.getId("product"),
-            },
-            quantity: 1,
-          },
-          {
-            unit_price: 10,
-            variant: {
-              _id: IdMap.getId("eur-10-us-12"),
-            },
-            product: {
-              _id: IdMap.getId("product"),
-            },
-            quantity: 1,
-          },
-        ],
+
+        unit_price: 8,
+        variant: {
+          id: IdMap.getId("eur-8-us-10"),
+        },
+        product: {
+          id: IdMap.getId("product"),
+        },
+        // {
+        //   unit_price: 10,
+        //   variant: {
+        //     id: IdMap.getId("eur-10-us-12"),
+        //   },
+        //   product: {
+        //     id: IdMap.getId("product"),
+        //   },
+        //   quantity: 1,
+        // },
         quantity: 10,
       },
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
-        content: {
-          unit_price: 10,
-          variant: {
-            _id: IdMap.getId("eur-10-us-12"),
-          },
-          product: {
-            _id: IdMap.getId("product"),
-          },
-          quantity: 1,
+        unit_price: 10,
+        variant: {
+          id: IdMap.getId("eur-10-us-12"),
         },
+        product: {
+          id: IdMap.getId("product"),
+        },
+        quantity: 1,
         quantity: 10,
       },
     ],
     shipping_methods: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
     shipping_options: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
@@ -102,12 +98,12 @@ export const carts = {
     customer_id: IdMap.getId("lebron"),
   },
   frCartNoStripeCustomer: {
-    _id: IdMap.getId("fr-cart-no-customer"),
+    id: IdMap.getId("fr-cart-no-customer"),
     title: "test",
     region_id: IdMap.getId("region-france"),
     items: [
       {
-        _id: IdMap.getId("line"),
+        id: IdMap.getId("line"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
@@ -115,20 +111,20 @@ export const carts = {
           {
             unit_price: 8,
             variant: {
-              _id: IdMap.getId("eur-8-us-10"),
+              id: IdMap.getId("eur-8-us-10"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              id: IdMap.getId("product"),
             },
             quantity: 1,
           },
           {
             unit_price: 10,
             variant: {
-              _id: IdMap.getId("eur-10-us-12"),
+              id: IdMap.getId("eur-10-us-12"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              id: IdMap.getId("product"),
             },
             quantity: 1,
           },
@@ -136,17 +132,17 @@ export const carts = {
         quantity: 10,
       },
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
         content: {
           unit_price: 10,
           variant: {
-            _id: IdMap.getId("eur-10-us-12"),
+            id: IdMap.getId("eur-10-us-12"),
           },
           product: {
-            _id: IdMap.getId("product"),
+            id: IdMap.getId("product"),
           },
           quantity: 1,
         },
@@ -155,13 +151,13 @@ export const carts = {
     ],
     shipping_methods: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
     shipping_options: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
@@ -192,6 +188,9 @@ export const CartServiceMock = {
   retrieve: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("fr-cart-no-customer")) {
+      return Promise.resolve(carts.frCartNoStripeCustomer)
     }
     if (cartId === IdMap.getId("emptyCart")) {
       return Promise.resolve(carts.emptyCart)

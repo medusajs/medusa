@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 
 const variant1 = {
-  _id: "1",
+  id: "1",
   title: "variant1",
   options: [
     {
@@ -16,7 +16,7 @@ const variant1 = {
 }
 
 const variant2 = {
-  _id: "2",
+  id: "2",
   title: "variant2",
   options: [
     {
@@ -31,7 +31,7 @@ const variant2 = {
 }
 
 const variant3 = {
-  _id: "3",
+  id: "3",
   title: "variant3",
   options: [
     {
@@ -46,7 +46,7 @@ const variant3 = {
 }
 
 const variant4 = {
-  _id: "4",
+  id: "4",
   title: "variant4",
   options: [
     {
@@ -61,7 +61,7 @@ const variant4 = {
 }
 
 const variant5 = {
-  _id: "5",
+  id: "5",
   title: "Variant with valid id",
   options: [
     {
@@ -76,7 +76,7 @@ const variant5 = {
 }
 
 const invalidVariant = {
-  _id: "invalid_option",
+  id: "invalid_option",
   title: "variant3",
   options: [
     {
@@ -91,23 +91,23 @@ const invalidVariant = {
 }
 
 const testVariant = {
-  _id: IdMap.getId("testVariant"),
+  id: IdMap.getId("testVariant"),
   title: "test variant",
 }
 
 const emptyVariant = {
-  _id: "empty_option",
+  id: "empty_option",
   title: "variant3",
   options: [],
 }
 
 const eur10us12 = {
-  _id: IdMap.getId("eur-10-us-12"),
+  id: IdMap.getId("eur-10-us-12"),
   title: "EUR10US-12",
 }
 
 const giftCardVar = {
-  _id: IdMap.getId("giftCardVar"),
+  id: IdMap.getId("giftCardVar"),
   title: "100 USD",
 }
 
@@ -124,12 +124,15 @@ export const variants = {
 }
 
 export const ProductVariantServiceMock = {
-  createDraft: jest.fn().mockImplementation(data => {
+  withTransaction: function() {
+    return this
+  },
+  create: jest.fn().mockImplementation(data => {
     return Promise.resolve(testVariant)
   }),
   publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
-      _id: IdMap.getId("publish"),
+      id: IdMap.getId("publish"),
       name: "Product Variant",
       published: true,
     })
@@ -212,25 +215,6 @@ export const ProductVariantServiceMock = {
     return Promise.resolve({})
   }),
   list: jest.fn().mockImplementation(data => {
-    if (data._id && data._id.$in) {
-      return Promise.resolve(
-        data._id.$in.map(id => {
-          if (id === "1") {
-            return variant1
-          }
-          if (id === "2") {
-            return variant2
-          }
-          if (id === "3") {
-            return variant3
-          }
-          if (id === "4") {
-            return variant4
-          }
-        })
-      )
-    }
-
     return Promise.resolve([testVariant])
   }),
   deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {

@@ -27,7 +27,7 @@ describe("POST /store/customers/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CustomerService create", () => {
+    it("calls CustomerService update", () => {
       expect(CustomerServiceMock.update).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
@@ -38,9 +38,16 @@ describe("POST /store/customers/:id", () => {
       )
     })
 
-    it("returns product decorated", () => {
-      expect(subject.body.customer.first_name).toEqual("LeBron")
-      expect(subject.body.customer.decorated).toEqual(true)
+    it("calls CustomerService retrieve", () => {
+      expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("lebron"),
+        ["orders", "shipping_addresses"]
+      )
+    })
+
+    it("returns customer", () => {
+      expect(subject.body.customer.id).toEqual(IdMap.getId("lebron"))
     })
 
     it("status code 200", () => {

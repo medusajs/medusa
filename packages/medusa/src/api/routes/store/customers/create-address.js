@@ -1,10 +1,10 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { id, address_id } = req.params
+  const { id } = req.params
 
   const schema = Validator.object().keys({
-    address: Validator.address(),
+    address: Validator.address().required(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -12,15 +12,15 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const customerService = req.scope.resolve("customerService")
   try {
-    const customer = await customerService.addAddress(id, value.address)
-    const data = await customerService.decorate(
-      customer,
-      ["email", "first_name", "last_name", "shipping_addresses"],
-      ["orders"]
-    )
-    res.json({ customer: data })
+    const customerService = req.scope.resolve("customerService")
+
+    let customer = await customerService.addAddress(id, value.address)
+    customer = await customerService.retrieve(id, {
+      relations: ["orders", "shipping_addresses"],
+    })
+
+    res.status(200).json({ customer })
   } catch (err) {
     throw err
   }

@@ -1,5 +1,12 @@
 class ContentfulSubscriber {
-  constructor({ contentfulService, eventBusService }) {
+  constructor({
+    contentfulService,
+    productVariantService,
+    productService,
+    eventBusService,
+  }) {
+    this.productVariantService_ = productVariantService
+    this.productService_ = productService
     this.contentfulService_ = contentfulService
     this.eventBus_ = eventBusService
 

@@ -13,7 +13,8 @@ describe("POST /admin/discounts", () => {
         {
           payload: {
             code: "10TOTALOFF",
-            discount_rule: {
+            rule: {
+              id: "1234",
               type: "fixed",
               value: 10,
               allocation: "total",
@@ -38,7 +39,8 @@ describe("POST /admin/discounts", () => {
         IdMap.getId("total10"),
         {
           code: "10TOTALOFF",
-          discount_rule: {
+          rule: {
+            id: "1234",
             type: "fixed",
             value: 10,
             allocation: "total",

@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-discount-generator",
-  "version": "1.0.1",
+  "version": "1.0.2-alpha.787+0646bd3",
   "main": "index.js",
   "license": "MIT",
   "author": "Sebastian Rindom",
@@ -40,5 +40,5 @@
     "medusa-core-utils": "^0.1.27",
     "randomatic": "^3.1.1"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
 }

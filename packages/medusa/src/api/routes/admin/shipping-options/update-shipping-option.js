@@ -1,21 +1,22 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { option_id } = req.params
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
-    price: Validator.object()
-      .keys({
-        type: Validator.string().required(),
-        amount: Validator.number().optional(),
-      })
+    amount: Validator.number()
+      .integer()
       .optional(),
     requirements: Validator.array()
       .items(
         Validator.object({
+          id: Validator.string().required(),
           type: Validator.string().required(),
-          value: Validator.number().required(),
+          amount: Validator.number()
+            .integer()
+            .required(),
         })
       )
       .optional(),
@@ -29,15 +30,13 @@ export default async (req, res) => {
 
   try {
     const optionService = req.scope.resolve("shippingOptionService")
-    if (!_.isEmpty(value.metadata)) {
-      for (let key of Object.keys(value.metadata)) {
-        await optionService.setMetadata(option_id, key, value.metadata[key])
-      }
 
-      delete value.metadata
-    }
+    await optionService.update(option_id, value)
 
-    const data = await optionService.update(option_id, value)
+    const data = await optionService.retrieve(option_id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ shipping_option: data })
   } catch (err) {

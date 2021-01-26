@@ -14,14 +14,12 @@ describe("POST /admin/shipping-options", () => {
           region_id: "testregion",
           provider_id: "test_provider",
           data: { id: "test" },
-          price: {
-            type: "flat_rate",
-            amount: 100,
-          },
+          price_type: "flat_rate",
+          amount: 100,
           requirements: [
             {
               type: "min_subtotal",
-              value: 1,
+              amount: 1,
             },
           ],
         },
@@ -46,14 +44,12 @@ describe("POST /admin/shipping-options", () => {
         provider_id: "test_provider",
         data: { id: "test" },
         profile_id: expect.stringMatching(/.*/),
-        price: {
-          type: "flat_rate",
-          amount: 100,
-        },
+        price_type: "flat_rate",
+        amount: 100,
         requirements: [
           {
             type: "min_subtotal",
-            value: 1,
+            amount: 1,
           },
         ],
       })
@@ -67,14 +63,12 @@ describe("POST /admin/shipping-options", () => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/shipping-options", {
         payload: {
-          price: {
-            type: "flat_rate",
-            amount: 100,
-          },
+          price_type: "flat_rate",
+          amount: 100,
           requirements: [
             {
               type: "min_subtotal",
-              value: 1,
+              amount: 1,
             },
           ],
         },

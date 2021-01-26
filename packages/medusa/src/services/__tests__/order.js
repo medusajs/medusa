@@ -1,30 +1,30 @@
-import { IdMap } from "medusa-test-utils"
-import { OrderModelMock, orders } from "../../models/__mocks__/order"
-import { carts } from "../../models/__mocks__/cart"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
-import ReturnService from "../return"
-import FulfillmentService from "../fulfillment"
-import {
-  PaymentProviderServiceMock,
-  DefaultProviderMock,
-} from "../__mocks__/payment-provider"
-import { DiscountServiceMock } from "../__mocks__/discount"
-import {
-  FulfillmentProviderServiceMock,
-  DefaultProviderMock as FulfillmentProviderMock,
-} from "../__mocks__/fulfillment-provider"
-import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
-import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
-import { TotalsServiceMock } from "../__mocks__/totals"
-import { RegionServiceMock } from "../__mocks__/region"
-import { CounterServiceMock } from "../__mocks__/counter"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("OrderService", () => {
+  const totalsService = {
+    getLineItemRefund: () => {},
+    getTotal: o => {
+      return o.total || 0
+    },
+    getRefundedTotal: o => {
+      return o.refunded_total || 0
+    },
+  }
+  const eventBusService = {
+    emit: jest.fn(),
+    withTransaction: function() {
+      return this
+    },
+  }
+
   describe("create", () => {
+    const orderRepo = MockRepository({ create: f => f })
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
-      eventBusService: EventBusServiceMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      totalsService,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -36,22 +36,104 @@ describe("OrderService", () => {
         email: "oliver@test.dk",
       })
 
-      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.create).toHaveBeenCalledWith({
+      expect(orderRepo.create).toHaveBeenCalledTimes(1)
+      expect(orderRepo.create).toHaveBeenCalledWith({
+        email: "oliver@test.dk",
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledWith({
         email: "oliver@test.dk",
       })
     })
   })
 
   describe("createFromCart", () => {
+    const orderRepo = MockRepository({
+      create: p => p,
+      save: p => ({ ...p, id: "id" }),
+    })
+    const lineItemService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const shippingOptionService = {
+      updateShippingMethod: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const giftCardService = {
+      update: jest.fn(),
+      createTransaction: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const paymentProviderService = {
+      getStatus: payment => {
+        return Promise.resolve(payment.status || "authorized")
+      },
+      updatePayment: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+    const emptyCart = {
+      region: {},
+      items: [],
+      total: 0,
+    }
+    const cartService = {
+      retrieve: jest.fn().mockImplementation(query => {
+        if (query === "empty") {
+          return Promise.resolve(emptyCart)
+        }
+        return Promise.resolve({
+          id: "cart_id",
+          email: "test@test.com",
+          customer_id: "cus_1234",
+          payment: {
+            id: "testpayment",
+            amount: 100,
+            status: "authorized",
+          },
+          region_id: "test",
+          region: {
+            id: "test",
+            currency_code: "eur",
+            name: "test",
+            tax_rate: 25,
+          },
+          shipping_address_id: "1234",
+          billing_address_id: "1234",
+          discounts: [],
+          gift_cards: [],
+          shipping_methods: [{ id: "method_1" }],
+          items: [{ id: "item_1" }, { id: "item_2" }],
+          total: 100,
+        })
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const discountService = {}
+    const regionService = {}
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
-      paymentProviderService: PaymentProviderServiceMock,
-      totalsService: TotalsServiceMock,
-      discountService: DiscountServiceMock,
-      regionService: RegionServiceMock,
-      eventBusService: EventBusServiceMock,
-      counterService: CounterServiceMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      lineItemService,
+      giftCardService,
+      paymentProviderService,
+      shippingOptionService,
+      totalsService,
+      discountService,
+      regionService,
+      eventBusService,
+      cartService,
     })
 
     beforeEach(async () => {
@@ -59,170 +141,317 @@ describe("OrderService", () => {
     })
 
     it("fails when no items", async () => {
-      const res = orderService.createFromCart(carts.emptyCart)
-      expect(res).rejects.toThrow("Cannot create order from empty cart")
+      const res = orderService.createFromCart("empty")
+      await expect(res).rejects.toThrow("Cannot create order from empty cart")
     })
 
     it("calls order model functions", async () => {
-      await orderService.createFromCart({
-        ...carts.completeCart,
+      const cart = {
+        id: "cart_id",
+        email: "test@test.com",
+        customer_id: "cus_1234",
+        payment: {
+          id: "testpayment",
+          amount: 100,
+          status: "authorized",
+        },
+        region_id: "test",
+        region: {
+          id: "test",
+          currency_code: "eur",
+          name: "test",
+          tax_rate: 25,
+        },
+        shipping_address_id: "1234",
+        billing_address_id: "1234",
+        gift_cards: [],
+        discounts: [],
+        shipping_methods: [{ id: "method_1" }],
+        items: [{ id: "item_1" }, { id: "item_2" }],
         total: 100,
-      })
+      }
 
+      orderService.cartService_.retrieve = jest.fn(() => Promise.resolve(cart))
+
+      await orderService.createFromCart("cart_id")
       const order = {
-        ...carts.completeCart,
+        payment_status: "awaiting",
+        email: cart.email,
+        customer_id: cart.customer_id,
+        shipping_methods: cart.shipping_methods,
+        customer_id: "cus_1234",
+        discounts: cart.discounts,
+        billing_address_id: cart.billing_address_id,
+        shipping_address_id: cart.shipping_address_id,
+        region_id: cart.region_id,
         currency_code: "eur",
-        cart_id: carts.completeCart._id,
-        tax_rate: 0.25,
+        cart_id: "cart_id",
+        tax_rate: 25,
+        gift_cards: [],
         metadata: {},
       }
-      delete order._id
-      delete order.payment_sessions
 
-      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
-        session: expect.anything(),
+      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
+      expect(cartService.retrieve).toHaveBeenCalledWith("cart_id", {
+        select: ["subtotal", "total"],
+        relations: [
+          "region",
+          "payment",
+          "items",
+          "discounts",
+          "gift_cards",
+          "shipping_methods",
+        ],
       })
+
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledWith(
+        "testpayment",
+        {
+          order_id: "id",
+        }
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        order_id: "id",
+      })
+      expect(lineItemService.update).toHaveBeenCalledWith("item_2", {
+        order_id: "id",
+      })
+
+      expect(orderRepo.create).toHaveBeenCalledTimes(1)
+      expect(orderRepo.create).toHaveBeenCalledWith(order)
+      expect(orderRepo.save).toHaveBeenCalledWith(order)
+    })
+
+    it("creates gift card transactions", async () => {
+      const cart = {
+        id: "cart_id",
+        email: "test@test.com",
+        customer_id: "cus_1234",
+        payment: {
+          id: "testpayment",
+          amount: 100,
+          status: "authorized",
+        },
+        region_id: "test",
+        region: {
+          id: "test",
+          currency_code: "eur",
+          name: "test",
+          tax_rate: 25,
+        },
+        shipping_address_id: "1234",
+        billing_address_id: "1234",
+        gift_cards: [
+          {
+            id: "gid",
+            code: "GC",
+            balance: 80,
+          },
+        ],
+        discounts: [],
+        shipping_methods: [{ id: "method_1" }],
+        items: [{ id: "item_1" }, { id: "item_2" }],
+        subtotal: 100,
+        total: 100,
+      }
+
+      orderService.cartService_.retrieve = () => {
+        return Promise.resolve(cart)
+      }
+
+      await orderService.createFromCart("cart_id")
+      const order = {
+        payment_status: "awaiting",
+        email: cart.email,
+        customer_id: cart.customer_id,
+        shipping_methods: cart.shipping_methods,
+        customer_id: "cus_1234",
+        discounts: cart.discounts,
+        billing_address_id: cart.billing_address_id,
+        shipping_address_id: cart.shipping_address_id,
+        region_id: cart.region_id,
+        currency_code: "eur",
+        cart_id: "cart_id",
+        tax_rate: 25,
+        gift_cards: [
+          {
+            id: "gid",
+            code: "GC",
+            balance: 80,
+          },
+        ],
+        metadata: {},
+      }
+
+      expect(giftCardService.update).toHaveBeenCalledTimes(1)
+      expect(giftCardService.update).toHaveBeenCalledWith("gid", {
+        balance: 0,
+        disabled: true,
+      })
+
+      expect(giftCardService.createTransaction).toHaveBeenCalledTimes(1)
+      expect(giftCardService.createTransaction).toHaveBeenCalledWith({
+        gift_card_id: "gid",
+        order_id: "id",
+        amount: 80,
+      })
+
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updatePayment).toHaveBeenCalledWith(
+        "testpayment",
+        {
+          order_id: "id",
+        }
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        order_id: "id",
+      })
+      expect(lineItemService.update).toHaveBeenCalledWith("item_2", {
+        order_id: "id",
+      })
+
+      expect(orderRepo.create).toHaveBeenCalledTimes(1)
+      expect(orderRepo.create).toHaveBeenCalledWith(order)
+      expect(orderRepo.save).toHaveBeenCalledWith(order)
     })
 
     it("creates cart with 0 total", async () => {
-      await orderService.createFromCart({
-        ...carts.completeCart,
+      const cart = {
+        id: "cart_id",
+        email: "test@test.com",
+        customer_id: "cus_1234",
+        payment: {
+          id: "testpayment",
+          amount: 100,
+          status: "authorized",
+        },
+        region_id: "test",
+        region: {
+          id: "test",
+          currency_code: "eur",
+          name: "test",
+          tax_rate: 25,
+        },
+        gift_cards: [],
+        shipping_address_id: "1234",
+        billing_address_id: "1234",
+        discounts: [],
+        shipping_methods: [{ id: "method_1" }],
+        items: [{ id: "item_1" }, { id: "item_2" }],
         total: 0,
-      })
-
+      }
+      orderService.cartService_.retrieve = () => Promise.resolve(cart)
+      await orderService.createFromCart(cart)
       const order = {
-        ...carts.completeCart,
-        payment_method: {},
+        payment_status: "awaiting",
+        email: cart.email,
+        customer_id: cart.customer_id,
+        shipping_methods: cart.shipping_methods,
+        customer_id: "cus_1234",
+        discounts: cart.discounts,
+        billing_address_id: cart.billing_address_id,
+        shipping_address_id: cart.shipping_address_id,
+        gift_cards: [],
+        region_id: cart.region_id,
         currency_code: "eur",
-        cart_id: carts.completeCart._id,
-        tax_rate: 0.25,
+        cart_id: "cart_id",
+        tax_rate: 25,
         metadata: {},
       }
-      delete order._id
-      delete order.payment_sessions
+      expect(orderRepo.create).toHaveBeenCalledTimes(1)
+      expect(orderRepo.create).toHaveBeenCalledWith(order)
 
-      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
-        session: expect.anything(),
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        order_id: "id",
       })
-    })
-
-    it("creates cart with gift card", async () => {
-      await orderService.createFromCart({
-        ...carts.withGiftCard,
-        total: 100,
+      expect(lineItemService.update).toHaveBeenCalledWith("item_2", {
+        order_id: "id",
       })
 
-      const order = {
-        ...carts.withGiftCard,
-        metadata: {},
-        items: [
-          {
-            _id: IdMap.getId("existingLine"),
-            title: "merge line",
-            description: "This is a new line",
-            is_giftcard: false,
-            thumbnail: "test-img-yeah.com/thumb",
-            content: {
-              unit_price: 123,
-              variant: {
-                _id: IdMap.getId("can-cover"),
-              },
-              product: {
-                _id: IdMap.getId("product"),
-              },
-              quantity: 1,
-            },
-            quantity: 10,
-          },
-          {
-            _id: IdMap.getId("giftline"),
-            title: "GiftCard",
-            description: "Gift card line",
-            thumbnail: "test-img-yeah.com/thumb",
-            metadata: {
-              name: "Test Name",
-            },
-            is_giftcard: true,
-            content: {
-              unit_price: 100,
-              variant: {
-                _id: IdMap.getId("giftCardVar"),
-              },
-              product: {
-                _id: IdMap.getId("giftCardProd"),
-              },
-              quantity: 1,
-            },
-            quantity: 1,
-          },
-        ],
-        currency_code: "eur",
-        cart_id: carts.withGiftCard._id,
-        tax_rate: 0.25,
-      }
-
-      delete order._id
-      delete order.payment_sessions
-
-      expect(OrderModelMock.create).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.create).toHaveBeenCalledWith([order], {
-        session: expect.anything(),
-      })
+      expect(orderRepo.save).toHaveBeenCalledWith(order)
     })
   })
 
   describe("retrieve", () => {
-    let result
+    const orderRepo = MockRepository({
+      findOne: q => {
+        return Promise.resolve({})
+      },
+    })
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      totalsService,
     })
 
     beforeAll(async () => {
       jest.clearAllMocks()
-      result = await orderService.retrieve(IdMap.getId("test-order"))
     })
 
     it("calls order model functions", async () => {
-      expect(OrderModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.findOne).toHaveBeenCalledWith({
-        _id: IdMap.getId("test-order"),
+      await orderService.retrieve(IdMap.getId("test-order"))
+      expect(orderRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(orderRepo.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("test-order") },
       })
-    })
-
-    it("returns correct order", async () => {
-      expect(result._id).toEqual(IdMap.getId("test-order"))
     })
   })
 
   describe("retrieveByCartId", () => {
-    let result
+    const orderRepo = MockRepository({
+      findOne: q => {
+        return Promise.resolve({})
+      },
+    })
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
+      totalsService,
+      manager: MockManager,
+      orderRepository: orderRepo,
     })
 
     beforeAll(async () => {
       jest.clearAllMocks()
-      result = await orderService.retrieveByCartId(IdMap.getId("test-cart"))
     })
 
     it("calls order model functions", async () => {
-      expect(OrderModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.findOne).toHaveBeenCalledWith({
-        cart_id: IdMap.getId("test-cart"),
+      await orderService.retrieveByCartId(IdMap.getId("test-cart"))
+      expect(orderRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(orderRepo.findOne).toHaveBeenCalledWith({
+        where: { cart_id: IdMap.getId("test-cart") },
       })
-    })
-
-    it("returns correct order", async () => {
-      expect(result._id).toEqual(IdMap.getId("test-order"))
     })
   })
 
   describe("update", () => {
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("fulfilled-order"):
+            return Promise.resolve({
+              fulfillment_status: "fulfilled",
+              payment_status: "awaiting",
+              status: "pending",
+            })
+          default:
+            return Promise.resolve({
+              fulfillment_status: "not_fulfilled",
+              payment_status: "awaiting",
+              status: "pending",
+            })
+        }
+      },
+    })
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
-      eventBusService: EventBusServiceMock,
+      totalsService,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -234,126 +463,95 @@ describe("OrderService", () => {
         email: "oliver@test.dk",
       })
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("test-order") },
-        {
-          $set: {
-            email: "oliver@test.dk",
-          },
-        },
-        { runValidators: true }
-      )
-    })
-
-    it("throws on invalid billing address", async () => {
-      const address = {
-        last_name: "James",
-        address_1: "24 Dunks Drive",
-        city: "Los Angeles",
-        country_code: "US",
-        province: "CA",
-        postal_code: "93011",
-      }
-
-      try {
-        await orderService.update(IdMap.getId("test-order"), {
-          billing_address: address,
-        })
-      } catch (err) {
-        expect(err.message).toEqual("The address is not valid")
-      }
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(0)
-    })
-
-    it("throws on invalid shipping address", async () => {
-      const address = {
-        last_name: "James",
-        address_1: "24 Dunks Drive",
-        city: "Los Angeles",
-        country_code: "US",
-        province: "CA",
-        postal_code: "93011",
-      }
-
-      try {
-        await orderService.update(IdMap.getId("test-order"), {
-          shipping_address: address,
-        })
-      } catch (err) {
-        expect(err.message).toEqual("The address is not valid")
-      }
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(0)
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        email: "oliver@test.dk",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "awaiting",
+        status: "pending",
+      })
     })
 
     it("throws if metadata update are attempted", async () => {
-      try {
-        await orderService.update(IdMap.getId("test-order"), {
-          metadata: { test: "foo" },
-        })
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Use setMetadata to update metadata fields"
-        )
-      }
-    })
-
-    it("throws if address updates are attempted after fulfillment", async () => {
-      try {
-        await orderService.update(IdMap.getId("fulfilled-order"), {
-          billing_address: {
-            first_name: "Lebron",
-            last_name: "James",
-            address_1: "24 Dunks Drive",
-            city: "Los Angeles",
-            country_code: "US",
-            province: "CA",
-            postal_code: "93011",
-          },
-        })
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Can't update shipping, billing, items and payment method when order is processed"
-        )
-      }
+      await orderService.update(IdMap.getId("test-order"), {
+        metadata: { test: "foo" },
+      })
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        metadata: { test: "foo" },
+        fulfillment_status: "not_fulfilled",
+        payment_status: "awaiting",
+        status: "pending",
+      })
     })
 
     it("throws if payment method update is attempted after fulfillment", async () => {
-      try {
-        await orderService.update(IdMap.getId("fulfilled-order"), {
-          payment_method: {
+      await expect(
+        orderService.update(IdMap.getId("fulfilled-order"), {
+          payment: {
             provider_id: "test",
             profile_id: "test",
           },
         })
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Can't update shipping, billing, items and payment method when order is processed"
-        )
-      }
+      ).rejects.toThrow(
+        "Can't update shipping, billing, items and payment method when order is processed"
+      )
     })
 
     it("throws if items update is attempted after fulfillment", async () => {
-      try {
-        await orderService.update(IdMap.getId("fulfilled-order"), {
+      await expect(
+        orderService.update(IdMap.getId("fulfilled-order"), {
           items: [],
         })
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Can't update shipping, billing, items and payment method when order is processed"
-        )
-      }
+      ).rejects.toThrow(
+        "Can't update shipping, billing, items and payment method when order is processed"
+      )
     })
   })
 
   describe("cancel", () => {
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("paid-order"):
+            return Promise.resolve({
+              fulfillment_status: "fulfilled",
+              payment_status: "paid",
+              status: "pending",
+            })
+          default:
+            return Promise.resolve({
+              fulfillment_status: "not_fulfilled",
+              payment_status: "awaiting",
+              status: "pending",
+              fulfillments: [{ id: "fulfillment_test" }],
+              payments: [{ id: "payment_test" }],
+            })
+        }
+      },
+    })
+
+    const fulfillmentService = {
+      cancelFulfillment: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const paymentProviderService = {
+      cancelPayment: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      paymentProviderService: PaymentProviderServiceMock,
-      orderModel: OrderModelMock,
-      eventBusService: EventBusServiceMock,
+      totalsService,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      paymentProviderService,
+      fulfillmentService,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -363,55 +561,74 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.cancel(IdMap.getId("not-fulfilled-order"))
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("not-fulfilled-order") },
-        {
-          $set: {
-            status: "canceled",
-            fulfillment_status: "canceled",
-            payment_status: "canceled",
-            fulfillments: [
-              {
-                _id: IdMap.getId("fulfillment"),
-                data: {},
-                is_canceled: true,
-                provider_id: "default_provider",
-              },
-            ],
-            payment_method: {
-              data: {},
-              provider_id: "default_provider",
-            },
-          },
-        }
-      )
-    })
+      expect(paymentProviderService.cancelPayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.cancelPayment).toHaveBeenCalledWith({
+        id: "payment_test",
+      })
 
-    it("throws if order is fulfilled", async () => {
-      try {
-        await orderService.cancel(IdMap.getId("fulfilled-order"))
-      } catch (error) {
-        expect(error.message).toEqual("Can't cancel a fulfilled order")
-      }
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
+        id: "fulfillment_test",
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        fulfillment_status: "canceled",
+        payment_status: "canceled",
+        status: "canceled",
+        fulfillments: [{ id: "fulfillment_test" }],
+        payments: [{ id: "payment_test" }],
+      })
     })
 
     it("throws if order payment is captured", async () => {
-      try {
-        await orderService.cancel(IdMap.getId("payed-order"))
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Can't cancel an order with a processed payment"
-        )
-      }
+      await expect(
+        orderService.cancel(IdMap.getId("paid-order"))
+      ).rejects.toThrow("Can't cancel an order with a processed payment")
     })
   })
 
   describe("capturePayment", () => {
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("fail"):
+            return Promise.resolve({
+              payment_status: "awaiting",
+              payments: [{ id: "payment_fail", captured_at: null }],
+            })
+
+          default:
+            return Promise.resolve({
+              fulfillment_status: "not_fulfilled",
+              payment_status: "awaiting",
+              status: "pending",
+              fulfillments: [{ id: "fulfillment_test" }],
+              payments: [{ id: "payment_test", captured_at: null }],
+            })
+        }
+      },
+    })
+
+    const paymentProviderService = {
+      capturePayment: jest
+        .fn()
+        .mockImplementation(p =>
+          p.id === "payment_fail"
+            ? Promise.reject()
+            : Promise.resolve({ ...p, captured_at: "notnull" })
+        ),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
-      paymentProviderService: PaymentProviderServiceMock,
-      eventBusService: EventBusServiceMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      paymentProviderService,
+      totalsService,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -419,33 +636,109 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.capturePayment(IdMap.getId("test-order"))
+      await orderService.capturePayment("test-order")
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("test-order") },
-        { $set: { payment_status: "captured" } }
-      )
+      expect(paymentProviderService.capturePayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
+        id: "payment_test",
+        captured_at: null,
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        fulfillment_status: "not_fulfilled",
+        payment_status: "captured",
+        status: "pending",
+        fulfillments: [{ id: "fulfillment_test" }],
+        payments: [{ id: "payment_test", captured_at: "notnull" }],
+      })
     })
 
-    it("throws if payment is already processed", async () => {
-      await expect(
-        orderService.capturePayment(IdMap.getId("payed-order"))
-      ).rejects.toThrow("Payment already captured")
+    it("sets requires action on failure", async () => {
+      await orderService.capturePayment(IdMap.getId("fail"))
+
+      expect(paymentProviderService.capturePayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
+        id: "payment_fail",
+        captured_at: null,
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        payment_status: "requires_action",
+        payments: [{ id: "payment_fail", captured_at: null }],
+      })
     })
   })
 
   describe("createFulfillment", () => {
-    const fulfillmentService = new FulfillmentService({
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      shippingProfileService: ShippingProfileServiceMock,
-      totalsService: TotalsServiceMock,
+    const partialOrder = {
+      fulfillments: [],
+      shipping_methods: [{ id: "ship" }],
+      items: [
+        {
+          id: "item_1",
+          quantity: 2,
+          fulfilled_quantity: 0,
+        },
+        {
+          id: "item_2",
+          quantity: 1,
+          fulfilled_quantity: 0,
+        },
+      ],
+    }
+
+    const order = {
+      fulfillments: [],
+      shipping_methods: [{ id: "ship" }],
+      items: [
+        {
+          id: "item_1",
+          quantity: 2,
+          fulfilled_quantity: 0,
+        },
+      ],
+    }
+
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case "partial":
+            return Promise.resolve(partialOrder)
+          default:
+            return Promise.resolve(order)
+        }
+      },
     })
+
+    const lineItemService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const fulfillmentService = {
+      createFulfillment: jest.fn().mockImplementation((o, i, m) => {
+        return Promise.resolve([
+          {
+            items: i,
+          },
+        ])
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
-      paymentProviderService: PaymentProviderServiceMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
       fulfillmentService,
-      eventBusService: EventBusServiceMock,
+      lineItemService,
+      totalsService,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -453,132 +746,166 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.createFulfillment(IdMap.getId("test-order"), [
+      await orderService.createFulfillment("test-order", [
         {
-          item_id: IdMap.getId("existingLine"),
-          quantity: 10,
+          item_id: "item_1",
+          quantity: 2,
         },
       ])
 
-      expect(FulfillmentProviderMock.createOrder).toHaveBeenCalledTimes(1)
-      expect(FulfillmentProviderMock.createOrder).toHaveBeenCalledWith(
-        {
-          extra: "hi",
-        },
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
+        order,
         [
           {
-            _id: IdMap.getId("existingLine"),
-            title: "merge line",
-            description: "This is a new line",
-            thumbnail: "test-img-yeah.com/thumb",
-            content: {
-              unit_price: 123,
-              variant: {
-                _id: IdMap.getId("can-cover"),
-              },
-              product: {
-                _id: IdMap.getId("validId"),
-              },
-              quantity: 1,
-            },
-            fulfilled_quantity: 0,
-            quantity: 10,
+            item_id: "item_1",
+            quantity: 2,
           },
         ],
-        orders.testOrder
+        { metadata: {}, order_id: "test-order" }
       )
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("test-order") },
-        {
-          $addToSet: {
-            fulfillments: {
-              $each: [
-                {
-                  data: {
-                    extra: "hi",
-                  },
-                  items: [
-                    {
-                      _id: IdMap.getId("existingLine"),
-                      title: "merge line",
-                      description: "This is a new line",
-                      thumbnail: "test-img-yeah.com/thumb",
-                      content: {
-                        unit_price: 123,
-                        variant: {
-                          _id: IdMap.getId("can-cover"),
-                        },
-                        product: {
-                          _id: IdMap.getId("validId"),
-                        },
-                        quantity: 1,
-                      },
-                      fulfilled_quantity: 0,
-                      quantity: 10,
-                    },
-                  ],
-                  metadata: {},
-                  provider_id: "default_provider",
-                },
-              ],
-            },
-          },
-          $set: {
-            items: [
-              {
-                _id: IdMap.getId("existingLine"),
-                title: "merge line",
-                description: "This is a new line",
-                thumbnail: "test-img-yeah.com/thumb",
-                content: {
-                  unit_price: 123,
-                  variant: {
-                    _id: IdMap.getId("can-cover"),
-                  },
-                  product: {
-                    _id: IdMap.getId("validId"),
-                  },
-                  quantity: 1,
-                },
-                quantity: 10,
-                fulfilled_quantity: 10,
-                fulfilled: true,
-              },
-            ],
-            fulfillment_status: "fulfilled",
-          },
-        }
-      )
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        fulfilled_quantity: 2,
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...order,
+        fulfillment_status: "fulfilled",
+      })
     })
 
-    it("throws if too many items are requested fulfilled", async () => {
-      await expect(
-        orderService.createFulfillment(IdMap.getId("test-order"), [
+    it("sets partially fulfilled", async () => {
+      await orderService.createFulfillment("partial", [
+        {
+          item_id: "item_1",
+          quantity: 2,
+        },
+      ])
+
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
+        partialOrder,
+        [
           {
-            item_id: IdMap.getId("existingLine"),
-            quantity: 11,
+            item_id: "item_1",
+            quantity: 2,
           },
-        ])
-      ).rejects.toThrow("Cannot fulfill more items than have been purchased")
+        ],
+        { metadata: {}, order_id: "partial" }
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        fulfilled_quantity: 2,
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...partialOrder,
+        fulfillment_status: "partially_fulfilled",
+      })
+    })
+
+    it("sets partially fulfilled", async () => {
+      await orderService.createFulfillment("test", [
+        {
+          item_id: "item_1",
+          quantity: 1,
+        },
+      ])
+
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
+        order,
+        [
+          {
+            item_id: "item_1",
+            quantity: 1,
+          },
+        ],
+        { metadata: {}, order_id: "test" }
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        fulfilled_quantity: 1,
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...order,
+        fulfillment_status: "partially_fulfilled",
+      })
     })
   })
 
   describe("receiveReturn", () => {
-    const returnService = new ReturnService({
-      totalsService: TotalsServiceMock,
-      shippingOptionService: ShippingOptionServiceMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
+    const order = {
+      items: [
+        {
+          id: "item_1",
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ],
+      payments: [{ id: "payment_test" }],
+    }
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          default:
+            return Promise.resolve(order)
+        }
+      },
     })
+
+    const returnService = {
+      retrieve: () => {
+        return Promise.resolve({
+          order_id: IdMap.getId("order"),
+        })
+      },
+      receiveReturn: jest
+        .fn()
+        .mockImplementation((id, items, amount, mism) =>
+          id === IdMap.getId("good")
+            ? Promise.resolve({ items, status: "received", refund_amount: 100 })
+            : Promise.resolve({ status: "requires_action" })
+        ),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const paymentProviderService = {
+      refundPayment: jest
+        .fn()
+        .mockImplementation(p =>
+          p.id === "payment_fail" ? Promise.reject() : Promise.resolve()
+        ),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const lineItemService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      paymentProviderService,
+      totalsService,
       returnService,
-      shippingOptionService: ShippingOptionServiceMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      paymentProviderService: PaymentProviderServiceMock,
-      totalsService: TotalsServiceMock,
-      eventBusService: EventBusServiceMock,
+      lineItemService,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -586,323 +913,93 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.receiveReturn(
-        IdMap.getId("returned-order"),
-        IdMap.getId("return"),
-        [
-          {
-            item_id: IdMap.getId("existingLine"),
-            quantity: 10,
-          },
-        ]
-      )
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("returned-order") },
+      const items = [
         {
-          $push: {
-            refunds: {
-              amount: 1228,
-            },
-          },
-          $set: {
-            returns: [
-              {
-                _id: IdMap.getId("return"),
-                status: "received",
-                documents: ["doc1234"],
-                shipping_method: {
-                  _id: IdMap.getId("return-shipping"),
-                  is_return: true,
-                  name: "Return Shipping",
-                  region_id: IdMap.getId("region-france"),
-                  profile_id: IdMap.getId("default-profile"),
-                  data: {
-                    id: "return_shipment",
-                  },
-                  price: 2,
-                  provider_id: "default_provider",
-                },
-                shipping_data: {
-                  id: "return_shipment",
-                  shipped: true,
-                },
-                items: [
-                  {
-                    item_id: IdMap.getId("existingLine"),
-                    content: {
-                      unit_price: 123,
-                      variant: {
-                        _id: IdMap.getId("can-cover"),
-                      },
-                      product: {
-                        _id: IdMap.getId("validId"),
-                      },
-                      quantity: 1,
-                    },
-                    is_requested: true,
-                    is_registered: true,
-                    quantity: 10,
-                    requested_quantity: 10,
-                  },
-                ],
-                refund_amount: 1228,
-              },
-            ],
-            items: [
-              {
-                _id: IdMap.getId("existingLine"),
-                content: {
-                  product: {
-                    _id: IdMap.getId("validId"),
-                  },
-                  quantity: 1,
-                  unit_price: 123,
-                  variant: {
-                    _id: IdMap.getId("can-cover"),
-                  },
-                },
-                description: "This is a new line",
-                quantity: 10,
-                returned_quantity: 10,
-                thumbnail: "test-img-yeah.com/thumb",
-                title: "merge line",
-                returned: true,
-              },
-            ],
-            fulfillment_status: "returned",
-          },
-        }
+          item_id: "item_1",
+          quantity: 10,
+        },
+      ]
+      await orderService.receiveReturn(
+        IdMap.getId("order"),
+        IdMap.getId("good"),
+        items
       )
 
-      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledTimes(1)
-      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledWith(
-        { hi: "hi" },
-        1228
+      expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
+      expect(returnService.receiveReturn).toHaveBeenCalledWith(
+        IdMap.getId("good"),
+        items,
+        undefined,
+        false
+      )
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
+        returned_quantity: 10,
+      })
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...order,
+        fulfillment_status: "returned",
+      })
+
+      expect(paymentProviderService.refundPayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(
+        order.payments,
+        100,
+        "return"
       )
     })
 
     it("return with custom refund", async () => {
-      await orderService.receiveReturn(
-        IdMap.getId("returned-order"),
-        IdMap.getId("return"),
-        [
-          {
-            item_id: IdMap.getId("existingLine"),
-            quantity: 10,
-          },
-        ],
-        102
-      )
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("returned-order") },
+      const items = [
         {
-          $push: {
-            refunds: {
-              amount: 102,
-            },
-          },
-          $set: {
-            items: [
-              {
-                _id: IdMap.getId("existingLine"),
-                content: {
-                  product: {
-                    _id: IdMap.getId("validId"),
-                  },
-                  quantity: 1,
-                  unit_price: 123,
-                  variant: {
-                    _id: IdMap.getId("can-cover"),
-                  },
-                },
-                description: "This is a new line",
-                quantity: 10,
-                returned_quantity: 10,
-                thumbnail: "test-img-yeah.com/thumb",
-                title: "merge line",
-                returned: true,
-              },
-            ],
-            returns: [
-              {
-                documents: ["doc1234"],
-                _id: IdMap.getId("return"),
-                status: "received",
-                shipping_method: {
-                  _id: IdMap.getId("return-shipping"),
-                  is_return: true,
-                  name: "Return Shipping",
-                  region_id: IdMap.getId("region-france"),
-                  profile_id: IdMap.getId("default-profile"),
-                  data: {
-                    id: "return_shipment",
-                  },
-                  price: 2,
-                  provider_id: "default_provider",
-                },
-                shipping_data: {
-                  id: "return_shipment",
-                  shipped: true,
-                },
-                items: [
-                  {
-                    item_id: IdMap.getId("existingLine"),
-                    content: {
-                      unit_price: 123,
-                      variant: {
-                        _id: IdMap.getId("can-cover"),
-                      },
-                      product: {
-                        _id: IdMap.getId("validId"),
-                      },
-                      quantity: 1,
-                    },
-                    is_requested: true,
-                    is_registered: true,
-                    quantity: 10,
-                    requested_quantity: 10,
-                  },
-                ],
-                refund_amount: 102,
-              },
-            ],
-            fulfillment_status: "returned",
-          },
-        }
+          item_id: IdMap.getId("existingLine"),
+          quantity: 10,
+        },
+      ]
+      await orderService.receiveReturn(
+        IdMap.getId("order"),
+        IdMap.getId("good"),
+        items,
+        102
       )
 
-      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledTimes(1)
-      expect(DefaultProviderMock.refundPayment).toHaveBeenCalledWith(
-        { hi: "hi" },
-        102
+      expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
+      expect(returnService.receiveReturn).toHaveBeenCalledWith(
+        IdMap.getId("good"),
+        items,
+        102,
+        false
       )
     })
 
     it("calls order model functions and sets partially_returned", async () => {
+      const items = [
+        {
+          item_id: IdMap.getId("existingLine"),
+          quantity: 2,
+        },
+      ]
       await orderService.receiveReturn(
-        IdMap.getId("order-refund"),
-        IdMap.getId("return"),
-        [
-          {
-            item_id: IdMap.getId("existingLine"),
-            quantity: 2,
-          },
-        ]
+        IdMap.getId("order"),
+        IdMap.getId("good"),
+        items
       )
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("order-refund") },
-        {
-          $push: {
-            refunds: {
-              amount: 246,
-            },
-          },
-          $set: {
-            returns: [
-              {
-                _id: IdMap.getId("return"),
-                status: "received",
-                shipping_method: {
-                  _id: IdMap.getId("return-shipping"),
-                  is_return: true,
-                  name: "Return Shipping",
-                  region_id: IdMap.getId("region-france"),
-                  profile_id: IdMap.getId("default-profile"),
-                  data: {
-                    id: "return_shipment",
-                  },
-                  price: 2,
-                  provider_id: "default_provider",
-                },
-                documents: ["doc1234"],
-                shipping_data: {
-                  id: "return_shipment",
-                  shipped: true,
-                },
-                items: [
-                  {
-                    item_id: IdMap.getId("existingLine"),
-                    content: {
-                      unit_price: 100,
-                      variant: {
-                        _id: IdMap.getId("can-cover"),
-                      },
-                      product: {
-                        _id: IdMap.getId("product"),
-                      },
-                      quantity: 1,
-                    },
-                    is_requested: true,
-                    is_registered: true,
-                    requested_quantity: 2,
-                    quantity: 2,
-                    metadata: {},
-                  },
-                ],
-                refund_amount: 246,
-              },
-            ],
-            items: [
-              {
-                _id: IdMap.getId("existingLine"),
-                content: {
-                  product: {
-                    _id: IdMap.getId("product"),
-                  },
-                  quantity: 1,
-                  unit_price: 100,
-                  variant: {
-                    _id: IdMap.getId("eur-8-us-10"),
-                  },
-                },
-                description: "This is a new line",
-                quantity: 10,
-                returned: false,
-                returned_quantity: 2,
-                thumbnail: "test-img-yeah.com/thumb",
-                title: "merge line",
-              },
-              {
-                _id: IdMap.getId("existingLine2"),
-                title: "merge line",
-                description: "This is a new line",
-                thumbnail: "test-img-yeah.com/thumb",
-                content: {
-                  unit_price: 100,
-                  variant: {
-                    _id: IdMap.getId("can-cover"),
-                  },
-                  product: {
-                    _id: IdMap.getId("product"),
-                  },
-                  quantity: 1,
-                },
-                quantity: 10,
-                returned_quantity: 0,
-                metadata: {},
-              },
-            ],
-            fulfillment_status: "partially_returned",
-          },
-        }
-      )
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...order,
+        fulfillment_status: "partially_returned",
+      })
     })
 
     it("sets requires_action on additional items", async () => {
       await orderService.receiveReturn(
-        IdMap.getId("order-refund"),
-        IdMap.getId("return"),
+        IdMap.getId("order"),
+        IdMap.getId("action"),
         [
-          {
-            item_id: IdMap.getId("existingLine"),
-            quantity: 2,
-          },
           {
             item_id: IdMap.getId("existingLine2"),
             quantity: 2,
@@ -910,99 +1007,48 @@ describe("OrderService", () => {
         ]
       )
 
-      const originalReturn = orders.orderToRefund.returns[0]
-      const toSet = {
-        ...originalReturn,
-        status: "requires_action",
-        items: [
-          ...originalReturn.items.map((i, index) => ({
-            ...i,
-            requested_quantity: i.quantity,
-            is_requested: index === 0,
-            is_registered: true,
-          })),
-          {
-            item_id: IdMap.getId("existingLine2"),
-            content: {
-              unit_price: 100,
-              variant: {
-                _id: IdMap.getId("can-cover"),
-              },
-              product: {
-                _id: IdMap.getId("product"),
-              },
-              quantity: 1,
-            },
-            is_requested: false,
-            is_registered: true,
-            quantity: 2,
-            metadata: {},
-          },
-        ],
-      }
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("order-refund"), "returns._id": originalReturn._id },
-        {
-          $set: {
-            "returns.$": toSet,
-          },
-        }
-      )
-    })
-
-    it("sets requires_action on unmatcing quantities", async () => {
-      await orderService.receiveReturn(
-        IdMap.getId("order-refund"),
-        IdMap.getId("return"),
-        [
-          {
-            item_id: IdMap.getId("existingLine"),
-            quantity: 1,
-          },
-        ]
-      )
-
-      const originalReturn = orders.orderToRefund.returns[0]
-      const toSet = {
-        ...originalReturn,
-        status: "requires_action",
-        items: originalReturn.items.map(i => ({
-          ...i,
-          requested_quantity: i.quantity,
-          quantity: 1,
-          is_requested: false,
-          is_registered: true,
-        })),
-      }
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("order-refund"), "returns._id": originalReturn._id },
-        {
-          $set: {
-            "returns.$": toSet,
-          },
-        }
-      )
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...order,
+        fulfillment_status: "requires_action",
+      })
     })
   })
 
   describe("requestReturn", () => {
-    const returnService = new ReturnService({
-      totalsService: TotalsServiceMock,
-      shippingOptionService: ShippingOptionServiceMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
+    const order = {
+      items: [
+        {
+          id: "item_1",
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ],
+      payments: [{ id: "payment_test" }],
+    }
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          default:
+            return Promise.resolve(order)
+        }
+      },
     })
+
+    const returnService = {
+      create: jest.fn(() => Promise.resolve({ id: "ret" })),
+      fulfill: jest.fn(() => Promise.resolve({ id: "ret" })),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      totalsService,
       returnService,
-      shippingOptionService: ShippingOptionServiceMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      paymentProviderService: PaymentProviderServiceMock,
-      totalsService: TotalsServiceMock,
-      eventBusService: EventBusServiceMock,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -1021,124 +1067,95 @@ describe("OrderService", () => {
         price: 2,
       }
       await orderService.requestReturn(
-        IdMap.getId("processed-order"),
+        "processed-order",
         items,
         shipping_method
       )
 
-      expect(FulfillmentProviderMock.createReturn).toHaveBeenCalledTimes(1)
-      expect(FulfillmentProviderMock.createReturn).toHaveBeenCalledWith(
+      expect(returnService.create).toHaveBeenCalledTimes(1)
+      expect(returnService.create).toHaveBeenCalledWith(
         {
-          id: "return_shipment",
+          items,
+          shipping_method,
+          refund_amount: undefined,
+          order_id: "processed-order",
         },
-        [
-          {
-            _id: IdMap.getId("existingLine"),
-            title: "merge line",
-            description: "This is a new line",
-            thumbnail: "test-img-yeah.com/thumb",
-            returned_quantity: 0,
-            content: {
-              unit_price: 123,
-              variant: {
-                _id: IdMap.getId("can-cover"),
-              },
-              product: {
-                _id: IdMap.getId("validId"),
-              },
-              quantity: 1,
-            },
-            quantity: 10,
-          },
-        ],
-        orders.processedOrder
+        order
       )
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("processed-order") },
-        {
-          $push: {
-            returns: {
-              shipping_method: {
-                _id: IdMap.getId("return-shipping"),
-                is_return: true,
-                name: "Return Shipping",
-                region_id: IdMap.getId("region-france"),
-                profile_id: IdMap.getId("default-profile"),
-                data: {
-                  id: "return_shipment",
-                },
-                price: 2,
-                provider_id: "default_provider",
-              },
-              shipping_data: {
-                id: "return_shipment",
-                shipped: true,
-              },
-              items: [
-                {
-                  item_id: IdMap.getId("existingLine"),
-                  content: {
-                    unit_price: 123,
-                    variant: {
-                      _id: IdMap.getId("can-cover"),
-                    },
-                    product: {
-                      _id: IdMap.getId("validId"),
-                    },
-                    quantity: 1,
-                  },
-                  is_requested: true,
-                  quantity: 10,
-                },
-              ],
-              refund_amount: 1228,
-            },
-          },
-        }
-      )
-    })
-
-    it("sets correct shipping method", async () => {
-      const items = [
-        {
-          item_id: IdMap.getId("existingLine"),
-          quantity: 10,
-        },
-      ]
-      await orderService.requestReturn(IdMap.getId("processed-order"), items)
-
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(
-        OrderModelMock.updateOne.mock.calls[0][1].$push.returns.refund_amount
-      ).toEqual(1230)
-    })
-
-    it("throws if payment is already processed", async () => {
-      await expect(
-        orderService.requestReturn(IdMap.getId("fulfilled-order"), [])
-      ).rejects.toThrow("Can't return an order with payment unprocessed")
-    })
-
-    it("throws if return is attempted on unfulfilled order", async () => {
-      await expect(
-        orderService.requestReturn(IdMap.getId("not-fulfilled-order"), [])
-      ).rejects.toThrow("Can't return an unfulfilled or already returned order")
+      expect(returnService.fulfill).toHaveBeenCalledWith("ret")
     })
   })
 
   describe("createShipment", () => {
-    const fulfillmentService = new FulfillmentService({
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      shippingProfileService: ShippingProfileServiceMock,
-      totalsService: TotalsServiceMock,
+    const partialOrder = {
+      items: [
+        {
+          id: "item_1",
+          quantity: 2,
+          fulfilled_quantity: 0,
+        },
+        {
+          id: "item_2",
+          quantity: 1,
+          fulfilled_quantity: 0,
+        },
+      ],
+    }
+
+    const order = {
+      items: [
+        {
+          id: "item_1",
+          quantity: 2,
+          fulfilled_quantity: 0,
+        },
+      ],
+    }
+
+    const orderRepo = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("partial"):
+            return Promise.resolve(partialOrder)
+          default:
+            return Promise.resolve(order)
+        }
+      },
     })
+
+    const lineItemService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const fulfillmentService = {
+      retrieve: () => Promise.resolve({ order_id: IdMap.getId("test") }),
+      createShipment: jest
+        .fn()
+        .mockImplementation((shipmentId, tracking, meta) => {
+          return Promise.resolve({
+            items: [
+              {
+                item_id: "item_1",
+                quantity: 2,
+              },
+            ],
+          })
+        }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
-      orderModel: OrderModelMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+      totalsService,
       fulfillmentService,
-      eventBusService: EventBusServiceMock,
+      lineItemService,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -1147,140 +1164,24 @@ describe("OrderService", () => {
 
     it("calls order model functions", async () => {
       await orderService.createShipment(
-        IdMap.getId("shippedOrder"),
+        IdMap.getId("test"),
         IdMap.getId("fulfillment"),
         ["1234", "2345"],
         {}
       )
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("shippedOrder"),
-          "fulfillments._id": IdMap.getId("fulfillment"),
-        },
-        {
-          $set: {
-            "fulfillments.$": {
-              _id: IdMap.getId("fulfillment"),
-              provider_id: "default_provider",
-              tracking_numbers: ["1234", "2345"],
-              data: {},
-              items: [
-                {
-                  _id: IdMap.getId("existingLine"),
-                  content: {
-                    product: {
-                      _id: IdMap.getId("validId"),
-                    },
-                    quantity: 1,
-                    unit_price: 123,
-                    variant: {
-                      _id: IdMap.getId("can-cover"),
-                    },
-                  },
-                  description: "This is a new line",
-                  fulfilled_quantity: 10,
-                  quantity: 10,
-                  thumbnail: "test-img-yeah.com/thumb",
-                  title: "merge line",
-                },
-              ],
-              shipped_at: expect.anything(),
-              metadata: {},
-            },
-            items: [
-              {
-                _id: IdMap.getId("existingLine"),
-                content: {
-                  product: {
-                    _id: IdMap.getId("validId"),
-                  },
-                  quantity: 1,
-                  unit_price: 123,
-                  variant: {
-                    _id: IdMap.getId("can-cover"),
-                  },
-                },
-                description: "This is a new line",
-                shipped: true,
-                fulfilled_quantity: 10,
-                shipped_quantity: 10,
-                quantity: 10,
-                thumbnail: "test-img-yeah.com/thumb",
-                title: "merge line",
-              },
-            ],
-            fulfillment_status: "shipped",
-          },
-        }
+      expect(fulfillmentService.createShipment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
+        IdMap.getId("fulfillment"),
+        ["1234", "2345"],
+        {}
       )
-    })
 
-    it("throws if order is unprocessed", async () => {
-      try {
-        await orderService.archive(IdMap.getId("test-order"))
-      } catch (error) {
-        expect(error.message).toEqual("Can't archive an unprocessed order")
-      }
-    })
-  })
-
-  describe("registerSwapCreated", () => {
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-    const orderModel = {
-      findOne: jest
-        .fn()
-        .mockReturnValue(Promise.resolve({ _id: IdMap.getId("order") })),
-      updateOne: jest.fn().mockReturnValue(Promise.resolve()),
-    }
-
-    it("adds a swap to an order", async () => {
-      const swapService = {
-        retrieve: jest
-          .fn()
-          .mockReturnValue(
-            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order") })
-          ),
-      }
-      const orderService = new OrderService({
-        swapService,
-        orderModel,
-        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        ...order,
+        fulfillment_status: "shipped",
       })
-
-      const res = orderService.registerSwapCreated(IdMap.getId("order"), "1235")
-      expect(res).resolves
-
-      await res
-      expect(orderModel.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("order"),
-        },
-        {
-          $addToSet: { swaps: "1235" },
-        }
-      )
-    })
-
-    it("fails if order/swap relationship is not satisfied", async () => {
-      const swapService = {
-        retrieve: jest
-          .fn()
-          .mockReturnValue(
-            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order_1") })
-          ),
-      }
-      const orderService = new OrderService({
-        swapService,
-        orderModel,
-        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
-      })
-
-      const res = orderService.registerSwapCreated(IdMap.getId("order"), "1235")
-      expect(res).rejects.toThrow("Swap must belong to the given order")
     })
   })
 
@@ -1288,25 +1189,30 @@ describe("OrderService", () => {
     beforeEach(async () => {
       jest.clearAllMocks()
     })
-    const orderModel = {
+    const orderRepo = MockRepository({
       findOne: jest
         .fn()
-        .mockReturnValue(Promise.resolve({ _id: IdMap.getId("order") })),
-      updateOne: jest.fn().mockReturnValue(Promise.resolve()),
-    }
+        .mockReturnValue(Promise.resolve({ id: IdMap.getId("order") })),
+    })
 
     it("fails if order/swap relationship not satisfied", async () => {
       const swapService = {
         retrieve: jest
           .fn()
           .mockReturnValue(
-            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order_1") })
+            Promise.resolve({ id: "1235", order_id: IdMap.getId("order_1") })
           ),
+        withTransaction: function() {
+          return this
+        },
       }
+
       const orderService = new OrderService({
+        manager: MockManager,
+        orderRepository: orderRepo,
+        totalsService,
         swapService,
-        orderModel,
-        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+        eventBusService,
       })
 
       const res = orderService.registerSwapReceived(
@@ -1320,15 +1226,20 @@ describe("OrderService", () => {
       const swapService = {
         retrieve: jest.fn().mockReturnValue(
           Promise.resolve({
-            _id: "1235",
+            id: "1235",
             order_id: IdMap.getId("order"),
-            return: { status: "requested" },
+            return_order: { status: "requested" },
           })
         ),
+        withTransaction: function() {
+          return this
+        },
       }
       const orderService = new OrderService({
+        manager: MockManager,
+        orderRepository: orderRepo,
         swapService,
-        orderModel,
+        totalsService,
         eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
       })
 
@@ -1340,102 +1251,138 @@ describe("OrderService", () => {
     })
 
     it("registers a swap as received", async () => {
-      const model = {
+      const orderRepo = MockRepository({
         findOne: jest.fn().mockReturnValue(
           Promise.resolve({
-            _id: IdMap.getId("order_123"),
+            id: IdMap.getId("order_123"),
             items: [
               {
-                _id: IdMap.getId("1234"),
+                id: IdMap.getId("1234"),
                 returned_quantity: 0,
                 quantity: 1,
               },
             ],
           })
         ),
-        updateOne: jest.fn().mockReturnValue(Promise.resolve()),
-      }
+      })
+
       const swapService = {
         retrieve: jest.fn().mockReturnValue(
           Promise.resolve({
-            _id: "1235",
+            id: "1235",
             order_id: IdMap.getId("order_123"),
-            return: { status: "received" },
-            return_items: [{ item_id: IdMap.getId("1234"), quantity: 1 }],
+            return_order: {
+              status: "received",
+              items: [{ item_id: IdMap.getId("1234"), quantity: 1 }],
+            },
           })
         ),
-      }
-      const orderService = new OrderService({
-        swapService,
-        orderModel: model,
-        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
-      })
-
-      await orderService.registerSwapReceived(IdMap.getId("order"), "1235")
-
-      expect(model.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("order_123"),
+        withTransaction: function() {
+          return this
         },
-        {
-          $set: {
-            items: [
-              {
-                _id: IdMap.getId("1234"),
-                returned_quantity: 1,
-                returned: true,
-                quantity: 1,
-              },
-            ],
-          },
-        }
-      )
-    })
-
-    it("fails if order/swap relationship is not satisfied", async () => {
-      const swapService = {
-        retrieve: jest
-          .fn()
-          .mockReturnValue(
-            Promise.resolve({ _id: "1235", order_id: IdMap.getId("order_1") })
-          ),
       }
+
+      const lineItemService = {
+        update: jest.fn(),
+        withTransaction: function() {
+          return this
+        },
+      }
+
       const orderService = new OrderService({
+        manager: MockManager,
+        orderRepository: orderRepo,
+        totalsService,
         swapService,
-        orderModel,
-        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
+        lineItemService,
+        eventBusService,
       })
 
-      const res = orderService.registerSwapCreated(IdMap.getId("order"), "1235")
-      expect(res).rejects.toThrow("Swap must belong to the given order")
+      await orderService.registerSwapReceived(IdMap.getId("order_123"), "1235")
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith(IdMap.getId("1234"), {
+        returned_quantity: 1,
+      })
     })
   })
 
-  describe("archive", () => {
-    const orderService = new OrderService({
-      orderModel: OrderModelMock,
-    })
-
+  describe("createRefund", () => {
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("calls order model functions", async () => {
-      await orderService.archive(IdMap.getId("processed-order"))
+    const orderRepo = MockRepository({
+      findOne: jest.fn().mockImplementation(q => {
+        if (q.where.id === IdMap.getId("cannot")) {
+          return Promise.resolve({
+            id: IdMap.getId("order"),
+            payments: [
+              {
+                id: "payment",
+              },
+            ],
+            total: 100,
+            refunded_total: 100,
+          })
+        }
 
-      expect(OrderModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(OrderModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("processed-order") },
-        { $set: { status: "archived" } }
+        return Promise.resolve({
+          id: IdMap.getId("order"),
+          payments: [
+            {
+              id: "payment",
+            },
+          ],
+          total: 100,
+          refunded_total: 0,
+        })
+      }),
+    })
+
+    const paymentProviderService = {
+      refundPayment: jest
+        .fn()
+        .mockImplementation(p => Promise.resolve({ id: "ref" })),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const orderService = new OrderService({
+      manager: MockManager,
+      orderRepository: orderRepo,
+      paymentProviderService,
+      totalsService,
+      eventBusService,
+    })
+
+    it("success", async () => {
+      await orderService.createRefund(
+        IdMap.getId("order_123"),
+        100,
+        "discount",
+        "note"
+      )
+
+      expect(paymentProviderService.refundPayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(
+        [{ id: "payment" }],
+        100,
+        "discount",
+        "note"
       )
     })
 
-    it("throws if order is unprocessed", async () => {
-      try {
-        await orderService.archive(IdMap.getId("test-order"))
-      } catch (error) {
-        expect(error.message).toEqual("Can't archive an unprocessed order")
-      }
+    it("fails when refund is off", async () => {
+      await expect(
+        orderService.createRefund(
+          IdMap.getId("cannot"),
+          100,
+          "discount",
+          "note"
+        )
+      ).rejects.toThrow("Cannot refund more than the original order amount")
     })
   })
 })

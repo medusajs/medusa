@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "./"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -18,8 +19,14 @@ export default async (req, res) => {
 
   try {
     const regionService = req.scope.resolve("regionService")
-    const data = await regionService.create(value)
-    res.status(200).json({ region: data })
+    const result = await regionService.create(value)
+
+    const region = await regionService.retrieve(result.id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
+
+    res.status(200).json({ region })
   } catch (err) {
     throw err
   }

@@ -24,6 +24,11 @@ export default (app, container) => {
 
   route.post("/:id", middlewares.wrap(require("./update-cart").default))
 
+  route.post(
+    "/:id/complete-cart",
+    middlewares.wrap(require("./complete-cart").default)
+  )
+
   // Line items
   route.post(
     "/:id/line-items",
@@ -49,10 +54,26 @@ export default (app, container) => {
     middlewares.wrap(require("./create-payment-sessions").default)
   )
 
+  route.post(
+    "/:id/payment-session/update",
+    middlewares.wrap(require("./update-payment-session").default)
+  )
+
   route.delete(
     "/:id/payment-sessions/:provider_id",
     middlewares.wrap(require("./delete-payment-session").default)
   )
+
+  route.post(
+    "/:id/payment-sessions/:provider_id/refresh",
+    middlewares.wrap(require("./refresh-payment-session").default)
+  )
+
+  route.post(
+    "/:id/payment-session",
+    middlewares.wrap(require("./set-payment-session").default)
+  )
+
   route.post(
     "/:id/payment-method",
     middlewares.wrap(require("./update-payment-method").default)
@@ -66,3 +87,27 @@ export default (app, container) => {
 
   return app
 }
+
+export const defaultFields = [
+  "subtotal",
+  "tax_total",
+  "shipping_total",
+  "discount_total",
+  "gift_card_total",
+  "total",
+]
+
+export const defaultRelations = [
+  "gift_cards",
+  "region",
+  "items",
+  "payment",
+  "shipping_address",
+  "billing_address",
+  "region.countries",
+  "region.payment_providers",
+  "shipping_methods",
+  "payment_sessions",
+  "shipping_methods.shipping_option",
+  "discounts",
+]

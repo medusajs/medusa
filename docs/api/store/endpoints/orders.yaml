@@ -7,12 +7,12 @@ routes:
     path: /orders/:id
 route: /orders
 description: >
-  An order represents a selection of items purchased and holds information about
+  An Order represents a selection of items purchased and holds information about
   how the items have been purchased and will be fulfilled.
 endpoints:
   - path: /:id
     method: GET
-    title: Retrieve an order
+    title: Retrieve an Order
     params:
       - name: id
         type: String
@@ -34,104 +34,104 @@ response: |
   {
     "order": {
       "id": "order_fi13oadpo2r3vc2g4592",
-        "status": "pending",
-        "fulfillment_status": "shipped",
-        "payment_status": "captured",
-        "email": "iron@man.com",
-        "billing_address": {
-            "id": "addr_WgNn0BSfIu",
-            "customer_id": "cus_4eThzYSuGv",
-            "company": "Stark Industries",
-            "first_name": "Tony",
-            "last_name": "Stark",
-            "address_1": "Hollywood Boulevard 1",
-            "address_2": null,
-            "city": "Los Angeles",
-            "country_code": "US",
-            "province": "CA",
-            "postal_code": "90046",
-            "phone": null,
-            "created_at": "2020-12-11T17:03:54.458Z",
-            "updated_at": "2020-12-11T17:03:54.458Z",
-            "deleted_at": null,
-            "metadata": null
-        },
-        "shipping_address": {
-            "id": "addr_WgNn0BSfIu",
-            "customer_id": "cus_4eThzYSuGv",
-            "company": "Stark Industries",
-            "first_name": "Tony",
-            "last_name": "Stark",
-            "address_1": "Hollywood Boulevard 1",
-            "address_2": null,
-            "city": "Los Angeles",
-            "country_code": "US",
-            "province": "CA",
-            "postal_code": "90046",
-            "phone": null,
-            "created_at": "2020-12-11T17:03:54.458Z",
-            "updated_at": "2020-12-11T17:03:54.458Z",
-            "deleted_at": null,
-            "metadata": null
-        },
-        "items": [
-            {
-                "id": "item_fn2uaQH95vG9ZMnhj2aU03xg",
-                "cart_id": null,
-                "order_id": "order_s9RojwCU2AM8RztcldM2Uof7",
-                "swap_id": null,
-                "title": "Ironman suit",
-                "description": "Awesome Ironman suit",
-                "thumbnail": null,
-                "is_giftcard": false,
-                "should_merge": false,
-                "allow_discounts": true,
-                "unit_price": 119600,
-                "variant_id": "variant_rdEH6PykBuH57giw",
-                "quantity": 1,
-                "fulfilled_quantity": 1,
-                "returned_quantity": 0,
-                "shipped_quantity": 0,
-                "created_at": "2020-12-11T17:03:54.458Z",
-                "updated_at": "2020-12-11T17:03:54.458Z",
-                "metadata": null
-            }
-        ],
-        "discounts": [
-            {
-                "id": "disc_OpYQN4H8MOWHN2en",
-                "code": "CCC3C4LL88",
-                "is_dynamic": true,
-                "discount_rule_id": "dru_MDyr3lJLa00uxOsY",
-                "parent_discount_id": "disc_ubtdlkASI7bfUj81",
-                "metadata": null
-            }
-        ],
-        "customer_id": "cus_4eThzYSuGv",
-        "shipping_methods": [
-            {
-                "id": "sm_77bEapbO8tkCqw3yo1NBuCUl",
-                "shipping_option_id": "so_nRvwHhEdZw",
-                "order_id": "order_s9RojwCU2AM8RztcldM2Uof7",
-                "cart_id": null,
-                "swap_id": null,
-                "return_id": null,
-                "price": 0,
-                "data": {
-                    "id": "Parcel shop",
-                    "city": "Los Angeles",
-                    "postal": "90046"
-                }
-            }
-        ],
-        "metadata": null,
-        "display_id": 50433,
-        "currency_code": "dkk",
-        "region_id": "reg_HMnixPlOicAs7aBlXuchAGxd",
-        "shipping_total": 0,
-        "discount_total": 0,
-        "tax_total": 3850000,
-        "subtotal": 154000,
-        "total": 4004000
+      "status": "pending",
+      "fulfillment_status": "shipped",
+      "payment_status": "captured",
+      "email": "iron@man.com",
+      "billing_address": {
+          "id": "addr_WgNn0BSfIu",
+          "customer_id": "cus_4eThzYSuGv",
+          "company": "Stark Industries",
+          "first_name": "Tony",
+          "last_name": "Stark",
+          "address_1": "Hollywood Boulevard 1",
+          "address_2": null,
+          "city": "Los Angeles",
+          "country_code": "US",
+          "province": "CA",
+          "postal_code": "90046",
+          "phone": null,
+          "created_at": "2020-12-11T17:03:54.458Z",
+          "updated_at": "2020-12-11T17:03:54.458Z",
+          "deleted_at": null,
+          "metadata": null
+      },
+      "shipping_address": {
+          "id": "addr_WgNn0BSfIu",
+          "customer_id": "cus_4eThzYSuGv",
+          "company": "Stark Industries",
+          "first_name": "Tony",
+          "last_name": "Stark",
+          "address_1": "Hollywood Boulevard 1",
+          "address_2": null,
+          "city": "Los Angeles",
+          "country_code": "US",
+          "province": "CA",
+          "postal_code": "90046",
+          "phone": null,
+          "created_at": "2020-12-11T17:03:54.458Z",
+          "updated_at": "2020-12-11T17:03:54.458Z",
+          "deleted_at": null,
+          "metadata": null
+      },
+      "items": [
+          {
+              "id": "item_fn2uaQH95vG9ZMnhj2aU03xg",
+              "cart_id": null,
+              "order_id": "order_s9RojwCU2AM8RztcldM2Uof7",
+              "swap_id": null,
+              "title": "Ironman suit",
+              "description": "Awesome Ironman suit",
+              "thumbnail": null,
+              "is_giftcard": false,
+              "should_merge": false,
+              "allow_discounts": true,
+              "unit_price": 119600,
+              "variant_id": "variant_rdEH6PykBuH57giw",
+              "quantity": 1,
+              "fulfilled_quantity": 1,
+              "returned_quantity": 0,
+              "shipped_quantity": 0,
+              "created_at": "2020-12-11T17:03:54.458Z",
+              "updated_at": "2020-12-11T17:03:54.458Z",
+              "metadata": null
+          }
+      ],
+      "discounts": [
+          {
+              "id": "disc_OpYQN4H8MOWHN2en",
+              "code": "CCC3C4LL88",
+              "is_dynamic": true,
+              "discount_rule_id": "dru_MDyr3lJLa00uxOsY",
+              "parent_discount_id": "disc_ubtdlkASI7bfUj81",
+              "metadata": null
+          }
+      ],
+      "customer_id": "cus_4eThzYSuGv",
+      "shipping_methods": [
+          {
+              "id": "sm_77bEapbO8tkCqw3yo1NBuCUl",
+              "shipping_option_id": "so_nRvwHhEdZw",
+              "order_id": "order_s9RojwCU2AM8RztcldM2Uof7",
+              "cart_id": null,
+              "swap_id": null,
+              "return_id": null,
+              "price": 0,
+              "data": {
+                  "id": "Parcel shop",
+                  "city": "Los Angeles",
+                  "postal": "90046"
+              }
+          }
+      ],
+      "metadata": null,
+      "display_id": 50433,
+      "currency_code": "dkk",
+      "region_id": "reg_HMnixPlOicAs7aBlXuchAGxd",
+      "shipping_total": 0,
+      "discount_total": 0,
+      "tax_total": 3850000,
+      "subtotal": 154000,
+      "total": 4004000
     }
   }

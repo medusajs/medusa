@@ -11,34 +11,46 @@ import { BaseService } from "medusa-interfaces"
 class CustomerService extends BaseService {
   static Events = {
     PASSWORD_RESET: "customer.password_reset",
+    CREATED: "customer.created",
+    UPDATED: "customer.updated",
   }
 
-  constructor({ customerModel, eventBusService }) {
+  constructor({
+    manager,
+    customerRepository,
+    eventBusService,
+    addressRepository,
+  }) {
     super()
 
-    /** @private @const {CustomerModel} */
-    this.customerModel_ = customerModel
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {CustomerRepository} */
+    this.customerRepository_ = customerRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {AddressRepository} */
+    this.addressRepository_ = addressRepository
   }
 
-  /**
-   * Used to validate customer ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw customer id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The customerId could not be casted to an ObjectId"
-      )
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
     }
 
-    return value
+    const cloned = new CustomerService({
+      manager: transactionManager,
+      customerRepository: this.customerRepository_,
+      eventBusService: this.eventBus_,
+      addressRepository: this.addressRepository_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -58,7 +70,7 @@ class CustomerService extends BaseService {
       )
     }
 
-    return value
+    return value.toLowerCase()
   }
 
   validateBillingAddress_(address) {
@@ -94,7 +106,7 @@ class CustomerService extends BaseService {
 
     const secret = customer.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
-    const payload = { customer_id: customer._id, exp: expiry }
+    const payload = { customer_id: customer.id, exp: expiry }
     const token = jwt.sign(payload, secret)
     // Notify subscribers
     this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
@@ -110,8 +122,13 @@ class CustomerService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, offset, limit) {
-    return this.customerModel_.find(selector, {}, offset, limit)
+  async list(selector = {}, config = { relations: [], skip: 0, take: 50 }) {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return customerRepo.find(query)
   }
 
   /**
@@ -119,7 +136,10 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the count operation
    */
   count() {
-    return this.customerModel_.count()
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerRepository_
+    )
+    return customerRepo.count({})
   }
 
   /**
@@ -127,13 +147,14 @@ class CustomerService extends BaseService {
    * @param {string} customerId - the id of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieve(customerId) {
+  async retrieve(customerId, config = {}) {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerRepository_
+    )
     const validatedId = this.validateId_(customerId)
-    const customer = await this.customerModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const customer = await customerRepo.findOne(query)
 
     if (!customer) {
       throw new MedusaError(
@@ -141,6 +162,7 @@ class CustomerService extends BaseService {
         `Customer with ${customerId} was not found`
       )
     }
+
     return customer
   }
 
@@ -149,11 +171,13 @@ class CustomerService extends BaseService {
    * @param {string} email - the email of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByEmail(email) {
-    this.validateEmail_(email)
-    const customer = await this.customerModel_.findOne({ email }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+  async retrieveByEmail(email, config = {}) {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerRepository_
+    )
+
+    const query = this.buildQuery_({ email: email.toLowerCase() }, config)
+    const customer = await customerRepo.findOne(query)
 
     if (!customer) {
       throw new MedusaError(
@@ -170,10 +194,13 @@ class CustomerService extends BaseService {
    * @param {string} phone - the phone of the customer to get.
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByPhone(phone) {
-    const customer = await this.customerModel_.findOne({ phone }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+  async retrieveByPhone(phone, config = {}) {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerRepository_
+    )
+
+    const query = this.buildQuery_({ phone }, config)
+    const customer = await customerRepo.findOne(query)
 
     if (!customer) {
       throw new MedusaError(
@@ -204,138 +231,168 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of create
    */
   async create(customer) {
-    const { email, billing_address, password } = customer
-    this.validateEmail_(email)
-
-    if (billing_address) {
-      this.validateBillingAddress_(billing_address)
-    }
-
-    const existing = await this.retrieveByEmail(email).catch(err => undefined)
-
-    if (existing && password && !existing.has_account) {
-      const hashedPassword = await this.hashPassword_(password)
-      customer.password_hash = hashedPassword
-      customer.has_account = true
-      delete customer.password
-
-      return this.customerModel_.updateOne(
-        { _id: existing._id },
-        {
-          $set: customer,
-        }
+    return this.atomicPhase_(async manager => {
+      const customerRepository = manager.getCustomRepository(
+        this.customerRepository_
       )
-    } else {
-      if (password) {
+
+      const { email, billing_address, password } = customer
+      customer.email = this.validateEmail_(email)
+
+      if (billing_address) {
+        customer.billing_address = this.validateBillingAddress_(billing_address)
+      }
+
+      const existing = await this.retrieveByEmail(email).catch(err => undefined)
+
+      if (existing && password && !existing.has_account) {
         const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
         customer.has_account = true
         delete customer.password
-      }
 
-      return this.customerModel_.create(customer).catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-    }
+        const toUpdate = { ...existing, ...customer }
+        const updated = await customerRepository.save(toUpdate)
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(CustomerService.Events.UPDATED, updated)
+        return updated
+      } else {
+        if (password) {
+          const hashedPassword = await this.hashPassword_(password)
+          customer.password_hash = hashedPassword
+          customer.has_account = true
+          delete customer.password
+        }
+
+        const created = await customerRepository.create(customer)
+        const result = await customerRepository.save(created)
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(CustomerService.Events.CREATED, result)
+        return result
+      }
+    })
   }
 
   /**
-   * Updates a customer. Metadata updates and address updates should
-   * use dedicated methods, e.g. `setMetadata`, etc. The function
-   * will throw errors if metadata updates and address updates are attempted.
+   * Updates a customer.
    * @param {string} variantId - the id of the variant. Must be a string that
    *   can be casted to an ObjectId
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
   async update(customerId, update) {
-    const customer = await this.retrieve(customerId)
-
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
+    return this.atomicPhase_(async manager => {
+      const customerRepository = manager.getCustomRepository(
+        this.customerRepository_
       )
-    }
 
-    if (update.email) {
-      this.validateEmail_(update.email)
-    }
+      const customer = await this.retrieve(customerId)
 
-    if (update.billing_address) {
-      this.validateBillingAddress_(update.billing_address)
-    }
+      const {
+        email,
+        password_hash,
+        billing_address,
+        metadata,
+        ...rest
+      } = update
 
-    if (update.password) {
-      const hashedPassword = await this.hashPassword_(update.password)
-      update.password_hash = hashedPassword
-      update.has_account = true
-      delete update.password
-    }
+      if (metadata) {
+        customer.metadata = this.setMetadata_(customer, metadata)
+      }
 
-    return this.customerModel_
-      .updateOne(
-        { _id: customer._id },
-        { $set: update },
-        { runValidators: true }
-      )
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
+      if (email) {
+        customer.email = this.validateEmail_(email)
+      }
 
-  async addOrder(customerId, orderId) {
-    const customer = await this.retrieve(customerId)
-    return this.customerModel_.updateOne(
-      { _id: customer._id },
-      { $addToSet: { orders: orderId } }
-    )
-  }
+      if (billing_address) {
+        customer.billing_address = this.validateBillingAddress_(billing_address)
+      }
 
-  async addAddress(customerId, address) {
-    const customer = await this.retrieve(customerId)
-    this.validateBillingAddress_(address)
+      for (const [key, value] of Object.entries(rest)) {
+        customer[key] = value
+      }
 
-    let shouldAdd = !customer.shipping_addresses.find(
-      a =>
-        a.country_code === address.country_code &&
-        a.address_1 === address.address_1 &&
-        a.address_2 === address.address_2 &&
-        a.city === address.city &&
-        a.phone === address.phone &&
-        a.postal_code === address.postal_code &&
-        a.province === address.province &&
-        a.first_name === address.first_name &&
-        a.last_name === address.last_name
-    )
-
-    if (shouldAdd) {
-      return this.customerModel_.updateOne(
-        { _id: customer._id },
-        { $addToSet: { shipping_addresses: address } }
-      )
-    } else {
-      return customer
-    }
+      const updated = await customerRepository.save(customer)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CustomerService.Events.UPDATED, updated)
+      return updated
+    })
   }
 
   async updateAddress(customerId, addressId, address) {
-    const customer = await this.retrieve(customerId)
-    this.validateBillingAddress_(address)
+    return this.atomicPhase_(async manager => {
+      const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
-    return this.customerModel_.updateOne(
-      { _id: customer._id, "shipping_addresses._id": addressId },
-      { $set: { "shipping_addresses.$": address } }
-    )
+      const toUpdate = await addressRepo.findOne({
+        where: { id: addressId, customer_id: customerId },
+      })
+
+      this.validateBillingAddress_(address)
+
+      for (const [key, value] of Object.entries(address)) {
+        toUpdate[key] = value
+      }
+
+      const result = addressRepo.save(toUpdate)
+      return result
+    })
   }
 
   async removeAddress(customerId, addressId) {
-    const customer = await this.retrieve(customerId)
+    return this.atomicPhase_(async manager => {
+      const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
-    return this.customerModel_.updateOne(
-      { _id: customer._id },
-      { $pull: { shipping_addresses: { _id: addressId } } }
-    )
+      // Should not fail, if user does not exist, since delete is idempotent
+      const address = await addressRepo.findOne({
+        where: { id: addressId, customer_id: customerId },
+      })
+
+      if (!address) return Promise.resolve()
+
+      await addressRepo.softRemove(address)
+
+      return Promise.resolve()
+    })
+  }
+
+  async addAddress(customerId, address) {
+    return this.atomicPhase_(async manager => {
+      const addressRepository = manager.getCustomRepository(
+        this.addressRepository_
+      )
+
+      const customer = await this.retrieve(customerId, {
+        relations: ["shipping_addresses"],
+      })
+      this.validateBillingAddress_(address)
+
+      let shouldAdd = !customer.shipping_addresses.find(
+        a =>
+          a.country_code === address.country_code &&
+          a.address_1 === address.address_1 &&
+          a.address_2 === address.address_2 &&
+          a.city === address.city &&
+          a.phone === address.phone &&
+          a.postal_code === address.postal_code &&
+          a.province === address.province &&
+          a.first_name === address.first_name &&
+          a.last_name === address.last_name
+      )
+
+      if (shouldAdd) {
+        const created = await addressRepository.create({
+          customer_id: customerId,
+          ...address,
+        })
+        const result = await addressRepository.save(created)
+        return result
+      } else {
+        return customer
+      }
+    })
   }
 
   /**
@@ -345,16 +402,17 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(customerId) {
-    let customer
-    try {
-      customer = await this.retrieve(customerId)
-    } catch (error) {
-      // Delete is idempotent, but we return a promise to allow then-chaining
-      return Promise.resolve()
-    }
+    return this.atomicPhase_(async manager => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-    return this.customerModel_.deleteOne({ _id: customer._id }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      // Should not fail, if user does not exist, since delete is idempotent
+      const customer = await customerRepo.findOne({ where: { id: customerId } })
+
+      if (!customer) return Promise.resolve()
+
+      await customerRepo.softRemove(customer)
+
+      return Promise.resolve()
     })
   }
 
@@ -371,57 +429,6 @@ class CustomerService extends BaseService {
 
     const final = await this.runDecorators_(decorated)
     return final
-  }
-
-  /**
-   * Dedicated method to set metadata for a customer.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} customerId - the customer to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  async setMetadata(customerId, key, value) {
-    const validatedId = this.validateId_(customerId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.customerModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a customer.
-   * @param {string} customerId - the customer to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(customerId, key) {
-    const validatedId = this.validateId_(customerId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.customerModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

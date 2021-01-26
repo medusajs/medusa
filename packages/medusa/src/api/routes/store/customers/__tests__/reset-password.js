@@ -4,7 +4,7 @@ import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
 describe("POST /store/customers/password-reset", () => {
-  describe("successfully creates a customer", () => {
+  describe("successfully udates customer password", () => {
     let subject
     beforeAll(async () => {
       subject = await request("POST", `/store/customers/password-reset`, {
@@ -20,7 +20,7 @@ describe("POST /store/customers/password-reset", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CustomerService create", () => {
+    it("calls CustomerService update", () => {
       expect(CustomerServiceMock.update).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
@@ -30,9 +30,15 @@ describe("POST /store/customers/password-reset", () => {
       )
     })
 
-    it("returns customer decorated", () => {
+    it("calls CustomerService retrieve", () => {
+      expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("lebron")
+      )
+    })
+
+    it("returns customer ", () => {
       expect(subject.body.customer.email).toEqual("lebron@james.com")
-      expect(subject.body.customer.decorated).toEqual(true)
     })
   })
 

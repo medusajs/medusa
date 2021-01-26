@@ -1,6 +1,39 @@
 import BaseService from "../base-service"
+import { In, Not } from "typeorm"
 
 describe("BaseService", () => {
+  describe("buildQuery_", () => {
+    const baseService = new BaseService()
+
+    it("successfully creates query", () => {
+      const q = baseService.buildQuery_(
+        {
+          id: "1234",
+          test1: ["123", "12", "1"],
+          test2: Not("this"),
+          rec: {
+            first: ["1", "2", "3"],
+          },
+        },
+        {
+          relations: ["1234"],
+        }
+      )
+
+      expect(q).toEqual({
+        where: {
+          id: "1234",
+          test1: In(["123", "12", "1"]),
+          test2: Not("this"),
+          rec: {
+            first: In(["1", "2", "3"]),
+          },
+        },
+        relations: ["1234"],
+      })
+    })
+  })
+
   describe("addDecorator", () => {
     const baseService = new BaseService()
 
