@@ -689,12 +689,13 @@ class CartService extends BaseService {
     }
 
     let customer = await this.customerService_
+      .withTransaction(this.transactionManager_)
       .retrieveByEmail(value)
       .catch(() => undefined)
 
     if (!customer) {
       customer = await this.customerService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.transactionManager_)
         .create({ email })
     }
 
@@ -1112,7 +1113,7 @@ class CartService extends BaseService {
           }
         }
       }
-    }, "SERIALIZABLE")
+    })
   }
 
   /**
