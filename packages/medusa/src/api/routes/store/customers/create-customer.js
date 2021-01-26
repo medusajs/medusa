@@ -26,10 +26,9 @@ export default async (req, res) => {
       expiresIn: "30d",
     })
 
-    customer = await customerService.retrieve(customer.id, [
-      "orders",
-      "shipping_addresses",
-    ])
+    customer = await customerService.retrieve(customer.id, {
+      relations: ["orders", "shipping_addresses"],
+    })
 
     res.status(200).json({ customer })
   } catch (err) {
