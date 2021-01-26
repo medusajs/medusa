@@ -1,13 +1,55 @@
 class OrderSubscriber {
-  constructor({ segmentService, eventBusService }) {
+  constructor({
+    segmentService,
+    eventBusService,
+    orderService,
+    returnService,
+  }) {
+    this.orderService_ = orderService
+
+    this.returnService_ = returnService
+
     eventBusService.subscribe(
       "order.items_returned",
-      async ({ order, return: ret }) => {
+      async ({ id, return_id }) => {
+        const order = await this.orderService_.retrieve(id, {
+          select: [
+            "shipping_total",
+            "discount_total",
+            "tax_total",
+            "refunded_total",
+            "gift_card_total",
+            "subtotal",
+            "total",
+          ],
+          relations: [
+            "customer",
+            "billing_address",
+            "shipping_address",
+            "discounts",
+            "shipping_methods",
+            "payments",
+            "fulfillments",
+            "returns",
+            "gift_cards",
+            "gift_card_transactions",
+            "swaps",
+            "swaps.return_order",
+            "swaps.payment",
+            "swaps.shipping_methods",
+            "swaps.shipping_address",
+            "swaps.additional_items",
+            "swaps.fulfillments",
+          ],
+        })
+
+        const ret = await this.returnService_.retrieve(return_id)
+
         const shipping = []
         if (ret.shipping_method && ret.shipping_method.price) {
           shipping.push({
             ...ret.shipping_method,
-            price: -1 * ret.shipping_method.price,
+            price: -1 * (ret.shipping_method.price / 100),
           })
         }
 
@@ -15,7 +57,7 @@ class OrderSubscriber {
           ...order,
           shipping_methods: shipping,
           items: ret.items.map((i) =>
-            order.items.find((l) => l._id === i.item_id)
+            order.items.find((l) => l.id === i.item_id)
           ),
         }
 
@@ -31,7 +73,19 @@ class OrderSubscriber {
       }
     )
 
-    eventBusService.subscribe("order.canceled", async (order) => {
+    eventBusService.subscribe("order.canceled", async ({ id }) => {
+      const order = await this.orderService_.retrieve(id, {
+        select: [
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "gift_card_total",
+          "subtotal",
+          "total",
+        ],
+      })
+
       const date = new Date()
       const orderData = await segmentService.buildOrder(order)
       const orderEvent = {
@@ -44,7 +98,38 @@ class OrderSubscriber {
       segmentService.track(orderEvent)
     })
 
-    eventBusService.subscribe("order.placed", async (order) => {
+    eventBusService.subscribe("order.placed", async ({ id }) => {
+      const order = await this.orderService_.retrieve(id, {
+        select: [
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "gift_card_total",
+          "subtotal",
+          "total",
+        ],
+        relations: [
+          "customer",
+          "billing_address",
+          "shipping_address",
+          "discounts",
+          "shipping_methods",
+          "payments",
+          "fulfillments",
+          "returns",
+          "gift_cards",
+          "gift_card_transactions",
+          "swaps",
+          "swaps.return_order",
+          "swaps.payment",
+          "swaps.shipping_methods",
+          "swaps.shipping_address",
+          "swaps.additional_items",
+          "swaps.fulfillments",
+        ],
+      })
+
       const date = new Date(parseInt(order.created))
       const orderData = await segmentService.buildOrder(order)
       const orderEvent = {

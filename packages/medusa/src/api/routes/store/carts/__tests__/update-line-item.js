@@ -25,63 +25,22 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService create", () => {
+    it("calls cartService.updateLineItem", () => {
       expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
-    })
-
-    it("calls LineItemService generate", () => {
-      expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("eur-10-us-12"),
-        IdMap.getId("region-france"),
-        3,
-        {}
-      )
-    })
-
-    it("returns 200", () => {
-      expect(subject.status).toEqual(200)
-    })
-
-    it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.cart.decorated).toEqual(true)
-    })
-  })
-
-  describe("successfully updates a line item with metadata", () => {
-    let subject
-
-    beforeAll(async () => {
-      const cartId = IdMap.getId("cartLineItemMetadata")
-      const lineId = IdMap.getId("lineWithMetadata")
-      subject = await request(
-        "POST",
-        `/store/carts/${cartId}/line-items/${lineId}`,
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
+        IdMap.getId("fr-cart"),
+        IdMap.getId("existingLine"),
         {
-          payload: {
-            quantity: 3,
-          },
+          variant_id: IdMap.getId("eur-10-us-12"),
+          region_id: IdMap.getId("region-france"),
+          quantity: 3,
+          metadata: {},
         }
       )
     })
 
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls CartService create", () => {
-      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
-    })
-
-    it("calls LineItemService generate", () => {
-      expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("eur-10-us-12"),
-        IdMap.getId("region-france"),
-        3,
-        { status: "confirmed" }
-      )
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(3)
     })
 
     it("returns 200", () => {
@@ -89,8 +48,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("cartLineItemMetadata"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
     })
   })
 
@@ -128,8 +86,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
     })
   })
 })

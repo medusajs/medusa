@@ -1,47 +1,53 @@
-import mongoose from "mongoose"
-import jwt from "jsonwebtoken"
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import UserService from "../user"
-import { UserModelMock, users } from "../../models/__mocks__/user"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
+
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function() {
+    return this
+  },
+}
 
 describe("UserService", () => {
   describe("retrieve", () => {
-    let result
+    const userRepository = MockRepository({
+      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+    })
+    const userService = new UserService({
+      manager: MockManager,
+      userRepository,
+    })
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       jest.clearAllMocks()
-      const userService = new UserService({
-        userModel: UserModelMock,
-      })
-      result = await userService.retrieve(IdMap.getId("test-user"))
     })
 
-    it("calls user model functions", () => {
-      expect(UserModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(UserModelMock.findOne).toHaveBeenCalledWith({
-        _id: IdMap.getId("test-user"),
-      })
-    })
+    it("successfully retrieves a user", async () => {
+      const result = await userService.retrieve(IdMap.getId("ironman"))
 
-    it("returns the user", () => {
-      expect(result).toEqual(users.testUser)
+      expect(userRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(userRepository.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("ironman") },
+      })
+
+      expect(result.id).toEqual(IdMap.getId("ironman"))
     })
   })
 
   describe("create", () => {
-    let result
+    const userRepository = MockRepository({})
 
     const userService = new UserService({
-      userModel: UserModelMock,
+      manager: MockManager,
+      userRepository,
     })
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("calls user model functions", async () => {
-      result = await userService.create(
+    it("successfully create a user", async () => {
+      await userService.create(
         {
           email: "oliver@test.dk",
           name: "Oliver",
@@ -49,8 +55,9 @@ describe("UserService", () => {
         },
         "password"
       )
-      expect(UserModelMock.create).toHaveBeenCalledTimes(1)
-      expect(UserModelMock.create).toHaveBeenCalledWith({
+
+      expect(userRepository.create).toHaveBeenCalledTimes(1)
+      expect(userRepository.create).toHaveBeenCalledWith({
         email: "oliver@test.dk",
         name: "Oliver",
         password_hash: expect.stringMatching(/.{128}$/),
@@ -59,99 +66,90 @@ describe("UserService", () => {
   })
 
   describe("update", () => {
+    const userRepository = MockRepository({
+      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+    })
     const userService = new UserService({
-      userModel: UserModelMock,
+      manager: MockManager,
+      userRepository,
     })
 
-    beforeEach(() => {
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("calls updateOne with correct params", async () => {
-      await userService.update(IdMap.getId("test-user"), {
-        name: "new name",
+    it("successfully updates user", async () => {
+      await userService.update(IdMap.getId("ironman"), {
+        first_name: "Tony",
+        last_name: "Stark",
       })
 
-      expect(UserModelMock.updateOne).toBeCalledTimes(1)
-      expect(UserModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("test-user") },
-        { $set: { name: "new name" } },
-        { runValidators: true }
-      )
-    })
-  })
-
-  describe("setMetadata", () => {
-    const userService = new UserService({
-      userModel: UserModelMock,
+      expect(userRepository.save).toBeCalledTimes(1)
+      expect(userRepository.save).toBeCalledWith({
+        id: IdMap.getId("ironman"),
+        first_name: "Tony",
+        last_name: "Stark",
+      })
     })
 
-    beforeEach(() => {
-      jest.clearAllMocks()
+    it("successfully updates user metadata", async () => {
+      await userService.update(IdMap.getId("ironman"), {
+        metadata: {
+          company: "Stark Industries",
+        },
+      })
+
+      expect(userRepository.save).toBeCalledTimes(1)
+      expect(userRepository.save).toBeCalledWith({
+        id: IdMap.getId("ironman"),
+        metadata: {
+          company: "Stark Industries",
+        },
+      })
     })
 
-    it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
-      await userService.setMetadata(`${id}`, "metadata", "testMetadata")
-
-      expect(UserModelMock.updateOne).toBeCalledTimes(1)
-      expect(UserModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { "metadata.metadata": "testMetadata" } }
-      )
-    })
-
-    it("throw error on invalid key type", async () => {
-      const id = mongoose.Types.ObjectId()
-
+    it("fails on email update", async () => {
       try {
-        await userService.setMetadata(`${id}`, 1234, "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Key type is invalid. Metadata keys must be strings"
+        await userService.update(IdMap.getId("ironman"), {
+          email: "tony@stark.com",
+        })
+      } catch (error) {
+        expect(error.message).toBe("You are not allowed to update email")
+      }
+    })
+
+    it("fails on password update", async () => {
+      try {
+        await userService.update(IdMap.getId("ironman"), {
+          password_hash: "lol",
+        })
+      } catch (error) {
+        expect(error.message).toBe(
+          "Use dedicated methods, `setPassword`, `generateResetPasswordToken` for password operations"
         )
       }
     })
   })
 
-  describe("setPassword", () => {
-    const userService = new UserService({
-      userModel: UserModelMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls updateOne with correct params", async () => {
-      await userService.setPassword(IdMap.getId("test-user"), "123456789")
-      expect(UserModelMock.updateOne).toBeCalledTimes(1)
-      expect(UserModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("test-user") },
-        {
-          $set: {
-            // Since bcrypt hashing always varies, we are testing the password
-            // match by using a regular expression.
-            password_hash: expect.stringMatching(/^.{128}$/),
-          },
-        }
-      )
-    })
-  })
-
   describe("generateResetPasswordToken", () => {
-    const userService = new UserService({
-      eventBusService: EventBusServiceMock,
-      userModel: UserModelMock,
+    const userRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({ id: IdMap.getId("ironman"), password_hash: "lol" }),
     })
 
-    beforeEach(() => {
+    const userService = new UserService({
+      manager: MockManager,
+      userRepository,
+      eventBusService,
+    })
+
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
     it("generates a token successfully", async () => {
       const token = await userService.generateResetPasswordToken(
-        IdMap.getId("test-user")
+        IdMap.getId("ironman")
       )
 
       expect(token).toMatch(

@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
+import { Brackets, Raw, IsNull } from "typeorm"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 /**
@@ -13,35 +14,55 @@ class ProductVariantService extends BaseService {
   }
 
   /** @param { productVariantModel: (ProductVariantModel) } */
-  constructor({ productVariantModel, eventBusService, regionService }) {
+  constructor({
+    manager,
+    productVariantRepository,
+    productRepository,
+    eventBusService,
+    regionService,
+    moneyAmountRepository,
+    productOptionValueRepository,
+  }) {
     super()
 
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
     /** @private @const {ProductVariantModel} */
-    this.productVariantModel_ = productVariantModel
+    this.productVariantRepository_ = productVariantRepository
+
+    /** @private @const {ProductModel} */
+    this.productRepository_ = productRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+
+    this.moneyAmountRepository_ = moneyAmountRepository
+
+    this.productOptionValueRepository_ = productOptionValueRepository
   }
 
-  /**
-   * Used to validate product ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw product id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The variantId could not be casted to an ObjectId"
-      )
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
     }
 
-    return value
+    const cloned = new ProductVariantService({
+      manager: transactionManager,
+      productVariantRepository: this.productVariantRepository_,
+      productRepository: this.productRepository_,
+      eventBusService: this.eventBus_,
+      regionService: this.regionService_,
+      moneyAmountRepository: this.moneyAmountRepository_,
+      productOptionValueRepository: this.productOptionValueRepository_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -49,100 +70,237 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the product to get.
    * @return {Promise<Product>} the product document.
    */
-  async retrieve(variantId) {
+  async retrieve(variantId, config = {}) {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
     const validatedId = this.validateId_(variantId)
-    const variant = await this.productVariantModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const variant = await variantRepo.findOne(query)
 
     if (!variant) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Variant with ${variantId} was not found`
+        `Variant with id: ${variantId} was not found`
       )
     }
+
     return variant
   }
 
-  // TODO: Validate productVariant
   /**
-   * Creates an unpublished product variant.
+   * Gets a product variant by id.
+   * @param {string} variantId - the id of the product to get.
+   * @return {Promise<Product>} the product document.
+   */
+  async retrieveBySKU(sku, config = {}) {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+    const query = this.buildQuery_({ sku }, config)
+    const variant = await variantRepo.findOne(query)
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with sku: ${sku} was not found`
+      )
+    }
+
+    return variant
+  }
+
+  /**
+   * Creates an unpublished product variant. Will validate against parent product
+   * to ensure that the variant can in fact be created.
+   * @param {string} productOrProductId - the product the variant will be added to
    * @param {object} variant - the variant to create
    * @return {Promise} resolves to the creation result.
    */
-  async createDraft(productVariant) {
-    return this.productVariantModel_
-      .create({
-        ...productVariant,
-        published: false,
+  async create(productOrProductId, variant) {
+    return this.atomicPhase_(async manager => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const variantRepo = manager.getCustomRepository(
+        this.productVariantRepository_
+      )
+
+      const { prices, ...rest } = variant
+
+      let product = productOrProductId
+
+      if (typeof product === `string`) {
+        product = await productRepo.findOne({
+          where: { id: productOrProductId },
+          relations: ["variants", "variants.options", "options"],
+        })
+      } else if (!product.id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product id missing`
+        )
+      }
+
+      if (product.options.length !== variant.options.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
+        )
+      }
+
+      product.options.forEach(option => {
+        if (!variant.options.find(vo => option.id === vo.option_id)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant options do not contain value for ${option.title}`
+          )
+        }
       })
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.CREATED, result)
-        return result
+
+      let variantExists = undefined
+      variantExists = product.variants.find(v => {
+        return v.options.every(option => {
+          const variantOption = variant.options.find(
+            o => option.option_id === o.option_id
+          )
+
+          return option.value === variantOption.value
+        })
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      if (variantExists) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Variant with title ${variantExists.title} with provided options already exists`
+        )
+      }
+
+      const toCreate = {
+        ...rest,
+        product_id: product.id,
+      }
+
+      const productVariant = await variantRepo.create(toCreate)
+
+      const result = await variantRepo.save(productVariant)
+
+      if (prices) {
+        for (const price of prices) {
+          if (price.region_id) {
+            await this.setRegionPrice(
+              result.id,
+              price.region_id,
+              price.amount,
+              price.sale_amount || undefined
+            )
+          } else {
+            await this.setCurrencyPrice(result.id, price)
+          }
+        }
+      }
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductVariantService.Events.CREATED, {
+          id: result.id,
+        })
+
+      return result
+    })
   }
 
   /**
-   * Creates an publishes variant.
-   * @param {string} variantId - ID of the variant to publish.
-   * @return {Promise} resolves to the creation result.
+   * Publishes an existing variant.
+   * @param {string} variantId - id of the variant to publish.
+   * @return {Promise}
    */
   async publish(variantId) {
-    return this.productVariantModel_
-      .updateOne({ _id: variantId }, { $set: { published: true } })
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return this.atomicPhase_(async manager => {
+      const variantRepo = manager.getCustomRepository(
+        this.productVariantRepository_
+      )
+
+      const variant = await this.retrieve(variantId)
+
+      variant.published = true
+
+      const result = await variantRepo.save(variant)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductVariantService.Events.UPDATED, {
+          id: result.id,
+        })
+
+      return result
+    })
   }
 
   /**
-   * Updates a variant. Metadata updates and price updates should
-   * use dedicated methods, e.g. `setMetadata`, etc. The function
-   * will throw errors if metadata updates and price updates are attempted.
-   * @param {string} variantId - the id of the variant. Must be a string that
-   *   can be casted to an ObjectId
+   * Updates a variant.
+   * Price updates should use dedicated methods.
+   * The function will throw, if price updates are attempted.
+   * @param {string | ProductVariant} variant - the id of the variant. Must be a
+   *   string that can be casted to an ObjectId
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(variantId, update) {
-    const validatedId = this.validateId_(variantId)
-
-    if (update.prices) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setCurrencyPrices, setRegionPrices method to update prices field"
+  async update(variantOrVariantId, update) {
+    return this.atomicPhase_(async manager => {
+      const variantRepo = manager.getCustomRepository(
+        this.productVariantRepository_
       )
-    }
+      let variant = variantOrVariantId
 
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
-      )
-    }
+      if (typeof variant === `string`) {
+        variant = await this.retrieve(variantOrVariantId)
+      } else if (!variant.id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Variant id missing`
+        )
+      }
 
-    return this.productVariantModel_
-      .updateOne(
-        { _id: validatedId },
-        { $set: update },
-        { runValidators: true }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      const { prices, options, metadata, ...rest } = update
+
+      if (prices) {
+        for (const price of prices) {
+          if (price.region_id) {
+            await this.setRegionPrice(
+              variant.id,
+              price.region_id,
+              price.amount,
+              price.sale_amount || undefined
+            )
+          } else {
+            await this.setCurrencyPrice(variant.id, price)
+          }
+        }
+      }
+
+      if (options) {
+        for (const option of options) {
+          await this.updateOptionValue(
+            variant.id,
+            option.option_id,
+            option.value
+          )
+        }
+      }
+
+      if (metadata) {
+        variant.metadata = this.setMetadata_(variant, metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        variant[key] = value
+      }
+
+      const result = await variantRepo.save(variant)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductVariantService.Events.UPDATED, result)
+      return result
+    })
   }
 
   /**
@@ -153,80 +311,35 @@ class ProductVariantService extends BaseService {
    * @param {number} saleAmount - the sale amount to set the price to
    * @return {Promise} the result of the update operation
    */
-  async setCurrencyPrice(variantId, currencyCode, amount, saleAmount) {
-    const variant = await this.retrieve(variantId)
+  async setCurrencyPrice(variantId, price) {
+    return this.atomicPhase_(async manager => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
 
-    // If prices already exist we need to update all prices with the same
-    // currency
-    if (variant.prices.length) {
-      let foundDefault = false
-      const newPrices = variant.prices.map(moneyAmount => {
-        if (moneyAmount.currency_code === currencyCode) {
-          moneyAmount.amount = amount
-          moneyAmount.sale_amount = saleAmount
-
-          if (!moneyAmount.region_id) {
-            foundDefault = true
-          }
-        }
-
-        return moneyAmount
+      let moneyAmount
+      moneyAmount = await moneyAmountRepo.findOne({
+        where: {
+          currency_code: price.currency_code.toLowerCase(),
+          variant_id: variantId,
+          region_id: IsNull(),
+        },
       })
 
-      // If there is no price entries for the currency we are updating we need
-      // to push it
-      if (!foundDefault) {
-        newPrices.push({
-          currency_code: currencyCode,
-          sale_amount: saleAmount,
-          amount,
+      if (!moneyAmount) {
+        moneyAmount = await moneyAmountRepo.create({
+          ...price,
+          currency_code: price.currency_code.toLowerCase(),
+          variant_id: variantId,
         })
+      } else {
+        moneyAmount.amount = price.amount
+        moneyAmount.sale_amount = price.sale_amount
       }
 
-      return this.productVariantModel_
-        .updateOne(
-          {
-            _id: variant._id,
-          },
-          {
-            $set: {
-              prices: newPrices,
-            },
-          }
-        )
-        .then(result => {
-          this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-          return result
-        })
-        .catch(err => {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-        })
-    }
-
-    return this.productVariantModel_
-      .updateOne(
-        {
-          _id: variant._id,
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: currencyCode,
-                sale_amount: saleAmount,
-                amount,
-              },
-            ],
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      const result = await moneyAmountRepo.save(moneyAmount)
+      return result
+    })
   }
 
   /**
@@ -238,43 +351,43 @@ class ProductVariantService extends BaseService {
    * @return {number} the price specific to the region
    */
   async getRegionPrice(variantId, regionId) {
-    const variant = await this.retrieve(variantId)
-    const region = await this.regionService_.retrieve(regionId)
+    return this.atomicPhase_(async manager => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
 
-    let price
-    variant.prices.forEach(
-      ({ region_id, amount, sale_amount, currency_code }) => {
-        if (!price && !region_id && currency_code === region.currency_code) {
-          // If we haven't yet found a price and the current money amount is
-          // the default money amount for the currency of the region we have found
-          // a possible price match
-          if (sale_amount) {
-            price = sale_amount
-          } else {
-            price = amount
-          }
-        } else if (region_id === region._id) {
-          // If the region matches directly with the money amount this is the best
-          // price
-          if (sale_amount) {
-            price = sale_amount
-          } else {
-            price = amount
-          }
-        }
+      const region = await this.regionService_
+        .withTransaction(manager)
+        .retrieve(regionId)
+
+      // Find region price based on region id
+      let moneyAmount = await moneyAmountRepo.findOne({
+        where: { region_id: regionId, variant_id: variantId },
+      })
+
+      // If no price could be find based on region id, we try to fetch
+      // based on the region currency code
+      if (!moneyAmount) {
+        moneyAmount = await moneyAmountRepo.findOne({
+          where: { variant_id: variantId, currency_code: region.currency_code },
+        })
       }
-    )
 
-    // Return the price if we found a suitable match
-    if (typeof price !== "undefined") {
-      return price
-    }
+      // Still, if no price is found, we throw
+      if (!moneyAmount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `A price for region: ${region.name} could not be found`
+        )
+      }
 
-    // If we got this far no price could be found for the region
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `A price for region: ${region.name} could not be found`
-    )
+      // Always return sale price, if present
+      if (moneyAmount.sale_amount) {
+        return moneyAmount.sale_amount
+      } else {
+        return moneyAmount.amount
+      }
+    })
   }
 
   /**
@@ -282,87 +395,36 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the variant to update
    * @param {string} regionId - the id of the region to set price for
    * @param {number} amount - the amount to set the price to
-   * @param {number} saleAmount - the amount to set the price to
+   * @param {number} saleAmount - the sale amount to set the price to
    * @return {Promise} the result of the update operation
    */
-  async setRegionPrice(variantId, regionId, amount, saleAmount) {
-    const variant = await this.retrieve(variantId)
-    const region = await this.regionService_.retrieve(regionId)
+  async setRegionPrice(variantId, price) {
+    return this.atomicPhase_(async manager => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
 
-    // If prices already exist we need to update all prices with the same currency
-    if (variant.prices.length) {
-      let foundRegion = false
-      const newPrices = variant.prices.map(moneyAmount => {
-        if (moneyAmount.region_id === region._id) {
-          moneyAmount.amount = amount
-          moneyAmount.sale_amount = amount
-          foundRegion = true
-        }
-
-        return moneyAmount
+      let moneyAmount
+      moneyAmount = await moneyAmountRepo.findOne({
+        where: {
+          variant_id: variantId,
+          region_id: price.region_id,
+        },
       })
 
-      // If the region doesn't exist in the prices we need to push it
-      if (!foundRegion) {
-        newPrices.push({
-          region_id: region._id,
-          currency_code: region.currency_code,
-          sale_amount: saleAmount,
-          amount,
+      if (!moneyAmount) {
+        moneyAmount = await moneyAmountRepo.create({
+          ...price,
+          variant_id: variantId,
         })
+      } else {
+        moneyAmount.amount = price.amount
+        moneyAmount.sale_amount = price.sale_amount
       }
 
-      return this.productVariantModel_
-        .updateOne(
-          {
-            _id: variant._id,
-          },
-          {
-            $set: {
-              prices: newPrices,
-            },
-          }
-        )
-        .then(result => {
-          this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-          return result
-        })
-        .catch(err => {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-        })
-    }
-
-    // Set the price both for default currency price and for the region
-    return this.productVariantModel_
-      .updateOne(
-        {
-          _id: variant._id,
-        },
-        {
-          $set: {
-            prices: [
-              {
-                region_id: region._id,
-                currency_code: region.currency_code,
-                sale_amount: saleAmount,
-                amount,
-              },
-              {
-                currency_code: region.currency_code,
-                sale_amount: saleAmount,
-                amount,
-              },
-            ],
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      const result = await moneyAmountRepo.save(moneyAmount)
+      return result
+    })
   }
 
   /**
@@ -374,25 +436,27 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation.
    */
   async updateOptionValue(variantId, optionId, optionValue) {
-    if (typeof optionValue !== "string" && typeof optionValue !== "number") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Option value is not of type string or number`
+    return this.atomicPhase_(async manager => {
+      const productOptionValueRepo = manager.getCustomRepository(
+        this.productOptionValueRepository_
       )
-    }
 
-    return this.productVariantModel_
-      .updateOne(
-        { _id: variantId, "options.option_id": optionId },
-        { $set: { "options.$.value": `${optionValue}` } }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
+      const productOptionValue = await productOptionValueRepo.findOne({
+        where: { variant_id: variantId, option_id: optionId },
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      if (!productOptionValue) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product option value not found`
+        )
+      }
+
+      productOptionValue.value = optionValue
+
+      const result = await productOptionValueRepo.save(productOptionValue)
+      return result
+    })
   }
 
   /**
@@ -407,52 +471,48 @@ class ProductVariantService extends BaseService {
    * @return {Promise} the result of the update operation.
    */
   async addOptionValue(variantId, optionId, optionValue) {
-    const variant = await this.retrieve(variantId)
-
-    if (typeof optionValue !== "string" && typeof optionValue !== "number") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Option value is not of type string or number`
+    return this.atomicPhase_(async manager => {
+      const productOptionValueRepo = manager.getCustomRepository(
+        this.productOptionValueRepository_
       )
-    }
 
-    return this.productVariantModel_
-      .updateOne(
-        { _id: variant._id },
-        { $push: { options: { option_id: optionId, value: `${optionValue}` } } }
-      )
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
+      const productOptionValue = await productOptionValueRepo.create({
+        variant_id: variantId,
+        option_id: optionId,
+        value: optionValue,
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      const result = await productOptionValueRepo.save(productOptionValue)
+      return result
+    })
   }
 
   /**
    * Deletes option value from given variant.
-   * Fails when product with variant does not exists or
-   * if that product has an option with the given
-   * option id.
-   * This method should only be used from the product service.
+   * Will never fail due to delete being idempotent.
    * @param {string} variantId - the variant to decorate.
    * @param {string} optionId - the option from product.
-   * @return {Promise} the result of the update operation.
+   * @return {Promise} empty promise
    */
   async deleteOptionValue(variantId, optionId) {
-    return this.productVariantModel_
-      .updateOne(
-        { _id: variantId },
-        { $pull: { options: { option_id: optionId } } }
+    return this.atomicPhase_(async manager => {
+      const productOptionValueRepo = manager.getCustomRepository(
+        this.productOptionValueRepository_
       )
-      .then(result => {
-        this.eventBus_.emit(ProductVariantService.Events.UPDATED, result)
-        return result
+
+      const productOptionValue = await productOptionValueRepo.findOne({
+        where: {
+          variant_id: variantId,
+          option_id: optionId,
+        },
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      if (!productOptionValue) return Promise.resolve()
+
+      await productOptionValueRepo.softRemove(productOptionValue)
+
+      return Promise.resolve()
+    })
   }
 
   /**
@@ -476,95 +536,96 @@ class ProductVariantService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  async list(selector) {
-    return this.productVariantModel_.find(selector)
-  }
+  async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
+    const productVariantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
 
-  /**
-   * Deletes a variant from given variant id.
-   * @param {string} variantId - the id of the variant to delete. Must be
-   *   castable as an ObjectId
-   * @return {Promise} the result of the delete operation.
-   */
-  async delete(variantId) {
-    let variant
-    try {
-      variant = await this.retrieve(variantId)
-    } catch (error) {
-      // Delete is idempotent, but we return a promise to allow then-chaining
-      return Promise.resolve()
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
     }
 
-    return this.productVariantModel_
-      .deleteOne({ _id: variant._id })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.sku
+      delete where.title
+
+      query.join = {
+        alias: "variant",
+        innerJoin: {
+          product: "variant.product",
+        },
+      }
+
+      query.where = qb => {
+        qb.where(where).andWhere(
+          new Brackets(qb => {
+            qb.where([
+              { sku: Raw(a => `${a} ILIKE :q`, { q: `%${q}%` }) },
+              { title: Raw(a => `${a} ILIKE :q`, { q: `%${q}%` }) },
+            ]).orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+      }
+    }
+
+    return productVariantRepo.find(query)
   }
 
   /**
-   * Decorates a variant with variant variants.
-   * @param {ProductVariant} variant - the variant to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {ProductVariant} return the decorated variant.
+   * Deletes variant.
+   * Will never fail due to delete being idempotent.
+   * @param {string} variantId - the id of the variant to delete. Must be
+   *   castable as an ObjectId
+   * @return {Promise} empty promise
    */
-  async decorate(variant, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(variant, fields.concat(requiredFields))
-    const final = await this.runDecorators_(decorated)
-    return final
+  async delete(variantId) {
+    return this.atomicPhase_(async manager => {
+      const variantRepo = manager.getCustomRepository(
+        this.productVariantRepository_
+      )
+
+      const variant = await variantRepo.findOne({ where: { id: variantId } })
+
+      if (!variant) return Promise.resolve()
+
+      await variantRepo.softRemove(variant)
+
+      return Promise.resolve()
+    })
   }
 
   /**
    * Dedicated method to set metadata for a variant.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} variantId - the variant to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
+   * @param {string} variant - the variant to set metadata for.
+   * @param {Object} metadata - the metadata to set
+   * @return {Object} updated metadata object
    */
-  async setMetadata(variantId, key, value) {
-    const validatedId = this.validateId_(variantId)
+  setMetadata_(variant, metadata) {
+    const existing = variant.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+      newData[key] = value
     }
 
-    const keyPath = `metadata.${key}`
-    return this.productVariantModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a product variant.
-   * @param {string} variantId - the product variant to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(variantId, key) {
-    const validatedId = this.validateId_(variantId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+    const updated = {
+      ...existing,
+      ...newData,
     }
 
-    const keyPath = `metadata.${key}`
-    return this.productVariantModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return updated
   }
 }
 

@@ -10,7 +10,7 @@ describe("POST /admin/discounts", () => {
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "TEST",
-          discount_rule: {
+          rule: {
             type: "fixed",
             value: 10,
             allocation: "total",
@@ -32,12 +32,13 @@ describe("POST /admin/discounts", () => {
       expect(DiscountServiceMock.create).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.create).toHaveBeenCalledWith({
         code: "TEST",
-        discount_rule: {
+        rule: {
           type: "fixed",
           value: 10,
           allocation: "total",
         },
-        is_dynamic: false
+        is_disabled: false,
+        is_dynamic: false,
       })
     })
   })
@@ -49,7 +50,7 @@ describe("POST /admin/discounts", () => {
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "10%OFF",
-          discount_rule: {
+          rule: {
             value: 10,
             allocation: "total",
           },
@@ -67,9 +68,7 @@ describe("POST /admin/discounts", () => {
     })
 
     it("returns error", () => {
-      expect(subject.body.message[0].message).toEqual(
-        `"discount_rule.type" is required`
-      )
+      expect(subject.body.message[0].message).toEqual(`"rule.type" is required`)
     })
   })
 })

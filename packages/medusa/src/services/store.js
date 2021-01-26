@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -10,57 +9,84 @@ import { currencies } from "../utils/currencies"
  * @implements BaseService
  */
 class StoreService extends BaseService {
-  constructor({ storeModel, eventBusService }) {
+  constructor({
+    manager,
+    storeRepository,
+    currencyRepository,
+    eventBusService,
+  }) {
     super()
 
-    /** @private @const {storeModel} */
-    this.storeModel_ = storeModel
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {StoreRepository} */
+    this.storeRepository_ = storeRepository
+
+    /** @private @const {CurrencyRepository} */
+    this.currencyRepository_ = currencyRepository
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
 
-  /**
-   * Used to validate customer ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw customer id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The customerId could not be casted to an ObjectId"
-      )
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
     }
 
-    return value
+    const cloned = new StoreService({
+      manager: transactionManager,
+      storeRepository: this.storeRepository_,
+      currencyRepository: this.currencyRepository_,
+      eventBusService: this.eventBus_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
    * Creates a store if it doesn't already exist.
    * @return {Promise<Store>} the store.
    */
-  async create(providers) {
-    let store = await this.retrieve()
-    if (!store) {
-      return this.storeModel_.create(providers)
-    } else {
-      store = await this.update(providers)
-    }
+  async create() {
+    return this.atomicPhase_(async manager => {
+      const storeRepository = manager.getCustomRepository(this.storeRepository_)
 
-    return store
+      let store = await this.retrieve()
+
+      if (!store) {
+        const s = await storeRepository.create()
+        store = await storeRepository.save(s)
+      }
+
+      return store
+    })
   }
 
   /**
    * Retrieve the store settings. There is always a maximum of one store.
-   * @return {Promise<Store>} the customer document.
+   * @return {Promise<Store>} the store
    */
-  retrieve() {
-    return this.storeModel_.findOne().catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
+  async retrieve(relations = []) {
+    const storeRepo = this.manager_.getCustomRepository(this.storeRepository_)
+
+    const store = await storeRepo.findOne({ relations })
+
+    return store
+  }
+
+  getDefaultCurrency_(code) {
+    const currencyObject = currencies[code.toUpperCase()]
+
+    return {
+      code: currencyObject.code.toLowerCase(),
+      symbol: currencyObject.symbol,
+      symbol_native: currencyObject.symbol_native,
+      name: currencyObject.name,
+    }
   }
 
   /**
@@ -73,42 +99,68 @@ class StoreService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(update) {
-    const store = await this.retrieve()
-
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
+    return this.atomicPhase_(async manager => {
+      const storeRepository = manager.getCustomRepository(this.storeRepository_)
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
       )
-    }
 
-    if (update.default_currency) {
-      update.default_currency = update.default_currency.toUpperCase()
-      if (!currencies[update.default_currency]) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Invalid currency ${update.default_currency}`
-        )
+      const store = await this.retrieve()
+
+      const {
+        metadata,
+        default_currency,
+        default_currency_code,
+        currencies: storeCurrencies,
+        ...rest
+      } = update
+
+      if (metadata) {
+        store.metadata = this.setMetadata_(store.id, metadata)
       }
-    }
 
-    if (update.currencies) {
-      update.currencies = update.currencies.map(c => c.toUpperCase())
-      update.currencies.forEach(c => {
-        if (!currencies[c]) {
+      if (default_currency_code) {
+        const curr = await currencyRepository.findOne({
+          code: default_currency_code.toLowerCase(),
+        })
+
+        if (!curr) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Invalid currency ${c}`
+            `Currency ${default_currency_code} not found`
           )
         }
-      })
-    }
 
-    return this.storeModel_
-      .updateOne({ _id: store._id }, { $set: update }, { runValidators: true })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+        store.default_currency = curr
+        store.default_currency_code = curr.code
+      }
+
+      if (storeCurrencies) {
+        store.currencies = await Promise.all(
+          storeCurrencies.map(async curr => {
+            const currency = await currencyRepository.findOne({
+              where: { code: curr.toLowerCase() },
+            })
+
+            if (!currency) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Invalid currency ${curr}`
+              )
+            }
+
+            return currency
+          })
+        )
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        store[key] = value
+      }
+
+      const result = await storeRepository.save(store)
+      return result
+    })
   }
 
   /**
@@ -117,29 +169,35 @@ class StoreService extends BaseService {
    * @return {Promise} result after update
    */
   async addCurrency(code) {
-    code = code.toUpperCase()
-    const store = await this.retrieve()
-
-    if (!currencies[code]) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Invalid currency ${code}`
+    return this.atomicPhase_(async manager => {
+      const storeRepo = manager.getCustomRepository(this.storeRepository_)
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
       )
-    }
+      const store = await this.retrieve(["currencies"])
 
-    if (store.currencies.includes(code)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Currency already added`
-      )
-    }
+      const curr = await currencyRepository.findOne({
+        where: { code: code.toLowerCase() },
+      })
 
-    return this.storeModel_.updateOne(
-      {
-        _id: store._id,
-      },
-      { $push: { currencies: code } }
-    )
+      if (!curr) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Currency ${code} not found`
+        )
+      }
+
+      if (store.currencies.map(c => c.code).includes(curr.code.toLowerCase())) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Currency already added`
+        )
+      }
+
+      store.currencies = [...store.currencies, curr]
+      const updated = await storeRepo.save(store)
+      return updated
+    })
   }
 
   /**
@@ -148,14 +206,20 @@ class StoreService extends BaseService {
    * @return {Promise} result after update
    */
   async removeCurrency(code) {
-    const store = await this.retrieve()
-    code = code.toUpperCase()
-    return this.storeModel_.updateOne(
-      {
-        _id: store._id,
-      },
-      { $pull: { currencies: code } }
-    )
+    return this.atomicPhase_(async manager => {
+      const storeRepo = manager.getCustomRepository(this.storeRepository_)
+      const store = await this.retrieve(["currencies"])
+
+      const exists = store.currencies.find(c => c.code === code.toLowerCase())
+      // If currency does not exist, return early
+      if (!exists) {
+        return store
+      }
+
+      store.currencies = store.currencies.filter(c => c.code !== code)
+      const updated = await storeRepo.save(store)
+      return updated
+    })
   }
 
   /**
@@ -167,32 +231,6 @@ class StoreService extends BaseService {
    */
   async decorate(store, fields, expandFields = []) {
     return store
-  }
-
-  /**
-   * Dedicated method to set metadata for a store.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} customerId - the customer to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  async setMetadata(key, value) {
-    const store = await this.retrieve()
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.storeModel_
-      .updateOne({ _id: store._id }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

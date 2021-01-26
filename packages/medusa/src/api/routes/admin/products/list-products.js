@@ -1,65 +1,33 @@
 import _ from "lodash"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   try {
-    const variantService = req.scope.resolve("productVariantService")
     const productService = req.scope.resolve("productService")
-    const queryBuilderService = req.scope.resolve("queryBuilderService")
 
-    const query = queryBuilderService.buildQuery(req.query, [
-      "title",
-      "description",
-    ])
-
-    if ("is_giftcard" in req.query) {
-      query.is_giftcard = req.query.is_giftcard === "true"
-    }
-
-    let variantMatches = []
-    if ("q" in req.query) {
-      let textQ = req.query.q
-      variantMatches = await variantService.list({
-        $or: [
-          { sku: new RegExp(textQ, "i") },
-          { title: new RegExp(textQ, "i") },
-        ],
-      })
-
-      query.$or = [
-        ...query.$or,
-        { variants: { $in: variantMatches.map(({ _id }) => _id.toString()) } },
-      ]
-    }
-
-    const limit = parseInt(req.query.limit) || 0
+    const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
 
-    let products = await productService.list(query, offset, limit)
+    const selector = {}
 
-    products = await Promise.all(
-      products.map(
-        async product =>
-          await productService.decorate(
-            product,
-            [
-              "title",
-              "description",
-              "is_giftcard",
-              "tags",
-              "thumbnail",
-              "handle",
-              "images",
-              "options",
-              "published",
-            ],
-            ["variants"]
-          )
-      )
-    )
+    if ("q" in req.query) {
+      selector.q = req.query.q
+    }
 
-    const numProducts = await productService.count()
+    if ("is_giftcard" in req.query) {
+      selector.is_giftcard = req.query.is_giftcard === "true"
+    }
 
-    res.json({ products, total_count: numProducts })
+    const listConfig = {
+      select: defaultFields,
+      relations: defaultRelations,
+      skip: offset,
+      take: limit,
+    }
+
+    let products = await productService.list(selector, listConfig)
+
+    res.json({ products, count: products.length, offset, limit })
   } catch (error) {
     throw error
   }

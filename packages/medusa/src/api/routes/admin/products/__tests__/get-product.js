@@ -27,13 +27,43 @@ describe("GET /admin/products/:id", () => {
     it("calls get product from productSerice", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("product1")
+        IdMap.getId("product1"),
+        {
+          select: [
+            "id",
+            "title",
+            "subtitle",
+            "description",
+            "tags",
+            "handle",
+            "is_giftcard",
+            "thumbnail",
+            "profile_id",
+            "weight",
+            "length",
+            "height",
+            "width",
+            "hs_code",
+            "origin_country",
+            "mid_code",
+            "material",
+            "created_at",
+            "updated_at",
+            "metadata",
+          ],
+          relations: [
+            "variants",
+            "variants.prices",
+            "variants.options",
+            "images",
+            "options",
+          ],
+        }
       )
     })
 
     it("returns product decorated", () => {
-      expect(subject.body.product._id).toEqual(IdMap.getId("product1"))
-      expect(subject.body.product.decorated).toEqual(true)
+      expect(subject.body.product.id).toEqual(IdMap.getId("product1"))
     })
   })
 })

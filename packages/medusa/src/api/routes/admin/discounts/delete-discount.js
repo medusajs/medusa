@@ -1,5 +1,6 @@
 export default async (req, res) => {
   const { discount_id } = req.params
+
   try {
     const discountService = req.scope.resolve("discountService")
     await discountService.delete(discount_id)

@@ -3,12 +3,12 @@ import { IdMap } from "medusa-test-utils"
 
 export const carts = {
   emptyCart: {
-    _id: IdMap.getId("emptyCart"),
+    id: IdMap.getId("emptyCart"),
     items: [],
     region_id: IdMap.getId("testRegion"),
     shipping_options: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
         data: {
           some_data: "yes",
@@ -16,72 +16,68 @@ export const carts = {
       },
     ],
   },
+  testCart: {
+    id: IdMap.getId("test-cart"),
+    items: [],
+    payment: {
+      data: "some-data",
+    },
+    payment_session: {
+      status: "authorized",
+    },
+    total: 1000,
+    region_id: IdMap.getId("testRegion"),
+  },
+  testSwapCart: {
+    id: IdMap.getId("test-swap"),
+    items: [],
+    type: "swap",
+    payment: {
+      data: "some-data",
+    },
+    payment_session: {
+      status: "authorized",
+    },
+    metadata: {
+      swap_id: "test-swap",
+    },
+    total: 1000,
+    region_id: IdMap.getId("testRegion"),
+  },
   regionCart: {
-    _id: IdMap.getId("regionCart"),
+    id: IdMap.getId("regionCart"),
     name: "Product 1",
     region_id: IdMap.getId("testRegion"),
   },
   frCart: {
-    _id: IdMap.getId("fr-cart"),
+    id: IdMap.getId("fr-cart"),
     title: "test",
     region_id: IdMap.getId("region-france"),
     items: [
       {
-        _id: IdMap.getId("line"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
-        content: [
-          {
-            unit_price: 8,
-            variant: {
-              _id: IdMap.getId("eur-8-us-10"),
-            },
-            product: {
-              _id: IdMap.getId("product"),
-            },
-            quantity: 1,
-          },
-          {
-            unit_price: 10,
-            variant: {
-              _id: IdMap.getId("eur-10-us-12"),
-            },
-            product: {
-              _id: IdMap.getId("product"),
-            },
-            quantity: 1,
-          },
-        ],
-        quantity: 10,
-      },
-      {
-        _id: IdMap.getId("existingLine"),
-        title: "merge line",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-        content: {
-          unit_price: 10,
-          variant: {
-            _id: IdMap.getId("eur-10-us-12"),
-          },
-          product: {
-            _id: IdMap.getId("product"),
-          },
-          quantity: 1,
+        unit_price: 10,
+        variant: {
+          id: IdMap.getId("eur-10-us-12"),
+        },
+        product: {
+          id: IdMap.getId("product"),
         },
         quantity: 10,
       },
     ],
     shipping_methods: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
     shipping_options: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
@@ -91,21 +87,21 @@ export const carts = {
     customer_id: "",
   },
   cartWithPaySessions: {
-    _id: IdMap.getId("cartWithPaySessions"),
+    id: IdMap.getId("cartWithPaySessions"),
     region_id: IdMap.getId("testRegion"),
     items: [
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
         content: {
           unit_price: 123,
           variant: {
-            _id: IdMap.getId("can-cover"),
+            id: IdMap.getId("can-cover"),
           },
           product: {
-            _id: IdMap.getId("product"),
+            id: IdMap.getId("product"),
           },
           quantity: 1,
         },
@@ -132,12 +128,12 @@ export const carts = {
     customer_id: "",
   },
   discountCart: {
-    _id: IdMap.getId("discount-cart"),
+    id: IdMap.getId("discount-cart"),
     discounts: [],
     region_id: IdMap.getId("region-france"),
     items: [
       {
-        _id: IdMap.getId("line"),
+        id: IdMap.getId("line"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
@@ -145,20 +141,20 @@ export const carts = {
           {
             unit_price: 8,
             variant: {
-              _id: IdMap.getId("eur-8-us-10"),
+              id: IdMap.getId("eur-8-us-10"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              id: IdMap.getId("product"),
             },
             quantity: 1,
           },
           {
             unit_price: 10,
             variant: {
-              _id: IdMap.getId("eur-10-us-12"),
+              id: IdMap.getId("eur-10-us-12"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              id: IdMap.getId("product"),
             },
             quantity: 1,
           },
@@ -166,17 +162,17 @@ export const carts = {
         quantity: 10,
       },
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
         content: {
           unit_price: 10,
           variant: {
-            _id: IdMap.getId("eur-10-us-12"),
+            id: IdMap.getId("eur-10-us-12"),
           },
           product: {
-            _id: IdMap.getId("product"),
+            id: IdMap.getId("product"),
           },
           quantity: 1,
         },
@@ -185,24 +181,21 @@ export const carts = {
     ],
   },
   cartWithMetadataLineItem: {
-    _id: IdMap.getId("cartLineItemMetadata"),
+    id: IdMap.getId("cartLineItemMetadata"),
     discounts: [],
     region_id: IdMap.getId("region-france"),
     items: [
       {
-        _id: IdMap.getId("lineWithMetadata"),
+        id: IdMap.getId("lineWithMetadata"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
-        content: {
-          unit_price: 10,
-          variant: {
-            _id: IdMap.getId("eur-10-us-12"),
-          },
-          product: {
-            _id: IdMap.getId("product"),
-          },
-          quantity: 1,
+        unit_price: 10,
+        variant: {
+          id: IdMap.getId("eur-10-us-12"),
+        },
+        product: {
+          id: IdMap.getId("product"),
         },
         quantity: 10,
         metadata: {
@@ -214,6 +207,28 @@ export const carts = {
 }
 
 export const CartServiceMock = {
+  withTransaction: function() {
+    return this
+  },
+  updatePaymentSession: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
+  authorizePayment: jest.fn().mockImplementation((id, data) => {
+    if (id === IdMap.getId("test-cart2")) {
+      return Promise.resolve({
+        ...carts.testCart,
+        payment_session: { status: "requires_more" },
+        id: IdMap.getId("test-cart2"),
+      })
+    }
+    return Promise.resolve(carts.testCart)
+  }),
+  refreshPaymentSession: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
+  update: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
+  }),
   create: jest.fn().mockImplementation(data => {
     if (data.region_id === IdMap.getId("testRegion")) {
       return Promise.resolve(carts.regionCart)
@@ -221,10 +236,17 @@ export const CartServiceMock = {
     if (data.region_id === IdMap.getId("fail")) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "Region not found")
     }
+    return Promise.resolve(carts.regionCart)
   }),
   retrieve: jest.fn().mockImplementation(cartId => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("swap-cart")) {
+      return Promise.resolve(carts.testSwapCart)
+    }
+    if (cartId === IdMap.getId("test-cart")) {
+      return Promise.resolve(carts.testCart)
     }
     if (cartId === IdMap.getId("cartLineItemMetadata")) {
       return Promise.resolve(carts.cartWithMetadataLineItem)
@@ -317,13 +339,13 @@ export const CartServiceMock = {
   retrieveShippingOption: jest.fn().mockImplementation((cartId, optionId) => {
     if (optionId === IdMap.getId("freeShipping")) {
       return {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       }
     }
     if (optionId === IdMap.getId("withData")) {
       return {
-        _id: IdMap.getId("withData"),
+        id: IdMap.getId("withData"),
         profile_id: "default_profile",
         data: {
           some_data: "yes",

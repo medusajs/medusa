@@ -3595,7 +3595,7 @@ joi-objectid@^3.0.1:
   resolved "https://registry.yarnpkg.com/joi-objectid/-/joi-objectid-3.0.1.tgz#63ace7860f8e1a993a28d40c40ffd8eff01a3668"
   integrity sha512-V/3hbTlGpvJ03Me6DJbdBI08hBTasFOmipsauOsxOSnsF1blxV537WTl1zPwbfcKle4AK0Ma4OPnzMH4LlvTpQ==
 
-joi@^17.2.1:
+joi@^17.2.1, joi@^17.3.0:
   version "17.3.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.3.0.tgz#f1be4a6ce29bc1716665819ac361dfa139fff5d2"
   integrity sha512-Qh5gdU6niuYbUIUV5ejbsMiiFmBdw8Kcp8Buj2JntszCkCfxJ9Cz76OtHxOZMPXrt5810iDIXs+n1nNVoquHgg==
@@ -3857,21 +3857,29 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.0.10.tgz#6175f1e428318205742621f78d387254fc85b8a1"
-  integrity sha512-z12ITzPl5UpDJTILNXcMGD4yujSRkuvVtxkrvqCmA44IEyRj1hWZ0dGbVzuHj2wIahDHFFg66oq91IQH5QVsyg==
+medusa-core-utils@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.0.11.tgz#c77685c4b637f6aebe808e82dc4f7739c2f9ff79"
+  integrity sha512-Nnp7RCWsR4MJNrslC0YB/wMO1Wf2QJH0aras+tjRdymXfR/ySn2/0+v8pyXxhY8XXYzOZknnjdCB8KI9+PHlsA==
   dependencies:
     joi "^17.2.1"
     joi-objectid "^3.0.1"
 
-medusa-test-utils@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.0.11.tgz#bae901efa90426fb64818de700dc6e163820160f"
-  integrity sha512-CSNb70sXOfKTndzxWtPMYq+KeYaFkSLAPUyhuwDNVvkbne0faOYF5OMCV8r3aLoQ3D1Tvjrb/XB9Qt17ycjuPw==
+medusa-core-utils@^1.0.12-alpha.787+0646bd3:
+  version "1.0.12-alpha.801"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.0.12-alpha.801.tgz#0a7d0b5d4b2290d9a2f7afb35ab1f0bec666dbb0"
+  integrity sha512-1ppxgl8noZfO3JLLHeLj4eEMOwTI/LcCxWwwD7AUp5uP1brPmctthDTM/pOMrEuytKWIqaNXCRohvAlgDr0vYA==
+  dependencies:
+    joi "^17.3.0"
+    joi-objectid "^3.0.1"
+
+medusa-test-utils@^1.0.12-alpha.176+0646bd3:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.0.13.tgz#f728b8dacb1ba64d85529e3f2e9dba6c7e315416"
+  integrity sha512-EBbjGLHFEG/Fnqneire/bNCPeseo1ZFF3n3yMUfp0JDmBAVgE8L52wJa8Zeu36TL/rbQsQAsTAS6La46A8IJgg==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.0.10"
+    medusa-core-utils "^1.0.11"
     mongoose "^5.8.0"
 
 memory-pager@^1.0.2:

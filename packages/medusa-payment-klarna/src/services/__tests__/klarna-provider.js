@@ -1,3 +1,5 @@
+jest.unmock("axios")
+import axios from "axios"
 import MockAdapter from "axios-mock-adapter"
 
 import KlarnaProviderService from "../klarna-provider"
@@ -151,7 +153,6 @@ describe("KlarnaProviderService", () => {
 
       expect(result).toEqual({
         order_id: "123456789",
-        order_amount: 1000,
       })
     })
   })
@@ -176,15 +177,19 @@ describe("KlarnaProviderService", () => {
     mockServer
       .onPost("/ordermanagement/v1/orders/123456789/cancel")
       .reply(() => {
-        return [200]
+        return [200, { order_id: "123456789" }]
       })
 
-    it("returns order id", async () => {
+    mockServer.onGet("/ordermanagement/v1/orders/123456789").reply(() => {
+      return [200, { order_id: "123456789" }]
+    })
+
+    it("returns order", async () => {
       result = await klarnaProviderService.cancelPayment({
-        order_id: "123456789",
+        data: { order_id: "123456789" },
       })
 
-      expect(result).toEqual("123456789")
+      expect(result).toEqual({ order_id: "123456789" })
     })
   })
 
@@ -289,15 +294,19 @@ describe("KlarnaProviderService", () => {
     mockServer
       .onPost("/ordermanagement/v1/orders/123456789/captures")
       .reply(() => {
-        return [200]
+        return [200, { order_id: "123456789" }]
       })
 
-    it("returns order id", async () => {
+    mockServer.onGet("/ordermanagement/v1/orders/123456789").reply(() => {
+      return [200, { order_id: "123456789" }]
+    })
+
+    it("returns order", async () => {
       result = await klarnaProviderService.capturePayment({
-        order_id: "123456789",
+        data: { order_id: "123456789" },
       })
 
-      expect(result).toEqual("123456789")
+      expect(result).toEqual({ order_id: "123456789" })
     })
   })
 
@@ -322,18 +331,22 @@ describe("KlarnaProviderService", () => {
     mockServer
       .onPost("/ordermanagement/v1/orders/123456789/refunds")
       .reply(() => {
-        return [200]
+        return [200, { order_id: "123456789" }]
       })
 
-    it("returns order id", async () => {
+    mockServer.onGet("/ordermanagement/v1/orders/123456789").reply(() => {
+      return [200, { order_id: "123456789" }]
+    })
+
+    it("returns order", async () => {
       result = await klarnaProviderService.refundPayment(
         {
-          order_id: "123456789",
+          data: { order_id: "123456789" },
         },
         1000
       )
 
-      expect(result).toEqual("123456789")
+      expect(result).toEqual({ order_id: "123456789" })
     })
   })
 })

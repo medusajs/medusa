@@ -29,7 +29,23 @@ describe("POST /admin/discounts/:discount_id/regions/:region_id", () => {
     it("calls service retrieve", () => {
       expect(DiscountServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("total10")
+        IdMap.getId("total10"),
+        {
+          select: [
+            "id",
+            "code",
+            "is_dynamic",
+            "rule_id",
+            "parent_discount_id",
+            "starts_at",
+            "ends_at",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+            "metadata",
+          ],
+          relations: ["rule", "parent_discount", "regions", "rule.valid_for"],
+        }
       )
 
       expect(DiscountServiceMock.addRegion).toHaveBeenCalledTimes(1)

@@ -1,165 +1,65 @@
-import mongoose from "mongoose"
-import { IdMap } from "medusa-test-utils"
+import { In } from "typeorm"
+import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ShippingProfileService from "../shipping-profile"
-import { ShippingProfileModelMock } from "../../models/__mocks__/shipping-profile"
-import { ProductServiceMock, products } from "../__mocks__/product"
-import {
-  ShippingOptionServiceMock,
-  shippingOptions,
-} from "../__mocks__/shipping-option"
+//import { ShippingProfileModelMock } from "../../models/__mocks__/shipping-profile"
+//import { ProductServiceMock, products } from "../__mocks__/product"
+//import {
+//  ShippingOptionServiceMock,
+//  shippingOptions,
+//} from "../__mocks__/shipping-option"
 
 describe("ShippingProfileService", () => {
   describe("retrieve", () => {
     describe("successfully get profile", () => {
-      let res
-      beforeAll(async () => {
-        const profileService = new ShippingProfileService({
-          shippingProfileModel: ShippingProfileModelMock,
-        })
-
-        res = await profileService.retrieve(IdMap.getId("validId"))
-      })
-
       afterAll(() => {
         jest.clearAllMocks()
       })
 
-      it("calls model layer findOne", () => {
-        expect(ShippingProfileModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(ShippingProfileModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("validId"),
+      it("calls model layer findOne", async () => {
+        const profRepo = MockRepository({
+          findOne: () => Promise.resolve({}),
         })
-      })
-
-      it("returns correct product", () => {
-        expect(res.name).toEqual("Default Profile")
-      })
-    })
-
-    describe("query fail", () => {
-      let res
-      beforeAll(async () => {
         const profileService = new ShippingProfileService({
-          shippingProfileModel: ShippingProfileModelMock,
+          manager: MockManager,
+          shippingProfileRepository: profRepo,
         })
 
-        await profileService.retrieve(IdMap.getId("failId")).catch(err => {
-          res = err
+        await profileService.retrieve(IdMap.getId("validId"))
+
+        expect(profRepo.findOne).toHaveBeenCalledTimes(1)
+        expect(profRepo.findOne).toHaveBeenCalledWith({
+          where: { id: IdMap.getId("validId") },
         })
       })
-
-      afterAll(() => {
-        jest.clearAllMocks()
-      })
-
-      it("calls model layer findOne", () => {
-        expect(ShippingProfileModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(ShippingProfileModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("failId"),
-        })
-      })
-
-      it("model query throws error", () => {
-        expect(res.name).toEqual("not_found")
-      })
-    })
-  })
-
-  describe("decorate", () => {
-    const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-      productService: ProductServiceMock,
-      shippingOptionService: ShippingOptionServiceMock,
-    })
-
-    const fakeProfile = {
-      _id: "1234",
-      name: "Fake",
-      products: [IdMap.getId("product1")],
-      shipping_options: [IdMap.getId("franceShipping")],
-      metadata: {},
-    }
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("returns decorated profile", async () => {
-      const decorated = await profileService.decorate(
-        fakeProfile,
-        [],
-        ["shipping_options"]
-      )
-      expect(decorated).toEqual({
-        _id: "1234",
-        metadata: {},
-        shipping_options: [shippingOptions.franceShipping],
-      })
-    })
-
-    it("returns decorated profile with name", async () => {
-      const decorated = await profileService.decorate(
-        fakeProfile,
-        ["name"],
-        ["products"]
-      )
-      expect(decorated).toEqual({
-        _id: "1234",
-        metadata: {},
-        name: "Fake",
-        products: [products.product1],
-      })
-    })
-  })
-
-  describe("setMetadata", () => {
-    const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
-      await profileService.setMetadata(`${id}`, "metadata", "testMetadata")
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { "metadata.metadata": "testMetadata" } }
-      )
-    })
-
-    it("throw error on invalid key type", async () => {
-      const id = mongoose.Types.ObjectId()
-
-      try {
-        await profileService.setMetadata(`${id}`, 1234, "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-    })
-
-    it("throws error on invalid profileId type", async () => {
-      try {
-        await profileService.setMetadata("fakeProfileId", "1234", "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The profileId could not be casted to an ObjectId"
-        )
-      }
     })
   })
 
   describe("update", () => {
+    const profRepo = MockRepository({
+      findOne: q => {
+        return Promise.resolve({ id: q.where.id })
+      },
+    })
+
+    const productService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const shippingOptionService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-      productService: ProductServiceMock,
-      shippingOptionService: ShippingOptionServiceMock,
+      manager: MockManager,
+      shippingProfileRepository: profRepo,
+      productService,
+      shippingOptionService,
     })
 
     beforeEach(() => {
@@ -169,119 +69,49 @@ describe("ShippingProfileService", () => {
     it("calls updateOne with correct params", async () => {
       const id = IdMap.getId("validId")
 
-      await profileService.update(`${id}`, { name: "new title" })
+      await profileService.update(id, { name: "new title" })
 
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { name: "new title" } },
-        { runValidators: true }
-      )
+      expect(profRepo.save).toBeCalledTimes(1)
+      expect(profRepo.save).toBeCalledWith({ id, name: "new title" })
     })
 
     it("calls updateOne products", async () => {
       const id = IdMap.getId("validId")
 
-      await profileService.update(`${id}`, {
-        products: [IdMap.getId("product1"), IdMap.getId("product1")],
+      await profileService.update(id, {
+        products: [IdMap.getId("product1")],
       })
 
-      expect(ProductServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ProductServiceMock.retrieve).toBeCalledWith(
-        IdMap.getId("product1")
-      )
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { products: [IdMap.getId("product1")] } },
-        { runValidators: true }
-      )
-    })
-
-    it("calls updateOne products", async () => {
-      const id = IdMap.getId("profile1")
-
-      await profileService.update(`${id}`, {
-        products: [IdMap.getId("validId")],
+      expect(productService.update).toBeCalledTimes(1)
+      expect(productService.update).toBeCalledWith(IdMap.getId("product1"), {
+        profile_id: id,
       })
-
-      expect(ProductServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ProductServiceMock.retrieve).toBeCalledWith(IdMap.getId("validId"))
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(2)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $pull: { products: IdMap.getId("validId") } }
-      )
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { products: [IdMap.getId("validId")] } },
-        { runValidators: true }
-      )
     })
 
     it("calls updateOne with shipping options", async () => {
       const id = IdMap.getId("profile1")
 
-      await profileService.update(`${id}`, {
+      await profileService.update(id, {
         shipping_options: [IdMap.getId("validId")],
       })
 
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledWith(
-        IdMap.getId("validId")
+      expect(shippingOptionService.update).toBeCalledTimes(1)
+      expect(shippingOptionService.update).toBeCalledWith(
+        IdMap.getId("validId"),
+        { profile_id: id }
       )
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(2)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $pull: { shipping_options: IdMap.getId("validId") } }
-      )
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { shipping_options: [IdMap.getId("validId")] } },
-        { runValidators: true }
-      )
-    })
-
-    it("calls updateOne with shipping options", async () => {
-      const id = IdMap.getId("validId")
-
-      await profileService.update(`${id}`, {
-        shipping_options: [IdMap.getId("validId")],
-      })
-
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledWith(
-        IdMap.getId("validId")
-      )
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { shipping_options: [IdMap.getId("validId")] } },
-        { runValidators: true }
-      )
-    })
-
-    it("throw error on invalid product id type", async () => {
-      await expect(
-        profileService.update(19314235, { name: "new title" })
-      ).rejects.toThrow("The profileId could not be casted to an ObjectId")
-    })
-
-    it("throws error when trying to update metadata", async () => {
-      const id = IdMap.getId("validId")
-      await expect(
-        profileService.update(`${id}`, { metadata: { key: "value" } })
-      ).rejects.toThrow("Use setMetadata to update metadata fields")
     })
   })
 
   describe("delete", () => {
+    const profRepo = MockRepository({
+      findOne: q => {
+        return Promise.resolve({ id: q.where.id })
+      },
+    })
     const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
+      manager: MockManager,
+      shippingProfileRepository: profRepo,
     })
 
     beforeEach(() => {
@@ -291,23 +121,27 @@ describe("ShippingProfileService", () => {
     it("deletes the profile successfully", async () => {
       await profileService.delete(IdMap.getId("validId"))
 
-      expect(ShippingProfileModelMock.deleteOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.deleteOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
+      expect(profRepo.softRemove).toBeCalledTimes(1)
+      expect(profRepo.softRemove).toBeCalledWith({
+        id: IdMap.getId("validId"),
       })
-    })
-
-    it("is idempotent", async () => {
-      await profileService.delete(IdMap.getId("delete"))
-
-      expect(ShippingProfileModelMock.deleteOne).toBeCalledTimes(0)
     })
   })
 
   describe("addProduct", () => {
+    const profRepo = MockRepository({ findOne: () => Promise.resolve({}) })
+
+    const productService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-      productService: ProductServiceMock,
+      manager: MockManager,
+      shippingProfileRepository: profRepo,
+      productService,
     })
 
     beforeEach(() => {
@@ -320,43 +154,48 @@ describe("ShippingProfileService", () => {
         IdMap.getId("product2")
       )
 
-      expect(ProductServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ProductServiceMock.retrieve).toBeCalledWith(
-        IdMap.getId("product2")
-      )
-      expect(ShippingProfileModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
+      expect(productService.update).toBeCalledTimes(1)
+      expect(productService.update).toBeCalledWith(IdMap.getId("product2"), {
+        profile_id: IdMap.getId("validId"),
       })
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $push: { products: IdMap.getId("product2") } }
-      )
-    })
-
-    it("is idempotent", async () => {
-      await profileService.addProduct(
-        IdMap.getId("validId"),
-        IdMap.getId("validId")
-      )
-
-      expect(ProductServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ProductServiceMock.retrieve).toBeCalledWith(IdMap.getId("validId"))
-      expect(ShippingProfileModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
-      })
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(0)
     })
   })
 
   describe("fetchCartOptions", () => {
+    const profRepo = MockRepository({
+      find: q => {
+        switch (q.where.id) {
+          default:
+            return Promise.resolve([
+              {
+                shipping_options: [],
+              },
+            ])
+        }
+      },
+    })
+
+    const shippingOptionService = {
+      list: jest.fn().mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: "ship_1",
+          },
+          {
+            id: "ship_2",
+          },
+        ])
+      ),
+      validateCartOption: jest.fn().mockImplementation(s => s),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-      shippingOptionService: ShippingOptionServiceMock,
+      manager: MockManager,
+      shippingProfileRepository: profRepo,
+      shippingOptionService,
     })
 
     beforeEach(() => {
@@ -364,30 +203,58 @@ describe("ShippingProfileService", () => {
     })
 
     it("fetches correct options", async () => {
-      await profileService.fetchCartOptions({
+      const cart = {
         items: [
           {
-            content: { product: { _id: IdMap.getId("product_1") } },
+            variant: {
+              product: {
+                _id: IdMap.getId("product_1"),
+                profile_id: IdMap.getId("profile"),
+              },
+            },
           },
           {
-            content: { product: { _id: IdMap.getId("product_2") } },
+            variant: {
+              product: {
+                _id: IdMap.getId("product_2"),
+                profile_id: IdMap.getId("profile"),
+              },
+            },
           },
         ],
-      })
+      }
 
-      expect(ShippingProfileModelMock.find).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.find).toBeCalledWith({
-        products: { $in: [IdMap.getId("product_1"), IdMap.getId("product_2")] },
-      })
+      await expect(profileService.fetchCartOptions(cart)).resolves.toEqual([
+        { id: "ship_1" },
+        { id: "ship_2" },
+      ])
 
-      expect(ShippingOptionServiceMock.validateCartOption).toBeCalledTimes(2)
+      expect(shippingOptionService.validateCartOption).toBeCalledTimes(2)
+      expect(shippingOptionService.validateCartOption).toBeCalledWith(
+        { id: "ship_1" },
+        cart
+      )
+      expect(shippingOptionService.validateCartOption).toBeCalledWith(
+        { id: "ship_2" },
+        cart
+      )
     })
   })
 
   describe("addShippingOption", () => {
+    const profRepo = MockRepository({ findOne: () => Promise.resolve({}) })
+
+    const shippingOptionService = {
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-      shippingOptionService: ShippingOptionServiceMock,
+      manager: MockManager,
+      shippingProfileRepository: profRepo,
+      shippingOptionService,
     })
 
     beforeEach(() => {
@@ -400,99 +267,19 @@ describe("ShippingProfileService", () => {
         IdMap.getId("freeShipping")
       )
 
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledWith(
-        IdMap.getId("freeShipping")
+      expect(shippingOptionService.update).toBeCalledTimes(1)
+      expect(shippingOptionService.update).toBeCalledWith(
+        IdMap.getId("freeShipping"),
+        { profile_id: IdMap.getId("validId") }
       )
-      expect(ShippingProfileModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
-      })
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $push: { shipping_options: IdMap.getId("freeShipping") } }
-      )
-    })
-
-    it("add product is idempotent", async () => {
-      await profileService.addShippingOption(
-        IdMap.getId("validId"),
-        IdMap.getId("validId")
-      )
-
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledTimes(1)
-      expect(ShippingOptionServiceMock.retrieve).toBeCalledWith(
-        IdMap.getId("validId")
-      )
-      expect(ShippingProfileModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
-      })
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(0)
-    })
-  })
-
-  describe("removeShippingOption", () => {
-    const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("deletes a shipping option from a profile", async () => {
-      await profileService.removeShippingOption(
-        IdMap.getId("validId"),
-        IdMap.getId("validId")
-      )
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $pull: { shipping_options: IdMap.getId("validId") } }
-      )
-    })
-  })
-
-  describe("removeProduct", () => {
-    const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("deletes a product from a profile", async () => {
-      await profileService.removeProduct(
-        IdMap.getId("validId"),
-        IdMap.getId("validId")
-      )
-
-      expect(ShippingProfileModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingProfileModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $pull: { products: IdMap.getId("validId") } }
-      )
-    })
-
-    it("if product does not exist, do nothing", async () => {
-      await profileService.removeProduct(
-        IdMap.getId("validId"),
-        IdMap.getId("produt")
-      )
-
-      expect(ShippingProfileModelMock.updateOne).not.toBeCalled()
     })
   })
 
   describe("create", () => {
+    const profRepo = MockRepository()
     const profileService = new ShippingProfileService({
-      shippingProfileModel: ShippingProfileModelMock,
+      manager: MockManager,
+      shippingProfileRepository: profRepo,
     })
 
     afterEach(() => {
@@ -504,8 +291,8 @@ describe("ShippingProfileService", () => {
         name: "New Profile",
       })
 
-      expect(ShippingProfileModelMock.create).toHaveBeenCalledTimes(1)
-      expect(ShippingProfileModelMock.create).toHaveBeenCalledWith({
+      expect(profRepo.create).toHaveBeenCalledTimes(1)
+      expect(profRepo.create).toHaveBeenCalledWith({
         name: "New Profile",
       })
     })

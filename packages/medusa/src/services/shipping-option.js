@@ -1,24 +1,35 @@
-import mongoose from "mongoose"
 import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { In } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
  * @implements BaseService
  */
 class ShippingOptionService extends BaseService {
-  /** @param { shippingOptionModel: (ShippingOptionModel) } */
   constructor({
-    shippingOptionModel,
+    manager,
+    shippingOptionRepository,
+    shippingOptionRequirementRepository,
+    shippingMethodRepository,
     fulfillmentProviderService,
     regionService,
     totalsService,
   }) {
     super()
 
-    /** @private @const {ShippingProfileModel} */
-    this.optionModel_ = shippingOptionModel
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @const {ShippingOptionRepository} */
+    this.optionRepository_ = shippingOptionRepository
+
+    /** @private @const {ShippingMethodRepository} */
+    this.methodRepository_ = shippingMethodRepository
+
+    /** @private @const {ShippingOptionRequirementRepository} */
+    this.requirementRepository_ = shippingOptionRequirementRepository
 
     /** @private @const {ProductService} */
     this.providerService_ = fulfillmentProviderService
@@ -30,22 +41,24 @@ class ShippingOptionService extends BaseService {
     this.totalsService_ = totalsService
   }
 
-  /**
-   * Used to validate product ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw product id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The shippingOptionId could not be casted to an ObjectId"
-      )
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
     }
 
-    return value
+    const cloned = new ShippingOptionService({
+      manager: transactionManager,
+      shippingOptionRepository: this.optionRepository_,
+      shippingMethodRepository: this.methodRepository_,
+      shippingOptionRequirementRepository: this.requirementRepository_,
+      fulfillmentProviderService: this.providerService_,
+      regionService: this.regionService_,
+      totalsService: this.totalsService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -53,7 +66,7 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingRequirement} requirement - the requirement to validate
    * @return {ShippingRequirement} a validated shipping requirement
    */
-  validateRequirement_(requirement) {
+  async validateRequirement_(requirement, optionId) {
     if (!requirement.type) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -71,25 +84,39 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    return requirement
+    const reqRepo = this.manager_.getCustomRepository(
+      this.requirementRepository_
+    )
+
+    const existingReq = await reqRepo.findOne({
+      where: { id: requirement.id },
+    })
+
+    let req
+    if (existingReq) {
+      req = await reqRepo.save({
+        ...existingReq,
+        ...requirement,
+      })
+    } else {
+      req = await reqRepo.create({
+        shipping_option_id: optionId,
+        ...requirement,
+      })
+    }
+
+    return req
   }
 
   /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    const query = {}
+  async list(selector, config = { skip: 0, take: 50 }) {
+    const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
 
-    if (selector.region_id !== undefined) {
-      query.region_id = selector.region_id
-    }
-
-    if ("is_return" in selector) {
-      query.is_return = selector.is_return.toLowerCase() === "true"
-    }
-
-    return this.optionModel_.find(query)
+    const query = this.buildQuery_(selector, config)
+    return optRepo.find(query)
   }
 
   /**
@@ -98,13 +125,23 @@ class ShippingOptionService extends BaseService {
    * @param {string} optionId - the id of the profile to get.
    * @return {Promise<Product>} the profile document.
    */
-  async retrieve(optionId) {
+  async retrieve(optionId, options = {}) {
+    const soRepo = this.manager_.getCustomRepository(this.optionRepository_)
     const validatedId = this.validateId_(optionId)
-    const option = await this.optionModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+    const query = {
+      where: { id: validatedId },
+    }
+
+    if (options.select) {
+      query.select = options.select
+    }
+
+    if (options.relations) {
+      query.relations = options.relations
+    }
+
+    const option = await soRepo.findOne(query)
 
     if (!option) {
       throw new MedusaError(
@@ -117,18 +154,107 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
-   * Checks if the provided data for a fulfillment is valid.
-   * @param {string} optionId - the id of the option.
-   * @param {FulfillmentData} data - the data to validate
-   * @param {Cart} cart - the cart to validate against
-   * @return {FulfillmentData} the validated fulfillment data
+   * Updates a shipping method's associations. Useful when a cart is completed
+   * and its methods should be copied to an order/swap entity.
+   * @param {string} id - the id of the shipping method to update
+   * @param {object} update - the values to update the method with
+   * @returns {Promise<ShippingMethod>} the resulting shipping method
    */
-  async validateFulfillmentData(optionId, data, cart) {
-    const option = await this.retrieve(optionId)
-    const provider = await this.providerService_.retrieveProvider(
-      option.provider_id
-    )
-    return provider.validateFulfillmentData(data, cart)
+  async updateShippingMethod(id, update) {
+    return this.atomicPhase_(async manager => {
+      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const method = await methodRepo.findOne({ where: { id } })
+
+      if ("return_id" in update) {
+        method.return_id = update.return_id
+      }
+
+      if ("swap_id" in update) {
+        method.swap_id = update.swap_id
+      }
+
+      if ("order_id" in update) {
+        method.order_id = update.order_id
+      }
+
+      return methodRepo.save(method)
+    })
+  }
+
+  /**
+   * Removes a given shipping method
+   * @param {string} id - the id of the option to use for the method.
+   */
+  async deleteShippingMethod(sm) {
+    return this.atomicPhase_(async manager => {
+      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      return methodRepo.remove(sm)
+    })
+  }
+
+  /**
+   * Creates a shipping method for a given cart.
+   * @param {string} optionId - the id of the option to use for the method.
+   * @param {object} data - the optional provider data to use.
+   * @param {object} config - the cart to create the shipping method for.
+   * @returns {ShippingMethod} the resulting shipping method.
+   */
+  async createShippingMethod(optionId, data, config) {
+    return this.atomicPhase_(async manager => {
+      const option = await this.retrieve(optionId, {
+        relations: ["requirements"],
+      })
+
+      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+
+      if ("cart" in config) {
+        this.validateCartOption(option, config.cart || {})
+      }
+
+      const validatedData = await this.providerService_.validateFulfillmentData(
+        option,
+        data,
+        config.cart || {}
+      )
+
+      let methodPrice
+      if ("price" in config) {
+        methodPrice = config.price
+      } else {
+        methodPrice = await this.getPrice_(option, validatedData, config.cart)
+      }
+
+      const toCreate = {
+        shipping_option_id: option.id,
+        data: validatedData,
+        price: methodPrice,
+      }
+
+      if (config.order) {
+        toCreate.order_id = config.order.id
+      }
+
+      if (config.cart) {
+        toCreate.cart_id = config.cart.id
+      }
+
+      if (config.return_id) {
+        toCreate.return_id = config.return_id
+      }
+
+      if (config.order_id) {
+        toCreate.order_id = config.order_id
+      }
+
+      const method = await methodRepo.create(toCreate)
+
+      const created = await methodRepo.save(method)
+
+      return methodRepo.findOne({
+        where: { id: created.id },
+        relations: ["shipping_option"],
+      })
+    })
   }
 
   /**
@@ -139,9 +265,7 @@ class ShippingOptionService extends BaseService {
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  async validateCartOption(optionId, cart) {
-    const option = await this.retrieve(optionId)
-
+  validateCartOption(option, cart) {
     if (option.is_return) {
       return null
     }
@@ -153,25 +277,24 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    const subtotal = this.totalsService_.getSubtotal(cart)
+    const subtotal = cart.subtotal
     const requirementResults = option.requirements.map(requirement => {
-      if (requirement.type === "max_subtotal") {
-        return requirement.value > subtotal
-      } else if (requirement.type === "min_subtotal") {
-        return requirement.value <= subtotal
+      switch (requirement.type) {
+        case "max_subtotal":
+          return requirement.amount > subtotal
+        case "min_subtotal":
+          return requirement.amount <= subtotal
+        default:
+          return true
       }
-
-      return true // default to true
     })
 
-    if (!requirementResults.every(r => r)) {
+    if (!requirementResults.every(Boolean)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "The Cart does not satisfy the shipping option's requirements"
       )
     }
-
-    option.price = await this.getPrice(option, cart)
 
     return option
   }
@@ -183,39 +306,48 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingOption} option - the shipping option to create
    * @return {Promise<ShippingOption>} the result of the create operation
    */
-  async create(option) {
-    const region = await this.regionService_.retrieve(option.region_id)
+  async create(data) {
+    return this.atomicPhase_(async manager => {
+      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const option = await optionRepo.create(data)
 
-    if (!region.fulfillment_providers.includes(option.provider_id)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The fulfillment provider is not available in the provided region"
-      )
-    }
+      const region = await this.regionService_.retrieve(option.region_id, {
+        relations: ["fulfillment_providers"],
+      })
 
-    const provider = await this.providerService_.retrieveProvider(
-      option.provider_id
-    )
-    option.price = await this.validatePrice_(option.price, option)
+      if (
+        !region.fulfillment_providers.find(
+          ({ id }) => id === option.provider_id
+        )
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "The fulfillment provider is not available in the provided region"
+        )
+      }
 
-    const isValid = await provider.validateOption(option.data)
-    if (!isValid) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The fulfillment provider cannot validate the shipping option"
-      )
-    }
+      option.price_type = await this.validatePriceType_(data.price_type, option)
+      option.amount = data.price_type === "calculated" ? null : data.amount
 
-    if (option.requirements) {
-      option.requirements = await Promise.all(
-        option.requirements.map(r => {
-          return this.validateRequirement_(r)
-        })
-      )
-    }
+      const isValid = await this.providerService_.validateOption(option)
 
-    return this.optionModel_.create(option).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      if (!isValid) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "The fulfillment provider cannot validate the shipping option"
+        )
+      }
+
+      if ("requirements" in data) {
+        option.requirements = await Promise.all(
+          data.requirements.map(r => {
+            return this.validateRequirement_(r, option.id)
+          })
+        )
+      }
+
+      const result = await optionRepo.save(option)
+      return result
     })
   }
 
@@ -231,10 +363,10 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingOption} option - the option to validate against
    * @return {Promise<ShippingOptionPrice>} the validated price
    */
-  async validatePrice_(price, option) {
+  async validatePriceType_(priceType, option) {
     if (
-      !price.type ||
-      (price.type !== "flat_rate" && price.type !== "calculated")
+      !priceType ||
+      (priceType !== "flat_rate" && priceType !== "calculated")
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -242,11 +374,11 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    if (price.type === "calculated") {
-      const provider = this.providerService_.retrieveProvider(
-        option.provider_id
+    if (priceType === "calculated") {
+      const canCalculate = await this.providerService_.canCalculate(
+        option.provider_id,
+        option.data
       )
-      const canCalculate = await provider.canCalculate(option.data)
       if (!canCalculate) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -255,22 +387,12 @@ class ShippingOptionService extends BaseService {
       }
     }
 
-    if (
-      price.type === "flat_rate" &&
-      (price.amount === undefined || price.amount < 0)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Flat rate prices must be zero or have a postive amount field."
-      )
-    }
-
-    return price
+    return priceType
   }
 
   /**
    * Updates a profile. Metadata updates and product updates should use
-   * dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
+   * dedicated methods, e.g. `setMetadata`, etc. The function
    * will throw errors if metadata or product updates are attempted.
    * @param {string} optionId - the id of the option. Must be a string that
    *   can be casted to an ObjectId
@@ -278,53 +400,66 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(optionId, update) {
-    const option = await this.retrieve(optionId)
-    const validatedId = this.validateId_(optionId)
+    return this.atomicPhase_(async manager => {
+      const option = await this.retrieve(optionId)
 
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Use setMetadata to update metadata fields"
-      )
-    }
+      if ("metadata" in update) {
+        option.metadata = await this.setMetadata_(option, update.metadata)
+      }
 
-    if (update.region_id || update.provider_id || update.data) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Region and Provider cannot be updated after creation"
-      )
-    }
+      if (update.region_id || update.provider_id || update.data) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Region and Provider cannot be updated after creation"
+        )
+      }
 
-    if (update.requirements) {
-      update.requirements = update.requirements.reduce((acc, r) => {
-        const validated = this.validateRequirement_(r)
+      if ("is_return" in update) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "is_return cannot be changed after creation"
+        )
+      }
 
-        if (acc.find(raw => raw.type === validated.type)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Only one requirement of each type is allowed"
-          )
+      if ("requirements" in update) {
+        const acc = []
+        for (const r of update.requirements) {
+          const validated = await this.validateRequirement_(r, optionId)
+
+          if (acc.find(raw => raw.type === validated.type)) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Only one requirement of each type is allowed"
+            )
+          }
+
+          acc.push(validated)
         }
+        option.requirements = acc
+      }
 
-        acc.push(validated)
+      if ("price_type" in update) {
+        option.price_type = await this.validatePriceType_(
+          update.price_type,
+          option
+        )
+        if (update.price_type === "calculated") {
+          option.amount = null
+        }
+      }
 
-        return acc
-      }, [])
-    }
+      if ("amount" in update && option.price_type !== "calculated") {
+        option.amount = update.amount
+      }
 
-    if (update.price) {
-      update.price = await this.validatePrice_(update.price, option)
-    }
+      if ("name" in update) {
+        option.name = update.name
+      }
 
-    return this.optionModel_
-      .updateOne(
-        { _id: validatedId },
-        { $set: update },
-        { runValidators: true }
-      )
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const result = await optionRepo.save(option)
+      return result
+    })
   }
 
   /**
@@ -334,23 +469,24 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(optionId) {
-    let option
     try {
-      option = await this.retrieve(optionId)
+      let option = await this.retrieve(optionId)
+
+      const optionRepo = this.manager_.getCustomRepository(
+        this.optionRepository_
+      )
+
+      return optionRepo.softRemove(option)
     } catch (error) {
       // Delete is idempotent, but we return a promise to allow then-chaining
       return Promise.resolve()
     }
-
-    return this.optionModel_.deleteOne({ _id: option._id }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-    })
   }
 
   /**
    * @typedef ShippingRequirement
    * @property {string} type - one of max_subtotal, min_subtotal
-   * @property {number} value - the value to match against
+   * @property {number} amount - the value to match against
    */
 
   /**
@@ -361,20 +497,24 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of update
    */
   async addRequirement(optionId, requirement) {
-    const option = await this.retrieve(optionId)
-    const validatedRequirement = this.validateRequirement_(requirement)
+    return this.atomicPhase_(async manager => {
+      const option = await this.retrieve(optionId, {
+        relations: ["requirements"],
+      })
+      const validatedReq = await this.validateRequirement_(requirement)
 
-    if (option.requirements.find(r => r.type === validatedRequirement.type)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `A requirement with type: ${validatedRequirement.type} already exists`
-      )
-    }
+      if (option.requirements.find(r => r.type === validatedReq.type)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `A requirement with type: ${validatedReq.type} already exists`
+        )
+      }
 
-    return this.optionModel_.updateOne(
-      { _id: option._id },
-      { $push: { requirements: validatedRequirement } }
-    )
+      option.requirements.push(validatedReq)
+
+      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      return optionRepo.save(option)
+    })
   }
 
   /**
@@ -384,17 +524,24 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of update
    */
   async removeRequirement(optionId, requirementId) {
-    const option = await this.retrieve(optionId)
+    return this.atomicPhase_(async manager => {
+      const option = await this.retrieve(optionId, {
+        relations: "requirements",
+      })
+      const newReqs = option.requirements.map(r => {
+        if (r.id === requirementId) {
+          return null
+        } else {
+          return r
+        }
+      })
 
-    if (!option.requirements.find(r => r._id === requirementId)) {
-      // Remove is idempotent
-      return Promise.resolve()
-    }
+      option.requirements = newReqs.filter(Boolean)
 
-    return this.optionModel_.updateOne(
-      { _id: option._id },
-      { $pull: { requirements: { _id: requirementId } } }
-    )
+      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const result = await optionRepo.save(option)
+      return result
+    })
   }
 
   /**
@@ -404,12 +551,17 @@ class ShippingOptionService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {ShippingOption} the decorated ShippingOption.
    */
-  async decorate(shippingOption, fields, expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    let decorated = _.pick(shippingOption, fields.concat(requiredFields))
+  async decorate(optionId, fields = [], expandFields = []) {
+    const requiredFields = ["id", "metadata"]
 
-    const final = await this.runDecorators_(decorated)
-    return final
+    fields = fields.concat(requiredFields)
+
+    const option = await this.retrieve(optionId, {
+      select: fields,
+      relations: expandFields,
+    })
+
+    return option
   }
 
   /**
@@ -419,22 +571,26 @@ class ShippingOptionService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(optionId, key, value) {
-    const validatedId = this.validateId_(optionId)
+  async setMetadata_(option, metadata) {
+    const existing = option.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+      newData[key] = value
     }
 
-    const keyPath = `metadata.${key}`
-    return this.optionModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const updated = {
+      ...existing,
+      ...newData,
+    }
+
+    return updated
   }
 
   /**
@@ -447,38 +603,11 @@ class ShippingOptionService extends BaseService {
    *   retrieved.
    * @returns {Promise<Number>} the price of the shipping option.
    */
-  async getPrice(option, cart) {
-    if (option.price && option.price.type === "calculated") {
-      const provider = this.providerService_.retrieveProvider(
-        option.provider_id
-      )
-      return provider.calculatePrice(option.data, cart)
+  async getPrice_(option, data, cart) {
+    if (option.price_type === "calculated") {
+      return this.providerService_.calculatePrice(option, data, cart)
     }
-    return option.price.amount
-  }
-
-  /**
-   * Dedicated method to delete metadata for a shipping option.
-   * @param {string} optionId - the shipping option to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(optionId, key) {
-    const validatedId = this.validateId_(optionId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.optionModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    return option.amount
   }
 }
 

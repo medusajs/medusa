@@ -22,7 +22,10 @@ describe("GET /admin/store", () => {
 
     it("calls service retrieve", () => {
       expect(StoreServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(StoreServiceMock.retrieve).toHaveBeenCalledWith()
+      expect(StoreServiceMock.retrieve).toHaveBeenCalledWith([
+        "currencies",
+        "default_currency",
+      ])
     })
   })
 })

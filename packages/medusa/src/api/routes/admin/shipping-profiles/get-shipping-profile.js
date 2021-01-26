@@ -1,15 +1,13 @@
+import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { profile_id } = req.params
   try {
     const profileService = req.scope.resolve("shippingProfileService")
 
-    const data = await profileService.retrieve(profile_id)
-
-    const profile = await profileService.decorate(
-      data,
-      ["name"],
-      ["products", "shipping_options"]
-    )
+    const profile = await profileService.retrieve(profile_id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ shipping_profile: profile })
   } catch (err) {

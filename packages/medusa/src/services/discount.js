@@ -9,8 +9,10 @@ import { Validator, MedusaError } from "medusa-core-utils"
  */
 class DiscountService extends BaseService {
   constructor({
-    discountModel,
-    dynamicDiscountCodeModel,
+    manager,
+    discountRepository,
+    discountRuleRepository,
+    giftCardRepository,
     totalsService,
     productVariantService,
     productService,
@@ -19,17 +21,20 @@ class DiscountService extends BaseService {
   }) {
     super()
 
-    /** @private @const {DiscountModel} */
-    this.discountModel_ = discountModel
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
 
-    /** @private @const {DynamicDiscountCodeModel} */
-    this.dynamicCodeModel_ = dynamicDiscountCodeModel
+    /** @private @const {DiscountRepository} */
+    this.discountRepository_ = discountRepository
+
+    /** @private @const {DiscountRuleRepository} */
+    this.discountRuleRepository_ = discountRuleRepository
+
+    /** @private @const {GiftCardRepository} */
+    this.giftCardRepository_ = giftCardRepository
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
-
-    /** @private @const {ProductVariantService} */
-    this.productVariantService_ = productVariantService
 
     /** @private @const {ProductService} */
     this.productService_ = productService
@@ -41,22 +46,25 @@ class DiscountService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
-  /**
-   * Validates discount id
-   * @param {string} rawId - the raw id to validate
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The discount id could not be casted to an ObjectId"
-      )
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
     }
 
-    return value
+    const cloned = new DiscountService({
+      manager: transactionManager,
+      discountRepository: this.discountRepository_,
+      discountRuleRepository: this.discountRuleRepository_,
+      giftCardRepository: this.giftCardRepository_,
+      totalsService: this.totalsService_,
+      productService: this.productService_,
+      regionService: this.regionService_,
+      eventBusService: this.eventBus_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -66,15 +74,14 @@ class DiscountService extends BaseService {
    */
   validateDiscountRule_(discountRule) {
     const schema = Validator.object().keys({
-      description: Validator.string(),
+      description: Validator.string().optional(),
       type: Validator.string().required(),
       value: Validator.number()
         .min(0)
         .required(),
       allocation: Validator.string().required(),
-      valid_for: Validator.array().items(Validator.string()),
-      user_limit: Validator.number(),
-      total_limit: Validator.number(),
+      valid_for: Validator.array().optional(),
+      user_limit: Validator.number().optional(),
     })
 
     const { value, error } = schema.validate(discountRule)
@@ -96,20 +103,16 @@ class DiscountService extends BaseService {
   }
 
   /**
-   * Used to normalize discount codes to uppercase.
-   * @param {string} discountCode - the discount code to normalize
-   * @return {string} the normalized discount code
-   */
-  normalizeDiscountCode_(discountCode) {
-    return discountCode.toUpperCase()
-  }
-
-  /**
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector) {
-    return this.discountModel_.find(selector)
+  async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
+    const discountRepo = this.manager_.getCustomRepository(
+      this.discountRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return discountRepo.find(query)
   }
 
   /**
@@ -119,27 +122,45 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(discount) {
-    discount.discount_rule = this.validateDiscountRule_(discount.discount_rule)
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-    discount.code = this.normalizeDiscountCode_(discount.code)
+      const validatedRule = this.validateDiscountRule_(discount.rule)
 
-    return this.discountModel_.create(discount).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+      if (discount.regions) {
+        discount.regions = await Promise.all(
+          discount.regions.map(regionId =>
+            this.regionService_.retrieve(regionId)
+          )
+        )
+      }
+
+      const discountRule = await ruleRepo.create(validatedRule)
+      const createdDiscountRule = await ruleRepo.save(discountRule)
+
+      discount.code = discount.code.toUpperCase()
+      discount.rule = createdDiscountRule
+
+      const created = await discountRepo.create(discount)
+      const result = await discountRepo.save(created)
+      return result
     })
   }
 
   /**
    * Gets a discount by id.
    * @param {string} discountId - id of discount to retrieve
-   * @return {Promise<Discount>} the discount document
+   * @return {Promise<Discount>} the discount
    */
-  async retrieve(discountId) {
+  async retrieve(discountId, config = {}) {
+    const discountRepo = this.manager_.getCustomRepository(
+      this.discountRepository_
+    )
+
     const validatedId = this.validateId_(discountId)
-    const discount = await this.discountModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const discount = await discountRepo.findOne(query)
 
     if (!discount) {
       throw new MedusaError(
@@ -147,6 +168,7 @@ class DiscountService extends BaseService {
         `Discount with ${discountId} was not found`
       )
     }
+
     return discount
   }
 
@@ -155,38 +177,28 @@ class DiscountService extends BaseService {
    * @param {string} discountCode - discount code of discount to retrieve
    * @return {Promise<Discount>} the discount document
    */
-  async retrieveByCode(discountCode) {
-    discountCode = this.normalizeDiscountCode_(discountCode)
-    let discount = await this.discountModel_
-      .findOne({ code: discountCode })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+  async retrieveByCode(discountCode, relations = []) {
+    const discountRepo = this.manager_.getCustomRepository(
+      this.discountRepository_
+    )
+
+    let discount = await discountRepo.findOne({
+      where: { code: discountCode.toUpperCase(), is_dynamic: false },
+      relations,
+    })
 
     if (!discount) {
-      const dynamicCode = await this.dynamicCodeModel_
-        .findOne({ code: discountCode })
-        .catch(err => {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-        })
+      discount = await discountRepo.findOne({
+        where: { code: discountCode.toUpperCase(), is_dynamic: true },
+        relations,
+      })
 
-      if (!dynamicCode) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Discount with code ${discountCode} was not found`
-        )
-      }
-
-      discount = await this.retrieve(dynamicCode.discount_id)
       if (!discount) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `Discount with code ${discountCode} was not found`
         )
       }
-
-      discount.code = discountCode
-      discount.disabled = dynamicCode.disabled
     }
 
     return discount
@@ -199,56 +211,33 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async update(discountId, update) {
-    const discount = await this.retrieve(discountId)
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Use setMetadata to update discount metadata"
-      )
-    }
+      const discount = await this.retrieve(discountId)
 
-    if (update.discount_rule) {
-      update.discount_rule = this.validateDiscountRule_(update.discount_rule)
-    }
+      const { rule, metadata, regions, ...rest } = update
 
-    return this.discountModel_.updateOne(
-      { _id: discount._id },
-      { $set: update },
-      { runValidators: true }
-    )
-  }
+      if (regions) {
+        discount.regions = await Promise.all(
+          regions.map(regionId => this.regionService_.retrieve(regionId))
+        )
+      }
 
-  /**
-   * Generates a gift card with the specified value which is valid in the
-   * specified region.
-   * @param {number} value - the value that the gift card represents
-   * @param {string} regionId - the id of the region in which the gift card can
-   *    be used
-   * @return {Discount} the newly created gift card
-   */
-  async generateGiftCard(value, regionId) {
-    const region = await this.regionService_.retrieve(regionId)
+      if (metadata) {
+        discount.metadata = await this.setMetadata_(discount.id, metadata)
+      }
 
-    const code = [
-      randomize("A0", 4),
-      randomize("A0", 4),
-      randomize("A0", 4),
-      randomize("A0", 4),
-    ].join("-")
+      if (rule) {
+        discount.rule = this.validateDiscountRule_(rule)
+      }
 
-    const discountRule = this.validateDiscountRule_({
-      type: "fixed",
-      allocation: "total",
-      value,
-    })
+      for (const [key, value] of Object.entries(rest)) {
+        discount[key] = value
+      }
 
-    return this.discountModel_.create({
-      code,
-      discount_rule: discountRule,
-      is_giftcard: true,
-      regions: [region._id],
-      original_amount: value,
+      const updated = await discountRepo.save(discount)
+      return updated
     })
   }
 
@@ -259,76 +248,123 @@ class DiscountService extends BaseService {
    * @return {Promise} the newly created dynamic code
    */
   async createDynamicCode(discountId, data) {
-    const discount = await this.retrieve(discountId)
-    if (!discount.is_dynamic) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Discount must be set to dynamic"
-      )
-    }
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    const code = this.normalizeDiscountCode_(data.code)
-    return this.dynamicCodeModel_.create({
-      ...data,
-      discount_id: discount._id,
-      code,
+      const discount = await this.retrieve(discountId)
+
+      if (!discount.is_dynamic) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount must be set to dynamic"
+        )
+      }
+
+      if (!data.code) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Discount must have a code"
+        )
+      }
+
+      const toCreate = {
+        ...data,
+        rule_id: discount.rule_id,
+        is_dynamic: true,
+        is_disabled: false,
+        code: data.code.toUpperCase(),
+        parent_discount_id: discount.id,
+      }
+
+      const created = await discountRepo.create(toCreate)
+      const result = await discountRepo.save(created)
+      return result
     })
   }
 
   /**
-   * Creates a dynamic code for a discount id.
+   * Deletes a dynamic code for a discount id.
    * @param {string} discountId - the id of the discount to create a code for
    * @param {string} code - the code to identify the discount by
    * @return {Promise} the newly created dynamic code
    */
   async deleteDynamicCode(discountId, code) {
-    const discont = await this.retrieve(discountId)
-    if (!discount.is_dynamic) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Discount must be set to dynamic"
-      )
-    }
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const discount = await discountRepo.findOne({
+        where: { parent_discount_id: discountId, code },
+      })
 
-    return this.dynamicCodeModel_.deleteOne({
-      code,
+      if (!discount) return Promise.resolve()
+
+      await discountRepo.softRemove(discount)
+
+      return Promise.resolve()
     })
   }
 
   /**
-   * Adds a valid variant to the discount rule valid_for array.
+   * Adds a valid product to the discount rule valid_for array.
    * @param {string} discountId - id of discount
-   * @param {string} variantId - id of variant to add
+   * @param {string} productId - id of product to add
    * @return {Promise} the result of the update operation
    */
-  async addValidVariant(discountId, variantId) {
-    const discount = await this.retrieve(discountId)
+  async addValidProduct(discountId, productId) {
+    return this.atomicPhase_(async manager => {
+      const discountRuleRepo = manager.getCustomRepository(
+        this.discountRuleRepository_
+      )
 
-    const variant = await this.productVariantService_.retrieve(variantId)
+      const discount = await this.retrieve(discountId, {
+        relations: ["rule", "rule.valid_for"],
+      })
 
-    return this.discountModel_.updateOne(
-      { _id: discount._id },
-      { $push: { discount_rule: { valid_for: variant._id } } },
-      { runValidators: true }
-    )
+      const { rule } = discount
+
+      const exists = rule.valid_for.find(p => p.id === productId)
+      // If product is already present, we return early
+      if (exists) {
+        return rule
+      }
+
+      const product = await this.productService_.retrieve(productId)
+
+      rule.valid_for = [...rule.valid_for, product]
+
+      const updated = await discountRuleRepo.save(rule)
+      return updated
+    })
   }
 
   /**
-   * Removes a valid variant from the discount rule valid_for array
+   * Removes a product from the discount rule valid_for array
    * @param {string} discountId - id of discount
-   * @param {string} variantId - id of variant to add
+   * @param {string} productId - id of product to add
    * @return {Promise} the result of the update operation
    */
-  async removeValidVariant(discountId, variantId) {
-    const discount = await this.retrieve(discountId)
+  async removeValidProduct(discountId, productId) {
+    return this.atomicPhase_(async manager => {
+      const discountRuleRepo = manager.getCustomRepository(
+        this.discountRuleRepository_
+      )
 
-    const variant = await this.productVariantService_.retrieve(variantId)
+      const discount = await this.retrieve(discountId, {
+        relations: ["rule", "rule.valid_for"],
+      })
 
-    return this.discountModel_.updateOne(
-      { _id: discount._id },
-      { $pull: { discount_rule: { valid_for: variant._id } } },
-      { runValidators: true }
-    )
+      const { rule } = discount
+
+      const exists = rule.valid_for.find(p => p.id === productId)
+      // If product is not present, we return early
+      if (!exists) {
+        return rule
+      }
+
+      rule.valid_for = rule.valid_for.filter(p => p.id !== productId)
+
+      const updated = await discountRuleRepo.save(rule)
+      return updated
+    })
   }
 
   /**
@@ -338,15 +374,26 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addRegion(discountId, regionId) {
-    const discount = await this.retrieve(discountId)
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    const region = await this.regionService_.retrieve(regionId)
+      const discount = await this.retrieve(discountId, {
+        relations: ["regions"],
+      })
 
-    return this.discountModel_.updateOne(
-      { _id: discount._id },
-      { $push: { regions: region._id } },
-      { runValidators: true }
-    )
+      const exists = discount.regions.find(r => r.id === regionId)
+      // If region is already present, we return early
+      if (exists) {
+        return discount
+      }
+
+      const region = await this.regionService_.retrieve(regionId)
+
+      discount.regions = [...discount.regions, region]
+
+      const updated = await discountRepo.save(discount)
+      return updated
+    })
   }
 
   /**
@@ -356,15 +403,24 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async removeRegion(discountId, regionId) {
-    const discount = await this.retrieve(discountId)
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    const region = await this.regionService_.retrieve(regionId)
+      const discount = await this.retrieve(discountId, {
+        relations: ["regions"],
+      })
 
-    return this.discountModel_.updateOne(
-      { _id: discount._id },
-      { $pull: { regions: region._id } },
-      { runValidators: true }
-    )
+      const exists = discount.regions.find(r => r.id === regionId)
+      // If region is not present, we return early
+      if (!exists) {
+        return discount
+      }
+
+      discount.regions = discount.regions.filter(r => r.id !== regionId)
+
+      const updated = await discountRepo.save(discount)
+      return updated
+    })
   }
 
   /**
@@ -373,68 +429,17 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the delete operation
    */
   async delete(discountId) {
-    let discount
-    try {
-      discount = await this.retrieve(discountId)
-    } catch (error) {
-      // Delete is idempotent, but we return a promise to allow then-chaining
+    return this.atomicPhase_(async manager => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+
+      const discount = await discountRepo.findOne({ where: { id: discountId } })
+
+      if (!discount) return Promise.resolve()
+
+      await discountRepo.softRemove(discount)
+
       return Promise.resolve()
-    }
-
-    return this.discountModel_.deleteOne({ _id: discount._id }).catch(err => {
-      throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
     })
-  }
-
-  /**
-   * Dedicated method to set metadata for a discount.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} discountId - the id to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  async setMetadata(discountId, key, value) {
-    const validatedId = this.validateId_(discountId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.discountModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Dedicated method to delete metadata for a discount.
-   * @param {string} discountId - the discount to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(discountId, key) {
-    const validatedId = this.validateId_(discountId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.discountModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 
   /**
@@ -444,49 +449,18 @@ class DiscountService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Discount} return the decorated discount.
    */
-  async decorate(discount, fields = [], expandFields = []) {
-    const requiredFields = [
-      "_id",
-      "code",
-      "regions",
-      "discount_rule",
-      "is_dynamic",
-      "is_giftcard",
-      "disabled",
-      "metadata",
-    ]
-    const decorated = _.pick(discount, fields.concat(requiredFields))
+  async decorate(discountId, fields = [], expandFields = []) {
+    const requiredFields = ["id", "code", "is_dynamic", "metadata"]
 
-    if (expandFields.includes("valid_for")) {
-      let prods = {}
-      decorated.discount_rule.valid_for = await Promise.all(
-        decorated.discount_rule.valid_for.map(async p => {
-          if (p in prods) {
-            return prods[p]
-          }
-          const next = await this.productService_.retrieve(p)
-          prods[p] = next
-          return next
-        })
-      )
-    }
+    fields = fields.concat(requiredFields)
 
-    if (expandFields.includes("regions")) {
-      let regions = {}
-      decorated.regions = await Promise.all(
-        decorated.regions.map(async r => {
-          if (r in regions) {
-            return regions[r]
-          }
-          const next = await this.regionService_.retrieve(r)
-          regions[r] = next
-          return next
-        })
-      )
-    }
+    const discount = await this.retrieve(discountId, {
+      select: fields,
+      relations: expandFields,
+    })
 
-    const final = await this.runDecorators_(decorated)
-    return final
+    // const final = await this.runDecorators_(decorated)
+    return discount
   }
 }
 

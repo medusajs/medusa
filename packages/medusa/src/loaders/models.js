@@ -1,8 +1,8 @@
-import { BaseModel } from "medusa-interfaces"
-import { Lifetime } from "awilix"
 import glob from "glob"
 import path from "path"
-import { asFunction } from "awilix"
+import { BaseModel } from "medusa-interfaces"
+import { EntitySchema } from "typeorm"
+import { Lifetime, asClass, asValue } from "awilix"
 
 /**
  * Registers all models in the model directory
@@ -13,10 +13,17 @@ export default ({ container }) => {
 
   const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
-    const loaded = require(fn).default
-    const name = formatRegistrationName(fn)
-    container.register({
-      [name]: asFunction(cradle => new loaded(cradle)).singleton(),
+    const loaded = require(fn)
+
+    Object.entries(loaded).map(([key, val]) => {
+      if (typeof val === "function" || val instanceof EntitySchema) {
+        const name = formatRegistrationName(fn)
+        container.register({
+          [name]: asClass(val),
+        })
+
+        container.registerAdd("db_entities", asValue(val))
+      }
     })
   })
 }

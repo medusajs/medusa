@@ -2,6 +2,24 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { RegionServiceMock } from "../../../../../services/__mocks__/region"
 
+const defaultFields = [
+  "id",
+  "name",
+  "currency_code",
+  "tax_rate",
+  "tax_code",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+const defaultRelations = [
+  "countries",
+  "payment_providers",
+  "fulfillment_providers",
+]
+
 describe("GET /admin/regions", () => {
   describe("successful creation", () => {
     let subject
@@ -22,7 +40,15 @@ describe("GET /admin/regions", () => {
 
     it("calls service addCountry", () => {
       expect(RegionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.list).toHaveBeenCalledWith({})
+      expect(RegionServiceMock.list).toHaveBeenCalledWith(
+        {},
+        {
+          select: defaultFields,
+          relations: defaultRelations,
+          take: 50,
+          skip: 0,
+        }
+      )
     })
   })
 })

@@ -32,13 +32,16 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       )
     })
 
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+    })
+
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
     })
   })
 
@@ -76,13 +79,16 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       )
     })
 
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+    })
+
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
 
     it("returns the cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("fr-cart"))
-      expect(subject.body.cart.decorated).toEqual(true)
+      expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
     })
   })
 })

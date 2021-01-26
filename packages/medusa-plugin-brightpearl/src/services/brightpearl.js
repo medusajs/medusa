@@ -160,7 +160,7 @@ class BrightpearlService extends BaseService {
 
             // Only update if the inventory levels have changed
             if (parseInt(v.inventory_quantity) !== parseInt(onHand)) {
-              return this.productVariantService_.update(v._id, {
+              return this.productVariantService_.update(v.id, {
                 inventory_quantity: onHand,
               })
             }
@@ -181,10 +181,13 @@ class BrightpearlService extends BaseService {
       const onHand = availability[productId].total.onHand
 
       const sku = brightpearlProduct.identity.sku
-      const [variant] = await this.productVariantService_.list({ sku })
+      if (!sku) return
 
+      const variant = await this.productVariantService_
+        .retrieveBySKU(sku)
+        .catch((_) => undefined)
       if (variant && variant.manage_inventory) {
-        await this.productVariantService_.update(variant._id, {
+        await this.productVariantService_.update(variant.id, {
           inventory_quantity: onHand,
         })
       }
@@ -249,7 +252,7 @@ class BrightpearlService extends BaseService {
   }
 
   async createRefundCredit(fromOrder, fromRefund) {
-    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
     const orderId = fromOrder.metadata.brightpearl_sales_order_id
@@ -266,7 +269,7 @@ class BrightpearlService extends BaseService {
       const order = {
         currency: parentSo.currency,
         ref: parentSo.ref,
-        externalRef: `${parentSo.externalRef}.${fromOrder.refunds.length}`,
+        externalRef: `${parentSo.externalRef}.${fromRefund.id}`,
         channelId: this.options.channel_id || `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
@@ -277,11 +280,12 @@ class BrightpearlService extends BaseService {
             name: `${fromRefund.reason}: ${fromRefund.note}`,
             quantity: 1,
             taxCode: region.tax_code,
-            net: this.totalsService_.rounded(
-              fromRefund.amount / (1 + fromOrder.tax_rate)
+            net: this.bpnum_(
+              fromRefund.amount,
+              10000 / (100 + fromOrder.tax_rate)
             ),
-            tax: this.totalsService_.rounded(
-              fromRefund.amount - fromRefund.amount / (1 + fromOrder.tax_rate)
+            tax: this.bpnum_(
+              fromRefund.amount * (1 - 100 / (100 + fromOrder.tax_rate))
             ),
             nominalCode: accountingCode,
           },
@@ -291,15 +295,15 @@ class BrightpearlService extends BaseService {
       return client.orders
         .createCredit(order)
         .then(async (creditId) => {
-          const paymentMethod = fromOrder.payment_method
+          const paymentMethod = fromOrder.payments[0]
           const paymentType = "PAYMENT"
           const payment = {
-            transactionRef: `${paymentMethod._id}.${fromOrder.refunds.length}`,
-            transactionCode: fromOrder._id,
+            transactionRef: `${paymentMethod.id}.${fromRefund.id}`,
+            transactionCode: fromOrder.id,
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
-            currencyIsoCode: fromOrder.currency_code,
-            amountPaid: fromRefund.amount,
+            currencyIsoCode: fromOrder.currency_code.toUpperCase(),
+            amountPaid: this.bpnum_(fromRefund.amount),
             paymentDate: new Date(),
             paymentType,
           }
@@ -309,18 +313,21 @@ class BrightpearlService extends BaseService {
 
           await client.payments.create(payment)
 
-          return this.orderService_.setMetadata(
-            fromOrder._id,
-            "brightpearl_credit_ids",
-            newIds
-          )
+          return this.orderService_.update(fromOrder.id, {
+            metadata: {
+              brightpearl_credit_ids: newIds,
+            },
+          })
         })
-        .catch((err) => console.log(err.response.data.errors))
+        .catch((err) => {
+          console.log(err)
+          console.log(err.response.data.errors)
+        })
     }
   }
 
   async createSalesCredit(fromOrder, fromReturn) {
-    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
     const orderId = fromOrder.metadata.brightpearl_sales_order_id
@@ -329,7 +336,7 @@ class BrightpearlService extends BaseService {
       const order = {
         currency: parentSo.currency,
         ref: parentSo.ref,
-        externalRef: `${parentSo.externalRef}.${fromOrder.refunds.length}`,
+        externalRef: `${parentSo.externalRef}.${fromReturn.id}`,
         channelId: this.options.channel_id || `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
@@ -359,18 +366,14 @@ class BrightpearlService extends BaseService {
         return acc + next.net + next.tax
       }, 0)
 
-      const difference = fromReturn.refund_amount - total
+      const difference = (fromReturn.refund_amount / 100 - total) * 100
       if (difference) {
         order.rows.push({
           name: "Difference",
           quantity: 1,
           taxCode: region.tax_code,
-          net: this.totalsService_.rounded(
-            difference / (1 + fromOrder.tax_rate)
-          ),
-          tax: this.totalsService_.rounded(
-            difference - difference / (1 + fromOrder.tax_rate)
-          ),
+          net: this.bpnum_(difference, 10000 / (100 + fromOrder.tax_rate)),
+          tax: this.bpnum_(difference * (1 - 100 / (100 + fromOrder.tax_rate))),
           nominalCode: this.options.sales_account_code || "4000",
         })
       }
@@ -378,15 +381,15 @@ class BrightpearlService extends BaseService {
       return client.orders
         .createCredit(order)
         .then(async (creditId) => {
-          const paymentMethod = fromOrder.payment_method
+          const paymentMethod = fromOrder.payments[0]
           const paymentType = "PAYMENT"
           const payment = {
-            transactionRef: `${paymentMethod._id}.${fromOrder.refunds.length}`,
-            transactionCode: fromOrder._id,
+            transactionRef: `${paymentMethod.id}.${fromReturn.id}`,
+            transactionCode: fromOrder.id,
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
-            currencyIsoCode: fromOrder.currency_code,
-            amountPaid: fromReturn.refund_amount,
+            currencyIsoCode: fromOrder.currency_code.toUpperCase(),
+            amountPaid: this.bpnum_(fromReturn.refund_amount),
             paymentDate: new Date(),
             paymentType,
           }
@@ -396,17 +399,34 @@ class BrightpearlService extends BaseService {
 
           await client.payments.create(payment)
 
-          return this.orderService_.setMetadata(
-            fromOrder._id,
-            "brightpearl_credit_ids",
-            newIds
-          )
+          return this.orderService_.update(fromOrder.id, {
+            metadata: {
+              brightpearl_credit_ids: newIds,
+            },
+          })
         })
-        .catch((err) => console.log(err.response.data.errors))
+        .catch((err) => console.log(err))
     }
   }
 
-  async createSalesOrder(fromOrder) {
+  async createSalesOrder(fromOrderId) {
+    const fromOrder = await this.orderService_.retrieve(fromOrderId, {
+      select: [
+        "total",
+        "subtotal",
+        "shipping_total",
+        "gift_card_total",
+        "discount_total",
+      ],
+      relations: [
+        "region",
+        "shipping_address",
+        "billing_address",
+        "shipping_methods",
+        "payments",
+      ],
+    })
+
     const client = await this.getClient()
     let customer = await this.retrieveCustomerByEmail(fromOrder.email)
 
@@ -420,10 +440,10 @@ class BrightpearlService extends BaseService {
     const { shipping_address } = fromOrder
     const order = {
       currency: {
-        code: fromOrder.currency_code,
+        code: fromOrder.currency_code.toUpperCase(),
       },
       ref: fromOrder.display_id,
-      externalRef: fromOrder._id,
+      externalRef: fromOrder.id,
       channelId: this.options.channel_id || `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId: this.options.default_status_id || `3`,
@@ -464,33 +484,34 @@ class BrightpearlService extends BaseService {
         return salesOrderId
       })
       .then((salesOrderId) => {
-        return this.orderService_.setMetadata(
-          fromOrder._id,
-          "brightpearl_sales_order_id",
-          salesOrderId
-        )
+        return this.orderService_.update(fromOrder.id, {
+          metadata: {
+            brightpearl_sales_order_id: salesOrderId,
+          },
+        })
       })
   }
 
-  async createSwapPayment(fromSwap) {
+  async createSwapPayment(fromSwapId) {
+    const fromSwap = await this.swapService_.retrieve(fromSwapId)
+
     const client = await this.getClient()
     const soId =
       fromSwap.metadata && fromSwap.metadata.brightpearl_sales_order_id
 
-    if (!soId || fromSwap.amount_paid <= 0) {
+    if (!soId || fromSwap.difference_due <= 0) {
       return
     }
 
     const paymentType = "RECEIPT"
-    const paymentMethod = fromSwap.payment_method
     const payment = {
-      transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
-      transactionCode: fromSwap._id,
+      transactionRef: `${fromSwap.id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
+      transactionCode: fromSwap.id,
       paymentMethodCode: this.options.payment_method_code || "1220",
       orderId: soId,
       paymentDate: new Date(),
-      currencyIsoCode: fromSwap.currency_code,
-      amountPaid: fromSwap.amount_paid,
+      currencyIsoCode: fromSwap.order.currency_code.toUpperCase(),
+      amountPaid: fromSwap.difference_due,
       paymentType,
     }
 
@@ -502,20 +523,23 @@ class BrightpearlService extends BaseService {
     let customer = await this.retrieveCustomerByEmail(fromOrder.email)
 
     if (!customer) {
-      customer = await this.createCustomer(fromOrder)
+      customer = await this.createCustomer({
+        ...fromOrder,
+        ...fromSwap,
+      })
     }
 
     const authData = await this.getAuthData()
 
-    const sIndex = fromOrder.swaps.findIndex((s) => fromSwap._id.equals(s))
+    const sIndex = fromOrder.swaps.findIndex((s) => fromSwap.id === s.id)
 
     const { shipping_address } = fromSwap
     const order = {
       currency: {
-        code: fromOrder.currency_code,
+        code: fromOrder.currency_code.toUpperCase(),
       },
       ref: `${fromOrder.display_id}-S${sIndex + 1}`,
-      externalRef: `${fromOrder._id}.${fromSwap._id}`,
+      externalRef: `${fromOrder.id}.${fromSwap.id}`,
       channelId: this.options.channel_id || `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
@@ -545,7 +569,7 @@ class BrightpearlService extends BaseService {
         },
       },
       rows: await this.getBrightpearlRows({
-        region_id: fromOrder.region_id,
+        region: fromOrder.region,
         discounts: fromOrder.discounts,
         tax_rate: fromOrder.tax_rate,
         items: fromSwap.additional_items,
@@ -562,14 +586,14 @@ class BrightpearlService extends BaseService {
         return acc + parseFloat(next.net) + parseFloat(next.tax)
       }, 0)
 
-      const paymentMethod = fromOrder.payment_method
+      const paymentMethod = fromOrder.payments[0]
       const paymentType = "RECEIPT"
       const payment = {
-        transactionRef: `${paymentMethod._id}.${paymentType}-${fromSwap._id}`,
-        transactionCode: fromOrder._id,
+        transactionRef: `${paymentMethod.id}.${paymentType}-${fromSwap.id}`,
+        transactionCode: fromOrder.id,
         paymentMethodCode: this.options.payment_method_code || "1220",
         orderId: salesOrderId,
-        currencyIsoCode: fromOrder.currency_code,
+        currencyIsoCode: fromOrder.currency_code.toUpperCase(),
         amountPaid: total,
         paymentDate: new Date(),
         paymentType,
@@ -577,33 +601,33 @@ class BrightpearlService extends BaseService {
 
       await client.payments.create(payment)
 
-      return this.swapService_.setMetadata(
-        fromSwap._id,
-        "brightpearl_sales_order_id",
-        salesOrderId
-      )
+      return this.swapService_.update(fromSwap.id, {
+        metadata: {
+          brightpearl_sales_order_id: salesOrderId,
+        },
+      })
     })
   }
 
   async createSwapCredit(fromOrder, fromSwap) {
-    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
     const orderId = fromOrder.metadata.brightpearl_sales_order_id
-    const sIndex = fromOrder.swaps.findIndex((s) => fromSwap._id.equals(s))
+    const sIndex = fromOrder.swaps.findIndex((s) => fromSwap.id === s.id)
 
     if (orderId) {
       const parentSo = await client.orders.retrieve(orderId)
       const order = {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-S${sIndex + 1}`,
-        externalRef: `${parentSo.externalRef}.${fromSwap._id}`,
+        externalRef: `${parentSo.externalRef}.${fromSwap.id}`,
         channelId: this.options.channel_id || `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
         parentId: orderId,
-        rows: fromSwap.return.items.map((i) => {
+        rows: fromSwap.return_order.items.map((i) => {
           const parentRow = parentSo.rows.find((row) => {
             return row.externalRef === i.item_id
           })
@@ -623,13 +647,18 @@ class BrightpearlService extends BaseService {
         }),
       }
 
-      if (fromSwap.return_shipping && fromSwap.return_shipping.price) {
+      if (
+        fromSwap.return_order.shipping_method &&
+        fromSwap.return_order.shipping_method.price
+      ) {
         order.rows.push({
           name: "Return Shipping",
           quantity: 1,
           taxCode: region.tax_code,
-          net: -1 * fromSwap.return_shipping.price,
-          tax: -1 * fromSwap.return_shipping.price * fromOrder.tax_rate,
+          net: (-1 * fromSwap.return_order.shipping_method.price) / 100,
+          tax:
+            ((-1 * fromSwap.return_order.shipping_method.price) / 100) *
+            (fromOrder.tax_rate / 100),
           nominalCode: this.options.shipping_account_code || "4040",
         })
       }
@@ -641,14 +670,14 @@ class BrightpearlService extends BaseService {
       return client.orders
         .createCredit(order)
         .then(async (creditId) => {
-          const paymentMethod = fromOrder.payment_method
+          const paymentMethod = fromOrder.payments[0]
           const paymentType = "PAYMENT"
           const payment = {
-            transactionRef: `${paymentMethod._id}.${paymentType}-${fromSwap._id}`,
-            transactionCode: fromSwap._id,
+            transactionRef: `${paymentMethod.id}.${paymentType}-${fromSwap.id}`,
+            transactionCode: fromSwap.id,
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
-            currencyIsoCode: fromSwap.currency_code,
+            currencyIsoCode: fromOrder.currency_code.toUpperCase(),
             amountPaid: total,
             paymentDate: new Date(),
             paymentType,
@@ -660,7 +689,12 @@ class BrightpearlService extends BaseService {
     }
   }
 
-  async createPayment(fromOrder) {
+  async createPayment(fromOrderId) {
+    const fromOrder = await this.orderService_.retrieve(fromOrderId, {
+      select: ["total"],
+      relations: ["payments"],
+    })
+
     const client = await this.getClient()
     const soId =
       fromOrder.metadata && fromOrder.metadata.brightpearl_sales_order_id
@@ -669,38 +703,35 @@ class BrightpearlService extends BaseService {
     }
 
     const paymentType = "RECEIPT"
-    const paymentMethod = fromOrder.payment_method
     const payment = {
-      transactionRef: `${paymentMethod._id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
-      transactionCode: fromOrder._id,
+      transactionRef: `${fromOrder.id}.${paymentType}`, // Brightpearl cannot accept an auth and capture with same ref
+      transactionCode: fromOrder.id,
       paymentMethodCode: this.options.payment_method_code || "1220",
       orderId: soId,
       paymentDate: new Date(),
-      currencyIsoCode: fromOrder.currency_code,
-      amountPaid: await this.totalsService_.getTotal(fromOrder),
+      currencyIsoCode: fromOrder.currency_code.toUpperCase(),
+      amountPaid: this.bpnum_(fromOrder.total),
       paymentType,
     }
 
-    await client.payments.create(payment)
+    return client.payments.create(payment)
   }
 
   async getBrightpearlRows(fromOrder) {
-    const region = await this.regionService_.retrieve(fromOrder.region_id)
+    const { region } = fromOrder
     const discount = fromOrder.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== "free_shipping"
     )
     let lineDiscounts = []
-    if (discount && !discount.is_giftcard) {
+    if (discount) {
       lineDiscounts = this.totalsService_.getLineDiscounts(fromOrder, discount)
     }
 
     const lines = await Promise.all(
       fromOrder.items.map(async (item) => {
-        const bpProduct = await this.retrieveProductBySKU(
-          item.content.variant.sku
-        )
+        const bpProduct = await this.retrieveProductBySKU(item.variant.sku)
 
-        const ld = lineDiscounts.find((l) => item._id === l.item._id) || {
+        const ld = lineDiscounts.find((l) => item.id === l.item.id) || {
           amount: 0,
         }
 
@@ -710,13 +741,14 @@ class BrightpearlService extends BaseService {
         } else {
           row.name = item.title
         }
-        row.net = this.totalsService_.rounded(
-          item.content.unit_price * item.quantity - ld.amount
+        row.net = this.bpnum_(item.unit_price * item.quantity - ld.amount)
+        row.tax = this.bpnum_(
+          item.unit_price * item.quantity - ld.amount,
+          fromOrder.tax_rate
         )
-        row.tax = this.totalsService_.rounded(row.net * fromOrder.tax_rate)
         row.quantity = item.quantity
         row.taxCode = region.tax_code
-        row.externalRef = item._id
+        row.externalRef = item.id
         row.nominalCode = this.options.sales_account_code || "4000"
 
         if (item.is_giftcard) {
@@ -731,30 +763,28 @@ class BrightpearlService extends BaseService {
     // correspondingly. This reduces the amount payable, while debiting the
     // gift card account that was previously credited, when the gift card was
     // purchased.
-    if (discount && discount.is_giftcard) {
-      const discountTotal = await this.totalsService_.getDiscountTotal(
-        fromOrder
-      )
+    const gcTotal = fromOrder.gift_card_total
+    if (gcTotal) {
       lines.push({
-        name: `Gift Card: ${discount.code}`,
-        net: -1 * discountTotal,
-        tax: this.totalsService_.rounded(
-          -1 * discountTotal * fromOrder.tax_rate
-        ),
+        name: `Gift Card`,
+        net: this.bpnum_(-1 * gcTotal),
+        tax: this.bpnum_(-1 * gcTotal, fromOrder.tax_rate),
         quantity: 1,
         taxCode: region.tax_code,
         nominalCode: this.options.gift_card_account_code || "4000",
       })
     }
 
-    const shippingTotal = this.totalsService_.getShippingTotal(fromOrder)
+    const shippingTotal =
+      fromOrder.shipping_total ||
+      this.totalsService_.getShippingTotal(fromOrder)
     const shippingMethods = fromOrder.shipping_methods
     if (shippingMethods.length > 0) {
       lines.push({
         name: `Shipping: ${shippingMethods.map((m) => m.name).join(" + ")}`,
         quantity: 1,
-        net: this.totalsService_.rounded(shippingTotal),
-        tax: this.totalsService_.rounded(shippingTotal * fromOrder.tax_rate),
+        net: this.bpnum_(shippingTotal),
+        tax: this.bpnum_(shippingTotal, fromOrder.tax_rate),
         taxCode: region.tax_code,
         nominalCode: this.options.shipping_account_code || "4040",
       })
@@ -821,11 +851,10 @@ class BrightpearlService extends BaseService {
       .filter((i) => !!i)
 
     // Orders with a concatenated externalReference are swap orders
-    const [orderId, swapId] = order.externalRef.split(".")
+    const [_, swapId] = order.externalRef.split(".")
 
     if (swapId) {
-      const order = await this.orderService_.retrieve(orderId)
-      return this.swapService_.createFulfillment(order, swapId, {
+      return this.swapService_.createFulfillment(swapId, {
         goods_out_note: id,
       })
     }
@@ -865,6 +894,11 @@ class BrightpearlService extends BaseService {
     })
 
     return { contactId: customer }
+  }
+
+  bpnum_(number, taxRate = 100) {
+    const bpNumber = number / 100
+    return this.totalsService_.rounded(bpNumber * (taxRate / 100))
   }
 }
 

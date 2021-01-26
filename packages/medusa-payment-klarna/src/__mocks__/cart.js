@@ -2,13 +2,17 @@ import { IdMap } from "medusa-test-utils"
 
 export const carts = {
   frCart: {
-    _id: IdMap.getId("fr-cart"),
+    id: IdMap.getId("fr-cart"),
     email: "lebron@james.com",
     title: "test",
+    region: {
+      tax_rate: 2500,
+      currency_code: "eur",
+    },
     region_id: IdMap.getId("region-france"),
     items: [
       {
-        _id: IdMap.getId("line"),
+        id: IdMap.getId("line"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
@@ -16,20 +20,20 @@ export const carts = {
           {
             unit_price: 8,
             variant: {
-              _id: IdMap.getId("eur-8-us-10"),
+              id: IdMap.getId("eur-8-us-10"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              id: IdMap.getId("product"),
             },
             quantity: 1,
           },
           {
             unit_price: 10,
             variant: {
-              _id: IdMap.getId("eur-10-us-12"),
+              id: IdMap.getId("eur-10-us-12"),
             },
             product: {
-              _id: IdMap.getId("product"),
+              id: IdMap.getId("product"),
             },
             quantity: 1,
           },
@@ -37,17 +41,17 @@ export const carts = {
         quantity: 10,
       },
       {
-        _id: IdMap.getId("existingLine"),
+        id: IdMap.getId("existingLine"),
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
         content: {
           unit_price: 10,
           variant: {
-            _id: IdMap.getId("eur-10-us-12"),
+            id: IdMap.getId("eur-10-us-12"),
           },
           product: {
-            _id: IdMap.getId("product"),
+            id: IdMap.getId("product"),
           },
           quantity: 1,
         },
@@ -56,13 +60,16 @@ export const carts = {
     ],
     shipping_methods: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
+        data: {
+          name: "test",
+        },
         profile_id: "default_profile",
       },
     ],
     shipping_options: [
       {
-        _id: IdMap.getId("freeShipping"),
+        id: IdMap.getId("freeShipping"),
         profile_id: "default_profile",
       },
     ],
@@ -87,7 +94,7 @@ export const carts = {
     discounts: [
       {
         code: "MEDUSA_FREE",
-        discount_rule: {
+        rule: {
           type: "percent",
           value: 20,
           allocation: "item",

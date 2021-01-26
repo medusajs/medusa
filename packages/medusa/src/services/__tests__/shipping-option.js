@@ -1,116 +1,63 @@
-import mongoose from "mongoose"
-import { IdMap } from "medusa-test-utils"
+import _ from "lodash"
+import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ShippingOptionService from "../shipping-option"
-import { ShippingOptionModelMock } from "../../models/__mocks__/shipping-option"
-import { RegionServiceMock, regions } from "../__mocks__/region"
-import { TotalsServiceMock } from "../__mocks__/totals"
-import {
-  FulfillmentProviderServiceMock,
-  DefaultProviderMock,
-} from "../__mocks__/fulfillment-provider"
 
 describe("ShippingOptionService", () => {
   describe("retrieve", () => {
-    describe("successfully get profile", () => {
-      let res
-      beforeAll(async () => {
-        const optionService = new ShippingOptionService({
-          shippingOptionModel: ShippingOptionModelMock,
-        })
-
-        res = await optionService.retrieve(IdMap.getId("validId"))
-      })
-
-      afterAll(() => {
-        jest.clearAllMocks()
-      })
-
-      it("calls model layer findOne", () => {
-        expect(ShippingOptionModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(ShippingOptionModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("validId"),
-        })
-      })
-
-      it("returns correct product", () => {
-        expect(res.name).toEqual("Default Option")
-      })
-    })
-
-    describe("query fail", () => {
-      let res
-      beforeAll(async () => {
-        const optionService = new ShippingOptionService({
-          shippingOptionModel: ShippingOptionModelMock,
-        })
-
-        await optionService.retrieve(IdMap.getId("failId")).catch(err => {
-          res = err
-        })
-      })
-
-      afterAll(() => {
-        jest.clearAllMocks()
-      })
-
-      it("calls model layer findOne", () => {
-        expect(ShippingOptionModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(ShippingOptionModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("failId"),
-        })
-      })
-
-      it("model query throws error", () => {
-        expect(res.name).toEqual("not_found")
-      })
-    })
-  })
-
-  describe("setMetadata", () => {
-    const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
-    })
-
-    beforeEach(() => {
+    afterAll(() => {
       jest.clearAllMocks()
     })
-
-    it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
-      await optionService.setMetadata(`${id}`, "metadata", "testMetadata")
-
-      expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { "metadata.metadata": "testMetadata" } }
-      )
+    const shippingOptionRepository = MockRepository({
+      findOne: () => Promise.resolve({}),
+    })
+    const optionService = new ShippingOptionService({
+      manager: MockManager,
+      shippingOptionRepository,
     })
 
-    it("throw error on invalid key type", async () => {
-      try {
-        optionService.setMetadata(IdMap.getId("test"), 1234, "nono")
-      } catch (error) {
-        expect(error.message).toEqual(
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-    })
+    it("successfully gets shipping option", async () => {
+      await optionService.retrieve(IdMap.getId("validId"))
 
-    it("throws error on invalid optionId type", async () => {
-      try {
-        optionService.setMetadata("fakeProfileId", 1234, "nono")
-      } catch (error) {
-        expect(error.message).toEqual(
-          "The shippingOptionId could not be casted to an ObjectId"
-        )
-      }
+      expect(shippingOptionRepository.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("validId") },
+      })
     })
   })
 
   describe("update", () => {
+    const shippingOptionRepository = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("noCalc"):
+            return Promise.resolve({
+              provider_id: "no_calc",
+            })
+          case IdMap.getId("validId"):
+            return Promise.resolve({
+              provider_id: "provider",
+              data: {
+                provider_data: "true",
+              },
+            })
+
+          default:
+            return Promise.resolve({})
+        }
+      },
+    })
+
+    const fulfillmentProviderService = {
+      canCalculate: jest.fn().mockImplementation(id => id !== "no_calc"),
+    }
+
+    const shippingOptionRequirementRepository = MockRepository({
+      create: r => r,
+    })
     const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
+      manager: MockManager,
+      shippingOptionRepository,
+      shippingOptionRequirementRepository,
+      fulfillmentProviderService,
     })
 
     beforeEach(() => {
@@ -118,50 +65,50 @@ describe("ShippingOptionService", () => {
     })
 
     it("calls updateOne with correct params", async () => {
-      const id = IdMap.getId("validId")
+      await optionService.update(IdMap.getId("option"), { name: "new title" })
 
-      await optionService.update(`${id}`, { name: "new title" })
-
-      expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { name: "new title" } },
-        { runValidators: true }
-      )
+      expect(shippingOptionRepository.save).toBeCalledTimes(1)
+      expect(shippingOptionRepository.save).toBeCalledWith({
+        name: "new title",
+      })
     })
 
     it("sets requirements", async () => {
       const requirements = [
         {
           type: "min_subtotal",
-          value: 1,
+          amount: 1,
         },
       ]
 
-      await optionService.update(IdMap.getId("validId"), { requirements })
+      await optionService.update(IdMap.getId("option"), { requirements })
 
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $set: { requirements } },
-        { runValidators: true }
-      )
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
+        requirements: [
+          {
+            shipping_option_id: IdMap.getId("option"),
+            type: "min_subtotal",
+            amount: 1,
+          },
+        ],
+      })
     })
 
     it("fails on invalid req", async () => {
       const requirements = [
         {
           type: "_",
-          value: 2,
+          amount: 2,
         },
         {
           type: "min_subtotal",
-          value: 1,
+          amount: 1,
         },
       ]
 
       await expect(
-        optionService.update(IdMap.getId("validId"), { requirements })
+        optionService.update(IdMap.getId("option"), { requirements })
       ).rejects.toThrow(
         "Requirement type must be one of min_subtotal, max_subtotal"
       )
@@ -171,11 +118,11 @@ describe("ShippingOptionService", () => {
       const requirements = [
         {
           type: "min_subtotal",
-          value: 2,
+          amount: 2,
         },
         {
           type: "min_subtotal",
-          value: 1,
+          amount: 1,
         },
       ]
 
@@ -186,56 +133,49 @@ describe("ShippingOptionService", () => {
 
     it("sets flat rate price", async () => {
       await optionService.update(IdMap.getId("validId"), {
-        price: {
-          type: "flat_rate",
-          amount: 100,
+        price_type: "flat_rate",
+        amount: 100,
+      })
+
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
+        provider_id: "provider",
+        data: {
+          provider_data: "true",
         },
+        price_type: "flat_rate",
+        amount: 100,
       })
-
-      expect(ShippingOptionModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionModelMock.findOne).toHaveBeenCalledWith({
-        _id: IdMap.getId("validId"),
-      })
-
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $set: { price: { type: "flat_rate", amount: 100 } } },
-        { runValidators: true }
-      )
     })
 
     it("sets calculated price", async () => {
       await optionService.update(IdMap.getId("validId"), {
-        price: {
-          type: "calculated",
-        },
+        price_type: "calculated",
       })
 
-      expect(ShippingOptionModelMock.findOne).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionModelMock.findOne).toHaveBeenCalledWith({
-        _id: IdMap.getId("validId"),
-      })
-
-      expect(DefaultProviderMock.canCalculate).toHaveBeenCalledTimes(1)
-      expect(DefaultProviderMock.canCalculate).toHaveBeenCalledWith({
-        id: "bonjour",
-      })
-
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $set: { price: { type: "calculated" } } },
-        { runValidators: true }
+      expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledTimes(1)
+      expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith(
+        "provider",
+        {
+          provider_data: "true",
+        }
       )
+
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
+        provider_id: "provider",
+        data: {
+          provider_data: "true",
+        },
+        price_type: "calculated",
+        amount: null,
+      })
     })
 
     it("fails on invalid type", async () => {
       await expect(
         optionService.update(IdMap.getId("validId"), {
-          price: {
-            type: "non",
-          },
+          price_type: "non",
         })
       ).rejects.toThrow("The price must be of type flat_rate or calculated")
     })
@@ -243,35 +183,11 @@ describe("ShippingOptionService", () => {
     it("fails if provider cannot calculate", async () => {
       await expect(
         optionService.update(IdMap.getId("noCalc"), {
-          price: {
-            type: "calculated",
-          },
+          price_type: "calculated",
         })
       ).rejects.toThrow(
         "The fulfillment provider cannot calculate prices for this option"
       )
-    })
-
-    it("throw error on invalid shipping id type", async () => {
-      await expect(
-        optionService.update(19314235, { name: "new title" })
-      ).rejects.toThrow(
-        "The shippingOptionId could not be casted to an ObjectId"
-      )
-    })
-
-    it("throws error when trying to update metadata", async () => {
-      const id = IdMap.getId("validId")
-      await expect(
-        optionService.update(`${id}`, { metadata: { key: "value" } })
-      ).rejects.toThrow("Use setMetadata to update metadata fields")
-    })
-
-    it("throws error when trying to update region_id", async () => {
-      const id = IdMap.getId("validId")
-      await expect(
-        optionService.update(`${id}`, { region_id: "id" })
-      ).rejects.toThrow("Region and Provider cannot be updated after creation")
     })
 
     it("throws error when trying to update region_id", async () => {
@@ -290,8 +206,15 @@ describe("ShippingOptionService", () => {
   })
 
   describe("delete", () => {
+    const shippingOptionRepository = MockRepository({
+      findOne: i =>
+        i.where.id === IdMap.getId("validId")
+          ? { id: IdMap.getId("validId") }
+          : null,
+    })
     const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
+      manager: MockManager,
+      shippingOptionRepository,
     })
 
     beforeEach(() => {
@@ -301,22 +224,45 @@ describe("ShippingOptionService", () => {
     it("deletes the option successfully", async () => {
       await optionService.delete(IdMap.getId("validId"))
 
-      expect(ShippingOptionModelMock.deleteOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.deleteOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
+      expect(shippingOptionRepository.softRemove).toBeCalledTimes(1)
+      expect(shippingOptionRepository.softRemove).toBeCalledWith({
+        id: IdMap.getId("validId"),
       })
     })
 
     it("is idempotent", async () => {
-      await optionService.delete(IdMap.getId("delete"))
+      await expect(optionService.delete(IdMap.getId("delete"))).resolves
 
-      expect(ShippingOptionModelMock.deleteOne).toBeCalledTimes(0)
+      expect(shippingOptionRepository.softRemove).toBeCalledTimes(0)
     })
   })
 
   describe("addRequirement", () => {
+    const shippingOptionRepository = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("has-min"):
+            return Promise.resolve({
+              requirements: [
+                {
+                  type: "min_subtotal",
+                  amount: 1234,
+                },
+              ],
+            })
+          default:
+            return Promise.resolve({ requirements: [] })
+        }
+      },
+    })
+
+    const shippingOptionRequirementRepository = MockRepository({
+      create: r => r,
+    })
     const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
+      manager: MockManager,
+      shippingOptionRepository,
+      shippingOptionRequirementRepository,
     })
 
     beforeEach(() => {
@@ -326,43 +272,55 @@ describe("ShippingOptionService", () => {
     it("add product to profile successfully", async () => {
       await optionService.addRequirement(IdMap.getId("validId"), {
         type: "max_subtotal",
-        value: 10,
+        amount: 10,
       })
 
-      expect(ShippingOptionModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
+      expect(shippingOptionRequirementRepository.create).toBeCalledTimes(1)
+      expect(shippingOptionRequirementRepository.create).toBeCalledWith({
+        type: "max_subtotal",
+        amount: 10,
       })
 
-      expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        {
-          $push: {
-            requirements: {
-              type: "max_subtotal",
-              value: 10,
-            },
+      expect(shippingOptionRepository.save).toBeCalledTimes(1)
+      expect(shippingOptionRepository.save).toBeCalledWith({
+        requirements: [
+          {
+            type: "max_subtotal",
+            amount: 10,
           },
-        }
-      )
+        ],
+      })
     })
 
     it("fails if type exists", async () => {
       await expect(
-        optionService.addRequirement(IdMap.getId("validId"), {
+        optionService.addRequirement(IdMap.getId("has-min"), {
           type: "min_subtotal",
-          value: 100,
+          amount: 100,
         })
       ).rejects.toThrow("A requirement with type: min_subtotal already exists")
-
-      expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(0)
     })
   })
 
   describe("removeRequirement", () => {
+    const shippingOptionRepository = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          default:
+            return Promise.resolve({
+              requirements: [
+                {
+                  id: IdMap.getId("requirement_id"),
+                },
+              ],
+            })
+        }
+      },
+    })
+
     const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
+      manager: MockManager,
+      shippingOptionRepository,
     })
 
     beforeEach(() => {
@@ -372,38 +330,49 @@ describe("ShippingOptionService", () => {
     it("remove requirement successfully", async () => {
       await optionService.removeRequirement(
         IdMap.getId("validId"),
-        "requirement_id"
+        IdMap.getId("requirement_id")
       )
 
-      expect(ShippingOptionModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
-      })
-
-      expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("validId") },
-        { $pull: { requirements: { _id: "requirement_id" } } }
-      )
+      expect(shippingOptionRepository.save).toBeCalledTimes(1)
+      expect(shippingOptionRepository.save).toBeCalledWith({ requirements: [] })
     })
 
     it("is idempotent", async () => {
       await optionService.removeRequirement(IdMap.getId("validId"), "something")
 
-      expect(ShippingOptionModelMock.findOne).toBeCalledTimes(1)
-      expect(ShippingOptionModelMock.findOne).toBeCalledWith({
-        _id: IdMap.getId("validId"),
+      expect(shippingOptionRepository.save).toBeCalledTimes(1)
+      expect(shippingOptionRepository.save).toBeCalledWith({
+        requirements: [{ id: IdMap.getId("requirement_id") }],
       })
-
-      expect(ShippingOptionModelMock.updateOne).toBeCalledTimes(0)
     })
   })
 
   describe("create", () => {
+    const shippingOptionRepository = MockRepository({
+      create: r => r,
+    })
+
+    const fulfillmentProviderService = {
+      validateOption: jest.fn().mockImplementation(o => {
+        return Promise.resolve(o.data.res)
+      }),
+    }
+
+    const regionService = {
+      retrieve: () => {
+        return Promise.resolve({ fulfillment_providers: [{ id: "provider" }] })
+      },
+    }
+
+    const shippingOptionRequirementRepository = MockRepository({
+      create: r => r,
+    })
     const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
-      fulfillmentProviderService: FulfillmentProviderServiceMock,
-      regionService: RegionServiceMock,
+      manager: MockManager,
+      shippingOptionRepository,
+      shippingOptionRequirementRepository,
+      fulfillmentProviderService,
+      regionService,
     })
 
     beforeEach(() => {
@@ -413,44 +382,33 @@ describe("ShippingOptionService", () => {
     it("creates a shipping option", async () => {
       const option = {
         name: "Test Option",
-        provider_id: "default_provider",
+        provider_id: "provider",
         data: {
-          id: "new",
+          res: true,
         },
-        region_id: IdMap.getId("region-france"),
+        region_id: IdMap.getId("reg"),
         requirements: [
           {
             type: "min_subtotal",
-            value: 1,
+            amount: 1,
           },
         ],
-        price: {
-          type: "flat_rate",
-          amount: 13,
-        },
+        price_type: "flat_rate",
+        amount: 13,
       }
 
       await optionService.create(option)
 
-      expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("region-france")
+      expect(shippingOptionRepository.create).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.create).toHaveBeenCalledWith(option)
+
+      expect(fulfillmentProviderService.validateOption).toHaveBeenCalledTimes(1)
+      expect(fulfillmentProviderService.validateOption).toHaveBeenCalledWith(
+        option
       )
 
-      expect(
-        FulfillmentProviderServiceMock.retrieveProvider
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        FulfillmentProviderServiceMock.retrieveProvider
-      ).toHaveBeenCalledWith("default_provider")
-
-      expect(DefaultProviderMock.validateOption).toHaveBeenCalledTimes(1)
-      expect(DefaultProviderMock.validateOption).toHaveBeenCalledWith({
-        id: "new",
-      })
-
-      expect(ShippingOptionModelMock.create).toHaveBeenCalledTimes(1)
-      expect(ShippingOptionModelMock.create).toHaveBeenCalledWith(option)
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith(option)
     })
 
     it("fails if region doesn't have fulfillment provider", async () => {
@@ -464,13 +422,11 @@ describe("ShippingOptionService", () => {
         requirements: [
           {
             type: "min_subtotal",
-            value: 1,
+            amount: 1,
           },
         ],
-        price: {
-          type: "flat_rate",
-          amount: 13,
-        },
+        price_type: "flat_rate",
+        amount: 13,
       }
 
       await expect(optionService.create(option)).rejects.toThrow(
@@ -481,15 +437,13 @@ describe("ShippingOptionService", () => {
     it("fails if fulfillment provider cannot validate", async () => {
       const option = {
         name: "Test Option",
-        provider_id: "default_provider",
+        provider_id: "provider",
         data: {
-          id: "bno",
+          res: false,
         },
         region_id: IdMap.getId("region-france"),
-        price: {
-          type: "flat_rate",
-          amount: 13,
-        },
+        price_type: "flat_rate",
+        amount: 13,
       }
 
       await expect(optionService.create(option)).rejects.toThrow(
@@ -500,9 +454,9 @@ describe("ShippingOptionService", () => {
     it("fails if requirement is not validated", async () => {
       const option = {
         name: "Test Option",
-        provider_id: "default_provider",
+        provider_id: "provider",
         data: {
-          id: "new",
+          res: true,
         },
         requirements: [
           {
@@ -511,10 +465,8 @@ describe("ShippingOptionService", () => {
           },
         ],
         region_id: IdMap.getId("region-france"),
-        price: {
-          type: "flat_rate",
-          amount: 13,
-        },
+        price_type: "flat_rate",
+        amount: 13,
       }
 
       await expect(optionService.create(option)).rejects.toThrow(
@@ -525,15 +477,13 @@ describe("ShippingOptionService", () => {
     it("fails if price is not validated", async () => {
       const option = {
         name: "Test Option",
-        provider_id: "default_provider",
+        provider_id: "provider",
         data: {
-          id: "new",
+          res: true,
         },
         region_id: IdMap.getId("region-france"),
-        price: {
-          type: "nonon",
-          amount: 13,
-        },
+        price_type: "nonon",
+        amount: 13,
       }
 
       await expect(optionService.create(option)).rejects.toThrow(
@@ -542,20 +492,50 @@ describe("ShippingOptionService", () => {
     })
   })
 
-  describe("setRequirements", () => {
-    const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
+  describe("createShippingMethod", () => {
+    const option = id => ({
+      id,
+      region_id: IdMap.getId("region"),
+      price_type: "flat_rate",
+      amount: 10,
+      data: {
+        something: "yes",
+      },
+      requirements: [
+        {
+          type: "min_subtotal",
+          amount: 100,
+        },
+      ],
     })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
+    const shippingOptionRepository = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          default:
+            return Promise.resolve(option(q.where.id))
+        }
+      },
     })
-  })
+    const shippingMethodRepository = MockRepository({ create: r => r })
+    const totalsService = {
+      getSubtotal: c => {
+        return c.subtotal
+      },
+    }
 
-  describe("validateCartOption", () => {
+    const providerService = {
+      validateFulfillmentData: jest
+        .fn()
+        .mockImplementation(r => Promise.resolve(r.data)),
+      getPrice: d => d.price,
+    }
+
     const optionService = new ShippingOptionService({
-      shippingOptionModel: ShippingOptionModelMock,
-      totalsService: TotalsServiceMock,
+      manager: MockManager,
+      shippingMethodRepository,
+      shippingOptionRepository,
+      totalsService,
+      fulfillmentProviderService: providerService,
     })
 
     beforeEach(() => {
@@ -564,54 +544,56 @@ describe("ShippingOptionService", () => {
 
     it("validates", async () => {
       const cart = {
-        region_id: IdMap.getId("fr-region"),
+        id: IdMap.getId("cart"),
+        region_id: IdMap.getId("region"),
         subtotal: 400,
       }
 
-      const res = await optionService.validateCartOption(
-        IdMap.getId("validId"),
+      await optionService.createShippingMethod(
+        IdMap.getId("option"),
+        { provider_data: "dat" },
+        { cart }
+      )
+
+      expect(providerService.validateFulfillmentData).toHaveBeenCalledTimes(1)
+      expect(providerService.validateFulfillmentData).toHaveBeenCalledWith(
+        option(IdMap.getId("option")),
+        { provider_data: "dat" },
         cart
       )
 
-      expect(res).toEqual({
-        _id: IdMap.getId("validId"),
-        name: "Default Option",
-        region_id: IdMap.getId("fr-region"),
-        provider_id: "default_provider",
-        data: {
-          id: "bonjour",
-        },
-        requirements: [
-          {
-            _id: "requirement_id",
-            type: "min_subtotal",
-            value: 100,
-          },
-        ],
+      expect(shippingMethodRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingMethodRepository.save).toHaveBeenCalledWith({
+        cart_id: IdMap.getId("cart"),
+        shipping_option_id: IdMap.getId("option"),
         price: 10,
+        data: { something: "yes" },
       })
     })
 
     it("fails on invalid req", async () => {
-      const cart = {
-        region_id: IdMap.getId("nomatch"),
-      }
+      const id = IdMap.getId("option")
+      const d = { some: "thing" }
+      const c = { region_id: IdMap.getId("nomatch") }
 
       await expect(
-        optionService.validateCartOption(IdMap.getId("validId"), cart)
+        optionService.createShippingMethod(id, d, { cart: c })
       ).rejects.toThrow(
         "The shipping option is not available in the cart's region"
       )
     })
 
     it("fails if reqs are not satisfied", async () => {
+      const data = { some: "thing" }
       const cart = {
-        region_id: IdMap.getId("fr-region"),
+        region_id: IdMap.getId("region"),
         subtotal: 2,
       }
 
       await expect(
-        optionService.validateCartOption(IdMap.getId("validId"), cart)
+        optionService.createShippingMethod(IdMap.getId("validId"), data, {
+          cart,
+        })
       ).rejects.toThrow(
         "The Cart does not satisfy the shipping option's requirements"
       )

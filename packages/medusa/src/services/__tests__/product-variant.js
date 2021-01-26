@@ -1,390 +1,844 @@
-import mongoose from "mongoose"
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import idMap from "medusa-test-utils/dist/id-map"
 import ProductVariantService from "../product-variant"
-import { ProductVariantModelMock } from "../../models/__mocks__/product-variant"
-import { ProductServiceMock } from "../__mocks__/product"
-import { RegionServiceMock } from "../__mocks__/region"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
+
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function() {
+    return this
+  },
+}
 
 describe("ProductVariantService", () => {
   describe("retrieve", () => {
-    describe("successfully get product variant", () => {
-      let res
-      beforeAll(async () => {
-        const productVariantService = new ProductVariantService({
-          productVariantModel: ProductVariantModelMock,
-          eventBusService: EventBusServiceMock,
-        })
-
-        res = await productVariantService.retrieve(IdMap.getId("validId"))
-      })
-
-      afterAll(() => {
-        jest.clearAllMocks()
-      })
-
-      it("calls model layer findOne", () => {
-        expect(ProductVariantModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(ProductVariantModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("validId"),
-        })
-      })
-
-      it("returns correct variant", () => {
-        expect(res.title).toEqual("test")
-      })
+    const productVariantRepository = MockRepository({
+      findOne: query => {
+        if (query.where.id === IdMap.getId("batman")) {
+          return Promise.resolve(undefined)
+        }
+        return Promise.resolve({ id: IdMap.getId("ironman") })
+      },
+    })
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      productVariantRepository,
     })
 
-    describe("query fail", () => {
-      let res
-      beforeAll(async () => {
-        const productVariantService = new ProductVariantService({
-          productVariantModel: ProductVariantModelMock,
-          eventBusService: EventBusServiceMock,
-        })
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
 
-        await productVariantService
-          .retrieve(IdMap.getId("failId"))
-          .catch(err => {
-            res = err
-          })
+    it("successfully retrieves a product variant", async () => {
+      const result = await productVariantService.retrieve(
+        IdMap.getId("ironman")
+      )
+
+      expect(productVariantRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("ironman") },
       })
 
-      afterAll(() => {
-        jest.clearAllMocks()
-      })
+      expect(result.id).toEqual(IdMap.getId("ironman"))
+    })
 
-      it("calls model layer findOne", () => {
-        expect(ProductVariantModelMock.findOne).toHaveBeenCalledTimes(1)
-        expect(ProductVariantModelMock.findOne).toHaveBeenCalledWith({
-          _id: IdMap.getId("failId"),
-        })
-      })
-
-      it("model query throws error", () => {
-        expect(res.name).toEqual("database_error")
-        expect(res.message).toEqual("test error")
-      })
+    it("fails on non-existing product variant id", async () => {
+      try {
+        await productVariantService.retrieve(IdMap.getId("batman"))
+      } catch (error) {
+        expect(error.message).toBe(
+          `Variant with id: ${IdMap.getId("batman")} was not found`
+        )
+      }
     })
   })
-  describe("createDraft", () => {
-    beforeAll(() => {
+
+  describe("create", () => {
+    const productVariantRepository = MockRepository({
+      findOne: query => {
+        return Promise.resolve()
+      },
+    })
+
+    const productRepository = MockRepository({
+      findOne: query => {
+        if (query.where.id === IdMap.getId("ironmans")) {
+          return Promise.resolve({
+            id: IdMap.getId("ironman"),
+            options: [
+              {
+                id: IdMap.getId("color"),
+                title: "red",
+              },
+              {
+                id: IdMap.getId("size"),
+                title: "size",
+              },
+            ],
+            variants: [
+              {
+                id: IdMap.getId("v1"),
+                title: "V1",
+                options: [
+                  {
+                    id: IdMap.getId("test"),
+                    option_id: IdMap.getId("color"),
+                    value: "blue",
+                  },
+                  {
+                    id: IdMap.getId("test"),
+                    option_id: IdMap.getId("size"),
+                    value: "large",
+                  },
+                ],
+              },
+            ],
+          })
+        }
+        return Promise.resolve({
+          id: IdMap.getId("ironman"),
+          options: [
+            {
+              id: IdMap.getId("color"),
+              title: "red",
+            },
+          ],
+          variants: [
+            {
+              id: IdMap.getId("v1"),
+              title: "V1",
+              options: [
+                {
+                  id: IdMap.getId("test"),
+                  option_id: IdMap.getId("color"),
+                  value: "blue",
+                },
+              ],
+            },
+          ],
+        })
+      },
+    })
+
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      productVariantRepository,
+      productRepository,
+    })
+
+    beforeEach(async () => {
       jest.clearAllMocks()
-      const productVariantService = new ProductVariantService({
-        productVariantModel: ProductVariantModelMock,
-        eventBusService: EventBusServiceMock,
+    })
+
+    it("successfully create product variant", async () => {
+      await productVariantService.create(IdMap.getId("ironman"), {
+        id: IdMap.getId("v2"),
+        options: [
+          {
+            id: IdMap.getId("test"),
+            option_id: IdMap.getId("color"),
+            value: "red",
+          },
+        ],
       })
 
-      productVariantService.createDraft({
-        title: "Test Prod",
-        image: "test-image",
-        options: [],
-        prices: [
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+
+      expect(productVariantRepository.create).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.create).toHaveBeenCalledWith({
+        id: IdMap.getId("v2"),
+        product_id: IdMap.getId("ironman"),
+        options: [
           {
-            currency_code: "usd",
-            amount: 100,
+            id: IdMap.getId("test"),
+            option_id: IdMap.getId("color"),
+            value: "red",
           },
         ],
       })
     })
 
-    it("calls model layer create", () => {
-      expect(ProductVariantModelMock.create).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.create).toHaveBeenCalledWith({
-        title: "Test Prod",
-        image: "test-image",
-        options: [],
-        prices: [
-          {
-            currency_code: "usd",
-            amount: 100,
-          },
-        ],
-        published: false,
-      })
+    it("fails if product options and variant options differ in length", async () => {
+      try {
+        await productVariantService.create(IdMap.getId("ironmans"), {
+          id: IdMap.getId("v2"),
+          options: [
+            {
+              id: IdMap.getId("test"),
+              option_id: IdMap.getId("color"),
+              value: "red",
+            },
+          ],
+        })
+      } catch (error) {
+        expect(error.message).toBe(
+          "Product options length does not match variant options length. Product has 2 and variant has 1."
+        )
+      }
+    })
+
+    it("fails if variants options is missing a product option", async () => {
+      try {
+        await productVariantService.create(IdMap.getId("ironmans"), {
+          id: IdMap.getId("v2"),
+          options: [
+            {
+              id: IdMap.getId("test"),
+              option_id: IdMap.getId("color"),
+              value: "red",
+            },
+            {
+              id: IdMap.getId("test"),
+              option_id: IdMap.getId("material"),
+              value: "carbon",
+            },
+          ],
+        })
+      } catch (error) {
+        expect(error.message).toBe(
+          "Variant options do not contain value for size"
+        )
+      }
+    })
+
+    it("fails if new option already exists", async () => {
+      try {
+        await productVariantService.create(IdMap.getId("ironmans"), {
+          id: IdMap.getId("v2"),
+          options: [
+            {
+              id: IdMap.getId("test"),
+              option_id: IdMap.getId("color"),
+              value: "blue",
+            },
+            {
+              id: IdMap.getId("test"),
+              option_id: IdMap.getId("size"),
+              value: "large",
+            },
+          ],
+        })
+      } catch (error) {
+        expect(error.message).toBe(
+          "Variant with title V1 with provided options already exists"
+        )
+      }
     })
   })
 
   describe("publishVariant", () => {
-    beforeAll(() => {
-      jest.clearAllMocks()
-      const productVariantService = new ProductVariantService({
-        productVariantModel: ProductVariantModelMock,
-        eventBusService: EventBusServiceMock,
-      })
-
-      productVariantService.publish(IdMap.getId("variantId"))
+    const productVariantRepository = MockRepository({
+      findOne: query => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
-    it("calls model layer create", () => {
-      expect(ProductVariantModelMock.create).toHaveBeenCalledTimes(0)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        { _id: IdMap.getId("variantId") },
-        { $set: { published: true } }
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      productVariantRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("sucessfully publishes a product", async () => {
+      const result = await productVariantService.publish(IdMap.getId("ironman"))
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-variant.updated",
+        {
+          id: IdMap.getId("ironman"),
+        }
       )
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("ironman"),
+        published: true,
+      })
+
+      expect(result).toEqual({
+        id: IdMap.getId("ironman"),
+        published: true,
+      })
     })
   })
 
   describe("update", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      eventBusService: EventBusServiceMock,
+    const productVariantRepository = MockRepository({
+      findOne: query => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
-    beforeEach(() => {
+    const moneyAmountRepository = MockRepository({
+      findOne: () => Promise.resolve({ id: IdMap.getId("some-amount") }),
+    })
+
+    const productOptionValueRepository = MockRepository({
+      findOne: () =>
+        Promise.resolve({ id: IdMap.getId("some-value"), value: "blue" }),
+    })
+
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      moneyAmountRepository,
+      productVariantRepository,
+      productOptionValueRepository,
+    })
+
+    productVariantService.updateOptionValue = jest
+      .fn()
+      .mockReturnValue(() => Promise.resolve())
+
+    productVariantService.setCurrencyPrice = jest
+      .fn()
+      .mockReturnValue(() => Promise.resolve())
+
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
+    it("successfully updates variant by id", async () => {
+      await productVariantService.update(IdMap.getId("ironman"), {
+        title: "new title",
+      })
 
-      await productVariantService.update(`${id}`, { title: "new title" })
-
-      expect(ProductVariantModelMock.updateOne).toBeCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { title: "new title" } },
-        { runValidators: true }
-      )
-    })
-
-    it("throw error on invalid variant id type", async () => {
-      try {
-        await productVariantService.update(19314235, { title: "new title" })
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The variantId could not be casted to an ObjectId"
-        )
-      }
-    })
-
-    it("throws error when trying to update metadata", async () => {
-      const id = mongoose.Types.ObjectId()
-      try {
-        await productVariantService.update(`${id}`, {
-          metadata: { key: "value" },
-        })
-      } catch (err) {
-        expect(err.message).toEqual("Use setMetadata to update metadata fields")
-      }
-    })
-  })
-
-  describe("decorate", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      eventBusService: EventBusServiceMock,
-    })
-
-    const fakeVariant = {
-      _id: "1234",
-      title: "test",
-      image: "test-image",
-      prices: [
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-variant.updated",
         {
-          currency_code: "usd",
-          amount: 100,
-        },
-      ],
-      metadata: { testKey: "testValue" },
-      published: true,
-    }
+          id: IdMap.getId("ironman"),
+          title: "new title",
+        }
+      )
 
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("returns decorated product", async () => {
-      const decorated = await productVariantService.decorate(fakeVariant, [])
-      expect(decorated).toEqual({
-        _id: "1234",
-        metadata: { testKey: "testValue" },
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("ironman"),
+        title: "new title",
       })
     })
 
-    it("returns decorated product with handle", async () => {
-      const decorated = await productVariantService.decorate(fakeVariant, [
-        "prices",
-      ])
-      expect(decorated).toEqual({
-        _id: "1234",
-        metadata: { testKey: "testValue" },
+    it("successfully updates variant", async () => {
+      await productVariantService.update(
+        { id: IdMap.getId("ironman"), title: "new title" },
+        {
+          title: "new title",
+        }
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-variant.updated",
+        {
+          id: IdMap.getId("ironman"),
+          title: "new title",
+        }
+      )
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("ironman"),
+        title: "new title",
+      })
+    })
+
+    it("throws if provided variant is missing an id", async () => {
+      try {
+        await productVariantService.update(
+          { title: "new title" },
+          {
+            title: "new title",
+          }
+        )
+      } catch (error) {
+        expect(error.message).toBe("Variant id missing")
+      }
+    })
+
+    it("successfully updates variant metadata", async () => {
+      await productVariantService.update(IdMap.getId("ironman"), {
+        title: "new title",
+        metadata: {
+          testing: "this",
+        },
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-variant.updated",
+        {
+          id: IdMap.getId("ironman"),
+          title: "new title",
+          metadata: {
+            testing: "this",
+          },
+        }
+      )
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("ironman"),
+        title: "new title",
+        metadata: {
+          testing: "this",
+        },
+      })
+    })
+
+    it("successfully updates variant prices", async () => {
+      await productVariantService.update(IdMap.getId("ironman"), {
+        title: "new title",
         prices: [
           {
-            currency_code: "usd",
-            amount: 100,
+            currency_code: "dkk",
+            amount: 1000,
+            sale_amount: 750,
           },
         ],
       })
+
+      expect(productVariantService.setCurrencyPrice).toHaveBeenCalledTimes(1)
+      expect(productVariantService.setCurrencyPrice).toHaveBeenCalledWith(
+        IdMap.getId("ironman"),
+        {
+          currency_code: "dkk",
+          amount: 1000,
+          sale_amount: 750,
+        }
+      )
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+    })
+
+    it("successfully updates variant options", async () => {
+      await productVariantService.update(IdMap.getId("ironman"), {
+        title: "new title",
+        options: [
+          {
+            option_id: IdMap.getId("color"),
+            value: "red",
+          },
+        ],
+      })
+
+      expect(productVariantService.updateOptionValue).toHaveBeenCalledTimes(1)
+      expect(productVariantService.updateOptionValue).toHaveBeenCalledWith(
+        IdMap.getId("ironman"),
+        IdMap.getId("color"),
+        "red"
+      )
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
     })
   })
 
-  describe("setMetadata", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      eventBusService: EventBusServiceMock,
+  describe("setCurrencyPrice", () => {
+    const productVariantRepository = MockRepository({
+      findOne: query => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
-    beforeEach(() => {
+    const moneyAmountRepository = MockRepository({
+      findOne: query => {
+        if (query.where.currency_code === "usd") {
+          return Promise.resolve(undefined)
+        }
+        return Promise.resolve({
+          id: IdMap.getId("dkk"),
+          variant_id: IdMap.getId("ironman"),
+          currency_code: "dkk",
+        })
+      },
+    })
+
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      moneyAmountRepository,
+      productVariantRepository,
+    })
+
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("calls updateOne with correct params", async () => {
-      const id = mongoose.Types.ObjectId()
-      await productVariantService.setMetadata(
-        `${id}`,
-        "metadata",
-        "testMetadata"
-      )
+    it("successfully creates a price if none exist with given currency", async () => {
+      await productVariantService.setCurrencyPrice(IdMap.getId("ironman"), {
+        currency_code: "usd",
+        amount: 100,
+      })
 
-      expect(ProductVariantModelMock.updateOne).toBeCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toBeCalledWith(
-        { _id: `${id}` },
-        { $set: { "metadata.metadata": "testMetadata" } }
-      )
+      expect(moneyAmountRepository.create).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.create).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("ironman"),
+        currency_code: "usd",
+        amount: 100,
+      })
+
+      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("throw error on invalid key type", async () => {
-      const id = mongoose.Types.ObjectId()
+    it("successfully updates a non-regional price if currency exists", async () => {
+      await productVariantService.setCurrencyPrice(IdMap.getId("ironman"), {
+        currency_code: "dkk",
+        amount: 1000,
+      })
 
+      expect(moneyAmountRepository.create).toHaveBeenCalledTimes(0)
+
+      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.save).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("ironman"),
+        id: IdMap.getId("dkk"),
+        currency_code: "dkk",
+        amount: 1000,
+        sale_amount: undefined,
+      })
+    })
+  })
+
+  describe("getRegionPrice", () => {
+    const regionService = {
+      retrieve: function() {
+        return Promise.resolve({
+          id: IdMap.getId("california"),
+          name: "California",
+        })
+      },
+      withTransaction: function() {
+        return this
+      },
+    }
+    const moneyAmountRepository = MockRepository({
+      findOne: query => {
+        if (query.where.variant_id === IdMap.getId("ironmanv2")) {
+          return Promise.resolve(undefined)
+        }
+        if (query.where.variant_id === IdMap.getId("ironman-sale")) {
+          return Promise.resolve({
+            id: IdMap.getId("dkk"),
+            variant_id: IdMap.getId("ironman-sale"),
+            currency_code: "dkk",
+            region_id: IdMap.getId("california"),
+            amount: 1000,
+            sale_amount: 750,
+          })
+        }
+        return Promise.resolve({
+          id: IdMap.getId("dkk"),
+          variant_id: IdMap.getId("ironman"),
+          currency_code: "dkk",
+          region_id: IdMap.getId("california"),
+          amount: 1000,
+        })
+      },
+    })
+
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      regionService,
+      moneyAmountRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully retrieves region price", async () => {
+      const result = await productVariantService.getRegionPrice(
+        IdMap.getId("ironman"),
+        IdMap.getId("california")
+      )
+
+      expect(result).toBe(1000)
+    })
+
+    it("successfully retrieves region sale price", async () => {
+      const result = await productVariantService.getRegionPrice(
+        IdMap.getId("ironman-sale"),
+        IdMap.getId("california")
+      )
+
+      expect(result).toBe(750)
+    })
+
+    it("fails if no price is found", async () => {
       try {
-        await productVariantService.setMetadata(`${id}`, 1234, "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Key type is invalid. Metadata keys must be strings"
+        await productVariantService.getRegionPrice(
+          IdMap.getId("ironmanv2"),
+          IdMap.getId("california")
+        )
+      } catch (error) {
+        expect(error.message).toBe(
+          "A price for region: California could not be found"
         )
       }
     })
+  })
 
-    it("throws error on invalid variantId type", async () => {
+  describe("setRegionPrice", () => {
+    const moneyAmountRepository = MockRepository({
+      findOne: query => {
+        if (query.where.region_id === IdMap.getId("cali")) {
+          return Promise.resolve(undefined)
+        }
+        return Promise.resolve({
+          id: IdMap.getId("dkk"),
+          variant_id: IdMap.getId("ironman"),
+          currency_code: "dkk",
+          amount: 750,
+          sale_amount: 500,
+        })
+      },
+    })
+
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      moneyAmountRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates a price if none exist with given region id", async () => {
+      await productVariantService.setRegionPrice(IdMap.getId("ironman"), {
+        currency_code: "usd",
+        amount: 100,
+        region_id: IdMap.getId("cali"),
+      })
+
+      expect(moneyAmountRepository.create).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.create).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("ironman"),
+        currency_code: "usd",
+        region_id: IdMap.getId("cali"),
+        amount: 100,
+      })
+
+      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
+    })
+
+    it("successfully updates a price", async () => {
+      await productVariantService.setRegionPrice(IdMap.getId("ironman"), {
+        currency_code: "dkk",
+        amount: 750,
+        sale_amount: 500,
+      })
+
+      expect(moneyAmountRepository.create).toHaveBeenCalledTimes(0)
+
+      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.save).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("ironman"),
+        id: IdMap.getId("dkk"),
+        currency_code: "dkk",
+        amount: 750,
+        sale_amount: 500,
+      })
+    })
+  })
+
+  describe("updateOptionValue", () => {
+    const productOptionValueRepository = MockRepository({
+      findOne: query => {
+        if (query.where.variant_id === IdMap.getId("jibberish")) {
+          return Promise.resolve(undefined)
+        }
+        return Promise.resolve({
+          id: IdMap.getId("red"),
+          option_id: IdMap.getId("color"),
+          value: "red",
+        })
+      },
+    })
+
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      productOptionValueRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates", async () => {
+      await productVariantService.updateOptionValue(
+        IdMap.getId("ironman"),
+        IdMap.getId("color"),
+        "more red"
+      )
+
+      expect(productOptionValueRepository.save).toHaveBeenCalledTimes(1)
+      expect(productOptionValueRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("red"),
+        option_id: IdMap.getId("color"),
+        value: "more red",
+      })
+    })
+
+    it("fails if product option value does not exist", async () => {
       try {
-        await productVariantService.setMetadata("fakeVariantId", 1234, "nono")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "The variantId could not be casted to an ObjectId"
+        await productVariantService.updateOptionValue(
+          IdMap.getId("jibberish"),
+          IdMap.getId("color"),
+          "red"
         )
+      } catch (error) {
+        expect(error.message).toBe("Product option value not found")
       }
     })
   })
 
   describe("addOptionValue", () => {
+    const productOptionValueRepository = MockRepository({})
+
     const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      productService: ProductServiceMock,
-      eventBusService: EventBusServiceMock,
+      manager: MockManager,
+      eventBusService,
+      productOptionValueRepository,
     })
 
-    beforeEach(() => {
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("it successfully adds option value", async () => {
+    it("successfully add an option value", async () => {
       await productVariantService.addOptionValue(
-        IdMap.getId("testVariant"),
-        IdMap.getId("testOptionId"),
-        "testValue"
+        IdMap.getId("ironman"),
+        IdMap.getId("color"),
+        "black"
       )
 
-      expect(ProductVariantModelMock.updateOne).toBeCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("testVariant") },
-        {
-          $push: {
-            options: {
-              option_id: IdMap.getId("testOptionId"),
-              value: "testValue",
-            },
-          },
-        }
-      )
-    })
+      expect(productOptionValueRepository.create).toHaveBeenCalledTimes(1)
+      expect(productOptionValueRepository.create).toHaveBeenCalledWith({
+        variant_id: IdMap.getId("ironman"),
+        option_id: IdMap.getId("color"),
+        value: "black",
+      })
 
-    it("it successfully casts numeric option value to string", async () => {
-      await productVariantService.addOptionValue(
-        IdMap.getId("testVariant"),
-        IdMap.getId("testOptionId"),
-        1234
-      )
-
-      expect(ProductVariantModelMock.updateOne).toBeCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("testVariant") },
-        {
-          $push: {
-            options: {
-              option_id: IdMap.getId("testOptionId"),
-              value: "1234",
-            },
-          },
-        }
-      )
-    })
-
-    it("throw error if option value is not string", async () => {
-      try {
-        await productVariantService.addOptionValue(
-          IdMap.getId("testVariant"),
-          IdMap.getId("testOptionId"),
-          {}
-        )
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Option value is not of type string or number`
-        )
-      }
+      expect(productOptionValueRepository.save).toBeCalledTimes(1)
     })
   })
 
   describe("deleteOptionValue", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      productService: ProductServiceMock,
-      eventBusService: EventBusServiceMock,
+    const productOptionValueRepository = MockRepository({
+      findOne: query => {
+        if (query.where.option_id === IdMap.getId("size")) {
+          return Promise.resolve(undefined)
+        }
+        return Promise.resolve({
+          variant_id: IdMap.getId("ironman"),
+          option_id: IdMap.getId("color"),
+          id: IdMap.getId("test"),
+        })
+      },
     })
 
-    beforeEach(() => {
+    const productVariantService = new ProductVariantService({
+      manager: MockManager,
+      eventBusService,
+      productOptionValueRepository,
+    })
+
+    beforeEach(async () => {
       jest.clearAllMocks()
     })
 
     it("successfully deletes option value from variant", async () => {
       await productVariantService.deleteOptionValue(
-        IdMap.getId("testVariant"),
-        IdMap.getId("testing")
+        IdMap.getId("ironman"),
+        IdMap.getId("color")
       )
 
-      expect(ProductVariantModelMock.updateOne).toBeCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toBeCalledWith(
-        { _id: IdMap.getId("testVariant") },
-        { $pull: { options: { option_id: IdMap.getId("testing") } } }
+      expect(productOptionValueRepository.softRemove).toBeCalledTimes(1)
+      expect(productOptionValueRepository.softRemove).toBeCalledWith({
+        variant_id: IdMap.getId("ironman"),
+        option_id: IdMap.getId("color"),
+        id: IdMap.getId("test"),
+      })
+    })
+
+    it("successfully resolves if product option value does not exist", async () => {
+      const result = await productVariantService.deleteOptionValue(
+        IdMap.getId("ironman"),
+        IdMap.getId("size")
       )
+
+      expect(result).toBe(undefined)
     })
   })
 
   describe("delete", () => {
+    const productVariantRepository = MockRepository({
+      findOne: query => {
+        if (query.where.id === IdMap.getId("ironmanv2")) {
+          return Promise.resolve(undefined)
+        }
+        return Promise.resolve({
+          id: IdMap.getId("ironman"),
+        })
+      },
+    })
+
     const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      eventBusService: EventBusServiceMock,
+      manager: MockManager,
+      eventBusService,
+      productVariantRepository,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("deletes all variants and product successfully", async () => {
-      await productVariantService.delete(IdMap.getId("deleteId"))
+    it("successfully deletes variant", async () => {
+      await productVariantService.delete(IdMap.getId("ironman"))
 
-      expect(ProductVariantModelMock.deleteOne).toBeCalledTimes(1)
-      expect(ProductVariantModelMock.deleteOne).toBeCalledWith({
-        _id: IdMap.getId("deleteId"),
+      expect(productVariantRepository.softRemove).toBeCalledTimes(1)
+      expect(productVariantRepository.softRemove).toBeCalledWith({
+        id: IdMap.getId("ironman"),
       })
+    })
+
+    it("successfully resolves if variant does not exist", async () => {
+      const result = await productVariantService.delete(
+        IdMap.getId("ironmanv2")
+      )
+
+      expect(result).toBe(undefined)
     })
   })
 
   describe("canCoverQuantity", () => {
+    const productVariantRepository = MockRepository({
+      findOne: query => {
+        if (query.where.id === IdMap.getId("no-manageable-ironman")) {
+          return Promise.resolve({ manage_inventory: false })
+        }
+        if (query.where.id === IdMap.getId("backorder-ironman")) {
+          return Promise.resolve({ allow_backorder: true })
+        }
+        if (query.where.id === IdMap.getId("no-ironman")) {
+          return Promise.resolve({
+            inventory_quantity: 5,
+            manage_inventory: true,
+            allow_backorder: false,
+          })
+        }
+        return Promise.resolve({
+          inventory_quantity: 20,
+        })
+      },
+    })
+
     const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      eventBusService: EventBusServiceMock,
+      manager: MockManager,
+      eventBusService,
+      productVariantRepository,
     })
 
     beforeEach(() => {
@@ -393,7 +847,7 @@ describe("ProductVariantService", () => {
 
     it("returns true if there is more inventory than requested", async () => {
       const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("inventory-test"),
+        IdMap.getId("ironman"),
         10
       )
 
@@ -402,7 +856,7 @@ describe("ProductVariantService", () => {
 
     it("returns true if inventory not managed", async () => {
       const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("no-inventory-test"),
+        IdMap.getId("no-manageable-ironman"),
         10
       )
 
@@ -411,7 +865,7 @@ describe("ProductVariantService", () => {
 
     it("returns true if backorders allowed", async () => {
       const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("backorder-test"),
+        IdMap.getId("backorder-ironman"),
         10
       )
 
@@ -420,255 +874,11 @@ describe("ProductVariantService", () => {
 
     it("returns false if insufficient inventory", async () => {
       const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("inventory-test"),
+        IdMap.getId("no-ironman"),
         20
       )
 
       expect(res).toEqual(false)
-    })
-  })
-
-  describe("setCurrencyPrice", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      eventBusService: EventBusServiceMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("creates a prices array if none exist", async () => {
-      await productVariantService.setCurrencyPrice(
-        IdMap.getId("no-prices"),
-        "usd",
-        100
-      )
-
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("no-prices"),
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: "usd",
-                amount: 100,
-              },
-            ],
-          },
-        }
-      )
-    })
-
-    it("updates all eur prices", async () => {
-      await productVariantService.setCurrencyPrice(
-        IdMap.getId("eur-prices"),
-        "eur",
-        100
-      )
-
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("eur-prices"),
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: "eur",
-                amount: 100,
-              },
-              {
-                region_id: IdMap.getId("region-france"),
-                currency_code: "eur",
-                amount: 100,
-              },
-            ],
-          },
-        }
-      )
-    })
-
-    it("creates usd prices", async () => {
-      await productVariantService.setCurrencyPrice(
-        IdMap.getId("eur-prices"),
-        "usd",
-        300
-      )
-
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("eur-prices"),
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: "eur",
-                amount: 1000,
-              },
-              {
-                region_id: IdMap.getId("region-france"),
-                currency_code: "eur",
-                amount: 950,
-              },
-              {
-                currency_code: "usd",
-                amount: 300,
-              },
-            ],
-          },
-        }
-      )
-    })
-  })
-
-  describe("setRegionPrice", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      regionService: RegionServiceMock,
-      eventBusService: EventBusServiceMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("creates a prices array if none exist", async () => {
-      await productVariantService.setCurrencyPrice(
-        IdMap.getId("no-prices"),
-        "usd",
-        100
-      )
-
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("no-prices"),
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: "usd",
-                amount: 100,
-              },
-            ],
-          },
-        }
-      )
-    })
-
-    it("updates all eur prices", async () => {
-      await productVariantService.setCurrencyPrice(
-        IdMap.getId("eur-prices"),
-        "eur",
-        100
-      )
-
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("eur-prices"),
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: "eur",
-                amount: 100,
-              },
-              {
-                region_id: IdMap.getId("region-france"),
-                currency_code: "eur",
-                amount: 100,
-              },
-            ],
-          },
-        }
-      )
-    })
-
-    it("creates usd prices", async () => {
-      await productVariantService.setCurrencyPrice(
-        IdMap.getId("eur-prices"),
-        "usd",
-        300
-      )
-
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledTimes(1)
-      expect(ProductVariantModelMock.updateOne).toHaveBeenCalledWith(
-        {
-          _id: IdMap.getId("eur-prices"),
-        },
-        {
-          $set: {
-            prices: [
-              {
-                currency_code: "eur",
-                amount: 1000,
-              },
-              {
-                region_id: IdMap.getId("region-france"),
-                currency_code: "eur",
-                amount: 950,
-              },
-              {
-                currency_code: "usd",
-                amount: 300,
-              },
-            ],
-          },
-        }
-      )
-    })
-  })
-
-  describe("getRegionPrice", () => {
-    const productVariantService = new ProductVariantService({
-      productVariantModel: ProductVariantModelMock,
-      regionService: RegionServiceMock,
-      eventBusService: EventBusServiceMock,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("gets region specific price", async () => {
-      const res = await productVariantService.getRegionPrice(
-        IdMap.getId("eur-prices"),
-        IdMap.getId("region-france")
-      )
-
-      expect(res).toEqual(950)
-    })
-
-    it("gets currency default price", async () => {
-      const res = await productVariantService.getRegionPrice(
-        IdMap.getId("eur-prices"),
-        IdMap.getId("region-de")
-      )
-
-      expect(res).toEqual(1000)
-    })
-
-    it("throws if no region or currency", async () => {
-      try {
-        const res = await productVariantService.getRegionPrice(
-          IdMap.getId("eur-prices"),
-          IdMap.getId("region-se")
-        )
-      } catch (err) {
-        expect(err.message).toEqual(
-          "A price for region: Sweden could not be found"
-        )
-      }
     })
   })
 })

@@ -19,7 +19,7 @@ export default async (req, res) => {
   }
   try {
     const customerService = req.scope.resolve("customerService")
-    const customer = await customerService.create(value)
+    let customer = await customerService.create(value)
 
     // Add JWT to cookie
     req.session.jwt = jwt.sign(
@@ -30,16 +30,12 @@ export default async (req, res) => {
       }
     )
 
-    const data = await customerService.decorate(customer, [
-      "_id",
-      "email",
+    customer = await customerService.retrieve(customer.id, [
       "orders",
       "shipping_addresses",
-      "first_name",
-      "last_name",
-      "phone",
     ])
-    res.status(201).json({ customer: data })
+
+    res.status(200).json({ customer })
   } catch (err) {
     throw err
   }

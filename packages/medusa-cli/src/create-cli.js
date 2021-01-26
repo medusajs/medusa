@@ -62,6 +62,22 @@ function buildLocalCommands(cli, isLocalProject) {
 
   cli
     .command({
+      command: `migrations [action]`,
+      desc: `Migrate the database to the most recent version.`,
+      builder: {
+        action: {
+          demand: true,
+          choices: ["run", "show"],
+        },
+      },
+      handler: handlerP(
+        getCommandHandler(`migrate`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: _ =>

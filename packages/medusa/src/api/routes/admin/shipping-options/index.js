@@ -24,3 +24,21 @@ export default app => {
 
   return app
 }
+
+export const defaultFields = [
+  "id",
+  "name",
+  "region_id",
+  "profile_id",
+  "provider_id",
+  "price_type",
+  "amount",
+  "is_return",
+  "data",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const defaultRelations = ["region", "profile", "requirements"]
