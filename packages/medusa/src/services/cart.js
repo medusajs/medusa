@@ -693,19 +693,15 @@ class CartService extends BaseService {
       .retrieveByEmail(value)
       .catch(() => undefined)
 
-    console.log(customer)
-
     if (!customer) {
       customer = await this.customerService_
         .withTransaction(this.transactionManager_)
         .create({ email })
     }
 
-    console.log(customer)
-
     cart.email = value
     cart.customer = customer
-    // cart.customer_id = customer.id
+    cart.customer_id = customer.id
   }
 
   /**
