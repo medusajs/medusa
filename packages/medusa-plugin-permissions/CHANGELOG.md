@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/medusajs/medusa/compare/medusa-plugin-permissions@1.0.13...medusa-plugin-permissions@1.1.0) (2021-01-26)
+
+**Note:** Version bump only for package medusa-plugin-permissions
+
+
+
+
+
 ## [1.0.13](https://github.com/medusajs/medusa/compare/medusa-plugin-permissions@1.0.12...medusa-plugin-permissions@1.0.13) (2020-12-17)
 
 **Note:** Version bump only for package medusa-plugin-permissions
