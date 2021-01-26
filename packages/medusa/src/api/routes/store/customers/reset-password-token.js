@@ -17,7 +17,7 @@ export default async (req, res) => {
     const customer = await customerService.retrieveByEmail(value.email)
 
     // Will generate a token and send it to the customer via an email privder
-    await customerService.generateResetPasswordToken(customer._id)
+    await customerService.generateResetPasswordToken(customer.id)
 
     res.sendStatus(204)
   } catch (error) {

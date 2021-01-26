@@ -7,13 +7,17 @@ exports["default"] = exports.CartServiceMock = exports.carts = void 0;
 
 var _medusaTestUtils = require("medusa-test-utils");
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var carts = {
   emptyCart: {
-    _id: _medusaTestUtils.IdMap.getId("emptyCart"),
+    id: _medusaTestUtils.IdMap.getId("emptyCart"),
     items: [],
     region_id: _medusaTestUtils.IdMap.getId("testRegion"),
+    customer_id: "test-customer",
+    payment_sessions: [],
     shipping_options: [{
-      _id: _medusaTestUtils.IdMap.getId("freeShipping"),
+      id: _medusaTestUtils.IdMap.getId("freeShipping"),
       profile_id: "default_profile",
       data: {
         some_data: "yes"
@@ -21,58 +25,53 @@ var carts = {
     }]
   },
   frCart: {
-    _id: _medusaTestUtils.IdMap.getId("fr-cart"),
+    id: _medusaTestUtils.IdMap.getId("fr-cart"),
     email: "lebron@james.com",
     title: "test",
     region_id: _medusaTestUtils.IdMap.getId("region-france"),
     items: [{
-      _id: _medusaTestUtils.IdMap.getId("line"),
+      id: _medusaTestUtils.IdMap.getId("line"),
       title: "merge line",
       description: "This is a new line",
       thumbnail: "test-img-yeah.com/thumb",
-      content: [{
-        unit_price: 8,
-        variant: {
-          _id: _medusaTestUtils.IdMap.getId("eur-8-us-10")
-        },
-        product: {
-          _id: _medusaTestUtils.IdMap.getId("product")
-        },
-        quantity: 1
-      }, {
-        unit_price: 10,
-        variant: {
-          _id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
-        },
-        product: {
-          _id: _medusaTestUtils.IdMap.getId("product")
-        },
-        quantity: 1
-      }],
-      quantity: 10
-    }, {
-      _id: _medusaTestUtils.IdMap.getId("existingLine"),
-      title: "merge line",
-      description: "This is a new line",
-      thumbnail: "test-img-yeah.com/thumb",
-      content: {
-        unit_price: 10,
-        variant: {
-          _id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
-        },
-        product: {
-          _id: _medusaTestUtils.IdMap.getId("product")
-        },
-        quantity: 1
+      unit_price: 8,
+      variant: {
+        id: _medusaTestUtils.IdMap.getId("eur-8-us-10")
       },
+      product: {
+        id: _medusaTestUtils.IdMap.getId("product")
+      },
+      // {
+      //   unit_price: 10,
+      //   variant: {
+      //     id: IdMap.getId("eur-10-us-12"),
+      //   },
+      //   product: {
+      //     id: IdMap.getId("product"),
+      //   },
+      //   quantity: 1,
+      // },
       quantity: 10
-    }],
+    }, _defineProperty({
+      id: _medusaTestUtils.IdMap.getId("existingLine"),
+      title: "merge line",
+      description: "This is a new line",
+      thumbnail: "test-img-yeah.com/thumb",
+      unit_price: 10,
+      variant: {
+        id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
+      },
+      product: {
+        id: _medusaTestUtils.IdMap.getId("product")
+      },
+      quantity: 1
+    }, "quantity", 10)],
     shipping_methods: [{
-      _id: _medusaTestUtils.IdMap.getId("freeShipping"),
+      id: _medusaTestUtils.IdMap.getId("freeShipping"),
       profile_id: "default_profile"
     }],
     shipping_options: [{
-      _id: _medusaTestUtils.IdMap.getId("freeShipping"),
+      id: _medusaTestUtils.IdMap.getId("freeShipping"),
       profile_id: "default_profile"
     }],
     payment_sessions: [{
@@ -95,57 +94,57 @@ var carts = {
     customer_id: _medusaTestUtils.IdMap.getId("lebron")
   },
   frCartNoStripeCustomer: {
-    _id: _medusaTestUtils.IdMap.getId("fr-cart-no-customer"),
+    id: _medusaTestUtils.IdMap.getId("fr-cart-no-customer"),
     title: "test",
     region_id: _medusaTestUtils.IdMap.getId("region-france"),
     items: [{
-      _id: _medusaTestUtils.IdMap.getId("line"),
+      id: _medusaTestUtils.IdMap.getId("line"),
       title: "merge line",
       description: "This is a new line",
       thumbnail: "test-img-yeah.com/thumb",
       content: [{
         unit_price: 8,
         variant: {
-          _id: _medusaTestUtils.IdMap.getId("eur-8-us-10")
+          id: _medusaTestUtils.IdMap.getId("eur-8-us-10")
         },
         product: {
-          _id: _medusaTestUtils.IdMap.getId("product")
+          id: _medusaTestUtils.IdMap.getId("product")
         },
         quantity: 1
       }, {
         unit_price: 10,
         variant: {
-          _id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
+          id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
         },
         product: {
-          _id: _medusaTestUtils.IdMap.getId("product")
+          id: _medusaTestUtils.IdMap.getId("product")
         },
         quantity: 1
       }],
       quantity: 10
     }, {
-      _id: _medusaTestUtils.IdMap.getId("existingLine"),
+      id: _medusaTestUtils.IdMap.getId("existingLine"),
       title: "merge line",
       description: "This is a new line",
       thumbnail: "test-img-yeah.com/thumb",
       content: {
         unit_price: 10,
         variant: {
-          _id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
+          id: _medusaTestUtils.IdMap.getId("eur-10-us-12")
         },
         product: {
-          _id: _medusaTestUtils.IdMap.getId("product")
+          id: _medusaTestUtils.IdMap.getId("product")
         },
         quantity: 1
       },
       quantity: 10
     }],
     shipping_methods: [{
-      _id: _medusaTestUtils.IdMap.getId("freeShipping"),
+      id: _medusaTestUtils.IdMap.getId("freeShipping"),
       profile_id: "default_profile"
     }],
     shipping_options: [{
-      _id: _medusaTestUtils.IdMap.getId("freeShipping"),
+      id: _medusaTestUtils.IdMap.getId("freeShipping"),
       profile_id: "default_profile"
     }],
     payment_sessions: [{
@@ -173,6 +172,10 @@ var CartServiceMock = {
   retrieve: jest.fn().mockImplementation(function (cartId) {
     if (cartId === _medusaTestUtils.IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart);
+    }
+
+    if (cartId === _medusaTestUtils.IdMap.getId("fr-cart-no-customer")) {
+      return Promise.resolve(carts.frCartNoStripeCustomer);
     }
 
     if (cartId === _medusaTestUtils.IdMap.getId("emptyCart")) {

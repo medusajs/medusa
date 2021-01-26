@@ -1,3 +1,6 @@
+import { MedusaError } from "medusa-core-utils"
+import { In, FindOperator, getManager } from "typeorm"
+
 /**
  * Common functionality for Services
  * @interface
@@ -5,6 +8,179 @@
 class BaseService {
   constructor() {
     this.decorators_ = []
+  }
+
+  withTransaction() {
+    console.log("WARN: withTransaction called without custom implementation")
+    return this
+  }
+
+  /**
+   * Used to build TypeORM queries.
+   */
+  buildQuery_(selector, config = {}) {
+    const build = obj => {
+      const where = Object.entries(obj).reduce((acc, [key, value]) => {
+        switch (true) {
+          case value instanceof FindOperator:
+            acc[key] = value
+            break
+          case Array.isArray(value):
+            acc[key] = In([...value])
+            break
+          case value !== null && typeof value === "object":
+            acc[key] = build(value)
+            break
+          default:
+            acc[key] = value
+            break
+        }
+
+        return acc
+      }, {})
+
+      return where
+    }
+
+    const query = {
+      where: build(selector),
+    }
+
+    if ("skip" in config) {
+      query.skip = config.skip
+    }
+
+    if ("take" in config) {
+      query.take = config.take
+    }
+
+    if ("relations" in config) {
+      query.relations = config.relations
+    }
+
+    if ("select" in config) {
+      query.select = config.select
+    }
+
+    if ("order" in config) {
+      query.order = config.order
+    }
+
+    return query
+  }
+
+  /**
+   * Confirms whether a given raw id is valid. Fails if the provided
+   * id is null or undefined. The validate function takes an optional config
+   * param, to support checking id prefix and length.
+   * @param {string} rawId - the id to validate.
+   * @param {object?} config - optional config
+   * @returns {string} the rawId given that nothing failed
+   */
+  validateId_(rawId, config = {}) {
+    const { prefix, length } = config
+    if (!rawId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Failed to validate id: ${rawId}`
+      )
+    }
+
+    if (prefix || length) {
+      const [pre, rand] = rawId.split("_")
+      if (prefix && pre !== prefix) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The provided id: ${rawId} does not adhere to prefix constraint: ${prefix}`
+        )
+      }
+
+      if (length && length !== rand.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The provided id: ${rawId} does not adhere to length constraint: ${length}`
+        )
+      }
+    }
+
+    return rawId
+  }
+
+  shouldRetryTransaction(err) {
+    const code = typeof err === "object" ? String(err.code) : null
+    return code === "40001" || code === "40P01"
+  }
+
+  /**
+   * Wraps some work within a transactional block. If the service already has
+   * a transaction manager attached this will be reused, otherwise a new
+   * transaction manager is created.
+   * @param {function} work - the transactional work to be done
+   * @param {string} isolation - the isolation level to be used for the work.
+   * @return {any} the result of the transactional work
+   */
+  async atomicPhase_(work, isolation) {
+    if (this.transactionManager_) {
+      return work(this.transactionManager_)
+    } else {
+      const temp = this.manager_
+      const doWork = async m => {
+        this.manager_ = m
+        this.transactionManager_ = m
+        try {
+          const result = await work(m)
+          this.manager_ = temp
+          this.transactionManager_ = undefined
+          return result
+        } catch (error) {
+          this.manager_ = temp
+          this.transactionManager_ = undefined
+          throw error
+        }
+      }
+
+      if (isolation) {
+        let result
+        try {
+          result = await this.manager_.transaction(isolation, m => doWork(m))
+          return result
+        } catch (error) {
+          if (this.shouldRetryTransaction(error)) {
+            return this.manager_.transaction(isolation, m => doWork(m))
+          } else {
+            throw error
+          }
+        }
+      }
+      return this.manager_.transaction(m => doWork(m))
+    }
+  }
+
+  /**
+   * Dedicated method to set metadata.
+   * @param {string} obj - the entity to apply metadata to.
+   * @param {object} metadata - the metadata to set
+   * @return {Promise} resolves to the updated result.
+   */
+  setMetadata_(obj, metadata) {
+    const existing = obj.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
+      newData[key] = value
+    }
+
+    const updated = {
+      ...existing,
+      ...newData,
+    }
+
+    return updated
   }
 
   /**

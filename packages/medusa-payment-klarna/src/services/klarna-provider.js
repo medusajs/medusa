@@ -5,14 +5,26 @@ import { PaymentService } from "medusa-interfaces"
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
 
-  constructor(
-    { shippingProfileService, totalsService, regionService },
-    options
-  ) {
+  constructor({ shippingProfileService }, options) {
     super()
 
+    /**
+     * Required Klarna options:
+     *  {
+     *    backend_url: "",
+     *    url: "",
+     *    user: "",
+     *    password: "",
+     *    merchant_urls: {
+     *        terms: ``,
+     *        checkout: ``,
+     *        confirmation: ``,
+     *    }
+     *  }
+     */
     this.options_ = options
 
+    /** @private @const {Klarna} */
     this.klarna_ = axios.create({
       baseURL: options.url,
       auth: {
@@ -27,54 +39,36 @@ class KlarnaProviderService extends PaymentService {
 
     this.backendUrl_ = options.backend_url
 
-    this.totalsService_ = totalsService
-
-    this.regionService_ = regionService
-
+    /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
   }
 
   async lineItemsToOrderLines_(cart, taxRate) {
     let order_lines = []
 
+    const tax = taxRate / 100
+
     cart.items.forEach((item) => {
-      // For bundles, we create an order line for each item in the bundle
-      if (Array.isArray(item.content)) {
-        item.content.forEach((c) => {
-          const total_amount = c.unit_price * c.quantity * (taxRate + 1)
-          const total_tax_amount = total_amount * taxRate
+      // Withdraw discount from the total item amount
+      const quantity = item.quantity
+      const unit_price = item.unit_price * (tax + 1)
+      const total_amount = unit_price * quantity
+      const total_tax_amount = total_amount * (tax / (1 + tax))
 
-          order_lines.push({
-            name: item.title,
-            unit_price: c.unit_price,
-            quantity: c.quantity,
-            tax_rate: taxRate * 10000,
-            total_amount,
-            total_tax_amount,
-          })
-        })
-      } else {
-        // Withdraw discount from the total item amount
-        const quantity = item.quantity
-        const unit_price = item.content.unit_price * 100 * (taxRate + 1)
-        const total_amount = unit_price * quantity
-        const total_tax_amount = total_amount * (taxRate / (1 + taxRate))
-
-        order_lines.push({
-          name: item.title,
-          tax_rate: taxRate * 10000,
-          quantity,
-          unit_price,
-          total_amount,
-          total_tax_amount,
-        })
-      }
+      order_lines.push({
+        name: item.title,
+        tax_rate: tax * 10000,
+        quantity,
+        unit_price,
+        total_amount,
+        total_tax_amount,
+      })
     })
 
     if (cart.shipping_methods.length) {
       const { name, price } = cart.shipping_methods.reduce(
         (acc, next) => {
-          acc.name = [...acc.name, next.name]
+          acc.name = [...acc.name, next.data.name]
           acc.price += next.price
           return acc
         },
@@ -85,10 +79,10 @@ class KlarnaProviderService extends PaymentService {
         name: name.join(" + "),
         quantity: 1,
         type: "shipping_fee",
-        unit_price: price * (1 + taxRate) * 100,
-        tax_rate: taxRate * 10000,
-        total_amount: price * (1 + taxRate) * 100,
-        total_tax_amount: price * taxRate * 100,
+        unit_price: price * (1 + tax),
+        tax_rate: tax * 10000,
+        total_amount: price * (1 + tax),
+        total_tax_amount: price * tax,
       })
     }
 
@@ -98,28 +92,39 @@ class KlarnaProviderService extends PaymentService {
   async cartToKlarnaOrder(cart) {
     let order = {
       // Cart id is stored, such that we can use it for hooks
-      merchant_data: cart._id,
-      // TODO: Investigate if other locales are needed
+      merchant_data: cart.id,
       locale: "en-US",
     }
 
-    const { tax_rate, currency_code } = await this.regionService_.retrieve(
-      cart.region_id
-    )
+    const { region, gift_card_total, discount_total, tax_total, total } = cart
 
-    order.order_lines = await this.lineItemsToOrderLines_(cart, tax_rate)
+    const taxRate = region.tax_rate / 100
 
-    const discount = (await this.totalsService_.getDiscountTotal(cart)) * 100
-    if (discount) {
+    order.order_lines = await this.lineItemsToOrderLines_(cart, region.tax_rate)
+
+    if (discount_total) {
       order.order_lines.push({
         name: `Discount`,
         quantity: 1,
         type: "discount",
         unit_price: 0,
-        total_discount_amount: discount * (1 + tax_rate),
-        tax_rate: tax_rate * 10000,
-        total_amount: -discount * (1 + tax_rate),
-        total_tax_amount: -discount * tax_rate,
+        total_discount_amount: discount_total * (1 + taxRate),
+        tax_rate: taxRate * 10000,
+        total_amount: -discount_total * (1 + taxRate),
+        total_tax_amount: -discount_total * taxRate,
+      })
+    }
+
+    if (gift_card_total) {
+      order.order_lines.push({
+        name: `Gift Card`,
+        quantity: 1,
+        type: "gift_card",
+        unit_price: 0,
+        total_discount_amount: gift_card_total * (1 + taxRate),
+        tax_rate: taxRate * 10000,
+        total_amount: -gift_card_total * (1 + taxRate),
+        total_tax_amount: -gift_card_total * taxRate,
       })
     }
 
@@ -134,20 +139,19 @@ class KlarnaProviderService extends PaymentService {
       }
     }
 
-    // TODO: Check if country matches ISO
-    if (
-      !_.isEmpty(cart.shipping_address) &&
-      cart.shipping_address.country_code
-    ) {
-      order.purchase_country = cart.shipping_address.country_code
+    const hasCountry =
+      !_.isEmpty(cart.shipping_address) && cart.shipping_address.country_code
+
+    if (hasCountry) {
+      order.purchase_country = cart.shipping_address.country_code.toUpperCase()
     } else {
       // Defaults to Sweden
       order.purchase_country = "SE"
     }
-    order.order_amount = (await this.totalsService_.getTotal(cart)) * 100
-    order.order_tax_amount = (await this.totalsService_.getTaxTotal(cart)) * 100
-    // TODO: Check if currency matches ISO
-    order.purchase_currency = currency_code
+
+    order.order_amount = total
+    order.order_tax_amount = tax_total
+    order.purchase_currency = region.currency_code.toUpperCase()
 
     order.merchant_urls = {
       terms: this.options_.merchant_urls.terms,
@@ -159,8 +163,12 @@ class KlarnaProviderService extends PaymentService {
     }
 
     if (cart.shipping_address && cart.shipping_address.first_name) {
-      const shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      let shippingOptions = await this.shippingProfileService_.fetchCartOptions(
         cart
+      )
+
+      shippingOptions = shippingOptions.filter(
+        (so) => !so.data?.require_drop_point
       )
 
       // If the cart does not have shipping methods yet, preselect one from
@@ -168,11 +176,11 @@ class KlarnaProviderService extends PaymentService {
       if (cart.shipping_methods.length) {
         const shipping_method = cart.shipping_methods[0]
         order.selected_shipping_option = {
-          id: shipping_method._id,
-          name: shipping_method.name,
-          price: shipping_method.price * (1 + tax_rate) * 100,
-          tax_amount: shipping_method.price * tax_rate * 100,
-          tax_rate: tax_rate * 10000,
+          id: shipping_method.shipping_option.id,
+          name: shipping_method.shipping_option.name,
+          price: shipping_method.price * (1 + taxRate),
+          tax_amount: shipping_method.price * taxRate,
+          tax_rate: taxRate * 10000,
         }
       }
 
@@ -185,20 +193,25 @@ class KlarnaProviderService extends PaymentService {
         return acc
       }, {})
 
-      let f = (a, b) =>
-        [].concat(...a.map((a) => b.map((b) => [].concat(a, b))))
-      let cartesian = (a, b, ...c) => (b ? cartesian(f(a, b), ...c) : a)
+      // Helper function that calculates the cartesian product of multiple arrays
+      // Don't touch :D
+      // From: https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
+      const f = (a, b) =>
+        [].concat(...a.map((d) => b.map((e) => [].concat(d, e))))
+      const cartesian = (a, b, ...c) => (b ? cartesian(f(a, b), ...c) : a)
 
       const methods = Object.keys(partitioned).map((k) => partitioned[k])
       const combinations = cartesian(...methods)
 
+      // Use the cartesian product of shipping methods to generate correct
+      // format for the Klarna Widget
       order.shipping_options = combinations.map((combination) => {
         combination = Array.isArray(combination) ? combination : [combination]
         const details = combination.reduce(
           (acc, next) => {
-            acc.id = [...acc.id, next._id]
+            acc.id = [...acc.id, next.id]
             acc.name = [...acc.name, next.name]
-            acc.price += next.price
+            acc.price += next.amount
             return acc
           },
           { id: [], name: [], price: 0 }
@@ -207,10 +220,9 @@ class KlarnaProviderService extends PaymentService {
         return {
           id: details.id.join("."),
           name: details.name.join(" + "),
-          price: details.price * (1 + tax_rate) * 100,
-          tax_amount: details.price * tax_rate * 100,
-          tax_rate: tax_rate * 10000,
-          preselected: combinations.length === 1,
+          price: details.price * (1 + taxRate),
+          tax_amount: details.price * taxRate,
+          tax_rate: taxRate * 10000,
         }
       })
     }
@@ -224,20 +236,18 @@ class KlarnaProviderService extends PaymentService {
    * @returns {string} the status of the Klarna order
    */
   async getStatus(paymentData) {
-    try {
-      const { order_id } = paymentData
-      const { data: order } = await this.klarna_.get(
-        `${this.klarnaOrderUrl_}/${order_id}`
-      )
+    const { order_id } = paymentData
+    const { data: order } = await this.klarna_.get(
+      `${this.klarnaOrderUrl_}/${order_id}`
+    )
 
-      let status = "initial"
-      if (order.status === "checkout_complete") {
-        status = "authorized"
-      }
-      return status
-    } catch (error) {
-      throw error
+    let status = "pending"
+
+    if (order.status === "checkout_complete") {
+      status = "authorized"
     }
+
+    return status
   }
 
   /**
@@ -249,9 +259,12 @@ class KlarnaProviderService extends PaymentService {
   async createPayment(cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart)
-      return this.klarna_
+
+      const klarnaPayment = await this.klarna_
         .post(this.klarnaOrderUrl_, order)
         .then(({ data }) => data)
+
+      return klarnaPayment
     } catch (error) {
       throw error
     }
@@ -273,6 +286,21 @@ class KlarnaProviderService extends PaymentService {
   }
 
   /**
+   * Gets a Klarna payment objec.
+   * @param {object} sessionData - the data of the payment to retrieve
+   * @returns {Promise<object>} Stripe payment intent
+   */
+  async getPaymentData(sessionData) {
+    try {
+      return this.klarna_
+        .get(`${this.klarnaOrderUrl_}/${sessionData.data.order_id}`)
+        .then(({ data }) => data)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
    * Retrieves completed Klarna Order.
    * @param {string} klarnaOrderId - id of the order to retrieve
    * @returns {Object} Klarna order
@@ -282,6 +310,23 @@ class KlarnaProviderService extends PaymentService {
       return this.klarna_
         .get(`${this.klarnaOrderManagementUrl_}/${klarnaOrderId}`)
         .then(({ data }) => data)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Authorizes Klarna payment by simply returning the status for the payment
+   * in use.
+   * @param {object} sessionData - payment session data
+   * @param {object} context - properties relevant to current context
+   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   */
+  async authorizePayment(sessionData, context = {}) {
+    try {
+      const paymentStatus = await this.getStatus(sessionData.data)
+
+      return { data: sessionData.data, status: paymentStatus }
     } catch (error) {
       throw error
     }
@@ -332,6 +377,14 @@ class KlarnaProviderService extends PaymentService {
     }
   }
 
+  async updatePaymentData(sessionData, update) {
+    try {
+      return { ...sessionData, ...update }
+    } catch (error) {
+      throw error
+    }
+  }
+
   /**
    * Updates Klarna order.
    * @param {string} order - the order to update
@@ -339,14 +392,14 @@ class KlarnaProviderService extends PaymentService {
    * @returns {Object} updated order
    */
   async updatePayment(paymentData, cart) {
-    try {
-      const order = await this.cartToKlarnaOrder(cart, true)
+    if (cart.total !== paymentData.order_amount) {
+      const order = await this.cartToKlarnaOrder(cart)
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)
-    } catch (error) {
-      throw error
     }
+
+    return paymentData
   }
 
   /**
@@ -354,9 +407,9 @@ class KlarnaProviderService extends PaymentService {
    * @param {Object} paymentData - payment method data from cart
    * @returns {string} id of captured order
    */
-  async capturePayment(paymentData) {
+  async capturePayment(payment) {
+    const { order_id } = payment.data
     try {
-      const { order_id } = paymentData
       const { data: order } = await this.klarna_.get(
         `${this.klarnaOrderManagementUrl_}/${order_id}`
       )
@@ -368,7 +421,8 @@ class KlarnaProviderService extends PaymentService {
           captured_amount: order_amount,
         }
       )
-      return order_id
+
+      return this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
@@ -379,16 +433,17 @@ class KlarnaProviderService extends PaymentService {
    * @param {Object} paymentData - payment method data from cart
    * @returns {string} id of refunded order
    */
-  async refundPayment(paymentData, amount) {
+  async refundPayment(payment, amountToRefund) {
+    const { order_id } = payment.data
     try {
-      const { order_id } = paymentData
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${order_id}/refunds`,
         {
-          refunded_amount: amount * 100,
+          refunded_amount: amountToRefund,
         }
       )
-      return order_id
+
+      return this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
@@ -399,16 +454,21 @@ class KlarnaProviderService extends PaymentService {
    * @param {Object} paymentData - payment method data from cart
    * @returns {string} id of cancelled order
    */
-  async cancelPayment(paymentData) {
+  async cancelPayment(payment) {
+    const { order_id } = payment.data
     try {
-      const { order_id } = paymentData
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${order_id}/cancel`
       )
-      return order_id
+
+      return this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
+  }
+
+  async deletePayment(_) {
+    return Promise.resolve()
   }
 }
 

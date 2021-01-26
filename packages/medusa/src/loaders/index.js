@@ -1,9 +1,11 @@
 import { createContainer, asValue } from "awilix"
 import Redis from "ioredis"
 import { getConfigFile } from "medusa-core-utils"
+import requestIp from "request-ip"
 
 import expressLoader from "./express"
-import mongooseLoader from "./mongoose"
+import databaseLoader from "./database"
+import repositoriesLoader from "./repositories"
 import apiLoader from "./api"
 import modelsLoader from "./models"
 import servicesLoader from "./services"
@@ -12,6 +14,7 @@ import passportLoader from "./passport"
 import pluginsLoader from "./plugins"
 import defaultsLoader from "./defaults"
 import Logger from "./logger"
+import { getManager } from "typeorm"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule, configFilePath } = getConfigFile(
@@ -40,6 +43,18 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const client = new Redis(configModule.projectConfig.redis_url)
   const subscriber = new Redis(configModule.projectConfig.redis_url)
 
+  // Add additional information to context of request
+  expressApp.use((req, res, next) => {
+    const ipAddress = requestIp.getClientIp(req)
+
+    const context = {
+      ip_address: ipAddress,
+    }
+
+    req.request_context = context
+    next()
+  })
+
   container.register({
     redisClient: asValue(client),
     redisSubscriber: asValue(subscriber),
@@ -49,14 +64,21 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await modelsLoader({ container })
   Logger.info("Models initialized")
 
+  await repositoriesLoader({ container })
+  Logger.info("Repositories initialized")
+
+  const dbConnection = await databaseLoader({ container, configModule })
+  Logger.info("Database initialized")
+
+  container.register({
+    manager: asValue(dbConnection.manager),
+  })
+
   await servicesLoader({ container, configModule })
   Logger.info("Services initialized")
 
   await subscribersLoader({ container })
   Logger.info("Subscribers initialized")
-
-  const dbConnection = await mongooseLoader({ container, configModule })
-  Logger.info("MongoDB Intialized")
 
   await expressLoader({ app: expressApp, configModule })
   Logger.info("Express Intialized")
@@ -66,6 +88,9 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
   // Add the registered services to the request scope
   expressApp.use((req, res, next) => {
+    container.register({
+      manager: asValue(getManager()),
+    })
     req.scope = container.createScope()
     next()
   })

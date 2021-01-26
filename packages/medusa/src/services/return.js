@@ -8,18 +8,56 @@ import { MedusaError } from "medusa-core-utils"
  */
 class ReturnService extends BaseService {
   constructor({
+    manager,
     totalsService,
+    lineItemService,
+    returnRepository,
+    returnItemRepository,
     shippingOptionService,
     fulfillmentProviderService,
   }) {
     super()
 
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
+
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
 
+    /** @private @const {ReturnRepository} */
+    this.returnRepository_ = returnRepository
+
+    /** @private @const {ReturnItemRepository} */
+    this.returnItemRepository_ = returnItemRepository
+
+    /** @private @const {ReturnItemRepository} */
+    this.lineItemService_ = lineItemService
+
+    /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
+    /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ReturnService({
+      manager: transactionManager,
+      totalsService: this.totalsService_,
+      lineItemService: this.lineItemService_,
+      returnRepository: this.returnRepository_,
+      returnItemRepository: this.returnItemRepository_,
+      shippingOptionService: this.shippingOptionService_,
+      fulfillmentProviderService: this.fulfillmentProviderService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -35,12 +73,25 @@ class ReturnService extends BaseService {
   async getFulfillmentItems_(order, items, transformer) {
     const toReturn = await Promise.all(
       items.map(async ({ item_id, quantity }) => {
-        const item = order.items.find(i => i._id.equals(item_id))
+        const item = order.items.find(i => i.id === item_id)
         return transformer(item, quantity)
       })
     )
 
     return toReturn.filter(i => !!i)
+  }
+
+  /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  list(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
+    const query = this.buildQuery_(selector, config)
+    return returnRepo.find(query)
   }
 
   /**
@@ -102,88 +153,200 @@ class ReturnService extends BaseService {
   }
 
   /**
-   * Creates a return request for an order, with given items, and a shipping
-   * method. If no refundAmount is provided the refund amount is calculated from
-   * the return lines and the shipping cost.
-   * @param {String} orderId - the id of the order to create a return for.
-   * @param {Array<{item_id: String, quantity: Int}>} items - the line items to
-   *   return
-   * @param {ShippingMethod?} shippingMethod - the shipping method used for the
-   *   return
-   * @param {Number?} refundAmount - the amount to refund when the return is
-   *   received.
-   * @returns {Promise<Order>} the resulting order.
+   * Retrieves a return by its id.
+   * @param {string} id - the id of the return to retrieve
+   * @return {Return} the return
    */
-  async requestReturn(order, items, shippingMethod, refundAmount) {
-    // Throws if the order doesn't have the necessary status for return
-    this.validateReturnStatuses_(order)
-
-    const returnLines = await this.getFulfillmentItems_(
-      order,
-      items,
-      this.validateReturnLineItem_
+  async retrieve(id, config = {}) {
+    const returnRepository = this.manager_.getCustomRepository(
+      this.returnRepository_
     )
 
-    let toRefund = refundAmount
-    if (typeof refundAmount !== "undefined") {
-      const total = await this.totalsService_.getTotal(order)
-      const refunded = await this.totalsService_.getRefundedTotal(order)
-      const refundable = total - refunded
-      if (refundAmount > refundable) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Cannot refund more than the original payment"
-        )
-      }
-    } else {
-      toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
+    const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const returnObj = await returnRepository.findOne(query)
+
+    if (!returnObj) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Return with id: ${id} was not found`
+      )
     }
+    return returnObj
+  }
 
-    let fulfillmentData = {}
-    let shipping_method = {}
-    if (typeof shippingMethod !== "undefined") {
-      shipping_method = await this.shippingOptionService_.retrieve(
-        shippingMethod.id
+  async retrieveBySwap(swapId, relations = []) {
+    const returnRepository = this.manager_.getCustomRepository(
+      this.returnRepository_
+    )
+
+    const validatedId = this.validateId_(swapId)
+
+    const returnObj = await returnRepository.findOne({
+      where: {
+        swap_id: validatedId,
+      },
+      relations,
+    })
+
+    if (!returnObj) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Return with swa_id: ${swapId} was not found`
       )
-      const provider = await this.fulfillmentProviderService_.retrieveProvider(
-        shipping_method.provider_id
-      )
-      fulfillmentData = await provider.createReturn(
-        shipping_method.data,
-        returnLines,
-        order
+    }
+    return returnObj
+  }
+
+  async update(returnId, update) {
+    return this.atomicPhase_(async manager => {
+      const ret = await this.retrieve(returnId)
+
+      const { metadata, ...rest } = update
+
+      if ("metadata" in update) {
+        ret.metadata = this.setMetadata_(ret, update.metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        ret[key] = value
+      }
+
+      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const result = await retRepo.save(ret)
+      return result
+    })
+  }
+
+  /**
+   * Creates a return request for an order, with given items, and a shipping
+   * method. If no refund amount is provided the refund amount is calculated from
+   * the return lines and the shipping cost.
+   * @param {object} data - data to use for the return e.g. shipping_method,
+   *    items or refund_amount
+   * @param {object} orderLike - order object
+   * @returns {Promise<Return>} the resulting order.
+   */
+  async create(data, orderLike) {
+    return this.atomicPhase_(async manager => {
+      const returnRepository = manager.getCustomRepository(
+        this.returnRepository_
       )
 
-      if (typeof shippingMethod.price !== "undefined") {
-        shipping_method.price = shippingMethod.price
+      const returnLines = await this.getFulfillmentItems_(
+        orderLike,
+        data.items,
+        this.validateReturnLineItem_
+      )
+
+      let toRefund = data.refund_amount
+      if (typeof toRefund !== "undefined") {
+        const refundable = orderLike.total - orderLike.refunded_total
+        if (toRefund > refundable) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Cannot refund more than the original payment"
+          )
+        }
       } else {
-        shipping_method.price = await this.shippingOptionService_.getPrice(
-          shipping_method,
-          {
-            ...order,
-            items: returnLines,
-          }
+        toRefund = await this.totalsService_.getRefundTotal(
+          orderLike,
+          returnLines
+        )
+
+        if (data.shipping_method) {
+          toRefund = Math.max(
+            0,
+            toRefund -
+              data.shipping_method.price * (1 + orderLike.tax_rate / 100)
+          )
+        }
+      }
+
+      const method = data.shipping_method
+      delete data.shipping_method
+
+      const returnObject = {
+        ...data,
+        status: "requested",
+        refund_amount: Math.floor(toRefund),
+      }
+
+      const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
+      returnObject.items = returnLines.map(i =>
+        rItemRepo.create({
+          item_id: i.id,
+          quantity: i.quantity,
+          requested_quantity: i.quantity,
+          metadata: i.metadata,
+        })
+      )
+
+      const created = await returnRepository.create(returnObject)
+      const result = await returnRepository.save(created)
+
+      if (method) {
+        await this.shippingOptionService_
+          .withTransaction(manager)
+          .createShippingMethod(
+            method.option_id,
+            {},
+            {
+              price: method.price,
+              return_id: result.id,
+            }
+          )
+      }
+
+      return result
+    })
+  }
+
+  fulfill(returnId) {
+    return this.atomicPhase_(async manager => {
+      const returnOrder = await this.retrieve(returnId, {
+        relations: [
+          "items",
+          "shipping_method",
+          "shipping_method.shipping_option",
+          "swap",
+        ],
+      })
+
+      const items = await this.lineItemService_.list({
+        id: returnOrder.items.map(({ item_id }) => item_id),
+      })
+
+      returnOrder.items = returnOrder.items.map(item => {
+        const found = items.find(i => i.id === item.item_id)
+        return {
+          ...item,
+          item: found,
+        }
+      })
+
+      if (returnOrder.shipping_data) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Return has already been fulfilled"
         )
       }
 
-      toRefund = Math.max(
-        0,
-        toRefund - shipping_method.price * (1 + order.tax_rate)
-      )
-    }
+      if (returnOrder.shipping_method === null) {
+        return returnOrder
+      }
 
-    return {
-      shipping_method,
-      refund_amount: toRefund,
-      items: returnLines.map(i => ({
-        item_id: i._id,
-        content: i.content,
-        quantity: i.quantity,
-        is_requested: true,
-        metadata: i.metadata,
-      })),
-      shipping_data: fulfillmentData,
-    }
+      const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
+        returnOrder
+      )
+
+      returnOrder.shipping_data = fulfillmentData
+
+      const returnRepo = manager.getCustomRepository(this.returnRepository_)
+      const result = await returnRepo.save(returnOrder)
+      return result
+    })
   }
 
   /**
@@ -199,75 +362,99 @@ class ReturnService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async receiveReturn(
-    order,
-    returnRequest,
-    items,
+    returnId,
+    receivedItems,
     refundAmount,
     allowMismatch = false
   ) {
-    if (returnRequest.status === "received") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Return with id ${returnId} has already been received`
+    return this.atomicPhase_(async manager => {
+      const returnRepository = manager.getCustomRepository(
+        this.returnRepository_
       )
-    }
 
-    const returnLines = await this.getFulfillmentItems_(
-      order,
-      items,
-      this.validateReturnLineItem_
-    )
+      const returnObj = await this.retrieve(returnId, {
+        relations: [
+          "items",
+          "order",
+          "order.items",
+          "order.discounts",
+          "order.refunds",
+          "order.shipping_methods",
+          "order.region",
+          "swap",
+          "swap.order",
+          "swap.order.items",
+          "swap.order.refunds",
+          "swap.order.shipping_methods",
+          "swap.order.region",
+        ],
+      })
 
-    const newLines = returnLines.map(l => {
-      const existing = returnRequest.items.find(i => l._id.equals(i.item_id))
-      if (existing) {
-        return {
-          ...existing,
-          quantity: l.quantity,
-          requested_quantity: existing.quantity,
-          is_requested: l.quantity === existing.quantity,
-          is_registered: true,
-        }
-      } else {
-        return {
-          item_id: l._id,
-          content: l.content,
-          quantity: l.quantity,
-          is_requested: false,
-          is_registered: true,
-          metadata: l.metadata,
-        }
+      const order = returnObj.order || (returnObj.swap && returnObj.swap.order)
+
+      if (returnObj.status === "received") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Return with id ${returnId} has already been received`
+        )
       }
+
+      const returnLines = await this.getFulfillmentItems_(
+        order,
+        receivedItems,
+        this.validateReturnLineItem_
+      )
+
+      const newLines = returnLines.map(l => {
+        const existing = returnObj.items.find(i => l.id === i.item_id)
+        if (existing) {
+          return {
+            ...existing,
+            quantity: l.quantity,
+            requested_quantity: existing.quantity,
+            received_quantity: l.quantity,
+            is_requested: l.quantity === existing.quantity,
+          }
+        } else {
+          return {
+            return_id: returnObj.id,
+            item_id: l.id,
+            quantity: l.quantity,
+            is_requested: false,
+            received_quantity: l.quantity,
+            metadata: l.metadata || {},
+          }
+        }
+      })
+
+      let returnStatus = "received"
+
+      const isMatching = newLines.every(l => l.is_requested)
+      if (!isMatching && !allowMismatch) {
+        // Should update status
+        returnStatus = "requires_action"
+      }
+
+      const toRefund = refundAmount || returnObj.refund_amount
+      const total = await this.totalsService_.getTotal(order)
+      const refunded = await this.totalsService_.getRefundedTotal(order)
+
+      if (toRefund > total - refunded) {
+        returnStatus = "requires_action"
+      }
+
+      const now = new Date()
+      const updateObj = {
+        ...returnObj,
+        status: returnStatus,
+        items: newLines,
+        refund_amount: toRefund,
+        received_at: now.toISOString(),
+      }
+
+      const result = await returnRepository.save(updateObj)
+      return result
     })
-
-    const isMatching = newLines.every(l => l.is_requested)
-    if (!isMatching && !allowMismatch) {
-      // Should update status
-      return {
-        ...returnRequest,
-        status: "requires_action",
-        items: newLines,
-      }
-    }
-
-    const toRefund = refundAmount || returnRequest.refund_amount
-    const total = await this.totalsService_.getTotal(order)
-    const refunded = await this.totalsService_.getRefundedTotal(order)
-
-    if (toRefund > total - refunded) {
-      return {
-        ...returnRequest,
-        status: "requires_action",
-        items: newLines,
-      }
-    }
-
-    return {
-      ...returnRequest,
-      status: "received",
-      items: newLines,
-      refund_amount: toRefund,
-    }
   }
 }
 

@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { Brackets } from "typeorm"
 
 class OrderService extends BaseService {
   static Events = {
@@ -13,6 +14,7 @@ class OrderService extends BaseService {
     ITEMS_RETURNED: "order.items_returned",
     RETURN_ACTION_REQUIRED: "order.return_action_required",
     REFUND_CREATED: "order.refund_created",
+    REFUND_FAILED: "order.refund_failed",
     SWAP_CREATED: "order.swap_created",
     SWAP_RECEIVED: "order.swap_received",
     PLACED: "order.placed",
@@ -22,8 +24,8 @@ class OrderService extends BaseService {
   }
 
   constructor({
-    orderModel,
-    counterService,
+    manager,
+    orderRepository,
     customerService,
     paymentProviderService,
     shippingOptionService,
@@ -36,13 +38,18 @@ class OrderService extends BaseService {
     regionService,
     returnService,
     swapService,
-    documentService,
+    cartService,
+    addressRepository,
+    giftCardService,
     eventBusService,
   }) {
     super()
 
-    /** @private @constant {OrderModel} */
-    this.orderModel_ = orderModel
+    /** @private @constant {EntityManager} */
+    this.manager_ = manager
+
+    /** @private @constant {OrderRepository} */
+    this.orderRepository_ = orderRepository
 
     /** @private @constant {CustomerService} */
     this.customerService_ = customerService
@@ -74,20 +81,50 @@ class OrderService extends BaseService {
     /** @private @constant {DiscountService} */
     this.discountService_ = discountService
 
+    /** @private @constant {DiscountService} */
+    this.giftCardService_ = giftCardService
+
     /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @constant {DocumentService} */
-    this.documentService_ = documentService
-
-    /** @private @constant {CounterService} */
-    this.counterService_ = counterService
 
     /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
+    /** @private @constant {CartService} */
+    this.cartService_ = cartService
+
+    /** @private @constant {AddressRepository} */
+    this.addressRepository_ = addressRepository
+
     /** @private @constant {SwapService} */
     this.swapService_ = swapService
+  }
+
+  withTransaction(manager) {
+    if (!manager) {
+      return this
+    }
+
+    const cloned = new OrderService({
+      manager,
+      orderRepository: this.orderRepository_,
+      eventBusService: this.eventBus_,
+      paymentProviderService: this.paymentProviderService_,
+      regionService: this.regionService_,
+      lineItemService: this.lineItemService_,
+      shippingOptionService: this.shippingOptionService_,
+      shippingProfileService: this.shippingProfileService_,
+      fulfillmentProviderService: this.fulfillmentProviderService_,
+      discountService: this.discountService_,
+      totalsService: this.totalsService_,
+      cartService: this.cartService_,
+      swapService: this.swapService_,
+      giftCardService: this.giftCardService_,
+    })
+
+    cloned.transactionManager_ = manager
+
+    return cloned
   }
 
   /**
@@ -96,16 +133,7 @@ class OrderService extends BaseService {
    * @return {string} the validated id
    */
   validateId_(rawId) {
-    const schema = Validator.objectId()
-    const { value, error } = schema.validate(rawId.toString())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The order id could not be casted to an ObjectId"
-      )
-    }
-
-    return value
+    return rawId
   }
 
   /**
@@ -148,18 +176,131 @@ class OrderService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector, offset, limit) {
-    return this.orderModel_
-      .find(selector, {}, offset, limit)
-      .sort({ created: -1 })
+  async list(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const query = this.buildQuery_(selector, config)
+
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    if (select && select.length) {
+      query.select = select
+    }
+
+    if (relations && relations.length) {
+      query.relations = relations
+    }
+
+    const raw = await orderRepo.find(query)
+
+    return raw.map(r => this.decorateTotals_(r, totalsToSelect))
   }
 
-  /**
-   * Return the total number of documents in database
-   * @return {Promise} the result of the count operation
-   */
-  count() {
-    return this.orderModel_.count()
+  async listAndCount(
+    selector,
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.display_id
+      delete where.email
+
+      query.join = {
+        alias: "order",
+        innerJoin: {
+          shipping_address: "order.shipping_address",
+        },
+      }
+
+      query.where = qb => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`shipping_address.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+          })
+        )
+      }
+    }
+
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    if (select && select.length) {
+      query.select = select
+    }
+
+    if (relations && relations.length) {
+      query.relations = relations
+    }
+
+    const [raw, count] = await orderRepo.findAndCount(query)
+    const orders = raw.map(r => this.decorateTotals_(r, totalsToSelect))
+
+    return [orders, count]
+  }
+
+  transformQueryForTotals_(config) {
+    let { select, relations } = config
+
+    if (!select) {
+      return {
+        select,
+        relations,
+        totalsToSelect: [],
+      }
+    }
+
+    const totalFields = [
+      "subtotal",
+      "tax_total",
+      "shipping_total",
+      "discount_total",
+      "gift_card_total",
+      "total",
+      "refunded_total",
+      "refundable_amount",
+      "items.refundable",
+    ]
+
+    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    if (totalsToSelect.length > 0) {
+      const relationSet = new Set(relations)
+      relationSet.add("items")
+      relationSet.add("discounts")
+      relationSet.add("gift_cards")
+      relationSet.add("gift_card_transactions")
+      relationSet.add("refunds")
+      relationSet.add("shipping_methods")
+      relationSet.add("region")
+      relations = [...relationSet]
+
+      select = select.filter(v => !totalFields.includes(v))
+    }
+
+    return {
+      relations,
+      select,
+      totalsToSelect,
+    }
   }
 
   /**
@@ -167,20 +308,36 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of order to retrieve
    * @return {Promise<Order>} the order document
    */
-  async retrieve(orderId) {
+  async retrieve(orderId, config = {}) {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
-    const order = await this.orderModel_
-      .findOne({ _id: validatedId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
 
-    if (!order) {
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    const query = {
+      where: { id: validatedId },
+    }
+
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
+
+    if (select && select.length > 0) {
+      query.select = select
+    }
+
+    const raw = await orderRepo.findOne(query)
+
+    if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Order with ${orderId} was not found`
       )
     }
+
+    const order = this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -189,41 +346,35 @@ class OrderService extends BaseService {
    * @param {string} cartId - cart id to find order
    * @return {Promise<Order>} the order document
    */
-  async retrieveByCartId(cartId) {
-    const order = await this.orderModel_
-      .findOne({ cart_id: cartId })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+  async retrieveByCartId(cartId, config = {}) {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    if (!order) {
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
+
+    const query = {
+      where: { cart_id: cartId },
+    }
+
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
+
+    if (select && select.length > 0) {
+      query.select = select
+    }
+
+    const raw = await orderRepo.findOne(query)
+
+    if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with cart id ${cartId} was not found`
+        `Order with cart id: ${cartId} was not found`
       )
     }
-    return order
-  }
 
-  /**
-   * Gets an order by metadata key value pair.
-   * @param {string} key - key of metadata
-   * @param {string} value - value of metadata
-   * @return {Promise<Order>} the order document
-   */
-  async retrieveByMetadata(key, value) {
-    const order = await this.orderModel_
-      .findOne({ metadata: { [key]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-
-    if (!order) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Order with metadata ${key}: ${value} was not found`
-      )
-    }
+    const order = this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -233,12 +384,7 @@ class OrderService extends BaseService {
    * @return {Promise<Order>} the order document
    */
   async existsByCartId(cartId) {
-    const order = await this.orderModel_
-      .findOne({ metadata: { cart_id: cartId } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-
+    const order = await this.retrieveByCartId(cartId).catch(_ => undefined)
     if (!order) {
       return false
     }
@@ -250,149 +396,153 @@ class OrderService extends BaseService {
    * @return {Promise} the result of the find operation
    */
   async completeOrder(orderId) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId)
 
-    // Run all other registered events
-    const completeOrderJob = await this.eventBus_.emit(
-      OrderService.Events.COMPLETED,
-      order
-    )
+      // Run all other registered events
+      const completeOrderJob = await this.eventBus_.emit(
+        OrderService.Events.COMPLETED,
+        {
+          id: orderId,
+        }
+      )
 
-    await completeOrderJob.finished().catch(error => {
-      throw error
+      await completeOrderJob.finished().catch(error => {
+        throw error
+      })
+
+      order.status = "completed"
+
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      return orderRepo.save(order)
     })
-
-    return this.orderModel_.updateOne(
-      { _id: order._id },
-      {
-        $set: { status: "completed" },
-      }
-    )
   }
 
   /**
    * Creates an order from a cart
-   * @param {object} order - the order to create
+   * @param {string} cartId - id of the cart to create an order from
    * @return {Promise} resolves to the creation result.
    */
-  async createFromCart(cart) {
-    // Create DB session for transaction
-    const dbSession = await this.orderModel_.startSession()
+  async createFromCart(cartId) {
+    return this.atomicPhase_(async manager => {
+      const cart = await this.cartService_
+        .withTransaction(manager)
+        .retrieve(cartId, {
+          select: ["subtotal", "total"],
+          relations: [
+            "region",
+            "payment",
+            "items",
+            "discounts",
+            "gift_cards",
+            "shipping_methods",
+          ],
+        })
 
-    if (cart.items.length === 0) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Cannot create order from empty cart"
-      )
-    }
+      if (cart.items.length === 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot create order from empty cart"
+        )
+      }
 
-    // Initialize DB transaction
-    return dbSession
-      .withTransaction(async () => {
-        // Check if order from cart already exists
-        // If so, this function throws
-        const exists = await this.existsByCartId(cart._id)
-        if (exists) {
+      const exists = await this.existsByCartId(cart.id)
+      if (exists) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Order from cart already exists"
+        )
+      }
+
+      const { payment, region, total } = cart
+      // Would be the case if a discount code is applied that covers the item
+      // total
+      if (total !== 0) {
+        // Throw if payment method does not exist
+        if (!payment) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
-            "Order from cart already exists"
+            "Cart does not contain a payment method"
           )
         }
 
-        const total = await this.totalsService_.getTotal(cart)
+        const paymentStatus = await this.paymentProviderService_.getStatus(
+          payment
+        )
 
-        let paymentSession = {}
-        let paymentData = {}
-        const { payment_method, payment_sessions } = cart
-
-        // Would be the case if a discount code is applied that covers the item
-        // total
-        if (total !== 0) {
-          // Throw if payment method does not exist
-          if (!payment_method) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "Cart does not contain a payment method"
-            )
-          }
-
-          if (!payment_sessions || !payment_sessions.length) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "cart must have payment sessions"
-            )
-          }
-
-          paymentSession = payment_sessions.find(
-            ps => ps.provider_id === payment_method.provider_id
-          )
-
-          // Throw if payment method does not exist
-          if (!paymentSession) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "Cart does not have an authorized payment session"
-            )
-          }
-
-          const paymentProvider = this.paymentProviderService_.retrieveProvider(
-            paymentSession.provider_id
-          )
-          const paymentStatus = await paymentProvider.getStatus(
-            paymentSession.data
-          )
-
-          // If payment status is not authorized, we throw
-          if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              "Payment method is not authorized"
-            )
-          }
-
-          paymentData = await paymentProvider.retrievePayment(
-            paymentSession.data
+        // If payment status is not authorized, we throw
+        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "Payment method is not authorized"
           )
         }
+      }
 
-        const region = await this.regionService_.retrieve(cart.region_id)
-
-        let payment = {}
-        if (paymentSession.provider_id) {
-          payment = {
-            provider_id: paymentSession.provider_id,
-            data: paymentData,
-          }
-        }
-
-        const o = {
-          display_id: await this.counterService_.getNext("orders"),
-          payment_method: payment,
-          discounts: cart.discounts,
-          shipping_methods: cart.shipping_methods,
-          items: cart.items,
-          shipping_address: cart.shipping_address,
-          billing_address: cart.shipping_address,
-          region_id: cart.region_id,
-          email: cart.email,
-          customer_id: cart.customer_id,
-          cart_id: cart._id,
-          tax_rate: region.tax_rate,
-          currency_code: region.currency_code,
-          metadata: cart.metadata || {},
-        }
-
-        const orderDocument = await this.orderModel_
-          .create([o], {
-            session: dbSession,
-          })
-          .catch(err => console.log(err))
-
-        // Emit and return
-        this.eventBus_.emit(OrderService.Events.PLACED, orderDocument[0])
-        return orderDocument[0]
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const o = await orderRepo.create({
+        payment_status: "awaiting",
+        discounts: cart.discounts,
+        gift_cards: cart.gift_cards,
+        payment_status: "awaiting",
+        shipping_methods: cart.shipping_methods,
+        shipping_address_id: cart.shipping_address_id,
+        billing_address_id: cart.billing_address_id,
+        region_id: cart.region_id,
+        email: cart.email,
+        customer_id: cart.customer_id,
+        cart_id: cart.id,
+        tax_rate: region.tax_rate,
+        currency_code: region.currency_code,
+        metadata: cart.metadata || {},
       })
-      .then(() => this.orderModel_.findOne({ cart_id: cart._id }))
+
+      const result = await orderRepo.save(o)
+
+      await this.paymentProviderService_
+        .withTransaction(manager)
+        .updatePayment(payment.id, {
+          order_id: result.id,
+        })
+
+      let gcBalance = cart.subtotal
+      for (const g of cart.gift_cards) {
+        const newBalance = Math.max(0, g.balance - gcBalance)
+        const usage = g.balance - newBalance
+        await this.giftCardService_.withTransaction(manager).update(g.id, {
+          balance: newBalance,
+          disabled: newBalance === 0,
+        })
+
+        await this.giftCardService_.withTransaction(manager).createTransaction({
+          gift_card_id: g.id,
+          order_id: result.id,
+          amount: usage,
+        })
+
+        gcBalance = gcBalance - usage
+      }
+
+      for (const method of cart.shipping_methods) {
+        await this.shippingOptionService_
+          .withTransaction(manager)
+          .updateShippingMethod(method.id, { order_id: result.id })
+      }
+
+      for (const item of cart.items) {
+        await this.lineItemService_
+          .withTransaction(manager)
+          .update(item.id, { order_id: result.id })
+      }
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.PLACED, {
+          id: result.id,
+        })
+
+      return result
+    })
   }
 
   /**
@@ -408,71 +558,52 @@ class OrderService extends BaseService {
    * @return {order} the resulting order following the update.
    */
   async createShipment(orderId, fulfillmentId, trackingNumbers, metadata = {}) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, { relations: ["items"] })
+      const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
 
-    const shipment = order.fulfillments.find(f => f._id.equals(fulfillmentId))
-    if (!shipment) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "Could not find fulfillment"
-      )
-    }
+      if (!shipment || shipment.order_id !== orderId) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          "Could not find fulfillment"
+        )
+      }
 
-    const updated = await this.fulfillmentService_.createShipment(
-      order,
-      shipment,
-      trackingNumbers,
-      metadata
-    )
+      const shipmentRes = await this.fulfillmentService_
+        .withTransaction(manager)
+        .createShipment(fulfillmentId, trackingNumbers, metadata)
 
-    let fulfillmentStatus = "shipped"
+      order.fulfillment_status = "shipped"
+      for (const item of order.items) {
+        const shipped = shipmentRes.items.find(si => si.item_id === item.id)
+        if (shipped) {
+          const shippedQty = (item.shipped_quantity || 0) + shipped.quantity
+          if (shippedQty !== item.quantity) {
+            order.fulfillment_status = "partially_shipped"
+          }
 
-    const newItems = order.items.map(item => {
-      const shipped = updated.items.find(fi => item._id.equals(fi._id))
-      if (shipped) {
-        // Find the new fulfilled total
-        const shippedQuantity = (item.shipped_quantity || 0) + shipped.quantity
-
-        // If the ordered quantity is not the same as the fulfilled quantity
-        // the order cannot be marked as fulfilled. We instead set it as
-        // partially_fulfilled.
-        if (item.quantity !== shippedQuantity) {
-          fulfillmentStatus = "partially_shipped"
-        }
-
-        return {
-          ...item,
-          shipped: item.quantity === shippedQuantity,
-          shipped_quantity: shippedQuantity,
+          await this.lineItemService_.withTransaction(manager).update(item.id, {
+            shipped_quantity: shippedQty,
+          })
+        } else {
+          if (item.shipped_quantity !== item.quantity) {
+            order.fulfillment_status = "partially_shipped"
+          }
         }
       }
 
-      if (!item.shipped) {
-        fulfillmentStatus = "partially_shipped"
-      }
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const result = await orderRepo.save(order)
 
-      return item
-    })
-
-    // Add the shipment to the order
-    return this.orderModel_
-      .updateOne(
-        { _id: orderId, "fulfillments._id": fulfillmentId },
-        {
-          $set: {
-            "fulfillments.$": updated,
-            items: newItems,
-            fulfillment_status: fulfillmentStatus,
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.SHIPMENT_CREATED, {
-          order_id: orderId,
-          shipment: result.fulfillments.find(f => f._id.equals(fulfillmentId)),
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.SHIPMENT_CREATED, {
+          id: orderId,
+          fulfillment_id: shipmentRes.id,
         })
-        return result
-      })
+
+      return result
+    })
   }
 
   /**
@@ -480,17 +611,128 @@ class OrderService extends BaseService {
    * @param {object} order - the order to create
    * @return {Promise} resolves to the creation result.
    */
-  async create(order) {
-    return this.orderModel_
-      .create(order)
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.PLACED, result)
-        return result
+  async create(data) {
+    return this.atomicPhase_(async manager => {
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const order = orderRepo.create(data)
+      const result = await orderRepo.save(order)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.PLACED, {
+          id: result.id,
+        })
+      return result
+    })
+  }
+
+  /**
+   * Updates the order's billing address.
+   * @param {string} orderId - the id of the order to update
+   * @param {object} address - the value to set the billing address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateBillingAddress_(order, address) {
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    address.country_code = address.country_code.toLowerCase()
+
+    const region = await this.regionService_.retrieve(order.region_id, {
+      relations: ["countries"],
+    })
+
+    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the order region"
+      )
+    }
+
+    address.country_code = address.country_code.toLowerCase()
+
+    if (order.billing_address_id) {
+      const addr = await addrRepo.findOne({
+        where: { id: order.billing_address_id },
       })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
+
+      await addrRepo.save({ ...addr, ...address })
+    } else {
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
+    }
+  }
+
+  /**
+   * Updates the order's shipping address.
+   * @param {string} orderId - the id of the order to update
+   * @param {object} address - the value to set the shipping address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateShippingAddress_(order, address) {
+    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    address.country_code = address.country_code.toLowerCase()
+
+    const region = await this.regionService_.retrieve(order.region_id, {
+      relations: ["countries"],
+    })
+
+    if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping country must be in the order region"
+      )
+    }
+
+    if (order.shipping_address_id) {
+      const addr = await addrRepo.findOne({
+        where: { id: order.shipping_address_id },
       })
+
+      await addrRepo.save({ ...addr, ...address })
+    } else {
+      const created = await addrRepo.create({ ...address })
+      await addrRepo.save(created)
+    }
+  }
+
+  async addShippingMethod(orderId, optionId, data, config = {}) {
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        select: ["subtotal"],
+        relations: [
+          "shipping_methods",
+          "shipping_methods.shipping_option",
+          "items",
+          "items.variant",
+          "items.variant.product",
+        ],
+      })
+      const { shipping_methods } = order
+
+      const newMethod = await this.shippingOptionService_
+        .withTransaction(manager)
+        .createShippingMethod(optionId, data, { order, ...config })
+
+      const methods = [newMethod]
+      if (shipping_methods.length) {
+        for (const sm of shipping_methods) {
+          if (
+            sm.shipping_option.profile_id ===
+            newMethod.shipping_option.profile_id
+          ) {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .deleteShippingMethod(sm)
+          } else {
+            methods.push(sm)
+          }
+        }
+      }
+
+      const result = await this.retrieve(orderId)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.UPDATED, { id: result.id })
+      return result
+    })
   }
 
   /**
@@ -503,71 +745,71 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(orderId, update) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId)
 
-    if (
-      (update.shipping_address ||
-        update.billing_address ||
-        update.payment_method ||
-        update.items) &&
-      (order.fulfillment_status !== "not_fulfilled" ||
-        order.payment_status !== "awaiting" ||
-        order.status !== "pending")
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't update shipping, billing, items and payment method when order is processed"
-      )
-    }
+      if (
+        (update.payment || update.items) &&
+        (order.fulfillment_status !== "not_fulfilled" ||
+          order.payment_status !== "awaiting" ||
+          order.status !== "pending")
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't update shipping, billing, items and payment method when order is processed"
+        )
+      }
 
-    if (update.metadata) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Use setMetadata to update metadata fields"
-      )
-    }
+      if (update.status || update.fulfillment_status || update.payment_status) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't update order statuses. This will happen automatically. Use metadata in order for additional statuses"
+        )
+      }
 
-    if (update.status || update.fulfillment_status || update.payment_status) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't update order statuses. This will happen automatically. Use metadata in order for additional statuses"
-      )
-    }
+      const {
+        metadata,
+        items,
+        billing_address,
+        shipping_address,
+        ...rest
+      } = update
 
-    const updateFields = { ...update }
+      if ("metadata" in update) {
+        order.metadata = this.setMetadata_(order, update.metadata)
+      }
 
-    if (update.shipping_address) {
-      updateFields.shipping_address = this.validateAddress_(
-        update.shipping_address
-      )
-    }
+      if ("shipping_address" in update) {
+        await this.updateShippingAddress_(order, update.shipping_address)
+      }
 
-    if (update.billing_address) {
-      updateFields.billing_address = this.validateAddress_(
-        update.billing_address
-      )
-    }
+      if ("billing_address" in update) {
+        await this.updateBillingAddress_(order, update.billing_address)
+      }
 
-    if (update.items) {
-      updateFields.items = update.items.map(item =>
-        this.lineItemService_.validate(item)
-      )
-    }
+      if ("items" in update) {
+        for (const item of update.items) {
+          await this.lineItemService_.withTransaction(manager).create({
+            ...item,
+            order_id: orderId,
+          })
+        }
+      }
 
-    return this.orderModel_
-      .updateOne(
-        { _id: order._id },
-        { $set: updateFields },
-        { runValidators: true }
-      )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.UPDATED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      for (const [key, value] of Object.entries(rest)) {
+        order[key] = value
+      }
+
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const result = await orderRepo.save(order)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.UPDATED, {
+          id: orderId,
+        })
+      return result
+    })
   }
 
   /**
@@ -578,64 +820,46 @@ class OrderService extends BaseService {
    * @return {Promise} result of the update operation.
    */
   async cancel(orderId) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        relations: ["fulfillments", "payments"],
+      })
 
-    if (order.payment_status !== "awaiting") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't cancel an order with a processed payment"
-      )
-    }
-
-    const fulfillments = await Promise.all(
-      order.fulfillments.map(async fulfillment => {
-        const { provider_id, data } = fulfillment
-        const provider = await this.fulfillmentProviderService_.retrieveProvider(
-          provider_id
+      if (order.payment_status !== "awaiting") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't cancel an order with a processed payment"
         )
-        const newData = await provider.cancelFulfillment(data)
-        return {
-          ...fulfillment,
-          is_canceled: true,
-          data: newData,
-        }
-      })
-    )
+      }
 
-    const { provider_id, data } = order.payment_method
-    const paymentProvider = await this.paymentProviderService_.retrieveProvider(
-      provider_id
-    )
-
-    // Cancel payment with payment provider
-    const payData = await paymentProvider.cancelPayment(data)
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $set: {
-            status: "canceled",
-            fulfillment_status: "canceled",
-            payment_status: "canceled",
-            fulfillments,
-            payment_method: {
-              ...order.payment_method,
-              data: payData,
-            },
-          },
-        }
+      await Promise.all(
+        order.fulfillments.map(fulfillment =>
+          this.fulfillmentService_
+            .withTransaction(manager)
+            .cancelFulfillment(fulfillment)
+        )
       )
-      .then(result => {
-        // Notify subscribers
-        this.eventBus_.emit(OrderService.Events.CANCELED, result)
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+
+      for (const p of order.payments) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .cancelPayment(p)
+      }
+
+      order.status = "canceled"
+      order.fulfillment_status = "canceled"
+      order.payment_status = "canceled"
+
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const result = await orderRepo.save(order)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.CANCELED, {
+          id: order.id,
+        })
+      return result
+    })
   }
 
   /**
@@ -644,56 +868,51 @@ class OrderService extends BaseService {
    * @return {Promise} result of the update operation.
    */
   async capturePayment(orderId) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const order = await this.retrieve(orderId, { relations: ["payments"] })
 
-    if (order.payment_status !== "awaiting") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Payment already captured"
-      )
-    }
+      const payments = []
+      for (const p of order.payments) {
+        if (p.captured_at === null) {
+          const result = await this.paymentProviderService_
+            .withTransaction(manager)
+            .capturePayment(p)
+            .catch(err => {
+              this.eventBus_
+                .withTransaction(manager)
+                .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
+                  id: orderId,
+                  payment_id: p.id,
+                  error: err,
+                })
+            })
 
-    const updateFields = { payment_status: "captured" }
-
-    const { provider_id, data } = order.payment_method
-    const paymentProvider = await this.paymentProviderService_.retrieveProvider(
-      provider_id
-    )
-
-    try {
-      await paymentProvider.capturePayment(data)
-    } catch (error) {
-      return this.orderModel_
-        .updateOne(
-          {
-            _id: orderId,
-          },
-          {
-            $set: { payment_status: "requires_action" },
+          if (result) {
+            payments.push(result)
+          } else {
+            payments.push(p)
           }
-        )
-        .then(result => {
-          this.eventBus_.emit(
-            OrderService.Events.PAYMENT_CAPTURE_FAILED,
-            result
-          )
-          return result
-        })
-    }
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $set: updateFields,
+        } else {
+          payments.push(p)
         }
-      )
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.PAYMENT_CAPTURED, result)
-        return result
-      })
+      }
+
+      order.payments = payments
+      order.payment_status = payments.every(p => p.captured_at !== null)
+        ? "captured"
+        : "requires_action"
+
+      const result = await orderRepo.save(order)
+
+      this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.PAYMENT_CAPTURED, {
+          id: result.id,
+        })
+
+      return result
+    })
   }
 
   /**
@@ -736,74 +955,83 @@ class OrderService extends BaseService {
    * @return {Promise} result of the update operation.
    */
   async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        relations: [
+          "region",
+          "fulfillments",
+          "shipping_address",
+          "billing_address",
+          "shipping_methods",
+          "shipping_methods.shipping_option",
+          "items",
+          "items.variant",
+          "items.variant.product",
+          "payments",
+        ],
+      })
 
-    const fulfillments = await this.fulfillmentService_.createFulfillment(
-      order,
-      itemsToFulfill,
-      metadata
-    )
-
-    let successfullyFulfilled = []
-    for (const f of fulfillments) {
-      successfullyFulfilled = [...successfullyFulfilled, ...f.items]
-    }
-
-    const updateFields = {}
-
-    // Reflect the fulfillments in the items
-    updateFields.items = order.items.map(i => {
-      const ful = successfullyFulfilled.find(f => i._id.equals(f._id))
-      if (ful) {
-        // Find the new fulfilled total
-        const fulfilledQuantity = i.fulfilled_quantity + ful.quantity
-
-        // If the ordered quantity is not the same as the fulfilled quantity
-        // the order cannot be marked as fulfilled. We instead set it as
-        // partially_fulfilled.
-        if (i.quantity !== fulfilledQuantity) {
-          updateFields.fulfillment_status = "partially_fulfilled"
-        }
-
-        // Update the items
-        return {
-          ...i,
-          fulfilled: i.quantity === fulfilledQuantity,
-          fulfilled_quantity: fulfilledQuantity,
-        }
+      if (!order.shipping_methods?.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot fulfill an order that lacks shipping methods"
+        )
       }
 
-      if (!i.fulfilled) {
-        updateFields.fulfillment_status = "partially_fulfilled"
+      const fulfillments = await this.fulfillmentService_
+        .withTransaction(manager)
+        .createFulfillment(order, itemsToFulfill, {
+          metadata,
+          order_id: orderId,
+        })
+      let successfullyFulfilled = []
+      for (const f of fulfillments) {
+        successfullyFulfilled = [...successfullyFulfilled, ...f.items]
       }
 
-      return i
-    })
+      order.fulfillment_status = "fulfilled"
 
-    updateFields.fulfillment_status = "fulfilled"
+      // Update all line items to reflect fulfillment
+      for (const item of order.items) {
+        const fulfillmentItem = successfullyFulfilled.find(
+          f => item.id === f.item_id
+        )
 
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $addToSet: { fulfillments: { $each: fulfillments } },
-          $set: updateFields,
-        }
-      )
-      .then(result => {
-        for (const fulfillment of fulfillments) {
-          this.eventBus_.emit(OrderService.Events.FULFILLMENT_CREATED, {
-            order_id: orderId,
-            fulfillment,
+        if (fulfillmentItem) {
+          const fulfilledQuantity =
+            (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
+
+          // Update the fulfilled quantity
+          await this.lineItemService_.withTransaction(manager).update(item.id, {
+            fulfilled_quantity: fulfilledQuantity,
           })
+
+          if (item.quantity !== fulfilledQuantity) {
+            order.fulfillment_status = "partially_fulfilled"
+          }
+        } else {
+          if (item.quantity !== item.fulfilled_quantity) {
+            order.fulfillment_status = "partially_fulfilled"
+          }
         }
-        return result
-      })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
+      }
+
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+
+      order.fulfillments = [...order.fulfillments, ...fulfillments]
+      const result = await orderRepo.save(order)
+
+      for (const fulfillment of fulfillments) {
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(OrderService.Events.FULFILLMENT_CREATED, {
+            id: orderId,
+            fulfillment_id: fulfillment.id,
+          })
+      }
+
+      return result
+    })
   }
 
   /**
@@ -845,7 +1073,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const returnable = item.quantity - item.returned_quantity
+    const returnable = item.quantity - (item.returned_quantity || 0)
     if (quantity > returnable) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -857,22 +1085,6 @@ class OrderService extends BaseService {
       ...item,
       quantity,
     }
-  }
-
-  /**
-   * Generates documents.
-   * @param {Array<Document>} docs - documents to generate
-   * @param {Function} transformer - a function to apply to the created document
-   *   before returning.
-   * @return {Promise<Array<_>>} returns the created documents
-   */
-  createDocuments_(docs, transformer) {
-    return Promise.all(
-      docs.map(async d => {
-        const doc = await this.documentService_.create(d)
-        return transformer(doc)
-      })
-    )
   }
 
   /**
@@ -889,33 +1101,37 @@ class OrderService extends BaseService {
    * @returns {Promise<Order>} the resulting order.
    */
   async requestReturn(orderId, items, shippingMethod, refundAmount) {
-    const order = await this.retrieve(orderId)
-
-    const returnRequest = await this.returnService_.requestReturn(
-      order,
-      items,
-      shippingMethod,
-      refundAmount
-    )
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: order._id,
-        },
-        {
-          $push: {
-            returns: returnRequest,
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.RETURN_REQUESTED, {
-          order: result,
-          return: returnRequest,
-        })
-        return result
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        select: ["refunded_total", "total"],
+        relations: ["items"],
       })
+
+      const returnObj = {
+        order_id: orderId,
+        items,
+        shipping_method: shippingMethod,
+        refund_amount: refundAmount,
+      }
+
+      const returnRequest = await this.returnService_
+        .withTransaction(manager)
+        .create(returnObj, order)
+
+      const fulfilledReturn = await this.returnService_
+        .withTransaction(manager)
+        .fulfill(returnRequest.id)
+
+      const result = await this.retrieve(orderId)
+
+      this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.RETURN_REQUESTED, {
+          id: result.id,
+          return_id: fulfilledReturn.id,
+        })
+      return result
+    })
   }
 
   /**
@@ -937,97 +1153,75 @@ class OrderService extends BaseService {
     refundAmount,
     allowMismatch = false
   ) {
-    const order = await this.retrieve(orderId)
-    const returnRequest = order.returns.find(r => r._id.equals(returnId))
-    if (!returnRequest) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Return request with id ${returnId} was not found`
-      )
-    }
-
-    const updatedReturn = await this.returnService_.receiveReturn(
-      order,
-      returnRequest,
-      items,
-      refundAmount,
-      allowMismatch
-    )
-
-    if (updatedReturn.status === "requires_action") {
-      return this.orderModel_
-        .updateOne(
-          {
-            _id: orderId,
-            "returns._id": updatedReturn._id,
-          },
-          {
-            $set: {
-              "returns.$": updatedReturn,
-            },
-          }
-        )
-        .then(result => {
-          this.eventBus_.emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
-            order: result,
-            return: result.returns.find(r => r._id.equals(returnId)),
-          })
-          return result
-        })
-    }
-
-    let isFullReturn = true
-    const newItems = order.items.map(i => {
-      const isReturn = updatedReturn.items.find(r => i._id.equals(r.item_id))
-      if (isReturn) {
-        const returnedQuantity = i.returned_quantity + isReturn.quantity
-        let returned = i.quantity === returnedQuantity
-        if (!returned) {
-          isFullReturn = false
-        }
-        return {
-          ...i,
-          returned_quantity: returnedQuantity,
-          returned,
-        }
-      } else {
-        if (!i.returned) {
-          isFullReturn = false
-        }
-        return i
-      }
-    })
-
-    const newReturns = order.returns.map(r =>
-      r._id.equals(returnId) ? updatedReturn : r
-    )
-
-    const update = {
-      $set: {
-        returns: newReturns,
-        items: newItems,
-        fulfillment_status: isFullReturn ? "returned" : "partially_returned",
-      },
-    }
-
-    if (updatedReturn.refund_amount > 0) {
-      const { provider_id, data } = order.payment_method
-      const paymentProvider = this.paymentProviderService_.retrieveProvider(
-        provider_id
-      )
-      await paymentProvider.refundPayment(data, updatedReturn.refund_amount)
-      update.$push = {
-        refunds: {
-          amount: updatedReturn.refund_amount,
-        },
-      }
-    }
-
-    return this.orderModel_.updateOne({ _id: orderId }, update).then(result => {
-      this.eventBus_.emit(OrderService.Events.ITEMS_RETURNED, {
-        order: result,
-        return: updatedReturn,
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        relations: ["items", "returns", "payments"],
       })
+      const returnRequest = await this.returnService_.retrieve(returnId)
+
+      if (!returnRequest || returnRequest.order_id !== orderId) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Return request with id ${returnId} was not found`
+        )
+      }
+
+      const updatedReturn = await this.returnService_
+        .withTransaction(manager)
+        .receiveReturn(returnId, items, refundAmount, allowMismatch)
+
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      if (updatedReturn.status === "requires_action") {
+        order.fulfillment_status = "requires_action"
+        const result = await orderRepo.save(order)
+        this.eventBus_
+          .withTransaction(manager)
+          .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
+            id: result.id,
+            return_id: updatedReturn.id,
+          })
+        return result
+      }
+
+      let isFullReturn = true
+      for (const i of order.items) {
+        const isReturn = updatedReturn.items.find(r => i.id === r.item_id)
+        if (isReturn) {
+          const returnedQuantity =
+            (i.returned_quantity || 0) + isReturn.quantity
+          if (i.quantity !== returnedQuantity) {
+            isFullReturn = false
+          }
+
+          await this.lineItemService_.withTransaction(manager).update(i.id, {
+            returned_quantity: returnedQuantity,
+          })
+        } else {
+          if (!i.returned_quantity !== i.quantity) {
+            isFullReturn = false
+          }
+        }
+      }
+
+      if (updatedReturn.refund_amount > 0) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .refundPayment(order.payments, updatedReturn.refund_amount, "return")
+      }
+
+      if (isFullReturn) {
+        order.fulfillment_status = "returned"
+      } else {
+        order.fulfillment_status = "partially_returned"
+      }
+
+      const result = await orderRepo.save(order)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.ITEMS_RETURNED, {
+          id: order.id,
+          return_id: updatedReturn.id,
+        })
       return result
     })
   }
@@ -1039,188 +1233,92 @@ class OrderService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async archive(orderId) {
-    const order = await this.retrieve(orderId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId)
 
-    if (order.status !== ("completed" || "refunded")) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Can't archive an unprocessed order"
-      )
-    }
-
-    return this.orderModel_.updateOne(
-      {
-        _id: orderId,
-      },
-      {
-        $set: { status: "archived" },
+      if (order.status !== ("completed" || "refunded")) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't archive an unprocessed order"
+        )
       }
-    )
+
+      order.status = "archived"
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const result = await orderRepo.save(order)
+      return result
+    })
   }
 
   /**
    * Refunds a given amount back to the customer.
    */
   async createRefund(orderId, refundAmount, reason, note) {
-    const order = await this.retrieve(orderId)
-    const total = await this.totalsService_.getTotal(order)
-    const refunded = await this.totalsService_.getRefundedTotal(order)
-
-    if (refundAmount > total - refunded) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Cannot refund more than original order amount"
-      )
-    }
-
-    const { provider_id, data } = order.payment_method
-    const paymentProvider = this.paymentProviderService_.retrieveProvider(
-      provider_id
-    )
-
-    await paymentProvider.refundPayment(data, refundAmount)
-
-    return this.orderModel_
-      .updateOne(
-        {
-          _id: orderId,
-        },
-        {
-          $push: {
-            refunds: {
-              amount: refundAmount,
-              reason,
-              note,
-            },
-          },
-        }
-      )
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-          order: result,
-          refund: {
-            amount: refundAmount,
-            reason,
-            note,
-          },
-        })
-        return result
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(orderId, {
+        select: ["refundable_amount", "total", "refunded_total"],
+        relations: ["payments"],
       })
+
+      if (refundAmount > order.refundable_amount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot refund more than the original order amount"
+        )
+      }
+
+      const refund = await this.paymentProviderService_
+        .withTransaction(manager)
+        .refundPayment(order.payments, refundAmount, reason, note)
+
+      const result = await this.retrieve(orderId)
+      this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
+        id: result.id,
+        refund_id: refund.id,
+      })
+      return result
+    })
   }
 
-  /**
-   * Decorates an order.
-   * @param {Order} order - the order to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {Order} return the decorated order.
-   */
-  async decorate(order, fields = [], expandFields = []) {
-    if (fields.length === 0) {
-      // Default to include all fields
-      fields = [
-        "_id",
-        "display_id",
-        "status",
-        "fulfillment_status",
-        "payment_status",
-        "email",
-        "cart_id",
-        "billing_address",
-        "shipping_address",
-        "items",
-        "currency_code",
-        "tax_rate",
-        "fulfillments",
-        "returns",
-        "refunds",
-        "region_id",
-        "discounts",
-        "customer_id",
-        "payment_method",
-        "shipping_methods",
-        "documents",
-        "created",
-        "metadata",
-        "shipping_total",
-        "discount_total",
-        "tax_total",
-        "subtotal",
-        "total",
-        "refunded_total",
-        "refundable_amount",
-      ]
+  decorateTotals_(order, totalsFields = []) {
+    if (totalsFields.includes("shipping_total")) {
+      order.shipping_total = this.totalsService_.getShippingTotal(order)
     }
-    const requiredFields = [
-      "_id",
-      "display_id",
-      "fulfillment_status",
-      "payment_status",
-      "status",
-      "currency_code",
-      "region_id",
-      "metadata",
-    ]
-    const o = _.pick(order, fields.concat(requiredFields))
-
-    if (fields.includes("shipping_total")) {
-      o.shipping_total = await this.totalsService_.getShippingTotal(order)
+    if (totalsFields.includes("gift_card_total")) {
+      order.gift_card_total = this.totalsService_.getGiftCardTotal(order)
     }
-    if (fields.includes("discount_total")) {
-      o.discount_total = await this.totalsService_.getDiscountTotal(order)
+    if (totalsFields.includes("discount_total")) {
+      order.discount_total = this.totalsService_.getDiscountTotal(order)
     }
-    if (fields.includes("tax_total")) {
-      o.tax_total = await this.totalsService_.getTaxTotal(order)
+    if (totalsFields.includes("tax_total")) {
+      order.tax_total = this.totalsService_.getTaxTotal(order)
     }
-    if (fields.includes("subtotal")) {
-      o.subtotal = await this.totalsService_.getSubtotal(order)
+    if (totalsFields.includes("subtotal")) {
+      order.subtotal = this.totalsService_.getSubtotal(order)
     }
-    if (fields.includes("total")) {
-      o.total = await this.totalsService_.getTotal(order)
+    if (totalsFields.includes("total")) {
+      order.total = this.totalsService_.getTotal(order)
     }
-    if (fields.includes("refunded_total")) {
-      o.refunded_total = await this.totalsService_.getRefundedTotal(order)
+    if (totalsFields.includes("refunded_total")) {
+      order.refunded_total = this.totalsService_.getRefundedTotal(order)
     }
-    if (fields.includes("refundable_amount")) {
-      o.refundable_amount = o.total - o.refunded_total
+    if (totalsFields.includes("refundable_amount")) {
+      const total = this.totalsService_.getTotal(order)
+      const refunded_total = this.totalsService_.getRefundedTotal(order)
+      order.refundable_amount = total - refunded_total
     }
 
-    o.created = order._id.getTimestamp()
-
-    if (expandFields.includes("swaps")) {
-      if (order.swaps) {
-        o.swaps = await Promise.all(
-          order.swaps.map(sId => {
-            return this.swapService_.retrieve(sId)
-          })
-        )
-      } else {
-        o.swaps = []
-      }
-    }
-
-    if (expandFields.includes("customer")) {
-      o.customer = await this.customerService_.retrieve(order.customer_id)
-    }
-
-    if (expandFields.includes("region")) {
-      o.region = await this.regionService_.retrieve(order.region_id)
-    }
-
-    if (fields.includes("items")) {
-      o.items = order.items.map(i => {
-        return {
+    if (totalsFields.includes("items.refundable")) {
+      order.items = order.items.map(i => ({
+        ...i,
+        refundable: this.totalsService_.getLineItemRefund(order, {
           ...i,
-          refundable: this.totalsService_.getLineItemRefund(o, {
-            ...i,
-            quantity: i.quantity - i.returned_quantity,
-          }),
-        }
-      })
+          quantity: i.quantity - (i.returned_quantity || 0),
+        }),
+      }))
     }
 
-    const data = await this.runDecorators_(o)
-    return data
+    return order
   }
 
   /**
@@ -1232,51 +1330,26 @@ class OrderService extends BaseService {
    * @param {string} value - value for metadata field.
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata(orderId, key, value) {
-    const validatedId = this.validateId_(orderId)
+  setMetadata_(order, metadata) {
+    const existing = order.metadata || {}
+    const newData = {}
+    for (const [key, value] of Object.entries(metadata)) {
+      if (typeof key !== "string") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "Key type is invalid. Metadata keys must be strings"
+        )
+      }
 
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
+      newData[key] = value
     }
 
-    const keyPath = `metadata.${key}`
-    return this.orderModel_
-      .updateOne({ _id: validatedId }, { $set: { [keyPath]: value } })
-      .catch(err => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
-  }
-
-  /**
-   * Registers a swap to the order. The swap must belong to the order for it to
-   * be registered.
-   * @param {string} id - the id of the order to register the swap to.
-   * @param {string} swapId - the id of the swap to add to the order.
-   * @returns {Promise<Order>} the resulting order
-   */
-  async registerSwapCreated(id, swapId) {
-    const order = await this.retrieve(id)
-    const swap = await this.swapService_.retrieve(swapId)
-
-    if (!order._id.equals(swap.order_id)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Swap must belong to the given order"
-      )
+    const updated = {
+      ...existing,
+      ...newData,
     }
 
-    return this.orderModel_
-      .updateOne({ _id: order._id }, { $addToSet: { swaps: swapId } })
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.SWAP_CREATED, {
-          order: result,
-          swap_id: swapId,
-        })
-        return result
-      })
+    return updated
   }
 
   /**
@@ -1287,48 +1360,47 @@ class OrderService extends BaseService {
    * @returns {Promise<Order>} the resulting order
    */
   async registerSwapReceived(id, swapId) {
-    const order = await this.retrieve(id)
-    const swap = await this.swapService_.retrieve(swapId)
+    return this.atomicPhase_(async manager => {
+      const order = await this.retrieve(id, { relations: ["items"] })
+      const swap = await this.swapService_
+        .withTransaction(manager)
+        .retrieve(swapId, { relations: ["return_order", "return_order.items"] })
 
-    if (!order._id.equals(swap.order_id)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Swap must belong to the given order"
-      )
-    }
+      if (!swap || swap.order_id !== id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Swap must belong to the given order"
+        )
+      }
 
-    if (swap.return.status !== "received") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Swap is not received"
-      )
-    }
+      if (swap.return_order.status !== "received") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Swap is not received"
+        )
+      }
 
-    const newItems = order.items.map(i => {
-      const isReturn = swap.return_items.find(ri => i._id.equals(ri.item_id))
+      for (const i of order.items) {
+        const isReturn = swap.return_order.items.find(ri => i.id === ri.item_id)
 
-      if (isReturn) {
-        const returnedQuantity = i.returned_quantity + isReturn.quantity
-        const returned = returnedQuantity === i.quantity
-        return {
-          ...i,
-          returned_quantity: returnedQuantity,
-          returned,
+        if (isReturn) {
+          const returnedQuantity =
+            (i.returned_quantity || 0) + isReturn.quantity
+          await this.lineItemService_.withTransaction(manager).update(i.id, {
+            returned_quantity: returnedQuantity,
+          })
         }
       }
 
-      return i
-    })
-
-    return this.orderModel_
-      .updateOne({ _id: order._id }, { $set: { items: newItems } })
-      .then(result => {
-        this.eventBus_.emit(OrderService.Events.SWAP_RECEIVED, {
-          order: result,
+      const result = await this.retrieve(id)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.SWAP_RECEIVED, {
+          id: result.id,
           swap_id: swapId,
         })
-        return result
-      })
+      return result
+    })
   }
 
   /**

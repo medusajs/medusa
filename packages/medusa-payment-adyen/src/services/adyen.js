@@ -2,72 +2,141 @@ import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
+import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
 class AdyenService extends BaseService {
-  constructor({ regionService, cartService, totalsService }, options) {
+  constructor({ cartService }, options) {
     super()
 
-    this.regionService_ = regionService
-
+    /** @private @constant {CartService} */
     this.cartService_ = cartService
 
-    this.totalsService_ = totalsService
-
+    /**
+     * {
+     *    api_key: "",
+     *    notification_hmac: "",
+     *    return_url: "",
+     *    merchant_account: "",
+     *    origin: "",
+     *    environment: "",
+     *    live_endpoint_prefix: "",
+     *    payment_endpoint: ""
+     * }
+     */
     this.options_ = options
 
-    this.adyenCheckoutApi = axios.create({
-      baseURL: "https://checkout-test.adyen.com/v53",
-      headers: {
-        "Content-Type": "application/json",
-        "x-API-key": this.options_.api_key,
-      },
+    /** @private @constant {AxiosClient} */
+    this.adyenClient_ = this.initAdyenClient()
+
+    /** @private @constant {AdyenClient} */
+    this.adyenPaymentApi = this.initPaymentClient()
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new AdyenService({
+      cartService: this.cartService_,
+      totalsService: this.totalsService_,
     })
 
-    this.adyenPaymentApi = axios.create({
-      baseURL: "https://pal-test.adyen.com/pal/servlet/Payment/v52",
-      headers: {
-        "Content-Type": "application/json",
-        "x-API-key": this.options_.api_key,
-      },
-    })
+    this.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   getOptions() {
     return this.options_
   }
 
-  validateNotification(event) {
+  initPaymentClient() {
+    return axios.create({
+      baseURL: this.options_.payment_endpoint,
+      headers: {
+        "Content-Type": "application/json",
+        "x-API-key": this.options_.api_key,
+      },
+    })
+  }
+
+  initAdyenClient() {
+    const config = new Config()
+    config.apiKey = this.options_.api_key
+    config.merchantAccount = this.options_.merchant_account
+
+    const client = new Client({
+      config,
+    })
+
+    client.setEnvironment(
+      this.options_.environment,
+      this.options_.live_endpoint_prefix
+    )
+
+    return client
+  }
+
+  /**
+   * Validates an Adyen webhook notification
+   * @param {object} notification - notification to validate
+   * @returns {string} the status of the payment
+   */
+  validateNotification(notification) {
     const validator = new hmacValidator()
+
     const validated = validator.validateHMAC(
-      event,
+      notification,
       this.options_.notification_hmac
     )
     return validated
   }
 
   /**
-   * Retrieve payment methods from Ayden using country as filter.
-   * @param {string} countryCode - country code of cart
-   * @param {string} shopperLocale - locale used on website
-   * @returns {string} the status of the payment
+   * Retrieve stored payment methods from Adyen.
+   * @param {Customer} customer - customer to retrieve methods for
+   * @returns {Promise} result containing the stored payment methods from Adyen
    */
-  async retrievePaymentMethods(cart, allowedMethods, total, currency) {
+  async retrieveSavedMethods(customer) {
     let request = {
-      allowedPaymentMethods: allowedMethods,
-      amount: {
-        value: total * 100,
-        currency: currency,
-      },
       merchantAccount: this.options_.merchant_account,
-      channel: this.options_.channel,
-    }
-
-    if (cart.customer_id) {
-      request.shopperReference = cart.customer_id
+      channel: "Web",
+      shopperReference: customer.id,
     }
 
     try {
-      return await this.adyenCheckoutApi.post("/paymentMethods", request)
+      const checkout = new CheckoutAPI(this.adyenClient_)
+      const methods = await checkout.paymentMethods(request)
+      return methods.storedPaymentMethods || []
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Retrieve payment methods from Adyen.
+   * @param {string[]} allowedMethods - the allowed methods based on region
+   * @param {number} total - total amount to be paid with payment methods
+   * @param {string} currency - currency code to use for the payment
+   * @param {string} customerId - id of the customer paying
+   * @returns {Promise} result containing the payment methods from Adyen
+   */
+  async retrievePaymentMethods(allowedMethods, total, currency, customerId) {
+    let request = {
+      allowedPaymentMethods: allowedMethods,
+      amount: {
+        value: total,
+        currency: currency,
+      },
+      merchantAccount: this.options_.merchant_account,
+      channel: "Web",
+      shopperReference: customerId,
+    }
+
+    try {
+      const checkout = new CheckoutAPI(this.adyenClient_)
+      return checkout.paymentMethods(request)
     } catch (error) {
       throw error
     }
@@ -75,89 +144,218 @@ class AdyenService extends BaseService {
 
   /**
    * Status for Adyen payment.
-   * @param {Object} paymentData - payment method data from cart
+   * @param {object} paymentData - payment method data from cart
    * @returns {string} the status of the payment
    */
-  async getStatus(_) {
-    let status = "initial"
+  getStatus(paymentData) {
+    const { resultCode } = paymentData
+    let status = "pending"
+
+    if (resultCode === "Pending") {
+      return status
+    }
+
+    if (resultCode === "Refused") {
+      return status
+    }
+
+    if (resultCode === "Error") {
+      status = "error"
+    }
+
+    if (resultCode === "Authorised") {
+      status = "authorized"
+    }
+
+    if (resultCode === "Canceled") {
+      status = "canceled"
+    }
+
+    if (resultCode === "ChallengeShopper") {
+      status = "requires_more"
+    }
+
+    if (resultCode === "RedirectShopper") {
+      status = "requires_more"
+    }
+
+    if (resultCode === "IdentifyShopper") {
+      status = "requires_more"
+    }
+
     return status
   }
 
   /**
    * Creates Adyen payment object.
-   * @param {any} _ - placeholder object
-   * @returns {Object} empty payment data
+   * @param {Cart} cart - cart to initiate payment for
+   * @returns {object} empty payment data
    */
-  async createPayment(_) {
-    return {}
-  }
-
-  async retrievePayment(data) {
-    return data
-  }
-
-  async updatePayment(paymentData, details) {
-    const request = {
-      paymentData,
-      details,
-    }
-    return this.adyenCheckoutApi.post("/payments/details", request)
+  async createPayment(cart) {
+    return { cart_id: cart.id }
   }
 
   /**
-   * Creates and authorizes an Ayden payment
-   * @returns {Object} payment data result
+   * Retrieves Adyen payment. This is not supported by adyen, so we simply
+   * return the current payment method data
+   * @param {object} data - payment session
+   * @returns {object} payment method data
    */
-  async authorizePayment(cart, paymentMethod) {
-    const region = await this.regionService_.retrieve(cart.region_id)
-    const total = await this.totalsService_.getTotal(cart)
+  async getPaymentData(paymentSession) {
+    return { ...paymentSession.data }
+  }
+
+  /**
+   * Retrieves Adyen payment. This is not supported by adyen, so we simply
+   * return the current payment method data
+   * @param {object} sessionData - the data of the payment to retrieve
+   * @returns {Promise<object>} Stripe payment intent
+   */
+  async retrieve(sessionData) {
+    return sessionData
+  }
+
+  /**
+   * Creates and authorizes an Adyen payment.
+   * Requires cart_id in context for authorization.
+   * Return status of authorization result.
+   * @param {object} sessionData - payment session data
+   * @param {object} context - properties relevant to current context
+   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   */
+  async authorizePayment(session, context) {
+    const sessionData = session.data
+
+    const status = this.getStatus(sessionData)
+
+    // If session data is present, we already called authorize once.
+    // Therefore, this is most likely a call for getting additional details
+    if (status === "requires_more") {
+      const updated = await this.updatePaymentData(sessionData, {
+        details: sessionData.details,
+        paymentData: sessionData.paymentData,
+      })
+
+      return { data: updated, status: this.getStatus(updated) }
+    }
+
+    if (status === "authorized") {
+      return { data: sessionData, status: "authorized" }
+    }
+
+    const cart = await this.cartService_.retrieve(session.cart_id, {
+      select: ["total"],
+      relations: ["region", "shipping_address"],
+    })
+
+    const amount = {
+      currency: cart.region.currency_code.toUpperCase(),
+      value: cart.total,
+    }
 
     let request = {
-      amount: {
-        currency: region.currency_code,
-        value: total * 100,
-      },
+      amount,
+      shopperIP: context.ip_address || "",
       shopperReference: cart.customer_id,
-      paymentMethod,
-      reference: cart._id,
+      paymentMethod: sessionData.paymentData.paymentMethod,
+      reference: cart.id,
       merchantAccount: this.options_.merchant_account,
       returnUrl: this.options_.return_url,
+      origin: this.options_.origin,
+      channel: "Web",
+      redirectFromIssuerMethod: "GET",
+      browserInfo: sessionData.browserInfo || {},
+      billingAddress: {
+        city: cart.shipping_address.city,
+        country: cart.shipping_address.country_code,
+        houseNumberOrName: cart.shipping_address.address_2 || "",
+        postalCode: cart.shipping_address.postal_code,
+        stateOrProvice: cart.shipping_address.province || "",
+        street: cart.shipping_address.address_1,
+      },
       metadata: {
-        cart_id: cart._id,
+        cart_id: cart.id,
       },
     }
 
-    if (paymentMethod.storedPaymentMethodId) {
+    // If customer chose to save the payment method
+    if (sessionData.storePaymentMethod) {
+      request.storePaymentMethod = "true"
       request.shopperInteraction = "Ecommerce"
       request.recurringProcessingModel = "CardOnFile"
     }
 
-    return await this.adyenCheckoutApi.post("/payments", request)
+    const checkout = new CheckoutAPI(this.adyenClient_)
+
+    try {
+      const authorizedPayment = await checkout.payments(request, {
+        idempotencyKey: context.idempotency_key || "",
+      })
+
+      return {
+        data: authorizedPayment,
+        status: this.getStatus(authorizedPayment),
+      }
+    } catch (error) {
+      throw error
+    }
   }
 
-  async checkPaymentResult(paymentData, payload) {
-    const request = {
-      paymentData,
-      details: {
-        payload,
-      },
+  async updatePaymentData(sessionData, update) {
+    if (_.isEmpty(update.details)) {
+      return { ...sessionData, ...update }
     }
-    return this.adyenCheckoutApi.post("/payments/details", request)
+
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    const updated = await checkout.paymentsDetails(update)
+
+    return updated
   }
 
   /**
-   * Captures an Ayden payment
-   * @param {Object} data - payment data to capture
-   * @returns {Object} payment data result of capture
+   * Updates an Adyen payment.
+   * @param {object} paymentData - payment data to update
+   * @param {details} details - details to update
+   * @returns {Promise} result of the update operation
    */
-  async capturePayment(data) {
-    const { pspReference, amount } = data
+  async updatePayment(paymentData, details) {
+    return paymentData
+  }
+
+  /**
+   * Additional details
+   * @param {object} paymentData - payment data
+   * @param {object} details - payment details
+   * @returns {Promise} current payment result
+   */
+  async additionalDetails(paymentData, details) {
+    const request = {
+      paymentData,
+      details,
+    }
+
+    const checkout = new CheckoutAPI(this.adyenClient_)
+    return checkout.paymentsDetails(request)
+  }
+
+  /**
+   * Captures an Adyen payment
+   * @param {object} payment - payment to capture
+   * @returns {string} status = processing_captures
+   */
+  async capturePayment(payment) {
+    const { pspReference, merchantReference } = payment.data
+    const { amount, currency_code } = payment
 
     try {
       const captured = await this.adyenPaymentApi.post("/capture", {
         originalReference: pspReference,
-        modificationAmount: amount,
+        modificationAmount: {
+          value: amount,
+          currency: currency_code.toUpperCase(),
+        },
         merchantAccount: this.options_.merchant_account,
+        reference: merchantReference,
       })
 
       if (
@@ -170,40 +368,55 @@ class AdyenService extends BaseService {
         )
       }
 
-      return captured
+      return { originalReference: pspReference, ...captured.data }
     } catch (error) {
-      console.log(error)
       throw error
     }
   }
 
   /**
-   * Refunds an Ayden payment
-   * @param {Object} paymentData - payment data to refund
+   * Refunds an Adyen payment
+   * @param {object} payment - payment to refund
    * @param {number} amountToRefund - amount to refund
-   * @returns {Object} payment data result of refund
+   * @returns {object} payment data result of refund
    */
-  async refundPayment(data) {
-    const { pspReference, amount } = data
+  async refundPayment(payment, amountToRefund) {
+    const { originalReference, merchantReference } = payment.data
+    const { currency_code } = payment
+
+    const refundAmount = {
+      currency: currency_code.toUpperCase(),
+      value: amountToRefund,
+    }
 
     try {
-      return this.adyenPaymentApi.post("/refund", {
-        originalReference: pspReference,
+      const refunded = await this.adyenPaymentApi.post("/refund", {
+        originalReference,
         merchantAccount: this.options_.merchant_account,
-        modificationAmount: amount,
+        modificationAmount: refundAmount,
+        reference: merchantReference,
       })
+
+      return { originalReference, ...refunded.data }
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Cancels an Ayden payment
-   * @param {Object} paymentData - payment data to cancel
-   * @returns {Object} payment data result of cancel
+   * Adyen does not have a way of deleting payments, hence the empty impl.
    */
-  async cancelPayment(paymentData) {
-    const { pspReference } = paymentData
+  async deletePayment(_) {
+    return {}
+  }
+
+  /**
+   * Cancels an Adyen payment.
+   * @param {object} payment - payment to cancel
+   * @returns {object} payment data result of cancel
+   */
+  async cancelPayment(payment) {
+    const { pspReference } = payment.data
 
     try {
       return this.adyenPaymentApi.post("/cancel", {

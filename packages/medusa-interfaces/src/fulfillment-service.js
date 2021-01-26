@@ -60,7 +60,7 @@ class BaseFulfillmentService extends BaseService {
     throw Error("calculatePrice must be overridden by the child class")
   }
 
-  createOrder() {
+  createFulfillment() {
     throw Error("createOrder must be overridden by the child class")
   }
 

@@ -270,7 +270,6 @@ export const countries = [
   { alpha2: "PR", name: "Puerto Rico", alpha3: "PRI", numeric: "630" },
   { alpha2: "QA", name: "Qatar", alpha3: "QAT", numeric: "634" },
   { alpha2: "RE", name: "Reunion", alpha3: "REU", numeric: "638" },
-  { alpha2: "RO", name: "Romania", alpha3: "ROU", numeric: "642" },
   { alpha2: "RO", name: "Romania", alpha3: "ROM", numeric: "642" },
   { alpha2: "RU", name: "Russian Federation", alpha3: "RUS", numeric: "643" },
   { alpha2: "RW", name: "Rwanda", alpha3: "RWA", numeric: "646" },

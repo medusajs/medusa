@@ -1,4 +1,5 @@
 import { Validator, MedusaError } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -17,7 +18,10 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
 
     let cart = await cartService.setPaymentMethod(id, value)
-    cart = await cartService.decorate(cart, [], ["region"])
+    cart = await cartService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ cart })
   } catch (err) {

@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -12,8 +13,10 @@ export default async (req, res) => {
       .required(),
     return_shipping: Validator.object()
       .keys({
-        id: Validator.string().optional(),
-        price: Validator.number().optional(),
+        option_id: Validator.string().optional(),
+        price: Validator.number()
+          .integer()
+          .optional(),
       })
       .optional(),
     additional_items: Validator.array().items({
@@ -27,41 +30,141 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
+  const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+
+  const headerKey = req.get("Idempotency-Key") || ""
+
+  let idempotencyKey
+  try {
+    idempotencyKey = await idempotencyKeyService.initializeRequest(
+      headerKey,
+      req.method,
+      req.params,
+      req.path
+    )
+  } catch (error) {
+    res.status(409).send("Failed to create idempotency key")
+    return
+  }
+
+  res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
+  res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
+
   try {
     const orderService = req.scope.resolve("orderService")
     const swapService = req.scope.resolve("swapService")
+    const returnService = req.scope.resolve("returnService")
 
-    let order = await orderService.retrieve(id)
+    let inProgress = true
+    let err = false
 
-    // Phase 1: Create swap and add it to the order
-    const swap = await swapService.create(
-      order,
-      value.return_items,
-      value.additional_items,
-      value.return_shipping
-    )
+    while (inProgress) {
+      switch (idempotencyKey.recovery_point) {
+        case "started": {
+          const { key, error } = await idempotencyKeyService.workStage(
+            idempotencyKey.idempotency_key,
+            async manager => {
+              const order = await orderService
+                .withTransaction(manager)
+                .retrieve(id, {
+                  select: ["refunded_total", "total"],
+                  relations: ["items", "swaps"],
+                })
 
-    await orderService.registerSwapCreated(id, swap._id)
+              const swap = await swapService
+                .withTransaction(manager)
+                .create(
+                  order,
+                  value.return_items,
+                  value.additional_items,
+                  value.return_shipping,
+                  { idempotency_key: idempotencyKey.idempotency_key }
+                )
 
-    // --> swap_created
-    // Phase 2: Create a return request from the swap
-    await swapService.requestReturn(order, swap._id)
+              await swapService.withTransaction(manager).createCart(swap.id)
+              const returnOrder = await returnService
+                .withTransaction(manager)
+                .retrieveBySwap(swap.id)
 
-    // --> return_request_created
-    // Phase 3: Create a cart that can be used to pay for the swap difference
-    await swapService.createCart(order, swap._id)
+              await returnService
+                .withTransaction(manager)
+                .fulfill(returnOrder.id)
 
-    // --> finished
+              return {
+                recovery_point: "swap_created",
+              }
+            }
+          )
 
-    order = await orderService.retrieve(id)
-    const data = await orderService.decorate(
-      order,
-      [],
-      ["region", "customer", "swaps"]
-    )
+          if (error) {
+            inProgress = false
+            err = error
+          } else {
+            idempotencyKey = key
+          }
+          break
+        }
 
-    res.status(200).json({ order: data })
-  } catch (err) {
-    throw err
+        case "swap_created": {
+          const { key, error } = await idempotencyKeyService.workStage(
+            idempotencyKey.idempotency_key,
+            async manager => {
+              const swaps = await swapService.list({
+                idempotency_key: idempotencyKey.idempotency_key,
+              })
+
+              if (!swaps.length) {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  "Swap not found"
+                )
+              }
+
+              const order = await orderService.retrieve(id, {
+                select: defaultFields,
+                relations: defaultRelations,
+              })
+
+              return {
+                response_code: 200,
+                response_body: { order },
+              }
+            }
+          )
+
+          if (error) {
+            inProgress = false
+            err = error
+          } else {
+            idempotencyKey = key
+          }
+          break
+        }
+
+        case "finished": {
+          inProgress = false
+          break
+        }
+
+        default:
+          idempotencyKey = await idempotencyKeyService.update(
+            idempotencyKey.idempotency_key,
+            {
+              recovery_point: "finished",
+              response_code: 500,
+              response_body: { message: "Unknown recovery point" },
+            }
+          )
+          break
+      }
+    }
+
+    if (err) {
+      throw err
+    }
+
+    res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
+  } catch (error) {
+    throw error
   }
 }

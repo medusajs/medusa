@@ -37,8 +37,7 @@ class SendGridService extends BaseService {
         templateId = this.options_.gift_card_created_template
         data = {
           ...data,
-          display_value:
-            data.giftcard.discount_rule.value * (1 + data.tax_rate),
+          display_value: data.giftcard.rule.value * (1 + data.tax_rate),
         }
         break
       case "order.placed":

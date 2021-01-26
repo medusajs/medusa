@@ -1,23 +1,19 @@
-import mongoose from "mongoose"
-
-String.prototype.equals = function(that) {
-  return this === that
-}
+import randomize from "randomatic";
 
 class IdMap {
-  ids = {}
+  ids = {};
 
-  getId(key, backend=false) {
+  getId(key, prefix = "", length = 10) {
     if (this.ids[key]) {
-      return this.ids[key]
+      return this.ids[key];
     }
 
-    const mongooseId = `${mongoose.Types.ObjectId()}`
-    this.ids[key] = mongooseId
+    const id = `${prefix && prefix + "_"}${randomize("Aa0", length)}`;
+    this.ids[key] = id;
 
-    return mongooseId
+    return id;
   }
 }
 
-const instance = new IdMap()
-export default instance
+const instance = new IdMap();
+export default instance;

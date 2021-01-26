@@ -4,16 +4,52 @@ class OrderSubscriber {
     orderService,
     sendgridService,
     eventBusService,
+    fulfillmentService,
   }) {
     this.orderService_ = orderService
     this.totalsService_ = totalsService
     this.sendgridService_ = sendgridService
     this.eventBus_ = eventBusService
+    this.fulfillmentService_ = fulfillmentService
 
     this.eventBus_.subscribe(
       "order.shipment_created",
-      async ({ order_id, shipment }) => {
-        const order = await this.orderService_.retrieve(order_id)
+      async ({ id, fulfillment_id }) => {
+        const order = await this.orderService_.retrieve(id, {
+          select: [
+            "shipping_total",
+            "discount_total",
+            "tax_total",
+            "refunded_total",
+            "gift_card_total",
+            "subtotal",
+            "total",
+            "refundable_amount",
+          ],
+          relations: [
+            "customer",
+            "billing_address",
+            "shipping_address",
+            "discounts",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+            "payments",
+            "fulfillments",
+            "returns",
+            "gift_cards",
+            "gift_card_transactions",
+            "swaps",
+            "swaps.return_order",
+            "swaps.payment",
+            "swaps.shipping_methods",
+            "swaps.shipping_address",
+            "swaps.additional_items",
+            "swaps.fulfillments",
+          ],
+        })
+
+        const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
+
         const data = {
           ...order,
           tracking_number: shipment.tracking_numbers.join(", "),
@@ -33,50 +69,108 @@ class OrderSubscriber {
       )
     })
 
-    this.eventBus_.subscribe("order.placed", async (order) => {
-      const subtotal = await this.totalsService_.getSubtotal(order)
-      const tax_total = await this.totalsService_.getTaxTotal(order)
-      const discount_total = await this.totalsService_.getDiscountTotal(order)
-      const shipping_total = await this.totalsService_.getShippingTotal(order)
-      const total = await this.totalsService_.getTotal(order)
+    this.eventBus_.subscribe("order.placed", async (orderObj) => {
+      try {
+        const order = await this.orderService_.retrieve(orderObj.id, {
+          select: [
+            "shipping_total",
+            "discount_total",
+            "tax_total",
+            "refunded_total",
+            "gift_card_total",
+            "subtotal",
+            "total",
+          ],
+          relations: [
+            "customer",
+            "billing_address",
+            "shipping_address",
+            "discounts",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+            "payments",
+            "fulfillments",
+            "returns",
+            "gift_cards",
+            "gift_card_transactions",
+            "swaps",
+            "swaps.return_order",
+            "swaps.payment",
+            "swaps.shipping_methods",
+            "swaps.shipping_address",
+            "swaps.additional_items",
+            "swaps.fulfillments",
+          ],
+        })
 
-      const date = new Date(parseInt(order.created))
-      const data = {
-        ...order,
-        date: date.toDateString(),
-        items: order.items.map((i) => {
+        const {
+          subtotal,
+          tax_total,
+          discount_total,
+          shipping_total,
+          total,
+        } = order
+
+        const taxRate = order.tax_rate / 100
+        const currencyCode = order.currency_code.toUpperCase()
+
+        const items = order.items.map((i) => {
           return {
             ...i,
-            price: `${(i.content.unit_price * (1 + order.tax_rate)).toFixed(
+            price: `${((i.unit_price / 100) * (1 + taxRate)).toFixed(
               2
-            )} ${order.currency_code}`,
+            )} ${currencyCode}`,
           }
-        }),
-        discounts: order.discounts.map((discount) => {
-          return {
-            is_giftcard: discount.is_giftcard,
-            code: discount.code,
-            descriptor: `${discount.discount_rule.value}${
-              discount.discount_rule.type === "percentage"
-                ? "%"
-                : ` ${order.currency_code}`
-            }`,
-          }
-        }),
-        subtotal: `${(subtotal * (1 + order.tax_rate)).toFixed(2)} ${
-          order.currency_code
-        }`,
-        tax_total: `${tax_total.toFixed(2)} ${order.currency_code}`,
-        discount_total: `${(discount_total * (1 + order.tax_rate)).toFixed(
-          2
-        )} ${order.currency_code}`,
-        shipping_total: `${(shipping_total * (1 + order.tax_rate)).toFixed(
-          2
-        )} ${order.currency_code}`,
-        total: `${total.toFixed(2)} ${order.currency_code}`,
-      }
+        })
 
-      await this.sendgridService_.transactionalEmail("order.placed", data)
+        let discounts = []
+        if (order.discounts) {
+          discounts = order.discounts.map((discount) => {
+            return {
+              is_giftcard: false,
+              code: discount.code,
+              descriptor: `${discount.rule.value}${
+                discount.rule.type === "percentage" ? "%" : ` ${currencyCode}`
+              }`,
+            }
+          })
+        }
+
+        let giftCards = []
+        if (order.gift_cards) {
+          giftCards = order.gift_cards.map((gc) => {
+            return {
+              is_giftcard: true,
+              code: gc.code,
+              descriptor: `${gc.value} ${currencyCode}`,
+            }
+          })
+
+          discounts.concat(giftCards)
+        }
+
+        const data = {
+          ...order,
+          date: order.created_at.toDateString(),
+          items,
+          discounts,
+          subtotal: `${((subtotal / 100) * (1 + taxRate)).toFixed(
+            2
+          )} ${currencyCode}`,
+          tax_total: `${(tax_total / 100).toFixed(2)} ${currencyCode}`,
+          discount_total: `${((discount_total / 100) * (1 + taxRate)).toFixed(
+            2
+          )} ${currencyCode}`,
+          shipping_total: `${((shipping_total / 100) * (1 + taxRate)).toFixed(
+            2
+          )} ${currencyCode}`,
+          total: `${(total / 100).toFixed(2)} ${currencyCode}`,
+        }
+
+        await this.sendgridService_.transactionalEmail("order.placed", data)
+      } catch (error) {
+        console.log(error)
+      }
     })
 
     this.eventBus_.subscribe("order.cancelled", async (order) => {

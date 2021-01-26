@@ -1,5 +1,4 @@
 import axios from "axios"
-import moment from "moment"
 import { BaseService } from "medusa-interfaces"
 
 class SlackService extends BaseService {
@@ -23,20 +22,48 @@ class SlackService extends BaseService {
   }
 
   async orderNotification(orderId) {
-    const order = await this.orderService_.retrieve(orderId)
+    const order = await this.orderService_.retrieve(orderId, {
+      select: [
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "gift_card_total",
+        "subtotal",
+        "total",
+      ],
+      relations: [
+        "customer",
+        "billing_address",
+        "shipping_address",
+        "discounts",
+        "shipping_methods",
+        "payments",
+        "fulfillments",
+        "returns",
+        "gift_cards",
+        "gift_card_transactions",
+        "swaps",
+        "swaps.return_order",
+        "swaps.payment",
+        "swaps.shipping_methods",
+        "swaps.shipping_address",
+        "swaps.additional_items",
+        "swaps.fulfillments",
+      ],
+    })
 
-    const subtotal = await this.totalsService_.getSubtotal(order)
-    const shippingTotal = await this.totalsService_.getShippingTotal(order)
-    const taxTotal = await this.totalsService_.getTaxTotal(order)
-    const discountTotal = await this.totalsService_.getDiscountTotal(order)
-    const total = await this.totalsService_.getTotal(order)
+    const { subtotal, tax_total, discount_total, shipping_total, total } = order
+
+    const currencyCode = order.currency_code.toUpperCase()
+    const taxRate = order.tax_rate / 100
 
     let blocks = [
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `Order *<${this.options_.admin_orders_url}/${order._id}|#${order.display_id}>* has been processed.`,
+          text: `Order *<${this.options_.admin_orders_url}/${order.id}|#${order.display_id}>* has been processed.`,
         },
       },
       {
@@ -56,15 +83,17 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Subtotal*\t${subtotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Shipping*\t${shippingTotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Discount Total*\t${discountTotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Tax*\t${taxTotal.toFixed(2)} ${
-            order.currency_code
-          }\n*Total*\t${total.toFixed(2)} ${order.currency_code}`,
+          text: `*Subtotal*\t${(subtotal / 100).toFixed(
+            2
+          )} ${currencyCode}\n*Shipping*\t${(shipping_total / 100).toFixed(
+            2
+          )} ${currencyCode}\n*Discount Total*\t${(
+            discount_total / 100
+          ).toFixed(2)} ${currencyCode}\n*Tax*\t${(tax_total / 100).toFixed(
+            2
+          )} ${currencyCode}\n*Total*\t${(total / 100).toFixed(
+            2
+          )} ${currencyCode}`,
         },
       },
     ]
@@ -74,7 +103,9 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Promo Code*\t${d.code} ${d.discount_rule.value}${d.discount_rule.type === "percentage" ? "%" : ` ${order.currency_code}`}`,
+          text: `*Promo Code*\t${d.code} ${d.rule.value}${
+            d.rule.type === "percentage" ? "%" : ` ${currencyCode}`
+          }`,
         },
       })
     })
@@ -88,12 +119,13 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*${lineItem.title}*\n${lineItem.quantity} x ${
-            !Array.isArray(lineItem.content) &&
-            (lineItem.content.unit_price * (1 + order.tax_rate)).toFixed(2)
-          } ${order.currency_code}`,
+          text: `*${lineItem.title}*\n${lineItem.quantity} x ${(
+            (lineItem.unit_price / 100) *
+            (1 + taxRate)
+          ).toFixed(2)} ${currencyCode}`,
         },
       }
+
       if (lineItem.thumbnail) {
         let url = lineItem.thumbnail
         if (
@@ -106,9 +138,8 @@ class SlackService extends BaseService {
         line.accessory = {
           type: "image",
           alt_text: "Item",
-          image_url: url
+          image_url: url,
         }
-
       }
 
       blocks.push(line)

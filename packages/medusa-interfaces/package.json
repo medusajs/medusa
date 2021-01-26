@@ -1,6 +1,6 @@
 {
   "name": "medusa-interfaces",
-  "version": "1.0.14",
+  "version": "1.0.14-alpha.170+0646bd3",
   "description": "Core interfaces for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -28,13 +28,14 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "typeorm": "^0.2.29"
   },
   "peerDependencies": {
-    "mongoose": "5.x"
+    "typeorm": "0.x"
   },
   "dependencies": {
-    "medusa-core-utils": "^1.0.11"
+    "medusa-core-utils": "^1.0.12-alpha.787+0646bd3"
   },
-  "gitHead": "3cc7cbe5124cbcbb75f6e1435db4dcfaa2a60408"
+  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
 }

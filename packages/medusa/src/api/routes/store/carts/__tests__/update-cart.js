@@ -1,4 +1,5 @@
 import { IdMap } from "medusa-test-utils"
+import { defaultFields, defaultRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 
@@ -41,44 +42,38 @@ describe("POST /store/carts/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("sets new region", () => {
-      expect(CartServiceMock.setRegion).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.setRegion).toHaveBeenCalledWith(
+    it("Call CartService update", () => {
+      expect(CartServiceMock.update).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("emptyCart"),
-        IdMap.getId("testRegion"),
-        undefined
+        {
+          region_id: IdMap.getId("testRegion"),
+          email: "test@admin.com",
+          shipping_address: address,
+          billing_address: address,
+          discounts: [
+            {
+              code: "TESTCODE",
+            },
+          ],
+        }
       )
     })
 
-    it("updates email", () => {
-      expect(CartServiceMock.updateEmail).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.updateEmail).toHaveBeenCalledWith(
+    it("calls get product from productSerice", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("emptyCart"),
-        "test@admin.com"
+        {
+          relations: ["payment_sessions"],
+        }
       )
-    })
-
-    it("updates shipping address", () => {
-      expect(CartServiceMock.updateShippingAddress).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.updateShippingAddress).toHaveBeenCalledWith(
+      expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("emptyCart"),
-        address
-      )
-    })
-
-    it("updates billing address", () => {
-      expect(CartServiceMock.updateBillingAddress).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.updateBillingAddress).toHaveBeenCalledWith(
-        IdMap.getId("emptyCart"),
-        address
-      )
-    })
-
-    it("applies promo code", () => {
-      expect(CartServiceMock.applyDiscount).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.applyDiscount).toHaveBeenCalledWith(
-        IdMap.getId("emptyCart"),
-        "TESTCODE"
+        {
+          relations: defaultRelations,
+          select: defaultFields,
+        }
       )
     })
 
@@ -87,32 +82,7 @@ describe("POST /store/carts/:id", () => {
     })
 
     it("returns cart", () => {
-      expect(subject.body.cart._id).toEqual(IdMap.getId("emptyCart"))
-      expect(subject.body.cart.decorated).toEqual(true)
-    })
-  })
-
-  describe("it bubbles errors", () => {
-    let subject
-    beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/carts/${IdMap.getId("emptyCart")}`,
-        {
-          payload: {
-            region_id: IdMap.getId("fail"),
-          },
-        }
-      )
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("returns 404", () => {
-      expect(subject.status).toEqual(404)
-      expect(subject.body.message).toEqual("Region not found")
+      expect(subject.body.cart.id).toEqual(IdMap.getId("emptyCart"))
     })
   })
 
@@ -125,11 +95,6 @@ describe("POST /store/carts/:id", () => {
 
     afterAll(() => {
       jest.clearAllMocks()
-    })
-
-    it("calls get product from productSerice", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none")
     })
 
     it("returns 404", () => {

@@ -20,10 +20,6 @@ export default app => {
     middlewares.wrap(require("./reset-password").default)
   )
   route.post("/:user_id", middlewares.wrap(require("./update-user").default))
-  route.post(
-    "/:user_id/set-password",
-    middlewares.wrap(require("./set-password").default)
-  )
 
   route.delete("/:user_id", middlewares.wrap(require("./delete-user").default))
 

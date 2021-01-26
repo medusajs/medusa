@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -17,12 +18,26 @@ export default async (req, res) => {
   }
 
   try {
+    const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
 
-    await cartService.addShippingMethod(id, value.option_id, value.data)
+    await manager.transaction(async m => {
+      await cartService
+        .withTransaction(m)
+        .addShippingMethod(id, value.option_id, value.data)
+      const updated = await cartService.withTransaction(m).retrieve(id, {
+        relations: ["payment_sessions"],
+      })
 
-    let cart = await cartService.retrieve(id)
-    cart = await cartService.decorate(cart, [], ["region"])
+      if (updated.payment_sessions?.length) {
+        await cartService.withTransaction(m).setPaymentSessions(id)
+      }
+    })
+
+    const cart = await cartService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
     res.status(200).json({ cart })
   } catch (err) {

@@ -1,22 +1,19 @@
 export default async (req, res) => {
   try {
     const customerService = req.scope.resolve("customerService")
-    const queryBuilderService = req.scope.resolve("queryBuilderService")
 
-    const query = queryBuilderService.buildQuery(req.query, [
-      "email",
-      "first_name",
-      "last_name",
-    ])
-
-    const limit = parseInt(req.query.limit) || 0
+    const limit = parseInt(req.query.limit) || 10
     const offset = parseInt(req.query.offset) || 0
 
-    const customers = await customerService.list(query, offset, limit)
+    const listConfig = {
+      relations: [],
+      skip: offset,
+      take: limit,
+    }
 
-    const numCustomers = await customerService.count()
+    const customers = await customerService.list({}, listConfig)
 
-    res.json({ customers, total_count: numCustomers })
+    res.json({ customers, count: customers.length, offset, limit })
   } catch (error) {
     throw error
   }

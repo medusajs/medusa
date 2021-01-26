@@ -18,8 +18,7 @@ export default async (req, res) => {
   try {
     const customerService = req.scope.resolve("customerService")
     const customer = await customerService.create(value)
-    const data = await customerService.decorate(customer, ["_id", "email"])
-    res.status(201).json({ customer: data })
+    res.status(201).json({ customer })
   } catch (err) {
     throw err
   }

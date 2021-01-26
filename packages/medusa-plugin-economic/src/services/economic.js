@@ -71,7 +71,7 @@ class EconomicService extends BaseService {
     let order_lines = []
     // Find the discount, that is not free shipping
     const discount = order.discounts.find(
-      ({ discount_rule }) => discount_rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== "free_shipping"
     )
     // If the discount has an item specific allocation method,
     // we need to fetch the discount for each item

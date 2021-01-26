@@ -3,8 +3,12 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-    let order = await orderService.deleteMetadata(id, key)
-    order = await orderService.decorate(order, [], ["region"])
+
+    await orderService.deleteMetadata(id, key)
+
+    const order = await orderService.retrieve(id, {
+      relations: ["region", "customer", "swaps"],
+    })
 
     res.status(200).json({ order })
   } catch (err) {

@@ -2,6 +2,15 @@ import { IdMap } from "medusa-test-utils"
 import { MedusaError } from "medusa-core-utils"
 
 export const LineItemServiceMock = {
+  withTransaction: function() {
+    return this
+  },
+  create: jest.fn().mockImplementation(data => {
+    return Promise.resolve({ ...data })
+  }),
+  update: jest.fn().mockImplementation(data => {
+    return Promise.resolve({ ...data })
+  }),
   validate: jest.fn().mockImplementation(data => {
     if (data.title === "invalid lineitem") {
       throw new Error(`"content" is required`)
@@ -16,13 +25,13 @@ export const LineItemServiceMock = {
       ) {
         return line.content.every(
           (c, index) =>
-            c.variant._id === match[index].variant._id &&
+            c.variant.id === match[index].variant.id &&
             c.quantity === match[index].quantity
         )
       }
     } else if (!Array.isArray(match.content)) {
       return (
-        line.content.variant._id === match.content.variant._id &&
+        line.content.variant.id === match.content.variant.id &&
         line.content.quantity === match.content.quantity
       )
     }
@@ -40,16 +49,8 @@ export const LineItemServiceMock = {
       }
 
       return Promise.resolve({
-        content: {
-          variant: {
-            _id: variantId,
-          },
-          product: {
-            _id: `p_${variantId}`,
-          },
-          quantity: 1,
-          unit_price: 100,
-        },
+        variant_id: variantId,
+        unit_price: 100,
         quantity,
         metadata,
       })

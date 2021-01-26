@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("POST /admin/products/:id/variants/:variantId", () => {
   describe("successful removes variant", () => {
@@ -27,9 +27,8 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
     })
 
     it("calls service removeVariant", () => {
-      expect(ProductServiceMock.deleteVariant).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.deleteVariant).toHaveBeenCalledWith(
-        IdMap.getId("productWithOptions"),
+      expect(ProductVariantServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(ProductVariantServiceMock.delete).toHaveBeenCalledWith(
         IdMap.getId("variant1")
       )
     })
@@ -39,19 +38,7 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
         variant_id: IdMap.getId("variant1"),
         object: "product-variant",
         deleted: true,
-        product: {
-          _id: IdMap.getId("productWithOptions"),
-          decorated: true,
-          options: [
-            {
-              _id: IdMap.getId("option1"),
-              title: "Test",
-              values: [IdMap.getId("optionValue1")],
-            },
-          ],
-          title: "Test",
-          variants: [IdMap.getId("variant1")],
-        },
+        product: expect.any(Object),
       })
     })
   })

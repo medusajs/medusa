@@ -14,7 +14,11 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
     const shippingProfileService = req.scope.resolve("shippingProfileService")
 
-    const cart = await cartService.retrieve(value.cart_id)
+    const cart = await cartService.retrieve(value.cart_id, {
+      select: ["subtotal"],
+      relations: ["region", "items", "items.variant", "items.variant.product"],
+    })
+
     const options = await shippingProfileService.fetchCartOptions(cart)
 
     res.status(200).json({ shipping_options: options })

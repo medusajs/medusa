@@ -13,8 +13,8 @@ class SegmentService extends BaseService {
   constructor({ totalsService }, options) {
     super()
 
-    this.options_ = options
     this.totalsService_ = totalsService
+    this.options_ = options
 
     this.analytics_ = new Analytics(options.write_key)
   }
@@ -30,14 +30,17 @@ class SegmentService extends BaseService {
     return this.analytics_.track(data)
   }
 
-  async getReportingValue(fromCurrency, value) {
+  async getReportingValue(rawCurrency, value) {
+    const fromCurrency = rawCurrency.toUpperCase()
     const date = "latest"
     const toCurrency =
       (this.options_.reporting_currency &&
         this.options_.reporting_currency.toUpperCase()) ||
       "EUR"
 
-    if (fromCurrency === toCurrency) return value.toFixed(2)
+    if (fromCurrency === toCurrency) {
+      return this.totalsService_.rounded(value)
+    }
 
     const exchangeRate = await axios
       .get(
@@ -47,28 +50,28 @@ class SegmentService extends BaseService {
         return data.rates[fromCurrency]
       })
 
-    return (value / exchangeRate).toFixed(2)
+    return this.totalsService_.rounded(value / exchangeRate)
   }
 
   async buildOrder(order) {
-    const subtotal = await this.totalsService_.getSubtotal(order)
-    const total = await this.totalsService_.getTotal(order)
-    const tax = await this.totalsService_.getTaxTotal(order)
-    const discount = await this.totalsService_.getDiscountTotal(order)
-    const shipping = await this.totalsService_.getShippingTotal(order)
+    const subtotal = order.subtotal / 100
+    const total = order.total / 100
+    const tax = order.tax_total / 100
+    const discount = order.discount_total / 100
+    const shipping = order.shipping_total / 100
     const revenue = total - tax
 
     let coupon
     if (order.discounts && order.discounts.length) {
-      coupon = order.discounts[0].code
+      coupon = order.discounts[0] && order.discounts[0].code
     }
 
     const orderData = {
       checkout_id: order.cart_id,
-      order_id: order._id,
+      order_id: order.id,
       email: order.email,
       region_id: order.region_id,
-      payment_provider: order.payment_method.provider_id,
+      payment_provider: order.payments.map((p) => p.provider_id).join(","),
       shipping_methods: order.shipping_methods,
       shipping_country: order.shipping_address.country_code,
       shipping_city: order.shipping_address.city,
@@ -102,8 +105,8 @@ class SegmentService extends BaseService {
         order.items.map(async (item) => {
           let name = item.title
 
-          const unit_price = item.content.unit_price
-          const line_total = unit_price * item.content.quantity * item.quantity
+          const unit_price = item.unit_price
+          const line_total = (unit_price * item.quantity) / 100
           const revenue = await this.getReportingValue(
             order.currency_code,
             line_total
@@ -114,11 +117,11 @@ class SegmentService extends BaseService {
 
           return {
             name,
-            variant: item.content.variant.sku,
-            price: unit_price,
+            variant,
+            price: unit_price / 100,
             reporting_revenue: revenue,
-            product_id: `${item.content.product._id}`,
-            sku: skuParts.join("-"),
+            product_id: item.variant.product_id,
+            sku: item.variant.sku,
             quantity: item.quantity,
           }
         })

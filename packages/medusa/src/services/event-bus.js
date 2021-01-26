@@ -7,16 +7,11 @@ import Redis from "ioredis"
  * @interface
  */
 class EventBusService {
-  constructor({ logger, redisClient, redisSubscriber }, config) {
-    /** @private {logger} */
-    this.logger_ = logger
-
-    /** @private {object} */
-    this.observers_ = {}
-
-    /** @private {object} to handle cron jobs */
-    this.cronHandlers_ = {}
-
+  constructor(
+    { manager, logger, stagedJobRepository, redisClient, redisSubscriber },
+    config,
+    singleton = true
+  ) {
     const opts = {
       createClient: type => {
         switch (type) {
@@ -30,17 +25,65 @@ class EventBusService {
       },
     }
 
-    /** @private {BullQueue} used for cron jobs */
-    this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
+    this.config_ = config
 
-    /** @private {BullQueue} */
-    this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
+    /** @private {EntityManager} */
+    this.manager_ = manager
 
-    // Register our worker to handle emit calls
-    this.queue_.process(this.worker_)
+    /** @private {logger} */
+    this.logger_ = logger
 
-    // Register cron worker
-    this.cronQueue_.process(this.cronWorker_)
+    this.stagedJobRepository_ = stagedJobRepository
+
+    if (singleton) {
+      /** @private {object} */
+      this.observers_ = {}
+
+      /** @private {BullQueue} */
+      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
+
+      /** @private {object} to handle cron jobs */
+      this.cronHandlers_ = {}
+
+      this.redisClient_ = redisClient
+      this.redisSubscriber_ = redisSubscriber
+
+      /** @private {BullQueue} used for cron jobs */
+      this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
+
+      // Register our worker to handle emit calls
+      this.queue_.process(this.worker_)
+
+      // Register cron worker
+      this.cronQueue_.process(this.cronWorker_)
+
+      if (process.env.NODE_ENV !== "test") {
+        this.startEnqueuer()
+      }
+    }
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new EventBusService(
+      {
+        manager: transactionManager,
+        stagedJobRepository: this.stagedJobRepository_,
+        logger: this.logger_,
+        redisClient: this.redisClient_,
+        redisSubscriber: this.redisSubscriber_,
+      },
+      this.config_,
+      false
+    )
+
+    cloned.transactionManager_ = transactionManager
+    cloned.queue_ = this.queue_
+
+    return cloned
   }
 
   /**
@@ -58,6 +101,25 @@ class EventBusService {
       this.observers_[event].push(subscriber)
     } else {
       this.observers_[event] = [subscriber]
+    }
+  }
+
+  /**
+   * Adds a function to a list of event subscribers.
+   * @param {string} event - the event that the subscriber will listen for.
+   * @param {func} subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
+   */
+  unsubscribe(event, subscriber) {
+    if (typeof subscriber !== "function") {
+      throw new Error("Subscriber must be a function")
+    }
+
+    if (this.observers_[event]) {
+      const index = this.observers_[event].indexOf(subscriber)
+      if (index !== -1) {
+        this.observers_[event].splice(index, 1)
+      }
     }
   }
 
@@ -82,16 +144,67 @@ class EventBusService {
    * @param {?any} data - the data to send to the subscriber.
    * @return {BullJob} - the job from our queue
    */
-  emit(eventName, data) {
-    return this.queue_.add(
-      {
-        eventName,
+  async emit(eventName, data) {
+    if (this.transactionManager_) {
+      const stagedJobRepository = this.transactionManager_.getCustomRepository(
+        this.stagedJobRepository_
+      )
+
+      const created = await stagedJobRepository.create({
+        event_name: eventName,
         data,
-      },
-      {
-        removeOnComplete: true,
+      })
+
+      return stagedJobRepository.save(created)
+    } else {
+      this.queue_.add({ eventName, data }, { removeOnComplete: true })
+    }
+  }
+
+  async sleep(ms) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms)
+    })
+  }
+
+  async startEnqueuer() {
+    this.enRun_ = true
+    this.enqueue_ = this.enqueuer_()
+  }
+
+  async stopEnqueuer() {
+    this.enRun_ = false
+    await this.enqueue_
+  }
+
+  async enqueuer_() {
+    while (this.enRun_) {
+      const listConfig = {
+        relations: [],
+        skip: 0,
+        take: 1000,
       }
-    )
+
+      const sjRepo = this.manager_.getCustomRepository(
+        this.stagedJobRepository_
+      )
+      const jobs = await sjRepo.find({}, listConfig)
+
+      await Promise.all(
+        jobs.map(job => {
+          this.queue_
+            .add(
+              { eventName: job.event_name, data: job.data },
+              { removeOnComplete: true }
+            )
+            .then(async () => {
+              await sjRepo.remove(job)
+            })
+        })
+      )
+
+      await this.sleep(3000)
+    }
   }
 
   /**
@@ -115,6 +228,7 @@ class EventBusService {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
+          console.log(err)
           return err
         })
       })

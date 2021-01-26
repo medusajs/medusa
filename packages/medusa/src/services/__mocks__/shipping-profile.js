@@ -2,13 +2,13 @@ import { IdMap } from "medusa-test-utils"
 
 export const profiles = {
   default: {
-    _id: IdMap.getId("default"),
+    id: IdMap.getId("default"),
     name: "default_profile",
     products: [IdMap.getId("product")],
     shipping_options: [],
   },
   other: {
-    _id: IdMap.getId("profile1"),
+    id: IdMap.getId("profile1"),
     name: "other_profile",
     products: [IdMap.getId("product")],
     shipping_options: [],
@@ -32,10 +32,10 @@ export const ShippingProfileServiceMock = {
     return Promise.resolve(profiles.default)
   }),
   retrieveGiftCardDefault: jest.fn().mockImplementation(data => {
-    return Promise.resolve({ _id: IdMap.getId("giftCardProfile") })
+    return Promise.resolve({ id: IdMap.getId("giftCardProfile") })
   }),
   retrieveDefault: jest.fn().mockImplementation(data => {
-    return Promise.resolve({ _id: IdMap.getId("default_shipping_profile") })
+    return Promise.resolve({ id: IdMap.getId("default_shipping_profile") })
   }),
   list: jest.fn().mockImplementation(selector => {
     if (!selector) {
@@ -45,10 +45,10 @@ export const ShippingProfileServiceMock = {
       return Promise.resolve([])
     }
     if (selector.shipping_options === IdMap.getId("freeShipping")) {
-      return Promise.resolve([{ _id: IdMap.getId("default_profile") }])
+      return Promise.resolve([{ id: IdMap.getId("default_profile") }])
     }
     if (selector.shipping_options === IdMap.getId("additional")) {
-      return Promise.resolve([{ _id: IdMap.getId("additional_profile") }])
+      return Promise.resolve([{ id: IdMap.getId("additional_profile") }])
     }
     if (
       selector.products &&
@@ -60,7 +60,7 @@ export const ShippingProfileServiceMock = {
           products: [IdMap.getId("product")],
           shipping_options: [
             {
-              _id: IdMap.getId("freeShipping"),
+              id: IdMap.getId("freeShipping"),
               name: "Free Shipping",
               region_id: IdMap.getId("testRegion"),
               price: {
@@ -88,7 +88,7 @@ export const ShippingProfileServiceMock = {
           products: [IdMap.getId("product1")],
           shipping_options: [
             {
-              _id: IdMap.getId("freeShipping"),
+              id: IdMap.getId("freeShipping"),
               name: "Free Shipping",
               region_id: IdMap.getId("testRegion"),
               price: {
@@ -108,7 +108,7 @@ export const ShippingProfileServiceMock = {
           products: [IdMap.getId("product2")],
           shipping_options: [
             {
-              _id: IdMap.getId("freeShipping"),
+              id: IdMap.getId("freeShipping"),
               name: "Free French Shipping",
               region_id: IdMap.getId("region-france"),
               price: {
@@ -132,7 +132,10 @@ export const ShippingProfileServiceMock = {
   addProduct: jest.fn().mockImplementation(() => Promise.resolve()),
   removeProduct: jest.fn().mockImplementation(() => Promise.resolve()),
   fetchCartOptions: jest.fn().mockImplementation(() => {
-    return Promise.resolve([{ _id: IdMap.getId("cartShippingOption") }])
+    return Promise.resolve([{ id: IdMap.getId("cartShippingOption") }])
+  }),
+  fetchOptionsByProductIds: jest.fn().mockImplementation(() => {
+    return Promise.resolve([{ id: IdMap.getId("cartShippingOption") }])
   }),
 }
 

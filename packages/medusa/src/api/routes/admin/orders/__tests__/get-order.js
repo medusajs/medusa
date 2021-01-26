@@ -2,6 +2,53 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { OrderServiceMock } from "../../../../../services/__mocks__/order"
 
+const defaultRelations = [
+  "customer",
+  "billing_address",
+  "shipping_address",
+  "discounts",
+  "shipping_methods",
+  "payments",
+  "fulfillments",
+  "returns",
+  "gift_cards",
+  "gift_card_transactions",
+  "swaps",
+  "swaps.return_order",
+  "swaps.payment",
+  "swaps.shipping_methods",
+  "swaps.shipping_address",
+  "swaps.additional_items",
+  "swaps.fulfillments",
+]
+
+const defaultFields = [
+  "id",
+  "status",
+  "fulfillment_status",
+  "payment_status",
+  "display_id",
+  "cart_id",
+  "customer_id",
+  "email",
+  "region_id",
+  "currency_code",
+  "tax_rate",
+  "canceled_at",
+  "created_at",
+  "updated_at",
+  "metadata",
+  "items.refundable",
+  "shipping_total",
+  "discount_total",
+  "tax_total",
+  "refunded_total",
+  "gift_card_total",
+  "subtotal",
+  "total",
+  "refundable_amount",
+]
+
 describe("GET /admin/orders", () => {
   describe("successfully gets an order", () => {
     let subject
@@ -27,13 +74,17 @@ describe("GET /admin/orders", () => {
     it("calls orderService retrieve", () => {
       expect(OrderServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(OrderServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("test-order")
+        IdMap.getId("test-order"),
+        {
+          select: defaultFields,
+          relations: defaultRelations,
+        }
       )
     })
 
     it("returns order", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body.order._id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body.order.id).toEqual(IdMap.getId("test-order"))
     })
   })
 })
