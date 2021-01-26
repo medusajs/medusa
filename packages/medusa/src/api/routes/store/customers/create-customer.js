@@ -22,13 +22,9 @@ export default async (req, res) => {
     let customer = await customerService.create(value)
 
     // Add JWT to cookie
-    req.session.jwt = jwt.sign(
-      { customer_id: customer._id },
-      config.jwtSecret,
-      {
-        expiresIn: "30d",
-      }
-    )
+    req.session.jwt = jwt.sign({ customer_id: customer.id }, config.jwtSecret, {
+      expiresIn: "30d",
+    })
 
     customer = await customerService.retrieve(customer.id, [
       "orders",

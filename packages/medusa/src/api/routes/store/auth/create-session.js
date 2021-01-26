@@ -28,7 +28,7 @@ export default async (req, res) => {
 
   // Add JWT to cookie
   req.session.jwt = jwt.sign(
-    { customer_id: result.customer._id },
+    { customer_id: result.customer.id },
     config.jwtSecret,
     {
       expiresIn: "30d",
