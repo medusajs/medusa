@@ -153,7 +153,6 @@ describe("KlarnaProviderService", () => {
 
       expect(result).toEqual({
         order_id: "123456789",
-        order_amount: 1000,
       })
     })
   })

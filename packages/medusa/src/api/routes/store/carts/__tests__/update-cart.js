@@ -60,6 +60,23 @@ describe("POST /store/carts/:id", () => {
       )
     })
 
+    it("calls get product from productSerice", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("emptyCart"),
+        {
+          relations: ["payment_sessions"],
+        }
+      )
+      expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("emptyCart"),
+        {
+          relations: defaultRelations,
+          select: defaultFields,
+        }
+      )
+    })
+
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
@@ -78,14 +95,6 @@ describe("POST /store/carts/:id", () => {
 
     afterAll(() => {
       jest.clearAllMocks()
-    })
-
-    it("calls get product from productSerice", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none", {
-        relations: defaultRelations,
-        select: defaultFields,
-      })
     })
 
     it("returns 404", () => {

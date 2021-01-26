@@ -33,7 +33,7 @@ describe("POST /store/carts/:id/shipping-methods", () => {
     })
 
     it("calls CartService retrieve", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
     })
 
     it("returns 200", () => {
@@ -80,7 +80,7 @@ describe("POST /store/carts/:id/shipping-methods", () => {
     })
 
     it("calls CartService retrieve", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
     })
 
     it("returns 200", () => {

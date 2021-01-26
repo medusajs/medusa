@@ -40,7 +40,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("calls CartService retrieve", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(3)
     })
 
     it("returns 200", () => {

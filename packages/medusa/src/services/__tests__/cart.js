@@ -620,13 +620,6 @@ describe("CartService", () => {
         where: { id: "withpays" },
       })
     })
-
-    it("updates payment sessions", async () => {
-      cartService.setPaymentSessions = jest.fn()
-      await cartService.update("withpays", {})
-
-      expect(cartService.setPaymentSessions).toHaveBeenCalledTimes(1)
-    })
   })
 
   describe("updateLineItem", () => {
@@ -1045,6 +1038,7 @@ describe("CartService", () => {
         items: [IdMap.getId("testitem"), null],
         payment_session: null,
         payment_sessions: [],
+        gift_cards: [],
         discount_total: 0,
         shipping_total: 0,
         subtotal: 0,
@@ -1221,13 +1215,6 @@ describe("CartService", () => {
         "provider_2",
         cart1
       )
-    })
-
-    it("updates payment sessions for existing sessions", async () => {
-      await cartService.setPaymentSessions(IdMap.getId("cart-with-session"))
-
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
     })
 
     it("filters sessions not available in the region", async () => {
