@@ -20,12 +20,12 @@ export default async (req, res) => {
     let user = await userService.retrieveByEmail(value.email)
 
     const decodedToken = await jwt.verify(value.token, user.password_hash)
-    if (!decodedToken || decodedToken.user_id !== user._id) {
+    if (!decodedToken || decodedToken.user_id !== user.id) {
       res.status(401).send("Invalid or expired password reset token")
       return
     }
 
-    const data = await userService.setPassword(user._id, value.password)
+    const data = await userService.setPassword(user.id, value.password)
 
     res.status(200).json({ user: data })
   } catch (error) {

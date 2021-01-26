@@ -326,6 +326,8 @@ class CustomerService extends BaseService {
     return this.atomicPhase_(async manager => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
+      address.country_code = address.country_code.toLowerCase()
+
       const toUpdate = await addressRepo.findOne({
         where: { id: addressId, customer_id: customerId },
       })
@@ -364,6 +366,8 @@ class CustomerService extends BaseService {
         this.addressRepository_
       )
 
+      address.country_code = address.country_code.toLowerCase()
+
       const customer = await this.retrieve(customerId, {
         relations: ["shipping_addresses"],
       })
@@ -371,7 +375,7 @@ class CustomerService extends BaseService {
 
       let shouldAdd = !customer.shipping_addresses.find(
         a =>
-          a.country_code === address.country_code &&
+          a.country_code.toLowerCase() === address.country_code.toLowerCase() &&
           a.address_1 === address.address_1 &&
           a.address_2 === address.address_2 &&
           a.city === address.city &&
