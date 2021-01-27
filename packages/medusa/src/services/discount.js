@@ -2,6 +2,7 @@ import _ from "lodash"
 import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
+import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate discounts.
@@ -113,6 +114,51 @@ class DiscountService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
     return discountRepo.find(query)
+  }
+
+  /**
+   * @param {Object} selector - the query object for find
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(
+    selector = {},
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const discountRepo = this.manager_.getCustomRepository(
+      this.discountRepository_
+    )
+
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.code
+
+      query.join = {
+        alias: "discount",
+      }
+
+      query.where = qb => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`discount.code ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+      }
+    }
+
+    const [discounts, count] = await discountRepo.findAndCount(query)
+
+    return [discounts, count]
   }
 
   /**
