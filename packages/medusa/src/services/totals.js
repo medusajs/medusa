@@ -73,7 +73,10 @@ class TotalsService extends BaseService {
     const shippingTotal = this.getShippingTotal(object)
     const discountTotal = this.getDiscountTotal(object)
     const giftCardTotal = this.getGiftCardTotal(object)
-    const tax_rate = object.tax_rate || object.region.tax_rate
+    const tax_rate =
+      typeof object.tax_rate !== "undefined"
+        ? object.tax_rate
+        : object.region.tax_rate
     return this.rounded(
       (subtotal - discountTotal - giftCardTotal + shippingTotal) *
         (tax_rate / 100)
