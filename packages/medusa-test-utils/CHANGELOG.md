@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.0...medusa-test-utils@1.1.1) (2021-01-27)
+
+
+### Features
+
+* adds discount code search functionality ([#155](https://github.com/medusajs/medusa/issues/155)) ([7e14da1](https://github.com/medusajs/medusa/commit/7e14da1225983dd58faabbd6d555818277ad4cc8))
+
+
+
+
+
 # [1.1.0](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.0.13...medusa-test-utils@1.1.0) (2021-01-26)
 
 **Note:** Version bump only for package medusa-test-utils
