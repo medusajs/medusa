@@ -17,7 +17,10 @@ import {
 import { ulid } from "ulid"
 
 import { Image } from "./image"
+import { ProductCategory } from "./product-category"
 import { ProductOption } from "./product-option"
+import { ProductTag } from "./product-tag"
+import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
 
@@ -34,9 +37,6 @@ export class Product {
 
   @Column({ nullable: true })
   description: string
-
-  @Column({ nullable: true })
-  tags: string
 
   @Index({ unique: true })
   @Column({ nullable: true })
@@ -105,6 +105,26 @@ export class Product {
 
   @Column({ nullable: true })
   material: string
+
+  @Column({ nullable: true })
+  category: ProductCategory
+
+  @Column({ nullable: true })
+  type: ProductType
+
+  @ManyToMany(() => ProductTag)
+  @JoinTable({
+    name: "product_tags",
+    joinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_tag_id",
+      referencedColumnName: "id",
+    },
+  })
+  tags: ProductTag[]
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
