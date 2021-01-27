@@ -165,6 +165,9 @@ export const DiscountServiceMock = {
   list: jest.fn().mockImplementation(data => {
     return Promise.resolve([{}])
   }),
+  listAndCount: jest.fn().mockImplementation(data => {
+    return Promise.resolve([{}])
+  }),
   addRegion: jest.fn().mockReturnValue(Promise.resolve()),
   removeRegion: jest.fn().mockReturnValue(Promise.resolve()),
   addValidProduct: jest.fn().mockReturnValue(Promise.resolve()),
