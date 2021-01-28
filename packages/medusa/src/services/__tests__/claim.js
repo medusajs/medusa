@@ -282,7 +282,7 @@ describe("ClaimService", () => {
             quantity: 1,
           },
         ],
-        { claim_id: "claim_id", metadata: { meta: "data" } }
+        { claim_order_id: "claim_id", metadata: { meta: "data" } }
       )
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")

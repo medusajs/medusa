@@ -11,6 +11,7 @@ import {
 } from "typeorm"
 import { ulid } from "ulid"
 
+import { ClaimOrder } from "./claim-order"
 import { Order } from "./order"
 import { Cart } from "./cart"
 import { Swap } from "./swap"
@@ -37,6 +38,14 @@ export class ShippingMethod {
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
   order: Order
+
+  @Index()
+  @Column({ nullable: true })
+  claim_order_id: string
+
+  @ManyToOne(() => ClaimOrder)
+  @JoinColumn({ name: "claim_order_id" })
+  claim_order: ClaimOrder
 
   @Index()
   @Column({ nullable: true })

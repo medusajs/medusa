@@ -29,6 +29,7 @@ import { Fulfillment } from "./fulfillment"
 import { Return } from "./return"
 import { Refund } from "./refund"
 import { Swap } from "./swap"
+import { ClaimOrder } from "./claim-order"
 import { ShippingMethod } from "./shipping-method"
 
 export enum OrderStatus {
@@ -182,6 +183,13 @@ export class Order {
     { cascade: ["insert"] }
   )
   returns: Return[]
+
+  @OneToMany(
+    () => ClaimOrder,
+    co => co.order,
+    { cascade: ["insert"] }
+  )
+  claims: ClaimOrder[]
 
   @OneToMany(
     () => Refund,
