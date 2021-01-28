@@ -57,6 +57,7 @@ describe("GET /admin/products/:id", () => {
             "variants.options",
             "images",
             "options",
+            "tags",
           ],
         }
       )

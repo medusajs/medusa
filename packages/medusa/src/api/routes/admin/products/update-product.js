@@ -7,7 +7,24 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     title: Validator.string().optional(),
     description: Validator.string().optional(),
-    tags: Validator.string().optional(),
+    type: Validator.object()
+      .keys({
+        id: Validator.string().optional(),
+        value: Validator.string().required(),
+      })
+      .optional(),
+    collection: Validator.object()
+      .keys({
+        id: Validator.string().required(),
+        title: Validator.string().required(),
+      })
+      .optional(),
+    tags: Validator.array()
+      .items({
+        id: Validator.string().optional(),
+        value: Validator.string().required(),
+      })
+      .optional(),
     handle: Validator.string().optional(),
     weight: Validator.number().optional(),
     length: Validator.number().optional(),

@@ -6,16 +6,25 @@ import {
   UpdateDateColumn,
   Column,
   PrimaryColumn,
+  ManyToMany,
+  Index,
+  OneToMany,
 } from "typeorm"
 import { ulid } from "ulid"
+import { Product } from "./product"
+import _ from "lodash"
 
 @Entity()
-export class ProductCategory {
+export class ProductCollection {
   @PrimaryColumn()
   id: string
 
   @Column()
   title: string
+
+  @Index({ unique: true })
+  @Column({ nullable: true })
+  handle: string
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
@@ -33,6 +42,13 @@ export class ProductCategory {
   private beforeInsert() {
     if (this.id) return
     const id = ulid()
-    this.id = `pcat_${id}`
+    this.id = `pcol_${id}`
+  }
+
+  @BeforeInsert()
+  private createMissingHandle() {
+    if (!this.handle) {
+      return _.kebabCase(this.title)
+    }
   }
 }

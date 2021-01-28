@@ -52,6 +52,7 @@ export const defaultRelations = [
   "variants.options",
   "images",
   "options",
+  "tags",
 ]
 
 export const defaultFields = [
@@ -105,4 +106,5 @@ export const allowedRelations = [
   "variants.prices",
   "images",
   "options",
+  "tags",
 ]

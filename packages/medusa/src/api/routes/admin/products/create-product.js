@@ -6,13 +6,30 @@ export default async (req, res) => {
     title: Validator.string().required(),
     subtitle: Validator.string().allow(""),
     description: Validator.string().allow(""),
-    tags: Validator.string().optional(),
     is_giftcard: Validator.boolean().default(false),
     images: Validator.array()
       .items(Validator.string())
       .optional(),
     thumbnail: Validator.string().optional(),
     handle: Validator.string().optional(),
+    type: Validator.object()
+      .keys({
+        id: Validator.string().optional(),
+        value: Validator.string().required(),
+      })
+      .optional(),
+    collection: Validator.object()
+      .keys({
+        id: Validator.string().required(),
+        title: Validator.string().required(),
+      })
+      .optional(),
+    tags: Validator.array()
+      .items({
+        id: Validator.string().optional(),
+        value: Validator.string().required(),
+      })
+      .optional(),
     options: Validator.array().items({
       title: Validator.string().required(),
     }),

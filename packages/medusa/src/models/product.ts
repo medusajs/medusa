@@ -17,7 +17,7 @@ import {
 import { ulid } from "ulid"
 
 import { Image } from "./image"
-import { ProductCategory } from "./product-category"
+import { ProductCollection } from "./product-collection"
 import { ProductOption } from "./product-option"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
@@ -107,9 +107,16 @@ export class Product {
   material: string
 
   @Column({ nullable: true })
-  category: ProductCategory
+  collection_id: string
+
+  @ManyToOne(() => ProductCollection)
+  @JoinColumn({ name: "collection_id" })
+  collection: ProductCollection
 
   @Column({ nullable: true })
+  type_id: string
+
+  @JoinColumn({ name: "type_id" })
   type: ProductType
 
   @ManyToMany(() => ProductTag)
