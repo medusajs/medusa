@@ -28,6 +28,11 @@ describe("ClaimItemService", () => {
       create: d => d,
     })
 
+    const claimImgRepo = MockRepository({
+      findOne: () => Promise.resolve(),
+      create: d => d,
+    })
+
     const claimItemRepo = MockRepository({
       create: d => ({ id: "ci_1234", ...d }),
     })
@@ -44,6 +49,8 @@ describe("ClaimItemService", () => {
       lineItemService,
       claimTagRepository: claimTagRepo,
       claimItemRepository: claimItemRepo,
+      claimImageRepository: claimImgRepo,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -99,19 +106,22 @@ describe("ClaimItemService", () => {
       lineItemService.retrieve = jest.fn(() =>
         Promise.resolve({ fulfilled_quantity: 0 })
       )
-      await expect(claimItemService.create(testClaim)).rejects.toThrow(
+      await expect(claimItemService.create(testItem)).rejects.toThrow(
         "Cannot claim more of an item than has been fulfilled"
       )
     })
 
     it("fails if reason is unknown", async () => {
+      lineItemService.retrieve = jest.fn(() =>
+        Promise.resolve({ fulfilled_quantity: 1 })
+      )
       await expect(
-        claimService.create({
-          ...testClaim,
-          type: "unknown",
+        claimItemService.create({
+          ...testItem,
+          reason: "unknown",
         })
       ).rejects.toThrow(
-        `reason must be one of "missing_item", "wrong_item", "production_failure", "other"`
+        `Claim Item reason must be one of "missing_item", "wrong_item", "production_failure" or "other".`
       )
     })
   })

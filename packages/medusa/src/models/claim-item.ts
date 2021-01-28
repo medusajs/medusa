@@ -7,14 +7,17 @@ import {
   Column,
   PrimaryColumn,
   Index,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   JoinColumn,
+  JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
 
 import { LineItem } from "./line-item"
 import { ClaimImage } from "./claim-image"
+import { ClaimTag } from "./claim-tag"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
 
@@ -71,6 +74,20 @@ export class ClaimItem {
 
   @Column({ type: "int" })
   quantity: number
+
+  @ManyToMany(() => ClaimTag)
+  @JoinTable({
+    name: "claim_item_tags",
+    joinColumn: {
+      name: "item_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "tag_id",
+      referencedColumnName: "id",
+    },
+  })
+  tags: ClaimTag[]
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date

@@ -52,7 +52,7 @@ describe("ClaimService", () => {
     }
 
     const lineItemService = {
-      generate: jest.fn(d => d),
+      generate: jest.fn((d, _, q) => ({ variant_id: d, quantity: q })),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -87,14 +87,19 @@ describe("ClaimService", () => {
       expect(returnService.create).toHaveBeenCalledTimes(1)
       expect(returnService.create).toHaveBeenCalledWith(
         {
+          claim_order_id: "claim_134",
+          shipping_method: {
+            option_id: "opt_13",
+            price: 0,
+          },
           items: [
             {
-              item_id: "itm_1",
+              id: "itm_1",
               quantity: 1,
             },
           ],
         },
-        { id: "1234" }
+        { id: "1234", region_id: "order_region" }
       )
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
@@ -108,7 +113,7 @@ describe("ClaimService", () => {
       expect(withTransactionMock).toHaveBeenCalledWith("claimItem")
       expect(claimItemService.create).toHaveBeenCalledTimes(1)
       expect(claimItemService.create).toHaveBeenCalledWith({
-        claim_order_id: "claim_1234",
+        claim_order_id: "claim_134",
         item_id: "itm_1",
         tags: ["fluff"],
         reason: "production_failure",
@@ -127,7 +132,6 @@ describe("ClaimService", () => {
             quantity: 1,
           },
         ],
-        return_id: "ret",
         shipping_address_id: "adr_1234",
       })
 
@@ -135,8 +139,8 @@ describe("ClaimService", () => {
 
       expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledTimes("claim.created", {
-        id: "claim_1234",
+      expect(eventBusService.emit).toHaveBeenCalledWith("claim.created", {
+        id: "claim_134",
       })
     })
 
@@ -155,7 +159,9 @@ describe("ClaimService", () => {
           type: "replace",
           additional_items: null,
         })
-      ).rejects.toThrow("A replace claim must have at least 1 additional item")
+      ).rejects.toThrow(
+        `Claims with type "replace" must have at least one additional item.`
+      )
     })
 
     it("fails if type is unknown", async () => {
@@ -164,7 +170,7 @@ describe("ClaimService", () => {
           ...testClaim,
           type: "unknown",
         })
-      ).rejects.toThrow(`Claim type must be "refund" or "replace"`)
+      ).rejects.toThrow(`Claim type must be one of "refund" or "replace".`)
     })
 
     it("fails if no claim items", async () => {
@@ -173,7 +179,7 @@ describe("ClaimService", () => {
           ...testClaim,
           claim_items: [],
         })
-      ).rejects.toThrow(`Claim must have claim items`)
+      ).rejects.toThrow(`Claims must have at least one claim item.`)
     })
   })
 
@@ -190,6 +196,7 @@ describe("ClaimService", () => {
     })
 
     it("successfully creates a claim", async () => {
+      claimRepo.setFindOne(() => Promise.resolve({ id: "claim_id" }))
       await claimService.retrieve("claim_id", {
         relations: ["order"],
       })
@@ -203,35 +210,40 @@ describe("ClaimService", () => {
 
   describe("createFulfillment", () => {
     const fulfillmentService = {
-      createFulfillment: jest.fn(),
+      createFulfillment: jest.fn((_, items) =>
+        Promise.resolve([{ id: "ful", items }])
+      ),
       withTransaction: function() {
         withTransactionMock("fulfillment")
         return this
       },
     }
 
+    const order = {
+      email: "hi@123",
+      discounts: [
+        {
+          id: "disc_1234",
+        },
+      ],
+      payments: [{ id: "pay_test" }],
+      currency_code: "dkk",
+      tax_rate: 25,
+      region_id: "test_region",
+      display_id: 112345,
+      billing_address: { first_name: "hi" },
+    }
+
     const claim = {
       type: "replace",
-      order: {
-        email: "hi@123",
-        discounts: [
-          {
-            id: "disc_1234",
-          },
-        ],
-        payments: [{ id: "pay_test" }],
-        currency_code: "dkk",
-        tax_rate: 25,
-        region_id: "test_region",
-        display_id: 112345,
-        billing_address: { first_name: "hi" },
-      },
+      fulfillment_status: "not_fulfilled",
+      order,
       additional_items: [{ id: "item_test", quantity: 1 }],
       shipping_methods: [{ id: "method_test" }],
     }
 
     const claimRepo = MockRepository({
-      findOne: () => Promise.resolve(claim),
+      findOne: () => Promise.resolve({ ...claim }),
     })
 
     const lineItemService = {
@@ -257,7 +269,8 @@ describe("ClaimService", () => {
     it("successfully creates fulfillment", async () => {
       await claimService.createFulfillment("claim_id", { meta: "data" })
 
-      expect(withTransactionMock).toHaveBeenCalledTimes(2)
+      expect(withTransactionMock).toHaveBeenCalledTimes(3)
+      expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
 
       expect(withTransactionMock).toHaveBeenCalledWith("fulfillment")
       expect(fulfillmentService.createFulfillment).toHaveBeenCalledTimes(1)
@@ -272,8 +285,8 @@ describe("ClaimService", () => {
           region_id: order.region_id,
           display_id: order.display_id,
           billing_address: order.billing_address,
-          items: swap.additional_items,
-          shipping_methods: swap.shipping_methods,
+          items: claim.additional_items,
+          shipping_methods: claim.shipping_methods,
           is_claim: true,
         },
         [
@@ -292,12 +305,32 @@ describe("ClaimService", () => {
       })
     })
 
+    it("fails if no shipping_methods", async () => {
+      claimRepo.setFindOne(() =>
+        Promise.resolve({ ...claim, shipping_methods: [] })
+      )
+
+      await expect(
+        claimService.createFulfillment("claim_id", { meta: "data" })
+      ).rejects.toThrow(`Cannot fulfill a claim without a shipping method.`)
+    })
+
+    it("fails if already fulfilled", async () => {
+      claimRepo.setFindOne(() =>
+        Promise.resolve({ ...claim, fulfillment_status: "fulfilled" })
+      )
+
+      await expect(
+        claimService.createFulfillment("claim_id", { meta: "data" })
+      ).rejects.toThrow(`The claim has already been fulfilled.`)
+    })
+
     it("fails if type is refund", async () => {
       claimRepo.setFindOne(() => Promise.resolve({ ...claim, type: "refund" }))
 
       await expect(
         claimService.createFulfillment("claim_id", { meta: "data" })
-      ).rejects.toThrow(`Claims with type "refund" can not be fulfilled`)
+      ).rejects.toThrow(`Claims with the type "refund" can not be fulfilled`)
     })
   })
 
@@ -334,6 +367,11 @@ describe("ClaimService", () => {
       claimRepository: claimRepo,
       fulfillmentService,
       lineItemService,
+      eventBusService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
     })
 
     it("calls fulfillment service", async () => {
@@ -352,9 +390,10 @@ describe("ClaimService", () => {
         meta: "data",
       })
 
-      expect(withTransactionMock).toHaveBeenCalledTimes(2)
+      expect(withTransactionMock).toHaveBeenCalledTimes(3)
       expect(withTransactionMock).toHaveBeenCalledWith("fulfillment")
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
+      expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
 
       expect(fulfillmentService.createShipment).toHaveBeenCalledTimes(1)
       expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
@@ -372,7 +411,7 @@ describe("ClaimService", () => {
 
   describe("cancel", () => {
     const fulfillmentService = {
-      cancel: jest.fn(),
+      cancelFulfillment: jest.fn(),
       withTransaction: function() {
         withTransactionMock("fulfillment")
         return this
@@ -393,7 +432,12 @@ describe("ClaimService", () => {
       manager: MockManager,
       claimRepository: claimRepo,
       fulfillmentService,
-      lineItemService,
+      eventBusService,
+      returnService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
     })
 
     it("calls fulfillment service", async () => {
@@ -413,14 +457,15 @@ describe("ClaimService", () => {
 
       await claimService.cancel("claim")
 
-      expect(withTransactionMock).toHaveBeenCalledTimes(2)
+      expect(withTransactionMock).toHaveBeenCalledTimes(3)
       expect(withTransactionMock).toHaveBeenCalledWith("fulfillment")
       expect(withTransactionMock).toHaveBeenCalledWith("return")
+      expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
 
       expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith(
-        "ful_21"
-      )
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
+        id: "ful_21",
+      })
 
       expect(returnService.cancel).toHaveBeenCalledTimes(1)
       expect(returnService.cancel).toHaveBeenCalledWith("ret")
@@ -433,8 +478,8 @@ describe("ClaimService", () => {
         })
       )
 
-      await expect(claimService.cancel).rejects.toThrow(
-        "Cannot cancel a received return"
+      await expect(claimService.cancel("id")).rejects.toThrow(
+        "Cannot cancel a claim that has been shipped."
       )
     })
 
@@ -448,8 +493,8 @@ describe("ClaimService", () => {
         })
       )
 
-      await expect(claimService.cancel).rejects.toThrow(
-        "Cannot cancel a received return"
+      await expect(claimService.cancel("id")).rejects.toThrow(
+        "Cannot cancel a claim that has a received return."
       )
     })
   })
