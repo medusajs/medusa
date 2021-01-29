@@ -182,7 +182,10 @@ class ProductService extends BaseService {
       return existing
     }
 
-    return productTypeRepository.create(type)
+    const created = productTypeRepository.create(type)
+    const result = await productTypeRepository.save(created)
+
+    return result
   }
 
   async upsertProductTags_(tags) {
@@ -289,7 +292,8 @@ class ProductService extends BaseService {
       }
 
       if (type) {
-        product.type = await this.upsertProductType_(type)
+        const productType = await this.upsertProductType_(type)
+        product.type_id = productType.id
       }
 
       if (tags) {
