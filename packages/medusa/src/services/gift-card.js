@@ -9,7 +9,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  */
 class GiftCardService extends BaseService {
   static Events = {
-    CREATED: "created",
+    CREATED: "gift_card.created",
   }
 
   constructor({
