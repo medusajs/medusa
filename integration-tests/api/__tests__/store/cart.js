@@ -1,69 +1,33 @@
-const { getManager, createConnection } = require("typeorm");
 const { dropDatabase } = require("pg-god");
-const { spawn } = require("child_process");
 const path = require("path");
-
 const { Region } = require("@medusajs/medusa/dist/models/region");
-const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default;
-const axios = require("axios");
 
-const { useApi, setPort } = require("../../../helpers/use-api");
+const setupServer = require("../../../helpers/setup-server");
+const { useApi } = require("../../../helpers/use-api");
+const { initDb } = require("../../../helpers/use-db");
 
 jest.setTimeout(30000);
 
-// const { initialize } = require("../../../helpers/setup");
-
 describe("/store/carts", () => {
-  let proc;
-  let server;
+  let medusaProcess;
   let dbConnection;
 
-  const setupPath = path.join(__dirname, "..", "..", "setup.js");
-
-  beforeAll(async (done) => {
-    proc = spawn("node", [path.resolve(setupPath)], {
-      cwd: path.resolve(path.join(__dirname, "..", "..")),
-      env: {
-        ...process.env,
-        NODE_ENV: "development",
-        JWT_SECRET: "test",
-        COOKIE_SECRET: "test",
-      },
-      stdio: ["ignore", "ignore", "inherit", "ipc"],
-    });
-
-    proc.on("error", (err) => {
-      console.log(err);
-      process.kill();
-    });
-
-    proc.on("message", async (msg) => {
-      setPort(msg);
-
-      const entities = modelsLoader({}, { register: false });
-      dbConnection = await createConnection({
-        type: "postgres",
-        url: "postgres://localhost/medusa-integration",
-        entities,
-      });
-
-      done();
-    });
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."));
+    dbConnection = await initDb({ cwd });
+    medusaProcess = await setupServer({ cwd });
   });
 
   afterAll(async () => {
     dbConnection.close();
     dropDatabase({ databaseName: "medusa-integration" });
 
-    proc.kill();
-    // console.log("kill");
-    // await dbConnection.close();
-    // server.close(done);
+    medusaProcess.kill();
   });
 
   describe("POST /store/carts", () => {
     beforeEach(async () => {
-      const manager = await getManager();
+      const manager = dbConnection.manager;
       await manager.insert(Region, {
         id: "region",
         name: "Test Region",

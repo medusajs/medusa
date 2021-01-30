@@ -22,7 +22,9 @@
     "lerna": "^3.22.1",
     "mongoose": "^5.10.15",
     "pg-god": "^1.0.11",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.1",
+    "resolve-cwd": "^3.0.0",
+    "typeorm": "^0.2.30"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
