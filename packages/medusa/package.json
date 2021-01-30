@@ -39,7 +39,8 @@
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist --ignore **/__tests__ --extensions \".ts,.js\"",
     "serve": "node dist/app.js",
-    "test": "jest"
+    "test": "jest",
+    "test:unit": "jest"
   },
   "peerDependencies": {
     "medusa-interfaces": "1.x",
