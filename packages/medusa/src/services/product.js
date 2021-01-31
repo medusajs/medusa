@@ -251,7 +251,9 @@ class ProductService extends BaseService {
         product.tags = await this.upsertProductTags_(tags)
       }
 
-      product.type_id = await this.upsertProductType_(type)
+      if (typeof type !== `undefined`) {
+        product.type_id = await this.upsertProductType_(type)
+      }
 
       const result = await productRepo.save(product)
 
