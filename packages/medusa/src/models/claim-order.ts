@@ -59,7 +59,8 @@ export class ClaimOrder {
 
   @OneToMany(
     () => LineItem,
-    li => li.claim_order
+    li => li.claim_order,
+    { cascade: ["insert"] }
   )
   additional_items: LineItem[]
 
@@ -98,7 +99,7 @@ export class ClaimOrder {
 
   @OneToMany(
     () => Fulfillment,
-    fulfillment => fulfillment.swap,
+    fulfillment => fulfillment.claim_order,
     { cascade: ["insert"] }
   )
   fulfillments: Fulfillment[]

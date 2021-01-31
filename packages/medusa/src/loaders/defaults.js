@@ -4,8 +4,6 @@ export default async ({ container }) => {
 
   const entityManager = container.resolve("manager")
 
-  console.log(storeService)
-
   await entityManager.transaction(async manager => {
     await storeService.withTransaction(manager).create()
 

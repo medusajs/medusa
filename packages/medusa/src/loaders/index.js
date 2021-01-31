@@ -56,8 +56,6 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   })
 
   container.register({
-    fulfillmentProviders: asValue([]),
-    paymentProviders: asValue([]),
     redisClient: asValue(client),
     redisSubscriber: asValue(subscriber),
     logger: asValue(Logger),

@@ -61,7 +61,7 @@ class ClaimService extends BaseService {
       return this
     }
 
-    const cloned = new claimService({
+    const cloned = new ClaimService({
       manager,
       claimRepository: this.claimRepository_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
@@ -79,6 +79,49 @@ class ClaimService extends BaseService {
     return cloned
   }
 
+  update(id, data) {
+    return this.atomicPhase_(async manager => {
+      const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
+
+      const { shipping_methods } = data
+
+      for (const m of claim.shipping_methods) {
+        await this.shippingOptionService_
+          .withTransaction(manager)
+          .updateShippingMethod(m.id, {
+            claim_order_id: null,
+          })
+      }
+
+      if (shipping_methods) {
+        for (const method of shipping_methods) {
+          if (method.id) {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .updateShippingMethod(method.id, {
+                claim_order_id: claim.id,
+              })
+          } else {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .createShippingMethod(method.option_id, method.data, {
+                claim_order_id: claim.id,
+                price: method.price,
+              })
+          }
+        }
+      }
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ClaimService.Events.UPDATED, {
+          id: claim.id,
+        })
+
+      return claim
+    })
+  }
+
   create(data) {
     return this.atomicPhase_(async manager => {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
@@ -89,6 +132,7 @@ class ClaimService extends BaseService {
         order,
         return_shipping,
         additional_items,
+        shipping_methods,
         ...rest
       } = data
 
@@ -122,6 +166,7 @@ class ClaimService extends BaseService {
       )
 
       const created = claimRepo.create({
+        shipping_address_id: order.shipping_address_id,
         ...rest,
         type,
         additional_items: newItems,
@@ -129,6 +174,25 @@ class ClaimService extends BaseService {
       })
 
       const result = await claimRepo.save(created)
+
+      if (shipping_methods) {
+        for (const method of shipping_methods) {
+          if (method.id) {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .updateShippingMethod(method.id, {
+                claim_order_id: result.id,
+              })
+          } else {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .createShippingMethod(method.option_id, method.data, {
+                claim_order_id: result.id,
+                price: method.price,
+              })
+          }
+        }
+      }
 
       for (const ci of claim_items) {
         await this.claimItemService_.withTransaction(manager).create({

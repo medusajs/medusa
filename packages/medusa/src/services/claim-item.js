@@ -40,7 +40,7 @@ class ClaimItemService extends BaseService {
       return this
     }
 
-    const cloned = new claimService({
+    const cloned = new ClaimItemService({
       manager,
       claimItemRepository: this.claimItemRepository_,
       claimTagRepository: this.claimTagRepository_,
