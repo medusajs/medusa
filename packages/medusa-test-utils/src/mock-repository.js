@@ -7,6 +7,7 @@ export default ({
   findOne,
   findOneOrFail,
   save,
+  findAndCount,
 } = {}) => {
   return {
     create: jest.fn().mockImplementation((...args) => {
@@ -62,6 +63,12 @@ export default ({
         return save(...args);
       }
       return Promise.resolve(...args);
+    }),
+    findAndCount: jest.fn().mockImplementation((...args) => {
+      if (findAndCount) {
+        return findAndCount(...args);
+      }
+      return {};
     }),
   };
 };

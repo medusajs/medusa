@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.3...@medusajs/medusa@1.1.4) (2021-01-29)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.3](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.2...@medusajs/medusa@1.1.3) (2021-01-27)
+
+
+### Bug Fixes
+
+* tax_rate extraction in totals service ([#156](https://github.com/medusajs/medusa/issues/156)) ([178d12f](https://github.com/medusajs/medusa/commit/178d12fc7107875b62126a63a32c7e9738a69000))
+
+
+
+
+
+## [1.1.2](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.1...@medusajs/medusa@1.1.2) (2021-01-27)
+
+
+### Features
+
+* adds discount code search functionality ([#155](https://github.com/medusajs/medusa/issues/155)) ([7e14da1](https://github.com/medusajs/medusa/commit/7e14da1225983dd58faabbd6d555818277ad4cc8))
+
+
+
+
+
 ## [1.1.1](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.0...@medusajs/medusa@1.1.1) (2021-01-26)
 
 

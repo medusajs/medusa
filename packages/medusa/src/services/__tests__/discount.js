@@ -468,4 +468,55 @@ describe("DiscountService", () => {
       expect(discountRepository.save).toHaveBeenCalledTimes(0)
     })
   })
+
+  describe("listAndCount", () => {
+    const discountRepository = MockRepository({
+      findAndCount: () =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("total10"),
+            code: "OLITEST",
+          },
+        ]),
+    })
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls repository function with query and default config", async () => {
+      await discountService.listAndCount({ q: "OLI" })
+
+      expect(discountRepository.findAndCount).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findAndCount).toHaveBeenCalledWith({
+        join: {
+          alias: "discount",
+        },
+        where: expect.anything(),
+        skip: 0,
+        take: 50,
+        order: { created_at: "DESC" },
+      })
+    })
+
+    it("calls repository function specified query", async () => {
+      await discountService.listAndCount(
+        {},
+        { skip: 50, take: 50, order: { created_at: "ASC" } }
+      )
+
+      expect(discountRepository.findAndCount).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findAndCount).toHaveBeenCalledWith({
+        where: {},
+        skip: 50,
+        take: 50,
+        order: { created_at: "ASC" },
+      })
+    })
+  })
 })
