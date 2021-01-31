@@ -42,6 +42,9 @@ export class productTypeCategoryTags1611909563253
     await queryRunner.query(
       `ALTER TABLE "product_tags" ADD CONSTRAINT "FK_21683a063fe82dafdf681ecc9c4" FOREIGN KEY ("product_tag_id") REFERENCES "product_tag"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
+    await queryRunner.query(
+      `ALTER TABLE "product" ADD CONSTRAINT "FK_e0843930fbb8854fe36ca39dae1" FOREIGN KEY ("type_id") REFERENCES "product_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -56,6 +59,9 @@ export class productTypeCategoryTags1611909563253
     )
     await queryRunner.query(`ALTER TABLE "product" DROP COLUMN "type_id"`)
     await queryRunner.query(`ALTER TABLE "product" DROP COLUMN "collection_id"`)
+    await queryRunner.query(
+      `ALTER TABLE "product" DROP CONSTRAINT "FK_e0843930fbb8854fe36ca39dae1"`
+    )
     await queryRunner.query(
       `ALTER TABLE "product" ADD "tags" character varying`
     )

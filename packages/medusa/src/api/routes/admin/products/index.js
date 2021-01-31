@@ -8,6 +8,7 @@ export default app => {
 
   route.post("/", middlewares.wrap(require("./create-product").default))
   route.post("/:id", middlewares.wrap(require("./update-product").default))
+  route.get("/types", middlewares.wrap(require("./list-types").default))
 
   route.post(
     "/:id/variants",
@@ -53,6 +54,8 @@ export const defaultRelations = [
   "images",
   "options",
   "tags",
+  "type",
+  "collection",
 ]
 
 export const defaultFields = [
@@ -109,4 +112,6 @@ export const allowedRelations = [
   "images",
   "options",
   "tags",
+  "type",
+  "collection",
 ]

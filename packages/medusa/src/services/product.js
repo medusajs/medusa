@@ -169,10 +169,22 @@ class ProductService extends BaseService {
     return product.variants
   }
 
+  async listTypes() {
+    const productTypeRepository = this.manager_.getCustomRepository(
+      this.productTypeRepository_
+    )
+
+    return await productTypeRepository.find({})
+  }
+
   async upsertProductType_(type) {
     const productTypeRepository = this.manager_.getCustomRepository(
       this.productTypeRepository_
     )
+
+    if (type === null) {
+      return null
+    }
 
     const existing = await productTypeRepository.findOne({
       where: { value: type.value },
@@ -185,7 +197,7 @@ class ProductService extends BaseService {
     const created = productTypeRepository.create(type)
     const result = await productTypeRepository.save(created)
 
-    return result
+    return result.id
   }
 
   async upsertProductTags_(tags) {
@@ -203,7 +215,8 @@ class ProductService extends BaseService {
         newTags.push(existing)
       } else {
         const created = productTagRepository.create(tag)
-        newTags.push(created)
+        const result = await productTagRepository.save(created)
+        newTags.push(result)
       }
     }
 
@@ -238,9 +251,7 @@ class ProductService extends BaseService {
         product.tags = await this.upsertProductTags_(tags)
       }
 
-      if (type) {
-        product.type = await this.upsertProductType_(type)
-      }
+      product.type_id = await this.upsertProductType_(type)
 
       const result = await productRepo.save(product)
 
@@ -291,10 +302,7 @@ class ProductService extends BaseService {
         product.metadata = this.setMetadata_(product, metadata)
       }
 
-      if (type) {
-        const productType = await this.upsertProductType_(type)
-        product.type_id = productType.id
-      }
+      product.type_id = await this.upsertProductType_(type)
 
       if (tags) {
         product.tags = await this.upsertProductTags_(tags)

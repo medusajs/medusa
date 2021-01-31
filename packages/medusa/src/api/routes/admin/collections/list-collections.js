@@ -1,3 +1,5 @@
+import { defaultFields, defaultRelations } from "."
+
 export default async (req, res) => {
   try {
     const selector = {}
@@ -10,8 +12,8 @@ export default async (req, res) => {
     )
 
     const listConfig = {
-      select: [],
-      relations: [],
+      select: defaultFields,
+      relations: defaultRelations,
       skip: offset,
       take: limit,
     }

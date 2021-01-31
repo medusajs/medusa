@@ -16,3 +16,6 @@ export default app => {
 
   return app
 }
+
+export const defaultFields = ["id", "title", "handle"]
+export const defaultRelations = ["products"]

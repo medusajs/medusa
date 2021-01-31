@@ -116,6 +116,7 @@ export class Product {
   @Column({ nullable: true })
   type_id: string
 
+  @ManyToOne(() => ProductType)
   @JoinColumn({ name: "type_id" })
   type: ProductType
 

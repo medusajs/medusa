@@ -12,12 +12,10 @@ export default async (req, res) => {
         id: Validator.string().optional(),
         value: Validator.string().required(),
       })
+      .allow(null)
       .optional(),
-    collection: Validator.object()
-      .keys({
-        id: Validator.string().required(),
-        title: Validator.string().required(),
-      })
+    collection_id: Validator.string()
+      .allow(null)
       .optional(),
     tags: Validator.array()
       .items({

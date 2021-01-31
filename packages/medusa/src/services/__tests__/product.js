@@ -120,7 +120,7 @@ describe("ProductService", () => {
           { id: "tag-1", value: "title" },
           { id: "tag-2", value: "title2" },
         ],
-        type: { id: "type", value: "type1" },
+        type_id: "type",
         collection: {
           id: IdMap.getId("cat"),
           title: "Suits",

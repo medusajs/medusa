@@ -26,6 +26,12 @@ export class ProductCollection {
   @Column({ nullable: true })
   handle: string
 
+  @OneToMany(
+    () => Product,
+    product => product.collection
+  )
+  products: Product[]
+
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
@@ -43,12 +49,9 @@ export class ProductCollection {
     if (this.id) return
     const id = ulid()
     this.id = `pcol_${id}`
-  }
 
-  @BeforeInsert()
-  private createMissingHandle() {
     if (!this.handle) {
-      return _.kebabCase(this.title)
+      this.handle = _.kebabCase(this.title)
     }
   }
 }
