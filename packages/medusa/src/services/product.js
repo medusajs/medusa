@@ -302,7 +302,9 @@ class ProductService extends BaseService {
         product.metadata = this.setMetadata_(product, metadata)
       }
 
-      product.type_id = await this.upsertProductType_(type)
+      if (typeof type !== `undefined`) {
+        product.type_id = await this.upsertProductType_(type)
+      }
 
       if (tags) {
         product.tags = await this.upsertProductTags_(tags)

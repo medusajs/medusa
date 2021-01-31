@@ -145,6 +145,13 @@ describe("ProductService", () => {
       },
     })
 
+    const productTypeRepository = MockRepository({
+      findOne: () => Promise.resolve(undefined),
+      create: data => {
+        return { id: "type", value: "type1" }
+      },
+    })
+
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
@@ -171,6 +178,7 @@ describe("ProductService", () => {
       productVariantService,
       productVariantRepository,
       productTagRepository,
+      productTypeRepository,
       eventBusService,
     })
 
