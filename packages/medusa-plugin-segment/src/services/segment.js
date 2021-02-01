@@ -113,20 +113,23 @@ class SegmentService extends BaseService {
           )
 
           let sku = ""
-          if (item.variant.sku) {
+          let variant = ""
+          if (item.variant && item.variant.sku) {
             let skuParts = item.variant.sku.split("-")
             skuParts.pop()
 
             sku = skuParts.join("-")
+
+            variant = item.variant.sku
           }
 
           return {
             name,
             variant,
-            price: unit_price / 100,
+            price: unit_price,
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
-            sku: sku,
+            sku,
             quantity: item.quantity,
           }
         })
