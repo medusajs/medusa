@@ -11,11 +11,24 @@ const eventBusService = {
   },
 }
 
+const totalsService = {
+  getRefundTotal: jest.fn(() => 1000),
+}
+
 describe("ClaimService", () => {
   describe("create", () => {
     const testClaim = {
       type: "refund",
-      order: { id: "1234", region_id: "order_region" },
+      order: {
+        id: "1234",
+        region_id: "order_region",
+        items: [
+          {
+            id: "itm_1",
+            unit_price: 8000,
+          },
+        ],
+      },
       claim_items: [
         {
           item_id: "itm_1",
@@ -70,6 +83,7 @@ describe("ClaimService", () => {
     const claimService = new ClaimService({
       manager: MockManager,
       claimRepository: claimRepo,
+      totalsService,
       returnService,
       lineItemService,
       claimItemService,
@@ -84,6 +98,7 @@ describe("ClaimService", () => {
       await claimService.create(testClaim)
 
       expect(withTransactionMock).toHaveBeenCalledWith("return")
+
       expect(returnService.create).toHaveBeenCalledTimes(1)
       expect(returnService.create).toHaveBeenCalledWith(
         {
@@ -94,12 +109,21 @@ describe("ClaimService", () => {
           },
           items: [
             {
-              id: "itm_1",
+              item_id: "itm_1",
               quantity: 1,
             },
           ],
         },
-        { id: "1234", region_id: "order_region" }
+        {
+          id: "1234",
+          region_id: "order_region",
+          items: [
+            {
+              id: "itm_1",
+              unit_price: 8000,
+            },
+          ],
+        }
       )
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
@@ -124,6 +148,8 @@ describe("ClaimService", () => {
 
       expect(claimRepo.create).toHaveBeenCalledTimes(1)
       expect(claimRepo.create).toHaveBeenCalledWith({
+        payment_status: "not_refunded",
+        refund_amount: 1000,
         type: "refund",
         order_id: "1234",
         additional_items: [
@@ -161,6 +187,18 @@ describe("ClaimService", () => {
         })
       ).rejects.toThrow(
         `Claims with type "replace" must have at least one additional item.`
+      )
+    })
+
+    it("fails if replace and refund amount", async () => {
+      await expect(
+        claimService.create({
+          ...testClaim,
+          type: "replace",
+          refund_amount: 102,
+        })
+      ).rejects.toThrow(
+        `Claim has type "replace" but must be type "refund" to have a refund_amount.`
       )
     })
 

@@ -179,7 +179,7 @@ class ClaimService extends BaseService {
       if (refund_amount && type !== "refund") {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Claim has type ${type} but must be of type "refund" to have a refund_amount.`
+          `Claim has type "${type}" but must be type "refund" to have a refund_amount.`
         )
       }
 
