@@ -30,6 +30,6 @@
     "bootstrap": "lerna bootstrap",
     "jest": "jest",
     "test": "jest",
-    "test:integration": "jest --config=integration-tests/jest.config.js"
+    "test:integration": "jest --config=integration-tests/jest.config.js --runInBand"
   }
 }

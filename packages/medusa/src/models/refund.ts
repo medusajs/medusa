@@ -19,6 +19,7 @@ export enum RefundReason {
   DISCOUNT = "discount",
   RETURN = "return",
   SWAP = "swap",
+  CLAIM = "claim",
   OTHER = "other",
 }
 

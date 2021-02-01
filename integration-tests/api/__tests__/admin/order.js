@@ -150,6 +150,25 @@ describe("/admin/orders", () => {
         }
       );
       expect(response.status).toEqual(200);
+
+      expect(response.data.order.claims[0].claim_items).toEqual([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          reason: "production_failure",
+          images: [
+            expect.objectContaining({
+              url: "https://test.image.com",
+            }),
+          ],
+          tags: [
+            expect.objectContaining({
+              value: "fluff",
+            }),
+          ],
+        }),
+      ]);
+
       expect(response.data.order.claims[0].additional_items).toEqual([
         expect.objectContaining({
           variant_id: "test-variant",

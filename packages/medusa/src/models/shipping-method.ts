@@ -19,7 +19,7 @@ import { Return } from "./return"
 import { ShippingOption } from "./shipping-option"
 
 @Check(
-  `"order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
+  `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
 )
 @Check(`"price" >= 0`)
 @Entity()

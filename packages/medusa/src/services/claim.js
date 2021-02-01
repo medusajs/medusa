@@ -9,6 +9,8 @@ class ClaimService extends BaseService {
     UPDATED: "claim.updated",
     CANCELED: "claim.canceled",
     FULFILLMENT_CREATED: "claim.fulfillment_created",
+    SHIPMENT_CREATED: "claim.shipment_created",
+    REFUND_PROCESSED: "claim.refund_processed",
   }
 
   constructor({
@@ -17,6 +19,8 @@ class ClaimService extends BaseService {
     fulfillmentProviderService,
     fulfillmentService,
     lineItemService,
+    totalsService,
+    paymentProviderService,
     returnService,
     shippingOptionService,
     claimItemService,
@@ -34,6 +38,9 @@ class ClaimService extends BaseService {
     /** @private @constant {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
 
+    /** @private @constant {PaymentProviderService} */
+    this.paymentProviderService_ = paymentProviderService
+
     /** @private @constant {LineItemService} */
     this.lineItemService_ = lineItemService
 
@@ -48,6 +55,9 @@ class ClaimService extends BaseService {
 
     /** @private @constant {ClaimItemService} */
     this.claimItemService_ = claimItemService
+
+    /** @private @constant {TotalsService} */
+    this.totalsService_ = totalsService
 
     /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
@@ -66,11 +76,13 @@ class ClaimService extends BaseService {
       claimRepository: this.claimRepository_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
       fulfillmentService: this.fulfillmentService_,
+      paymentProviderService: this.paymentProviderService_,
       lineItemService: this.lineItemService_,
       regionService: this.regionService_,
       returnService: this.returnService_,
       claimItemService: this.claimItemService_,
       eventBusService: this.eventBus_,
+      totalsService: this.totalsService_,
       shippingOptionService: this.shippingOptionService_,
     })
 
@@ -81,19 +93,25 @@ class ClaimService extends BaseService {
 
   update(id, data) {
     return this.atomicPhase_(async manager => {
+      const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
-      const { shipping_methods } = data
+      const { shipping_methods, metadata } = data
 
-      for (const m of claim.shipping_methods) {
-        await this.shippingOptionService_
-          .withTransaction(manager)
-          .updateShippingMethod(m.id, {
-            claim_order_id: null,
-          })
+      if (metadata) {
+        claim.metadata = this.setMetadata_(claim, update.metadata)
+        claimRepo.save(claim)
       }
 
       if (shipping_methods) {
+        for (const m of claim.shipping_methods) {
+          await this.shippingOptionService_
+            .withTransaction(manager)
+            .updateShippingMethod(m.id, {
+              claim_order_id: null,
+            })
+        }
+
         for (const method of shipping_methods) {
           if (method.id) {
             await this.shippingOptionService_
@@ -133,6 +151,7 @@ class ClaimService extends BaseService {
         return_shipping,
         additional_items,
         shipping_methods,
+        refund_amount,
         ...rest
       } = data
 
@@ -157,6 +176,25 @@ class ClaimService extends BaseService {
         )
       }
 
+      if (refund_amount && type !== "refund") {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Claim has type ${type} but must be of type "refund" to have a refund_amount.`
+        )
+      }
+
+      let toRefund = refund_amount
+      if (type === "refund" && typeof refund_amount === "undefined") {
+        const lines = claim_items.map(ci => {
+          const orderItem = order.items.find(oi => oi.id === ci.item_id)
+          return {
+            ...orderItem,
+            quantity: ci.quantity,
+          }
+        })
+        toRefund = await this.totalsService_.getRefundTotal(order, lines)
+      }
+
       const newItems = await Promise.all(
         additional_items.map(i =>
           this.lineItemService_
@@ -167,7 +205,9 @@ class ClaimService extends BaseService {
 
       const created = claimRepo.create({
         shipping_address_id: order.shipping_address_id,
+        payment_status: type === "refund" ? "not_refunded" : "na",
         ...rest,
+        refund_amount: toRefund,
         type,
         additional_items: newItems,
         order_id: order.id,
@@ -206,7 +246,7 @@ class ClaimService extends BaseService {
           {
             claim_order_id: result.id,
             items: claim_items.map(ci => ({
-              id: ci.item_id,
+              item_id: ci.item_id,
               quantity: ci.quantity,
               metadata: ci.metadata,
             })),
@@ -329,6 +369,40 @@ class ClaimService extends BaseService {
             fulfillment_id: fulfillment.id,
           })
       }
+
+      return result
+    })
+  }
+
+  async processRefund(id) {
+    return this.atomicPhase_(async manager => {
+      const claim = await this.retrieve(id, {
+        relations: ["order", "order.payments"],
+      })
+
+      if (claim.type !== "refund") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Claim must have type "refund" to create a refund.`
+        )
+      }
+
+      if (claim.refund_amount) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .refundPayment(claim.order.payments, claim.refund_amount, "claim")
+      }
+
+      claim.payment_status = "refunded"
+
+      const claimRepo = manager.getCustomRepository(this.claimRepository_)
+      const result = await claimRepo.save(claim)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ClaimService.Events.REFUND_PROCESSED, {
+          id,
+        })
 
       return result
     })

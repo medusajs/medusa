@@ -301,6 +301,13 @@ class BrightpearlClient {
             return this.buildSearchResults_(data.response)
           })
       },
+      retrievePrice: (productId) => {
+        return this.client_
+          .request({
+            url: `/product-service/product-price/${productId}`,
+          })
+          .then(({ data }) => data.response.length && data.response[0])
+      },
     }
   }
 

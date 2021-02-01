@@ -35,7 +35,8 @@ export class ClaimItem {
 
   @OneToMany(
     () => ClaimImage,
-    ci => ci.claim_item
+    ci => ci.claim_item,
+    { cascade: ["insert"] }
   )
   images: ClaimImage[]
 
@@ -75,7 +76,7 @@ export class ClaimItem {
   @Column({ type: "int" })
   quantity: number
 
-  @ManyToMany(() => ClaimTag)
+  @ManyToMany(() => ClaimTag, { cascade: ["insert"] })
   @JoinTable({
     name: "claim_item_tags",
     joinColumn: {

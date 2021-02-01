@@ -27,6 +27,12 @@ export enum ClaimType {
   REPLACE = "replace",
 }
 
+export enum ClaimPaymentStatus {
+  NA = "na",
+  NOT_REFUNDED = "not_refunded",
+  REFUNDED = "refunded",
+}
+
 export enum ClaimFulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   PARTIALLY_FULFILLED = "partially_fulfilled",
@@ -43,6 +49,13 @@ export enum ClaimFulfillmentStatus {
 export class ClaimOrder {
   @PrimaryColumn()
   id: string
+
+  @Column({
+    type: "enum",
+    enum: ClaimPaymentStatus,
+    default: ClaimPaymentStatus.NA,
+  })
+  payment_status: ClaimPaymentStatus
 
   @Column({
     type: "enum",
@@ -104,6 +117,9 @@ export class ClaimOrder {
   )
   fulfillments: Fulfillment[]
 
+  @Column({ type: "int", nullable: true })
+  refund_amount: number
+
   @Column({ type: "timestamptz", nullable: true })
   canceled_at: Date
 
@@ -118,6 +134,9 @@ export class ClaimOrder {
 
   @Column({ type: "jsonb", nullable: true })
   metadata: any
+
+  @Column({ nullable: true })
+  idempotency_key: string
 
   @BeforeInsert()
   private beforeInsert() {
