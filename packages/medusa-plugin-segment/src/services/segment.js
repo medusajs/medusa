@@ -112,8 +112,13 @@ class SegmentService extends BaseService {
             line_total
           )
 
-          const skuParts = item.content.variant.sku.split("-")
-          skuParts.pop()
+          let sku = ""
+          if (item.variant.sku) {
+            let skuParts = item.variant.sku.split("-")
+            skuParts.pop()
+
+            sku = skuParts.join("-")
+          }
 
           return {
             name,
@@ -121,7 +126,7 @@ class SegmentService extends BaseService {
             price: unit_price / 100,
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
-            sku: item.variant.sku,
+            sku: sku,
             quantity: item.quantity,
           }
         })
