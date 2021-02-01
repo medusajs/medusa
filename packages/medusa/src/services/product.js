@@ -177,6 +177,24 @@ class ProductService extends BaseService {
     return await productTypeRepository.find({})
   }
 
+  async listTagsByUsage(count = 10) {
+    const tags = await this.manager_.query(
+      `
+      SELECT ID, O.USAGE_COUNT, PT.VALUE
+      FROM PRODUCT_TAG PT
+      LEFT JOIN
+        (SELECT COUNT(*) AS USAGE_COUNT,
+          PRODUCT_TAG_ID
+          FROM PRODUCT_TAGS
+          GROUP BY PRODUCT_TAG_ID) O ON O.PRODUCT_TAG_ID = PT.ID
+      ORDER BY O.USAGE_COUNT DESC
+      LIMIT $1`,
+      [count]
+    )
+
+    return tags
+  }
+
   async upsertProductType_(type) {
     const productTypeRepository = this.manager_.getCustomRepository(
       this.productTypeRepository_

@@ -9,6 +9,10 @@ export default app => {
   route.post("/", middlewares.wrap(require("./create-product").default))
   route.post("/:id", middlewares.wrap(require("./update-product").default))
   route.get("/types", middlewares.wrap(require("./list-types").default))
+  route.get(
+    "/tag-usage",
+    middlewares.wrap(require("./list-tag-usage-count").default)
+  )
 
   route.post(
     "/:id/variants",
