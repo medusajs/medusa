@@ -42,7 +42,7 @@ describe("POST /admin/users/reset-password", () => {
     })
 
     it("returns updated user", () => {
-      expect(subject.body.user._id).toEqual(IdMap.getId("vandijk"))
+      expect(subject.body.user.id).toEqual(IdMap.getId("vandijk"))
     })
     it("returns 200", () => {
       expect(subject.status).toEqual(200)

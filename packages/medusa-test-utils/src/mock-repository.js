@@ -8,6 +8,7 @@ class MockRepo {
     findOne,
     findOneOrFail,
     save,
+    findAndCount,
   }) {
     this.create_ = create;
     this.update_ = update;
@@ -17,6 +18,7 @@ class MockRepo {
     this.findOne_ = findOne;
     this.findOneOrFail_ = findOneOrFail;
     this.save_ = save;
+    this.findAndCount_ = findAndCount;
   }
 
   setFindOne(fn) {
@@ -76,6 +78,13 @@ class MockRepo {
       return this.save_(...args);
     }
     return Promise.resolve(...args);
+  });
+
+  findAndCount = jest.fn().mockImplementation((...args) => {
+    if (this.findAndCount_) {
+      return this.findAndCount_(...args);
+    }
+    return {};
   });
 }
 

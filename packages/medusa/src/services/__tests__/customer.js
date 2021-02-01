@@ -269,7 +269,7 @@ describe("CustomerService", () => {
           last_name: "Stark",
           address_1: "Hollywood Boulevard 1",
           city: "Los Angeles",
-          country_code: "US",
+          country_code: "us",
           postal_code: "90046",
           phone: "+1 (222) 333 4444",
         }
@@ -282,7 +282,7 @@ describe("CustomerService", () => {
         last_name: "Stark",
         address_1: "Hollywood Boulevard 1",
         city: "Los Angeles",
-        country_code: "US",
+        country_code: "us",
         postal_code: "90046",
         phone: "+1 (222) 333 4444",
       })

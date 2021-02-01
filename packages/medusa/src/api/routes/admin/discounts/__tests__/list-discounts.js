@@ -1,9 +1,10 @@
 import { IdMap } from "medusa-test-utils"
+import { defaultFields, defaultRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
 describe("GET /admin/discounts", () => {
-  describe("successful retrieval", () => {
+  describe("successful retrieval of discounts", () => {
     let subject
 
     beforeAll(async () => {
@@ -21,31 +22,55 @@ describe("GET /admin/discounts", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("calls service retrieve", () => {
-      expect(DiscountServiceMock.list).toHaveBeenCalledTimes(1)
+    it("calls service retrieve with config", () => {
+      expect(DiscountServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.listAndCount).toHaveBeenCalledWith(
+        {},
+        {
+          select: defaultFields,
+          relations: defaultRelations,
+          skip: 0,
+          take: 20,
+          order: { created_at: "DESC" },
+        }
+      )
     })
   })
 
-  describe("expand region filter", () => {
+  describe("successful retrieval of discounts with query config", () => {
     let subject
 
     beforeAll(async () => {
       jest.clearAllMocks()
-      subject = await request("GET", `/admin/discounts?expand_fields=regions`, {
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
+      subject = await request(
+        "GET",
+        `/admin/discounts?q=OLI&limit=40&offset=20&is_dynamic=false`,
+        {
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
           },
-        },
-      })
+        }
+      )
     })
 
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("calls service retrieve", () => {
-      expect(DiscountServiceMock.list).toHaveBeenCalledTimes(1)
+    it("calls service retrieve with config", () => {
+      expect(DiscountServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(DiscountServiceMock.listAndCount).toHaveBeenCalledWith(
+        { q: "OLI", is_dynamic: false },
+        {
+          select: defaultFields,
+          relations: defaultRelations,
+          skip: 20,
+          take: 40,
+          order: { created_at: "DESC" },
+        }
+      )
     })
   })
 })
