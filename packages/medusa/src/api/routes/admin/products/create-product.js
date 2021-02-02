@@ -63,7 +63,7 @@ export default async (req, res) => {
           Validator.object()
             .keys({
               region_id: Validator.string(),
-              currency_code: Validator.string().required(),
+              currency_code: Validator.string(),
               amount: Validator.number()
                 .integer()
                 .required(),

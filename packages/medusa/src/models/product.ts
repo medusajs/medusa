@@ -23,6 +23,7 @@ import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
+import _ from "lodash"
 
 @Entity()
 export class Product {
@@ -151,5 +152,9 @@ export class Product {
     if (this.id) return
     const id = ulid()
     this.id = `prod_${id}`
+
+    if (!this.handle) {
+      this.handle = _.kebabCase(this.title)
+    }
   }
 }
