@@ -4,7 +4,7 @@ import Webshipper from "../utils/webshipper"
 class WebshipperFulfillmentService extends FulfillmentService {
   static identifier = "webshipper"
 
-  constructor({ logger, swapService, orderService }, options) {
+  constructor({ logger, claimService, swapService, orderService }, options) {
     super()
 
     this.options_ = options
@@ -17,6 +17,9 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     /** @private @const {SwapService} */
     this.swapService_ = swapService
+
+    /** @private @const {SwapService} */
+    this.claimService_ = claimService
 
     /** @private @const {AxiosClient} */
     this.client_ = new Webshipper({
@@ -82,18 +85,19 @@ class WebshipperFulfillmentService extends FulfillmentService {
    * return lines.
    */
   async createReturn(returnOrder) {
-    let fromOrder
+    let orderId
     if (returnOrder.order_id) {
-      fromOrder = await this.orderService_.retrieve(returnOrder.order_id, {
-        select: ["total"],
-        relations: ["shipping_address", "returns"],
-      })
+      orderId = returnOrder.order_id
     } else if (returnOrder.swap) {
-      fromOrder = await this.orderService_.retrieve(returnOrder.swap.order_id, {
-        select: ["total"],
-        relations: ["shipping_address", "returns"],
-      })
+      orderId = returnOrder.swap.order_id
+    } else if (returnOrder.claim_order) {
+      orderId = returnOrder.claim_order.order_id
     }
+
+    const fromOrder = await this.orderService_.retrieve(orderId, {
+      select: ["total"],
+      relations: ["discounts", "shipping_address", "returns"],
+    })
 
     const methodData = returnOrder.shipping_method.data
 
@@ -384,6 +388,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
             trackingNumbers
           )
         }
+      } else if (orderId.charAt(0).toLowerCase() === "c") {
+        return this.claimService_.createShipment(
+          orderId,
+          fulfillmentIndex,
+          trackingNumbers
+        )
       } else {
         if (fulfillmentIndex.startsWith("ful")) {
           return this.orderService_.createShipment(

@@ -311,6 +311,7 @@ class ReturnService extends BaseService {
           "shipping_method",
           "shipping_method.shipping_option",
           "swap",
+          "claim_order",
         ],
       })
 
