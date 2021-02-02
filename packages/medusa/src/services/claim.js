@@ -100,7 +100,7 @@ class ClaimService extends BaseService {
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, update.metadata)
-        claimRepo.save(claim)
+        await claimRepo.save(claim)
       }
 
       if (shipping_methods) {
@@ -500,7 +500,7 @@ class ClaimService extends BaseService {
       claim.fulfillment_status = "canceled"
 
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
-      const result = claimRepo.save(claim)
+      const result = await claimRepo.save(claim)
 
       await this.eventBus_
         .withTransaction(manager)
@@ -545,37 +545,6 @@ class ClaimService extends BaseService {
     }
 
     return claim
-  }
-
-  /**
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  setMetadata_(order, metadata) {
-    const existing = order.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
   }
 
   /**
