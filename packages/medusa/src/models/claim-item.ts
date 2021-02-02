@@ -36,7 +36,7 @@ export class ClaimItem {
   @OneToMany(
     () => ClaimImage,
     ci => ci.claim_item,
-    { cascade: ["insert"] }
+    { cascade: ["insert", "remove"] }
   )
   images: ClaimImage[]
 

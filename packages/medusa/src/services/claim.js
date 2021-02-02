@@ -96,7 +96,7 @@ class ClaimService extends BaseService {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
-      const { shipping_methods, metadata } = data
+      const { claim_items, shipping_methods, metadata } = data
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, update.metadata)
@@ -126,6 +126,16 @@ class ClaimService extends BaseService {
                 claim_order_id: claim.id,
                 price: method.price,
               })
+          }
+        }
+      }
+
+      if (claim_items) {
+        for (const i of claim_items) {
+          if (i.id) {
+            await this.claimItemService_
+              .withTransaction(manager)
+              .update(i.id, i)
           }
         }
       }
