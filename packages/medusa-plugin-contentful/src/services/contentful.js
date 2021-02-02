@@ -157,6 +157,13 @@ class ContentfulService extends BaseService {
         fields.tags = tags
       }
 
+      if (p.handle) {
+        const handle = {
+          "en-US": p.handle,
+        }
+        fields.handle = handle
+      }
+
       const result = await environment.createEntryWithId("product", p.id, {
         fields,
       })
@@ -274,6 +281,13 @@ class ContentfulService extends BaseService {
           "en-US": p.tags,
         }
         productEntryFields.tags = tags
+      }
+
+      if (p.handle) {
+        const handle = {
+          "en-US": p.handle,
+        }
+        productEntryFields.handle = handle
       }
 
       productEntry.fields = productEntryFields
