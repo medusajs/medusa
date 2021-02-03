@@ -127,207 +127,84 @@ class ClaimItemService extends BaseService {
     })
   }
 
-  createFulfillment(id, metadata = {}) {
+  update(id, data) {
     return this.atomicPhase_(async manager => {
-      const claim = await this.retrieve(id, {
-        relations: [
-          "additional_items",
-          "shipping_methods",
-          "shipping_address",
-          "order",
-          "order.billing_address",
-          "order.discounts",
-          "order.payments",
-        ],
-      })
+      const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
+      const item = await this.retrieve(id, { relations: ["images", "tags"] })
 
-      const order = claim.order
+      const { tags, images, reason, note, metadata } = data
 
-      if (claim.fulfillment_status !== "not_fulfilled") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "The claim has already been fulfilled."
-        )
+      if (note) {
+        item.note = note
       }
 
-      if (claim.type !== "replace") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Claims with the type "${claim.type}" can not be fulfilled.`
-        )
+      if (reason) {
+        item.reason = reason
       }
 
-      if (!claim.shipping_methods?.length) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot fulfill a claim without a shipping method."
-        )
+      if (metadata) {
+        item.metadata = this.setMetadata_(item, update.metadata)
       }
 
-      const fulfillments = await this.fulfillmentService_
-        .withTransaction(manager)
-        .createFulfillment(
-          {
-            ...claim,
-            email: order.email,
-            payments: order.payments,
-            discounts: order.discounts,
-            currency_code: order.currency_code,
-            tax_rate: order.tax_rate,
-            region_id: order.region_id,
-            display_id: order.display_id,
-            billing_address: order.billing_address,
-            items: claim.additional_items,
-            shipping_methods: claim.shipping_methods,
-            is_claim: true,
-          },
-          claim.additional_items.map(i => ({
-            item_id: i.id,
-            quantity: i.quantity,
-          })),
-          { claim_order_id: id, metadata }
+      if (tags) {
+        item.tags = []
+        const claimTagRepo = manager.getCustomRepository(
+          this.claimTagRepository_
         )
+        for (const t of tags) {
+          if (t.id) {
+            item.tags.push(t)
+          } else {
+            const normalized = t.value.trim().toLowerCase()
 
-      let successfullyFulfilled = []
-      for (const f of fulfillments) {
-        successfullyFulfilled = successfullyFulfilled.concat(f.items)
-      }
+            const existing = await claimTagRepo.findOne({
+              where: { value: normalized },
+            })
 
-      claim.fulfillment_status = "fulfilled"
-
-      for (const item of claim.additional_items) {
-        const fulfillmentItem = successfullyFulfilled.find(
-          f => item.id === f.item_id
-        )
-
-        if (fulfillmentItem) {
-          const fulfilledQuantity =
-            (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
-
-          // Update the fulfilled quantity
-          await this.lineItemService_.withTransaction(manager).update(item.id, {
-            fulfilled_quantity: fulfilledQuantity,
-          })
-
-          if (item.quantity !== fulfilledQuantity) {
-            claim.fulfillment_status = "requires_action"
-          }
-        } else {
-          if (item.quantity !== item.fulfilled_quantity) {
-            claim.fulfillment_status = "requires_action"
+            if (existing) {
+              item.tags.push(existing)
+            } else {
+              item.tags.push(claimTagRepo.create({ value: normalized }))
+            }
           }
         }
       }
 
-      const claimRepo = manager.getCustomRepository(this.claimRepository_)
-      const result = await claimRepo.save(claim)
-
-      for (const fulfillment of fulfillments) {
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(ClaimService.Events.FULFILLMENT_CREATED, {
-            id: id,
-            fulfillment_id: fulfillment.id,
-          })
-      }
-
-      return result
-    })
-  }
-
-  async createShipment(id, fulfillmentId, trackingNumbers, metadata = []) {
-    return this.atomicPhase_(async manager => {
-      const claim = await this.retrieve(id, {
-        relations: ["additional_items"],
-      })
-
-      const shipment = await this.fulfillmentService_
-        .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingNumbers, metadata)
-
-      claim.fulfillment_status = "shipped"
-
-      for (const i of claim.additional_items) {
-        const shipped = shipment.items.find(si => si.item_id === i.id)
-        if (shipped) {
-          const shippedQty = (i.shipped_quantity || 0) + shipped.quantity
-          await this.lineItemService_.withTransaction(manager).update(i.id, {
-            shipped_quantity: shippedQty,
-          })
-
-          if (shippedQty !== i.quantity) {
-            claim.fulfillment_status = "partially_shipped"
+      if (images) {
+        const claimImgRepo = manager.getCustomRepository(
+          this.claimImageRepository_
+        )
+        const ids = images.map(i => i.id)
+        for (const i of item.images) {
+          if (!ids.includes(i.id)) {
+            await claimImgRepo.remove(i)
           }
-        } else {
-          if (i.shipped_quantity !== i.quantity) {
-            claim.fulfillment_status = "partially_shipped"
+        }
+
+        item.images = []
+
+        for (const i of images) {
+          if (i.id) {
+            item.images.push(i)
+          } else {
+            item.images.push(claimImgRepo.create({ url: i.url }))
           }
         }
       }
 
-      const claimRepo = manager.getCustomRepository(this.claimRepository_)
-      const result = await claimRepo.save(claim)
+      await ciRepo.save(item)
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ClaimService.Events.SHIPMENT_CREATED, {
-          id,
-          fulfillment_id: shipment.id,
+        .emit(ClaimItemService.Events.UPDATED, {
+          id: item.id,
         })
 
-      return result
+      return item
     })
   }
 
-  async cancel(id) {
-    return this.atomicPhase_(async manager => {
-      const claim = await this.retrieve(id, {
-        relations: ["return_order", "fulfillments"],
-      })
-
-      if (
-        claim.fulfillment_status === "shipped" ||
-        claim.fulfillment_status === "partially_shipped"
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel a claim that has been shipped.`
-        )
-      }
-
-      if (claim?.return_order?.status === "received") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel a claim that has a received return.`
-        )
-      }
-
-      if (claim.return_order) {
-        await this.returnService_
-          .withTransaction(manager)
-          .cancel(claim.return_order.id)
-      }
-
-      await Promise.all(
-        claim.fulfillments.map(f =>
-          this.fulfillmentService_.withTransaction(manager).cancelFulfillment(f)
-        )
-      )
-
-      claim.fulfillment_status = "canceled"
-
-      const claimRepo = manager.getCustomRepository(this.claimRepository_)
-      const result = claimRepo.save(claim)
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ClaimService.Events.CANCELED, {
-          id: result.id,
-        })
-
-      return result
-    })
-  }
+  async cancel(id) {}
 
   /**
    * @param {Object} selector - the query object for find
@@ -337,9 +214,9 @@ class ClaimItemService extends BaseService {
     selector,
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
-    const claimRepo = this.manager_.getCustomRepository(this.claimRepository_)
+    const ciRepo = this.manager_.getCustomRepository(this.claimItemRepository_)
     const query = this.buildQuery_(selector, config)
-    return claimRepo.find(query)
+    return ciRepo.find(query)
   }
 
   /**
@@ -347,52 +224,23 @@ class ClaimItemService extends BaseService {
    * @param {string} orderId - id of order to retrieve
    * @return {Promise<Order>} the order document
    */
-  async retrieve(claimId, config = {}) {
-    const claimRepo = this.manager_.getCustomRepository(this.claimRepository_)
-    const validatedId = this.validateId_(claimId)
+  async retrieve(id, config = {}) {
+    const claimItemRepo = this.manager_.getCustomRepository(
+      this.claimItemRepository_
+    )
+    const validatedId = this.validateId_(id)
 
     const query = this.buildQuery_({ id: validatedId }, config)
-    const claim = await claimRepo.findOne(query)
+    const item = await claimItemRepo.findOne(query)
 
-    if (!claim) {
+    if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Claim with ${claimId} was not found`
+        `Claim item with id: ${id} was not found.`
       )
     }
 
-    return claim
-  }
-
-  /**
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  setMetadata_(order, metadata) {
-    const existing = order.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
+    return item
   }
 
   /**

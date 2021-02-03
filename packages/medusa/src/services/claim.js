@@ -96,11 +96,11 @@ class ClaimService extends BaseService {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
-      const { shipping_methods, metadata } = data
+      const { claim_items, shipping_methods, metadata } = data
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, update.metadata)
-        claimRepo.save(claim)
+        await claimRepo.save(claim)
       }
 
       if (shipping_methods) {
@@ -126,6 +126,16 @@ class ClaimService extends BaseService {
                 claim_order_id: claim.id,
                 price: method.price,
               })
+          }
+        }
+      }
+
+      if (claim_items) {
+        for (const i of claim_items) {
+          if (i.id) {
+            await this.claimItemService_
+              .withTransaction(manager)
+              .update(i.id, i)
           }
         }
       }
@@ -490,7 +500,7 @@ class ClaimService extends BaseService {
       claim.fulfillment_status = "canceled"
 
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
-      const result = claimRepo.save(claim)
+      const result = await claimRepo.save(claim)
 
       await this.eventBus_
         .withTransaction(manager)
@@ -538,6 +548,7 @@ class ClaimService extends BaseService {
   }
 
   /**
+<<<<<<< HEAD
    * Dedicated method to set metadata for an order.
    * To ensure that plugins does not overwrite each
    * others metadata fields, setMetadata is provided.
@@ -569,6 +580,8 @@ class ClaimService extends BaseService {
   }
 
   /**
+=======
+>>>>>>> master
    * Dedicated method to delete metadata for an order.
    * @param {string} orderId - the order to delete metadata from.
    * @param {string} key - key for metadata field

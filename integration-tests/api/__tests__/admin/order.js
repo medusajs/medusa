@@ -226,9 +226,169 @@ describe("/admin/orders", () => {
       );
 
       expect(status).toEqual(200);
-      expect(updateData.order.shipping_methods).toEqual([
+      expect(updateData.order.claims[0].shipping_methods).toEqual([
         expect.objectContaining({
           id: "test-method",
+        }),
+      ]);
+    });
+
+    it("updates claim items", async () => {
+      const api = useApi();
+
+      const response = await api.post(
+        "/admin/orders/test-order/claims",
+        {
+          type: "replace",
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason: "production_failure",
+              tags: ["fluff"],
+              images: ["https://test.image.com"],
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: "test-variant",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+
+      let claim = response.data.order.claims[0];
+      const cid = claim.id;
+      const { status, data: updateData } = await api.post(
+        `/admin/orders/test-order/claims/${cid}`,
+        {
+          claim_items: claim.claim_items.map((i) => ({
+            id: i.id,
+            note: "Something new",
+            images: [
+              ...i.images.map((i) => ({ id: i.id })),
+              { url: "https://new.com/image" },
+            ],
+            tags: [
+              { value: "completely" },
+              { value: "NEW" },
+              { value: " tags" },
+            ],
+          })),
+        },
+        {
+          headers: {
+            authorization: "bearer test_token",
+          },
+        }
+      );
+
+      expect(status).toEqual(200);
+      expect(updateData.order.claims.length).toEqual(1);
+
+      claim = updateData.order.claims[0];
+
+      expect(claim.claim_items.length).toEqual(1);
+      expect(claim.claim_items).toEqual([
+        expect.objectContaining({
+          id: claim.claim_items[0].id,
+          reason: "production_failure",
+          note: "Something new",
+          images: expect.arrayContaining([
+            expect.objectContaining({
+              url: "https://test.image.com",
+            }),
+            expect.objectContaining({
+              url: "https://new.com/image",
+            }),
+          ]),
+          tags: expect.arrayContaining([
+            expect.objectContaining({ value: "completely" }),
+            expect.objectContaining({ value: "new" }),
+            expect.objectContaining({ value: "tags" }),
+          ]),
+        }),
+      ]);
+    });
+
+    it("updates claim items - removes image", async () => {
+      const api = useApi();
+
+      const response = await api.post(
+        "/admin/orders/test-order/claims",
+        {
+          type: "replace",
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason: "production_failure",
+              tags: ["fluff"],
+              images: ["https://test.image.com"],
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: "test-variant",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+
+      let claim = response.data.order.claims[0];
+      const cid = claim.id;
+      const { status, data: updateData } = await api.post(
+        `/admin/orders/test-order/claims/${cid}`,
+        {
+          claim_items: claim.claim_items.map((i) => ({
+            id: i.id,
+            note: "Something new",
+            images: [],
+            tags: [
+              { value: "completely" },
+              { value: "NEW" },
+              { value: " tags" },
+            ],
+          })),
+        },
+        {
+          headers: {
+            authorization: "bearer test_token",
+          },
+        }
+      );
+
+      expect(status).toEqual(200);
+      expect(updateData.order.claims.length).toEqual(1);
+
+      claim = updateData.order.claims[0];
+
+      expect(claim.claim_items.length).toEqual(1);
+      expect(claim.claim_items).toEqual([
+        expect.objectContaining({
+          id: claim.claim_items[0].id,
+          reason: "production_failure",
+          note: "Something new",
+          images: [],
+          tags: expect.arrayContaining([
+            expect.objectContaining({ value: "completely" }),
+            expect.objectContaining({ value: "new" }),
+            expect.objectContaining({ value: "tags" }),
+          ]),
         }),
       ]);
     });
