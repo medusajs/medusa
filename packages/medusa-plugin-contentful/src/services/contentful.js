@@ -430,6 +430,11 @@ class ContentfulService extends BaseService {
       throw error
     }
   }
+
+  async getType(type) {
+    const environment = await this.getContentfulEnvironment_()
+    return environment.getContentType(type)
+  }
 }
 
 export default ContentfulService
