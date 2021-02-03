@@ -2,6 +2,7 @@ import {
   Entity,
   BeforeInsert,
   Column,
+  Index,
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -28,6 +29,7 @@ export class ShippingOptionRequirement {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column()
   shipping_option_id: string
 

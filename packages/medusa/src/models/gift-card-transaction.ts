@@ -1,6 +1,7 @@
 import {
   Entity,
   BeforeInsert,
+  Index,
   CreateDateColumn,
   Column,
   PrimaryColumn,
@@ -26,6 +27,7 @@ export class GiftCardTransaction {
   @JoinColumn({ name: "gift_card_id" })
   gift_card: GiftCard
 
+  @Index()
   @Column()
   order_id: string
 
