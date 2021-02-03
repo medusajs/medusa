@@ -2,6 +2,7 @@ import {
   Entity,
   Generated,
   BeforeInsert,
+  Index,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
@@ -76,10 +77,12 @@ export class Order {
   @Column({ type: "enum", enum: PaymentStatus, default: "not_paid" })
   payment_status: PaymentStatus
 
+  @Index()
   @Column()
   @Generated("increment")
   display_id: number
 
+  @Index()
   @Column({ nullable: true })
   cart_id: string
 
@@ -87,6 +90,7 @@ export class Order {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
+  @Index()
   @Column()
   customer_id: string
 
@@ -97,6 +101,7 @@ export class Order {
   @Column()
   email: string
 
+  @Index()
   @Column({ nullable: true })
   billing_address_id: string
 
@@ -104,6 +109,7 @@ export class Order {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
+  @Index()
   @Column({ nullable: true })
   shipping_address_id: string
 
@@ -111,6 +117,7 @@ export class Order {
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
+  @Index()
   @Column()
   region_id: string
 

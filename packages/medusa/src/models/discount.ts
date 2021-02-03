@@ -30,6 +30,7 @@ export class Discount {
   @Column()
   is_dynamic: boolean
 
+  @Index()
   @Column({ nullable: true })
   rule_id: string
 

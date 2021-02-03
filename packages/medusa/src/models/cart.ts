@@ -1,6 +1,7 @@
 import {
   Entity,
   BeforeInsert,
+  Index,
   Column,
   DeleteDateColumn,
   CreateDateColumn,
@@ -42,6 +43,7 @@ export class Cart {
   @Column({ nullable: true })
   email: string
 
+  @Index()
   @Column({ nullable: true })
   billing_address_id: string
 
@@ -51,6 +53,7 @@ export class Cart {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
+  @Index()
   @Column({ nullable: true })
   shipping_address_id: string
 
@@ -67,6 +70,7 @@ export class Cart {
   )
   items: LineItem[]
 
+  @Index()
   @Column()
   region_id: string
 
@@ -102,6 +106,7 @@ export class Cart {
   })
   gift_cards: GiftCard
 
+  @Index()
   @Column({ nullable: true })
   customer_id: string
 
@@ -118,6 +123,7 @@ export class Cart {
   )
   payment_sessions: PaymentSession[]
 
+  @Index()
   @Column({ nullable: true })
   payment_id: string
 

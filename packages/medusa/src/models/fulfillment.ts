@@ -3,6 +3,7 @@ import {
   RelationId,
   BeforeInsert,
   Column,
+  Index,
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -27,6 +28,7 @@ export class Fulfillment {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column({ nullable: true })
   claim_order_id: string
 
@@ -37,6 +39,7 @@ export class Fulfillment {
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
+  @Index()
   @Column({ nullable: true })
   swap_id: string
 
@@ -47,6 +50,7 @@ export class Fulfillment {
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
+  @Index()
   @Column({ nullable: true })
   order_id: string
 
@@ -57,6 +61,7 @@ export class Fulfillment {
   @JoinColumn({ name: "order_id" })
   order: Order
 
+  @Index()
   @Column()
   provider_id: string
 

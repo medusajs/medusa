@@ -1,6 +1,7 @@
 import {
   Entity,
   Check,
+  Index,
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -36,6 +37,7 @@ export class ShippingOption {
   @Column()
   name: string
 
+  @Index()
   @Column()
   region_id: string
 
@@ -43,6 +45,7 @@ export class ShippingOption {
   @JoinColumn({ name: "region_id" })
   region: Region
 
+  @Index()
   @Column()
   profile_id: string
 
@@ -50,6 +53,7 @@ export class ShippingOption {
   @JoinColumn({ name: "profile_id" })
   profile: ShippingProfile
 
+  @Index()
   @Column()
   provider_id: string
 

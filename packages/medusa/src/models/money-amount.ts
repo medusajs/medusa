@@ -5,6 +5,7 @@ import {
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
   RelationId,
   PrimaryColumn,
   OneToOne,
@@ -38,6 +39,7 @@ export class MoneyAmount {
   @Column({ type: "int", nullable: true, default: null })
   sale_amount: number
 
+  @Index()
   @Column({ nullable: true })
   variant_id: string
 
@@ -45,6 +47,7 @@ export class MoneyAmount {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
+  @Index()
   @Column({ nullable: true })
   region_id: string
 

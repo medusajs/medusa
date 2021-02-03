@@ -2,6 +2,7 @@ import {
   Entity,
   BeforeInsert,
   Column,
+  Index,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryColumn,
@@ -28,6 +29,7 @@ export class Refund {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column()
   order_id: string
 
