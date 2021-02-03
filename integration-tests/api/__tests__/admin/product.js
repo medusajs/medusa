@@ -159,5 +159,36 @@ describe("/admin/products", () => {
         })
       );
     });
+
+    it("add option", async () => {
+      const api = useApi();
+
+      const payload = {
+        title: "should_add",
+      };
+
+      const response = await api
+        .post("/admin/products/test-product/options", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          options: [
+            expect.objectContaining({
+              title: "should_add",
+              product_id: "test-product",
+            }),
+          ],
+        })
+      );
+    });
   });
 });

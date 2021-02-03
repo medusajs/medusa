@@ -255,15 +255,7 @@ class ProductService extends BaseService {
 
       const { options, tags, type, ...rest } = productObject
 
-      const product = productRepo.create(rest)
-
-      product.options = await Promise.all(
-        options.map(async o => {
-          const res = optionRepo.create({ ...o, product_id: product.id })
-          await optionRepo.save(res)
-          return res
-        })
-      )
+      let product = productRepo.create(rest)
 
       if (tags) {
         product.tags = await this.upsertProductTags_(tags)
@@ -273,7 +265,17 @@ class ProductService extends BaseService {
         product.type_id = await this.upsertProductType_(type)
       }
 
-      const result = await productRepo.save(product)
+      product = await productRepo.save(product)
+
+      product.options = await Promise.all(
+        options.map(async o => {
+          const res = optionRepo.create({ ...o, product_id: product.id })
+          await optionRepo.save(res)
+          return res
+        })
+      )
+
+      const result = await this.retrieve(product.id, { relations: ["options"] })
 
       await this.eventBus_
         .withTransaction(manager)
@@ -420,6 +422,7 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
+      console.log("Product id: ", productId)
       const product = await this.retrieve(productId, {
         relations: ["options", "variants"],
       })
@@ -436,13 +439,15 @@ class ProductService extends BaseService {
         product_id: productId,
       })
 
-      const result = await productOptionRepo.save(option)
+      await productOptionRepo.save(option)
 
       for (const variant of product.variants) {
         this.productVariantService_
           .withTransaction(manager)
           .addOptionValue(variant.id, option.id, "Default Value")
       }
+
+      const result = await this.retrieve(productId)
 
       await this.eventBus_
         .withTransaction(manager)
