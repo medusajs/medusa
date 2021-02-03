@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.4...@medusajs/medusa@1.1.5) (2021-02-03)
+
+
+### Features
+
+* **medusa,brightpearl,segment,webshipper:** claims ([#163](https://github.com/medusajs/medusa/issues/163)) ([690d339](https://github.com/medusajs/medusa/commit/690d33966754a7dbe159c3ac09712a3c3bfaff0b))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.3...@medusajs/medusa@1.1.4) (2021-01-29)
 
 **Note:** Version bump only for package @medusajs/medusa
