@@ -64,13 +64,13 @@ describe("/admin/products", () => {
         type: { value: "test-type" },
         collection_id: "test-collection",
         tags: [{ value: "123" }, { value: "456" }],
-        options: [{ title: "Default value" }],
+        options: [{ title: "size" }, { title: "color" }],
         variants: [
           {
             title: "Test variant",
             inventory_quantity: 10,
             prices: [{ currency_code: "usd", amount: 100 }],
-            options: [{ value: "Default variant" }],
+            options: [{ value: "large" }, { value: "green" }],
           },
         ],
       };
@@ -106,6 +106,14 @@ describe("/admin/products", () => {
             id: "test-collection",
             title: "Test collection",
           }),
+          options: [
+            expect.objectContaining({
+              title: "size",
+            }),
+            expect.objectContaining({
+              title: "color",
+            }),
+          ],
           variants: [
             expect.objectContaining({
               title: "Test variant",
@@ -117,7 +125,10 @@ describe("/admin/products", () => {
               ],
               options: [
                 expect.objectContaining({
-                  value: "Default variant",
+                  value: "large",
+                }),
+                expect.objectContaining({
+                  value: "green",
                 }),
               ],
             }),

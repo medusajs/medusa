@@ -422,7 +422,6 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
-      console.log("Product id: ", productId)
       const product = await this.retrieve(productId, {
         relations: ["options", "variants"],
       })
