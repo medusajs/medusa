@@ -548,40 +548,6 @@ class ClaimService extends BaseService {
   }
 
   /**
-<<<<<<< HEAD
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  setMetadata_(order, metadata) {
-    const existing = order.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
-  }
-
-  /**
-=======
->>>>>>> master
    * Dedicated method to delete metadata for an order.
    * @param {string} orderId - the order to delete metadata from.
    * @param {string} key - key for metadata field
