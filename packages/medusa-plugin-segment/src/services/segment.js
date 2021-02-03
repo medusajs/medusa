@@ -126,7 +126,7 @@ class SegmentService extends BaseService {
           return {
             name,
             variant,
-            price: unit_price,
+            price: unit_price / 100,
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
             sku,
