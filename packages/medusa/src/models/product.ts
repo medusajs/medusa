@@ -76,6 +76,7 @@ export class Product {
   )
   variants: ProductVariant[]
 
+  @Index()
   @Column()
   profile_id: string
 

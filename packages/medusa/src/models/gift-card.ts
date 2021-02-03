@@ -31,6 +31,7 @@ export class GiftCard {
   @Column("int")
   balance: number
 
+  @Index()
   @Column()
   region_id: string
 
@@ -38,6 +39,7 @@ export class GiftCard {
   @JoinColumn({ name: "region_id" })
   region: Region
 
+  @Index()
   @Column({ nullable: true })
   order_id: string
 

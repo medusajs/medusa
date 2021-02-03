@@ -80,6 +80,7 @@ export class ClaimOrder {
   @Column({ type: "enum", enum: ClaimType })
   type: ClaimType
 
+  @Index()
   @Column()
   order_id: string
 
@@ -96,6 +97,7 @@ export class ClaimOrder {
   )
   return_order: Return
 
+  @Index()
   @Column({ nullable: true })
   shipping_address_id: string
 

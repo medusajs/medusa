@@ -34,6 +34,7 @@ export class ProductOptionValue {
   @JoinColumn({ name: "option_id" })
   option: ProductOption
 
+  @Index()
   @Column()
   variant_id: string
 
