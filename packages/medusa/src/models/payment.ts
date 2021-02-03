@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -21,6 +22,7 @@ export class Payment {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column({ nullable: true })
   swap_id: string
 
@@ -28,6 +30,7 @@ export class Payment {
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
+  @Index()
   @Column({ nullable: true })
   cart_id: string
 
@@ -35,6 +38,7 @@ export class Payment {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
+  @Index()
   @Column({ nullable: true })
   order_id: string
 
@@ -58,6 +62,7 @@ export class Payment {
   @Column({ type: "int", default: 0 })
   amount_refunded: number
 
+  @Index()
   @Column()
   provider_id: string
 

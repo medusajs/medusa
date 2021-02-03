@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -54,6 +55,7 @@ export class Swap {
   @Column({ type: "enum", enum: PaymentStatus })
   payment_status: PaymentStatus
 
+  @Index()
   @Column({ type: "string" })
   order_id: string
 

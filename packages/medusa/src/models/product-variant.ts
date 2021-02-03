@@ -27,6 +27,7 @@ export class ProductVariant {
   @Column()
   title: string
 
+  @Index()
   @Column()
   product_id: string
 

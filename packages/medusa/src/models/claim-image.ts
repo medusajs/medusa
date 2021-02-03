@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   BeforeInsert,
   DeleteDateColumn,
   CreateDateColumn,
@@ -18,6 +19,7 @@ export class ClaimImage {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column()
   claim_item_id: string
 

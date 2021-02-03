@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   RelationId,
   BeforeInsert,
   Column,
@@ -43,6 +44,7 @@ export class Return {
   )
   items: ReturnItem[]
 
+  @Index()
   @Column({ nullable: true })
   swap_id: string
 
@@ -53,6 +55,7 @@ export class Return {
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
+  @Index()
   @Column({ nullable: true })
   claim_order_id: string
 
@@ -63,6 +66,7 @@ export class Return {
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
+  @Index()
   @Column({ nullable: true })
   order_id: string
 
