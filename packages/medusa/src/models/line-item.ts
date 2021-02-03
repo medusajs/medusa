@@ -15,6 +15,7 @@ import { ulid } from "ulid"
 import { Swap } from "./swap"
 import { Cart } from "./cart"
 import { Order } from "./order"
+import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
@@ -58,6 +59,17 @@ export class LineItem {
   )
   @JoinColumn({ name: "swap_id" })
   swap: Swap
+
+  @Index()
+  @Column({ nullable: true })
+  claim_order_id: string
+
+  @ManyToOne(
+    () => ClaimOrder,
+    co => co.additional_items
+  )
+  @JoinColumn({ name: "claim_order_id" })
+  claim_order: ClaimOrder
 
   @Column()
   title: string

@@ -20,11 +20,22 @@ import { Order } from "./order"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { FulfillmentItem } from "./fulfillment-item"
 import { Swap } from "./swap"
+import { ClaimOrder } from "./claim-order"
 
 @Entity()
 export class Fulfillment {
   @PrimaryColumn()
   id: string
+
+  @Column({ nullable: true })
+  claim_order_id: string
+
+  @ManyToOne(
+    () => ClaimOrder,
+    co => co.fulfillments
+  )
+  @JoinColumn({ name: "claim_order_id" })
+  claim_order: ClaimOrder
 
   @Column({ nullable: true })
   swap_id: string

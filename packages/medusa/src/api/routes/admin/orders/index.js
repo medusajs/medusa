@@ -141,6 +141,27 @@ export default app => {
   )
 
   /**
+   * Creates a claim
+   */
+  route.post("/:id/claims", middlewares.wrap(require("./create-claim").default))
+
+  /**
+   * Updates a claim
+   */
+  route.post(
+    "/:id/claims/:claim_id",
+    middlewares.wrap(require("./update-claim").default)
+  )
+
+  /**
+   * Creates claim fulfillment
+   */
+  route.post(
+    "/:id/claims/:claim_id/fulfillments",
+    middlewares.wrap(require("./fulfill-claim").default)
+  )
+
+  /**
    * Delete metadata key / value pair.
    */
   route.delete(
@@ -162,6 +183,15 @@ export const defaultRelations = [
   "returns",
   "gift_cards",
   "gift_card_transactions",
+  "claims",
+  "claims.return_order",
+  "claims.shipping_methods",
+  "claims.shipping_address",
+  "claims.additional_items",
+  "claims.fulfillments",
+  "claims.claim_items",
+  "claims.claim_items.images",
+  "claims.claim_items.tags",
   "swaps",
   "swaps.return_order",
   "swaps.payment",
@@ -234,6 +264,7 @@ export const allowedRelations = [
   "payments",
   "fulfillments",
   "returns",
+  "claims",
   "swaps",
   "swaps.return_order",
   "swaps.additional_items",
