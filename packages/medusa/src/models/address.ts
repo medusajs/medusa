@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -19,6 +20,7 @@ export class Address {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column({ nullable: true })
   customer_id: string
 

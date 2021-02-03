@@ -31,6 +31,7 @@ export class Customer {
   @Column({ nullable: true })
   last_name: string
 
+  @Index()
   @Column({ nullable: true })
   billing_address_id: string
 

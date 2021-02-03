@@ -2,6 +2,7 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
   BeforeInsert,
   Column,
   PrimaryColumn,
@@ -9,7 +10,7 @@ import {
   JoinColumn,
   Unique,
 } from "typeorm"
-import {ulid } from "ulid"
+import { ulid } from "ulid"
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
@@ -26,6 +27,7 @@ export class PaymentSession {
   @PrimaryColumn()
   id: string
 
+  @Index()
   @Column()
   cart_id: string
 
@@ -36,6 +38,7 @@ export class PaymentSession {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
+  @Index()
   @Column()
   provider_id: string
 

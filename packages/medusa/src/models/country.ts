@@ -30,6 +30,7 @@ export class Country {
   @Column()
   display_name: string
 
+  @Index()
   @Column({ nullable: true })
   region_id: string
 
