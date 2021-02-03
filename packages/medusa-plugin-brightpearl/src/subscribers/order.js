@@ -6,6 +6,7 @@ class OrderSubscriber {
     returnService,
     paymentProviderService,
     brightpearlService,
+    claimService,
     fulfillmentService,
   }) {
     this.orderService_ = orderService
@@ -14,8 +15,11 @@ class OrderSubscriber {
     this.returnService_ = returnService
     this.paymentProviderService_ = paymentProviderService
     this.fulfillmentService_ = fulfillmentService
+    this.claimService_ = claimService
 
     eventBusService.subscribe("order.placed", this.sendToBrightpearl)
+
+    eventBusService.subscribe("claim.created", this.registerClaim)
 
     eventBusService.subscribe("order.refund_created", this.registerRefund)
 
@@ -28,6 +32,7 @@ class OrderSubscriber {
 
     eventBusService.subscribe("order.shipment_created", this.registerShipment)
     eventBusService.subscribe("swap.shipment_created", this.registerShipment)
+    eventBusService.subscribe("claim.shipment_created", this.registerShipment)
 
     // Before we initiate a swap we wait for the payment and the return
     eventBusService.subscribe(
@@ -84,6 +89,34 @@ class OrderSubscriber {
 
     await this.brightpearlService_.createSwapCredit(fromOrder, fromSwap)
     await this.brightpearlService_.createSwapOrder(fromOrder, fromSwap)
+  }
+
+  registerClaim = async (data) => {
+    const { id } = data
+    const fromClaim = await this.claimService_.retrieve(id, {
+      relations: [
+        "order",
+        "order.payments",
+        "order.region",
+        "order.claims",
+        "order.discounts",
+        "claim_items",
+        "return_order",
+        "return_order.items",
+        "return_order.shipping_method",
+        "additional_items",
+        "shipping_address",
+        "shipping_methods",
+      ],
+    })
+
+    const fromOrder = fromClaim.order
+
+    if (fromClaim.type === "replace") {
+      await this.brightpearlService_.createClaim(fromOrder, fromClaim)
+    } else if (fromClaim.type === "refund") {
+      await this.brightpearlService_.createClaimCredit(fromOrder, fromClaim)
+    }
   }
 
   registerShipment = async (data) => {

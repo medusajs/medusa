@@ -11,6 +11,7 @@ class BrightpearlService extends BaseService {
       regionService,
       orderService,
       swapService,
+      claimService,
       discountService,
     },
     options
@@ -25,6 +26,7 @@ class BrightpearlService extends BaseService {
     this.discountService_ = discountService
     this.oauthService_ = oauthService
     this.swapService_ = swapService
+    this.claimService_ = claimService
   }
 
   async getClient() {
@@ -609,6 +611,63 @@ class BrightpearlService extends BaseService {
     })
   }
 
+  async createClaimCredit(fromOrder, fromClaim) {
+    const region = fromOrder.region
+    const client = await this.getClient()
+    const authData = await this.getAuthData()
+    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+    const cIndex = fromOrder.claims.findIndex((c) => fromClaim.id === c.id)
+
+    if (orderId) {
+      const parentSo = await client.orders.retrieve(orderId)
+      const order = {
+        currency: parentSo.currency,
+        ref: `${parentSo.ref}-C${cIndex + 1}`,
+        externalRef: `${parentSo.externalRef}.${fromClaim.id}`,
+        channelId: this.options.channel_id || `1`,
+        installedIntegrationInstanceId: authData.installation_instance_id,
+        customer: parentSo.customer,
+        delivery: parentSo.delivery,
+        parentId: orderId,
+        rows: [
+          {
+            name: `#${fromOrder.display_id}: Claim ${fromClaim.id}`,
+            net: this.bpnum_(
+              fromClaim.refund_amount,
+              10000 / (100 + fromOrder.tax_rate)
+            ),
+            tax: this.bpnum_(
+              fromClaim.refund_amount * (1 - 100 / (100 + fromOrder.tax_rate))
+            ),
+            taxCode: region.tax_code,
+            nominalCode: this.options.sales_account_code || `4000`,
+            quantity: 1,
+          },
+        ],
+      }
+
+      return client.orders
+        .createCredit(order)
+        .then(async (creditId) => {
+          const paymentMethod = fromOrder.payments[0]
+          const paymentType = "PAYMENT"
+          const payment = {
+            transactionRef: `${paymentMethod.id}.${paymentType}-${fromClaim.id}`,
+            transactionCode: fromClaim.id,
+            paymentMethodCode: this.options.payment_method_code || "1220",
+            orderId: creditId,
+            currencyIsoCode: fromOrder.currency_code.toUpperCase(),
+            amountPaid: this.bpnum_(fromClaim.refund_amount),
+            paymentDate: new Date(),
+            paymentType,
+          }
+
+          await client.payments.create(payment)
+        })
+        .catch((err) => console.log(err.response.data.errors))
+    }
+  }
+
   async createSwapCredit(fromOrder, fromSwap) {
     const region = fromOrder.region
     const client = await this.getClient()
@@ -717,7 +776,10 @@ class BrightpearlService extends BaseService {
     return client.payments.create(payment)
   }
 
-  async getBrightpearlRows(fromOrder) {
+  async getBrightpearlRows(
+    fromOrder,
+    config = { include_price: true, is_claim: false }
+  ) {
     const { region } = fromOrder
     const discount = fromOrder.discounts.find(
       ({ rule }) => rule.type !== "free_shipping"
@@ -741,15 +803,27 @@ class BrightpearlService extends BaseService {
         } else {
           row.name = item.title
         }
-        row.net = this.bpnum_(item.unit_price * item.quantity - ld.amount)
-        row.tax = this.bpnum_(
-          item.unit_price * item.quantity - ld.amount,
-          fromOrder.tax_rate
-        )
+
+        if (config.include_price) {
+          row.net = this.bpnum_(item.unit_price * item.quantity - ld.amount)
+          row.tax = this.bpnum_(
+            item.unit_price * item.quantity - ld.amount,
+            fromOrder.tax_rate
+          )
+        } else if (config.is_claim) {
+          row.net = await this.retrieveProductPrice(
+            bpProduct.productId,
+            this.options.cost_price_list || `1`
+          )
+          row.tax = this.bpnum_(row.net * 100, fromOrder.tax_rate)
+        }
+
         row.quantity = item.quantity
         row.taxCode = region.tax_code
         row.externalRef = item.id
-        row.nominalCode = this.options.sales_account_code || "4000"
+        row.nominalCode = config.is_claim
+          ? this.options.claims_account_code || "4000"
+          : this.options.sales_account_code || "4000"
 
         if (item.is_giftcard) {
           row.nominalCode = this.options.gift_card_account_code || "4000"
@@ -793,6 +867,106 @@ class BrightpearlService extends BaseService {
     return lines
   }
 
+  async createClaim(fromOrder, fromClaim) {
+    const client = await this.getClient()
+    let customer = await this.retrieveCustomerByEmail(fromOrder.email)
+
+    if (!customer) {
+      customer = await this.createCustomer({
+        ...fromOrder,
+        ...fromClaim,
+      })
+    }
+
+    const authData = await this.getAuthData()
+
+    const cIndex = fromOrder.claims.findIndex((s) => fromClaim.id === s.id)
+
+    const { shipping_address } = fromClaim
+    const order = {
+      currency: {
+        code: this.options.base_currency || `EUR`,
+      },
+      priceListId: this.options.cost_price_list || `1`,
+      ref: `${fromOrder.display_id}-C${cIndex + 1}`,
+      externalRef: `${fromOrder.id}.${fromClaim.id}`,
+      channelId: this.options.channel_id || `1`,
+      installedIntegrationInstanceId: authData.installation_instance_id,
+      statusId:
+        this.options.claim_status_id || this.options.default_status_id || `3`,
+      customer: {
+        id: customer.contactId,
+        address: {
+          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          addressLine1: shipping_address.address_1,
+          addressLine2: shipping_address.address_2,
+          postalCode: shipping_address.postal_code,
+          countryIsoCode: shipping_address.country_code,
+          telephone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+      },
+      delivery: {
+        shippingMethodId: 0,
+        address: {
+          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          addressLine1: shipping_address.address_1,
+          addressLine2: shipping_address.address_2,
+          postalCode: shipping_address.postal_code,
+          countryIsoCode: shipping_address.country_code,
+          telephone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+      },
+      rows: await this.getBrightpearlRows(
+        {
+          region: fromOrder.region,
+          discounts: fromOrder.discounts,
+          tax_rate: fromOrder.tax_rate,
+          items: fromClaim.additional_items,
+          shipping_methods: [],
+        },
+        { include_price: false, is_claim: true }
+      ),
+    }
+
+    return client.orders
+      .create(order)
+      .then(async (salesOrderId) => {
+        const order = await client.orders.retrieve(salesOrderId)
+        await client.warehouses.createReservation(order, this.options.warehouse)
+
+        const total = order.rows.reduce((acc, next) => {
+          return acc + parseFloat(next.net) + parseFloat(next.tax)
+        }, 0)
+
+        const paymentMethod = fromOrder.payments[0]
+        const paymentType = "RECEIPT"
+        const payment = {
+          transactionRef: `${paymentMethod.id}.${paymentType}-${fromClaim.id}`,
+          transactionCode: fromOrder.id,
+          paymentMethodCode: this.options.payment_method_code || "1220",
+          orderId: salesOrderId,
+          currencyIsoCode: this.options.base_currency || "EUR",
+          amountPaid: total,
+          paymentDate: new Date(),
+          paymentType,
+        }
+
+        await client.payments.create(payment)
+
+        return this.claimService_.update(fromClaim.id, {
+          metadata: {
+            brightpearl_sales_order_id: salesOrderId,
+          },
+        })
+      })
+      .catch((err) => {
+        // console.log(err.response.data)
+        throw err
+      })
+  }
+
   async retrieveCustomerByEmail(email) {
     const client = await this.getClient()
     return client.customers.retrieveByEmail(email).then((customers) => {
@@ -815,6 +989,20 @@ class BrightpearlService extends BaseService {
         return null
       }
       return products[0]
+    })
+  }
+
+  async retrieveProductPrice(id, priceList) {
+    const client = await this.getClient()
+    return client.products.retrievePrice(id).then((data) => {
+      if (!data.priceLists.length) {
+        return null
+      } else {
+        const found = data.priceLists.find(
+          (p) => `${p.priceListId}` === `${priceList}`
+        )
+        return found.quantityPrice["1"]
+      }
     })
   }
 
@@ -851,12 +1039,20 @@ class BrightpearlService extends BaseService {
       .filter((i) => !!i)
 
     // Orders with a concatenated externalReference are swap orders
-    const [_, swapId] = order.externalRef.split(".")
+    const [_, partId] = order.externalRef.split(".")
 
-    if (swapId) {
-      return this.swapService_.createFulfillment(swapId, {
-        goods_out_note: id,
-      })
+    if (partId) {
+      if (partId.startsWith("claim")) {
+        return this.claimService_.createFulfillment(partId, {
+          goods_out_note: id,
+        })
+      }
+
+      if (partId.startsWith("swap")) {
+        return this.swapService_.createFulfillment(partId, {
+          goods_out_note: id,
+        })
+      }
     }
 
     return this.orderService_.createFulfillment(order.externalRef, lines, {
