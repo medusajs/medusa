@@ -18,6 +18,7 @@ import { ulid } from "ulid"
 
 import { Order } from "./order"
 import { Swap } from "./swap"
+import { ClaimOrder } from "./claim-order"
 import { ReturnItem } from "./return-item"
 import { ShippingMethod } from "./shipping-method"
 
@@ -51,6 +52,16 @@ export class Return {
   )
   @JoinColumn({ name: "swap_id" })
   swap: Swap
+
+  @Column({ nullable: true })
+  claim_order_id: string
+
+  @OneToOne(
+    () => ClaimOrder,
+    co => co.return_order
+  )
+  @JoinColumn({ name: "claim_order_id" })
+  claim_order: ClaimOrder
 
   @Column({ nullable: true })
   order_id: string
