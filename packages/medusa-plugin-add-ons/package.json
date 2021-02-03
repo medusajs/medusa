@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-add-ons",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Add-on plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,7 @@
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.1.1"
+    "medusa-test-utils": "^1.1.2"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__",
