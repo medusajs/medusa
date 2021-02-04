@@ -6,6 +6,8 @@ const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
 const { initDb } = require("../../../helpers/use-db");
 
+const cartSeeder = require("../../helpers/cart-seeder");
+
 jest.setTimeout(30000);
 
 describe("/store/carts", () => {
@@ -69,6 +71,126 @@ describe("/store/carts", () => {
 
       const getRes = await api.post(`/store/carts/${response.data.cart.id}`);
       expect(getRes.status).toEqual(200);
+    });
+  });
+
+  describe("POST /store/carts/:id", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+    });
+
+    it("updates cart customer id", async () => {
+      const api = useApi();
+
+      const response = await api.post("/store/carts/test-cart", {
+        customer_id: "test-customer-2",
+      });
+
+      expect(response.status).toEqual(200);
+    });
+  });
+
+  describe("get-cart with session customer", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+    });
+
+    it("updates empty cart.customer_id on cart retrieval", async () => {
+      const api = useApi();
+
+      let customer = await api.post(
+        "/store/customers",
+        {
+          email: "oli@test.dk",
+          password: "olitest",
+          first_name: "oli",
+          last_name: "oli",
+        },
+        { withCredentials: true }
+      );
+
+      const cookie = customer.headers["set-cookie"][0];
+
+      const cart = await api.post(
+        "/store/carts",
+        {},
+        { withCredentials: true }
+      );
+
+      const response = await api.get(`/store/carts/${cart.data.cart.id}`, {
+        headers: {
+          cookie,
+        },
+        withCredentials: true,
+      });
+
+      expect(response.data.cart.customer_id).toEqual(customer.data.customer.id);
+      expect(response.status).toEqual(200);
+    });
+
+    it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {
+      const api = useApi();
+
+      let customer = await api.post(
+        "/store/customers",
+        {
+          email: "oli@test.dk",
+          password: "olitest",
+          first_name: "oli",
+          last_name: "oli",
+        },
+        { withCredentials: true }
+      );
+
+      const cookie = customer.headers["set-cookie"][0];
+
+      const cart = await api.post("/store/carts");
+
+      const updatedCart = await api.post(`/store/carts/${cart.data.cart.id}`, {
+        customer_id: "test-customer",
+      });
+
+      const response = await api.get(
+        `/store/carts/${updatedCart.data.cart.id}`,
+        {
+          headers: {
+            cookie,
+          },
+        }
+      );
+
+      expect(response.data.cart.customer_id).toEqual(customer.data.customer.id);
+      expect(response.status).toEqual(200);
     });
   });
 });

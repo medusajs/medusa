@@ -666,6 +666,7 @@ class CartService extends BaseService {
       .withTransaction(this.transactionManager_)
       .retrieve(customerId)
 
+    cart.customer = customer
     cart.customer_id = customer.id
     cart.email = customer.email
   }
