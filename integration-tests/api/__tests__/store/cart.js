@@ -105,7 +105,7 @@ describe("/store/carts", () => {
     });
   });
 
-  describe("GET /store/carts/:id", () => {
+  describe("get-cart with session customer", () => {
     beforeEach(async () => {
       try {
         await cartSeeder(dbConnection);
@@ -125,7 +125,7 @@ describe("/store/carts", () => {
       await manager.query(`DELETE FROM "region"`);
     });
 
-    it("updates cart customer id", async () => {
+    it("updates empty cart.customer_id on cart retrieval", async () => {
       const api = useApi();
 
       let customer = await api.post(
@@ -154,6 +154,42 @@ describe("/store/carts", () => {
         withCredentials: true,
       });
 
+      expect(response.data.cart.customer_id).toEqual(customer.data.customer.id);
+      expect(response.status).toEqual(200);
+    });
+
+    it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {
+      const api = useApi();
+
+      let customer = await api.post(
+        "/store/customers",
+        {
+          email: "oli@test.dk",
+          password: "olitest",
+          first_name: "oli",
+          last_name: "oli",
+        },
+        { withCredentials: true }
+      );
+
+      const cookie = customer.headers["set-cookie"][0];
+
+      const cart = await api.post("/store/carts");
+
+      const updatedCart = await api.post(`/store/carts/${cart.data.cart.id}`, {
+        customer_id: "test-customer",
+      });
+
+      const response = await api.get(
+        `/store/carts/${updatedCart.data.cart.id}`,
+        {
+          headers: {
+            cookie,
+          },
+        }
+      );
+
+      expect(response.data.cart.customer_id).toEqual(customer.data.customer.id);
       expect(response.status).toEqual(200);
     });
   });
