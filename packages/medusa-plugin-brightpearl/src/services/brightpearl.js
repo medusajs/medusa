@@ -1046,9 +1046,7 @@ class BrightpearlService extends BaseService {
         return this.claimService_.createFulfillment(partId, {
           goods_out_note: id,
         })
-      }
-
-      if (partId.startsWith("swap")) {
+      } else {
         return this.swapService_.createFulfillment(partId, {
           goods_out_note: id,
         })
