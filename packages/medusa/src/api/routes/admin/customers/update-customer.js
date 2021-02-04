@@ -16,7 +16,6 @@ export default async (req, res) => {
   }
 
   try {
-    const orderService = req.scope.resolve("orderService")
     const customerService = req.scope.resolve("customerService")
     await customerService.update(id, value)
 
