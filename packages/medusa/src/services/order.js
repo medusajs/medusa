@@ -905,11 +905,13 @@ class OrderService extends BaseService {
 
       const result = await orderRepo.save(order)
 
-      this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderService.Events.PAYMENT_CAPTURED, {
-          id: result.id,
-        })
+      if (order.payment_status === "captured") {
+        this.eventBus_
+          .withTransaction(manager)
+          .emit(OrderService.Events.PAYMENT_CAPTURED, {
+            id: result.id,
+          })
+      }
 
       return result
     })
