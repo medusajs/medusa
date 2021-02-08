@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.7](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.6...@medusajs/medusa@1.1.7) (2021-02-08)
+
+
+### Features
+
+* adds paypal ([#168](https://github.com/medusajs/medusa/issues/168)) ([#169](https://github.com/medusajs/medusa/issues/169)) ([427ae25](https://github.com/medusajs/medusa/commit/427ae25016bb3a22ebc05aa7b18017132846567c))
+
+
+
+
+
 ## [1.1.6](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.5...@medusajs/medusa@1.1.6) (2021-02-03)
 
 **Note:** Version bump only for package @medusajs/medusa
