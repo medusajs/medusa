@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-paypal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Paypal Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
