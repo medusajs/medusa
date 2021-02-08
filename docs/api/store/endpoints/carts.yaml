@@ -1,26 +1,32 @@
 title: Carts
 domain: store
 routes:
-  - method: POST
-    path: /carts
   - method: GET
     path: /carts/:id
   - method: POST
+    path: /carts
+  - method: POST
     path: /carts/:id
+  - method: POST
+    path: /carts/:id/complete-cart
   - method: POST
     path: /carts/:id/line-items
   - method: POST
     path: /carts/:id/line-items/:line_id
-  - method: DELETE
-    path: /carts/:id/line-items/:line_id
   - method: POST
     path: /carts/:id/payment-sessions
-  - method: DELETE
-    path: /carts/:id/payment-sessions/:provider_id
   - method: POST
-    path: /carts/:id/payment-method
+    path: /carts/:id/payment-session/update
+  - method: POST
+    path: /carts/:id/payment-sessions/:provider_id/refresh
+  - method: POST
+    path: /carts/:id/payment-session
   - method: POST
     path: /carts/:id/shipping-methods
+  - method: DELETE
+    path: /carts/:id/payment-sessions/:provider_id
+  - method: DELETE
+    path: /carts/:id/line-items/:line_id
   - method: DELETE
     path: /carts/:id/discounts/:code
 route: /carts
@@ -40,7 +46,7 @@ endpoints:
       - name: items
         type: List
         required: false
-        description: List of objects with `variantId` and `quantity`.
+        description: List of objects with `variant_id` and `quantity`.
     description: >
       Creates a Cart within the given region and with the initial items. If no
       `region_id` is provided the cart will be associated with the first Region
@@ -49,19 +55,11 @@ endpoints:
   - path: /:id
     method: GET
     title: Retrieve a Cart
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
     description: >
       Retrieves an existing cart.
   - path: /:id
     method: POST
     title: Update a Cart
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
     body:
       - name: region_id
         type: String
@@ -84,17 +82,28 @@ endpoints:
         description: >
           A list of objects with `code` that represents a discount code to be
           applied to the cart.
+      - name: customer_id
+        type: String
+        description: >
+          A list of objects with `code` that represents a discount code to be
+          applied to the cart.
     description: >
       Updates an existing cart with the provided data. Updating the `region_id`
       will change the prices of the items in the cart to match the prices 
       defined for the region. You can apply multiple discounts at once by 
       calling the endpoint with an array of discounts.
+  - path: /:id/complete-cart
+    method: POST
+    title: Complete cart
+    description: >
+      Completes a cart. The following steps will be performed. Payment authorization 
+      is attempted and if more work is required, we simply return the cart for further updates.
+      If payment is authorized and order is not yet created, we make sure to do so. 
+      The completion of a cart can be performed idempotently with a provided header `Idempotency-Key`.
+      If not provided, we will generate one for the request.
   - path: /:id/line-items
     method: POST
     title: Add line item
-    params:
-      - name: id
-        type: String
     body:
       - name: variant_id
         type: String
@@ -114,13 +123,6 @@ endpoints:
   - path: /:id/line-items/:line_id
     method: POST
     title: Update line item
-    params:
-      - name: id
-        type: String
-        description: Id of the cart to update.
-      - name: line_id
-        type: String
-        description: Id of the line to update.
     body:
       - name: quantity
         type: Integer
@@ -132,73 +134,54 @@ endpoints:
   - path: /:id/line-items/:line_id
     method: DELETE
     title: Remove line item
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
-      - name: line_id
-        type: String
-        description: Id of the line item to remove.
     description: >
       Removes a the given line item from the cart.
   - path: /:id/discounts/:code
     method: DELETE
     title: Remove discount code
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
-      - name: code
-        type: String
-        description: The discount code to remove
     description: Removes a discount code from the cart.
   - path: /:id/payment-sessions
     method: POST
     title: Create payment sessions
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
     description: >
       Initializes the payment sessions that can be used to pay for the items of
       the cart. This is usually called when a customer proceeds to checkout.
   - path: /:id/payment-sessions/:provider_id
     method: DELETE
     title: Delete payment session
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
-      - name: provider_id
-        type: String
-        description: >
-          Id of the provider that created the payment session to remove.
     description: >
       Deletes a payment session. Note that this will initialize a new payment
       session with the provider. This is usually used if the payment session
       reaches a state that cannot be recovered from.
-  - path: /:id/payment-method
+  - path: /:id/payment-session
     method: POST
-    title: Add payment method
+    title: Set payment session on cart
     params:
-      - name: id
-        type: String
-        description: Id of the cart.
-    body:
       - name: provider_id
         type: String
         required: true
-        description: >
-          Id of the provider that offers the payment method.
-      - name: data
-        type: Dictionary
-        description: >
-          Used to hold any data that the payment method may need to process the
-          payment. The requirements of `data` will be different across payment 
-          methods, and you should look at your installed payment providers to
-          find out what to send.
+        description: Id of the provider (e.g. stripe).
     description: >
       Adds or updates the payment method that will be used to pay for the items
+      in the cart. The payment is not processed until the payment provider's 
+      authorization functionality is called. You should consult with your 
+      installed payment plugins to find information about how to authorize a 
+      payment.
+  - path: /:id/payment-session/update
+    method: POST
+    title: Update payment session on cart
+    params:
+      - name: session
+        type: Dictionary
+        required: true
+        description: >
+          The session object needs to have a `provider_id` (e.g. stripe) and `data`, that holds the update data for the session. 
+          The data object can be anything that might be needed for the payment provider to process the
+          payment. The requirements of `data` will be different across payment 
+          methods, and you should look at your installed payment providers to
+          find out what to send..
+    description: >
+      Updates the payment session that will be used to pay for the items
       in the cart. The payment is not processed until the payment provider's 
       authorization functionality is called. You should consult with your 
       installed payment plugins to find information about how to authorize a 
@@ -206,10 +189,6 @@ endpoints:
   - path: /:id/shipping-methods
     method: POST
     title: Add shipping method
-    params:
-      - name: id
-        type: String
-        description: Id of the cart.
     body:
       - name: option_id
         type: String
@@ -226,115 +205,145 @@ endpoints:
 response: |
   {
     "cart": {
-      "_id": "5f68a234d694d000217a4d64",
-      "customer_id": "",
-      "region_id": "5f4cd57a5d1e3200214c0e4e",
-      "email": "",
+      "id": "cart_1234",
+      "email": null,
+      "billing_address_id": null,
+      "billing_address": null,
+      "shipping_address_id": "addr_1234",
       "shipping_address": {
-        "_id": "5f68a234d694d000217a4d65",
-        "country_code": "US"
+        "id": "addr_1234",
+        "customer_id": null,
+        "company": null,
+        "first_name": null,
+        "last_name": null,
+        "address_1": null,
+        "address_2": null,
+        "city": null,
+        "country_code": "dk",
+        "province": null,
+        "postal_code": null,
+        "phone": null,
+        "created_at": "2021-02-04T15:40:54.691Z",
+        "updated_at": "2021-02-04T15:40:54.691Z",
+        "deleted_at": null,
+        "metadata": null
       },
-      "items": [
-        {
-          "is_giftcard": false,
-          "has_shipping": false,
-          "returned": false,
-          "fulfilled": false,
-          "fulfilled_quantity": 0,
-          "returned_quantity": 0,
-          "_id": "5f72f79c2834b400216b1a54",
-          "title": "Line Item",
-          "description": "240x260",
-          "quantity": 1,
-          "thumbnail": "https://example-thumbnail.com",
-          "content": {
-            "unit_price": 303.2,
-            "variant": {
-                "_id": "5f4cf81a2ac41700211f6e63",
-                "barcode": "",
-                "image": "",
-                "published": true,
-                "inventory_quantity": 11,
-                "allow_backorder": false,
-                "manage_inventory": true,
-                "title": "1234",
-                "sku": "SKU1234",
-                "ean": "1111111111111",
-                "options": [
-                    {
-                        "_id": "5f4cf81a2ac41700211f6e64",
-                        "value": "1234",
-                        "option_id": "5f4cf81a2ac41700211f6e62"
-                    }
-                ],
-                "prices": [
-                    {
-                        "_id": "5f4cf81a2ac41700211f6e65",
-                        "currency_code": "SEK",
-                        "amount": 3180
-                    },
-                    {
-                        "_id": "5f4cf81a2ac41700211f6e66",
-                        "currency_code": "EUR",
-                        "amount": 303.2
-                    },
-                    {
-                        "_id": "5f4cf81a2ac41700211f6e67",
-                        "currency_code": "DKK",
-                        "amount": 2260
-                    }
-                ],
-                "metadata": {
-                    "origin_country": "Portugal"
-                }
-            },
-            "product": {
-                "_id": "5f4cf81a2ac41700211f6e61",
-                "description": "100% Organic",
-                "tags": "",
-                "is_giftcard": false,
-                "images": [],
-                "thumbnail": "https://example-thumbnail.com",
-                "variants": [
-                    "5f4cf81a2ac41700211f6e63"
-                ],
-                "published": false,
-                "title": "Line Item",
-                "options": [
-                    {
-                        "values": [],
-                        "_id": "5f4cf81a2ac41700211f6e62",
-                        "title": "Size"
-                    }
-                ]
-            },
-            "quantity": 1
-          }
-        }
-      ],
+      "items": [{
+        "id": "item_1234",
+        "cart_id": "cart_1234",
+        "order_id": null,
+        "swap_id": null,
+        "claim_order_id": null,
+        "title": "Terry Towel",
+        "description": "30x30",
+        "thumbnail": "",
+        "is_giftcard": false,
+        "should_merge": true,
+        "allow_discounts": true,
+        "has_shipping": false,
+        "unit_price": 6000,
+        "variant_id": "variant_1234",
+        "variant": {
+          "id": "variant_1234",
+          "title": "30x30",
+          "product_id": "prod_1234",
+          "sku": null,
+          "barcode": null,
+          "ean": null,
+          "upc": null,
+          "inventory_quantity": 9999,
+          "allow_backorder": false,
+          "manage_inventory": true,
+          "hs_code": null,
+          "origin_country": null,
+          "mid_code": null,
+          "material": null,
+          "weight": null,
+          "length": null,
+          "height": null,
+          "width": null,
+          "created_at": "2021-01-19T17:09:01.864Z",
+          "updated_at": "2021-02-02T02:43:17.718Z",
+          "deleted_at": null,
+            "metadata": null
+        },
+        "quantity": 1,
+        "fulfilled_quantity": null,
+        "returned_quantity": null,
+        "shipped_quantity": null,
+        "created_at": "2021-02-04T15:42:12.514Z",
+        "updated_at": "2021-02-04T15:42:12.514Z",
+        "metadata": {}
+      }],
+      "region_id": "reg_1234",
+      "region": {
+        "id": "reg_1234",
+        "name": "Denmark",
+        "currency_code": "dkk",
+        "tax_rate": "25",
+        "tax_code": null,
+        "countries": [{
+          "id": 60,
+          "iso_2": "dk",
+          "iso_3": "dnk",
+          "num_code": 208,
+          "name": "DENMARK",
+          "display_name": "Denmark",
+          "region_id": "reg_1234"
+        }],
+        "payment_providers": [{
+          "id": "stripe",
+          "is_installed": true
+        }],
+        "fulfillment_providers": [{
+          "id": "manual",
+          "is_installed": true
+        }],
+        "created_at": "2021-01-19T17:09:01.864Z",
+        "updated_at": "2021-01-21T15:44:05.492Z",
+        "deleted_at": null,
+        "metadata": null
+      },
       "discounts": [],
-      "payment_sessions": [],
+      "gift_cards": [],
+      "customer_id": null,
+      "payment_sessions": [{
+        "id": "ps_1234",
+        "cart_id": "cart_1234",
+        "provider_id": "stripe",
+        "is_selected": true,
+        "status": "pending",
+        "data": {},
+        "created_at": "2021-02-08T11:37:17.906Z",
+        "updated_at": "2021-02-08T11:37:17.906Z",
+        "idempotency_key": null
+      }],
+      "payment_id": null,
+      "payment": null,
       "shipping_methods": [],
+      "type": "default",
+      "completed_at": null,
+      "created_at": "2021-02-04T15:40:54.691Z",
+      "updated_at": "2021-02-04T15:40:54.691Z",
+      "deleted_at": null,
+      "metadata": null,
+      "idempotency_key": null,
+      "payment_session": {
+        "id": "ps_1234",
+        "cart_id": "cart_1234",
+        "provider_id": "stripe",
+        "is_selected": true,
+        "status": "pending",
+        "data": {},
+        "created_at": "2021-02-08T11:37:17.906Z",
+        "updated_at": "2021-02-08T11:37:17.906Z",
+        "idempotency_key": null
+      },
       "shipping_total": 0,
       "discount_total": 0,
-      "tax_total": 0,
-      "subtotal": 303.2,
-      "total": 303.2,
-      "region": {
-          "_id": "5f4cd57a5d1e3200214c0e4e",
-          "tax_rate": 0,
-          "countries": [
-              "US"
-          ],
-          "payment_providers": [
-              "stripe"
-          ],
-          "fulfillment_providers": [
-              "shiphero"
-          ],
-          "name": "United States",
-          "currency_code": "EUR",
-          "tax_code": "ABR"
-      }
+      "tax_total": 1500,
+      "gift_card_total": 0,
+      "subtotal": 6000,
+      "total": 7500
     }
   }
