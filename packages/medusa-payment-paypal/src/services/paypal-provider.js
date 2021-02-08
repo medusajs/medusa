@@ -9,12 +9,12 @@ class PayPalProviderService extends PaymentService {
     super()
 
     /**
-     * Required Stripe options:
+     * Required PayPal options:
      *  {
-     *    sandbox: false,
+     *    sandbox: [default: false],
      *    client_id: "CLIENT_ID", REQUIRED
      *    client_secret: "CLIENT_SECRET", REQUIRED
-     *    backend_url: REQUIRED
+     *    auth_webhook_id: REQUIRED for webhook to work
      *  }
      */
     this.options_ = options
@@ -46,10 +46,10 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Fetches Stripe payment intent. Check its status and returns the
-   * corresponding Medusa status.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * Fetches an open PayPal order and maps its status to Medusa payment
+   * statuses.
+   * @param {object} paymentData - the data stored with the payment
+   * @returns {string} the status of the order
    */
   async getStatus(paymentData) {
     const order = await this.retrievePayment(paymentData)
@@ -74,19 +74,18 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Fetches a customers saved payment methods if registered in Stripe.
-   * @param {object} customer - customer to fetch saved cards for
-   * @returns {Promise<Array<object>>} saved payments methods
+   * Not supported
    */
   async retrieveSavedMethods(customer) {
     return Promise.resolve([])
   }
 
   /**
-   * Creates a Stripe payment intent.
-   * If customer is not registered in Stripe, we do so.
+   * Creates a PayPal order, with an Authorize intent. The plugin doesn't
+   * support shipping details at the moment.
+   * Reference docs: https://developer.paypal.com/docs/api/orders/v2/
    * @param {object} cart - cart to create a payment for
-   * @returns {object} Stripe payment intent
+   * @returns {object} the data to be stored with the payment session.
    */
   async createPayment(cart) {
     const { customer_id, region_id, email } = cart
@@ -117,9 +116,9 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Retrieves Stripe payment intent.
-   * @param {object} data - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * Retrieves a PayPal order.
+   * @param {object} data - the data stored with the payment
+   * @returns {Promise<object>} PayPal order
    */
   async retrievePayment(data) {
     try {
@@ -132,11 +131,11 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Gets a Stripe payment intent and returns it.
-   * @param {object} sessionData - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * Gets the payment data from a payment session
+   * @param {object} session - the session to fetch payment data for.
+   * @returns {Promise<object>} the PayPal order object
    */
-  async getPaymentData(paymentSession) {
+  async getPaymentData(session) {
     try {
       return this.retrievePayment(paymentSession.data)
     } catch (error) {
@@ -145,9 +144,9 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Authorizes Stripe payment intent by simply returning
-   * the status for the payment intent in use.
-   * @param {object} sessionData - payment session data
+   * This method does not call the PayPal authorize function, but fetches the
+   * status of the payment as it is expected to have been authorized client side.
+   * @param {object} session - payment session
    * @param {object} context - properties relevant to current context
    * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
@@ -161,10 +160,16 @@ class PayPalProviderService extends PaymentService {
     }
   }
 
-  async updatePaymentData(sessionData, update) {
+  /**
+   * Updates the data stored with the payment session.
+   * @param {object} data - the currently stored data.
+   * @param {object} update - the update data to store.
+   * @returns {object} the merged data of the two arguments.
+   */
+  async updatePaymentData(data, update) {
     try {
       return {
-        ...sessionData,
+        ...data,
         ...update.data,
       }
     } catch (error) {
@@ -173,10 +178,10 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Updates Stripe payment intent.
+   * Updates the PayPal order.
    * @param {object} sessionData - payment session data.
-   * @param {object} update - objec to update intent with
-   * @returns {object} Stripe payment intent
+   * @param {object} cart - the cart to update by.
+   * @returns {object} the resulting order object.
    */
   async updatePayment(sessionData, cart) {
     try {
@@ -197,25 +202,25 @@ class PayPalProviderService extends PaymentService {
         },
       ])
 
-      const res = await this.paypal_.execute(request)
+      await this.paypal_.execute(request)
+
       return sessionData
     } catch (error) {
       throw error
     }
   }
 
+  /**
+   * Not suported
+   */
   async deletePayment(payment) {
-    try {
-      return
-    } catch (error) {
-      throw error
-    }
+    return
   }
 
   /**
-   * Captures payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {object} Stripe payment intent
+   * Captures a previously authorized order.
+   * @param {object} payment - the payment to capture
+   * @returns {object} the PayPal order
    */
   async capturePayment(payment) {
     const { purchase_units } = payment.data
@@ -232,10 +237,10 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Refunds payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
+   * Refunds a given amount.
+   * @param {object} payment - payment to refund
    * @param {number} amountToRefund - amount to refund
-   * @returns {string} refunded payment intent
+   * @returns {string} the resulting PayPal order
    */
   async refundPayment(payment, amountToRefund) {
     const { purchase_units } = payment.data
@@ -258,7 +263,7 @@ class PayPalProviderService extends PaymentService {
 
       await this.paypal_.execute(request)
 
-      return payment.data
+      return this.retrievePayment(payment.id)
     } catch (error) {
       throw error
     }
@@ -290,6 +295,12 @@ class PayPalProviderService extends PaymentService {
     }
   }
 
+  /**
+   * Given a PayPal authorization object the method will find the order that
+   * created the authorization, by following the HATEOAS link to the order.
+   * @param {object} auth - the authorization object.
+   * @returns {Promise<object>} the PayPal order object
+   */
   async retrieveOrderFromAuth(auth) {
     const link = auth.links.find((l) => l.rel === "up")
     const parts = link.href.split("/")
@@ -302,6 +313,11 @@ class PayPalProviderService extends PaymentService {
     return null
   }
 
+  /**
+   * Retrieves a PayPal authorization.
+   * @param {string} id - the id of the authorization.
+   * @returns {Promise<object>} the authorization.
+   */
   async retrieveAuthorization(id) {
     const authReq = new PayPal.payments.AuthorizationsGetRequest(id)
     const res = await this.paypal_.execute(authReq)
@@ -311,6 +327,11 @@ class PayPalProviderService extends PaymentService {
     return null
   }
 
+  /**
+   * Checks if a webhook is verified.
+   * @param {object} data - the verficiation data.
+   * @returns {Promise<object>} the response of the verification request.
+   */
   async verifyWebhook(data) {
     const verifyReq = {
       verb: "POST",
@@ -327,6 +348,9 @@ class PayPalProviderService extends PaymentService {
     return this.paypal_.execute(verifyReq)
   }
 
+  /**
+   * Upserts a webhook that listens for order authorizations.
+   */
   async ensureWebhooks() {
     if (!this.options_.backend_url) {
       return
