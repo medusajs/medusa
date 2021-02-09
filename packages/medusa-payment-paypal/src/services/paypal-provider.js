@@ -49,7 +49,7 @@ class PayPalProviderService extends PaymentService {
    * Fetches an open PayPal order and maps its status to Medusa payment
    * statuses.
    * @param {object} paymentData - the data stored with the payment
-   * @returns {string} the status of the order
+   * @returns {Promise<string>} the status of the order
    */
   async getStatus(paymentData) {
     const order = await this.retrievePayment(paymentData)
@@ -88,7 +88,7 @@ class PayPalProviderService extends PaymentService {
    * @returns {object} the data to be stored with the payment session.
    */
   async createPayment(cart) {
-    const { customer_id, region_id, email } = cart
+    const { region_id } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
     const amount = await this.totalsService_.getTotal(cart)
