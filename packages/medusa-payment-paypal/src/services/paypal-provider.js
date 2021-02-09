@@ -137,7 +137,7 @@ class PayPalProviderService extends PaymentService {
    */
   async getPaymentData(session) {
     try {
-      return this.retrievePayment(paymentSession.data)
+      return this.retrievePayment(session.data)
     } catch (error) {
       throw error
     }
