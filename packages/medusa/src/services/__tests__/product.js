@@ -42,6 +42,12 @@ describe("ProductService", () => {
         options: [],
         collection: { id: IdMap.getId("cat"), title: "Suits" },
       }),
+      findOne: () => ({
+        id: IdMap.getId("ironman"),
+        title: "Suit",
+        options: [],
+        collection: { id: IdMap.getId("cat"), title: "Suits" },
+      }),
     })
 
     const productTagRepository = MockRepository({
