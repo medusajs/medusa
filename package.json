@@ -27,7 +27,7 @@
     "typeorm": "^0.2.30"
   },
   "scripts": {
-    "publish:next": "lerna publish --dist-tag next",
+    "publish:next": "lerna publish --canary --preid next",
     "bootstrap": "lerna bootstrap",
     "jest": "jest",
     "test": "jest",
