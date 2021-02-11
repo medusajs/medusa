@@ -20,6 +20,9 @@ export class Notification {
   @PrimaryColumn()
   id: string
 
+  @Column({ nullable: true })
+  event_name: string
+
   @Index()
   @Column()
   resource_type: string

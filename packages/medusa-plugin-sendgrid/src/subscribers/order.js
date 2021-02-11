@@ -18,6 +18,10 @@ class OrderSubscriber {
     this.notificationService_.subscribe("order.placed", "sendgrid")
     this.notificationService_.subscribe("order.canceled", "sendgrid")
     this.notificationService_.subscribe("customer.password_reset", "sendgrid")
+    this.notificationService_.subscribe("claim.shipment_created", "sendgrid")
+    this.notificationService_.subscribe("swap.shipment_created", "sendgrid")
+    this.notificationService_.subscribe("swap.created", "sendgrid")
+    this.notificationService_.subscribe("order.items_returned", "sendgrid")
   }
 }
 

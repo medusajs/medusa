@@ -18,17 +18,28 @@ class SendGridService extends NotificationService {
    *    }
    */
   constructor(
-    { orderService, returnService, swapService, fulfillmentService },
+    {
+      storeService,
+      orderService,
+      returnService,
+      swapService,
+      claimService,
+      fulfillmentService,
+      totalsService,
+    },
     options
   ) {
     super()
 
     this.options_ = options
 
+    this.storeService_ = storeService
     this.orderService_ = orderService
+    this.claimService_ = claimService
     this.returnService_ = returnService
     this.swapService_ = swapService
     this.fulfillmentService_ = fulfillmentService
+    this.totalsService_ = totalsService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -75,8 +86,8 @@ class SendGridService extends NotificationService {
           data = await this.swapReceivedData(eventData)
         }
         break
-      case "order.swap_created":
-        templateId = this.options_.order_swap_created_template
+      case "swap.created":
+        templateId = this.options_.swap_created_template
         if (templateId) {
           data = await this.swapCreatedData(eventData)
         }
@@ -126,6 +137,8 @@ class SendGridService extends NotificationService {
       default:
         return
     }
+
+    console.log(event, templateId)
 
     if (!templateId) {
       return
@@ -197,20 +210,15 @@ class SendGridService extends NotificationService {
         "returns",
         "gift_cards",
         "gift_card_transactions",
-        "swaps",
-        "swaps.return_order",
-        "swaps.payment",
-        "swaps.shipping_methods",
-        "swaps.shipping_address",
-        "swaps.additional_items",
-        "swaps.fulfillments",
       ],
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
 
     return {
-      ...order,
+      email: order.email,
+      order,
+      fulfillment: shipment,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
@@ -253,15 +261,7 @@ class SendGridService extends NotificationService {
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
-    const items = order.items.map((i) => {
-      return {
-        ...i,
-        thumbnail: this.normalizeThumbUrl_(i.thumbnail),
-        price: `${this.humanPrice_(
-          i.unit_price * (1 + taxRate)
-        )} ${currencyCode}`,
-      }
-    })
+    const items = this.processItems_(order.items, taxRate, currencyCode)
 
     let discounts = []
     if (order.discounts) {
@@ -291,6 +291,8 @@ class SendGridService extends NotificationService {
 
     return {
       ...order,
+      has_discounts: order.discounts.length,
+      has_gift_cards: order.gift_cards.length,
       date: order.created_at.toDateString(),
       items,
       discounts,
@@ -325,11 +327,11 @@ class SendGridService extends NotificationService {
 
   async returnRequestedData({ id, return_id }) {
     const returnRequest = await this.returnService_.retrieve(return_id, {
-      relations: ["items"],
+      relations: ["items", "shipping_method"],
     })
 
     const order = await this.orderService_.retrieve(id, {
-      relations: ["items"],
+      relations: ["items", "discounts", "shipping_address"],
     })
 
     const returnItems = returnRequest.items.map((i) => {
@@ -340,45 +342,90 @@ class SendGridService extends NotificationService {
       }
     })
 
+    const taxRate = order.tax_rate / 100
+    const currencyCode = order.currency_code.toUpperCase()
+
+    const item_subtotal = this.totalsService_.getRefundTotal(order, returnItems)
+
+    let shippingTotal = 0
+    if (returnRequest.shipping_method) {
+      shippingTotal = returnRequest.shipping_method.price * (1 + taxRate)
+    }
+
     return {
+      has_shipping: !!returnRequest.shipping_method,
+      email: order.email,
+      items: this.processItems_(returnItems, taxRate, currencyCode),
+      subtotal: `${this.humanPrice_(item_subtotal)} ${currencyCode}`,
+      shipping_total: `${this.humanPrice_(shippingTotal)} ${currencyCode}`,
+      refund_amount: `${this.humanPrice_(
+        returnRequest.refund_amount
+      )} ${currencyCode}`,
       return_request: {
         ...returnRequest,
-        refund_amount: this.humanPrice_(returnRequest.refund_amount),
+        refund_amount: `${this.humanPrice_(
+          returnRequest.refund_amount
+        )} ${currencyCode}`,
       },
       order,
-      items: this.processItems_(returnItems),
+      date: returnRequest.updated_at.toDateString(),
     }
   }
 
   async swapCreatedData({ id }) {
+    const store = await this.storeService_.retrieve()
     const swap = await this.swapService_.retrieve(id, {
-      relations: [
-        "order",
-        "order.items",
-        "additional_items",
-        "return_order",
-        "return_order.items",
-      ],
+      relations: ["additional_items", "return_order", "return_order.items"],
     })
 
-    const data = {
-      ...swap,
-      additional_items: this.processItems_(swap.additional_items),
-    }
+    const swapLink = store.swap_link_template.replace(
+      /\{cart_id\}/,
+      swap.cart_id
+    )
 
-    if (swap.return_order) {
-      const returnItems = swap.return_order.items.map((i) => {
+    const order = await this.orderService_.retrieve(swap.order_id, {
+      relations: ["items", "discounts", "shipping_address"],
+    })
+
+    const taxRate = order.tax_rate / 100
+    const currencyCode = order.currency_code.toUpperCase()
+
+    const returnItems = this.processItems_(
+      swap.return_order.items.map((i) => {
         const found = order.items.find((oi) => oi.id === i.item_id)
         return {
           ...found,
           quantity: i.quantity,
         }
-      })
+      }),
+      taxRate,
+      currencyCode
+    )
 
-      data.return_items = this.processItems_(returnItems)
+    const returnTotal = this.totalsService_.getRefundTotal(order, returnItems)
+
+    const constructedOrder = {
+      ...order,
+      shipping_methods: [],
+      items: swap.additional_items,
     }
 
-    return data
+    const additionalTotal = this.totalsService_.getTotal(constructedOrder)
+
+    const refundAmount = swap.return_order.refund_amount
+
+    return {
+      swap,
+      order,
+      date: swap.updated_at.toDateString(),
+      swap_link: swapLink,
+      email: order.email,
+      items: this.processItems_(swap.additional_items, taxRate, currencyCode),
+      return_items: returnItems,
+      return_total: `${this.humanPrice_(returnTotal)} ${currencyCode}`,
+      refund_amount: `${this.humanPrice_(refundAmount)} ${currencyCode}`,
+      additional_total: `${this.humanPrice_(additionalTotal)} ${currencyCode}`,
+    }
   }
 
   async itemsReturnedData(data) {
@@ -387,26 +434,78 @@ class SendGridService extends NotificationService {
 
   async swapShipmentCreatedData({ id, fulfillment_id }) {
     const swap = await this.swapService_.retrieve(id, {
-      relations: ["order"],
+      relations: [
+        "shipping_address",
+        "shipping_methods",
+        "additional_items",
+        "return_order",
+        "return_order.items",
+      ],
     })
+
+    const order = await this.orderService_.retrieve(swap.order_id, {
+      relations: ["items", "discounts"],
+    })
+
+    const taxRate = order.tax_rate / 100
+    const currencyCode = order.currency_code.toUpperCase()
+
+    const returnItems = this.processItems_(
+      swap.return_order.items.map((i) => {
+        const found = order.items.find((oi) => oi.id === i.item_id)
+        return {
+          ...found,
+          quantity: i.quantity,
+        }
+      }),
+      taxRate,
+      currencyCode
+    )
+
+    const returnTotal = this.totalsService_.getRefundTotal(order, returnItems)
+
+    const constructedOrder = {
+      ...order,
+      shipping_methods: swap.shipping_methods,
+      items: swap.additional_items,
+    }
+
+    const additionalTotal = this.totalsService_.getTotal(constructedOrder)
+
+    const refundAmount = swap.return_order.refund_amount
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
 
     return {
-      ...swap,
+      swap,
+      order,
+      items: this.processItems_(swap.additional_items, taxRate, currencyCode),
+      date: swap.updated_at.toDateString(),
+      email: order.email,
+      tax_amount: `${this.humanPrice_(
+        swap.difference_due * taxRate
+      )} ${currencyCode}`,
+      paid_total: `${this.humanPrice_(swap.difference_due)} ${currencyCode}`,
+      return_total: `${this.humanPrice_(returnTotal)} ${currencyCode}`,
+      refund_amount: `${this.humanPrice_(refundAmount)} ${currencyCode}`,
+      additional_total: `${this.humanPrice_(additionalTotal)} ${currencyCode}`,
+      fulfillment: shipment,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
 
   async claimShipmentCreatedData({ id, fulfillment_id }) {
     const claim = await this.claimService_.retrieve(id, {
-      relations: ["order"],
+      relations: ["order", "order.items", "order.shipping_address"],
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
 
     return {
-      ...claim,
+      email: claim.order.email,
+      claim,
+      order: claim.order,
+      fulfillment: shipment,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
@@ -419,7 +518,7 @@ class SendGridService extends NotificationService {
     return data
   }
 
-  processItems_(items) {
+  processItems_(items, taxRate, currencyCode) {
     return items.map((i) => {
       return {
         ...i,

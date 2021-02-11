@@ -217,7 +217,7 @@ class EventBusService {
    */
   worker_ = job => {
     const { eventName, data } = job.data
-    const eventObservers = this.observers_[eventName] || []
+    const eventObservers = [] //this.observers_[eventName] || []
     const wildcardObservers = this.observers_["*"] || []
 
     const observers = eventObservers.concat(wildcardObservers)
@@ -228,7 +228,7 @@ class EventBusService {
 
     return Promise.all(
       observers.map(subscriber => {
-        return subscriber(data).catch(err => {
+        return subscriber(data, eventName).catch(err => {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )

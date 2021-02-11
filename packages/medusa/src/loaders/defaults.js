@@ -15,7 +15,7 @@ export default async ({ container }) => {
 
     let notiIds
     const nProviderService = container.resolve("notificationService")
-    const notiProviders = container.resolve("paymentProviders")
+    const notiProviders = container.resolve("notificationProviders")
     notiIds = notiProviders.map(p => p.getIdentifier())
     await nProviderService.registerInstalledProviders(notiIds)
 

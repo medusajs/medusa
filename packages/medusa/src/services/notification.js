@@ -119,6 +119,9 @@ class NotificationService extends BaseService {
 
   handleEvent(eventName, data) {
     const subs = this.subscribers_[eventName]
+    if (!subs) {
+      return
+    }
 
     return Promise.all(
       subs.map(async providerId => {
@@ -153,6 +156,7 @@ class NotificationService extends BaseService {
       to,
       status,
       data,
+      event_name: event,
       provider_id: providerId,
     })
 
