@@ -254,6 +254,10 @@ class ShippingOptionService extends BaseService {
         toCreate.claim_order_id = config.claim_order_id
       }
 
+      if (config.draft_order_id) {
+        toCreate.draft_order_id = config.draft_order_id
+      }
+
       const method = await methodRepo.create(toCreate)
 
       const created = await methodRepo.save(method)
