@@ -17,6 +17,7 @@ import { Cart } from "./cart"
 import { Order } from "./order"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
+import { DraftOrder } from "./draft-order"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -48,6 +49,17 @@ export class LineItem {
   )
   @JoinColumn({ name: "order_id" })
   order: Order
+  
+  @Index()
+  @Column({ nullable: true })
+  draft_order_id: string
+
+  @ManyToOne(
+    () => DraftOrder,
+    dorder => dorder.items
+  )
+  @JoinColumn({ name: "draft_order_id" })
+  draft_order: DraftOrder
 
   @Index()
   @Column({ nullable: true })
