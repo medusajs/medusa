@@ -4,40 +4,33 @@ import {
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  OneToMany,
   Column,
   PrimaryColumn,
-  JoinColumn,
+  ManyToMany,
+  Index,
+  OneToMany,
 } from "typeorm"
 import { ulid } from "ulid"
-
 import { Product } from "./product"
-import { ProductOptionValue } from "./product-option-value"
+import _ from "lodash"
 
 @Entity()
-export class ProductOption {
+export class ProductCollection {
   @PrimaryColumn()
   id: string
 
   @Column()
   title: string
 
+  @Index({ unique: true })
+  @Column({ nullable: true })
+  handle: string
+
   @OneToMany(
-    () => ProductOptionValue,
-    value => value.option
-  )
-  values: ProductOptionValue
-
-  @Column()
-  product_id: string
-
-  @ManyToOne(
     () => Product,
-    product => product.options
+    product => product.collection
   )
-  @JoinColumn({ name: "product_id" })
-  product: Product
+  products: Product[]
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
@@ -55,6 +48,10 @@ export class ProductOption {
   private beforeInsert() {
     if (this.id) return
     const id = ulid()
-    this.id = `opt_${id}`
+    this.id = `pcol_${id}`
+
+    if (!this.handle) {
+      this.handle = _.kebabCase(this.title)
+    }
   }
 }
