@@ -4,40 +4,18 @@ import {
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  OneToMany,
   Column,
   PrimaryColumn,
-  JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 
-import { Product } from "./product"
-import { ProductOptionValue } from "./product-option-value"
-
 @Entity()
-export class ProductOption {
+export class ProductType {
   @PrimaryColumn()
   id: string
 
   @Column()
-  title: string
-
-  @OneToMany(
-    () => ProductOptionValue,
-    value => value.option
-  )
-  values: ProductOptionValue
-
-  @Column()
-  product_id: string
-
-  @ManyToOne(
-    () => Product,
-    product => product.options
-  )
-  @JoinColumn({ name: "product_id" })
-  product: Product
+  value: string
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
@@ -55,6 +33,6 @@ export class ProductOption {
   private beforeInsert() {
     if (this.id) return
     const id = ulid()
-    this.id = `opt_${id}`
+    this.id = `ptyp_${id}`
   }
 }
