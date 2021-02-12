@@ -28,6 +28,11 @@ class NotificationService extends BaseService {
     this.notificationProviderRepository_ = notificationProviderRepository
 
     this.subscribers_ = {}
+    this.attachmentGenerator_ = null
+  }
+
+  registerAttachmentGenerator(service) {
+    this.attachmentGenerator_ = service
   }
 
   withTransaction(transactionManager) {
@@ -136,11 +141,17 @@ class NotificationService extends BaseService {
 
   async send(event, eventData, providerId) {
     const provider = this.retrieveProvider_(providerId)
-    const { to, data, status } = await provider.sendNotification(
+    const result = await provider.sendNotification(
       event,
-      eventData
+      eventData,
+      this.attachmentGenerator_
     )
 
+    if (!result) {
+      return
+    }
+
+    const { to, data, status } = result
     const notiRepo = this.manager_.getCustomRepository(
       this.notificationRepository_
     )
@@ -169,7 +180,8 @@ class NotificationService extends BaseService {
     const provider = this.retrieveProvider_(notification.provider_id)
     const { to, data, status } = await provider.resendNotification(
       notification,
-      config
+      config,
+      this.attachmentGenerator_
     )
 
     const created = notiRepo.create({

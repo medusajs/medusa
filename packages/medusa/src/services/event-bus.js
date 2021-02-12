@@ -217,7 +217,7 @@ class EventBusService {
    */
   worker_ = job => {
     const { eventName, data } = job.data
-    const eventObservers = [] //this.observers_[eventName] || []
+    const eventObservers = this.observers_[eventName] || []
     const wildcardObservers = this.observers_["*"] || []
 
     const observers = eventObservers.concat(wildcardObservers)

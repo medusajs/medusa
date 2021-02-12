@@ -25,6 +25,7 @@ class SendGridService extends NotificationService {
       swapService,
       claimService,
       fulfillmentService,
+      fulfillmentProviderService,
       totalsService,
     },
     options
@@ -33,6 +34,7 @@ class SendGridService extends NotificationService {
 
     this.options_ = options
 
+    this.fulfillmentProviderService_ = fulfillmentProviderService
     this.storeService_ = storeService
     this.orderService_ = orderService
     this.claimService_ = claimService
@@ -44,116 +46,154 @@ class SendGridService extends NotificationService {
     SendGrid.setApiKey(options.api_key)
   }
 
-  // // order_refund_created_template: ``,
-  // // order_return_requested_template: ``,
-  // order_items_returned_template: `d-7b49dcd155d4462cad36f5c27d8883ec`,
-  // // swap_shipment_created_template: ``,
-  // // claim_created_template: ``,
-  // claim_shipment_created_template: `d-655069147c474cd3be191539e1e1479a`,
+  async fetchAttachments(event, data) {
+    switch (event) {
+      case "swap.created":
+      case "order.return_requested": {
+        let attachments = []
+        const { shipping_method, shipping_data } = data.return_request
+        if (shipping_method) {
+          const provider = shipping_method.shipping_option.provider_id
 
-  async sendNotification(event, eventData) {
-    let templateId
-    let data = {}
+          const lbl = await this.fulfillmentProviderService_.retrieveDocuments(
+            provider,
+            shipping_data,
+            "label"
+          )
 
+          attachments = attachments.concat(
+            lbl.map((d) => ({
+              name: "return-label",
+              base64: d.base_64,
+              type: d.type,
+            }))
+          )
+
+          const inv = await this.fulfillmentProviderService_.retrieveDocuments(
+            provider,
+            shipping_data,
+            "invoice"
+          )
+
+          attachments = attachments.concat(
+            inv.map((d) => ({
+              name: "invoice",
+              base64: d.base_64,
+              type: d.type,
+            }))
+          )
+        }
+
+        return attachments
+      }
+      default:
+        return []
+    }
+  }
+
+  async fetchData(event, eventData, attachmentGenerator) {
     switch (event) {
       case "order.return_requested":
-        templateId = this.options_.order_return_requested_template
-        if (templateId) {
-          data = await this.returnRequestedData(eventData)
-        }
-        break
+        return this.returnRequestedData(eventData, attachmentGenerator)
       case "swap.shipment_created":
-        templateId = this.options_.swap_shipment_created_template
-        if (templateId) {
-          data = await this.swapShipmentCreatedData(eventData)
-        }
-        break
+        return this.swapShipmentCreatedData(eventData, attachmentGenerator)
       case "claim.shipment_created":
-        templateId = this.options_.claim_shipment_created_template
-        if (templateId) {
-          data = await this.claimShipmentCreatedData(eventData)
-        }
-        break
+        return this.claimShipmentCreatedData(eventData, attachmentGenerator)
       case "order.items_returned":
-        templateId = this.options_.order_items_returned_template
-        if (templateId) {
-          data = await this.itemsReturnedData(eventData)
-        }
-        break
+        return this.itemsReturnedData(eventData, attachmentGenerator)
       case "order.swap_received":
-        templateId = this.options_.order_swap_received_template
-        if (templateId) {
-          data = await this.swapReceivedData(eventData)
-        }
-        break
+        return this.swapReceivedData(eventData, attachmentGenerator)
       case "swap.created":
-        templateId = this.options_.swap_created_template
-        if (templateId) {
-          data = await this.swapCreatedData(eventData)
-        }
-        break
+        return this.swapCreatedData(eventData, attachmentGenerator)
       case "gift_card.created":
-        templateId = this.options_.gift_card_created_template
-        if (templateId) {
-          data = await this.gcCreatedData(eventData)
-        }
-        break
+        return this.gcCreatedData(eventData, attachmentGenerator)
       case "order.gift_card_created":
-        templateId = this.options_.gift_card_created_template
-        if (templateId) {
-          data = await this.gcCreatedData(eventData)
-        }
-        break
+        return this.gcCreatedData(eventData, attachmentGenerator)
       case "order.placed":
-        templateId = this.options_.order_placed_template
-        if (templateId) {
-          data = await this.orderPlacedData(eventData)
-        }
-        break
+        return this.orderPlacedData(eventData, attachmentGenerator)
       case "order.shipment_created":
-        templateId = this.options_.order_shipped_template
-        if (templateId) {
-          data = await this.orderShipmentCreatedData(eventData)
-        }
-        break
+        return this.orderShipmentCreatedData(eventData, attachmentGenerator)
       case "order.canceled":
-        templateId = this.options_.order_canceled_template
-        if (templateId) {
-          data = await this.orderCanceledData(eventData)
-        }
-        break
+        return this.orderCanceledData(eventData, attachmentGenerator)
       case "user.password_reset":
-        templateId = this.options_.user_password_reset_template
-        if (templateId) {
-          data = await this.userPasswordResetData(eventData)
-        }
-        break
+        return this.userPasswordResetData(eventData, attachmentGenerator)
       case "customer.password_reset":
-        templateId = this.options_.customer_password_reset_template
-        if (templateId) {
-          data = await this.customerPasswordResetData(eventData)
-        }
-        break
+        return this.customerPasswordResetData(eventData, attachmentGenerator)
       default:
-        return
+        return {}
     }
+  }
 
-    console.log(event, templateId)
+  getTemplateId(event) {
+    switch (event) {
+      case "order.return_requested":
+        return this.options_.order_return_requested_template
+      case "swap.shipment_created":
+        return this.options_.swap_shipment_created_template
+      case "claim.shipment_created":
+        return this.options_.claim_shipment_created_template
+      case "order.items_returned":
+        return this.options_.order_items_returned_template
+      case "order.swap_received":
+        return this.options_.order_swap_received_template
+      case "swap.created":
+        return this.options_.swap_created_template
+      case "gift_card.created":
+        return this.options_.gift_card_created_template
+      case "order.gift_card_created":
+        return this.options_.gift_card_created_template
+      case "order.placed":
+        return this.options_.order_placed_template
+      case "order.shipment_created":
+        return this.options_.order_shipped_template
+      case "order.canceled":
+        return this.options_.order_canceled_template
+      case "user.password_reset":
+        return this.options_.user_password_reset_template
+      case "customer.password_reset":
+        return this.options_.customer_password_reset_template
+      default:
+        return null
+    }
+  }
+
+  async sendNotification(event, eventData, attachmentGenerator) {
+    let templateId = this.getTemplateId(event)
 
     if (!templateId) {
-      return
+      return false
     }
+
+    const data = await this.fetchData(event, eventData, attachmentGenerator)
+    const attachments = await this.fetchAttachments(event, data)
 
     const sendOptions = {
       template_id: templateId,
       from: this.options_.from,
       to: data.email,
       dynamic_template_data: data,
+      has_attachments: attachments?.length,
+    }
+
+    if (attachments?.length) {
+      sendOptions.has_attachments = true
+      sendOptions.attachments = attachments.map((a) => {
+        return {
+          content: a.base64,
+          filename: a.name,
+          type: a.type,
+          disposition: "attachment",
+          contentId: a.name,
+        }
+      })
     }
 
     const status = await SendGrid.send(sendOptions)
       .then(() => "sent")
       .catch(() => "failed")
+
+    // We don't want heavy docs stored in DB
+    delete sendOptions.attachments
 
     return { to: data.email, status, data: sendOptions }
   }
@@ -163,6 +203,24 @@ class SendGridService extends NotificationService {
       ...notification.data,
       to: config.to || notification.to,
     }
+
+    if (notification.has_attachments) {
+      const attachs = await this.fetchAttachments(
+        notification.event_name,
+        notification.data.dynamic_template_data
+      )
+
+      sendOptions.attachments = attachs.map((a) => {
+        return {
+          content: a.base64,
+          filename: a.name,
+          type: a.type,
+          disposition: "attachment",
+          contentId: a.name,
+        }
+      })
+    }
+
     const status = await SendGrid.send(sendOptions)
       .then(() => "sent")
       .catch(() => "failed")
@@ -186,7 +244,7 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async orderShipmentCreatedData({ id, fulfillment_id }) {
+  async orderShipmentCreatedData({ id, fulfillment_id }, attachmentGenerator) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -213,11 +271,14 @@ class SendGridService extends NotificationService {
       ],
     })
 
-    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
+    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
+      relations: ["items"],
+    })
 
     return {
-      email: order.email,
       order,
+      attachments,
+      email: order.email,
       fulfillment: shipment,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
@@ -326,14 +387,21 @@ class SendGridService extends NotificationService {
   }
 
   async returnRequestedData({ id, return_id }) {
+    // Fetch the return request
     const returnRequest = await this.returnService_.retrieve(return_id, {
-      relations: ["items", "shipping_method"],
+      relations: [
+        "items",
+        "shipping_method",
+        "shipping_method.shipping_option",
+      ],
     })
 
+    // Fetch the order
     const order = await this.orderService_.retrieve(id, {
       relations: ["items", "discounts", "shipping_address"],
     })
 
+    // Calculate which items are in the return
     const returnItems = returnRequest.items.map((i) => {
       const found = order.items.find((oi) => oi.id === i.item_id)
       return {
@@ -345,8 +413,10 @@ class SendGridService extends NotificationService {
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
+    // Get total of the returned products
     const item_subtotal = this.totalsService_.getRefundTotal(order, returnItems)
 
+    // If the return has a shipping method get the price and any attachments
     let shippingTotal = 0
     if (returnRequest.shipping_method) {
       shippingTotal = returnRequest.shipping_method.price * (1 + taxRate)
@@ -375,7 +445,13 @@ class SendGridService extends NotificationService {
   async swapCreatedData({ id }) {
     const store = await this.storeService_.retrieve()
     const swap = await this.swapService_.retrieve(id, {
-      relations: ["additional_items", "return_order", "return_order.items"],
+      relations: [
+        "additional_items",
+        "return_order",
+        "return_order.items",
+        "return_order.shipping_method",
+        "return_order.shipping_method.shipping_option",
+      ],
     })
 
     const swapLink = store.swap_link_template.replace(
@@ -417,6 +493,7 @@ class SendGridService extends NotificationService {
     return {
       swap,
       order,
+      return_request: swap.return_order,
       date: swap.updated_at.toDateString(),
       swap_link: swapLink,
       email: order.email,

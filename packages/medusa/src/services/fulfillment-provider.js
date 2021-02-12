@@ -89,6 +89,18 @@ class FulfillmentProviderService {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.createReturn(returnOrder)
   }
+
+  /**
+   * Fetches documents from the fulfillment provider
+   * @param {string} providerId - the id of the provider
+   * @param {object} fulfillmentData - the data relating to the fulfillment
+   * @param {"invoice" | "label"} documentType - the typ of
+   *  document to fetch
+   */
+  async retrieveDocuments(providerId, fulfillmentData, documentType) {
+    const provider = this.retrieveProvider(providerId)
+    return provider.retrieveDocuments(fulfillmentData, documentType)
+  }
 }
 
 export default FulfillmentProviderService
