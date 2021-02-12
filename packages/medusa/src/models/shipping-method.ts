@@ -17,6 +17,7 @@ import { Cart } from "./cart"
 import { Swap } from "./swap"
 import { Return } from "./return"
 import { ShippingOption } from "./shipping-option"
+import { DraftOrder } from "./draft-order"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
@@ -66,6 +67,14 @@ export class ShippingMethod {
   @Index()
   @Column({ nullable: true })
   return_id: string
+
+  @Index()
+  @Column({ nullable: true })
+  draft_order_id: string
+
+  @ManyToOne(() => DraftOrder)
+  @JoinColumn({ name: "draft_order_id" })
+  draft_order: DraftOrder
 
   @OneToOne(
     () => Return,

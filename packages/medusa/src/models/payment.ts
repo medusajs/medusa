@@ -16,6 +16,7 @@ import { Swap } from "./swap"
 import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
+import { DraftOrder } from "./draft-order"
 
 @Entity()
 export class Payment {
@@ -48,6 +49,14 @@ export class Payment {
   )
   @JoinColumn({ name: "order_id" })
   order: Order
+
+  @Index()
+  @Column({ nullable: true })
+  draft_order_id: string
+
+  @OneToOne(() => DraftOrder)
+  @JoinColumn({ name: "draft_order_id" })
+  draft_order: DraftOrder
 
   @Column({ type: "int" })
   amount: number
