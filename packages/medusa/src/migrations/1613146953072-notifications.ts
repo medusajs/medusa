@@ -1,14 +1,14 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class notifications1613033018859 implements MigrationInterface {
-  name = "notifications1613033018859"
+export class notifications1613146953072 implements MigrationInterface {
+  name = "notifications1613146953072"
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `CREATE TABLE "notification_provider" ("id" character varying NOT NULL, "is_installed" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_0425c2423e2ce9fdfd5c23761d9" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "notification" ("id" character varying NOT NULL, "resource_type" character varying NOT NULL, "resource_id" character varying NOT NULL, "customer_id" character varying, "to" character varying NOT NULL, "data" jsonb NOT NULL, "parent_id" character varying, "provider_id" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_705b6c7cdf9b2c2ff7ac7872cb7" PRIMARY KEY ("id"))`
+      `CREATE TABLE "notification" ("id" character varying NOT NULL, "event_name" character varying, "resource_type" character varying NOT NULL, "resource_id" character varying NOT NULL, "customer_id" character varying, "to" character varying NOT NULL, "data" jsonb NOT NULL, "parent_id" character varying, "provider_id" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_705b6c7cdf9b2c2ff7ac7872cb7" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_df1494d263740fcfb1d09a98fc" ON "notification" ("resource_type") `
