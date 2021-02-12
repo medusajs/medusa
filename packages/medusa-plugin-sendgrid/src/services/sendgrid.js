@@ -277,7 +277,6 @@ class SendGridService extends NotificationService {
 
     return {
       order,
-      attachments,
       email: order.email,
       fulfillment: shipment,
       tracking_number: shipment.tracking_numbers.join(", "),
