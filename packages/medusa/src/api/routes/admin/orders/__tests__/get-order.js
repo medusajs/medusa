@@ -21,7 +21,6 @@ const defaultRelations = [
   "claims.fulfillments",
   "claims.claim_items",
   "claims.claim_items.images",
-  "claims.claim_items.tags",
   "swaps",
   "swaps.return_order",
   "swaps.payment",
