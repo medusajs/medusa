@@ -197,7 +197,7 @@ class NotificationService extends BaseService {
       return
     }
 
-    const { to, data, status } = result
+    const { to, data } = result
     const notiRepo = this.manager_.getCustomRepository(
       this.notificationRepository_
     )
@@ -211,7 +211,6 @@ class NotificationService extends BaseService {
       resource_id,
       customer_id,
       to,
-      status,
       data,
       event_name: event,
       provider_id: providerId,
@@ -232,7 +231,7 @@ class NotificationService extends BaseService {
     const notification = await this.retrieve(id)
 
     const provider = this.retrieveProvider_(notification.provider_id)
-    const { to, data, status } = await provider.resendNotification(
+    const { to, data } = await provider.resendNotification(
       notification,
       config,
       this.attachmentGenerator_
@@ -242,7 +241,6 @@ class NotificationService extends BaseService {
       ...notification,
       to,
       data,
-      status,
       parent_id: id,
     })
 
