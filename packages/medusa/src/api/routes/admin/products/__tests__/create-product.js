@@ -12,7 +12,7 @@ describe("POST /admin/products", () => {
         payload: {
           title: "Test Product",
           description: "Test Description",
-          tags: "hi,med,dig",
+          tags: [{ id: "test", value: "test" }],
           handle: "test-product",
         },
         adminSession: {
@@ -36,7 +36,7 @@ describe("POST /admin/products", () => {
       expect(ProductServiceMock.create).toHaveBeenCalledWith({
         title: "Test Product",
         description: "Test Description",
-        tags: "hi,med,dig",
+        tags: [{ id: "test", value: "test" }],
         handle: "test-product",
         is_giftcard: false,
         profile_id: IdMap.getId("default_shipping_profile"),

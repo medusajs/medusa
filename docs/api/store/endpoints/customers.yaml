@@ -19,7 +19,7 @@ routes:
     path: /customers/:id/reset-password-token
 route: /customers
 description: >
-  Customers can create a login to view Order history and manage details. 
+  Customers can create a login to view order history and manage details. 
   Customers must have unique emails.
 endpoints:
   - path: /

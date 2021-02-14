@@ -20,6 +20,9 @@ class ProductService extends BaseService {
     productOptionRepository,
     eventBusService,
     productVariantService,
+    productCollectionService,
+    productTypeRepository,
+    productTagRepository,
   }) {
     super()
 
@@ -40,6 +43,15 @@ class ProductService extends BaseService {
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
+
+    /** @private @const {ProductCollectionService} */
+    this.productCollectionService_ = productCollectionService
+
+    /** @private @const {ProductCollectionService} */
+    this.productTypeRepository_ = productTypeRepository
+
+    /** @private @const {ProductCollectionService} */
+    this.productTagRepository_ = productTagRepository
   }
 
   withTransaction(transactionManager) {
@@ -54,6 +66,9 @@ class ProductService extends BaseService {
       productOptionRepository: this.productOptionRepository_,
       eventBusService: this.eventBus_,
       productVariantService: this.productVariantService_,
+      productCollectionService: this.productCollectionService_,
+      productTagRepository: this.productTagRepository_,
+      productTypeRepository: this.productTypeRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -88,6 +103,7 @@ class ProductService extends BaseService {
         alias: "product",
         leftJoinAndSelect: {
           variant: "product.variants",
+          collection: "product.collection",
         },
       }
 
@@ -100,6 +116,7 @@ class ProductService extends BaseService {
               .orWhere(`product.description ILIKE :q`, { q: `%${q}%` })
               .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
               .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
           })
         )
       }
@@ -152,6 +169,78 @@ class ProductService extends BaseService {
     return product.variants
   }
 
+  async listTypes() {
+    const productTypeRepository = this.manager_.getCustomRepository(
+      this.productTypeRepository_
+    )
+
+    return await productTypeRepository.find({})
+  }
+
+  async listTagsByUsage(count = 10) {
+    const tags = await this.manager_.query(
+      `
+      SELECT ID, O.USAGE_COUNT, PT.VALUE
+      FROM PRODUCT_TAG PT
+      LEFT JOIN
+        (SELECT COUNT(*) AS USAGE_COUNT,
+          PRODUCT_TAG_ID
+          FROM PRODUCT_TAGS
+          GROUP BY PRODUCT_TAG_ID) O ON O.PRODUCT_TAG_ID = PT.ID
+      ORDER BY O.USAGE_COUNT DESC
+      LIMIT $1`,
+      [count]
+    )
+
+    return tags
+  }
+
+  async upsertProductType_(type) {
+    const productTypeRepository = this.manager_.getCustomRepository(
+      this.productTypeRepository_
+    )
+
+    if (type === null) {
+      return null
+    }
+
+    const existing = await productTypeRepository.findOne({
+      where: { value: type.value },
+    })
+
+    if (existing) {
+      return existing
+    }
+
+    const created = productTypeRepository.create(type)
+    const result = await productTypeRepository.save(created)
+
+    return result.id
+  }
+
+  async upsertProductTags_(tags) {
+    const productTagRepository = this.manager_.getCustomRepository(
+      this.productTagRepository_
+    )
+
+    let newTags = []
+    for (const tag of tags) {
+      const existing = await productTagRepository.findOne({
+        where: { value: tag.value },
+      })
+
+      if (existing) {
+        newTags.push(existing)
+      } else {
+        const created = productTagRepository.create(tag)
+        const result = await productTagRepository.save(created)
+        newTags.push(result)
+      }
+    }
+
+    return newTags
+  }
+
   /**
    * Creates a product.
    * @param {object} productObject - the product to create
@@ -164,17 +253,29 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
-      const product = await productRepo.create(productObject)
+      const { options, tags, type, ...rest } = productObject
+
+      let product = productRepo.create(rest)
+
+      if (tags) {
+        product.tags = await this.upsertProductTags_(tags)
+      }
+
+      if (typeof type !== `undefined`) {
+        product.type_id = await this.upsertProductType_(type)
+      }
+
+      product = await productRepo.save(product)
 
       product.options = await Promise.all(
-        productObject.options.map(async o => {
-          const res = await optionRepo.create({ ...o, product_id: product.id })
+        options.map(async o => {
+          const res = optionRepo.create({ ...o, product_id: product.id })
           await optionRepo.save(res)
           return res
         })
       )
 
-      const result = await productRepo.save(product)
+      const result = await this.retrieve(product.id, { relations: ["options"] })
 
       await this.eventBus_
         .withTransaction(manager)
@@ -202,10 +303,18 @@ class ProductService extends BaseService {
       )
 
       const product = await this.retrieve(productId, {
-        relations: ["variants"],
+        relations: ["variants", "tags"],
       })
 
-      const { variants, metadata, options, images, ...rest } = update
+      const {
+        variants,
+        metadata,
+        options,
+        images,
+        tags,
+        type,
+        ...rest
+      } = update
 
       if (!product.thumbnail && !update.thumbnail && images && images.length) {
         product.thumbnail = images[0]
@@ -213,6 +322,14 @@ class ProductService extends BaseService {
 
       if (metadata) {
         product.metadata = this.setMetadata_(product, metadata)
+      }
+
+      if (typeof type !== `undefined`) {
+        product.type_id = await this.upsertProductType_(type)
+      }
+
+      if (tags) {
+        product.tags = await this.upsertProductTags_(tags)
       }
 
       if (variants) {
@@ -321,13 +438,15 @@ class ProductService extends BaseService {
         product_id: productId,
       })
 
-      const result = await productOptionRepo.save(option)
+      await productOptionRepo.save(option)
 
       for (const variant of product.variants) {
         this.productVariantService_
           .withTransaction(manager)
           .addOptionValue(variant.id, option.id, "Default Value")
       }
+
+      const result = await this.retrieve(productId)
 
       await this.eventBus_
         .withTransaction(manager)
