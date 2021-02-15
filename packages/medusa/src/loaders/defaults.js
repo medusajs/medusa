@@ -13,6 +13,12 @@ export default async ({ container }) => {
     payIds = payProviders.map(p => p.getIdentifier())
     await pProviderService.registerInstalledProviders(payIds)
 
+    let notiIds
+    const nProviderService = container.resolve("notificationService")
+    const notiProviders = container.resolve("notificationProviders")
+    notiIds = notiProviders.map(p => p.getIdentifier())
+    await nProviderService.registerInstalledProviders(notiIds)
+
     let fulfilIds
     const fProviderService = container.resolve("fulfillmentProviderService")
     const fulfilProviders = container.resolve("fulfillmentProviders")

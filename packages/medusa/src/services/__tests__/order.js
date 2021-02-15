@@ -10,7 +10,23 @@ describe("OrderService", () => {
     getRefundedTotal: o => {
       return o.refunded_total || 0
     },
+    getShippingTotal: o => {
+      return o.shipping_total || 0
+    },
+    getGiftCardTotal: o => {
+      return o.gift_card_total || 0
+    },
+    getDiscountTotal: o => {
+      return o.discount_total || 0
+    },
+    getTaxTotal: o => {
+      return o.tax_total || 0
+    },
+    getSubtotal: o => {
+      return o.subtotal || 0
+    },
   }
+
   const eventBusService = {
     emit: jest.fn(),
     withTransaction: function() {

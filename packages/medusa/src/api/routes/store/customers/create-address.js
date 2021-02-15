@@ -17,7 +17,7 @@ export default async (req, res) => {
 
     let customer = await customerService.addAddress(id, value.address)
     customer = await customerService.retrieve(id, {
-      relations: ["orders", "shipping_addresses"],
+      relations: ["shipping_addresses"],
     })
 
     res.status(200).json({ customer })

@@ -21,7 +21,7 @@ export default async (req, res) => {
     )
 
     customer = await customerService.retrieve(id, {
-      relations: ["orders", "shipping_addresses"],
+      relations: ["shipping_addresses"],
     })
 
     res.json({ customer })

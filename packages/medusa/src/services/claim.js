@@ -99,7 +99,7 @@ class ClaimService extends BaseService {
       const { claim_items, shipping_methods, metadata } = data
 
       if (metadata) {
-        claim.metadata = this.setMetadata_(claim, update.metadata)
+        claim.metadata = this.setMetadata_(claim, metadata)
         await claimRepo.save(claim)
       }
 
