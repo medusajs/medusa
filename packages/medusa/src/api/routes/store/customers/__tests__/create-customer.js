@@ -34,7 +34,7 @@ describe("POST /store/customers", () => {
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
-        { relations: ["orders", "shipping_addresses"] }
+        { relations: ["shipping_addresses"] }
       )
     })
 

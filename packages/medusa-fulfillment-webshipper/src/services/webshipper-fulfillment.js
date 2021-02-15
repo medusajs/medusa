@@ -422,8 +422,41 @@ class WebshipperFulfillmentService extends FulfillmentService {
   /**
    * This plugin doesn't support shipment documents.
    */
-  async getShipmentDocuments() {
-    return []
+  async retrieveDocuments(fulfillmentData, documentType) {
+    switch (documentType) {
+      case "label":
+        const labelRelation = fulfillmentData?.relationships?.labels
+        if (labelRelation) {
+          const docs = await this.retrieveRelationship(labelRelation)
+            .then(({ data }) => data)
+            .catch((_) => [])
+
+          return docs.map((d) => ({
+            name: d.attributes.document_type,
+            base_64: d.attributes.base64,
+            type: "application/pdf",
+          }))
+        }
+        return []
+
+      case "invoice":
+        const docRelation = fulfillmentData?.relationships?.documents
+        if (docRelation) {
+          const docs = await this.retrieveRelationship(docRelation)
+            .then(({ data }) => data)
+            .catch((_) => [])
+
+          return docs.map((d) => ({
+            name: d.attributes.document_type,
+            base_64: d.attributes.base64,
+            type: "application/pdf",
+          }))
+        }
+        return []
+
+      default:
+        return []
+    }
   }
 
   /**

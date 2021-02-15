@@ -217,14 +217,18 @@ class EventBusService {
    */
   worker_ = job => {
     const { eventName, data } = job.data
-    const observers = this.observers_[eventName] || []
+    const eventObservers = this.observers_[eventName] || []
+    const wildcardObservers = this.observers_["*"] || []
+
+    const observers = eventObservers.concat(wildcardObservers)
+
     this.logger_.info(
-      `Processing ${eventName} which has ${observers.length} subscribers`
+      `Processing ${eventName} which has ${eventObservers.length} subscribers`
     )
 
     return Promise.all(
       observers.map(subscriber => {
-        return subscriber(data).catch(err => {
+        return subscriber(data, eventName).catch(err => {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
@@ -242,7 +246,7 @@ class EventBusService {
 
     return Promise.all(
       observers.map(subscriber => {
-        return subscriber(data).catch(err => {
+        return subscriber(data, eventName).catch(err => {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
