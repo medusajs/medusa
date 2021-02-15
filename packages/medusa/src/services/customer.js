@@ -110,6 +110,7 @@ class CustomerService extends BaseService {
     const token = jwt.sign(payload, secret)
     // Notify subscribers
     this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
+      id: customerId,
       email: customer.email,
       first_name: customer.first_name,
       last_name: customer.last_name,
@@ -292,6 +293,7 @@ class CustomerService extends BaseService {
 
       const {
         email,
+        password,
         password_hash,
         billing_address,
         metadata,
@@ -312,6 +314,10 @@ class CustomerService extends BaseService {
 
       for (const [key, value] of Object.entries(rest)) {
         customer[key] = value
+      }
+
+      if (password) {
+        customer.password_hash = await this.hashPassword_(password)
       }
 
       const updated = await customerRepository.save(customer)
