@@ -33,6 +33,8 @@ export default (app, container) => {
   route.get("/:id", middlewares.wrap(require("./get-customer").default))
   route.post("/:id", middlewares.wrap(require("./update-customer").default))
 
+  route.get("/:id/orders", middlewares.wrap(require("./list-orders").default))
+
   route.post(
     "/:id/addresses",
     middlewares.wrap(require("./create-address").default)

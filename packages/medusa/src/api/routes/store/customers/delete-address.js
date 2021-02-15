@@ -6,7 +6,7 @@ export default async (req, res) => {
     let customer = await customerService.removeAddress(id, address_id)
 
     customer = await customerService.retrieve(id, {
-      relations: ["orders", "shipping_addresses"],
+      relations: ["shipping_addresses"],
     })
 
     res.json({ customer: data })

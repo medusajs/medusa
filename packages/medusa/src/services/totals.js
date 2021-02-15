@@ -94,7 +94,10 @@ class TotalsService extends BaseService {
 
   getLineItemRefund(object, lineItem) {
     const { discounts } = object
-    const tax_rate = object.tax_rate || object.region.tax_rate
+    const tax_rate =
+      typeof object.tax_rate !== "undefined"
+        ? object.tax_rate
+        : object.region.tax_rate
     const taxRate = (tax_rate || 0) / 100
 
     const discount = discounts.find(({ rule }) => rule.type !== "free_shipping")

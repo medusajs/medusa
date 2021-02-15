@@ -162,6 +162,14 @@ export default app => {
   )
 
   /**
+   * Creates claim fulfillment
+   */
+  route.post(
+    "/:id/claims/:claim_id/shipments",
+    middlewares.wrap(require("./create-claim-shipment").default)
+  )
+
+  /**
    * Delete metadata key / value pair.
    */
   route.delete(
