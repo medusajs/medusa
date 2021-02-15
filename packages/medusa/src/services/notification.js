@@ -237,6 +237,9 @@ class NotificationService extends BaseService {
       this.attachmentGenerator_
     )
 
+    const notiRepo = this.manager_.getCustomRepository(
+      this.notificationRepository_
+    )
     const created = notiRepo.create({
       ...notification,
       to,

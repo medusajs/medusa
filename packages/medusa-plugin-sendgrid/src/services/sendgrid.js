@@ -204,7 +204,7 @@ class SendGridService extends NotificationService {
       to: config.to || notification.to,
     }
 
-    if (notification.has_attachments) {
+    if (notification.data?.has_attachments) {
       const attachs = await this.fetchAttachments(
         notification.event_name,
         notification.data.dynamic_template_data
