@@ -647,6 +647,10 @@ class SendGridService extends NotificationService {
   }
 
   normalizeThumbUrl_(url) {
+    if (!url) {
+      return null
+    }
+
     if (url.startsWith("http")) {
       return url
     } else if (url.startsWith("//")) {
