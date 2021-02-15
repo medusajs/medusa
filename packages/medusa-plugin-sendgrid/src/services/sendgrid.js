@@ -23,6 +23,7 @@ class SendGridService extends NotificationService {
       orderService,
       returnService,
       swapService,
+      lineItemService,
       claimService,
       fulfillmentService,
       fulfillmentProviderService,
@@ -36,6 +37,7 @@ class SendGridService extends NotificationService {
 
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.storeService_ = storeService
+    this.lineItemService_ = lineItemService
     this.orderService_ = orderService
     this.claimService_ = claimService
     this.returnService_ = returnService
@@ -46,7 +48,7 @@ class SendGridService extends NotificationService {
     SendGrid.setApiKey(options.api_key)
   }
 
-  async fetchAttachments(event, data) {
+  async fetchAttachments(event, data, attachmentGenerator) {
     switch (event) {
       case "swap.created":
       case "order.return_requested": {
@@ -68,20 +70,18 @@ class SendGridService extends NotificationService {
               type: d.type,
             }))
           )
+        }
 
-          const inv = await this.fulfillmentProviderService_.retrieveDocuments(
-            provider,
-            shipping_data,
-            "invoice"
+        if (attachmentGenerator && attachmentGenerator.createReturnInvoice) {
+          const base64 = await attachmentGenerator.createReturnInvoice(
+            data.order,
+            data.return_request.items
           )
-
-          attachments = attachments.concat(
-            inv.map((d) => ({
-              name: "invoice",
-              base64: d.base_64,
-              type: d.type,
-            }))
-          )
+          attachments.push({
+            name: "invoice",
+            base64,
+            type: "application/pdf",
+          })
         }
 
         return attachments
@@ -165,7 +165,11 @@ class SendGridService extends NotificationService {
     }
 
     const data = await this.fetchData(event, eventData, attachmentGenerator)
-    const attachments = await this.fetchAttachments(event, data)
+    const attachments = await this.fetchAttachments(
+      event,
+      data,
+      attachmentGenerator
+    )
 
     const sendOptions = {
       template_id: templateId,
@@ -198,28 +202,27 @@ class SendGridService extends NotificationService {
     return { to: data.email, status, data: sendOptions }
   }
 
-  async resendNotification(notification, config) {
+  async resendNotification(notification, config, attachmentGenerator) {
     const sendOptions = {
       ...notification.data,
       to: config.to || notification.to,
     }
 
-    if (notification.data?.has_attachments) {
-      const attachs = await this.fetchAttachments(
-        notification.event_name,
-        notification.data.dynamic_template_data
-      )
+    const attachs = await this.fetchAttachments(
+      notification.event_name,
+      notification.data.dynamic_template_data,
+      attachmentGenerator
+    )
 
-      sendOptions.attachments = attachs.map((a) => {
-        return {
-          content: a.base64,
-          filename: a.name,
-          type: a.type,
-          disposition: "attachment",
-          contentId: a.name,
-        }
-      })
-    }
+    sendOptions.attachments = attachs.map((a) => {
+      return {
+        content: a.base64,
+        filename: a.name,
+        type: a.type,
+        disposition: "attachment",
+        contentId: a.name,
+      }
+    })
 
     const status = await SendGrid.send(sendOptions)
       .then(() => "sent")
@@ -277,6 +280,7 @@ class SendGridService extends NotificationService {
 
     return {
       order,
+      date: shipment.shipped_at.toDateString(),
       email: order.email,
       fulfillment: shipment,
       tracking_number: shipment.tracking_numbers.join(", "),
@@ -390,14 +394,30 @@ class SendGridService extends NotificationService {
     const returnRequest = await this.returnService_.retrieve(return_id, {
       relations: [
         "items",
+        "items.item",
+        "items.item.variant",
+        "items.item.variant.product",
         "shipping_method",
         "shipping_method.shipping_option",
       ],
     })
 
+    const items = await this.lineItemService_.list({
+      id: returnRequest.items.map(({ item_id }) => item_id),
+    })
+
+    returnRequest.items = returnRequest.items.map((item) => {
+      const found = items.find((i) => i.id === item.item_id)
+      return {
+        ...item,
+        item: found,
+      }
+    })
+
     // Fetch the order
     const order = await this.orderService_.retrieve(id, {
-      relations: ["items", "discounts", "shipping_address"],
+      select: ["total"],
+      relations: ["items", "discounts", "shipping_address", "returns"],
     })
 
     // Calculate which items are in the return
@@ -448,9 +468,24 @@ class SendGridService extends NotificationService {
         "additional_items",
         "return_order",
         "return_order.items",
+        "return_order.items.item",
         "return_order.shipping_method",
         "return_order.shipping_method.shipping_option",
       ],
+    })
+
+    const returnRequest = swap.return_order
+
+    const items = await this.lineItemService_.list({
+      id: returnRequest.items.map(({ item_id }) => item_id),
+    })
+
+    returnRequest.items = returnRequest.items.map((item) => {
+      const found = items.find((i) => i.id === item.item_id)
+      return {
+        ...item,
+        item: found,
+      }
     })
 
     const swapLink = store.swap_link_template.replace(
@@ -459,6 +494,7 @@ class SendGridService extends NotificationService {
     )
 
     const order = await this.orderService_.retrieve(swap.order_id, {
+      select: ["total"],
       relations: ["items", "discounts", "shipping_address"],
     })
 
@@ -492,7 +528,7 @@ class SendGridService extends NotificationService {
     return {
       swap,
       order,
-      return_request: swap.return_order,
+      return_request: returnRequest,
       date: swap.updated_at.toDateString(),
       swap_link: swapLink,
       email: order.email,
