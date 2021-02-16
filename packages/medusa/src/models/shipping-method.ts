@@ -68,14 +68,6 @@ export class ShippingMethod {
   @Column({ nullable: true })
   return_id: string
 
-  @Index()
-  @Column({ nullable: true })
-  draft_order_id: string
-
-  @ManyToOne(() => DraftOrder)
-  @JoinColumn({ name: "draft_order_id" })
-  draft_order: DraftOrder
-
   @OneToOne(
     () => Return,
     ret => ret.shipping_method
