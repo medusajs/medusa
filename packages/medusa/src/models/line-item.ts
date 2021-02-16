@@ -49,17 +49,6 @@ export class LineItem {
   )
   @JoinColumn({ name: "order_id" })
   order: Order
-  
-  @Index()
-  @Column({ nullable: true })
-  draft_order_id: string
-
-  @ManyToOne(
-    () => DraftOrder,
-    dorder => dorder.items
-  )
-  @JoinColumn({ name: "draft_order_id" })
-  draft_order: DraftOrder
 
   @Index()
   @Column({ nullable: true })

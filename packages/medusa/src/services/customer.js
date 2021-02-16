@@ -3,6 +3,7 @@ import Scrypt from "scrypt-kdf"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate customers.
@@ -127,7 +128,34 @@ class CustomerService extends BaseService {
       this.customerRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.where = qb => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`email ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`last_name ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+      }
+    }
+
     return customerRepo.find(query)
   }
 

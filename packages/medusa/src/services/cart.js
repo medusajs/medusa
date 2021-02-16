@@ -958,6 +958,8 @@ class CartService extends BaseService {
         relations: ["payment_sessions"],
       })
 
+      console.log("YELLO: ", session.status)
+
       if (session.status === "authorized") {
         const payment = await this.paymentProviderService_
           .withTransaction(manager)
