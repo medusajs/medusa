@@ -484,7 +484,6 @@ class OrderService extends BaseService {
         payment_status: "awaiting",
         discounts: cart.discounts,
         gift_cards: cart.gift_cards,
-        payment_status: "awaiting",
         shipping_methods: cart.shipping_methods,
         shipping_address_id: cart.shipping_address_id,
         billing_address_id: cart.billing_address_id,

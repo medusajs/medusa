@@ -1,0 +1,34 @@
+import _ from "lodash"
+import { defaultRelations, defaultFields } from "./"
+
+export default async (req, res) => {
+  try {
+    const draftOrderService = req.scope.resolve("draftOrderService")
+
+    const limit = parseInt(req.query.limit) || 50
+    const offset = parseInt(req.query.offset) || 0
+
+    let selector = {}
+
+    if ("q" in req.query) {
+      selector.q = req.query.q
+    }
+
+    const listConfig = {
+      select: defaultFields,
+      relations: defaultRelations,
+      skip: offset,
+      take: limit,
+      order: { created_at: "DESC" },
+    }
+
+    const [draftOrders, count] = await draftOrderService.listAndCount(
+      selector,
+      listConfig
+    )
+
+    res.json({ draft_orders: draftOrders, count, offset, limit })
+  } catch (error) {
+    throw error
+  }
+}
