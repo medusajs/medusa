@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.2...medusa-plugin-sendgrid@1.1.3) (2021-02-17)
+
+
+### Bug Fixes
+
+* attachment generator for invoices ([0cc2ccd](https://github.com/medusajs/medusa/commit/0cc2ccd3b2100960ce7d3422e20ce89ca96704a0))
+* handles normalizeThumb without thumbnail ([93f6812](https://github.com/medusajs/medusa/commit/93f68126bfb27f694211b6f890ce0370c42fa08a))
+
+
+### Features
+
+* notifications ([#172](https://github.com/medusajs/medusa/issues/172)) ([7308946](https://github.com/medusajs/medusa/commit/7308946e567ed4e63e1ed3d9d31b30c4f1a73f0d))
+
+
+
+
+
 ## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.1...medusa-plugin-sendgrid@1.1.2) (2021-02-03)
 
 **Note:** Version bump only for package medusa-plugin-sendgrid
