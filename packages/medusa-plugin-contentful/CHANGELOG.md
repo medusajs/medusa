@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.2...medusa-plugin-contentful@1.1.3) (2021-02-17)
+
+
+### Features
+
+* **medusa:** Product category, type and tags ([c4d1203](https://github.com/medusajs/medusa/commit/c4d1203155b7cc03e8892f0409efec83e030063e))
+
+
+
+
+
 ## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.1...medusa-plugin-contentful@1.1.2) (2021-02-03)
 
 **Note:** Version bump only for package medusa-plugin-contentful
