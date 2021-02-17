@@ -502,6 +502,8 @@ class DraftOrderService extends BaseService {
       }
 
       draftOrder.status = "completed"
+      draftOrder.order_id = result.id
+      console.log(draftOrder)
       await draftOrderRepo.save(draftOrder)
 
       return result

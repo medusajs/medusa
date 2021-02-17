@@ -15,9 +15,13 @@ export default async (req, res) => {
     shipping_address_id: Validator.string().optional(),
     items: Validator.array()
       .items({
-        variant_id: Validator.string().optional(),
+        variant_id: Validator.string()
+          .optional()
+          .allow(""),
         unit_price: Validator.number().optional(),
-        title: Validator.string().optional(),
+        title: Validator.string()
+          .optional()
+          .allow(""),
         quantity: Validator.number().required(),
         metadata: Validator.object().default({}),
       })
