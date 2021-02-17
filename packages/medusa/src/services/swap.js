@@ -8,6 +8,7 @@ import { MedusaError } from "medusa-core-utils"
  */
 class SwapService extends BaseService {
   static Events = {
+    CREATED: "swap.created",
     SHIPMENT_CREATED: "swap.shipment_created",
     PAYMENT_COMPLETED: "swap.payment_completed",
     PAYMENT_CAPTURED: "swap.payment_captured",
@@ -246,6 +247,12 @@ class SwapService extends BaseService {
         },
         order
       )
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(SwapService.Events.CREATED, {
+          id: result.id,
+        })
 
       return result
     })

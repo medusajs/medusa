@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.3...medusa-plugin-segment@1.1.4) (2021-02-17)
+
+
+### Bug Fixes
+
+* item reporting revenue discounted ([6e6669d](https://github.com/medusajs/medusa/commit/6e6669dee8cb3f7e044a4001fa1e183bb61766dd))
+* price after discounts ([0ed6b4a](https://github.com/medusajs/medusa/commit/0ed6b4a6a09d1d2ef5c9d6a199db1e01234bc3c2))
+
+
+
+
+
 ## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.2...medusa-plugin-segment@1.1.3) (2021-02-03)
 
 

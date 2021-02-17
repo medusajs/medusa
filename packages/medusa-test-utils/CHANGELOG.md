@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.2...medusa-test-utils@1.1.3) (2021-02-17)
+
+
+### Bug Fixes
+
+* use parallel relation fetching ([#173](https://github.com/medusajs/medusa/issues/173)) ([46006e4](https://github.com/medusajs/medusa/commit/46006e4b0647bada1dc2cb417766e22f65bad23e))
+
+
+
+
+
 ## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.1...medusa-test-utils@1.1.2) (2021-02-03)
 
 

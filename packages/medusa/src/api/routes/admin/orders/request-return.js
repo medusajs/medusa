@@ -53,6 +53,7 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
     const returnService = req.scope.resolve("returnService")
+    const eventBus = req.scope.resolve("eventBusService")
 
     let inProgress = true
     let err = false
@@ -97,6 +98,13 @@ export default async (req, res) => {
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)
               }
+
+              await eventBus
+                .withTransaction(manager)
+                .emit("order.return_requested", {
+                  id,
+                  return_id: createdReturn.id,
+                })
 
               return {
                 recovery_point: "return_requested",
