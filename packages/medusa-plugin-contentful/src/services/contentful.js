@@ -114,28 +114,58 @@ class ContentfulService extends BaseService {
   async createProductInContentful(product) {
     try {
       const p = await this.productService_.retrieve(product.id, {
-        relations: ["variants", "options"],
+        relations: ["variants", "options", "tags", "type", "collection"],
       })
 
       const environment = await this.getContentfulEnvironment_()
       const variantEntries = await this.getVariantEntries_(p.variants)
       const variantLinks = this.getVariantLinks_(variantEntries)
 
-      const result = await environment.createEntryWithId("product", p.id, {
-        fields: {
-          title: {
-            "en-US": p.title,
-          },
-          variants: {
-            "en-US": variantLinks,
-          },
-          options: {
-            "en-US": p.options,
-          },
-          objectId: {
-            "en-US": p.id,
-          },
+      const fields = {
+        title: {
+          "en-US": p.title,
         },
+        variants: {
+          "en-US": variantLinks,
+        },
+        options: {
+          "en-US": p.options,
+        },
+        objectId: {
+          "en-US": p.id,
+        },
+      }
+
+      if (p.type) {
+        const type = {
+          "en-US": p.type.value,
+        }
+        fields.type = type
+      }
+
+      if (p.collection) {
+        const collection = {
+          "en-US": p.collection.title,
+        }
+        fields.collection = collection
+      }
+
+      if (p.tags) {
+        const tags = {
+          "en-US": p.tags,
+        }
+        fields.tags = tags
+      }
+
+      if (p.handle) {
+        const handle = {
+          "en-US": p.handle,
+        }
+        fields.handle = handle
+      }
+
+      const result = await environment.createEntryWithId("product", p.id, {
+        fields,
       })
 
       const ignoreIds = (await this.getIgnoreIds_("product")) || []
@@ -210,7 +240,7 @@ class ContentfulService extends BaseService {
       }
 
       const p = await this.productService_.retrieve(product.id, {
-        relations: ["options", "variants"],
+        relations: ["options", "variants", "type", "collection", "tags"],
       })
 
       const variantEntries = await this.getVariantEntries_(p.variants)
@@ -230,6 +260,34 @@ class ContentfulService extends BaseService {
         objectId: {
           "en-US": p.id,
         },
+      }
+
+      if (p.type) {
+        const type = {
+          "en-US": p.type.value,
+        }
+        productEntryFields.type = type
+      }
+
+      if (p.collection) {
+        const collection = {
+          "en-US": p.collection.title,
+        }
+        productEntryFields.collection = collection
+      }
+
+      if (p.tags) {
+        const tags = {
+          "en-US": p.tags,
+        }
+        productEntryFields.tags = tags
+      }
+
+      if (p.handle) {
+        const handle = {
+          "en-US": p.handle,
+        }
+        productEntryFields.handle = handle
       }
 
       productEntry.fields = productEntryFields
@@ -371,6 +429,11 @@ class ContentfulService extends BaseService {
     } catch (error) {
       throw error
     }
+  }
+
+  async getType(type) {
+    const environment = await this.getContentfulEnvironment_()
+    return environment.getContentType(type)
   }
 }
 

@@ -397,6 +397,11 @@ class KlarnaProviderService extends PaymentService {
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)
+        .catch(async (_) => {
+          return this.klarna_
+            .post(this.klarnaOrderUrl_, order)
+            .then(({ data }) => data)
+        })
     }
 
     return paymentData

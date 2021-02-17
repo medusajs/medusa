@@ -29,6 +29,9 @@ export class ProductOption {
   )
   values: ProductOptionValue
 
+  @Column()
+  product_id: string
+
   @ManyToOne(
     () => Product,
     product => product.options
