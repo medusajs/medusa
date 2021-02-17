@@ -12,6 +12,8 @@ export default app => {
 
   route.post("/", middlewares.wrap(require("./create-draft-order").default))
 
+  route.post("/:id", middlewares.wrap(require("./update-draft-order").default))
+
   route.delete(
     "/:id/line-items/:line_id",
     middlewares.wrap(require("./delete-line-item").default)
@@ -32,7 +34,7 @@ export default app => {
   return app
 }
 
-export const defaultRelations = []
+export const defaultRelations = ["order", "cart"]
 
 export const defaultCartRelations = [
   "region",
@@ -48,16 +50,12 @@ export const defaultCartRelations = [
 ]
 
 export const defaultCartFields = [
-  "region",
-  "items",
-  "payment",
-  "shipping_address",
-  "billing_address",
-  "region.payment_providers",
-  "shipping_methods",
-  "payment_sessions",
-  "shipping_methods.shipping_option",
-  "discounts",
+  "subtotal",
+  "tax_total",
+  "shipping_total",
+  "discount_total",
+  "gift_card_total",
+  "total",
 ]
 
 export const defaultFields = [
@@ -65,6 +63,7 @@ export const defaultFields = [
   "status",
   "display_id",
   "cart_id",
+  "order_id",
   "canceled_at",
   "created_at",
   "updated_at",

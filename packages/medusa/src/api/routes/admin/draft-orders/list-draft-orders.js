@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { defaultRelations, defaultFields } from "./"
+import { defaultFields, defaultRelations } from "./"
 
 export default async (req, res) => {
   try {
