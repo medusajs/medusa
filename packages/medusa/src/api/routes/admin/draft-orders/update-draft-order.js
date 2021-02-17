@@ -34,7 +34,7 @@ export default async (req, res) => {
     await entityManager.transaction(async manager => {
       const draftOrder = await draftOrderService
         .withTransaction(manager)
-        .retrieve(id, { select: defaultFields })
+        .retrieve(id)
 
       if (
         draftOrder.status === "completed" ||
