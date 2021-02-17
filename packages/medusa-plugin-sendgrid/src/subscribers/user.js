@@ -10,13 +10,6 @@ class UserSubscriber {
         data
       )
     })
-
-    this.eventBus_.subscribe("customer.password_reset", async (data) => {
-      await this.sendgridService_.transactionalEmail(
-        "customer.password_reset",
-        data
-      )
-    })
   }
 }
 

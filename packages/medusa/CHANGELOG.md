@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.7...@medusajs/medusa@1.1.8) (2021-02-17)
+
+
+### Bug Fixes
+
+* test ([4229e24](https://github.com/medusajs/medusa/commit/4229e241d03986039d283d98e034eaaefb50e04d))
+* use parallel relation fetching ([#173](https://github.com/medusajs/medusa/issues/173)) ([46006e4](https://github.com/medusajs/medusa/commit/46006e4b0647bada1dc2cb417766e22f65bad23e))
+
+
+### Features
+
+* notifications ([#172](https://github.com/medusajs/medusa/issues/172)) ([7308946](https://github.com/medusajs/medusa/commit/7308946e567ed4e63e1ed3d9d31b30c4f1a73f0d))
+* **medusa:** Product category, type and tags ([c4d1203](https://github.com/medusajs/medusa/commit/c4d1203155b7cc03e8892f0409efec83e030063e))
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.6...@medusajs/medusa@1.1.7) (2021-02-08)
+
+
+### Features
+
+* adds paypal ([#168](https://github.com/medusajs/medusa/issues/168)) ([#169](https://github.com/medusajs/medusa/issues/169)) ([427ae25](https://github.com/medusajs/medusa/commit/427ae25016bb3a22ebc05aa7b18017132846567c))
+
+
+
+
+
 ## [1.1.6](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.5...@medusajs/medusa@1.1.6) (2021-02-03)
 
 **Note:** Version bump only for package @medusajs/medusa
