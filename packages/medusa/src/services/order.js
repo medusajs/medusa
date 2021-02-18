@@ -553,13 +553,13 @@ class OrderService extends BaseService {
    * have been created in regards to the shipment.
    * @param {string} orderId - the id of the order that has been shipped
    * @param {string} fulfillmentId - the fulfillment that has now been shipped
-   * @param {Array<String>} trackingNumbers - array of tracking numebers
+   * @param {TrackingLink[]} trackingLinks - array of tracking numebers
    *   associated with the shipment
    * @param {Dictionary<String, String>} metadata - optional metadata to add to
    *   the fulfillment
    * @return {order} the resulting order following the update.
    */
-  async createShipment(orderId, fulfillmentId, trackingNumbers, metadata = {}) {
+  async createShipment(orderId, fulfillmentId, trackingLinks, metadata = {}) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, { relations: ["items"] })
       const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
@@ -573,7 +573,7 @@ class OrderService extends BaseService {
 
       const shipmentRes = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingNumbers, metadata)
+        .createShipment(fulfillmentId, trackingLinks, metadata)
 
       order.fulfillment_status = "shipped"
       for (const item of order.items) {
