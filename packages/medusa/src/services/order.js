@@ -328,7 +328,9 @@ class OrderService extends BaseService {
       query.select = select
     }
 
-    const raw = await orderRepo.findOneWithRelations(query.relations, query)
+    const rels = query.relations
+    delete query.relations
+    const raw = await orderRepo.findOneWithRelations(rels, query)
 
     if (!raw) {
       throw new MedusaError(
