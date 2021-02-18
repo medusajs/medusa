@@ -1,10 +1,10 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { Brackets } from "typeorm"
 
 /**
- * Handles swaps
+ * Handles draft orders
  * @implements BaseService
  */
 class DraftOrderService extends BaseService {
@@ -81,84 +81,23 @@ class DraftOrderService extends BaseService {
     const cloned = new DraftOrderService({
       manager: transactionManager,
       draftOrderRepository: this.draftOrderRepository_,
-      orderRepository: this.orderRepository_,
       paymentRepository: this.paymentRepository_,
-      paymentProviderService: this.paymentProviderService_,
-      regionService: this.regionService_,
-      eventBusService: this.eventBus_,
-      cartService: this.cartService_,
+      orderRepository: this.orderRepository_,
       totalsService: this.totalsService_,
-      productVariantService: this.productVariantService_,
       addressRepository: this.addressRepository_,
-      shippingOptionService: this.shippingOptionService_,
       lineItemService: this.lineItemService_,
+      cartService: this.cartService_,
+      customerService: this.customerService_,
+      regionService: this.regionService_,
+      paymentProviderService: this.paymentProviderService_,
+      productVariantService: this.productVariantService_,
+      shippingOptionService: this.shippingOptionService_,
+      eventBusService: this.eventBus_,
     })
 
     cloned.transactionManager_ = transactionManager
 
     return cloned
-  }
-
-  transformQueryForTotals_(config) {
-    let { select, relations } = config
-
-    if (!select) {
-      return {
-        select,
-        relations,
-        totalsToSelect: [],
-      }
-    }
-
-    const totalFields = [
-      "subtotal",
-      "tax_total",
-      "shipping_total",
-      "discount_total",
-      "total",
-    ]
-
-    const totalsToSelect = select.filter(v => totalFields.includes(v))
-    if (totalsToSelect.length > 0) {
-      const relationSet = new Set(relations)
-      relationSet.add("items")
-      relationSet.add("discounts")
-      relationSet.add("shipping_methods")
-      relationSet.add("region")
-      relations = [...relationSet]
-
-      select = select.filter(v => !totalFields.includes(v))
-    }
-
-    return {
-      relations,
-      select,
-      totalsToSelect,
-    }
-  }
-
-  decorateTotals_(draftOrder, totalsFields = []) {
-    if (totalsFields.includes("shipping_total")) {
-      draftOrder.shipping_total = this.totalsService_.getShippingTotal(
-        draftOrder
-      )
-    }
-    if (totalsFields.includes("discount_total")) {
-      draftOrder.discount_total = this.totalsService_.getDiscountTotal(
-        draftOrder
-      )
-    }
-    if (totalsFields.includes("tax_total")) {
-      draftOrder.tax_total = this.totalsService_.getTaxTotal(draftOrder)
-    }
-    if (totalsFields.includes("subtotal")) {
-      draftOrder.subtotal = this.totalsService_.getSubtotal(draftOrder)
-    }
-    if (totalsFields.includes("total")) {
-      draftOrder.total = this.totalsService_.getTotal(draftOrder)
-    }
-
-    return draftOrder
   }
 
   /**
@@ -173,32 +112,17 @@ class DraftOrderService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const query = this.buildQuery_({ id: validatedId }, config)
 
-    const query = {
-      where: { id: validatedId },
-    }
+    const draftOrder = await draftOrderRepo.findOne(query)
 
-    if (relations && relations.length > 0) {
-      query.relations = relations
-    }
-
-    if (select && select.length > 0) {
-      query.select = select
-    }
-
-    const raw = await draftOrderRepo.findOne(query)
-
-    if (!raw) {
+    if (!draftOrder) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Draft order with ${id} was not found`
       )
     }
 
-    const draftOrder = this.decorateTotals_(raw, totalsToSelect)
     return draftOrder
   }
 
@@ -252,6 +176,12 @@ class DraftOrderService extends BaseService {
     })
   }
 
+  /**
+   * Lists draft orders alongside the count
+   * @param {object} selector - query selector to filter draft orders
+   * @param {object} config - query config
+   * @return {Promise<DraftOrder[]>} draft orders
+   */
   async listAndCount(
     selector,
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
@@ -295,20 +225,7 @@ class DraftOrderService extends BaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
-
-    if (select && select.length) {
-      query.select = select
-    }
-
-    if (relations && relations.length) {
-      query.relations = relations
-    }
-
-    const [raw, count] = await draftOrderRepository.findAndCount(query)
-    const draftOrders = raw.map(r => this.decorateTotals_(r, totalsToSelect))
+    const [draftOrders, count] = await draftOrderRepository.findAndCount(query)
 
     return [draftOrders, count]
   }
@@ -317,7 +234,7 @@ class DraftOrderService extends BaseService {
    * Lists draft orders
    * @param {Object} selector - query object for find
    * @param {Object} config - configurable attributes for find
-   * @return {Promise<Array<DraftOrder>>} list of draft orders
+   * @return {Promise<DraftOrder>} list of draft orders
    */
   async list(
     selector,
@@ -330,27 +247,6 @@ class DraftOrderService extends BaseService {
     const query = this.buildQuery_(selector, config)
 
     return draftOrderRepo.find(query)
-  }
-
-  /**
-   * Confirms if the contents of a line item is covered by the inventory.
-   * To be covered a variant must either not have its inventory managed or it
-   * must allow backorders or it must have enough inventory to cover the request.
-   * If the content is made up of multiple variants it will return true if all
-   * variants can be covered. If the content consists of a single variant it will
-   * return true if the variant is covered.
-   * @param {(LineItemContent | LineItemContentArray)} - the content of the line
-   *     item
-   * @param {number} - the quantity of the line item
-   * @return {boolean} true if the inventory covers the line item.
-   */
-  async confirmInventory_(variantId, quantity) {
-    // If the line item is not stock tracked we don't have double check it
-    if (!variantId) {
-      return true
-    }
-
-    return this.productVariantService_.canCoverQuantity(variantId, quantity)
   }
 
   /**
@@ -457,6 +353,11 @@ class DraftOrderService extends BaseService {
     })
   }
 
+  /**
+   * Registers a system payment and creates an order
+   * @param {string} doId - id of draft order to register payment for
+   * @return {Promise<Order>} the created order
+   */
   async registerSystemPayment(doId) {
     return this.atomicPhase_(async manager => {
       const draftOrder = await this.retrieve(doId)
@@ -534,6 +435,12 @@ class DraftOrderService extends BaseService {
     })
   }
 
+  /**
+   * Registers a draft order as completed, when an order has been completed.
+   * @param {string} doId - id of draft order to complete
+   * @param {string} orderId - id of order completed from draft order cart
+   * @return {Promise} the created order
+   */
   async registerCartCompletion(doId, orderId) {
     return this.atomicPhase_(async manager => {
       const draftOrderRepo = manager.getCustomRepository(
