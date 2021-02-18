@@ -11,7 +11,7 @@ class TestNotiService extends NotificationService {
     return Promise.resolve();
   }
 
-  async reSendNotification() {
+  async resendNotification() {
     return Promise.resolve();
   }
 }
