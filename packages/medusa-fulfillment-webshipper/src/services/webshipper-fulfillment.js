@@ -363,9 +363,10 @@ class WebshipperFulfillmentService extends FulfillmentService {
       body.data.relationships.order
     )
     if (wsOrder.data && wsOrder.data.attributes.ext_ref) {
-      const trackingNumbers = body.data.attributes.tracking_links.map(
-        (l) => l.number
-      )
+      const trackingLinks = body.data.attributes.tracking_links.map((l) => ({
+        url: l.url,
+        tracking_number: l.number,
+      }))
       const [orderId, fulfillmentIndex] = wsOrder.data.attributes.ext_ref.split(
         "."
       )
@@ -375,7 +376,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
           return this.swapService_.createShipment(
             orderId,
             fulfillmentIndex,
-            trackingNumbers
+            trackingLinks
           )
         } else {
           const swap = await this.swapService_.retrieve(orderId.substring(1), {
@@ -385,21 +386,21 @@ class WebshipperFulfillmentService extends FulfillmentService {
           return this.swapService_.createShipment(
             swap.id,
             fulfillment.id,
-            trackingNumbers
+            trackingLinks
           )
         }
       } else if (orderId.charAt(0).toLowerCase() === "c") {
         return this.claimService_.createShipment(
           orderId,
           fulfillmentIndex,
-          trackingNumbers
+          trackingLinks
         )
       } else {
         if (fulfillmentIndex.startsWith("ful")) {
           return this.orderService_.createShipment(
             orderId,
             fulfillmentIndex,
-            trackingNumbers
+            trackingLinks
           )
         } else {
           const order = await this.orderService_.retrieve(orderId, {
@@ -411,7 +412,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
             return this.orderService_.createShipment(
               order.id,
               fulfillment.id,
-              trackingNumbers
+              trackingLinks
             )
           }
         }
