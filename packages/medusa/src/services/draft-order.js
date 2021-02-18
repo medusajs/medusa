@@ -229,6 +229,29 @@ class DraftOrderService extends BaseService {
     return draftOrder
   }
 
+  /**
+   * Deletes draft order idempotently.
+   * @param {string} draftOrderId - id of draft order to delete
+   * @return {Promise} empty promise
+   */
+  async delete(draftOrderId) {
+    return this.atomicPhase_(async manager => {
+      const draftOrderRepo = manager.getCustomRepository(
+        this.draftOrderRepository_
+      )
+
+      const draftOrder = await draftOrderRepo.findOne({
+        where: { id: draftOrderId },
+      })
+
+      if (!draftOrder) return Promise.resolve()
+
+      await draftOrderRepo.remove(draftOrder)
+
+      return Promise.resolve()
+    })
+  }
+
   async listAndCount(
     selector,
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
@@ -503,10 +526,23 @@ class DraftOrderService extends BaseService {
 
       draftOrder.status = "completed"
       draftOrder.order_id = result.id
-      console.log(draftOrder)
       await draftOrderRepo.save(draftOrder)
 
       return result
+    })
+  }
+
+  async registerCartCompletion(doId, orderId) {
+    return this.atomicPhase_(async manager => {
+      const draftOrderRepo = manager.getCustomRepository(
+        this.draftOrderRepository_
+      )
+      const draftOrder = await this.retrieve(doId)
+
+      draftOrder.status = "completed"
+      draftOrder.order_id = orderId
+
+      await draftOrderRepo.save(draftOrder)
     })
   }
 }

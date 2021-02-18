@@ -15,6 +15,11 @@ export default app => {
   route.post("/:id", middlewares.wrap(require("./update-draft-order").default))
 
   route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-draft-order").default)
+  )
+
+  route.delete(
     "/:id/line-items/:line_id",
     middlewares.wrap(require("./delete-line-item").default)
   )

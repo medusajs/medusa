@@ -40,7 +40,7 @@ export default async (req, res) => {
           .allow(0)
           .optional(),
       })
-      .required(),
+      .optional(),
     metadata: Validator.object().optional(),
     requires_shipping: Validator.boolean().default(true),
   })
