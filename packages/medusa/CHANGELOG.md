@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.8...@medusajs/medusa@1.1.9) (2021-02-18)
+
+
+### Bug Fixes
+
+* performant relations ([5659d10](https://github.com/medusajs/medusa/commit/5659d106e3be139fcf2b32b48ce4c7fa5f678a8b))
+
+
+
+
+
 ## [1.1.8](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.7...@medusajs/medusa@1.1.8) (2021-02-17)
 
 
