@@ -49,7 +49,7 @@ export class DraftOrder {
   @Column({ nullable: true })
   cart_id: string
 
-  @OneToOne(() => Cart)
+  @OneToOne(() => Cart, { onDelete: "CASCADE" })
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 

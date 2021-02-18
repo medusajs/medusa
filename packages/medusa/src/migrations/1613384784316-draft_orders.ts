@@ -21,6 +21,7 @@ export class draftOrders1613384784316 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "draft_order" ADD CONSTRAINT "FK_5bd11d0e2a9628128e2c26fd0a6" FOREIGN KEY ("cart_id") REFERENCES "cart"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "draft_order" ADD CONSTRAINT "FK_8f6dd6c49202f1466ebf21e77da" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "order" ADD CONSTRAINT "FK_727b872f86c7378474a8fa46147" FOREIGN KEY ("draft_order_id") REFERENCES "draft_order"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "store" ADD "payment_link_template" character varying`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
@@ -41,6 +42,7 @@ export class draftOrders1613384784316 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX "IDX_e87cc617a22ef4edce5601edab"`);
         await queryRunner.query(`DROP TABLE "draft_order"`);
         await queryRunner.query(`DROP TYPE "draft_order_status_enum"`);
+        await queryRunner.query(`ALTER TABLE "store" DROP COLUMN "payment_link_template"`);
     }
 
 }

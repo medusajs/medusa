@@ -50,6 +50,9 @@ export class Store {
   @Column({ nullable: true })
   swap_link_template: string
 
+  @Column({ nullable: true })
+  payment_link_template: string
+
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
