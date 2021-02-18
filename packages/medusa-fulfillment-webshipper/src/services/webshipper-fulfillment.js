@@ -523,6 +523,11 @@ class WebshipperFulfillmentService extends FulfillmentService {
       .retrieve(data.id)
       .catch(() => undefined)
 
+    // if order does not exist, we resolve gracefully
+    if (!order) {
+      return Promise.resolve()
+    }
+
     if (order) {
       if (order.data.attributes.status !== "pending") {
         if (order.data.attributes.status === "cancelled") {
