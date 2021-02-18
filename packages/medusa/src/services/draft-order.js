@@ -274,9 +274,9 @@ class DraftOrderService extends BaseService {
       delete where.display_id
 
       query.join = {
-        alias: "draftOrder",
+        alias: "draft_order",
         innerJoin: {
-          cart: "draftOrder.cart",
+          cart: "draft_order.cart",
         },
       }
 
@@ -287,7 +287,9 @@ class DraftOrderService extends BaseService {
           new Brackets(qb => {
             qb.where(`cart.email ILIKE :q`, {
               q: `%${q}%`,
-            }).orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+            }).orWhere(`draft_order.display_id::varchar(255) ILIKE :dId`, {
+              dId: `${q}`,
+            })
           })
         )
       }
