@@ -341,4 +341,68 @@ describe("/admin/draft-orders", () => {
       expect(response.data.count).toEqual(0);
     });
   });
+
+  describe("DELETE /admin/draft-orders/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        await draftOrderSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "payment_provider"`);
+      await manager.query(`DELETE FROM "payment_session"`);
+      await manager.query(`UPDATE "payment" SET order_id=NULL`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`UPDATE "draft_order" SET order_id=NULL`);
+      await manager.query(`DELETE FROM "draft_order"`);
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(`DELETE FROM "address"`);
+
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'de'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("lists draft orders", async () => {
+      const api = useApi();
+
+      const response = await api
+        .delete("/admin/draft-orders/test-draft-order", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      expect(response.data).toEqual({
+        id: "test-draft-order",
+        object: "draft-order",
+        deleted: true,
+      });
+    });
+  });
 });
