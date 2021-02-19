@@ -18,15 +18,10 @@ class DraftOrderService extends BaseService {
     paymentRepository,
     orderRepository,
     eventBusService,
-    addressRepository,
     cartService,
-    customerService,
-    totalsService,
     lineItemService,
-    paymentProviderService,
     productVariantService,
     shippingOptionService,
-    regionService,
   }) {
     super()
 
@@ -42,26 +37,11 @@ class DraftOrderService extends BaseService {
     /** @private @const {OrderRepository} */
     this.orderRepository_ = orderRepository
 
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
-
-    /** @private @const {AddressRepository} */
-    this.addressRepository_ = addressRepository
-
     /** @private @const {LineItemService} */
     this.lineItemService_ = lineItemService
 
     /** @private @const {CartService} */
     this.cartService_ = cartService
-
-    /** @private @const {CustomerService} */
-    this.customerService_ = customerService
-
-    /** @private @const {RegionService} */
-    this.regionService_ = regionService
-
-    /** @private @const {PaymentProviderService} */
-    this.paymentProviderService_ = paymentProviderService
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
@@ -83,13 +63,8 @@ class DraftOrderService extends BaseService {
       draftOrderRepository: this.draftOrderRepository_,
       paymentRepository: this.paymentRepository_,
       orderRepository: this.orderRepository_,
-      totalsService: this.totalsService_,
-      addressRepository: this.addressRepository_,
       lineItemService: this.lineItemService_,
       cartService: this.cartService_,
-      customerService: this.customerService_,
-      regionService: this.regionService_,
-      paymentProviderService: this.paymentProviderService_,
       productVariantService: this.productVariantService_,
       shippingOptionService: this.shippingOptionService_,
       eventBusService: this.eventBus_,
@@ -103,6 +78,7 @@ class DraftOrderService extends BaseService {
   /**
    * Retrieves a draft order with the given id.
    * @param {string} id - id of the draft order to retrieve
+   * @param {object} config - query object for findOne
    * @return {Promise<DraftOrder>} the draft order
    */
   async retrieve(id, config = {}) {
@@ -129,19 +105,17 @@ class DraftOrderService extends BaseService {
   /**
    * Retrieves a draft order based on its associated cart id
    * @param {string} cartId - cart id that the draft orders's cart has
+   * * @param {object} config - query object for findOne
    * @return {Promise<DraftOrder>} the draft order
    */
-  async retrieveByCartId(cartId, relations = []) {
+  async retrieveByCartId(cartId, config = {}) {
     const draftOrderRepo = this.manager_.getCustomRepository(
       this.draftOrderRepository_
     )
 
-    const draftOrder = await draftOrderRepo.findOne({
-      where: {
-        cart_id: cartId,
-      },
-      relations,
-    })
+    const query = this.buildQuery_({ cart_id: cartId }, config)
+
+    const draftOrder = await draftOrderRepo.findOne(query)
 
     if (!draftOrder) {
       throw new MedusaError(
