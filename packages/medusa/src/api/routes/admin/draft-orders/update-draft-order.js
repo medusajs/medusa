@@ -12,7 +12,6 @@ export default async (req, res) => {
       .optional(),
     billing_address: Validator.object().optional(),
     shipping_address: Validator.object().optional(),
-
     discounts: Validator.array()
       .items({
         code: Validator.string(),
@@ -29,36 +28,24 @@ export default async (req, res) => {
   try {
     const draftOrderService = req.scope.resolve("draftOrderService")
     const cartService = req.scope.resolve("cartService")
-    const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
-      const draftOrder = await draftOrderService
-        .withTransaction(manager)
-        .retrieve(id)
+    const draftOrder = await draftOrderService.retrieve(id)
 
-      if (
-        draftOrder.status === "completed" ||
-        draftOrder.status === "awaiting"
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "You are only allowed to update open draft orders"
-        )
-      }
+    if (draftOrder.status === "completed" || draftOrder.status === "awaiting") {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You are only allowed to update open draft orders"
+      )
+    }
 
-      await cartService
-        .withTransaction(manager)
-        .update(draftOrder.cart_id, value)
+    await cartService.update(draftOrder.cart_id, value)
 
-      draftOrder.cart = await cartService
-        .withTransaction(manager)
-        .retrieve(draftOrder.cart_id, {
-          relations: defaultCartRelations,
-          select: defaultCartFields,
-        })
-
-      res.status(200).json({ draft_order: draftOrder })
+    draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
+      relations: defaultCartRelations,
+      select: defaultCartFields,
     })
+
+    res.status(200).json({ draft_order: draftOrder })
   } catch (err) {
     throw err
   }

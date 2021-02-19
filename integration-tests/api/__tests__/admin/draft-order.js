@@ -141,6 +141,58 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200);
     });
 
+    it("creates a draft order with product variant with custom price", async () => {
+      const api = useApi();
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address_id: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+            unit_price: 10000000,
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      };
+
+      const response = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      const created = await api
+        .get(`/admin/draft-orders/${response.data.draft_order.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(created.data.draft_order.cart.items[0]).toEqual(
+        expect.objectContaining({
+          variant_id: "test-variant",
+          unit_price: 10000000,
+        })
+      );
+    });
+
     it("creates a draft order with created shipping address", async () => {
       const api = useApi();
 
@@ -239,7 +291,6 @@ describe("/admin/draft-orders", () => {
         await adminSeeder(dbConnection);
         await draftOrderSeeder(dbConnection);
       } catch (err) {
-        console.log(err);
         throw err;
       }
     });
@@ -334,8 +385,6 @@ describe("/admin/draft-orders", () => {
         });
 
       expect(response.status).toEqual(200);
-
-      console.log(response.data.draft_orders);
 
       expect(response.data.draft_orders).toEqual([]);
       expect(response.data.count).toEqual(0);
