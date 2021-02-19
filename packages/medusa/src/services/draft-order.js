@@ -290,7 +290,8 @@ class DraftOrderService extends BaseService {
               item.variant_id,
               data.region_id,
               item.quantity,
-              item.metadata
+              item.metadata,
+              item.unit_price
             )
 
           const variant = await this.productVariantService_
@@ -322,88 +323,6 @@ class DraftOrderService extends BaseService {
           })
         }
       }
-
-      return result
-    })
-  }
-
-  /**
-   * Registers a system payment and creates an order
-   * @param {string} doId - id of draft order to register payment for
-   * @return {Promise<Order>} the created order
-   */
-  async registerSystemPayment(doId) {
-    return this.atomicPhase_(async manager => {
-      const draftOrder = await this.retrieve(doId)
-
-      const draftOrderCart = await this.cartService_
-        .withTransaction(manager)
-        .retrieve(draftOrder.cart_id, {
-          select: ["total"],
-          relations: ["discounts", "shipping_methods", "region", "items"],
-        })
-
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      const draftOrderRepo = manager.getCustomRepository(
-        this.draftOrderRepository_
-      )
-
-      const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
-
-      const created = paymentRepo.create({
-        provider_id: "system",
-        amount: draftOrderCart.total,
-        currency_code: draftOrderCart.region.currency_code,
-        data: {},
-      })
-
-      const toCreate = {
-        payment_status: "awaiting",
-        discounts: draftOrderCart.discounts,
-        region_id: draftOrderCart.region_id,
-        email: draftOrderCart.email,
-        customer_id: draftOrderCart.customer_id,
-        draft_order_id: draftOrder.id,
-        cart_id: draftOrderCart.id,
-        tax_rate: draftOrderCart.region.tax_rate,
-        currency_code: draftOrderCart.region.currency_code,
-        metadata: draftOrderCart.metadata || {},
-        payments: [created],
-      }
-
-      if (draftOrderCart.shipping_address_id) {
-        toCreate.shipping_address_id = draftOrderCart.shipping_address_id
-      }
-
-      if (draftOrderCart.billing_address_id) {
-        toCreate.billing_address_id = draftOrderCart.billing_address_id
-      }
-
-      if (draftOrderCart.shipping_methods) {
-        toCreate.shipping_methods = draftOrderCart.shipping_methods
-      }
-
-      const o = orderRepo.create(toCreate)
-
-      const result = await orderRepo.save(o)
-
-      if (draftOrderCart.shipping_methods) {
-        for (const method of draftOrderCart.shipping_methods) {
-          await this.shippingOptionService_
-            .withTransaction(manager)
-            .updateShippingMethod(method.id, { order_id: result.id })
-        }
-      }
-
-      for (const item of draftOrderCart.items) {
-        await this.lineItemService_
-          .withTransaction(manager)
-          .update(item.id, { order_id: result.id })
-      }
-
-      draftOrder.status = "completed"
-      draftOrder.order_id = result.id
-      await draftOrderRepo.save(draftOrder)
 
       return result
     })

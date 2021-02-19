@@ -43,7 +43,8 @@ export default async (req, res) => {
           value.variant_id,
           draftOrder.cart.region_id,
           value.quantity,
-          value.metadata
+          value.metadata,
+          value.unit_price
         )
 
         await cartService

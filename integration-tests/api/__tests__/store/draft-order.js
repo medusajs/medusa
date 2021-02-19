@@ -46,11 +46,12 @@ describe("/store/carts (draft-orders)", () => {
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "draft_order"`);
       await manager.query(`DELETE FROM "payment_provider"`);
       await manager.query(`DELETE FROM "payment_session"`);
       await manager.query(`UPDATE "payment" SET order_id=NULL`);
+      await manager.query(`UPDATE "draft_order" SET order_id=NULL`);
       await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "draft_order"`);
       await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "payment"`);
       await manager.query(`DELETE FROM "customer"`);

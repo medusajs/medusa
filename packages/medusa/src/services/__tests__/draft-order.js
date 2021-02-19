@@ -179,7 +179,8 @@ describe("DraftOrderService", () => {
         "test-variant",
         "test-region",
         2,
-        {}
+        {},
+        undefined
       )
 
       expect(lineItemService.create).toHaveBeenCalledTimes(1)
@@ -214,125 +215,6 @@ describe("DraftOrderService", () => {
           `Items are required to create a draft order`
         )
       }
-    })
-  })
-
-  describe("registerSystemPayment", () => {
-    let result
-
-    const shippingOptionService = {
-      update: jest.fn(),
-      withTransaction: function() {
-        return this
-      },
-    }
-
-    const lineItemService = {
-      update: jest.fn(),
-      withTransaction: function() {
-        return this
-      },
-    }
-
-    const cartService = {
-      retrieve: jest.fn().mockImplementation(data =>
-        Promise.resolve({
-          id: "test-cart",
-          total: 1000,
-          region_id: "test-region",
-          region: {
-            id: "test-region",
-            currency_code: "usd",
-            tax_rate: 0,
-          },
-          items: [{ id: "test-item" }],
-          discounts: [],
-          email: "oli@test.dk",
-          customer_id: "test-customer",
-          draft_order_id: "test-draft-order",
-          metadata: {},
-        })
-      ),
-      withTransaction: function() {
-        return this
-      },
-    }
-
-    const draftOrderRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({ id: "test-draft-order", cart_id: "test-cart" }),
-    })
-    const orderRepository = MockRepository({
-      create: d => ({ id: "test-order", ...d }),
-    })
-    const paymentRepository = MockRepository({
-      create: d => ({
-        ...d,
-      }),
-    })
-
-    const draftOrderService = new DraftOrderService({
-      manager: MockManager,
-      cartService,
-      shippingOptionService,
-      lineItemService,
-      paymentRepository,
-      draftOrderRepository,
-      orderRepository,
-      eventBusService,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
-    it("registers system payment", async () => {
-      await draftOrderService.registerSystemPayment("test-draft-order")
-
-      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
-      expect(cartService.retrieve).toHaveBeenCalledWith("test-cart", {
-        relations: ["discounts", "shipping_methods", "region", "items"],
-        select: ["total"],
-      })
-
-      expect(paymentRepository.create).toHaveBeenCalledTimes(1)
-      expect(paymentRepository.create).toHaveBeenCalledWith({
-        provider_id: "system",
-        amount: 1000,
-        currency_code: "usd",
-        data: {},
-      })
-
-      expect(orderRepository.create).toHaveBeenCalledTimes(1)
-      expect(orderRepository.create).toHaveBeenCalledWith({
-        cart_id: "test-cart",
-        discounts: [],
-        region_id: "test-region",
-        discounts: [],
-        email: "oli@test.dk",
-        customer_id: "test-customer",
-        draft_order_id: "test-draft-order",
-        tax_rate: 0,
-        payment_status: "awaiting",
-        currency_code: "usd",
-        metadata: {},
-        payments: [
-          {
-            provider_id: "system",
-            amount: 1000,
-            currency_code: "usd",
-            data: {},
-          },
-        ],
-      })
-
-      expect(draftOrderRepository.save).toHaveBeenCalledTimes(1)
-      expect(draftOrderRepository.save).toHaveBeenCalledWith({
-        id: "test-draft-order",
-        cart_id: "test-cart",
-        order_id: "test-order",
-        status: "completed",
-      })
     })
   })
 })

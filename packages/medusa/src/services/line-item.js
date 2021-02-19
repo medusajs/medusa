@@ -89,17 +89,22 @@ class LineItemService extends BaseService {
     return lineItem
   }
 
-  async generate(variantId, regionId, quantity, metadata = {}) {
+  async generate(variantId, regionId, quantity, metadata = {}, unitPrice) {
     const variant = await this.productVariantService_.retrieve(variantId, {
       relations: ["product"],
     })
 
     const region = await this.regionService_.retrieve(regionId)
 
-    const price = await this.productVariantService_.getRegionPrice(
-      variant.id,
-      region.id
-    )
+    let price
+    if (unitPrice) {
+      price = unitPrice
+    } else {
+      price = await this.productVariantService_.getRegionPrice(
+        variant.id,
+        region.id
+      )
+    }
 
     const toCreate = {
       unit_price: price,
