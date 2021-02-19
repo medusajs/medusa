@@ -153,6 +153,7 @@ describe("DraftOrderService", () => {
         shipping_address_id: "test-shipping",
         billing_address_id: "test-billing",
         customer_id: "test-customer",
+        type: "draft_order",
       })
 
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
@@ -168,6 +169,7 @@ describe("DraftOrderService", () => {
             shipping_address_id: "test-shipping",
             billing_address_id: "test-billing",
             customer_id: "test-customer",
+            type: "draft_order",
           },
         }
       )
@@ -328,6 +330,7 @@ describe("DraftOrderService", () => {
       expect(draftOrderRepository.save).toHaveBeenCalledWith({
         id: "test-draft-order",
         cart_id: "test-cart",
+        order_id: "test-order",
         status: "completed",
       })
     })
