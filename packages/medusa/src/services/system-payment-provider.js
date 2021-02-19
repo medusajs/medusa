@@ -11,6 +11,10 @@ class SystemProviderService extends BaseService {
     return {}
   }
 
+  async getStatus(_) {
+    return "authorized"
+  }
+
   async getPaymentData(_) {
     return {}
   }

@@ -52,25 +52,18 @@ export default async (req, res) => {
 
   try {
     const draftOrderService = req.scope.resolve("draftOrderService")
-    const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
-      const requiresShipping = value.requires_shipping
-      delete value.requires_shipping
+    const requiresShipping = value.requires_shipping
+    delete value.requires_shipping
 
-      let draftOrder = await draftOrderService
-        .withTransaction(manager)
-        .create(value, requiresShipping)
+    let draftOrder = await draftOrderService.create(value, requiresShipping)
 
-      draftOrder = await draftOrderService
-        .withTransaction(manager)
-        .retrieve(draftOrder.id, {
-          relations: defaultRelations,
-          select: defaultFields,
-        })
-
-      res.status(200).json({ draft_order: draftOrder })
+    draftOrder = await draftOrderService.retrieve(draftOrder.id, {
+      relations: defaultRelations,
+      select: defaultFields,
     })
+
+    res.status(200).json({ draft_order: draftOrder })
   } catch (err) {
     throw err
   }

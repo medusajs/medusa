@@ -17,7 +17,6 @@ import { Cart } from "./cart"
 import { Swap } from "./swap"
 import { Return } from "./return"
 import { ShippingOption } from "./shipping-option"
-import { DraftOrder } from "./draft-order"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
