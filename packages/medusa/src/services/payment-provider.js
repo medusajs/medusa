@@ -225,7 +225,6 @@ class PaymentProviderService extends BaseService {
     try {
       let provider
       if (providerId === "system") {
-        console.log(this.container_)
         provider = this.container_[`systemPaymentProviderService`]
       } else {
         provider = this.container_[`pp_${providerId}`]
