@@ -96,13 +96,15 @@ class ContentfulService extends BaseService {
             },
           })
 
-          await asset.processForAllLocales()
+          const finalAsset = await asset
+            .processForAllLocales()
+            .then((ast) => ast.publish())
 
           assets.push({
             sys: {
               type: "Link",
               linkType: "Asset",
-              id: asset.sys.id,
+              id: finalAsset.sys.id,
             },
           })
         })
@@ -168,9 +170,9 @@ class ContentfulService extends BaseService {
         fields,
       })
 
-      const ignoreIds = (await this.getIgnoreIds_("product")) || []
-      ignoreIds.push(product.id)
-      this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      // const ignoreIds = (await this.getIgnoreIds_("product")) || []
+      // ignoreIds.push(product.id)
+      // this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
       return result
     } catch (error) {
       throw error
@@ -208,40 +210,57 @@ class ContentfulService extends BaseService {
         }
       )
 
-      const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
-      ignoreIds.push(v.id)
-      this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
+      // ignoreIds.push(v.id)
+      // this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
       return result
     } catch (error) {
       throw error
     }
   }
 
-  async updateProductInContentful(product) {
-    try {
-      const ignoreIds = (await this.getIgnoreIds_("product")) || []
+  async updateProductInContentful(data) {
+    const updateFields = [
+      "variants",
+      "options",
+      "tags",
+      "title",
+      "tags",
+      "type",
+      "type_id",
+      "collection",
+      "collection_id",
+    ]
 
-      if (ignoreIds.includes(product.id)) {
-        const newIgnoreIds = ignoreIds.filter((id) => id !== product.id)
-        this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
-        return
-      } else {
-        ignoreIds.push(product.id)
-        this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
-      }
+    const found = data.fields.find((f) => updateFields.includes(f))
+    if (!found) {
+      return
+    }
+
+    try {
+      // const ignoreIds = (await this.getIgnoreIds_("product")) || []
+
+      // if (ignoreIds.includes(product.id)) {
+      //   const newIgnoreIds = ignoreIds.filter((id) => id !== product.id)
+      //   this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
+      //   return
+      // } else {
+      //   ignoreIds.push(product.id)
+      //   this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      // }
+
+      const p = await this.productService_.retrieve(data.id, {
+        relations: ["options", "variants", "type", "collection", "tags"],
+      })
 
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let productEntry = undefined
       try {
-        productEntry = await environment.getEntry(product.id)
+        productEntry = await environment.getEntry(data.id)
       } catch (error) {
-        return this.createProductInContentful(product)
+        return this.createProductInContentful(p)
       }
-
-      const p = await this.productService_.retrieve(product.id, {
-        relations: ["options", "variants", "type", "collection", "tags"],
-      })
 
       const variantEntries = await this.getVariantEntries_(p.variants)
       const variantLinks = this.getVariantLinks_(variantEntries)
@@ -303,19 +322,19 @@ class ContentfulService extends BaseService {
 
   async updateProductVariantInContentful(variant) {
     try {
-      const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
+      // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
 
-      if (ignoreIds.includes(variant.id)) {
-        const newIgnoreIds = ignoreIds.filter((id) => id !== variant.id)
-        this.redis_.set(
-          "product_variant_ignore_ids",
-          JSON.stringify(newIgnoreIds)
-        )
-        return
-      } else {
-        ignoreIds.push(variant.id)
-        this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
-      }
+      //if (ignoreIds.includes(variant.id)) {
+      //  const newIgnoreIds = ignoreIds.filter((id) => id !== variant.id)
+      //  this.redis_.set(
+      //    "product_variant_ignore_ids",
+      //    JSON.stringify(newIgnoreIds)
+      //  )
+      //  return
+      //} else {
+      //  ignoreIds.push(variant.id)
+      //  this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      //}
 
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
@@ -366,18 +385,25 @@ class ContentfulService extends BaseService {
       const environment = await this.getContentfulEnvironment_()
       const productEntry = await environment.getEntry(productId)
 
-      const ignoreIds = (await this.getIgnoreIds_("product")) || []
-      if (ignoreIds.includes(productId)) {
-        const newIgnoreIds = ignoreIds.filter((id) => id !== productId)
-        this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
-        return
-      } else {
-        ignoreIds.push(productId)
-        this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      const product = await this.productService_.retrieve(productId)
+
+      //const ignoreIds = (await this.getIgnoreIds_("product")) || []
+      //if (ignoreIds.includes(productId)) {
+      //  const newIgnoreIds = ignoreIds.filter((id) => id !== productId)
+      //  this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
+      //  return
+      //} else {
+      //  ignoreIds.push(productId)
+      //  this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
+      //}
+
+      let update = {}
+      if (product.title !== productEntry.fields.title["en-US"]) {
+        update.title = productEntry.fields.title["en-US"]
       }
 
-      let update = {
-        title: productEntry.fields.title["en-US"],
+      if (product.handle !== productEntry.fields.handle["en-US"]) {
+        update.handle = productEntry.fields.handle["en-US"]
       }
 
       // Get the thumbnail, if present
@@ -386,15 +412,16 @@ class ContentfulService extends BaseService {
           productEntry.fields.thumbnail["en-US"].sys.id
         )
 
-        update.thumbnail = thumb.fields.file["en-US"].url
+        if (thumb.fields.file["en-US"].url) {
+          if (product.thumbnail !== thumb.fields.file["en-US"].url) {
+            update.thumbnail = thumb.fields.file["en-US"].url
+          }
+        }
       }
 
-      const updatedProduct = await this.productService_.update(
-        productId,
-        update
-      )
-
-      return updatedProduct
+      if (!_.isEmpty(update)) {
+        await this.productService_.update(productId, update)
+      }
     } catch (error) {
       throw error
     }
@@ -405,18 +432,18 @@ class ContentfulService extends BaseService {
       const environment = await this.getContentfulEnvironment_()
       const variantEntry = await environment.getEntry(variantId)
 
-      const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
-      if (ignoreIds.includes(variantId)) {
-        const newIgnoreIds = ignoreIds.filter((id) => id !== variantId)
-        this.redis_.set(
-          "product_variant_ignore_ids",
-          JSON.stringify(newIgnoreIds)
-        )
-        return
-      } else {
-        ignoreIds.push(variantId)
-        this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
-      }
+      // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
+      // if (ignoreIds.includes(variantId)) {
+      //   const newIgnoreIds = ignoreIds.filter((id) => id !== variantId)
+      //   this.redis_.set(
+      //     "product_variant_ignore_ids",
+      //     JSON.stringify(newIgnoreIds)
+      //   )
+      //   return
+      // } else {
+      //   ignoreIds.push(variantId)
+      //   this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
+      // }
 
       const updatedVariant = await this.productVariantService_.update(
         variantId,
