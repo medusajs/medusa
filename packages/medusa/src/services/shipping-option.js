@@ -468,6 +468,10 @@ class ShippingOptionService extends BaseService {
         option.name = update.name
       }
 
+      if ("admin_only" in update) {
+        option.admin_only = update.admin_only
+      }
+
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const result = await optionRepo.save(option)
       return result
