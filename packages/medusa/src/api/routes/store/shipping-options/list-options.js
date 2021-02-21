@@ -13,6 +13,8 @@ export default async (req, res) => {
       query.region_id = regionId
     }
 
+    query.admin_only = false
+
     if (productIds.length) {
       const prods = await productService.list({ id: productIds })
       query.profile_id = prods.map(p => p.profile_id)
