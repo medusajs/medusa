@@ -229,7 +229,7 @@ class DraftOrderService extends BaseService {
    * @param {boolean} shippingRequired - needs shipping flag
    * @return {Promise<DraftOrder>} the created draft order
    */
-  async create(data, shippingRequired = true) {
+  async create(data) {
     return this.atomicPhase_(async manager => {
       const draftOrderRepo = manager.getCustomRepository(
         this.draftOrderRepository_
@@ -265,22 +265,20 @@ class DraftOrderService extends BaseService {
         })
 
       let shippingMethods = []
-      let profiles = []
-      if (shippingRequired) {
-        for (const method of shipping_methods) {
-          const m = await this.shippingOptionService_
-            .withTransaction(manager)
-            .createShippingMethod(method.option_id, method.data, {
-              cart: createdCart,
-            })
 
-          shippingMethods.push(m)
-        }
+      for (const method of shipping_methods) {
+        const m = await this.shippingOptionService_
+          .withTransaction(manager)
+          .createShippingMethod(method.option_id, method.data, {
+            cart: createdCart,
+          })
 
-        profiles = shippingMethods.map(
-          ({ shipping_option }) => shipping_option.profile_id
-        )
+        shippingMethods.push(m)
       }
+
+      const profiles = shippingMethods.map(
+        ({ shipping_option }) => shipping_option.profile_id
+      )
 
       for (const item of items) {
         if (item.variant_id) {
@@ -299,12 +297,7 @@ class DraftOrderService extends BaseService {
             .retrieve(item.variant_id)
           const itemProfile = variant.product.profile_id
 
-          let hasShipping = true
-
-          // if shipping is required, ensure items can be shipped
-          if (shippingRequired) {
-            hasShipping = profiles.includes(itemProfile)
-          }
+          const hasShipping = profiles.includes(itemProfile)
 
           await this.lineItemService_.withTransaction(manager).create({
             cart_id: createdCart.id,

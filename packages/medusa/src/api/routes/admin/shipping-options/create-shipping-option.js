@@ -23,6 +23,7 @@ export default async (req, res) => {
       )
       .optional(),
     is_return: Validator.boolean().default(false),
+    admin_only: Validator.boolean().default(false),
   })
 
   const { value, error } = schema.validate(req.body)

@@ -40,9 +40,8 @@ export default async (req, res) => {
           .allow(0)
           .optional(),
       })
-      .optional(),
+      .required(),
     metadata: Validator.object().optional(),
-    requires_shipping: Validator.boolean().default(true),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -52,11 +51,7 @@ export default async (req, res) => {
 
   try {
     const draftOrderService = req.scope.resolve("draftOrderService")
-
-    const requiresShipping = value.requires_shipping
-    delete value.requires_shipping
-
-    let draftOrder = await draftOrderService.create(value, requiresShipping)
+    let draftOrder = await draftOrderService.create(value)
 
     draftOrder = await draftOrderService.retrieve(draftOrder.id, {
       relations: defaultRelations,
