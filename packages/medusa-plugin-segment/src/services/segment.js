@@ -10,11 +10,12 @@ class SegmentService extends BaseService {
    *      write_key: Segment write key given in Segment dashboard
    *    }
    */
-  constructor({ totalsService }, options) {
+  constructor({ totalsService, productService }, options) {
     super()
 
     this.totalsService_ = totalsService
     this.options_ = options
+    this.productService_ = productService
 
     this.analytics_ = new Analytics(options.write_key)
   }
@@ -129,12 +130,19 @@ class SegmentService extends BaseService {
             variant = item.variant.sku
           }
 
+          const product = await this.productService_.retrieve(
+            item.variant.product_id,
+            { relations: ["collection", "type"] }
+          )
+
           return {
             name,
             variant,
             price: lineTotal / 100 / item.quantity,
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
+            category: product.collection?.title,
+            type: product.type?.value,
             sku,
             quantity: item.quantity,
           }
