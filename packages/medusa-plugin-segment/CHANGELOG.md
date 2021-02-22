@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-next.0](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.4...medusa-plugin-segment@1.1.5-next.0) (2021-02-22)
+
+
+### Features
+
+* **medusa-plugin-segment:** adds category and type to segment events ([#179](https://github.com/medusajs/medusa/issues/179)) ([e27cf72](https://github.com/medusajs/medusa/commit/e27cf72a8ca49a6586a82dde964d559c40a4415f))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.3...medusa-plugin-segment@1.1.4) (2021-02-17)
 
 
