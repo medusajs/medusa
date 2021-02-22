@@ -20,7 +20,7 @@ const checkContentTypes = async (container) => {
     const productFields = product.fields
 
     const customProductFields = Object.keys(
-      contentfulService.options_.custom_product_fields
+      contentfulService.options_.custom_product_fields || {}
     )
     const keys = Object.values(productFields).map((f) => f.id)
 
@@ -41,7 +41,7 @@ const checkContentTypes = async (container) => {
     const variantFields = variant.fields
 
     const customVariantFields = Object.keys(
-      contentfulService.options_.custom_variant_fields
+      contentfulService.options_.custom_variant_fields || {}
     )
     const keys = Object.values(variantFields).map((f) => f.id)
 
