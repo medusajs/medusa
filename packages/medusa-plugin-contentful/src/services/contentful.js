@@ -124,7 +124,14 @@ class ContentfulService extends BaseService {
   async createProductInContentful(product) {
     try {
       const p = await this.productService_.retrieve(product.id, {
-        relations: ["variants", "options", "tags", "type", "collection"],
+        relations: [
+          "variants",
+          "options",
+          "tags",
+          "type",
+          "collection",
+          "images",
+        ],
       })
 
       const environment = await this.getContentfulEnvironment_()
@@ -144,6 +151,48 @@ class ContentfulService extends BaseService {
         [this.getCustomField("medusaId", "product")]: {
           "en-US": p.id,
         },
+      }
+
+      if (p.images.length > 0) {
+        const imageLinks = await this.createImageAssets(product)
+
+        const thumbnailAsset = await environment.createAsset({
+          fields: {
+            title: {
+              "en-US": `${p.title}`,
+            },
+            description: {
+              "en-US": "",
+            },
+            file: {
+              "en-US": {
+                contentType: "image/xyz",
+                fileName: p.thumbnail,
+                upload: p.thumbnail,
+              },
+            },
+          },
+        })
+
+        await thumbnailAsset.processForAllLocales()
+
+        const thumbnailLink = {
+          sys: {
+            type: "Link",
+            linkType: "Asset",
+            id: thumbnailAsset.sys.id,
+          },
+        }
+
+        fields.thumbnail = {
+          "en-US": thumbnailLink,
+        }
+
+        if (imageLinks) {
+          fields.images = {
+            "en-US": imageLinks,
+          }
+        }
       }
 
       if (p.type) {
@@ -254,7 +303,14 @@ class ContentfulService extends BaseService {
       }
 
       const p = await this.productService_.retrieve(product.id, {
-        relations: ["options", "variants", "type", "collection", "tags"],
+        relations: [
+          "options",
+          "variants",
+          "type",
+          "collection",
+          "tags",
+          "images",
+        ],
       })
 
       const variantEntries = await this.getVariantEntries_(p.variants)
@@ -274,6 +330,40 @@ class ContentfulService extends BaseService {
         [this.getCustomField("medusaId", "product")]: {
           "en-US": p.id,
         },
+      }
+
+      if (p.thumbnail) {
+        const thumbnailAsset = await environment.createAsset({
+          fields: {
+            title: {
+              "en-US": `${p.title}`,
+            },
+            description: {
+              "en-US": "",
+            },
+            file: {
+              "en-US": {
+                contentType: "image/xyz",
+                fileName: p.thumbnail,
+                upload: p.thumbnail,
+              },
+            },
+          },
+        })
+
+        await thumbnailAsset.processForAllLocales()
+
+        const thumbnailLink = {
+          sys: {
+            type: "Link",
+            linkType: "Asset",
+            id: thumbnailAsset.sys.id,
+          },
+        }
+
+        productEntryFields.thumbnail = {
+          "en-US": thumbnailLink,
+        }
       }
 
       if (p.type) {
