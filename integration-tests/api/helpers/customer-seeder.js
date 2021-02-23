@@ -1,4 +1,4 @@
-const { Customer } = require("@medusajs/medusa");
+const { Customer, Address } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager;
@@ -16,5 +16,12 @@ module.exports = async (connection, data = {}) => {
   await manager.insert(Customer, {
     id: "test-customer-3",
     email: "test3@email.com",
+  });
+
+  await manager.insert(Address, {
+    id: "test-address",
+    first_name: "Lebron",
+    last_name: "James",
+    customer_id: "test-customer-1",
   });
 };

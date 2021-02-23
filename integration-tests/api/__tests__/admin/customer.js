@@ -40,6 +40,7 @@ describe("/admin/customers", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "address"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(`DELETE FROM "user"`);
     });
@@ -99,11 +100,11 @@ describe("/admin/customers", () => {
       );
     });
 
-    it("lists customers with query", async () => {
+    it("lists customers with expand query", async () => {
       const api = useApi();
 
       const response = await api
-        .get("/admin/customers?q=test", {
+        .get("/admin/customers?q=test1@email.com&expand=shipping_addresses", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -113,17 +114,19 @@ describe("/admin/customers", () => {
         });
 
       expect(response.status).toEqual(200);
-      expect(response.data.count).toEqual(3);
+      expect(response.data.count).toEqual(1);
+      console.log(response.data.customers);
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-customer-1",
-          }),
-          expect.objectContaining({
-            id: "test-customer-2",
-          }),
-          expect.objectContaining({
-            id: "test-customer-3",
+            shipping_addresses: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-address",
+                first_name: "Lebron",
+                last_name: "James",
+              }),
+            ]),
           }),
         ])
       );

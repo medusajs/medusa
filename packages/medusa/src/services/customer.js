@@ -135,7 +135,7 @@ class CustomerService extends BaseService {
 
   async listAndCount(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+    config = { relations: [], skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
@@ -156,14 +156,18 @@ class CustomerService extends BaseService {
       delete where.first_name
       delete where.last_name
 
+      query.join = {
+        alias: "customer",
+      }
+
       query.where = qb => {
         qb.where(where)
 
         qb.andWhere(
           new Brackets(qb => {
-            qb.where(`first_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`last_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`email ILIKE :q`, { q: `%${q}%` })
+            qb.where(`customer.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.email ILIKE :q`, { q: `%${q}%` })
           })
         )
       }
