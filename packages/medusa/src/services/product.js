@@ -143,20 +143,20 @@ class ProductService extends BaseService {
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieve(productId, config = {}) {
-    return this.atomicPhase_(async manager => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-      const validatedId = this.validateId_(productId)
-      const query = this.buildQuery_({ id: validatedId }, config)
-      const product = await productRepo.findOne(query)
-      if (!product) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Product with id: ${productId} was not found`
-        )
-      }
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+    const validatedId = this.validateId_(productId)
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const product = await productRepo.findOne(query)
+    if (!product) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with id: ${productId} was not found`
+      )
+    }
 
-      return product
-    })
+    return product
   }
 
   /**
