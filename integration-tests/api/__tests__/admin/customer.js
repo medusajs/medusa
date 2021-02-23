@@ -60,7 +60,7 @@ describe("/admin/customers", () => {
       expect(response.status).toEqual(200);
       expect(response.data.count).toEqual(3);
       expect(response.data.customers).toEqual(
-        expect.arrayContaing(
+        expect.arrayContaining([
           expect.objectContaining({
             id: "test-customer-1",
           }),
@@ -69,8 +69,63 @@ describe("/admin/customers", () => {
           }),
           expect.objectContaining({
             id: "test-customer-3",
-          })
-        )
+          }),
+        ])
+      );
+    });
+
+    it("lists customers with specific query", async () => {
+      const api = useApi();
+
+      const response = await api
+        .get("/admin/customers?q=test2@email.com", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.count).toEqual(1);
+      expect(response.data.customers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-customer-2",
+            email: "test2@email.com",
+          }),
+        ])
+      );
+    });
+
+    it("lists customers with query", async () => {
+      const api = useApi();
+
+      const response = await api
+        .get("/admin/customers?q=test", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.count).toEqual(3);
+      expect(response.data.customers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-customer-1",
+          }),
+          expect.objectContaining({
+            id: "test-customer-2",
+          }),
+          expect.objectContaining({
+            id: "test-customer-3",
+          }),
+        ])
       );
     });
   });
