@@ -111,10 +111,27 @@ class ContentfulService extends BaseService {
     return assets
   }
 
+  getCustomField(field, type) {
+    const customOptions = this.options_[`custom_${type}_fields`]
+
+    if (customOptions) {
+      return customOptions[field] || field
+    } else {
+      return field
+    }
+  }
+
   async createProductInContentful(product) {
     try {
       const p = await this.productService_.retrieve(product.id, {
-        relations: ["variants", "options", "tags", "type", "collection"],
+        relations: [
+          "variants",
+          "options",
+          "tags",
+          "type",
+          "collection",
+          "images",
+        ],
       })
 
       const environment = await this.getContentfulEnvironment_()
@@ -122,46 +139,92 @@ class ContentfulService extends BaseService {
       const variantLinks = this.getVariantLinks_(variantEntries)
 
       const fields = {
-        title: {
+        [this.getCustomField("title", "product")]: {
           "en-US": p.title,
         },
-        variants: {
+        [this.getCustomField("variants", "product")]: {
           "en-US": variantLinks,
         },
-        options: {
+        [this.getCustomField("options", "product")]: {
           "en-US": p.options,
         },
-        objectId: {
+        [this.getCustomField("medusaId", "product")]: {
           "en-US": p.id,
         },
+      }
+
+      if (p.images.length > 0) {
+        const imageLinks = await this.createImageAssets(product)
+
+        const thumbnailAsset = await environment.createAsset({
+          fields: {
+            title: {
+              "en-US": `${p.title}`,
+            },
+            description: {
+              "en-US": "",
+            },
+            file: {
+              "en-US": {
+                contentType: "image/xyz",
+                fileName: p.thumbnail,
+                upload: p.thumbnail,
+              },
+            },
+          },
+        })
+
+        await thumbnailAsset.processForAllLocales()
+
+        const thumbnailLink = {
+          sys: {
+            type: "Link",
+            linkType: "Asset",
+            id: thumbnailAsset.sys.id,
+          },
+        }
+
+        fields.thumbnail = {
+          "en-US": thumbnailLink,
+        }
+
+        if (imageLinks) {
+          fields.images = {
+            "en-US": imageLinks,
+          }
+        }
       }
 
       if (p.type) {
         const type = {
           "en-US": p.type.value,
         }
-        fields.type = type
+
+        fields[this.getCustomField("type", "product")] = type
       }
 
       if (p.collection) {
         const collection = {
           "en-US": p.collection.title,
         }
-        fields.collection = collection
+
+        fields[this.getCustomField("collection", "product")] = collection
       }
 
       if (p.tags) {
         const tags = {
           "en-US": p.tags,
         }
-        fields.tags = tags
+
+        fields[this.getCustomField("tags", "product")] = tags
       }
 
       if (p.handle) {
         const handle = {
           "en-US": p.handle,
         }
-        fields.handle = handle
+
+        fields[this.getCustomField("handle", "product")] = handle
       }
 
       const result = await environment.createEntryWithId("product", p.id, {
@@ -189,19 +252,19 @@ class ContentfulService extends BaseService {
         v.id,
         {
           fields: {
-            title: {
+            [this.getCustomField("title", "variant")]: {
               "en-US": v.title,
             },
-            sku: {
+            [this.getCustomField("sku", "variant")]: {
               "en-US": v.sku,
             },
-            prices: {
+            [this.getCustomField("prices", "variant")]: {
               "en-US": v.prices,
             },
-            options: {
+            [this.getCustomField("options", "variant")]: {
               "en-US": v.options,
             },
-            objectId: {
+            [this.getCustomField("medusaId", "variant")]: {
               "en-US": v.id,
             },
           },
@@ -240,7 +303,14 @@ class ContentfulService extends BaseService {
       }
 
       const p = await this.productService_.retrieve(product.id, {
-        relations: ["options", "variants", "type", "collection", "tags"],
+        relations: [
+          "options",
+          "variants",
+          "type",
+          "collection",
+          "tags",
+          "images",
+        ],
       })
 
       const variantEntries = await this.getVariantEntries_(p.variants)
@@ -248,46 +318,86 @@ class ContentfulService extends BaseService {
 
       const productEntryFields = {
         ...productEntry.fields,
-        title: {
+        [this.getCustomField("title", "product")]: {
           "en-US": p.title,
         },
-        options: {
+        [this.getCustomField("options", "product")]: {
           "en-US": p.options,
         },
-        variants: {
+        [this.getCustomField("variants", "product")]: {
           "en-US": variantLinks,
         },
-        objectId: {
+        [this.getCustomField("medusaId", "product")]: {
           "en-US": p.id,
         },
+      }
+
+      if (p.thumbnail) {
+        const thumbnailAsset = await environment.createAsset({
+          fields: {
+            title: {
+              "en-US": `${p.title}`,
+            },
+            description: {
+              "en-US": "",
+            },
+            file: {
+              "en-US": {
+                contentType: "image/xyz",
+                fileName: p.thumbnail,
+                upload: p.thumbnail,
+              },
+            },
+          },
+        })
+
+        await thumbnailAsset.processForAllLocales()
+
+        const thumbnailLink = {
+          sys: {
+            type: "Link",
+            linkType: "Asset",
+            id: thumbnailAsset.sys.id,
+          },
+        }
+
+        productEntryFields.thumbnail = {
+          "en-US": thumbnailLink,
+        }
       }
 
       if (p.type) {
         const type = {
           "en-US": p.type.value,
         }
-        productEntryFields.type = type
+
+        productEntryFields[this.getCustomField("type", "product")] = type
       }
 
       if (p.collection) {
         const collection = {
           "en-US": p.collection.title,
         }
-        productEntryFields.collection = collection
+
+        productEntryFields[
+          this.getCustomField("collection", "product")
+        ] = collection
       }
 
       if (p.tags) {
         const tags = {
           "en-US": p.tags,
         }
-        productEntryFields.tags = tags
+
+        productEntryFields[this.getCustomField("tags", "product")] = tags
       }
 
       if (p.handle) {
         const handle = {
           "en-US": p.handle,
         }
-        productEntryFields.handle = handle
+
+        productEntryFields[this.getCustomField("handle", "product")] = handle
       }
 
       productEntry.fields = productEntryFields
@@ -333,19 +443,19 @@ class ContentfulService extends BaseService {
 
       const variantEntryFields = {
         ...variantEntry.fields,
-        title: {
+        [this.getCustomField("title", "variant")]: {
           "en-US": v.title,
         },
-        sku: {
+        [this.getCustomField("sku", "variant")]: {
           "en-US": v.sku,
         },
-        options: {
+        [this.getCustomField("options", "variant")]: {
           "en-US": v.options,
         },
-        prices: {
+        [this.getCustomField("prices", "variant")]: {
           "en-US": v.prices,
         },
-        objectId: {
+        [this.getCustomField("medusaId", "variant")]: {
           "en-US": v.id,
         },
       }
@@ -377,7 +487,8 @@ class ContentfulService extends BaseService {
       }
 
       let update = {
-        title: productEntry.fields.title["en-US"],
+        title:
+          productEntry.fields[this.getCustomField("title", "product")]["en-US"],
       }
 
       // Get the thumbnail, if present
@@ -421,7 +532,10 @@ class ContentfulService extends BaseService {
       const updatedVariant = await this.productVariantService_.update(
         variantId,
         {
-          title: variantEntry.fields.title["en-US"],
+          title:
+            variantEntry.fields[this.getCustomField("title", "variant")][
+              "en-US"
+            ],
         }
       )
 
