@@ -133,8 +133,6 @@ class ProductService extends BaseService {
       }
     }
 
-    console.log(query)
-
     return productRepo.findWithRelations(rels, query)
   }
 
