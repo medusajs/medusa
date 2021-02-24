@@ -136,6 +136,33 @@ class ProductService extends BaseService {
     return productRepo.count()
   }
 
+  async importProducts(products) {
+    return this.atomicPhase_(async manager => {
+      const productRepository = manager.getCustomRepository(
+        this.productRepository_
+      )
+
+      let toSave = []
+      await Promise.all(
+        products.map(async product => {
+          const exists = await productRepository.findOne({
+            where: { handle: product.handle },
+          })
+
+          if (exists) {
+            const updated = { ...exists, ...product }
+            toSave.push(updated)
+          } else {
+            const created = productRepository.create(product)
+            toSave.push(created)
+          }
+        })
+      )
+
+      await productRepository.save(toSave, { chunk: toSave.length / 200 })
+    })
+  }
+
   /**
    * Gets a product by id.
    * Throws in case of DB Error and if product was not found.
