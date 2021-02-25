@@ -142,6 +142,7 @@ class SegmentService extends BaseService {
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
             category: product.collection?.title,
+            subtitle: product.subtitle,
             type: product.type?.value,
             sku,
             quantity: item.quantity,
