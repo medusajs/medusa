@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10-next.1](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.10-next.0...@medusajs/medusa@1.1.10-next.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* update-product ([0320788](https://github.com/medusajs/medusa/commit/0320788aacf93da8a8951c6a540656da1772dba4))
+
+
+
+
+
 ## [1.1.10-next.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.9...@medusajs/medusa@1.1.10-next.0) (2021-02-22)
 
 
