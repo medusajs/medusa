@@ -275,7 +275,7 @@ class SendGridService extends NotificationService {
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
-      relations: ["items"],
+      relations: ["items", "tracking_links"],
     })
 
     return {
@@ -586,7 +586,9 @@ class SendGridService extends NotificationService {
 
     const refundAmount = swap.return_order.refund_amount
 
-    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
+    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
+      relations: ["tracking_links"],
+    })
 
     return {
       swap,
@@ -611,7 +613,9 @@ class SendGridService extends NotificationService {
       relations: ["order", "order.items", "order.shipping_address"],
     })
 
-    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
+    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
+      relations: ["tracking_links"],
+    })
 
     return {
       email: claim.order.email,
