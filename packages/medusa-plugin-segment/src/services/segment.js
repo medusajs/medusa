@@ -103,7 +103,7 @@ class SegmentService extends BaseService {
       tax,
       discount,
       coupon,
-      currency: order.currency_code,
+      currency: order.currency_code.toUpperCase(),
       products: await Promise.all(
         order.items.map(async (item) => {
           let name = item.title
