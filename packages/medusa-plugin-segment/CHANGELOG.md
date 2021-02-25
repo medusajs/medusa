@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-next.3](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.2...medusa-plugin-segment@1.1.5-next.3) (2021-02-25)
+
+
+### Bug Fixes
+
+* normalize currency code ([98aa404](https://github.com/medusajs/medusa/commit/98aa404306d55f0818d48e56c51146351ebfe306))
+
+
+
+
+
 ## [1.1.5-next.2](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.1...medusa-plugin-segment@1.1.5-next.2) (2021-02-25)
 
 
