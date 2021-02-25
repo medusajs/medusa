@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-segment",
-  "version": "1.1.5-next.0+0c294b7b",
+  "version": "1.1.5-next.1",
   "description": "Segment Analytics",
   "main": "index.js",
   "repository": {
