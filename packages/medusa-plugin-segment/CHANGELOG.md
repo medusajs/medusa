@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5-next.1](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.0...medusa-plugin-segment@1.1.5-next.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* add subtitle to tracks ([0c294b7](https://github.com/medusajs/medusa/commit/0c294b7b3acbc1b873aab7e90a8e596bdac48899))
+* versioning ([262af34](https://github.com/medusajs/medusa/commit/262af34125543d9a80bf469b5d380019b9bc8d3f))
+
+
+
+
+
 ## [1.1.5-next.0](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.4...medusa-plugin-segment@1.1.5-next.0) (2021-02-22)
 
 
