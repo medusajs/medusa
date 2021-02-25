@@ -3,6 +3,7 @@ import Scrypt from "scrypt-kdf"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate customers.
@@ -130,6 +131,50 @@ class CustomerService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
     return customerRepo.find(query)
+  }
+
+  async listAndCount(
+    selector,
+    config = { relations: [], skip: 0, take: 50, order: { created_at: "DESC" } }
+  ) {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerRepository_
+    )
+
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.join = {
+        alias: "customer",
+      }
+
+      query.where = qb => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`customer.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.email ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+      }
+    }
+
+    const [customers, count] = await customerRepo.findAndCount(query)
+    return [customers, count]
   }
 
   /**
