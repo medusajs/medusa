@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.10...@medusajs/medusa@1.1.11) (2021-02-25)
+
+
+### Bug Fixes
+
+* **medusa:** Add querying func. on customer retrievals ([#181](https://github.com/medusajs/medusa/issues/181)) ([22be418](https://github.com/medusajs/medusa/commit/22be418ec132944afe469106ba4b3b92f634d240))
+
+
+
+
+
 ## [1.1.10](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.10-next.1...@medusajs/medusa@1.1.10) (2021-02-25)
 
 **Note:** Version bump only for package @medusajs/medusa
