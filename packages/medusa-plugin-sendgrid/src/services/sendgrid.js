@@ -283,6 +283,7 @@ class SendGridService extends NotificationService {
       date: shipment.shipped_at.toDateString(),
       email: order.email,
       fulfillment: shipment,
+      tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
@@ -604,6 +605,7 @@ class SendGridService extends NotificationService {
       refund_amount: `${this.humanPrice_(refundAmount)} ${currencyCode}`,
       additional_total: `${this.humanPrice_(additionalTotal)} ${currencyCode}`,
       fulfillment: shipment,
+      tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
@@ -622,6 +624,7 @@ class SendGridService extends NotificationService {
       claim,
       order: claim.order,
       fulfillment: shipment,
+      tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
