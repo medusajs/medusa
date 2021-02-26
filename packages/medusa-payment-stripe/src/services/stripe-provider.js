@@ -141,7 +141,7 @@ class StripeProviderService extends PaymentService {
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
-      amount: Math.floor(amount),
+      amount: Math.round(amount),
       currency: currency_code,
       setup_future_usage: "on_session",
       capture_method: this.options_.capture ? "automatic" : "manual",
@@ -242,12 +242,12 @@ class StripeProviderService extends PaymentService {
       if (stripeId !== sessionData.customer) {
         return this.createPayment(cart)
       } else {
-        if (cart.total && sessionData.amount === Math.floor(cart.total)) {
+        if (cart.total && sessionData.amount === Math.round(cart.total)) {
           return sessionData
         }
 
         return this.stripe_.paymentIntents.update(sessionData.id, {
-          amount: Math.floor(cart.total),
+          amount: Math.round(cart.total),
         })
       }
     } catch (error) {
@@ -309,7 +309,7 @@ class StripeProviderService extends PaymentService {
     const { id } = payment.data
     try {
       await this.stripe_.refunds.create({
-        amount: Math.floor(amountToRefund),
+        amount: Math.round(amountToRefund),
         payment_intent: id,
       })
 
