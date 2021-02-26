@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.3...medusa-plugin-sendgrid@1.1.4) (2021-02-25)
+
+
+### Bug Fixes
+
+* add tracking links to shipments ([7be4bb5](https://github.com/medusajs/medusa/commit/7be4bb5f2daa0aad805abe0f97278f53cf3af402))
+* sendgrid tracking links ([5cfc8d8](https://github.com/medusajs/medusa/commit/5cfc8d80bd3eaee93595027d0cc3ce67ae98d275))
+
+
+
+
+
 ## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.2...medusa-plugin-sendgrid@1.1.3) (2021-02-17)
 
 
