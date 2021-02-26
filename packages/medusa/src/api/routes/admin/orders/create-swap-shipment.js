@@ -23,7 +23,7 @@ export default async (req, res) => {
     await swapService.createShipment(
       swap_id,
       value.fulfillment_id,
-      value.tracking_numbers
+      value.tracking_numbers.map(n => ({ tracking_number: n }))
     )
 
     const order = await orderService.retrieve(id, {
