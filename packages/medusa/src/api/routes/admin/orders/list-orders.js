@@ -1,8 +1,16 @@
 import _ from "lodash"
-import { Not } from "typeorm"
-import { defaultRelations, defaultFields } from "./"
+import { defaultRelations, defaultFields, filterableFields } from "./"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
+  const schema = Validator.orderFilter()
+
+  const { value, error } = schema.validate(req.query)
+
+  if (error) {
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  }
+
   try {
     const orderService = req.scope.resolve("orderService")
 
@@ -25,17 +33,9 @@ export default async (req, res) => {
       expandFields = req.query.expand.split(",")
     }
 
-    if ("new" in req.query) {
-      selector = {
-        payment_status: Not("captured"),
-        fulfillment_status: Not("shipped"),
-      }
-    }
-
-    if ("requires_more" in req.query) {
-      selector = {
-        payment_status: Not("captured"),
-        fulfillment_status: Not("shipped"),
+    for (const k of filterableFields) {
+      if (k in value) {
+        selector[k] = value[k]
       }
     }
 
