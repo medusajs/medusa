@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.3...medusa-plugin-contentful@1.1.4) (2021-02-25)
+
+
+### Bug Fixes
+
+* **medusa-plugin-contentful:** Allow custom fields in plugin options ([#180](https://github.com/medusajs/medusa/issues/180)) ([587a464](https://github.com/medusajs/medusa/commit/587a464e83576833ff616bde7bb26b1bb48472fe))
+
+
+
+
+
 ## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.2...medusa-plugin-contentful@1.1.3) (2021-02-17)
 
 
