@@ -93,6 +93,17 @@ class ProductService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+
     if (q) {
       const where = query.where
 
@@ -122,7 +133,7 @@ class ProductService extends BaseService {
       }
     }
 
-    return productRepo.find(query)
+    return productRepo.findWithRelations(rels, query)
   }
 
   /**
@@ -147,8 +158,21 @@ class ProductService extends BaseService {
       this.productRepository_
     )
     const validatedId = this.validateId_(productId)
-    const query = this.buildQuery_({ id: validatedId }, config)
-    const product = await productRepo.findOne(query)
+
+    const query = { where: { id: validatedId } }
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+    const product = await productRepo.findOneWithRelations(rels, query)
+
     if (!product) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
