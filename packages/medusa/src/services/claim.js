@@ -418,7 +418,7 @@ class ClaimService extends BaseService {
     })
   }
 
-  async createShipment(id, fulfillmentId, trackingNumbers, metadata = []) {
+  async createShipment(id, fulfillmentId, trackingLinks, metadata = []) {
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
         relations: ["additional_items"],
@@ -426,7 +426,7 @@ class ClaimService extends BaseService {
 
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingNumbers, metadata)
+        .createShipment(fulfillmentId, trackingLinks, metadata)
 
       claim.fulfillment_status = "shipped"
 

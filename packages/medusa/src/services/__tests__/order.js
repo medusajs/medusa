@@ -1182,14 +1182,14 @@ describe("OrderService", () => {
       await orderService.createShipment(
         IdMap.getId("test"),
         IdMap.getId("fulfillment"),
-        ["1234", "2345"],
+        [{ tracking_number: "1234" }, { tracking_number: "2345" }],
         {}
       )
 
       expect(fulfillmentService.createShipment).toHaveBeenCalledTimes(1)
       expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
         IdMap.getId("fulfillment"),
-        ["1234", "2345"],
+        [{ tracking_number: "1234" }, { tracking_number: "2345" }],
         {}
       )
 

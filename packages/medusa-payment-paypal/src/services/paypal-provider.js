@@ -206,7 +206,7 @@ class PayPalProviderService extends PaymentService {
 
       return sessionData
     } catch (error) {
-      throw error
+      return this.createPayment(cart)
     }
   }
 
