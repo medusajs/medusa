@@ -30,6 +30,11 @@ export default async (req, res) => {
     const purchaseUnit = order.purchase_units[0]
     const cartId = purchaseUnit.custom_id
 
+    if (!cartId) {
+      res.sendStatus(200)
+      return
+    }
+
     const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
     const orderService = req.scope.resolve("orderService")
