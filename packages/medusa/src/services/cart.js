@@ -269,7 +269,9 @@ class CartService extends BaseService {
       query.select = select
     }
 
-    const raw = await cartRepo.findOne(query)
+    const rels = query.relations
+    delete query.relations
+    const raw = await cartRepo.findOneWithRelations(rels, query)
 
     if (!raw) {
       throw new MedusaError(
