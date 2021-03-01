@@ -328,10 +328,7 @@ class TotalsService extends BaseService {
   }
 
   rounded(value) {
-    const decimalPlaces = 4
-    return Number(
-      Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
-    )
+    return Math.round(value)
   }
 }
 
