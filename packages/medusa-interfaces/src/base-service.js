@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { In, FindOperator, getManager } from "typeorm"
+import { In, FindOperator, Raw } from "typeorm"
 
 /**
  * Common functionality for Services
@@ -29,7 +29,32 @@ class BaseService {
             acc[key] = In([...value])
             break
           case value !== null && typeof value === "object":
-            acc[key] = build(value)
+            const subquery = []
+
+            Object.entries(value).map(([modifier, val]) => {
+              switch (modifier) {
+                case "lt":
+                  subquery.push({ operator: "<", value: val })
+                  break
+                case "gt":
+                  subquery.push({ operator: ">", value: val })
+                  break
+                case "lte":
+                  subquery.push({ operator: "<=", value: val })
+                  break
+                case "gte":
+                  subquery.push({ operator: ">=", value: val })
+                  break
+              }
+            })
+
+            acc[key] = Raw(
+              a =>
+                subquery
+                  .map((s, index) => `${a} ${s.operator} :${index}`)
+                  .join(" AND "),
+              subquery.map(s => s.value)
+            )
             break
           default:
             acc[key] = value
