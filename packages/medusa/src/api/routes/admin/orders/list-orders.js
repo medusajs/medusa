@@ -26,6 +26,8 @@ export default async (req, res) => {
     let includeFields = []
     if ("fields" in req.query) {
       includeFields = req.query.fields.split(",")
+      // Ensure created_at is included, since we are sorting on this
+      includeFields.push("created_at")
     }
 
     let expandFields = []
@@ -52,8 +54,12 @@ export default async (req, res) => {
       listConfig
     )
 
+    let data = orders
+
     const fields = [...includeFields, ...expandFields]
-    const data = orders.map(o => _.pick(o, fields))
+    if (fields.length) {
+      data = orders.map(o => _.pick(o, fields))
+    }
 
     res.json({ orders: data, count, offset, limit })
   } catch (error) {
