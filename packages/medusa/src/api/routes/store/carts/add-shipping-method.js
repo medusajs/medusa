@@ -2,6 +2,21 @@ import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /store/carts/{id}/shipping-methods
+ * description: "Adds a shipping method to the cart."
+ * parameters:
+ *   - (path) id=* {String} The cart id.
+ *   - (body) option_id=* {String} id of the shipping option to create the method from
+ *   - (body) data {Object} Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+ * responses:
+ *  "200":
+ *    description: "A successful response"
+ *    content:
+ *      application/json:
+ *        schema:
+ *          $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

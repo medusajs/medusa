@@ -183,3 +183,27 @@ export class Cart {
     }
   }
 }
+
+/**
+ * @schema cart
+ * title: "Cart"
+ * description: "Represents a user cart"
+ * x-resourceId: cart
+ * properties:
+ *   id:
+ *     type: string
+ *   email:
+ *     type: string
+ *   billing_address_id:
+ *     type: string
+ *   billing_address:
+ *     $ref: "#/components/schemas/address"
+ *   shipping_address_id:
+ *     type: string
+ *   shipping_address:
+ *     $ref: "#/components/schemas/address"
+ *   items:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/line_item"
+ */

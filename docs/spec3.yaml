@@ -1,0 +1,10 @@
+openapi: "3.0.0"
+info: 
+  version: "1.0.0"
+  title: "medusa"
+  license: 
+    name: "MIT"
+servers: 
+  - 
+    url: "https://api.medusa-commerce.com"
+paths: {}

@@ -81,3 +81,31 @@ export class Address {
     this.id = `addr_${id}`
   }
 }
+
+/**
+ * @schema address
+ * title: "Address",
+ * description: "An address."
+ * x-resourceId: address
+ * properties:
+ *  id:
+ *    type: string
+ *  customer_id:
+ *    type: string
+ *  company: 
+ *    type: string
+ *  first_name:
+ *    type: string
+ *  last_name:
+ *    type: string
+ *  address_1:
+ *    type: string
+ *  address_2:
+ *    type: string
+ *  city:
+ *    type: string
+ *  country_code:
+ *    type: string
+ *  country:
+ *    $ref: "#/components/schemas/country"
+ */

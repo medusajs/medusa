@@ -133,3 +133,15 @@ export class LineItem {
     this.id = `item_${id}`
   }
 }
+
+/**
+ * @schema line_item
+ * x-resourceId: line_item
+ * title: "Line Item"
+ * properties:
+ *   id:
+ *     type: integer
+ *     format: int64
+ *   title:
+ *     type: string
+ */
