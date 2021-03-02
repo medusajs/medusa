@@ -11,11 +11,17 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .optional(),
+    context: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  }
+
+  const reqContext = {
+    ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+    user_agent: req.get("user-agent"),
   }
 
   try {
@@ -35,6 +41,10 @@ export default async (req, res) => {
 
       const toCreate = {
         region_id: regionId,
+        context: {
+          ...reqContext,
+          ...value.context,
+        },
       }
 
       if (req.user && req.user.customer_id) {

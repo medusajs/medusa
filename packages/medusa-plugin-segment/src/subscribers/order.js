@@ -3,15 +3,19 @@ class OrderSubscriber {
     segmentService,
     eventBusService,
     orderService,
+    cartService,
     claimService,
     returnService,
     fulfillmentService,
   }) {
     this.orderService_ = orderService
 
+    this.cartService_ = cartService
+
     this.returnService_ = returnService
 
     this.claimService_ = claimService
+
     this.fulfillmentService_ = fulfillmentService
 
     eventBusService.subscribe(
@@ -239,12 +243,34 @@ class OrderSubscriber {
         ],
       })
 
+      const eventContext = {}
+
+      if (order.cart_id) {
+        try {
+          const cart = await this.cartService_.retrieve(order.cart_id, {
+            select: ["context"],
+          })
+
+          if (cart.context && cart.context.ip) {
+            eventContext.ip = cart.context.ip
+          }
+
+          if (cart.context && cart.context.user_agent) {
+            eventContext.user_agent = cart.context.user_agent
+          }
+        } catch (err) {
+          console.log(err)
+          console.warn("Failed to gather context for order")
+        }
+      }
+
       const orderData = await segmentService.buildOrder(order)
       const orderEvent = {
         event: "Order Completed",
         userId: order.customer_id,
         properties: orderData,
         timestamp: order.created_at,
+        context: eventContext,
       }
 
       segmentService.track(orderEvent)
