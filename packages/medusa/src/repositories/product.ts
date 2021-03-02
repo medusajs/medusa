@@ -6,9 +6,17 @@ import { Product } from "../models/product"
 export class ProductRepository extends Repository<Product> {
   public async findWithRelations(
     relations: Array<keyof Product> = [],
-    optionsWithoutRelations: Omit<FindManyOptions<Product>, "relations"> = {}
+    idsOrOptionsWithoutRelations: Omit<
+      FindManyOptions<Product>,
+      "relations"
+    > = {}
   ): Promise<Product[]> {
-    const entities = await this.find(optionsWithoutRelations)
+    let entities
+    if (Array.isArray(idsOrOptionsWithoutRelations)) {
+      entities = await this.findByIds(idsOrOptionsWithoutRelations)
+    } else {
+      entities = await this.find(idsOrOptionsWithoutRelations)
+    }
     const entitiesIds = entities.map(({ id }) => id)
 
     const groupedRelations = {}
