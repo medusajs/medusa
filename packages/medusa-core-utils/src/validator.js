@@ -29,6 +29,7 @@ Joi.dateFilter = () => {
 Joi.orderFilter = () => {
   return Joi.object().keys({
     id: Joi.string(),
+    q: Joi.string(),
     status: Joi.array()
       .items(
         Joi.string().valid(
