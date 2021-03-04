@@ -1,5 +1,22 @@
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /store/carts/{id}
+ * operationId: "GetCartsCart"
+ * summary: "Retrieve a Cart"
+ * description: "Retrieves a Cart."
+ * parameters:
+ *   - (path) id=* {string} The id of the Cart.
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

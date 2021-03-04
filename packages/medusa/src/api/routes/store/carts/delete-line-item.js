@@ -1,4 +1,23 @@
 import { defaultFields, defaultRelations } from "./"
+
+/**
+ * @oas [delete] /store/carts/{id}/line-items/{line_id}
+ * operationId: DeleteCartsCartLineItemsItem
+ * summary: Delete a Line Item
+ * description: "Removes a Line Item from a Cart."
+ * parameters:
+ *   - (path) id=* {string} The id of the Cart.
+ *   - (path) line_id=* {string} The id of the Line Item.
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id, line_id } = req.params
 

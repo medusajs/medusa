@@ -4,7 +4,9 @@ import { defaultFields, defaultRelations } from "./"
 
 /**
  * @oas [post] /store/carts/{id}/shipping-methods
- * description: "Adds a shipping method to the cart."
+ * operationId: "PostCartsCartShippingMethod"
+ * description: "Adds a Shipping Method to the Cart."
+ * summary: "Add a Shipping Method"
  * parameters:
  *   - (path) id=* {String} The cart id.
  *   - (body) option_id=* {String} id of the shipping option to create the method from
@@ -15,7 +17,9 @@ import { defaultFields, defaultRelations } from "./"
  *    content:
  *      application/json:
  *        schema:
- *          $ref: "#/components/schemas/cart"
+ *          properties:
+ *            cart:
+ *              $ref: "#/components/schemas/cart"
  */
 export default async (req, res) => {
   const { id } = req.params

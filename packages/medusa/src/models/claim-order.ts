@@ -147,3 +147,82 @@ export class ClaimOrder {
     this.id = `claim_${id}`
   }
 }
+
+/**
+ * @schema claim_order
+ * title: "Claim Order"
+ * description: "Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns."
+ * x-resourceId: claim_order
+ * properties:
+ *   id:
+ *     type: string
+ *   type:
+ *     type: string
+ *     enum:
+ *       - refund
+ *       - replace
+ *   payment_status:
+ *     type: string
+ *     enum:
+ *       - na
+ *       - not_refunded
+ *       - refunded
+ *   fulfillment_status:
+ *     type: string
+ *     enum:
+ *       - not_fulfilled
+ *       - partially_fulfilled
+ *       - fulfilled
+ *       - partially_shipped
+ *       - shipped
+ *       - partially_returned
+ *       - returned
+ *       - canceled
+ *       - requires_action
+ *   claim_items:
+ *     description: "The items that have been claimed"
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/claim_item"
+ *   additional_items:
+ *     description: "Refers to the new items to be shipped when the claim order has the type `replace`"
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/line_item"
+ *   order_id:
+ *     description: "The id of the order that the claim comes from."
+ *     type: string
+ *   return_order:
+ *     description: "Holds information about the return if the claim is to be returned"
+ *     $ref: "#/components/schemas/return"
+ *   shipping_address_id:
+ *     description: "The id of the address that the new items should be shipped to"
+ *     type: string
+ *   shipping_address:
+ *     description: "The address that the new items should be shipped to"
+ *     $ref: "#/components/schemas/address"
+ *   shipping_methods:
+ *     description: "The shipping methods that the claim order will be shipped with."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/shipping_method"
+ *   fulfillments:
+ *     description: "The fulfillments of the new items to be shipped"
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/fulfillment"
+ *   refund_amount:
+ *     description: "The amount that will be refunded in conjunction with the claim"
+ *     type: integer
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ */

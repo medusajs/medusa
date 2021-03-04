@@ -143,3 +143,88 @@ export class Swap {
     this.id = `swap_${id}`
   }
 }
+
+/**
+ * @schema swap
+ * title: "Swap"
+ * description: "Swaps can be created when a Customer wishes to exchange Products that they have purchased to different Products. Swaps consist of a Return of previously purchased Products and a Fulfillment of new Products, the amount paid for the Products being returned will be used towards payment for the new Products. In the case where the amount paid for the the Products being returned exceed the amount to be paid for the new Products, a Refund will be issued for the difference."
+ * x-resourceId: swap
+ * properties:
+ *   id:
+ *     description: "The id of the Swap. This value will be prefixed with `swap_`."
+ *     type: string
+ *   fulfillment_status:
+ *     description: "The status of the Fulfillment of the Swap."
+ *     type: string
+ *     enum:
+ *       - not_fulfilled
+ *       - partially_fulfilled
+ *       - fulfilled
+ *       - partially_shipped
+ *       - shipped
+ *       - partially_returned
+ *       - returned
+ *       - canceled
+ *       - requires_action
+ *   payment_status:
+ *     description: "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount."
+ *     type: string
+ *     enum:
+ *       - not_paid
+ *       - awaiting
+ *       - captured
+ *       - canceled
+ *       - difference_refunded
+ *       - requires_action
+ *   order_id:
+ *     description: "The id of the Order where the Line Items to be returned where purchased."
+ *     type: string
+ *   additional_items:
+ *     description: "The new Line Items to ship to the Customer."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/line_item"
+ *   return_order:
+ *     description: "The Return that is issued for the return part of the Swap."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/return"
+ *   fulfillments:
+ *     description: "The Fulfillments used to send the new Line Items."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/fulfillment"
+ *   payment:
+ *     description: "The Payment authorized when the Swap requires an additional amount to be charged from the Customer."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/payment"
+ *   difference_due:
+ *     description: "The difference that is paid or refunded as a result of the Swap. May be negative when the amount paid for the returned items exceed the total of the new Products."
+ *     type: integer
+ *   shipping_address:
+ *     description: "The Address to send the new Line Items to - in most cases this will be the same as the shipping address on the Order."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/address"
+ *   shipping_methods:
+ *     description: "The Shipping Methods used to fulfill the addtional items purchased."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/shipping_method"
+ *   cart_id:
+ *     description: "The id of the Cart that the Customer will use to confirm the Swap."
+ *     type: string
+ *   confirmed_at:
+ *     description: "The date with timezone at which the Swap was confirmed by the Customer."
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     description: "The date with timezone at which the resource was created."
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     description: "An optional key-value map with additional information."
+ *     type: object
+ */
