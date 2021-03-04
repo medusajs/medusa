@@ -2,7 +2,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [post] /store/carts
+ * @oas [post] /carts
  * summary: "Create a Cart"
  * operationId: "PostCart"
  * description: "Creates a Cart within the given region and with the initial items. If no
@@ -31,6 +31,8 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity of the Product Variant to add
  *                   type: integer
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: "Successfully created a new Cart"

@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /store/carts/{id}/complete-cart
+ * @oas [post] /carts/{id}/complete-cart
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: "Completes a cart. The following steps will be performed. Payment
@@ -12,6 +12,8 @@ import { MedusaError } from "medusa-core-utils"
  *   will generate one for the request."
  * parameters:
  *   - (path) id=* {String} The Cart id.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: "If a cart was successfully authorized, but requires further

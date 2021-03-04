@@ -1,13 +1,15 @@
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [delete] /store/carts/{id}/payment-sessions/{provider_id}
+ * @oas [delete] /carts/{id}/payment-sessions/{provider_id}
  * operationId: DeleteCartsCartPaymentSessionsSession
  * summary: "Delete a Payment Session"
  * description: "Deletes a Payment Session on a Cart. May be useful if a payment has failed."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the Payment Provider used to create the Payment Session to be deleted.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

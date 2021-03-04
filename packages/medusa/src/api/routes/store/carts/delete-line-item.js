@@ -1,13 +1,15 @@
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [delete] /store/carts/{id}/line-items/{line_id}
+ * @oas [delete] /carts/{id}/line-items/{line_id}
  * operationId: DeleteCartsCartLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Cart."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

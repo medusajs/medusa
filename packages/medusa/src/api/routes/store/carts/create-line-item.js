@@ -2,7 +2,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [post] /store/carts/{id}/line-items
+ * @oas [post] /carts/{id}/line-items
  * operationId: PostCartsCartLineItems
  * summary: "Add a Line Item"
  * description: "Generates a Line Item with a given Product Variant and adds it
@@ -12,6 +12,8 @@ import { defaultFields, defaultRelations } from "./"
  *   - (body) variant_id=* {string} The id of the Product Variant to generate the Line Item from.
  *   - (body) quantity=* {integer} The quantity of the Product Variant to add to the Line Item.
  *   - (body) metadata {object} An optional key-value map with additional details about the Line Item.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

@@ -26,10 +26,12 @@ import { defaultFields, defaultRelations } from "./"
  *             description: "An email to be used on the Cart."
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
- *             $ref: "#/components/schemas/address"
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: "The Address to be used for shipping."
- *             $ref: "#/components/schemas/address"
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
  *           gift_cards:
  *             description: "An array of Gift Card codes to add to the Cart."
  *             type: array
@@ -49,6 +51,8 @@ import { defaultFields, defaultRelations } from "./"
  *           customer_id:
  *             description: "The id of the Customer to associate the Cart with."
  *             type: string
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

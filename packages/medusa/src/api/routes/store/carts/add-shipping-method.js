@@ -3,10 +3,12 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [post] /store/carts/{id}/shipping-methods
+ * @oas [post] /carts/{id}/shipping-methods
  * operationId: "PostCartsCartShippingMethod"
  * description: "Adds a Shipping Method to the Cart."
  * summary: "Add a Shipping Method"
+ * tags:
+ *   - cart
  * parameters:
  *   - (path) id=* {String} The cart id.
  *   - (body) option_id=* {String} id of the shipping option to create the method from

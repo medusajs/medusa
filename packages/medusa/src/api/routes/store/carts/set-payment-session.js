@@ -2,13 +2,15 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [post] /store/carts/{id}/payment-session
+ * @oas [post] /carts/{id}/payment-session
  * operationId: PostCartsCartPaymentSession
  * summary: Select a Payment Session
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (body) provider_id=* {string} The id of the Payment Provider.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

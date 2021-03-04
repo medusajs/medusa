@@ -1,12 +1,14 @@
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [post] /store/carts/{id}/payment-sessions
+ * @oas [post] /carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Initialize Payment Sessions"
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

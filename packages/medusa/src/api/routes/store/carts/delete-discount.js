@@ -1,13 +1,15 @@
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [delete] /store/carts/{id}/discounts/{code}
+ * @oas [delete] /carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
  * description: "Removes a Discount from a Cart."
  * summary: "Remove Discount from Cart"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) code=* {string} The unique Discount code.
+ * tags:
+ *   - cart
  * responses:
  *   200:
  *     description: OK

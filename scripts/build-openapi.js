@@ -4,23 +4,56 @@ const fs = require("fs");
 const OAS = require("oas-normalize");
 const swaggerInline = require("swagger-inline");
 
-swaggerInline(["./packages/medusa/src"], {
-  base: "./docs/spec3-base.json",
-}).then((gen) => {
-  // fs.writeFileSync("./docs/spec3.json", gen);
+// Storefront API
+swaggerInline(
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  {
+    base: "./docs/store-spec3-base.json",
+  }
+).then((gen) => {
   const oas = new OAS(gen);
   oas.validate((err, genObj) => {
     if (err) {
       console.error(err);
       return;
     }
-    fs.writeFileSync("./docs/spec3.json", JSON.stringify(genObj));
+    fs.writeFileSync("./docs/store-spec3.json", JSON.stringify(genObj));
   }, true);
 });
 
-swaggerInline(["./packages/medusa/src"], {
-  base: "./docs/spec3-base.json",
-  format: "yaml",
-}).then((gen) => {
-  fs.writeFileSync("./docs/spec3.yaml", gen);
+swaggerInline(
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  {
+    base: "./docs/store-spec3-base.json",
+    format: "yaml",
+  }
+).then((gen) => {
+  fs.writeFileSync("./docs/store-spec3.yaml", gen);
+});
+
+// Admin API
+swaggerInline(
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/admin"],
+  {
+    base: "./docs/admin-spec3-base.json",
+  }
+).then((gen) => {
+  const oas = new OAS(gen);
+  oas.validate((err, genObj) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    fs.writeFileSync("./docs/admin-spec3.json", JSON.stringify(genObj));
+  }, true);
+});
+
+swaggerInline(
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  {
+    base: "./docs/admin-spec3-base.json",
+    format: "yaml",
+  }
+).then((gen) => {
+  fs.writeFileSync("./docs/admin-spec3.yaml", gen);
 });
