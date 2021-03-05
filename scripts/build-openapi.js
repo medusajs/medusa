@@ -49,7 +49,7 @@ swaggerInline(
 });
 
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/admin"],
   {
     base: "./docs/admin-spec3-base.json",
     format: "yaml",

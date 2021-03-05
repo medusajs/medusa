@@ -1092,6 +1092,29 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
   /shipping-options:
     get:
       operationId: GetShippingOptions
@@ -1146,29 +1169,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
-  '/swaps/{cart_id}':
-    get:
-      operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
-      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart
-          schema:
-            type: string
-      tags:
-        - swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant
@@ -3490,4 +3490,32 @@ components:
           format: date-time
         metadata:
           description: An optional key-value map with additional information.
+          type: object
+    user:
+      title: User
+      description: Represents a User who can manage store settings.
+      x-resourceId: user
+      properties:
+        id:
+          description: The unique id of the User. This will be prefixed with `usr_`
+          type: string
+        email:
+          description: The email of the User
+          type: string
+        first_name:
+          type: string
+        last_name:
+          description: The Customer's billing address.
+          anyOf:
+            - $ref: '#/components/schemas/address'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
           type: object
