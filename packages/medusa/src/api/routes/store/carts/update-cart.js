@@ -25,6 +25,7 @@ export default async (req, res) => {
       })
       .optional(),
     customer_id: Validator.string().optional(),
+    context: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
