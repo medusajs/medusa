@@ -282,6 +282,7 @@ class OrderSubscriber {
         properties: orderData,
         timestamp: order.created_at,
         context: eventContext,
+        integrations,
       }
 
       segmentService.track(orderEvent)
