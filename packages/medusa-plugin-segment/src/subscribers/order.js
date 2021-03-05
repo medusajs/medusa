@@ -244,6 +244,7 @@ class OrderSubscriber {
       })
 
       const eventContext = {}
+      const integrations = {}
 
       if (order.cart_id) {
         try {
@@ -251,12 +252,22 @@ class OrderSubscriber {
             select: ["context"],
           })
 
-          if (cart.context && cart.context.ip) {
-            eventContext.ip = cart.context.ip
-          }
+          if (cart.context) {
+            if (cart.context.ip) {
+              eventContext.ip = cart.context.ip
+            }
 
-          if (cart.context && cart.context.user_agent) {
-            eventContext.user_agent = cart.context.user_agent
+            if (cart.context.user_agent) {
+              eventContext.user_agent = cart.context.user_agent
+            }
+
+            if (segmentService.options_ && segmentService.options_.use_ga_id) {
+              if (cart.context.ga_id) {
+                integrations["Google Analytics"] = {
+                  clientId: cart.context.ga_id,
+                }
+              }
+            }
           }
         } catch (err) {
           console.log(err)
