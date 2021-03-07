@@ -1318,6 +1318,16 @@ paths:
           description: The id of the Claim.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
       tags:
         - order
       responses:
@@ -1329,16 +1339,6 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: !<tag:yaml.org,2002:js/undefined> ''
-              properties:
-                metadata:
-                  type: object
-                  description: An additional set of key-value pairs for the Fulfillment.
   '/orders/{id}/swaps/{swap_id}/fulfillments':
     post:
       operationId: PostOrdersOrderSwapsSwapFulfillments

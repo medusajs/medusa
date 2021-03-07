@@ -9,7 +9,14 @@ import { defaultRelations, defaultFields } from "./"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) claim_id=* {string} The id of the Claim.
- *   - (body) metadata {object} An additional set of key-value pairs for the Fulfillment.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           metadata:
+ *             description: An optional set of key-value pairs to hold additional information.
+ *             type: object
  * tags:
  *   - order
  * responses:
