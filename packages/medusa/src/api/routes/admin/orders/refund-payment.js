@@ -1,6 +1,28 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /orders/{id}/refunds
+ * operationId: "PostOrdersOrderRefunds"
+ * summary: "Create a Refund"
+ * description: "Issues a Refund."
+ * parameters:
+ *   - (path) id=* {string} The id of the Order.
+ *   - (body) amount=* {integer} The amount to refund.
+ *   - (body) reason=* {string} The reason for the Refund.
+ *   - (body) note {string} A note with additional details about the Refund.
+ * tags:
+ *   - order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const { id } = req.params
   const schema = Validator.object().keys({

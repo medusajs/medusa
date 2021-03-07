@@ -8,6 +8,7 @@ import { defaultFields, defaultRelations } from "./"
  * summary: "Add a Shipping Method"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
  * parameters:
+ *   - (path) id=* {string} The id of the Order.
  *   - (body) price=* {integer} The price (excluding VAT) that should be charged for the Shipping Method
  *   - (body) option_id=* {string} The id of the Shipping Option to create the Shipping Method from.
  *   - (body) data=* {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.

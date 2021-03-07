@@ -1,6 +1,27 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
+ * operationId: "PostOrdersOrderSwapsSwapFulfillments"
+ * summary: "Create a Swap Fulfillment"
+ * description: "Creates a Fulfillment for a Swap."
+ * parameters:
+ *   - (path) id=* {string} The id of the Order.
+ *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (body) metadata {object} An additional set of key-value pairs for the Fulfillment.
+ * tags:
+ *   - order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
