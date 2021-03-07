@@ -8,9 +8,23 @@ import { defaultRelations, defaultFields } from "./"
  * description: "Issues a Refund."
  * parameters:
  *   - (path) id=* {string} The id of the Order.
- *   - (body) amount=* {integer} The amount to refund.
- *   - (body) reason=* {string} The reason for the Refund.
- *   - (body) note {string} A note with additional details about the Refund.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - amount
+ *           - reason
+ *         properties:
+ *           amount:
+ *             description: The amount to refund.
+ *             type: integer
+ *           reason:
+ *             description: The reason for the Refund.
+ *             type: string
+ *           note:
+ *             description: A not with additional details about the Refund.
+ *             type: string
  * tags:
  *   - order
  * responses:

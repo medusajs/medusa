@@ -1554,6 +1554,23 @@ paths:
           description: The id of the Order.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - amount
+                - reason
+              properties:
+                amount:
+                  description: The amount to refund.
+                  type: integer
+                reason:
+                  description: The reason for the Refund.
+                  type: string
+                note:
+                  description: A not with additional details about the Refund.
+                  type: string
       tags:
         - order
       responses:
@@ -1565,24 +1582,6 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-                - reason
-              properties:
-                amount:
-                  type: integer
-                  description: The amount to refund.
-                reason:
-                  type: string
-                  description: The reason for the Refund.
-                note:
-                  type: string
-                  description: A note with additional details about the Refund.
   '/orders/{id}/returns':
     post:
       operationId: PostOrdersOrderReturns
