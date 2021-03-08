@@ -7,14 +7,14 @@ info:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
-  /auth:
+  /customers:
     post:
-      operationId: PostAuth
-      summary: Authenticate a User
-      description: Logs a User in and authorizes them to manage Store settings.
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
       parameters: []
       tags:
-        - auth
+        - customer
       responses:
         '200':
           description: OK
@@ -23,7 +23,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/user'
+                    $ref: '#/components/schemas/customer'
       requestBody:
         content:
           application/json:
@@ -31,20 +31,28 @@ paths:
               type: object
               required:
                 - email
-                - password
+                - first_name
+                - last_name
               properties:
                 email:
                   type: string
-                  description: The User's email.
-                password:
+                  description: The Customer's email address.
+                first_name:
                   type: string
-                  description: The User's password.
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+  '/customers/{id}':
     get:
-      operationId: GetAuth
-      summary: Get Session
-      description: Gets the currently logged in User.
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
       tags:
-        - auth
+        - customer
       responses:
         '200':
           description: OK
@@ -53,7 +61,43 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/user'
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  description: The Customer's phone number.
+                  type: object
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   /collections:
     post:
       operationId: PostCollections
@@ -196,14 +240,14 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  /customers:
+  /auth:
     post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
+      operationId: PostAuth
+      summary: Authenticate a User
+      description: Logs a User in and authorizes them to manage Store settings.
       parameters: []
       tags:
-        - customer
+        - auth
       responses:
         '200':
           description: OK
@@ -212,7 +256,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: '#/components/schemas/user'
       requestBody:
         content:
           application/json:
@@ -220,28 +264,20 @@ paths:
               type: object
               required:
                 - email
-                - first_name
-                - last_name
+                - password
               properties:
                 email:
                   type: string
-                  description: The Customer's email address.
-                first_name:
+                  description: The User's email.
+                password:
                   type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-  '/customers/{id}':
+                  description: The User's password.
     get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
+      operationId: GetAuth
+      summary: Get Session
+      description: Gets the currently logged in User.
       tags:
-        - customer
+        - auth
       responses:
         '200':
           description: OK
@@ -250,43 +286,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  description: The Customer's phone number.
-                  type: object
-      tags:
-        - customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: '#/components/schemas/user'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -1725,6 +1725,1462 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+  '/products/{id}/options':
+    post:
+      operationId: PostProductsProductOptions
+      summary: Add an Option
+      description: Adds a Product Option to a Product
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  description: >-
+                    The title the Product Option will be identified by i.e.
+                    "Size"
+                  type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    post:
+      operationId: PostProducts
+      summary: Create a Product
+      description: Creates a Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  description: The title of the Product
+                  type: string
+                subtitle:
+                  description: The subtitle of the Product
+                  type: string
+                description:
+                  description: A description of the Product.
+                  type: string
+                is_giftcard:
+                  description: >-
+                    A flag to indicate if the Product represents a Gift Card.
+                    Purchasing Products with this flag set to `true` will result
+                    in a Gift Card being created.
+                  type: boolean
+                images:
+                  description: Images of the Product.
+                  type: array
+                  items:
+                    type: string
+                thumbnail:
+                  description: The thumbnail to use for the Product.
+                  type: string
+                handle:
+                  description: A unique handle to identify the Product by.
+                  type: string
+                type:
+                  description: The Product Type to associate the Product with.
+                  type: object
+                  properties:
+                    value:
+                      description: The value of the Product Type.
+                      type: string
+                collection_id:
+                  description: The id of the Collection the Product should belong to.
+                  type: string
+                tags:
+                  description: Tags to associate the Product with.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of an existing Tag.
+                        type: string
+                      value:
+                        description: 'The value of the Tag, these will be upserted.'
+                        type: string
+                options:
+                  description: >-
+                    The Options that the Product should have. These define on
+                    which properties the Product's Product Variants will differ.
+                  type: array
+                  items:
+                    properties:
+                      title:
+                        description: The title to identify the Product Option by.
+                        type: string
+                variants:
+                  description: A list of Product Variants to create with the Product.
+                  type: array
+                  items:
+                    properties:
+                      title:
+                        description: The title to identify the Product Variant by.
+                        type: string
+                      sku:
+                        description: The unique SKU for the Product Variant.
+                        type: string
+                      ean:
+                        description: The EAN number of the item.
+                        type: string
+                      upc:
+                        description: The UPC number of the item.
+                        type: string
+                      barcode:
+                        description: A generic GTIN field for the Product Variant.
+                        type: string
+                      hs_code:
+                        description: The Harmonized System code for the Product Variant.
+                        type: string
+                      inventory_quantity:
+                        description: The amount of stock kept for the Product Variant.
+                        type: integer
+                      allow_backorder:
+                        description: >-
+                          Whether the Product Variant can be purchased when out
+                          of stock.
+                        type: boolean
+                      manage_inventory:
+                        description: >-
+                          Whether Medusa should keep track of the inventory for
+                          this Product Variant.
+                        type: boolean
+                      weight:
+                        description: The wieght of the Product Variant.
+                        type: string
+                      length:
+                        description: The length of the Product Variant.
+                        type: string
+                      height:
+                        description: The height of the Product Variant.
+                        type: string
+                      width:
+                        description: The width of the Product Variant.
+                        type: string
+                      origin_country:
+                        description: The country of origin of the Product Variant.
+                        type: string
+                      mid_code:
+                        description: >-
+                          The Manufacturer Identification code for the Product
+                          Variant.
+                        type: string
+                      material:
+                        description: The material composition of the Product Variant.
+                        type: string
+                      metadata:
+                        description: >-
+                          An optional set of key-value pairs with additional
+                          information.
+                        type: object
+                      prices:
+                        type: array
+                        items:
+                          properties:
+                            region_id:
+                              description: >-
+                                The id of the Region for which the price is
+                                used.
+                              type: string
+                            currency_code:
+                              description: >-
+                                The 3 character ISO currency code for which the
+                                price will be used.
+                              type: string
+                            amount:
+                              description: The amount to charge for the Product Variant.
+                              type: integer
+                            sale_amount:
+                              description: >-
+                                The sale amount to charge for the Product
+                                Variant.
+                              type: integer
+                      options:
+                        type: array
+                        items:
+                          properties:
+                            value:
+                              description: >-
+                                The value to give for the Product Option at the
+                                same index in the Product's `options` field.
+                              type: string
+                weight:
+                  description: The wieght of the Product.
+                  type: string
+                length:
+                  description: The length of the Product.
+                  type: string
+                height:
+                  description: The height of the Product.
+                  type: string
+                width:
+                  description: The width of the Product.
+                  type: string
+                origin_country:
+                  description: The country of origin of the Product.
+                  type: string
+                mid_code:
+                  description: The Manufacturer Identification code for the Product.
+                  type: string
+                material:
+                  description: The material composition of the Product.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+    get:
+      operationId: GetProducts
+      summary: List Product
+      description: Retrieves a list of Product
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The number of Products.
+                    type: integer
+                  offset:
+                    description: The offset of the Product query.
+                    type: integer
+                  limit:
+                    description: The limit of the Product query.
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
+  '/products/{id}/variants':
+    post:
+      operationId: PostProductsProductVariants
+      summary: Create a Product Variant
+      description: >-
+        Creates a Product Variant. Each Product Variant must have a unique
+        combination of Product Option Values.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  description: The title to identify the Product Variant by.
+                  type: string
+                sku:
+                  description: The unique SKU for the Product Variant.
+                  type: string
+                ean:
+                  description: The EAN number of the item.
+                  type: string
+                upc:
+                  description: The UPC number of the item.
+                  type: string
+                barcode:
+                  description: A generic GTIN field for the Product Variant.
+                  type: string
+                hs_code:
+                  description: The Harmonized System code for the Product Variant.
+                  type: string
+                inventory_quantity:
+                  description: The amount of stock kept for the Product Variant.
+                  type: integer
+                allow_backorder:
+                  description: >-
+                    Whether the Product Variant can be purchased when out of
+                    stock.
+                  type: boolean
+                manage_inventory:
+                  description: >-
+                    Whether Medusa should keep track of the inventory for this
+                    Product Variant.
+                  type: boolean
+                weight:
+                  description: The wieght of the Product Variant.
+                  type: string
+                length:
+                  description: The length of the Product Variant.
+                  type: string
+                height:
+                  description: The height of the Product Variant.
+                  type: string
+                width:
+                  description: The width of the Product Variant.
+                  type: string
+                origin_country:
+                  description: The country of origin of the Product Variant.
+                  type: string
+                mid_code:
+                  description: >-
+                    The Manufacturer Identification code for the Product
+                    Variant.
+                  type: string
+                material:
+                  description: The material composition of the Product Variant.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+                prices:
+                  type: array
+                  items:
+                    properties:
+                      region_id:
+                        description: The id of the Region for which the price is used.
+                        type: string
+                      currency_code:
+                        description: >-
+                          The 3 character ISO currency code for which the price
+                          will be used.
+                        type: string
+                      amount:
+                        description: The amount to charge for the Product Variant.
+                        type: integer
+                      sale_amount:
+                        description: The sale amount to charge for the Product Variant.
+                        type: integer
+                options:
+                  type: array
+                  items:
+                    properties:
+                      option_id:
+                        description: The id of the Product Option to set the value for.
+                        type: string
+                      value:
+                        description: The value to give for the Product Option.
+                        type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+    get:
+      operationId: GetProductsProductVariants
+      summary: List a Product's Product Variants
+      description: Retrieves a list of the Product Variants associated with a Product.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_variant'
+  '/products/{id}/options/{option_id}':
+    delete:
+      operationId: DeleteProductsProductOptionsOption
+      summary: Delete a Product Option
+      description: >-
+        Deletes a Product Option. Before a Product Option can be deleted all
+        Option Values for the Product Option must be the same. You may, for
+        example, have to delete some of your variants prior to deleting the
+        Product Option
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Product Option
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                  product:
+                    $ref: '#/components/schemas/product'
+    post:
+      operationId: PostProductsProductOptionsOption
+      summary: Update a Product Option.
+      description: Updates a Product Option
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+        - in: path
+          name: option_id
+          required: true
+          description: The id of the Product Option.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  description: The title of the Product Option
+                  type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  '/products/{id}':
+    delete:
+      operationId: DeleteProductsProduct
+      summary: Delete a Product
+      description: Deletes a Product and it's associated Product Variants.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Product.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetProductsProduct
+      summary: Retrieve a Product
+      description: Retrieves a Product.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+    post:
+      operationId: PostProductsProduct
+      summary: Update a Product
+      description: Updates a Product
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  description: The title of the Product
+                  type: string
+                subtitle:
+                  description: The subtitle of the Product
+                  type: string
+                description:
+                  description: A description of the Product.
+                  type: string
+                is_giftcard:
+                  description: >-
+                    A flag to indicate if the Product represents a Gift Card.
+                    Purchasing Products with this flag set to `true` will result
+                    in a Gift Card being created.
+                  type: boolean
+                images:
+                  description: Images of the Product.
+                  type: array
+                  items:
+                    type: string
+                thumbnail:
+                  description: The thumbnail to use for the Product.
+                  type: string
+                handle:
+                  description: A unique handle to identify the Product by.
+                  type: string
+                type:
+                  description: The Product Type to associate the Product with.
+                  type: object
+                  properties:
+                    value:
+                      description: The value of the Product Type.
+                      type: string
+                collection_id:
+                  description: The id of the Collection the Product should belong to.
+                  type: string
+                tags:
+                  description: Tags to associate the Product with.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of an existing Tag.
+                        type: string
+                      value:
+                        description: 'The value of the Tag, these will be upserted.'
+                        type: string
+                options:
+                  description: >-
+                    The Options that the Product should have. These define on
+                    which properties the Product's Product Variants will differ.
+                  type: array
+                  items:
+                    properties:
+                      title:
+                        description: The title to identify the Product Option by.
+                        type: string
+                variants:
+                  description: A list of Product Variants to create with the Product.
+                  type: array
+                  items:
+                    properties:
+                      title:
+                        description: The title to identify the Product Variant by.
+                        type: string
+                      sku:
+                        description: The unique SKU for the Product Variant.
+                        type: string
+                      ean:
+                        description: The EAN number of the item.
+                        type: string
+                      upc:
+                        description: The UPC number of the item.
+                        type: string
+                      barcode:
+                        description: A generic GTIN field for the Product Variant.
+                        type: string
+                      hs_code:
+                        description: The Harmonized System code for the Product Variant.
+                        type: string
+                      inventory_quantity:
+                        description: The amount of stock kept for the Product Variant.
+                        type: integer
+                      allow_backorder:
+                        description: >-
+                          Whether the Product Variant can be purchased when out
+                          of stock.
+                        type: boolean
+                      manage_inventory:
+                        description: >-
+                          Whether Medusa should keep track of the inventory for
+                          this Product Variant.
+                        type: boolean
+                      weight:
+                        description: The wieght of the Product Variant.
+                        type: string
+                      length:
+                        description: The length of the Product Variant.
+                        type: string
+                      height:
+                        description: The height of the Product Variant.
+                        type: string
+                      width:
+                        description: The width of the Product Variant.
+                        type: string
+                      origin_country:
+                        description: The country of origin of the Product Variant.
+                        type: string
+                      mid_code:
+                        description: >-
+                          The Manufacturer Identification code for the Product
+                          Variant.
+                        type: string
+                      material:
+                        description: The material composition of the Product Variant.
+                        type: string
+                      metadata:
+                        description: >-
+                          An optional set of key-value pairs with additional
+                          information.
+                        type: object
+                      prices:
+                        type: array
+                        items:
+                          properties:
+                            region_id:
+                              description: >-
+                                The id of the Region for which the price is
+                                used.
+                              type: string
+                            currency_code:
+                              description: >-
+                                The 3 character ISO currency code for which the
+                                price will be used.
+                              type: string
+                            amount:
+                              description: The amount to charge for the Product Variant.
+                              type: integer
+                            sale_amount:
+                              description: >-
+                                The sale amount to charge for the Product
+                                Variant.
+                              type: integer
+                      options:
+                        type: array
+                        items:
+                          properties:
+                            value:
+                              description: >-
+                                The value to give for the Product Option at the
+                                same index in the Product's `options` field.
+                              type: string
+                weight:
+                  description: The wieght of the Product.
+                  type: string
+                length:
+                  description: The length of the Product.
+                  type: string
+                height:
+                  description: The height of the Product.
+                  type: string
+                width:
+                  description: The width of the Product.
+                  type: string
+                origin_country:
+                  description: The country of origin of the Product.
+                  type: string
+                mid_code:
+                  description: The Manufacturer Identification code for the Product.
+                  type: string
+                material:
+                  description: The material composition of the Product.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  '/products/{id}/variants/{variant_id}':
+    delete:
+      operationId: DeleteProductsProductVariantsVariant
+      summary: Delete a Product Variant
+      description: Deletes a Product Variant.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Product Variant.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    post:
+      operationId: PostProductsProductVariantsVariant
+      summary: Update a Product Variant
+      description: Update a Product Variant.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+        - in: path
+          name: variant_id
+          required: true
+          description: The id of the Product Variant.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  description: The title to identify the Product Variant by.
+                  type: string
+                sku:
+                  description: The unique SKU for the Product Variant.
+                  type: string
+                ean:
+                  description: The EAN number of the item.
+                  type: string
+                upc:
+                  description: The UPC number of the item.
+                  type: string
+                barcode:
+                  description: A generic GTIN field for the Product Variant.
+                  type: string
+                hs_code:
+                  description: The Harmonized System code for the Product Variant.
+                  type: string
+                inventory_quantity:
+                  description: The amount of stock kept for the Product Variant.
+                  type: integer
+                allow_backorder:
+                  description: >-
+                    Whether the Product Variant can be purchased when out of
+                    stock.
+                  type: boolean
+                manage_inventory:
+                  description: >-
+                    Whether Medusa should keep track of the inventory for this
+                    Product Variant.
+                  type: boolean
+                weight:
+                  description: The wieght of the Product Variant.
+                  type: string
+                length:
+                  description: The length of the Product Variant.
+                  type: string
+                height:
+                  description: The height of the Product Variant.
+                  type: string
+                width:
+                  description: The width of the Product Variant.
+                  type: string
+                origin_country:
+                  description: The country of origin of the Product Variant.
+                  type: string
+                mid_code:
+                  description: >-
+                    The Manufacturer Identification code for the Product
+                    Variant.
+                  type: string
+                material:
+                  description: The material composition of the Product Variant.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+                prices:
+                  type: array
+                  items:
+                    properties:
+                      region_id:
+                        description: The id of the Region for which the price is used.
+                        type: string
+                      currency_code:
+                        description: >-
+                          The 3 character ISO currency code for which the price
+                          will be used.
+                        type: string
+                      amount:
+                        description: The amount to charge for the Product Variant.
+                        type: integer
+                      sale_amount:
+                        description: The sale amount to charge for the Product Variant.
+                        type: integer
+                options:
+                  type: array
+                  items:
+                    properties:
+                      option_id:
+                        description: The id of the Product Option to set the value for.
+                        type: string
+                      value:
+                        description: The value to give for the Product Option.
+                        type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products/types:
+    get:
+      operationId: GetProductsTypes
+      summary: List Product Types
+      description: Retrieves a list of Product Types.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  types:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_type'
+  /returns:
+    get:
+      operationId: GetReturns
+      summary: List Returns
+      description: Retrieves a list of Returns
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  returns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return'
+  '/regions/{id}/countries':
+    post:
+      operationId: PostRegionsRegionCountries
+      summary: Add Country
+      description: Adds a Country to the list of Countries in a Region
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                country_code:
+                  description: The 2 character ISO code for the Country.
+                  type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/regions/{id}/fulfillment-providers':
+    post:
+      operationId: PostRegionsRegionFulfillmentProviders
+      summary: Add Fulfillment Provider
+      description: Adds a Fulfillment Provider to a Region
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                provider_id:
+                  description: The id of the Fulfillment Provider to add.
+                  type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/regions/{id}/payment-providers':
+    post:
+      operationId: PostRegionsRegionPaymentProviders
+      summary: Add Payment Provider
+      description: Adds a Payment Provider to a Region
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                provider_id:
+                  description: The id of the Payment Provider to add.
+                  type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /regions:
+    post:
+      operationId: PostRegions
+      summary: Create a Region
+      description: Creates a Region
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Region
+                  type: string
+                currency_code:
+                  description: The 3 character ISO currency code to use for the Region.
+                  type: string
+                tax_code:
+                  description: An optional tax code the Region.
+                  type: string
+                tax_rate:
+                  description: The tax rate to use on Orders in the Region.
+                  type: number
+                payment_providers:
+                  description: >-
+                    A list of Payment Providers that should be enabled for the
+                    Region
+                  type: array
+                  items:
+                    type: string
+                fulfillment_providers:
+                  description: >-
+                    A list of Fulfillment Providers that should be enabled for
+                    the Region
+                  type: array
+                  items:
+                    type: string
+                countries:
+                  description: A list of countries that should be included in the Region.
+                  type: array
+                  items:
+                    type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+    get:
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
+  '/regions/{id}/metadata/{key}':
+    delete:
+      operationId: DeleteRegionsRegionMetadataKey
+      summary: Delete Metadata
+      description: Deletes a metadata key.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+        - in: path
+          name: key
+          required: true
+          description: The metadata key.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/regions/{id}':
+    delete:
+      operationId: DeleteRegionsRegion
+      summary: Delete a Region
+      description: Deletes a Region.
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Region.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetRegionsRegion
+      summary: Retrieve a Region
+      description: Retrieves a Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+    post:
+      operationId: PostRegionsRegion
+      summary: Update a Region
+      description: Updates a Region
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Region
+                  type: string
+                currency_code:
+                  description: The 3 character ISO currency code to use for the Region.
+                  type: string
+                tax_code:
+                  description: An optional tax code the Region.
+                  type: string
+                tax_rate:
+                  description: The tax rate to use on Orders in the Region.
+                  type: number
+                payment_providers:
+                  description: >-
+                    A list of Payment Providers that should be enabled for the
+                    Region
+                  type: array
+                  items:
+                    type: string
+                fulfillment_providers:
+                  description: >-
+                    A list of Fulfillment Providers that should be enabled for
+                    the Region
+                  type: array
+                  items:
+                    type: string
+                countries:
+                  description: A list of countries that should be included in the Region.
+                  type: array
+                  items:
+                    type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/regions/{id}/fulfillment-options':
+    get:
+      operationId: GetRegionsRegionFulfillmentOptions
+      summary: List Fulfillment Options available in the Region
+      description: Gathers all the fulfillment options available to in the Region.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  fulfillment_options:
+                    type: array
+                    items:
+                      type: object
+  '/regions/{id}/countries/{country_code}':
+    delete:
+      operationId: PostRegionsRegionCountriesCountry
+      summary: Remove Country
+      description: Removes a Country from the list of Countries in a Region
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+        - in: path
+          name: country_code
+          required: true
+          description: The 2 character ISO code for the Country.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/regions/{id}/fulfillment-providers/{provider_id}':
+    delete:
+      operationId: PostRegionsRegionFulfillmentProvidersProvider
+      summary: Remove Fulfillment Provider
+      description: Removes a Fulfillment Provider.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: The id of the Fulfillment Provider.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/regions/{id}/payment-providers/{provider_id}':
+    delete:
+      operationId: PostRegionsRegionPaymentProvidersProvider
+      summary: Remove Payment Provider
+      description: Removes a Payment Provider.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: The id of the Payment Provider.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /shipping-options:
+    post:
+      operationId: PostShippingOptions
+      summary: Create Shipping Option
+      description: Creates a Shipping Option
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Shipping Option
+                  type: string
+                region_id:
+                  description: >-
+                    The id of the Region in which the Shipping Option will be
+                    available.
+                  type: string
+                provider_id:
+                  description: >-
+                    The id of the Fulfillment Provider that handles the Shipping
+                    Option.
+                  type: string
+                profile_id:
+                  description: >-
+                    The id of the Shipping Profile to add the Shipping Option
+                    to.
+                  type: number
+                data:
+                  description: >-
+                    The data needed for the Fulfillment Provider to handle
+                    shipping with this Shipping Option.
+                  type: object
+                price_type:
+                  description: The type of the Shipping Option price.
+                  type: string
+                  enum:
+                    - flat_rate
+                    - calculated
+                amount:
+                  description: The amount to charge for the Shipping Option.
+                  type: integer
+                requirements:
+                  description: >-
+                    The requirements that must be satisfied for the Shipping
+                    Option to be available.
+                  type: array
+                  items:
+                    properties:
+                      type:
+                        description: The type of the requirement
+                        type: string
+                        enum:
+                          - max_subtotal
+                          - min_subtotal
+                      amount:
+                        description: The amount to compare with.
+                        type: integer
+                is_return:
+                  description: Whether the Shipping Option defines a return shipment.
+                  type: boolean
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/shipping_option'
+    get:
+      operationId: GetShippingOptions
+      summary: List Shipping Options
+      description: Retrieves a list of Shipping Options.
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+  '/shipping-options/{id}':
+    delete:
+      operationId: DeleteShippingOptionsOption
+      summary: Delete a Shipping Option
+      description: Deletes a Shipping Option.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Shipping Option.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Shipping Option.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetShippingOptionsOption
+      summary: Retrieve a Shipping Option
+      description: Retrieves a Shipping Option.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Shipping Option.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/shipping_option'
+    post:
+      operationId: PostShippingOptionsOption
+      summary: Update Shipping Option
+      description: Updates a Shipping Option
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Shipping Option.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Shipping Option
+                  type: string
+                amount:
+                  description: The amount to charge for the Shipping Option.
+                  type: integer
+                requirements:
+                  description: >-
+                    The requirements that must be satisfied for the Shipping
+                    Option to be available.
+                  type: array
+                  items:
+                    properties:
+                      type:
+                        description: The type of the requirement
+                        type: string
+                        enum:
+                          - max_subtotal
+                          - min_subtotal
+                      amount:
+                        description: The amount to compare with.
+                        type: integer
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/shipping_option'
 components:
   schemas:
     address:

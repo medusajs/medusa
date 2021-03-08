@@ -1,5 +1,25 @@
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [delete] /regions/{id}/metadata/{key}
+ * operationId: "DeleteRegionsRegionMetadataKey"
+ * summary: "Delete Metadata"
+ * description: "Deletes a metadata key."
+ * parameters:
+ *   - (path) id=* {string} The id of the Region.
+ *   - (path) key=* {string} The metadata key.
+ * tags:
+ *   - Region
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             region:
+ *               $ref: "#/components/schemas/region"
+ */
 export default async (req, res) => {
   const { id, key } = req.params
 
