@@ -20,9 +20,12 @@ export default async (req, res) => {
   try {
     const giftCardService = req.scope.resolve("giftCardService")
 
-    await giftCardService.create(value)
+    const newly = await giftCardService.create({
+      ...value,
+      balance: value.value,
+    })
 
-    const giftCard = await giftCardService.retrieve(id, {
+    const giftCard = await giftCardService.retrieve(newly.id, {
       select: defaultFields,
       relations: defaultRelations,
     })
