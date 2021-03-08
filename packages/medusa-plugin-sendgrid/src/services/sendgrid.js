@@ -381,6 +381,10 @@ class SendGridService extends NotificationService {
       relations: ["region", "order"],
     })
 
+    if (!giftCard.order) {
+      return
+    }
+
     const taxRate = giftCard.region.tax_rate / 100
 
     return {
