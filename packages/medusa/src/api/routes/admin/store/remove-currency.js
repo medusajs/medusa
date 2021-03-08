@@ -1,3 +1,22 @@
+/**
+ * @oas [delete] /store/currencies/{code}
+ * operationId: "DeleteStoreCurrenciesCode"
+ * summary: "Remvoe a Currency Code"
+ * description: "Removes a Currency Code from the available currencies."
+ * parameters:
+ *   - (path) code=* {string} The 3 character ISO currency code.
+ * tags:
+ *   - Store
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             store:
+ *               $ref: "#/components/schemas/store"
+ */
 export default async (req, res) => {
   const { currency_code } = req.params
 
