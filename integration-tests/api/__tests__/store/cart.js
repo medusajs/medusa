@@ -22,7 +22,7 @@ describe("/store/carts", () => {
 
   afterAll(async () => {
     dbConnection.close();
-    dropDatabase({ databaseName: "medusa-integration" });
+    await dropDatabase({ databaseName: "medusa-integration" });
 
     medusaProcess.kill();
   });
