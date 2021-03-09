@@ -1,18 +1,18 @@
-const fs = require(`fs-extra`)
-const path = require(`path`)
+const fs = require(`fs-extra`);
+const path = require(`path`);
 
-const { promisifiedSpawn } = require(`../utils/promisified-spawn`)
-const { registryUrl } = require(`./verdaccio-config`)
+const { promisifiedSpawn } = require(`../utils/promisified-spawn`);
+const { registryUrl } = require(`./verdaccio-config`);
 
 const NPMRCContent = `${registryUrl.replace(
   /https?:/g,
   ``
-)}/:_authToken="gatsby-dev"`
+)}/:_authToken="gatsby-dev"`;
 
 const {
   getMonorepoPackageJsonPath,
-} = require(`../utils/get-monorepo-package-json-path`)
-const { registerCleanupTask } = require(`./cleanup-tasks`)
+} = require(`../utils/get-monorepo-package-json-path`);
+const { registerCleanupTask } = require(`./cleanup-tasks`);
 
 /**
  * Edit package.json to:
@@ -36,11 +36,11 @@ const adjustPackageJson = ({
   const monorepoPKGjsonString = fs.readFileSync(
     monoRepoPackageJsonPath,
     `utf-8`
-  )
-  const monorepoPKGjson = JSON.parse(monorepoPKGjsonString)
+  );
+  const monorepoPKGjson = JSON.parse(monorepoPKGjsonString);
 
-  monorepoPKGjson.version = `${monorepoPKGjson.version}-dev-${versionPostFix}`
-  packagesToPublish.forEach(packageThatWillBePublished => {
+  monorepoPKGjson.version = `${monorepoPKGjson.version}-dev-${versionPostFix}`;
+  packagesToPublish.forEach((packageThatWillBePublished) => {
     if (
       monorepoPKGjson.dependencies &&
       monorepoPKGjson.dependencies[packageThatWillBePublished]
@@ -53,33 +53,33 @@ const adjustPackageJson = ({
           }),
           `utf-8`
         )
-      ).version
+      ).version;
 
       monorepoPKGjson.dependencies[
         packageThatWillBePublished
-      ] = `${currentVersion}-dev-${versionPostFix}`
+      ] = `${currentVersion}-dev-${versionPostFix}`;
     }
-  })
+  });
 
-  const temporaryMonorepoPKGjsonString = JSON.stringify(monorepoPKGjson)
+  const temporaryMonorepoPKGjsonString = JSON.stringify(monorepoPKGjson);
 
   const unignorePackageJSONChanges = ignorePackageJSONChanges(packageName, [
     monorepoPKGjsonString,
     temporaryMonorepoPKGjsonString,
-  ])
+  ]);
 
   // change version and dependency versions
-  fs.outputFileSync(monoRepoPackageJsonPath, temporaryMonorepoPKGjsonString)
+  fs.outputFileSync(monoRepoPackageJsonPath, temporaryMonorepoPKGjsonString);
 
   return {
     newPackageVersion: monorepoPKGjson.version,
     unadjustPackageJson: registerCleanupTask(() => {
       // restore original package.json
-      fs.outputFileSync(monoRepoPackageJsonPath, monorepoPKGjsonString)
-      unignorePackageJSONChanges()
+      fs.outputFileSync(monoRepoPackageJsonPath, monorepoPKGjsonString);
+      unignorePackageJSONChanges();
     }),
-  }
-}
+  };
+};
 
 /**
  * Anonymous publishing require dummy .npmrc
@@ -88,13 +88,13 @@ const adjustPackageJson = ({
  * This is not verdaccio restriction.
  */
 const createTemporaryNPMRC = ({ pathToPackage }) => {
-  const NPMRCPath = path.join(pathToPackage, `.npmrc`)
-  fs.outputFileSync(NPMRCPath, NPMRCContent)
+  const NPMRCPath = path.join(pathToPackage, `.npmrc`);
+  fs.outputFileSync(NPMRCPath, NPMRCContent);
 
   return registerCleanupTask(() => {
-    fs.removeSync(NPMRCPath)
-  })
-}
+    fs.removeSync(NPMRCPath);
+  });
+};
 
 const publishPackage = async ({
   packageName,
@@ -106,7 +106,7 @@ const publishPackage = async ({
   const monoRepoPackageJsonPath = getMonorepoPackageJsonPath({
     packageName,
     root,
-  })
+  });
 
   const { unadjustPackageJson, newPackageVersion } = adjustPackageJson({
     monoRepoPackageJsonPath,
@@ -115,11 +115,11 @@ const publishPackage = async ({
     versionPostFix,
     packagesToPublish,
     ignorePackageJSONChanges,
-  })
+  });
 
-  const pathToPackage = path.dirname(monoRepoPackageJsonPath)
+  const pathToPackage = path.dirname(monoRepoPackageJsonPath);
 
-  const uncreateTemporaryNPMRC = createTemporaryNPMRC({ pathToPackage })
+  const uncreateTemporaryNPMRC = createTemporaryNPMRC({ pathToPackage });
 
   // npm publish
   const publishCmd = [
@@ -128,26 +128,26 @@ const publishPackage = async ({
     {
       cwd: pathToPackage,
     },
-  ]
+  ];
 
   console.log(
     `Publishing ${packageName}@${newPackageVersion} to local registry`
-  )
+  );
   try {
-    await promisifiedSpawn(publishCmd)
+    await promisifiedSpawn(publishCmd);
 
     console.log(
       `Published ${packageName}@${newPackageVersion} to local registry`
-    )
+    );
   } catch (e) {
-    console.error(`Failed to publish ${packageName}@${newPackageVersion}`, e)
-    process.exit(1)
+    console.error(`Failed to publish ${packageName}@${newPackageVersion}`, e);
+    process.exit(1);
   }
 
-  uncreateTemporaryNPMRC()
-  unadjustPackageJson()
+  uncreateTemporaryNPMRC();
+  unadjustPackageJson();
 
-  return newPackageVersion
-}
+  return newPackageVersion;
+};
 
-exports.publishPackage = publishPackage
+exports.publishPackage = publishPackage;

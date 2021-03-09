@@ -1,4 +1,5 @@
-const path = require(`path`)
+const path = require(`path`);
 
-exports.getMonorepoPackageJsonPath = ({ packageName, root }) =>
-  path.join(root, `packages`, packageName, `package.json`)
+exports.getMonorepoPackageJsonPath = ({ packageName, root }) => {
+  return path.join(root, `packages`, packageName, `package.json`);
+};

@@ -78,8 +78,12 @@ exports.checkDepsChanges = async ({
     }
   }
 
+  const monoDir = packageName.startsWith("@medusajs")
+    ? packageName.split("/")[1]
+    : packageName;
+
   const monoRepoPackageJsonPath = getMonorepoPackageJsonPath({
-    packageName,
+    packageName: monoDir,
     root,
   });
   const monorepoPKGjsonString = fs.readFileSync(

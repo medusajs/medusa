@@ -83,7 +83,15 @@ medusa-dev --set-path-to-repo /path/to/my/cloned/version/medusa
 }
 
 // get list of packages from monorepo
-const monoRepoPackages = fs.readdirSync(path.join(medusaLocation, `packages`));
+const monoRepoPackages = [];
+
+const pkgsDirs = fs.readdirSync(path.join(medusaLocation, `packages`));
+for (const dir of pkgsDirs) {
+  const pack = JSON.parse(
+    fs.readFileSync(path.join(medusaLocation, `packages`, dir, `package.json`))
+  );
+  monoRepoPackages.push(pack.name);
+}
 
 const localPkg = JSON.parse(fs.readFileSync(`package.json`));
 // intersect dependencies with monoRepoPackages to get list of packages that are used

@@ -163,9 +163,12 @@ async function watch(
     return;
   }
 
-  const allPackagesIgnoringThemesToWatch = allPackagesToWatch.filter(
-    (pkgName) => !pkgName.startsWith(`medusa-theme`)
-  );
+  const cleanToWatch = allPackagesToWatch.map((pkgName) => {
+    if (pkgName.startsWith(`@medusajs`)) {
+      return pkgName.split("/")[1];
+    }
+    return pkgName;
+  });
 
   const ignored = [
     /[/\\]node_modules[/\\]/i,
@@ -175,12 +178,10 @@ async function watch(
     /[/\\]__mocks__[/\\]/i,
     /\.npmrc/i,
   ].concat(
-    allPackagesIgnoringThemesToWatch.map(
-      (p) => new RegExp(`${p}[\\/\\\\]src[\\/\\\\]`, `i`)
-    )
+    cleanToWatch.map((p) => new RegExp(`${p}[\\/\\\\]src[\\/\\\\]`, `i`))
   );
   const watchers = _.uniq(
-    allPackagesToWatch
+    cleanToWatch
       .map((p) => path.join(root, `/packages/`, p))
       .filter((p) => fs.existsSync(p))
   );
@@ -204,11 +205,17 @@ async function watch(
         return;
       }
 
-      const [packageName] = filePath
+      const [pack] = filePath
         .split(/packages[/\\]/)
         .pop()
         .split(/[/\\]/);
-      const prefix = path.join(root, `/packages/`, packageName);
+
+      const sourcePkg = JSON.parse(
+        fs.readFileSync(path.join(root, `/packages/`, pack, `package.json`))
+      );
+      const packageName = sourcePkg.name;
+
+      const prefix = path.join(root, `/packages/`, pack);
 
       // Copy it over local version.
       // Don't copy over the medusa bin file as that breaks the NPM symlink.

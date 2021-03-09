@@ -5,16 +5,6 @@ const path = require(`path`);
  * @typedef {Object} TraversePackagesDepsReturn
  * @property {Object} depTree Lookup table to check dependants for given package.
  * Used to determine which packages need to be published.
- * @example
- * ```
- * {
- *   "medusa-cli": Set(["gatsby"]),
- *   "medusa-telemetry": Set(["gatsby", "gatsby-cli"]),
- *   "medusa-source-filesystem": Set(["gatsby-source-contentful", "gatsby-source-drupal", "gatsby-source-wordpress", etc])
- *   // no package have remark plugin in dependencies - so dependent list is empty
- *   "medusa-transformer-remark": Set([])
- * }
- * ```
  */
 
 /**
@@ -41,6 +31,9 @@ const traversePackagesDeps = ({
   depTree = {},
 }) => {
   packages.forEach((p) => {
+    if (p.startsWith("@medusajs")) {
+      p = p.split("/")[1];
+    }
     let pkgJson;
     try {
       pkgJson = require(path.join(root, `packages`, p, `package.json`));
