@@ -5,6 +5,9 @@ import { defaultRelations, defaultFields } from "."
  * operationId: "DeleteProductsProductVariantsVariant"
  * summary: "Delete a Product Variant"
  * description: "Deletes a Product Variant."
+ * parameters:
+ *   - (path) id=* {string} The id of the Product.
+ *   - (path) variant_id=* {string} The id of the Product Variant.
  * tags:
  *   - Product
  * responses:

@@ -9,7 +9,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (path) id=* {string} The id of the Order.
  *   - (path) swap_id=* {string} The id of the Swap.
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

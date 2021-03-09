@@ -11,7 +11,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (path) line_id=* {string} The id of the Line Item.
  *   - (body) quantity=* {integer} The quantity to set the Line Item to.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

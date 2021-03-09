@@ -26,7 +26,7 @@ import { defaultFields, defaultRelations } from "./"
  *                   description: The quantity of the Line Item.
  *                   type: integer
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

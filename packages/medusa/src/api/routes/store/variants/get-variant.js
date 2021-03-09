@@ -6,7 +6,7 @@
  * parameters:
  *   - (path) variant_id=* {string} The id of the Product Variant.
  * tags:
- *   - product_variant
+ *   - Product Variant
  * responses:
  *   200:
  *     description: OK

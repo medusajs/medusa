@@ -25,7 +25,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *             description: "The Customer's phone number."
  *             type: string
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

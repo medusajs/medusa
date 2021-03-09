@@ -7,7 +7,7 @@
  *   - (path) id=* {string} The id of the Discount
  *   - (path) code=* {string} The id of the Discount
  * tags:
- *   - discount
+ *   - Discount
  * responses:
  *   200:
  *     description: OK

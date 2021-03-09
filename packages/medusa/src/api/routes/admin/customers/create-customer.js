@@ -11,7 +11,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *   - (body) last_name=* {string} The Customer's last name.
  *   - (body) phone {string} The Customer's phone number.
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

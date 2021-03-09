@@ -6,7 +6,7 @@
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

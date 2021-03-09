@@ -6,7 +6,7 @@ import passport from "passport"
  * summary: "Get Session"
  * description: "Gets the currently logged in User."
  * tags:
- *   - auth
+ *   - Auth
  * responses:
  *  "200":
  *    description: OK

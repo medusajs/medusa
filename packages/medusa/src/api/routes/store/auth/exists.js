@@ -8,7 +8,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) email=* {string} The Customer's email.
  * tags:
- *   - auth
+ *   - Auth
  * responses:
  *  "200":
  *    description: OK

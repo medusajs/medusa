@@ -4,7 +4,7 @@
  * summary: List Regions
  * description: "Retrieves a list of Regions."
  * tags:
- *   - region
+ *   - Region
  * responses:
  *   200:
  *     description: OK

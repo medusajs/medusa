@@ -6,7 +6,7 @@ import { defaultFields, defaultRelations } from "./"
  * summary: "List Discounts"
  * description: "Retrieves a list of Discounts"
  * tags:
- *   - discount
+ *   - Discount
  * responses:
  *   200:
  *     description: OK

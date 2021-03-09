@@ -6,7 +6,7 @@
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:
- *   - region
+ *   - Region
  * responses:
  *   200:
  *     description: OK

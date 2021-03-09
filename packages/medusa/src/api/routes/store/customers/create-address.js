@@ -17,7 +17,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *  "200":
  *    description: "A successful response"

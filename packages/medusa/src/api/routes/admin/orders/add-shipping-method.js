@@ -13,7 +13,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (body) option_id=* {string} The id of the Shipping Option to create the Shipping Method from.
  *   - (body) data=* {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

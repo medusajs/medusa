@@ -18,7 +18,7 @@ import { defaultFields, defaultRelations } from "./"
  *             variants:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/variant"
+ *                 $ref: "#/components/schemas/product_variant"
  */
 export default async (req, res) => {
   try {

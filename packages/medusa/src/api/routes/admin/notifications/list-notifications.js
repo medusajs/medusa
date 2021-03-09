@@ -7,7 +7,7 @@ import { defaultRelations, defaultFields } from "./"
  * summary: "List Notifications"
  * description: "Retrieves a list of Notifications."
  * tags:
- *   - notification
+ *   - Notification
  * responses:
  *   200:
  *     description: OK

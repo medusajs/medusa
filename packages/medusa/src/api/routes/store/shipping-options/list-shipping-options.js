@@ -8,7 +8,7 @@ import { Validator, MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) cart_id {string} The id of the Cart.
  * tags:
- *   - shipping_option
+ *   - Shipping Option
  * responses:
  *   200:
  *     description: OK

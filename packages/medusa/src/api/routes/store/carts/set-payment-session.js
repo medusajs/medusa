@@ -10,7 +10,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (path) id=* {string} The id of the Cart.
  *   - (body) provider_id=* {string} The id of the Payment Provider.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

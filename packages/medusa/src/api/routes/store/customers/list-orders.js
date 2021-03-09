@@ -14,7 +14,7 @@ import {
  * parameters:
  *   - (path) id=* {string} The id of the Customer.
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

@@ -9,7 +9,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (path) id=* {string} The id of the Discount.
  *   - (path) region_id=* {string} The id of the Region.
  * tags:
- *   - discount
+ *   - Discount
  * responses:
  *   200:
  *     description: OK

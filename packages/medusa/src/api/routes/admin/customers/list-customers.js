@@ -1,10 +1,10 @@
 /**
- * @oas [get] /customers/{id}
+ * @oas [get] /customers
  * operationId: "GetCustomers"
  * summary: "List Customers"
  * description: "Retrieves a list of Customers."
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

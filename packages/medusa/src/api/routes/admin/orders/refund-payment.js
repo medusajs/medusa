@@ -26,7 +26,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: A not with additional details about the Refund.
  *             type: string
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

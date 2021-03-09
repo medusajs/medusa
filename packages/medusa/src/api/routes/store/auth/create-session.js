@@ -11,7 +11,7 @@ import config from "../../../../config"
  *   - (body) email=* {string} The Customer's email.
  *   - (body) password=* {string} The Customer's password.
  * tags:
- *   - auth
+ *   - Auth
  * responses:
  *  "200":
  *    description: OK

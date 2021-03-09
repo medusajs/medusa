@@ -7,7 +7,7 @@
  *   - (path) id=* {string} The id of the Customer.
  *   - (path) address_id=* {string} The id of the Address to remove.
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

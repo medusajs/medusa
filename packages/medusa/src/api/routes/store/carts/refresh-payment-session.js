@@ -7,7 +7,7 @@
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the Payment Provider that created the Payment Session to be refreshed.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

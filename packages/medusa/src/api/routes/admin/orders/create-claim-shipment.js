@@ -23,7 +23,7 @@ import { defaultFields, defaultRelations } from "./"
  *             items:
  *               type: string
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

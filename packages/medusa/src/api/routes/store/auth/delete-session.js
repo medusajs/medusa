@@ -4,7 +4,7 @@
  * summary: "Log out"
  * description: "Destroys a Customer's authenticated session."
  * tags:
- *   - auth
+ *   - Auth
  * responses:
  *  "200":
  *    description: OK

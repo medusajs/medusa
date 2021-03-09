@@ -6,7 +6,7 @@
  * parameters:
  *   - (path) cart_id {string} The id of the Cart
  * tags:
- *   - swap
+ *   - Swap
  * responses:
  *   200:
  *     description: OK

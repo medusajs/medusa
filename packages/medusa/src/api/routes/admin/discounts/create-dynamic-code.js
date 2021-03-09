@@ -10,7 +10,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
  * tags:
- *   - discount
+ *   - Discount
  * responses:
  *   200:
  *     description: OK

@@ -6,7 +6,7 @@ import { defaultFields, defaultRelations } from "."
  * summary: "List Product Collections"
  * description: "Retrieve a list of Product Collection."
  * tags:
- *   - collection
+ *   - Collection
  * responses:
  *  "200":
  *    description: OK

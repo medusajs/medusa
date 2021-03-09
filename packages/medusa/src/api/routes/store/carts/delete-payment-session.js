@@ -9,7 +9,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the Payment Provider used to create the Payment Session to be deleted.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

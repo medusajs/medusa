@@ -13,7 +13,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (body) quantity=* {integer} The quantity of the Product Variant to add to the Line Item.
  *   - (body) metadata {object} An optional key-value map with additional details about the Line Item.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

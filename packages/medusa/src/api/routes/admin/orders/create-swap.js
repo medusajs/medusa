@@ -6,6 +6,8 @@ import { defaultFields, defaultRelations } from "./"
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
+ * parameters:
+ *   - (path) id=* {string} The id of the Swap.
  * requestBody:
  *   content:
  *     application/json:
@@ -44,7 +46,7 @@ import { defaultFields, defaultRelations } from "./"
  *                   description: The quantity of the Product Variant to ship.
  *                   type: integer
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

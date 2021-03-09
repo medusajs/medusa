@@ -8,7 +8,7 @@ import { defaultFields, defaultRelations } from "./"
  * parameters:
  *   - (path) id=* {string} The id of the Discount
  * tags:
- *   - discount
+ *   - Discount
  * responses:
  *   200:
  *     description: OK

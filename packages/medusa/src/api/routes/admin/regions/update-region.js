@@ -6,6 +6,8 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "PostRegionsRegion"
  * summary: "Update a Region"
  * description: "Updates a Region"
+ * parameters:
+ *   - (path) id=* {string} The id of the Region.
  * requestBody:
  *   content:
  *     application/json:

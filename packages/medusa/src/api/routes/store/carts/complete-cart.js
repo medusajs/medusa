@@ -13,7 +13,7 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {String} The Cart id.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: "If a cart was successfully authorized, but requires further

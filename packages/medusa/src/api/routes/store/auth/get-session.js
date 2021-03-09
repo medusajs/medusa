@@ -4,7 +4,7 @@
  * summary: "Get Session"
  * description: "Gets the currently logged in Customer."
  * tags:
- *   - auth
+ *   - Auth
  * responses:
  *  "200":
  *    description: OK

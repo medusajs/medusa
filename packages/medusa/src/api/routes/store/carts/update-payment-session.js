@@ -11,7 +11,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (body) provider_id=* {string} The id of the Payment Provider responsible for the Payment Session to update.
  *   - (body) data=* {object} The data to update the payment session with.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

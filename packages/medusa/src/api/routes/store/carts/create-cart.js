@@ -32,7 +32,7 @@ import { defaultFields, defaultRelations } from "./"
  *                   description: The quantity of the Product Variant to add
  *                   type: integer
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: "Successfully created a new Cart"

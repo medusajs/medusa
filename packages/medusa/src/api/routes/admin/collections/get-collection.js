@@ -6,7 +6,7 @@
  * parameters:
  *   - (path) id=* {string} The id of the Product Collection
  * tags:
- *   - collection
+ *   - Collection
  * responses:
  *  "200":
  *    description: OK

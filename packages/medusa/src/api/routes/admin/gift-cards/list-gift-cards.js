@@ -1,12 +1,12 @@
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [get] /gift-cards/{id}
+ * @oas [get] /gift-cards
  * operationId: "GetGiftCards"
  * summary: "List Gift Cards"
  * description: "Retrieves a list of Gift Cards."
  * tags:
- *   - gift_card
+ *   - Gift Card
  * responses:
  *   200:
  *     description: OK

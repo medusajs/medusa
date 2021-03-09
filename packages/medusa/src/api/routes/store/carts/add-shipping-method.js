@@ -8,7 +8,7 @@ import { defaultFields, defaultRelations } from "./"
  * description: "Adds a Shipping Method to the Cart."
  * summary: "Add a Shipping Method"
  * tags:
- *   - cart
+ *   - Cart
  * parameters:
  *   - (path) id=* {String} The cart id.
  *   - (body) option_id=* {String} id of the shipping option to create the method from

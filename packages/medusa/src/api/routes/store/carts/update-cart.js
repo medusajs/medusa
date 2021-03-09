@@ -52,7 +52,7 @@ import { defaultFields, defaultRelations } from "./"
  *             description: "The id of the Customer to associate the Cart with."
  *             type: string
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

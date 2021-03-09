@@ -6,8 +6,10 @@ import { defaultFields, defaultRelations } from "./"
  * operationId: "PostNotificationsNotificationResend"
  * summary: "Resend Notification"
  * description: "Resends a previously sent notifications, with the same data but optionally to a different address"
+ * parameters:
+ *   - (path) id=* {string} The id of the Notification
  * tags:
- *   - notification
+ *   - Notification
  * responses:
  *   200:
  *     description: OK

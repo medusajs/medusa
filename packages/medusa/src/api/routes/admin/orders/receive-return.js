@@ -29,7 +29,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: The amount to refund.
  *             type: integer
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

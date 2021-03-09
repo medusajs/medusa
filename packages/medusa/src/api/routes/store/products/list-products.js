@@ -4,7 +4,7 @@
  * summary: List Products
  * description: "Retrieves a list of Products."
  * tags:
- *   - product
+ *   - Product
  * responses:
  *   200:
  *     description: OK

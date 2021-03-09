@@ -7,7 +7,7 @@
  *   - (path) id=* {string} The id of the Order.
  *   - (path) key=* {string} The metadata key.
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

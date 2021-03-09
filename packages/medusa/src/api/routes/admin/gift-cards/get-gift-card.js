@@ -8,7 +8,7 @@ import { defaultFields, defaultRelations } from "./"
  * parameters:
  *   - (path) id=* {string} The id of the Gift Card.
  * tags:
- *   - gift_card
+ *   - Gift Card
  * responses:
  *   200:
  *     description: OK

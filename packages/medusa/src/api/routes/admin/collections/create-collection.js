@@ -22,7 +22,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - collection
+ *   - Collection
  * responses:
  *  "200":
  *    description: OK

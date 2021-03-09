@@ -6,7 +6,7 @@
  * parameters:
  *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
  * tags:
- *   - product_variant
+ *   - Product Variant
  * responses:
  *   200:
  *     description: OK

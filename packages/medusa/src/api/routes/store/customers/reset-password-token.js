@@ -8,7 +8,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The id of the Customer.
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   204:
  *     description: OK

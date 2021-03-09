@@ -8,7 +8,7 @@ import { defaultFields, defaultRelations } from "."
  * parameters:
  *   - (path) cart_id=* {string} The id of Cart.
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

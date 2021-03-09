@@ -7,7 +7,7 @@ import { defaultRelations, defaultFields } from "./"
  * summary: "List Orders"
  * description: "Retrieves an list of Orders"
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

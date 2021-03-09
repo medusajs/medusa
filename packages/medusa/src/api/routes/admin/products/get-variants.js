@@ -3,6 +3,8 @@
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Product Variants"
  * description: "Retrieves a list of the Product Variants associated with a Product."
+ * parameters:
+ *   - (path) id=* {string} The id of the Product.
  * tags:
  *   - Product
  * responses:

@@ -18,7 +18,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

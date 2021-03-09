@@ -40,7 +40,7 @@ import { defaultFields, defaultRelations } from "./"
  *             items:
  *               type: string
  * tags:
- *   - discount
+ *   - Discount
  * responses:
  *   200:
  *     description: OK

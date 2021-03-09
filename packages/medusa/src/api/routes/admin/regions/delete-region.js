@@ -5,6 +5,8 @@ import { MedusaError, Validator } from "medusa-core-utils"
  * operationId: "DeleteRegionsRegion"
  * summary: "Delete a Region"
  * description: "Deletes a Region."
+ * parameters:
+ *   - (path) id=* {string} The id of the Region.
  * tags:
  *   - Region
  * responses:

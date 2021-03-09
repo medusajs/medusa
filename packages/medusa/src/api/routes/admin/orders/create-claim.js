@@ -6,6 +6,8 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
  * description: "Creates a Claim."
+ * parameters:
+ *   - (path) id=* {string} The id of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -90,7 +92,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - order
+ *   - Order
  * responses:
  *   200:
  *     description: OK

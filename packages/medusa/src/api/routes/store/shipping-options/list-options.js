@@ -7,7 +7,7 @@
  *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
  *   - (query) region_id {string} the Region to retrieve Shipping Options from.
  * tags:
- *   - shipping_option
+ *   - Shipping Option
  * responses:
  *   200:
  *     description: OK

@@ -12,7 +12,7 @@ import jwt from "jsonwebtoken"
  *   - (body) token=* {string} The password token created by a /password-token request.
  *   - (body) password=* {string} The new password to set for the Customer.
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

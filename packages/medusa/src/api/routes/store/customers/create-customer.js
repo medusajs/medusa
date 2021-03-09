@@ -14,7 +14,7 @@ import config from "../../../../config"
  *   - (body) password=* {string} The Customer's password for login.
  *   - (body) phone {string} The Customer's phone number.
  * tags:
- *   - customer
+ *   - Customer
  * responses:
  *   200:
  *     description: OK

@@ -9,7 +9,7 @@ import { defaultFields, defaultRelations } from "./"
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) code=* {string} The unique Discount code.
  * tags:
- *   - cart
+ *   - Cart
  * responses:
  *   200:
  *     description: OK

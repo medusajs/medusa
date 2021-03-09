@@ -5,6 +5,8 @@ import { defaultFields, defaultRelations } from "./"
  * operationId: "GetProductsProduct"
  * summary: "Retrieve a Product"
  * description: "Retrieves a Product."
+ * parameters:
+ *   - (path) id=* {string} The id of the Product.
  * tags:
  *   - Product
  * responses:
