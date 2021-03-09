@@ -3,8 +3,6 @@
  * operationId: "GetShippingProfiles"
  * summary: "List Shipping Profiles"
  * description: "Retrieves a list of Shipping Profile."
- * parameters:
- *   - (path) id=* {string} The id of the Shipping Profile.
  * tags:
  *   - Shipping Profile
  * responses:

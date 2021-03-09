@@ -664,6 +664,49 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  /notifications:
+    get:
+      operationId: GetNotifications
+      summary: List Notifications
+      description: Retrieves a list of Notifications.
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/notification'
+  '/notifications/{id}/resend':
+    post:
+      operationId: PostNotificationsNotificationResend
+      summary: Resend Notification
+      description: >-
+        Resends a previously sent notifications, with the same data but
+        optionally to a different address
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Notification
+          schema:
+            type: string
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification:
+                    $ref: '#/components/schemas/notification'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -836,49 +879,6 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
-  /notifications:
-    get:
-      operationId: GetNotifications
-      summary: List Notifications
-      description: Retrieves a list of Notifications.
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notifications:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/notification'
-  '/notifications/{id}/resend':
-    post:
-      operationId: PostNotificationsNotificationResend
-      summary: Resend Notification
-      description: >-
-        Resends a previously sent notifications, with the same data but
-        optionally to a different address
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Notification
-          schema:
-            type: string
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notification:
-                    $ref: '#/components/schemas/notification'
   '/orders/{id}/shipping-methods':
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -3355,13 +3355,6 @@ paths:
       operationId: GetShippingProfiles
       summary: List Shipping Profiles
       description: Retrieves a list of Shipping Profile.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Shipping Profile.
-          schema:
-            type: string
       tags:
         - Shipping Profile
       responses:
@@ -3456,6 +3449,24 @@ paths:
                 properties:
                   shipping_profiles:
                     $ref: '#/components/schemas/shipping_profile'
+  /swaps:
+    get:
+      operationId: GetSwaps
+      summary: List Swaps
+      description: Retrieves a list of Swaps.
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swaps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/swap'
   '/store/currencies/{code}':
     post:
       operationId: PostStoreCurrenciesCode
@@ -3566,24 +3577,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/store'
-  /swaps:
-    get:
-      operationId: GetSwaps
-      summary: List Swaps
-      description: Retrieves a list of Swaps.
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swaps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/swap'
   /variants:
     get:
       operationId: GetVariants
