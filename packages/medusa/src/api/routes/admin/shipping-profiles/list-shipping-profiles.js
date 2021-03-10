@@ -1,3 +1,22 @@
+/**
+ * @oas [get] /shipping-profiles
+ * operationId: "GetShippingProfiles"
+ * summary: "List Shipping Profiles"
+ * description: "Retrieves a list of Shipping Profile."
+ * tags:
+ *   - Shipping Profile
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             shipping_profiles:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/shipping_profile"
+ */
 export default async (req, res) => {
   try {
     const profileService = req.scope.resolve("shippingProfileService")

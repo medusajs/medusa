@@ -1,5 +1,22 @@
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /discounts
+ * operationId: "GetDiscounts"
+ * summary: "List Discounts"
+ * description: "Retrieves a list of Discounts"
+ * tags:
+ *   - Discount
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             discount:
+ *               $ref: "#/components/schemas/discount"
+ */
 export default async (req, res) => {
   try {
     const discountService = req.scope.resolve("discountService")

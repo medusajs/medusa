@@ -21,5 +21,11 @@ module.exports = {
         path: `${__dirname}/../docs/api/store`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/../docs/api`,
+      },
+    },
   ],
 }
