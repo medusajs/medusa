@@ -7,6 +7,8 @@ import "highlight.js/styles/a11y-light.css"
 
 import fixtures from "../../../docs/api/fixtures.json"
 
+import { deref } from "../utils/deref"
+
 export const ResponseContainer = styled(Flex)`
   border: 1px solid #e3e8ee;
   border-radius: 5px;
@@ -25,7 +27,7 @@ export const ResponseContainer = styled(Flex)`
   }
 `
 
-const JsonBox = ({ text, resourceId, endpoint }) => {
+const JsonBox = ({ text, resourceId, endpoint, spec }) => {
   let json = {}
 
   const toSet = {}
@@ -36,13 +38,19 @@ const JsonBox = ({ text, resourceId, endpoint }) => {
 
     if (props) {
       for (const [name, details] of Object.entries(props)) {
+        let cleanDets = details
+        if (details.$ref) {
+          const [, ...path] = details.$ref.split("/")
+          cleanDets = deref(path, spec)
+        }
+
         if (
-          details["x-resourceId"] &&
-          details["x-resourceId"] in fixtures.resources
+          cleanDets["x-resourceId"] &&
+          cleanDets["x-resourceId"] in fixtures.resources
         ) {
-          toSet[name] = fixtures.resources[details["x-resourceId"]]
+          toSet[name] = fixtures.resources[cleanDets["x-resourceId"]]
         } else {
-          toSet[name] = details
+          toSet[name] = cleanDets
         }
       }
     }

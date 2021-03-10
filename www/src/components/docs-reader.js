@@ -68,10 +68,14 @@ const DocsReader = ({ tags, spec }) => {
                           path={endpoint.path}
                         />
                         <Markdown>{endpoint.description}</Markdown>
-                        <Parameters endpoint={endpoint} />
+                        <Parameters spec={spec} endpoint={endpoint} />
                       </Flex>
                       <Flex py={5} width="45%" flex="1">
-                        <JsonBox name={tagName} endpoint={endpoint} />
+                        <JsonBox
+                          name={tagName}
+                          endpoint={endpoint}
+                          spec={spec}
+                        />
                       </Flex>
                     </Flex>
                   ))}

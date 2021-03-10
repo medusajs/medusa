@@ -49,7 +49,7 @@ const EndpointOverview = ({ title, description, routes, spec }) => {
           >
             <Text my={2}>Attributes</Text>
             {attrs.map(p => (
-              <ParamSection param={p} />
+              <ParamSection param={p} spec={spec} />
             ))}
           </Box>
         )}

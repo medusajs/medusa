@@ -4,6 +4,8 @@ import { Flex, Box, Text } from "rebass"
 import Markdown from "react-markdown"
 import Collapsible from "react-collapsible"
 
+import { deref } from "../utils/deref"
+
 const ExpandContainer = styled.div`
   .child-attrs {
     cursor: pointer;
@@ -28,15 +30,27 @@ const ExpandContainer = styled.div`
   }
 `
 
-const Expand = ({ schema }) => {
+const Expand = ({ schema, spec }) => {
+  if (schema.$ref) {
+    const [, ...path] = schema.$ref.split("/")
+    schema = deref(path, spec)
+  }
+
   const properties = schema.properties
 
   let aggregated = []
   for (const [name, details] of Object.entries(properties)) {
+    let cleanDets = details
+
+    if (name === "$ref") {
+      const [, ...path] = details.split("/")
+      cleanDets = deref(path, spec)
+    }
+
     if (!aggregated.find(a => a.name === name)) {
       aggregated.push({
         name,
-        ...details,
+        ...cleanDets,
       })
     }
   }
@@ -104,7 +118,7 @@ const Expand = ({ schema }) => {
   )
 }
 
-const ParamSection = ({ routeParam, param }) => {
+const ParamSection = ({ routeParam, param, spec }) => {
   let type = param.type
   if (!type && param.schema) {
     type = param.schema.type
@@ -133,10 +147,12 @@ const ParamSection = ({ routeParam, param }) => {
       <Text fontSize={0}>
         <Markdown>{param.description}</Markdown>
       </Text>
-      {param.anyOf && param.anyOf.map(schema => <Expand schema={schema} />)}
-      {param.oneOf && param.oneOf.map(schema => <Expand schema={schema} />)}
+      {param.anyOf &&
+        param.anyOf.map(schema => <Expand schema={schema} spec={spec} />)}
+      {param.oneOf &&
+        param.oneOf.map(schema => <Expand schema={schema} spec={spec} />)}
       {param.type === "array" && param.items?.properties && (
-        <Expand schema={param.items} />
+        <Expand schema={param.items} spec={spec} />
       )}
     </Box>
   )
