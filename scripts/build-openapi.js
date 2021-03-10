@@ -17,7 +17,7 @@ swaggerInline(
       console.error(err);
       return;
     }
-    fs.writeFileSync("./docs/api/store-spec3.json", JSON.stringify(genObj));
+    fs.writeFileSync("./docs/api/store-spec3.json", gen);
   }, true);
 });
 
@@ -44,7 +44,7 @@ swaggerInline(
       console.error(err);
       return;
     }
-    fs.writeFileSync("./docs/api/admin-spec3.json", JSON.stringify(genObj));
+    fs.writeFileSync("./docs/api/admin-spec3.json", gen);
   }, true);
 });
 

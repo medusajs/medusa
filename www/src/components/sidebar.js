@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link, navigate } from "gatsby"
+import { navigate } from "gatsby"
 import { Flex, Box, Text } from "rebass"
 import { AnchorLink } from "gatsby-plugin-anchor-links"
 import styled from "@emotion/styled"
@@ -63,11 +63,6 @@ const SideBarContainer = styled(Flex)`
   flex-direction: column;
 `
 
-const StyledLink = styled(Link)`
-  color: #212121;
-  font-decoration: none;
-`
-
 const SideBar = ({ tags }) => {
   const [api, setApi] = useState("store")
 
@@ -89,7 +84,6 @@ const SideBar = ({ tags }) => {
         px={4}
         py={3}
         mb={3}
-        justifyContent="center"
         flexDirection="column"
       >
         <Flex width={"100%"} alignContent="center">

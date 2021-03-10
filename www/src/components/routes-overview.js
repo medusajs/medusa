@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import styled from "@emotion/styled"
-import { Flex, Box, Text, Image } from "rebass"
+import { Flex, Box, Text } from "rebass"
 
 const StyledRoutesOverview = styled(Flex)`
   border: 1px solid #e3e8ee;
@@ -51,7 +51,7 @@ const RoutesOverview = ({ content }) => {
                 {route.method}
               </Text>
               <Text color="#4f566b">
-                {route.path?.replaceAll(/{(.*?)}/g, ":$1")}
+                {route.path?.replace(/{(.*?)}/g, ":$1")}
               </Text>
             </Flex>
           ))}

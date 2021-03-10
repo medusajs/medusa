@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Flex } from "rebass"
 import { Helmet } from "react-helmet"
 

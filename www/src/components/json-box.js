@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react"
-import { graphql } from "gatsby"
-import { Flex, Box, Text, Image } from "rebass"
+import React from "react"
+import { Flex, Box, Text } from "rebass"
 import styled from "@emotion/styled"
-import { AnchorLink } from "gatsby-plugin-anchor-links"
-import Markdown from "react-markdown"
 import Highlight from "react-highlight.js"
 
 import "highlight.js/styles/a11y-light.css"
 
 import fixtures from "../../../docs/api/fixtures.json"
+
+import { deref } from "../utils/deref"
 
 export const ResponseContainer = styled(Flex)`
   border: 1px solid #e3e8ee;
@@ -28,36 +27,40 @@ export const ResponseContainer = styled(Flex)`
   }
 `
 
-const JsonBox = ({ text, resourceId, endpoint }) => {
-  const [json, setJson] = useState({})
+const JsonBox = ({ text, resourceId, endpoint, spec }) => {
+  let json = {}
 
-  useEffect(() => {
-    const toSet = {}
-    if (endpoint) {
-      const props =
-        endpoint?.responses?.["200"]?.content?.["application/json"]?.schema
-          ?.properties
+  const toSet = {}
+  if (endpoint) {
+    const props =
+      endpoint?.responses?.["200"]?.content?.["application/json"]?.schema
+        ?.properties
 
-      if (props) {
-        for (const [name, details] of Object.entries(props)) {
-          if (
-            details["x-resourceId"] &&
-            details["x-resourceId"] in fixtures.resources
-          ) {
-            toSet[name] = fixtures.resources[details["x-resourceId"]]
-          } else {
-            toSet[name] = details
-          }
+    if (props) {
+      for (const [name, details] of Object.entries(props)) {
+        let cleanDets = details
+        if (details.$ref) {
+          const [, ...path] = details.$ref.split("/")
+          cleanDets = deref(path, spec)
+        }
+
+        if (
+          cleanDets["x-resourceId"] &&
+          cleanDets["x-resourceId"] in fixtures.resources
+        ) {
+          toSet[name] = fixtures.resources[cleanDets["x-resourceId"]]
+        } else {
+          toSet[name] = cleanDets
         }
       }
     }
+  }
 
-    if (resourceId) {
-      setJson(fixtures.resources[resourceId])
-    } else {
-      setJson(toSet)
-    }
-  }, [])
+  if (resourceId) {
+    json = fixtures.resources[resourceId]
+  } else {
+    json = toSet
+  }
 
   return (
     <ResponseContainer flexDirection="column" as="pre">
