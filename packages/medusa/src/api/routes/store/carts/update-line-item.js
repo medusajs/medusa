@@ -1,6 +1,27 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /carts/{id}/line-items/{line_id}
+ * operationId: PostCartsCartLineItemsItem
+ * summary: Update a Line Item
+ * description: "Updates a Line Item if the desired quantity can be fulfilled."
+ * parameters:
+ *   - (path) id=* {string} The id of the Cart.
+ *   - (path) line_id=* {string} The id of the Line Item.
+ *   - (body) quantity=* {integer} The quantity to set the Line Item to.
+ * tags:
+ *   - Cart
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id, line_id } = req.params
 

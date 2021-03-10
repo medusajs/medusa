@@ -1,6 +1,23 @@
 import _ from "lodash"
 import { Not } from "typeorm"
 import { defaultRelations, defaultFields } from "./"
+/**
+ * @oas [get] /orders
+ * operationId: "GetOrders"
+ * summary: "List Orders"
+ * description: "Retrieves an list of Orders"
+ * tags:
+ *   - Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 
 export default async (req, res) => {
   try {

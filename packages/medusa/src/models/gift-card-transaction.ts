@@ -48,3 +48,31 @@ export class GiftCardTransaction {
     this.id = `gct_${id}`
   }
 }
+
+/**
+ * @schema gift_card_transaction
+ * title: "Gift Card Transaction"
+ * description: "Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order"
+ * x-resourceId: gift_card_transaction
+ * properties:
+ *   id:
+ *     description: "The id of the Gift Card Transaction. This value will be prefixed by `gct_`."
+ *     type: string
+ *   gift_card_id:
+ *     description: "The id of the Gift Card that was used in the transaction."
+ *     type: string
+ *   gift_card:
+ *     description: "The Gift Card that was used in the transaction."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/gift_card"
+ *   order_id:
+ *     description: "The id of the Order that the Gift Card was used to pay for."
+ *     type: string
+ *   amount:
+ *     description: "The amount that was used from the Gift Card."
+ *     type: integer
+ *   created_at:
+ *     description: "The date with timezone at which the resource was created."
+ *     type: string
+ *     format: date-time
+ */

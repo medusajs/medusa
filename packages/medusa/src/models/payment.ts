@@ -94,3 +94,57 @@ export class Payment {
     this.id = `pay_${id}`
   }
 }
+
+/**
+ * @schema payment
+ * title: "Payment"
+ * description: "Payments represent an amount authorized with a given payment method, Payments can be captured, canceled or refunded."
+ * x-resourceId: payment
+ * properties:
+ *   id:
+ *     description: "The id of the Payment. This value will be prefixed with `pay_`."
+ *     type: string
+ *   swap_id:
+ *     description: "The id of the Swap that the Payment is used for."
+ *     type: string
+ *   order_id:
+ *     description: "The id of the Order that the Payment is used for."
+ *     type: string
+ *   cart_id:
+ *     description: "The id of the Cart that the Payment Session is created for."
+ *     type: string
+ *   amount:
+ *     description: "The amount that the Payment has been authorized for."
+ *     type: integer
+ *   currency_code:
+ *     description: "The 3 character ISO currency code that the Payment is completed in."
+ *     type: string
+ *   amount_refunded:
+ *     description: "The amount of the original Payment amount that has been refunded back to the Customer."
+ *     type: integer
+ *   provider_id:
+ *     description: "The id of the Payment Provider that is responsible for the Payment"
+ *     type: string
+ *   data:
+ *     description: "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state."
+ *     type: object
+ *   captured_at:
+ *     description: "The date with timezone at which the Payment was captured."
+ *     type: string
+ *     format: date-time
+ *   canceled_at:
+ *     description: "The date with timezone at which the Payment was canceled."
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     description: "The date with timezone at which the resource was created."
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     description: "An optional key-value map with additional information."
+ *     type: object
+ */

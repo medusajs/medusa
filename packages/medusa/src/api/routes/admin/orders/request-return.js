@@ -1,6 +1,57 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /orders/{id}/returns
+ * operationId: "PostOrdersOrderReturns"
+ * summary: "Request a Return"
+ * description: "Requests a Return. If applicable a return label will be created and other plugins notified."
+ * parameters:
+ *   - (path) id=* {string} The id of the Order.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           items:
+ *             description: The Line Items that will be returned.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 item_id:
+ *                   description: The id of the Line Item.
+ *                   type: string
+ *                 quantity:
+ *                   description: The quantity of the Line Item.
+ *                   type: integer
+ *           return_shipping:
+ *             description: The Shipping Method to be used to handle the return shipment.
+ *             type: object
+ *             properties:
+ *               option_id:
+ *                 type: string
+ *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *               price:
+ *                 type: integer
+ *                 description: The price to charge for the Shipping Method.
+ *           receive_now:
+ *             description: A flag to indicate if the Return should be registerd as received immediately.
+ *             type: boolean
+ *           refund:
+ *             description: The amount to refund.
+ *             type: integer
+ * tags:
+ *   - Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

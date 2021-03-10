@@ -1,6 +1,62 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /order/{id}/swaps
+ * operationId: "PostOrdersOrderSwaps"
+ * summary: "Create a Swap"
+ * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
+ * parameters:
+ *   - (path) id=* {string} The id of the Swap.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           return_items:
+ *             description: The Line Items to return as part of the Swap.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 item_id:
+ *                   description: The id of the Line Item that will be claimed.
+ *                   type: string
+ *                 quantity:
+ *                   description: The number of items that will be returned
+ *                   type: integer
+ *           return_shipping:
+ *             description: How the Swap will be returned.
+ *             type: object
+ *             properties:
+ *               option_id:
+ *                 type: string
+ *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *               price:
+ *                 type: integer
+ *                 description: The price to charge for the Shipping Method.
+ *           additional_items:
+ *             description: The new items to send to the Customer.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 variant_id:
+ *                   description: The id of the Product Variant to ship.
+ *                   type: string
+ *                 quantity:
+ *                   description: The quantity of the Product Variant to ship.
+ *                   type: integer
+ * tags:
+ *   - Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const { id } = req.params
 
