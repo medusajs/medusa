@@ -42,7 +42,6 @@ const RoutesOverview = ({ content }) => {
         <Flex fontSize={1} flexDirection="column">
           {content.map(route => (
             <Flex mb={2} width="100%">
-              {console.log(route)}
               <Text
                 width="55px"
                 mr={2}
@@ -52,7 +51,7 @@ const RoutesOverview = ({ content }) => {
                 {route.method}
               </Text>
               <Text color="#4f566b">
-                {route.path?.replaceAll(/{(.*?)}/g, ":$1")}
+                {route.path?.replace(/{(.*?)}/g, ":$1")}
               </Text>
             </Flex>
           ))}
