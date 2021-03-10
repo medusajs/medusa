@@ -42,6 +42,7 @@ const RoutesOverview = ({ content }) => {
         <Flex fontSize={1} flexDirection="column">
           {content.map(route => (
             <Flex mb={2} width="100%">
+              {console.log(route)}
               <Text
                 width="55px"
                 mr={2}
