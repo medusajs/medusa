@@ -6,6 +6,7 @@ const route = Router()
 export default app => {
   app.use("/orders", route)
 
+  route.get("/", middlewares.wrap(require("./lookup-order").default))
   route.get("/:id", middlewares.wrap(require("./get-order").default))
 
   route.get(
