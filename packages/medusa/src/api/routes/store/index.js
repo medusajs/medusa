@@ -10,6 +10,7 @@ import orderRoutes from "./orders"
 import customerRoutes from "./customers"
 import shippingOptionRoutes from "./shipping-options"
 import regionRoutes from "./regions"
+import returnRoutes from "./returns"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
 import giftCardRoutes from "./gift-cards"
@@ -38,6 +39,7 @@ export default (app, container, config) => {
   regionRoutes(route)
   swapRoutes(route)
   variantRoutes(route)
+  returnRoutes(route)
   giftCardRoutes(route)
 
   return app
