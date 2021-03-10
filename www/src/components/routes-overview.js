@@ -51,7 +51,7 @@ const RoutesOverview = ({ content }) => {
                 {route.method}
               </Text>
               <Text color="#4f566b">
-                {route.path.replaceAll(/{(.*?)}/g, ":$1")}
+                {route.path?.replaceAll(/{(.*?)}/g, ":$1")}
               </Text>
             </Flex>
           ))}
