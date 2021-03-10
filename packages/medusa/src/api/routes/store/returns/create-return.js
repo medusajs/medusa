@@ -73,14 +73,6 @@ export default async (req, res) => {
                 returnObj.shipping_method = value.return_shipping
               }
 
-              if (typeof value.refund !== "undefined" && value.refund < 0) {
-                returnObj.refund_amount = 0
-              } else {
-                if (value.refund) {
-                  returnObj.refund_amount = value.refund
-                }
-              }
-
               const createdReturn = await returnService
                 .withTransaction(manager)
                 .create(returnObj, order)
@@ -131,16 +123,6 @@ export default async (req, res) => {
                 )
               }
               ret = ret[0]
-
-              /**
-               * If we are ready to receive immediately, we find the newly created return
-               * and register it as received.
-               */
-              if (value.receive_now) {
-                await returnService
-                  .withTransaction(manager)
-                  .receiveReturn(order.id, ret.id, value.items, value.refund)
-              }
 
               return {
                 response_code: 200,
