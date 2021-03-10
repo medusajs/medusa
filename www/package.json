@@ -16,6 +16,7 @@
   "dependencies": {
     "@emotion/react": "^11.1.2",
     "@emotion/styled": "^11.0.0",
+    "@rebass/forms": "^4.0.6",
     "emotion-theming": "^10.0.27",
     "gatsby": "^2.24.66",
     "gatsby-plugin-anchor-links": "^1.1.1",

@@ -1,6 +1,26 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /carts/{id}/payment-session
+ * operationId: PostCartsCartPaymentSession
+ * summary: Select a Payment Session
+ * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
+ * parameters:
+ *   - (path) id=* {string} The id of the Cart.
+ *   - (body) provider_id=* {string} The id of the Payment Provider.
+ * tags:
+ *   - Cart
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

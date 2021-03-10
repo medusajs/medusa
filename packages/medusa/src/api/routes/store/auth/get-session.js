@@ -1,3 +1,20 @@
+/**
+ * @oas [get] /auth
+ * operationId: "GetAuth"
+ * summary: "Get Session"
+ * description: "Gets the currently logged in Customer."
+ * tags:
+ *   - Auth
+ * responses:
+ *  "200":
+ *    description: OK
+ *    content:
+ *      application/json:
+ *        schema:
+ *          properties:
+ *            customer:
+ *              $ref: "#/components/schemas/customer"
+ */
 export default async (req, res) => {
   try {
     if (req.user && req.user.customer_id) {

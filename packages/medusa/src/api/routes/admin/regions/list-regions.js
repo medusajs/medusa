@@ -1,5 +1,24 @@
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /regions
+ * operationId: "GetRegions"
+ * summary: "List Regions"
+ * description: "Retrieves a list of Regions."
+ * tags:
+ *   - Region
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             regions:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/region"
+ */
 export default async (req, res) => {
   try {
     const regionService = req.scope.resolve("regionService")

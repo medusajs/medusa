@@ -1,5 +1,24 @@
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /gift-cards
+ * operationId: "GetGiftCards"
+ * summary: "List Gift Cards"
+ * description: "Retrieves a list of Gift Cards."
+ * tags:
+ *   - Gift Card
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             gift_cards:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/gift_card"
+ */
 export default async (req, res) => {
   try {
     const selector = {}

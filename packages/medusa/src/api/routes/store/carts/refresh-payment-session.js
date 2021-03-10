@@ -1,3 +1,23 @@
+/**
+ * @oas [post] /carts/{id}/payment-sessions/{provider_id}
+ * operationId: PostCartsCartPaymentSessionsSession
+ * summary: Refresh a Payment Session
+ * description: "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary."
+ * parameters:
+ *   - (path) id=* {string} The id of the Cart.
+ *   - (path) provider_id=* {string} The id of the Payment Provider that created the Payment Session to be refreshed.
+ * tags:
+ *   - Cart
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id, provider_id } = req.params
 

@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Medusa Storefront API",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Auth endpoints allows authorization of admin Users and manages their sessions."
+    },
+    {
+      "name": "Cart",
+      "x-resourceId": "cart"
+    },
+    {
+      "name": "Collection",
+      "x-resourceId": "product_collection"
+    },
+    {
+      "name": "Customer",
+      "x-resourceId": "customer"
+    },
+    {
+      "name": "Discount",
+      "x-resourceId": "discount"
+    },
+    {
+      "name": "Gift Card",
+      "x-resourceId": "gift_card"
+    },
+    {
+      "name": "Notification",
+      "x-resourceId": "notification"
+    },
+    {
+      "name": "Order",
+      "x-resourceId": "order"
+    },
+    {
+      "name": "Product",
+      "x-resourceId": "product"
+    },
+    {
+      "name": "Region",
+      "x-resourceId": "region"
+    },
+    {
+      "name": "Return",
+      "x-resourceId": "return"
+    },
+    {
+      "name": "Shipping Option",
+      "x-resourceId": "shipping_option"
+    },
+    {
+      "name": "Shipping Profile",
+      "x-resourceId": "shipping_profile"
+    },
+    {
+      "name": "Swap",
+      "x-resourceId": "swap"
+    },
+    {
+      "name": "Product Variant",
+      "x-resourceId": "product_variant"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.medusa-commerce.com/store"
+    }
+  ],
+  "paths": {}
+}
