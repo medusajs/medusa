@@ -13,7 +13,7 @@ module.exports = {
         offset: -300,
       },
     },
-    `gatsby-transformer-yaml`,
+    `gatsby-transformer-json`,
     `gatsby-plugin-emotion`,
     {
       resolve: `gatsby-source-filesystem`,
