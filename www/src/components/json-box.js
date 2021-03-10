@@ -10,7 +10,7 @@ import "highlight.js/styles/a11y-light.css"
 
 import fixtures from "../../../docs/api/fixtures.json"
 
-const ResponseContainer = styled(Flex)`
+export const ResponseContainer = styled(Flex)`
   border: 1px solid #e3e8ee;
   border-radius: 5px;
   margin-left: auto;
@@ -22,29 +22,42 @@ const ResponseContainer = styled(Flex)`
   font-size: 1;
   position: sticky;
   top: 20px;
-  bottom: 20px;
 
   code {
     background: #f7fafc !important;
   }
 `
 
-const JsonBox = ({ endpoint }) => {
-  const props =
-    endpoint.responses["200"].content["application/json"].schema.properties
+const JsonBox = ({ text, resourceId, endpoint }) => {
+  const [json, setJson] = useState({})
 
-  const json = {}
+  useEffect(() => {
+    const toSet = {}
+    if (endpoint) {
+      const props =
+        endpoint?.responses?.["200"]?.content?.["application/json"]?.schema
+          ?.properties
 
-  for (const [name, details] of Object.entries(props)) {
-    if (
-      details["x-resourceId"] &&
-      details["x-resourceId"] in fixtures.resources
-    ) {
-      json[name] = fixtures.resources[details["x-resourceId"]]
-    } else {
-      json[name] = details
+      if (props) {
+        for (const [name, details] of Object.entries(props)) {
+          if (
+            details["x-resourceId"] &&
+            details["x-resourceId"] in fixtures.resources
+          ) {
+            toSet[name] = fixtures.resources[details["x-resourceId"]]
+          } else {
+            toSet[name] = details
+          }
+        }
+      }
     }
-  }
+
+    if (resourceId) {
+      setJson(fixtures.resources[resourceId])
+    } else {
+      setJson(toSet)
+    }
+  }, [])
 
   return (
     <ResponseContainer flexDirection="column" as="pre">
@@ -56,7 +69,7 @@ const JsonBox = ({ endpoint }) => {
         color="#4f566b"
         backgroundColor="#e3e8ee"
       >
-        RESPONSE
+        {text || "RESPONSE"}
       </Text>
       <Box
         w={1}

@@ -24,7 +24,7 @@ const EndpointContainer = styled(Flex)`
   }
 `
 
-const DocsReader = ({ tags }) => {
+const DocsReader = ({ tags, spec }) => {
   return (
     <Flex flexDirection="column" width="100%">
       {Object.entries(tags).map(([tagName, endpoints]) => (
@@ -35,6 +35,7 @@ const DocsReader = ({ tags }) => {
                 title={tagName}
                 description={""}
                 routes={endpoints}
+                spec={spec}
               />
               <Flex
                 flexDirection="row"

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "gatsby"
-import { Flex, Box, Text, Image } from "rebass"
+import { Link, navigate } from "gatsby"
+import { Flex, Box, Text } from "rebass"
 import { AnchorLink } from "gatsby-plugin-anchor-links"
 import styled from "@emotion/styled"
 import Collapsible from "react-collapsible"
+
+import Select from "./select"
 
 const convertToKebabCase = string => {
   return string.replace(/\s+/g, "-").toLowerCase()
@@ -67,10 +69,20 @@ const StyledLink = styled(Link)`
 `
 
 const SideBar = ({ tags }) => {
+  const [api, setApi] = useState("store")
+
+  useEffect(() => {
+    const pathname = window.location.pathname
+    const matches = pathname.match(/api\/(store|admin)/)
+    if (pathname.length > 1) {
+      setApi(matches[1])
+    }
+  }, [])
+
   return (
     <SideBarContainer>
       <Flex
-        width="100"
+        width="100%"
         alignContent="center"
         justifyContent={"center"}
         sx={{ borderBottom: "hairline" }}
@@ -80,24 +92,30 @@ const SideBar = ({ tags }) => {
         justifyContent="center"
         flexDirection="column"
       >
-        <Flex alignContent="center">
+        <Flex width={"100%"} alignContent="center">
           <Text
             fontFamily="Medusa"
             fontSize="26px"
             color="#454b54"
             fontWeight={300}
           >
-            MEDUSA
+            medusa
           </Text>
         </Flex>
-        <Flex pt={4} justifyContent="space-between">
-          <Link to="/api/admin">Admin</Link>
-          <Link to="/api/store">Storefront</Link>
+        <Flex pt={3} justifyContent="space-between">
+          <Select
+            value={api}
+            onChange={e => navigate(`/api/${e.target.value}`)}
+            options={[
+              { value: "admin", label: "Admin" },
+              { value: "store", label: "Storefront" },
+            ]}
+          />
         </Flex>
       </Flex>
       {Object.entries(tags).map(([tag, details]) => {
         return (
-          <Box pt={3} px={3}>
+          <Box pt={1} px={3}>
             <Collapsible
               transitionTime={50}
               trigger={<StyledNavItem fontSize={1}>{tag}</StyledNavItem>}

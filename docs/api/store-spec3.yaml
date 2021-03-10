@@ -4,6 +4,39 @@ info:
   title: Medusa Storefront API
   license:
     name: MIT
+tags:
+  - name: Auth
+    description: >-
+      Auth endpoints allows authorization of admin Users and manages their
+      sessions.
+  - name: Cart
+    x-resourceId: cart
+  - name: Collection
+    x-resourceId: product_collection
+  - name: Customer
+    x-resourceId: customer
+  - name: Discount
+    x-resourceId: discount
+  - name: Gift Card
+    x-resourceId: gift_card
+  - name: Notification
+    x-resourceId: notification
+  - name: Order
+    x-resourceId: order
+  - name: Product
+    x-resourceId: product
+  - name: Region
+    x-resourceId: region
+  - name: Return
+    x-resourceId: return
+  - name: Shipping Option
+    x-resourceId: shipping_option
+  - name: Shipping Profile
+    x-resourceId: shipping_profile
+  - name: Swap
+    x-resourceId: swap
+  - name: Product Variant
+    x-resourceId: product_variant
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
@@ -992,56 +1025,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  '/products/{id}':
-    get:
-      operationId: GetProductsProduct
-      summary: Retrieves a Product
-      description: Retrieves a Product.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product.
-          schema:
-            type: string
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  product:
-                    $ref: '#/components/schemas/product'
-  /products:
-    get:
-      operationId: GetProducts
-      summary: List Products
-      description: Retrieves a list of Products.
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Products.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of Products to return,'
-                    type: integer
-                  products:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1092,29 +1075,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
-  '/swaps/{cart_id}':
-    get:
-      operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
-      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart
-          schema:
-            type: string
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
   /shipping-options:
     get:
       operationId: GetShippingOptions
@@ -1169,6 +1129,79 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
+  '/products/{id}':
+    get:
+      operationId: GetProductsProduct
+      summary: Retrieves a Product
+      description: Retrieves a Product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieves a list of Products.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Products.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Products to return,'
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant

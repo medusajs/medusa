@@ -7,7 +7,7 @@ const StyledRoutesOverview = styled(Flex)`
   border-radius: 5px;
   margin-left: auto;
   margin-right: auto;
-  width: 45%;
+  width: 100%;
   max-height: calc(90vh - 20px);
   overflow-y: scroll;
   align-self: flex-start;
@@ -20,7 +20,7 @@ const RoutesOverview = ({ content }) => {
   if (!content) return null
 
   return (
-    <StyledRoutesOverview flexDirection="column">
+    <StyledRoutesOverview mb={3} flexDirection="column">
       <Text
         fontSize={0}
         fontFamily="body"
@@ -50,7 +50,9 @@ const RoutesOverview = ({ content }) => {
               >
                 {route.method}
               </Text>
-              <Text color="#4f566b">{route.path}</Text>
+              <Text color="#4f566b">
+                {route.path.replaceAll(/{(.*?)}/g, ":$1")}
+              </Text>
             </Flex>
           ))}
         </Flex>

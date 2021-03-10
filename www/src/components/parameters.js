@@ -10,10 +10,12 @@ const Parameters = ({ endpoint }) => {
   const props = reqBody.content?.["application/json"]?.schema?.properties
   if (props) {
     for (const [name, details] of Object.entries(props)) {
-      aggregated.push({
-        name,
-        ...details,
-      })
+      if (!aggregated.find(a => a.name === name)) {
+        aggregated.push({
+          name,
+          ...details,
+        })
+      }
     }
   }
 

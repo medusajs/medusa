@@ -4,6 +4,37 @@ info:
   title: Medusa Admin API
   license:
     name: MIT
+tags:
+  - name: Auth
+    description: >-
+      Auth endpoints allows authorization of admin Users and manages their
+      sessions.
+  - name: Collection
+    x-resourceId: product_collection
+  - name: Customer
+    x-resourceId: customer
+  - name: Discount
+    x-resourceId: discount
+  - name: Gift Card
+    x-resourceId: gift_card
+  - name: Notification
+    x-resourceId: notification
+  - name: Order
+    x-resourceId: order
+  - name: Product
+    x-resourceId: product
+  - name: Region
+    x-resourceId: region
+  - name: Return
+    x-resourceId: return
+  - name: Shipping Option
+    x-resourceId: shipping_option
+  - name: Shipping Profile
+    x-resourceId: shipping_profile
+  - name: Swap
+    x-resourceId: swap
+  - name: Product Variant
+    x-resourceId: product_variant
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
@@ -3327,6 +3358,116 @@ paths:
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
+  '/store/currencies/{code}':
+    post:
+      operationId: PostStoreCurrenciesCode
+      summary: Add a Currency Code
+      description: Adds a Currency Code to the available currencies.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The 3 character ISO currency code.
+          schema:
+            type: string
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+    delete:
+      operationId: DeleteStoreCurrenciesCode
+      summary: Remvoe a Currency Code
+      description: Removes a Currency Code from the available currencies.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The 3 character ISO currency code.
+          schema:
+            type: string
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+  /store:
+    get:
+      operationId: GetStore
+      summary: Retrieve Store details.
+      description: Retrieves the Store details
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+    post:
+      operationId: PostStore
+      summary: Update Store details.
+      description: Updates the Store details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Store
+                  type: string
+                swap_link_template:
+                  description: >-
+                    A template for Swap links - use `{{cart_id}}` to insert the
+                    Swap Cart id
+                  type: string
+                default_currency_code:
+                  description: The default currency code for the Store.
+                  type: string
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+  /store/payment-providers:
+    get:
+      operationId: GetStorePaymentProviders
+      summary: Retrieve configured Payment Providers
+      description: Retrieves the configured Payment Providers
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_providers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/store'
   /shipping-profiles:
     post:
       operationId: PostShippingProfiles
@@ -3449,116 +3590,6 @@ paths:
                 properties:
                   shipping_profiles:
                     $ref: '#/components/schemas/shipping_profile'
-  '/store/currencies/{code}':
-    post:
-      operationId: PostStoreCurrenciesCode
-      summary: Add a Currency Code
-      description: Adds a Currency Code to the available currencies.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The 3 character ISO currency code.
-          schema:
-            type: string
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-    delete:
-      operationId: DeleteStoreCurrenciesCode
-      summary: Remvoe a Currency Code
-      description: Removes a Currency Code from the available currencies.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The 3 character ISO currency code.
-          schema:
-            type: string
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-  /store:
-    get:
-      operationId: GetStore
-      summary: Retrieve Store details.
-      description: Retrieves the Store details
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-    post:
-      operationId: PostStore
-      summary: Update Store details.
-      description: Updates the Store details
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: The name of the Store
-                  type: string
-                swap_link_template:
-                  description: >-
-                    A template for Swap links - use `{{cart_id}}` to insert the
-                    Swap Cart id
-                  type: string
-                default_currency_code:
-                  description: The default currency code for the Store.
-                  type: string
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-  /store/payment-providers:
-    get:
-      operationId: GetStorePaymentProviders
-      summary: Retrieve configured Payment Providers
-      description: Retrieves the configured Payment Providers
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_providers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/store'
   /swaps:
     get:
       operationId: GetSwaps
