@@ -23,6 +23,7 @@
     "gatsby-plugin-emotion": "^5.0.0",
     "gatsby-plugin-react-helmet": "^3.3.12",
     "gatsby-source-filesystem": "^2.3.31",
+    "gatsby-transformer-json": "^3.0.0",
     "gatsby-transformer-yaml": "^2.4.13",
     "react": "^16.12.0",
     "react-collapsible": "^2.8.1",

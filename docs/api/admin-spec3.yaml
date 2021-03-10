@@ -695,49 +695,6 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  /notifications:
-    get:
-      operationId: GetNotifications
-      summary: List Notifications
-      description: Retrieves a list of Notifications.
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notifications:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/notification'
-  '/notifications/{id}/resend':
-    post:
-      operationId: PostNotificationsNotificationResend
-      summary: Resend Notification
-      description: >-
-        Resends a previously sent notifications, with the same data but
-        optionally to a different address
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Notification
-          schema:
-            type: string
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notification:
-                    $ref: '#/components/schemas/notification'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -910,6 +867,49 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+  /notifications:
+    get:
+      operationId: GetNotifications
+      summary: List Notifications
+      description: Retrieves a list of Notifications.
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/notification'
+  '/notifications/{id}/resend':
+    post:
+      operationId: PostNotificationsNotificationResend
+      summary: Resend Notification
+      description: >-
+        Resends a previously sent notifications, with the same data but
+        optionally to a different address
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Notification
+          schema:
+            type: string
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification:
+                    $ref: '#/components/schemas/notification'
   '/orders/{id}/shipping-methods':
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -3358,116 +3358,6 @@ paths:
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
-  '/store/currencies/{code}':
-    post:
-      operationId: PostStoreCurrenciesCode
-      summary: Add a Currency Code
-      description: Adds a Currency Code to the available currencies.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The 3 character ISO currency code.
-          schema:
-            type: string
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-    delete:
-      operationId: DeleteStoreCurrenciesCode
-      summary: Remvoe a Currency Code
-      description: Removes a Currency Code from the available currencies.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The 3 character ISO currency code.
-          schema:
-            type: string
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-  /store:
-    get:
-      operationId: GetStore
-      summary: Retrieve Store details.
-      description: Retrieves the Store details
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-    post:
-      operationId: PostStore
-      summary: Update Store details.
-      description: Updates the Store details
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: The name of the Store
-                  type: string
-                swap_link_template:
-                  description: >-
-                    A template for Swap links - use `{{cart_id}}` to insert the
-                    Swap Cart id
-                  type: string
-                default_currency_code:
-                  description: The default currency code for the Store.
-                  type: string
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-  /store/payment-providers:
-    get:
-      operationId: GetStorePaymentProviders
-      summary: Retrieve configured Payment Providers
-      description: Retrieves the configured Payment Providers
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_providers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/store'
   /shipping-profiles:
     post:
       operationId: PostShippingProfiles
@@ -3590,6 +3480,116 @@ paths:
                 properties:
                   shipping_profiles:
                     $ref: '#/components/schemas/shipping_profile'
+  '/store/currencies/{code}':
+    post:
+      operationId: PostStoreCurrenciesCode
+      summary: Add a Currency Code
+      description: Adds a Currency Code to the available currencies.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The 3 character ISO currency code.
+          schema:
+            type: string
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+    delete:
+      operationId: DeleteStoreCurrenciesCode
+      summary: Remvoe a Currency Code
+      description: Removes a Currency Code from the available currencies.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The 3 character ISO currency code.
+          schema:
+            type: string
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+  /store:
+    get:
+      operationId: GetStore
+      summary: Retrieve Store details.
+      description: Retrieves the Store details
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+    post:
+      operationId: PostStore
+      summary: Update Store details.
+      description: Updates the Store details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Store
+                  type: string
+                swap_link_template:
+                  description: >-
+                    A template for Swap links - use `{{cart_id}}` to insert the
+                    Swap Cart id
+                  type: string
+                default_currency_code:
+                  description: The default currency code for the Store.
+                  type: string
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+  /store/payment-providers:
+    get:
+      operationId: GetStorePaymentProviders
+      summary: Retrieve configured Payment Providers
+      description: Retrieves the configured Payment Providers
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_providers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/store'
   /swaps:
     get:
       operationId: GetSwaps

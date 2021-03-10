@@ -1002,6 +1002,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.12.5":
+  version "7.13.10"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
+  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/standalone@^7.11.6":
   version "7.11.6"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.11.6.tgz#2ea3c9463c8b1d04ee2dacc5ac4b81674cec2967"
@@ -5960,6 +5967,14 @@ gatsby-telemetry@^1.3.36:
     lodash "^4.17.20"
     node-fetch "^2.6.0"
     uuid "3.4.0"
+
+gatsby-transformer-json@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-json/-/gatsby-transformer-json-3.0.0.tgz#e8ab61ac5aa9aa7699c00d869c63b91ce37d606e"
+  integrity sha512-MyQZdoGbr1OEtFkAF1BAEvfhZKZVeD00yCX/9E/CSd/73jrBqxXqSWN2gIVx9HlPRbPUjmChMW6Nwx0z6GF+MA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    bluebird "^3.7.2"
 
 gatsby-transformer-yaml@^2.4.13:
   version "2.4.13"
