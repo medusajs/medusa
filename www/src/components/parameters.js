@@ -1,5 +1,5 @@
 import React from "react"
-import { Flex, Box, Text } from "rebass"
+import { Box, Text } from "rebass"
 
 import ParamSection from "./param-section"
 

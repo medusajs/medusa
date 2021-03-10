@@ -1,5 +1,5 @@
 import React from "react"
-import { Flex, Box, Text } from "rebass"
+import { Flex, Text } from "rebass"
 import styled from "@emotion/styled"
 import Markdown from "react-markdown"
 
