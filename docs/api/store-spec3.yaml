@@ -645,6 +645,28 @@ paths:
                 data:
                   type: object
                   description: The data to update the payment session with.
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
   '/customers/{id}/addresses':
     post:
       operationId: PostCustomersCustomerAddresses
@@ -977,54 +999,6 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
-  '/orders/cart/{cart_id}':
-    get:
-      operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
-      description: >-
-        Retrieves an Order by the id of the Cart that was used to create the
-        Order.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of Cart.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
-    get:
-      operationId: GetOrdersOrder
-      summary: Retrieves an Order
-      description: Retrieves an Order
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -1075,6 +1049,133 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /orders:
+    get:
+      operationId: GetOrders
+      summary: Look Up an Order
+      description: >-
+        Looks for an Order with a given `display_id`, `email` pair. The
+        `display_id`, `email` pair must match in order for the Order to be
+        returned.
+      parameters:
+        - in: query
+          name: display_id
+          required: true
+          description: The display id given to the Order.
+          schema:
+            type: number
+        - in: query
+          name: email
+          required: true
+          description: The email of the Order with the given display_id.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  /returns:
+    post:
+      operationId: PostReturns
+      summary: Create Return
+      description: Creates a Return for an Order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order_id:
+                  type: string
+                  description: The id of the Order to create the Return from.
+                items:
+                  description: The items to include in the Return.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item from the Order.
+                        type: string
+                      quantity:
+                        description: The quantity to return.
+                        type: integer
+                return_shipping:
+                  description: >-
+                    If the Return is to be handled by the store operator the
+                    Customer can choose a Return Shipping Method. Alternatvely
+                    the Customer can handle the Return themselves.
+                  type: object
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The id of the Shipping Option to create the Shipping
+                        Method from.
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return:
+                    $ref: '#/components/schemas/return'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
