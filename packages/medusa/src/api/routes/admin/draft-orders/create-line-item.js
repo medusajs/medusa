@@ -1,6 +1,44 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultCartFields, defaultCartRelations, defaultFields } from "."
 
+/**
+ * @oas [post] /draft-orders/{id}/line-items
+ * operationId: "PostDraftOrdersDraftOrderLineItems"
+ * summary: "Create a Line Item for Draft Order"
+ * description: "Creates a Line Item for the Draft Order"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           variant_id:
+ *             description: The id of the Product Variant to generate the Line Item from.
+ *             type: string
+ *           unit_price:
+ *             description: The potential custom price of the item.
+ *             type: integer
+ *           title:
+ *             description: The potential custom title of the item.
+ *             type: string
+ *           quantity:
+ *             description: The quantity of the Line Item.
+ *             type: integer
+ *           metadata:
+ *             description: The optional key-value map with additional details about the Line Item.
+ *             type: object
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   const { id } = req.params
 

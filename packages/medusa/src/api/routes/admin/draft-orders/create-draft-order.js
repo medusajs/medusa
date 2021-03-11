@@ -1,6 +1,100 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "."
 
+/**
+ * @oas [post] /draft-orders
+ * operationId: "PostDraftOrders"
+ * summary: "Create a Draft Order"
+ * description: "Creates a Draft Order"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           status:
+ *             description: "The status of the draft order"
+ *             type: string
+ *           email:
+ *             description: "The email of the customer of the draft order"
+ *             type: string
+ *           billing_address:
+ *             description: "The Address to be used for billing purposes."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
+ *           shipping_address:
+ *             description: "The Address to be used for shipping."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
+ *           billing_address_id:
+ *             description: The id of an existing billing Address
+ *             type: string
+ *           shipping_address_id:
+ *             description: The id of an existing shipping Address
+ *             type: string
+ *           items:
+ *             description: The Line Items that have been received.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 variant_id:
+ *                   description: The id of the Product Variant to generate the Line Item from.
+ *                   type: string
+ *                 unit_price:
+ *                   description: The potential custom price of the item.
+ *                   type: integer
+ *                 title:
+ *                   description: The potential custom title of the item.
+ *                   type: string
+ *                 quantity:
+ *                   description: The quantity of the Line Item.
+ *                   type: integer
+ *                 metadata:
+ *                   description: The optional key-value map with additional details about the Line Item.
+ *                   type: object
+ *           region_id:
+ *             description: The id of the region for the draft order
+ *             type: string
+ *           discounts:
+ *             description: The discounts to add on the draft order
+ *             type: array
+ *             items:
+ *               properties:
+ *                 code:
+ *                   description: The code of the discount to apply
+ *                   type: string
+ *           customer_id:
+ *             description: The id of the customer to add on the draft order
+ *             type: string
+ *           shipping_methods:
+ *             description: The shipping methods for the draft order
+ *             type: array
+ *             items:
+ *               properties:
+ *                 option_id:
+ *                   description: The id of the shipping option in use
+ *                   type: string
+ *                 data:
+ *                   description: The optional additional data needed for the shipping method
+ *                   type: object
+ *                 price:
+ *                   description: The potential custom price of the shipping
+ *                   type: integer
+ *           metadata:
+ *             description: The optional key-value map with additional details about the Draft Order.
+ *             type: object
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   const schema = Validator.object().keys({
     status: Validator.string()
