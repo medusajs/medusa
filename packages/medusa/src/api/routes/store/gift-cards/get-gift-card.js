@@ -22,6 +22,8 @@ import { defaultRelations, defaultFields } from "./"
  *               description: The original value of the Gift Card.
  *             balance:
  *               description: The current balanace of the Gift Card
+ *             region:
+ *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
   const { code } = req.params
