@@ -1,6 +1,24 @@
 import _ from "lodash"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /draft-orders
+ * operationId: "GetDraftOrders"
+ * summary: "List Draft Orders"
+ * description: "Retrieves an list of Draft Orders"
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   try {
     const draftOrderService = req.scope.resolve("draftOrderService")

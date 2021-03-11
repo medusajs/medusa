@@ -5,6 +5,26 @@ import {
   defaultCartFields,
 } from "."
 
+/**
+ * @oas [get] /draft-orders/{id}
+ * operationId: "GetDraftOrdersDraftOrder"
+ * summary: "Retrieve a Draft Order"
+ * description: "Retrieves a Draft Order."
+ * parameters:
+ *   - (path) id=* {string} The id of the Draft Order.
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   const { id } = req.params
 

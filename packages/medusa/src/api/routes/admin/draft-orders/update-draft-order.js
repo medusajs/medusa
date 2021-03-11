@@ -1,6 +1,59 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultCartFields, defaultCartRelations, defaultFields } from "."
 
+/**
+ * @oas [post] /admin/draft-orders/{id}
+ * operationId: PostDraftOrdersDraftOrder
+ * summary: Update a Draft Order"
+ * description: "Updates a Draft Order."
+ * parameters:
+ *   - (path) id=* {string} The id of the Draft Order.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           region_id:
+ *             type: string
+ *             description: The id of the Region to create the Draft Order in.
+ *           country_code:
+ *             type: string
+ *             description: "The 2 character ISO country code to create the Draft Order in."
+ *           email:
+ *             type: string
+ *             description: "An email to be used on the Draft Order."
+ *           billing_address:
+ *             description: "The Address to be used for billing purposes."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
+ *           shipping_address:
+ *             description: "The Address to be used for shipping."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
+ *           discounts:
+ *             description: "An array of Discount codes to add to the Draft Order."
+ *             type: array
+ *             items:
+ *               properties:
+ *                 code:
+ *                   description: "The code that a Discount is identifed by."
+ *                   type: string
+ *           customer_id:
+ *             description: "The id of the Customer to associate the Draft Order with."
+ *             type: string
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   const { id } = req.params
 
