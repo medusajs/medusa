@@ -6,6 +6,10 @@ const {
   Product,
   ShippingProfile,
   ProductVariant,
+  ProductOptionValue,
+  ProductOption,
+  MoneyAmount,
+  Image,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -36,6 +40,13 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(type);
 
+  const image = manager.create(Image, {
+    id: "test-image",
+    url: "test-image.png",
+  });
+
+  await manager.save(image);
+
   await manager.insert(Region, {
     id: "test-region",
     name: "Test Region",
@@ -46,6 +57,22 @@ module.exports = async (connection, data = {}) => {
   await manager.insert(Product, {
     id: "test-product",
     title: "Test product",
+    profile_id: defaultProfile.id,
+    images: [{ id: "test-image", url: "test-image.png" }],
+    description: "test-product-description",
+    collection_id: "test-collection",
+    type: { id: "test-type", value: "test-type" },
+    tags: [
+      { id: "tag1", value: "123" },
+      { tag: "tag2", value: "456" },
+    ],
+    options: [{ id: "test-option", title: "Default value" }],
+  });
+
+  await manager.insert(Product, {
+    id: "test-product-2",
+    handle: "test-product-two",
+    title: "Test product two",
     profile_id: defaultProfile.id,
     description: "test-product-description",
     collection_id: "test-collection",
@@ -65,4 +92,37 @@ module.exports = async (connection, data = {}) => {
     prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
     options: [{ id: "test-variant-option", value: "Default variant" }],
   });
+
+  const productOption = manager.create(ProductOption, {
+    id: "test-option",
+    title: "Default value",
+    product_id: "test-product-2",
+  });
+
+  await manager.save(productOption);
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant-2",
+    inventory_quantity: 10,
+    title: "Test variant",
+    product_id: "test-product-2",
+    prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
+  });
+
+  const ma = manager.create(MoneyAmount, {
+    variant_id: "test-variant-2",
+    currency_code: "usd",
+    amount: 100,
+  });
+
+  await manager.save(ma);
+
+  const option = manager.create(ProductOptionValue, {
+    id: "test-variant-option",
+    value: "Default variant",
+    option_id: "test-option",
+    variant_id: "test-variant-2",
+  });
+
+  await manager.save(option);
 };

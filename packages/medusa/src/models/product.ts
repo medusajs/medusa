@@ -46,7 +46,7 @@ export class Product {
   @Column({ default: false })
   is_giftcard: boolean
 
-  @ManyToMany(() => Image)
+  @ManyToMany(() => Image, { cascade: true })
   @JoinTable({
     name: "product_images",
     joinColumn: {
@@ -65,14 +65,15 @@ export class Product {
 
   @OneToMany(
     () => ProductOption,
-    productOption => productOption.product
+    productOption => productOption.product,
+    { cascade: true }
   )
   options: ProductOption[]
 
   @OneToMany(
     () => ProductVariant,
     variant => variant.product,
-    { cascade: true }
+    { cascade: true, onDelete: "CASCADE" }
   )
   variants: ProductVariant[]
 
@@ -111,18 +112,18 @@ export class Product {
   @Column({ nullable: true })
   collection_id: string
 
-  @ManyToOne(() => ProductCollection)
+  @ManyToOne(() => ProductCollection, { cascade: true })
   @JoinColumn({ name: "collection_id" })
   collection: ProductCollection
 
   @Column({ nullable: true })
   type_id: string
 
-  @ManyToOne(() => ProductType)
+  @ManyToOne(() => ProductType, { cascade: true })
   @JoinColumn({ name: "type_id" })
   type: ProductType
 
-  @ManyToMany(() => ProductTag)
+  @ManyToMany(() => ProductTag, { cascade: true })
   @JoinTable({
     name: "product_tags",
     joinColumn: {

@@ -7,6 +7,7 @@ export default app => {
   app.use("/products", route)
 
   route.post("/", middlewares.wrap(require("./create-product").default))
+  route.post("/import", middlewares.wrap(require("./import-products").default))
   route.post("/:id", middlewares.wrap(require("./update-product").default))
   route.get("/types", middlewares.wrap(require("./list-types").default))
   route.get(
