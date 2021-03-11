@@ -355,10 +355,10 @@ class BrightpearlService extends BaseService {
             return row.externalRef === i.item_id
           })
           return {
-            net: this.totalsService_.rounded(
+            net: this.bpround_(
               (parentRow.net / parentRow.quantity) * i.quantity
             ),
-            tax: this.totalsService_.rounded(
+            tax: this.bpround_(
               (parentRow.tax / parentRow.quantity) * i.quantity
             ),
             productId: parentRow.productId,
@@ -697,10 +697,10 @@ class BrightpearlService extends BaseService {
             return row.externalRef === i.item_id
           })
           return {
-            net: this.totalsService_.rounded(
+            net: this.bpround_(
               (parentRow.net / parentRow.quantity) * i.quantity
             ),
-            tax: this.totalsService_.rounded(
+            tax: this.bpround_(
               (parentRow.tax / parentRow.quantity) * i.quantity
             ),
             productId: parentRow.productId,
@@ -1096,9 +1096,16 @@ class BrightpearlService extends BaseService {
     return { contactId: customer }
   }
 
+  bpround_(n) {
+    const decimalPlaces = 4
+    return Number(
+      Math.round(parseFloat(n + "e" + decimalPlaces)) + "e-" + decimalPlaces
+    )
+  }
+
   bpnum_(number, taxRate = 100) {
     const bpNumber = number / 100
-    return this.totalsService_.rounded(bpNumber * (taxRate / 100))
+    return this.bpround_(bpNumber * (taxRate / 100))
   }
 }
 
