@@ -1,3 +1,30 @@
+/**
+ * @oas [get] /customers/{id}/payment-methods
+ * operationId: GetCustomersCustomerPaymentMethods
+ * summary: Retrieve saved payment methods
+ * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
+ * parameters:
+ *   - (path) id=* {string} The id of the Customer.
+ * tags:
+ *   - Customer
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             payment_methods:
+ *               type: array
+ *               items:
+ *                 properties:
+ *                   provider_id:
+ *                     type: string
+ *                     description: The id of the Payment Provider where the payment method is saved.
+ *                   data:
+ *                     type: object
+ *                     description: The data needed for the Payment Provider to use the saved payment method.
+ */
 export default async (req, res) => {
   const { id } = req.params
   try {

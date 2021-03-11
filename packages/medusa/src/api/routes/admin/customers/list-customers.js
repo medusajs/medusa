@@ -1,3 +1,20 @@
+/**
+ * @oas [get] /customers
+ * operationId: "GetCustomers"
+ * summary: "List Customers"
+ * description: "Retrieves a list of Customers."
+ * tags:
+ *   - Customer
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             customer:
+ *               $ref: "#/components/schemas/customer"
+ */
 export default async (req, res) => {
   try {
     const customerService = req.scope.resolve("customerService")

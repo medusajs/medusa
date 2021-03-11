@@ -1,6 +1,33 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /products/{id}/options
+ * operationId: "PostProductsProductOptions"
+ * summary: "Add an Option"
+ * description: "Adds a Product Option to a Product"
+ * parameters:
+ *   - (path) id=* {string} The id of the Product.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           title:
+ *             description: "The title the Product Option will be identified by i.e. \"Size\""
+ *             type: string
+ * tags:
+ *   - Product
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             product:
+ *               $ref: "#/components/schemas/product"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

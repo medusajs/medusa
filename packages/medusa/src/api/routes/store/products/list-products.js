@@ -1,3 +1,31 @@
+/**
+ * @oas [get] /products
+ * operationId: GetProducts
+ * summary: List Products
+ * description: "Retrieves a list of Products."
+ * tags:
+ *   - Product
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             count:
+ *               description: The total number of Products.
+ *               type: integer
+ *             offset:
+ *               description: The offset for pagination.
+ *               type: integer
+ *             limit:
+ *               description: The maxmimum number of Products to return,
+ *               type: integer
+ *             products:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/product"
+ */
 export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")
