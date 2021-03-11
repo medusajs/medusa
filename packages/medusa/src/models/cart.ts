@@ -1,3 +1,87 @@
+/**
+ * @schema cart
+ * title: "Cart"
+ * description: "Represents a user cart"
+ * x-resourceId: cart
+ * properties:
+ *   id:
+ *     type: string
+ *   email:
+ *     type: string
+ *   billing_address_id:
+ *     type: string
+ *   billing_address:
+ *     $ref: "#/components/schemas/address"
+ *   shipping_address_id:
+ *     type: string
+ *   shipping_address:
+ *     $ref: "#/components/schemas/address"
+ *   items:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/line_item"
+ *   region_id:
+ *     type: string
+ *   region:
+ *     $ref: "#/components/schemas/region"
+ *   discounts:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/region"
+ *   gift_cards:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/gift_card"
+ *   customer_id:
+ *     type: string
+ *   customer:
+ *     $ref: "#/components/schemas/customer"
+ *   payment_session:
+ *     $ref: "#/components/schemas/payment_session"
+ *   payment_sessions:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/payment_session"
+ *   payment:
+ *     $ref: "#/components/schemas/payment"
+ *   shipping_methods:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/shipping_method"
+ *   type:
+ *     type: string
+ *     enum:
+ *       - default
+ *       - swap
+ *       - payment_link
+ *   completed_at:
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ *   shipping_total:
+ *     type: integer
+ *   discount_total:
+ *     type: integer
+ *   tax_total:
+ *     type: integer
+ *   subtotal:
+ *     type: integer
+ *   refundable_amount:
+ *     type: integer
+ *   gift_card_total:
+ *     type: integer
+ */
+
 import {
   Entity,
   BeforeInsert,

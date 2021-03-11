@@ -79,3 +79,44 @@ export class Customer {
     this.id = `cus_${id}`
   }
 }
+
+/**
+ * @schema customer
+ * title: "Customer"
+ * description: "Represents a customer"
+ * x-resourceId: customer
+ * properties:
+ *   id:
+ *     type: string
+ *   email:
+ *     type: string
+ *   billing_address_id:
+ *     type: string
+ *   billing_address:
+ *     description: "The Customer's billing address."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/address"
+ *   shipping_addresses:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/address"
+ *   first_name:
+ *     type: string
+ *   last_name:
+ *     type: string
+ *   phone:
+ *     type: string
+ *   has_account:
+ *     type: boolean
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ */

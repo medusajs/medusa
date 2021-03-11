@@ -1,3 +1,24 @@
+/**
+ * @oas [get] /regions/{id}/fulfillment-options
+ * operationId: "GetRegionsRegionFulfillmentOptions"
+ * summary: "List Fulfillment Options available in the Region"
+ * description: "Gathers all the fulfillment options available to in the Region."
+ * parameters:
+ *   - (path) id=* {string} The id of the Region.
+ * tags:
+ *   - Product
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             fulfillment_options:
+ *               type: array
+ *               items:
+ *                 type: object
+ */
 export default async (req, res) => {
   const { region_id } = req.params
 
