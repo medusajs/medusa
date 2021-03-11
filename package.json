@@ -31,6 +31,11 @@
     "bootstrap": "lerna bootstrap",
     "jest": "jest",
     "test": "jest",
-    "test:integration": "jest --config=integration-tests/jest.config.js --runInBand"
+    "test:integration": "jest --config=integration-tests/jest.config.js --runInBand",
+    "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
+  },
+  "dependencies": {
+    "oas-normalize": "^2.3.1",
+    "swagger-inline": "^3.2.2"
   }
 }

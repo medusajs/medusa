@@ -140,15 +140,15 @@ describe("CustomerService", () => {
     })
 
     it("fails if email is in incorrect format", async () => {
-      expect(
+      await expect(
         customerService.create({
           email: "olivermedusa.com",
         })
       ).rejects.toThrow("The email is not valid")
     })
 
-    it("fails if billing address is in incorrect format", () => {
-      expect(
+    it("fails if billing address is in incorrect format", async () => {
+      await expect(
         customerService.create({
           email: "oliver@medusa.com",
           first_name: "Oliver",
@@ -289,13 +289,15 @@ describe("CustomerService", () => {
     })
 
     it("throws on invalid address", async () => {
-      expect(
+      await expect(
         customerService.updateAddress(
           IdMap.getId("ironman"),
           IdMap.getId("hollywood-boulevard"),
           {
             first_name: "Tony",
             last_name: "Stark",
+            country_code: "us",
+            unknown: "key",
             address_1: "Hollywood",
           }
         )
