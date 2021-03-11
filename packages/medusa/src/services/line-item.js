@@ -89,7 +89,7 @@ class LineItemService extends BaseService {
     return lineItem
   }
 
-  async generate(variantId, regionId, quantity, metadata = {}, unitPrice) {
+  async generate(variantId, regionId, quantity, config = {}) {
     const variant = await this.productVariantService_.retrieve(variantId, {
       relations: ["product"],
     })
@@ -97,8 +97,13 @@ class LineItemService extends BaseService {
     const region = await this.regionService_.retrieve(regionId)
 
     let price
-    if (unitPrice) {
-      price = unitPrice
+
+    if (config.unit_price && typeof config.unit_price !== `undefined`) {
+      if (config.unit_price < 0) {
+        price = 0
+      } else {
+        price = config.unit_price
+      }
     } else {
       price = await this.productVariantService_.getRegionPrice(
         variant.id,
@@ -115,7 +120,7 @@ class LineItemService extends BaseService {
       quantity: quantity || 1,
       allow_discounts: !variant.product.is_giftcard,
       is_giftcard: variant.product.is_giftcard,
-      metadata: metadata || {},
+      metadata: config?.metadata || {},
       should_merge: true,
     }
 

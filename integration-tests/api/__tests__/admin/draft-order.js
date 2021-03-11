@@ -46,7 +46,9 @@ describe("/admin/draft-orders", () => {
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
       await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "payment_provider"`);
       await manager.query(`DELETE FROM "payment_session"`);
       await manager.query(`UPDATE "payment" SET order_id=NULL`);
@@ -141,18 +143,24 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200);
     });
 
-    it("creates a draft order with product variant with custom price", async () => {
+    it("creates a draft order with product variant with custom price and custom item price set to 0", async () => {
       const api = useApi();
 
       const payload = {
         email: "oli@test.dk",
         shipping_address_id: "oli-shipping",
+        discounts: [{ code: "TEST" }],
         items: [
           {
             variant_id: "test-variant",
             quantity: 2,
             metadata: {},
             unit_price: 10000000,
+          },
+          {
+            quantity: 2,
+            metadata: {},
+            unit_price: -1000,
           },
         ],
         region_id: "test-region",
@@ -185,10 +193,21 @@ describe("/admin/draft-orders", () => {
         });
 
       expect(response.status).toEqual(200);
-      expect(created.data.draft_order.cart.items[0]).toEqual(
+      expect(created.data.draft_order.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            unit_price: 10000000,
+          }),
+          expect.objectContaining({
+            unit_price: 0,
+          }),
+        ])
+      );
+      // Check that discount is applied
+      expect(created.data.draft_order.cart.discounts[0]).toEqual(
         expect.objectContaining({
-          variant_id: "test-variant",
-          unit_price: 10000000,
+          code: "TEST",
         })
       );
     });
@@ -303,7 +322,9 @@ describe("/admin/draft-orders", () => {
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
       await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "payment_provider"`);
       await manager.query(`DELETE FROM "payment_session"`);
       await manager.query(`UPDATE "payment" SET order_id=NULL`);
