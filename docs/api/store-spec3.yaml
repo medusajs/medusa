@@ -1,0 +1,3554 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Medusa Storefront API
+  license:
+    name: MIT
+tags:
+  - name: Auth
+    description: >-
+      Auth endpoints allows authorization of admin Users and manages their
+      sessions.
+  - name: Cart
+    x-resourceId: cart
+  - name: Collection
+    x-resourceId: product_collection
+  - name: Customer
+    x-resourceId: customer
+  - name: Discount
+    x-resourceId: discount
+  - name: Gift Card
+    x-resourceId: gift_card
+  - name: Notification
+    x-resourceId: notification
+  - name: Order
+    x-resourceId: order
+  - name: Product
+    x-resourceId: product
+  - name: Region
+    x-resourceId: region
+  - name: Return
+    x-resourceId: return
+  - name: Shipping Option
+    x-resourceId: shipping_option
+  - name: Shipping Profile
+    x-resourceId: shipping_profile
+  - name: Swap
+    x-resourceId: swap
+  - name: Product Variant
+    x-resourceId: product_variant
+servers:
+  - url: 'https://api.medusa-commerce.com/store'
+paths:
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate Customer
+      description: >-
+        Logs a Customer in and authorizes them to view their details. Successful
+        authentication will set a session cookie in the Customer's browser.
+      parameters: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                password:
+                  type: string
+                  description: The Customer's password.
+    delete:
+      operationId: DeleteAuth
+      summary: Log out
+      description: Destroys a Customer's authenticated session.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      description: Gets the currently logged in Customer.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/auth/{email}':
+    get:
+      operationId: GetAuthEmail
+      summary: Check if email has account
+      description: Checks if a Customer with the given email has signed up.
+      parameters:
+        - in: path
+          name: email
+          required: true
+          description: The Customer's email.
+          schema:
+            type: string
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  exists:
+                    type: boolean
+  '/carts/{id}/shipping-methods':
+    post:
+      operationId: PostCartsCartShippingMethod
+      description: Adds a Shipping Method to the Cart.
+      summary: Add a Shipping Method
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The cart id.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - option_id
+              properties:
+                option_id:
+                  type: string
+                  description: id of the shipping option to create the method from
+                data:
+                  type: object
+                  description: >-
+                    Used to hold any data that the shipping method may need to
+                    process the fulfillment of the order. Look at the
+                    documentation for your installed fulfillment providers to
+                    find out what to send.
+  '/carts/{id}/complete-cart':
+    post:
+      summary: Complete a Cart
+      operationId: PostCartsCartComplete
+      description: >-
+        Completes a cart. The following steps will be performed. Payment
+        authorization is attempted and if more work is required, we simply
+        return the cart for further updates. If payment is authorized and order
+        is not yet created, we make sure to do so. The completion of a cart can
+        be performed idempotently with a provided header `Idempotency-Key`. If
+        not provided, we will generate one for the request.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Cart id.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: >-
+            If a cart was successfully authorized, but requires further action
+            from the user the response body will contain the cart with an
+            updated payment session. If the Cart was successfully completed the
+            response body will contain the newly created Order.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/order'
+                  - type: object
+                    properties:
+                      cart:
+                        $ref: '#/components/schemas/cart'
+  /carts:
+    post:
+      summary: Create a Cart
+      operationId: PostCart
+      description: >-
+        Creates a Cart within the given region and with the initial items. If no
+        `region_id` is provided the cart will be associated with the first
+        Region available. If no items are provided the cart will be empty after
+        creation. If a user is logged in the cart's customer id and email will
+        be set.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                items:
+                  description: >-
+                    An optional array of `variant_id`, `quantity` pairs to
+                    generate Line Items from.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: >-
+                          The id of the Product Variant to generate a Line Item
+                          from.
+                        type: string
+                      quantity:
+                        description: The quantity of the Product Variant to add
+                        type: integer
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: Successfully created a new Cart
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/line-items':
+    post:
+      operationId: PostCartsCartLineItems
+      summary: Add a Line Item
+      description: >-
+        Generates a Line Item with a given Product Variant and adds it to the
+        Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart to add the Line Item to.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  type: string
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                quantity:
+                  type: integer
+                  description: The quantity of the Product Variant to add to the Line Item.
+                metadata:
+                  type: object
+                  description: >-
+                    An optional key-value map with additional details about the
+                    Line Item.
+  '/carts/{id}/payment-sessions':
+    post:
+      operationId: PostCartsCartPaymentSessions
+      summary: Initialize Payment Sessions
+      description: >-
+        Creates Payment Sessions for each of the available Payment Providers in
+        the Cart's Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/discounts/{code}':
+    delete:
+      operationId: DeleteCartsCartDiscountsDiscount
+      description: Removes a Discount from a Cart.
+      summary: Remove Discount from Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: code
+          required: true
+          description: The unique Discount code.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/line-items/{line_id}':
+    delete:
+      operationId: DeleteCartsCartLineItemsItem
+      summary: Delete a Line Item
+      description: Removes a Line Item from a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+    post:
+      operationId: PostCartsCartLineItemsItem
+      summary: Update a Line Item
+      description: Updates a Line Item if the desired quantity can be fulfilled.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quantity
+              properties:
+                quantity:
+                  type: integer
+                  description: The quantity to set the Line Item to.
+  '/carts/{id}/payment-sessions/{provider_id}':
+    delete:
+      operationId: DeleteCartsCartPaymentSessionsSession
+      summary: Delete a Payment Session
+      description: >-
+        Deletes a Payment Session on a Cart. May be useful if a payment has
+        failed.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: >-
+            The id of the Payment Provider used to create the Payment Session to
+            be deleted.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+    post:
+      operationId: PostCartsCartPaymentSessionsSession
+      summary: Refresh a Payment Session
+      description: >-
+        Refreshes a Payment Session to ensure that it is in sync with the Cart -
+        this is usually not necessary.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: >-
+            The id of the Payment Provider that created the Payment Session to
+            be refreshed.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}':
+    get:
+      operationId: GetCartsCart
+      summary: Retrieve a Cart
+      description: Retrieves a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/payment-session':
+    post:
+      operationId: PostCartsCartPaymentSession
+      summary: Select a Payment Session
+      description: >-
+        Selects a Payment Session as the session intended to be used towards the
+        completion of the Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_id
+              properties:
+                provider_id:
+                  type: string
+                  description: The id of the Payment Provider.
+  '/store/carts/{id}':
+    post:
+      operationId: PostCartsCart
+      summary: Update a Cart"
+      description: Updates a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                email:
+                  type: string
+                  description: An email to be used on the Cart.
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                gift_cards:
+                  description: An array of Gift Card codes to add to the Cart.
+                  type: array
+                  items:
+                    properties:
+                      code:
+                        description: The code that a Gift Card is identified by.
+                        type: string
+                discounts:
+                  description: An array of Discount codes to add to the Cart.
+                  type: array
+                  items:
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                customer_id:
+                  description: The id of the Customer to associate the Cart with.
+                  type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/payment-session/update':
+    post:
+      operationId: PostCartsCartPaymentSessionUpdate
+      summary: Update a Payment Session
+      description: Updates a Payment Session with additional data.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_id
+                - data
+              properties:
+                provider_id:
+                  type: string
+                  description: >-
+                    The id of the Payment Provider responsible for the Payment
+                    Session to update.
+                data:
+                  type: object
+                  description: The data to update the payment session with.
+  '/customers/{id}/addresses':
+    post:
+      operationId: PostCustomersCustomerAddresses
+      summary: Add a Shipping Address
+      description: Adds a Shipping Address to a Customer's saved addresses.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Customer id.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The Address to add to the Customer.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer account.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                password:
+                  type: string
+                  description: The Customer's password for login.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+  '/customers/{id}/addresses/{address_id}':
+    delete:
+      operationId: DeleteCustomersCustomerAddressesAddress
+      summary: Delete an Address
+      description: Removes an Address from the Customer's saved addresse.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to remove.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomerAddressesAddress
+      summary: Update a Shipping Address
+      description: Updates a Customer's saved Shipping Address.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Customer id.
+          schema:
+            type: string
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The updated Address.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieves a Customer
+      description: >-
+        Retrieves a Customer - the Customer must be logged in to retrieve their
+        details.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update Customer details
+      description: Updates a Customer's saved details.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                password:
+                  description: The Customer's password.
+                  type: string
+                phone:
+                  description: The Customer's phone number.
+                  type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customers/{id}/payment-methods':
+    get:
+      operationId: GetCustomersCustomerPaymentMethods
+      summary: Retrieve saved payment methods
+      description: >-
+        Retrieves a list of a Customer's saved payment methods. Payment methods
+        are saved with Payment Providers and it is their responsibility to fetch
+        saved methods.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      properties:
+                        provider_id:
+                          type: string
+                          description: >-
+                            The id of the Payment Provider where the payment
+                            method is saved.
+                        data:
+                          type: object
+                          description: >-
+                            The data needed for the Payment Provider to use the
+                            saved payment method.
+  '/customers/{id}/orders':
+    get:
+      operationId: GetCustomersCustomerOrders
+      summary: Retrieve Customer Orders
+      description: Retrieves a list of a Customer's Orders.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
+  '/customers/{id}/password-token':
+    post:
+      operationId: PostCustomersCustomerPasswordToken
+      summary: Creates a reset password token
+      description: >-
+        Creates a reset password token to be used in a subsequent
+        /reset-password request. The password token should be sent out of band
+        e.g. via email and will not be returned.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '204':
+          description: OK
+  '/customers/{id}/reset-password':
+    post:
+      operationId: PostCustomersCustomerResetPassword
+      summary: Resets Customer password
+      description: >-
+        Resets a Customer's password using a password token created by a
+        previous /password-token request.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - token
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                token:
+                  type: string
+                  description: The password token created by a /password-token request.
+                password:
+                  type: string
+                  description: The new password to set for the Customer.
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/products/{id}':
+    get:
+      operationId: GetProductsProduct
+      summary: Retrieves a Product
+      description: Retrieves a Product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieves a list of Products.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Products.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Products to return,'
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
+  '/regions/{id}':
+    get:
+      operationId: GetRegionsRegion
+      summary: Retrieves a Region
+      description: Retrieves a Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /regions:
+    get:
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of regions.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of regions to return,'
+                    type: integer
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
+  /shipping-options:
+    get:
+      operationId: GetShippingOptions
+      summary: Retrieve Shipping Options
+      description: Retrieves a list of Shipping Options.
+      parameters:
+        - in: query
+          name: product_ids
+          description: A comma separated list of Product ids to filter Shipping Options by.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: the Region to retrieve Shipping Options from.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+  '/shipping-options/{cart_id}':
+    get:
+      operationId: GetShippingOptionsCartId
+      summary: Retrieve Shipping Options for Cart
+      description: Retrieves a list of Shipping Options available to a cart.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
+  '/variants/{variant_id}':
+    get:
+      operationId: GetVariantsVariant
+      summary: Retrieve a Product Variant
+      description: Retrieves a Product Variant by id
+      parameters:
+        - in: path
+          name: variant_id
+          required: true
+          description: The id of the Product Variant.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variant:
+                    $ref: '#/components/schemas/product_variant'
+  /variants:
+    get:
+      operationId: GetVariants
+      summary: Retrieve Product Variants
+      description: Retrieves a list of Product Variants
+      parameters:
+        - in: query
+          name: ids
+          description: A comma separated list of Product Variant ids to filter by.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_variant'
+components:
+  schemas:
+    address:
+      title: Address
+      description: An address.
+      x-resourceId: address
+      properties:
+        id:
+          type: string
+        customer_id:
+          type: string
+        company:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        address_1:
+          type: string
+        address_2:
+          type: string
+        city:
+          type: string
+        country_code:
+          type: string
+        country:
+          $ref: '#/components/schemas/country'
+    cart:
+      title: Cart
+      description: Represents a user cart
+      x-resourceId: cart
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        billing_address_id:
+          type: string
+        billing_address:
+          $ref: '#/components/schemas/address'
+        shipping_address_id:
+          type: string
+        shipping_address:
+          $ref: '#/components/schemas/address'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/line_item'
+        region_id:
+          type: string
+        region:
+          $ref: '#/components/schemas/region'
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/region'
+        gift_cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/gift_card'
+        customer_id:
+          type: string
+        customer:
+          $ref: '#/components/schemas/customer'
+        payment_session:
+          $ref: '#/components/schemas/payment_session'
+        payment_sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment_session'
+        payment:
+          $ref: '#/components/schemas/payment'
+        shipping_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/shipping_method'
+        type:
+          type: string
+          enum:
+            - default
+            - swap
+            - payment_link
+        completed_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+        shipping_total:
+          type: integer
+        discount_total:
+          type: integer
+        tax_total:
+          type: integer
+        subtotal:
+          type: integer
+        refundable_amount:
+          type: integer
+        gift_card_total:
+          type: integer
+    claim_image:
+      title: Claim Image
+      description: Represents photo documentation of a claim.
+      x-resourceId: claim_image
+      properties:
+        id:
+          type: string
+        claim_item_id:
+          type: string
+        url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+    claim_item:
+      title: Claim Item
+      description: >-
+        Represents a claimed item along with information about the reasons for
+        the claim.
+      x-resourceId: claim_item
+      properties:
+        id:
+          type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim_image'
+        claim_order_id:
+          type: string
+        item_id:
+          type: string
+        item:
+          description: The Line Item that the claim refers to
+          $ref: '#/components/schemas/line_item'
+        variant_id:
+          type: string
+        variant:
+          description: The Product Variant that is claimed.
+          $ref: '#/components/schemas/product_variant'
+        reason:
+          description: The reason for the claim
+          type: string
+          enum:
+            - missing_item
+            - wrong_item
+            - production_failure
+            - other
+        note:
+          description: 'An optional note about the claim, for additional information'
+          type: string
+        quantity:
+          description: >-
+            The quantity of the item that is being claimed; must be less than or
+            equal to the amount purchased in the original order.
+          type: integer
+        tags:
+          description: User defined tags for easy filtering and grouping.
+          type: array
+          items:
+            $ref: '#/components/schemas/claim_tag'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+    claim_order:
+      title: Claim Order
+      description: >-
+        Claim Orders represent a group of faulty or missing items. Each claim
+        order consists of a subset of items associated with an original order,
+        and can contain additional information about fulfillments and returns.
+      x-resourceId: claim_order
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - refund
+            - replace
+        payment_status:
+          type: string
+          enum:
+            - na
+            - not_refunded
+            - refunded
+        fulfillment_status:
+          type: string
+          enum:
+            - not_fulfilled
+            - partially_fulfilled
+            - fulfilled
+            - partially_shipped
+            - shipped
+            - partially_returned
+            - returned
+            - canceled
+            - requires_action
+        claim_items:
+          description: The items that have been claimed
+          type: array
+          items:
+            $ref: '#/components/schemas/claim_item'
+        additional_items:
+          description: >-
+            Refers to the new items to be shipped when the claim order has the
+            type `replace`
+          type: array
+          items:
+            $ref: '#/components/schemas/line_item'
+        order_id:
+          description: The id of the order that the claim comes from.
+          type: string
+        return_order:
+          description: Holds information about the return if the claim is to be returned
+          $ref: '#/components/schemas/return'
+        shipping_address_id:
+          description: The id of the address that the new items should be shipped to
+          type: string
+        shipping_address:
+          description: The address that the new items should be shipped to
+          $ref: '#/components/schemas/address'
+        shipping_methods:
+          description: The shipping methods that the claim order will be shipped with.
+          type: array
+          items:
+            $ref: '#/components/schemas/shipping_method'
+        fulfillments:
+          description: The fulfillments of the new items to be shipped
+          type: array
+          items:
+            $ref: '#/components/schemas/fulfillment'
+        refund_amount:
+          description: The amount that will be refunded in conjunction with the claim
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+    claim_tag:
+      title: Claim Tag
+      description: >-
+        Claim Tags are user defined tags that can be assigned to claim items for
+        easy filtering and grouping.
+      x-resourceId: claim_tag
+      properties:
+        id:
+          description: The id of the claim tag. Will be prefixed by `ctag_`.
+          type: string
+        value:
+          description: The value that the claim tag holds
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        update_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    country:
+      title: Country
+      description: Country details
+      x-resourceId: country
+      properties:
+        id:
+          description: The database id of the country
+          type: integer
+        iso_2:
+          description: The 2 character ISO code for the country.
+          type: string
+        iso_3:
+          description: The 3 character ISO code for the country.
+          type: string
+        num_code:
+          description: The numerical ISO code for the country.
+          type: string
+        name:
+          description: The normalized country name; in upper case.
+          type: string
+        display_name:
+          description: The country name appropriate for display.
+          type: string
+    currency:
+      title: Currency
+      description: Currency
+      x-resourceId: currency
+      properties:
+        code:
+          description: The 3 character ISO code for the currency.
+          type: string
+        symbol:
+          description: The symbol used to indicate the currency.
+          type: string
+        symbol_native:
+          description: The native symbol used to indicate the currency.
+          type: string
+        name:
+          description: The written name of the currency
+          type: string
+    customer:
+      title: Customer
+      description: Represents a customer
+      x-resourceId: customer
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        billing_address_id:
+          type: string
+        billing_address:
+          description: The Customer's billing address.
+          anyOf:
+            - $ref: '#/components/schemas/address'
+        shipping_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/address'
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        has_account:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+    discount_rule:
+      title: Discount Rule
+      description: >-
+        Holds the rules that governs how a Discount is calculated when applied
+        to a Cart.
+      x-resourceId: discount_rule
+      properties:
+        id:
+          description: The id of the Discount Rule. Will be prefixed by `dru_`.
+          type: string
+        type:
+          description: >-
+            The type of the Discount, can be `fixed` for discounts that reduce
+            the price by a fixed amount, `percentage` for percentage reductions
+            or `free_shipping` for shipping vouchers.
+          type: string
+          enum:
+            - fixed
+            - percentage
+            - free_shipping
+        description:
+          description: A short description of the discount
+          type: string
+        value:
+          description: >-
+            The value that the discount represents; this will depend on the type
+            of the discount
+          type: integer
+        allocation:
+          description: The scope that the discount should apply to.
+          type: string
+          enum:
+            - total
+            - item
+        valid_for:
+          description: A set of Products that the discount can be used for.
+          type: array
+          items:
+            $ref: '#/components/schemas/product'
+        usage_limit:
+          description: The maximum number of times that a discount can be used.
+          type: integer
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        update_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount:
+      title: Discount
+      description: >-
+        Represents a discount that can be applied to a cart for promotional
+        purposes.
+      x-resourceId: discount
+      properties:
+        id:
+          description: The id of the Discount. Will be prefixed by `disc_`.
+          type: string
+        code:
+          description: >-
+            A unique code for the discount - this will be used by the customer
+            to apply the discount
+          type: string
+        is_dynamic:
+          description: >-
+            A flag to indicate if multiple instances of the discount can be
+            generated. I.e. for newsletter discounts
+          type: boolean
+        rule:
+          description: The Discount Rule that governs the behaviour of the Discount
+          anyOf:
+            - $ref: '#/components/schemas/discount_rule'
+        is_disabled:
+          description: >-
+            Whether the Discount has been disabled. Disabled discounts cannot be
+            applied to carts
+          type: boolean
+        parent_discount_id:
+          description: >-
+            The Discount that the discount was created from. This will always be
+            a dynamic discount
+          type: string
+        starts_at:
+          description: The time at which the discount can be used.
+          type: string
+          format: date-time
+        ends_at:
+          description: The time at which the discount can no longer be used.
+          type: string
+          format: date-time
+        regions:
+          description: The Regions in which the Discount can be used
+          type: array
+          items:
+            $ref: '#/components/schemas/region'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    fulfillment_item:
+      title: Fulfillment Item
+      description: >-
+        Correlates a Line Item with a Fulfillment, keeping track of the quantity
+        of the Line Item.
+      x-resourceId: fulfillment_item
+      properties:
+        fulfillment_id:
+          description: The id of the Fulfillment that the Fulfillment Item belongs to.
+          type: string
+        item_id:
+          description: The id of the Line Item that the Fulfillment Item references.
+          type: string
+        item:
+          description: The Line Item that the Fulfillment Item references.
+          anyOf:
+            - $ref: '#/components/schemas/line_item'
+        quantity:
+          description: The quantity of the Line Item that is included in the Fulfillment.
+          type: integer
+    fulfillment_provider:
+      title: Fulfillment Provider
+      description: >-
+        Represents a fulfillment provider plugin and holds its installation
+        status.
+      x-resourceId: fulfillment_provider
+      properties:
+        id:
+          description: The id of the fulfillment provider as given by the plugin.
+          type: string
+        is_installed:
+          description: >-
+            Whether the plugin is installed in the current version. Plugins that
+            are no longer installed are not deleted by will have this field set
+            to `false`.
+          type: boolean
+    fulfillment:
+      title: Fulfillment
+      description: >-
+        Fulfillments are created once store operators can prepare the purchased
+        goods. Fulfillments will eventually be shipped and hold information
+        about how to track shipments. Fulfillments are created through a
+        provider, which is typically an external shipping aggregator, shipping
+        partner og 3PL, most plugins will have asynchronous communications with
+        these providers through webhooks in order to automatically update and
+        synchronize the state of Fulfillments.
+      x-resourceId: fulfillment
+      properties:
+        id:
+          description: The id of the Fulfillment. This value will be prefixed by `ful_`.
+          type: string
+        claim_order_id:
+          description: The id of the Claim that the Fulfillment belongs to.
+          type: string
+        swap_id:
+          description: The id of the Swap that the Fulfillment belongs to.
+          type: string
+        order_id:
+          description: The id of the Order that the Fulfillment belongs to.
+          type: string
+        provider_id:
+          description: >-
+            The id of the Fulfillment Provider responsible for handling the
+            fulfillment
+          type: string
+        items:
+          description: >-
+            The Fulfillment Items in the Fulfillment - these hold information
+            about how many of each Line Item has been fulfilled.
+          type: array
+          items:
+            $ref: '#/components/schemas/fulfillment_item'
+        tracking_links:
+          description: >-
+            The Tracking Links that can be used to track the status of the
+            Fulfillment, these will usually be provided by the Fulfillment
+            Provider.
+          type: array
+          items:
+            $ref: '#/components/schemas/tracking_link'
+        tracking_numbers:
+          deprecated: true
+          description: >-
+            The tracking numbers that can be used to track the status of the
+            fulfillment.
+          type: array
+          items:
+            type: string
+        shipped_at:
+          description: The date with timezone at which the Fulfillment was shipped.
+          type: string
+          format: date-time
+        canceled_at:
+          description: The date with timezone at which the Fulfillment was canceled.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    gift_card_transaction:
+      title: Gift Card Transaction
+      description: >-
+        Gift Card Transactions are created once a Customer uses a Gift Card to
+        pay for their Order
+      x-resourceId: gift_card_transaction
+      properties:
+        id:
+          description: >-
+            The id of the Gift Card Transaction. This value will be prefixed by
+            `gct_`.
+          type: string
+        gift_card_id:
+          description: The id of the Gift Card that was used in the transaction.
+          type: string
+        gift_card:
+          description: The Gift Card that was used in the transaction.
+          anyOf:
+            - $ref: '#/components/schemas/gift_card'
+        order_id:
+          description: The id of the Order that the Gift Card was used to pay for.
+          type: string
+        amount:
+          description: The amount that was used from the Gift Card.
+          type: integer
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+    gift_card:
+      title: Gift Card
+      description: >-
+        Gift Cards are redeemable and represent a value that can be used towards
+        the payment of an Order.
+      x-resourceId: gift_card
+      properties:
+        id:
+          description: The id of the Gift Card. This value will be prefixed by `gift_`.
+          type: string
+        code:
+          description: >-
+            The unique code that identifies the Gift Card. This is used by the
+            Customer to redeem the value of the Gift Card.
+          type: string
+        value:
+          description: The value that the Gift Card represents.
+          type: integer
+        balance:
+          description: The remaining value on the Gift Card.
+          type: integer
+        region_id:
+          description: The id of the Region in which the Gift Card is available.
+          type: string
+        region:
+          description: The Region in which the Gift Card is available.
+          anyOf:
+            - $ref: '#/components/schemas/region'
+        order_id:
+          description: The id of the Order that the Gift Card was purchased in.
+          type: string
+        is_disabled:
+          description: >-
+            Whether the Gift Card has been disabled. Disabled Gift Cards cannot
+            be applied to carts.
+          type: boolean
+        ends_at:
+          description: The time at which the Gift Card can no longer be used.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    image:
+      title: Image
+      description: Images holds a reference to a URL at which the image file can be found.
+      x-resourceId: image
+      properties:
+        id:
+          description: The id of the Image. This value will be prefixed by `img_`.
+          type: string
+        url:
+          description: The URL at which the image file can be found.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        update_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    line_item:
+      title: Line Item
+      description: >-
+        Line Items represent purchasable units that can be added to a Cart for
+        checkout. When Line Items are purchased they will get copied to the
+        resulting order and can eventually be referenced in Fulfillments and
+        Returns. Line Items may also be created when processing Swaps and
+        Claims.
+      x-resourceId: line_item
+      properties:
+        id:
+          description: The id of the Line Item. This value will be prefixed by `item_`.
+          type: string
+        cart_id:
+          description: The id of the Cart that the Line Item belongs to.
+          type: string
+        order_id:
+          description: The id of the Order that the Line Item belongs to.
+          type: string
+        swap_id:
+          description: The id of the Swap that the Line Item belongs to.
+          type: string
+        claim_order_id:
+          description: The id of the Claim that the Line Item belongs to.
+          type: string
+        title:
+          description: >-
+            The title of the Line Item, this should be easily identifiable by
+            the Customer.
+          type: string
+        description:
+          description: A more detailed description of the contents of the Line Item.
+          type: string
+        thumbnail:
+          description: A URL string to a small image of the contents of the Line Item.
+          type: string
+        is_giftcard:
+          description: Flag to indicate if the Line Item is a Gift Card.
+          type: boolean
+        should_merge:
+          description: >-
+            Flag to indicate if new Line Items with the same variant should be
+            merged or added as an additional Line Item.
+          type: boolean
+        allow_discounts:
+          description: >-
+            Flag to indicate if the Line Item should be included when doing
+            discount calculations.
+          type: boolean
+        unit_price:
+          description: >-
+            The price of one unit of the content in the Line Item. This should
+            be in the currency defined by the Cart/Order/Swap/Claim that the
+            Line Item belongs to.
+          type: boolean
+        variant_id:
+          description: The id of the Product Variant contained in the Line Item.
+          type: string
+        variant:
+          description: The Product Variant contained in the Line Item.
+          anyOf:
+            - $ref: '#/components/schemas/product_variant'
+        quantity:
+          description: The quantity of the content in the Line Item.
+          type: integer
+        fulfilled_quantity:
+          description: The quantity of the Line Item that has been fulfilled.
+          type: integer
+        returned_quantity:
+          description: The quantity of the Line Item that has been returned.
+          type: integer
+        shipped_quantity:
+          description: The quantity of the Line Item that has been shipped.
+          type: integer
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+        refundable:
+          description: >-
+            The amount that can be refunded from the given Line Item. Takes
+            taxes and discounts into consideration.
+          type: integer
+    money_amount:
+      title: Money Amount
+      description: >-
+        Money Amounts represents an amount that a given Product Variant can be
+        purcased for. Each Money Amount either has a Currency or Region
+        associated with it to indicate the pricing in a given Currency or, for
+        fully region-based pricing, the given price in a specific Region. If
+        region-based pricing is used the amount will be in the currency defined
+        for the Reigon.
+      x-resourceId: money_amount
+      properties:
+        id:
+          description: The id of the Money Amount. This value will be prefixed by `ma_`.
+          type: string
+        currency_code:
+          description: The 3 character currency code that the Money Amount is given in.
+          type: string
+        amount:
+          description: >-
+            The amount in the smallest currecny unit (e.g. cents 100 cents to
+            charge $1) that the Product Variant will cost.
+          type: integer
+        sale_amount:
+          description: >-
+            An optional sale amount that the Product Variant will be available
+            for when defined.
+          type: integer
+        variant_id:
+          description: The id of the Product Variant that the Money Amount belongs to.
+          type: string
+        region_id:
+          description: The id of the Region that the Money Amount is defined for.
+          type: string
+        region:
+          description: The Region that the Money Amount is defined for.
+          anyOf:
+            - $ref: '#/components/schemas/region'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+    notification_provider:
+      title: Notification Provider
+      description: >-
+        Represents a notification provider plugin and holds its installation
+        status.
+      x-resourceId: notification_provider
+      properties:
+        id:
+          description: The id of the notification provider as given by the plugin.
+          type: string
+        is_installed:
+          description: >-
+            Whether the plugin is installed in the current version. Plugins that
+            are no longer installed are not deleted by will have this field set
+            to `false`.
+          type: boolean
+    notification:
+      title: Notification
+      description: >-
+        Notifications a communications sent via Notification Providers as a
+        reaction to internal events such as `order.placed`. Notifications can be
+        used to show a chronological timeline for communications sent to a
+        Customer regarding an Order, and enables resends.
+      x-resourceId: notification
+      properties:
+        id:
+          description: The id of the Notification. This value will be prefixed by `noti_`.
+          type: string
+        event_name:
+          description: The name of the event that the notification was sent for.
+          type: string
+        resource_type:
+          description: The type of resource that the Notification refers to.
+          type: string
+        resource_id:
+          description: The id of the resource that the Notification refers to.
+          type: string
+        customer_id:
+          description: The id of the Customer that the Notification was sent to.
+          type: string
+        customer:
+          description: The Customer that the Notification was sent to.
+          anyOf:
+            - $ref: '#/components/schemas/customer'
+        to:
+          description: >-
+            The address that the Notification was sent to. This will usually be
+            an email address, but represent other addresses such as a chat bot
+            user id
+          type: string
+        data:
+          description: >-
+            The data that the Notification was sent with. This contains all the
+            data necessary for the Notification Provider to initiate a resend.
+          type: object
+        parent_id:
+          description: The id of the Notification that was originally sent.
+          type: string
+        resends:
+          description: >-
+            The resends that have been completed after the original
+            Notification.
+          type: array
+          items:
+            $ref: '#/components/schemas/notification_resend'
+        provider_id:
+          description: The id of the Notification Provider that handles the Notification.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+    notification_resend:
+      title: Notification Resend
+      description: A resend of a Notification.
+      x-resourceId: notification_resend
+      properties:
+        id:
+          description: The id of the Notification. This value will be prefixed by `noti_`.
+          type: string
+        event_name:
+          description: The name of the event that the notification was sent for.
+          type: string
+        resource_type:
+          description: The type of resource that the Notification refers to.
+          type: string
+        resource_id:
+          description: The id of the resource that the Notification refers to.
+          type: string
+        to:
+          description: >-
+            The address that the Notification was sent to. This will usually be
+            an email address, but represent other addresses such as a chat bot
+            user id
+          type: string
+        data:
+          description: >-
+            The data that the Notification was sent with. This contains all the
+            data necessary for the Notification Provider to initiate a resend.
+          type: object
+        parent_id:
+          description: The id of the Notification that was originally sent.
+          type: string
+        provider_id:
+          description: The id of the Notification Provider that handles the Notification.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+    order:
+      title: Order
+      description: Represents an order
+      x-resourceId: order
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - archived
+            - canceled
+            - requires_action
+        fulfillment_status:
+          type: string
+          enum:
+            - not_fulfilled
+            - partially_fulfilled
+            - fulfilled
+            - partially_shipped
+            - shipped
+            - partially_returned
+            - returned
+            - canceled
+            - requires_action
+        payment_status:
+          type: string
+          enum:
+            - not_paid
+            - awaiting
+            - captured
+            - partially_refunded
+            - refuneded
+            - canceled
+            - requires_action
+        display_id:
+          type: integer
+        cart_id:
+          type: string
+        currency_code:
+          type: string
+        tax_rate:
+          type: integer
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/discount'
+        email:
+          type: string
+        billing_address_id:
+          type: string
+        billing_address:
+          anyOf:
+            - $ref: '#/components/schemas/address'
+        shipping_address_id:
+          type: string
+        shipping_address:
+          anyOf:
+            - $ref: '#/components/schemas/address'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/line_item'
+        region_id:
+          type: string
+        region:
+          anyOf:
+            - $ref: '#/components/schemas/region'
+        gift_cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/gift_card'
+        customer_id:
+          type: string
+        customer:
+          anyOf:
+            - $ref: '#/components/schemas/customer'
+        payment_session:
+          anyOf:
+            - $ref: '#/components/schemas/payment_session'
+        payment_sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment_session'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment'
+        shipping_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/shipping_method'
+        fulfillments:
+          type: array
+          items:
+            $ref: '#/components/schemas/fulfillment'
+        returns:
+          type: array
+          items:
+            $ref: '#/components/schemas/return'
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim_order'
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/refund'
+        swaps:
+          type: array
+          items:
+            $ref: '#/components/schemas/refund'
+        gift_card_transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/gift_card_transaction'
+        canceled_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        update_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+        shipping_total:
+          type: integer
+        discount_total:
+          type: integer
+        tax_total:
+          type: integer
+        subtotal:
+          type: integer
+        refundable_amount:
+          type: integer
+        gift_card_total:
+          type: integer
+    payment_provider:
+      title: Payment Provider
+      description: Represents a Payment Provider plugin and holds its installation status.
+      x-resourceId: payment_provider
+      properties:
+        id:
+          description: The id of the payment provider as given by the plugin.
+          type: string
+        is_installed:
+          description: >-
+            Whether the plugin is installed in the current version. Plugins that
+            are no longer installed are not deleted by will have this field set
+            to `false`.
+          type: boolean
+    payment_session:
+      title: Payment Session
+      description: >-
+        Payment Sessions are created when a Customer initilizes the checkout
+        flow, and can be used to hold the state of a payment flow. Each Payment
+        Session is controlled by a Payment Provider, who is responsible for the
+        communication with external payment services. Authorized Payment
+        Sessions will eventually get promoted to Payments to indicate that they
+        are authorized for capture/refunds/etc.
+      x-resourceId: payment_session
+      properties:
+        id:
+          description: >-
+            The id of the Payment Session. This value will be prefixed with
+            `ps_`.
+          type: string
+        cart_id:
+          description: The id of the Cart that the Payment Session is created for.
+          type: string
+        provider_id:
+          description: >-
+            The id of the Payment Provider that is responsible for the Payment
+            Session
+          type: string
+        is_selected:
+          description: >-
+            A flag to indicate if the Payment Session has been selected as the
+            method that will be used to complete the purchase.
+          type: boolean
+        status:
+          description: >-
+            Indicates the status of the Payment Session. Will default to
+            `pending`, and will eventually become `authorized`. Payment Sessions
+            may have the status of `requires_more` to indicate that further
+            actions are to be completed by the Customer.
+          type: string
+          enum:
+            - authorized
+            - pending
+            - requires_more
+            - error
+            - canceled
+        data:
+          description: >-
+            The data required for the Payment Provider to identify, modify and
+            process the Payment Session. Typically this will be an object that
+            holds an id to the external payment session, but can be an empty
+            object if the Payment Provider doesn't hold any state.
+          type: object
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+    payment:
+      title: Payment
+      description: >-
+        Payments represent an amount authorized with a given payment method,
+        Payments can be captured, canceled or refunded.
+      x-resourceId: payment
+      properties:
+        id:
+          description: The id of the Payment. This value will be prefixed with `pay_`.
+          type: string
+        swap_id:
+          description: The id of the Swap that the Payment is used for.
+          type: string
+        order_id:
+          description: The id of the Order that the Payment is used for.
+          type: string
+        cart_id:
+          description: The id of the Cart that the Payment Session is created for.
+          type: string
+        amount:
+          description: The amount that the Payment has been authorized for.
+          type: integer
+        currency_code:
+          description: The 3 character ISO currency code that the Payment is completed in.
+          type: string
+        amount_refunded:
+          description: >-
+            The amount of the original Payment amount that has been refunded
+            back to the Customer.
+          type: integer
+        provider_id:
+          description: The id of the Payment Provider that is responsible for the Payment
+          type: string
+        data:
+          description: >-
+            The data required for the Payment Provider to identify, modify and
+            process the Payment. Typically this will be an object that holds an
+            id to the external payment session, but can be an empty object if
+            the Payment Provider doesn't hold any state.
+          type: object
+        captured_at:
+          description: The date with timezone at which the Payment was captured.
+          type: string
+          format: date-time
+        canceled_at:
+          description: The date with timezone at which the Payment was canceled.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product_collection:
+      title: Product Collection
+      description: Product Collections represents a group of Products that are related.
+      x-resourceId: product_collection
+      properties:
+        id:
+          description: >-
+            The id of the Product Collection. This value will be prefixed with
+            `pcol_`.
+          type: string
+        title:
+          description: The title that the Product Collection is identified by.
+          type: string
+        handle:
+          description: >-
+            A unique string that identifies the Product Collection - can for
+            example be used in slug structures.
+          type: string
+        products:
+          description: The Products contained in the Product Collection.
+          type: array
+          items:
+            type: object
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product_option_value:
+      title: Product Option Value
+      description: >-
+        A value given to a Product Variant's option set. Product Variant have a
+        Product Option Value for each of the Product Options defined on the
+        Product.
+      x-resourceId: product_option_value
+      properties:
+        id:
+          description: >-
+            The id of the Product Option Value. This value will be prefixed with
+            `optval_`.
+          type: string
+        value:
+          description: >-
+            The value that the Product Variant has defined for the specific
+            Product Option (e.g. if the Product Option is "Size" this value
+            could be "Small", "Medium" or "Large").
+          type: string
+        option_id:
+          description: >-
+            The id of the Product Option that the Product Option Value is
+            defined for.
+          type: string
+        variant_id:
+          description: >-
+            The id of the Product Variant that the Product Option Value is
+            defined for.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product_option:
+      title: Product Option
+      description: >-
+        Product Options define properties that may vary between different
+        variants of a Product. Common Product Options are "Size" and "Color",
+        but Medusa doesn't limit what Product Options that can be defined.
+      x-resourceId: product_option
+      properties:
+        id:
+          description: >-
+            The id of the Product Option. This value will be prefixed with
+            `opt_`.
+          type: string
+        title:
+          description: The title that the Product Option is defined by (e.g. "Size").
+          type: string
+        values:
+          description: The Product Option Values that are defined for the Product Option.
+          type: array
+          items:
+            $ref: '#/components/schemas/product_option_value'
+        product_id:
+          description: The id of the Product that the Product Option is defined for.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product_tag:
+      title: Product Tag
+      description: Product Tags can be added to Products for easy filtering and grouping.
+      x-resourceId: product_tag
+      properties:
+        id:
+          description: The id of the Product Tag. This value will be prefixed with `ptag_`.
+          type: string
+        value:
+          description: The value that the Product Tag represents (e.g. "Pants").
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product_type:
+      title: Product Type
+      description: >-
+        Product Type can be added to Products for filtering and reporting
+        purposes.
+      x-resourceId: product_type
+      properties:
+        id:
+          description: >-
+            The id of the Product Type. This value will be prefixed with
+            `ptyp_`.
+          type: string
+        value:
+          description: The value that the Product Type represents (e.g. "Clothing").
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product_variant:
+      title: Product Variant
+      description: >-
+        Product Variants represent a Product with a specific set of Product
+        Option configurations. The maximum number of Product Variants that a
+        Product can have is given by the number of available Product Option
+        combinations.
+      x-resourceId: product_variant
+      properties:
+        id:
+          description: >-
+            The id of the Product Variant. This value will be prefixed with
+            `variant_`.
+          type: string
+        title:
+          description: >-
+            A title that can be displayed for easy identification of the Product
+            Variant.
+          type: string
+        product_id:
+          description: The id of the Product that the Product Variant belongs to.
+          type: string
+        prices:
+          description: >-
+            The Money Amounts defined for the Product Variant. Each Money Amount
+            represents a price in a given currency or a price in a specific
+            Region.
+          type: array
+          items:
+            $ref: '#/components/schemas/money_amount'
+        sku:
+          description: >-
+            The unique stock keeping unit used to identify the Product Variant.
+            This will usually be a unqiue identifer for the item that is to be
+            shipped, and can be referenced across multiple systems.
+          type: string
+        barcode:
+          description: >-
+            A generic field for a GTIN number that can be used to identify the
+            Product Variant.
+          type: string
+        ean:
+          description: >-
+            An EAN barcode number that can be used to identify the Product
+            Variant.
+          type: string
+        upc:
+          description: >-
+            A UPC barcode number that can be used to identify the Product
+            Variant.
+          type: string
+        inventory_quantity:
+          description: The current quantity of the item that is stocked.
+          type: integer
+        allow_backorder:
+          description: >-
+            Whether the Product Variant should be purchasable when
+            `inventory_quantity` is 0.
+          type: boolean
+        manage_inventory:
+          description: Whether Medusa should manage inventory for the Product Variant.
+          type: boolean
+        hs_code:
+          description: >-
+            The Harmonized System code of the Product Variant. May be used by
+            Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        origin_country:
+          description: >-
+            The country in which the Product Variant was produced. May be used
+            by Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        mid_code:
+          description: >-
+            The Manufacturers Identification code that identifies the
+            manufacturer of the Product Variant. May be used by Fulfillment
+            Providers to pass customs information to shipping carriers.
+          type: string
+        material:
+          description: >-
+            The material and composition that the Product Variant is made of,
+            May be used by Fulfillment Providers to pass customs information to
+            shipping carriers.
+          type: string
+        weight:
+          description: >-
+            The weight of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        height:
+          description: >-
+            The height of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        width:
+          description: >-
+            The width of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        length:
+          description: >-
+            The length of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        options:
+          description: The Product Option Values specified for the Product Variant.
+          type: array
+          items:
+            $ref: '#/components/schemas/product_option_value'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    product:
+      title: Product
+      description: >-
+        Products are a grouping of Product Variants that have common properties
+        such as images and descriptions. Products can have multiple options
+        which define the properties that Product Variants differ by.
+      x-resourceId: product
+      properties:
+        id:
+          description: The id of the Product. This value will be prefixed with `prod_`.
+          type: string
+        title:
+          description: >-
+            A title that can be displayed for easy identification of the
+            Product.
+          type: string
+        subtitle:
+          description: >-
+            An optional subtitle that can be used to further specify the
+            Product.
+          type: string
+        description:
+          description: A short description of the Product.
+          type: string
+        handle:
+          description: A unique identifier for the Product (e.g. for slug structure).
+          type: string
+        is_giftcard:
+          description: >-
+            Whether the Product represents a Gift Card. Products that represent
+            Gift Cards will automatically generate a redeemable Gift Card code
+            once they are purchased.
+          type: boolean
+        images:
+          description: Images of the Product
+          type: array
+          items:
+            $ref: '#/components/schemas/image'
+        thumbnail:
+          description: A URL to an image file that can be used to identify the Product.
+          type: string
+        options:
+          description: >-
+            The Product Options that are defined for the Product. Product
+            Variants of the Product will have a unique combination of Product
+            Option Values.
+          type: array
+          items:
+            $ref: '#/components/schemas/product_option'
+        variants:
+          description: >-
+            The Product Variants that belong to the Product. Each will have a
+            unique combination of Product Option Values.
+          type: array
+          items:
+            $ref: '#/components/schemas/product_variant'
+        profile_id:
+          description: >-
+            The id of the Shipping Profile that the Product belongs to. Shipping
+            Profiles have a set of defined Shipping Options that can be used to
+            Fulfill a given set of Products.
+          type: string
+        hs_code:
+          description: >-
+            The Harmonized System code of the Product Variant. May be used by
+            Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        origin_country:
+          description: >-
+            The country in which the Product Variant was produced. May be used
+            by Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        mid_code:
+          description: >-
+            The Manufacturers Identification code that identifies the
+            manufacturer of the Product Variant. May be used by Fulfillment
+            Providers to pass customs information to shipping carriers.
+          type: string
+        material:
+          description: >-
+            The material and composition that the Product Variant is made of,
+            May be used by Fulfillment Providers to pass customs information to
+            shipping carriers.
+          type: string
+        weight:
+          description: >-
+            The weight of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        height:
+          description: >-
+            The height of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        width:
+          description: >-
+            The width of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        length:
+          description: >-
+            The length of the Product Variant. May be used in shipping rate
+            calculations.
+          type: string
+        type:
+          description: The Product Type of the Product (e.g. "Clothing")
+          anyOf:
+            - $ref: '#/components/schemas/product_type'
+        collection:
+          description: The Product Collection that the Product belongs to (e.g. "SS20")
+          anyOf:
+            - $ref: '#/components/schemas/product_collection'
+        tags:
+          description: The Product Tags assigned to the Product.
+          type: array
+          items:
+            $ref: '#/components/schemas/product_tag'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    refund:
+      title: Refund
+      description: >-
+        Refund represent an amount of money transfered back to the Customer for
+        a given reason. Refunds may occur in relation to Returns, Swaps and
+        Claims, but can also be initiated by a store operator.
+      x-resourceId: refund
+      properties:
+        id:
+          description: The id of the Refund. This value will be prefixed with `ref_`.
+          type: string
+        order_id:
+          description: The id of the Order that the Refund is related to.
+          type: string
+        amount:
+          description: The amount that has be refunded to the Customer.
+          type: integer
+        note:
+          description: An optional note explaining why the amount was refunded.
+          type: string
+        reason:
+          description: >-
+            The reason given for the Refund, will automatically be set when
+            processed as part of a Swap, Claim or Return.
+          type: string
+          enum:
+            - discount
+            - return
+            - swap
+            - claim
+            - other
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    region:
+      title: Region
+      description: >-
+        Regions hold settings for how Customers in a given geographical location
+        shop. The is, for example, where currencies and tax rates are defined. A
+        Region can consist of multiple countries to accomodate common shopping
+        settings across countries.
+      x-resourceId: region
+      properties:
+        id:
+          description: The id of the Region. This value will be prefixed with `reg_`.
+          type: string
+        name:
+          description: >-
+            The name of the region as displayed to the customer. If the Region
+            only has one country it is recommended to write the country name.
+          type: string
+        currency_code:
+          description: >-
+            The 3 character ISO currency code that Customers will shop in in the
+            Region.
+          type: string
+        tax_rate:
+          description: The tax rate that should be charged on purchases in the Region.
+          type: number
+        tax_code:
+          description: >-
+            The tax code used on purchases in the Region. This may be used by
+            other systems for accounting purposes.
+          type: string
+        countries:
+          description: The countries that are included in the Region.
+          type: array
+          items:
+            $ref: '#/components/schemas/country'
+        payment_providers:
+          description: >-
+            The Payment Providers that can be used to process Payments in the
+            Region.
+          type: array
+          items:
+            $ref: '#/components/schemas/payment_provider'
+        fulfillment_providers:
+          description: >-
+            The Fulfillment Providers that can be used to fulfill orders in the
+            Region.
+          type: array
+          items:
+            $ref: '#/components/schemas/fulfillment_provider'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    return_item:
+      title: Return Item
+      description: >-
+        Correlates a Line Item with a Return, keeping track of the quantity of
+        the Line Item that will be returned.
+      x-resourceId: return_item
+      properties:
+        return_id:
+          description: The id of the Return that the Return Item belongs to.
+          type: string
+        item_id:
+          description: The id of the Line Item that the Return Item references.
+          type: string
+        item:
+          description: The Line Item that the Return Item references.
+          anyOf:
+            - $ref: '#/components/schemas/line_item'
+        quantity:
+          description: The quantity of the Line Item that is included in the Return.
+          type: integer
+        is_requested:
+          description: >-
+            Whether the Return Item was requested initially or received
+            unexpectedly in the warehouse.
+          type: boolean
+        requested_quantity:
+          description: The quantity that was originally requested to be returned.
+          type: integer
+        recieved_quantity:
+          description: The quantity that was received in the warehouse.
+          type: integer
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    return:
+      title: Return
+      description: >-
+        Return orders hold information about Line Items that a Customer wishes
+        to send back, along with how the items will be returned. Returns can be
+        used as part of a Swap.
+      x-resourceId: return
+      properties:
+        id:
+          description: The id of the Return. This value will be prefixed with `ret_`.
+          type: string
+        status:
+          description: Status of the Return.
+          type: string
+          enum:
+            - requested
+            - received
+            - requires_action
+        items:
+          description: >-
+            The Return Items that will be shipped back to the warehouse. type:
+            array items: $ref: 
+        swap_id:
+          description: The id of the Swap that the Return is a part of.
+          type: string
+        order_id:
+          description: The id of the Order that the Return is made from.
+          type: string
+        claim_order_id:
+          description: The id of the Claim that the Return is a part of.
+          type: string
+        shipping_method:
+          description: >-
+            The Shipping Method that will be used to send the Return back. Can
+            be null if the Customer facilitates the return shipment themselves.
+          anyOf:
+            - $ref: '#/components/schemas/shipping_method'
+        shipping_data:
+          description: >-
+            Data about the return shipment as provided by the Fulfilment
+            Provider that handles the return shipment.
+          type: object
+        refund_amount:
+          description: The amount that should be refunded as a result of the return.
+          type: integer
+        received_at:
+          description: The date with timezone at which the return was received.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    shipping_method:
+      title: Shipping Method
+      description: >-
+        Shipping Methods represent a way in which an Order or Return can be
+        shipped. Shipping Methods are built from a Shipping Option, but may
+        contain additional details, that can be necessary for the Fulfillment
+        Provider to handle the shipment.
+      x-resourceId: shipping_method
+      properties:
+        id:
+          description: >-
+            The id of the Shipping Method. This value will be prefixed with
+            `sm_`.
+          type: string
+        shipping_option_id:
+          description: >-
+            The id of the Shipping Option that the Shipping Method is built
+            from.
+          type: string
+        shipping_option:
+          description: The Shipping Option that the Shipping Method is built from.
+          anyOf:
+            - $ref: '#/components/schemas/shipping_option'
+        order_id:
+          description: The id of the Order that the Shipping Method is used on.
+          type: string
+        return_id:
+          description: The id of the Return that the Shipping Method is used on.
+          type: string
+        swap_id:
+          description: The id of the Swap that the Shipping Method is used on.
+          type: string
+        cart_id:
+          description: The id of the Cart that the Shipping Method is used on.
+          type: string
+        claim_order_id:
+          description: The id of the Claim that the Shipping Method is used on.
+          type: string
+        price:
+          description: >-
+            The amount to charge for the Shipping Method. The currency of the
+            price is defined by the Region that the Order that the Shipping
+            Method belongs to is a part of.
+          type: integer
+        data:
+          description: >-
+            Additional data that the Fulfillment Provider needs to fulfill the
+            shipment. This is used in combination with the Shipping Options
+            data, and may contain information such as a drop point id.
+          type: object
+    shipping_option_requirement:
+      title: Shipping Option Requirement
+      description: >-
+        A requirement that a Cart must satisfy for the Shipping Option to be
+        available to the Cart.
+      x-resourceId: shipping_option_requirement
+      properties:
+        id:
+          description: >-
+            The id of the Shipping Option Requirement. This value will be
+            prefixed with `sor_`.
+          type: string
+        shipping_option_id:
+          description: >-
+            The id of the Shipping Option that the Shipping Option Requirement
+            belongs to.
+          type: string
+        type:
+          description: >-
+            The type of the requirement, this defines how the value will be
+            compared to the Cart's total. `min_subtotal` requirements define the
+            minimum subtotal that is needed for the Shipping Option to be
+            available, while the `max_subtotal` defines the maximum subtotal
+            that the Cart can have for the Shipping Option to be available.
+          type: string
+          enum:
+            - min_subtotal
+            - max_subtotal
+        amount:
+          description: The amount to compare the Cart subtotal to.
+          type: integer
+    shipping_option:
+      title: Shipping Option
+      description: >-
+        Shipping Options represent a way in which an Order or Return can be
+        shipped. Shipping Options have an associated Fulfillment Provider that
+        will be used when the fulfillment of an Order is initiated. Shipping
+        Options themselves cannot be added to Carts, but serve as a template for
+        Shipping Methods. This distinction makes it possible to customize
+        individual Shipping Methods with additional information.
+      x-resourceId: shipping_option
+      properties:
+        id:
+          description: >-
+            The id of the Shipping Option. This value will be prefixed with
+            `so_`.
+          type: string
+        name:
+          description: >-
+            The name given to the Shipping Option - this may be displayed to the
+            Customer.
+          type: string
+        region_id:
+          description: The id of the Region that the Shipping Option belongs to.
+          type: string
+        region:
+          description: The id of the Region that the Shipping Option belongs to.
+          anyOf:
+            - $ref: '#/components/schemas/region'
+        profile_id:
+          description: >-
+            The id of the Shipping Profile that the Shipping Option belongs to.
+            Shipping Profiles have a set of defined Shipping Options that can be
+            used to Fulfill a given set of Products.
+          type: string
+        provider_id:
+          description: >-
+            The id of the Fulfillment Provider, that will be used to process
+            Fulfillments from the Shipping Option.
+          type: string
+        price_type:
+          description: >-
+            The type of pricing calculation that is used when creatin Shipping
+            Methods from the Shipping Option. Can be `flat_rate` for fixed
+            prices or `calculated` if the Fulfillment Provider can provide price
+            calulations.
+          type: string
+          enum:
+            - flat_rate
+            - calculated
+        amount:
+          description: >-
+            The amount to charge for shipping when the Shipping Option price
+            type is `flat_rate`.
+          type: integer
+        is_return:
+          description: >-
+            Flag to indicate if the Shipping Option can be used for Return
+            shipments.
+          type: boolean
+        requirements:
+          description: >-
+            The requirements that must be satisfied for the Shipping Option to
+            be available for a Cart.
+          type: array
+          items:
+            $ref: '#/components/schemas/shipping_option_requirement'
+        data:
+          description: >-
+            The data needed for the Fulfillment Provider to identify the
+            Shipping Option.
+          type: object
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    shipping_profile:
+      title: Shipping Profile
+      description: >-
+        Shipping Profiles have a set of defined Shipping Options that can be
+        used to fulfill a given set of Products.
+      x-resourceId: shipping_profile
+      properties:
+        id:
+          description: >-
+            The id of the Shipping Profile. This value will be prefixed with
+            `sp_`.
+          type: string
+        name:
+          description: >-
+            The name given to the Shipping profile - this may be displayed to
+            the Customer.
+          type: string
+        type:
+          description: >-
+            The type of the Shipping Profile, may be `default`, `gift_card` or
+            `custom`.
+          type: string
+          enum:
+            - default
+            - gift_card
+            - custom
+        products:
+          description: The Products that the Shipping Profile defines Shipping Options for.
+          type: array
+          items:
+            $ref: '#/components/schemas/product'
+        shipping_options:
+          description: >-
+            The Shipping Options that can be used to fulfill the Products in the
+            Shipping Profile.
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/shipping_option'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    store:
+      title: Store
+      description: 'Holds settings for the Store, such as name, currencies, etc.'
+      x-resourceId: store
+      properties:
+        id:
+          description: The id of the Store. This value will be prefixed with `store_`.
+          type: string
+        name:
+          description: The name of the Store - this may be displayed to the Customer.
+          type: string
+        default_currency_code:
+          description: >-
+            The default currency code used when no other currency code is
+            specified.
+          type: string
+        currencies:
+          description: The currencies that are enabled for the Store.
+          type: array
+          items:
+            $ref: '#/components/schemas/currency'
+        swap_link_template:
+          description: >-
+            A template to generate Swap links from use {{cart_id}} to include
+            the Swap's `cart_id` in the link.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    swap:
+      title: Swap
+      description: >-
+        Swaps can be created when a Customer wishes to exchange Products that
+        they have purchased to different Products. Swaps consist of a Return of
+        previously purchased Products and a Fulfillment of new Products, the
+        amount paid for the Products being returned will be used towards payment
+        for the new Products. In the case where the amount paid for the the
+        Products being returned exceed the amount to be paid for the new
+        Products, a Refund will be issued for the difference.
+      x-resourceId: swap
+      properties:
+        id:
+          description: The id of the Swap. This value will be prefixed with `swap_`.
+          type: string
+        fulfillment_status:
+          description: The status of the Fulfillment of the Swap.
+          type: string
+          enum:
+            - not_fulfilled
+            - partially_fulfilled
+            - fulfilled
+            - partially_shipped
+            - shipped
+            - partially_returned
+            - returned
+            - canceled
+            - requires_action
+        payment_status:
+          description: >-
+            The status of the Payment of the Swap. The payment may either refer
+            to the refund of an amount or the authorization of a new amount.
+          type: string
+          enum:
+            - not_paid
+            - awaiting
+            - captured
+            - canceled
+            - difference_refunded
+            - requires_action
+        order_id:
+          description: >-
+            The id of the Order where the Line Items to be returned where
+            purchased.
+          type: string
+        additional_items:
+          description: The new Line Items to ship to the Customer.
+          type: array
+          items:
+            $ref: '#/components/schemas/line_item'
+        return_order:
+          description: The Return that is issued for the return part of the Swap.
+          anyOf:
+            - $ref: '#/components/schemas/return'
+        fulfillments:
+          description: The Fulfillments used to send the new Line Items.
+          type: array
+          items:
+            $ref: '#/components/schemas/fulfillment'
+        payment:
+          description: >-
+            The Payment authorized when the Swap requires an additional amount
+            to be charged from the Customer.
+          anyOf:
+            - $ref: '#/components/schemas/payment'
+        difference_due:
+          description: >-
+            The difference that is paid or refunded as a result of the Swap. May
+            be negative when the amount paid for the returned items exceed the
+            total of the new Products.
+          type: integer
+        shipping_address:
+          description: >-
+            The Address to send the new Line Items to - in most cases this will
+            be the same as the shipping address on the Order.
+          anyOf:
+            - $ref: '#/components/schemas/address'
+        shipping_methods:
+          description: The Shipping Methods used to fulfill the addtional items purchased.
+          type: array
+          items:
+            $ref: '#/components/schemas/shipping_method'
+        cart_id:
+          description: The id of the Cart that the Customer will use to confirm the Swap.
+          type: string
+        confirmed_at:
+          description: >-
+            The date with timezone at which the Swap was confirmed by the
+            Customer.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    tracking_link:
+      title: Tracking Link
+      description: >-
+        Tracking Link holds information about tracking numbers for a
+        Fulfillment. Tracking Links can optionally contain a URL that can be
+        visited to see the status of the shipment.
+      x-resourceId: tracking_link
+      properties:
+        id:
+          description: >-
+            The id of the Tracking Link. This value will be prefixed with
+            `tlink_`.
+          type: string
+        url:
+          description: The URL at which the status of the shipment can be tracked.
+          type: string
+        tracking_number:
+          description: The tracking number given by the shipping carrier.
+          type: string
+        fulfillment_id:
+          description: The id of the Fulfillment that the Tracking Link references.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    user:
+      title: User
+      description: Represents a User who can manage store settings.
+      x-resourceId: user
+      properties:
+        id:
+          description: The unique id of the User. This will be prefixed with `usr_`
+          type: string
+        email:
+          description: The email of the User
+          type: string
+        first_name:
+          type: string
+        last_name:
+          description: The Customer's billing address.
+          anyOf:
+            - $ref: '#/components/schemas/address'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
