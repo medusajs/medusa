@@ -2,6 +2,26 @@ import jwt from "jsonwebtoken"
 import { Validator } from "medusa-core-utils"
 import config from "../../../../config"
 
+/**
+ * @oas [post] /auth
+ * operationId: "PostAuth"
+ * summary: "Authenticate a User"
+ * description: "Logs a User in and authorizes them to manage Store settings."
+ * parameters:
+ *   - (body) email=* {string} The User's email.
+ *   - (body) password=* {string} The User's password.
+ * tags:
+ *   - Auth
+ * responses:
+ *  "200":
+ *    description: OK
+ *    content:
+ *      application/json:
+ *        schema:
+ *          properties:
+ *            customer:
+ *              $ref: "#/components/schemas/user"
+ */
 export default async (req, res) => {
   const { body } = req
   const schema = Validator.object().keys({

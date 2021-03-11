@@ -78,3 +78,95 @@ export class Notification {
     this.id = `noti_${id}`
   }
 }
+
+/**
+ * @schema notification
+ * title: "Notification"
+ * description: "Notifications a communications sent via Notification Providers as a reaction to internal events such as `order.placed`. Notifications can be used to show a chronological timeline for communications sent to a Customer regarding an Order, and enables resends."
+ * x-resourceId: notification
+ * properties:
+ *   id:
+ *     description: "The id of the Notification. This value will be prefixed by `noti_`."
+ *     type: string
+ *   event_name:
+ *     description: "The name of the event that the notification was sent for."
+ *     type: string
+ *   resource_type:
+ *     description: "The type of resource that the Notification refers to."
+ *     type: string
+ *   resource_id:
+ *     description: "The id of the resource that the Notification refers to."
+ *     type: string
+ *   customer_id:
+ *     description: "The id of the Customer that the Notification was sent to."
+ *     type: string
+ *   customer:
+ *     description: "The Customer that the Notification was sent to."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/customer"
+ *   to:
+ *     description: "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id"
+ *     type: string
+ *   data:
+ *     description: "The data that the Notification was sent with. This contains all the data necessary for the Notification Provider to initiate a resend."
+ *     type: object
+ *   parent_id:
+ *     description: "The id of the Notification that was originally sent."
+ *     type: string
+ *   resends:
+ *     description: "The resends that have been completed after the original Notification."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/notification_resend"
+ *   provider_id:
+ *     description: "The id of the Notification Provider that handles the Notification."
+ *     type: string
+ *   created_at:
+ *     description: "The date with timezone at which the resource was created."
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ */
+
+/**
+ * @schema notification_resend
+ * title: "Notification Resend"
+ * description: "A resend of a Notification."
+ * x-resourceId: notification_resend
+ * properties:
+ *   id:
+ *     description: "The id of the Notification. This value will be prefixed by `noti_`."
+ *     type: string
+ *   event_name:
+ *     description: "The name of the event that the notification was sent for."
+ *     type: string
+ *   resource_type:
+ *     description: "The type of resource that the Notification refers to."
+ *     type: string
+ *   resource_id:
+ *     description: "The id of the resource that the Notification refers to."
+ *     type: string
+ *   to:
+ *     description: "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id"
+ *     type: string
+ *   data:
+ *     description: "The data that the Notification was sent with. This contains all the data necessary for the Notification Provider to initiate a resend."
+ *     type: object
+ *   parent_id:
+ *     description: "The id of the Notification that was originally sent."
+ *     type: string
+ *   provider_id:
+ *     description: "The id of the Notification Provider that handles the Notification."
+ *     type: string
+ *   created_at:
+ *     description: "The date with timezone at which the resource was created."
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ */

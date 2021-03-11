@@ -2,6 +2,23 @@ import _ from "lodash"
 import { defaultRelations, defaultFields, filterableFields } from "./"
 import { MedusaError, Validator } from "medusa-core-utils"
 
+/**
+ * @oas [get] /orders
+ * operationId: "GetOrders"
+ * summary: "List Orders"
+ * description: "Retrieves an list of Orders"
+ * tags:
+ *   - Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const schema = Validator.orderFilter()
 
