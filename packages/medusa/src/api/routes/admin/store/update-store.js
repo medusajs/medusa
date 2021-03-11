@@ -1,5 +1,36 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
+/**
+ * @oas [post] /store
+ * operationId: "PostStore"
+ * summary: "Update Store details."
+ * description: "Updates the Store details"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           name:
+ *             description: "The name of the Store"
+ *             type: string
+ *           swap_link_template:
+ *             description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart id"
+ *             type: string
+ *           default_currency_code:
+ *             description: "The default currency code for the Store."
+ *             type: string
+ * tags:
+ *   - Store
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             store:
+ *               $ref: "#/components/schemas/store"
+ */
 export default async (req, res) => {
   const schema = Validator.object().keys({
     name: Validator.string(),

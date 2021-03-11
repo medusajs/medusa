@@ -265,3 +265,150 @@ export class Order {
     this.id = `order_${id}`
   }
 }
+
+/**
+ * @schema order
+ * title: "Order"
+ * description: "Represents an order"
+ * x-resourceId: order
+ * properties:
+ *   id:
+ *     type: string
+ *   status:
+ *     type: string
+ *     enum:
+ *       - pending
+ *       - completed
+ *       - archived
+ *       - canceled
+ *       - requires_action
+ *   fulfillment_status:
+ *     type: string
+ *     enum:
+ *       - not_fulfilled
+ *       - partially_fulfilled
+ *       - fulfilled
+ *       - partially_shipped
+ *       - shipped
+ *       - partially_returned
+ *       - returned
+ *       - canceled
+ *       - requires_action
+ *   payment_status:
+ *     type: string
+ *     enum:
+ *       - not_paid
+ *       - awaiting
+ *       - captured
+ *       - partially_refunded
+ *       - refuneded
+ *       - canceled
+ *       - requires_action
+ *   display_id:
+ *     type: integer
+ *   cart_id:
+ *     type: string
+ *   currency_code:
+ *     type: string
+ *   tax_rate:
+ *     type: integer
+ *   discounts:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/discount"
+ *   email:
+ *     type: string
+ *   billing_address_id:
+ *     type: string
+ *   billing_address:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/address"
+ *   shipping_address_id:
+ *     type: string
+ *   shipping_address:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/address"
+ *   items:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/line_item"
+ *   region_id:
+ *     type: string
+ *   region:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/region"
+ *   gift_cards:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/gift_card"
+ *   customer_id:
+ *     type: string
+ *   customer:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/customer"
+ *   payment_session:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/payment_session"
+ *   payment_sessions:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/payment_session"
+ *   payments:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/payment"
+ *   shipping_methods:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/shipping_method"
+ *   fulfillments:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/fulfillment"
+ *   returns:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/return"
+ *   claims:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/claim_order"
+ *   refunds:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/refund"
+ *   swaps:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/refund"
+ *   gift_card_transactions:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/gift_card_transaction"
+ *   canceled_at:
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   update_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ *   shipping_total:
+ *     type: integer
+ *   discount_total:
+ *     type: integer
+ *   tax_total:
+ *     type: integer
+ *   subtotal:
+ *     type: integer
+ *   refundable_amount:
+ *     type: integer
+ *   gift_card_total:
+ *     type: integer
+ */

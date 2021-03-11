@@ -240,6 +240,15 @@ class ReturnService extends BaseService {
         this.validateReturnLineItem_
       )
 
+      if (data.shipping_method) {
+        if (typeof data.shipping_method.price === "undefined") {
+          const opt = await this.shippingOptionService_.retrieve(
+            data.shipping_method.option_id
+          )
+          data.shipping_method.price = opt.amount
+        }
+      }
+
       let toRefund = data.refund_amount
       if (typeof toRefund !== "undefined") {
         const refundable = orderLike.total - orderLike.refunded_total

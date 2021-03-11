@@ -1,6 +1,25 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /notifications/{id}/resend
+ * operationId: "PostNotificationsNotificationResend"
+ * summary: "Resend Notification"
+ * description: "Resends a previously sent notifications, with the same data but optionally to a different address"
+ * parameters:
+ *   - (path) id=* {string} The id of the Notification
+ * tags:
+ *   - Notification
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             notification:
+ *               $ref: "#/components/schemas/notification"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

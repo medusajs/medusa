@@ -1,6 +1,29 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /carts/{id}/line-items
+ * operationId: PostCartsCartLineItems
+ * summary: "Add a Line Item"
+ * description: "Generates a Line Item with a given Product Variant and adds it
+ *   to the Cart"
+ * parameters:
+ *   - (path) id=* {string} The id of the Cart to add the Line Item to.
+ *   - (body) variant_id=* {string} The id of the Product Variant to generate the Line Item from.
+ *   - (body) quantity=* {integer} The quantity of the Product Variant to add to the Line Item.
+ *   - (body) metadata {object} An optional key-value map with additional details about the Line Item.
+ * tags:
+ *   - Cart
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@medusajs/medusa": "^1.1.3",
-    "medusa-interfaces": "^1.1.0"
+    "medusa-interfaces": "^1.1.0",
+    "typeorm": "^0.2.31"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

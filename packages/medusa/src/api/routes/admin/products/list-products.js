@@ -1,6 +1,34 @@
 import _ from "lodash"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /products
+ * operationId: "GetProducts"
+ * summary: "List Product"
+ * description: "Retrieves a list of Product"
+ * tags:
+ *   - Product
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             count:
+ *               description: The number of Products.
+ *               type: integer
+ *             offset:
+ *               description: The offset of the Product query.
+ *               type: integer
+ *             limit:
+ *               description: The limit of the Product query.
+ *               type: integer
+ *             products:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/product"
+ */
 export default async (req, res) => {
   try {
     const productService = req.scope.resolve("productService")

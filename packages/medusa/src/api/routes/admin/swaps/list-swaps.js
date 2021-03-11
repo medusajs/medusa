@@ -1,5 +1,24 @@
 import _ from "lodash"
 
+/**
+ * @oas [get] /swaps
+ * operationId: "GetSwaps"
+ * summary: "List Swaps"
+ * description: "Retrieves a list of Swaps."
+ * tags:
+ *   - Swap
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             swaps:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/swap"
+ */
 export default async (req, res) => {
   try {
     const swapService = req.scope.resolve("swapService")
