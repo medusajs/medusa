@@ -18,12 +18,6 @@ describe("ImportService", () => {
         collection: { id: IdMap.getId("cat"), title: "Suits" },
       }),
       findOne: () => undefined,
-      // findOne: () => ({
-      //   id: IdMap.getId("ironman"),
-      //   title: "Suit",
-      //   options: [],
-      //   collection: { id: IdMap.getId("cat"), title: "Suits" },
-      // }),
     })
 
     const productTagRepository = MockRepository({
@@ -90,7 +84,7 @@ describe("ImportService", () => {
           {
             title: "Suit",
             options: [{ title: "test-opt" }],
-            tags: [{ value: "title" }, { value: "title2" }],
+            tags: ["title", "title2"],
             type: "type-1",
             collection: "test-col",
             variants: [

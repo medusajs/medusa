@@ -402,7 +402,7 @@ class ProductService extends BaseService {
 
       if (!product) return Promise.resolve()
 
-      await productRepo.remove(product)
+      await productRepo.softRemove(product)
 
       return Promise.resolve()
     })
