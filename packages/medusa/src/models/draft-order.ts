@@ -9,22 +9,11 @@ import {
   PrimaryColumn,
   OneToOne,
   JoinColumn,
-  ManyToOne,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
 } from "typeorm"
 import { ulid } from "ulid"
-import { Address } from "./address"
 
 import { Cart } from "./cart"
-import { Customer } from "./customer"
-import { Discount } from "./discount"
-import { LineItem } from "./line-item"
 import { Order } from "./order"
-import { Payment } from "./payment"
-import { Region } from "./region"
-import { ShippingMethod } from "./shipping-method"
 
 enum DraftOrderStatus {
   OPEN = "open",
@@ -83,3 +72,47 @@ export class DraftOrder {
     this.id = `dorder_${id}`
   }
 }
+
+/**
+ * @schema draft-order
+ * title: "DraftOrder"
+ * description: "Represents a draft order"
+ * x-resourceId: draft-order
+ * properties:
+ *   id:
+ *     type: string
+ *   status:
+ *     type: string
+ *     enum:
+ *       - open
+ *       - awaiting
+ *       - completed
+ *   display_id:
+ *     type: string
+ *   cart_id:
+ *     type: string
+ *   cart:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/cart"
+ *   order_id:
+ *     type: string
+ *   order:
+ *     anyOf:
+ *       - $ref: "#/components/schemas/order"
+ *   canceled_at:
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   update_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ *   idempotency_key:
+ *     type: string
+ */

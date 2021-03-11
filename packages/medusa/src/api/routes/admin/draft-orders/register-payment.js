@@ -3,6 +3,26 @@ import {
   defaultRelations as defaultOrderRelations,
 } from "../orders/index"
 
+/**
+ * @oas [post] /draft-orders/{id}/register-payment
+ * summary: "Registers a payment for a Draft Order"
+ * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
+ * description: "Registers a payment for a Draft Order."
+ * parameters:
+ *   - (path) id=* {String} The Draft Order id.
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   const { id } = req.params
 

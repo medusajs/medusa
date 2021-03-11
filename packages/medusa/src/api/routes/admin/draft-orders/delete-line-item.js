@@ -1,6 +1,27 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultCartFields, defaultCartRelations, defaultFields } from "."
 
+/**
+ * @oas [delete] /draft-orders/{id}/line-items/{line_id}
+ * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
+ * summary: Delete a Line Item
+ * description: "Removes a Line Item from a Draft Order."
+ * parameters:
+ *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) line_id=* {string} The id of the Draft Order.
+ * tags:
+ *   - Draft Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             draft_order:
+ *               $ref: "#/components/schemas/draft-order"
+ */
+
 export default async (req, res) => {
   const { id, line_id } = req.params
 
