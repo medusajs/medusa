@@ -156,6 +156,7 @@ describe("/admin/products", () => {
         type: null,
         tags: [{ value: "123" }],
         images: ["test-image-2.png"],
+        type: { value: "test-type-2" },
       };
 
       const response = await api
@@ -185,6 +186,9 @@ describe("/admin/products", () => {
           ],
           type: null,
           collection: null,
+          type: expect.objectContaining({
+            value: "test-type-2",
+          }),
         })
       );
     });

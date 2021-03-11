@@ -238,7 +238,7 @@ class ProductService extends BaseService {
     })
 
     if (existing) {
-      return existing
+      return existing.id
     }
 
     const created = productTypeRepository.create(type)
