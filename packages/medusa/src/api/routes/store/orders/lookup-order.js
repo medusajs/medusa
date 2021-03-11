@@ -1,6 +1,26 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./index"
 
+/**
+ * @oas [get] /orders
+ * operationId: "GetOrders"
+ * summary: "Look Up an Order"
+ * description: "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned."
+ * parameters:
+ *   - (query) display_id=* {number} The display id given to the Order.
+ *   - (query) email=* {string} The email of the Order with the given display_id.
+ * tags:
+ *   - Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const schema = Validator.object().keys({
     display_id: Validator.number().required(),

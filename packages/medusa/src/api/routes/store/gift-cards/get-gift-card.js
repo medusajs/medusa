@@ -6,7 +6,7 @@ import { defaultRelations, defaultFields } from "./"
  * summary: "Retrieve Gift Card by Code"
  * description: "Retrieves a Gift Card by its associated unqiue code."
  * tags:
- *   - Region
+ *   - Gift Card
  * responses:
  *   200:
  *     description: OK
