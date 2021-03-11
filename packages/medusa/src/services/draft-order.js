@@ -249,7 +249,16 @@ class DraftOrderService extends BaseService {
         )
       }
 
-      const { items, shipping_methods, ...rest } = data
+      const { items, shipping_methods, discounts, ...rest } = data
+
+      if (discounts) {
+        for (const { code } of discounts) {
+          rest.discounts = []
+          await this.cartService_
+            .withTransaction(manager)
+            .applyDiscount(rest, code)
+        }
+      }
 
       const createdCart = await this.cartService_
         .withTransaction(manager)
@@ -284,13 +293,10 @@ class DraftOrderService extends BaseService {
         if (item.variant_id) {
           const line = await this.lineItemService_
             .withTransaction(manager)
-            .generate(
-              item.variant_id,
-              data.region_id,
-              item.quantity,
-              item.metadata,
-              item.unit_price
-            )
+            .generate(item.variant_id, data.region_id, item.quantity, {
+              metadata: item?.metadata || {},
+              unit_price: item.unit_price,
+            })
 
           const variant = await this.productVariantService_
             .withTransaction(manager)
@@ -305,13 +311,20 @@ class DraftOrderService extends BaseService {
             ...line,
           })
         } else {
+          let price
+          if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
+            price = 0
+          } else {
+            price = item.unit_price
+          }
+
           // custom line items can be added to a draft order
           await this.lineItemService_.withTransaction(manager).create({
             cart_id: createdCart.id,
             has_shipping: true,
             title: item.title || "Custom item",
             allow_discounts: false,
-            unit_price: item.unit_price || 0,
+            unit_price: price,
             quantity: item.quantity,
           })
         }

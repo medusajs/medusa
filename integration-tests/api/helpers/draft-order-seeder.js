@@ -10,6 +10,8 @@ const {
   Cart,
   PaymentSession,
   DraftOrder,
+  Discount,
+  DiscountRule,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -106,6 +108,33 @@ module.exports = async (connection, data = {}) => {
       },
     ],
   });
+
+  await manager.insert(DiscountRule, {
+    id: "discount_rule_id",
+    description: "test description",
+    value: 10,
+    allocation: "total",
+    type: "percentage",
+  });
+
+  const d = manager.create(Discount, {
+    id: "test-discount",
+    code: "TEST",
+    is_dynamic: false,
+    is_disabled: false,
+    rule_id: "discount_rule_id",
+  });
+
+  d.regions = [
+    {
+      id: "test-region",
+      name: "Test Region",
+      currency_code: "usd",
+      tax_rate: 0,
+    },
+  ];
+
+  await manager.save(d);
 
   await manager.query(
     `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`

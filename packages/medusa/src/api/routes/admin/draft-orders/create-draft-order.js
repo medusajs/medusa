@@ -27,9 +27,12 @@ export default async (req, res) => {
       })
       .required(),
     region_id: Validator.string().required(),
-    discounts: Validator.array().optional(),
+    discounts: Validator.array()
+      .items({
+        code: Validator.string().required(),
+      })
+      .optional(),
     customer_id: Validator.string().optional(),
-    customer: Validator.string().optional(),
     shipping_methods: Validator.array()
       .items({
         option_id: Validator.string().required(),

@@ -17,7 +17,6 @@ import { Cart } from "./cart"
 import { Order } from "./order"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
-import { DraftOrder } from "./draft-order"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)

@@ -179,8 +179,7 @@ describe("DraftOrderService", () => {
         "test-variant",
         "test-region",
         2,
-        {},
-        undefined
+        { metadata: {}, unit_price: undefined }
       )
 
       expect(lineItemService.create).toHaveBeenCalledTimes(1)
