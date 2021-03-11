@@ -47,8 +47,63 @@ const order = {
   email: "test@example.com",
 }
 
+const roundingOrder = {
+  region: {
+    tax_code: "1234",
+  },
+  items: [
+    {
+      id: "rounding-item",
+      title: "Test",
+      allow_discounts: true,
+      variant: {
+        sku: "TEST",
+      },
+      unit_price: 31600,
+      quantity: 1,
+    },
+  ],
+  shipping_total: 0,
+  shipping_methods: [
+    {
+      name: "standard",
+      price: 0,
+    },
+  ],
+  discounts: [
+    {
+      code: "testdiscount",
+      rule: {
+        type: "percentage",
+        allocation: "total",
+        value: 50,
+      },
+    },
+  ],
+  payment_method: {
+    id: "123",
+  },
+  tax_rate: 25,
+  currency_code: "DKK",
+  display_id: "1234",
+  id: "rounding",
+  shipping_address: {
+    first_name: "Test",
+    last_name: "Testson",
+    address_1: "Test",
+    address_2: "TEst",
+    postal_code: "1234",
+    country_code: "DK",
+    phone: "12345678",
+  },
+  email: "test@example.com",
+}
+
 const OrderService = {
-  retrieve: () => {
+  retrieve: (id) => {
+    if (id === "rounding") {
+      return Promise.resolve(roundingOrder)
+    }
     return Promise.resolve(order)
   },
   update: () => {
@@ -60,17 +115,29 @@ const TotalsService = {
   getTotal: () => {
     return Promise.resolve(123)
   },
-  getLineDiscounts: () => {
-    return Promise.resolve([])
+  getLineDiscounts: (o) => {
+    if (o.id === "rounding") {
+      return [
+        {
+          item: { id: "rounding-item", quantity: 1 },
+          amount: 15800,
+        },
+      ]
+    }
+    return []
   },
-  getShippingTotal: () => {
+  getShippingTotal: (o) => {
+    if (o.id === "rounding") {
+      return 0
+    }
     return 12399
   },
   rounded: (value) => {
-    const decimalPlaces = 4
-    return Number(
-      Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
-    )
+    return Math.round(value)
+    // const decimalPlaces = 4
+    // return Number(
+    //   Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
+    // )
   },
 }
 
@@ -146,6 +213,8 @@ describe("BrightpearlService", () => {
     )
 
     it("successfully builds sales order", async () => {
+      jest.clearAllMocks()
+
       await bpService.createSalesOrder(order)
 
       expect(mockCreateOrder).toHaveBeenCalledWith({
@@ -194,6 +263,134 @@ describe("BrightpearlService", () => {
             quantity: 1,
             net: 123.99,
             tax: 28.6417,
+            taxCode: "1234",
+            nominalCode: "4040",
+          },
+        ],
+      })
+    })
+  })
+
+  describe("rounding", () => {
+    const bpService = new BrightpearlService(
+      {
+        orderService: OrderService,
+        totalsService: TotalsService,
+        oauthService: OAuthService,
+        regionService: RegionService,
+      },
+      { account: "test" }
+    )
+
+    it("rounds correctly", async () => {
+      jest.clearAllMocks()
+      await bpService.createSalesOrder("rounding")
+
+      expect(mockCreateOrder).toHaveBeenCalledTimes(1)
+      expect(mockCreateOrder).toHaveBeenCalledWith({
+        currency: { code: "DKK" },
+        ref: "1234",
+        externalRef: "rounding",
+        channelId: "1",
+        installedIntegrationInstanceId: undefined,
+        statusId: "3",
+        customer: {
+          id: "12345",
+          address: {
+            addressFullName: "Test Testson",
+            addressLine1: "Test",
+            addressLine2: "TEst",
+            postalCode: "1234",
+            countryIsoCode: "DK",
+            telephone: "12345678",
+            email: "test@example.com",
+          },
+        },
+        delivery: {
+          shippingMethodId: 0,
+          address: {
+            addressFullName: "Test Testson",
+            addressLine1: "Test",
+            addressLine2: "TEst",
+            postalCode: "1234",
+            countryIsoCode: "DK",
+            telephone: "12345678",
+            email: "test@example.com",
+          },
+        },
+        rows: [
+          {
+            name: "Test",
+            net: 158,
+            tax: 39.5,
+            quantity: 1,
+            taxCode: "1234",
+            externalRef: "rounding-item",
+            nominalCode: "4000",
+          },
+          {
+            name: "Shipping: standard",
+            quantity: 1,
+            net: 0,
+            tax: 0,
+            taxCode: "1234",
+            nominalCode: "4040",
+          },
+        ],
+      })
+    })
+
+    it("rounds correctly", async () => {
+      jest.clearAllMocks()
+      await bpService.createSalesOrder("rounding")
+
+      expect(mockCreateOrder).toHaveBeenCalledTimes(1)
+      expect(mockCreateOrder).toHaveBeenCalledWith({
+        currency: { code: "DKK" },
+        ref: "1234",
+        externalRef: "rounding",
+        channelId: "1",
+        installedIntegrationInstanceId: undefined,
+        statusId: "3",
+        customer: {
+          id: "12345",
+          address: {
+            addressFullName: "Test Testson",
+            addressLine1: "Test",
+            addressLine2: "TEst",
+            postalCode: "1234",
+            countryIsoCode: "DK",
+            telephone: "12345678",
+            email: "test@example.com",
+          },
+        },
+        delivery: {
+          shippingMethodId: 0,
+          address: {
+            addressFullName: "Test Testson",
+            addressLine1: "Test",
+            addressLine2: "TEst",
+            postalCode: "1234",
+            countryIsoCode: "DK",
+            telephone: "12345678",
+            email: "test@example.com",
+          },
+        },
+        rows: [
+          {
+            name: "Test",
+            net: 158,
+            tax: 39.5,
+            quantity: 1,
+            taxCode: "1234",
+            externalRef: "rounding-item",
+            nominalCode: "4000",
+          },
+          {
+            name: "Shipping: standard",
+            quantity: 1,
+            net: 0,
+            tax: 0,
             taxCode: "1234",
             nominalCode: "4040",
           },
