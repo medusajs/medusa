@@ -317,6 +317,7 @@ describe("ProductService", () => {
       expect(productRepository.softRemove).toBeCalledTimes(1)
       expect(productRepository.softRemove).toBeCalledWith({
         id: IdMap.getId("ironman"),
+        handle: null,
       })
     })
   })
