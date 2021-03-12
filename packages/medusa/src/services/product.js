@@ -23,6 +23,7 @@ class ProductService extends BaseService {
     productCollectionService,
     productTypeRepository,
     productTagRepository,
+    imageRepository,
   }) {
     super()
 
@@ -52,6 +53,9 @@ class ProductService extends BaseService {
 
     /** @private @const {ProductCollectionService} */
     this.productTagRepository_ = productTagRepository
+
+    /** @private @const {ImageRepository} */
+    this.imageRepository_ = imageRepository
   }
 
   withTransaction(transactionManager) {
@@ -69,6 +73,7 @@ class ProductService extends BaseService {
       productCollectionService: this.productCollectionService_,
       productTagRepository: this.productTagRepository_,
       productTypeRepository: this.productTypeRepository_,
+      imageRepository: this.imageRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -80,7 +85,7 @@ class ProductService extends BaseService {
    * @param {Object} listOptions - the query object for find
    * @return {Promise} the result of the find operation
    */
-  list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
+  async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
@@ -93,36 +98,47 @@ class ProductService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    let rels = query.relations
+    delete query.relations
+
     if (q) {
       const where = query.where
 
       delete where.description
       delete where.title
 
-      query.join = {
-        alias: "product",
-        leftJoinAndSelect: {
-          variant: "product.variants",
-          collection: "product.collection",
-        },
-      }
-
-      query.where = qb => {
-        qb.where(where)
-
-        qb.andWhere(
+      const raw = await productRepo
+        .createQueryBuilder("product")
+        .leftJoinAndSelect("product.variants", "variant")
+        .leftJoinAndSelect("product.collection", "collection")
+        .select(["product.id"])
+        .where(where)
+        .andWhere(
           new Brackets(qb => {
-            qb.where(`product.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`product.description ILIKE :q`, { q: `%${q}%` })
+            qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
               .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
               .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
               .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
           })
         )
-      }
+        .getMany()
+
+      return productRepo.findWithRelations(
+        rels,
+        raw.map(i => i.id)
+      )
     }
 
-    return productRepo.find(query)
+    return productRepo.findWithRelations(rels, query)
   }
 
   /**
@@ -143,20 +159,33 @@ class ProductService extends BaseService {
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieve(productId, config = {}) {
-    return this.atomicPhase_(async manager => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-      const validatedId = this.validateId_(productId)
-      const query = this.buildQuery_({ id: validatedId }, config)
-      const product = await productRepo.findOne(query)
-      if (!product) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Product with id: ${productId} was not found`
-        )
-      }
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+    const validatedId = this.validateId_(productId)
 
-      return product
-    })
+    const query = { where: { id: validatedId } }
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+    const product = await productRepo.findOneWithRelations(rels, query)
+
+    if (!product) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with id: ${productId} was not found`
+      )
+    }
+
+    return product
   }
 
   /**
@@ -253,9 +282,17 @@ class ProductService extends BaseService {
         this.productOptionRepository_
       )
 
-      const { options, tags, type, ...rest } = productObject
+      const { options, tags, type, images, ...rest } = productObject
+
+      if (!rest.thumbnail && images && images.length) {
+        rest.thumbnail = images[0]
+      }
 
       let product = productRepo.create(rest)
+
+      if (images && images.length) {
+        product.images = await this.upsertImages_(images)
+      }
 
       if (tags) {
         product.tags = await this.upsertProductTags_(tags)
@@ -286,6 +323,28 @@ class ProductService extends BaseService {
     })
   }
 
+  async upsertImages_(images) {
+    const imageRepository = this.manager_.getCustomRepository(
+      this.imageRepository_
+    )
+
+    let productImages = []
+    for (const img of images) {
+      const existing = await imageRepository.findOne({
+        where: { url: img },
+      })
+
+      if (existing) {
+        productImages.push(existing)
+      } else {
+        const created = imageRepository.create({ url: img })
+        productImages.push(created)
+      }
+    }
+
+    return productImages
+  }
+
   /**
    * Updates a product. Product variant updates should use dedicated methods,
    * e.g. `addVariant`, etc. The function will throw errors if metadata or
@@ -303,7 +362,7 @@ class ProductService extends BaseService {
       )
 
       const product = await this.retrieve(productId, {
-        relations: ["variants", "tags"],
+        relations: ["variants", "tags", "images"],
       })
 
       const {
@@ -318,6 +377,10 @@ class ProductService extends BaseService {
 
       if (!product.thumbnail && !update.thumbnail && images && images.length) {
         product.thumbnail = images[0]
+      }
+
+      if (images && images.length) {
+        product.images = await this.upsertImages_(images)
       }
 
       if (metadata) {

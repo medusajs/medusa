@@ -1,5 +1,41 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 
+/**
+ * @oas [post] /customers/{id}
+ * operationId: PostCustomersCustomer
+ * summary: Update Customer details
+ * description: "Updates a Customer's saved details."
+ * parameters:
+ *   - (path) id=* {string} The id of the Customer.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           first_name:
+ *             description: "The Customer's first name."
+ *             type: string
+ *           last_name:
+ *             description: "The Customer's last name."
+ *             type: string
+ *           password:
+ *             description: "The Customer's password."
+ *             type: string
+ *           phone:
+ *             description: "The Customer's phone number."
+ *             type: string
+ * tags:
+ *   - Customer
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             customer:
+ *               $ref: "#/components/schemas/customer"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

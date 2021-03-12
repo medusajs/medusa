@@ -1,6 +1,52 @@
+import reqIp from "request-ip"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [post] /carts
+ * summary: "Create a Cart"
+ * operationId: "PostCart"
+ * description: "Creates a Cart within the given region and with the initial items. If no
+ *   `region_id` is provided the cart will be associated with the first Region
+ *   available. If no items are provided the cart will be empty after creation.
+ *   If a user is logged in the cart's customer id and email will be set."
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           region_id:
+ *             type: string
+ *             description: The id of the Region to create the Cart in.
+ *           country_code:
+ *             type: string
+ *             description: "The 2 character ISO country code to create the Cart in."
+ *           items:
+ *             description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
+ *             type: array
+ *             items:
+ *               properties:
+ *                 variant_id:
+ *                   description: The id of the Product Variant to generate a Line Item from.
+ *                   type: string
+ *                 quantity:
+ *                   description: The quantity of the Product Variant to add
+ *                   type: integer
+ *           context:
+ *             description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *             type: object
+ * tags:
+ *   - Cart
+ * responses:
+ *   200:
+ *     description: "Successfully created a new Cart"
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
+ */
 export default async (req, res) => {
   const schema = Validator.object().keys({
     region_id: Validator.string().optional(),
@@ -11,11 +57,17 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .optional(),
+    context: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  }
+
+  const reqContext = {
+    ip: reqIp.getClientIp(req),
+    user_agent: req.get("user-agent"),
   }
 
   try {
@@ -35,6 +87,10 @@ export default async (req, res) => {
 
       const toCreate = {
         region_id: regionId,
+        context: {
+          ...reqContext,
+          ...value.context,
+        },
       }
 
       if (req.user && req.user.customer_id) {

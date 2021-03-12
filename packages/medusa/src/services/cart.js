@@ -269,7 +269,9 @@ class CartService extends BaseService {
       query.select = select
     }
 
-    const raw = await cartRepo.findOne(query)
+    const rels = query.relations
+    delete query.relations
+    const raw = await cartRepo.findOneWithRelations(rels, query)
 
     if (!raw) {
       throw new MedusaError(
@@ -636,6 +638,14 @@ class CartService extends BaseService {
 
         for (const { code } of update.gift_cards) {
           await this.applyGiftCard_(cart, code)
+        }
+      }
+
+      if ("context" in update) {
+        const prevContext = cart.context || {}
+        cart.context = {
+          ...prevContext,
+          ...update.context,
         }
       }
 

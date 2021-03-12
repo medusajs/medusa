@@ -275,7 +275,7 @@ class SendGridService extends NotificationService {
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
-      relations: ["items"],
+      relations: ["items", "tracking_links"],
     })
 
     return {
@@ -283,6 +283,7 @@ class SendGridService extends NotificationService {
       date: shipment.shipped_at.toDateString(),
       email: order.email,
       fulfillment: shipment,
+      tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
@@ -379,6 +380,10 @@ class SendGridService extends NotificationService {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
+
+    if (!giftCard.order) {
+      return
+    }
 
     const taxRate = giftCard.region.tax_rate / 100
 
@@ -586,7 +591,9 @@ class SendGridService extends NotificationService {
 
     const refundAmount = swap.return_order.refund_amount
 
-    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
+    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
+      relations: ["tracking_links"],
+    })
 
     return {
       swap,
@@ -602,6 +609,7 @@ class SendGridService extends NotificationService {
       refund_amount: `${this.humanPrice_(refundAmount)} ${currencyCode}`,
       additional_total: `${this.humanPrice_(additionalTotal)} ${currencyCode}`,
       fulfillment: shipment,
+      tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }
@@ -611,13 +619,16 @@ class SendGridService extends NotificationService {
       relations: ["order", "order.items", "order.shipping_address"],
     })
 
-    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id)
+    const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
+      relations: ["tracking_links"],
+    })
 
     return {
       email: claim.order.email,
       claim,
       order: claim.order,
       fulfillment: shipment,
+      tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
     }
   }

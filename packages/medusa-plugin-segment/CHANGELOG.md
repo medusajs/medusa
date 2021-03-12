@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.3...medusa-plugin-segment@1.1.5) (2021-02-25)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.5-next.3](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.2...medusa-plugin-segment@1.1.5-next.3) (2021-02-25)
+
+
+### Bug Fixes
+
+* normalize currency code ([98aa404](https://github.com/medusajs/medusa/commit/98aa404306d55f0818d48e56c51146351ebfe306))
+
+
+
+
+
+## [1.1.5-next.2](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.1...medusa-plugin-segment@1.1.5-next.2) (2021-02-25)
+
+
+### Features
+
+* **segment:** track shipments ([d156911](https://github.com/medusajs/medusa/commit/d15691188348c19fc22806d8cf7584fc5f249ce9))
+
+
+
+
+
+## [1.1.5-next.1](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.0...medusa-plugin-segment@1.1.5-next.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* add subtitle to tracks ([0c294b7](https://github.com/medusajs/medusa/commit/0c294b7b3acbc1b873aab7e90a8e596bdac48899))
+* versioning ([262af34](https://github.com/medusajs/medusa/commit/262af34125543d9a80bf469b5d380019b9bc8d3f))
+
+
+
+
+
+## [1.1.5-next.0](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.4...medusa-plugin-segment@1.1.5-next.0) (2021-02-22)
+
+
+### Features
+
+* **medusa-plugin-segment:** adds category and type to segment events ([#179](https://github.com/medusajs/medusa/issues/179)) ([e27cf72](https://github.com/medusajs/medusa/commit/e27cf72a8ca49a6586a82dde964d559c40a4415f))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.3...medusa-plugin-segment@1.1.4) (2021-02-17)
 
 

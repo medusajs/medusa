@@ -1,3 +1,22 @@
+/**
+ * @oas [get] /shipping-options/{id}
+ * operationId: "GetShippingOptionsOption"
+ * summary: "Retrieve a Shipping Option"
+ * description: "Retrieves a Shipping Option."
+ * parameters:
+ *   - (path) id=* {string} The id of the Shipping Option.
+ * tags:
+ *   - Shipping Option
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             shipping_option:
+ *               $ref: "#/components/schemas/shipping_option"
+ */
 export default async (req, res) => {
   const { option_id } = req.params
   try {

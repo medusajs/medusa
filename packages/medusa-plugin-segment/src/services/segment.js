@@ -8,6 +8,9 @@ class SegmentService extends BaseService {
    *    e.g.
    *    {
    *      write_key: Segment write key given in Segment dashboard
+   *      use_ga_id: If set to true the plugin will look for a ga_id in the cart
+   *        context if present this id will be used as the Google Analytics
+   *        client id.
    *    }
    */
   constructor({ totalsService, productService }, options) {
@@ -103,7 +106,7 @@ class SegmentService extends BaseService {
       tax,
       discount,
       coupon,
-      currency: order.currency_code,
+      currency: order.currency_code.toUpperCase(),
       products: await Promise.all(
         order.items.map(async (item) => {
           let name = item.title
@@ -142,6 +145,7 @@ class SegmentService extends BaseService {
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
             category: product.collection?.title,
+            subtitle: product.subtitle,
             type: product.type?.value,
             sku,
             quantity: item.quantity,
