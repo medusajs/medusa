@@ -1,3 +1,4 @@
+import reqIp from "request-ip"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
@@ -31,6 +32,9 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity of the Product Variant to add
  *                   type: integer
+ *           context:
+ *             description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *             type: object
  * tags:
  *   - Cart
  * responses:
@@ -53,11 +57,17 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .optional(),
+    context: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  }
+
+  const reqContext = {
+    ip: reqIp.getClientIp(req),
+    user_agent: req.get("user-agent"),
   }
 
   try {
@@ -77,6 +87,10 @@ export default async (req, res) => {
 
       const toCreate = {
         region_id: regionId,
+        context: {
+          ...reqContext,
+          ...value.context,
+        },
       }
 
       if (req.user && req.user.customer_id) {

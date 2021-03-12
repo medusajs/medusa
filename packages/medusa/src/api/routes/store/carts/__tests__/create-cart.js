@@ -11,6 +11,9 @@ describe("POST /store/carts", () => {
       subject = await request("POST", `/store/carts`, {
         payload: {
           region_id: IdMap.getId("testRegion"),
+          context: {
+            clientId: "test",
+          },
         },
       })
     })
@@ -23,6 +26,11 @@ describe("POST /store/carts", () => {
       expect(CartServiceMock.create).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.create).toHaveBeenCalledWith({
         region_id: IdMap.getId("testRegion"),
+        context: {
+          ip: "::ffff:127.0.0.1",
+          user_agent: "node-superagent/3.8.3",
+          clientId: "test",
+        },
       })
     })
 
