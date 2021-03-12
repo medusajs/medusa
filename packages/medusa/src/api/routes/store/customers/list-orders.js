@@ -6,6 +6,27 @@ import {
   allowedRelations,
 } from "../orders"
 
+/**
+ * @oas [get] /customers/{id}/orders
+ * operationId: GetCustomersCustomerOrders
+ * summary: Retrieve Customer Orders
+ * description: "Retrieves a list of a Customer's Orders."
+ * parameters:
+ *   - (path) id=* {string} The id of the Customer.
+ * tags:
+ *   - Customer
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             payment_methods:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const { id } = req.params
   try {

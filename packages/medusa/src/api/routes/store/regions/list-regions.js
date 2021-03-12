@@ -1,3 +1,31 @@
+/**
+ * @oas [get] /regions
+ * operationId: GetRegions
+ * summary: List Regions
+ * description: "Retrieves a list of Regions."
+ * tags:
+ *   - Region
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             count:
+ *               description: The total number of regions.
+ *               type: integer
+ *             offset:
+ *               description: The offset for pagination.
+ *               type: integer
+ *             limit:
+ *               description: The maxmimum number of regions to return,
+ *               type: integer
+ *             regions:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/region"
+ */
 export default async (req, res) => {
   const regionService = req.scope.resolve("regionService")
 
