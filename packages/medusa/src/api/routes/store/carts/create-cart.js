@@ -1,3 +1,4 @@
+import reqIp from "request-ip"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
@@ -65,7 +66,7 @@ export default async (req, res) => {
   }
 
   const reqContext = {
-    ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+    ip: reqIp.getClientIp(req),
     user_agent: req.get("user-agent"),
   }
 
