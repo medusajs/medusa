@@ -6,6 +6,7 @@ const {
   Product,
   ShippingProfile,
   ProductVariant,
+  Image,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -36,6 +37,13 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(type);
 
+  const image = manager.create(Image, {
+    id: "test-image",
+    url: "test-image.png",
+  });
+
+  await manager.save(image);
+
   await manager.insert(Region, {
     id: "test-region",
     name: "Test Region",
@@ -43,7 +51,7 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   });
 
-  await manager.insert(Product, {
+  const p = manager.create(Product, {
     id: "test-product",
     title: "Test product",
     profile_id: defaultProfile.id,
@@ -56,6 +64,10 @@ module.exports = async (connection, data = {}) => {
     ],
     options: [{ id: "test-option", title: "Default value" }],
   });
+
+  p.images = [image];
+
+  await manager.save(p);
 
   await manager.insert(ProductVariant, {
     id: "test-variant",
