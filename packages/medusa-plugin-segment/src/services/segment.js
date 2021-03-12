@@ -8,6 +8,9 @@ class SegmentService extends BaseService {
    *    e.g.
    *    {
    *      write_key: Segment write key given in Segment dashboard
+   *      use_ga_id: If set to true the plugin will look for a ga_id in the cart
+   *        context if present this id will be used as the Google Analytics
+   *        client id.
    *    }
    */
   constructor({ totalsService, productService }, options) {
