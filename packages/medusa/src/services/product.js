@@ -460,12 +460,13 @@ class ProductService extends BaseService {
     return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      // Should not fail, if product does not exist, since delete is idempotent
       const product = await productRepo.findOne({ where: { id: productId } })
 
       if (!product) return Promise.resolve()
 
-      await productRepo.softRemove(product)
+      const handleRemoved = await productRepo.save({ ...product, handle: null })
+
+      await productRepo.softRemove(handleRemoved)
 
       return Promise.resolve()
     })
