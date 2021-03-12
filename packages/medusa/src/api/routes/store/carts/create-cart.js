@@ -31,6 +31,9 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity of the Product Variant to add
  *                   type: integer
+ *           context:
+ *             description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *             type: object
  * tags:
  *   - Cart
  * responses:
