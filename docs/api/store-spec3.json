@@ -846,6 +846,10 @@
                         }
                       }
                     }
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+                    "type": "object"
                   }
                 }
               }
@@ -1386,6 +1390,10 @@
                   "customer_id": {
                     "description": "The id of the Customer to associate the Cart with.",
                     "type": "string"
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart.",
+                    "type": "object"
                   }
                 }
               }
@@ -1465,6 +1473,41 @@
                   "data": {
                     "type": "object",
                     "description": "The data to update the payment session with."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards/{code}": {
+      "get": {
+        "operationId": "GetGiftCardsCode",
+        "summary": "Retrieve Gift Card by Code",
+        "description": "Retrieves a Gift Card by its associated unqiue code.",
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "description": "The id of the Gift Card"
+                    },
+                    "code": {
+                      "description": "The code of the Gift Card"
+                    },
+                    "value": {
+                      "description": "The original value of the Gift Card."
+                    },
+                    "balance": {
+                      "description": "The current balanace of the Gift Card"
+                    }
                   }
                 }
               }
@@ -1709,6 +1752,14 @@
         "summary": "Retrieve Shipping Options",
         "description": "Retrieves a list of Shipping Options.",
         "parameters": [
+          {
+            "in": "query",
+            "name": "is_return",
+            "description": "Whether return Shipping Options should be included. By default all Shipping Options are returned.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
           {
             "in": "query",
             "name": "product_ids",

@@ -237,6 +237,12 @@ paths:
                       quantity:
                         description: The quantity of the Product Variant to add
                         type: integer
+                context:
+                  description: >-
+                    An optional object to provide context to the Cart. The
+                    `context` field is automatically populated with `ip` and
+                    `user_agent`
+                  type: object
       tags:
         - Cart
       responses:
@@ -594,6 +600,9 @@ paths:
                 customer_id:
                   description: The id of the Customer to associate the Cart with.
                   type: string
+                context:
+                  description: An optional object to provide context to the Cart.
+                  type: object
       tags:
         - Cart
       responses:
@@ -977,22 +986,13 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
-  '/orders/cart/{cart_id}':
+  '/gift-cards/{code}':
     get:
-      operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
-      description: >-
-        Retrieves an Order by the id of the Cart that was used to create the
-        Order.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of Cart.
-          schema:
-            type: string
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
       tags:
-        - Order
+        - Region
       responses:
         '200':
           description: OK
@@ -1000,31 +1000,14 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
-    get:
-      operationId: GetOrdersOrder
-      summary: Retrieves an Order
-      description: Retrieves an Order
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -1075,6 +1058,54 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1125,12 +1156,42 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
   /shipping-options:
     get:
       operationId: GetShippingOptions
       summary: Retrieve Shipping Options
       description: Retrieves a list of Shipping Options.
       parameters:
+        - in: query
+          name: is_return
+          description: >-
+            Whether return Shipping Options should be included. By default all
+            Shipping Options are returned.
+          schema:
+            type: boolean
         - in: query
           name: product_ids
           description: A comma separated list of Product ids to filter Shipping Options by.
@@ -1179,29 +1240,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
-  '/swaps/{cart_id}':
-    get:
-      operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
-      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart
-          schema:
-            type: string
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant
