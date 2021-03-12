@@ -71,80 +71,6 @@
     }
   ],
   "paths": {
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate a User",
-        "description": "Logs a User in and authorizes them to manage Store settings.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The User's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The User's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in User.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/collections": {
       "post": {
         "operationId": "PostCollections",
@@ -357,6 +283,80 @@
         }
       }
     },
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate a User",
+        "description": "Logs a User in and authorizes them to manage Store settings.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The User's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The User's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "description": "Gets the currently logged in User.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/customers": {
       "post": {
         "operationId": "PostCustomers",
@@ -525,6 +525,242 @@
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards": {
+      "post": {
+        "operationId": "PostGiftCards",
+        "summary": "Create a Gift Card",
+        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "value": {
+                    "type": "integer",
+                    "description": "The value (excluding VAT) that the Gift Card should represent."
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Gift Card should no longer be available."
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Gift Card can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetGiftCards",
+        "summary": "List Gift Cards",
+        "description": "Retrieves a list of Gift Cards.",
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_cards": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/gift_card"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards/{id}": {
+      "delete": {
+        "operationId": "DeleteGiftCardsGiftCard",
+        "summary": "Delete a Gift Card",
+        "description": "Deletes a Gift Card",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Gift Card"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetGiftCardsGiftCard",
+        "summary": "Retrieve a Gift Card",
+        "description": "Retrieves a Gift Card.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostGiftCardsGiftCard",
+        "summary": "Create a Gift Card",
+        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "balance": {
+                    "type": "integer",
+                    "description": "The value (excluding VAT) that the Gift Card should represent."
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Gift Card should no longer be available."
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Gift Card can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
                     }
                   }
                 }
@@ -1029,242 +1265,6 @@
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards": {
-      "post": {
-        "operationId": "PostGiftCards",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "value": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCards",
-        "summary": "List Gift Cards",
-        "description": "Retrieves a list of Gift Cards.",
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_cards": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/gift_card"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards/{id}": {
-      "delete": {
-        "operationId": "DeleteGiftCardsGiftCard",
-        "summary": "Delete a Gift Card",
-        "description": "Deletes a Gift Card",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card to delete.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Gift Card"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCardsGiftCard",
-        "summary": "Retrieve a Gift Card",
-        "description": "Retrieves a Gift Card.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostGiftCardsGiftCard",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "balance": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
                     }
                   }
                 }
