@@ -730,6 +730,17 @@
       "updated_at": "2021-03-09T12:48:24.921Z",
       "deleted_at": null,
       "metadata": null
+    },
+    "user": {
+      "id": "admin_user",
+      "email": "admin@medusa.js",
+      "first_name": null,
+      "last_name": null,
+      "api_token": "test_token",
+      "created_at": "2021-03-12T15:36:44.195Z",
+      "updated_at": "2021-03-12T15:36:44.195Z",
+      "deleted_at": null,
+      "metadata": null
     }
   }
 }
