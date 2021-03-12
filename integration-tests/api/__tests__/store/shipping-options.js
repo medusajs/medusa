@@ -82,7 +82,7 @@ describe("/store/shipping-options", () => {
         data: {},
         price_type: "flat_rate",
         amount: 1000,
-        is_return: true,
+        is_return: false,
       });
     });
 
