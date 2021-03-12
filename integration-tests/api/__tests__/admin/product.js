@@ -239,7 +239,7 @@ describe("/admin/products", () => {
           description: "test-product-description",
           images: ["test-image.png", "test-image-2.png"],
           type: "test-type",
-          collection: "test-collection",
+          collection: "Album",
           tags: ["123", "456"],
           options: [{ title: "size" }, { title: "color" }],
           variants: [
@@ -303,7 +303,7 @@ describe("/admin/products", () => {
             }),
           ],
           type_id: "test-type",
-          collection: expect.objectContaining({ title: "test-collection" }),
+          collection: expect.objectContaining({ title: "Album" }),
           options: [
             expect.objectContaining({
               title: "size",
@@ -343,13 +343,30 @@ describe("/admin/products", () => {
           title: "Watch the throne",
           handle: "watch-the-throne",
           description: "",
-          type: "test-type",
-          collection: "test-collection",
+          type: "GOAT",
+          collection: "Album",
           tags: ["123", "456"],
           options: [{ title: "Default value" }],
           variants: [
             {
               title: "V1",
+              inventory_quantity: 100,
+              prices: [{ currency_code: "usd", amount: 10000 }],
+              options: [{ value: "Default variant" }],
+            },
+          ],
+        },
+        {
+          title: "Watch the throne 2",
+          handle: "watch-the-throne-2",
+          description: "",
+          collection: "Album",
+          type: "GOAT",
+          tags: ["123", "456"],
+          options: [{ title: "Default value" }],
+          variants: [
+            {
+              title: "2-V1",
               inventory_quantity: 100,
               prices: [{ currency_code: "usd", amount: 10000 }],
               options: [{ value: "Default variant" }],
@@ -373,7 +390,7 @@ describe("/admin/products", () => {
         });
 
       expect(response.status).toEqual(200);
-      expect(response.data.products.length).toEqual(1);
+      expect(response.data.products.length).toEqual(2);
 
       const productId = response.data.products[0];
 
@@ -398,8 +415,8 @@ describe("/admin/products", () => {
               value: "456",
             }),
           ],
-          type_id: "test-type",
-          collection: expect.objectContaining({ title: "test-collection" }),
+          type: expect.objectContaining({ value: "GOAT" }),
+          collection: expect.objectContaining({ title: "Album" }),
           options: [
             expect.objectContaining({
               title: "Default value",
@@ -448,6 +465,23 @@ describe("/admin/products", () => {
             },
           ],
         },
+        {
+          title: "Watch the throne",
+          handle: "watch-the-throne",
+          description: "",
+          type: "GOAT",
+          collection: "Album",
+          tags: ["123", "456"],
+          options: [{ title: "Default value" }],
+          variants: [
+            {
+              title: "V1",
+              inventory_quantity: 100,
+              prices: [{ currency_code: "usd", amount: 10000 }],
+              options: [{ value: "Default variant" }],
+            },
+          ],
+        },
       ];
 
       const response = await api
@@ -465,7 +499,7 @@ describe("/admin/products", () => {
         });
 
       expect(response.status).toEqual(200);
-      expect(response.data.products.length).toEqual(1);
+      expect(response.data.products.length).toEqual(2);
 
       const productId = response.data.products[0];
 

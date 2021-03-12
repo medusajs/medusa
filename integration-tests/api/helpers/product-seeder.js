@@ -19,12 +19,10 @@ module.exports = async (connection, data = {}) => {
     type: "default",
   });
 
-  const coll = manager.create(ProductCollection, {
+  await manager.insert(ProductCollection, {
     id: "test-collection",
     title: "Test collection",
   });
-
-  await manager.save(coll);
 
   const tag = manager.create(ProductTag, {
     id: "tag1",

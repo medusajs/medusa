@@ -86,6 +86,12 @@ class ImportService extends BaseService {
     return cloned
   }
 
+  /**
+   * Upserts product variant prices
+   * @param {object[]} newPrices - list of new prices for the variant
+   * @param {string} variantId - the variants to update prices for
+   * @return {Promise<MoneyAmount[]>} update product variant prices
+   */
   async upsertVariantPrices_(newPrices, variantId) {
     const moneyAmountRepo = this.manager_.getCustomRepository(
       this.moneyAmountRepository_
@@ -119,7 +125,13 @@ class ImportService extends BaseService {
     return variantPrices
   }
 
-  async upsertVariants(existingProduct, fromImport) {
+  /**
+   * Upserts product variants
+   * @param {Product} existingProduct - the existing product to update variants for
+   * @param {object[]} fromImport - the variants from import
+   * @return {Promise<ProductVariant[]>} upserted variants
+   */
+  async upsertVariants_(existingProduct, fromImport) {
     return this.atomicPhase_(async manager => {
       const productVariantRepository = manager.getCustomRepository(
         this.productVariantRepository_
@@ -178,28 +190,11 @@ class ImportService extends BaseService {
     })
   }
 
-  async upsertTags_(tags) {
-    const productTagRepository = this.manager_.getCustomRepository(
-      this.productTagRepository_
-    )
-
-    let productTags = []
-    for (const tag of tags) {
-      const existing = await productTagRepository.findOne({
-        where: { value: tag },
-      })
-
-      if (existing) {
-        productTags.push(existing)
-      } else {
-        const created = productTagRepository.create({ value: tag })
-        productTags.push(created)
-      }
-    }
-
-    return productTags
-  }
-
+  /**
+   * Upserts images
+   * @param {string[]} images - list of images to upsert
+   * @return {Promise<Image[]>} created or existing images
+   */
   async upsertImages_(images) {
     const imageRepository = this.manager_.getCustomRepository(
       this.imageRepository_
@@ -222,10 +217,63 @@ class ImportService extends BaseService {
     return productImages
   }
 
-  async upsertType_(type) {
+  /**
+   * Upserts product tags
+   * Everytime we create a new tag, we make sure to keep track, such
+   * that it can be used for future products with the same tag.
+   * @param {string[]} tags - list of tags
+   * @param {ProductTag[]} createdTags - the previously created tags
+   * @return {Promise<ProductTags[]>} created or existing product tags
+   */
+  async upsertTags_(tags, createdTags) {
+    const productTagRepository = this.manager_.getCustomRepository(
+      this.productTagRepository_
+    )
+
+    let productTags = []
+
+    for (const tag of tags) {
+      const alreadyCreated = createdTags.find(t => t.value === tag)
+
+      if (alreadyCreated) {
+        productTags.push(alreadyCreated)
+        break
+      }
+
+      const existing = await productTagRepository.findOne({
+        where: { value: tag },
+      })
+
+      if (existing) {
+        productTags.push(existing)
+      } else {
+        const created = productTagRepository.create({ value: tag })
+        createdTags.push(created)
+        productTags.push(created)
+      }
+    }
+
+    return productTags
+  }
+
+  /**
+   * Upserts a product type
+   * Everytime we create a new type, we make sure to keep track, such
+   * that it can be used for future products with the same type.
+   * @param {string} type - the value of a type
+   * @param {ProductType[]} createdTypes - the previously created types
+   * @return {Promise<ProductType>} created or existing product type
+   */
+  async upsertType_(type, createdTypes) {
     const productTypeRepository = this.manager_.getCustomRepository(
       this.productTypeRepository_
     )
+
+    const alreadyCreated = createdTypes.find(t => t.value === type)
+
+    if (alreadyCreated) {
+      return alreadyCreated
+    }
 
     const existing = await productTypeRepository.findOne({
       where: { value: type },
@@ -234,14 +282,30 @@ class ImportService extends BaseService {
     if (existing) {
       return existing
     } else {
-      return productTypeRepository.create({ value: type })
+      const created = productTypeRepository.create({ value: type })
+      createdTypes.push(created)
+      return created
     }
   }
 
-  async upsertCollection_(collection) {
+  /**
+   * Upserts a product collection
+   * Everytime we create a new collection, we make sure to keep track, such
+   * that it can be used for future products with the same collection.
+   * @param {string} collection - the title of a collection
+   * @param {ProductCollection[]} createdCollections - the previously created collections
+   * @return {Promise<ProductCollection>} created or existing product collection
+   */
+  async upsertCollection_(collection, createdCollections) {
     const collectionRepository = this.manager_.getCustomRepository(
       this.productCollectionRepository_
     )
+
+    const alreadyCreated = createdCollections.find(c => c.title === collection)
+
+    if (alreadyCreated) {
+      return alreadyCreated
+    }
 
     const existingCol = await collectionRepository.findOne({
       where: { title: collection },
@@ -250,13 +314,21 @@ class ImportService extends BaseService {
     if (existingCol) {
       return existingCol
     } else {
-      return collectionRepository.create({
+      const created = collectionRepository.create({
         title: collection,
       })
+      createdCollections.push(created)
+      return created
     }
   }
 
-  async updateProduct(existingProduct, newProduct) {
+  /**
+   * Updates an existing product
+   * @param {Product} existingProduct - the existing product to update
+   * @param {object} newProduct - the product to update the existing with
+   * @return {Promise<Product>} updated product
+   */
+  async updateProduct(existingProduct, newProduct, createdEntities) {
     return this.atomicPhase_(async manager => {
       const optionRepo = manager.getCustomRepository(
         this.productOptionRepository_
@@ -286,22 +358,21 @@ class ImportService extends BaseService {
         existingProduct.images = await this.upsertImages_(images)
       }
 
-      if (collection) {
-        existingProduct.collection = await this.upsertCollection_(collection)
-      }
+      const { createdCols, createdTypes, createdTags } = createdEntities
 
-      if (metadata) {
-        existingProduct.metadata = this.productService_
-          .withTransaction(manager)
-          .setMetadata_(existingProduct, metadata)
+      if (collection) {
+        existingProduct.collection = await this.upsertCollection_(
+          collection,
+          createdCols
+        )
       }
 
       if (tags) {
-        existingProduct.tags = await this.upsertTags_(tags)
+        existingProduct.tags = await this.upsertTags_(tags, createdTags)
       }
 
-      if (typeof type !== `undefined`) {
-        existingProduct.type = await this.upsertType_(type)
+      if (typeof type !== `undefined` && type !== null) {
+        existingProduct.type = await this.upsertType_(type, createdTypes)
       }
 
       existingProduct.options = await Promise.all(
@@ -324,7 +395,7 @@ class ImportService extends BaseService {
       )
 
       if (variants) {
-        existingProduct.variants = await this.upsertVariants(
+        existingProduct.variants = await this.upsertVariants_(
           existingProduct,
           variants
         )
@@ -334,12 +405,17 @@ class ImportService extends BaseService {
         existingProduct[key] = value
       }
 
-      const updated = { ...rest, ...existingProduct }
-      return updated
+      return existingProduct
     })
   }
 
-  async createProduct_(toCreate) {
+  /**
+   * Creates a new product
+   * @param {object} toCreate - the product to create
+   * @param {object} createdEntities - the already created tags, types and collections
+   * @return {Promise<Product>} created product
+   */
+  async createProduct_(toCreate, createdEntities) {
     return this.atomicPhase_(async manager => {
       const productRepository = manager.getCustomRepository(
         this.productRepository_
@@ -371,16 +447,21 @@ class ImportService extends BaseService {
 
       const created = productRepository.create(rest)
 
+      const { createdCols, createdTypes, createdTags } = createdEntities
+
       if (collection) {
-        created.collection = await this.upsertCollection_(collection)
+        created.collection = await this.upsertCollection_(
+          collection,
+          createdCols
+        )
       }
 
       if (tags) {
-        created.tags = await this.upsertTags_(tags)
+        created.tags = await this.upsertTags_(tags, createdTags)
       }
 
       if (typeof type !== `undefined` && type !== null) {
-        created.type = await this.upsertType_(type)
+        created.type = await this.upsertType_(type, createdTypes)
       }
 
       created.options = await Promise.all(
@@ -429,41 +510,66 @@ class ImportService extends BaseService {
     })
   }
 
+  /**
+   * Imports products with upsert functionality.
+   * If a product with a given handle already exists, the product will be updated.
+   * Else, we created a new product.
+   * Will keep track of created collections, tags and types, so these can be reused
+   * for all products
+   * @param {object[]} products - the products to import
+   * @param {string} defaultShippingProfileId - the id of the default shipping profile
+   * @return {string[]} ids of the imported products
+   */
   async importProducts(products, defaultShippingProfileId) {
     return this.atomicPhase_(async manager => {
       const productRepository = manager.getCustomRepository(
         this.productRepository_
       )
 
+      // Holds all the upserted products
       let toSave = []
 
-      await Promise.all(
-        products.map(async product => {
-          const exists = await productRepository.findOne({
-            where: { handle: product.handle },
-            relations: [
-              "variants",
-              "variants.options",
-              "variants.prices",
-              "tags",
-              "options",
-            ],
+      // Keep track of created entities, that could cause duplicate key errors
+      let createdCols = []
+      let createdTypes = []
+      let createdTags = []
+
+      for (const product of products) {
+        const exists = await productRepository.findOne({
+          where: { handle: product.handle },
+          relations: [
+            "variants",
+            "variants.options",
+            "variants.prices",
+            "tags",
+            "options",
+          ],
+        })
+
+        if (exists) {
+          const updated = await this.updateProduct(exists, product, {
+            createdCols,
+            createdTags,
+            createdTypes,
           })
 
-          if (exists) {
-            const updated = await this.updateProduct(exists, product)
-
-            toSave.push(updated)
-          } else {
-            const created = await this.createProduct_({
+          toSave.push(updated)
+        } else {
+          const created = await this.createProduct_(
+            {
               ...product,
               profile_id: defaultShippingProfileId,
-            })
+            },
+            {
+              createdCols,
+              createdTags,
+              createdTypes,
+            }
+          )
 
-            toSave.push(created)
-          }
-        })
-      )
+          toSave.push(created)
+        }
+      }
 
       // Save all imported products and return ids
       let result = await productRepository.save(toSave)

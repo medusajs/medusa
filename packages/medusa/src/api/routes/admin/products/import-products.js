@@ -1,7 +1,4 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
-import { In } from "typeorm"
-
 export default async (req, res) => {
   const schema = Validator.object().keys({
     products: Validator.array().items({
