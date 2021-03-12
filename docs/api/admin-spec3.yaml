@@ -3480,6 +3480,24 @@ paths:
                 properties:
                   shipping_profiles:
                     $ref: '#/components/schemas/shipping_profile'
+  /swaps:
+    get:
+      operationId: GetSwaps
+      summary: List Swaps
+      description: Retrieves a list of Swaps.
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swaps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/swap'
   '/store/currencies/{code}':
     post:
       operationId: PostStoreCurrenciesCode
@@ -3590,24 +3608,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/store'
-  /swaps:
-    get:
-      operationId: GetSwaps
-      summary: List Swaps
-      description: Retrieves a list of Swaps.
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swaps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/swap'
   /variants:
     get:
       operationId: GetVariants
