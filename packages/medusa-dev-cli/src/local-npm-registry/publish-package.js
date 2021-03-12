@@ -7,7 +7,7 @@ const { registryUrl } = require(`./verdaccio-config`);
 const NPMRCContent = `${registryUrl.replace(
   /https?:/g,
   ``
-)}/:_authToken="gatsby-dev"`;
+)}/:_authToken="medusa-dev"`;
 
 const {
   getMonorepoPackageJsonPath,
@@ -124,7 +124,7 @@ const publishPackage = async ({
   // npm publish
   const publishCmd = [
     `npm`,
-    [`publish`, `--tag`, `gatsby-dev`, `--registry=${registryUrl}`],
+    [`publish`, `--tag`, `medusa-dev`, `--registry=${registryUrl}`],
     {
       cwd: pathToPackage,
     },

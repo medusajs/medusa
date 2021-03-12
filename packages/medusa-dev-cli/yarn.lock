@@ -1271,10 +1271,10 @@ babel-plugin-transform-typescript-metadata@^0.3.1:
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-babel-preset-medusa-package@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.0.tgz#3b5a5fc5679a92747a5f13ab5419252b0de67b84"
-  integrity sha512-1rGnObrfr4WCcmYciovqn8JbwNq2KtbEho/acQAYIxl6G3LOODK/jBH2zQHeW5k4GxjVe72JZDdqjfdm88KmEw==
+babel-preset-medusa-package@1.1.0-dev-1615541393216:
+  version "1.1.0-dev-1615541393216"
+  resolved "http://localhost:4873/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.0-dev-1615541393216.tgz#54bc2dfe83fd96f9f1077717f0947386edd4a436"
+  integrity sha512-h+KDhljBxH/E6d4OC5bvKeveTJUDJx9xe2qM6+ZrUTXmki+kWx707G51UIQxV7Rz+vh+6Q21nZ+L6qqbYGpkjg==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-decorators" "^7.12.1"

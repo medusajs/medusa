@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
-    "babel-preset-medusa-package": "^1.1.0",
+    "babel-preset-medusa-package": "1.1.0-dev-1615541393216",
     "cross-env": "^7.0.3"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
