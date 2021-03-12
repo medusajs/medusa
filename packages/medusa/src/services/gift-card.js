@@ -108,13 +108,6 @@ class GiftCardService extends BaseService {
         )
       }
 
-      if (!giftCard.order_id) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Gift card is missing order_id`
-        )
-      }
-
       // Will throw if region does not exist
       const region = await this.regionService_.retrieve(giftCard.region_id)
 

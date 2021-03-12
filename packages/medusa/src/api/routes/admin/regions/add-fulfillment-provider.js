@@ -1,6 +1,33 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /regions/{id}/fulfillment-providers
+ * operationId: "PostRegionsRegionFulfillmentProviders"
+ * summary: "Add Fulfillment Provider"
+ * description: "Adds a Fulfillment Provider to a Region"
+ * parameters:
+ *   - (path) id=* {string} The id of the Region.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           provider_id:
+ *             description: "The id of the Fulfillment Provider to add."
+ *             type: string
+ * tags:
+ *   - Region
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             region:
+ *               $ref: "#/components/schemas/region"
+ */
 export default async (req, res) => {
   const { region_id } = req.params
   const schema = Validator.object().keys({

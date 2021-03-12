@@ -1,6 +1,25 @@
 import _ from "lodash"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [get] /notifications
+ * operationId: "GetNotifications"
+ * summary: "List Notifications"
+ * description: "Retrieves a list of Notifications."
+ * tags:
+ *   - Notification
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             notifications:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/notification"
+ */
 export default async (req, res) => {
   try {
     const notificationService = req.scope.resolve("notificationService")

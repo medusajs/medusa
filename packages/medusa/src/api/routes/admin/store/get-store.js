@@ -1,3 +1,20 @@
+/**
+ * @oas [get] /store
+ * operationId: "GetStore"
+ * summary: "Retrieve Store details."
+ * description: "Retrieves the Store details"
+ * tags:
+ *   - Store
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             store:
+ *               $ref: "#/components/schemas/store"
+ */
 export default async (req, res) => {
   try {
     const storeService = req.scope.resolve("storeService")

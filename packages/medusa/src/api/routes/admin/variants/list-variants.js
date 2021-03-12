@@ -1,6 +1,25 @@
 import _ from "lodash"
 import { defaultFields, defaultRelations } from "./"
 
+/**
+ * @oas [get] /variants
+ * operationId: "GetVariants"
+ * summary: "List Product Variants."
+ * description: "Retrieves a list of Product Variants"
+ * tags:
+ *   - Product Variant
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             variants:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/product_variant"
+ */
 export default async (req, res) => {
   try {
     const variantService = req.scope.resolve("productVariantService")

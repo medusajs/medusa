@@ -1,5 +1,32 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
+/**
+ * @oas [post] /shipping-profiles/{id}
+ * operationId: "PostShippingProfilesProfile"
+ * summary: "Update a Shipping Profiles"
+ * description: "Updates a Shipping Profile"
+ * parameters:
+ *   - (path) id=* {string} The id of the Shipping Profile.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           name:
+ *             description: "The name of the Shipping Profile"
+ *             type: string
+ * tags:
+ *   - Shipping Profile
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             shipping_profiles:
+ *               $ref: "#/components/schemas/shipping_profile"
+ */
 export default async (req, res) => {
   const { profile_id } = req.params
 
