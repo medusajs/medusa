@@ -695,6 +695,178 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  /gift-cards:
+    post:
+      operationId: PostGiftCards
+      summary: Create a Gift Card
+      description: >-
+        Creates a Gift Card that can redeemed by its unique code. The Gift Card
+        is only valid within 1 region.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                value:
+                  type: integer
+                  description: >-
+                    The value (excluding VAT) that the Gift Card should
+                    represent.
+                is_disabled:
+                  type: boolean
+                  description: >-
+                    Whether the Gift Card is disabled on creation. You will have
+                    to enable it later to make it available to Customers.
+                ends_at:
+                  type: string
+                  format: date-time
+                  description: >-
+                    The time at which the Gift Card should no longer be
+                    available.
+                region_id:
+                  description: The id of the Region in which the Gift Card can be used.
+                  type: array
+                  items:
+                    type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
+    get:
+      operationId: GetGiftCards
+      summary: List Gift Cards
+      description: Retrieves a list of Gift Cards.
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_cards:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/gift_card'
+  '/gift-cards/{id}':
+    delete:
+      operationId: DeleteGiftCardsGiftCard
+      summary: Delete a Gift Card
+      description: Deletes a Gift Card
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Gift Card to delete.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Gift Card
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetGiftCardsGiftCard
+      summary: Retrieve a Gift Card
+      description: Retrieves a Gift Card.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Gift Card.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
+    post:
+      operationId: PostGiftCardsGiftCard
+      summary: Create a Gift Card
+      description: >-
+        Creates a Gift Card that can redeemed by its unique code. The Gift Card
+        is only valid within 1 region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Gift Card.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                balance:
+                  type: integer
+                  description: >-
+                    The value (excluding VAT) that the Gift Card should
+                    represent.
+                is_disabled:
+                  type: boolean
+                  description: >-
+                    Whether the Gift Card is disabled on creation. You will have
+                    to enable it later to make it available to Customers.
+                ends_at:
+                  type: string
+                  format: date-time
+                  description: >-
+                    The time at which the Gift Card should no longer be
+                    available.
+                region_id:
+                  description: The id of the Region in which the Gift Card can be used.
+                  type: array
+                  items:
+                    type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
   /notifications:
     get:
       operationId: GetNotifications
@@ -1662,178 +1834,6 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-  /gift-cards:
-    post:
-      operationId: PostGiftCards
-      summary: Create a Gift Card
-      description: >-
-        Creates a Gift Card that can redeemed by its unique code. The Gift Card
-        is only valid within 1 region.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                value:
-                  type: integer
-                  description: >-
-                    The value (excluding VAT) that the Gift Card should
-                    represent.
-                is_disabled:
-                  type: boolean
-                  description: >-
-                    Whether the Gift Card is disabled on creation. You will have
-                    to enable it later to make it available to Customers.
-                ends_at:
-                  type: string
-                  format: date-time
-                  description: >-
-                    The time at which the Gift Card should no longer be
-                    available.
-                region_id:
-                  description: The id of the Region in which the Gift Card can be used.
-                  type: array
-                  items:
-                    type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
-    get:
-      operationId: GetGiftCards
-      summary: List Gift Cards
-      description: Retrieves a list of Gift Cards.
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_cards:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/gift_card'
-  '/gift-cards/{id}':
-    delete:
-      operationId: DeleteGiftCardsGiftCard
-      summary: Delete a Gift Card
-      description: Deletes a Gift Card
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Gift Card to delete.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Gift Card
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-    get:
-      operationId: GetGiftCardsGiftCard
-      summary: Retrieve a Gift Card
-      description: Retrieves a Gift Card.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Gift Card.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
-    post:
-      operationId: PostGiftCardsGiftCard
-      summary: Create a Gift Card
-      description: >-
-        Creates a Gift Card that can redeemed by its unique code. The Gift Card
-        is only valid within 1 region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Gift Card.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                balance:
-                  type: integer
-                  description: >-
-                    The value (excluding VAT) that the Gift Card should
-                    represent.
-                is_disabled:
-                  type: boolean
-                  description: >-
-                    Whether the Gift Card is disabled on creation. You will have
-                    to enable it later to make it available to Customers.
-                ends_at:
-                  type: string
-                  format: date-time
-                  description: >-
-                    The time at which the Gift Card should no longer be
-                    available.
-                region_id:
-                  description: The id of the Region in which the Gift Card can be used.
-                  type: array
-                  items:
-                    type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
   '/products/{id}/options':
     post:
       operationId: PostProductsProductOptions
@@ -2739,6 +2739,24 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_type'
+  /returns:
+    get:
+      operationId: GetReturns
+      summary: List Returns
+      description: Retrieves a list of Returns
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  returns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return'
   '/regions/{id}/countries':
     post:
       operationId: PostRegionsRegionCountries
@@ -3151,24 +3169,6 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
-  /returns:
-    get:
-      operationId: GetReturns
-      summary: List Returns
-      description: Retrieves a list of Returns
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  returns:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return'
   /shipping-options:
     post:
       operationId: PostShippingOptions

@@ -243,6 +243,9 @@ export class Cart {
   @Column({ nullable: true })
   idempotency_key: string
 
+  @Column({ type: "jsonb", nullable: true })
+  context: any
+
   // Total fields
   shipping_total: number
   discount_total: number
