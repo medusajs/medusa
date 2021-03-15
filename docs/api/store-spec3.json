@@ -75,130 +75,6 @@
     }
   ],
   "paths": {
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate Customer",
-        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteAuth",
-        "summary": "Log out",
-        "description": "Destroys a Customer's authenticated session.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in Customer.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/{email}": {
-      "get": {
-        "operationId": "GetAuthEmail",
-        "summary": "Check if email has account",
-        "description": "Checks if a Customer with the given email has signed up.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "email",
-            "required": true,
-            "description": "The Customer's email.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "exists": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -341,6 +217,10 @@
                         }
                       }
                     }
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+                    "type": "object"
                   }
                 }
               }
@@ -881,6 +761,10 @@
                   "customer_id": {
                     "description": "The id of the Customer to associate the Cart with.",
                     "type": "string"
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart.",
+                    "type": "object"
                   }
                 }
               }
@@ -1473,6 +1357,130 @@
         }
       }
     },
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate Customer",
+        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteAuth",
+        "summary": "Log out",
+        "description": "Destroys a Customer's authenticated session.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "description": "Gets the currently logged in Customer.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/{email}": {
+      "get": {
+        "operationId": "GetAuthEmail",
+        "summary": "Check if email has account",
+        "description": "Checks if a Customer with the given email has signed up.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "description": "The Customer's email.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "exists": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/gift-cards/{code}": {
       "get": {
         "operationId": "GetGiftCardsCode",
@@ -1499,6 +1507,9 @@
                     },
                     "balance": {
                       "description": "The current balanace of the Gift Card"
+                    },
+                    "region": {
+                      "$ref": "#/components/schemas/region"
                     }
                   }
                 }
@@ -1706,6 +1717,84 @@
         }
       }
     },
+    "/regions/{id}": {
+      "get": {
+        "operationId": "GetRegionsRegion",
+        "summary": "Retrieves a Region",
+        "description": "Retrieves a Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions": {
+      "get": {
+        "operationId": "GetRegions",
+        "summary": "List Regions",
+        "description": "Retrieves a list of Regions.",
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of regions.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of regions to return,",
+                      "type": "integer"
+                    },
+                    "regions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/region"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/returns": {
       "post": {
         "operationId": "PostReturns",
@@ -1778,6 +1867,14 @@
         "summary": "Retrieve Shipping Options",
         "description": "Retrieves a list of Shipping Options.",
         "parameters": [
+          {
+            "in": "query",
+            "name": "is_return",
+            "description": "Whether return Shipping Options should be included. By default all Shipping Options are returned.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
           {
             "in": "query",
             "name": "product_ids",
@@ -1962,84 +2059,6 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/product_variant"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}": {
-      "get": {
-        "operationId": "GetRegionsRegion",
-        "summary": "Retrieves a Region",
-        "description": "Retrieves a Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions": {
-      "get": {
-        "operationId": "GetRegions",
-        "summary": "List Regions",
-        "description": "Retrieves a list of Regions.",
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of regions.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of regions to return,",
-                      "type": "integer"
-                    },
-                    "regions": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/region"
                       }
                     }
                   }
