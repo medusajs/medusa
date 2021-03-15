@@ -5,6 +5,7 @@ import Brightpearl from "../utils/brightpearl"
 class BrightpearlService extends BaseService {
   constructor(
     {
+      manager,
       oauthService,
       totalsService,
       productVariantService,
@@ -18,6 +19,7 @@ class BrightpearlService extends BaseService {
   ) {
     super()
 
+    this.manager_ = manager
     this.options = options
     this.productVariantService_ = productVariantService
     this.regionService_ = regionService
@@ -189,8 +191,12 @@ class BrightpearlService extends BaseService {
         .retrieveBySKU(sku)
         .catch((_) => undefined)
       if (variant && variant.manage_inventory) {
-        await this.productVariantService_.update(variant.id, {
-          inventory_quantity: onHand,
+        await this.manager_.transaction((m) => {
+          return this.productVariantService_
+            .withTransaction(m)
+            .update(variant.id, {
+              inventory_quantity: onHand,
+            })
         })
       }
     }
@@ -349,10 +355,10 @@ class BrightpearlService extends BaseService {
             return row.externalRef === i.item_id
           })
           return {
-            net: this.totalsService_.rounded(
+            net: this.bpround_(
               (parentRow.net / parentRow.quantity) * i.quantity
             ),
-            tax: this.totalsService_.rounded(
+            tax: this.bpround_(
               (parentRow.tax / parentRow.quantity) * i.quantity
             ),
             productId: parentRow.productId,
@@ -691,10 +697,10 @@ class BrightpearlService extends BaseService {
             return row.externalRef === i.item_id
           })
           return {
-            net: this.totalsService_.rounded(
+            net: this.bpround_(
               (parentRow.net / parentRow.quantity) * i.quantity
             ),
-            tax: this.totalsService_.rounded(
+            tax: this.bpround_(
               (parentRow.tax / parentRow.quantity) * i.quantity
             ),
             productId: parentRow.productId,
@@ -1090,9 +1096,16 @@ class BrightpearlService extends BaseService {
     return { contactId: customer }
   }
 
+  bpround_(n) {
+    const decimalPlaces = 4
+    return Number(
+      Math.round(parseFloat(n + "e" + decimalPlaces)) + "e-" + decimalPlaces
+    )
+  }
+
   bpnum_(number, taxRate = 100) {
     const bpNumber = number / 100
-    return this.totalsService_.rounded(bpNumber * (taxRate / 100))
+    return this.bpround_(bpNumber * (taxRate / 100))
   }
 }
 

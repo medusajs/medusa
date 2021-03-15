@@ -1,5 +1,24 @@
 import _ from "lodash"
 
+/**
+ * @oas [get] /returns
+ * operationId: "GetReturns"
+ * summary: "List Returns"
+ * description: "Retrieves a list of Returns"
+ * tags:
+ *   - Return
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             returns:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/return"
+ */
 export default async (req, res) => {
   try {
     const returnService = req.scope.resolve("returnService")

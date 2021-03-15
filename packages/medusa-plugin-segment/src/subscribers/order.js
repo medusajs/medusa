@@ -3,14 +3,82 @@ class OrderSubscriber {
     segmentService,
     eventBusService,
     orderService,
+    cartService,
     claimService,
     returnService,
+    fulfillmentService,
   }) {
     this.orderService_ = orderService
+
+    this.cartService_ = cartService
 
     this.returnService_ = returnService
 
     this.claimService_ = claimService
+
+    this.fulfillmentService_ = fulfillmentService
+
+    eventBusService.subscribe(
+      "order.shipment_created",
+      async ({ id, fulfillment_id }) => {
+        const order = await this.orderService_.retrieve(id, {
+          select: [
+            "shipping_total",
+            "discount_total",
+            "tax_total",
+            "refunded_total",
+            "gift_card_total",
+            "subtotal",
+            "total",
+          ],
+          relations: [
+            "customer",
+            "billing_address",
+            "shipping_address",
+            "discounts",
+            "shipping_methods",
+            "payments",
+            "fulfillments",
+            "returns",
+            "items",
+            "gift_cards",
+            "gift_card_transactions",
+            "swaps",
+            "swaps.return_order",
+            "swaps.payment",
+            "swaps.shipping_methods",
+            "swaps.shipping_address",
+            "swaps.additional_items",
+            "swaps.fulfillments",
+          ],
+        })
+
+        const fulfillment = await this.fulfillmentService_.retrieve(
+          fulfillment_id,
+          {
+            relations: ["items"],
+          }
+        )
+
+        const toBuildFrom = {
+          ...order,
+          provider_id: fulfillment.provider,
+          items: fulfillment.items.map((i) =>
+            order.items.find((l) => l.id === i.item_id)
+          ),
+        }
+
+        const orderData = await segmentService.buildOrder(toBuildFrom)
+        const orderEvent = {
+          event: "Order Shipped",
+          userId: order.customer_id,
+          properties: orderData,
+          timestamp: fulfillment.shipped_at,
+        }
+
+        segmentService.track(orderEvent)
+      }
+    )
 
     eventBusService.subscribe("claim.created", async ({ id }) => {
       const claim = await this.claimService_.retrieve(id, {
@@ -74,6 +142,7 @@ class OrderSubscriber {
             "payments",
             "fulfillments",
             "returns",
+            "items",
             "gift_cards",
             "gift_card_transactions",
             "swaps",
@@ -160,6 +229,7 @@ class OrderSubscriber {
           "shipping_methods",
           "payments",
           "fulfillments",
+          "items",
           "returns",
           "gift_cards",
           "gift_card_transactions",
@@ -173,12 +243,46 @@ class OrderSubscriber {
         ],
       })
 
+      const eventContext = {}
+      const integrations = {}
+
+      if (order.cart_id) {
+        try {
+          const cart = await this.cartService_.retrieve(order.cart_id, {
+            select: ["context"],
+          })
+
+          if (cart.context) {
+            if (cart.context.ip) {
+              eventContext.ip = cart.context.ip
+            }
+
+            if (cart.context.user_agent) {
+              eventContext.user_agent = cart.context.user_agent
+            }
+
+            if (segmentService.options_ && segmentService.options_.use_ga_id) {
+              if (cart.context.ga_id) {
+                integrations["Google Analytics"] = {
+                  clientId: cart.context.ga_id,
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err)
+          console.warn("Failed to gather context for order")
+        }
+      }
+
       const orderData = await segmentService.buildOrder(order)
       const orderEvent = {
         event: "Order Completed",
         userId: order.customer_id,
         properties: orderData,
         timestamp: order.created_at,
+        context: eventContext,
+        integrations,
       }
 
       segmentService.track(orderEvent)

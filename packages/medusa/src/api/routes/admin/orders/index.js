@@ -9,7 +9,11 @@ export default app => {
   /**
    * List orders
    */
-  route.get("/", middlewares.wrap(require("./list-orders").default))
+  route.get(
+    "/",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-orders").default)
+  )
 
   /**
    * Get an order
@@ -188,6 +192,8 @@ export const defaultRelations = [
   "shipping_methods",
   "payments",
   "fulfillments",
+  "fulfillments.tracking_links",
+  "fulfillments.items",
   "returns",
   "gift_cards",
   "gift_card_transactions",
@@ -271,9 +277,27 @@ export const allowedRelations = [
   "shipping_methods",
   "payments",
   "fulfillments",
+  "fulfillments.tracking_links",
   "returns",
   "claims",
   "swaps",
   "swaps.return_order",
   "swaps.additional_items",
+]
+
+export const filterableFields = [
+  "id",
+  "status",
+  "fulfillment_status",
+  "payment_status",
+  "display_id",
+  "cart_id",
+  "customer_id",
+  "email",
+  "region_id",
+  "currency_code",
+  "tax_rate",
+  "canceled_at",
+  "created_at",
+  "updated_at",
 ]

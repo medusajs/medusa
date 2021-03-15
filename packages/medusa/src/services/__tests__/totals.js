@@ -377,7 +377,7 @@ describe("TotalsService", () => {
         },
       ])
 
-      expect(res).toEqual(1243.75)
+      expect(res).toEqual(1244)
     })
 
     it("calculates refund with item fixed discount", async () => {

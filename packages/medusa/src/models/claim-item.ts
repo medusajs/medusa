@@ -109,3 +109,59 @@ export class ClaimItem {
     this.id = `citm_${id}`
   }
 }
+
+/**
+ * @schema claim_item
+ * title: "Claim Item"
+ * description: "Represents a claimed item along with information about the reasons for the claim."
+ * x-resourceId: claim_item
+ * properties:
+ *   id:
+ *     type: string
+ *   images:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/claim_image"
+ *   claim_order_id:
+ *     type: string
+ *   item_id:
+ *     type: string
+ *   item:
+ *     description: "The Line Item that the claim refers to"
+ *     $ref: "#/components/schemas/line_item"
+ *   variant_id:
+ *     type: string
+ *   variant:
+ *     description: "The Product Variant that is claimed."
+ *     $ref: "#/components/schemas/product_variant"
+ *   reason:
+ *     description: "The reason for the claim"
+ *     type: string
+ *     enum:
+ *       - missing_item
+ *       - wrong_item
+ *       - production_failure
+ *       - other
+ *   note:
+ *     description: "An optional note about the claim, for additional information"
+ *     type: string
+ *   quantity:
+ *     description: "The quantity of the item that is being claimed; must be less than or equal to the amount purchased in the original order."
+ *     type: integer
+ *   tags:
+ *     description: "User defined tags for easy filtering and grouping."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/claim_tag"
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ */

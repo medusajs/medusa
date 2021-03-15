@@ -1,6 +1,108 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /order/{id}/claims
+ * operationId: "PostOrdersOrderClaims"
+ * summary: "Create a Claim"
+ * description: "Creates a Claim."
+ * parameters:
+ *   - (path) id=* {string} The id of the Order.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           type:
+ *             description: "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items."
+ *             type: string
+ *             enum:
+ *               - replace
+ *               - refund
+ *           claim_items:
+ *             description: The Claim Items that the Claim will consist of.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 item_id:
+ *                   description: The id of the Line Item that will be claimed.
+ *                   type: string
+ *                 quantity:
+ *                   description: The number of items that will be returned
+ *                   type: integer
+ *                 note:
+ *                   description: Short text describing the Claim Item in further detail.
+ *                   type: string
+ *                 reason:
+ *                   description: The reason for the Claim
+ *                   type: string
+ *                   enum:
+ *                     - missing_item
+ *                     - wrong_item
+ *                     - production_failure
+ *                     - other
+ *                 tags:
+ *                   description: A list o tags to add to the Claim Item
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 images:
+ *                   description: A list of image URL's that will be associated with the Claim
+ *                   items:
+ *                     type: string
+ *           return_shipping:
+ *             description: Optional details for the Return Shipping Method, if the items are to be sent back.
+ *             type: object
+ *             properties:
+ *               option_id:
+ *                 type: string
+ *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *               price:
+ *                 type: integer
+ *                 description: The price to charge for the Shipping Method.
+ *           additional_items:
+ *             description: The new items to send to the Customer when the Claim type is Replace.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 variant_id:
+ *                   description: The id of the Product Variant to ship.
+ *                   type: string
+ *                 quantity:
+ *                   description: The quantity of the Product Variant to ship.
+ *                   type: integer
+ *           shipping_methods:
+ *             description: The Shipping Methods to send the additional Line Items with.
+ *             type: array
+ *             items:
+ *                properties:
+ *                  id:
+ *                    description: The id of an existing Shipping Method
+ *                    type: string
+ *                  option_id:
+ *                    description: The id of the Shipping Option to create a Shipping Method from
+ *                    type: string
+ *                  price:
+ *                    description: The price to charge for the Shipping Method
+ *                    type: integer
+ *           refund_amount:
+ *             description: The amount to refund the Customer when the Claim type is `refund`.
+ *             type: integer
+ *           metadata:
+ *             description: An optional set of key-value pairs to hold additional information.
+ *             type: object
+ * tags:
+ *   - Order
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             order:
+ *               $ref: "#/components/schemas/order"
+ */
 export default async (req, res) => {
   const { id } = req.params
 

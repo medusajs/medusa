@@ -91,3 +91,42 @@ export class ShippingMethod {
     this.id = `sm_${id}`
   }
 }
+
+/**
+ * @schema shipping_method
+ * title: "Shipping Method"
+ * description: "Shipping Methods represent a way in which an Order or Return can be shipped. Shipping Methods are built from a Shipping Option, but may contain additional details, that can be necessary for the Fulfillment Provider to handle the shipment."
+ * x-resourceId: shipping_method
+ * properties:
+ *   id:
+ *     description: "The id of the Shipping Method. This value will be prefixed with `sm_`."
+ *     type: string
+ *   shipping_option_id:
+ *     description: "The id of the Shipping Option that the Shipping Method is built from."
+ *     type: string
+ *   shipping_option:
+ *     description: "The Shipping Option that the Shipping Method is built from."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/shipping_option"
+ *   order_id:
+ *     description: "The id of the Order that the Shipping Method is used on."
+ *     type: string
+ *   return_id:
+ *     description: "The id of the Return that the Shipping Method is used on."
+ *     type: string
+ *   swap_id:
+ *     description: "The id of the Swap that the Shipping Method is used on."
+ *     type: string
+ *   cart_id:
+ *     description: "The id of the Cart that the Shipping Method is used on."
+ *     type: string
+ *   claim_order_id:
+ *     description: "The id of the Claim that the Shipping Method is used on."
+ *     type: string
+ *   price:
+ *     description: "The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of."
+ *     type: integer
+ *   data:
+ *     description: "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id."
+ *     type: object
+ */

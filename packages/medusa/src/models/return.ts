@@ -112,3 +112,60 @@ export class Return {
     this.id = `ret_${id}`
   }
 }
+
+/**
+ * @schema return
+ * title: "Return"
+ * description: "Return orders hold information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can be used as part of a Swap."
+ * x-resourceId: return
+ * properties:
+ *   id:
+ *     description: "The id of the Return. This value will be prefixed with `ret_`."
+ *     type: string
+ *   status:
+ *     description: "Status of the Return."
+ *     type: string
+ *     enum:
+ *       - requested
+ *       - received
+ *       - requires_action
+ *   items:
+ *     description: "The Return Items that will be shipped back to the warehouse.
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/return_item"
+ *   swap_id:
+ *     description: "The id of the Swap that the Return is a part of."
+ *     type: string
+ *   order_id:
+ *     description: "The id of the Order that the Return is made from."
+ *     type: string
+ *   claim_order_id:
+ *     description: "The id of the Claim that the Return is a part of."
+ *     type: string
+ *   shipping_method:
+ *     description: "The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/shipping_method"
+ *   shipping_data:
+ *     description: "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment."
+ *     type: object
+ *   refund_amount:
+ *     description: "The amount that should be refunded as a result of the return."
+ *     type: integer
+ *   received_at:
+ *     description: "The date with timezone at which the return was received."
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     description: "The date with timezone at which the resource was created."
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     description: "An optional key-value map with additional information."
+ *     type: object
+ */
