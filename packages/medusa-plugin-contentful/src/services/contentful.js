@@ -293,6 +293,7 @@ class ContentfulService extends BaseService {
       "type_id",
       "collection",
       "collection_id",
+      "thumbnail",
     ]
 
     const found = data.fields.find((f) => updateFields.includes(f))
@@ -351,7 +352,7 @@ class ContentfulService extends BaseService {
         },
       }
 
-      if (p.thumbnail) {
+      if (data.fields.includes("thumbnail") && p.thumbnail) {
         const thumbnailAsset = await environment.createAsset({
           fields: {
             title: {
@@ -521,7 +522,7 @@ class ContentfulService extends BaseService {
         )
 
         if (thumb.fields.file["en-US"].url) {
-          if (product.thumbnail !== thumb.fields.file["en-US"].url) {
+          if (!product.thumbnail.includes(thumb.fields.file["en-US"].url)) {
             update.thumbnail = thumb.fields.file["en-US"].url
           }
         }
