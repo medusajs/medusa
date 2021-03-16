@@ -19,6 +19,13 @@ import {
 import { Return } from "./return"
 import { LineItem } from "./line-item"
 
+export enum ReturnReason {
+  TOO_SMALL = "too_small",
+  TOO_BIG = "too_big",
+  NOT_AS_EXPECTED = "not_as_expected",
+  OTHER = "other",
+}
+
 @Entity()
 export class ReturnItem {
   @PrimaryColumn()
@@ -46,6 +53,12 @@ export class ReturnItem {
 
   @Column({ type: "int", nullable: true })
   received_quantity: number
+
+  @Column({ type: "enum", enum: ReturnReason, nullable: true })
+  reason: ReturnReason
+
+  @Column({ nullable: true })
+  note: string
 
   @Column({ type: "jsonb", nullable: true })
   metadata: any
@@ -79,6 +92,17 @@ export class ReturnItem {
  *   recieved_quantity:
  *     description: "The quantity that was received in the warehouse."
  *     type: integer
+ *   reason:
+ *     description: "The reason for returning the item."
+ *     type: string
+ *     enum:
+ *       - too_small
+ *       - too_big
+ *       - not_as_expected
+ *       - other
+ *   note:
+ *     description: "An optional note with additional details about the Return."
+ *     type: string
  *   metadata:
  *     description: "An optional key-value map with additional information."
  *     type: object

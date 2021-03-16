@@ -174,5 +174,33 @@ describe("/store/carts", () => {
 
       expect(response.data.return.refund_amount).toEqual(7000);
     });
+
+    it("creates a return with reasons", async () => {
+      const api = useApi();
+
+      const response = await api
+        .post("/store/returns", {
+          order_id: "order_test",
+          items: [
+            {
+              reason: "too_small",
+              note: "TOO small",
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => {
+          return err.response;
+        });
+      expect(response.status).toEqual(200);
+
+      expect(response.data.return.items).toEqual([
+        expect.objectContaining({
+          reason: "too_small",
+          note: "TOO small",
+        }),
+      ]);
+    });
   });
 });

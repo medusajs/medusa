@@ -8,6 +8,8 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
+        reason: Validator.string().optional(),
+        note: Validator.string().optional(),
       })
       .required(),
     return_shipping: Validator.object()
