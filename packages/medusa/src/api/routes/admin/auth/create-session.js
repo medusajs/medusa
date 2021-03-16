@@ -1,3 +1,4 @@
+import _ from "lodash"
 import jwt from "jsonwebtoken"
 import { Validator } from "medusa-core-utils"
 import config from "../../../../config"
@@ -19,7 +20,7 @@ import config from "../../../../config"
  *      application/json:
  *        schema:
  *          properties:
- *            customer:
+ *            user:
  *              $ref: "#/components/schemas/user"
  */
 export default async (req, res) => {
@@ -46,5 +47,7 @@ export default async (req, res) => {
     expiresIn: "24h",
   })
 
-  res.json({ user: result.user })
+  const cleanRes = _.omit(result.user, ["password_hash"])
+
+  res.json({ user: cleanRes })
 }

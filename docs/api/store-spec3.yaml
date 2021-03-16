@@ -1025,56 +1025,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  '/products/{id}':
-    get:
-      operationId: GetProductsProduct
-      summary: Retrieves a Product
-      description: Retrieves a Product.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product.
-          schema:
-            type: string
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  product:
-                    $ref: '#/components/schemas/product'
-  /products:
-    get:
-      operationId: GetProducts
-      summary: List Products
-      description: Retrieves a list of Products.
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Products.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of Products to return,'
-                    type: integer
-                  products:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1125,49 +1075,20 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
-  /shipping-options:
+  '/products/{id}':
     get:
-      operationId: GetShippingOptions
-      summary: Retrieve Shipping Options
-      description: Retrieves a list of Shipping Options.
-      parameters:
-        - in: query
-          name: product_ids
-          description: A comma separated list of Product ids to filter Shipping Options by.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: the Region to retrieve Shipping Options from.
-          schema:
-            type: string
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
-  '/shipping-options/{cart_id}':
-    get:
-      operationId: GetShippingOptionsCartId
-      summary: Retrieve Shipping Options for Cart
-      description: Retrieves a list of Shipping Options available to a cart.
+      operationId: GetProductsProduct
+      summary: Retrieves a Product
+      description: Retrieves a Product.
       parameters:
         - in: path
-          name: cart_id
+          name: id
           required: true
-          description: The id of the Cart.
+          description: The id of the Product.
           schema:
             type: string
       tags:
-        - Shipping Option
+        - Product
       responses:
         '200':
           description: OK
@@ -1175,10 +1096,35 @@ paths:
             application/json:
               schema:
                 properties:
-                  shipping_options:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieves a list of Products.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Products.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Products to return,'
+                    type: integer
+                  products:
                     type: array
                     items:
-                      $ref: '#/components/schemas/shipping_option'
+                      $ref: '#/components/schemas/product'
   '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
@@ -1249,6 +1195,60 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_variant'
+  /shipping-options:
+    get:
+      operationId: GetShippingOptions
+      summary: Retrieve Shipping Options
+      description: Retrieves a list of Shipping Options.
+      parameters:
+        - in: query
+          name: product_ids
+          description: A comma separated list of Product ids to filter Shipping Options by.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: the Region to retrieve Shipping Options from.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+  '/shipping-options/{cart_id}':
+    get:
+      operationId: GetShippingOptionsCartId
+      summary: Retrieve Shipping Options for Cart
+      description: Retrieves a list of Shipping Options available to a cart.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
 components:
   schemas:
     address:

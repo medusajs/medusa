@@ -5,7 +5,7 @@ import { defaultRelations, defaultFields } from "./"
  * @oas [get] /orders
  * operationId: "GetOrders"
  * summary: "List Orders"
- * description: "Retrieves an list of Orders"
+ * description: "Retrieves a list of Orders"
  * tags:
  *   - Order
  * responses:
@@ -15,8 +15,10 @@ import { defaultRelations, defaultFields } from "./"
  *       application/json:
  *         schema:
  *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *             orders:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/order"
  */
 
 export default async (req, res) => {
