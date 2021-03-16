@@ -449,7 +449,7 @@ class ContentfulService extends BaseService {
       "options",
     ]
 
-    const found = data.fields.find((f) => updateFields.includes(f))
+    const found = variant.fields.find((f) => updateFields.includes(f))
     if (!found) {
       return
     }
