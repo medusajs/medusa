@@ -508,13 +508,10 @@ class ContentfulService extends BaseService {
       //}
 
       let update = {}
-      if (product.title !== productEntry.fields.title["en-US"]) {
-        update.title = productEntry.fields.title["en-US"]
-      }
-
-      let update = {
-        title:
-          productEntry.fields[this.getCustomField("title", "product")]["en-US"],
+      const title =
+        productEntry.fields[this.getCustomField("title", "product")]["en-US"]
+      if (product.title !== title) {
+        update.title = title
       }
 
       // Get the thumbnail, if present
