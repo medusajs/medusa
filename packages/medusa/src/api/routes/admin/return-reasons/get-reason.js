@@ -7,7 +7,7 @@ import { defaultRelations, defaultFields } from "./"
  * summary: "Retrieve a Return Reason"
  * description: "Retrieves a Return Reason."
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The id of the Return Reason.
  * tags:
  *   - Return Reason
  * responses:
