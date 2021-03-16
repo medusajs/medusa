@@ -16,6 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 
+import { ReturnReason } from "./return-reason"
 import { Return } from "./return"
 import { LineItem } from "./line-item"
 
@@ -46,6 +47,16 @@ export class ReturnItem {
 
   @Column({ type: "int", nullable: true })
   received_quantity: number
+
+  @Column({ nullable: true })
+  reason_id: string
+
+  @ManyToOne(() => ReturnReason, { eager: true })
+  @JoinColumn({ name: "reason_id" })
+  reason: ReturnReason
+
+  @Column({ nullable: true })
+  note: string
 
   @Column({ type: "jsonb", nullable: true })
   metadata: any
@@ -79,6 +90,13 @@ export class ReturnItem {
  *   recieved_quantity:
  *     description: "The quantity that was received in the warehouse."
  *     type: integer
+ *   reason:
+ *     description: "The reason for returning the item."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/return_reason"
+ *   note:
+ *     description: "An optional note with additional details about the Return."
+ *     type: string
  *   metadata:
  *     description: "An optional key-value map with additional information."
  *     type: object
