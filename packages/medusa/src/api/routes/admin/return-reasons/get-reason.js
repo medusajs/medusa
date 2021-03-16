@@ -9,7 +9,7 @@ import { defaultRelations, defaultFields } from "./"
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:
- *   - Region
+ *   - Return Reason
  * responses:
  *   200:
  *     description: OK
