@@ -41,7 +41,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    label: Validator.string().required(),
+    label: Validator.string().optional(),
     description: Validator.string().allow(""),
     metadata: Validator.object().optional(),
   })
