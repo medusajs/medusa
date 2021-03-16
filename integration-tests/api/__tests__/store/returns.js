@@ -2,6 +2,7 @@ const { dropDatabase } = require("pg-god");
 const path = require("path");
 const {
   Region,
+  ReturnReason,
   Order,
   Customer,
   ShippingProfile,
@@ -35,6 +36,8 @@ describe("/store/carts", () => {
   });
 
   describe("POST /store/returns", () => {
+    let rrId;
+
     beforeEach(async () => {
       const manager = dbConnection.manager;
       await manager.query(
@@ -110,6 +113,14 @@ describe("/store/carts", () => {
         amount: 1000,
         is_return: true,
       });
+
+      const created = dbConnection.manager.create(ReturnReason, {
+        value: "too_big",
+        label: "Too Big",
+      });
+      const result = await dbConnection.manager.save(created);
+
+      rrId = result.id;
     });
 
     afterEach(async () => {
@@ -117,6 +128,7 @@ describe("/store/carts", () => {
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
       await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
       await manager.query(`DELETE FROM "order"`);
@@ -173,6 +185,34 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200);
 
       expect(response.data.return.refund_amount).toEqual(7000);
+    });
+
+    it("creates a return with reasons", async () => {
+      const api = useApi();
+
+      const response = await api
+        .post("/store/returns", {
+          order_id: "order_test",
+          items: [
+            {
+              reason_id: rrId,
+              note: "TOO small",
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => {
+          return err.response;
+        });
+      expect(response.status).toEqual(200);
+
+      expect(response.data.return.items).toEqual([
+        expect.objectContaining({
+          reason_id: rrId,
+          note: "TOO small",
+        }),
+      ]);
     });
   });
 });

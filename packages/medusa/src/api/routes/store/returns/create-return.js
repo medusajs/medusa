@@ -8,6 +8,8 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
+        reason_id: Validator.string().optional(),
+        note: Validator.string().optional(),
       })
       .required(),
     return_shipping: Validator.object()
@@ -109,13 +111,14 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              let order = await orderService
-                .withTransaction(manager)
-                .retrieve(value.order_id, { relations: ["returns"] })
-
-              let ret = await returnService.withTransaction(manager).list({
-                idempotency_key: idempotencyKey.idempotency_key,
-              })
+              let ret = await returnService.withTransaction(manager).list(
+                {
+                  idempotency_key: idempotencyKey.idempotency_key,
+                },
+                {
+                  relations: ["items", "items.reason"],
+                }
+              )
               if (!ret.length) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,
