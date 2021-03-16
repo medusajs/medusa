@@ -121,338 +121,6 @@ paths:
                 properties:
                   exists:
                     type: boolean
-  '/customers/{id}/addresses':
-    post:
-      operationId: PostCustomersCustomerAddresses
-      summary: Add a Shipping Address
-      description: Adds a Shipping Address to a Customer's saved addresses.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Customer id.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                address:
-                  description: The Address to add to the Customer.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer account.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                password:
-                  type: string
-                  description: The Customer's password for login.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-  '/customers/{id}/addresses/{address_id}':
-    delete:
-      operationId: DeleteCustomersCustomerAddressesAddress
-      summary: Delete an Address
-      description: Removes an Address from the Customer's saved addresse.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to remove.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomerAddressesAddress
-      summary: Update a Shipping Address
-      description: Updates a Customer's saved Shipping Address.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Customer id.
-          schema:
-            type: string
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to update.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                address:
-                  description: The updated Address.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieves a Customer
-      description: >-
-        Retrieves a Customer - the Customer must be logged in to retrieve their
-        details.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update Customer details
-      description: Updates a Customer's saved details.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                password:
-                  description: The Customer's password.
-                  type: string
-                phone:
-                  description: The Customer's phone number.
-                  type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/customers/{id}/payment-methods':
-    get:
-      operationId: GetCustomersCustomerPaymentMethods
-      summary: Retrieve saved payment methods
-      description: >-
-        Retrieves a list of a Customer's saved payment methods. Payment methods
-        are saved with Payment Providers and it is their responsibility to fetch
-        saved methods.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_methods:
-                    type: array
-                    items:
-                      properties:
-                        provider_id:
-                          type: string
-                          description: >-
-                            The id of the Payment Provider where the payment
-                            method is saved.
-                        data:
-                          type: object
-                          description: >-
-                            The data needed for the Payment Provider to use the
-                            saved payment method.
-  '/customers/{id}/orders':
-    get:
-      operationId: GetCustomersCustomerOrders
-      summary: Retrieve Customer Orders
-      description: Retrieves a list of a Customer's Orders.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_methods:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/order'
-  '/customers/{id}/password-token':
-    post:
-      operationId: PostCustomersCustomerPasswordToken
-      summary: Creates a reset password token
-      description: >-
-        Creates a reset password token to be used in a subsequent
-        /reset-password request. The password token should be sent out of band
-        e.g. via email and will not be returned.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '204':
-          description: OK
-  '/customers/{id}/reset-password':
-    post:
-      operationId: PostCustomersCustomerResetPassword
-      summary: Resets Customer password
-      description: >-
-        Resets a Customer's password using a password token created by a
-        previous /password-token request.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - token
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                token:
-                  type: string
-                  description: The password token created by a /password-token request.
-                password:
-                  type: string
-                  description: The new password to set for the Customer.
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -986,11 +654,350 @@ paths:
                 data:
                   type: object
                   description: The data to update the payment session with.
+  '/customers/{id}/addresses':
+    post:
+      operationId: PostCustomersCustomerAddresses
+      summary: Add a Shipping Address
+      description: Adds a Shipping Address to a Customer's saved addresses.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Customer id.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The Address to add to the Customer.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer account.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                password:
+                  type: string
+                  description: The Customer's password for login.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+  '/customers/{id}/addresses/{address_id}':
+    delete:
+      operationId: DeleteCustomersCustomerAddressesAddress
+      summary: Delete an Address
+      description: Removes an Address from the Customer's saved addresse.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to remove.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomerAddressesAddress
+      summary: Update a Shipping Address
+      description: Updates a Customer's saved Shipping Address.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Customer id.
+          schema:
+            type: string
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The updated Address.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieves a Customer
+      description: >-
+        Retrieves a Customer - the Customer must be logged in to retrieve their
+        details.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update Customer details
+      description: Updates a Customer's saved details.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                password:
+                  description: The Customer's password.
+                  type: string
+                phone:
+                  description: The Customer's phone number.
+                  type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customers/{id}/payment-methods':
+    get:
+      operationId: GetCustomersCustomerPaymentMethods
+      summary: Retrieve saved payment methods
+      description: >-
+        Retrieves a list of a Customer's saved payment methods. Payment methods
+        are saved with Payment Providers and it is their responsibility to fetch
+        saved methods.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      properties:
+                        provider_id:
+                          type: string
+                          description: >-
+                            The id of the Payment Provider where the payment
+                            method is saved.
+                        data:
+                          type: object
+                          description: >-
+                            The data needed for the Payment Provider to use the
+                            saved payment method.
+  '/customers/{id}/orders':
+    get:
+      operationId: GetCustomersCustomerOrders
+      summary: Retrieve Customer Orders
+      description: Retrieves a list of a Customer's Orders.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
+  '/customers/{id}/password-token':
+    post:
+      operationId: PostCustomersCustomerPasswordToken
+      summary: Creates a reset password token
+      description: >-
+        Creates a reset password token to be used in a subsequent
+        /reset-password request. The password token should be sent out of band
+        e.g. via email and will not be returned.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '204':
+          description: OK
+  '/customers/{id}/reset-password':
+    post:
+      operationId: PostCustomersCustomerResetPassword
+      summary: Resets Customer password
+      description: >-
+        Resets a Customer's password using a password token created by a
+        previous /password-token request.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - token
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                token:
+                  type: string
+                  description: The password token created by a /password-token request.
+                password:
+                  type: string
+                  description: The new password to set for the Customer.
   '/gift-cards/{code}':
     get:
       operationId: GetGiftCardsCode
       summary: Retrieve Gift Card by Code
       description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
       tags:
         - Gift Card
       responses:
@@ -1140,6 +1147,47 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+  /return-reasons:
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -3183,6 +3231,47 @@ components:
         recieved_quantity:
           description: The quantity that was received in the warehouse.
           type: integer
+        reason:
+          description: The reason for returning the item.
+          anyOf:
+            - $ref: '#/components/schemas/return_reason'
+        note:
+          description: An optional note with additional details about the Return.
+          type: string
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    return_reason:
+      title: Return Reason
+      description: >-
+        A Reason for why a given product is returned. A Return Reason can be
+        used on Return Items in order to indicate why a Line Item was returned.
+      x-resourceId: return_reason
+      properties:
+        id:
+          description: The id of the Return Reason will start with `rr_`.
+          type: string
+        description:
+          description: A description of the Reason.
+          type: string
+        label:
+          description: A text that can be displayed to the Customer as a reason.
+          type: string
+        value:
+          description: The value to identify the reason by.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
         metadata:
           description: An optional key-value map with additional information.
           type: object

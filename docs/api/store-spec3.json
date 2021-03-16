@@ -75,6 +75,130 @@
     }
   ],
   "paths": {
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate Customer",
+        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteAuth",
+        "summary": "Log out",
+        "description": "Destroys a Customer's authenticated session.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "description": "Gets the currently logged in Customer.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/{email}": {
+      "get": {
+        "operationId": "GetAuthEmail",
+        "summary": "Check if email has account",
+        "description": "Checks if a Customer with the given email has signed up.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "description": "The Customer's email.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "exists": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -1357,135 +1481,22 @@
         }
       }
     },
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate Customer",
-        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteAuth",
-        "summary": "Log out",
-        "description": "Destroys a Customer's authenticated session.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in Customer.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/{email}": {
-      "get": {
-        "operationId": "GetAuthEmail",
-        "summary": "Check if email has account",
-        "description": "Checks if a Customer with the given email has signed up.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "email",
-            "required": true,
-            "description": "The Customer's email.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "exists": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/gift-cards/{code}": {
       "get": {
         "operationId": "GetGiftCardsCode",
         "summary": "Retrieve Gift Card by Code",
         "description": "Retrieves a Gift Card by its associated unqiue code.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "description": "The unique Gift Card code.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Gift Card"
         ],
@@ -1510,6 +1521,228 @@
                     },
                     "region": {
                       "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "operationId": "GetProductsProduct",
+        "summary": "Retrieves a Product",
+        "description": "Retrieves a Product.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "GetProducts",
+        "summary": "List Products",
+        "description": "Retrieves a list of Products.",
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of Products.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of Products to return,",
+                      "type": "integer"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons/{id}": {
+      "get": {
+        "operationId": "GetReturnReasonsReason",
+        "summary": "Retrieve a Return Reason",
+        "description": "Retrieves a Return Reason.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons": {
+      "get": {
+        "operationId": "GetReturnReasons",
+        "summary": "List Return Reasons",
+        "description": "Retrieves a list of Return Reasons.",
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reasons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return_reason"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}": {
+      "get": {
+        "operationId": "GetRegionsRegion",
+        "summary": "Retrieves a Region",
+        "description": "Retrieves a Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions": {
+      "get": {
+        "operationId": "GetRegions",
+        "summary": "List Regions",
+        "description": "Retrieves a list of Regions.",
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of regions.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of regions to return,",
+                      "type": "integer"
+                    },
+                    "regions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/region"
+                      }
                     }
                   }
                 }
@@ -1630,162 +1863,6 @@
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products/{id}": {
-      "get": {
-        "operationId": "GetProductsProduct",
-        "summary": "Retrieves a Product",
-        "description": "Retrieves a Product.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/product"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products": {
-      "get": {
-        "operationId": "GetProducts",
-        "summary": "List Products",
-        "description": "Retrieves a list of Products.",
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of Products to return,",
-                      "type": "integer"
-                    },
-                    "products": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}": {
-      "get": {
-        "operationId": "GetRegionsRegion",
-        "summary": "Retrieves a Region",
-        "description": "Retrieves a Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions": {
-      "get": {
-        "operationId": "GetRegions",
-        "summary": "List Regions",
-        "description": "Retrieves a list of Regions.",
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of regions.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of regions to return,",
-                      "type": "integer"
-                    },
-                    "regions": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/region"
-                      }
                     }
                   }
                 }
@@ -4198,6 +4275,60 @@
           "recieved_quantity": {
             "description": "The quantity that was received in the warehouse.",
             "type": "integer"
+          },
+          "reason": {
+            "description": "The reason for returning the item.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/return_reason"
+              }
+            ]
+          },
+          "note": {
+            "description": "An optional note with additional details about the Return.",
+            "type": "string"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "return_reason": {
+        "title": "Return Reason",
+        "description": "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned.",
+        "x-resourceId": "return_reason",
+        "properties": {
+          "id": {
+            "description": "The id of the Return Reason will start with `rr_`.",
+            "type": "string"
+          },
+          "description": {
+            "description": "A description of the Reason.",
+            "type": "string"
+          },
+          "label": {
+            "description": "A text that can be displayed to the Customer as a reason.",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value to identify the reason by.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
           },
           "metadata": {
             "description": "An optional key-value map with additional information.",

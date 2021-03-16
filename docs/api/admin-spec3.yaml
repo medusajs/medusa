@@ -53,7 +53,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
+                  user:
                     $ref: '#/components/schemas/user'
       requestBody:
         content:
@@ -83,7 +83,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
+                  user:
                     $ref: '#/components/schemas/user'
   /collections:
     post:
@@ -1314,7 +1314,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Swap.
+          description: The id of the Order.
           schema:
             type: string
       requestBody:
@@ -1501,7 +1501,7 @@ paths:
     get:
       operationId: GetOrders
       summary: List Orders
-      description: Retrieves an list of Orders
+      description: Retrieves a list of Orders
       tags:
         - Order
       responses:
@@ -1511,8 +1511,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
   '/orders/{id}/swaps/{swap_id}/process-payment':
     post:
       operationId: PostOrdersOrderSwapsSwapProcessPayment
@@ -1704,6 +1706,12 @@ paths:
                     properties:
                       item_id:
                         description: The id of the Line Item.
+                        type: string
+                      reason_id:
+                        description: The id of the Return Reason to use.
+                        type: string
+                      note:
+                        description: An optional note with information about the Return.
                         type: string
                       quantity:
                         description: The quantity of the Line Item.
@@ -2739,24 +2747,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_type'
-  /returns:
-    get:
-      operationId: GetReturns
-      summary: List Returns
-      description: Retrieves a list of Returns
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  returns:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return'
   '/regions/{id}/countries':
     post:
       operationId: PostRegionsRegionCountries
@@ -3169,6 +3159,144 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+  /return-reasons:
+    post:
+      operationId: PostReturnReasons
+      summary: Create a Return Reason
+      description: Creates a Return Reason
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                label:
+                  description: The label to display to the Customer.
+                  type: string
+                value:
+                  description: >-
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
+                  type: string
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+    post:
+      operationId: PostReturnReasonsReason
+      summary: Update a Return Reason
+      description: Updates a Return Reason
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                label:
+                  description: The label to display to the Customer.
+                  type: string
+                value:
+                  description: >-
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
+                  type: string
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+  /returns:
+    get:
+      operationId: GetReturns
+      summary: List Returns
+      description: Retrieves a list of Returns
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  returns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -5441,6 +5569,47 @@ components:
         recieved_quantity:
           description: The quantity that was received in the warehouse.
           type: integer
+        reason:
+          description: The reason for returning the item.
+          anyOf:
+            - $ref: '#/components/schemas/return_reason'
+        note:
+          description: An optional note with additional details about the Return.
+          type: string
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    return_reason:
+      title: Return Reason
+      description: >-
+        A Reason for why a given product is returned. A Return Reason can be
+        used on Return Items in order to indicate why a Line Item was returned.
+      x-resourceId: return_reason
+      properties:
+        id:
+          description: The id of the Return Reason will start with `rr_`.
+          type: string
+        description:
+          description: A description of the Reason.
+          type: string
+        label:
+          description: A text that can be displayed to the Customer as a reason.
+          type: string
+        value:
+          description: The value to identify the reason by.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
         metadata:
           description: An optional key-value map with additional information.
           type: object
