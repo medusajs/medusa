@@ -49,8 +49,19 @@ const JsonBox = ({ text, resourceId, endpoint, spec }) => {
           cleanDets["x-resourceId"] in fixtures.resources
         ) {
           toSet[name] = fixtures.resources[cleanDets["x-resourceId"]]
-        } else {
+        } else if (cleanDets.type === "array") {
           toSet[name] = cleanDets
+          if (cleanDets.items.$ref) {
+            const [, ...path] = cleanDets.items.$ref.split("/")
+            let cleanObj = deref(path, spec)
+            if (
+              cleanObj["x-resourceId"] &&
+              cleanObj["x-resourceId"] in fixtures.resources
+            ) {
+              cleanObj = fixtures.resources[cleanObj["x-resourceId"]]
+            }
+            toSet[name] = [cleanObj]
+          }
         }
       }
     }
