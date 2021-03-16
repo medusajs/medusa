@@ -312,7 +312,7 @@ class ContentfulService extends BaseService {
       //   this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
       // }
 
-      const p = await this.productService_.retrieve(product.id, {
+      const p = await this.productService_.retrieve(data.id, {
         relations: [
           "options",
           "variants",
