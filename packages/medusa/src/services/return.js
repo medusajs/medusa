@@ -288,6 +288,8 @@ class ReturnService extends BaseService {
           item_id: i.id,
           quantity: i.quantity,
           requested_quantity: i.quantity,
+          reason: i.reason,
+          note: i.note,
           metadata: i.metadata,
         })
       )
