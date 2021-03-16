@@ -1,5 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
+const { ReturnReason } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -469,10 +470,19 @@ describe("/admin/orders", () => {
   });
 
   describe("POST /admin/orders/:id/return", () => {
+    let rrId;
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection);
         await orderSeeder(dbConnection);
+
+        const created = dbConnection.manager.create(ReturnReason, {
+          value: "too_big",
+          label: "Too Big",
+        });
+        const result = await dbConnection.manager.save(created);
+
+        rrId = result.id;
       } catch (err) {
         console.log(err);
         throw err;
@@ -486,6 +496,7 @@ describe("/admin/orders", () => {
       await manager.query(`DELETE FROM "fulfillment"`);
       await manager.query(`DELETE FROM "swap"`);
       await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
       await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
@@ -518,7 +529,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "too_small",
+              reason_id: rrId,
               note: "TOO SMALL",
             },
           ],
@@ -536,7 +547,7 @@ describe("/admin/orders", () => {
         expect.objectContaining({
           item_id: "test-item",
           quantity: 1,
-          reason: "too_small",
+          reason_id: rrId,
           note: "TOO SMALL",
         }),
       ]);

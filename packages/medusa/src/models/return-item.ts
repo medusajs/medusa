@@ -16,15 +16,9 @@ import {
   JoinTable,
 } from "typeorm"
 
+import { ReturnReason } from "./return-reason"
 import { Return } from "./return"
 import { LineItem } from "./line-item"
-
-export enum ReturnReason {
-  TOO_SMALL = "too_small",
-  TOO_BIG = "too_big",
-  NOT_AS_EXPECTED = "not_as_expected",
-  OTHER = "other",
-}
 
 @Entity()
 export class ReturnItem {
@@ -54,7 +48,11 @@ export class ReturnItem {
   @Column({ type: "int", nullable: true })
   received_quantity: number
 
-  @Column({ type: "enum", enum: ReturnReason, nullable: true })
+  @Column({ nullable: true })
+  reason_id: string
+
+  @ManyToOne(() => ReturnReason, { eager: true })
+  @JoinColumn({ name: "reason_id" })
   reason: ReturnReason
 
   @Column({ nullable: true })
@@ -94,12 +92,8 @@ export class ReturnItem {
  *     type: integer
  *   reason:
  *     description: "The reason for returning the item."
- *     type: string
- *     enum:
- *       - too_small
- *       - too_big
- *       - not_as_expected
- *       - other
+ *     anyOf:
+ *       - $ref: "#/components/schemas/return_reason"
  *   note:
  *     description: "An optional note with additional details about the Return."
  *     type: string

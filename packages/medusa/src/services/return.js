@@ -14,6 +14,7 @@ class ReturnService extends BaseService {
     returnRepository,
     returnItemRepository,
     shippingOptionService,
+    returnReasonService,
     fulfillmentProviderService,
   }) {
     super()
@@ -38,6 +39,8 @@ class ReturnService extends BaseService {
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
+
+    this.returnReasonService_ = returnReasonService
   }
 
   withTransaction(transactionManager) {
@@ -53,6 +56,7 @@ class ReturnService extends BaseService {
       returnItemRepository: this.returnItemRepository_,
       shippingOptionService: this.shippingOptionService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
+      returnReasonService: this.returnReasonService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -152,8 +156,8 @@ class ReturnService extends BaseService {
       quantity,
     }
 
-    if ("reason" in additional) {
-      toReturn.reason = additional.reason
+    if ("reason_id" in additional) {
+      toReturn.reason_id = additional.reason_id
     }
 
     if ("note" in additional) {
@@ -299,7 +303,7 @@ class ReturnService extends BaseService {
           item_id: i.id,
           quantity: i.quantity,
           requested_quantity: i.quantity,
-          reason: i.reason,
+          reason_id: i.reason_id,
           note: i.note,
           metadata: i.metadata,
         })
