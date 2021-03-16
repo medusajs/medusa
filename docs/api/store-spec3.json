@@ -75,130 +75,6 @@
     }
   ],
   "paths": {
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate Customer",
-        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteAuth",
-        "summary": "Log out",
-        "description": "Destroys a Customer's authenticated session.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in Customer.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/{email}": {
-      "get": {
-        "operationId": "GetAuthEmail",
-        "summary": "Check if email has account",
-        "description": "Checks if a Customer with the given email has signed up.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "email",
-            "required": true,
-            "description": "The Customer's email.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "exists": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -968,80 +844,6 @@
         }
       }
     },
-    "/orders/cart/{cart_id}": {
-      "get": {
-        "operationId": "GetOrdersOrderCartId",
-        "summary": "Retrieves Order by Cart id",
-        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cart_id",
-            "required": true,
-            "description": "The id of Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieves an Order",
-        "description": "Retrieves an Order",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/customers/{id}/addresses": {
       "post": {
         "operationId": "PostCustomersCustomerAddresses",
@@ -1547,6 +1349,204 @@
         }
       }
     },
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate Customer",
+        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteAuth",
+        "summary": "Log out",
+        "description": "Destroys a Customer's authenticated session.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "description": "Gets the currently logged in Customer.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/{email}": {
+      "get": {
+        "operationId": "GetAuthEmail",
+        "summary": "Check if email has account",
+        "description": "Checks if a Customer with the given email has signed up.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "description": "The Customer's email.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "exists": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/cart/{cart_id}": {
+      "get": {
+        "operationId": "GetOrdersOrderCartId",
+        "summary": "Retrieves Order by Cart id",
+        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "required": true,
+            "description": "The id of Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "operationId": "GetOrdersOrder",
+        "summary": "Retrieves an Order",
+        "description": "Retrieves an Order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/regions/{id}": {
       "get": {
         "operationId": "GetRegionsRegion",
@@ -1653,82 +1653,6 @@
                   "properties": {
                     "swap": {
                       "$ref": "#/components/schemas/swap"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/variants/{variant_id}": {
-      "get": {
-        "operationId": "GetVariantsVariant",
-        "summary": "Retrieve a Product Variant",
-        "description": "Retrieves a Product Variant by id",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "variant_id",
-            "required": true,
-            "description": "The id of the Product Variant.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product Variant"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "variant": {
-                      "$ref": "#/components/schemas/product_variant"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/variants": {
-      "get": {
-        "operationId": "GetVariants",
-        "summary": "Retrieve Product Variants",
-        "description": "Retrieves a list of Product Variants",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ids",
-            "description": "A comma separated list of Product Variant ids to filter by.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product Variant"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "variants": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product_variant"
-                      }
                     }
                   }
                 }
@@ -1893,6 +1817,82 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/variants/{variant_id}": {
+      "get": {
+        "operationId": "GetVariantsVariant",
+        "summary": "Retrieve a Product Variant",
+        "description": "Retrieves a Product Variant by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "variant_id",
+            "required": true,
+            "description": "The id of the Product Variant.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product Variant"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "variant": {
+                      "$ref": "#/components/schemas/product_variant"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/variants": {
+      "get": {
+        "operationId": "GetVariants",
+        "summary": "Retrieve Product Variants",
+        "description": "Retrieves a list of Product Variants",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ids",
+            "description": "A comma separated list of Product Variant ids to filter by.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product Variant"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "variants": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product_variant"
                       }
                     }
                   }

@@ -145,183 +145,6 @@
         }
       }
     },
-    "/customers": {
-      "post": {
-        "operationId": "PostCustomers",
-        "summary": "Create a Customer",
-        "description": "Creates a Customer.",
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "first_name",
-                  "last_name"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email address."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/{id}": {
-      "get": {
-        "operationId": "GetCustomersCustomer",
-        "summary": "Retrieve a Customer",
-        "description": "Retrieves a Customer.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomersCustomer",
-        "summary": "Update a Customer",
-        "description": "Updates a Customer.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "description": "The Customer's phone number.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/collections": {
       "post": {
         "operationId": "PostCollections",
@@ -534,33 +357,14 @@
         }
       }
     },
-    "/discounts/{id}/regions/{region_id}": {
+    "/customers": {
       "post": {
-        "operationId": "PostDiscountsDiscountRegionsRegion",
-        "summary": "Adds Region availability",
-        "description": "Adds a Region to the list of Regions that a Discount can be used in.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "region_id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "PostCustomers",
+        "summary": "Create a Customer",
+        "description": "Creates a Customer.",
+        "parameters": [],
         "tags": [
-          "Discount"
+          "Customer"
         ],
         "responses": {
           "200": {
@@ -569,236 +373,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteDiscountsDiscountRegionsRegion",
-        "summary": "Remove Region availability",
-        "description": "Removes a Region from the list of Regions that a Discount can be used in.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "region_id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/products/{product_id}": {
-      "post": {
-        "operationId": "DeleteDiscountsDiscountProductsProduct",
-        "summary": "Remove Product availability",
-        "description": "Removes a Product from the list of Products that a Discount can be used for.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "product_id",
-            "required": true,
-            "description": "The id of the Product.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts": {
-      "post": {
-        "operationId": "PostDiscounts",
-        "summary": "Creates a Discount",
-        "description": "Creates a Discount with a given set of rules that define how the Discount behaves.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "code": {
-                    "type": "string",
-                    "description": "A unique code that will be used to redeem the Discount"
-                  },
-                  "is_dynamic": {
-                    "type": "string",
-                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
-                  },
-                  "rule": {
-                    "description": "The Discount Rule that defines how Discounts are calculated",
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/discount_rule"
-                      }
-                    ]
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "starts_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should be available."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should no longer be available."
-                  },
-                  "regions": {
-                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDiscounts",
-        "summary": "List Discounts",
-        "description": "Retrieves a list of Discounts",
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/dynamic-codes": {
-      "post": {
-        "operationId": "PostDiscountsDiscountDynamicCodes",
-        "summary": "Create a dynamic Discount code",
-        "description": "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount to create the dynamic code from.\"",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -812,61 +388,26 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "code"
+                  "email",
+                  "first_name",
+                  "last_name"
                 ],
                 "properties": {
-                  "code": {
+                  "email": {
                     "type": "string",
-                    "description": "The unique code that will be used to redeem the Discount."
+                    "description": "The Customer's email address."
                   },
-                  "metadata": {
-                    "type": "object",
-                    "description": "An optional set of key-value paris to hold additional information."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}": {
-      "delete": {
-        "operationId": "DeleteDiscountsDiscount",
-        "summary": "Delete a Discount",
-        "description": "Deletes a Discount.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Discount"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
                   }
                 }
               }
@@ -875,22 +416,11 @@
         }
       },
       "get": {
-        "operationId": "GetDiscountsDiscount",
-        "summary": "Retrieve a Discount",
-        "description": "Retrieves a Discount",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "GetCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
         "tags": [
-          "Discount"
+          "Customer"
         ],
         "responses": {
           "200": {
@@ -899,8 +429,45 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "operationId": "GetCustomersCustomer",
+        "summary": "Retrieve a Customer",
+        "description": "Retrieves a Customer.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -910,15 +477,15 @@
         }
       },
       "post": {
-        "operationId": "PostDiscountsDiscount",
-        "summary": "Update a Discount",
-        "description": "Updates a Discount with a given set of rules that define how the Discount behaves.",
+        "operationId": "PostCustomersCustomer",
+        "summary": "Update a Customer",
+        "description": "Updates a Customer.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Discount.",
+            "description": "The id of the Customer.",
             "schema": {
               "type": "string"
             }
@@ -929,42 +496,17 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "code": {
+                  "first_name": {
                     "type": "string",
-                    "description": "A unique code that will be used to redeem the Discount"
+                    "description": "The Customer's first name."
                   },
-                  "is_dynamic": {
+                  "last_name": {
                     "type": "string",
-                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
+                    "description": "The Customer's last name."
                   },
-                  "rule": {
-                    "description": "The Discount Rule that defines how Discounts are calculated",
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/discount_rule"
-                      }
-                    ]
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "starts_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should be available."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should no longer be available."
-                  },
-                  "regions": {
-                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                  "phone": {
+                    "description": "The Customer's phone number.",
+                    "type": "object"
                   }
                 }
               }
@@ -972,7 +514,7 @@
           }
         },
         "tags": [
-          "Discount"
+          "Customer"
         ],
         "responses": {
           "200": {
@@ -981,54 +523,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/dynamic-codes/{code}": {
-      "delete": {
-        "operationId": "DeleteDiscountsDiscountDynamicCodesCode",
-        "summary": "Delete a dynamic code",
-        "description": "Deletes a dynamic code from a Discount.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "code",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -2205,8 +1701,11 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/order"
+                      }
                     }
                   }
                 }
@@ -2685,15 +2184,24 @@
         }
       }
     },
-    "/regions/{id}/countries": {
+    "/discounts/{id}/regions/{region_id}": {
       "post": {
-        "operationId": "PostRegionsRegionCountries",
-        "summary": "Add Country",
-        "description": "Adds a Country to the list of Countries in a Region",
+        "operationId": "PostDiscountsDiscountRegionsRegion",
+        "summary": "Adds Region availability",
+        "description": "Adds a Region to the list of Regions that a Discount can be used in.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
+            "required": true,
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "region_id",
             "required": true,
             "description": "The id of the Region.",
             "schema": {
@@ -2701,22 +2209,8 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "country_code": {
-                    "description": "The 2 character ISO code for the Country.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
-          "Region"
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -2725,183 +2219,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/fulfillment-providers": {
-      "post": {
-        "operationId": "PostRegionsRegionFulfillmentProviders",
-        "summary": "Add Fulfillment Provider",
-        "description": "Adds a Fulfillment Provider to a Region",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "provider_id": {
-                    "description": "The id of the Fulfillment Provider to add.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/payment-providers": {
-      "post": {
-        "operationId": "PostRegionsRegionPaymentProviders",
-        "summary": "Add Payment Provider",
-        "description": "Adds a Payment Provider to a Region",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "provider_id": {
-                    "description": "The id of the Payment Provider to add.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions": {
-      "post": {
-        "operationId": "PostRegions",
-        "summary": "Create a Region",
-        "description": "Creates a Region",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "name": {
-                    "description": "The name of the Region",
-                    "type": "string"
-                  },
-                  "currency_code": {
-                    "description": "The 3 character ISO currency code to use for the Region.",
-                    "type": "string"
-                  },
-                  "tax_code": {
-                    "description": "An optional tax code the Region.",
-                    "type": "string"
-                  },
-                  "tax_rate": {
-                    "description": "The tax rate to use on Orders in the Region.",
-                    "type": "number"
-                  },
-                  "payment_providers": {
-                    "description": "A list of Payment Providers that should be enabled for the Region",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "fulfillment_providers": {
-                    "description": "A list of Fulfillment Providers that should be enabled for the Region",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "countries": {
-                    "description": "A list of countries that should be included in the Region.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -2910,61 +2229,32 @@
           }
         }
       },
-      "get": {
-        "operationId": "GetRegions",
-        "summary": "List Regions",
-        "description": "Retrieves a list of Regions.",
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "regions": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/region"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/metadata/{key}": {
       "delete": {
-        "operationId": "DeleteRegionsRegionMetadataKey",
-        "summary": "Delete Metadata",
-        "description": "Deletes a metadata key.",
+        "operationId": "DeleteDiscountsDiscountRegionsRegion",
+        "summary": "Remove Region availability",
+        "description": "Removes a Region from the list of Regions that a Discount can be used in.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Region.",
+            "description": "The id of the Discount.",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "path",
-            "name": "key",
+            "name": "region_id",
             "required": true,
-            "description": "The metadata key.",
+            "description": "The id of the Region.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Region"
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -2973,8 +2263,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -2984,440 +2274,102 @@
         }
       }
     },
-    "/regions/{id}": {
-      "delete": {
-        "operationId": "DeleteRegionsRegion",
-        "summary": "Delete a Region",
-        "description": "Deletes a Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Region."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetRegionsRegion",
-        "summary": "Retrieve a Region",
-        "description": "Retrieves a Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
+    "/discounts/{id}/products/{product_id}": {
       "post": {
-        "operationId": "PostRegionsRegion",
-        "summary": "Update a Region",
-        "description": "Updates a Region",
+        "operationId": "DeleteDiscountsDiscountProductsProduct",
+        "summary": "Remove Product availability",
+        "description": "Removes a Product from the list of Products that a Discount can be used for.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Region.",
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "product_id",
+            "required": true,
+            "description": "The id of the Product.",
             "schema": {
               "type": "string"
             }
           }
         ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts": {
+      "post": {
+        "operationId": "PostDiscounts",
+        "summary": "Creates a Discount",
+        "description": "Creates a Discount with a given set of rules that define how the Discount behaves.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "properties": {
-                  "name": {
-                    "description": "The name of the Region",
-                    "type": "string"
-                  },
-                  "currency_code": {
-                    "description": "The 3 character ISO currency code to use for the Region.",
-                    "type": "string"
-                  },
-                  "tax_code": {
-                    "description": "An optional tax code the Region.",
-                    "type": "string"
-                  },
-                  "tax_rate": {
-                    "description": "The tax rate to use on Orders in the Region.",
-                    "type": "number"
-                  },
-                  "payment_providers": {
-                    "description": "A list of Payment Providers that should be enabled for the Region",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "fulfillment_providers": {
-                    "description": "A list of Fulfillment Providers that should be enabled for the Region",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "countries": {
-                    "description": "A list of countries that should be included in the Region.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/fulfillment-options": {
-      "get": {
-        "operationId": "GetRegionsRegionFulfillmentOptions",
-        "summary": "List Fulfillment Options available in the Region",
-        "description": "Gathers all the fulfillment options available to in the Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "fulfillment_options": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/countries/{country_code}": {
-      "delete": {
-        "operationId": "PostRegionsRegionCountriesCountry",
-        "summary": "Remove Country",
-        "description": "Removes a Country from the list of Countries in a Region",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "country_code",
-            "required": true,
-            "description": "The 2 character ISO code for the Country.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/fulfillment-providers/{provider_id}": {
-      "delete": {
-        "operationId": "PostRegionsRegionFulfillmentProvidersProvider",
-        "summary": "Remove Fulfillment Provider",
-        "description": "Removes a Fulfillment Provider.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "provider_id",
-            "required": true,
-            "description": "The id of the Fulfillment Provider.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}/payment-providers/{provider_id}": {
-      "delete": {
-        "operationId": "PostRegionsRegionPaymentProvidersProvider",
-        "summary": "Remove Payment Provider",
-        "description": "Removes a Payment Provider.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "provider_id",
-            "required": true,
-            "description": "The id of the Payment Provider.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns": {
-      "get": {
-        "operationId": "GetReturns",
-        "summary": "List Returns",
-        "description": "Retrieves a list of Returns",
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "returns": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/return"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/shipping-options": {
-      "post": {
-        "operationId": "PostShippingOptions",
-        "summary": "Create Shipping Option",
-        "description": "Creates a Shipping Option",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "name": {
-                    "description": "The name of the Shipping Option",
-                    "type": "string"
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Shipping Option will be available.",
-                    "type": "string"
-                  },
-                  "provider_id": {
-                    "description": "The id of the Fulfillment Provider that handles the Shipping Option.",
-                    "type": "string"
-                  },
-                  "profile_id": {
-                    "description": "The id of the Shipping Profile to add the Shipping Option to.",
-                    "type": "number"
-                  },
-                  "data": {
-                    "description": "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option.",
-                    "type": "object"
-                  },
-                  "price_type": {
-                    "description": "The type of the Shipping Option price.",
+                  "code": {
                     "type": "string",
-                    "enum": [
-                      "flat_rate",
-                      "calculated"
+                    "description": "A unique code that will be used to redeem the Discount"
+                  },
+                  "is_dynamic": {
+                    "type": "string",
+                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
+                  },
+                  "rule": {
+                    "description": "The Discount Rule that defines how Discounts are calculated",
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/discount_rule"
+                      }
                     ]
                   },
-                  "amount": {
-                    "description": "The amount to charge for the Shipping Option.",
-                    "type": "integer"
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
                   },
-                  "requirements": {
-                    "description": "The requirements that must be satisfied for the Shipping Option to be available.",
+                  "starts_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should be available."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should no longer be available."
+                  },
+                  "regions": {
+                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
                     "type": "array",
                     "items": {
-                      "properties": {
-                        "type": {
-                          "description": "The type of the requirement",
-                          "type": "string",
-                          "enum": [
-                            "max_subtotal",
-                            "min_subtotal"
-                          ]
-                        },
-                        "amount": {
-                          "description": "The amount to compare with.",
-                          "type": "integer"
-                        }
-                      }
+                      "type": "string"
                     }
                   },
-                  "is_return": {
-                    "description": "Whether the Shipping Option defines a return shipment.",
-                    "type": "boolean"
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
                   }
                 }
               }
@@ -3425,7 +2377,7 @@
           }
         },
         "tags": [
-          "Shipping Option"
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -3434,8 +2386,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "shipping_option": {
-                      "$ref": "#/components/schemas/shipping_option"
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -3445,11 +2397,11 @@
         }
       },
       "get": {
-        "operationId": "GetShippingOptions",
-        "summary": "List Shipping Options",
-        "description": "Retrieves a list of Shipping Options.",
+        "operationId": "GetDiscounts",
+        "summary": "List Discounts",
+        "description": "Retrieves a list of Discounts",
         "tags": [
-          "Shipping Option"
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -3458,11 +2410,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "shipping_options": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/shipping_option"
-                      }
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -3472,24 +2421,83 @@
         }
       }
     },
-    "/shipping-options/{id}": {
-      "delete": {
-        "operationId": "DeleteShippingOptionsOption",
-        "summary": "Delete a Shipping Option",
-        "description": "Deletes a Shipping Option.",
+    "/discounts/{id}/dynamic-codes": {
+      "post": {
+        "operationId": "PostDiscountsDiscountDynamicCodes",
+        "summary": "Create a dynamic Discount code",
+        "description": "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Shipping Option.",
+            "description": "The id of the Discount to create the dynamic code from.\"",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Shipping Option"
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "The unique code that will be used to redeem the Discount."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "An optional set of key-value paris to hold additional information."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts/{id}": {
+      "delete": {
+        "operationId": "DeleteDiscountsDiscount",
+        "summary": "Delete a Discount",
+        "description": "Deletes a Discount.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -3500,7 +2508,7 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "description": "The id of the deleted Shipping Option."
+                      "description": "The id of the deleted Discount"
                     },
                     "object": {
                       "type": "string",
@@ -3517,22 +2525,22 @@
         }
       },
       "get": {
-        "operationId": "GetShippingOptionsOption",
-        "summary": "Retrieve a Shipping Option",
-        "description": "Retrieves a Shipping Option.",
+        "operationId": "GetDiscountsDiscount",
+        "summary": "Retrieve a Discount",
+        "description": "Retrieves a Discount",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Shipping Option.",
+            "description": "The id of the Discount",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Shipping Option"
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -3541,8 +2549,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "shipping_option": {
-                      "$ref": "#/components/schemas/shipping_option"
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -3552,15 +2560,15 @@
         }
       },
       "post": {
-        "operationId": "PostShippingOptionsOption",
-        "summary": "Update Shipping Option",
-        "description": "Updates a Shipping Option",
+        "operationId": "PostDiscountsDiscount",
+        "summary": "Update a Discount",
+        "description": "Updates a Discount with a given set of rules that define how the Discount behaves.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Shipping Option.",
+            "description": "The id of the Discount.",
             "schema": {
               "type": "string"
             }
@@ -3571,32 +2579,41 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "name": {
-                    "description": "The name of the Shipping Option",
-                    "type": "string"
+                  "code": {
+                    "type": "string",
+                    "description": "A unique code that will be used to redeem the Discount"
                   },
-                  "amount": {
-                    "description": "The amount to charge for the Shipping Option.",
-                    "type": "integer"
+                  "is_dynamic": {
+                    "type": "string",
+                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
                   },
-                  "requirements": {
-                    "description": "The requirements that must be satisfied for the Shipping Option to be available.",
+                  "rule": {
+                    "description": "The Discount Rule that defines how Discounts are calculated",
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/discount_rule"
+                      }
+                    ]
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "starts_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should be available."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should no longer be available."
+                  },
+                  "regions": {
+                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
                     "type": "array",
                     "items": {
-                      "properties": {
-                        "type": {
-                          "description": "The type of the requirement",
-                          "type": "string",
-                          "enum": [
-                            "max_subtotal",
-                            "min_subtotal"
-                          ]
-                        },
-                        "amount": {
-                          "description": "The amount to compare with.",
-                          "type": "integer"
-                        }
-                      }
+                      "type": "string"
                     }
                   }
                 }
@@ -3605,7 +2622,7 @@
           }
         },
         "tags": [
-          "Shipping Option"
+          "Discount"
         ],
         "responses": {
           "200": {
@@ -3614,8 +2631,54 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "shipping_option": {
-                      "$ref": "#/components/schemas/shipping_option"
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts/{id}/dynamic-codes/{code}": {
+      "delete": {
+        "operationId": "DeleteDiscountsDiscountDynamicCodesCode",
+        "summary": "Delete a dynamic code",
+        "description": "Deletes a dynamic code from a Discount.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -4846,6 +3909,946 @@
                       "items": {
                         "$ref": "#/components/schemas/product_type"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/countries": {
+      "post": {
+        "operationId": "PostRegionsRegionCountries",
+        "summary": "Add Country",
+        "description": "Adds a Country to the list of Countries in a Region",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "country_code": {
+                    "description": "The 2 character ISO code for the Country.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/fulfillment-providers": {
+      "post": {
+        "operationId": "PostRegionsRegionFulfillmentProviders",
+        "summary": "Add Fulfillment Provider",
+        "description": "Adds a Fulfillment Provider to a Region",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "provider_id": {
+                    "description": "The id of the Fulfillment Provider to add.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/payment-providers": {
+      "post": {
+        "operationId": "PostRegionsRegionPaymentProviders",
+        "summary": "Add Payment Provider",
+        "description": "Adds a Payment Provider to a Region",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "provider_id": {
+                    "description": "The id of the Payment Provider to add.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions": {
+      "post": {
+        "operationId": "PostRegions",
+        "summary": "Create a Region",
+        "description": "Creates a Region",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Region",
+                    "type": "string"
+                  },
+                  "currency_code": {
+                    "description": "The 3 character ISO currency code to use for the Region.",
+                    "type": "string"
+                  },
+                  "tax_code": {
+                    "description": "An optional tax code the Region.",
+                    "type": "string"
+                  },
+                  "tax_rate": {
+                    "description": "The tax rate to use on Orders in the Region.",
+                    "type": "number"
+                  },
+                  "payment_providers": {
+                    "description": "A list of Payment Providers that should be enabled for the Region",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "fulfillment_providers": {
+                    "description": "A list of Fulfillment Providers that should be enabled for the Region",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "countries": {
+                    "description": "A list of countries that should be included in the Region.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetRegions",
+        "summary": "List Regions",
+        "description": "Retrieves a list of Regions.",
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "regions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/region"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/metadata/{key}": {
+      "delete": {
+        "operationId": "DeleteRegionsRegionMetadataKey",
+        "summary": "Delete Metadata",
+        "description": "Deletes a metadata key.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "description": "The metadata key.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}": {
+      "delete": {
+        "operationId": "DeleteRegionsRegion",
+        "summary": "Delete a Region",
+        "description": "Deletes a Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Region."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetRegionsRegion",
+        "summary": "Retrieve a Region",
+        "description": "Retrieves a Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostRegionsRegion",
+        "summary": "Update a Region",
+        "description": "Updates a Region",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Region",
+                    "type": "string"
+                  },
+                  "currency_code": {
+                    "description": "The 3 character ISO currency code to use for the Region.",
+                    "type": "string"
+                  },
+                  "tax_code": {
+                    "description": "An optional tax code the Region.",
+                    "type": "string"
+                  },
+                  "tax_rate": {
+                    "description": "The tax rate to use on Orders in the Region.",
+                    "type": "number"
+                  },
+                  "payment_providers": {
+                    "description": "A list of Payment Providers that should be enabled for the Region",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "fulfillment_providers": {
+                    "description": "A list of Fulfillment Providers that should be enabled for the Region",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "countries": {
+                    "description": "A list of countries that should be included in the Region.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/fulfillment-options": {
+      "get": {
+        "operationId": "GetRegionsRegionFulfillmentOptions",
+        "summary": "List Fulfillment Options available in the Region",
+        "description": "Gathers all the fulfillment options available to in the Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "fulfillment_options": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/countries/{country_code}": {
+      "delete": {
+        "operationId": "PostRegionsRegionCountriesCountry",
+        "summary": "Remove Country",
+        "description": "Removes a Country from the list of Countries in a Region",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "country_code",
+            "required": true,
+            "description": "The 2 character ISO code for the Country.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/fulfillment-providers/{provider_id}": {
+      "delete": {
+        "operationId": "PostRegionsRegionFulfillmentProvidersProvider",
+        "summary": "Remove Fulfillment Provider",
+        "description": "Removes a Fulfillment Provider.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "description": "The id of the Fulfillment Provider.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}/payment-providers/{provider_id}": {
+      "delete": {
+        "operationId": "PostRegionsRegionPaymentProvidersProvider",
+        "summary": "Remove Payment Provider",
+        "description": "Removes a Payment Provider.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "description": "The id of the Payment Provider.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns": {
+      "get": {
+        "operationId": "GetReturns",
+        "summary": "List Returns",
+        "description": "Retrieves a list of Returns",
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "returns": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipping-options": {
+      "post": {
+        "operationId": "PostShippingOptions",
+        "summary": "Create Shipping Option",
+        "description": "Creates a Shipping Option",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Shipping Option",
+                    "type": "string"
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Shipping Option will be available.",
+                    "type": "string"
+                  },
+                  "provider_id": {
+                    "description": "The id of the Fulfillment Provider that handles the Shipping Option.",
+                    "type": "string"
+                  },
+                  "profile_id": {
+                    "description": "The id of the Shipping Profile to add the Shipping Option to.",
+                    "type": "number"
+                  },
+                  "data": {
+                    "description": "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option.",
+                    "type": "object"
+                  },
+                  "price_type": {
+                    "description": "The type of the Shipping Option price.",
+                    "type": "string",
+                    "enum": [
+                      "flat_rate",
+                      "calculated"
+                    ]
+                  },
+                  "amount": {
+                    "description": "The amount to charge for the Shipping Option.",
+                    "type": "integer"
+                  },
+                  "requirements": {
+                    "description": "The requirements that must be satisfied for the Shipping Option to be available.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "type": {
+                          "description": "The type of the requirement",
+                          "type": "string",
+                          "enum": [
+                            "max_subtotal",
+                            "min_subtotal"
+                          ]
+                        },
+                        "amount": {
+                          "description": "The amount to compare with.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "is_return": {
+                    "description": "Whether the Shipping Option defines a return shipment.",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_option": {
+                      "$ref": "#/components/schemas/shipping_option"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetShippingOptions",
+        "summary": "List Shipping Options",
+        "description": "Retrieves a list of Shipping Options.",
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_options": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/shipping_option"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipping-options/{id}": {
+      "delete": {
+        "operationId": "DeleteShippingOptionsOption",
+        "summary": "Delete a Shipping Option",
+        "description": "Deletes a Shipping Option.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Shipping Option.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Shipping Option."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetShippingOptionsOption",
+        "summary": "Retrieve a Shipping Option",
+        "description": "Retrieves a Shipping Option.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Shipping Option.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_option": {
+                      "$ref": "#/components/schemas/shipping_option"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostShippingOptionsOption",
+        "summary": "Update Shipping Option",
+        "description": "Updates a Shipping Option",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Shipping Option.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Shipping Option",
+                    "type": "string"
+                  },
+                  "amount": {
+                    "description": "The amount to charge for the Shipping Option.",
+                    "type": "integer"
+                  },
+                  "requirements": {
+                    "description": "The requirements that must be satisfied for the Shipping Option to be available.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "type": {
+                          "description": "The type of the requirement",
+                          "type": "string",
+                          "enum": [
+                            "max_subtotal",
+                            "min_subtotal"
+                          ]
+                        },
+                        "amount": {
+                          "description": "The amount to compare with.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_option": {
+                      "$ref": "#/components/schemas/shipping_option"
                     }
                   }
                 }
