@@ -12,7 +12,7 @@ const fixtureWriter = require("../../utils/write-fixture").default;
 
 jest.setTimeout(30000);
 
-describe("/shipping-options", () => {
+describe("/shipping-profiles", () => {
   let medusaProcess;
   let dbConnection;
 
@@ -29,55 +29,28 @@ describe("/shipping-options", () => {
     medusaProcess.kill();
   });
 
-  describe("POST /admin/shipping-options", () => {
+  describe("GET /admin/store", () => {
     let regId;
     beforeEach(async () => {
       await adminSeeder(dbConnection);
-      const manager = dbConnection.manager;
-      const created = manager.create(Region, {
-        name: "Test Region",
-        currency_code: "usd",
-        tax_rate: 0,
-        fulfillment_providers: [
-          {
-            id: "test-ful",
-          },
-        ],
-      });
-      const newReg = await manager.save(created);
-      regId = newReg.id;
     });
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "region"`);
       await manager.query(`DELETE FROM "user"`);
     });
 
     it("creates a cart", async () => {
       const api = useApi();
 
-      const getRes = await api.post(
-        `/admin/shipping-options`,
-        {
-          name: "Free Shipping",
-          region_id: regId,
-          provider_id: "test-ful",
-          data: {},
-          price_type: "flat_rate",
-          amount: 100,
+      const getRes = await api.get(`/admin/store`, {
+        headers: {
+          Authorization: "Bearer test_token",
         },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      );
+      });
       expect(getRes.status).toEqual(200);
 
-      fixtureWriter.addFixture("region", getRes.data.shipping_option.region);
-      fixtureWriter.addFixture("shipping_option", getRes.data.shipping_option);
+      fixtureWriter.addFixture("store", getRes.data.store);
     });
   });
 });
