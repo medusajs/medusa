@@ -5,6 +5,8 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "GetGiftCardsCode"
  * summary: "Retrieve Gift Card by Code"
  * description: "Retrieves a Gift Card by its associated unqiue code."
+ * parameters:
+ *   - (path) code=* {string} The unique Gift Card code.
  * tags:
  *   - Gift Card
  * responses:
