@@ -43,7 +43,7 @@ module.exports = async (connection, data = {}) => {
       },
     ],
   });
-  const newProdVar = manager.save(prodVar);
+  const newProdVar = await manager.save(prodVar);
 
   const ma = manager.create(MoneyAmount, {
     variant_id: newProdVar.id,

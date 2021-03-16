@@ -1,4 +1,4 @@
-import passport from "passport"
+import _ from "lodash"
 
 /**
  * @oas [get] /auth
@@ -14,11 +14,13 @@ import passport from "passport"
  *      application/json:
  *        schema:
  *          properties:
- *            customer:
+ *            user:
  *              $ref: "#/components/schemas/user"
  */
 export default async (req, res) => {
   const userService = req.scope.resolve("userService")
   const user = await userService.retrieve(req.user.userId)
-  res.status(200).json({ user })
+
+  const cleanRes = _.omit(user, ["password_hash"])
+  res.status(200).json({ user: cleanRes })
 }
