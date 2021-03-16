@@ -6,8 +6,8 @@ const importFrom = require("import-from");
 const initialize = async () => {
   const app = express();
 
-  const loaders = importFrom(process.cwd(), "@medusajs/medusa/dist/loaders")
-    .default;
+  const cwd = process.cwd();
+  const loaders = importFrom(cwd, "@medusajs/medusa/dist/loaders").default;
 
   const { dbConnection } = await loaders({
     directory: path.resolve(process.cwd()),
