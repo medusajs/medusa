@@ -1000,6 +1000,7 @@ paths:
             application/json:
               schema:
                 properties:
+<<<<<<< HEAD
                   id:
                     description: The id of the Gift Card
                   code:
@@ -1104,6 +1105,8 @@ paths:
             application/json:
               schema:
                 properties:
+=======
+>>>>>>> origin/master
                   customer:
                     $ref: '#/components/schemas/customer'
   '/regions/{id}':
@@ -1156,6 +1159,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+<<<<<<< HEAD
   '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
@@ -1180,11 +1184,15 @@ paths:
                   swap:
                     $ref: '#/components/schemas/swap'
   /shipping-options:
+=======
+  '/products/{id}':
+>>>>>>> origin/master
     get:
-      operationId: GetShippingOptions
-      summary: Retrieve Shipping Options
-      description: Retrieves a list of Shipping Options.
+      operationId: GetProductsProduct
+      summary: Retrieves a Product
+      description: Retrieves a Product.
       parameters:
+<<<<<<< HEAD
         - in: query
           name: is_return
           description: >-
@@ -1192,6 +1200,140 @@ paths:
             Shipping Options are returned.
           schema:
             type: boolean
+        - in: query
+          name: product_ids
+          description: A comma separated list of Product ids to filter Shipping Options by.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: the Region to retrieve Shipping Options from.
+=======
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+>>>>>>> origin/master
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieves a list of Products.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Products.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Products to return,'
+                    type: integer
+                  products:
+                    type: array
+                    items:
+<<<<<<< HEAD
+                      $ref: '#/components/schemas/shipping_option'
+=======
+                      $ref: '#/components/schemas/product'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
+>>>>>>> origin/master
+  '/variants/{variant_id}':
+    get:
+      operationId: GetVariantsVariant
+      summary: Retrieve a Product Variant
+      description: Retrieves a Product Variant by id
+      parameters:
+        - in: path
+          name: variant_id
+          required: true
+          description: The id of the Product Variant.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variant:
+                    $ref: '#/components/schemas/product_variant'
+  /variants:
+    get:
+      operationId: GetVariants
+      summary: Retrieve Product Variants
+      description: Retrieves a list of Product Variants
+      parameters:
+        - in: query
+          name: ids
+          description: A comma separated list of Product Variant ids to filter by.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_variant'
+  /shipping-options:
+    get:
+      operationId: GetShippingOptions
+      summary: Retrieve Shipping Options
+      description: Retrieves a list of Shipping Options.
+      parameters:
         - in: query
           name: product_ids
           description: A comma separated list of Product ids to filter Shipping Options by.
@@ -1240,53 +1382,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
-  '/variants/{variant_id}':
-    get:
-      operationId: GetVariantsVariant
-      summary: Retrieve a Product Variant
-      description: Retrieves a Product Variant by id
-      parameters:
-        - in: path
-          name: variant_id
-          required: true
-          description: The id of the Product Variant.
-          schema:
-            type: string
-      tags:
-        - Product Variant
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  variant:
-                    $ref: '#/components/schemas/product_variant'
-  /variants:
-    get:
-      operationId: GetVariants
-      summary: Retrieve Product Variants
-      description: Retrieves a list of Product Variants
-      parameters:
-        - in: query
-          name: ids
-          description: A comma separated list of Product Variant ids to filter by.
-          schema:
-            type: string
-      tags:
-        - Product Variant
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  variants:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_variant'
 components:
   schemas:
     address:
