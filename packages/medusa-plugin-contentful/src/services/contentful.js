@@ -353,6 +353,11 @@ class ContentfulService extends BaseService {
       }
 
       if (data.fields.includes("thumbnail") && p.thumbnail) {
+        let url = p.thumbnail
+        if (p.thumbnail.startsWith("//")) {
+          url = `https:${url}`
+        }
+
         const thumbnailAsset = await environment.createAsset({
           fields: {
             title: {
@@ -364,8 +369,8 @@ class ContentfulService extends BaseService {
             file: {
               "en-US": {
                 contentType: "image/xyz",
-                fileName: p.thumbnail,
-                upload: p.thumbnail,
+                fileName: url,
+                upload: url,
               },
             },
           },
