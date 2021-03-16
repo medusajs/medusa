@@ -1,5 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
+const { ReturnReason } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -463,6 +464,91 @@ describe("/admin/orders", () => {
               quantity: 1,
             },
           ],
+        }),
+      ]);
+    });
+  });
+
+  describe("POST /admin/orders/:id/return", () => {
+    let rrId;
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        await orderSeeder(dbConnection);
+
+        const created = dbConnection.manager.create(ReturnReason, {
+          value: "too_big",
+          label: "Too Big",
+        });
+        const result = await dbConnection.manager.save(created);
+
+        rrId = result.id;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "fulfillment_item"`);
+      await manager.query(`DELETE FROM "fulfillment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
+      await manager.query(`DELETE FROM "return"`);
+      await manager.query(`DELETE FROM "claim_image"`);
+      await manager.query(`DELETE FROM "claim_tag"`);
+      await manager.query(`DELETE FROM "claim_item"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "claim_order"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("creates a return", async () => {
+      const api = useApi();
+
+      const response = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason_id: rrId,
+              note: "TOO SMALL",
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+
+      expect(response.data.order.returns[0].refund_amount).toEqual(7200);
+      expect(response.data.order.returns[0].items).toEqual([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          reason_id: rrId,
+          note: "TOO SMALL",
         }),
       ]);
     });
