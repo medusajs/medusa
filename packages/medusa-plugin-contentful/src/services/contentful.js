@@ -437,6 +437,23 @@ class ContentfulService extends BaseService {
   }
 
   async updateProductVariantInContentful(variant) {
+    const updateFields = [
+      "title",
+      "prices",
+      "sku",
+      "material",
+      "weight",
+      "length",
+      "height",
+      "origin_country",
+      "options",
+    ]
+
+    const found = data.fields.find((f) => updateFields.includes(f))
+    if (!found) {
+      return
+    }
+
     try {
       // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
 
