@@ -534,6 +534,510 @@
         }
       }
     },
+    "/discounts/{id}/regions/{region_id}": {
+      "post": {
+        "operationId": "PostDiscountsDiscountRegionsRegion",
+        "summary": "Adds Region availability",
+        "description": "Adds a Region to the list of Regions that a Discount can be used in.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "region_id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteDiscountsDiscountRegionsRegion",
+        "summary": "Remove Region availability",
+        "description": "Removes a Region from the list of Regions that a Discount can be used in.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "region_id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts/{id}/products/{product_id}": {
+      "post": {
+        "operationId": "DeleteDiscountsDiscountProductsProduct",
+        "summary": "Remove Product availability",
+        "description": "Removes a Product from the list of Products that a Discount can be used for.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "product_id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts": {
+      "post": {
+        "operationId": "PostDiscounts",
+        "summary": "Creates a Discount",
+        "description": "Creates a Discount with a given set of rules that define how the Discount behaves.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "A unique code that will be used to redeem the Discount"
+                  },
+                  "is_dynamic": {
+                    "type": "string",
+                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
+                  },
+                  "rule": {
+                    "description": "The Discount Rule that defines how Discounts are calculated",
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/discount_rule"
+                      }
+                    ]
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "starts_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should be available."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should no longer be available."
+                  },
+                  "regions": {
+                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetDiscounts",
+        "summary": "List Discounts",
+        "description": "Retrieves a list of Discounts",
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts/{id}/dynamic-codes": {
+      "post": {
+        "operationId": "PostDiscountsDiscountDynamicCodes",
+        "summary": "Create a dynamic Discount code",
+        "description": "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount to create the dynamic code from.\"",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "The unique code that will be used to redeem the Discount."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "An optional set of key-value paris to hold additional information."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts/{id}": {
+      "delete": {
+        "operationId": "DeleteDiscountsDiscount",
+        "summary": "Delete a Discount",
+        "description": "Deletes a Discount.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Discount"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetDiscountsDiscount",
+        "summary": "Retrieve a Discount",
+        "description": "Retrieves a Discount",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostDiscountsDiscount",
+        "summary": "Update a Discount",
+        "description": "Updates a Discount with a given set of rules that define how the Discount behaves.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "A unique code that will be used to redeem the Discount"
+                  },
+                  "is_dynamic": {
+                    "type": "string",
+                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
+                  },
+                  "rule": {
+                    "description": "The Discount Rule that defines how Discounts are calculated",
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/discount_rule"
+                      }
+                    ]
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "starts_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should be available."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Discount should no longer be available."
+                  },
+                  "regions": {
+                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discounts/{id}/dynamic-codes/{code}": {
+      "delete": {
+        "operationId": "DeleteDiscountsDiscountDynamicCodesCode",
+        "summary": "Delete a dynamic code",
+        "description": "Deletes a dynamic code from a Discount.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "description": "The id of the Discount",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/gift-cards": {
       "post": {
         "operationId": "PostGiftCards",
@@ -1400,7 +1904,7 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Swap.",
+            "description": "The id of the Order.",
             "schema": {
               "type": "string"
             }
@@ -1690,7 +2194,7 @@
       "get": {
         "operationId": "GetOrders",
         "summary": "List Orders",
-        "description": "Retrieves an list of Orders",
+        "description": "Retrieves a list of Orders",
         "tags": [
           "Order"
         ],
@@ -2002,6 +2506,14 @@
                           "description": "The id of the Line Item.",
                           "type": "string"
                         },
+                        "reason_id": {
+                          "description": "The id of the Return Reason to use.",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "An optional note with information about the Return.",
+                          "type": "string"
+                        },
                         "quantity": {
                           "description": "The quantity of the Line Item.",
                           "type": "integer"
@@ -2175,510 +2687,6 @@
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/regions/{region_id}": {
-      "post": {
-        "operationId": "PostDiscountsDiscountRegionsRegion",
-        "summary": "Adds Region availability",
-        "description": "Adds a Region to the list of Regions that a Discount can be used in.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "region_id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteDiscountsDiscountRegionsRegion",
-        "summary": "Remove Region availability",
-        "description": "Removes a Region from the list of Regions that a Discount can be used in.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "region_id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/products/{product_id}": {
-      "post": {
-        "operationId": "DeleteDiscountsDiscountProductsProduct",
-        "summary": "Remove Product availability",
-        "description": "Removes a Product from the list of Products that a Discount can be used for.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "product_id",
-            "required": true,
-            "description": "The id of the Product.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts": {
-      "post": {
-        "operationId": "PostDiscounts",
-        "summary": "Creates a Discount",
-        "description": "Creates a Discount with a given set of rules that define how the Discount behaves.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "code": {
-                    "type": "string",
-                    "description": "A unique code that will be used to redeem the Discount"
-                  },
-                  "is_dynamic": {
-                    "type": "string",
-                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
-                  },
-                  "rule": {
-                    "description": "The Discount Rule that defines how Discounts are calculated",
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/discount_rule"
-                      }
-                    ]
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "starts_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should be available."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should no longer be available."
-                  },
-                  "regions": {
-                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDiscounts",
-        "summary": "List Discounts",
-        "description": "Retrieves a list of Discounts",
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/dynamic-codes": {
-      "post": {
-        "operationId": "PostDiscountsDiscountDynamicCodes",
-        "summary": "Create a dynamic Discount code",
-        "description": "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount to create the dynamic code from.\"",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "code"
-                ],
-                "properties": {
-                  "code": {
-                    "type": "string",
-                    "description": "The unique code that will be used to redeem the Discount."
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "An optional set of key-value paris to hold additional information."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}": {
-      "delete": {
-        "operationId": "DeleteDiscountsDiscount",
-        "summary": "Delete a Discount",
-        "description": "Deletes a Discount.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Discount"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDiscountsDiscount",
-        "summary": "Retrieve a Discount",
-        "description": "Retrieves a Discount",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostDiscountsDiscount",
-        "summary": "Update a Discount",
-        "description": "Updates a Discount with a given set of rules that define how the Discount behaves.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "code": {
-                    "type": "string",
-                    "description": "A unique code that will be used to redeem the Discount"
-                  },
-                  "is_dynamic": {
-                    "type": "string",
-                    "description": "Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules."
-                  },
-                  "rule": {
-                    "description": "The Discount Rule that defines how Discounts are calculated",
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/discount_rule"
-                      }
-                    ]
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "starts_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should be available."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Discount should no longer be available."
-                  },
-                  "regions": {
-                    "description": "A list of Region ids representing the Regions in which the Discount can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/discounts/{id}/dynamic-codes/{code}": {
-      "delete": {
-        "operationId": "DeleteDiscountsDiscountDynamicCodesCode",
-        "summary": "Delete a dynamic code",
-        "description": "Deletes a dynamic code from a Discount.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "code",
-            "required": true,
-            "description": "The id of the Discount",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -4548,6 +4556,183 @@
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons": {
+      "post": {
+        "operationId": "PostReturnReasons",
+        "summary": "Create a Return Reason",
+        "description": "Creates a Return Reason",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "label": {
+                    "description": "The label to display to the Customer.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "The value that the Return Reason will be identified by. Must be unique.",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "An optional description to for the Reason.",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetReturnReasons",
+        "summary": "List Return Reasons",
+        "description": "Retrieves a list of Return Reasons.",
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reasons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return_reason"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons/{id}": {
+      "get": {
+        "operationId": "GetReturnReasonsReason",
+        "summary": "Retrieve a Return Reason",
+        "description": "Retrieves a Return Reason.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostReturnReasonsReason",
+        "summary": "Update a Return Reason",
+        "description": "Updates a Return Reason",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "label": {
+                    "description": "The label to display to the Customer.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "The value that the Return Reason will be identified by. Must be unique.",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "An optional description to for the Reason.",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
                     }
                   }
                 }
@@ -7414,6 +7599,60 @@
           "recieved_quantity": {
             "description": "The quantity that was received in the warehouse.",
             "type": "integer"
+          },
+          "reason": {
+            "description": "The reason for returning the item.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/return_reason"
+              }
+            ]
+          },
+          "note": {
+            "description": "An optional note with additional details about the Return.",
+            "type": "string"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "return_reason": {
+        "title": "Return Reason",
+        "description": "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned.",
+        "x-resourceId": "return_reason",
+        "properties": {
+          "id": {
+            "description": "The id of the Return Reason will start with `rr_`.",
+            "type": "string"
+          },
+          "description": {
+            "description": "A description of the Reason.",
+            "type": "string"
+          },
+          "label": {
+            "description": "A text that can be displayed to the Customer as a reason.",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value to identify the reason by.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
           },
           "metadata": {
             "description": "An optional key-value map with additional information.",

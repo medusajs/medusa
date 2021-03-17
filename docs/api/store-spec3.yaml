@@ -237,6 +237,12 @@ paths:
                       quantity:
                         description: The quantity of the Product Variant to add
                         type: integer
+                context:
+                  description: >-
+                    An optional object to provide context to the Cart. The
+                    `context` field is automatically populated with `ip` and
+                    `user_agent`
+                  type: object
       tags:
         - Cart
       responses:
@@ -594,6 +600,9 @@ paths:
                 customer_id:
                   description: The id of the Customer to associate the Cart with.
                   type: string
+                context:
+                  description: An optional object to provide context to the Cart.
+                  type: object
       tags:
         - Cart
       responses:
@@ -977,6 +986,37 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
+                  region:
+                    $ref: '#/components/schemas/region'
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
@@ -1025,20 +1065,29 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  '/regions/{id}':
+  /orders:
     get:
-      operationId: GetRegionsRegion
-      summary: Retrieves a Region
-      description: Retrieves a Region.
+      operationId: GetOrders
+      summary: Look Up an Order
+      description: >-
+        Looks for an Order with a given `display_id`, `email` pair. The
+        `display_id`, `email` pair must match in order for the Order to be
+        returned.
       parameters:
-        - in: path
-          name: id
+        - in: query
+          name: display_id
           required: true
-          description: The id of the Region.
+          description: The display id given to the Order.
+          schema:
+            type: number
+        - in: query
+          name: email
+          required: true
+          description: The email of the Order with the given display_id.
           schema:
             type: string
       tags:
-        - Region
+        - Order
       responses:
         '200':
           description: OK
@@ -1046,35 +1095,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  region:
-                    $ref: '#/components/schemas/region'
-  /regions:
-    get:
-      operationId: GetRegions
-      summary: List Regions
-      description: Retrieves a list of Regions.
-      tags:
-        - Region
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of regions.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of regions to return,'
-                    type: integer
-                  regions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/region'
+                  order:
+                    $ref: '#/components/schemas/order'
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -1125,6 +1147,205 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+  /return-reasons:
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
+  '/regions/{id}':
+    get:
+      operationId: GetRegionsRegion
+      summary: Retrieves a Region
+      description: Retrieves a Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /regions:
+    get:
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of regions.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of regions to return,'
+                    type: integer
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
+  /returns:
+    post:
+      operationId: PostReturns
+      summary: Create Return
+      description: Creates a Return for an Order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order_id:
+                  type: string
+                  description: The id of the Order to create the Return from.
+                items:
+                  description: The items to include in the Return.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item from the Order.
+                        type: string
+                      quantity:
+                        description: The quantity to return.
+                        type: integer
+                return_shipping:
+                  description: >-
+                    If the Return is to be handled by the store operator the
+                    Customer can choose a Return Shipping Method. Alternatvely
+                    the Customer can handle the Return themselves.
+                  type: object
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The id of the Shipping Option to create the Shipping
+                        Method from.
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return:
+                    $ref: '#/components/schemas/return'
+  /shipping-options:
+    get:
+      operationId: GetShippingOptions
+      summary: Retrieve Shipping Options
+      description: Retrieves a list of Shipping Options.
+      parameters:
+        - in: query
+          name: is_return
+          description: >-
+            Whether return Shipping Options should be included. By default all
+            Shipping Options are returned.
+          schema:
+            type: boolean
+        - in: query
+          name: product_ids
+          description: A comma separated list of Product ids to filter Shipping Options by.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: the Region to retrieve Shipping Options from.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+  '/shipping-options/{cart_id}':
+    get:
+      operationId: GetShippingOptionsCartId
+      summary: Retrieve Shipping Options for Cart
+      description: Retrieves a list of Shipping Options available to a cart.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
   '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
@@ -1195,60 +1416,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_variant'
-  /shipping-options:
-    get:
-      operationId: GetShippingOptions
-      summary: Retrieve Shipping Options
-      description: Retrieves a list of Shipping Options.
-      parameters:
-        - in: query
-          name: product_ids
-          description: A comma separated list of Product ids to filter Shipping Options by.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: the Region to retrieve Shipping Options from.
-          schema:
-            type: string
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
-  '/shipping-options/{cart_id}':
-    get:
-      operationId: GetShippingOptionsCartId
-      summary: Retrieve Shipping Options for Cart
-      description: Retrieves a list of Shipping Options available to a cart.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
 components:
   schemas:
     address:
@@ -3064,6 +3231,47 @@ components:
         recieved_quantity:
           description: The quantity that was received in the warehouse.
           type: integer
+        reason:
+          description: The reason for returning the item.
+          anyOf:
+            - $ref: '#/components/schemas/return_reason'
+        note:
+          description: An optional note with additional details about the Return.
+          type: string
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    return_reason:
+      title: Return Reason
+      description: >-
+        A Reason for why a given product is returned. A Return Reason can be
+        used on Return Items in order to indicate why a Line Item was returned.
+      x-resourceId: return_reason
+      properties:
+        id:
+          description: The id of the Return Reason will start with `rr_`.
+          type: string
+        description:
+          description: A description of the Reason.
+          type: string
+        label:
+          description: A text that can be displayed to the Customer as a reason.
+          type: string
+        value:
+          description: The value to identify the reason by.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
         metadata:
           description: An optional key-value map with additional information.
           type: object
