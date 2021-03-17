@@ -36,6 +36,10 @@ class TestFulService extends FulfillmentService {
     return Promise.resolve({});
   }
 
+  createReturn() {
+    return Promise.resolve({});
+  }
+
   createFulfillment() {
     // No data is being sent anywhere
     return Promise.resolve({});

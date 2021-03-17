@@ -6,8 +6,19 @@ const route = Router()
 export default app => {
   app.use("/orders", route)
 
+  /**
+   * Lookup
+   */
+  route.get("/", middlewares.wrap(require("./lookup-order").default))
+
+  /**
+   * Retrieve Order
+   */
   route.get("/:id", middlewares.wrap(require("./get-order").default))
 
+  /**
+   * Retrieve by Cart Id
+   */
   route.get(
     "/cart/:cart_id",
     middlewares.wrap(require("./get-order-by-cart").default)
@@ -42,6 +53,7 @@ export const defaultFields = [
   "shipping_total",
   "discount_total",
   "tax_total",
+  "items.refundable",
   "refunded_total",
   "gift_card_total",
   "subtotal",
@@ -70,6 +82,7 @@ export const allowedFields = [
   "email",
   "region_id",
   "currency_code",
+  "items.refundable",
   "tax_rate",
   "created_at",
   "shipping_total",

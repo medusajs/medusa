@@ -51,6 +51,9 @@ import { defaultFields, defaultRelations } from "./"
  *           customer_id:
  *             description: "The id of the Customer to associate the Cart with."
  *             type: string
+ *           context:
+ *             description: "An optional object to provide context to the Cart."
+ *             type: object
  * tags:
  *   - Cart
  * responses:
@@ -85,6 +88,7 @@ export default async (req, res) => {
       })
       .optional(),
     customer_id: Validator.string().optional(),
+    context: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)

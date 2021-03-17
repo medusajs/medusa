@@ -75,6 +75,130 @@
     }
   ],
   "paths": {
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate Customer",
+        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteAuth",
+        "summary": "Log out",
+        "description": "Destroys a Customer's authenticated session.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "description": "Gets the currently logged in Customer.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/{email}": {
+      "get": {
+        "operationId": "GetAuthEmail",
+        "summary": "Check if email has account",
+        "description": "Checks if a Customer with the given email has signed up.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "description": "The Customer's email.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "exists": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -217,6 +341,10 @@
                         }
                       }
                     }
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+                    "type": "object"
                   }
                 }
               }
@@ -757,6 +885,10 @@
                   "customer_id": {
                     "description": "The id of the Customer to associate the Cart with.",
                     "type": "string"
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart.",
+                    "type": "object"
                   }
                 }
               }
@@ -1349,111 +1481,24 @@
         }
       }
     },
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate Customer",
-        "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteAuth",
-        "summary": "Log out",
-        "description": "Destroys a Customer's authenticated session.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/gift-cards/{code}": {
       "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in Customer.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/{email}": {
-      "get": {
-        "operationId": "GetAuthEmail",
-        "summary": "Check if email has account",
-        "description": "Checks if a Customer with the given email has signed up.",
+        "operationId": "GetGiftCardsCode",
+        "summary": "Retrieve Gift Card by Code",
+        "description": "Retrieves a Gift Card by its associated unqiue code.",
         "parameters": [
           {
             "in": "path",
-            "name": "email",
+            "name": "code",
             "required": true,
-            "description": "The Customer's email.",
+            "description": "The unique Gift Card code.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Auth"
+          "Gift Card"
         ],
         "responses": {
           "200": {
@@ -1462,8 +1507,20 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "exists": {
-                      "type": "boolean"
+                    "id": {
+                      "description": "The id of the Gift Card"
+                    },
+                    "code": {
+                      "description": "The code of the Gift Card"
+                    },
+                    "value": {
+                      "description": "The original value of the Gift Card."
+                    },
+                    "balance": {
+                      "description": "The current balanace of the Gift Card"
+                    },
+                    "region": {
+                      "$ref": "#/components/schemas/region"
                     }
                   }
                 }
@@ -1473,61 +1530,24 @@
         }
       }
     },
-    "/orders/cart/{cart_id}": {
+    "/products/{id}": {
       "get": {
-        "operationId": "GetOrdersOrderCartId",
-        "summary": "Retrieves Order by Cart id",
-        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cart_id",
-            "required": true,
-            "description": "The id of Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieves an Order",
-        "description": "Retrieves an Order",
+        "operationId": "GetProductsProduct",
+        "summary": "Retrieves a Product",
+        "description": "Retrieves a Product.",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Order.",
+            "description": "The id of the Product.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Order"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -1536,8 +1556,115 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "GetProducts",
+        "summary": "List Products",
+        "description": "Retrieves a list of Products.",
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of Products.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of Products to return,",
+                      "type": "integer"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons/{id}": {
+      "get": {
+        "operationId": "GetReturnReasonsReason",
+        "summary": "Retrieve a Return Reason",
+        "description": "Retrieves a Return Reason.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons": {
+      "get": {
+        "operationId": "GetReturnReasons",
+        "summary": "List Return Reasons",
+        "description": "Retrieves a list of Return Reasons.",
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reasons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return_reason"
+                      }
                     }
                   }
                 }
@@ -1625,24 +1752,24 @@
         }
       }
     },
-    "/swaps/{cart_id}": {
+    "/orders/cart/{cart_id}": {
       "get": {
-        "operationId": "GetSwapsSwapCartId",
-        "summary": "Retrieve Swap by Cart id",
-        "description": "Retrieves a Swap by the id of the Cart used to confirm the Swap.",
+        "operationId": "GetOrdersOrderCartId",
+        "summary": "Retrieves Order by Cart id",
+        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
         "parameters": [
           {
             "in": "path",
             "name": "cart_id",
             "required": true,
-            "description": "The id of the Cart",
+            "description": "The id of Cart.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Swap"
+          "Order"
         ],
         "responses": {
           "200": {
@@ -1651,8 +1778,157 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "swap": {
-                      "$ref": "#/components/schemas/swap"
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "operationId": "GetOrdersOrder",
+        "summary": "Retrieves an Order",
+        "description": "Retrieves an Order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "operationId": "GetOrders",
+        "summary": "Look Up an Order",
+        "description": "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "display_id",
+            "required": true,
+            "description": "The display id given to the Order.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "description": "The email of the Order with the given display_id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns": {
+      "post": {
+        "operationId": "PostReturns",
+        "summary": "Create Return",
+        "description": "Creates a Return for an Order.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "order_id": {
+                    "type": "string",
+                    "description": "The id of the Order to create the Return from."
+                  },
+                  "items": {
+                    "description": "The items to include in the Return.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item from the Order.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity to return.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "return_shipping": {
+                    "description": "If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.",
+                    "type": "object",
+                    "properties": {
+                      "option_id": {
+                        "type": "string",
+                        "description": "The id of the Shipping Option to create the Shipping Method from."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/return"
                     }
                   }
                 }
@@ -1668,6 +1944,14 @@
         "summary": "Retrieve Shipping Options",
         "description": "Retrieves a list of Shipping Options.",
         "parameters": [
+          {
+            "in": "query",
+            "name": "is_return",
+            "description": "Whether return Shipping Options should be included. By default all Shipping Options are returned.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
           {
             "in": "query",
             "name": "product_ids",
@@ -1749,24 +2033,24 @@
         }
       }
     },
-    "/products/{id}": {
+    "/swaps/{cart_id}": {
       "get": {
-        "operationId": "GetProductsProduct",
-        "summary": "Retrieves a Product",
-        "description": "Retrieves a Product.",
+        "operationId": "GetSwapsSwapCartId",
+        "summary": "Retrieve Swap by Cart id",
+        "description": "Retrieves a Swap by the id of the Cart used to confirm the Swap.",
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "cart_id",
             "required": true,
-            "description": "The id of the Product.",
+            "description": "The id of the Cart",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Product"
+          "Swap"
         ],
         "responses": {
           "200": {
@@ -1775,49 +2059,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/product"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products": {
-      "get": {
-        "operationId": "GetProducts",
-        "summary": "List Products",
-        "description": "Retrieves a list of Products.",
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of Products to return,",
-                      "type": "integer"
-                    },
-                    "products": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product"
-                      }
+                    "swap": {
+                      "$ref": "#/components/schemas/swap"
                     }
                   }
                 }
@@ -4032,6 +4275,60 @@
           "recieved_quantity": {
             "description": "The quantity that was received in the warehouse.",
             "type": "integer"
+          },
+          "reason": {
+            "description": "The reason for returning the item.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/return_reason"
+              }
+            ]
+          },
+          "note": {
+            "description": "An optional note with additional details about the Return.",
+            "type": "string"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "return_reason": {
+        "title": "Return Reason",
+        "description": "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned.",
+        "x-resourceId": "return_reason",
+        "properties": {
+          "id": {
+            "description": "The id of the Return Reason will start with `rr_`.",
+            "type": "string"
+          },
+          "description": {
+            "description": "A description of the Reason.",
+            "type": "string"
+          },
+          "label": {
+            "description": "A text that can be displayed to the Customer as a reason.",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value to identify the reason by.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
           },
           "metadata": {
             "description": "An optional key-value map with additional information.",
