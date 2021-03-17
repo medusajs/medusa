@@ -83,7 +83,23 @@ class DiscountService extends BaseService {
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().optional(),
-      user_limit: Validator.number().optional(),
+      usage_limit: Validator.number()
+        .positive()
+        .allow(null)
+        .optional(),
+      usage_count: Validator.number()
+        .positive()
+        .optional(),
+      created_at: Validator.date().optional(),
+      updated_at: Validator.date()
+        .allow(null)
+        .optional(),
+      deleted_at: Validator.date()
+        .allow(null)
+        .optional(),
+      metadata: Validator.object()
+        .allow(null)
+        .optional(),
     })
 
     const { value, error } = schema.validate(discountRule)

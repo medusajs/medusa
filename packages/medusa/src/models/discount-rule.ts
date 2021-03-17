@@ -7,7 +7,6 @@ import {
   Index,
   Column,
   PrimaryColumn,
-  OneToOne,
   ManyToMany,
   JoinTable,
 } from "typeorm"
@@ -67,6 +66,9 @@ export class DiscountRule {
   @Column({ nullable: true })
   usage_limit: number
 
+  @Column({ default: 0 })
+  usage_count: number
+
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
@@ -121,6 +123,9 @@ export class DiscountRule {
  *       $ref: "#/components/schemas/product"
  *   usage_limit:
  *     description: "The maximum number of times that a discount can be used."
+ *     type: integer
+ *   usage_count:
+ *     description: "The number of times a discount has been used."
  *     type: integer
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
