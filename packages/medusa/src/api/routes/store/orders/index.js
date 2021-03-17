@@ -42,6 +42,9 @@ export const defaultRelations = [
 
 export const defaultFields = [
   "id",
+  "status",
+  "fulfillment_status",
+  "payment_status",
   "display_id",
   "cart_id",
   "customer_id",
@@ -76,6 +79,9 @@ export const allowedRelations = [
 
 export const allowedFields = [
   "id",
+  "status",
+  "fulfillment_status",
+  "payment_status",
   "display_id",
   "cart_id",
   "customer_id",

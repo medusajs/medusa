@@ -59,6 +59,7 @@ describe("/store/gift-cards", () => {
         code: "GC_TEST",
         value: 200,
         balance: 120,
+        region: expect.any(Object),
       });
     });
   });
