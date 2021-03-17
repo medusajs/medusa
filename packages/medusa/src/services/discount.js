@@ -83,7 +83,12 @@ class DiscountService extends BaseService {
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().optional(),
-      user_limit: Validator.number().optional(),
+      usage_limit: Validator.number()
+        .min(0)
+        .optional(),
+      usage_count: Validator.number()
+        .positive()
+        .optional(),
     })
 
     const { value, error } = schema.validate(discountRule)
@@ -276,7 +281,8 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        discount.rule = this.validateDiscountRule_(rule)
+        const updated = this.validateDiscountRule_(rule)
+        discount.rule = { ...discount.rule, ...updated }
       }
 
       for (const [key, value] of Object.entries(rest)) {
