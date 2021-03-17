@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.0...medusa-core-utils@1.1.2) (2021-03-17)
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+
+
+
+
+
 ## [1.1.1](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.0...medusa-core-utils@1.1.1) (2021-03-17)
 
 
