@@ -12,7 +12,7 @@ const fixtureWriter = require("../../utils/write-fixture").default;
 
 jest.setTimeout(30000);
 
-describe("/shipping-options", () => {
+describe("/shipping-profiles", () => {
   let medusaProcess;
   let dbConnection;
 
@@ -29,7 +29,7 @@ describe("/shipping-options", () => {
     medusaProcess.kill();
   });
 
-  describe("POST /admin/shipping-options", () => {
+  describe("POST /admin/shipping-profiles", () => {
     let regId;
     beforeEach(async () => {
       await adminSeeder(dbConnection);
@@ -58,26 +58,17 @@ describe("/shipping-options", () => {
     it("creates a cart", async () => {
       const api = useApi();
 
-      const getRes = await api.post(
-        `/admin/shipping-options`,
-        {
-          name: "Free Shipping",
-          region_id: regId,
-          provider_id: "test-ful",
-          data: {},
-          price_type: "flat_rate",
-          amount: 100,
+      const getRes = await api.get(`/admin/shipping-profiles`, {
+        headers: {
+          Authorization: "Bearer test_token",
         },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      );
+      });
       expect(getRes.status).toEqual(200);
 
-      fixtureWriter.addFixture("region", getRes.data.shipping_option.region);
-      fixtureWriter.addFixture("shipping_option", getRes.data.shipping_option);
+      fixtureWriter.addFixture(
+        "shipping_profile",
+        getRes.data.shipping_profiles[0]
+      );
     });
   });
 });
