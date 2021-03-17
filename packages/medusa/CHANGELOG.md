@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.14](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.13...@medusajs/medusa@1.1.14) (2021-03-17)
+
+
+### Bug Fixes
+
+* expose statusses on order ([a26b12a](https://github.com/medusajs/medusa/commit/a26b12a5367738d9434dc46fadaea6f9a5d5a498))
+* **medusa:** Add usage_count + usage_limit to discount ([c513813](https://github.com/medusajs/medusa/commit/c513813bb680486f309f68b03bf878151e0a7b1e))
+
+
+
+
+
 ## [1.1.13](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.11...@medusajs/medusa@1.1.13) (2021-03-17)
 
 
