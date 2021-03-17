@@ -13,6 +13,8 @@ const defaultRelations = [
   "fulfillments.tracking_links",
   "fulfillments.items",
   "returns",
+  "returns.items",
+  "returns.items.reason",
   "gift_cards",
   "gift_card_transactions",
   "claims",
