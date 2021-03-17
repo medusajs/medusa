@@ -84,7 +84,7 @@ class DiscountService extends BaseService {
       allocation: Validator.string().required(),
       valid_for: Validator.array().optional(),
       usage_limit: Validator.number()
-        .min(0)
+        .positive()
         .optional(),
       usage_count: Validator.number()
         .positive()
@@ -281,8 +281,7 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        const updated = this.validateDiscountRule_(rule)
-        discount.rule = { ...discount.rule, ...updated }
+        discount.rule = this.validateDiscountRule_(rule)
       }
 
       for (const [key, value] of Object.entries(rest)) {
