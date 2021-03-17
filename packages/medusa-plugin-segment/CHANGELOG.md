@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5...medusa-plugin-segment@1.1.7) (2021-03-17)
+
+
+### Features
+
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+
+
+
+
+
 ## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5...medusa-plugin-segment@1.1.6) (2021-03-17)
 
 

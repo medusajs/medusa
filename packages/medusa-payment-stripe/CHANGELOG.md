@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-payment-stripe@1.1.3...medusa-payment-stripe@1.1.5) (2021-03-17)
+
+
+### Bug Fixes
+
+* floor amounts ([5e2f550](https://github.com/medusajs/medusa/commit/5e2f550ae10a3eb7636edf6bf99197517a1fa7b3))
+* round instead of floor ([74a6b67](https://github.com/medusajs/medusa/commit/74a6b67f9db0a66fdf3cf69be6db62ae0deea635))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-payment-stripe@1.1.3...medusa-payment-stripe@1.1.4) (2021-03-17)
 
 
