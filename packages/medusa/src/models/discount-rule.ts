@@ -66,7 +66,7 @@ export class DiscountRule {
   @Column({ nullable: true })
   usage_limit: number
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   usage_count: number
 
   @CreateDateColumn({ type: "timestamptz" })
