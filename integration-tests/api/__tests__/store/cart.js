@@ -106,12 +106,29 @@ describe("/store/carts", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
         `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
       );
       await manager.query(`DELETE FROM "region"`);
+    });
+
+    it("fails on apply discount if limit has been reached", async () => {
+      const api = useApi();
+
+      try {
+        await api.post("/store/carts/test-cart", {
+          discounts: [{ code: "CREATED" }],
+        });
+      } catch (error) {
+        expect(error.response.status).toEqual(400);
+        expect(error.response.data.message).toEqual(
+          "Discount has been used maximum allowed times"
+        );
+      }
     });
 
     it("updates cart customer id", async () => {

@@ -1,8 +1,7 @@
 import glob from "glob"
 import path from "path"
-import { BaseModel } from "medusa-interfaces"
 import { EntitySchema } from "typeorm"
-import { Lifetime, asClass, asValue } from "awilix"
+import { asClass, asValue } from "awilix"
 
 /**
  * Registers all models in the model directory
