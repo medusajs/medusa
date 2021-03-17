@@ -71,8 +71,6 @@
     }
   ],
   "paths": {
-<<<<<<< HEAD
-=======
     "/auth": {
       "post": {
         "operationId": "PostAuth",
@@ -147,7 +145,6 @@
         }
       }
     },
->>>>>>> origin/master
     "/collections": {
       "post": {
         "operationId": "PostCollections",
@@ -360,80 +357,6 @@
         }
       }
     },
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate a User",
-        "description": "Logs a User in and authorizes them to manage Store settings.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The User's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The User's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in User.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/customers": {
       "post": {
         "operationId": "PostCustomers",
@@ -602,1945 +525,6 @@
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards": {
-      "post": {
-        "operationId": "PostGiftCards",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "value": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCards",
-        "summary": "List Gift Cards",
-        "description": "Retrieves a list of Gift Cards.",
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_cards": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/gift_card"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards/{id}": {
-      "delete": {
-        "operationId": "DeleteGiftCardsGiftCard",
-        "summary": "Delete a Gift Card",
-        "description": "Deletes a Gift Card",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card to delete.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Gift Card"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCardsGiftCard",
-        "summary": "Retrieve a Gift Card",
-        "description": "Retrieves a Gift Card.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostGiftCardsGiftCard",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "balance": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards": {
-      "post": {
-        "operationId": "PostGiftCards",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "value": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCards",
-        "summary": "List Gift Cards",
-        "description": "Retrieves a list of Gift Cards.",
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_cards": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/gift_card"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards/{id}": {
-      "delete": {
-        "operationId": "DeleteGiftCardsGiftCard",
-        "summary": "Delete a Gift Card",
-        "description": "Deletes a Gift Card",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card to delete.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Gift Card"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCardsGiftCard",
-        "summary": "Retrieve a Gift Card",
-        "description": "Retrieves a Gift Card.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostGiftCardsGiftCard",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "balance": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/notifications": {
-      "get": {
-        "operationId": "GetNotifications",
-        "summary": "List Notifications",
-        "description": "Retrieves a list of Notifications.",
-        "tags": [
-          "Notification"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "notifications": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/notification"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/notifications/{id}/resend": {
-      "post": {
-        "operationId": "PostNotificationsNotificationResend",
-        "summary": "Resend Notification",
-        "description": "Resends a previously sent notifications, with the same data but optionally to a different address",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Notification",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Notification"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "notification": {
-                      "$ref": "#/components/schemas/notification"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/shipping-methods": {
-      "post": {
-        "operationId": "PostOrdersOrderShippingMethods",
-        "summary": "Add a Shipping Method",
-        "description": "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "price",
-                  "option_id",
-                  "data"
-                ],
-                "properties": {
-                  "price": {
-                    "type": "integer",
-                    "description": "The price (excluding VAT) that should be charged for the Shipping Method"
-                  },
-                  "option_id": {
-                    "type": "string",
-                    "description": "The id of the Shipping Option to create the Shipping Method from."
-                  },
-                  "data": {
-                    "type": "object",
-                    "description": "The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/cancel": {
-      "post": {
-        "operationId": "PostOrdersOrderCancel",
-        "summary": "Cancel an Order",
-        "description": "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/capture": {
-      "post": {
-        "operationId": "PostOrdersOrderCapture",
-        "summary": "Capture an Order",
-        "description": "Captures all the Payments associated with an Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/claims/{claim_id}/shipments": {
-      "post": {
-        "operationId": "PostOrdersOrderClaimsClaimShipments",
-        "summary": "Create Claim Shipment",
-        "description": "Registers a Claim Fulfillment as shipped.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "claim_id",
-            "required": true,
-            "description": "The id of the Claim.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-<<<<<<< HEAD
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-=======
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "fulfillment_id": {
-                    "description": "The id of the Fulfillment.",
-                    "type": "string"
-                  },
-                  "tracking_numbers": {
-                    "description": "The tracking numbers for the shipment.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
->>>>>>> origin/master
-                    }
-                  }
-                }
-              }
-            }
-          }
-<<<<<<< HEAD
-        }
-      }
-    },
-    "/notifications": {
-      "get": {
-        "operationId": "GetNotifications",
-        "summary": "List Notifications",
-        "description": "Retrieves a list of Notifications.",
-        "tags": [
-          "Notification"
-=======
-        },
-        "tags": [
-          "Order"
->>>>>>> origin/master
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-<<<<<<< HEAD
-                    "notifications": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/notification"
-                      }
-=======
-                    "order": {
-                      "$ref": "#/components/schemas/order"
->>>>>>> origin/master
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-<<<<<<< HEAD
-    "/notifications/{id}/resend": {
-      "post": {
-        "operationId": "PostNotificationsNotificationResend",
-        "summary": "Resend Notification",
-        "description": "Resends a previously sent notifications, with the same data but optionally to a different address",
-=======
-    "/order/{id}/claims": {
-      "post": {
-        "operationId": "PostOrdersOrderClaims",
-        "summary": "Create a Claim",
-        "description": "Creates a Claim.",
->>>>>>> origin/master
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-<<<<<<< HEAD
-            "description": "The id of the Notification",
-=======
-            "description": "The id of the Order.",
->>>>>>> origin/master
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-<<<<<<< HEAD
-        "tags": [
-          "Notification"
-=======
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "type": {
-                    "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
-                    "type": "string",
-                    "enum": [
-                      "replace",
-                      "refund"
-                    ]
-                  },
-                  "claim_items": {
-                    "description": "The Claim Items that the Claim will consist of.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item that will be claimed.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The number of items that will be returned",
-                          "type": "integer"
-                        },
-                        "note": {
-                          "description": "Short text describing the Claim Item in further detail.",
-                          "type": "string"
-                        },
-                        "reason": {
-                          "description": "The reason for the Claim",
-                          "type": "string",
-                          "enum": [
-                            "missing_item",
-                            "wrong_item",
-                            "production_failure",
-                            "other"
-                          ]
-                        },
-                        "tags": {
-                          "description": "A list o tags to add to the Claim Item",
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "images": {
-                          "description": "A list of image URL's that will be associated with the Claim",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "return_shipping": {
-                    "description": "Optional details for the Return Shipping Method, if the items are to be sent back.",
-                    "type": "object",
-                    "properties": {
-                      "option_id": {
-                        "type": "string",
-                        "description": "The id of the Shipping Option to create the Shipping Method from."
-                      },
-                      "price": {
-                        "type": "integer",
-                        "description": "The price to charge for the Shipping Method."
-                      }
-                    }
-                  },
-                  "additional_items": {
-                    "description": "The new items to send to the Customer when the Claim type is Replace.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "variant_id": {
-                          "description": "The id of the Product Variant to ship.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Product Variant to ship.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "shipping_methods": {
-                    "description": "The Shipping Methods to send the additional Line Items with.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of an existing Shipping Method",
-                          "type": "string"
-                        },
-                        "option_id": {
-                          "description": "The id of the Shipping Option to create a Shipping Method from",
-                          "type": "string"
-                        },
-                        "price": {
-                          "description": "The price to charge for the Shipping Method",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "refund_amount": {
-                    "description": "The amount to refund the Customer when the Claim type is `refund`.",
-                    "type": "integer"
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
->>>>>>> origin/master
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/fulfillments": {
-      "post": {
-        "operationId": "PostOrdersOrderFulfillments",
-        "summary": "Create a Fulfillment",
-        "description": "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items to include in the Fulfillment.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of Line Item to fulfill.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item to fulfill.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/shipment": {
-      "post": {
-        "operationId": "PostOrdersOrderShipment",
-        "summary": "Create a Shipment",
-        "description": "Registers a Fulfillment as shipped.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "fulfillment_id": {
-                    "description": "The id of the Fulfillment.",
-                    "type": "string"
-                  },
-                  "tracking_numbers": {
-                    "description": "The tracking numbers for the shipment.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/swaps/{swap_id}/shipments": {
-      "post": {
-        "operationId": "PostOrdersOrderSwapsSwapShipments",
-        "summary": "Create Swap Shipment",
-        "description": "Registers a Swap Fulfillment as shipped.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "swap_id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "fulfillment_id": {
-                    "description": "The id of the Fulfillment.",
-                    "type": "string"
-                  },
-                  "tracking_numbers": {
-                    "description": "The tracking numbers for the shipment.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/order/{id}/swaps": {
-      "post": {
-        "operationId": "PostOrdersOrderSwaps",
-        "summary": "Create a Swap",
-        "description": "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "return_items": {
-                    "description": "The Line Items to return as part of the Swap.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item that will be claimed.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The number of items that will be returned",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "return_shipping": {
-                    "description": "How the Swap will be returned.",
-                    "type": "object",
-                    "properties": {
-                      "option_id": {
-                        "type": "string",
-                        "description": "The id of the Shipping Option to create the Shipping Method from."
-                      },
-                      "price": {
-                        "type": "integer",
-                        "description": "The price to charge for the Shipping Method."
-                      }
-                    }
-                  },
-                  "additional_items": {
-                    "description": "The new items to send to the Customer.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "variant_id": {
-                          "description": "The id of the Product Variant to ship.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Product Variant to ship.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/order/{id}/metadata/{key}": {
-      "delete": {
-        "operationId": "DeleteOrdersOrderMetadataKey",
-        "summary": "Delete Metadata",
-        "description": "Deletes a metadata key.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "key",
-            "required": true,
-            "description": "The metadata key.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/claims/{claim_id}/fulfillments": {
-      "post": {
-        "operationId": "PostOrdersOrderClaimsClaimFulfillments",
-        "summary": "Create a Claim Fulfillment",
-        "description": "Creates a Fulfillment for a Claim.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "claim_id",
-            "required": true,
-            "description": "The id of the Claim.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/swaps/{swap_id}/fulfillments": {
-      "post": {
-        "operationId": "PostOrdersOrderSwapsSwapFulfillments",
-        "summary": "Create a Swap Fulfillment",
-        "description": "Creates a Fulfillment for a Swap.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "swap_id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieve an Order",
-        "description": "Retrieves an Order",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders": {
-      "get": {
-        "operationId": "GetOrders",
-        "summary": "List Orders",
-        "description": "Retrieves an list of Orders",
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "orders": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/order"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/swaps/{swap_id}/process-payment": {
-      "post": {
-        "operationId": "PostOrdersOrderSwapsSwapProcessPayment",
-        "summary": "Process a Swap difference",
-        "description": "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "swap_id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/returns/{return_id}/receive": {
-      "post": {
-        "operationId": "PostOrdersOrderReturnsReturnReceive",
-        "summary": "Receive a Return",
-        "description": "Registers a Return as received.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "return_id",
-            "required": true,
-            "description": "The id of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "refund": {
-                    "description": "The amount to refund.",
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/swaps/{swap_id}/receive": {
-      "post": {
-        "operationId": "PostOrdersOrderSwapsSwapReceive",
-        "summary": "Receive a Swap",
-        "description": "Registers a Swap as received.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "swap_id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/refunds": {
-      "post": {
-        "operationId": "PostOrdersOrderRefunds",
-        "summary": "Create a Refund",
-        "description": "Issues a Refund.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "amount",
-                  "reason"
-                ],
-                "properties": {
-                  "amount": {
-                    "description": "The amount to refund.",
-                    "type": "integer"
-                  },
-                  "reason": {
-                    "description": "The reason for the Refund.",
-                    "type": "string"
-                  },
-                  "note": {
-                    "description": "A not with additional details about the Refund.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/returns": {
-      "post": {
-        "operationId": "PostOrdersOrderReturns",
-        "summary": "Request a Return",
-        "description": "Requests a Return. If applicable a return label will be created and other plugins notified.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that will be returned.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "return_shipping": {
-                    "description": "The Shipping Method to be used to handle the return shipment.",
-                    "type": "object",
-                    "properties": {
-                      "option_id": {
-                        "type": "string",
-                        "description": "The id of the Shipping Option to create the Shipping Method from."
-                      },
-                      "price": {
-                        "type": "integer",
-                        "description": "The price to charge for the Shipping Method."
-                      }
-                    }
-                  },
-                  "receive_now": {
-                    "description": "A flag to indicate if the Return should be registerd as received immediately.",
-                    "type": "boolean"
-                  },
-                  "refund": {
-                    "description": "The amount to refund.",
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/order/{id}/claims/{claim_id}": {
-      "post": {
-        "operationId": "PostOrdersOrderClaimsClaim",
-        "summary": "Update a Claim",
-        "description": "Updates a Claim.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "claim_id",
-            "required": true,
-            "description": "The id of the Claim.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "claim_items": {
-                    "description": "The Claim Items that the Claim will consist of.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of the Claim Item.",
-                          "type": "string"
-                        },
-                        "item_id": {
-                          "description": "The id of the Line Item that will be claimed.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The number of items that will be returned",
-                          "type": "integer"
-                        },
-                        "note": {
-                          "description": "Short text describing the Claim Item in further detail.",
-                          "type": "string"
-                        },
-                        "reason": {
-                          "description": "The reason for the Claim",
-                          "type": "string",
-                          "enum": [
-                            "missing_item",
-                            "wrong_item",
-                            "production_failure",
-                            "other"
-                          ]
-                        },
-                        "tags": {
-                          "description": "A list o tags to add to the Claim Item",
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "images": {
-                          "description": "A list of image URL's that will be associated with the Claim",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "shipping_methods": {
-                    "description": "The Shipping Methods to send the additional Line Items with.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of an existing Shipping Method",
-                          "type": "string"
-                        },
-                        "option_id": {
-                          "description": "The id of the Shipping Option to create a Shipping Method from",
-                          "type": "string"
-                        },
-                        "price": {
-                          "description": "The price to charge for the Shipping Method",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -3045,6 +1029,1664 @@
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards": {
+      "post": {
+        "operationId": "PostGiftCards",
+        "summary": "Create a Gift Card",
+        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "value": {
+                    "type": "integer",
+                    "description": "The value (excluding VAT) that the Gift Card should represent."
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Gift Card should no longer be available."
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Gift Card can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetGiftCards",
+        "summary": "List Gift Cards",
+        "description": "Retrieves a list of Gift Cards.",
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_cards": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/gift_card"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards/{id}": {
+      "delete": {
+        "operationId": "DeleteGiftCardsGiftCard",
+        "summary": "Delete a Gift Card",
+        "description": "Deletes a Gift Card",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Gift Card"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetGiftCardsGiftCard",
+        "summary": "Retrieve a Gift Card",
+        "description": "Retrieves a Gift Card.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostGiftCardsGiftCard",
+        "summary": "Create a Gift Card",
+        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "balance": {
+                    "type": "integer",
+                    "description": "The value (excluding VAT) that the Gift Card should represent."
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Gift Card should no longer be available."
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Gift Card can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "operationId": "GetNotifications",
+        "summary": "List Notifications",
+        "description": "Retrieves a list of Notifications.",
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "notifications": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/notification"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{id}/resend": {
+      "post": {
+        "operationId": "PostNotificationsNotificationResend",
+        "summary": "Resend Notification",
+        "description": "Resends a previously sent notifications, with the same data but optionally to a different address",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Notification",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "notification": {
+                      "$ref": "#/components/schemas/notification"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/shipping-methods": {
+      "post": {
+        "operationId": "PostOrdersOrderShippingMethods",
+        "summary": "Add a Shipping Method",
+        "description": "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "price",
+                  "option_id",
+                  "data"
+                ],
+                "properties": {
+                  "price": {
+                    "type": "integer",
+                    "description": "The price (excluding VAT) that should be charged for the Shipping Method"
+                  },
+                  "option_id": {
+                    "type": "string",
+                    "description": "The id of the Shipping Option to create the Shipping Method from."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/cancel": {
+      "post": {
+        "operationId": "PostOrdersOrderCancel",
+        "summary": "Cancel an Order",
+        "description": "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/capture": {
+      "post": {
+        "operationId": "PostOrdersOrderCapture",
+        "summary": "Capture an Order",
+        "description": "Captures all the Payments associated with an Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/claims/{claim_id}/shipments": {
+      "post": {
+        "operationId": "PostOrdersOrderClaimsClaimShipments",
+        "summary": "Create Claim Shipment",
+        "description": "Registers a Claim Fulfillment as shipped.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "claim_id",
+            "required": true,
+            "description": "The id of the Claim.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "fulfillment_id": {
+                    "description": "The id of the Fulfillment.",
+                    "type": "string"
+                  },
+                  "tracking_numbers": {
+                    "description": "The tracking numbers for the shipment.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{id}/claims": {
+      "post": {
+        "operationId": "PostOrdersOrderClaims",
+        "summary": "Create a Claim",
+        "description": "Creates a Claim.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "type": {
+                    "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
+                    "type": "string",
+                    "enum": [
+                      "replace",
+                      "refund"
+                    ]
+                  },
+                  "claim_items": {
+                    "description": "The Claim Items that the Claim will consist of.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item that will be claimed.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The number of items that will be returned",
+                          "type": "integer"
+                        },
+                        "note": {
+                          "description": "Short text describing the Claim Item in further detail.",
+                          "type": "string"
+                        },
+                        "reason": {
+                          "description": "The reason for the Claim",
+                          "type": "string",
+                          "enum": [
+                            "missing_item",
+                            "wrong_item",
+                            "production_failure",
+                            "other"
+                          ]
+                        },
+                        "tags": {
+                          "description": "A list o tags to add to the Claim Item",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "images": {
+                          "description": "A list of image URL's that will be associated with the Claim",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "return_shipping": {
+                    "description": "Optional details for the Return Shipping Method, if the items are to be sent back.",
+                    "type": "object",
+                    "properties": {
+                      "option_id": {
+                        "type": "string",
+                        "description": "The id of the Shipping Option to create the Shipping Method from."
+                      },
+                      "price": {
+                        "type": "integer",
+                        "description": "The price to charge for the Shipping Method."
+                      }
+                    }
+                  },
+                  "additional_items": {
+                    "description": "The new items to send to the Customer when the Claim type is Replace.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "variant_id": {
+                          "description": "The id of the Product Variant to ship.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Product Variant to ship.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "shipping_methods": {
+                    "description": "The Shipping Methods to send the additional Line Items with.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The id of an existing Shipping Method",
+                          "type": "string"
+                        },
+                        "option_id": {
+                          "description": "The id of the Shipping Option to create a Shipping Method from",
+                          "type": "string"
+                        },
+                        "price": {
+                          "description": "The price to charge for the Shipping Method",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "refund_amount": {
+                    "description": "The amount to refund the Customer when the Claim type is `refund`.",
+                    "type": "integer"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/fulfillments": {
+      "post": {
+        "operationId": "PostOrdersOrderFulfillments",
+        "summary": "Create a Fulfillment",
+        "description": "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "items": {
+                    "description": "The Line Items to include in the Fulfillment.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of Line Item to fulfill.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item to fulfill.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/shipment": {
+      "post": {
+        "operationId": "PostOrdersOrderShipment",
+        "summary": "Create a Shipment",
+        "description": "Registers a Fulfillment as shipped.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "fulfillment_id": {
+                    "description": "The id of the Fulfillment.",
+                    "type": "string"
+                  },
+                  "tracking_numbers": {
+                    "description": "The tracking numbers for the shipment.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/swaps/{swap_id}/shipments": {
+      "post": {
+        "operationId": "PostOrdersOrderSwapsSwapShipments",
+        "summary": "Create Swap Shipment",
+        "description": "Registers a Swap Fulfillment as shipped.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "fulfillment_id": {
+                    "description": "The id of the Fulfillment.",
+                    "type": "string"
+                  },
+                  "tracking_numbers": {
+                    "description": "The tracking numbers for the shipment.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{id}/swaps": {
+      "post": {
+        "operationId": "PostOrdersOrderSwaps",
+        "summary": "Create a Swap",
+        "description": "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "return_items": {
+                    "description": "The Line Items to return as part of the Swap.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item that will be claimed.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The number of items that will be returned",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "return_shipping": {
+                    "description": "How the Swap will be returned.",
+                    "type": "object",
+                    "properties": {
+                      "option_id": {
+                        "type": "string",
+                        "description": "The id of the Shipping Option to create the Shipping Method from."
+                      },
+                      "price": {
+                        "type": "integer",
+                        "description": "The price to charge for the Shipping Method."
+                      }
+                    }
+                  },
+                  "additional_items": {
+                    "description": "The new items to send to the Customer.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "variant_id": {
+                          "description": "The id of the Product Variant to ship.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Product Variant to ship.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{id}/metadata/{key}": {
+      "delete": {
+        "operationId": "DeleteOrdersOrderMetadataKey",
+        "summary": "Delete Metadata",
+        "description": "Deletes a metadata key.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "description": "The metadata key.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/claims/{claim_id}/fulfillments": {
+      "post": {
+        "operationId": "PostOrdersOrderClaimsClaimFulfillments",
+        "summary": "Create a Claim Fulfillment",
+        "description": "Creates a Fulfillment for a Claim.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "claim_id",
+            "required": true,
+            "description": "The id of the Claim.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/swaps/{swap_id}/fulfillments": {
+      "post": {
+        "operationId": "PostOrdersOrderSwapsSwapFulfillments",
+        "summary": "Create a Swap Fulfillment",
+        "description": "Creates a Fulfillment for a Swap.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "operationId": "GetOrdersOrder",
+        "summary": "Retrieve an Order",
+        "description": "Retrieves an Order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "operationId": "GetOrders",
+        "summary": "List Orders",
+        "description": "Retrieves a list of Orders",
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/order"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/swaps/{swap_id}/process-payment": {
+      "post": {
+        "operationId": "PostOrdersOrderSwapsSwapProcessPayment",
+        "summary": "Process a Swap difference",
+        "description": "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/returns/{return_id}/receive": {
+      "post": {
+        "operationId": "PostOrdersOrderReturnsReturnReceive",
+        "summary": "Receive a Return",
+        "description": "Registers a Return as received.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "return_id",
+            "required": true,
+            "description": "The id of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "refund": {
+                    "description": "The amount to refund.",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/swaps/{swap_id}/receive": {
+      "post": {
+        "operationId": "PostOrdersOrderSwapsSwapReceive",
+        "summary": "Receive a Swap",
+        "description": "Registers a Swap as received.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/refunds": {
+      "post": {
+        "operationId": "PostOrdersOrderRefunds",
+        "summary": "Create a Refund",
+        "description": "Issues a Refund.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "amount",
+                  "reason"
+                ],
+                "properties": {
+                  "amount": {
+                    "description": "The amount to refund.",
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "description": "The reason for the Refund.",
+                    "type": "string"
+                  },
+                  "note": {
+                    "description": "A not with additional details about the Refund.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/returns": {
+      "post": {
+        "operationId": "PostOrdersOrderReturns",
+        "summary": "Request a Return",
+        "description": "Requests a Return. If applicable a return label will be created and other plugins notified.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "items": {
+                    "description": "The Line Items that will be returned.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item.",
+                          "type": "string"
+                        },
+                        "reason_id": {
+                          "description": "The id of the Return Reason to use.",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "An optional note with information about the Return.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "return_shipping": {
+                    "description": "The Shipping Method to be used to handle the return shipment.",
+                    "type": "object",
+                    "properties": {
+                      "option_id": {
+                        "type": "string",
+                        "description": "The id of the Shipping Option to create the Shipping Method from."
+                      },
+                      "price": {
+                        "type": "integer",
+                        "description": "The price to charge for the Shipping Method."
+                      }
+                    }
+                  },
+                  "receive_now": {
+                    "description": "A flag to indicate if the Return should be registerd as received immediately.",
+                    "type": "boolean"
+                  },
+                  "refund": {
+                    "description": "The amount to refund.",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{id}/claims/{claim_id}": {
+      "post": {
+        "operationId": "PostOrdersOrderClaimsClaim",
+        "summary": "Update a Claim",
+        "description": "Updates a Claim.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "claim_id",
+            "required": true,
+            "description": "The id of the Claim.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "claim_items": {
+                    "description": "The Claim Items that the Claim will consist of.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The id of the Claim Item.",
+                          "type": "string"
+                        },
+                        "item_id": {
+                          "description": "The id of the Line Item that will be claimed.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The number of items that will be returned",
+                          "type": "integer"
+                        },
+                        "note": {
+                          "description": "Short text describing the Claim Item in further detail.",
+                          "type": "string"
+                        },
+                        "reason": {
+                          "description": "The reason for the Claim",
+                          "type": "string",
+                          "enum": [
+                            "missing_item",
+                            "wrong_item",
+                            "production_failure",
+                            "other"
+                          ]
+                        },
+                        "tags": {
+                          "description": "A list o tags to add to the Claim Item",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "images": {
+                          "description": "A list of image URL's that will be associated with the Claim",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "shipping_methods": {
+                    "description": "The Shipping Methods to send the additional Line Items with.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The id of an existing Shipping Method",
+                          "type": "string"
+                        },
+                        "option_id": {
+                          "description": "The id of the Shipping Option to create a Shipping Method from",
+                          "type": "string"
+                        },
+                        "price": {
+                          "description": "The price to charge for the Shipping Method",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -4914,6 +4556,183 @@
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons": {
+      "post": {
+        "operationId": "PostReturnReasons",
+        "summary": "Create a Return Reason",
+        "description": "Creates a Return Reason",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "label": {
+                    "description": "The label to display to the Customer.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "The value that the Return Reason will be identified by. Must be unique.",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "An optional description to for the Reason.",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetReturnReasons",
+        "summary": "List Return Reasons",
+        "description": "Retrieves a list of Return Reasons.",
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reasons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return_reason"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons/{id}": {
+      "get": {
+        "operationId": "GetReturnReasonsReason",
+        "summary": "Retrieve a Return Reason",
+        "description": "Retrieves a Return Reason.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostReturnReasonsReason",
+        "summary": "Update a Return Reason",
+        "description": "Updates a Return Reason",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "label": {
+                    "description": "The label to display to the Customer.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "The value that the Return Reason will be identified by. Must be unique.",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "An optional description to for the Reason.",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
                     }
                   }
                 }
@@ -7780,6 +7599,60 @@
           "recieved_quantity": {
             "description": "The quantity that was received in the warehouse.",
             "type": "integer"
+          },
+          "reason": {
+            "description": "The reason for returning the item.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/return_reason"
+              }
+            ]
+          },
+          "note": {
+            "description": "An optional note with additional details about the Return.",
+            "type": "string"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "return_reason": {
+        "title": "Return Reason",
+        "description": "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned.",
+        "x-resourceId": "return_reason",
+        "properties": {
+          "id": {
+            "description": "The id of the Return Reason will start with `rr_`.",
+            "type": "string"
+          },
+          "description": {
+            "description": "A description of the Reason.",
+            "type": "string"
+          },
+          "label": {
+            "description": "A text that can be displayed to the Customer as a reason.",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value to identify the reason by.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
           },
           "metadata": {
             "description": "An optional key-value map with additional information.",
