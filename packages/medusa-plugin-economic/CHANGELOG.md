@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.5...medusa-plugin-economic@1.1.6) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-economic
+
+
+
+
+
 ## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.3...medusa-plugin-economic@1.1.5) (2021-03-17)
 
 **Note:** Version bump only for package medusa-plugin-economic
