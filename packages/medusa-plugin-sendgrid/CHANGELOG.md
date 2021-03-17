@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.4...medusa-plugin-sendgrid@1.1.5) (2021-03-17)
+
+
+### Bug Fixes
+
+* enable gift-card creation without order_id ([9ce935a](https://github.com/medusajs/medusa/commit/9ce935a779aec90ff1ad301c73114ab69ce51b36))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.3...medusa-plugin-sendgrid@1.1.4) (2021-02-25)
 
 
