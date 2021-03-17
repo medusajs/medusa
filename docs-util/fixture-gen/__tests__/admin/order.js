@@ -1,5 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
+const { ProductVariant } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -159,6 +160,95 @@ describe("/admin/orders", () => {
       expect(response.status).toEqual(200);
 
       fixtureWriter.addFixture("return", response.data.order.returns[0]);
+    });
+  });
+
+  describe("POST /admin/orders/:id/swaps", () => {
+    let id;
+    let varId;
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        const order = await orderSeeder(dbConnection, {
+          fulfillment_status: "fulfilled",
+          payment_status: "captured",
+        });
+        id = order.id;
+
+        const pVar = await dbConnection.manager.findOne(ProductVariant, {});
+        varId = pVar.id;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "fulfillment_item"`);
+      await manager.query(`DELETE FROM "fulfillment"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return"`);
+      await manager.query(`DELETE FROM "claim_image"`);
+      await manager.query(`DELETE FROM "claim_tag"`);
+      await manager.query(`DELETE FROM "claim_item"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "claim_order"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_option_value"`);
+      await manager.query(`DELETE FROM "product_option"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("creates a swap", async () => {
+      const api = useApi();
+
+      const { data } = await api.get(`/admin/orders/${id}`, {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      });
+      const order = data.order;
+
+      const response = await api.post(
+        `/admin/orders/${id}/swaps`,
+        {
+          return_items: [
+            {
+              item_id: order.items[0].id,
+              quantity: 1,
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: varId,
+              quantity: 2,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+
+      fixtureWriter.addFixture("swap", response.data.order.swaps[0]);
     });
   });
 });

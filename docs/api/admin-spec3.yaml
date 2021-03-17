@@ -53,7 +53,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
+                  user:
                     $ref: '#/components/schemas/user'
       requestBody:
         content:
@@ -83,7 +83,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
+                  user:
                     $ref: '#/components/schemas/user'
   /collections:
     post:
@@ -695,6 +695,49 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  /notifications:
+    get:
+      operationId: GetNotifications
+      summary: List Notifications
+      description: Retrieves a list of Notifications.
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/notification'
+  '/notifications/{id}/resend':
+    post:
+      operationId: PostNotificationsNotificationResend
+      summary: Resend Notification
+      description: >-
+        Resends a previously sent notifications, with the same data but
+        optionally to a different address
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Notification
+          schema:
+            type: string
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification:
+                    $ref: '#/components/schemas/notification'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -867,49 +910,6 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
-  /notifications:
-    get:
-      operationId: GetNotifications
-      summary: List Notifications
-      description: Retrieves a list of Notifications.
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notifications:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/notification'
-  '/notifications/{id}/resend':
-    post:
-      operationId: PostNotificationsNotificationResend
-      summary: Resend Notification
-      description: >-
-        Resends a previously sent notifications, with the same data but
-        optionally to a different address
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Notification
-          schema:
-            type: string
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notification:
-                    $ref: '#/components/schemas/notification'
   '/orders/{id}/shipping-methods':
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -1511,8 +1511,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
   '/orders/{id}/swaps/{swap_id}/process-payment':
     post:
       operationId: PostOrdersOrderSwapsSwapProcessPayment
