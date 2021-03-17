@@ -991,8 +991,15 @@ paths:
       operationId: GetGiftCardsCode
       summary: Retrieve Gift Card by Code
       description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
       tags:
-        - Region
+        - Gift Card
       responses:
         '200':
           description: OK
@@ -1000,7 +1007,6 @@ paths:
             application/json:
               schema:
                 properties:
-<<<<<<< HEAD
                   id:
                     description: The id of the Gift Card
                   code:
@@ -1009,6 +1015,88 @@ paths:
                     description: The original value of the Gift Card.
                   balance:
                     description: The current balanace of the Gift Card
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /orders:
+    get:
+      operationId: GetOrders
+      summary: Look Up an Order
+      description: >-
+        Looks for an Order with a given `display_id`, `email` pair. The
+        `display_id`, `email` pair must match in order for the Order to be
+        returned.
+      parameters:
+        - in: query
+          name: display_id
+          required: true
+          description: The display id given to the Order.
+          schema:
+            type: number
+        - in: query
+          name: email
+          required: true
+          description: The email of the Order with the given display_id.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -1059,45 +1147,20 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
-  '/orders/cart/{cart_id}':
+  '/return-reasons/{id}':
     get:
-      operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
-      description: >-
-        Retrieves an Order by the id of the Cart that was used to create the
-        Order.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of Cart.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
-    get:
-      operationId: GetOrdersOrder
-      summary: Retrieves an Order
-      description: Retrieves an Order
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The id of the Return Reason.
           schema:
             type: string
       tags:
-        - Order
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -1105,10 +1168,26 @@ paths:
             application/json:
               schema:
                 properties:
-=======
->>>>>>> origin/master
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+  /return-reasons:
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1159,21 +1238,44 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
-<<<<<<< HEAD
-  '/swaps/{cart_id}':
-    get:
-      operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
-      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart
-          schema:
-            type: string
+  /returns:
+    post:
+      operationId: PostReturns
+      summary: Create Return
+      description: Creates a Return for an Order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order_id:
+                  type: string
+                  description: The id of the Order to create the Return from.
+                items:
+                  description: The items to include in the Return.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item from the Order.
+                        type: string
+                      quantity:
+                        description: The quantity to return.
+                        type: integer
+                return_shipping:
+                  description: >-
+                    If the Return is to be handled by the store operator the
+                    Customer can choose a Return Shipping Method. Alternatvely
+                    the Customer can handle the Return themselves.
+                  type: object
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The id of the Shipping Option to create the Shipping
+                        Method from.
       tags:
-        - Swap
+        - Return
       responses:
         '200':
           description: OK
@@ -1181,18 +1283,14 @@ paths:
             application/json:
               schema:
                 properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
+                  return:
+                    $ref: '#/components/schemas/return'
   /shipping-options:
-=======
-  '/products/{id}':
->>>>>>> origin/master
     get:
-      operationId: GetProductsProduct
-      summary: Retrieves a Product
-      description: Retrieves a Product.
+      operationId: GetShippingOptions
+      summary: Retrieve Shipping Options
+      description: Retrieves a list of Shipping Options.
       parameters:
-<<<<<<< HEAD
         - in: query
           name: is_return
           description: >-
@@ -1200,140 +1298,6 @@ paths:
             Shipping Options are returned.
           schema:
             type: boolean
-        - in: query
-          name: product_ids
-          description: A comma separated list of Product ids to filter Shipping Options by.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: the Region to retrieve Shipping Options from.
-=======
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product.
->>>>>>> origin/master
-          schema:
-            type: string
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  product:
-                    $ref: '#/components/schemas/product'
-  /products:
-    get:
-      operationId: GetProducts
-      summary: List Products
-      description: Retrieves a list of Products.
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Products.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of Products to return,'
-                    type: integer
-                  products:
-                    type: array
-                    items:
-<<<<<<< HEAD
-                      $ref: '#/components/schemas/shipping_option'
-=======
-                      $ref: '#/components/schemas/product'
-  '/swaps/{cart_id}':
-    get:
-      operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
-      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart
-          schema:
-            type: string
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
->>>>>>> origin/master
-  '/variants/{variant_id}':
-    get:
-      operationId: GetVariantsVariant
-      summary: Retrieve a Product Variant
-      description: Retrieves a Product Variant by id
-      parameters:
-        - in: path
-          name: variant_id
-          required: true
-          description: The id of the Product Variant.
-          schema:
-            type: string
-      tags:
-        - Product Variant
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  variant:
-                    $ref: '#/components/schemas/product_variant'
-  /variants:
-    get:
-      operationId: GetVariants
-      summary: Retrieve Product Variants
-      description: Retrieves a list of Product Variants
-      parameters:
-        - in: query
-          name: ids
-          description: A comma separated list of Product Variant ids to filter by.
-          schema:
-            type: string
-      tags:
-        - Product Variant
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  variants:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_variant'
-  /shipping-options:
-    get:
-      operationId: GetShippingOptions
-      summary: Retrieve Shipping Options
-      description: Retrieves a list of Shipping Options.
-      parameters:
         - in: query
           name: product_ids
           description: A comma separated list of Product ids to filter Shipping Options by.
@@ -1382,6 +1346,76 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
+  '/variants/{variant_id}':
+    get:
+      operationId: GetVariantsVariant
+      summary: Retrieve a Product Variant
+      description: Retrieves a Product Variant by id
+      parameters:
+        - in: path
+          name: variant_id
+          required: true
+          description: The id of the Product Variant.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variant:
+                    $ref: '#/components/schemas/product_variant'
+  /variants:
+    get:
+      operationId: GetVariants
+      summary: Retrieve Product Variants
+      description: Retrieves a list of Product Variants
+      parameters:
+        - in: query
+          name: ids
+          description: A comma separated list of Product Variant ids to filter by.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_variant'
 components:
   schemas:
     address:
@@ -3197,6 +3231,47 @@ components:
         recieved_quantity:
           description: The quantity that was received in the warehouse.
           type: integer
+        reason:
+          description: The reason for returning the item.
+          anyOf:
+            - $ref: '#/components/schemas/return_reason'
+        note:
+          description: An optional note with additional details about the Return.
+          type: string
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    return_reason:
+      title: Return Reason
+      description: >-
+        A Reason for why a given product is returned. A Return Reason can be
+        used on Return Items in order to indicate why a Line Item was returned.
+      x-resourceId: return_reason
+      properties:
+        id:
+          description: The id of the Return Reason will start with `rr_`.
+          type: string
+        description:
+          description: A description of the Reason.
+          type: string
+        label:
+          description: A text that can be displayed to the Customer as a reason.
+          type: string
+        value:
+          description: The value to identify the reason by.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
         metadata:
           description: An optional key-value map with additional information.
           type: object

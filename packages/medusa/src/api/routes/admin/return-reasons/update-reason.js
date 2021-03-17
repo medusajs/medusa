@@ -2,7 +2,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
 /**
- * @oas [post] /return-reasons/:id
+ * @oas [post] /return-reasons/{id}
  * operationId: "PostReturnReasonsReason"
  * summary: "Update a Return Reason"
  * description: "Updates a Return Reason"

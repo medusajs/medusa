@@ -5,7 +5,7 @@
   ],
   "command": {
     "publish": {
-      "allowBranch": "release/*",
+      "allowBranch": ["master", "release/*"],
       "bump": "patch",
       "conventionalCommits": true,
       "message": "chore(release): Publish"
