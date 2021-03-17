@@ -309,7 +309,7 @@ describe("ProductVariantService", () => {
         "product-variant.updated",
         {
           id: IdMap.getId("ironman"),
-          title: "new title",
+          fields: ["title"],
         }
       )
 
@@ -333,7 +333,7 @@ describe("ProductVariantService", () => {
         "product-variant.updated",
         {
           id: IdMap.getId("ironman"),
-          title: "new title",
+          fields: ["title"],
         }
       )
 
@@ -370,10 +370,7 @@ describe("ProductVariantService", () => {
         "product-variant.updated",
         {
           id: IdMap.getId("ironman"),
-          title: "new title",
-          metadata: {
-            testing: "this",
-          },
+          fields: ["title", "metadata"],
         }
       )
 
