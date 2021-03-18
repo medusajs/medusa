@@ -35,6 +35,7 @@ describe("POST /admin/discounts/:discount_id/regions/:region_id", () => {
             "id",
             "code",
             "is_dynamic",
+            "is_disabled",
             "rule_id",
             "parent_discount_id",
             "starts_at",
