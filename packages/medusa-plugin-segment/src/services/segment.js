@@ -55,7 +55,9 @@ class SegmentService extends BaseService {
         return data.rates[fromCurrency]
       })
 
-    return this.totalsService_.rounded(value / exchangeRate)
+    // Two decimal places
+    const num = value / exchangeRate
+    return Number(Math.round(num + "e2") + "e-2")
   }
 
   async buildOrder(order) {
