@@ -44,7 +44,7 @@ class SegmentService extends BaseService {
       "EUR"
 
     if (fromCurrency === toCurrency) {
-      return this.totalsService_.rounded(value)
+      return this.rounded_(value)
     }
 
     const exchangeRate = await axios
@@ -55,9 +55,7 @@ class SegmentService extends BaseService {
         return data.rates[fromCurrency]
       })
 
-    // Two decimal places
-    const num = value / exchangeRate
-    return Number(Math.round(num + "e2") + "e-2")
+    return this.rounded_(value / exchangeRate)
   }
 
   async buildOrder(order) {
@@ -146,7 +144,9 @@ class SegmentService extends BaseService {
           return {
             name,
             variant,
-            price: humanizeAmount(lineTotal, curr) / item.quantity,
+            price: this.rounded_(
+              humanizeAmount(lineTotal, curr) / item.quantity
+            ),
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
             category: product.collection?.title,
@@ -160,6 +160,10 @@ class SegmentService extends BaseService {
     }
 
     return orderData
+  }
+
+  rounded_(v) {
+    return Number(Math.round(v + "e2") + "e-2")
   }
 }
 
