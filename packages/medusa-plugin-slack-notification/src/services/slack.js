@@ -1,4 +1,5 @@
 import axios from "axios"
+import { zeroDecimalCurrencies, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 class SlackService extends BaseService {
@@ -58,6 +59,14 @@ class SlackService extends BaseService {
     const currencyCode = order.currency_code.toUpperCase()
     const taxRate = order.tax_rate / 100
 
+    const getDisplayAmount = (amount) => {
+      const humanAmount = humanizeAmount(amount, currencyCode)
+      if (zeroDecimalCurrencies.includes(currencyCode.toLowerCase())) {
+        return humanAmount
+      }
+      return humanAmount.toFixed(2)
+    }
+
     let blocks = [
       {
         type: "section",
@@ -83,20 +92,32 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Subtotal*\t${(subtotal / 100).toFixed(
-            2
-          )} ${currencyCode}\n*Shipping*\t${(shipping_total / 100).toFixed(
-            2
-          )} ${currencyCode}\n*Discount Total*\t${(
-            discount_total / 100
-          ).toFixed(2)} ${currencyCode}\n*Tax*\t${(tax_total / 100).toFixed(
-            2
-          )} ${currencyCode}\n*Total*\t${(total / 100).toFixed(
-            2
+          text: `*Subtotal*\t${getDisplayAmount(
+            subtotal
+          )} ${currencyCode}\n*Shipping*\t${getDisplayAmount(
+            shipping_total
+          )} ${currencyCode}\n*Discount Total*\t${getDisplayAmount(
+            discount_total
+          )} ${currencyCode}\n*Tax*\t${getDisplayAmount(
+            tax_total
+          )} ${currencyCode}\n*Total*\t${getDisplayAmount(
+            total
           )} ${currencyCode}`,
         },
       },
     ]
+
+    if (order.gift_card_total) {
+      blocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*Gift Card Total*\t${getDisplayAmount(
+            order.gift_card_total
+          )} ${currencyCode}`,
+        },
+      })
+    }
 
     order.discounts.forEach((d) => {
       blocks.push({
@@ -119,19 +140,15 @@ class SlackService extends BaseService {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*${lineItem.title}*\n${lineItem.quantity} x ${(
-            (lineItem.unit_price / 100) *
-            (1 + taxRate)
-          ).toFixed(2)} ${currencyCode}`,
+          text: `*${lineItem.title}*\n${lineItem.quantity} x ${getDisplayAmount(
+            lineItem.unit_price * (1 + taxRate)
+          )} ${currencyCode}`,
         },
       }
 
       if (lineItem.thumbnail) {
         let url = lineItem.thumbnail
-        if (
-          !lineItem.thumbnail.startsWith("http:") &&
-          !lineItem.thumbnail.startsWith("https:")
-        ) {
+        if (lineItem.thumbnail.startsWith("//")) {
           url = `https:${lineItem.thumbnail}`
         }
 
