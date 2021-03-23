@@ -6,6 +6,8 @@ class SlackService extends BaseService {
   /**
    * @param {Object} options - options defined in `medusa-config.js`
    *    {
+   *      show_discount_code: If set to true the discount code used will be
+   *        displayed in the order channel.
    *      slack_url: "https://hooks.slack.com/services/...",
    *      admin_orders_url: "https:..../orders"
    *    }
@@ -119,17 +121,19 @@ class SlackService extends BaseService {
       })
     }
 
-    order.discounts.forEach((d) => {
-      blocks.push({
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `*Promo Code*\t${d.code} ${d.rule.value}${
-            d.rule.type === "percentage" ? "%" : ` ${currencyCode}`
-          }`,
-        },
+    if (this.options_.show_discount_code) {
+      order.discounts.forEach((d) => {
+        blocks.push({
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `*Promo Code*\t${d.code} ${d.rule.value}${
+              d.rule.type === "percentage" ? "%" : ` ${currencyCode}`
+            }`,
+          },
+        })
       })
-    })
+    }
 
     blocks.push({
       type: "divider",
