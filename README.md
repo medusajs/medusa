@@ -18,7 +18,7 @@ You can get a Medusa engine up and running in your local development environment
     yarn add @medusajs/medusa
 
     # CLI
-    npm install -g @medusa/medusa-cli
+    npm install -g @medusajs/medusa-cli
     yarn add global @medusajs/medusa-cli
     
     # babel preset
