@@ -182,7 +182,16 @@ class BrightpearlService extends BaseService {
 
     if (availability) {
       const brightpearlProduct = await client.products.retrieve(productId)
-      const onHand = availability[productId].total.onHand
+
+      const prodAvail = availability[productId]
+
+      let onHand = 0
+      if (
+        prodAvail.warehouses &&
+        prodAvail.warehouses[`${this.options.warehouse}`]
+      ) {
+        onHand = prodAvail.warehouses[`${this.options.warehouse}`].onHand
+      }
 
       const sku = brightpearlProduct.identity.sku
       if (!sku) return
