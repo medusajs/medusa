@@ -102,13 +102,23 @@ class KlarnaProviderService extends PaymentService {
 
     order.order_lines = await this.lineItemsToOrderLines_(cart, region.tax_rate)
 
-    if (discount_total) {
+    if (discount_total > 0) {
       order.order_lines.push({
         name: `Discount`,
         quantity: 1,
         type: "discount",
         unit_price: 0,
         total_discount_amount: discount_total * (1 + taxRate),
+        tax_rate: taxRate * 10000,
+        total_amount: -discount_total * (1 + taxRate),
+        total_tax_amount: -discount_total * taxRate,
+      })
+    } else if (discount_total < 0) {
+      order.order_lines.push({
+        name: `Discount Payback`,
+        quantity: 1,
+        type: "surcharge",
+        unit_price: -discount_total * (1 + taxRate),
         tax_rate: taxRate * 10000,
         total_amount: -discount_total * (1 + taxRate),
         total_tax_amount: -discount_total * taxRate,
