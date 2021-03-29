@@ -14,6 +14,12 @@ export class discountUsage1617002207608 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "discount" ADD "usage_count" integer NOT NULL DEFAULT '0'`
     )
+    await queryRunner.query(
+      `ALTER TABLE "discount_rule" ALTER COLUMN "description" DROP NOT NULL`
+    )
+    await queryRunner.query(
+      `COMMENT ON COLUMN "discount_rule"."description" IS NULL`
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -24,6 +30,12 @@ export class discountUsage1617002207608 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "discount_rule" ADD "usage_limit" integer`
+    )
+    await queryRunner.query(
+      `COMMENT ON COLUMN "discount_rule"."description" IS NULL`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "discount_rule" ALTER COLUMN "description" SET NOT NULL`
     )
   }
 }
