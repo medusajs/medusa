@@ -30,7 +30,7 @@ export class DiscountRule {
   @PrimaryColumn()
   id: string
 
-  @Column()
+  @Column({ nullable: true })
   description: string
 
   @Column({
