@@ -60,7 +60,7 @@ export default async (req, res) => {
     is_dynamic: Validator.boolean().default(false),
     rule: Validator.object()
       .keys({
-        description: Validator.string().required(),
+        description: Validator.string().optional(),
         type: Validator.string().required(),
         value: Validator.number()
           .positive()
