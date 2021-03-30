@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.8...medusa-plugin-segment@1.1.9) (2021-03-30)
+
+
+### Bug Fixes
+
+* adds tests for segment ([1b00f96](https://github.com/medusajs/medusa/commit/1b00f967dea3dc3aa65fafbe1334492fba5c33c2))
+* don't divide zero decimal currencies ([3258955](https://github.com/medusajs/medusa/commit/3258955b462f91fc6f4d807c5cc9b5ad11d6bbdf))
+* don't divide zero decimal currencies ([cfab2d4](https://github.com/medusajs/medusa/commit/cfab2d408a296a938266d0989b1de67d060b2ed5))
+
+
+
+
+
 ## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.7...medusa-plugin-segment@1.1.8) (2021-03-17)
 
 **Note:** Version bump only for package medusa-plugin-segment

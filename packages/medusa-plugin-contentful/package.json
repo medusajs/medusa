@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-contentful",
-  "version": "1.1.8-next.1+d78a7ce8",
+  "version": "1.1.8",
   "description": "Contentful plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -39,8 +39,8 @@
     "body-parser": "^1.19.0",
     "contentful-management": "^5.27.1",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.3",
-    "medusa-test-utils": "^1.1.6",
+    "medusa-core-utils": "^1.1.4",
+    "medusa-test-utils": "^1.1.7",
     "redis": "^3.0.2"
   },
   "gitHead": "d78a7ce85876e0bfd9a4bfebe4f5743921961e9c"
