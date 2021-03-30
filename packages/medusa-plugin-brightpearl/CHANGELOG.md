@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.9...medusa-plugin-brightpearl@1.1.9) (2021-03-30)
+
+
+### Bug Fixes
+
+* don't divide zero decimal currencies ([cfab2d4](https://github.com/medusajs/medusa/commit/cfab2d408a296a938266d0989b1de67d060b2ed5))
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
 ## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.8...medusa-plugin-brightpearl@1.1.9) (2021-03-25)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl
