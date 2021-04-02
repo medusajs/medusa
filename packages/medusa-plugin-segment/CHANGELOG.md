@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.9...medusa-plugin-segment@1.1.10) (2021-04-02)
+
+
+### Bug Fixes
+
+* adds exchange rates api key ([8eec38a](https://github.com/medusajs/medusa/commit/8eec38af7164fe60106b8dac33ae9acfeb2b0f2e))
+
+
+
+
+
 ## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.8...medusa-plugin-segment@1.1.9) (2021-03-30)
 
 
