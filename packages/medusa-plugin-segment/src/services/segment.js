@@ -49,7 +49,7 @@ class SegmentService extends BaseService {
 
     const exchangeRate = await axios
       .get(
-        `https://api.exchangeratesapi.io/${date}?symbols=${fromCurrency}&base=${toCurrency}`
+        `https://api.exchangeratesapi.io/${date}?symbols=${fromCurrency}&base=${toCurrency}&access_key=${this.options_.exchange_rates_api_key}`
       )
       .then(({ data }) => {
         return data.rates[fromCurrency]
