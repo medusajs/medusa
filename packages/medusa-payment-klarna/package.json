@@ -40,8 +40,8 @@
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.3",
-    "medusa-test-utils": "^1.1.6"
+    "medusa-core-utils": "^1.1.4",
+    "medusa-test-utils": "^1.1.7"
   },
-  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
+  "gitHead": "d78a7ce85876e0bfd9a4bfebe4f5743921961e9c"
 }
