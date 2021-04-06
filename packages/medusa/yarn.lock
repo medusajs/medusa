@@ -5662,21 +5662,21 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.0.tgz#0641b365b769dbf99856025d935eef5cf5d81f2c"
-  integrity sha512-zocRthKhLK3eSjrXbAhZZkIMBRxyvU7GcAMFh5UCEgfe7f935vjE7r5lGTr5jTEwgwaoTUk9ep0VBekz0SEdyw==
+medusa-core-utils@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.4.tgz#ec2bb98c83426d7033632cd225b3b5dc62c26f1a"
+  integrity sha512-SzFfMmNbE9ukSfhapJOuYEksOKDo3yYSCeuBLFWnCZZRDnUV4ttH4Yp/ydT+cZKtqZwF2vKceXNbrT4uJYjHgw==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-test-utils@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.3.tgz#c2b45d44b9567fa2255e936d7bed73a31dfb42dd"
-  integrity sha512-0saYG5BhEjc4BZP76/2IJL7CyqIdbCasAci+EYXzwnwgS+nCUhKDjzzNAnC+PZMK/teD3M7x4n7isFtjgNSIDQ==
+medusa-test-utils@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.7.tgz#19d0bdf3f6f7fef0bc7f2f8e258f8c66167c692f"
+  integrity sha512-kcN4oJjUEAkFeko7DEaok9Qy3aty41gEzGSdR4F3KPORXZJ+YADHuj4F219/X1k+3iGqCUgmNQ9eKl6Aobq44g==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.1.0"
+    medusa-core-utils "^1.1.4"
     randomatic "^3.1.1"
 
 merge-descriptors@1.0.1:

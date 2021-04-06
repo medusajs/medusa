@@ -13,13 +13,32 @@ import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
-import { asFunction, aliasTo } from "awilix"
+import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 
 /**
  * Registers all services in the services directory
  */
 export default async ({ rootDirectory, container, app }) => {
+  const resolved = getResolvedPlugins(rootDirectory)
+
+  await Promise.all(
+    resolved.map(async pluginDetails => {
+      registerRepositories(pluginDetails, container)
+      await registerServices(pluginDetails, container)
+      registerMedusaApi(pluginDetails, container)
+      registerApi(pluginDetails, app, rootDirectory, container)
+      registerCoreRouters(pluginDetails, container)
+      registerSubscribers(pluginDetails, container)
+    })
+  )
+
+  await Promise.all(
+    resolved.map(async pluginDetails => runLoaders(pluginDetails, container))
+  )
+}
+
+function getResolvedPlugins(rootDirectory) {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   if (!configModule) {
@@ -47,20 +66,15 @@ export default async ({ rootDirectory, container, app }) => {
     version: createFileContentHash(process.cwd(), `**`),
   })
 
+  return resolved
+}
+
+export async function registerPluginModels({ rootDirectory, container }) {
+  const resolved = getResolvedPlugins(rootDirectory)
   await Promise.all(
     resolved.map(async pluginDetails => {
-      // registerModels(pluginDetails, container)
-      registerRepositories(pluginDetails, container)
-      await registerServices(pluginDetails, container)
-      registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory, container)
-      registerCoreRouters(pluginDetails, container)
-      registerSubscribers(pluginDetails, container)
+      registerModels(pluginDetails, container)
     })
-  )
-
-  await Promise.all(
-    resolved.map(async pluginDetails => runLoaders(pluginDetails, container))
   )
 }
 
@@ -309,7 +323,6 @@ function registerRepositories(pluginDetails, container) {
     Object.entries(loaded).map(([key, val]) => {
       if (typeof val === "function") {
         const name = formatRegistrationName(fn)
-        console.log(name)
         container.register({
           [name]: asClass(val),
         })
@@ -336,14 +349,12 @@ function registerModels(pluginDetails, container) {
 
     Object.entries(loaded).map(([key, val]) => {
       if (typeof val === "function" || val instanceof EntitySchema) {
-        if (config.register) {
-          const name = formatRegistrationName(fn)
-          container.register({
-            [name]: asClass(val),
-          })
+        const name = formatRegistrationName(fn)
+        container.register({
+          [name]: asClass(val),
+        })
 
-          container.registerAdd("db_entities", asValue(val))
-        }
+        container.registerAdd("db_entities", asValue(val))
       }
     })
   })
