@@ -1101,53 +1101,6 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Creates a return request for an order, with given items, and a shipping
-   * method. If no refundAmount is provided the refund amount is calculated from
-   * the return lines and the shipping cost.
-   * @param {String} orderId - the id of the order to create a return for.
-   * @param {Array<{item_id: String, quantity: Int}>} items - the line items to
-   *   return
-   * @param {ShippingMethod?} shippingMethod - the shipping method used for the
-   *   return
-   * @param {Number?} refundAmount - the amount to refund when the return is
-   *   received.
-   * @returns {Promise<Order>} the resulting order.
-   */
-  async requestReturn(orderId, items, shippingMethod, refundAmount) {
-    return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, {
-        select: ["refunded_total", "total"],
-        relations: ["items"],
-      })
-
-      const returnObj = {
-        order_id: orderId,
-        items,
-        shipping_method: shippingMethod,
-        refund_amount: refundAmount,
-      }
-
-      const returnRequest = await this.returnService_
-        .withTransaction(manager)
-        .create(returnObj, order)
-
-      const fulfilledReturn = await this.returnService_
-        .withTransaction(manager)
-        .fulfill(returnRequest.id)
-
-      const result = await this.retrieve(orderId)
-
-      this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderService.Events.RETURN_REQUESTED, {
-          id: result.id,
-          return_id: fulfilledReturn.id,
-        })
-      return result
-    })
-  }
-
-  /**
    * Registers a previously requested return as received. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour

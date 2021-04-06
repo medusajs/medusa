@@ -123,13 +123,6 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  select: ["refunded_total", "total"],
-                  relations: ["items"],
-                })
-
               const returnObj = {
                 order_id: id,
                 idempotency_key: idempotencyKey.idempotency_key,

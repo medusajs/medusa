@@ -82,7 +82,7 @@ class ReturnService extends BaseService {
     let merged = [...order.items]
 
     // merge items from order with items from order swaps
-    if (order?.swaps.length) {
+    if (order.swaps && order.swaps.length) {
       for (const s of order.swaps) {
         merged.concat(s.items)
       }

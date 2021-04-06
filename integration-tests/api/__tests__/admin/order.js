@@ -77,7 +77,7 @@ describe("/admin/orders", () => {
         })
         .catch((err) => {
           console.log(err);
-        });
+        });p
       expect(response.status).toEqual(200);
     });
   });
