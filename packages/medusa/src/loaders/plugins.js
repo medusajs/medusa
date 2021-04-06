@@ -351,7 +351,7 @@ function registerModels(pluginDetails, container) {
       if (typeof val === "function" || val instanceof EntitySchema) {
         const name = formatRegistrationName(fn)
         container.register({
-          [name]: asClass(val),
+          [name]: asValue(val),
         })
 
         container.registerAdd("db_entities", asValue(val))
