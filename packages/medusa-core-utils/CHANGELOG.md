@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.3...medusa-core-utils@1.1.4) (2021-03-30)
+
+
+### Bug Fixes
+
+* don't divide zero decimal currencies ([cfab2d4](https://github.com/medusajs/medusa/commit/cfab2d408a296a938266d0989b1de67d060b2ed5))
+
+
+
+
+
 ## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.2...medusa-core-utils@1.1.3) (2021-03-17)
 
 **Note:** Version bump only for package medusa-core-utils

@@ -6,6 +6,7 @@ const defaultFields = [
   "id",
   "code",
   "is_dynamic",
+  "is_disabled",
   "rule_id",
   "parent_discount_id",
   "starts_at",
