@@ -1,10 +1,16 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
-import { RestockNotification } from "../models/restock-notification"
-
 class RestockNotificationService extends BaseService {
-  constructor({ manager, eventBusService, productVariantService }, options) {
+  constructor(
+    {
+      manager,
+      eventBusService,
+      productVariantService,
+      restockNotificationModel,
+    },
+    options
+  ) {
     super()
 
     this.manager_ = manager
@@ -12,6 +18,8 @@ class RestockNotificationService extends BaseService {
     this.options_ = options
 
     this.productVariantService_ = productVariantService
+
+    this.restockNotificationModel_ = restockNotificationModel
 
     this.eventBus_ = eventBusService
   }
@@ -34,13 +42,15 @@ class RestockNotificationService extends BaseService {
   }
 
   async retrieve(variantId) {
-    const restockRepo = this.manager_.getRepository(RestockNotification)
+    const restockRepo = this.manager_.getRepository(
+      this.restockNotificationModel_
+    )
     return await restockRepo.findOne({ where: { variant_id: variantId } })
   }
 
   async addEmail(variantId, email) {
     return this.atomicPhase_(async (manager) => {
-      const restockRepo = manager.getRepository(RestockNotification)
+      const restockRepo = manager.getRepository(this.restockNotificationModel_)
       const existing = await this.retrieve(variantId)
 
       if (existing) {
@@ -73,7 +83,7 @@ class RestockNotificationService extends BaseService {
 
   async triggerRestock(variantId) {
     return this.atomicPhase_(async (manager) => {
-      const restockRepo = manager.getRepository(RestockNotification)
+      const restockRepo = manager.getRepository(this.restockNotificationModel_)
 
       const existing = await this.retrieve(variantId)
       if (!existing) {
@@ -84,7 +94,7 @@ class RestockNotificationService extends BaseService {
       if (variant.inventory_quantity > 0) {
         await this.eventBus_
           .withTransaction(manager)
-          .emit("restock_notification.restocked", {
+          .emit("restock-notification.restocked", {
             variant_id: variantId,
             emails: existing.emails,
           })
