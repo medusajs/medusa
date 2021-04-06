@@ -18,25 +18,28 @@
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
+    "@babel/preset-typescript": "^7.13.0",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.9.6",
+    "babel-preset-medusa-package": "^1.1.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "medusa-test-utils": "^1.1.6",
+    "pg": "^8.5.1",
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "build": "babel src -d .",
+    "build": "babel src -d . --ignore **/__tests__ --extensions \".ts,.js\"",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
     "test": "jest"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.x",
     "medusa-interfaces": "1.x"
   },
   "dependencies": {
+    "@medusajs/medusa": "^1.1.17",
     "body-parser": "^1.19.0",
     "medusa-core-utils": "^1.1.3"
   },
