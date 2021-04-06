@@ -1,9 +1,10 @@
 class VariantSubscriber {
-  constructor({ eventBusService, restockNotificationService }) {
+  constructor({ manager, eventBusService, restockNotificationService }) {
+    this.manager_ = manager
     this.restockNotificationService_ = restockNotificationService
 
     eventBusService.subscribe(
-      "product_variant.updated",
+      "product-variant.updated",
       this.handleVariantUpdate
     )
   }
@@ -11,7 +12,12 @@ class VariantSubscriber {
   handleVariantUpdate = async (data) => {
     const { id, fields } = data
     if (fields.includes("inventory_quantity")) {
-      return this.restockNotificationService_.triggerRestock(id)
+      return await this.manager_.transaction(
+        async (m) =>
+          await this.restockNotificationService_
+            .withTransaction(m)
+            .triggerRestock(id)
+      )
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
-  const { variant_id } = req.parmas
+  const { variant_id } = req.params
 
   const schema = Validator.object().keys({
     email: Validator.string().required(),
@@ -9,7 +9,8 @@ export default async (req, res) => {
 
   const { value, error } = schema.validate(req.body)
   if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+    res.status(400).json({ message: error.message })
+    return
   }
 
   try {
@@ -19,6 +20,6 @@ export default async (req, res) => {
     await restockNotificationService.addEmail(variant_id, value.email)
     res.sendStatus(200)
   } catch (err) {
-    res.sendStatus(400).json({ message: err.message })
+    res.status(400).json({ message: err.message })
   }
 }

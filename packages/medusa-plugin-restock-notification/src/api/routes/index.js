@@ -9,7 +9,7 @@ export default (app) => {
 
   route.post(
     "/variants/:variant_id",
-    bodyParser.raw({ type: "application/json" }),
+    bodyParser.json(),
     middlewares.wrap(require("./add-email").default)
   )
   return app

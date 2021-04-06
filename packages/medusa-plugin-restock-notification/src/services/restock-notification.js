@@ -16,6 +16,23 @@ class RestockNotificationService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new RestockNotificationService({
+      manager: transactionManager,
+      options: this.options_,
+      eventBusService: this.eventBus_,
+      productVariantService: this.productVariantService_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
   async retrieve(variantId) {
     const restockRepo = this.manager_.getRepository(RestockNotification)
     return await restockRepo.findOne({ where: { variant_id: variantId } })
@@ -29,13 +46,13 @@ class RestockNotificationService extends BaseService {
       if (existing) {
         // Converting to a set handles duplicates for us
         const emailSet = new Set(existing.emails)
-        emailSet.push(email)
+        emailSet.add(email)
 
         existing.emails = Array.from(emailSet)
 
         return await restockRepo.save(existing)
       } else {
-        const variant = await productVariantService.retrieve(variantId)
+        const variant = await this.productVariantService_.retrieve(variantId)
 
         if (variant.inventory_quantity > 0) {
           throw new MedusaError(
@@ -54,15 +71,10 @@ class RestockNotificationService extends BaseService {
     })
   }
 
-  async delete(variantId) {
-    return this.atomicPhase_(async (manager) => {
-      const restockRepo = manager.getRepository(RestockNotification)
-      return restockRepo.delete(variantId)
-    })
-  }
-
   async triggerRestock(variantId) {
     return this.atomicPhase_(async (manager) => {
+      const restockRepo = manager.getRepository(RestockNotification)
+
       const existing = await this.retrieve(variantId)
       if (!existing) {
         return
@@ -70,10 +82,13 @@ class RestockNotificationService extends BaseService {
 
       const variant = await this.productVariantService_.retrieve(variantId)
       if (variant.inventory_quantity > 0) {
-        await eventBus_
+        await this.eventBus_
           .withTransaction(manager)
-          .emit("restock_notification.restocked")
-        await this.delete(variantId)
+          .emit("restock_notification.restocked", {
+            variant_id: variantId,
+            emails: existing.emails,
+          })
+        await restockRepo.delete(variantId)
       }
     })
   }

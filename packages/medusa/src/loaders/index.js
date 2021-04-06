@@ -11,7 +11,7 @@ import modelsLoader from "./models"
 import servicesLoader from "./services"
 import subscribersLoader from "./subscribers"
 import passportLoader from "./passport"
-import pluginsLoader from "./plugins"
+import pluginsLoader, { registerPluginModels } from "./plugins"
 import defaultsLoader from "./defaults"
 import Logger from "./logger"
 import { getManager } from "typeorm"
@@ -62,6 +62,9 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   })
 
   await modelsLoader({ container })
+  Logger.info("Models initialized")
+
+  await registerPluginModels({ rootDirectory, container })
   Logger.info("Models initialized")
 
   await repositoriesLoader({ container })
