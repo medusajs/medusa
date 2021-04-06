@@ -150,7 +150,7 @@ export default async (req, res) => {
 
               const createdReturn = await returnService
                 .withTransaction(manager)
-                .create(returnObj, order)
+                .create(returnObj)
 
               if (value.return_shipping) {
                 await returnService
