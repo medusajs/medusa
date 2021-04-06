@@ -1,4 +1,5 @@
 import glob from "glob"
+import { EntitySchema } from "typeorm"
 import {
   BaseModel,
   BaseService,
@@ -48,7 +49,8 @@ export default async ({ rootDirectory, container, app }) => {
 
   await Promise.all(
     resolved.map(async pluginDetails => {
-      registerModels(pluginDetails, container)
+      // registerModels(pluginDetails, container)
+      registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container)
@@ -299,23 +301,50 @@ function registerSubscribers(pluginDetails, container) {
  *    registered
  * @return {void}
  */
+function registerRepositories(pluginDetails, container) {
+  const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
+  files.forEach(fn => {
+    const loaded = require(fn)
+
+    Object.entries(loaded).map(([key, val]) => {
+      if (typeof val === "function") {
+        const name = formatRegistrationName(fn)
+        console.log(name)
+        container.register({
+          [name]: asClass(val),
+        })
+      }
+    })
+  })
+}
+
+/**
+ * Registers a plugin's models at the right location in our container. Models
+ * must inherit from BaseModel. Models are registered directly in the container.
+ * Names are camelCase formatted and namespaced by the folder i.e:
+ * models/example-person -> examplePersonModel
+ * @param {object} pluginDetails - the plugin details including plugin options,
+ *    version, id, resolved path, etc. See resolvePlugin
+ * @param {object} container - the container where the services will be
+ *    registered
+ * @return {void}
+ */
 function registerModels(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
   files.forEach(fn => {
-    const loaded = require(fn).default
+    const loaded = require(fn)
 
-    if (!(loaded.prototype instanceof BaseModel)) {
-      const logger = container.resolve("logger")
-      const message = `Models must inherit from BaseModel, please check ${fn}`
-      logger.error(message)
-      throw new Error(message)
-    }
+    Object.entries(loaded).map(([key, val]) => {
+      if (typeof val === "function" || val instanceof EntitySchema) {
+        if (config.register) {
+          const name = formatRegistrationName(fn)
+          container.register({
+            [name]: asClass(val),
+          })
 
-    const name = formatRegistrationName(fn)
-    container.register({
-      [name]: asFunction(
-        cradle => new loaded(cradle, pluginDetails.options)
-      ).singleton(),
+          container.registerAdd("db_entities", asValue(val))
+        }
+      }
     })
   })
 }

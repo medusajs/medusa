@@ -1,4 +1,4 @@
-# medusa-plugin-sendgrid
+# medusa-plugin-restock-notification
 
 Twilio SMS / Messaging plugin.
 
