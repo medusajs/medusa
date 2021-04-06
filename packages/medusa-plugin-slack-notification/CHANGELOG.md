@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.6...medusa-plugin-slack-notification@1.1.7) (2021-03-30)
+
+
+### Bug Fixes
+
+* **slack:** show discount code flag ([b5bf650](https://github.com/medusajs/medusa/commit/b5bf650ec26182be6324bc56e7f6efd744a7131e))
+* zero decimal amounts in slack + gc total ([c6a5dff](https://github.com/medusajs/medusa/commit/c6a5dffa7bd8f627310d1f90364492084051dd47))
+
+
+
+
+
 ## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.5...medusa-plugin-slack-notification@1.1.6) (2021-03-17)
 
 **Note:** Version bump only for package medusa-plugin-slack-notification

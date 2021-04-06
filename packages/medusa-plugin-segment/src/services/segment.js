@@ -1,6 +1,7 @@
 import Analytics from "analytics-node"
 import axios from "axios"
 import { BaseService } from "medusa-interfaces"
+import { humanizeAmount } from "medusa-core-utils"
 
 class SegmentService extends BaseService {
   /**
@@ -43,26 +44,28 @@ class SegmentService extends BaseService {
       "EUR"
 
     if (fromCurrency === toCurrency) {
-      return this.totalsService_.rounded(value)
+      return this.rounded_(value)
     }
 
     const exchangeRate = await axios
       .get(
-        `https://api.exchangeratesapi.io/${date}?symbols=${fromCurrency}&base=${toCurrency}`
+        `https://api.exchangeratesapi.io/${date}?symbols=${fromCurrency}&base=${toCurrency}&access_key=${this.options_.exchange_rates_api_key}`
       )
       .then(({ data }) => {
         return data.rates[fromCurrency]
       })
 
-    return this.totalsService_.rounded(value / exchangeRate)
+    return this.rounded_(value / exchangeRate)
   }
 
   async buildOrder(order) {
-    const subtotal = order.subtotal / 100
-    const total = order.total / 100
-    const tax = order.tax_total / 100
-    const discount = order.discount_total / 100
-    const shipping = order.shipping_total / 100
+    const curr = order.currency_code
+
+    const subtotal = humanizeAmount(order.subtotal, curr)
+    const total = humanizeAmount(order.total, curr)
+    const tax = humanizeAmount(order.tax_total, curr)
+    const discount = humanizeAmount(order.discount_total, curr)
+    const shipping = humanizeAmount(order.shipping_total, curr)
     const revenue = total - tax
 
     let coupon
@@ -119,7 +122,7 @@ class SegmentService extends BaseService {
 
           const revenue = await this.getReportingValue(
             order.currency_code,
-            lineTotal / 100
+            humanizeAmount(lineTotal, curr)
           )
 
           let sku = ""
@@ -141,7 +144,9 @@ class SegmentService extends BaseService {
           return {
             name,
             variant,
-            price: lineTotal / 100 / item.quantity,
+            price: this.rounded_(
+              humanizeAmount(lineTotal, curr) / item.quantity
+            ),
             reporting_revenue: revenue,
             product_id: item.variant.product_id,
             category: product.collection?.title,
@@ -155,6 +160,10 @@ class SegmentService extends BaseService {
     }
 
     return orderData
+  }
+
+  rounded_(v) {
+    return Number(Math.round(v + "e2") + "e-2")
   }
 }
 
