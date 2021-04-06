@@ -26,5 +26,8 @@
   "engines": {
     "node": ">=10.14.0"
   },
-  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
+  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd",
+  "devDependencies": {
+    "babel-plugin-polyfill-corejs2": "^0.2.0"
+  }
 }
