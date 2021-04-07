@@ -18,7 +18,7 @@ export default async (req, res) => {
       "restockNotificationService"
     )
     await restockNotificationService.addEmail(variant_id, value.email)
-    res.sendStatus(200)
+    res.sendStatus(201)
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
