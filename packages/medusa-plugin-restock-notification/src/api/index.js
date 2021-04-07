@@ -1,10 +1,11 @@
 import { Router } from "express"
+
 import routes from "./routes"
 
-export default (container) => {
+export default (rootDirectory) => {
   const app = Router()
 
-  routes(app)
+  routes(app, rootDirectory)
 
   return app
 }
