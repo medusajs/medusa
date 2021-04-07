@@ -330,7 +330,7 @@ class DiscountService extends BaseService {
         is_disabled: false,
         code: data.code.toUpperCase(),
         parent_discount_id: discount.id,
-        usage_limit: data.usage_limit,
+        usage_limit: discount.usage_limit,
       }
 
       const created = await discountRepo.create(toCreate)
