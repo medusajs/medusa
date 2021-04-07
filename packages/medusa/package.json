@@ -19,6 +19,7 @@
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
@@ -47,7 +48,6 @@
     "typeorm": "0.2.x"
   },
   "dependencies": {
-    "@babel/plugin-transform-classes": "^7.9.5",
     "@hapi/joi": "^16.1.8",
     "@types/lodash": "^4.14.168",
     "awilix": "^4.2.3",
