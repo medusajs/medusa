@@ -21,6 +21,7 @@ export default (app, rootDirectory) => {
   route.options("/variants/:variant_id", cors(corsOptions))
   route.post(
     "/variants/:variant_id",
+    cors(corsOptions),
     bodyParser.json(),
     middlewares.wrap(require("./add-email").default)
   )
