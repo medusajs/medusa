@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 
@@ -299,10 +299,12 @@ class BrightpearlService extends BaseService {
             taxCode: region.tax_code,
             net: this.bpnum_(
               fromRefund.amount,
+              fromOrder.currency_code,
               10000 / (100 + fromOrder.tax_rate)
             ),
             tax: this.bpnum_(
-              fromRefund.amount * (1 - 100 / (100 + fromOrder.tax_rate))
+              fromRefund.amount * (1 - 100 / (100 + fromOrder.tax_rate)),
+              fromOrder.currency_code
             ),
             nominalCode: accountingCode,
           },
@@ -320,7 +322,7 @@ class BrightpearlService extends BaseService {
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-            amountPaid: this.bpnum_(fromRefund.amount),
+            amountPaid: this.bpnum_(fromRefund.amount, fromOrder.currency_code),
             paymentDate: new Date(),
             paymentType,
           }
@@ -389,8 +391,15 @@ class BrightpearlService extends BaseService {
           name: "Difference",
           quantity: 1,
           taxCode: region.tax_code,
-          net: this.bpnum_(difference, 10000 / (100 + fromOrder.tax_rate)),
-          tax: this.bpnum_(difference * (1 - 100 / (100 + fromOrder.tax_rate))),
+          net: this.bpnum_(
+            difference,
+            fromOrder.currency_code,
+            10000 / (100 + fromOrder.tax_rate)
+          ),
+          tax: this.bpnum_(
+            difference * (1 - 100 / (100 + fromOrder.tax_rate)),
+            fromOrder.currency_code
+          ),
           nominalCode: this.options.sales_account_code || "4000",
         })
       }
@@ -406,7 +415,10 @@ class BrightpearlService extends BaseService {
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-            amountPaid: this.bpnum_(fromReturn.refund_amount),
+            amountPaid: this.bpnum_(
+              fromReturn.refund_amount,
+              fromOrder.currencyCode
+            ),
             paymentDate: new Date(),
             paymentType,
           }
@@ -649,10 +661,12 @@ class BrightpearlService extends BaseService {
             name: `#${fromOrder.display_id}: Claim ${fromClaim.id}`,
             net: this.bpnum_(
               fromClaim.refund_amount,
+              fromOrder.currency_code,
               10000 / (100 + fromOrder.tax_rate)
             ),
             tax: this.bpnum_(
-              fromClaim.refund_amount * (1 - 100 / (100 + fromOrder.tax_rate))
+              fromClaim.refund_amount * (1 - 100 / (100 + fromOrder.tax_rate)),
+              fromOrder.currency_code
             ),
             taxCode: region.tax_code,
             nominalCode: this.options.sales_account_code || `4000`,
@@ -672,7 +686,10 @@ class BrightpearlService extends BaseService {
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-            amountPaid: this.bpnum_(fromClaim.refund_amount),
+            amountPaid: this.bpnum_(
+              fromClaim.refund_amount,
+              fromOrder.currency_code
+            ),
             paymentDate: new Date(),
             paymentType,
           }
@@ -784,7 +801,7 @@ class BrightpearlService extends BaseService {
       orderId: soId,
       paymentDate: new Date(),
       currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-      amountPaid: this.bpnum_(fromOrder.total),
+      amountPaid: this.bpnum_(fromOrder.total, fromOrder.currency_code),
       paymentType,
     }
 
@@ -820,9 +837,13 @@ class BrightpearlService extends BaseService {
         }
 
         if (config.include_price) {
-          row.net = this.bpnum_(item.unit_price * item.quantity - ld.amount)
+          row.net = this.bpnum_(
+            item.unit_price * item.quantity - ld.amount,
+            fromOrder.currency_code
+          )
           row.tax = this.bpnum_(
             item.unit_price * item.quantity - ld.amount,
+            fromOrder.currency_code,
             fromOrder.tax_rate
           )
         } else if (config.is_claim) {
@@ -830,7 +851,11 @@ class BrightpearlService extends BaseService {
             bpProduct.productId,
             this.options.cost_price_list || `1`
           )
-          row.tax = this.bpnum_(row.net * 100, fromOrder.tax_rate)
+          row.tax = this.bpnum_(
+            row.net * 100,
+            fromOrder.currency_code,
+            fromOrder.tax_rate
+          )
         }
 
         row.quantity = item.quantity
@@ -856,8 +881,12 @@ class BrightpearlService extends BaseService {
     if (gcTotal) {
       lines.push({
         name: `Gift Card`,
-        net: this.bpnum_(-1 * gcTotal),
-        tax: this.bpnum_(-1 * gcTotal, fromOrder.tax_rate),
+        net: this.bpnum_(-1 * gcTotal, fromOrder.currency_code),
+        tax: this.bpnum_(
+          -1 * gcTotal,
+          fromOrder.currency_code,
+          fromOrder.tax_rate
+        ),
         quantity: 1,
         taxCode: region.tax_code,
         nominalCode: this.options.gift_card_account_code || "4000",
@@ -872,8 +901,12 @@ class BrightpearlService extends BaseService {
       lines.push({
         name: `Shipping: ${shippingMethods.map((m) => m.name).join(" + ")}`,
         quantity: 1,
-        net: this.bpnum_(shippingTotal),
-        tax: this.bpnum_(shippingTotal, fromOrder.tax_rate),
+        net: this.bpnum_(shippingTotal, fromOrder.currency_code),
+        tax: this.bpnum_(
+          shippingTotal,
+          fromOrder.currency_code,
+          fromOrder.tax_rate
+        ),
         taxCode: region.tax_code,
         nominalCode: this.options.shipping_account_code || "4040",
       })
@@ -1112,8 +1145,8 @@ class BrightpearlService extends BaseService {
     )
   }
 
-  bpnum_(number, taxRate = 100) {
-    const bpNumber = number / 100
+  bpnum_(number, currency, taxRate = 100) {
+    const bpNumber = humanizeAmount(number, currency)
     return this.bpround_(bpNumber * (taxRate / 100))
   }
 }
