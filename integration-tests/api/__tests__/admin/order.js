@@ -77,7 +77,7 @@ describe("/admin/orders", () => {
         })
         .catch((err) => {
           console.log(err);
-        });p
+        });
       expect(response.status).toEqual(200);
     });
   });
@@ -706,4 +706,69 @@ describe("/admin/orders", () => {
       ]);
     });
   });
+
+  // describe("POST /admin/orders/:id/swaps", () => {
+  //   beforeEach(async () => {
+  //     try {
+  //       await adminSeeder(dbConnection);
+  //       await orderSeeder(dbConnection);
+  //     } catch (err) {
+  //       console.log(err);
+  //       throw err;
+  //     }
+  //   });
+
+  //   afterEach(async () => {
+  //     const manager = dbConnection.manager;
+  //     await manager.query(`DELETE FROM "cart"`);
+  //     await manager.query(`DELETE FROM "fulfillment_item"`);
+  //     await manager.query(`DELETE FROM "fulfillment"`);
+  //     await manager.query(`DELETE FROM "swap"`);
+  //     await manager.query(`DELETE FROM "return_item"`);
+  //     await manager.query(`DELETE FROM "return_reason"`);
+  //     await manager.query(`DELETE FROM "return"`);
+  //     await manager.query(`DELETE FROM "claim_image"`);
+  //     await manager.query(`DELETE FROM "claim_tag"`);
+  //     await manager.query(`DELETE FROM "claim_item"`);
+  //     await manager.query(`DELETE FROM "shipping_method"`);
+  //     await manager.query(`DELETE FROM "line_item"`);
+  //     await manager.query(`DELETE FROM "claim_order"`);
+  //     await manager.query(`DELETE FROM "money_amount"`);
+  //     await manager.query(`DELETE FROM "product_variant"`);
+  //     await manager.query(`DELETE FROM "product"`);
+  //     await manager.query(`DELETE FROM "shipping_option"`);
+  //     await manager.query(`DELETE FROM "discount"`);
+  //     await manager.query(`DELETE FROM "payment"`);
+  //     await manager.query(`DELETE FROM "order"`);
+  //     await manager.query(`DELETE FROM "customer"`);
+  //     await manager.query(
+  //       `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+  //     );
+  //     await manager.query(`DELETE FROM "region"`);
+  //     await manager.query(`DELETE FROM "user"`);
+  //   });
+
+  //   it("creates a swap", async () => {
+  //     const api = useApi();
+
+  //     const response = await api.post(
+  //       "/admin/orders/test-order/swaps",
+  //       {
+  //         return_items: [
+  //           {
+  //             item_id: "test-item",
+  //             quantity: 1,
+  //           },
+  //         ],
+  //         additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+  //       },
+  //       {
+  //         headers: {
+  //           authorization: "Bearer test_token",
+  //         },
+  //       }
+  //     );
+  //     expect(response.status).toEqual(200);
+  //   });
+  // });
 });

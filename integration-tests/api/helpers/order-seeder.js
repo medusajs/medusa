@@ -39,6 +39,19 @@ module.exports = async (connection, data = {}) => {
     ],
   });
 
+  await manager.insert(ProductVariant, {
+    id: "test-variant-2",
+    title: "Swap product",
+    product_id: "test-product",
+    inventory_quantity: 1,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Large",
+      },
+    ],
+  });
+
   const ma = manager.create(MoneyAmount, {
     variant_id: "test-variant",
     currency_code: "usd",

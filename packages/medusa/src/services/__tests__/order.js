@@ -858,13 +858,13 @@ describe("OrderService", () => {
     })
   })
 
-  describe("receiveReturn", () => {
+  describe("registerReturnReceived", () => {
     const order = {
       items: [
         {
           id: "item_1",
           quantity: 10,
-          returned_quantity: 0,
+          returned_quantity: 10,
         },
       ],
       payments: [{ id: "payment_test" }],
@@ -878,24 +878,6 @@ describe("OrderService", () => {
       },
     })
 
-    const returnService = {
-      retrieve: () => {
-        return Promise.resolve({
-          order_id: IdMap.getId("order"),
-        })
-      },
-      receiveReturn: jest
-        .fn()
-        .mockImplementation((id, items, amount, mism) =>
-          id === IdMap.getId("good")
-            ? Promise.resolve({ items, status: "received", refund_amount: 100 })
-            : Promise.resolve({ status: "requires_action" })
-        ),
-      withTransaction: function() {
-        return this
-      },
-    }
-
     const paymentProviderService = {
       refundPayment: jest
         .fn()
@@ -907,20 +889,11 @@ describe("OrderService", () => {
       },
     }
 
-    const lineItemService = {
-      update: jest.fn(),
-      withTransaction: function() {
-        return this
-      },
-    }
-
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
       paymentProviderService,
       totalsService,
-      returnService,
-      lineItemService,
       eventBusService,
     })
 
@@ -929,29 +902,11 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      const items = [
-        {
-          item_id: "item_1",
-          quantity: 10,
-        },
-      ]
-      await orderService.receiveReturn(
-        IdMap.getId("order"),
-        IdMap.getId("good"),
-        items
-      )
-
-      expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
-      expect(returnService.receiveReturn).toHaveBeenCalledWith(
-        IdMap.getId("good"),
-        items,
-        undefined,
-        false
-      )
-
-      expect(lineItemService.update).toHaveBeenCalledTimes(1)
-      expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
-        returned_quantity: 10,
+      await orderService.registerReturnReceived(IdMap.getId("order"), {
+        id: IdMap.getId("good"),
+        order_id: IdMap.getId("order"),
+        status: "received",
+        refund_amount: 100,
       })
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
@@ -969,65 +924,19 @@ describe("OrderService", () => {
     })
 
     it("return with custom refund", async () => {
-      const items = [
-        {
-          item_id: IdMap.getId("existingLine"),
-          quantity: 10,
-        },
-      ]
-      await orderService.receiveReturn(
-        IdMap.getId("order"),
-        IdMap.getId("good"),
-        items,
-        102
-      )
+      await orderService.registerReturnReceived(IdMap.getId("order"), {
+        id: IdMap.getId("good"),
+        order_id: IdMap.getId("order"),
+        status: "received",
+        refund_amount: 102,
+      })
 
-      expect(returnService.receiveReturn).toHaveBeenCalledTimes(1)
-      expect(returnService.receiveReturn).toHaveBeenCalledWith(
-        IdMap.getId("good"),
-        items,
+      expect(paymentProviderService.refundPayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(
+        order.payments,
         102,
-        false
+        "return"
       )
-    })
-
-    it("calls order model functions and sets partially_returned", async () => {
-      const items = [
-        {
-          item_id: IdMap.getId("existingLine"),
-          quantity: 2,
-        },
-      ]
-      await orderService.receiveReturn(
-        IdMap.getId("order"),
-        IdMap.getId("good"),
-        items
-      )
-
-      expect(orderRepo.save).toHaveBeenCalledTimes(1)
-      expect(orderRepo.save).toHaveBeenCalledWith({
-        ...order,
-        fulfillment_status: "partially_returned",
-      })
-    })
-
-    it("sets requires_action on additional items", async () => {
-      await orderService.receiveReturn(
-        IdMap.getId("order"),
-        IdMap.getId("action"),
-        [
-          {
-            item_id: IdMap.getId("existingLine2"),
-            quantity: 2,
-          },
-        ]
-      )
-
-      expect(orderRepo.save).toHaveBeenCalledTimes(1)
-      expect(orderRepo.save).toHaveBeenCalledWith({
-        ...order,
-        fulfillment_status: "requires_action",
-      })
     })
   })
 
@@ -1126,125 +1035,6 @@ describe("OrderService", () => {
       expect(orderRepo.save).toHaveBeenCalledWith({
         ...order,
         fulfillment_status: "shipped",
-      })
-    })
-  })
-
-  describe("registerSwapReceived", () => {
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-    const orderRepo = MockRepository({
-      findOneWithRelations: () => Promise.resolve({ id: IdMap.getId("order") }),
-    })
-
-    it("fails if order/swap relationship not satisfied", async () => {
-      const swapService = {
-        retrieve: jest
-          .fn()
-          .mockReturnValue(
-            Promise.resolve({ id: "1235", order_id: IdMap.getId("order_1") })
-          ),
-        withTransaction: function() {
-          return this
-        },
-      }
-
-      const orderService = new OrderService({
-        manager: MockManager,
-        orderRepository: orderRepo,
-        totalsService,
-        swapService,
-        eventBusService,
-      })
-
-      const res = orderService.registerSwapReceived(
-        IdMap.getId("order"),
-        "1235"
-      )
-      await expect(res).rejects.toThrow("Swap must belong to the given order")
-    })
-
-    it("fails if swap doesn't have status received", async () => {
-      const swapService = {
-        retrieve: jest.fn().mockReturnValue(
-          Promise.resolve({
-            id: "1235",
-            order_id: IdMap.getId("order"),
-            return_order: { status: "requested" },
-          })
-        ),
-        withTransaction: function() {
-          return this
-        },
-      }
-      const orderService = new OrderService({
-        manager: MockManager,
-        orderRepository: orderRepo,
-        swapService,
-        totalsService,
-        eventBusService: { emit: jest.fn().mockReturnValue(Promise.resolve()) },
-      })
-
-      const res = orderService.registerSwapReceived(
-        IdMap.getId("order"),
-        "1235"
-      )
-      await expect(res).rejects.toThrow("Swap is not received")
-    })
-
-    it("registers a swap as received", async () => {
-      const orderRepo = MockRepository({
-        findOneWithRelations: () =>
-          Promise.resolve({
-            id: IdMap.getId("order_123"),
-            items: [
-              {
-                id: IdMap.getId("1234"),
-                returned_quantity: 0,
-                quantity: 1,
-              },
-            ],
-          }),
-      })
-
-      const swapService = {
-        retrieve: jest.fn().mockReturnValue(
-          Promise.resolve({
-            id: "1235",
-            order_id: IdMap.getId("order_123"),
-            return_order: {
-              status: "received",
-              items: [{ item_id: IdMap.getId("1234"), quantity: 1 }],
-            },
-          })
-        ),
-        withTransaction: function() {
-          return this
-        },
-      }
-
-      const lineItemService = {
-        update: jest.fn(),
-        withTransaction: function() {
-          return this
-        },
-      }
-
-      const orderService = new OrderService({
-        manager: MockManager,
-        orderRepository: orderRepo,
-        totalsService,
-        swapService,
-        lineItemService,
-        eventBusService,
-      })
-
-      await orderService.registerSwapReceived(IdMap.getId("order_123"), "1235")
-
-      expect(lineItemService.update).toHaveBeenCalledTimes(1)
-      expect(lineItemService.update).toHaveBeenCalledWith(IdMap.getId("1234"), {
-        returned_quantity: 1,
       })
     })
   })

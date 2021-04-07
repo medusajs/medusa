@@ -61,6 +61,7 @@ class ReturnService extends BaseService {
       shippingOptionService: this.shippingOptionService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
       returnReasonService: this.returnReasonService_,
+      orderService: this.orderService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -409,12 +410,7 @@ class ReturnService extends BaseService {
    * @param {string[]} lineItems - the line items to return
    * @return {Promise} the result of the update operation
    */
-  async receiveReturn(
-    returnId,
-    receivedItems,
-    refundAmount,
-    allowMismatch = false
-  ) {
+  async receive(returnId, receivedItems, refundAmount, allowMismatch = false) {
     return this.atomicPhase_(async manager => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
@@ -425,6 +421,8 @@ class ReturnService extends BaseService {
           "items",
           "order",
           "order.items",
+          "order.returns",
+          "order.payments",
           "order.discounts",
           "order.refunds",
           "order.shipping_methods",
@@ -501,6 +499,16 @@ class ReturnService extends BaseService {
       }
 
       const result = await returnRepository.save(updateObj)
+
+      console.log(returnObj.items)
+
+      for (const i of returnObj.items) {
+        const returnedQuantity = (i.returned_quantity || 0) + i.quantity
+        await this.lineItemService_.withTransaction(manager).update(i.item_id, {
+          returned_quantity: returnedQuantity,
+        })
+      }
+
       return result
     })
   }

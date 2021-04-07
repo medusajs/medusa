@@ -41,7 +41,7 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
-  const { id, return_id } = req.params
+  const { id } = req.params
 
   const schema = Validator.object().keys({
     items: Validator.array()
@@ -61,28 +61,39 @@ export default async (req, res) => {
   }
 
   try {
+    const returnService = req.scope.resolve("returnService")
     const orderService = req.scope.resolve("orderService")
+    const swapService = req.scope.resolve("swapService")
+    const entityManager = req.scope.resolve("manager")
 
-    let refundAmount = value.refund
+    let receivedReturn
+    await entityManager.transaction(async manager => {
+      let refundAmount = value.refund
 
-    if (typeof value.refund !== "undefined" && value.refund < 0) {
-      refundAmount = 0
-    }
+      if (typeof value.refund !== "undefined" && value.refund < 0) {
+        refundAmount = 0
+      }
 
-    let order = await orderService.receiveReturn(
-      id,
-      return_id,
-      value.items,
-      refundAmount,
-      true
-    )
+      receivedReturn = await returnService
+        .withTransaction(manager)
+        .receive(id, value.items, refundAmount, true)
 
-    order = await orderService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
+      if (receivedReturn.order_id) {
+        await orderService
+          .withTransaction(manager)
+          .registerReturnReceived(receivedReturn.order_id, receivedReturn)
+      }
+
+      if (receivedReturn.swap_id) {
+        await swapService
+          .withTransaction(manager)
+          .registerSwapReceived(id, receivedReturn.swap_id)
+      }
     })
 
-    res.status(200).json({ order })
+    receivedReturn = await returnService.retrieve(id)
+
+    res.status(200).json({ return: receivedReturn })
   } catch (err) {
     throw err
   }

@@ -36,7 +36,6 @@ class OrderService extends BaseService {
     lineItemService,
     totalsService,
     regionService,
-    returnService,
     swapService,
     cartService,
     addressRepository,
@@ -71,9 +70,6 @@ class OrderService extends BaseService {
 
     /** @private @constant {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @constant {ReturnService} */
-    this.returnService_ = returnService
 
     /** @private @constant {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
@@ -1101,98 +1097,6 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Registers a previously requested return as received. This will create a
-   * refund to the customer. If the returned items don't match the requested
-   * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
-   * allowMismatch argument to true, will process the return, ignoring any
-   * mismatches.
-   * @param {string} orderId - the order to return.
-   * @param {string[]} lineItems - the line items to return
-   * @return {Promise} the result of the update operation
-   */
-  async receiveReturn(
-    orderId,
-    returnId,
-    items,
-    refundAmount,
-    allowMismatch = false
-  ) {
-    return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, {
-        relations: ["items", "returns", "payments"],
-      })
-      const returnRequest = await this.returnService_.retrieve(returnId)
-
-      if (!returnRequest || returnRequest.order_id !== orderId) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Return request with id ${returnId} was not found`
-        )
-      }
-
-      const updatedReturn = await this.returnService_
-        .withTransaction(manager)
-        .receiveReturn(returnId, items, refundAmount, allowMismatch)
-
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      if (updatedReturn.status === "requires_action") {
-        order.fulfillment_status = "requires_action"
-        const result = await orderRepo.save(order)
-        this.eventBus_
-          .withTransaction(manager)
-          .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
-            id: result.id,
-            return_id: updatedReturn.id,
-          })
-        return result
-      }
-
-      let isFullReturn = true
-      for (const i of order.items) {
-        const isReturn = updatedReturn.items.find(r => i.id === r.item_id)
-        if (isReturn) {
-          const returnedQuantity =
-            (i.returned_quantity || 0) + isReturn.quantity
-          if (i.quantity !== returnedQuantity) {
-            isFullReturn = false
-          }
-
-          await this.lineItemService_.withTransaction(manager).update(i.id, {
-            returned_quantity: returnedQuantity,
-          })
-        } else {
-          if (!i.returned_quantity !== i.quantity) {
-            isFullReturn = false
-          }
-        }
-      }
-
-      if (updatedReturn.refund_amount > 0) {
-        await this.paymentProviderService_
-          .withTransaction(manager)
-          .refundPayment(order.payments, updatedReturn.refund_amount, "return")
-      }
-
-      if (isFullReturn) {
-        order.fulfillment_status = "returned"
-      } else {
-        order.fulfillment_status = "partially_returned"
-      }
-
-      const result = await orderRepo.save(order)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderService.Events.ITEMS_RETURNED, {
-          id: order.id,
-          return_id: updatedReturn.id,
-        })
-      return result
-    })
-  }
-
-  /**
    * Archives an order. It only alloved, if the order has been fulfilled
    * and payment has been captured.
    * @param {string} orderId - the order to archive
@@ -1288,82 +1192,68 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
+   * Handles receiving a return. This will create a
+   * refund to the customer. If the returned items don't match the requested
+   * items the return status will be updated to requires_action. This behaviour
+   * is useful in sitautions where a custom refund amount is requested, but the
+   * retuned items are not matching the requested items. Setting the
+   * allowMismatch argument to true, will process the return, ignoring any
+   * mismatches.
+   * @param {string} orderId - the order to return.
+   * @param {object} receivedReturn - the received return
+   * @return {Promise} the result of the update operation
    */
-  setMetadata_(order, metadata) {
-    const existing = order.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
-  }
-
-  /**
-   * Registers the swap return items as received so that they cannot be used
-   * as a part of other swaps/returns.
-   * @param {string} id - the id of the order with the swap.
-   * @param {string} swapId - the id of the swap that has been received.
-   * @returns {Promise<Order>} the resulting order
-   */
-  async registerSwapReceived(id, swapId) {
+  async registerReturnReceived(orderId, receivedReturn) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(id, { relations: ["items"] })
-      const swap = await this.swapService_
-        .withTransaction(manager)
-        .retrieve(swapId, { relations: ["return_order", "return_order.items"] })
+      const order = await this.retrieve(orderId, {
+        relations: ["items", "returns", "payments"],
+      })
 
-      if (!swap || swap.order_id !== id) {
+      if (!receivedReturn || receivedReturn.order_id !== orderId) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Swap must belong to the given order"
+          MedusaError.Types.NOT_FOUND,
+          `Received return does not exist`
         )
       }
 
-      if (swap.return_order.status !== "received") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Swap is not received"
-        )
-      }
-
-      for (const i of order.items) {
-        const isReturn = swap.return_order.items.find(ri => i.id === ri.item_id)
-
-        if (isReturn) {
-          const returnedQuantity =
-            (i.returned_quantity || 0) + isReturn.quantity
-          await this.lineItemService_.withTransaction(manager).update(i.id, {
-            returned_quantity: returnedQuantity,
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      if (receivedReturn.status === "requires_action") {
+        order.fulfillment_status = "requires_action"
+        const result = await orderRepo.save(order)
+        this.eventBus_
+          .withTransaction(manager)
+          .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
+            id: result.id,
+            return_id: receivedReturn.id,
           })
+        return result
+      }
+
+      let isFullReturn = true
+      for (const i of order.items) {
+        if (i.returned_quantity !== i.quantity) {
+          isFullReturn = false
         }
       }
 
-      const result = await this.retrieve(id)
+      if (receivedReturn.refund_amount > 0) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .refundPayment(order.payments, receivedReturn.refund_amount, "return")
+      }
+
+      if (isFullReturn) {
+        order.fulfillment_status = "returned"
+      } else {
+        order.fulfillment_status = "partially_returned"
+      }
+
+      const result = await orderRepo.save(order)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.SWAP_RECEIVED, {
-          id: result.id,
-          swap_id: swapId,
+        .emit(OrderService.Events.ITEMS_RETURNED, {
+          id: order.id,
+          return_id: receivedReturn.id,
         })
       return result
     })

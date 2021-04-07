@@ -9,6 +9,7 @@ import { MedusaError } from "medusa-core-utils"
 class SwapService extends BaseService {
   static Events = {
     CREATED: "swap.created",
+    RECEIVED: "swap.received",
     SHIPMENT_CREATED: "swap.shipment_created",
     PAYMENT_COMPLETED: "swap.payment_completed",
     PAYMENT_CAPTURED: "swap.payment_captured",
@@ -417,6 +418,7 @@ class SwapService extends BaseService {
       }
 
       for (const r of swap.return_order.items) {
+        c
         const lineItem = order.items.find(i => i.id === r.item_id)
 
         const toCreate = {
@@ -719,37 +721,6 @@ class SwapService extends BaseService {
   }
 
   /**
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  setMetadata_(swap, metadata) {
-    const existing = swap.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
-  }
-
-  /**
    * Dedicated method to delete metadata for a swap.
    * @param {string} swapId - the order to delete metadata from.
    * @param {string} key - key for metadata field
@@ -771,6 +742,48 @@ class SwapService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Registers the swap return items as received so that they cannot be used
+   * as a part of other swaps/returns.
+   * @param {string} id - the id of the order with the swap.
+   * @param {string} swapId - the id of the swap that has been received.
+   * @returns {Promise<Order>} the resulting order
+   */
+  async registerReceived(id) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(id, {
+        relations: ["return_order", "return_order.items"],
+      })
+
+      if (swap.return_order.status !== "received") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Swap is not received"
+        )
+      }
+
+      const result = await this.retrieve(id)
+
+      // backwards compatibility
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit("order.swap_received", {
+          id: result.order_id,
+          swap_id: id,
+          _deprecated: true,
+        })
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(SwapService.Events.RECEIVED, {
+          id: id,
+          order_id: result.order_id,
+        })
+
+      return result
+    })
   }
 }
 

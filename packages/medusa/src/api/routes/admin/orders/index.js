@@ -79,14 +79,6 @@ export default app => {
   )
 
   /**
-   * Register a requested return
-   */
-  route.post(
-    "/:id/return/:return_id/receive",
-    middlewares.wrap(require("./receive-return").default)
-  )
-
-  /**
    * Cancel an order.
    */
   route.post("/:id/cancel", middlewares.wrap(require("./cancel-order").default))
