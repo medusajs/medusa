@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.7...medusa-plugin-sendgrid@1.1.8) (2021-03-30)
+
+
+### Bug Fixes
+
+* format numbers correctly in sendgrid ([7682980](https://github.com/medusajs/medusa/commit/7682980c58f1a01f0c510b1d4feae3a62892040c))
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
 ## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.6...medusa-plugin-sendgrid@1.1.7) (2021-03-17)
 
 **Note:** Version bump only for package medusa-plugin-sendgrid
