@@ -88,10 +88,7 @@ describe("RestockNotificationService", () => {
     it("successfully adds email to non-existing noti", async () => {
       jest.clearAllMocks()
 
-      const result = await restockNotiService.addEmail(
-        "variant_test",
-        "seb@med-test.com"
-      )
+      await restockNotiService.addEmail("variant_test", "seb@med-test.com")
 
       expect(RestockNotificationModel.create).toHaveBeenCalledTimes(1)
       expect(RestockNotificationModel.create).toHaveBeenCalledWith({
@@ -105,10 +102,7 @@ describe("RestockNotificationService", () => {
     it("successfully adds email to existing noti", async () => {
       jest.clearAllMocks()
 
-      const result = await restockNotiService.addEmail(
-        "variant_1234",
-        "seb@med-test.com"
-      )
+      await restockNotiService.addEmail("variant_1234", "seb@med-test.com")
 
       expect(RestockNotificationModel.save).toHaveBeenCalledTimes(1)
       expect(RestockNotificationModel.save).toHaveBeenCalledWith({

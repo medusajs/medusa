@@ -30,3 +30,25 @@ export class RestockNotification {
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 }
+
+/**
+ * @schema restock_notification
+ * title: "Restock Notification"
+ * description: "Holds a list of emails that wish to be notifed when an item is restocked."
+ * x-resourceId: restock_notification
+ * properties:
+ *   variant_id:
+ *     type: string
+ *     description: "The id of the variant that customers have signed up to be notified about,"
+ *   emails:
+ *     type: string[]
+ *     description: "The emails of customers who wish to be notified about restocks."
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     description: "The date time at which the first restock signup was made."
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     description: "The date time at which the first last signup was made."
+ */
