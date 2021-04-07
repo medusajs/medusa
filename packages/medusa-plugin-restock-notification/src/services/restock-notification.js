@@ -1,6 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
+/**
+ * Restock notifications can be used to keep track of customers who wish to be
+ * notified when a certain item is restocked. Restock notifications can only
+ * apply to sold out items and will be deleted once items are restocked.
+ */
 class RestockNotificationService extends BaseService {
   constructor(
     {
@@ -41,6 +46,12 @@ class RestockNotificationService extends BaseService {
     return cloned
   }
 
+  /**
+   * Retrieves a restock notification by a given variant id.
+   * @param {string} variantId - the variant id to retrieve restock notification
+   *  for
+   * @return {Promise<RestockNotification>} The restock notification
+   */
   async retrieve(variantId) {
     const restockRepo = this.manager_.getRepository(
       this.restockNotificationModel_
@@ -48,6 +59,13 @@ class RestockNotificationService extends BaseService {
     return await restockRepo.findOne({ where: { variant_id: variantId } })
   }
 
+  /**
+   * Adds an email to be notified when a certain variant is restocked. Throws if
+   * the variant is not sold out.
+   * @param {string} variantId - the variant id to sign up for notifications for
+   * @param {string} email - the email to signup
+   * @return {Promise<RestockNotification>} The resulting restock notification
+   */
   async addEmail(variantId, email) {
     return this.atomicPhase_(async (manager) => {
       const restockRepo = manager.getRepository(this.restockNotificationModel_)
@@ -81,6 +99,13 @@ class RestockNotificationService extends BaseService {
     })
   }
 
+  /**
+   * Checks if anyone has signed up for restock notifications on a given variant
+   * and emits a restocked event to the event bus. After successful emission the
+   * restock notification is deleted.
+   * @param {string} variantId - the variant id to trigger restock for
+   * @return {Promise<RestockNotification>} The resulting restock notification
+   */
   async triggerRestock(variantId) {
     return this.atomicPhase_(async (manager) => {
       const restockRepo = manager.getRepository(this.restockNotificationModel_)
