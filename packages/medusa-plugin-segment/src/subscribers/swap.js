@@ -30,7 +30,8 @@ class OrderSubscriber {
     // swap.refund_processed
 
     eventBusService.subscribe("order.swap_received", async ({ id, swap_id }) => {
-      const swap = await swapService
+      const swap = await swapService.retrieve(swap_id, {
+      })
     })
 
   }
