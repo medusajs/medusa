@@ -10,6 +10,7 @@
   "author": "Sebastian Rindom <seb@medusa-commerce.com>",
   "license": "MIT",
   "devDependencies": {
+    "@medusajs/medusa": "^1.1.17",
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@babel/plugin-transform-typescript": "^7.13.0",
@@ -29,10 +30,10 @@
     "test": "jest"
   },
   "peerDependencies": {
+    "@medusajs/medusa": "1.x",
     "medusa-interfaces": "1.x"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.1.17",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
