@@ -485,20 +485,14 @@ class ReturnService extends BaseService {
         returnStatus = "requires_action"
       }
 
-      const toRefund = refundAmount || returnObj.refund_amount
-      const total = await this.totalsService_.getTotal(order)
-      const refunded = await this.totalsService_.getRefundedTotal(order)
-
-      if (toRefund > total - refunded) {
-        returnStatus = "requires_action"
-      }
+      const totalRefundableAmount = refundAmount || returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
         ...returnObj,
         status: returnStatus,
         items: newLines,
-        refund_amount: toRefund,
+        refund_amount: totalRefundableAmount,
         received_at: now.toISOString(),
       }
 

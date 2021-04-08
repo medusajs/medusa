@@ -270,6 +270,7 @@ class OrderService extends BaseService {
       "refunded_total",
       "refundable_amount",
       "items.refundable",
+      "swaps.additional_items.refundable",
     ]
 
     const totalsToSelect = select.filter(v => totalFields.includes(v))
@@ -1151,6 +1152,22 @@ class OrderService extends BaseService {
       }))
     }
 
+    if (
+      totalsFields.includes("swaps.additional_items.refundable") &&
+      order.swaps &&
+      order.swaps.length
+    ) {
+      for (const s of order.swaps) {
+        s.additional_items = s.additional_items.map(i => ({
+          ...i,
+          refundable: this.totalsService_.getLineItemRefund(order, {
+            ...i,
+            quantity: i.quantity - (i.returned_quantity || 0),
+          }),
+        }))
+      }
+    }
+
     return order
   }
 
@@ -1180,7 +1197,10 @@ class OrderService extends BaseService {
       }
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      if (receivedReturn.status === "requires_action") {
+      const total = await this.totalsService_.getTotal(order)
+      const refunded = await this.totalsService_.getRefundedTotal(order)
+
+      if (totalRefundableAmount > total - refunded) {
         order.fulfillment_status = "requires_action"
         const result = await orderRepo.save(order)
         this.eventBus_
