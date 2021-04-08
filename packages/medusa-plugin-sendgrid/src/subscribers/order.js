@@ -1,16 +1,6 @@
 class OrderSubscriber {
-  constructor({
-    totalsService,
-    orderService,
-    sendgridService,
-    notificationService,
-    fulfillmentService,
-  }) {
-    this.orderService_ = orderService
-    this.totalsService_ = totalsService
-    this.sendgridService_ = sendgridService
+  constructor({ notificationService }) {
     this.notificationService_ = notificationService
-    this.fulfillmentService_ = fulfillmentService
 
     this.notificationService_.subscribe("order.shipment_created", "sendgrid")
     this.notificationService_.subscribe("order.gift_card_created", "sendgrid")
