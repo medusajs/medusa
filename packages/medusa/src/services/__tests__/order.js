@@ -868,6 +868,8 @@ describe("OrderService", () => {
         },
       ],
       payments: [{ id: "payment_test" }],
+      refunded_total: 0,
+      total: 100,
     }
     const orderRepo = MockRepository({
       findOneWithRelations: (rel, q) => {
@@ -924,12 +926,16 @@ describe("OrderService", () => {
     })
 
     it("return with custom refund", async () => {
-      await orderService.registerReturnReceived(IdMap.getId("order"), {
-        id: IdMap.getId("good"),
-        order_id: IdMap.getId("order"),
-        status: "received",
-        refund_amount: 102,
-      })
+      await orderService.registerReturnReceived(
+        IdMap.getId("order"),
+        {
+          id: IdMap.getId("good"),
+          order_id: IdMap.getId("order"),
+          status: "received",
+          refund_amount: 102,
+        },
+        true
+      )
 
       expect(paymentProviderService.refundPayment).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(

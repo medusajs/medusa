@@ -1183,9 +1183,10 @@ class OrderService extends BaseService {
    * @param {object} receivedReturn - the received return
    * @return {Promise} the result of the update operation
    */
-  async registerReturnReceived(orderId, receivedReturn) {
+  async registerReturnReceived(orderId, receivedReturn, customRefundAmount) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
+        select: ["total", "refunded_total"],
         relations: ["items", "returns", "payments"],
       })
 
@@ -1196,11 +1197,11 @@ class OrderService extends BaseService {
         )
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      const total = await this.totalsService_.getTotal(order)
-      const refunded = await this.totalsService_.getRefundedTotal(order)
+      let refundAmount = customRefundAmount || receivedReturn.refund_amount
 
-      if (totalRefundableAmount > total - refunded) {
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+
+      if (refundAmount > order.total - order.refunded_total) {
         order.fulfillment_status = "requires_action"
         const result = await orderRepo.save(order)
         this.eventBus_

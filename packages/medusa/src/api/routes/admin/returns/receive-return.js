@@ -81,7 +81,11 @@ export default async (req, res) => {
       if (receivedReturn.order_id) {
         await orderService
           .withTransaction(manager)
-          .registerReturnReceived(receivedReturn.order_id, receivedReturn)
+          .registerReturnReceived(
+            receivedReturn.order_id,
+            receivedReturn,
+            refundAmount
+          )
       }
 
       if (receivedReturn.swap_id) {

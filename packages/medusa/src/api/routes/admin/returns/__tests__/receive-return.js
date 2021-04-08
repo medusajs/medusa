@@ -50,7 +50,8 @@ describe("POST /admin/returns/:id/receive", () => {
         {
           id: IdMap.getId("test-return"),
           order_id: IdMap.getId("test-order"),
-        }
+        },
+        undefined
       )
     })
   })
