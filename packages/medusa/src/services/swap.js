@@ -364,6 +364,8 @@ class SwapService extends BaseService {
         relations: [
           "order",
           "order.items",
+          "order.swaps",
+          "order.swaps.additional_items",
           "order.discounts",
           "additional_items",
           "return_order",
@@ -418,8 +420,15 @@ class SwapService extends BaseService {
       }
 
       for (const r of swap.return_order.items) {
-        c
-        const lineItem = order.items.find(i => i.id === r.item_id)
+        let allItems = [...order.items]
+
+        if (order.swaps && order.swaps.length) {
+          for (const s of order.swaps) {
+            allItems = [...allItems, ...s.additional_items]
+          }
+        }
+
+        const lineItem = allItems.find(i => i.id === r.item_id)
 
         const toCreate = {
           cart_id: cart.id,

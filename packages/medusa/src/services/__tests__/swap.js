@@ -192,6 +192,8 @@ describe("SwapService", () => {
           relations: [
             "order",
             "order.items",
+            "order.swaps",
+            "order.swaps.additional_items",
             "order.discounts",
             "additional_items",
             "return_order",

@@ -36,7 +36,6 @@ class OrderService extends BaseService {
     lineItemService,
     totalsService,
     regionService,
-    swapService,
     cartService,
     addressRepository,
     giftCardService,
@@ -53,10 +52,10 @@ class OrderService extends BaseService {
     /** @private @constant {CustomerService} */
     this.customerService_ = customerService
 
-    /** @private @constantant {PaymentProviderService} */
+    /** @private @constant {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
 
-    /** @private @constantant {ShippingProvileService} */
+    /** @private @constant {ShippingProvileService} */
     this.shippingProfileService_ = shippingProfileService
 
     /** @private @constant {FulfillmentProviderService} */
@@ -91,9 +90,6 @@ class OrderService extends BaseService {
 
     /** @private @constant {AddressRepository} */
     this.addressRepository_ = addressRepository
-
-    /** @private @constant {SwapService} */
-    this.swapService_ = swapService
   }
 
   withTransaction(manager) {
@@ -114,7 +110,6 @@ class OrderService extends BaseService {
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       cartService: this.cartService_,
-      swapService: this.swapService_,
       giftCardService: this.giftCardService_,
     })
 
@@ -1062,38 +1057,6 @@ class OrderService extends BaseService {
     )
 
     return toReturn.filter(i => !!i)
-  }
-
-  /**
-   * Checks that a given quantity of a line item can be returned. Fails if the
-   * item is undefined or if the returnable quantity of the item is lower, than
-   * the quantity that is requested to be returned.
-   * @param {LineItem?} item - the line item to check has sufficient returnable
-   *   quantity.
-   * @param {number} quantity - the quantity that is requested to be returned.
-   * @return {LineItem} a line item where the quantity is set to the requested
-   *   return quantity.
-   */
-  validateReturnLineItem_(item, quantity) {
-    if (!item) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Return contains invalid line item"
-      )
-    }
-
-    const returnable = item.quantity - (item.returned_quantity || 0)
-    if (quantity > returnable) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Cannot return more items than have been purchased"
-      )
-    }
-
-    return {
-      ...item,
-      quantity,
-    }
   }
 
   /**

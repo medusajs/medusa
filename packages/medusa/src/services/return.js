@@ -70,7 +70,7 @@ class ReturnService extends BaseService {
   }
 
   /**
-   * Retrieves the order line items, given an array of items.
+   * Retrieves the order line items, given an array of items
    * @param {Order} order - the order to get line items from
    * @param {{ item_id: string, quantity: number }} items - the items to get
    * @param {function} transformer - a function to apply to each of the items
@@ -85,7 +85,7 @@ class ReturnService extends BaseService {
     // merge items from order with items from order swaps
     if (order.swaps && order.swaps.length) {
       for (const s of order.swaps) {
-        merged.concat(s.items)
+        merged = [...merged, ...s.additional_items]
       }
     }
 
@@ -427,12 +427,16 @@ class ReturnService extends BaseService {
           "order.refunds",
           "order.shipping_methods",
           "order.region",
+          "order.swaps",
           "swap",
+          "swap.additional_items",
           "swap.order",
           "swap.order.items",
           "swap.order.refunds",
           "swap.order.shipping_methods",
           "swap.order.region",
+          "swap.order.swaps",
+          "swap.order.swaps.additional_items",
         ],
       })
 
@@ -499,8 +503,6 @@ class ReturnService extends BaseService {
       }
 
       const result = await returnRepository.save(updateObj)
-
-      console.log(returnObj.items)
 
       for (const i of returnObj.items) {
         const returnedQuantity = (i.returned_quantity || 0) + i.quantity

@@ -87,7 +87,7 @@ export default async (req, res) => {
       if (receivedReturn.swap_id) {
         await swapService
           .withTransaction(manager)
-          .registerSwapReceived(id, receivedReturn.swap_id)
+          .registerReceived(receivedReturn.swap_id)
       }
     })
 

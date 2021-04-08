@@ -128,7 +128,16 @@ class TotalsService extends BaseService {
    * @return {int} the calculated subtotal
    */
   getRefundTotal(order, lineItems) {
-    const itemIds = order.items.map(i => i.id)
+    let itemIds = order.items.map(i => i.id)
+
+    // in case we swap a swap, we need to include swap items
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        const swapItemIds = s.additional_items.map(el => el.id)
+        itemIds = [...itemIds, ...swapItemIds]
+      }
+    }
+
     const refunds = lineItems.map(i => {
       if (!itemIds.includes(i.id)) {
         throw new MedusaError(

@@ -10,6 +10,7 @@ const {
   ProductVariant,
   Region,
   Order,
+  Swap,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -52,6 +53,13 @@ module.exports = async (connection, data = {}) => {
     ],
   });
 
+  const ma2 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-2",
+    currency_code: "usd",
+    amount: 8000,
+  });
+  await manager.save(ma2);
+
   const ma = manager.create(MoneyAmount, {
     variant_id: "test-variant",
     currency_code: "usd",
@@ -90,6 +98,8 @@ module.exports = async (connection, data = {}) => {
     id: "test-order",
     customer_id: "test-customer",
     email: "test@email.com",
+    payment_status: "captured",
+    fulfillment_status: "fulfilled",
     billing_address: {
       id: "test-billing-address",
       first_name: "lebron",
@@ -132,22 +142,25 @@ module.exports = async (connection, data = {}) => {
         data: {},
       },
     ],
-    items: [
-      {
-        id: "test-item",
-        fulfilled_quantity: 1,
-        title: "Line Item",
-        description: "Line Item Desc",
-        thumbnail: "https://test.js/1234",
-        unit_price: 8000,
-        quantity: 1,
-        variant_id: "test-variant",
-      },
-    ],
+    items: [],
     ...data,
   });
 
   await manager.save(order);
+
+  const li = manager.create(LineItem, {
+    id: "test-item",
+    fulfilled_quantity: 1,
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    order_id: "test-order",
+  });
+
+  await manager.save(li);
 
   await manager.insert(ShippingMethod, {
     id: "test-method",
