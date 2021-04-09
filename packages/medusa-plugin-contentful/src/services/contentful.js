@@ -76,7 +76,7 @@ class ContentfulService extends BaseService {
     let assets = []
     await Promise.all(
       product.images
-        .filter((image) => image !== product.thumbnail)
+        .filter((image) => image.url !== product.thumbnail)
         .map(async (image, i) => {
           const asset = await environment.createAsset({
             fields: {
@@ -89,8 +89,8 @@ class ContentfulService extends BaseService {
               file: {
                 "en-US": {
                   contentType: "image/xyz",
-                  fileName: image,
-                  upload: image,
+                  fileName: image.url,
+                  upload: image.url,
                 },
               },
             },
@@ -450,7 +450,7 @@ class ContentfulService extends BaseService {
     ]
 
     // Update came directly from product variant service so only act on a couple
-    // of fields. When the update comes from the product we want to ensure 
+    // of fields. When the update comes from the product we want to ensure
     // references are set up correctly so we run through everything.
     if (variant.fields) {
       const found = variant.fields.find((f) => updateFields.includes(f))
