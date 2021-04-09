@@ -30,6 +30,7 @@ class SendGridService extends NotificationService {
       fulfillmentService,
       fulfillmentProviderService,
       totalsService,
+      productVariantService,
     },
     options
   ) {
@@ -46,6 +47,7 @@ class SendGridService extends NotificationService {
     this.swapService_ = swapService
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
+    this.productVariantService_ = productVariantService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -122,7 +124,10 @@ class SendGridService extends NotificationService {
       case "customer.password_reset":
         return this.customerPasswordResetData(eventData, attachmentGenerator)
       case "restock-notification.restocked":
-        return await this.restockNotificationData(eventData, attachmentGenerator)
+        return await this.restockNotificationData(
+          eventData,
+          attachmentGenerator
+        )
       default:
         return {}
     }
@@ -677,14 +682,14 @@ class SendGridService extends NotificationService {
 
   async restockNotificationData({ variant_id, emails }) {
     const variant = await this.productVariantService_.retrieve(variant_id, {
-      relations: ["product"]
+      relations: ["product"],
     })
 
     return {
       product: variant.product,
       variant,
       variant_id,
-      emails
+      emails,
     }
   }
 
