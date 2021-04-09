@@ -48,12 +48,9 @@ class OrderSubscriber {
 
     await Promise.all(
       order.discounts.map(async d => {
-        const usageCount = d.rule?.usage_count || 0
+        const usageCount = d?.usage_count || 0
         return this.discountService_.update(d.id, {
-          rule: {
-            ...d.rule,
-            usage_count: usageCount + 1,
-          },
+          usage_count: usageCount + 1,
         })
       })
     )
