@@ -814,10 +814,10 @@ class CartService extends BaseService {
     const rule = discount.rule
 
     // if limit is set and reached, we make an early exit
-    if (rule?.usage_limit) {
-      rule.usage_count = rule.usage_count || 0
+    if (discount.usage_limit) {
+      discount.usage_count = discount.usage_count || 0
 
-      if (rule.usage_limit === rule.usage_count)
+      if (discount.usage_limit === discount.usage_count)
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Discount has been used maximum allowed times"

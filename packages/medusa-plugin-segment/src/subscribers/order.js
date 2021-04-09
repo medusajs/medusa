@@ -18,6 +18,17 @@ class OrderSubscriber {
 
     this.fulfillmentService_ = fulfillmentService
 
+
+    // Swaps 
+    // order.swap_received <--- Will be deprecated
+    // swap.created
+    // swap.received
+    // swap.shipment_created
+    // swap.payment_completed
+    // swap.payment_captured
+    // swap.refund_processed
+
+
     eventBusService.subscribe(
       "order.shipment_created",
       async ({ id, fulfillment_id }) => {
