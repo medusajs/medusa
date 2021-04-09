@@ -83,13 +83,6 @@ class DiscountService extends BaseService {
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().optional(),
-      usage_limit: Validator.number()
-        .positive()
-        .allow(null)
-        .optional(),
-      usage_count: Validator.number()
-        .positive()
-        .optional(),
       created_at: Validator.date().optional(),
       updated_at: Validator.date()
         .allow(null)
@@ -337,6 +330,7 @@ class DiscountService extends BaseService {
         is_disabled: false,
         code: data.code.toUpperCase(),
         parent_discount_id: discount.id,
+        usage_limit: discount.usage_limit,
       }
 
       const created = await discountRepo.create(toCreate)

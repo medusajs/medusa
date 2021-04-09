@@ -16,6 +16,24 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   });
 
+  await manager.insert(DiscountRule, {
+    id: "test-discount-rule",
+    description: "Dynamic rule",
+    type: "percentage",
+    value: 10,
+    allocation: "total",
+  });
+
+  await manager.insert(Discount, {
+    id: "test-discount",
+    code: "DYNAMIC",
+    rule_id: "test-discount-rule",
+    is_dynamic: true,
+    usage_count: 0,
+    usage_limit: 1,
+    is_disabled: false,
+  });
+
   const d = await manager.create(Discount, {
     id: "test-discount",
     code: "CREATED",
@@ -29,8 +47,6 @@ module.exports = async (connection, data = {}) => {
     type: "fixed",
     value: 10000,
     allocation: "total",
-    usage_limit: 2,
-    usage_count: 2,
   });
 
   d.rule = dr;
