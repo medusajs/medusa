@@ -864,5 +864,28 @@ describe("/admin/orders", () => {
 
       expect(received.status).toEqual(200);
     });
+
+    it("creates a return on a swap", async () => {
+      const api = useApi();
+
+      const returnOnSwap = await api.post(
+        "/admin/orders/order-with-swap/return",
+        {
+          items: [
+            {
+              item_id: "test-item-swapped",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnOnSwap.status).toEqual(200);
+    });
   });
 });
