@@ -685,8 +685,16 @@ class SendGridService extends NotificationService {
       relations: ["product"],
     })
 
+    let thumb
+    if (variant.product.thumbnail) {
+      thumb = this.normalizeThumbUrl_(variant.product.thumbnail)
+    }
+
     return {
-      product: variant.product,
+      product: {
+        ...variant.product,
+        thumbnail: thumb,
+      },
       variant,
       variant_id,
       emails,
