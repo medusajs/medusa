@@ -292,7 +292,15 @@ class ReturnService extends BaseService {
 
       let toRefund = data.refund_amount
       if (typeof toRefund !== "undefined") {
-        const refundable = order.total - order.refunded_total
+        // refundable from order
+        let refundable = order.total - order.refunded_total
+        // refundable from potential swaps
+        if (order.swaps && order.swaps.length) {
+          for (const s of order.swaps) {
+            refundable = refundable + s.difference_due
+          }
+        }
+
         if (toRefund > refundable) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
@@ -428,6 +436,7 @@ class ReturnService extends BaseService {
           "order.shipping_methods",
           "order.region",
           "order.swaps",
+          "order.swaps.additional_items",
           "swap",
           "swap.additional_items",
           "swap.order",

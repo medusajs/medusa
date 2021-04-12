@@ -1221,9 +1221,11 @@ class OrderService extends BaseService {
       }
 
       if (receivedReturn.refund_amount > 0) {
-        await this.paymentProviderService_
+        const refund = await this.paymentProviderService_
           .withTransaction(manager)
           .refundPayment(order.payments, receivedReturn.refund_amount, "return")
+
+        order.refunds = [...(order.refunds || []), refund]
       }
 
       if (isFullReturn) {

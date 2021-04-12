@@ -741,6 +741,7 @@ describe("/admin/orders", () => {
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "refund"`);
       await manager.query(`DELETE FROM "order"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
@@ -886,6 +887,60 @@ describe("/admin/orders", () => {
       );
 
       expect(returnOnSwap.status).toEqual(200);
+    });
+
+    it("creates a return on an order", async () => {
+      const api = useApi();
+
+      const returnOnOrder = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnOnOrder.status).toEqual(200);
+
+      const captured = await api.post(
+        "/admin/orders/test-order/capture",
+        {},
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      const returnId = returnOnOrder.data.order.returns[0].id;
+
+      const received = await api.post(
+        `/admin/returns/${returnId}/receive`,
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(received.status).toEqual(200);
     });
   });
 });

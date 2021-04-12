@@ -222,6 +222,16 @@ class TotalsService extends BaseService {
 
   getLineDiscounts(cart, discount) {
     const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
+
+    let merged = [...cart.items]
+
+    // merge items from order with items from order swaps
+    if (cart.swaps && cart.swaps.length) {
+      for (const s of cart.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
+
     const { type, allocation, value } = discount.rule
     if (allocation === "total") {
       let percentage = 0
@@ -234,7 +244,7 @@ class TotalsService extends BaseService {
         percentage = nominator / subtotal
       }
 
-      return cart.items.map(item => {
+      return merged.map(item => {
         const lineTotal = item.unit_price * item.quantity
 
         return {
@@ -248,7 +258,7 @@ class TotalsService extends BaseService {
         cart,
         type
       )
-      return cart.items.map(item => {
+      return merged.map(item => {
         const discounted = allocationDiscounts.find(
           a => a.lineItem.id === item.id
         )
@@ -259,7 +269,7 @@ class TotalsService extends BaseService {
       })
     }
 
-    return cart.items.map(i => ({ item: i, amount: 0 }))
+    return merged.map(i => ({ item: i, amount: 0 }))
   }
 
   getGiftCardTotal(cart) {

@@ -29,6 +29,7 @@ class SwapService extends BaseService {
     paymentProviderService,
     shippingOptionService,
     fulfillmentService,
+    orderService,
   }) {
     super()
 
@@ -56,6 +57,9 @@ class SwapService extends BaseService {
     /** @private @const {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
 
+    /** @private @const {OrderService} */
+    this.orderService_ = orderService
+
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
@@ -78,6 +82,7 @@ class SwapService extends BaseService {
       lineItemService: this.lineItemService_,
       paymentProviderService: this.paymentProviderService_,
       shippingOptionService: this.shippingOptionService_,
+      orderService: this.orderService_,
       fulfillmentService: this.fulfillmentService_,
     })
 
@@ -508,6 +513,7 @@ class SwapService extends BaseService {
           .withTransaction(manager)
           .updatePayment(payment.id, {
             swap_id: swapId,
+            order_id: swap.order_id,
           })
       }
 

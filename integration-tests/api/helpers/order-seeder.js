@@ -138,7 +138,7 @@ module.exports = async (connection, data = {}) => {
         amount: 10000,
         currency_code: "usd",
         amount_refunded: 0,
-        provider_id: "test",
+        provider_id: "test-pay",
         data: {},
       },
     ],
