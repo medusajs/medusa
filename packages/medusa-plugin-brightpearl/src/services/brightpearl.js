@@ -968,6 +968,7 @@ class BrightpearlService extends BaseService {
       },
       rows: await this.getBrightpearlRows(
         {
+          currency_code: fromOrder.currency_code,
           region: fromOrder.region,
           discounts: fromOrder.discounts,
           tax_rate: fromOrder.tax_rate,
