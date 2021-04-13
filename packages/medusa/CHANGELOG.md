@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.19](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.18...@medusajs/medusa@1.1.19) (2021-04-13)
+
+
+### Bug Fixes
+
+* adds tests ([69442a1](https://github.com/medusajs/medusa/commit/69442a1735193aeb010043f114d89037d4d76279))
+* creates restock functionality ([2b25550](https://github.com/medusajs/medusa/commit/2b2555004e52e97c15bfca59e030fdfc3d86ae49))
+* deps ([a9ea38c](https://github.com/medusajs/medusa/commit/a9ea38c2005beb63e14ed151e25ecd26819c748c))
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+* working api ([9d81097](https://github.com/medusajs/medusa/commit/9d810971a7e0de2a586b5c9c372f0aad2818918b))
+* **medusa:** Move discount usage from rule to discount ([d9cd52a](https://github.com/medusajs/medusa/commit/d9cd52a1776e9a334b155d37e58d73f456e3a028))
+
+
+### Features
+
+* restock service ([8bd5fa8](https://github.com/medusajs/medusa/commit/8bd5fa821286a90f3ab21e8c96993ac543fb7cab))
+
+
+
+
+
 ## [1.1.18](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.17...@medusajs/medusa@1.1.18) (2021-04-09)
 
 
