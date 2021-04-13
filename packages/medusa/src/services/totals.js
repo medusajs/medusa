@@ -26,6 +26,26 @@ class TotalsService extends BaseService {
     return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
   }
 
+  getPaidTotal(order) {
+    const total = order.payments?.reduce((acc, next) => {
+      acc += next.amount
+      return acc
+    }, 0)
+
+    return total
+  }
+
+  getSwapTotal(order) {
+    let swapTotal = 0
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        swapTotal = swapTotal + s.difference_due
+      }
+    }
+
+    return swapTotal
+  }
+
   /**
    * Calculates subtotal of a given cart or order.
    * @param {Cart || Order} object - cart or order to calculate subtotal for

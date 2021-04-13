@@ -59,6 +59,7 @@ const defaultFields = [
   "gift_card_total",
   "subtotal",
   "total",
+  "paid_total",
   "refundable_amount",
 ]
 

@@ -234,6 +234,7 @@ export const defaultFields = [
   "gift_card_total",
   "subtotal",
   "total",
+  "paid_total",
   "refundable_amount",
 ]
 
@@ -260,6 +261,7 @@ export const allowedFields = [
   "subtotal",
   "gift_card_total",
   "total",
+  "paid_total",
   "refundable_amount",
 ]
 

@@ -25,6 +25,9 @@ describe("OrderService", () => {
     getSubtotal: o => {
       return o.subtotal || 0
     },
+    getPaidTotal: o => {
+      return o.paid_total || 0
+    },
   }
 
   const eventBusService = {
@@ -867,8 +870,10 @@ describe("OrderService", () => {
           returned_quantity: 10,
         },
       ],
-      payments: [{ id: "payment_test" }],
+      payments: [{ id: "payment_test", amount: 100 }],
       refunded_total: 0,
+      paid_total: 100,
+      refundable_amount: 100,
       total: 100,
     }
     const orderRepo = MockRepository({
@@ -932,15 +937,15 @@ describe("OrderService", () => {
           id: IdMap.getId("good"),
           order_id: IdMap.getId("order"),
           status: "received",
-          refund_amount: 102,
+          refund_amount: 95,
         },
-        true
+        95
       )
 
       expect(paymentProviderService.refundPayment).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.refundPayment).toHaveBeenCalledWith(
         order.payments,
-        102,
+        95,
         "return"
       )
     })
@@ -1066,13 +1071,15 @@ describe("OrderService", () => {
         }
 
         return Promise.resolve({
-          id: IdMap.getId("order"),
+          id: IdMap.getId("order_123"),
           payments: [
             {
               id: "payment",
             },
           ],
           total: 100,
+          paid_total: 100,
+          refundable_amount: 100,
           refunded_total: 0,
         })
       },

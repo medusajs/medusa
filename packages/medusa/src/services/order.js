@@ -267,6 +267,7 @@ class OrderService extends BaseService {
       "discount_total",
       "gift_card_total",
       "total",
+      "paid_total",
       "refunded_total",
       "refundable_amount",
       "items.refundable",
@@ -277,6 +278,7 @@ class OrderService extends BaseService {
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
+      relationSet.add("swaps")
       relationSet.add("discounts")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
@@ -1136,10 +1138,13 @@ class OrderService extends BaseService {
     if (totalsFields.includes("refunded_total")) {
       order.refunded_total = this.totalsService_.getRefundedTotal(order)
     }
+    if (totalsFields.includes("paid_total")) {
+      order.paid_total = this.totalsService_.getPaidTotal(order)
+    }
     if (totalsFields.includes("refundable_amount")) {
-      const total = this.totalsService_.getTotal(order)
+      const paid_total = this.totalsService_.getPaidTotal(order)
       const refunded_total = this.totalsService_.getRefundedTotal(order)
-      order.refundable_amount = total - refunded_total
+      order.refundable_amount = paid_total - refunded_total
     }
 
     if (totalsFields.includes("items.refundable")) {
@@ -1186,7 +1191,7 @@ class OrderService extends BaseService {
   async registerReturnReceived(orderId, receivedReturn, customRefundAmount) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        select: ["total", "refunded_total"],
+        select: ["total", "refunded_total", "refundable_amount"],
         relations: ["items", "returns", "payments"],
       })
 
@@ -1201,7 +1206,7 @@ class OrderService extends BaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
-      if (refundAmount > order.total - order.refunded_total) {
+      if (refundAmount > order.refundable_amount) {
         order.fulfillment_status = "requires_action"
         const result = await orderRepo.save(order)
         this.eventBus_
