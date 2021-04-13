@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.7...medusa-plugin-twilio-sms@1.1.8) (2021-04-13)
+
+**Note:** Version bump only for package medusa-plugin-twilio-sms
+
+
+
+
+
 ## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.6...medusa-plugin-twilio-sms@1.1.7) (2021-03-30)
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
