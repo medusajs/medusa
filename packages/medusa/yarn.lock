@@ -5662,21 +5662,21 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.4.tgz#ec2bb98c83426d7033632cd225b3b5dc62c26f1a"
-  integrity sha512-SzFfMmNbE9ukSfhapJOuYEksOKDo3yYSCeuBLFWnCZZRDnUV4ttH4Yp/ydT+cZKtqZwF2vKceXNbrT4uJYjHgw==
+medusa-core-utils@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.6.tgz#d0c71a1e9a2ffbb912803b37ca32e21dc9263834"
+  integrity sha512-6FHABuiCKKs8GOLBj12Z3BogGYxsz4JUgrJ0L/Sk/TmpQxeEK7iDiWSHHTmLZzY90/21AFvSnkwrig12Htahzw==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-test-utils@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.7.tgz#19d0bdf3f6f7fef0bc7f2f8e258f8c66167c692f"
-  integrity sha512-kcN4oJjUEAkFeko7DEaok9Qy3aty41gEzGSdR4F3KPORXZJ+YADHuj4F219/X1k+3iGqCUgmNQ9eKl6Aobq44g==
+medusa-test-utils@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.9.tgz#b7b94d4d00f43c2a8316787c2139deea43663b5a"
+  integrity sha512-EhqfleeX95fGgtpGtQ4FhIFiQL2B+8+CNN3F6RiIJ8Bas3LyMpdNarHP8QCMihtVI5S+xiTD2Vy4BTI8JJsVbg==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.1.4"
+    medusa-core-utils "^1.1.6"
     randomatic "^3.1.1"
 
 merge-descriptors@1.0.1:
@@ -8229,9 +8229,9 @@ xtend@^4.0.0:
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
 y18n@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
-  integrity sha512-r9S/ZyXu/Xu9q1tYlpsLIsa3EeLXXk0VwlxqTcFRfg9EhMW+17kbt9G0NrgCmhGb5vT2hyhJZLfDGx+7+5Uj/w==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.3.tgz#b5f259c82cd6e336921efd7bfd8bf560de9eeedf"
+  integrity sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==
 
 yallist@^2.1.2:
   version "2.1.2"
