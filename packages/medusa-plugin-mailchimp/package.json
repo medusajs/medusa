@@ -40,7 +40,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mailchimp-api-v3": "^1.14.0",
+<<<<<<< HEAD
     "medusa-core-utils": "^1.1.4",
+=======
+    "medusa-core-utils": "^1.1.5",
+>>>>>>> origin/develop
     "medusa-test-utils": "^1.1.8"
   },
   "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
