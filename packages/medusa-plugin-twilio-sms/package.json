@@ -35,11 +35,7 @@
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
     "body-parser": "^1.19.0",
-<<<<<<< HEAD
-    "medusa-core-utils": "^1.1.4",
-=======
     "medusa-core-utils": "^1.1.5",
->>>>>>> origin/develop
     "medusa-test-utils": "^1.1.8",
     "twilio": "^3.49.1"
   },
