@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.10...medusa-plugin-brightpearl@1.1.11) (2021-04-13)
 
 
@@ -10,6 +11,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * bp swaps ([e105d4e](https://github.com/medusajs/medusa/commit/e105d4edde5793f40e867291606b3db5e44dc24f))
 * typo ([37ab52b](https://github.com/medusajs/medusa/commit/37ab52b19514fb1dfd864f0c218efd7ad205ff30))
+=======
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.10...medusa-plugin-brightpearl@1.1.11) (2021-04-09)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+>>>>>>> origin/develop
 
 
 

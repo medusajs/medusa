@@ -3,7 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.7...medusa-plugin-mailchimp@1.1.8) (2021-04-13)
+=======
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.7...medusa-plugin-mailchimp@1.1.8) (2021-04-09)
+>>>>>>> origin/develop
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
 

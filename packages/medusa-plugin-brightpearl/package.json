@@ -43,7 +43,7 @@
     "axios": "^0.19.2",
     "axios-rate-limit": "^1.2.1",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.4",
+    "medusa-core-utils": "^1.1.5",
     "randomatic": "^3.1.1"
   },
   "gitHead": "d78a7ce85876e0bfd9a4bfebe4f5743921961e9c"

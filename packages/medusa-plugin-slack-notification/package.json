@@ -39,7 +39,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.4",
+    "medusa-core-utils": "^1.1.5",
     "medusa-test-utils": "^1.1.8",
     "moment": "^2.27.0"
   },
