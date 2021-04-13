@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.8...medusa-plugin-sendgrid@1.1.9) (2021-04-13)
+
+
+### Bug Fixes
+
+* creates restock functionality ([2b25550](https://github.com/medusajs/medusa/commit/2b2555004e52e97c15bfca59e030fdfc3d86ae49))
+* normalize thumbanils ([26e7f20](https://github.com/medusajs/medusa/commit/26e7f203069547b954796c1f04f5844b406c1e33))
+* restock ([237ed51](https://github.com/medusajs/medusa/commit/237ed5130760645c6b892fa1d5fc09a713b95f58))
+
+
+
+
+
 ## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.7...medusa-plugin-sendgrid@1.1.8) (2021-03-30)
 
 
