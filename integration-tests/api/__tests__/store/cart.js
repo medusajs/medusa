@@ -44,6 +44,8 @@ describe("/store/carts", () => {
     afterEach(async () => {
       const manager = dbConnection.manager;
       await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(
         `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
       );
@@ -106,9 +108,9 @@ describe("/store/carts", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "discount"`);
       await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
         `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
@@ -155,6 +157,8 @@ describe("/store/carts", () => {
     afterEach(async () => {
       const manager = dbConnection.manager;
       await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
         `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
