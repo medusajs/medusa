@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-payment-stripe@1.1.8...medusa-payment-stripe@1.1.9) (2021-04-13)
+
+
+### Bug Fixes
+
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+
+
+
+
+
 ## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-payment-stripe@1.1.7...medusa-payment-stripe@1.1.8) (2021-04-13)
 
 **Note:** Version bump only for package medusa-payment-stripe
