@@ -3,7 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.8...medusa-plugin-contentful@1.1.9) (2021-04-13)
+=======
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.8...medusa-plugin-contentful@1.1.9) (2021-04-09)
+>>>>>>> origin/develop
 
 
 ### Bug Fixes

@@ -39,7 +39,11 @@
     "body-parser": "^1.19.0",
     "contentful-management": "^5.27.1",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "medusa-core-utils": "^1.1.4",
+=======
+    "medusa-core-utils": "^1.1.5",
+>>>>>>> origin/develop
     "medusa-test-utils": "^1.1.8",
     "redis": "^3.0.2"
   },

@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.7...medusa-fulfillment-webshipper@1.1.8) (2021-04-13)
 
 
@@ -14,6 +15,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 * adds support for certificate of origin ([f21dae8](https://github.com/medusajs/medusa/commit/f21dae827ad64522fd1f4d6317740c6b0ded0536))
+=======
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.7...medusa-fulfillment-webshipper@1.1.8) (2021-04-09)
+
+**Note:** Version bump only for package medusa-fulfillment-webshipper
+>>>>>>> origin/develop
 
 
 
