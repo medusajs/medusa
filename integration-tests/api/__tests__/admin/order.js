@@ -774,6 +774,54 @@ describe("/admin/orders", () => {
       expect(response.status).toEqual(200);
     });
 
+    it("creates a swap and a return", async () => {
+      const api = useApi();
+
+      const createdSwapOrder = await api.post(
+        "/admin/orders/test-order/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant-2", quantity: 4 }],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(createdSwapOrder.status).toEqual(200);
+
+      const swap = createdSwapOrder.data.order.swaps[0];
+
+      const receivedSwap = await api.post(
+        `/admin/returns/${swap.return_order.id}/receive`,
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      console.log(receivedSwap.data);
+
+      expect(receivedSwap.status).toEqual(200);
+      expect(receivedSwap.status).toEqual(200);
+    });
+
     it("creates a swap and receives the items", async () => {
       const api = useApi();
 
