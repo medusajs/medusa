@@ -419,7 +419,7 @@ class ReturnService extends BaseService {
       )
 
       const returnObj = await this.retrieve(returnId, {
-        relations: ["items", "items.item", "swap", "swap.additional_items"],
+        relations: ["items", "swap", "swap.additional_items"],
       })
 
       let orderId = returnObj.order_id
@@ -428,19 +428,21 @@ class ReturnService extends BaseService {
         orderId = returnObj.swap.order_id
       }
 
-      const order = await this.orderService_.retrieve(orderId, {
-        relations: [
-          "items",
-          "returns",
-          "payments",
-          "discounts",
-          "refunds",
-          "shipping_methods",
-          "region",
-          "swaps",
-          "swaps.additional_items",
-        ],
-      })
+      const order = await this.orderService_
+        .withTransaction(manager)
+        .retrieve(orderId, {
+          relations: [
+            "items",
+            "returns",
+            "payments",
+            "discounts",
+            "refunds",
+            "shipping_methods",
+            "region",
+            "swaps",
+            "swaps.additional_items",
+          ],
+        })
 
       if (returnObj.status === "received") {
         throw new MedusaError(
@@ -499,7 +501,10 @@ class ReturnService extends BaseService {
       const result = await returnRepository.save(updateObj)
 
       for (const i of returnObj.items) {
-        const returnedQuantity = (i.item.returned_quantity || 0) + i.quantity
+        const lineItem = await this.lineItemService_
+          .withTransaction(manager)
+          .retrieve(i.item_id)
+        const returnedQuantity = (lineItem.returned_quantity || 0) + i.quantity
         await this.lineItemService_.withTransaction(manager).update(i.item_id, {
           returned_quantity: returnedQuantity,
         })

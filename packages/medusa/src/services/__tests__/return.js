@@ -193,7 +193,12 @@ describe("ReturnService", () => {
         return Promise.resolve({
           items: [
             {
-              id: "item_1",
+              id: IdMap.getId("test-line"),
+              quantity: 10,
+              returned_quantity: 0,
+            },
+            {
+              id: IdMap.getId("test-line-2"),
               quantity: 10,
               returned_quantity: 0,
             },
@@ -207,6 +212,9 @@ describe("ReturnService", () => {
     }
 
     const lineItemService = {
+      retrieve: jest.fn().mockImplementation(data => {
+        return Promise.resolve({ ...data, returned_quantity: 0 })
+      }),
       update: jest.fn(),
       withTransaction: function() {
         return this

@@ -151,6 +151,7 @@ module.exports = async (connection, data = {}) => {
   const li = manager.create(LineItem, {
     id: "test-item",
     fulfilled_quantity: 1,
+    returned_quantity: 0,
     title: "Line Item",
     description: "Line Item Desc",
     thumbnail: "https://test.js/1234",

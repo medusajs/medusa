@@ -66,6 +66,20 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(li);
 
+  const li2 = manager.create(LineItem, {
+    id: "test-item-many",
+    fulfilled_quantity: 4,
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 4,
+    variant_id: "test-variant",
+    order_id: orderWithSwap.id,
+  });
+
+  await manager.save(li2);
+
   const swap = manager.create(Swap, {
     id: "test-swap",
     order_id: "order-with-swap",

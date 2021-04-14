@@ -777,37 +777,16 @@ describe("/admin/orders", () => {
     it("creates a swap and a return", async () => {
       const api = useApi();
 
-      const createdSwapOrder = await api.post(
-        "/admin/orders/test-order/swaps",
-        {
-          return_items: [
-            {
-              item_id: "test-item",
-              quantity: 1,
-            },
-          ],
-          additional_items: [{ variant_id: "test-variant-2", quantity: 4 }],
-        },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
-      );
-
-      expect(createdSwapOrder.status).toEqual(200);
-
-      const swap = createdSwapOrder.data.order.swaps[0];
-
-      const receivedSwap = await api.post(
-        `/admin/returns/${swap.return_order.id}/receive`,
+      const returnedOrderFirst = await api.post(
+        "/admin/orders/order-with-swap/return",
         {
           items: [
             {
-              item_id: "test-item",
-              quantity: 1,
+              item_id: "test-item-many",
+              quantity: 2,
             },
           ],
+          receive_now: true,
         },
         {
           headers: {
@@ -816,10 +795,28 @@ describe("/admin/orders", () => {
         }
       );
 
-      console.log(receivedSwap.data);
+      expect(returnedOrderFirst.status).toEqual(200);
 
-      expect(receivedSwap.status).toEqual(200);
-      expect(receivedSwap.status).toEqual(200);
+      const returnedOrderSecond = await api.post(
+        "/admin/orders/order-with-swap/return",
+        {
+          items: [
+            {
+              item_id: "test-item-many",
+              quantity: 1,
+            },
+          ],
+          receive_now: true,
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnedOrderSecond.status).toEqual(200);
+      expect(returnedOrderSecond.data.order.items[1].returned_quantity).toBe(3);
     });
 
     it("creates a swap and receives the items", async () => {

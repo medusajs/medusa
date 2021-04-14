@@ -201,7 +201,7 @@ export default async (req, res) => {
 
                 order = await returnService
                   .withTransaction(manager)
-                  .receiveReturn(order.id, ret.id, value.items, value.refund)
+                  .receive(ret.id, value.items, value.refund)
               }
 
               order = await orderService.withTransaction(manager).retrieve(id, {
