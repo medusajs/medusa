@@ -595,15 +595,24 @@ class SendGridService extends NotificationService {
     })
 
     const order = await this.orderService_.retrieve(swap.order_id, {
-      relations: ["items", "discounts"],
+      relations: ["items", "discounts", "swaps", "swaps.additional_items"],
     })
+
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
 
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
     const returnItems = this.processItems_(
       swap.return_order.items.map((i) => {
-        const found = order.items.find((oi) => oi.id === i.item_id)
+        const found = merged.find((oi) => oi.id === i.item_id)
         return {
           ...found,
           quantity: i.quantity,

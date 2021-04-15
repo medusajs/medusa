@@ -95,7 +95,7 @@ export default async (req, res) => {
       }
     })
 
-    receivedReturn = await returnService.retrieve(id)
+    receivedReturn = await returnService.retrieve(id, { relations: ["swap"] })
 
     res.status(200).json({ return: receivedReturn })
   } catch (err) {
