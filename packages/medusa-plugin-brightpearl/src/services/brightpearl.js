@@ -417,7 +417,7 @@ class BrightpearlService extends BaseService {
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
             amountPaid: this.bpnum_(
               fromReturn.refund_amount,
-              fromOrder.currencyCode
+              fromOrder.currency_code
             ),
             paymentDate: new Date(),
             paymentType,
