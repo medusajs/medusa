@@ -39,7 +39,7 @@ class OrderSubscriber {
       "swap.payment_completed",
       this.registerSwapPayment
     )
-    eventBusService.subscribe("order.swap_received", this.registerSwap)
+    eventBusService.subscribe("swap.received", this.registerSwap)
   }
 
   sendToBrightpearl = (data) => {
@@ -55,9 +55,9 @@ class OrderSubscriber {
   }
 
   registerSwap = async (data) => {
-    const { id, swap_id } = data
+    const { id } = data
 
-    if (!id && !swap_id) {
+    if (!id) {
       return
     }
 

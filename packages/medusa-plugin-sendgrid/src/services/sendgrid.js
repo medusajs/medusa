@@ -105,7 +105,7 @@ class SendGridService extends NotificationService {
         return this.claimShipmentCreatedData(eventData, attachmentGenerator)
       case "order.items_returned":
         return this.itemsReturnedData(eventData, attachmentGenerator)
-      case "order.swap_received":
+      case "swap.received":
         return this.swapReceivedData(eventData, attachmentGenerator)
       case "swap.created":
         return this.swapCreatedData(eventData, attachmentGenerator)
@@ -143,8 +143,8 @@ class SendGridService extends NotificationService {
         return this.options_.claim_shipment_created_template
       case "order.items_returned":
         return this.options_.order_items_returned_template
-      case "order.swap_received":
-        return this.options_.order_swap_received_template
+      case "swap.received":
+        return this.options_.swap_received_template
       case "swap.created":
         return this.options_.swap_created_template
       case "gift_card.created":
