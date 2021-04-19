@@ -136,7 +136,7 @@ class OrderSubscriber {
     const { id, return_id } = data
 
     const order = await this.orderService_.retrieve(id, {
-      relations: ["region", "payments"],
+      relations: ["region", "swaps", "payments"],
     })
 
     const fromReturn = await this.returnService_.retrieve(return_id, {
