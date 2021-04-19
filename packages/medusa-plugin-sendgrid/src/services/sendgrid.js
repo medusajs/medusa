@@ -439,12 +439,28 @@ class SendGridService extends NotificationService {
     // Fetch the order
     const order = await this.orderService_.retrieve(id, {
       select: ["total"],
-      relations: ["items", "discounts", "shipping_address", "returns"],
+      relations: [
+        "items",
+        "discounts",
+        "shipping_address",
+        "returns",
+        "swaps",
+        "swaps.additional_items",
+      ],
     })
+
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
 
     // Calculate which items are in the return
     const returnItems = returnRequest.items.map((i) => {
-      const found = order.items.find((oi) => oi.id === i.item_id)
+      const found = merged.find((oi) => oi.id === i.item_id)
       return {
         ...found,
         quantity: i.quantity,
