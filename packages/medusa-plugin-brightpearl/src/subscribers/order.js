@@ -61,7 +61,7 @@ class OrderSubscriber {
       return
     }
 
-    const fromSwap = await this.swapService_.retrieve(swap_id, {
+    const fromSwap = await this.swapService_.retrieve(id, {
       relations: [
         "order",
         "order.payments",
