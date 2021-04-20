@@ -1,14 +1,12 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
 
 /**
- * @oas [post] /orders/{id}/returns/{return_id}/receive
- * operationId: "PostOrdersOrderReturnsReturnReceive"
+ * @oas [post] /returns/{id}receive
+ * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
- * description: "Registers a Return as received."
+ * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) return_id=* {string} The id of the Return.
+ *   - (path) id=* {string} The id of the Return.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,7 +27,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: The amount to refund.
  *             type: integer
  * tags:
- *   - Order
+ *   - Return
  * responses:
  *   200:
  *     description: OK
@@ -37,11 +35,11 @@ import { defaultRelations, defaultFields } from "./"
  *       application/json:
  *         schema:
  *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *             return:
+ *               $ref: "#/components/schemas/return"
  */
 export default async (req, res) => {
-  const { id, return_id } = req.params
+  const { id } = req.params
 
   const schema = Validator.object().keys({
     items: Validator.array()
@@ -61,28 +59,43 @@ export default async (req, res) => {
   }
 
   try {
+    const returnService = req.scope.resolve("returnService")
     const orderService = req.scope.resolve("orderService")
+    const swapService = req.scope.resolve("swapService")
+    const entityManager = req.scope.resolve("manager")
 
-    let refundAmount = value.refund
+    let receivedReturn
+    await entityManager.transaction(async manager => {
+      let refundAmount = value.refund
 
-    if (typeof value.refund !== "undefined" && value.refund < 0) {
-      refundAmount = 0
-    }
+      if (typeof value.refund !== "undefined" && value.refund < 0) {
+        refundAmount = 0
+      }
 
-    let order = await orderService.receiveReturn(
-      id,
-      return_id,
-      value.items,
-      refundAmount,
-      true
-    )
+      receivedReturn = await returnService
+        .withTransaction(manager)
+        .receive(id, value.items, refundAmount, true)
 
-    order = await orderService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
+      if (receivedReturn.order_id) {
+        await orderService
+          .withTransaction(manager)
+          .registerReturnReceived(
+            receivedReturn.order_id,
+            receivedReturn,
+            refundAmount
+          )
+      }
+
+      if (receivedReturn.swap_id) {
+        await swapService
+          .withTransaction(manager)
+          .registerReceived(receivedReturn.swap_id)
+      }
     })
 
-    res.status(200).json({ order })
+    receivedReturn = await returnService.retrieve(id, { relations: ["swap"] })
+
+    res.status(200).json({ return: receivedReturn })
   } catch (err) {
     throw err
   }

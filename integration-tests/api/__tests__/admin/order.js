@@ -7,6 +7,7 @@ const { useApi } = require("../../../helpers/use-api");
 const { initDb } = require("../../../helpers/use-db");
 
 const orderSeeder = require("../../helpers/order-seeder");
+const swapSeeder = require("../../helpers/swap-seeder");
 const adminSeeder = require("../../helpers/admin-seeder");
 
 jest.setTimeout(30000);
@@ -704,6 +705,288 @@ describe("/admin/orders", () => {
           id: "test-order",
         }),
       ]);
+    });
+  });
+
+  describe("POST /admin/orders/:id/swaps", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        await orderSeeder(dbConnection);
+        await swapSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "fulfillment_item"`);
+      await manager.query(`DELETE FROM "fulfillment"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
+      await manager.query(`DELETE FROM "return"`);
+      await manager.query(`DELETE FROM "claim_image"`);
+      await manager.query(`DELETE FROM "claim_tag"`);
+      await manager.query(`DELETE FROM "claim_item"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "claim_order"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "refund"`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("creates a swap", async () => {
+      const api = useApi();
+
+      const response = await api.post(
+        "/admin/orders/test-order/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+    });
+
+    it("creates a swap and a return", async () => {
+      const api = useApi();
+
+      const returnedOrderFirst = await api.post(
+        "/admin/orders/order-with-swap/return",
+        {
+          items: [
+            {
+              item_id: "test-item-many",
+              quantity: 2,
+            },
+          ],
+          receive_now: true,
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnedOrderFirst.status).toEqual(200);
+
+      const returnedOrderSecond = await api.post(
+        "/admin/orders/order-with-swap/return",
+        {
+          items: [
+            {
+              item_id: "test-item-many",
+              quantity: 1,
+            },
+          ],
+          receive_now: true,
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnedOrderSecond.status).toEqual(200);
+      expect(returnedOrderSecond.data.order.items[1].returned_quantity).toBe(3);
+    });
+
+    it("creates a swap and receives the items", async () => {
+      const api = useApi();
+
+      const createdSwapOrder = await api.post(
+        "/admin/orders/test-order/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(createdSwapOrder.status).toEqual(200);
+
+      const swap = createdSwapOrder.data.order.swaps[0];
+
+      const receivedSwap = await api.post(
+        `/admin/returns/${swap.return_order.id}/receive`,
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(receivedSwap.status).toEqual(200);
+      expect(receivedSwap.data.return.status).toBe("received");
+    });
+
+    it("creates a swap on a swap", async () => {
+      const api = useApi();
+
+      const swapOnSwap = await api.post(
+        "/admin/orders/order-with-swap/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item-swapped",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(swapOnSwap.status).toEqual(200);
+    });
+
+    it("receives a swap on swap", async () => {
+      const api = useApi();
+
+      const received = await api.post(
+        `/admin/returns/return-on-swap/receive`,
+        {
+          items: [
+            {
+              item_id: "test-item-swapped",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(received.status).toEqual(200);
+    });
+
+    it("creates a return on a swap", async () => {
+      const api = useApi();
+
+      const returnOnSwap = await api.post(
+        "/admin/orders/order-with-swap/return",
+        {
+          items: [
+            {
+              item_id: "test-item-swapped",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnOnSwap.status).toEqual(200);
+    });
+
+    it("creates a return on an order", async () => {
+      const api = useApi();
+
+      const returnOnOrder = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(returnOnOrder.status).toEqual(200);
+
+      const captured = await api.post(
+        "/admin/orders/test-order/capture",
+        {},
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      const returnId = returnOnOrder.data.order.returns[0].id;
+
+      const received = await api.post(
+        `/admin/returns/${returnId}/receive`,
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(received.status).toEqual(200);
     });
   });
 });

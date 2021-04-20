@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.11...medusa-plugin-sendgrid@1.1.12) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-sendgrid
+
+
+
+
+
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.10...medusa-plugin-sendgrid@1.1.11) (2021-04-20)
+
+
+### Features
+
+* **medusa:** Swaps on swaps ([#229](https://github.com/medusajs/medusa/issues/229)) ([f8f1f57](https://github.com/medusajs/medusa/commit/f8f1f57fa1bcdc6f7ae4183e657a07e2641b1345))
+* **medusa-plugin-sendgrid:** adds localization option ([#238](https://github.com/medusajs/medusa/issues/238)) ([a81ea1c](https://github.com/medusajs/medusa/commit/a81ea1c20a8779ba72e1ee5cc58c9b5335b79eca))
+
+
+
+
+
 ## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.9...medusa-plugin-sendgrid@1.1.10) (2021-04-13)
 
 

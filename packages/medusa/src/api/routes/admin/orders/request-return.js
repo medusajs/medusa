@@ -123,13 +123,6 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  select: ["refunded_total", "total"],
-                  relations: ["items"],
-                })
-
               const returnObj = {
                 order_id: id,
                 idempotency_key: idempotencyKey.idempotency_key,
@@ -150,7 +143,7 @@ export default async (req, res) => {
 
               const createdReturn = await returnService
                 .withTransaction(manager)
-                .create(returnObj, order)
+                .create(returnObj)
 
               if (value.return_shipping) {
                 await returnService
@@ -208,7 +201,7 @@ export default async (req, res) => {
 
                 order = await returnService
                   .withTransaction(manager)
-                  .receiveReturn(order.id, ret.id, value.items, value.refund)
+                  .receive(ret.id, value.items, value.refund)
               }
 
               order = await orderService.withTransaction(manager).retrieve(id, {

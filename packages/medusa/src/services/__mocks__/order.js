@@ -126,8 +126,12 @@ export const OrderServiceMock = {
   withTransaction: function() {
     return this
   },
+
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(orders.testOrder)
+  }),
+  registerReturnReceived: jest.fn().mockImplementation(data => {
+    return Promise.resolve()
   }),
   createFromCart: jest.fn().mockImplementation(data => {
     return Promise.resolve(orders.testOrder)
@@ -193,12 +197,6 @@ export const OrderServiceMock = {
   capturePayment: jest.fn().mockImplementation(order => {
     if (order === IdMap.getId("test-order")) {
       orders.testOrder.payment_status = "captured"
-      return Promise.resolve(orders.testOrder)
-    }
-    return Promise.resolve(undefined)
-  }),
-  requestReturn: jest.fn().mockImplementation(order => {
-    if (order === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)

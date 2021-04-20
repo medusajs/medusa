@@ -26,6 +26,26 @@ class TotalsService extends BaseService {
     return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
   }
 
+  getPaidTotal(order) {
+    const total = order.payments?.reduce((acc, next) => {
+      acc += next.amount
+      return acc
+    }, 0)
+
+    return total
+  }
+
+  getSwapTotal(order) {
+    let swapTotal = 0
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        swapTotal = swapTotal + s.difference_due
+      }
+    }
+
+    return swapTotal
+  }
+
   /**
    * Calculates subtotal of a given cart or order.
    * @param {Cart || Order} object - cart or order to calculate subtotal for
@@ -128,7 +148,16 @@ class TotalsService extends BaseService {
    * @return {int} the calculated subtotal
    */
   getRefundTotal(order, lineItems) {
-    const itemIds = order.items.map(i => i.id)
+    let itemIds = order.items.map(i => i.id)
+
+    // in case we swap a swap, we need to include swap items
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        const swapItemIds = s.additional_items.map(el => el.id)
+        itemIds = [...itemIds, ...swapItemIds]
+      }
+    }
+
     const refunds = lineItems.map(i => {
       if (!itemIds.includes(i.id)) {
         throw new MedusaError(
@@ -213,6 +242,16 @@ class TotalsService extends BaseService {
 
   getLineDiscounts(cart, discount) {
     const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
+
+    let merged = [...cart.items]
+
+    // merge items from order with items from order swaps
+    if (cart.swaps && cart.swaps.length) {
+      for (const s of cart.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
+
     const { type, allocation, value } = discount.rule
     if (allocation === "total") {
       let percentage = 0
@@ -225,7 +264,7 @@ class TotalsService extends BaseService {
         percentage = nominator / subtotal
       }
 
-      return cart.items.map(item => {
+      return merged.map(item => {
         const lineTotal = item.unit_price * item.quantity
 
         return {
@@ -239,7 +278,7 @@ class TotalsService extends BaseService {
         cart,
         type
       )
-      return cart.items.map(item => {
+      return merged.map(item => {
         const discounted = allocationDiscounts.find(
           a => a.lineItem.id === item.id
         )
@@ -250,7 +289,7 @@ class TotalsService extends BaseService {
       })
     }
 
-    return cart.items.map(i => ({ item: i, amount: 0 }))
+    return merged.map(i => ({ item: i, amount: 0 }))
   }
 
   getGiftCardTotal(cart) {
