@@ -349,7 +349,11 @@ class BrightpearlService extends BaseService {
     const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
-    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+
+    const orderIds = this.gatherOrders(fromOrder)
+    const orderId = orderIds[0]
+    const parentRows = await this.gatherRowsFromOrderIds(orderIds)
+
     if (orderId) {
       const parentSo = await client.orders.retrieve(orderId)
       const order = {
@@ -362,7 +366,7 @@ class BrightpearlService extends BaseService {
         delivery: parentSo.delivery,
         parentId: orderId,
         rows: fromReturn.items.map((i) => {
-          const parentRow = parentSo.rows.find((row) => {
+          const parentRow = parentRows.find((row) => {
             return row.externalRef === i.item_id
           })
           return {
@@ -509,7 +513,9 @@ class BrightpearlService extends BaseService {
         const order = await client.orders.retrieve(salesOrderId)
         await client.warehouses
           .createReservation(order, this.options.warehouse)
-          .catch(() => {})
+          .catch((err) => {
+            console.log("Failed to allocate for order:", salesOrderId)
+          })
         return salesOrderId
       })
       .then((salesOrderId) => {
@@ -610,7 +616,11 @@ class BrightpearlService extends BaseService {
 
     return client.orders.create(order).then(async (salesOrderId) => {
       const order = await client.orders.retrieve(salesOrderId)
-      await client.warehouses.createReservation(order, this.options.warehouse)
+      await client.warehouses
+        .createReservation(order, this.options.warehouse)
+        .catch((err) => {
+          console.log("Failed to allocate for order:", salesOrderId)
+        })
 
       const total = order.rows.reduce((acc, next) => {
         return acc + parseFloat(next.net) + parseFloat(next.tax)
@@ -701,11 +711,43 @@ class BrightpearlService extends BaseService {
     }
   }
 
+  gatherOrders(fromOrder) {
+    const ids = []
+    if (fromOrder.metadata && fromOrder.metadata.brightpearl_sales_order_id) {
+      ids.push(fromOrder.metadata.brightpearl_sales_order_id)
+    }
+
+    if (fromOrder.swaps) {
+      for (const s of fromOrder.swaps) {
+        if (s.metadata && s.metadata.brightpearl_sales_order_id) {
+          ids.push(s.metadata.brightpearl_sales_order_id)
+        }
+      }
+    }
+
+    return ids
+  }
+
+  async gatherRowsFromOrderIds(ids) {
+    const client = await this.getClient()
+    const orders = await Promise.all(ids.map((i) => client.orders.retrieve(i)))
+
+    let rows = []
+    for (const o of orders) {
+      rows = rows.concat(o.rows)
+    }
+
+    return rows
+  }
+
   async createSwapCredit(fromOrder, fromSwap) {
     const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
-    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+
+    const orderIds = this.gatherOrders(fromOrder)
+    const orderId = orderIds[0]
+    const parentRows = await this.gatherRowsFromOrderIds(orderIds)
     const sIndex = fromOrder.swaps.findIndex((s) => fromSwap.id === s.id)
 
     if (orderId) {
@@ -720,7 +762,7 @@ class BrightpearlService extends BaseService {
         delivery: parentSo.delivery,
         parentId: orderId,
         rows: fromSwap.return_order.items.map((i) => {
-          const parentRow = parentSo.rows.find((row) => {
+          const parentRow = parentRows.find((row) => {
             return row.externalRef === i.item_id
           })
           return {
@@ -984,7 +1026,11 @@ class BrightpearlService extends BaseService {
       .create(order)
       .then(async (salesOrderId) => {
         const order = await client.orders.retrieve(salesOrderId)
-        await client.warehouses.createReservation(order, this.options.warehouse)
+        await client.warehouses
+          .createReservation(order, this.options.warehouse)
+          .catch((err) => {
+            console.log("Failed to allocate for order:", salesOrderId)
+          })
 
         const total = order.rows.reduce((acc, next) => {
           return acc + parseFloat(next.net) + parseFloat(next.tax)
