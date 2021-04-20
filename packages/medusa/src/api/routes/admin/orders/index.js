@@ -79,14 +79,6 @@ export default app => {
   )
 
   /**
-   * Register a requested return
-   */
-  route.post(
-    "/:id/return/:return_id/receive",
-    middlewares.wrap(require("./receive-return").default)
-  )
-
-  /**
    * Cancel an order.
    */
   route.post("/:id/cancel", middlewares.wrap(require("./cancel-order").default))
@@ -234,6 +226,7 @@ export const defaultFields = [
   "updated_at",
   "metadata",
   "items.refundable",
+  "swaps.additional_items.refundable",
   "shipping_total",
   "discount_total",
   "tax_total",
@@ -241,6 +234,7 @@ export const defaultFields = [
   "gift_card_total",
   "subtotal",
   "total",
+  "paid_total",
   "refundable_amount",
 ]
 
@@ -267,6 +261,7 @@ export const allowedFields = [
   "subtotal",
   "gift_card_total",
   "total",
+  "paid_total",
   "refundable_amount",
 ]
 

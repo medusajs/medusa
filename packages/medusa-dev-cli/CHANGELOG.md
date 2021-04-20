@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.6...medusa-dev-cli@0.0.7) (2021-04-20)
+
+**Note:** Version bump only for package medusa-dev-cli
+
+
+
+
+
+## [0.0.6](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.5...medusa-dev-cli@0.0.6) (2021-04-20)
+
+**Note:** Version bump only for package medusa-dev-cli
+
+
+
+
+
 ## [0.0.5](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.4...medusa-dev-cli@0.0.5) (2021-04-13)
 
 

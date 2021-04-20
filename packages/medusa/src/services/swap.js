@@ -9,6 +9,7 @@ import { MedusaError } from "medusa-core-utils"
 class SwapService extends BaseService {
   static Events = {
     CREATED: "swap.created",
+    RECEIVED: "swap.received",
     SHIPMENT_CREATED: "swap.shipment_created",
     PAYMENT_COMPLETED: "swap.payment_completed",
     PAYMENT_CAPTURED: "swap.payment_captured",
@@ -28,6 +29,7 @@ class SwapService extends BaseService {
     paymentProviderService,
     shippingOptionService,
     fulfillmentService,
+    orderService,
   }) {
     super()
 
@@ -55,6 +57,9 @@ class SwapService extends BaseService {
     /** @private @const {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
 
+    /** @private @const {OrderService} */
+    this.orderService_ = orderService
+
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
@@ -77,6 +82,7 @@ class SwapService extends BaseService {
       lineItemService: this.lineItemService_,
       paymentProviderService: this.paymentProviderService_,
       shippingOptionService: this.shippingOptionService_,
+      orderService: this.orderService_,
       fulfillmentService: this.fulfillmentService_,
     })
 
@@ -239,14 +245,12 @@ class SwapService extends BaseService {
 
       const result = await swapRepo.save(created)
 
-      await this.returnService_.withTransaction(manager).create(
-        {
-          swap_id: result.id,
-          items: returnItems,
-          shipping_method: returnShipping,
-        },
-        order
-      )
+      await this.returnService_.withTransaction(manager).create({
+        swap_id: result.id,
+        order_id: order.id,
+        items: returnItems,
+        shipping_method: returnShipping,
+      })
 
       await this.eventBus_
         .withTransaction(manager)
@@ -273,6 +277,10 @@ class SwapService extends BaseService {
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       if (swap.difference_due < 0) {
+        if (swap.payment_status === "difference_refunded") {
+          return swap
+        }
+
         try {
           await this.paymentProviderService_
             .withTransaction(manager)
@@ -299,6 +307,10 @@ class SwapService extends BaseService {
           .emit(SwapService.Events.REFUND_PROCESSED, result)
         return result
       } else if (swap.difference_due === 0) {
+        if (swap.payment_status === "difference_refunded") {
+          return swap
+        }
+
         swap.payment_status = "difference_refunded"
 
         const result = await swapRepo.save(swap)
@@ -309,6 +321,10 @@ class SwapService extends BaseService {
       }
 
       try {
+        if (swap.payment_status === "captured") {
+          return swap
+        }
+
         await this.paymentProviderService_
           .withTransaction(manager)
           .capturePayment(swap.payment)
@@ -365,6 +381,8 @@ class SwapService extends BaseService {
         relations: [
           "order",
           "order.items",
+          "order.swaps",
+          "order.swaps.additional_items",
           "order.discounts",
           "additional_items",
           "return_order",
@@ -419,7 +437,15 @@ class SwapService extends BaseService {
       }
 
       for (const r of swap.return_order.items) {
-        const lineItem = order.items.find(i => i.id === r.item_id)
+        let allItems = [...order.items]
+
+        if (order.swaps && order.swaps.length) {
+          for (const s of order.swaps) {
+            allItems = [...allItems, ...s.additional_items]
+          }
+        }
+
+        const lineItem = allItems.find(i => i.id === r.item_id)
 
         const toCreate = {
           cart_id: cart.id,
@@ -499,6 +525,7 @@ class SwapService extends BaseService {
           .withTransaction(manager)
           .updatePayment(payment.id, {
             swap_id: swapId,
+            order_id: swap.order_id,
           })
       }
 
@@ -721,37 +748,6 @@ class SwapService extends BaseService {
   }
 
   /**
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
-   */
-  setMetadata_(swap, metadata) {
-    const existing = swap.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
-  }
-
-  /**
    * Dedicated method to delete metadata for a swap.
    * @param {string} swapId - the order to delete metadata from.
    * @param {string} key - key for metadata field
@@ -773,6 +769,39 @@ class SwapService extends BaseService {
       .catch(err => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
+  }
+
+  /**
+   * Registers the swap return items as received so that they cannot be used
+   * as a part of other swaps/returns.
+   * @param {string} id - the id of the order with the swap.
+   * @param {string} swapId - the id of the swap that has been received.
+   * @returns {Promise<Order>} the resulting order
+   */
+  async registerReceived(id) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(id, {
+        relations: ["return_order", "return_order.items"],
+      })
+
+      if (swap.return_order.status !== "received") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Swap is not received"
+        )
+      }
+
+      const result = await this.retrieve(id)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(SwapService.Events.RECEIVED, {
+          id: id,
+          order_id: result.order_id,
+        })
+
+      return result
+    })
   }
 }
 

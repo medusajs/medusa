@@ -192,6 +192,8 @@ describe("SwapService", () => {
           relations: [
             "order",
             "order.items",
+            "order.swaps",
+            "order.swaps.additional_items",
             "order.discounts",
             "additional_items",
             "return_order",
@@ -862,6 +864,57 @@ describe("SwapService", () => {
         await expect(swapService.processDifference("not_conf")).rejects.toThrow(
           "Cannot process a swap that hasn't been confirmed by the customer"
         )
+      })
+    })
+
+    describe("registerReceived", () => {
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
+
+      const eventBusService = {
+        emit: jest.fn().mockReturnValue(Promise.resolve()),
+        withTransaction: function() {
+          return this
+        },
+      }
+
+      const swapRepo = MockRepository({
+        findOne: q => {
+          switch (q.where.id) {
+            case "requested":
+              return Promise.resolve({
+                id: "requested",
+                order_id: IdMap.getId("order"),
+                return_order: { status: "requested" },
+              })
+            case "received":
+              return Promise.resolve({
+                id: "received",
+                order_id: IdMap.getId("order"),
+                return_order: { status: "received" },
+              })
+            default:
+              return Promise.resolve()
+          }
+        },
+      })
+
+      const swapService = new SwapService({
+        manager: MockManager,
+        swapRepository: swapRepo,
+        eventBusService,
+      })
+
+      it("fails if swap doesn't have status received", async () => {
+        const res = swapService.registerReceived("requested")
+        await expect(res).rejects.toThrow("Swap is not received")
+      })
+
+      it("registers a swap as received", async () => {
+        await swapService.registerReceived("received")
+
+        expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       })
     })
   })

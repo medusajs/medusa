@@ -39,7 +39,7 @@ class OrderSubscriber {
       "swap.payment_completed",
       this.registerSwapPayment
     )
-    eventBusService.subscribe("order.swap_received", this.registerSwap)
+    eventBusService.subscribe("swap.received", this.registerSwap)
   }
 
   sendToBrightpearl = (data) => {
@@ -55,13 +55,13 @@ class OrderSubscriber {
   }
 
   registerSwap = async (data) => {
-    const { id, swap_id } = data
+    const { id } = data
 
-    if (!id && !swap_id) {
+    if (!id) {
       return
     }
 
-    const fromSwap = await this.swapService_.retrieve(swap_id, {
+    const fromSwap = await this.swapService_.retrieve(id, {
       relations: [
         "order",
         "order.payments",
@@ -136,7 +136,7 @@ class OrderSubscriber {
     const { id, return_id } = data
 
     const order = await this.orderService_.retrieve(id, {
-      relations: ["region", "payments"],
+      relations: ["region", "swaps", "payments"],
     })
 
     const fromReturn = await this.returnService_.retrieve(return_id, {
