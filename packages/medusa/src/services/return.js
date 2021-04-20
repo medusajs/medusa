@@ -365,11 +365,13 @@ class ReturnService extends BaseService {
         ],
       })
 
+      let returnData = { ...returnOrder }
+
       const items = await this.lineItemService_.list({
         id: returnOrder.items.map(({ item_id }) => item_id),
       })
 
-      returnOrder.items = returnOrder.items.map(item => {
+      returnData.items = returnOrder.items.map(item => {
         const found = items.find(i => i.id === item.item_id)
         return {
           ...item,
@@ -389,7 +391,7 @@ class ReturnService extends BaseService {
       }
 
       const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
-        returnOrder
+        returnData
       )
 
       returnOrder.shipping_data = fulfillmentData

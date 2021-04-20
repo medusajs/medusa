@@ -862,6 +862,7 @@ describe("/admin/orders", () => {
       );
 
       expect(receivedSwap.status).toEqual(200);
+      expect(receivedSwap.data.return.status).toBe("received");
     });
 
     it("creates a swap on a swap", async () => {

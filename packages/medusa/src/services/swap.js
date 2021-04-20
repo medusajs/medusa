@@ -277,6 +277,10 @@ class SwapService extends BaseService {
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       if (swap.difference_due < 0) {
+        if (swap.payment_status === "difference_refunded") {
+          return swap
+        }
+
         try {
           await this.paymentProviderService_
             .withTransaction(manager)
@@ -303,6 +307,10 @@ class SwapService extends BaseService {
           .emit(SwapService.Events.REFUND_PROCESSED, result)
         return result
       } else if (swap.difference_due === 0) {
+        if (swap.payment_status === "difference_refunded") {
+          return swap
+        }
+
         swap.payment_status = "difference_refunded"
 
         const result = await swapRepo.save(swap)
@@ -313,6 +321,10 @@ class SwapService extends BaseService {
       }
 
       try {
+        if (swap.payment_status === "captured") {
+          return swap
+        }
+
         await this.paymentProviderService_
           .withTransaction(manager)
           .capturePayment(swap.payment)
