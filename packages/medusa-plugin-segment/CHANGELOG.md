@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.12...medusa-plugin-segment@1.1.13) (2021-04-20)
+
+
+### Features
+
+* **medusa:** Swaps on swaps ([#229](https://github.com/medusajs/medusa/issues/229)) ([f8f1f57](https://github.com/medusajs/medusa/commit/f8f1f57fa1bcdc6f7ae4183e657a07e2641b1345))
+
+
+
+
+
 ## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.11...medusa-plugin-segment@1.1.12) (2021-04-13)
 
 
