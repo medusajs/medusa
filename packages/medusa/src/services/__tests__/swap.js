@@ -914,7 +914,7 @@ describe("SwapService", () => {
       it("registers a swap as received", async () => {
         await swapService.registerReceived("received")
 
-        expect(eventBusService.emit).toHaveBeenCalledTimes(2)
+        expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       })
     })
   })
