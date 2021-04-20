@@ -25,6 +25,7 @@ class SendGridService extends NotificationService {
       orderService,
       returnService,
       swapService,
+      cartService,
       lineItemService,
       claimService,
       fulfillmentService,
@@ -42,6 +43,7 @@ class SendGridService extends NotificationService {
     this.storeService_ = storeService
     this.lineItemService_ = lineItemService
     this.orderService_ = orderService
+    this.cartService_ = cartService
     this.claimService_ = claimService
     this.returnService_ = returnService
     this.swapService_ = swapService
@@ -133,6 +135,45 @@ class SendGridService extends NotificationService {
     }
   }
 
+  getLocalizedTemplateId(event, locale) {
+    if (this.options_.localization && this.options_.localization[locale]) {
+      const map = this.options_.localization[locale]
+      switch (event) {
+        case "order.return_requested":
+          return map.order_return_requested_template
+        case "swap.shipment_created":
+          return map.swap_shipment_created_template
+        case "claim.shipment_created":
+          return map.claim_shipment_created_template
+        case "order.items_returned":
+          return map.order_items_returned_template
+        case "order.swap_received":
+          return map.order_swap_received_template
+        case "swap.created":
+          return map.swap_created_template
+        case "gift_card.created":
+          return map.gift_card_created_template
+        case "order.gift_card_created":
+          return map.gift_card_created_template
+        case "order.placed":
+          return map.order_placed_template
+        case "order.shipment_created":
+          return map.order_shipped_template
+        case "order.canceled":
+          return map.order_canceled_template
+        case "user.password_reset":
+          return map.user_password_reset_template
+        case "customer.password_reset":
+          return map.customer_password_reset_template
+        case "restock-notification.restocked":
+          return map.medusa_restock_template
+        default:
+          return null
+      }
+    }
+    return null
+  }
+
   getTemplateId(event) {
     switch (event) {
       case "order.return_requested":
@@ -181,6 +222,10 @@ class SendGridService extends NotificationService {
       data,
       attachmentGenerator
     )
+
+    if (data.locale) {
+      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
+    }
 
     const sendOptions = {
       template_id: templateId,
@@ -289,7 +334,10 @@ class SendGridService extends NotificationService {
       relations: ["items", "tracking_links"],
     })
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       order,
       date: shipment.shipped_at.toDateString(),
       email: order.email,
@@ -365,8 +413,11 @@ class SendGridService extends NotificationService {
       discounts.concat(giftCards)
     }
 
+    const locale = await this.extractLocale(order)
+
     return {
       ...order,
+      locale,
       has_discounts: order.discounts.length,
       has_gift_cards: order.gift_cards.length,
       date: order.created_at.toDateString(),
@@ -404,8 +455,11 @@ class SendGridService extends NotificationService {
 
     const taxRate = giftCard.region.tax_rate / 100
 
+    const locale = await this.extractLocale(order)
+
     return {
       ...giftCard,
+      locale,
       email: giftCard.order.email,
       display_value: giftCard.value * (1 + taxRate),
     }
@@ -463,7 +517,10 @@ class SendGridService extends NotificationService {
       shippingTotal = returnRequest.shipping_method.price * (1 + taxRate)
     }
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       has_shipping: !!returnRequest.shipping_method,
       email: order.email,
       items: this.processItems_(returnItems, taxRate, currencyCode),
@@ -555,7 +612,10 @@ class SendGridService extends NotificationService {
 
     const refundAmount = swap.return_order.refund_amount
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       swap,
       order,
       return_request: returnRequest,
@@ -629,7 +689,10 @@ class SendGridService extends NotificationService {
       relations: ["tracking_links"],
     })
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       swap,
       order,
       items: this.processItems_(swap.additional_items, taxRate, currencyCode),
@@ -670,7 +733,10 @@ class SendGridService extends NotificationService {
       relations: ["tracking_links"],
     })
 
+    const locale = await this.extractLocale(claim.order)
+
     return {
+      locale,
       email: claim.order.email,
       claim,
       order: claim.order,
@@ -744,6 +810,25 @@ class SendGridService extends NotificationService {
       return `https:${url}`
     }
     return url
+  }
+
+  async extractLocale(fromOrder) {
+    if (fromOrder.cart_id) {
+      try {
+        const cart = await this.cartService_.retrieve(fromOrder.cart_id, {
+          select: ["context"],
+        })
+
+        if (cart.context && cart.context.locale) {
+          return cart.context.locale
+        }
+      } catch (err) {
+        console.log(err)
+        console.warn("Failed to gather context for order")
+        return null
+      }
+    }
+    return null
   }
 }
 
