@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-brightpearl",
-  "version": "1.1.13",
+  "version": "1.1.13-next.8+4ce77d52",
   "description": "Brightpearl plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -27,7 +27,7 @@
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.1.9",
+    "medusa-test-utils": "^1.1.10-next.8+4ce77d52",
     "prettier": "^2.0.5"
   },
   "scripts": {
@@ -43,8 +43,8 @@
     "axios": "^0.19.2",
     "axios-rate-limit": "^1.2.1",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.6",
+    "medusa-core-utils": "^1.1.7-next.8+4ce77d52",
     "randomatic": "^3.1.1"
   },
-  "gitHead": "d78a7ce85876e0bfd9a4bfebe4f5743921961e9c"
+  "gitHead": "4ce77d5229f62a819cdcf68af3ffe1b4b2f459ef"
 }
