@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-sendgrid",
-  "version": "1.1.10",
+  "version": "1.1.11-next.8+4ce77d52",
   "description": "SendGrid transactional emails",
   "main": "index.js",
   "repository": {
@@ -39,8 +39,8 @@
     "@sendgrid/mail": "^7.1.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.6",
-    "medusa-test-utils": "^1.1.9"
+    "medusa-core-utils": "^1.1.7-next.8+4ce77d52",
+    "medusa-test-utils": "^1.1.10-next.8+4ce77d52"
   },
-  "gitHead": "d78a7ce85876e0bfd9a4bfebe4f5743921961e9c"
+  "gitHead": "4ce77d5229f62a819cdcf68af3ffe1b4b2f459ef"
 }
