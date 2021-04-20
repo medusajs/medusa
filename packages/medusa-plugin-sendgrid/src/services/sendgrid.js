@@ -147,8 +147,8 @@ class SendGridService extends NotificationService {
           return map.claim_shipment_created_template
         case "order.items_returned":
           return map.order_items_returned_template
-        case "order.swap_received":
-          return map.order_swap_received_template
+        case "swap.received":
+          return map.swap_received_template
         case "swap.created":
           return map.swap_created_template
         case "gift_card.created":
