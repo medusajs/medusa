@@ -793,15 +793,6 @@ class SwapService extends BaseService {
 
       const result = await this.retrieve(id)
 
-      // backwards compatibility
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit("order.swap_received", {
-          id: result.order_id,
-          swap_id: id,
-          _deprecated: true,
-        })
-
       await this.eventBus_
         .withTransaction(manager)
         .emit(SwapService.Events.RECEIVED, {

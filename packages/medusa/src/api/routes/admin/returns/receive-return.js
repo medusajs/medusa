@@ -1,14 +1,12 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
 
 /**
- * @oas [post] /orders/{id}/returns/{return_id}/receive
- * operationId: "PostOrdersOrderReturnsReturnReceive"
+ * @oas [post] /returns/{id}receive
+ * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
- * description: "Registers a Return as received."
+ * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) return_id=* {string} The id of the Return.
+ *   - (path) id=* {string} The id of the Return.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,7 +27,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: The amount to refund.
  *             type: integer
  * tags:
- *   - Order
+ *   - Return
  * responses:
  *   200:
  *     description: OK
@@ -37,8 +35,8 @@ import { defaultRelations, defaultFields } from "./"
  *       application/json:
  *         schema:
  *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *             return:
+ *               $ref: "#/components/schemas/return"
  */
 export default async (req, res) => {
   const { id } = req.params

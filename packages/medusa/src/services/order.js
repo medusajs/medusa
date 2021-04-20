@@ -16,7 +16,6 @@ class OrderService extends BaseService {
     REFUND_CREATED: "order.refund_created",
     REFUND_FAILED: "order.refund_failed",
     SWAP_CREATED: "order.swap_created",
-    SWAP_RECEIVED: "order.swap_received",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELED: "order.canceled",

@@ -19,7 +19,6 @@ class OrderSubscriber {
     this.fulfillmentService_ = fulfillmentService
 
     // Swaps
-    // order.swap_received <--- Will be deprecated
     // swap.created
     // swap.received
     // swap.shipment_created
