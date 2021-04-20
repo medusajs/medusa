@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-cli",
-  "version": "1.1.5-next.32+4ce77d52",
+  "version": "1.1.5-next.33+982da259",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -48,5 +48,5 @@
     "resolve-cwd": "^3.0.0",
     "yargs": "^15.3.1"
   },
-  "gitHead": "4ce77d5229f62a819cdcf68af3ffe1b4b2f459ef"
+  "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"
 }
