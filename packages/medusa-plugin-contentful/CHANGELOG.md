@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.11...medusa-plugin-contentful@1.1.12) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-contentful
+
+
+
+
+
 ## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.10...medusa-plugin-contentful@1.1.11) (2021-04-20)
 
 **Note:** Version bump only for package medusa-plugin-contentful
