@@ -18,16 +18,13 @@ class OrderSubscriber {
 
     this.fulfillmentService_ = fulfillmentService
 
-
-    // Swaps 
-    // order.swap_received <--- Will be deprecated
+    // Swaps
     // swap.created
     // swap.received
     // swap.shipment_created
     // swap.payment_completed
     // swap.payment_captured
     // swap.refund_processed
-
 
     eventBusService.subscribe(
       "order.shipment_created",
@@ -176,12 +173,19 @@ class OrderSubscriber {
           })
         }
 
+        let merged = [...order.items]
+
+        // merge items from order with items from order swaps
+        if (order.swaps && order.swaps.length) {
+          for (const s of order.swaps) {
+            merged = [...merged, ...s.additional_items]
+          }
+        }
+
         const toBuildFrom = {
           ...order,
           shipping_methods: shipping,
-          items: ret.items.map((i) =>
-            order.items.find((l) => l.id === i.item_id)
-          ),
+          items: ret.items.map((i) => merged.find((l) => l.id === i.item_id)),
         }
 
         const orderData = await segmentService.buildOrder(toBuildFrom)
