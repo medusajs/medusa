@@ -124,7 +124,7 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id, {
                   select: ["refunded_total", "total"],
-                  relations: ["items", "swaps"],
+                  relations: ["items", "swaps", "swaps.additional_items"],
                 })
 
               const swap = await swapService

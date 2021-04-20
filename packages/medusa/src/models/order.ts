@@ -247,6 +247,7 @@ export class Order {
   refunded_total: number
   total: number
   subtotal: number
+  paid_total: number
   refundable_amount: number
   gift_card_total: number
 
@@ -402,5 +403,7 @@ export class Order {
  *   refundable_amount:
  *     type: integer
  *   gift_card_total:
+ *     type: integer
+ *   paid_total:
  *     type: integer
  */

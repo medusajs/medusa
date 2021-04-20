@@ -1,5 +1,4 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import idMap from "medusa-test-utils/dist/id-map"
 import ReturnService from "../return"
 
 describe("ReturnService", () => {
@@ -141,7 +140,7 @@ describe("ReturnService", () => {
   //   })
   // })
 
-  describe("receiveReturn", () => {
+  describe("receive", () => {
     const returnRepository = MockRepository({
       findOne: query => {
         if (query.where.id === IdMap.getId("test-return-2")) {
@@ -189,9 +188,44 @@ describe("ReturnService", () => {
       }),
     }
 
+    const orderService = {
+      retrieve: jest.fn().mockImplementation(() => {
+        return Promise.resolve({
+          items: [
+            {
+              id: IdMap.getId("test-line"),
+              quantity: 10,
+              returned_quantity: 0,
+            },
+            {
+              id: IdMap.getId("test-line-2"),
+              quantity: 10,
+              returned_quantity: 0,
+            },
+          ],
+          payments: [{ id: "payment_test" }],
+        })
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const lineItemService = {
+      retrieve: jest.fn().mockImplementation(data => {
+        return Promise.resolve({ ...data, returned_quantity: 0 })
+      }),
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const returnService = new ReturnService({
       manager: MockManager,
       totalsService,
+      lineItemService,
+      orderService,
       returnRepository,
     })
 
@@ -200,7 +234,7 @@ describe("ReturnService", () => {
     })
 
     it("successfully receives a return", async () => {
-      await returnService.receiveReturn(
+      await returnService.receive(
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
         1000
@@ -226,10 +260,18 @@ describe("ReturnService", () => {
         refund_amount: 1000,
         received_at: expect.anything(),
       })
+
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith(
+        IdMap.getId("test-line"),
+        {
+          returned_quantity: 10,
+        }
+      )
     })
 
     it("successfully receives a return with requires_action status", async () => {
-      await returnService.receiveReturn(
+      await returnService.receive(
         IdMap.getId("test-return-2"),
         [
           { item_id: IdMap.getId("test-line"), quantity: 10 },
