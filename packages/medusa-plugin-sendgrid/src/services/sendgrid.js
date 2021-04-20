@@ -107,7 +107,7 @@ class SendGridService extends NotificationService {
         return this.claimShipmentCreatedData(eventData, attachmentGenerator)
       case "order.items_returned":
         return this.itemsReturnedData(eventData, attachmentGenerator)
-      case "order.swap_received":
+      case "swap.received":
         return this.swapReceivedData(eventData, attachmentGenerator)
       case "swap.created":
         return this.swapCreatedData(eventData, attachmentGenerator)
@@ -147,8 +147,8 @@ class SendGridService extends NotificationService {
           return map.claim_shipment_created_template
         case "order.items_returned":
           return map.order_items_returned_template
-        case "order.swap_received":
-          return map.order_swap_received_template
+        case "swap.received":
+          return map.swap_received_template
         case "swap.created":
           return map.swap_created_template
         case "gift_card.created":
@@ -184,8 +184,8 @@ class SendGridService extends NotificationService {
         return this.options_.claim_shipment_created_template
       case "order.items_returned":
         return this.options_.order_items_returned_template
-      case "order.swap_received":
-        return this.options_.order_swap_received_template
+      case "swap.received":
+        return this.options_.swap_received_template
       case "swap.created":
         return this.options_.swap_created_template
       case "gift_card.created":
@@ -493,12 +493,28 @@ class SendGridService extends NotificationService {
     // Fetch the order
     const order = await this.orderService_.retrieve(id, {
       select: ["total"],
-      relations: ["items", "discounts", "shipping_address", "returns"],
+      relations: [
+        "items",
+        "discounts",
+        "shipping_address",
+        "returns",
+        "swaps",
+        "swaps.additional_items",
+      ],
     })
+
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
 
     // Calculate which items are in the return
     const returnItems = returnRequest.items.map((i) => {
-      const found = order.items.find((oi) => oi.id === i.item_id)
+      const found = merged.find((oi) => oi.id === i.item_id)
       return {
         ...found,
         quantity: i.quantity,
@@ -582,15 +598,30 @@ class SendGridService extends NotificationService {
 
     const order = await this.orderService_.retrieve(swap.order_id, {
       select: ["total"],
-      relations: ["items", "discounts", "shipping_address"],
+      relations: [
+        "items",
+        "discounts",
+        "shipping_address",
+        "swaps",
+        "swaps.additional_items",
+      ],
     })
 
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
+
     const returnItems = this.processItems_(
       swap.return_order.items.map((i) => {
-        const found = order.items.find((oi) => oi.id === i.item_id)
+        const found = merged.find((oi) => oi.id === i.item_id)
         return {
           ...found,
           quantity: i.quantity,
@@ -655,15 +686,24 @@ class SendGridService extends NotificationService {
     })
 
     const order = await this.orderService_.retrieve(swap.order_id, {
-      relations: ["items", "discounts"],
+      relations: ["items", "discounts", "swaps", "swaps.additional_items"],
     })
+
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
 
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
     const returnItems = this.processItems_(
       swap.return_order.items.map((i) => {
-        const found = order.items.find((oi) => oi.id === i.item_id)
+        const found = merged.find((oi) => oi.id === i.item_id)
         return {
           ...found,
           quantity: i.quantity,
