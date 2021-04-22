@@ -608,10 +608,8 @@ class CartService extends BaseService {
 
             // if free shipping discount is removed, we adjust the shipping
             // back to its original amount
-            if (sm.price === 0) {
-              sm.price = sm.shipping_option.amount
-              await smRepo.save(sm)
-            }
+            sm.price = sm.shipping_option.amount
+            await smRepo.save(sm)
           })
         )
       }
