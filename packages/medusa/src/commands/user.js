@@ -9,7 +9,7 @@ import cwdResolve from "resolve-cwd"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
-export default async function({ directory, email, password }) {
+export default async function({ directory, id, email, password }) {
   const app = express()
   const { container, dbConnection } = await loaders({
     directory,
@@ -17,7 +17,7 @@ export default async function({ directory, email, password }) {
   })
 
   const userService = container.resolve("userService")
-  const user = await userService.create({ email }, password)
+  const user = await userService.create({ id, email }, password)
 
   process.exit()
 }
