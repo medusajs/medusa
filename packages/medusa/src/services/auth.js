@@ -40,6 +40,16 @@ class AuthService extends BaseService {
    *    error: a string with the error message
    */
   async authenticateAPIToken(token) {
+    if (process.env.NODE_ENV === "development") {
+      try {
+        const user = await this.userService_.retrieve(token)
+        return {
+          success: true,
+          user,
+        }
+      } catch (error) {}
+    }
+
     try {
       const user = await this.userService_.retrieveByApiToken(token)
       return {
