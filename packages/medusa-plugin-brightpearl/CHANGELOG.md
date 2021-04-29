@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.13...medusa-plugin-brightpearl@1.1.15) (2021-04-28)
+
+
+### Bug Fixes
+
+* better inventory sync ([9eaf027](https://github.com/medusajs/medusa/commit/9eaf02762ff1ad455ac5020668ee9106db7c705a))
+
+
+
+
+
 ## [1.1.14](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.13...medusa-plugin-brightpearl@1.1.14) (2021-04-20)
 
 
