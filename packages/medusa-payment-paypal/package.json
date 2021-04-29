@@ -26,12 +26,13 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
+    "medusa-interfaces": "^1.1.10",
     "medusa-test-utils": "^1.1.12"
   },
   "scripts": {
-    "build": "babel src -d . --ignore **/__tests__",
+    "build": "babel src -d . --ignore **/__tests__,**/__mocks__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__,**/__mocks__",
     "test": "jest"
   },
   "peerDependencies": {
