@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class PayPalProviderService extends PaymentService {
   static identifier = "paypal"
 
-  constructor({ customerService, totalsService, regionService }, options) {
+  constructor({ totalsService, regionService }, options) {
     super()
 
     /**
@@ -34,9 +34,6 @@ class PayPalProviderService extends PaymentService {
 
     /** @private @const {PayPalHttpClient} */
     this.paypal_ = new PayPal.core.PayPalHttpClient(environment)
-
-    /** @private @const {CustomerService} */
-    this.customerService_ = customerService
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
@@ -196,7 +193,7 @@ class PayPalProviderService extends PaymentService {
           value: {
             amount: {
               currency_code: currency_code.toUpperCase(),
-              value: (cart.total / 100).toFixed(),
+              value: (cart.total / 100).toFixed(2),
             },
           },
         },
@@ -240,7 +237,7 @@ class PayPalProviderService extends PaymentService {
    * Refunds a given amount.
    * @param {object} payment - payment to refund
    * @param {number} amountToRefund - amount to refund
-   * @returns {string} the resulting PayPal order
+   * @returns {Promise<Object>} the resulting PayPal order
    */
   async refundPayment(payment, amountToRefund) {
     const { purchase_units } = payment.data
@@ -257,13 +254,13 @@ class PayPalProviderService extends PaymentService {
       request.requestBody({
         amount: {
           currency_code: payment.currency_code.toUpperCase(),
-          value: (amountToRefund / 100).toFixed(),
+          value: (amountToRefund / 100).toFixed(2),
         },
       })
 
       await this.paypal_.execute(request)
 
-      return this.retrievePayment(payment.id)
+      return this.retrievePayment(payment.data)
     } catch (error) {
       throw error
     }
@@ -272,7 +269,7 @@ class PayPalProviderService extends PaymentService {
   /**
    * Cancels payment for Stripe payment intent.
    * @param {object} paymentData - payment method data from cart
-   * @returns {object} canceled payment intent
+   * @returns {Promise<object>} canceled payment intent
    */
   async cancelPayment(payment) {
     try {
