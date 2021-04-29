@@ -100,11 +100,12 @@ describe("/admin/orders", () => {
       await manager.query(`DELETE FROM "fulfillment_item"`);
       await manager.query(`DELETE FROM "fulfillment"`);
       await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
       await manager.query(`DELETE FROM "claim_item"`);
       await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
       await manager.query(`DELETE FROM "claim_order"`);
       await manager.query(`DELETE FROM "money_amount"`);
@@ -175,6 +176,72 @@ describe("/admin/orders", () => {
             quantity: 1,
           }),
         ])
+      );
+    });
+
+    it("creates a claim with return shipping", async () => {
+      const api = useApi();
+
+      const response = await api.post(
+        "/admin/orders/test-order/claims",
+        {
+          type: "replace",
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason: "production_failure",
+              tags: ["fluff"],
+              images: ["https://test.image.com"],
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: "test-variant",
+              quantity: 1,
+            },
+          ],
+          return_shipping: { option_id: "test-return-option", price: 0 },
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+
+      expect(response.data.order.claims[0].claim_items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: "test-item",
+            quantity: 1,
+            reason: "production_failure",
+            images: expect.arrayContaining([
+              expect.objectContaining({
+                url: "https://test.image.com",
+              }),
+            ]),
+          }),
+        ])
+      );
+
+      expect(response.data.order.claims[0].additional_items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            quantity: 1,
+          }),
+        ])
+      );
+
+      expect(
+        response.data.order.claims[0].return_order.shipping_method
+      ).toEqual(
+        expect.objectContaining({
+          price: 0,
+          shipping_option_id: "test-return-option",
+        })
       );
     });
 

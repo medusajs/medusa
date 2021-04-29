@@ -252,18 +252,16 @@ class ClaimService extends BaseService {
       }
 
       if (return_shipping) {
-        await this.returnService_.withTransaction(manager).create(
-          {
-            claim_order_id: result.id,
-            items: claim_items.map(ci => ({
-              item_id: ci.item_id,
-              quantity: ci.quantity,
-              metadata: ci.metadata,
-            })),
-            shipping_method: return_shipping,
-          },
-          order
-        )
+        await this.returnService_.withTransaction(manager).create({
+          order_id: order.id,
+          claim_order_id: result.id,
+          items: claim_items.map(ci => ({
+            item_id: ci.item_id,
+            quantity: ci.quantity,
+            metadata: ci.metadata,
+          })),
+          shipping_method: return_shipping,
+        })
       }
 
       await this.eventBus_

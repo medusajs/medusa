@@ -100,31 +100,20 @@ describe("ClaimService", () => {
       expect(withTransactionMock).toHaveBeenCalledWith("return")
 
       expect(returnService.create).toHaveBeenCalledTimes(1)
-      expect(returnService.create).toHaveBeenCalledWith(
-        {
-          claim_order_id: "claim_134",
-          shipping_method: {
-            option_id: "opt_13",
-            price: 0,
-          },
-          items: [
-            {
-              item_id: "itm_1",
-              quantity: 1,
-            },
-          ],
+      expect(returnService.create).toHaveBeenCalledWith({
+        order_id: "1234",
+        claim_order_id: "claim_134",
+        shipping_method: {
+          option_id: "opt_13",
+          price: 0,
         },
-        {
-          id: "1234",
-          region_id: "order_region",
-          items: [
-            {
-              id: "itm_1",
-              unit_price: 8000,
-            },
-          ],
-        }
-      )
+        items: [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ],
+      })
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
       expect(lineItemService.generate).toHaveBeenCalledTimes(1)
