@@ -1,7 +1,8 @@
 const axios = require("axios").default
 const open = require("open")
-const Netrc = require("netrc-parser").default
 const inquirer = require("inquirer")
+
+const { setToken } = require("../util/token-store")
 
 module.exports = {
   login: async _ => {
@@ -11,7 +12,7 @@ module.exports = {
     const authHost = process.env.MEDUSA_AUTH_HOST || `${apiHost}/cli-auth`
 
     const loginHost =
-      process.env.MEDUSA_LOGIN_HOST || "https://admin.medusa-commerce.com"
+      process.env.MEDUSA_APP_HOST || "https://app.medusa-commerce.com"
 
     const { data: urls } = await axios.post(authHost)
 
@@ -55,9 +56,8 @@ module.exports = {
 
       const { data: user } = await axios
         .get(`${apiHost}/auth`, {
-          auth: {
-            username: auth.username,
-            password: auth.password,
+          headers: {
+            authorization: `Bearer ${auth.password}`,
           },
         })
         .catch(err => {
@@ -65,18 +65,9 @@ module.exports = {
           process.exit(1)
         })
 
-      await Netrc.load()
       if (user) {
-        const hostMachine =
-          process.env.MEDUSA_HOST_MACHINE || "api.medusa-commerce.com"
-
-        if (!Netrc.machines[hostMachine]) {
-          Netrc.machines[hostMachine] = {}
-        }
-        Netrc.machines[hostMachine].login = auth.username
-        Netrc.machines[hostMachine].password = auth.password
+        setToken(auth.password)
       }
-      await Netrc.save()
     })
   },
 }

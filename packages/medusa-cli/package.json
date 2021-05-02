@@ -40,6 +40,7 @@
     "@hapi/joi": "^16.1.8",
     "axios": "^0.21.1",
     "chalk": "^4.0.0",
+    "configstore": "5.0.1",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "fs-exists-cached": "^1.0.0",
