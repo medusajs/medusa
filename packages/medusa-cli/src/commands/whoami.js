@@ -1,30 +1,24 @@
 const axios = require("axios").default
-const resolveCwd = require(`resolve-cwd`)
-const Netrc = require("netrc-parser").default
+const { getToken } = require("../util/token-store")
 
 module.exports = {
   whoami: async argv => {
     const apiHost =
       process.env.MEDUSA_API_HOST || "https://api.medusa-commerce.com"
-    const hostMachine =
-      process.env.MEDUSA_HOST_MACHINE || "api.medusa-commerce.com"
 
-    await Netrc.load()
+    const tok = getToken()
 
-    if (!Netrc.machines[hostMachine]) {
+    if (!tok) {
       console.log(
         "You are not logged into Medusa Cloud. Please run medusa login."
       )
       process.exit(0)
     }
 
-    const { login, password } = Netrc.machines[hostMachine]
-
     const { data: auth } = await axios
       .get(`${apiHost}/auth`, {
-        auth: {
-          username: login,
-          password: password,
+        headers: {
+          authorization: `Bearer ${tok}`,
         },
       })
       .catch(err => {
