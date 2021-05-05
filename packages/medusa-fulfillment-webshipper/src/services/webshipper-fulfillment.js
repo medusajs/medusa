@@ -9,6 +9,16 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     this.options_ = options
 
+    if (!options.coo_countries) {
+      this.options_.coo_countries = ["all"]
+    } else if (Array.isArray(options.coo_countries)) {
+      this.options_.coo_countries = options.coo_countries.map((c) =>
+        c.toLowerCase()
+      )
+    } else if (typeof options.coo_countries === "string") {
+      this.options_.coo_countries = [options.coo_countries]
+    }
+
     /** @private @const {logger} */
     this.logger_ = logger
 
@@ -242,6 +252,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
       webshipperOrder = await this.client_.orders.retrieve(existing)
     }
 
+    const { shipping_address } = fromOrder
+
     if (!webshipperOrder) {
       let invoice
       let certificateOfOrigin
@@ -266,7 +278,14 @@ class WebshipperFulfillmentService extends FulfillmentService {
             throw err
           })
 
-        if (this.invoiceGenerator_.createCertificateOfOrigin) {
+        const cooCountries = this.options_.coo_countries
+        if (
+          (cooCountries.includes("all") ||
+            cooCountries.includes(
+              shipping_address.country_code.toLowerCase()
+            )) &&
+          this.invoiceGenerator_.createCertificateOfOrigin
+        ) {
           const base64Coo = await this.invoiceGenerator_.createCertificateOfOrigin(
             fromOrder,
             fulfillmentItems
@@ -297,7 +316,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
         visible_ref = `S-${fromOrder.display_id}`
       }
 
-      const { shipping_address } = fromOrder
       const newOrder = {
         type: "orders",
         attributes: {
