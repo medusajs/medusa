@@ -12,4 +12,5 @@ A webhook listener is exposed at `/webshipper/shipments` to listen for shipment 
   api_token: [a webshipper api token] (required)
   order_channel_id: [the channel id to register orders on] (required)
   webhook_secret: [the webhook secret used to listen for shipments] (required)
+  coo_countries: [an array of countries in which a Certificate of Origin will be attached] (default: "all")
 ```
