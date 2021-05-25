@@ -7,7 +7,7 @@ import { defaultFields, defaultRelations } from "./"
  * summary: "Create a Swap"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
  * parameters:
- *   - (path) id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The id of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -124,7 +124,7 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id, {
                   select: ["refunded_total", "total"],
-                  relations: ["items", "swaps"],
+                  relations: ["items", "swaps", "swaps.additional_items"],
                 })
 
               const swap = await swapService

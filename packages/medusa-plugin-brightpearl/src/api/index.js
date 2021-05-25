@@ -65,7 +65,7 @@ export default (container) => {
         throw new Error("Already sent to BP")
       }
 
-      await brightpearlService.createSalesOrder(order)
+      await brightpearlService.createSalesOrder(order.id)
       res.sendStatus(200)
     } catch (err) {
       res.status(400).json(err)

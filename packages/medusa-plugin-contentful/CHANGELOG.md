@@ -3,6 +3,105 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.10...medusa-plugin-contentful@1.1.13) (2021-04-28)
+
+**Note:** Version bump only for package medusa-plugin-contentful
+
+
+
+
+
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.11...medusa-plugin-contentful@1.1.12) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-contentful
+
+
+
+
+
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.10...medusa-plugin-contentful@1.1.11) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-contentful
+
+
+
+
+
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.9...medusa-plugin-contentful@1.1.10) (2021-04-13)
+
+
+### Bug Fixes
+
+* merge develop ([2982a8e](https://github.com/medusajs/medusa/commit/2982a8e682e90beb4549d969d9d3b04d78a46a2d))
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+
+
+
+
+
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.8...medusa-plugin-contentful@1.1.9) (2021-04-13)
+
+
+### Bug Fixes
+
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.8...medusa-plugin-contentful@1.1.8) (2021-03-30)
+
+
+### Bug Fixes
+
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.7...medusa-plugin-contentful@1.1.8) (2021-03-26)
+
+
+### Bug Fixes
+
+* update all contentful ([806918a](https://github.com/medusajs/medusa/commit/806918a10e42fde60240dcc785d8e175dc8507b5))
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.6...medusa-plugin-contentful@1.1.7) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-contentful
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.4...medusa-plugin-contentful@1.1.6) (2021-03-17)
+
+
+### Bug Fixes
+
+* contentful sync ([#206](https://github.com/medusajs/medusa/issues/206)) ([227cdb6](https://github.com/medusajs/medusa/commit/227cdb622234126df6087992203ce82ff9446974))
+
+
+
+
+
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.4...medusa-plugin-contentful@1.1.5) (2021-03-17)
+
+
+### Bug Fixes
+
+* contentful sync ([#206](https://github.com/medusajs/medusa/issues/206)) ([227cdb6](https://github.com/medusajs/medusa/commit/227cdb622234126df6087992203ce82ff9446974))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.3...medusa-plugin-contentful@1.1.4) (2021-02-25)
 
 

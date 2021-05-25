@@ -21,6 +21,12 @@ import { defaultRelations, defaultFields } from "./"
  *                 item_id:
  *                   description: The id of the Line Item.
  *                   type: string
+ *                 reason_id:
+ *                   description: The id of the Return Reason to use.
+ *                   type: string
+ *                 note:
+ *                   description: An optional note with information about the Return.
+ *                   type: string
  *                 quantity:
  *                   description: The quantity of the Line Item.
  *                   type: integer
@@ -60,6 +66,8 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
+        reason_id: Validator.string().optional(),
+        note: Validator.string().optional(),
       })
       .required(),
     return_shipping: Validator.object()
@@ -115,13 +123,6 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  select: ["refunded_total", "total"],
-                  relations: ["items"],
-                })
-
               const returnObj = {
                 order_id: id,
                 idempotency_key: idempotencyKey.idempotency_key,
@@ -142,7 +143,7 @@ export default async (req, res) => {
 
               const createdReturn = await returnService
                 .withTransaction(manager)
-                .create(returnObj, order)
+                .create(returnObj)
 
               if (value.return_shipping) {
                 await returnService
@@ -200,7 +201,7 @@ export default async (req, res) => {
 
                 order = await returnService
                   .withTransaction(manager)
-                  .receiveReturn(order.id, ret.id, value.items, value.refund)
+                  .receive(ret.id, value.items, value.refund)
               }
 
               order = await orderService.withTransaction(manager).retrieve(id, {

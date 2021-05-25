@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 
@@ -126,7 +126,6 @@ class BrightpearlService extends BaseService {
 
   async syncInventory() {
     const client = await this.getClient()
-    const variants = await this.productVariantService_.list()
 
     let search = true
     let bpProducts = []
@@ -141,31 +140,39 @@ class BrightpearlService extends BaseService {
     }
 
     if (bpProducts.length) {
-      const productRange = `${bpProducts[0].productId}-${
-        bpProducts[bpProducts.length - 1].productId
-      }`
+      const productRange = bpProducts
+        .map(({ productId }) => productId)
+        .join(",")
 
       const availabilities = await client.products.retrieveAvailability(
         productRange
       )
+
       return Promise.all(
-        variants.map(async (v) => {
-          const brightpearlProduct = bpProducts.find(
-            (prod) => prod.SKU === v.sku
-          )
-          if (!brightpearlProduct) {
-            return
+        bpProducts.map(async (bpProduct) => {
+          const { SKU: sku, productId } = bpProduct
+
+          const variant = await this.productVariantService_
+            .retrieveBySKU(sku, {
+              select: ["id", "manage_inventory", "inventory_quantity"],
+            })
+            .catch((_) => undefined)
+
+          const prodAvail = availabilities[productId]
+
+          let onHand = 0
+          if (
+            prodAvail &&
+            prodAvail.warehouses &&
+            prodAvail.warehouses[`${this.options.warehouse}`]
+          ) {
+            onHand = prodAvail.warehouses[`${this.options.warehouse}`].onHand
           }
 
-          const { productId } = brightpearlProduct
-          const availability = availabilities[productId]
-          if (availability) {
-            const onHand = availability.total.onHand
-
-            // Only update if the inventory levels have changed
-            if (parseInt(v.inventory_quantity) !== parseInt(onHand)) {
-              return this.productVariantService_.update(v.id, {
-                inventory_quantity: onHand,
+          if (variant && variant.manage_inventory) {
+            if (parseInt(variant.inventory_quantity) !== parseInt(onHand)) {
+              return this.productVariantService_.update(variant.id, {
+                inventory_quantity: parseInt(onHand),
               })
             }
           }
@@ -182,7 +189,16 @@ class BrightpearlService extends BaseService {
 
     if (availability) {
       const brightpearlProduct = await client.products.retrieve(productId)
-      const onHand = availability[productId].total.onHand
+
+      const prodAvail = availability[productId]
+
+      let onHand = 0
+      if (
+        prodAvail.warehouses &&
+        prodAvail.warehouses[`${this.options.warehouse}`]
+      ) {
+        onHand = prodAvail.warehouses[`${this.options.warehouse}`].onHand
+      }
 
       const sku = brightpearlProduct.identity.sku
       if (!sku) return
@@ -290,10 +306,12 @@ class BrightpearlService extends BaseService {
             taxCode: region.tax_code,
             net: this.bpnum_(
               fromRefund.amount,
+              fromOrder.currency_code,
               10000 / (100 + fromOrder.tax_rate)
             ),
             tax: this.bpnum_(
-              fromRefund.amount * (1 - 100 / (100 + fromOrder.tax_rate))
+              fromRefund.amount * (1 - 100 / (100 + fromOrder.tax_rate)),
+              fromOrder.currency_code
             ),
             nominalCode: accountingCode,
           },
@@ -311,7 +329,7 @@ class BrightpearlService extends BaseService {
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-            amountPaid: this.bpnum_(fromRefund.amount),
+            amountPaid: this.bpnum_(fromRefund.amount, fromOrder.currency_code),
             paymentDate: new Date(),
             paymentType,
           }
@@ -338,7 +356,11 @@ class BrightpearlService extends BaseService {
     const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
-    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+
+    const orderIds = this.gatherOrders(fromOrder)
+    const orderId = orderIds[0]
+    const parentRows = await this.gatherRowsFromOrderIds(orderIds)
+
     if (orderId) {
       const parentSo = await client.orders.retrieve(orderId)
       const order = {
@@ -351,7 +373,7 @@ class BrightpearlService extends BaseService {
         delivery: parentSo.delivery,
         parentId: orderId,
         rows: fromReturn.items.map((i) => {
-          const parentRow = parentSo.rows.find((row) => {
+          const parentRow = parentRows.find((row) => {
             return row.externalRef === i.item_id
           })
           return {
@@ -380,8 +402,15 @@ class BrightpearlService extends BaseService {
           name: "Difference",
           quantity: 1,
           taxCode: region.tax_code,
-          net: this.bpnum_(difference, 10000 / (100 + fromOrder.tax_rate)),
-          tax: this.bpnum_(difference * (1 - 100 / (100 + fromOrder.tax_rate))),
+          net: this.bpnum_(
+            difference,
+            fromOrder.currency_code,
+            10000 / (100 + fromOrder.tax_rate)
+          ),
+          tax: this.bpnum_(
+            difference * (1 - 100 / (100 + fromOrder.tax_rate)),
+            fromOrder.currency_code
+          ),
           nominalCode: this.options.sales_account_code || "4000",
         })
       }
@@ -397,7 +426,10 @@ class BrightpearlService extends BaseService {
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-            amountPaid: this.bpnum_(fromReturn.refund_amount),
+            amountPaid: this.bpnum_(
+              fromReturn.refund_amount,
+              fromOrder.currency_code
+            ),
             paymentDate: new Date(),
             paymentType,
           }
@@ -488,7 +520,9 @@ class BrightpearlService extends BaseService {
         const order = await client.orders.retrieve(salesOrderId)
         await client.warehouses
           .createReservation(order, this.options.warehouse)
-          .catch(() => {})
+          .catch((err) => {
+            console.log("Failed to allocate for order:", salesOrderId)
+          })
         return salesOrderId
       })
       .then((salesOrderId) => {
@@ -577,6 +611,7 @@ class BrightpearlService extends BaseService {
         },
       },
       rows: await this.getBrightpearlRows({
+        currency_code: fromOrder.currency_code,
         region: fromOrder.region,
         discounts: fromOrder.discounts,
         tax_rate: fromOrder.tax_rate,
@@ -588,7 +623,11 @@ class BrightpearlService extends BaseService {
 
     return client.orders.create(order).then(async (salesOrderId) => {
       const order = await client.orders.retrieve(salesOrderId)
-      await client.warehouses.createReservation(order, this.options.warehouse)
+      await client.warehouses
+        .createReservation(order, this.options.warehouse)
+        .catch((err) => {
+          console.log("Failed to allocate for order:", salesOrderId)
+        })
 
       const total = order.rows.reduce((acc, next) => {
         return acc + parseFloat(next.net) + parseFloat(next.tax)
@@ -640,10 +679,12 @@ class BrightpearlService extends BaseService {
             name: `#${fromOrder.display_id}: Claim ${fromClaim.id}`,
             net: this.bpnum_(
               fromClaim.refund_amount,
+              fromOrder.currency_code,
               10000 / (100 + fromOrder.tax_rate)
             ),
             tax: this.bpnum_(
-              fromClaim.refund_amount * (1 - 100 / (100 + fromOrder.tax_rate))
+              fromClaim.refund_amount * (1 - 100 / (100 + fromOrder.tax_rate)),
+              fromOrder.currency_code
             ),
             taxCode: region.tax_code,
             nominalCode: this.options.sales_account_code || `4000`,
@@ -663,7 +704,10 @@ class BrightpearlService extends BaseService {
             paymentMethodCode: this.options.payment_method_code || "1220",
             orderId: creditId,
             currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-            amountPaid: this.bpnum_(fromClaim.refund_amount),
+            amountPaid: this.bpnum_(
+              fromClaim.refund_amount,
+              fromOrder.currency_code
+            ),
             paymentDate: new Date(),
             paymentType,
           }
@@ -674,11 +718,43 @@ class BrightpearlService extends BaseService {
     }
   }
 
+  gatherOrders(fromOrder) {
+    const ids = []
+    if (fromOrder.metadata && fromOrder.metadata.brightpearl_sales_order_id) {
+      ids.push(fromOrder.metadata.brightpearl_sales_order_id)
+    }
+
+    if (fromOrder.swaps) {
+      for (const s of fromOrder.swaps) {
+        if (s.metadata && s.metadata.brightpearl_sales_order_id) {
+          ids.push(s.metadata.brightpearl_sales_order_id)
+        }
+      }
+    }
+
+    return ids
+  }
+
+  async gatherRowsFromOrderIds(ids) {
+    const client = await this.getClient()
+    const orders = await Promise.all(ids.map((i) => client.orders.retrieve(i)))
+
+    let rows = []
+    for (const o of orders) {
+      rows = rows.concat(o.rows)
+    }
+
+    return rows
+  }
+
   async createSwapCredit(fromOrder, fromSwap) {
     const region = fromOrder.region
     const client = await this.getClient()
     const authData = await this.getAuthData()
-    const orderId = fromOrder.metadata.brightpearl_sales_order_id
+
+    const orderIds = this.gatherOrders(fromOrder)
+    const orderId = orderIds[0]
+    const parentRows = await this.gatherRowsFromOrderIds(orderIds)
     const sIndex = fromOrder.swaps.findIndex((s) => fromSwap.id === s.id)
 
     if (orderId) {
@@ -693,7 +769,7 @@ class BrightpearlService extends BaseService {
         delivery: parentSo.delivery,
         parentId: orderId,
         rows: fromSwap.return_order.items.map((i) => {
-          const parentRow = parentSo.rows.find((row) => {
+          const parentRow = parentRows.find((row) => {
             return row.externalRef === i.item_id
           })
           return {
@@ -775,7 +851,7 @@ class BrightpearlService extends BaseService {
       orderId: soId,
       paymentDate: new Date(),
       currencyIsoCode: fromOrder.currency_code.toUpperCase(),
-      amountPaid: this.bpnum_(fromOrder.total),
+      amountPaid: this.bpnum_(fromOrder.total, fromOrder.currency_code),
       paymentType,
     }
 
@@ -811,9 +887,13 @@ class BrightpearlService extends BaseService {
         }
 
         if (config.include_price) {
-          row.net = this.bpnum_(item.unit_price * item.quantity - ld.amount)
+          row.net = this.bpnum_(
+            item.unit_price * item.quantity - ld.amount,
+            fromOrder.currency_code
+          )
           row.tax = this.bpnum_(
             item.unit_price * item.quantity - ld.amount,
+            fromOrder.currency_code,
             fromOrder.tax_rate
           )
         } else if (config.is_claim) {
@@ -821,7 +901,11 @@ class BrightpearlService extends BaseService {
             bpProduct.productId,
             this.options.cost_price_list || `1`
           )
-          row.tax = this.bpnum_(row.net * 100, fromOrder.tax_rate)
+          row.tax = this.bpnum_(
+            row.net * 100,
+            fromOrder.currency_code,
+            fromOrder.tax_rate
+          )
         }
 
         row.quantity = item.quantity
@@ -847,8 +931,12 @@ class BrightpearlService extends BaseService {
     if (gcTotal) {
       lines.push({
         name: `Gift Card`,
-        net: this.bpnum_(-1 * gcTotal),
-        tax: this.bpnum_(-1 * gcTotal, fromOrder.tax_rate),
+        net: this.bpnum_(-1 * gcTotal, fromOrder.currency_code),
+        tax: this.bpnum_(
+          -1 * gcTotal,
+          fromOrder.currency_code,
+          fromOrder.tax_rate
+        ),
         quantity: 1,
         taxCode: region.tax_code,
         nominalCode: this.options.gift_card_account_code || "4000",
@@ -863,8 +951,12 @@ class BrightpearlService extends BaseService {
       lines.push({
         name: `Shipping: ${shippingMethods.map((m) => m.name).join(" + ")}`,
         quantity: 1,
-        net: this.bpnum_(shippingTotal),
-        tax: this.bpnum_(shippingTotal, fromOrder.tax_rate),
+        net: this.bpnum_(shippingTotal, fromOrder.currency_code),
+        tax: this.bpnum_(
+          shippingTotal,
+          fromOrder.currency_code,
+          fromOrder.tax_rate
+        ),
         taxCode: region.tax_code,
         nominalCode: this.options.shipping_account_code || "4040",
       })
@@ -926,6 +1018,7 @@ class BrightpearlService extends BaseService {
       },
       rows: await this.getBrightpearlRows(
         {
+          currency_code: fromOrder.currency_code,
           region: fromOrder.region,
           discounts: fromOrder.discounts,
           tax_rate: fromOrder.tax_rate,
@@ -940,7 +1033,11 @@ class BrightpearlService extends BaseService {
       .create(order)
       .then(async (salesOrderId) => {
         const order = await client.orders.retrieve(salesOrderId)
-        await client.warehouses.createReservation(order, this.options.warehouse)
+        await client.warehouses
+          .createReservation(order, this.options.warehouse)
+          .catch((err) => {
+            console.log("Failed to allocate for order:", salesOrderId)
+          })
 
         const total = order.rows.reduce((acc, next) => {
           return acc + parseFloat(next.net) + parseFloat(next.tax)
@@ -1103,8 +1200,8 @@ class BrightpearlService extends BaseService {
     )
   }
 
-  bpnum_(number, taxRate = 100) {
-    const bpNumber = number / 100
+  bpnum_(number, currency, taxRate = 100) {
+    const bpNumber = humanizeAmount(number, currency)
     return this.bpround_(bpNumber * (taxRate / 100))
   }
 }

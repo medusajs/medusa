@@ -13,6 +13,8 @@ const defaultRelations = [
   "fulfillments.tracking_links",
   "fulfillments.items",
   "returns",
+  "returns.items",
+  "returns.items.reason",
   "gift_cards",
   "gift_card_transactions",
   "claims",
@@ -50,6 +52,7 @@ const defaultFields = [
   "updated_at",
   "metadata",
   "items.refundable",
+  "swaps.additional_items.refundable",
   "shipping_total",
   "discount_total",
   "tax_total",
@@ -57,6 +60,7 @@ const defaultFields = [
   "gift_card_total",
   "subtotal",
   "total",
+  "paid_total",
   "refundable_amount",
 ]
 

@@ -1,6 +1,48 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
 
+/**
+ * @oas [post] /returns
+ * operationId: "PostReturns"
+ * summary: "Create Return"
+ * description: "Creates a Return for an Order."
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           order_id:
+ *             type: string
+ *             description: The id of the Order to create the Return from.
+ *           items:
+ *             description: "The items to include in the Return."
+ *             type: array
+ *             items:
+ *               properties:
+ *                 item_id:
+ *                   description: The id of the Line Item from the Order.
+ *                   type: string
+ *                 quantity:
+ *                   description: The quantity to return.
+ *                   type: integer
+ *           return_shipping:
+ *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
+ *             type: object
+ *             properties:
+ *               option_id:
+ *                 type: string
+ *                 description: The id of the Shipping Option to create the Shipping Method from.
+ * tags:
+ *   - Return
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             return:
+ *               $ref: "#/components/schemas/return"
+ */
 export default async (req, res) => {
   const schema = Validator.object().keys({
     order_id: Validator.string().required(),
@@ -8,6 +50,8 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
+        reason_id: Validator.string().optional(),
+        note: Validator.string().optional(),
       })
       .required(),
     return_shipping: Validator.object()
@@ -109,13 +153,14 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              let order = await orderService
-                .withTransaction(manager)
-                .retrieve(value.order_id, { relations: ["returns"] })
-
-              let ret = await returnService.withTransaction(manager).list({
-                idempotency_key: idempotencyKey.idempotency_key,
-              })
+              let ret = await returnService.withTransaction(manager).list(
+                {
+                  idempotency_key: idempotencyKey.idempotency_key,
+                },
+                {
+                  relations: ["items", "items.reason"],
+                }
+              )
               if (!ret.length) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,

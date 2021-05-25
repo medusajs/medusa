@@ -37,21 +37,18 @@ describe("POST /admin/orders/:id/return", () => {
 
     it("calls OrderService return", () => {
       expect(ReturnService.create).toHaveBeenCalledTimes(1)
-      expect(ReturnService.create).toHaveBeenCalledWith(
-        {
-          order_id: IdMap.getId("test-order"),
-          idempotency_key: "testkey",
-          items: [
-            {
-              item_id: IdMap.getId("existingLine"),
-              quantity: 10,
-            },
-          ],
-          refund_amount: 10,
-          shipping_method: undefined,
-        },
-        orders.testOrder
-      )
+      expect(ReturnService.create).toHaveBeenCalledWith({
+        order_id: IdMap.getId("test-order"),
+        idempotency_key: "testkey",
+        items: [
+          {
+            item_id: IdMap.getId("existingLine"),
+            quantity: 10,
+          },
+        ],
+        refund_amount: 10,
+        shipping_method: undefined,
+      })
     })
   })
 
@@ -88,21 +85,18 @@ describe("POST /admin/orders/:id/return", () => {
 
     it("calls OrderService return", () => {
       expect(ReturnService.create).toHaveBeenCalledTimes(1)
-      expect(ReturnService.create).toHaveBeenCalledWith(
-        {
-          order_id: IdMap.getId("test-order"),
-          idempotency_key: "testkey",
-          items: [
-            {
-              item_id: IdMap.getId("existingLine"),
-              quantity: 10,
-            },
-          ],
-          refund_amount: 0,
-          shipping_method: undefined,
-        },
-        orders.testOrder
-      )
+      expect(ReturnService.create).toHaveBeenCalledWith({
+        order_id: IdMap.getId("test-order"),
+        idempotency_key: "testkey",
+        items: [
+          {
+            item_id: IdMap.getId("existingLine"),
+            quantity: 10,
+          },
+        ],
+        refund_amount: 0,
+        shipping_method: undefined,
+      })
     })
   })
 
@@ -139,21 +133,18 @@ describe("POST /admin/orders/:id/return", () => {
 
     it("calls OrderService return", () => {
       expect(ReturnService.create).toHaveBeenCalledTimes(1)
-      expect(ReturnService.create).toHaveBeenCalledWith(
-        {
-          order_id: IdMap.getId("test-order"),
-          idempotency_key: "testkey",
-          items: [
-            {
-              item_id: IdMap.getId("existingLine"),
-              quantity: 10,
-            },
-          ],
-          refund_amount: 0,
-          shipping_method: undefined,
-        },
-        orders.testOrder
-      )
+      expect(ReturnService.create).toHaveBeenCalledWith({
+        order_id: IdMap.getId("test-order"),
+        idempotency_key: "testkey",
+        items: [
+          {
+            item_id: IdMap.getId("existingLine"),
+            quantity: 10,
+          },
+        ],
+        refund_amount: 0,
+        shipping_method: undefined,
+      })
     })
   })
 
@@ -194,24 +185,21 @@ describe("POST /admin/orders/:id/return", () => {
 
     it("calls OrderService return", () => {
       expect(ReturnService.create).toHaveBeenCalledTimes(1)
-      expect(ReturnService.create).toHaveBeenCalledWith(
-        {
-          order_id: IdMap.getId("test-order"),
-          idempotency_key: "testkey",
-          items: [
-            {
-              item_id: IdMap.getId("existingLine"),
-              quantity: 10,
-            },
-          ],
-          refund_amount: 100,
-          shipping_method: {
-            option_id: "opt_1234",
-            price: 12,
+      expect(ReturnService.create).toHaveBeenCalledWith({
+        order_id: IdMap.getId("test-order"),
+        idempotency_key: "testkey",
+        items: [
+          {
+            item_id: IdMap.getId("existingLine"),
+            quantity: 10,
           },
+        ],
+        refund_amount: 100,
+        shipping_method: {
+          option_id: "opt_1234",
+          price: 12,
         },
-        orders.testOrder
-      )
+      })
 
       expect(ReturnService.fulfill).toHaveBeenCalledTimes(1)
       expect(ReturnService.fulfill).toHaveBeenCalledWith("return")

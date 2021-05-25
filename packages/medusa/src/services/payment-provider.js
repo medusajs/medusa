@@ -403,13 +403,15 @@ class PaymentProviderService extends BaseService {
       }
 
       const refundRepo = manager.getCustomRepository(this.refundRepository_)
-      const created = refundRepo.create({
+
+      const toCreate = {
         order_id,
         amount,
         reason,
         note,
-      })
+      }
 
+      const created = refundRepo.create(toCreate)
       return refundRepo.save(created)
     })
   }

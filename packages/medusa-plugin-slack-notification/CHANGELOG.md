@@ -3,6 +3,85 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.9...medusa-plugin-slack-notification@1.1.12) (2021-04-28)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.10...medusa-plugin-slack-notification@1.1.11) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.9...medusa-plugin-slack-notification@1.1.10) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.8...medusa-plugin-slack-notification@1.1.9) (2021-04-13)
+
+
+### Bug Fixes
+
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.7...medusa-plugin-slack-notification@1.1.8) (2021-04-13)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.6...medusa-plugin-slack-notification@1.1.7) (2021-03-30)
+
+
+### Bug Fixes
+
+* **slack:** show discount code flag ([b5bf650](https://github.com/medusajs/medusa/commit/b5bf650ec26182be6324bc56e7f6efd744a7131e))
+* zero decimal amounts in slack + gc total ([c6a5dff](https://github.com/medusajs/medusa/commit/c6a5dffa7bd8f627310d1f90364492084051dd47))
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.5...medusa-plugin-slack-notification@1.1.6) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.3...medusa-plugin-slack-notification@1.1.5) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.3...medusa-plugin-slack-notification@1.1.4) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-slack-notification
+
+
+
+
+
 ## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.2...medusa-plugin-slack-notification@1.1.3) (2021-02-17)
 
 **Note:** Version bump only for package medusa-plugin-slack-notification

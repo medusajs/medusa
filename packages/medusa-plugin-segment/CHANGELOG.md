@@ -3,6 +3,112 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.12...medusa-plugin-segment@1.1.15) (2021-04-28)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.14](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.13...medusa-plugin-segment@1.1.14) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.13](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.12...medusa-plugin-segment@1.1.13) (2021-04-20)
+
+
+### Features
+
+* **medusa:** Swaps on swaps ([#229](https://github.com/medusajs/medusa/issues/229)) ([f8f1f57](https://github.com/medusajs/medusa/commit/f8f1f57fa1bcdc6f7ae4183e657a07e2641b1345))
+
+
+
+
+
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.11...medusa-plugin-segment@1.1.12) (2021-04-13)
+
+
+### Bug Fixes
+
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+* **segment:** swap tracking ([295f0f6](https://github.com/medusajs/medusa/commit/295f0f652a0880292a3788b9c65476a3c5c1b8d4))
+* scaffolding ([0539a94](https://github.com/medusajs/medusa/commit/0539a949fa208ddbf140823c47abb7589f3c2401))
+
+
+
+
+
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.10...medusa-plugin-segment@1.1.11) (2021-04-13)
+
+
+### Bug Fixes
+
+* **segment:** swap tracking ([295f0f6](https://github.com/medusajs/medusa/commit/295f0f652a0880292a3788b9c65476a3c5c1b8d4))
+* scaffolding ([0539a94](https://github.com/medusajs/medusa/commit/0539a949fa208ddbf140823c47abb7589f3c2401))
+
+
+
+
+
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.9...medusa-plugin-segment@1.1.10) (2021-04-02)
+
+
+### Bug Fixes
+
+* adds exchange rates api key ([8eec38a](https://github.com/medusajs/medusa/commit/8eec38af7164fe60106b8dac33ae9acfeb2b0f2e))
+
+
+
+
+
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.8...medusa-plugin-segment@1.1.9) (2021-03-30)
+
+
+### Bug Fixes
+
+* adds tests for segment ([1b00f96](https://github.com/medusajs/medusa/commit/1b00f967dea3dc3aa65fafbe1334492fba5c33c2))
+* don't divide zero decimal currencies ([3258955](https://github.com/medusajs/medusa/commit/3258955b462f91fc6f4d807c5cc9b5ad11d6bbdf))
+* don't divide zero decimal currencies ([cfab2d4](https://github.com/medusajs/medusa/commit/cfab2d408a296a938266d0989b1de67d060b2ed5))
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.7...medusa-plugin-segment@1.1.8) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5...medusa-plugin-segment@1.1.7) (2021-03-17)
+
+
+### Features
+
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5...medusa-plugin-segment@1.1.6) (2021-03-17)
+
+
+### Features
+
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+
+
+
+
+
 ## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.5-next.3...medusa-plugin-segment@1.1.5) (2021-02-25)
 
 **Note:** Version bump only for package medusa-plugin-segment

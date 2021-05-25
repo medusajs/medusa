@@ -68,6 +68,12 @@ export class Discount {
   })
   regions: Region[]
 
+  @Column({ nullable: true })
+  usage_limit: number
+
+  @Column({ default: 0 })
+  usage_count: number
+
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
@@ -127,6 +133,12 @@ export class Discount {
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/region"
+ *   usage_limit:
+ *     description: "The maximum number of times that a discount can be used."
+ *     type: integer
+ *   usage_count:
+ *     description: "The number of times a discount has been used."
+ *     type: integer
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

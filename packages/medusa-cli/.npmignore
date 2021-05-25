@@ -3,3 +3,4 @@ src
 .eslintrc
 .gitignore
 .prettierrc
+.env
