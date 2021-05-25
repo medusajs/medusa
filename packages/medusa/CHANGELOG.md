@@ -3,6 +3,203 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.22...@medusajs/medusa@1.1.23) (2021-04-29)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.22](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.19...@medusajs/medusa@1.1.22) (2021-04-28)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.21](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.20...@medusajs/medusa@1.1.21) (2021-04-20)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.20](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.19...@medusajs/medusa@1.1.20) (2021-04-20)
+
+
+### Features
+
+* **medusa:** Swaps on swaps ([#229](https://github.com/medusajs/medusa/issues/229)) ([f8f1f57](https://github.com/medusajs/medusa/commit/f8f1f57fa1bcdc6f7ae4183e657a07e2641b1345))
+
+
+
+
+
+## [1.1.19](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.18...@medusajs/medusa@1.1.19) (2021-04-13)
+
+
+### Bug Fixes
+
+* adds tests ([69442a1](https://github.com/medusajs/medusa/commit/69442a1735193aeb010043f114d89037d4d76279))
+* creates restock functionality ([2b25550](https://github.com/medusajs/medusa/commit/2b2555004e52e97c15bfca59e030fdfc3d86ae49))
+* deps ([a9ea38c](https://github.com/medusajs/medusa/commit/a9ea38c2005beb63e14ed151e25ecd26819c748c))
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+* working api ([9d81097](https://github.com/medusajs/medusa/commit/9d810971a7e0de2a586b5c9c372f0aad2818918b))
+* **medusa:** Move discount usage from rule to discount ([d9cd52a](https://github.com/medusajs/medusa/commit/d9cd52a1776e9a334b155d37e58d73f456e3a028))
+
+
+### Features
+
+* restock service ([8bd5fa8](https://github.com/medusajs/medusa/commit/8bd5fa821286a90f3ab21e8c96993ac543fb7cab))
+
+
+
+
+
+## [1.1.18](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.17...@medusajs/medusa@1.1.18) (2021-04-09)
+
+
+### Bug Fixes
+
+* adds tests ([69442a1](https://github.com/medusajs/medusa/commit/69442a1735193aeb010043f114d89037d4d76279))
+* creates restock functionality ([2b25550](https://github.com/medusajs/medusa/commit/2b2555004e52e97c15bfca59e030fdfc3d86ae49))
+* deps ([a9ea38c](https://github.com/medusajs/medusa/commit/a9ea38c2005beb63e14ed151e25ecd26819c748c))
+* working api ([9d81097](https://github.com/medusajs/medusa/commit/9d810971a7e0de2a586b5c9c372f0aad2818918b))
+* **medusa:** Move discount usage from rule to discount ([d9cd52a](https://github.com/medusajs/medusa/commit/d9cd52a1776e9a334b155d37e58d73f456e3a028))
+
+
+### Features
+
+* restock service ([8bd5fa8](https://github.com/medusajs/medusa/commit/8bd5fa821286a90f3ab21e8c96993ac543fb7cab))
+
+
+
+
+
+## [1.1.17](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.16...@medusajs/medusa@1.1.17) (2021-03-30)
+
+
+### Bug Fixes
+
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
+## [1.1.16](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.16...@medusajs/medusa@1.1.16) (2021-03-30)
+
+
+### Bug Fixes
+
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
+## [1.1.15](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.16...@medusajs/medusa@1.1.15) (2021-03-30)
+
+
+### Bug Fixes
+
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
+## [1.1.16](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.15...@medusajs/medusa@1.1.16) (2021-03-26)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.15](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.14...@medusajs/medusa@1.1.15) (2021-03-18)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.14](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.13...@medusajs/medusa@1.1.14) (2021-03-17)
+
+
+### Bug Fixes
+
+* expose statusses on order ([a26b12a](https://github.com/medusajs/medusa/commit/a26b12a5367738d9434dc46fadaea6f9a5d5a498))
+* **medusa:** Add usage_count + usage_limit to discount ([c513813](https://github.com/medusajs/medusa/commit/c513813bb680486f309f68b03bf878151e0a7b1e))
+
+
+
+
+
+## [1.1.13](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.11...@medusajs/medusa@1.1.13) (2021-03-17)
+
+
+### Bug Fixes
+
+* add region to gift-cards ([ffac0d3](https://github.com/medusajs/medusa/commit/ffac0d3a3de876a5fe5b6b75910ef02f249fae4c))
+* adds integration test to create endpoint ([521d306](https://github.com/medusajs/medusa/commit/521d306b7126a820297d7374b9c16bea465fa643))
+* allows shipping option filters in return ([#202](https://github.com/medusajs/medusa/issues/202)) ([7c7f86e](https://github.com/medusajs/medusa/commit/7c7f86e8e8be20173e774ea86b53e75c98e72e9a))
+* contentful sync ([#206](https://github.com/medusajs/medusa/issues/206)) ([227cdb6](https://github.com/medusajs/medusa/commit/227cdb622234126df6087992203ce82ff9446974))
+* enable gift-card creation without order_id ([9ce935a](https://github.com/medusajs/medusa/commit/9ce935a779aec90ff1ad301c73114ab69ce51b36))
+* enable gift-card creation without order_id ([#195](https://github.com/medusajs/medusa/issues/195)) ([1263d24](https://github.com/medusajs/medusa/commit/1263d24ca380918345c844c1793f2706a49f85c6))
+* merge ([49f1d0f](https://github.com/medusajs/medusa/commit/49f1d0f67a3eb285397d8b7c8e9033fcf42589ff))
+* merge ([31d5bb0](https://github.com/medusajs/medusa/commit/31d5bb017d3028beb5325185ccec80cd1772165e))
+* **medusa:** expose items.refundable ([3fbf38f](https://github.com/medusajs/medusa/commit/3fbf38ffc93b969adbb5033e5b7cb31aeff36896))
+* merge api ([6ad2b0e](https://github.com/medusajs/medusa/commit/6ad2b0e6e9f339f60a3cc9d8674e5055121685b4))
+* **medusa:** Upsert product images ([#200](https://github.com/medusajs/medusa/issues/200)) ([a031f1f](https://github.com/medusajs/medusa/commit/a031f1f33873dddd0246e668c5b98c12bbaa108b))
+* round totals ([a1ba2e8](https://github.com/medusajs/medusa/commit/a1ba2e8b5cdf586ac2d646f2334e46ceae96bc8f))
+* test ([caf1ecf](https://github.com/medusajs/medusa/commit/caf1ecfd5af58559d035d6c17a4993bdd6a5cc0b))
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+* **medusa:** storefront return ([#194](https://github.com/medusajs/medusa/issues/194)) ([252db5e](https://github.com/medusajs/medusa/commit/252db5ef7e09e844fac72bbb8e2b2de34a541d25))
+
+
+
+
+
+## [1.1.12](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.11...@medusajs/medusa@1.1.12) (2021-03-17)
+
+
+### Bug Fixes
+
+* add region to gift-cards ([ffac0d3](https://github.com/medusajs/medusa/commit/ffac0d3a3de876a5fe5b6b75910ef02f249fae4c))
+* adds integration test to create endpoint ([521d306](https://github.com/medusajs/medusa/commit/521d306b7126a820297d7374b9c16bea465fa643))
+* allows shipping option filters in return ([#202](https://github.com/medusajs/medusa/issues/202)) ([7c7f86e](https://github.com/medusajs/medusa/commit/7c7f86e8e8be20173e774ea86b53e75c98e72e9a))
+* contentful sync ([#206](https://github.com/medusajs/medusa/issues/206)) ([227cdb6](https://github.com/medusajs/medusa/commit/227cdb622234126df6087992203ce82ff9446974))
+* enable gift-card creation without order_id ([9ce935a](https://github.com/medusajs/medusa/commit/9ce935a779aec90ff1ad301c73114ab69ce51b36))
+* enable gift-card creation without order_id ([#195](https://github.com/medusajs/medusa/issues/195)) ([1263d24](https://github.com/medusajs/medusa/commit/1263d24ca380918345c844c1793f2706a49f85c6))
+* merge ([49f1d0f](https://github.com/medusajs/medusa/commit/49f1d0f67a3eb285397d8b7c8e9033fcf42589ff))
+* merge ([31d5bb0](https://github.com/medusajs/medusa/commit/31d5bb017d3028beb5325185ccec80cd1772165e))
+* **medusa:** expose items.refundable ([3fbf38f](https://github.com/medusajs/medusa/commit/3fbf38ffc93b969adbb5033e5b7cb31aeff36896))
+* merge api ([6ad2b0e](https://github.com/medusajs/medusa/commit/6ad2b0e6e9f339f60a3cc9d8674e5055121685b4))
+* **medusa:** Upsert product images ([#200](https://github.com/medusajs/medusa/issues/200)) ([a031f1f](https://github.com/medusajs/medusa/commit/a031f1f33873dddd0246e668c5b98c12bbaa108b))
+* round totals ([a1ba2e8](https://github.com/medusajs/medusa/commit/a1ba2e8b5cdf586ac2d646f2334e46ceae96bc8f))
+* test ([caf1ecf](https://github.com/medusajs/medusa/commit/caf1ecfd5af58559d035d6c17a4993bdd6a5cc0b))
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+* **medusa:** storefront return ([#194](https://github.com/medusajs/medusa/issues/194)) ([252db5e](https://github.com/medusajs/medusa/commit/252db5ef7e09e844fac72bbb8e2b2de34a541d25))
+
+
+
+
+
 ## [1.1.11](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.10...@medusajs/medusa@1.1.11) (2021-02-25)
 
 

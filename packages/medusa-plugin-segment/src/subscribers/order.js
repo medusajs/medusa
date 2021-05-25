@@ -3,16 +3,28 @@ class OrderSubscriber {
     segmentService,
     eventBusService,
     orderService,
+    cartService,
     claimService,
     returnService,
     fulfillmentService,
   }) {
     this.orderService_ = orderService
 
+    this.cartService_ = cartService
+
     this.returnService_ = returnService
 
     this.claimService_ = claimService
+
     this.fulfillmentService_ = fulfillmentService
+
+    // Swaps
+    // swap.created
+    // swap.received
+    // swap.shipment_created
+    // swap.payment_completed
+    // swap.payment_captured
+    // swap.refund_processed
 
     eventBusService.subscribe(
       "order.shipment_created",
@@ -161,12 +173,19 @@ class OrderSubscriber {
           })
         }
 
+        let merged = [...order.items]
+
+        // merge items from order with items from order swaps
+        if (order.swaps && order.swaps.length) {
+          for (const s of order.swaps) {
+            merged = [...merged, ...s.additional_items]
+          }
+        }
+
         const toBuildFrom = {
           ...order,
           shipping_methods: shipping,
-          items: ret.items.map((i) =>
-            order.items.find((l) => l.id === i.item_id)
-          ),
+          items: ret.items.map((i) => merged.find((l) => l.id === i.item_id)),
         }
 
         const orderData = await segmentService.buildOrder(toBuildFrom)
@@ -239,12 +258,46 @@ class OrderSubscriber {
         ],
       })
 
+      const eventContext = {}
+      const integrations = {}
+
+      if (order.cart_id) {
+        try {
+          const cart = await this.cartService_.retrieve(order.cart_id, {
+            select: ["context"],
+          })
+
+          if (cart.context) {
+            if (cart.context.ip) {
+              eventContext.ip = cart.context.ip
+            }
+
+            if (cart.context.user_agent) {
+              eventContext.user_agent = cart.context.user_agent
+            }
+
+            if (segmentService.options_ && segmentService.options_.use_ga_id) {
+              if (cart.context.ga_id) {
+                integrations["Google Analytics"] = {
+                  clientId: cart.context.ga_id,
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err)
+          console.warn("Failed to gather context for order")
+        }
+      }
+
       const orderData = await segmentService.buildOrder(order)
       const orderEvent = {
         event: "Order Completed",
         userId: order.customer_id,
         properties: orderData,
         timestamp: order.created_at,
+        context: eventContext,
+        integrations,
       }
 
       segmentService.track(orderEvent)

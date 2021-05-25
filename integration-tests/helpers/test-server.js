@@ -1,11 +1,13 @@
 const path = require("path");
 const express = require("express");
 const getPort = require("get-port");
-
-const loaders = require("@medusajs/medusa/dist/loaders").default;
+const importFrom = require("import-from");
 
 const initialize = async () => {
   const app = express();
+
+  const loaders = importFrom(process.cwd(), "@medusajs/medusa/dist/loaders")
+    .default;
 
   const { dbConnection } = await loaders({
     directory: path.resolve(process.cwd()),

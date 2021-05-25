@@ -11,5 +11,10 @@ export default app => {
    */
   route.get("/", middlewares.wrap(require("./list-returns").default))
 
+  route.post(
+    "/:id/receive",
+    middlewares.wrap(require("./receive-return").default)
+  )
+
   return app
 }

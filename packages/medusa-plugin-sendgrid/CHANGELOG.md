@@ -3,6 +3,103 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.10...medusa-plugin-sendgrid@1.1.13) (2021-04-28)
+
+**Note:** Version bump only for package medusa-plugin-sendgrid
+
+
+
+
+
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.11...medusa-plugin-sendgrid@1.1.12) (2021-04-20)
+
+**Note:** Version bump only for package medusa-plugin-sendgrid
+
+
+
+
+
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.10...medusa-plugin-sendgrid@1.1.11) (2021-04-20)
+
+
+### Features
+
+* **medusa:** Swaps on swaps ([#229](https://github.com/medusajs/medusa/issues/229)) ([f8f1f57](https://github.com/medusajs/medusa/commit/f8f1f57fa1bcdc6f7ae4183e657a07e2641b1345))
+* **medusa-plugin-sendgrid:** adds localization option ([#238](https://github.com/medusajs/medusa/issues/238)) ([a81ea1c](https://github.com/medusajs/medusa/commit/a81ea1c20a8779ba72e1ee5cc58c9b5335b79eca))
+
+
+
+
+
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.9...medusa-plugin-sendgrid@1.1.10) (2021-04-13)
+
+
+### Bug Fixes
+
+* creates restock functionality ([2b25550](https://github.com/medusajs/medusa/commit/2b2555004e52e97c15bfca59e030fdfc3d86ae49))
+* merge develop ([a468c45](https://github.com/medusajs/medusa/commit/a468c451e82c68f41b5005a2e480057f6124aaa6))
+* normalize thumbanils ([26e7f20](https://github.com/medusajs/medusa/commit/26e7f203069547b954796c1f04f5844b406c1e33))
+* restock ([237ed51](https://github.com/medusajs/medusa/commit/237ed5130760645c6b892fa1d5fc09a713b95f58))
+
+
+
+
+
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.8...medusa-plugin-sendgrid@1.1.9) (2021-04-13)
+
+
+### Bug Fixes
+
+* creates restock functionality ([2b25550](https://github.com/medusajs/medusa/commit/2b2555004e52e97c15bfca59e030fdfc3d86ae49))
+* normalize thumbanils ([26e7f20](https://github.com/medusajs/medusa/commit/26e7f203069547b954796c1f04f5844b406c1e33))
+* restock ([237ed51](https://github.com/medusajs/medusa/commit/237ed5130760645c6b892fa1d5fc09a713b95f58))
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.7...medusa-plugin-sendgrid@1.1.8) (2021-03-30)
+
+
+### Bug Fixes
+
+* format numbers correctly in sendgrid ([7682980](https://github.com/medusajs/medusa/commit/7682980c58f1a01f0c510b1d4feae3a62892040c))
+* publish assist ([7719957](https://github.com/medusajs/medusa/commit/7719957b44a0c0d950eff948faf31188fe0e3ef1))
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.6...medusa-plugin-sendgrid@1.1.7) (2021-03-17)
+
+**Note:** Version bump only for package medusa-plugin-sendgrid
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.4...medusa-plugin-sendgrid@1.1.6) (2021-03-17)
+
+
+### Bug Fixes
+
+* enable gift-card creation without order_id ([9ce935a](https://github.com/medusajs/medusa/commit/9ce935a779aec90ff1ad301c73114ab69ce51b36))
+
+
+
+
+
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.4...medusa-plugin-sendgrid@1.1.5) (2021-03-17)
+
+
+### Bug Fixes
+
+* enable gift-card creation without order_id ([9ce935a](https://github.com/medusajs/medusa/commit/9ce935a779aec90ff1ad301c73114ab69ce51b36))
+
+
+
+
+
 ## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-plugin-sendgrid@1.1.3...medusa-plugin-sendgrid@1.1.4) (2021-02-25)
 
 

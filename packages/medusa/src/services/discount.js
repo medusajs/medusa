@@ -83,7 +83,16 @@ class DiscountService extends BaseService {
         .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().optional(),
-      user_limit: Validator.number().optional(),
+      created_at: Validator.date().optional(),
+      updated_at: Validator.date()
+        .allow(null)
+        .optional(),
+      deleted_at: Validator.date()
+        .allow(null)
+        .optional(),
+      metadata: Validator.object()
+        .allow(null)
+        .optional(),
     })
 
     const { value, error } = schema.validate(discountRule)
@@ -321,6 +330,7 @@ class DiscountService extends BaseService {
         is_disabled: false,
         code: data.code.toUpperCase(),
         parent_discount_id: discount.id,
+        usage_limit: discount.usage_limit,
       }
 
       const created = await discountRepo.create(toCreate)

@@ -1,5 +1,7 @@
-import { NotificationService } from "medusa-interfaces"
 import SendGrid from "@sendgrid/mail"
+
+import { NotificationService } from "medusa-interfaces"
+import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -23,11 +25,13 @@ class SendGridService extends NotificationService {
       orderService,
       returnService,
       swapService,
+      cartService,
       lineItemService,
       claimService,
       fulfillmentService,
       fulfillmentProviderService,
       totalsService,
+      productVariantService,
     },
     options
   ) {
@@ -39,11 +43,13 @@ class SendGridService extends NotificationService {
     this.storeService_ = storeService
     this.lineItemService_ = lineItemService
     this.orderService_ = orderService
+    this.cartService_ = cartService
     this.claimService_ = claimService
     this.returnService_ = returnService
     this.swapService_ = swapService
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
+    this.productVariantService_ = productVariantService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -101,7 +107,7 @@ class SendGridService extends NotificationService {
         return this.claimShipmentCreatedData(eventData, attachmentGenerator)
       case "order.items_returned":
         return this.itemsReturnedData(eventData, attachmentGenerator)
-      case "order.swap_received":
+      case "swap.received":
         return this.swapReceivedData(eventData, attachmentGenerator)
       case "swap.created":
         return this.swapCreatedData(eventData, attachmentGenerator)
@@ -119,9 +125,53 @@ class SendGridService extends NotificationService {
         return this.userPasswordResetData(eventData, attachmentGenerator)
       case "customer.password_reset":
         return this.customerPasswordResetData(eventData, attachmentGenerator)
+      case "restock-notification.restocked":
+        return await this.restockNotificationData(
+          eventData,
+          attachmentGenerator
+        )
       default:
         return {}
     }
+  }
+
+  getLocalizedTemplateId(event, locale) {
+    if (this.options_.localization && this.options_.localization[locale]) {
+      const map = this.options_.localization[locale]
+      switch (event) {
+        case "order.return_requested":
+          return map.order_return_requested_template
+        case "swap.shipment_created":
+          return map.swap_shipment_created_template
+        case "claim.shipment_created":
+          return map.claim_shipment_created_template
+        case "order.items_returned":
+          return map.order_items_returned_template
+        case "swap.received":
+          return map.swap_received_template
+        case "swap.created":
+          return map.swap_created_template
+        case "gift_card.created":
+          return map.gift_card_created_template
+        case "order.gift_card_created":
+          return map.gift_card_created_template
+        case "order.placed":
+          return map.order_placed_template
+        case "order.shipment_created":
+          return map.order_shipped_template
+        case "order.canceled":
+          return map.order_canceled_template
+        case "user.password_reset":
+          return map.user_password_reset_template
+        case "customer.password_reset":
+          return map.customer_password_reset_template
+        case "restock-notification.restocked":
+          return map.medusa_restock_template
+        default:
+          return null
+      }
+    }
+    return null
   }
 
   getTemplateId(event) {
@@ -134,8 +184,8 @@ class SendGridService extends NotificationService {
         return this.options_.claim_shipment_created_template
       case "order.items_returned":
         return this.options_.order_items_returned_template
-      case "order.swap_received":
-        return this.options_.order_swap_received_template
+      case "swap.received":
+        return this.options_.swap_received_template
       case "swap.created":
         return this.options_.swap_created_template
       case "gift_card.created":
@@ -152,6 +202,8 @@ class SendGridService extends NotificationService {
         return this.options_.user_password_reset_template
       case "customer.password_reset":
         return this.options_.customer_password_reset_template
+      case "restock-notification.restocked":
+        return this.options_.medusa_restock_template
       default:
         return null
     }
@@ -170,6 +222,10 @@ class SendGridService extends NotificationService {
       data,
       attachmentGenerator
     )
+
+    if (data.locale) {
+      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
+    }
 
     const sendOptions = {
       template_id: templateId,
@@ -278,7 +334,10 @@ class SendGridService extends NotificationService {
       relations: ["items", "tracking_links"],
     })
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       order,
       date: shipment.shipped_at.toDateString(),
       email: order.email,
@@ -354,25 +413,34 @@ class SendGridService extends NotificationService {
       discounts.concat(giftCards)
     }
 
+    const locale = await this.extractLocale(order)
+
     return {
       ...order,
+      locale,
       has_discounts: order.discounts.length,
       has_gift_cards: order.gift_cards.length,
       date: order.created_at.toDateString(),
       items,
       discounts,
-      subtotal: `${this.humanPrice_(subtotal * (1 + taxRate))} ${currencyCode}`,
-      gift_card_total: `${this.humanPrice_(
-        gift_card_total * (1 + taxRate)
+      subtotal: `${this.humanPrice_(
+        subtotal * (1 + taxRate),
+        currencyCode
       )} ${currencyCode}`,
-      tax_total: `${this.humanPrice_(tax_total)} ${currencyCode}`,
+      gift_card_total: `${this.humanPrice_(
+        gift_card_total * (1 + taxRate),
+        currencyCode
+      )} ${currencyCode}`,
+      tax_total: `${this.humanPrice_(tax_total, currencyCode)} ${currencyCode}`,
       discount_total: `${this.humanPrice_(
-        discount_total * (1 + taxRate)
+        discount_total * (1 + taxRate),
+        currencyCode
       )} ${currencyCode}`,
       shipping_total: `${this.humanPrice_(
-        shipping_total * (1 + taxRate)
+        shipping_total * (1 + taxRate),
+        currencyCode
       )} ${currencyCode}`,
-      total: `${this.humanPrice_(total)} ${currencyCode}`,
+      total: `${this.humanPrice_(total, currencyCode)} ${currencyCode}`,
     }
   }
 
@@ -387,8 +455,11 @@ class SendGridService extends NotificationService {
 
     const taxRate = giftCard.region.tax_rate / 100
 
+    const locale = await this.extractLocale(order)
+
     return {
       ...giftCard,
+      locale,
       email: giftCard.order.email,
       display_value: giftCard.value * (1 + taxRate),
     }
@@ -422,12 +493,28 @@ class SendGridService extends NotificationService {
     // Fetch the order
     const order = await this.orderService_.retrieve(id, {
       select: ["total"],
-      relations: ["items", "discounts", "shipping_address", "returns"],
+      relations: [
+        "items",
+        "discounts",
+        "shipping_address",
+        "returns",
+        "swaps",
+        "swaps.additional_items",
+      ],
     })
+
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
 
     // Calculate which items are in the return
     const returnItems = returnRequest.items.map((i) => {
-      const found = order.items.find((oi) => oi.id === i.item_id)
+      const found = merged.find((oi) => oi.id === i.item_id)
       return {
         ...found,
         quantity: i.quantity,
@@ -446,19 +533,30 @@ class SendGridService extends NotificationService {
       shippingTotal = returnRequest.shipping_method.price * (1 + taxRate)
     }
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       has_shipping: !!returnRequest.shipping_method,
       email: order.email,
       items: this.processItems_(returnItems, taxRate, currencyCode),
-      subtotal: `${this.humanPrice_(item_subtotal)} ${currencyCode}`,
-      shipping_total: `${this.humanPrice_(shippingTotal)} ${currencyCode}`,
+      subtotal: `${this.humanPrice_(
+        item_subtotal,
+        currencyCode
+      )} ${currencyCode}`,
+      shipping_total: `${this.humanPrice_(
+        shippingTotal,
+        currencyCode
+      )} ${currencyCode}`,
       refund_amount: `${this.humanPrice_(
-        returnRequest.refund_amount
+        returnRequest.refund_amount,
+        currencyCode
       )} ${currencyCode}`,
       return_request: {
         ...returnRequest,
         refund_amount: `${this.humanPrice_(
-          returnRequest.refund_amount
+          returnRequest.refund_amount,
+          currencyCode
         )} ${currencyCode}`,
       },
       order,
@@ -500,15 +598,30 @@ class SendGridService extends NotificationService {
 
     const order = await this.orderService_.retrieve(swap.order_id, {
       select: ["total"],
-      relations: ["items", "discounts", "shipping_address"],
+      relations: [
+        "items",
+        "discounts",
+        "shipping_address",
+        "swaps",
+        "swaps.additional_items",
+      ],
     })
 
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
+
     const returnItems = this.processItems_(
       swap.return_order.items.map((i) => {
-        const found = order.items.find((oi) => oi.id === i.item_id)
+        const found = merged.find((oi) => oi.id === i.item_id)
         return {
           ...found,
           quantity: i.quantity,
@@ -530,7 +643,10 @@ class SendGridService extends NotificationService {
 
     const refundAmount = swap.return_order.refund_amount
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       swap,
       order,
       return_request: returnRequest,
@@ -539,9 +655,18 @@ class SendGridService extends NotificationService {
       email: order.email,
       items: this.processItems_(swap.additional_items, taxRate, currencyCode),
       return_items: returnItems,
-      return_total: `${this.humanPrice_(returnTotal)} ${currencyCode}`,
-      refund_amount: `${this.humanPrice_(refundAmount)} ${currencyCode}`,
-      additional_total: `${this.humanPrice_(additionalTotal)} ${currencyCode}`,
+      return_total: `${this.humanPrice_(
+        returnTotal,
+        currencyCode
+      )} ${currencyCode}`,
+      refund_amount: `${this.humanPrice_(
+        refundAmount,
+        currencyCode
+      )} ${currencyCode}`,
+      additional_total: `${this.humanPrice_(
+        additionalTotal,
+        currencyCode
+      )} ${currencyCode}`,
     }
   }
 
@@ -561,15 +686,24 @@ class SendGridService extends NotificationService {
     })
 
     const order = await this.orderService_.retrieve(swap.order_id, {
-      relations: ["items", "discounts"],
+      relations: ["items", "discounts", "swaps", "swaps.additional_items"],
     })
+
+    let merged = [...order.items]
+
+    // merge items from order with items from order swaps
+    if (order.swaps && order.swaps.length) {
+      for (const s of order.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
 
     const taxRate = order.tax_rate / 100
     const currencyCode = order.currency_code.toUpperCase()
 
     const returnItems = this.processItems_(
       swap.return_order.items.map((i) => {
-        const found = order.items.find((oi) => oi.id === i.item_id)
+        const found = merged.find((oi) => oi.id === i.item_id)
         return {
           ...found,
           quantity: i.quantity,
@@ -595,19 +729,35 @@ class SendGridService extends NotificationService {
       relations: ["tracking_links"],
     })
 
+    const locale = await this.extractLocale(order)
+
     return {
+      locale,
       swap,
       order,
       items: this.processItems_(swap.additional_items, taxRate, currencyCode),
       date: swap.updated_at.toDateString(),
       email: order.email,
       tax_amount: `${this.humanPrice_(
-        swap.difference_due * taxRate
+        swap.difference_due * taxRate,
+        currencyCode
       )} ${currencyCode}`,
-      paid_total: `${this.humanPrice_(swap.difference_due)} ${currencyCode}`,
-      return_total: `${this.humanPrice_(returnTotal)} ${currencyCode}`,
-      refund_amount: `${this.humanPrice_(refundAmount)} ${currencyCode}`,
-      additional_total: `${this.humanPrice_(additionalTotal)} ${currencyCode}`,
+      paid_total: `${this.humanPrice_(
+        swap.difference_due,
+        currencyCode
+      )} ${currencyCode}`,
+      return_total: `${this.humanPrice_(
+        returnTotal,
+        currencyCode
+      )} ${currencyCode}`,
+      refund_amount: `${this.humanPrice_(
+        refundAmount,
+        currencyCode
+      )} ${currencyCode}`,
+      additional_total: `${this.humanPrice_(
+        additionalTotal,
+        currencyCode
+      )} ${currencyCode}`,
       fulfillment: shipment,
       tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
@@ -623,13 +773,37 @@ class SendGridService extends NotificationService {
       relations: ["tracking_links"],
     })
 
+    const locale = await this.extractLocale(claim.order)
+
     return {
+      locale,
       email: claim.order.email,
       claim,
       order: claim.order,
       fulfillment: shipment,
       tracking_links: shipment.tracking_links,
       tracking_number: shipment.tracking_numbers.join(", "),
+    }
+  }
+
+  async restockNotificationData({ variant_id, emails }) {
+    const variant = await this.productVariantService_.retrieve(variant_id, {
+      relations: ["product"],
+    })
+
+    let thumb
+    if (variant.product.thumbnail) {
+      thumb = this.normalizeThumbUrl_(variant.product.thumbnail)
+    }
+
+    return {
+      product: {
+        ...variant.product,
+        thumbnail: thumb,
+      },
+      variant,
+      variant_id,
+      emails,
     }
   }
 
@@ -647,14 +821,22 @@ class SendGridService extends NotificationService {
         ...i,
         thumbnail: this.normalizeThumbUrl_(i.thumbnail),
         price: `${this.humanPrice_(
-          i.unit_price * (1 + taxRate)
+          i.unit_price * (1 + taxRate),
+          currencyCode
         )} ${currencyCode}`,
       }
     })
   }
 
-  humanPrice_(amount) {
-    return amount ? (amount / 100).toFixed(2) : "0.00"
+  humanPrice_(amount, currency) {
+    if (!amount) {
+      return "0.00"
+    }
+
+    const normalized = humanizeAmount(amount, currency)
+    return normalized.toFixed(
+      zeroDecimalCurrencies.includes(currency.toLowerCase()) ? 0 : 2
+    )
   }
 
   normalizeThumbUrl_(url) {
@@ -668,6 +850,25 @@ class SendGridService extends NotificationService {
       return `https:${url}`
     }
     return url
+  }
+
+  async extractLocale(fromOrder) {
+    if (fromOrder.cart_id) {
+      try {
+        const cart = await this.cartService_.retrieve(fromOrder.cart_id, {
+          select: ["context"],
+        })
+
+        if (cart.context && cart.context.locale) {
+          return cart.context.locale
+        }
+      } catch (err) {
+        console.log(err)
+        console.warn("Failed to gather context for order")
+        return null
+      }
+    }
+    return null
   }
 }
 
