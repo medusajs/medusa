@@ -16,7 +16,6 @@ class OrderService extends BaseService {
     REFUND_CREATED: "order.refund_created",
     REFUND_FAILED: "order.refund_failed",
     SWAP_CREATED: "order.swap_created",
-    SWAP_RECEIVED: "order.swap_received",
     PLACED: "order.placed",
     UPDATED: "order.updated",
     CANCELED: "order.canceled",
@@ -36,8 +35,6 @@ class OrderService extends BaseService {
     lineItemService,
     totalsService,
     regionService,
-    returnService,
-    swapService,
     cartService,
     addressRepository,
     giftCardService,
@@ -55,10 +52,10 @@ class OrderService extends BaseService {
     /** @private @constant {CustomerService} */
     this.customerService_ = customerService
 
-    /** @private @constantant {PaymentProviderService} */
+    /** @private @constant {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
 
-    /** @private @constantant {ShippingProvileService} */
+    /** @private @constant {ShippingProvileService} */
     this.shippingProfileService_ = shippingProfileService
 
     /** @private @constant {FulfillmentProviderService} */
@@ -72,9 +69,6 @@ class OrderService extends BaseService {
 
     /** @private @constant {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @constant {ReturnService} */
-    this.returnService_ = returnService
 
     /** @private @constant {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
@@ -122,7 +116,6 @@ class OrderService extends BaseService {
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       cartService: this.cartService_,
-      swapService: this.swapService_,
       giftCardService: this.giftCardService_,
       draftOrderService: this.draftOrderService_,
     })
@@ -282,15 +275,18 @@ class OrderService extends BaseService {
       "discount_total",
       "gift_card_total",
       "total",
+      "paid_total",
       "refunded_total",
       "refundable_amount",
       "items.refundable",
+      "swaps.additional_items.refundable",
     ]
 
     const totalsToSelect = select.filter(v => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
+      relationSet.add("swaps")
       relationSet.add("discounts")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
@@ -1085,177 +1081,6 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Checks that a given quantity of a line item can be returned. Fails if the
-   * item is undefined or if the returnable quantity of the item is lower, than
-   * the quantity that is requested to be returned.
-   * @param {LineItem?} item - the line item to check has sufficient returnable
-   *   quantity.
-   * @param {number} quantity - the quantity that is requested to be returned.
-   * @return {LineItem} a line item where the quantity is set to the requested
-   *   return quantity.
-   */
-  validateReturnLineItem_(item, quantity) {
-    if (!item) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Return contains invalid line item"
-      )
-    }
-
-    const returnable = item.quantity - (item.returned_quantity || 0)
-    if (quantity > returnable) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Cannot return more items than have been purchased"
-      )
-    }
-
-    return {
-      ...item,
-      quantity,
-    }
-  }
-
-  /**
-   * Creates a return request for an order, with given items, and a shipping
-   * method. If no refundAmount is provided the refund amount is calculated from
-   * the return lines and the shipping cost.
-   * @param {String} orderId - the id of the order to create a return for.
-   * @param {Array<{item_id: String, quantity: Int}>} items - the line items to
-   *   return
-   * @param {ShippingMethod?} shippingMethod - the shipping method used for the
-   *   return
-   * @param {Number?} refundAmount - the amount to refund when the return is
-   *   received.
-   * @returns {Promise<Order>} the resulting order.
-   */
-  async requestReturn(orderId, items, shippingMethod, refundAmount) {
-    return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, {
-        select: ["refunded_total", "total"],
-        relations: ["items"],
-      })
-
-      const returnObj = {
-        order_id: orderId,
-        items,
-        shipping_method: shippingMethod,
-        refund_amount: refundAmount,
-      }
-
-      const returnRequest = await this.returnService_
-        .withTransaction(manager)
-        .create(returnObj, order)
-
-      const fulfilledReturn = await this.returnService_
-        .withTransaction(manager)
-        .fulfill(returnRequest.id)
-
-      const result = await this.retrieve(orderId)
-
-      this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderService.Events.RETURN_REQUESTED, {
-          id: result.id,
-          return_id: fulfilledReturn.id,
-        })
-      return result
-    })
-  }
-
-  /**
-   * Registers a previously requested return as received. This will create a
-   * refund to the customer. If the returned items don't match the requested
-   * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
-   * allowMismatch argument to true, will process the return, ignoring any
-   * mismatches.
-   * @param {string} orderId - the order to return.
-   * @param {string[]} lineItems - the line items to return
-   * @return {Promise} the result of the update operation
-   */
-  async receiveReturn(
-    orderId,
-    returnId,
-    items,
-    refundAmount,
-    allowMismatch = false
-  ) {
-    return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(orderId, {
-        relations: ["items", "returns", "payments"],
-      })
-      const returnRequest = await this.returnService_.retrieve(returnId)
-
-      if (!returnRequest || returnRequest.order_id !== orderId) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Return request with id ${returnId} was not found`
-        )
-      }
-
-      const updatedReturn = await this.returnService_
-        .withTransaction(manager)
-        .receiveReturn(returnId, items, refundAmount, allowMismatch)
-
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      if (updatedReturn.status === "requires_action") {
-        order.fulfillment_status = "requires_action"
-        const result = await orderRepo.save(order)
-        this.eventBus_
-          .withTransaction(manager)
-          .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
-            id: result.id,
-            return_id: updatedReturn.id,
-          })
-        return result
-      }
-
-      let isFullReturn = true
-      for (const i of order.items) {
-        const isReturn = updatedReturn.items.find(r => i.id === r.item_id)
-        if (isReturn) {
-          const returnedQuantity =
-            (i.returned_quantity || 0) + isReturn.quantity
-          if (i.quantity !== returnedQuantity) {
-            isFullReturn = false
-          }
-
-          await this.lineItemService_.withTransaction(manager).update(i.id, {
-            returned_quantity: returnedQuantity,
-          })
-        } else {
-          if (!i.returned_quantity !== i.quantity) {
-            isFullReturn = false
-          }
-        }
-      }
-
-      if (updatedReturn.refund_amount > 0) {
-        await this.paymentProviderService_
-          .withTransaction(manager)
-          .refundPayment(order.payments, updatedReturn.refund_amount, "return")
-      }
-
-      if (isFullReturn) {
-        order.fulfillment_status = "returned"
-      } else {
-        order.fulfillment_status = "partially_returned"
-      }
-
-      const result = await orderRepo.save(order)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderService.Events.ITEMS_RETURNED, {
-          id: order.id,
-          return_id: updatedReturn.id,
-        })
-      return result
-    })
-  }
-
-  /**
    * Archives an order. It only alloved, if the order has been fulfilled
    * and payment has been captured.
    * @param {string} orderId - the order to archive
@@ -1331,10 +1156,13 @@ class OrderService extends BaseService {
     if (totalsFields.includes("refunded_total")) {
       order.refunded_total = this.totalsService_.getRefundedTotal(order)
     }
+    if (totalsFields.includes("paid_total")) {
+      order.paid_total = this.totalsService_.getPaidTotal(order)
+    }
     if (totalsFields.includes("refundable_amount")) {
-      const total = this.totalsService_.getTotal(order)
+      const paid_total = this.totalsService_.getPaidTotal(order)
       const refunded_total = this.totalsService_.getRefundedTotal(order)
-      order.refundable_amount = total - refunded_total
+      order.refundable_amount = paid_total - refunded_total
     }
 
     if (totalsFields.includes("items.refundable")) {
@@ -1347,86 +1175,94 @@ class OrderService extends BaseService {
       }))
     }
 
+    if (
+      totalsFields.includes("swaps.additional_items.refundable") &&
+      order.swaps &&
+      order.swaps.length
+    ) {
+      for (const s of order.swaps) {
+        s.additional_items = s.additional_items.map(i => ({
+          ...i,
+          refundable: this.totalsService_.getLineItemRefund(order, {
+            ...i,
+            quantity: i.quantity - (i.returned_quantity || 0),
+          }),
+        }))
+      }
+    }
+
     return order
   }
 
   /**
-   * Dedicated method to set metadata for an order.
-   * To ensure that plugins does not overwrite each
-   * others metadata fields, setMetadata is provided.
-   * @param {string} orderId - the order to decorate.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
+   * Handles receiving a return. This will create a
+   * refund to the customer. If the returned items don't match the requested
+   * items the return status will be updated to requires_action. This behaviour
+   * is useful in sitautions where a custom refund amount is requested, but the
+   * retuned items are not matching the requested items. Setting the
+   * allowMismatch argument to true, will process the return, ignoring any
+   * mismatches.
+   * @param {string} orderId - the order to return.
+   * @param {object} receivedReturn - the received return
+   * @return {Promise} the result of the update operation
    */
-  setMetadata_(order, metadata) {
-    const existing = order.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
-  }
-
-  /**
-   * Registers the swap return items as received so that they cannot be used
-   * as a part of other swaps/returns.
-   * @param {string} id - the id of the order with the swap.
-   * @param {string} swapId - the id of the swap that has been received.
-   * @returns {Promise<Order>} the resulting order
-   */
-  async registerSwapReceived(id, swapId) {
+  async registerReturnReceived(orderId, receivedReturn, customRefundAmount) {
     return this.atomicPhase_(async manager => {
-      const order = await this.retrieve(id, { relations: ["items"] })
-      const swap = await this.swapService_
-        .withTransaction(manager)
-        .retrieve(swapId, { relations: ["return_order", "return_order.items"] })
+      const order = await this.retrieve(orderId, {
+        select: ["total", "refunded_total", "refundable_amount"],
+        relations: ["items", "returns", "payments"],
+      })
 
-      if (!swap || swap.order_id !== id) {
+      if (!receivedReturn || receivedReturn.order_id !== orderId) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Swap must belong to the given order"
+          MedusaError.Types.NOT_FOUND,
+          `Received return does not exist`
         )
       }
 
-      if (swap.return_order.status !== "received") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Swap is not received"
-        )
-      }
+      let refundAmount = customRefundAmount || receivedReturn.refund_amount
 
-      for (const i of order.items) {
-        const isReturn = swap.return_order.items.find(ri => i.id === ri.item_id)
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
-        if (isReturn) {
-          const returnedQuantity =
-            (i.returned_quantity || 0) + isReturn.quantity
-          await this.lineItemService_.withTransaction(manager).update(i.id, {
-            returned_quantity: returnedQuantity,
+      if (refundAmount > order.refundable_amount) {
+        order.fulfillment_status = "requires_action"
+        const result = await orderRepo.save(order)
+        this.eventBus_
+          .withTransaction(manager)
+          .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
+            id: result.id,
+            return_id: receivedReturn.id,
           })
+        return result
+      }
+
+      let isFullReturn = true
+      for (const i of order.items) {
+        if (i.returned_quantity !== i.quantity) {
+          isFullReturn = false
         }
       }
 
-      const result = await this.retrieve(id)
+      if (receivedReturn.refund_amount > 0) {
+        const refund = await this.paymentProviderService_
+          .withTransaction(manager)
+          .refundPayment(order.payments, receivedReturn.refund_amount, "return")
+
+        order.refunds = [...(order.refunds || []), refund]
+      }
+
+      if (isFullReturn) {
+        order.fulfillment_status = "returned"
+      } else {
+        order.fulfillment_status = "partially_returned"
+      }
+
+      const result = await orderRepo.save(order)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(OrderService.Events.SWAP_RECEIVED, {
-          id: result.id,
-          swap_id: swapId,
+        .emit(OrderService.Events.ITEMS_RETURNED, {
+          id: order.id,
+          return_id: receivedReturn.id,
         })
       return result
     })

@@ -18,6 +18,7 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "get-port": "^5.1.1",
+    "import-from": "^3.0.0",
     "jest": "^26.6.3",
     "lerna": "^3.22.1",
     "mongoose": "^5.10.15",
@@ -35,6 +36,7 @@
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
   },
   "dependencies": {
+    "import-from": "^3.0.0",
     "oas-normalize": "^2.3.1",
     "swagger-inline": "^3.2.2"
   }

@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.7...@medusajs/medusa-cli@1.1.8) (2021-05-05)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.4...@medusajs/medusa-cli@1.1.7) (2021-04-28)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.5...@medusajs/medusa-cli@1.1.6) (2021-04-20)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
+
+
+
+
+## [1.1.5](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.4...@medusajs/medusa-cli@1.1.5) (2021-04-20)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
+
+
+
+
+## [1.1.4](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.3...@medusajs/medusa-cli@1.1.4) (2021-03-17)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
+
+
+
+
+## [1.1.3](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.0...@medusajs/medusa-cli@1.1.3) (2021-03-17)
+
+
+### Features
+
+* dev cli ([#203](https://github.com/medusajs/medusa/issues/203)) ([695b1fd](https://github.com/medusajs/medusa/commit/695b1fd0a54a247502cb48ffb73d060356293b76)), closes [#199](https://github.com/medusajs/medusa/issues/199)
+
+
+
+
+
+## [1.1.2](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.0...@medusajs/medusa-cli@1.1.2) (2021-03-17)
+
+
+### Features
+
+* dev cli ([#203](https://github.com/medusajs/medusa/issues/203)) ([695b1fd](https://github.com/medusajs/medusa/commit/695b1fd0a54a247502cb48ffb73d060356293b76)), closes [#199](https://github.com/medusajs/medusa/issues/199)
+
+
+
+
+
 # [1.1.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.0.11...@medusajs/medusa-cli@1.1.0) (2021-01-26)
 
 **Note:** Version bump only for package @medusajs/medusa-cli

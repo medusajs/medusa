@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.1.0",
+  "version": "1.1.9",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -17,13 +17,13 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.5",
-    "@babel/runtime": "^7.9.6",
+    "@babel/preset-env": "^7.13.9",
+    "@babel/runtime": "^7.13.9",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
@@ -33,5 +33,5 @@
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1"
   },
-  "gitHead": "0646bd395a6056657cb0aa93c13699c4a9dbbcdd"
+  "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"
 }

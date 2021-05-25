@@ -1281,6 +1281,7 @@ describe("CartService", () => {
             profile_id: IdMap.getId(m.profile),
           },
         })),
+        discounts: [],
       }
     }
 
@@ -1462,6 +1463,26 @@ describe("CartService", () => {
             regions: [{ id: IdMap.getId("bad") }],
           })
         }
+        if (code === "limit-reached") {
+          return Promise.resolve({
+            id: IdMap.getId("limit-reached"),
+            code: "limit-reached",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {},
+            usage_count: 2,
+            usage_limit: 2,
+          })
+        }
+        if (code === "null-count") {
+          return Promise.resolve({
+            id: IdMap.getId("null-count"),
+            code: "null-count",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {},
+            usage_count: null,
+            usage_limit: 2,
+          })
+        }
         if (code === "FREESHIPPING") {
           return Promise.resolve({
             id: IdMap.getId("freeship"),
@@ -1592,6 +1613,42 @@ describe("CartService", () => {
         total: 0,
         region_id: IdMap.getId("good"),
       })
+    })
+
+    it("successfully applies discount with usage count null", async () => {
+      await cartService.update(IdMap.getId("cart"), {
+        discounts: [{ code: "null-count" }],
+      })
+
+      expect(discountService.retrieveByCode).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("cart"),
+        discounts: [
+          {
+            id: IdMap.getId("null-count"),
+            code: "null-count",
+            regions: [{ id: IdMap.getId("good") }],
+            usage_count: 0,
+            usage_limit: 2,
+            rule: {},
+          },
+        ],
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        region_id: IdMap.getId("good"),
+      })
+    })
+
+    it("throws if discount limit is reached", async () => {
+      await expect(
+        cartService.update(IdMap.getId("cart"), {
+          discounts: [{ code: "limit-reached" }],
+        })
+      ).rejects.toThrow("Discount has been used maximum allowed times")
     })
 
     it("throws if discount is not available in region", async () => {

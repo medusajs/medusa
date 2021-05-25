@@ -1,7 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { defaultFields, defaultRelations } from "../api/routes/store/carts"
 
 /**
  * Provides layer to manipulate carts.
@@ -574,6 +573,49 @@ class CartService extends BaseService {
     })
   }
 
+  /**
+   * Ensures shipping total on cart is correct in regards to a potential free
+   * shipping discount
+   * If a free shipping is present, we set shipping methods price to 0
+   * if a free shipping was present, we set shipping methods to original amount
+   * @param {Cart} cart - the the cart to adjust free shipping for
+   * @param {boolean} shouldAdd - flag to indicate, if we should add or remove
+   */
+  async adjustFreeShipping_(cart, shouldAdd) {
+    if (cart.shipping_methods?.length) {
+      // if any free shipping discounts, we ensure to update shipping method amount
+      if (shouldAdd) {
+        await Promise.all(
+          cart.shipping_methods.map(async sm => {
+            const smRepo = this.manager_.getCustomRepository(
+              this.shippingMethodRepository_
+            )
+
+            const method = await smRepo.findOne({ where: { id: sm.id } })
+
+            if (method) {
+              method.price = 0
+              await smRepo.save(method)
+            }
+          })
+        )
+      } else {
+        await Promise.all(
+          cart.shipping_methods.map(async sm => {
+            const smRepo = this.manager_.getCustomRepository(
+              this.shippingMethodRepository_
+            )
+
+            // if free shipping discount is removed, we adjust the shipping
+            // back to its original amount
+            sm.price = sm.shipping_option.amount
+            await smRepo.save(sm)
+          })
+        )
+      }
+    }
+  }
+
   async update(cartId, update) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
@@ -627,9 +669,28 @@ class CartService extends BaseService {
       }
 
       if ("discounts" in update) {
+        const previousDiscounts = cart.discounts
         cart.discounts = []
+
         for (const { code } of update.discounts) {
           await this.applyDiscount(cart, code)
+        }
+
+        const hasFreeShipping = cart.discounts.some(
+          ({ rule }) => rule.type === "free_shipping"
+        )
+
+        // if we previously had a free shipping discount and then removed it,
+        // we need to update shipping methods to original price
+        if (
+          previousDiscounts.some(({ rule }) => rule.type === "free_shipping") &&
+          !hasFreeShipping
+        ) {
+          await this.adjustFreeShipping_(cart, false)
+        }
+
+        if (hasFreeShipping) {
+          await this.adjustFreeShipping_(cart, true)
         }
       }
 
@@ -638,6 +699,14 @@ class CartService extends BaseService {
 
         for (const { code } of update.gift_cards) {
           await this.applyGiftCard_(cart, code)
+        }
+      }
+
+      if ("context" in update) {
+        const prevContext = cart.context || {}
+        cart.context = {
+          ...prevContext,
+          ...update.context,
         }
       }
 
@@ -804,6 +873,18 @@ class CartService extends BaseService {
     ])
 
     const rule = discount.rule
+
+    // if limit is set and reached, we make an early exit
+    if (discount.usage_limit) {
+      discount.usage_count = discount.usage_count || 0
+
+      if (discount.usage_limit === discount.usage_count)
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount has been used maximum allowed times"
+        )
+    }
+
     let regions = discount.regions
     if (discount.parent_discount_id) {
       const parent = await this.discountService_.retrieve(
@@ -870,8 +951,13 @@ class CartService extends BaseService {
   async removeDiscount(cartId, discountCode) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
-        relations: ["discounts", "payment_sessions"],
+        relations: ["discounts", "payment_sessions", "shipping_methods"],
       })
+
+      if (cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+        await this.adjustFreeShipping_(cart, false)
+      }
+
       cart.discounts = cart.discounts.filter(d => d.code !== discountCode)
 
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
@@ -1213,6 +1299,7 @@ class CartService extends BaseService {
         select: ["subtotal"],
         relations: [
           "shipping_methods",
+          "discounts",
           "shipping_methods.shipping_option",
           "items",
           "items.variant",
@@ -1248,7 +1335,15 @@ class CartService extends BaseService {
         })
       }
 
-      const result = await this.retrieve(cartId)
+      const result = await this.retrieve(cartId, {
+        relations: ["discounts", "shipping_methods"],
+      })
+
+      // if cart has freeshipping, adjust price
+      if (result.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+        await this.adjustFreeShipping_(result, true)
+      }
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)

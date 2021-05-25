@@ -78,10 +78,6 @@ describe("/shipping-options", () => {
 
       fixtureWriter.addFixture("region", getRes.data.shipping_option.region);
       fixtureWriter.addFixture("shipping_option", getRes.data.shipping_option);
-      fixtureWriter.addFixture(
-        "shipping_profile",
-        getRes.data.shipping_option.shipping_profile
-      );
     });
   });
 });

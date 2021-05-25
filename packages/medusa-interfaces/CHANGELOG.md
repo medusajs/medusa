@@ -3,6 +3,84 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.7...medusa-interfaces@1.1.10) (2021-04-28)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.8...medusa-interfaces@1.1.9) (2021-04-20)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.7...medusa-interfaces@1.1.8) (2021-04-20)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.6...medusa-interfaces@1.1.7) (2021-04-13)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.5...medusa-interfaces@1.1.6) (2021-04-09)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.4...medusa-interfaces@1.1.5) (2021-03-30)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.3...medusa-interfaces@1.1.4) (2021-03-17)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
+## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.1...medusa-interfaces@1.1.3) (2021-03-17)
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+
+
+
+
+
+## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.1...medusa-interfaces@1.1.2) (2021-03-17)
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+
+
+
+
+
 ## [1.1.1](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.0...medusa-interfaces@1.1.1) (2021-02-17)
 
 

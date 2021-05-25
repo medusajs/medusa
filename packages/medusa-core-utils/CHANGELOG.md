@@ -3,6 +3,89 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.6...medusa-core-utils@1.1.9) (2021-04-28)
+
+**Note:** Version bump only for package medusa-core-utils
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.7...medusa-core-utils@1.1.8) (2021-04-20)
+
+**Note:** Version bump only for package medusa-core-utils
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.6...medusa-core-utils@1.1.7) (2021-04-20)
+
+**Note:** Version bump only for package medusa-core-utils
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.5...medusa-core-utils@1.1.6) (2021-04-13)
+
+**Note:** Version bump only for package medusa-core-utils
+
+
+
+
+
+## [1.1.5](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.4...medusa-core-utils@1.1.5) (2021-04-09)
+
+**Note:** Version bump only for package medusa-core-utils
+
+
+
+
+
+## [1.1.4](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.3...medusa-core-utils@1.1.4) (2021-03-30)
+
+
+### Bug Fixes
+
+* don't divide zero decimal currencies ([cfab2d4](https://github.com/medusajs/medusa/commit/cfab2d408a296a938266d0989b1de67d060b2ed5))
+
+
+
+
+
+## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.2...medusa-core-utils@1.1.3) (2021-03-17)
+
+**Note:** Version bump only for package medusa-core-utils
+
+
+
+
+
+## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.0...medusa-core-utils@1.1.2) (2021-03-17)
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+
+
+
+
+
+## [1.1.1](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.0...medusa-core-utils@1.1.1) (2021-03-17)
+
+
+### Features
+
+* **medusa:** Add support for filtering with gt, lt, gte and lte ([#190](https://github.com/medusajs/medusa/issues/190)) ([dd0491f](https://github.com/medusajs/medusa/commit/dd0491f52132aed24f642589b12fcf636b719580))
+* **medusa:** cart context ([#201](https://github.com/medusajs/medusa/issues/201)) ([dd7b306](https://github.com/medusajs/medusa/commit/dd7b306333fbe1042f5cf2bed614bce84ea9475f))
+
+
+
+
+
 # [1.1.0](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.0.11...medusa-core-utils@1.1.0) (2021-01-26)
 
 **Note:** Version bump only for package medusa-core-utils
