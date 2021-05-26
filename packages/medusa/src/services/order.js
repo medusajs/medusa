@@ -91,9 +91,6 @@ class OrderService extends BaseService {
     /** @private @constant {AddressRepository} */
     this.addressRepository_ = addressRepository
 
-    /** @private @constant {SwapService} */
-    this.swapService_ = swapService
-
     /** @private @constant {DraftOrderService} */
     this.draftOrderService_ = draftOrderService
   }
