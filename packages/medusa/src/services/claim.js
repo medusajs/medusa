@@ -16,6 +16,7 @@ class ClaimService extends BaseService {
   constructor({
     manager,
     claimRepository,
+    addressRepository,
     fulfillmentProviderService,
     fulfillmentService,
     lineItemService,
@@ -34,6 +35,9 @@ class ClaimService extends BaseService {
 
     /** @private @constant {ClaimRepository} */
     this.claimRepository_ = claimRepository
+
+    /** @private @constant {AddressRepository} */
+    this.addressRepo_ = addressRepository
 
     /** @private @constant {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
@@ -74,6 +78,7 @@ class ClaimService extends BaseService {
     const cloned = new ClaimService({
       manager,
       claimRepository: this.claimRepository_,
+      addressRepository: this.addressRepo_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
       fulfillmentService: this.fulfillmentService_,
       paymentProviderService: this.paymentProviderService_,
@@ -150,6 +155,11 @@ class ClaimService extends BaseService {
     })
   }
 
+  /**
+   * Creates a Claim on an Order. Claims consists of items that are claimed and
+   * optionally items to be sent as replacement for the claimed items. The
+   * shipping address that the new items will be shipped to
+   */
   create(data) {
     return this.atomicPhase_(async manager => {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
@@ -162,8 +172,18 @@ class ClaimService extends BaseService {
         additional_items,
         shipping_methods,
         refund_amount,
+        shipping_address,
+        shipping_address_id,
         ...rest
       } = data
+
+      let addressId = shipping_address_id || order.shipping_address_id
+      if (shipping_address) {
+        const addressRepo = manager.getCustomRepository(this.addressRepo_)
+        const created = addressRepo.create(shipping_address)
+        const saved = await addressRepo.save(created)
+        addressId = saved.id
+      }
 
       if (type !== "refund" && type !== "replace") {
         throw new MedusaError(
@@ -214,7 +234,7 @@ class ClaimService extends BaseService {
       )
 
       const created = claimRepo.create({
-        shipping_address_id: order.shipping_address_id,
+        shipping_address_id: addressId,
         payment_status: type === "refund" ? "not_refunded" : "na",
         ...rest,
         refund_amount: toRefund,
