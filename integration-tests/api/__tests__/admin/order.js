@@ -154,6 +154,91 @@ describe("/admin/orders", () => {
       );
       expect(response.status).toEqual(200);
 
+      expect(response.data.order.claims[0].shipping_address_id).toEqual(
+        "test-shipping-address"
+      );
+      expect(response.data.order.claims[0].shipping_address).toEqual(
+        expect.objectContaining({
+          first_name: "lebron",
+          country_code: "us",
+        })
+      );
+
+      expect(response.data.order.claims[0].claim_items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: "test-item",
+            quantity: 1,
+            reason: "production_failure",
+            images: expect.arrayContaining([
+              expect.objectContaining({
+                url: "https://test.image.com",
+              }),
+            ]),
+          }),
+        ])
+      );
+
+      expect(response.data.order.claims[0].additional_items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            quantity: 1,
+          }),
+        ])
+      );
+    });
+
+    it("creates a claim with a shipping address", async () => {
+      const api = useApi();
+
+      const response = await api.post(
+        "/admin/orders/test-order/claims",
+        {
+          type: "replace",
+          shipping_address: {
+            first_name: "test",
+            last_name: "testson",
+            address_1: "Test",
+            city: "testvill",
+            postal_code: "12345",
+            country_code: "us",
+          },
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason: "production_failure",
+              tags: ["fluff"],
+              images: ["https://test.image.com"],
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: "test-variant",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+      expect(response.status).toEqual(200);
+
+      expect(response.data.order.claims[0].shipping_address).toEqual(
+        expect.objectContaining({
+          first_name: "test",
+          last_name: "testson",
+          address_1: "Test",
+          city: "testvill",
+          postal_code: "12345",
+          country_code: "us",
+        })
+      );
+
       expect(response.data.order.claims[0].claim_items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
