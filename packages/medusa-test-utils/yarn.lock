@@ -3424,10 +3424,10 @@ math-random@^1.0.1:
   resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.4.tgz#5dd6943c938548267016d4e34f057583080c514c"
   integrity sha512-rUxjysqif/BZQH2yhd5Aaq7vXMSx9NdEsQcyA07uEzIvxgI7zIr33gGsh+RU0/XjmQpCW7RsVof1vlkvQVCK5A==
 
-medusa-core-utils@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.0.tgz#0641b365b769dbf99856025d935eef5cf5d81f2c"
-  integrity sha512-zocRthKhLK3eSjrXbAhZZkIMBRxyvU7GcAMFh5UCEgfe7f935vjE7r5lGTr5jTEwgwaoTUk9ep0VBekz0SEdyw==
+medusa-core-utils@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.9.tgz#7b93c72d9c318ff4ab971381401158eee7d3edd9"
+  integrity sha512-XBxwpCQT82gi/S92Bc0qfCSYyD5Hj+zstUbyOCKGp7nhwFPvYwJ0hp6NPKDSwHZ1uPEmb4rdHcW2qyf1bM4L1Q==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
@@ -4894,9 +4894,9 @@ write@1.0.3:
     mkdirp "^0.5.1"
 
 ws@^7.0.0:
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.3.tgz#1f9643de34a543b8edb124bdcbc457ae55a6e5cd"
-  integrity sha512-hr6vCR76GsossIRsr8OLR9acVVm1jyfEWvhbNjtgPOrfvAlKzvyeg/P6r8RuDjRyrcQoPQT7K0DGEPc7Ae6jzA==
+  version "7.4.6"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.6.tgz#5654ca8ecdeee47c33a9a4bf6d28e2be2980377c"
+  integrity sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
