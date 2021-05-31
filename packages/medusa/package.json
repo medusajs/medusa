@@ -14,6 +14,7 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/preset-typescript": "^7.13.0",
     "babel-preset-medusa-package": "^1.1.3",
