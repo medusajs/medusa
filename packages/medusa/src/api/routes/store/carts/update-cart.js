@@ -104,7 +104,7 @@ export default async (req, res) => {
 
     // If the cart has payment sessions update these
     const updated = await cartService.retrieve(id, {
-      relations: ["payment_sessions"],
+      relations: ["payment_sessions", "shipping_methods"],
     })
 
     if (updated.payment_sessions?.length && !value.region_id) {

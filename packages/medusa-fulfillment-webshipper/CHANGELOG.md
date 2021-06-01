@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.12...medusa-fulfillment-webshipper@1.1.13) (2021-05-05)
+
+**Note:** Version bump only for package medusa-fulfillment-webshipper
+
+
+
+
+
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.9...medusa-fulfillment-webshipper@1.1.12) (2021-04-28)
+
+**Note:** Version bump only for package medusa-fulfillment-webshipper
+
+
+
+
+
 ## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.10...medusa-fulfillment-webshipper@1.1.11) (2021-04-20)
 
 **Note:** Version bump only for package medusa-fulfillment-webshipper
