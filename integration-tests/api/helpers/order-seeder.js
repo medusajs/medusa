@@ -94,6 +94,18 @@ module.exports = async (connection, data = {}) => {
     data: {},
   });
 
+  await manager.insert(ShippingOption, {
+    id: "test-return-option",
+    name: "Test ret",
+    profile_id: defaultProfile.id,
+    region_id: "test-region",
+    provider_id: "test-ful",
+    data: {},
+    price_type: "flat_rate",
+    amount: 1000,
+    is_return: true,
+  });
+
   const order = manager.create(Order, {
     id: "test-order",
     customer_id: "test-customer",
