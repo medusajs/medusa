@@ -453,7 +453,7 @@ describe("/admin/draft-orders", () => {
       await manager.query(`DELETE FROM "user"`);
     });
 
-    it("lists draft orders", async () => {
+    it("deletes a draft order", async () => {
       const api = useApi();
 
       const response = await api
