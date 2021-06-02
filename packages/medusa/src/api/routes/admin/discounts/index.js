@@ -13,6 +13,10 @@ export default app => {
     "/:discount_id",
     middlewares.wrap(require("./get-discount").default)
   )
+  route.get(
+    "/code/:code",
+    middlewares.wrap(require("./get-discount-by-code").default)
+  )
   route.post(
     "/:discount_id",
     middlewares.wrap(require("./update-discount").default)
