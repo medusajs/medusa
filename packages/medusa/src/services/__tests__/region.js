@@ -45,6 +45,9 @@ describe("RegionService", () => {
     })
 
     const storeService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-store"),
@@ -221,6 +224,9 @@ describe("RegionService", () => {
     })
 
     const storeService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-store"),
@@ -312,6 +318,9 @@ describe("RegionService", () => {
     })
 
     const storeService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-store"),
