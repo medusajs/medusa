@@ -1,5 +1,5 @@
 import { createConnection } from "typeorm"
-import _ from "lodash"
+import { getConfigFile } from "medusa-core-utils"
 
 import Logger from "../loaders/logger"
 
@@ -13,6 +13,7 @@ const t = async function({ port, directory }) {
 
   const migrationDirs = getMigrations(directory)
 
+  const { configModule } = getConfigFile(directory, `medusa-config`)
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
