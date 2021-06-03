@@ -417,4 +417,7 @@ export class Order {
  *     type: integer
  *   paid_total:
  *     type: integer
+ *   no_notification:
+ *     description: "Flag for describing whether or not notifications related to this should be send."
+ *     type: boolean
  */
