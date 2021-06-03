@@ -976,6 +976,55 @@
         }
       }
     },
+    "/gift-cards/{code}": {
+      "get": {
+        "operationId": "GetGiftCardsCode",
+        "summary": "Retrieve Gift Card by Code",
+        "description": "Retrieves a Gift Card by its associated unqiue code.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "description": "The unique Gift Card code.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "description": "The id of the Gift Card"
+                    },
+                    "code": {
+                      "description": "The code of the Gift Card"
+                    },
+                    "value": {
+                      "description": "The original value of the Gift Card."
+                    },
+                    "balance": {
+                      "description": "The current balanace of the Gift Card"
+                    },
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/customers/{id}/addresses": {
       "post": {
         "operationId": "PostCustomersCustomerAddresses",
@@ -1481,277 +1530,6 @@
         }
       }
     },
-    "/gift-cards/{code}": {
-      "get": {
-        "operationId": "GetGiftCardsCode",
-        "summary": "Retrieve Gift Card by Code",
-        "description": "Retrieves a Gift Card by its associated unqiue code.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "code",
-            "required": true,
-            "description": "The unique Gift Card code.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "description": "The id of the Gift Card"
-                    },
-                    "code": {
-                      "description": "The code of the Gift Card"
-                    },
-                    "value": {
-                      "description": "The original value of the Gift Card."
-                    },
-                    "balance": {
-                      "description": "The current balanace of the Gift Card"
-                    },
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products/{id}": {
-      "get": {
-        "operationId": "GetProductsProduct",
-        "summary": "Retrieves a Product",
-        "description": "Retrieves a Product.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/product"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products": {
-      "get": {
-        "operationId": "GetProducts",
-        "summary": "List Products",
-        "description": "Retrieves a list of Products.",
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of Products to return,",
-                      "type": "integer"
-                    },
-                    "products": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/return-reasons/{id}": {
-      "get": {
-        "operationId": "GetReturnReasonsReason",
-        "summary": "Retrieve a Return Reason",
-        "description": "Retrieves a Return Reason.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Return Reason.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Return Reason"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return_reason": {
-                      "$ref": "#/components/schemas/return_reason"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/return-reasons": {
-      "get": {
-        "operationId": "GetReturnReasons",
-        "summary": "List Return Reasons",
-        "description": "Retrieves a list of Return Reasons.",
-        "tags": [
-          "Return Reason"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return_reasons": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/return_reason"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions/{id}": {
-      "get": {
-        "operationId": "GetRegionsRegion",
-        "summary": "Retrieves a Region",
-        "description": "Retrieves a Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Region.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "region": {
-                      "$ref": "#/components/schemas/region"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/regions": {
-      "get": {
-        "operationId": "GetRegions",
-        "summary": "List Regions",
-        "description": "Retrieves a list of Regions.",
-        "tags": [
-          "Region"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of regions.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of regions to return,",
-                      "type": "integer"
-                    },
-                    "regions": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/region"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/orders/cart/{cart_id}": {
       "get": {
         "operationId": "GetOrdersOrderCartId",
@@ -1872,6 +1650,162 @@
         }
       }
     },
+    "/products/{id}": {
+      "get": {
+        "operationId": "GetProductsProduct",
+        "summary": "Retrieves a Product",
+        "description": "Retrieves a Product.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "GetProducts",
+        "summary": "List Products",
+        "description": "Retrieves a list of Products.",
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of Products.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of Products to return,",
+                      "type": "integer"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions/{id}": {
+      "get": {
+        "operationId": "GetRegionsRegion",
+        "summary": "Retrieves a Region",
+        "description": "Retrieves a Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/regions": {
+      "get": {
+        "operationId": "GetRegions",
+        "summary": "List Regions",
+        "description": "Retrieves a list of Regions.",
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of regions.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of regions to return,",
+                      "type": "integer"
+                    },
+                    "regions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/region"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/returns": {
       "post": {
         "operationId": "PostReturns",
@@ -1911,6 +1845,10 @@
                         "description": "The id of the Shipping Option to create the Shipping Method from."
                       }
                     }
+                  },
+                  "no_notification": {
+                    "description": "If set to true no notification will be send",
+                    "type": "boolean"
                   }
                 }
               }
@@ -1929,6 +1867,72 @@
                   "properties": {
                     "return": {
                       "$ref": "#/components/schemas/return"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons/{id}": {
+      "get": {
+        "operationId": "GetReturnReasonsReason",
+        "summary": "Retrieve a Return Reason",
+        "description": "Retrieves a Return Reason.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return Reason.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reason": {
+                      "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-reasons": {
+      "get": {
+        "operationId": "GetReturnReasons",
+        "summary": "List Return Reasons",
+        "description": "Retrieves a list of Return Reasons.",
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return_reasons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return_reason"
+                      }
                     }
                   }
                 }
@@ -2696,10 +2700,6 @@
               "$ref": "#/components/schemas/product"
             }
           },
-          "usage_limit": {
-            "description": "The maximum number of times that a discount can be used.",
-            "type": "integer"
-          },
           "created_at": {
             "description": "The date with timezone at which the resource was created.",
             "type": "string",
@@ -2770,6 +2770,14 @@
             "items": {
               "$ref": "#/components/schemas/region"
             }
+          },
+          "usage_limit": {
+            "description": "The maximum number of times that a discount can be used.",
+            "type": "integer"
+          },
+          "usage_count": {
+            "description": "The number of times a discount has been used.",
+            "type": "integer"
           },
           "created_at": {
             "description": "The date with timezone at which the resource was created.",
@@ -3544,6 +3552,9 @@
             "type": "integer"
           },
           "gift_card_total": {
+            "type": "integer"
+          },
+          "paid_total": {
             "type": "integer"
           }
         }
