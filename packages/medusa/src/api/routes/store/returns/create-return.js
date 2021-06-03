@@ -31,6 +31,10 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *               option_id:
  *                 type: string
  *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *           no_notification:
+ *             description: If set to true no notification will be send
+ *             type: boolean
+ *             
  * tags:
  *   - Return
  * responses:
@@ -59,6 +63,7 @@ export default async (req, res) => {
         option_id: Validator.string().optional(),
       })
       .optional(),
+    no_notification: Validator.boolean().optional()
   })
 
   const { value, error } = schema.validate(req.body)
@@ -132,6 +137,7 @@ export default async (req, res) => {
                 .emit("order.return_requested", {
                   id: value.order_id,
                   return_id: createdReturn.id,
+                  no_notification: no_notification
                 })
 
               return {
