@@ -1,30 +1,31 @@
 import NotificationService from "../notification"
-import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { MockManager, MockRepository } from "medusa-test-utils"
 
 describe("NotificationService", () => {
-  describe("send", () => {
-    const notificationRepository = MockRepository({ create: c => c })
+  const notificationRepository = MockRepository({ create: c => c })
 
-    const container = {
-      manager: MockManager,
-      notificationRepository,
-      noti_test: {
-        sendNotification: jest.fn(() =>
-          Promise.resolve({
-            to: "test@mail.com",
-            data: { id: "something" },
-          })
-        ),
-      },
-    }
+  const container = {
+    manager: MockManager,
+    notificationRepository,
+    noti_test: {
+      sendNotification: jest.fn(() =>
+        Promise.resolve({
+          to: "test@mail.com",
+          data: { id: "something" },
+        })
+      ),
+    },
+  }
 
-    const notificationService = new NotificationService(container)
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
+  describe("send", () =>{ 
 
     it("successfully calls provider and saves noti", async () => {
+      const notificationService = new NotificationService(container)
+
       await notificationService.send("event.test", { id: "test" }, "test")
 
       expect(container.noti_test.sendNotification).toHaveBeenCalledTimes(1)
@@ -50,5 +51,31 @@ describe("NotificationService", () => {
       expect(notificationRepository.save).toHaveBeenCalledTimes(1)
       expect(notificationRepository.save).toHaveBeenCalledWith(constructed)
     })
+  })
+
+  describe("handleEvent", () => {
+
+    it("cancels notification if no_notification is set", async () => {
+      const notificationService = new NotificationService(container)
+      const event = "event.test"
+      notificationService.subscribe(event, "test")
+
+      await notificationService.handleEvent(event, {id: "id",
+        return_id: "id",
+        no_notification: true})
+
+      expect(container.noti_test.sendNotification).not.toHaveBeenCalled()
+    })
+
+    it("if no_notification is not set notification is send", async () => {
+      const notificationService = new NotificationService(container)
+      const event = "event.test"
+      notificationService.subscribe(event, "test")
+
+      await notificationService.handleEvent(event, {id: "id", return_id: "id"})
+
+      expect(container.noti_test.sendNotification).toHaveBeenCalledTimes(1)
+    })
+
   })
 })
