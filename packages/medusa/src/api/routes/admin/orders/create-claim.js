@@ -85,6 +85,9 @@ import { defaultRelations, defaultFields } from "./"
  *                  price:
  *                    description: The price to charge for the Shipping Method
  *                    type: integer
+ *           shipping_address:
+ *             type: object
+ *             description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
  *           refund_amount:
  *             description: The amount to refund the Customer when the Claim type is `refund`.
  *             type: integer
@@ -151,6 +154,7 @@ export default async (req, res) => {
     refund_amount: Validator.number()
       .integer()
       .optional(),
+    shipping_address: Validator.object().optional(),
     metadata: Validator.object().optional(),
   })
 
@@ -203,6 +207,7 @@ export default async (req, res) => {
                 idempotency_key: idempotencyKey.idempotency_key,
                 order,
                 type: value.type,
+                shipping_address: value.shipping_address,
                 claim_items: value.claim_items,
                 return_shipping: value.return_shipping,
                 additional_items: value.additional_items,
