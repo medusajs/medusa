@@ -134,6 +134,9 @@ export class ClaimOrder {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
+  @Column({ type: "boolean"})
+  no_notification: Boolean
+
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
