@@ -237,6 +237,9 @@ export class Order {
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
+  @Column({ type: "boolean"})
+  no_notification: Boolean
+
   @Column({ nullable: true })
   idempotency_key: string
 
