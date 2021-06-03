@@ -67,6 +67,27 @@ function buildLocalCommands(cli, isLocalProject) {
 
   cli
     .command({
+      command: `seed`,
+      desc: `Migrates and populates the database with the provided file.`,
+      builder: _ =>
+        _.option(`f`, {
+          alias: `seed-file`,
+          type: `string`,
+          describe: `Path to the file where the seed is defined.`,
+        }).option(`m`, {
+          alias: `migrate`,
+          type: `boolean`,
+          default: true,
+          describe: `Flag to indicate if migrations should be run prior to seeding the database`,
+        }),
+      handler: handlerP(
+        getCommandHandler(`seed`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `migrations [action]`,
       desc: `Migrate the database to the most recent version.`,
       builder: {
