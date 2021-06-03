@@ -85,6 +85,119 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+    get:
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  description: The Customer's phone number.
+                  type: object
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   /collections:
     post:
       operationId: PostCollections
@@ -227,119 +340,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  description: The Customer's phone number.
-                  type: object
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -478,6 +478,9 @@ paths:
                   type: array
                   items:
                     type: string
+                usage_limit:
+                  type: number
+                  description: Maximum times the discount can be used
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -910,266 +913,34 @@ paths:
                 properties:
                   notification:
                     $ref: '#/components/schemas/notification'
-  '/orders/{id}/shipping-methods':
+  /return-reasons:
     post:
-      operationId: PostOrdersOrderShippingMethods
-      summary: Add a Shipping Method
-      description: >-
-        Adds a Shipping Method to an Order. If another Shipping Method exists
-        with the same Shipping Profile, the previous Shipping Method will be
-        replaced.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - price
-                - option_id
-                - data
-              properties:
-                price:
-                  type: integer
-                  description: >-
-                    The price (excluding VAT) that should be charged for the
-                    Shipping Method
-                option_id:
-                  type: string
-                  description: >-
-                    The id of the Shipping Option to create the Shipping Method
-                    from.
-                data:
-                  type: object
-                  description: >-
-                    The data required for the Shipping Option to create a
-                    Shipping Method. This will depend on the Fulfillment
-                    Provider.
-  '/orders/{id}/cancel':
-    post:
-      operationId: PostOrdersOrderCancel
-      summary: Cancel an Order
-      description: >-
-        Registers an Order as canceled. This triggers a flow that will cancel
-        any created Fulfillments and Payments, may fail if the Payment or
-        Fulfillment Provider is unable to cancel the Payment/Fulfillment.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/capture':
-    post:
-      operationId: PostOrdersOrderCapture
-      summary: Capture an Order
-      description: Captures all the Payments associated with an Order.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/claims/{claim_id}/shipments':
-    post:
-      operationId: PostOrdersOrderClaimsClaimShipments
-      summary: Create Claim Shipment
-      description: Registers a Claim Fulfillment as shipped.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: claim_id
-          required: true
-          description: The id of the Claim.
-          schema:
-            type: string
+      operationId: PostReturnReasons
+      summary: Create a Return Reason
+      description: Creates a Return Reason
       requestBody:
         content:
           application/json:
             schema:
               properties:
-                fulfillment_id:
-                  description: The id of the Fulfillment.
+                label:
+                  description: The label to display to the Customer.
                   type: string
-                tracking_numbers:
-                  description: The tracking numbers for the shipment.
-                  type: array
-                  items:
-                    type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/order/{id}/claims':
-    post:
-      operationId: PostOrdersOrderClaims
-      summary: Create a Claim
-      description: Creates a Claim.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                type:
+                value:
                   description: >-
-                    The type of the Claim. This will determine how the Claim is
-                    treated: `replace` Claims will result in a Fulfillment with
-                    new items being created, while a `refund` Claim will refund
-                    the amount paid for the claimed items.
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
                   type: string
-                  enum:
-                    - replace
-                    - refund
-                claim_items:
-                  description: The Claim Items that the Claim will consist of.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item that will be claimed.
-                        type: string
-                      quantity:
-                        description: The number of items that will be returned
-                        type: integer
-                      note:
-                        description: >-
-                          Short text describing the Claim Item in further
-                          detail.
-                        type: string
-                      reason:
-                        description: The reason for the Claim
-                        type: string
-                        enum:
-                          - missing_item
-                          - wrong_item
-                          - production_failure
-                          - other
-                      tags:
-                        description: A list o tags to add to the Claim Item
-                        type: array
-                        items:
-                          type: string
-                      images:
-                        description: >-
-                          A list of image URL's that will be associated with the
-                          Claim
-                        items:
-                          type: string
-                return_shipping:
-                  description: >-
-                    Optional details for the Return Shipping Method, if the
-                    items are to be sent back.
-                  type: object
-                  properties:
-                    option_id:
-                      type: string
-                      description: >-
-                        The id of the Shipping Option to create the Shipping
-                        Method from.
-                    price:
-                      type: integer
-                      description: The price to charge for the Shipping Method.
-                additional_items:
-                  description: >-
-                    The new items to send to the Customer when the Claim type is
-                    Replace.
-                  type: array
-                  items:
-                    properties:
-                      variant_id:
-                        description: The id of the Product Variant to ship.
-                        type: string
-                      quantity:
-                        description: The quantity of the Product Variant to ship.
-                        type: integer
-                shipping_methods:
-                  description: The Shipping Methods to send the additional Line Items with.
-                  type: array
-                  items:
-                    properties:
-                      id:
-                        description: The id of an existing Shipping Method
-                        type: string
-                      option_id:
-                        description: >-
-                          The id of the Shipping Option to create a Shipping
-                          Method from
-                        type: string
-                      price:
-                        description: The price to charge for the Shipping Method
-                        type: integer
-                refund_amount:
-                  description: >-
-                    The amount to refund the Customer when the Claim type is
-                    `refund`.
-                  type: integer
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
                 metadata:
                   description: >-
-                    An optional set of key-value pairs to hold additional
+                    An optional set of key-value pairs with additional
                     information.
                   type: object
       tags:
-        - Order
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -1177,317 +948,14 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/fulfillments':
-    post:
-      operationId: PostOrdersOrderFulfillments
-      summary: Create a Fulfillment
-      description: >-
-        Creates a Fulfillment of an Order - will notify Fulfillment Providers to
-        prepare a shipment.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                items:
-                  description: The Line Items to include in the Fulfillment.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of Line Item to fulfill.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item to fulfill.
-                        type: integer
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/shipment':
-    post:
-      operationId: PostOrdersOrderShipment
-      summary: Create a Shipment
-      description: Registers a Fulfillment as shipped.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                fulfillment_id:
-                  description: The id of the Fulfillment.
-                  type: string
-                tracking_numbers:
-                  description: The tracking numbers for the shipment.
-                  type: array
-                  items:
-                    type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/swaps/{swap_id}/shipments':
-    post:
-      operationId: PostOrdersOrderSwapsSwapShipments
-      summary: Create Swap Shipment
-      description: Registers a Swap Fulfillment as shipped.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: swap_id
-          required: true
-          description: The id of the Swap.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                fulfillment_id:
-                  description: The id of the Fulfillment.
-                  type: string
-                tracking_numbers:
-                  description: The tracking numbers for the shipment.
-                  type: array
-                  items:
-                    type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/order/{id}/swaps':
-    post:
-      operationId: PostOrdersOrderSwaps
-      summary: Create a Swap
-      description: >-
-        Creates a Swap. Swaps are used to handle Return of previously purchased
-        goods and Fulfillment of replacements simultaneously.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                return_items:
-                  description: The Line Items to return as part of the Swap.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item that will be claimed.
-                        type: string
-                      quantity:
-                        description: The number of items that will be returned
-                        type: integer
-                return_shipping:
-                  description: How the Swap will be returned.
-                  type: object
-                  properties:
-                    option_id:
-                      type: string
-                      description: >-
-                        The id of the Shipping Option to create the Shipping
-                        Method from.
-                    price:
-                      type: integer
-                      description: The price to charge for the Shipping Method.
-                additional_items:
-                  description: The new items to send to the Customer.
-                  type: array
-                  items:
-                    properties:
-                      variant_id:
-                        description: The id of the Product Variant to ship.
-                        type: string
-                      quantity:
-                        description: The quantity of the Product Variant to ship.
-                        type: integer
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/order/{id}/metadata/{key}':
-    delete:
-      operationId: DeleteOrdersOrderMetadataKey
-      summary: Delete Metadata
-      description: Deletes a metadata key.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: key
-          required: true
-          description: The metadata key.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/claims/{claim_id}/fulfillments':
-    post:
-      operationId: PostOrdersOrderClaimsClaimFulfillments
-      summary: Create a Claim Fulfillment
-      description: Creates a Fulfillment for a Claim.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: claim_id
-          required: true
-          description: The id of the Claim.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/swaps/{swap_id}/fulfillments':
-    post:
-      operationId: PostOrdersOrderSwapsSwapFulfillments
-      summary: Create a Swap Fulfillment
-      description: Creates a Fulfillment for a Swap.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: swap_id
-          required: true
-          description: The id of the Swap.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
     get:
-      operationId: GetOrdersOrder
-      summary: Retrieve an Order
-      description: Retrieves an Order
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
       tags:
-        - Order
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -1495,49 +963,24 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  /orders:
-    get:
-      operationId: GetOrders
-      summary: List Orders
-      description: Retrieves a list of Orders
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  orders:
+                  return_reasons:
                     type: array
                     items:
-                      $ref: '#/components/schemas/order'
-  '/orders/{id}/swaps/{swap_id}/process-payment':
-    post:
-      operationId: PostOrdersOrderSwapsSwapProcessPayment
-      summary: Process a Swap difference
-      description: >-
-        When there are differences between the returned and shipped Products in
-        a Swap, the difference must be processed. Either a Refund will be issued
-        or a Payment will be captured.
+                      $ref: '#/components/schemas/return_reason'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: swap_id
-          required: true
-          description: The id of the Swap.
+          description: The id of the Return Reason.
           schema:
             type: string
       tags:
-        - Order
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -1545,24 +988,17 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/returns/{return_id}/receive':
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
     post:
-      operationId: PostOrdersOrderReturnsReturnReceive
-      summary: Receive a Return
-      description: Registers a Return as received.
+      operationId: PostReturnReasonsReason
+      summary: Update a Return Reason
+      description: Updates a Return Reason
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: return_id
-          required: true
-          description: The id of the Return.
+          description: The id of the Return Reason.
           schema:
             type: string
       requestBody:
@@ -1570,269 +1006,24 @@ paths:
           application/json:
             schema:
               properties:
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                refund:
-                  description: The amount to refund.
-                  type: integer
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/swaps/{swap_id}/receive':
-    post:
-      operationId: PostOrdersOrderSwapsSwapReceive
-      summary: Receive a Swap
-      description: Registers a Swap as received.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: swap_id
-          required: true
-          description: The id of the Swap.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/refunds':
-    post:
-      operationId: PostOrdersOrderRefunds
-      summary: Create a Refund
-      description: Issues a Refund.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - amount
-                - reason
-              properties:
-                amount:
-                  description: The amount to refund.
-                  type: integer
-                reason:
-                  description: The reason for the Refund.
+                label:
+                  description: The label to display to the Customer.
                   type: string
-                note:
-                  description: A not with additional details about the Refund.
+                value:
+                  description: >-
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
                   type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/returns':
-    post:
-      operationId: PostOrdersOrderReturns
-      summary: Request a Return
-      description: >-
-        Requests a Return. If applicable a return label will be created and
-        other plugins notified.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                items:
-                  description: The Line Items that will be returned.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item.
-                        type: string
-                      reason_id:
-                        description: The id of the Return Reason to use.
-                        type: string
-                      note:
-                        description: An optional note with information about the Return.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                return_shipping:
-                  description: >-
-                    The Shipping Method to be used to handle the return
-                    shipment.
-                  type: object
-                  properties:
-                    option_id:
-                      type: string
-                      description: >-
-                        The id of the Shipping Option to create the Shipping
-                        Method from.
-                    price:
-                      type: integer
-                      description: The price to charge for the Shipping Method.
-                receive_now:
-                  description: >-
-                    A flag to indicate if the Return should be registerd as
-                    received immediately.
-                  type: boolean
-                refund:
-                  description: The amount to refund.
-                  type: integer
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/order/{id}/claims/{claim_id}':
-    post:
-      operationId: PostOrdersOrderClaimsClaim
-      summary: Update a Claim
-      description: Updates a Claim.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: claim_id
-          required: true
-          description: The id of the Claim.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                claim_items:
-                  description: The Claim Items that the Claim will consist of.
-                  type: array
-                  items:
-                    properties:
-                      id:
-                        description: The id of the Claim Item.
-                        type: string
-                      item_id:
-                        description: The id of the Line Item that will be claimed.
-                        type: string
-                      quantity:
-                        description: The number of items that will be returned
-                        type: integer
-                      note:
-                        description: >-
-                          Short text describing the Claim Item in further
-                          detail.
-                        type: string
-                      reason:
-                        description: The reason for the Claim
-                        type: string
-                        enum:
-                          - missing_item
-                          - wrong_item
-                          - production_failure
-                          - other
-                      tags:
-                        description: A list o tags to add to the Claim Item
-                        type: array
-                        items:
-                          type: string
-                      images:
-                        description: >-
-                          A list of image URL's that will be associated with the
-                          Claim
-                        items:
-                          type: string
-                shipping_methods:
-                  description: The Shipping Methods to send the additional Line Items with.
-                  type: array
-                  items:
-                    properties:
-                      id:
-                        description: The id of an existing Shipping Method
-                        type: string
-                      option_id:
-                        description: >-
-                          The id of the Shipping Option to create a Shipping
-                          Method from
-                        type: string
-                      price:
-                        description: The price to charge for the Shipping Method
-                        type: integer
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
                 metadata:
                   description: >-
-                    An optional set of key-value pairs to hold additional
+                    An optional set of key-value pairs with additional
                     information.
                   type: object
       tags:
-        - Order
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -1840,8 +1031,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  order:
-                    $ref: '#/components/schemas/order'
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
   '/products/{id}/options':
     post:
       operationId: PostProductsProductOptions
@@ -3159,126 +2350,6 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
-  /return-reasons:
-    post:
-      operationId: PostReturnReasons
-      summary: Create a Return Reason
-      description: Creates a Return Reason
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                label:
-                  description: The label to display to the Customer.
-                  type: string
-                value:
-                  description: >-
-                    The value that the Return Reason will be identified by. Must
-                    be unique.
-                  type: string
-                description:
-                  description: An optional description to for the Reason.
-                  type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-    get:
-      operationId: GetReturnReasons
-      summary: List Return Reasons
-      description: Retrieves a list of Return Reasons.
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reasons:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return_reason'
-  '/return-reasons/{id}':
-    get:
-      operationId: GetReturnReasonsReason
-      summary: Retrieve a Return Reason
-      description: Retrieves a Return Reason.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Return Reason.
-          schema:
-            type: string
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-    post:
-      operationId: PostReturnReasonsReason
-      summary: Update a Return Reason
-      description: Updates a Return Reason
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Return Reason.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                label:
-                  description: The label to display to the Customer.
-                  type: string
-                value:
-                  description: >-
-                    The value that the Return Reason will be identified by. Must
-                    be unique.
-                  type: string
-                description:
-                  description: An optional description to for the Reason.
-                  type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
   /returns:
     get:
       operationId: GetReturns
@@ -3297,6 +2368,937 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/return'
+  '/returns/{id}receive':
+    post:
+      operationId: PostReturnsReturnReceive
+      summary: Receive a Return
+      description: >-
+        Registers a Return as received. Updates statuses on Orders and Swaps
+        accordingly.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                refund:
+                  description: The amount to refund.
+                  type: integer
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return:
+                    $ref: '#/components/schemas/return'
+  '/orders/{id}/shipping-methods':
+    post:
+      operationId: PostOrdersOrderShippingMethods
+      summary: Add a Shipping Method
+      description: >-
+        Adds a Shipping Method to an Order. If another Shipping Method exists
+        with the same Shipping Profile, the previous Shipping Method will be
+        replaced.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - price
+                - option_id
+                - data
+              properties:
+                price:
+                  type: integer
+                  description: >-
+                    The price (excluding VAT) that should be charged for the
+                    Shipping Method
+                option_id:
+                  type: string
+                  description: >-
+                    The id of the Shipping Option to create the Shipping Method
+                    from.
+                data:
+                  type: object
+                  description: >-
+                    The data required for the Shipping Option to create a
+                    Shipping Method. This will depend on the Fulfillment
+                    Provider.
+  '/orders/{id}/cancel':
+    post:
+      operationId: PostOrdersOrderCancel
+      summary: Cancel an Order
+      description: >-
+        Registers an Order as canceled. This triggers a flow that will cancel
+        any created Fulfillments and Payments, may fail if the Payment or
+        Fulfillment Provider is unable to cancel the Payment/Fulfillment.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/capture':
+    post:
+      operationId: PostOrdersOrderCapture
+      summary: Capture an Order
+      description: Captures all the Payments associated with an Order.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/claims/{claim_id}/shipments':
+    post:
+      operationId: PostOrdersOrderClaimsClaimShipments
+      summary: Create Claim Shipment
+      description: Registers a Claim Fulfillment as shipped.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: claim_id
+          required: true
+          description: The id of the Claim.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                fulfillment_id:
+                  description: The id of the Fulfillment.
+                  type: string
+                tracking_numbers:
+                  description: The tracking numbers for the shipment.
+                  type: array
+                  items:
+                    type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/order/{id}/claims':
+    post:
+      operationId: PostOrdersOrderClaims
+      summary: Create a Claim
+      description: Creates a Claim.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                type:
+                  description: >-
+                    The type of the Claim. This will determine how the Claim is
+                    treated: `replace` Claims will result in a Fulfillment with
+                    new items being created, while a `refund` Claim will refund
+                    the amount paid for the claimed items.
+                  type: string
+                  enum:
+                    - replace
+                    - refund
+                claim_items:
+                  description: The Claim Items that the Claim will consist of.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item that will be claimed.
+                        type: string
+                      quantity:
+                        description: The number of items that will be returned
+                        type: integer
+                      note:
+                        description: >-
+                          Short text describing the Claim Item in further
+                          detail.
+                        type: string
+                      reason:
+                        description: The reason for the Claim
+                        type: string
+                        enum:
+                          - missing_item
+                          - wrong_item
+                          - production_failure
+                          - other
+                      tags:
+                        description: A list o tags to add to the Claim Item
+                        type: array
+                        items:
+                          type: string
+                      images:
+                        description: >-
+                          A list of image URL's that will be associated with the
+                          Claim
+                        items:
+                          type: string
+                return_shipping:
+                  description: >-
+                    Optional details for the Return Shipping Method, if the
+                    items are to be sent back.
+                  type: object
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The id of the Shipping Option to create the Shipping
+                        Method from.
+                    price:
+                      type: integer
+                      description: The price to charge for the Shipping Method.
+                additional_items:
+                  description: >-
+                    The new items to send to the Customer when the Claim type is
+                    Replace.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: The id of the Product Variant to ship.
+                        type: string
+                      quantity:
+                        description: The quantity of the Product Variant to ship.
+                        type: integer
+                shipping_methods:
+                  description: The Shipping Methods to send the additional Line Items with.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of an existing Shipping Method
+                        type: string
+                      option_id:
+                        description: >-
+                          The id of the Shipping Option to create a Shipping
+                          Method from
+                        type: string
+                      price:
+                        description: The price to charge for the Shipping Method
+                        type: integer
+                refund_amount:
+                  description: >-
+                    The amount to refund the Customer when the Claim type is
+                    `refund`.
+                  type: integer
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/fulfillments':
+    post:
+      operationId: PostOrdersOrderFulfillments
+      summary: Create a Fulfillment
+      description: >-
+        Creates a Fulfillment of an Order - will notify Fulfillment Providers to
+        prepare a shipment.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                items:
+                  description: The Line Items to include in the Fulfillment.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of Line Item to fulfill.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item to fulfill.
+                        type: integer
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/shipment':
+    post:
+      operationId: PostOrdersOrderShipment
+      summary: Create a Shipment
+      description: Registers a Fulfillment as shipped.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                fulfillment_id:
+                  description: The id of the Fulfillment.
+                  type: string
+                tracking_numbers:
+                  description: The tracking numbers for the shipment.
+                  type: array
+                  items:
+                    type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/swaps/{swap_id}/shipments':
+    post:
+      operationId: PostOrdersOrderSwapsSwapShipments
+      summary: Create Swap Shipment
+      description: Registers a Swap Fulfillment as shipped.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: swap_id
+          required: true
+          description: The id of the Swap.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                fulfillment_id:
+                  description: The id of the Fulfillment.
+                  type: string
+                tracking_numbers:
+                  description: The tracking numbers for the shipment.
+                  type: array
+                  items:
+                    type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/order/{id}/swaps':
+    post:
+      operationId: PostOrdersOrderSwaps
+      summary: Create a Swap
+      description: >-
+        Creates a Swap. Swaps are used to handle Return of previously purchased
+        goods and Fulfillment of replacements simultaneously.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                return_items:
+                  description: The Line Items to return as part of the Swap.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item that will be claimed.
+                        type: string
+                      quantity:
+                        description: The number of items that will be returned
+                        type: integer
+                return_shipping:
+                  description: How the Swap will be returned.
+                  type: object
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The id of the Shipping Option to create the Shipping
+                        Method from.
+                    price:
+                      type: integer
+                      description: The price to charge for the Shipping Method.
+                additional_items:
+                  description: The new items to send to the Customer.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: The id of the Product Variant to ship.
+                        type: string
+                      quantity:
+                        description: The quantity of the Product Variant to ship.
+                        type: integer
+                no_notification:
+                  description: If set to true no notification will be send
+                  type: boolean
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/order/{id}/metadata/{key}':
+    delete:
+      operationId: DeleteOrdersOrderMetadataKey
+      summary: Delete Metadata
+      description: Deletes a metadata key.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: key
+          required: true
+          description: The metadata key.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/claims/{claim_id}/fulfillments':
+    post:
+      operationId: PostOrdersOrderClaimsClaimFulfillments
+      summary: Create a Claim Fulfillment
+      description: Creates a Fulfillment for a Claim.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: claim_id
+          required: true
+          description: The id of the Claim.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/swaps/{swap_id}/fulfillments':
+    post:
+      operationId: PostOrdersOrderSwapsSwapFulfillments
+      summary: Create a Swap Fulfillment
+      description: Creates a Fulfillment for a Swap.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: swap_id
+          required: true
+          description: The id of the Swap.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieve an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  /orders:
+    get:
+      operationId: GetOrders
+      summary: List Orders
+      description: Retrieves a list of Orders
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
+  '/orders/{id}/swaps/{swap_id}/process-payment':
+    post:
+      operationId: PostOrdersOrderSwapsSwapProcessPayment
+      summary: Process a Swap difference
+      description: >-
+        When there are differences between the returned and shipped Products in
+        a Swap, the difference must be processed. Either a Refund will be issued
+        or a Payment will be captured.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: swap_id
+          required: true
+          description: The id of the Swap.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/swaps/{swap_id}/receive':
+    post:
+      operationId: PostOrdersOrderSwapsSwapReceive
+      summary: Receive a Swap
+      description: Registers a Swap as received.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: swap_id
+          required: true
+          description: The id of the Swap.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/refunds':
+    post:
+      operationId: PostOrdersOrderRefunds
+      summary: Create a Refund
+      description: Issues a Refund.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - amount
+                - reason
+              properties:
+                amount:
+                  description: The amount to refund.
+                  type: integer
+                reason:
+                  description: The reason for the Refund.
+                  type: string
+                note:
+                  description: A not with additional details about the Refund.
+                  type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}/returns':
+    post:
+      operationId: PostOrdersOrderReturns
+      summary: Request a Return
+      description: >-
+        Requests a Return. If applicable a return label will be created and
+        other plugins notified.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                items:
+                  description: The Line Items that will be returned.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item.
+                        type: string
+                      reason_id:
+                        description: The id of the Return Reason to use.
+                        type: string
+                      note:
+                        description: An optional note with information about the Return.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                return_shipping:
+                  description: >-
+                    The Shipping Method to be used to handle the return
+                    shipment.
+                  type: object
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The id of the Shipping Option to create the Shipping
+                        Method from.
+                    price:
+                      type: integer
+                      description: The price to charge for the Shipping Method.
+                receive_now:
+                  description: >-
+                    A flag to indicate if the Return should be registerd as
+                    received immediately.
+                  type: boolean
+                refund:
+                  description: The amount to refund.
+                  type: integer
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/order/{id}/claims/{claim_id}':
+    post:
+      operationId: PostOrdersOrderClaimsClaim
+      summary: Update a Claim
+      description: Updates a Claim.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+        - in: path
+          name: claim_id
+          required: true
+          description: The id of the Claim.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                claim_items:
+                  description: The Claim Items that the Claim will consist of.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of the Claim Item.
+                        type: string
+                      item_id:
+                        description: The id of the Line Item that will be claimed.
+                        type: string
+                      quantity:
+                        description: The number of items that will be returned
+                        type: integer
+                      note:
+                        description: >-
+                          Short text describing the Claim Item in further
+                          detail.
+                        type: string
+                      reason:
+                        description: The reason for the Claim
+                        type: string
+                        enum:
+                          - missing_item
+                          - wrong_item
+                          - production_failure
+                          - other
+                      tags:
+                        description: A list o tags to add to the Claim Item
+                        type: array
+                        items:
+                          type: string
+                      images:
+                        description: >-
+                          A list of image URL's that will be associated with the
+                          Claim
+                        items:
+                          type: string
+                shipping_methods:
+                  description: The Shipping Methods to send the additional Line Items with.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of an existing Shipping Method
+                        type: string
+                      option_id:
+                        description: >-
+                          The id of the Shipping Option to create a Shipping
+                          Method from
+                        type: string
+                      price:
+                        description: The price to charge for the Shipping Method
+                        type: integer
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -3608,6 +3610,24 @@ paths:
                 properties:
                   shipping_profiles:
                     $ref: '#/components/schemas/shipping_profile'
+  /swaps:
+    get:
+      operationId: GetSwaps
+      summary: List Swaps
+      description: Retrieves a list of Swaps.
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swaps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/swap'
   '/store/currencies/{code}':
     post:
       operationId: PostStoreCurrenciesCode
@@ -3718,24 +3738,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/store'
-  /swaps:
-    get:
-      operationId: GetSwaps
-      summary: List Swaps
-      description: Retrieves a list of Swaps.
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swaps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/swap'
   /variants:
     get:
       operationId: GetVariants
@@ -4167,9 +4169,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/product'
-        usage_limit:
-          description: The maximum number of times that a discount can be used.
-          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -4232,6 +4231,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/region'
+        usage_limit:
+          description: The maximum number of times that a discount can be used.
+          type: integer
+        usage_count:
+          description: The number of times a discount has been used.
+          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -4864,6 +4869,8 @@ components:
         refundable_amount:
           type: integer
         gift_card_total:
+          type: integer
+        paid_total:
           type: integer
     payment_provider:
       title: Payment Provider
