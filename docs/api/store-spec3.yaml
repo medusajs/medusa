@@ -1147,47 +1147,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
-  '/return-reasons/{id}':
-    get:
-      operationId: GetReturnReasonsReason
-      summary: Retrieve a Return Reason
-      description: Retrieves a Return Reason.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Return Reason.
-          schema:
-            type: string
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-  /return-reasons:
-    get:
-      operationId: GetReturnReasons
-      summary: List Return Reasons
-      description: Retrieves a list of Return Reasons.
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reasons:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return_reason'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1238,6 +1197,47 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+  /return-reasons:
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
   /returns:
     post:
       operationId: PostReturns
@@ -1274,6 +1274,9 @@ paths:
                       description: >-
                         The id of the Shipping Option to create the Shipping
                         Method from.
+                no_notification:
+                  description: If set to true no notification will be send
+                  type: boolean
       tags:
         - Return
       responses:
@@ -1285,6 +1288,29 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
+  '/swaps/{cart_id}':
+    get:
+      operationId: GetSwapsSwapCartId
+      summary: Retrieve Swap by Cart id
+      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
   /shipping-options:
     get:
       operationId: GetShippingOptions
@@ -1346,29 +1372,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
-  '/swaps/{cart_id}':
-    get:
-      operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
-      description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart
-          schema:
-            type: string
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant
@@ -1829,9 +1832,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/product'
-        usage_limit:
-          description: The maximum number of times that a discount can be used.
-          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -1894,6 +1894,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/region'
+        usage_limit:
+          description: The maximum number of times that a discount can be used.
+          type: integer
+        usage_count:
+          description: The number of times a discount has been used.
+          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -2526,6 +2532,8 @@ components:
         refundable_amount:
           type: integer
         gift_card_total:
+          type: integer
+        paid_total:
           type: integer
     payment_provider:
       title: Payment Provider
