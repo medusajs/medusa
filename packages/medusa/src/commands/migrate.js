@@ -5,15 +5,15 @@ import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
 
-const t = async function({ port, directory }) {
+const t = async function({ directory }) {
   const args = process.argv
   args.shift()
   args.shift()
   args.shift()
 
+  const { configModule } = getConfigFile(directory, `medusa-config`)
   const migrationDirs = getMigrations(directory)
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
