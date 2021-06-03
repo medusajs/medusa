@@ -226,6 +226,9 @@ export class ClaimOrder {
  *   deleted_at:
  *     type: string
  *     format: date-time
+ *   no_notification:
+ *     description: "Flag for describing whether or not notifications related to this should be send."
+ *     type: boolean
  *   metadata:
  *     type: object
  */
