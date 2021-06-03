@@ -319,9 +319,11 @@ class ShippingOptionService extends BaseService {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = await optionRepo.create(data)
 
-      const region = await this.regionService_.retrieve(option.region_id, {
-        relations: ["fulfillment_providers"],
-      })
+      const region = await this.regionService_
+        .withTransaction(manager)
+        .retrieve(option.region_id, {
+          relations: ["fulfillment_providers"],
+        })
 
       if (
         !region.fulfillment_providers.find(

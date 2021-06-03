@@ -1,63 +1,143 @@
+import path from "path"
+import fs from "fs"
+import express from "express"
 import { createConnection } from "typeorm"
+import { sync as existsSync } from "fs-exists-cached"
+import { getConfigFile } from "medusa-core-utils"
 
-const t = async function({ port, directory }) {
-  const args = process.argv
-  args.shift()
-  args.shift()
-  args.shift()
+import Logger from "../loaders/logger"
+import loaders from "../loaders"
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
-  const { plugins } = configModule
+import getMigrations from "./utils/get-migrations"
 
-  const resolved = plugins.map(plugin => {
-    if (_.isString(plugin)) {
-      return resolvePlugin(plugin)
-    }
+const t = async function({ directory, migrate, seedFile }) {
+  let resolvedPath = seedFile
 
-    const details = resolvePlugin(plugin.resolve)
-    details.options = plugin.options
+  // If we are already given an absolute path we can skip resolution step
+  if (!existsSync(resolvedPath)) {
+    resolvedPath = path.resolve(path.join(directory, seedFile))
 
-    return details
-  })
+    if (!existsSync(resolvedPath)) {
+      console.error(`Could not find a seed file at: ${seedFile}`)
+      console.error(`Resolved path: ${resolvedPath}`)
 
-  resolved.push({
-    resolve: `${directory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
-    options: {},
-    version: createFileContentHash(process.cwd(), `**`),
-  })
-
-  const migrationDirs = []
-  const coreMigrations = path.resolve(__dirname, "../migrations")
-
-  migrationDirs.push(`${coreMigrations}/*.js`)
-
-  for (const p of resolved) {
-    const exists = existsSync(`${p.resolve}/migrations`)
-    if (exists) {
-      migrationDirs.push(`${p.resolve}/migrations/*.js`)
+      process.exit(1)
     }
   }
 
-  const connection = await createConnection({
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    extra: configModule.projectConfig.database_extra || {},
-    migrations: migrationDirs,
-    logging: true,
-  })
+  if (migrate) {
+    const migrationDirs = getMigrations(directory)
+    const { configModule } = getConfigFile(directory, `medusa-config`)
+    const connection = await createConnection({
+      type: configModule.projectConfig.database_type,
+      url: configModule.projectConfig.database_url,
+      extra: configModule.projectConfig.database_extra || {},
+      migrations: migrationDirs,
+      logging: true,
+    })
 
-  if (args[0] === "run") {
     await connection.runMigrations()
     await connection.close()
     Logger.info("Migrations completed.")
-    process.exit()
-  } else if (args[0] === "show") {
-    const unapplied = await connection.showMigrations()
-    await connection.close()
-    process.exit(unapplied ? 1 : 0)
   }
+
+  const app = express()
+  const { container } = await loaders({
+    directory,
+    expressApp: app,
+  })
+
+  const manager = container.resolve("manager")
+
+  const storeService = container.resolve("storeService")
+  const userService = container.resolve("userService")
+  const regionService = container.resolve("regionService")
+  const productService = container.resolve("productService")
+  const productVariantService = container.resolve("productVariantService")
+  const shippingOptionService = container.resolve("shippingOptionService")
+  const shippingProfileService = container.resolve("shippingProfileService")
+
+  await manager.transaction(async tx => {
+    const { store, regions, products, shipping_options, users } = JSON.parse(
+      fs.readFileSync(resolvedPath, `utf-8`)
+    )
+
+    const gcProfile = await shippingProfileService.retrieveGiftCardDefault()
+    const defaultProfile = await shippingProfileService.retrieveDefault()
+
+    if (store) {
+      await storeService.withTransaction(tx).update(store)
+    }
+
+    for (const u of users) {
+      let pass = u.password
+      if (pass) {
+        delete u.password
+      }
+      await userService.withTransaction(tx).create(u, pass)
+    }
+
+    let regionIds = {}
+    for (const r of regions) {
+      let dummyId
+      if (!r.id || !r.id.startsWith("reg_")) {
+        dummyId = r.id
+        delete r.id
+      }
+
+      const reg = await regionService.withTransaction(tx).create(r)
+
+      if (dummyId) {
+        regionIds[dummyId] = reg.id
+      }
+    }
+
+    for (const so of shipping_options) {
+      if (regionIds[so.region_id]) {
+        so.region_id = regionIds[so.region_id]
+      }
+
+      so.profile_id = defaultProfile.id
+      if (so.is_giftcard) {
+        so.profile_id = gcProfile.id
+        delete so.is_giftcard
+      }
+
+      await shippingOptionService.withTransaction(tx).create(so)
+    }
+
+    for (const p of products) {
+      const variants = p.variants
+      delete p.variants
+
+      p.profile_id = defaultProfile.id
+      if (p.is_giftcard) {
+        p.profile_id = gcProfile.id
+      }
+
+      const newProd = await productService.withTransaction(tx).create(p)
+
+      if (variants && variants.length) {
+        const optionIds = p.options.map(
+          o => newProd.options.find(newO => newO.title === o.title).id
+        )
+
+        for (const v of variants) {
+          const variant = {
+            ...v,
+            options: v.options.map((o, index) => ({
+              ...o,
+              option_id: optionIds[index],
+            })),
+          }
+
+          await productVariantService
+            .withTransaction(tx)
+            .create(newProd.id, variant)
+        }
+      }
+    }
+  })
 }
 
 export default t
