@@ -45,6 +45,9 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity of the Product Variant to ship.
  *                   type: integer
+ *           no_notification:
+ *             description: If set to true no notification will be send.
+ *             type: boolean
  * tags:
  *   - Order
  * responses:
@@ -65,7 +68,7 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
-      })
+      }) 
       .required(),
     return_shipping: Validator.object()
       .keys({
@@ -79,6 +82,7 @@ export default async (req, res) => {
       variant_id: Validator.string().required(),
       quantity: Validator.number().required(),
     }),
+    no_notification: Validator.boolean().optional()
   })
 
   const { value, error } = schema.validate(req.body)
@@ -134,6 +138,7 @@ export default async (req, res) => {
                   value.return_items,
                   value.additional_items,
                   value.return_shipping,
+                  no_notification,
                   { idempotency_key: idempotencyKey.idempotency_key }
                 )
 
