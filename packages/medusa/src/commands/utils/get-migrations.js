@@ -110,9 +110,11 @@ export default directory => {
   })
 
   const migrationDirs = []
-  const coreMigrations = path.resolve(__dirname, "../migrations")
+  const coreMigrations = path.resolve(
+    path.join(__dirname, "..", "..", "migrations")
+  )
 
-  migrationDirs.push(`${coreMigrations}/*.js`)
+  migrationDirs.push(path.join(coreMigrations, "*.js"))
 
   for (const p of resolved) {
     const exists = existsSync(`${p.resolve}/migrations`)
