@@ -338,6 +338,28 @@ describe("SwapService", () => {
 
         expect(returnService.create).toHaveBeenCalledTimes(1)
       })
+      
+      it.each([
+        [true, true],
+        [false, false],
+        [undefined, undefined]
+      ])( "passes correct notification to eventBus with %s", async (input, expected) => {
+
+        await swapService.create(
+          testOrder,
+          [{ item_id: IdMap.getId("line"), quantity: 1 }],
+          [{ variant_id: IdMap.getId("new-variant"), quantity: 1 }],
+          {
+            id: IdMap.getId("return-shipping"),
+            price: 20,
+          },
+          input
+        )
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(
+          expect.anything(),
+          {"id": undefined, "no_notification": expected})
+      })
     })
   })
 
@@ -918,4 +940,6 @@ describe("SwapService", () => {
       })
     })
   })
+
+
 })
