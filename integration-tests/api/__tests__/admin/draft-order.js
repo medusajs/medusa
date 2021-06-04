@@ -263,7 +263,7 @@ describe("/admin/draft-orders", () => {
 
       // register system payment for draft order
       const orderResponse = await api.post(
-        `/admin/draft-orders/test-draft-order/register-payment`,
+        `/admin/draft-orders/test-draft-order/pay`,
         {},
         {
           headers: {
@@ -431,12 +431,14 @@ describe("/admin/draft-orders", () => {
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
       await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "payment_provider"`);
       await manager.query(`DELETE FROM "payment_session"`);
       await manager.query(`UPDATE "payment" SET order_id=NULL`);
-      await manager.query(`DELETE FROM "order"`);
       await manager.query(`UPDATE "draft_order" SET order_id=NULL`);
+      await manager.query(`DELETE FROM "order"`);
       await manager.query(`DELETE FROM "draft_order"`);
       await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "payment"`);
@@ -473,6 +475,220 @@ describe("/admin/draft-orders", () => {
         object: "draft-order",
         deleted: true,
       });
+    });
+  });
+
+  describe("POST /admin/draft-orders/:id/line-items/:line_id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        await draftOrderSeeder(dbConnection, { status: "open" });
+      } catch (err) {
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
+      await manager.query(`DELETE FROM "payment_provider"`);
+      await manager.query(`DELETE FROM "payment_session"`);
+      await manager.query(`UPDATE "payment" SET order_id=NULL`);
+      await manager.query(`UPDATE "draft_order" SET order_id=NULL`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "draft_order"`);
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(`DELETE FROM "address"`);
+
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'de'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("updates a line item on the draft order", async () => {
+      const api = useApi();
+
+      const response = await api
+        .post(
+          "/admin/draft-orders/test-draft-order/line-items/test-item",
+          {
+            title: "Update title",
+            unit_price: 1000,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      const updatedDraftOrder = await api.get(
+        `/admin/draft-orders/test-draft-order`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      const item = updatedDraftOrder.data.draft_order.cart.items[0];
+
+      expect(item.title).toEqual("Update title");
+      expect(item.unit_price).toEqual(1000);
+    });
+
+    it("removes the line item, if quantity is 0", async () => {
+      const api = useApi();
+
+      const response = await api
+        .post(
+          "/admin/draft-orders/test-draft-order/line-items/test-item",
+          {
+            title: "Update title",
+            quantity: 0,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      const updatedDraftOrder = await api.get(
+        `/admin/draft-orders/test-draft-order`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      const items = updatedDraftOrder.data.draft_order.cart.items;
+
+      expect(items).toEqual([]);
+    });
+  });
+
+  describe("POST /admin/draft-orders/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        await draftOrderSeeder(dbConnection, { status: "open" });
+      } catch (err) {
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
+      await manager.query(`DELETE FROM "payment_provider"`);
+      await manager.query(`DELETE FROM "payment_session"`);
+      await manager.query(`UPDATE "payment" SET order_id=NULL`);
+      await manager.query(`UPDATE "draft_order" SET order_id=NULL`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "draft_order"`);
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(`DELETE FROM "address"`);
+
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'de'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("updates a line item on the draft order", async () => {
+      const api = useApi();
+
+      const response = await api
+        .post(
+          "/admin/draft-orders/test-draft-order",
+          {
+            email: "lebron@james.com",
+            billing_address: {
+              first_name: "lebron",
+              last_name: "james",
+              address_1: "hollywood boulevard 1",
+              city: "hollywood",
+              country_code: "us",
+              postal_code: "2100",
+            },
+            shipping_address: {
+              first_name: "lebron",
+              last_name: "james",
+              address_1: "hollywood boulevard 1",
+              city: "hollywood",
+              country_code: "us",
+              postal_code: "2100",
+            },
+            discounts: [{ code: "TEST" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      const updatedDraftOrder = await api.get(
+        `/admin/draft-orders/test-draft-order`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      const dorder = updatedDraftOrder.data.draft_order;
+
+      expect(dorder.cart.email).toEqual("lebron@james.com");
+      expect(dorder.cart.billing_address.first_name).toEqual("lebron");
+      expect(dorder.cart.shipping_address.last_name).toEqual("james");
+      expect(dorder.cart.discounts[0].code).toEqual("TEST");
     });
   });
 });

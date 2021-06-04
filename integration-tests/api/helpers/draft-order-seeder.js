@@ -200,8 +200,6 @@ module.exports = async (connection, data = {}) => {
     status: "pending",
   });
 
-  // await manager.save(cart);
-
   const draftOrder = manager.create(DraftOrder, {
     id: "test-draft-order",
     status: "awaiting",
@@ -223,6 +221,7 @@ module.exports = async (connection, data = {}) => {
     email: "oli@test.dk",
     region_id: "test-region",
     discounts: [],
+    ...data,
   });
 
   await manager.save(draftOrder);

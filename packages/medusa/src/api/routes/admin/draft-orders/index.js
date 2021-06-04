@@ -29,10 +29,15 @@ export default app => {
     middlewares.wrap(require("./create-line-item").default)
   )
 
+  route.post(
+    "/:id/line-items/:line_id",
+    middlewares.wrap(require("./update-line-item").default)
+  )
+
   route.post("/", middlewares.wrap(require("./create-draft-order").default))
 
   route.post(
-    "/:id/register-payment",
+    "/:id/pay",
     middlewares.wrap(require("./register-payment").default)
   )
 
