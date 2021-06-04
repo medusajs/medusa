@@ -16,9 +16,6 @@ import { defaultCartFields, defaultCartRelations, defaultFields } from "."
  *           region_id:
  *             type: string
  *             description: The id of the Region to create the Draft Order in.
- *           country_code:
- *             type: string
- *             description: "The 2 character ISO country code to create the Draft Order in."
  *           email:
  *             type: string
  *             description: "An email to be used on the Draft Order."
@@ -66,6 +63,11 @@ export default async (req, res) => {
     billing_address: Validator.object().optional(),
     shipping_address: Validator.object().optional(),
     discounts: Validator.array()
+      .items({
+        code: Validator.string(),
+      })
+      .optional(),
+    gift_cards: Validator.array()
       .items({
         code: Validator.string(),
       })
