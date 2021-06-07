@@ -248,7 +248,8 @@ class OrderService extends BaseService {
       query.relations = relations
     }
 
-    const [raw, count] = await orderRepo.findAndCount(query)
+    const raw = await orderRepo.findWithRelations(query.relations, query)
+    const count = await orderRepo.count(query)
     const orders = raw.map(r => this.decorateTotals_(r, totalsToSelect))
 
     return [orders, count]
