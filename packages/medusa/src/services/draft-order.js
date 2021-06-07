@@ -226,7 +226,6 @@ class DraftOrderService extends BaseService {
   /**
    * Creates a draft order.
    * @param {object} data - data to create draft order from
-   * @param {boolean} shippingRequired - needs shipping flag
    * @return {Promise<DraftOrder>} the created draft order
    */
   async create(data) {
@@ -348,6 +347,7 @@ class DraftOrderService extends BaseService {
       const draftOrder = await this.retrieve(doId)
 
       draftOrder.status = "completed"
+      draftOrder.completed_at = new Date()
       draftOrder.order_id = orderId
 
       await draftOrderRepo.save(draftOrder)

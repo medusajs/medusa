@@ -45,7 +45,9 @@ describe("/store/carts (draft-orders)", () => {
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
       await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "payment_provider"`);
       await manager.query(`DELETE FROM "payment_session"`);
       await manager.query(`UPDATE "payment" SET order_id=NULL`);
@@ -64,6 +66,7 @@ describe("/store/carts (draft-orders)", () => {
         `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'de'`
       );
       await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
     });
 
     it("completes a cart for a draft order thereby creating an order for the draft order", async () => {

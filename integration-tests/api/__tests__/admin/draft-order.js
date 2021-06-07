@@ -75,7 +75,7 @@ describe("/admin/draft-orders", () => {
 
       const payload = {
         email: "oli@test.dk",
-        shipping_address_id: "oli-shipping",
+        shipping_address: "oli-shipping",
         items: [
           {
             variant_id: "test-variant",
@@ -109,7 +109,7 @@ describe("/admin/draft-orders", () => {
 
       const payload = {
         email: "oli@test.dk",
-        shipping_address_id: "oli-shipping",
+        shipping_address: "oli-shipping",
         items: [
           {
             variant_id: "test-variant",
@@ -148,7 +148,7 @@ describe("/admin/draft-orders", () => {
 
       const payload = {
         email: "oli@test.dk",
-        shipping_address_id: "oli-shipping",
+        shipping_address: "oli-shipping",
         discounts: [{ code: "TEST" }],
         items: [
           {
@@ -302,6 +302,7 @@ describe("/admin/draft-orders", () => {
       );
       // expect draft order to be complete
       expect(updatedDraftOrder.data.draft_order.status).toEqual("completed");
+      expect(updatedDraftOrder.data.draft_order.completed_at).not.toEqual(null);
     });
   });
   describe("GET /admin/draft-orders", () => {

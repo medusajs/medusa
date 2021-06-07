@@ -66,10 +66,7 @@ export default async (req, res) => {
         .withTransaction(manager)
         .retrieve(id, { select: defaultFields, relations: ["cart"] })
 
-      if (
-        draftOrder.status === "completed" ||
-        draftOrder.status === "awaiting"
-      ) {
+      if (draftOrder.status === "completed") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "You are only allowed to update open draft orders"

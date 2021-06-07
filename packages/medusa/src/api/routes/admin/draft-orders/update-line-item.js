@@ -64,10 +64,7 @@ export default async (req, res) => {
           relations: ["cart", "cart.items"],
         })
 
-      if (
-        draftOrder.status === "completed" ||
-        draftOrder.status === "awaiting"
-      ) {
+      if (draftOrder.status === "completed") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "You are only allowed to update open draft orders"
