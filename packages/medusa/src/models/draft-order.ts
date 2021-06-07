@@ -58,7 +58,7 @@ export class DraftOrder {
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @Column({ type: "timestamptz", nullable: true })
   completed_at: Date
 
   @Column({ type: "jsonb", nullable: true })
