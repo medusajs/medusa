@@ -13,6 +13,10 @@ function formatRegistrationName(fn) {
 
   const rawname = parsed.name
   let namespace = parsedDir.name
+  if (namespace.startsWith("__")) {
+    const parsedCoreDir = path.parse(parsedDir.dir)
+    namespace = parsedCoreDir.name
+  }
 
   switch (namespace) {
     case "repositories":
