@@ -42,18 +42,6 @@ export default async (req, res) => {
       selector.q = req.query.q
     }
 
-    if ("payment_status" in req.query) {
-      selector.payment_status = req.query.payment_status
-    }
-
-    if ("status" in req.query) {
-      selector.status = req.query.status
-    }
-
-    if ("fulfillment_status" in req.query) {
-      selector.fulfillment_status = req.query.fulfillment_status
-    }
-
     let includeFields = []
     if ("fields" in req.query) {
       includeFields = req.query.fields.split(",")
