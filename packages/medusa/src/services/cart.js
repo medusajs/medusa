@@ -306,7 +306,12 @@ class CartService extends BaseService {
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
-      if (!data.shipping_address && !data.shipping_address_id) {
+      if (data.shipping_address && typeof data.shipping_address === `string`) {
+        const addr = await addressRepo.findOne(data.shipping_address)
+        data.shipping_address = addr
+      }
+
+      if (!data.shipping_address) {
         if (region.countries.length === 1) {
           // Preselect the country if the region only has 1
           // and create address entity
@@ -315,22 +320,11 @@ class CartService extends BaseService {
           })
         }
       } else {
-        if (data.shipping_address) {
-          if (!regCountries.includes(data.shipping_address.country_code)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "Shipping country not in region"
-            )
-          }
-        }
-        if (data.shipping_address_id) {
-          const addr = await addressRepo.findOne(data.shipping_address_id)
-          if (!regCountries.includes(addr.country_code)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "Shipping country not in region"
-            )
-          }
+        if (!regCountries.includes(data.shipping_address.country_code)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Shipping country not in region"
+          )
         }
       }
 
@@ -782,20 +776,32 @@ class CartService extends BaseService {
    * @param {object} address - the value to set the billing address to
    * @return {Promise} the result of the update operation
    */
-  async updateBillingAddress_(cart, address, addrRepo) {
-    address.country_code = address.country_code.toLowerCase()
-    if (cart.billing_address_id) {
-      const addr = await addrRepo.findOne({
-        where: { id: cart.billing_address_id },
+  async updateBillingAddress_(cart, addressOrId, addrRepo) {
+    if (typeof addressOrId === `string`) {
+      addressOrId = await addrRepo.findOne({
+        where: { id: addressOrId },
       })
+    }
 
-      await addrRepo.save({ ...addr, ...address })
+    addressOrId.country_code = addressOrId.country_code.toLowerCase()
+
+    if (addressOrId.id) {
+      cart.billing_address_id = addressOrId.id
+      cart.billing_address = addressOrId
     } else {
-      const created = addrRepo.create({
-        ...address,
-      })
+      if (cart.billing_address_id) {
+        const addr = await addrRepo.findOne({
+          where: { id: cart.billing_address_id },
+        })
 
-      cart.billing_address = created
+        await addrRepo.save({ ...addr, ...addressOrId })
+      } else {
+        const created = addrRepo.create({
+          ...addressOrId,
+        })
+
+        cart.billing_address = created
+      }
     }
   }
 
@@ -805,11 +811,19 @@ class CartService extends BaseService {
    * @param {object} address - the value to set the shipping address to
    * @return {Promise} the result of the update operation
    */
-  async updateShippingAddress_(cart, address, addrRepo) {
-    address.country_code = address.country_code.toLowerCase()
+  async updateShippingAddress_(cart, addressOrId, addrRepo) {
+    if (typeof addressOrId === `string`) {
+      addressOrId = await addrRepo.findOne({
+        where: { id: addressOrId },
+      })
+    }
+
+    addressOrId.country_code = addressOrId.country_code.toLowerCase()
 
     if (
-      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
+      !cart.region.countries.find(
+        ({ iso_2 }) => addressOrId.country_code === iso_2
+      )
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -817,18 +831,23 @@ class CartService extends BaseService {
       )
     }
 
-    if (cart.shipping_address_id) {
-      const addr = await addrRepo.findOne({
-        where: { id: cart.shipping_address_id },
-      })
-
-      await addrRepo.save({ ...addr, ...address })
+    if (addressOrId.id) {
+      cart.shipping_address = addressOrId
+      cart.shipping_address_id = addressOrId.id
     } else {
-      const created = addrRepo.create({
-        ...address,
-      })
+      if (cart.shipping_address_id) {
+        const addr = await addrRepo.findOne({
+          where: { id: cart.shipping_address_id },
+        })
 
-      cart.shipping_address = created
+        await addrRepo.save({ ...addr, ...addressOrId })
+      } else {
+        const created = addrRepo.create({
+          ...addressOrId,
+        })
+
+        cart.shipping_address = created
+      }
     }
   }
 

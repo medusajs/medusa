@@ -97,8 +97,12 @@ class LineItemService extends BaseService {
     const region = await this.regionService_.retrieve(regionId)
 
     let price
+    let shouldMerge = true
 
     if (config.unit_price && typeof config.unit_price !== `undefined`) {
+      // if custom unit_price, we ensure positive values
+      // and we choose to not merge the items
+      shouldMerge = false
       if (config.unit_price < 0) {
         price = 0
       } else {
@@ -121,7 +125,7 @@ class LineItemService extends BaseService {
       allow_discounts: !variant.product.is_giftcard,
       is_giftcard: variant.product.is_giftcard,
       metadata: config?.metadata || {},
-      should_merge: true,
+      should_merge: shouldMerge,
     }
 
     return toCreate

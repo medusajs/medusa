@@ -67,11 +67,6 @@ export default async (req, res) => {
         code: Validator.string(),
       })
       .optional(),
-    gift_cards: Validator.array()
-      .items({
-        code: Validator.string(),
-      })
-      .optional(),
     customer_id: Validator.string().optional(),
   })
 
@@ -86,7 +81,7 @@ export default async (req, res) => {
 
     const draftOrder = await draftOrderService.retrieve(id)
 
-    if (draftOrder.status === "completed" || draftOrder.status === "awaiting") {
+    if (draftOrder.status === "completed") {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "You are only allowed to update open draft orders"

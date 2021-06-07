@@ -75,8 +75,8 @@ export default async (req, res) => {
     email: Validator.string()
       .email()
       .optional(),
-    billing_address: Validator.object().optional(),
-    shipping_address: Validator.object().optional(),
+    billing_address: Validator.address().optional(),
+    shipping_address: Validator.address().optional(),
     gift_cards: Validator.array()
       .items({
         code: Validator.string(),

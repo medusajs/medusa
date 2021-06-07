@@ -12,6 +12,7 @@ const {
   DraftOrder,
   Discount,
   DiscountRule,
+  Payment,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -189,6 +190,19 @@ module.exports = async (connection, data = {}) => {
     metadata: { draft_order_id: "test-draft-order" },
   });
 
+  const pay = manager.create(Payment, {
+    id: "test-payment",
+    amount: 10000,
+    currency_code: "usd",
+    amount_refunded: 0,
+    provider_id: "test-pay",
+    data: {},
+  });
+
+  await manager.save(pay);
+
+  c.payment = pay;
+
   await manager.save(c);
 
   await manager.insert(PaymentSession, {
@@ -197,12 +211,12 @@ module.exports = async (connection, data = {}) => {
     provider_id: "test-pay",
     is_selected: true,
     data: {},
-    status: "pending",
+    status: "authorized",
   });
 
   const draftOrder = manager.create(DraftOrder, {
     id: "test-draft-order",
-    status: "awaiting",
+    status: "open",
     display_id: 4,
     cart_id: "test-cart",
     customer_id: "oli-test",
