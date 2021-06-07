@@ -25,12 +25,6 @@ import { defaultFields, defaultRelations } from "."
  *             description: "The Address to be used for shipping."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
- *           billing_address_id:
- *             description: The id of an existing billing Address
- *             type: string
- *           shipping_address_id:
- *             description: The id of an existing shipping Address
- *             type: string
  *           items:
  *             description: The Line Items that have been received.
  *             type: array
@@ -98,15 +92,13 @@ import { defaultFields, defaultRelations } from "."
 export default async (req, res) => {
   const schema = Validator.object().keys({
     status: Validator.string()
-      .valid("open", "awaiting", "completed")
+      .valid("open", "completed")
       .optional(),
     email: Validator.string()
       .email()
       .required(),
     billing_address: Validator.address().optional(),
     shipping_address: Validator.address().optional(),
-    billing_address_id: Validator.string().optional(),
-    shipping_address_id: Validator.string().optional(),
     items: Validator.array()
       .items({
         variant_id: Validator.string()

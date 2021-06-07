@@ -2,19 +2,29 @@ import Joi from "joi"
 
 Joi.objectId = require("joi-objectid")(Joi)
 
+// if address is a string, we assume that it is an id
 Joi.address = () => {
-  return Joi.object().keys({
-    first_name: Joi.string().required(),
-    last_name: Joi.string().required(),
-    address_1: Joi.string().required(),
-    address_2: Joi.string().allow(null),
-    city: Joi.string().required(),
-    country_code: Joi.string().required(),
-    province: Joi.string().allow(null),
-    postal_code: Joi.string().required(),
-    phone: Joi.string().optional(),
-    metadata: Joi.object().allow(null),
-  })
+  return Joi.alternatives().try(
+    Joi.string(),
+    Joi.object().keys({
+      first_name: Joi.string().required(),
+      last_name: Joi.string().required(),
+      address_1: Joi.string().required(),
+      address_2: Joi.string()
+        .allow(null, "")
+        .optional(),
+      city: Joi.string().required(),
+      country_code: Joi.string().required(),
+      province: Joi.string()
+        .allow(null, "")
+        .optional(),
+      postal_code: Joi.string().required(),
+      phone: Joi.string().optional(),
+      metadata: Joi.object()
+        .allow(null, {})
+        .optional(),
+    })
+  )
 }
 
 Joi.dateFilter = () => {

@@ -17,7 +17,6 @@ import { Order } from "./order"
 
 enum DraftOrderStatus {
   OPEN = "open",
-  AWAITING = "awaiting",
   COMPLETED = "completed",
 }
 
@@ -59,6 +58,9 @@ export class DraftOrder {
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
+  @UpdateDateColumn({ type: "timestamptz" })
+  completed_at: Date
+
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
@@ -85,7 +87,6 @@ export class DraftOrder {
  *     type: string
  *     enum:
  *       - open
- *       - awaiting
  *       - completed
  *   display_id:
  *     type: string
@@ -109,6 +110,9 @@ export class DraftOrder {
  *     type: string
  *     format: date-time
  *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   completed_at:
  *     type: string
  *     format: date-time
  *   metadata:
