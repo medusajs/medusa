@@ -39,6 +39,7 @@ describe("POST /admin/shipping-options", () => {
       expect(ShippingOptionServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ShippingOptionServiceMock.create).toHaveBeenCalledWith({
         is_return: false,
+        admin_only: false,
         name: "Test option",
         region_id: "testregion",
         provider_id: "test_provider",

@@ -418,6 +418,7 @@ class ShippingProfileService extends BaseService {
     const rawOpts = await this.shippingOptionService_.list(
       {
         profile_id: profileIds,
+        admin_only: false,
       },
       { relations: ["requirements", "profile"] }
     )

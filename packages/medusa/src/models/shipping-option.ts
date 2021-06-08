@@ -70,6 +70,9 @@ export class ShippingOption {
   @Column({ default: false })
   is_return: boolean
 
+  @Column({ default: false })
+  admin_only: boolean
+
   @OneToMany(
     () => ShippingOptionRequirement,
     req => req.shipping_option,
