@@ -23,6 +23,9 @@ module.exports = {
       }
     }
 
+    // Checks if there is already a token from a previous log in; this is
+    // necessary to redirect the customer to the page where local linking is
+    // done
     const tok = getToken()
     if (!tok) {
       console.log(
@@ -31,6 +34,9 @@ module.exports = {
       process.exit(1)
     }
 
+    // Get the currenty logged in user; we will be using the Cloud user id to
+    // create a user in the local DB with the same user id; allowing you to
+    // authenticate to the local API.
     const { data: auth } = await axios
       .get(`${apiHost}/auth`, {
         headers: {
@@ -42,6 +48,7 @@ module.exports = {
         process.exit(1)
       })
 
+    // Create the user with the user id
     if (!argv.skipLocalUser && auth.user) {
       const localCmd = resolveLocalCommand(`user`)
       await localCmd({
@@ -51,10 +58,9 @@ module.exports = {
       })
     }
 
-    console.log(auth.user)
-
+    // This step sets the Cloud link by opening a browser
     const bo = await open(
-      `${appHost}/local-link?lurl=http://localhost:4000&ltoken=${auth.user.id}`,
+      `${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`,
       {
         app: "browser",
         wait: false,
@@ -63,7 +69,7 @@ module.exports = {
     bo.on("error", err => {
       console.warn(err)
       console.log(
-        `Could not open browser go to: ${loginHost}${urls.browser_url}`
+        `Could not open browser go to: ${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`
       )
     })
   },

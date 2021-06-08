@@ -1,6 +1,9 @@
 const axios = require("axios").default
 const { getToken } = require("../util/token-store")
 
+/**
+ * Fetches the locally logged in user.
+ */
 module.exports = {
   whoami: async argv => {
     const apiHost =

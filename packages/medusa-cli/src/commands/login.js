@@ -4,6 +4,11 @@ const inquirer = require("inquirer")
 
 const { setToken } = require("../util/token-store")
 
+/**
+ * The login command allows the CLI to keep track of Cloud users; the command
+ * makes a cli-login request to the cloud server and keeps an open connection
+ * until the user has authenticated via the Medusa Cloud website.
+ */
 module.exports = {
   login: async _ => {
     const apiHost =
@@ -54,6 +59,8 @@ module.exports = {
       }
       const auth = await fetchAuth()
 
+      // This is kept alive for several seconds until the user has authenticated
+      // in the browser.
       const { data: user } = await axios
         .get(`${apiHost}/auth`, {
           headers: {
