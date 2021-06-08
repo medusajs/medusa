@@ -3,6 +3,7 @@ const {
   Customer,
   MoneyAmount,
   ShippingOption,
+  ShippingOptionRequirement,
   Product,
   ProductVariant,
   Region,
@@ -164,6 +165,24 @@ module.exports = async (connection, data = {}) => {
     price_type: "flat_rate",
     amount: 1000,
     data: {},
+  });
+
+  await manager.insert(ShippingOption, {
+    id: "test-option-req",
+    name: "test-option-req",
+    provider_id: "test-ful",
+    region_id: "test-region",
+    profile_id: defaultProfile.id,
+    price_type: "flat_rate",
+    amount: 1000,
+    data: {},
+  });
+
+  await manager.insert(ShippingOptionRequirement, {
+    id: "option-req",
+    shipping_option_id: "test-option-req",
+    type: "min_subtotal",
+    amount: 10,
   });
 
   const c = manager.create(Cart, {
