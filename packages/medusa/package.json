@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.23",
+  "version": "1.1.20-cloud-cli.14+43a3e56",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "repository": {
@@ -21,6 +21,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
+    "medusa-interfaces": "^1.1.10",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2"
@@ -77,5 +78,5 @@
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"
+  "gitHead": "43a3e5680387cdeddb0d92a1bb0762235f15ca9a"
 }
