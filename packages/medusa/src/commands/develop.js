@@ -1,10 +1,6 @@
 import { spawn, execSync } from "child_process"
-import mongoose from "mongoose"
 import chokidar from "chokidar"
-import express from "express"
-import path from "path"
 
-import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
 export default async function({ port, directory }) {
