@@ -88,6 +88,7 @@ describe("DraftOrderService", () => {
           ...data,
         })
       ),
+      addShippingMethod: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -156,22 +157,11 @@ describe("DraftOrderService", () => {
         type: "draft_order",
       })
 
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
-        1
-      )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
+      expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)
+      expect(cartService.addShippingMethod).toHaveBeenCalledWith(
+        "test-cart",
         "test-option",
-        {},
-        {
-          cart: {
-            id: "test-cart",
-            region_id: "test-region",
-            shipping_address_id: "test-shipping",
-            billing_address_id: "test-billing",
-            customer_id: "test-customer",
-            type: "draft_order",
-          },
-        }
+        {}
       )
 
       expect(lineItemService.generate).toHaveBeenCalledTimes(1)
@@ -185,7 +175,6 @@ describe("DraftOrderService", () => {
       expect(lineItemService.create).toHaveBeenCalledTimes(1)
       expect(lineItemService.create).toHaveBeenCalledWith({
         cart_id: "test-cart",
-        has_shipping: true,
         title: "test-item",
         variant_id: "test-variant",
       })
