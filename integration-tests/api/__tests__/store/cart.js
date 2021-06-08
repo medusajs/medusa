@@ -20,6 +20,7 @@ describe("/store/carts", () => {
     await manager.query(`DELETE FROM "shipping_method"`);
     await manager.query(`DELETE FROM "shipping_option"`);
     await manager.query(`DELETE FROM "cart"`);
+    await manager.query(`DELETE FROM "address"`);
     await manager.query(`DELETE FROM "customer"`);
     await manager.query(
       `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
@@ -140,6 +141,41 @@ describe("/store/carts", () => {
         customer_id: "test-customer-2",
       });
 
+      expect(response.status).toEqual(200);
+    });
+
+    it("updates address using string id", async () => {
+      const api = useApi();
+
+      const response = await api.post("/store/carts/test-cart", {
+        billing_address: "test-general-address",
+        shipping_address: "test-general-address",
+      });
+
+      expect(response.data.cart.shipping_address_id).toEqual(
+        "test-general-address"
+      );
+      expect(response.data.cart.billing_address_id).toEqual(
+        "test-general-address"
+      );
+      expect(response.status).toEqual(200);
+    });
+
+    it("updates address", async () => {
+      const api = useApi();
+
+      const response = await api.post("/store/carts/test-cart", {
+        shipping_address: {
+          first_name: "clark",
+          last_name: "kent",
+          address_1: "5th avenue",
+          city: "nyc",
+          country_code: "us",
+          postal_code: "something",
+        },
+      });
+
+      expect(response.data.cart.shipping_address.first_name).toEqual("clark");
       expect(response.status).toEqual(200);
     });
 
