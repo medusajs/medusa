@@ -29,12 +29,12 @@ export class OrderRepository extends Repository<Order> {
         })
       })
     ).then(flatten)
+
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, entityAndRelations =>
-      merge({}, ...entityAndRelations)
-    )
+
+    return map(entities, e => merge({}, ...entitiesAndRelationsById[e.id]))
   }
 
   public async findOneWithRelations(
