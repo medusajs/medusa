@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-cli",
-  "version": "1.1.8",
+  "version": "1.1.5-cloud-cli.38+43a3e56",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -38,15 +38,21 @@
     "@babel/polyfill": "^7.8.7",
     "@babel/runtime": "^7.9.6",
     "@hapi/joi": "^16.1.8",
+    "axios": "^0.21.1",
     "chalk": "^4.0.0",
+    "configstore": "5.0.1",
     "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
     "fs-exists-cached": "^1.0.0",
+    "inquirer": "^8.0.0",
     "joi-objectid": "^3.0.1",
     "meant": "^1.0.1",
     "medusa-core-utils": "^0.1.27",
+    "netrc-parser": "^3.1.6",
+    "open": "^8.0.6",
     "regenerator-runtime": "^0.13.5",
     "resolve-cwd": "^3.0.0",
     "yargs": "^15.3.1"
   },
-  "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"
+  "gitHead": "43a3e5680387cdeddb0d92a1bb0762235f15ca9a"
 }
