@@ -272,22 +272,6 @@ class DraftOrderService extends BaseService {
           id: result.id,
         })
 
-      let shippingMethods = []
-
-      for (const method of shipping_methods) {
-        const m = await this.shippingOptionService_
-          .withTransaction(manager)
-          .createShippingMethod(method.option_id, method.data, {
-            cart: createdCart,
-          })
-
-        shippingMethods.push(m)
-      }
-
-      const profiles = shippingMethods.map(
-        ({ shipping_option }) => shipping_option.profile_id
-      )
-
       for (const item of items) {
         if (item.variant_id) {
           const line = await this.lineItemService_
@@ -297,16 +281,8 @@ class DraftOrderService extends BaseService {
               unit_price: item.unit_price,
             })
 
-          const variant = await this.productVariantService_
-            .withTransaction(manager)
-            .retrieve(item.variant_id)
-          const itemProfile = variant.product.profile_id
-
-          const hasShipping = profiles.includes(itemProfile)
-
           await this.lineItemService_.withTransaction(manager).create({
             cart_id: createdCart.id,
-            has_shipping: hasShipping,
             ...line,
           })
         } else {
@@ -327,6 +303,12 @@ class DraftOrderService extends BaseService {
             quantity: item.quantity,
           })
         }
+      }
+
+      for (const method of shipping_methods) {
+        await this.cartService_
+          .withTransaction(manager)
+          .addShippingMethod(createdCart.id, method.option_id, method.data)
       }
 
       return result
