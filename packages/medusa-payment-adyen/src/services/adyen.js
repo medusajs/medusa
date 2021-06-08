@@ -84,9 +84,6 @@ class AdyenService extends BaseService {
   validateNotification(notification) {
     const validator = new hmacValidator()
 
-    console.log(notification)
-    console.log(this.options_.notification_hmac)
-
     const validated = validator.validateHMAC(
       notification,
       this.options_.notification_hmac
