@@ -44,6 +44,7 @@ describe("/store/carts (draft-orders)", () => {
       await manager.query(`DELETE FROM "product_variant"`);
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "shipping_option_requirement"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`UPDATE "discount" SET rule_id=NULL`);
       await manager.query(`DELETE FROM "discount"`);
