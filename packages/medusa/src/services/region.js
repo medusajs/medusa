@@ -57,6 +57,7 @@ class RegionService extends BaseService {
     const cloned = new RegionService({
       manager: transactionManager,
       regionRepository: this.regionRepository_,
+      currencyRepository: this.currencyRepository_,
       countryRepository: this.countryRepository_,
       storeService: this.storeService_,
       paymentProviderRepository: this.paymentProviderRepository_,
@@ -114,7 +115,7 @@ class RegionService extends BaseService {
         regionObject[key] = value
       }
 
-      const created = await regionRepository.create(regionObject)
+      const created = regionRepository.create(regionObject)
       const result = await regionRepository.save(created)
       return result
     })
@@ -253,7 +254,9 @@ class RegionService extends BaseService {
    * @param {string} currencyCode - an ISO currency code
    */
   async validateCurrency_(currencyCode) {
-    const store = await this.storeService_.retrieve(["currencies"])
+    const store = await this.storeService_
+      .withTransaction(this.transactionManager_)
+      .retrieve(["currencies"])
 
     const storeCurrencies = store.currencies.map(curr => curr.code)
 
