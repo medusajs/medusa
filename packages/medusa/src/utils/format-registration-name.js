@@ -19,6 +19,8 @@ function formatRegistrationName(fn) {
   }
 
   switch (namespace) {
+    // We strip the last character when adding the type of registration
+    // this is a trick for plural "ies"
     case "repositories":
       namespace = "repositorys"
       break
