@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.22](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.23...@medusajs/medusa@1.1.22) (2021-06-09)
+
+
+### Bug Fixes
+
+* babel ([813a1c9](https://github.com/medusajs/medusa/commit/813a1c95a86139a3293c6f8d8bc13f4eb76ef96e))
+* bearer user id login development ([df50186](https://github.com/medusajs/medusa/commit/df5018669ce7b727798234e74cda30de262bbb91))
+* common registration name formatter ([f4f67a3](https://github.com/medusajs/medusa/commit/f4f67a376dcb6a4d6734c227ba3c2a9e3353a5ce))
+* migration dirs ([57a2de6](https://github.com/medusajs/medusa/commit/57a2de64b209544c39af5a7dae43f1230cf36058))
+* migration dirs ([e764d8e](https://github.com/medusajs/medusa/commit/e764d8e465fb2ce1a2330cc55097d15dde647074))
+* order order ([245ccdc](https://github.com/medusajs/medusa/commit/245ccdc4774965cdd27d4dbdb5fbb084c8066c66))
+* PR ([e20ba1e](https://github.com/medusajs/medusa/commit/e20ba1e4faa8d13b3fc35c7c2fe8597c6ec8f41c))
+* setup to allow login to Medusa Cloud ([bbd2f02](https://github.com/medusajs/medusa/commit/bbd2f02d549330df160c76cf1f4e4d5e7d08f246))
+* test name registration ([e59dc3b](https://github.com/medusajs/medusa/commit/e59dc3b6c85db369c0b7dd3d097578fc2b527431))
+* wip ([42d9a48](https://github.com/medusajs/medusa/commit/42d9a487ff1239f32a00bf47df3218ff3cf03217))
+* **medusa:** Add free shipping functionality ([#241](https://github.com/medusajs/medusa/issues/241)) ([fb0613d](https://github.com/medusajs/medusa/commit/fb0613d3cbbfeb858b4a4a0f4da859b9692379bd))
+
+
+### Features
+
+* **cli:** adds seed script ([5136c77](https://github.com/medusajs/medusa/commit/5136c7740137afcda52393131ef931eb76ea9f5d))
+* allow custom address on claims ([586f4d8](https://github.com/medusajs/medusa/commit/586f4d884c4b7b5b84fbd1f4dbf5c6fb2ffccf50))
+* **medusa:** Swaps on swaps ([#229](https://github.com/medusajs/medusa/issues/229)) ([f8f1f57](https://github.com/medusajs/medusa/commit/f8f1f57fa1bcdc6f7ae4183e657a07e2641b1345))
+
+
+
+
+
 ## [1.1.20](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.23...@medusajs/medusa@1.1.20) (2021-06-08)
 
 
