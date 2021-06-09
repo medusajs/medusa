@@ -417,4 +417,6 @@ export class Order {
  *     type: integer
  *   paid_total:
  *     type: integer
+ *   no_notification:
+ *     type: boolean
  */
