@@ -2,6 +2,8 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orders } from "../../../../../services/__mocks__/order"
 import { ReturnService } from "../../../../../services/__mocks__/return"
+import { EventBusServiceMock } from "../../../../../services/__mocks__/event-bus"
+import { OrderServiceMock } from "../../../../../services/__mocks__/order"
 
 describe("POST /admin/orders/:id/return", () => {
   describe("successfully returns full order", () => {
@@ -21,6 +23,7 @@ describe("POST /admin/orders/:id/return", () => {
               },
             ],
             refund: 10,
+            no_notification: true,
           },
           adminSession: {
             jwt: {
@@ -47,6 +50,7 @@ describe("POST /admin/orders/:id/return", () => {
           },
         ],
         refund_amount: 10,
+        no_notification: true,
         shipping_method: undefined,
       })
     })
@@ -69,6 +73,7 @@ describe("POST /admin/orders/:id/return", () => {
               },
             ],
             refund: -1,
+            no_notification: true,
           },
           adminSession: {
             jwt: {
@@ -95,6 +100,7 @@ describe("POST /admin/orders/:id/return", () => {
           },
         ],
         refund_amount: 0,
+        no_notification: true,
         shipping_method: undefined,
       })
     })
@@ -118,6 +124,7 @@ describe("POST /admin/orders/:id/return", () => {
             ],
             refund: -1,
           },
+          no_notification: true,
           adminSession: {
             jwt: {
               userId: IdMap.getId("admin_user"),
@@ -143,6 +150,7 @@ describe("POST /admin/orders/:id/return", () => {
           },
         ],
         refund_amount: 0,
+        no_notification: true,
         shipping_method: undefined,
       })
     })
@@ -165,6 +173,7 @@ describe("POST /admin/orders/:id/return", () => {
               },
             ],
             refund: 100,
+            no_notification: true,
             return_shipping: {
               option_id: "opt_1234",
               price: 12,
@@ -195,6 +204,7 @@ describe("POST /admin/orders/:id/return", () => {
           },
         ],
         refund_amount: 100,
+        no_notification: true,
         shipping_method: {
           option_id: "opt_1234",
           price: 12,
@@ -203,6 +213,78 @@ describe("POST /admin/orders/:id/return", () => {
 
       expect(ReturnService.fulfill).toHaveBeenCalledTimes(1)
       expect(ReturnService.fulfill).toHaveBeenCalledWith("return")
+    })
+  })
+
+  describe("the api call overrides notification settings of order", () => {
+    it("eventBus is called with the proper no notification feature", async () => {
+      jest.clearAllMocks()
+      const subject = await request(
+        "POST",
+        `/admin/orders/${IdMap.getId("test-order")}/return`,
+        {
+          payload: {
+            items: [
+              {
+                item_id: IdMap.getId("existingLine"),
+                quantity: 10,
+              },
+            ],
+            refund: 100,
+            return_shipping: {
+              option_id: "opt_1234",
+              price: 12,
+            },
+            no_notification: false,
+          },
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
+          },
+        }
+      )
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(expect.any(String),{
+        id: expect.any(String), 
+        no_notification: false, 
+        return_id: expect.any(String)
+      })
+    })
+  })
+
+  describe("the api call inherits notification settings of order", () => {
+    it("eventBus is called with the proper no notification feature", async () => {
+      jest.clearAllMocks()
+      await request(
+        "POST",
+        `/admin/orders/${IdMap.getId("test-order")}/return`,
+        {
+          payload: {
+            items: [
+              {
+                item_id: IdMap.getId("existingLine"),
+                quantity: 10,
+              },
+            ],
+            refund: 100,
+            return_shipping: {
+              option_id: "opt_1234",
+              price: 12,
+            },
+          },
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
+          },
+        }
+      )
+
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(expect.any(String),{
+        id: expect.any(String), 
+        no_notification: true, 
+        return_id: expect.any(String)
+      })
     })
   })
 })
