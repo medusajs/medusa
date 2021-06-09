@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/medusajs/medusa/compare/babel-preset-medusa-package@1.1.5...babel-preset-medusa-package@1.1.6) (2021-06-09)
+
+**Note:** Version bump only for package babel-preset-medusa-package
+
+
+
+
+
 ## [1.1.5](https://github.com/medusajs/medusa/compare/babel-preset-medusa-package@1.1.4...babel-preset-medusa-package@1.1.5) (2021-06-09)
 
 **Note:** Version bump only for package babel-preset-medusa-package
