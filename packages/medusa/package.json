@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.23",
+  "version": "1.1.22-next.12+245ccdc",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "repository": {
@@ -14,22 +14,14 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/node": "^7.7.4",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-proposal-decorators": "^7.12.1",
-    "@babel/plugin-transform-classes": "^7.9.5",
-    "@babel/plugin-transform-instanceof": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.5",
-    "@babel/preset-typescript": "^7.12.7",
-    "@babel/register": "^7.7.4",
-    "@babel/runtime": "^7.7.6",
-    "babel-preset-medusa-package": "^1.1.3",
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-typescript": "^7.13.0",
+    "babel-preset-medusa-package": "^1.1.5-next.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
+    "medusa-interfaces": "^1.1.12-next.0",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2"
@@ -67,8 +59,8 @@
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.1.9",
-    "medusa-test-utils": "^1.1.12",
+    "medusa-core-utils": "^1.1.11-next.0",
+    "medusa-test-utils": "^1.1.14-next.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
@@ -86,5 +78,5 @@
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"
+  "gitHead": "245ccdc4774965cdd27d4dbdb5fbb084c8066c66"
 }

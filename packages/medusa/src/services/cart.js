@@ -1,7 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { defaultFields, defaultRelations } from "../api/routes/store/carts"
 
 /**
  * Provides layer to manipulate carts.
@@ -307,7 +306,12 @@ class CartService extends BaseService {
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
-      if (!data.shipping_address && !data.shipping_address_id) {
+      if (data.shipping_address && typeof data.shipping_address === `string`) {
+        const addr = await addressRepo.findOne(data.shipping_address)
+        data.shipping_address = addr
+      }
+
+      if (!data.shipping_address) {
         if (region.countries.length === 1) {
           // Preselect the country if the region only has 1
           // and create address entity
@@ -316,22 +320,11 @@ class CartService extends BaseService {
           })
         }
       } else {
-        if (data.shipping_address) {
-          if (!regCountries.includes(data.shipping_address.country_code)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "Shipping country not in region"
-            )
-          }
-        }
-        if (data.shipping_address_id) {
-          const addr = await addressRepo.findOne(data.shipping_address_id)
-          if (!regCountries.includes(addr.country_code)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "Shipping country not in region"
-            )
-          }
+        if (!regCountries.includes(data.shipping_address.country_code)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Shipping country not in region"
+          )
         }
       }
 
@@ -574,6 +567,49 @@ class CartService extends BaseService {
     })
   }
 
+  /**
+   * Ensures shipping total on cart is correct in regards to a potential free
+   * shipping discount
+   * If a free shipping is present, we set shipping methods price to 0
+   * if a free shipping was present, we set shipping methods to original amount
+   * @param {Cart} cart - the the cart to adjust free shipping for
+   * @param {boolean} shouldAdd - flag to indicate, if we should add or remove
+   */
+  async adjustFreeShipping_(cart, shouldAdd) {
+    if (cart.shipping_methods?.length) {
+      // if any free shipping discounts, we ensure to update shipping method amount
+      if (shouldAdd) {
+        await Promise.all(
+          cart.shipping_methods.map(async sm => {
+            const smRepo = this.manager_.getCustomRepository(
+              this.shippingMethodRepository_
+            )
+
+            const method = await smRepo.findOne({ where: { id: sm.id } })
+
+            if (method) {
+              method.price = 0
+              await smRepo.save(method)
+            }
+          })
+        )
+      } else {
+        await Promise.all(
+          cart.shipping_methods.map(async sm => {
+            const smRepo = this.manager_.getCustomRepository(
+              this.shippingMethodRepository_
+            )
+
+            // if free shipping discount is removed, we adjust the shipping
+            // back to its original amount
+            sm.price = sm.shipping_option.amount
+            await smRepo.save(sm)
+          })
+        )
+      }
+    }
+  }
+
   async update(cartId, update) {
     return this.atomicPhase_(async manager => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
@@ -627,9 +663,28 @@ class CartService extends BaseService {
       }
 
       if ("discounts" in update) {
+        const previousDiscounts = cart.discounts
         cart.discounts = []
+
         for (const { code } of update.discounts) {
-          await this.applyDiscount_(cart, code)
+          await this.applyDiscount(cart, code)
+        }
+
+        const hasFreeShipping = cart.discounts.some(
+          ({ rule }) => rule.type === "free_shipping"
+        )
+
+        // if we previously had a free shipping discount and then removed it,
+        // we need to update shipping methods to original price
+        if (
+          previousDiscounts.some(({ rule }) => rule.type === "free_shipping") &&
+          !hasFreeShipping
+        ) {
+          await this.adjustFreeShipping_(cart, false)
+        }
+
+        if (hasFreeShipping) {
+          await this.adjustFreeShipping_(cart, true)
         }
       }
 
@@ -721,20 +776,32 @@ class CartService extends BaseService {
    * @param {object} address - the value to set the billing address to
    * @return {Promise} the result of the update operation
    */
-  async updateBillingAddress_(cart, address, addrRepo) {
-    address.country_code = address.country_code.toLowerCase()
-    if (cart.billing_address_id) {
-      const addr = await addrRepo.findOne({
-        where: { id: cart.billing_address_id },
+  async updateBillingAddress_(cart, addressOrId, addrRepo) {
+    if (typeof addressOrId === `string`) {
+      addressOrId = await addrRepo.findOne({
+        where: { id: addressOrId },
       })
+    }
 
-      await addrRepo.save({ ...addr, ...address })
+    addressOrId.country_code = addressOrId.country_code.toLowerCase()
+
+    if (addressOrId.id) {
+      cart.billing_address_id = addressOrId.id
+      cart.billing_address = addressOrId
     } else {
-      const created = addrRepo.create({
-        ...address,
-      })
+      if (cart.billing_address_id) {
+        const addr = await addrRepo.findOne({
+          where: { id: cart.billing_address_id },
+        })
 
-      cart.billing_address = created
+        await addrRepo.save({ ...addr, ...addressOrId })
+      } else {
+        const created = addrRepo.create({
+          ...addressOrId,
+        })
+
+        cart.billing_address = created
+      }
     }
   }
 
@@ -744,11 +811,19 @@ class CartService extends BaseService {
    * @param {object} address - the value to set the shipping address to
    * @return {Promise} the result of the update operation
    */
-  async updateShippingAddress_(cart, address, addrRepo) {
-    address.country_code = address.country_code.toLowerCase()
+  async updateShippingAddress_(cart, addressOrId, addrRepo) {
+    if (typeof addressOrId === `string`) {
+      addressOrId = await addrRepo.findOne({
+        where: { id: addressOrId },
+      })
+    }
+
+    addressOrId.country_code = addressOrId.country_code.toLowerCase()
 
     if (
-      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
+      !cart.region.countries.find(
+        ({ iso_2 }) => addressOrId.country_code === iso_2
+      )
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -756,18 +831,23 @@ class CartService extends BaseService {
       )
     }
 
-    if (cart.shipping_address_id) {
-      const addr = await addrRepo.findOne({
-        where: { id: cart.shipping_address_id },
-      })
-
-      await addrRepo.save({ ...addr, ...address })
+    if (addressOrId.id) {
+      cart.shipping_address = addressOrId
+      cart.shipping_address_id = addressOrId.id
     } else {
-      const created = addrRepo.create({
-        ...address,
-      })
+      if (cart.shipping_address_id) {
+        const addr = await addrRepo.findOne({
+          where: { id: cart.shipping_address_id },
+        })
 
-      cart.shipping_address = created
+        await addrRepo.save({ ...addr, ...addressOrId })
+      } else {
+        const created = addrRepo.create({
+          ...addressOrId,
+        })
+
+        cart.shipping_address = created
+      }
     }
   }
 
@@ -805,7 +885,7 @@ class CartService extends BaseService {
    * @param {string} discountCode - the discount code
    * @return {Promise} the result of the update operation
    */
-  async applyDiscount_(cart, discountCode) {
+  async applyDiscount(cart, discountCode) {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
       "rule",
       "regions",
@@ -890,8 +970,13 @@ class CartService extends BaseService {
   async removeDiscount(cartId, discountCode) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
-        relations: ["discounts", "payment_sessions"],
+        relations: ["discounts", "payment_sessions", "shipping_methods"],
       })
+
+      if (cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+        await this.adjustFreeShipping_(cart, false)
+      }
+
       cart.discounts = cart.discounts.filter(d => d.code !== discountCode)
 
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
@@ -1020,6 +1105,7 @@ class CartService extends BaseService {
 
       // The region must have the provider id in its providers array
       if (
+        providerId !== "system" &&
         !(
           cart.region.payment_providers.length &&
           cart.region.payment_providers.find(({ id }) => providerId === id)
@@ -1232,6 +1318,7 @@ class CartService extends BaseService {
         select: ["subtotal"],
         relations: [
           "shipping_methods",
+          "discounts",
           "shipping_methods.shipping_option",
           "items",
           "items.variant",
@@ -1267,7 +1354,15 @@ class CartService extends BaseService {
         })
       }
 
-      const result = await this.retrieve(cartId)
+      const result = await this.retrieve(cartId, {
+        relations: ["discounts", "shipping_methods"],
+      })
+
+      // if cart has freeshipping, adjust price
+      if (result.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+        await this.adjustFreeShipping_(result, true)
+      }
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
