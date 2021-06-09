@@ -130,7 +130,7 @@ export class Swap {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
-  @Column({ type: "boolean"})
+  @Column({ type: "boolean", nullable: true})
   no_notification: Boolean
 
   @Column({ type: "jsonb", nullable: true })
