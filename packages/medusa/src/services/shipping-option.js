@@ -254,6 +254,10 @@ class ShippingOptionService extends BaseService {
         toCreate.claim_order_id = config.claim_order_id
       }
 
+      if (config.draft_order_id) {
+        toCreate.draft_order_id = config.draft_order_id
+      }
+
       const method = await methodRepo.create(toCreate)
 
       const created = await methodRepo.save(method)
@@ -319,9 +323,11 @@ class ShippingOptionService extends BaseService {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = await optionRepo.create(data)
 
-      const region = await this.regionService_.retrieve(option.region_id, {
-        relations: ["fulfillment_providers"],
-      })
+      const region = await this.regionService_
+        .withTransaction(manager)
+        .retrieve(option.region_id, {
+          relations: ["fulfillment_providers"],
+        })
 
       if (
         !region.fulfillment_providers.find(
@@ -462,6 +468,10 @@ class ShippingOptionService extends BaseService {
 
       if ("name" in update) {
         option.name = update.name
+      }
+
+      if ("admin_only" in update) {
+        option.admin_only = update.admin_only
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)

@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-medusa-package",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "author": "Sebastian Rindom <sebastian@mrbltech.com>",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-proposal-decorators": "^7.12.1",
-    "@babel/plugin-proposal-optional-chaining": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.2",
     "@babel/plugin-transform-classes": "^7.12.1",
     "@babel/plugin-transform-instanceof": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.1",

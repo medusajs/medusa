@@ -64,6 +64,7 @@ export default async (req, res) => {
         })
       )
       .optional(),
+    admin_only: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
   })
 

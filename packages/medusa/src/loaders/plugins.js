@@ -16,6 +16,8 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 
+import formatRegistrationName from "../utils/format-registration-name"
+
 /**
  * Registers all services in the services directory
  */
@@ -358,29 +360,6 @@ function registerModels(pluginDetails, container) {
       }
     })
   })
-}
-
-/**
- * Formats a filename into the correct container resolution name.
- * Names are camelCase formatted and namespaced by the folder i.e:
- * models/example-person -> examplePersonModel
- * @param {string} fn - the full path of the file
- * @return {string} the formatted name
- */
-function formatRegistrationName(fn) {
-  const descriptor = fn.split(".")[0]
-  const splat = descriptor.split("/")
-  const rawname = splat[splat.length - 1]
-  const namespace = splat[splat.length - 2]
-  const upperNamespace =
-    namespace.charAt(0).toUpperCase() + namespace.slice(1, -1)
-  const parts = rawname.split("-").map((n, index) => {
-    if (index !== 0) {
-      return n.charAt(0).toUpperCase() + n.slice(1)
-    }
-    return n
-  })
-  return parts.join("") + upperNamespace
 }
 
 // TODO: Create unique id for each plugin
