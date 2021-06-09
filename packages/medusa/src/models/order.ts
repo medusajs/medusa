@@ -245,7 +245,7 @@ export class Order {
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
-  @Column({ type: "boolean"})
+  @Column({ type: "boolean", nullable: true})
   no_notification: Boolean
 
   @Column({ nullable: true })
