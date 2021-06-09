@@ -2,7 +2,7 @@ import { NotificationService } from "medusa-interfaces";
 
 class TestNotiService extends NotificationService {
   static identifier = "test-not";
-   
+
   constructor() {
     super();
   }

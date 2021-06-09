@@ -75,8 +75,8 @@ export default async (req, res) => {
     email: Validator.string()
       .email()
       .optional(),
-    billing_address: Validator.object().optional(),
-    shipping_address: Validator.object().optional(),
+    billing_address: Validator.address().optional(),
+    shipping_address: Validator.address().optional(),
     gift_cards: Validator.array()
       .items({
         code: Validator.string(),
@@ -104,7 +104,7 @@ export default async (req, res) => {
 
     // If the cart has payment sessions update these
     const updated = await cartService.retrieve(id, {
-      relations: ["payment_sessions"],
+      relations: ["payment_sessions", "shipping_methods"],
     })
 
     if (updated.payment_sessions?.length && !value.region_id) {

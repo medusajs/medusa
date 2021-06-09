@@ -1,9 +1,14 @@
 const path = require(`path`)
 const resolveCwd = require(`resolve-cwd`)
 const yargs = require(`yargs`)
+const existsSync = require(`fs-exists-cached`).sync
+
 const { getLocalMedusaVersion } = require(`./util/version`)
 const { didYouMean } = require(`./did-you-mean`)
-const existsSync = require(`fs-exists-cached`).sync
+
+const { whoami } = require("./commands/whoami")
+const { login } = require("./commands/login")
+const { link } = require("./commands/link")
 
 const handlerP = fn => (...args) => {
   Promise.resolve(fn(...args)).then(
@@ -62,6 +67,27 @@ function buildLocalCommands(cli, isLocalProject) {
 
   cli
     .command({
+      command: `seed`,
+      desc: `Migrates and populates the database with the provided file.`,
+      builder: _ =>
+        _.option(`f`, {
+          alias: `seed-file`,
+          type: `string`,
+          describe: `Path to the file where the seed is defined.`,
+        }).option(`m`, {
+          alias: `migrate`,
+          type: `boolean`,
+          default: true,
+          describe: `Flag to indicate if migrations should be run prior to seeding the database`,
+        }),
+      handler: handlerP(
+        getCommandHandler(`seed`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `migrations [action]`,
       desc: `Migrate the database to the most recent version.`,
       builder: {
@@ -76,6 +102,37 @@ function buildLocalCommands(cli, isLocalProject) {
           return cmd(args)
         })
       ),
+    })
+    .command({
+      command: `whoami`,
+      desc: `View the details of the currently logged in user.`,
+      handler: handlerP(whoami),
+    })
+    .command({
+      command: `link`,
+      desc: `Creates your Medusa Cloud user in your local database for local testing.`,
+      builder: _ =>
+        _.option(`skip-local-user`, {
+          alias: `skipLocalUser`,
+          type: `boolean`,
+          default: false,
+          describe: `If set a user will not be created in the database.`,
+        }),
+      handler: handlerP(argv => {
+        if (!isLocalProject) {
+          console.log("must be a local project")
+          cli.showHelp()
+        }
+
+        const args = { ...argv, ...projectInfo, useYarn }
+
+        return link(args)
+      }),
+    })
+    .command({
+      command: `login`,
+      desc: `Logs you into Medusa Cloud.`,
+      handler: handlerP(login),
     })
     .command({
       command: `develop`,

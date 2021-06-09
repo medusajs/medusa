@@ -14,6 +14,20 @@ describe("/store/carts", () => {
   let medusaProcess;
   let dbConnection;
 
+  const doAfterEach = async (manager) => {
+    await manager.query(`DELETE FROM "discount"`);
+    await manager.query(`DELETE FROM "discount_rule"`);
+    await manager.query(`DELETE FROM "shipping_method"`);
+    await manager.query(`DELETE FROM "shipping_option"`);
+    await manager.query(`DELETE FROM "cart"`);
+    await manager.query(`DELETE FROM "address"`);
+    await manager.query(`DELETE FROM "customer"`);
+    await manager.query(
+      `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+    );
+    await manager.query(`DELETE FROM "region"`);
+  };
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."));
     dbConnection = await initDb({ cwd });
@@ -43,13 +57,7 @@ describe("/store/carts", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
+      await doAfterEach(manager);
     });
 
     it("creates a cart", async () => {
@@ -108,14 +116,7 @@ describe("/store/carts", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
+      await doAfterEach(manager);
     });
 
     it("fails on apply discount if limit has been reached", async () => {
@@ -142,6 +143,108 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200);
     });
+
+    it("updates address using string id", async () => {
+      const api = useApi();
+
+      const response = await api.post("/store/carts/test-cart", {
+        billing_address: "test-general-address",
+        shipping_address: "test-general-address",
+      });
+
+      expect(response.data.cart.shipping_address_id).toEqual(
+        "test-general-address"
+      );
+      expect(response.data.cart.billing_address_id).toEqual(
+        "test-general-address"
+      );
+      expect(response.status).toEqual(200);
+    });
+
+    it("updates address", async () => {
+      const api = useApi();
+
+      const response = await api.post("/store/carts/test-cart", {
+        shipping_address: {
+          first_name: "clark",
+          last_name: "kent",
+          address_1: "5th avenue",
+          city: "nyc",
+          country_code: "us",
+          postal_code: "something",
+        },
+      });
+
+      expect(response.data.cart.shipping_address.first_name).toEqual("clark");
+      expect(response.status).toEqual(200);
+    });
+
+    it("adds free shipping to cart then removes it again", async () => {
+      const api = useApi();
+
+      let cart = await api.post(
+        "/store/carts/test-cart",
+        {
+          discounts: [{ code: "FREE_SHIPPING" }, { code: "CREATED" }],
+        },
+        { withCredentials: true }
+      );
+
+      expect(cart.data.cart.shipping_total).toBe(0);
+      expect(cart.status).toEqual(200);
+
+      cart = await api.post(
+        "/store/carts/test-cart",
+        {
+          discounts: [{ code: "CREATED" }],
+        },
+        { withCredentials: true }
+      );
+
+      expect(cart.data.cart.shipping_total).toBe(1000);
+      expect(cart.status).toEqual(200);
+    });
+  });
+
+  describe("DELETE /store/carts/:id/discounts/:code", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection);
+        await dbConnection.manager.query(
+          `INSERT INTO "cart_discounts" (cart_id, discount_id) VALUES ('test-cart', 'free-shipping')`
+        );
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await doAfterEach(manager);
+    });
+
+    it("removes free shipping and updates shipping total", async () => {
+      const api = useApi();
+
+      const cartWithFreeShipping = await api.post(
+        "/store/carts/test-cart",
+        {
+          discounts: [{ code: "FREE_SHIPPING" }],
+        },
+        { withCredentials: true }
+      );
+
+      expect(cartWithFreeShipping.data.cart.shipping_total).toBe(0);
+      expect(cartWithFreeShipping.status).toEqual(200);
+
+      const response = await api.delete(
+        "/store/carts/test-cart/discounts/FREE_SHIPPING"
+      );
+
+      expect(response.data.cart.shipping_total).toBe(1000);
+      expect(response.status).toEqual(200);
+    });
   });
 
   describe("get-cart with session customer", () => {
@@ -156,14 +259,7 @@ describe("/store/carts", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
+      await doAfterEach(manager);
     });
 
     it("updates empty cart.customer_id on cart retrieval", async () => {

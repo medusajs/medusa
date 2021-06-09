@@ -11,6 +11,7 @@ const defaultFields = [
   "price_type",
   "amount",
   "is_return",
+  "admin_only",
   "data",
   "created_at",
   "updated_at",

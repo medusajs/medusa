@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.8...medusa-dev-cli@0.0.9) (2021-06-08)
+
+
+### Bug Fixes
+
+* babel ([81960d5](https://github.com/medusajs/medusa/commit/81960d51812f093e04271f50ffe5de9bce17c06b))
+
+
+
+
+
 ## [0.0.8](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.5...medusa-dev-cli@0.0.8) (2021-04-28)
 
 **Note:** Version bump only for package medusa-dev-cli
