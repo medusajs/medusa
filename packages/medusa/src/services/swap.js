@@ -238,7 +238,7 @@ class SwapService extends BaseService {
         })
       )
 
-      const evaluatedNoNotification = noNotification ? noNotification : order.noNotification
+      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const created = swapRepo.create({
