@@ -149,6 +149,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.UPDATED, {
           id: claim.id,
+          no_notification: claim.no_notification
         })
 
       return claim
@@ -174,6 +175,7 @@ class ClaimService extends BaseService {
         refund_amount,
         shipping_address,
         shipping_address_id,
+        no_notification,
         ...rest
       } = data
 
@@ -233,6 +235,8 @@ class ClaimService extends BaseService {
         )
       )
 
+      const evaluatedNoNotification = noNotification ? noNotification : order.no_notification
+
       const created = claimRepo.create({
         shipping_address_id: addressId,
         payment_status: type === "refund" ? "not_refunded" : "na",
@@ -241,6 +245,7 @@ class ClaimService extends BaseService {
         type,
         additional_items: newItems,
         order_id: order.id,
+        no_notification: evaluatedNoNotification
       })
 
       const result = await claimRepo.save(created)
@@ -288,6 +293,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.CREATED, {
           id: result.id,
+          no_notification: claim.no_notification
         })
 
       return result
@@ -395,6 +401,7 @@ class ClaimService extends BaseService {
           .emit(ClaimService.Events.FULFILLMENT_CREATED, {
             id: id,
             fulfillment_id: fulfillment.id,
+            no_notification: claim.no_notification
           })
       }
 
@@ -430,6 +437,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.REFUND_PROCESSED, {
           id,
+          no_notification: claim.no_notification
         })
 
       return result
@@ -474,6 +482,7 @@ class ClaimService extends BaseService {
         .emit(ClaimService.Events.SHIPMENT_CREATED, {
           id,
           fulfillment_id: shipment.id,
+          no_notification: claim.no_notification
         })
 
       return result
@@ -524,6 +533,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.CANCELED, {
           id: result.id,
+          no_notification: claim.no_notification
         })
 
       return result
