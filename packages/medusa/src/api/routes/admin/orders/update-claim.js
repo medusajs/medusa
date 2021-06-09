@@ -62,6 +62,9 @@ import { defaultRelations, defaultFields } from "./"
  *                  price:
  *                    description: The price to charge for the Shipping Method
  *                    type: integer
+ *           no_notification:
+ *             description: If set to true no notification will be send related to this Swap.
+ *             type: boolean
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -106,6 +109,7 @@ export default async (req, res) => {
           .optional(),
       })
       .optional(),
+    no_notification: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
   })
 

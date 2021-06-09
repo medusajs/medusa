@@ -406,6 +406,7 @@ class OrderService extends BaseService {
         OrderService.Events.COMPLETED,
         {
           id: orderId,
+          no_notification: order.no_notification 
         }
       )
 
@@ -550,7 +551,7 @@ class OrderService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
-          id: result.id,
+          id: result.id
         })
 
       return result
@@ -612,6 +613,7 @@ class OrderService extends BaseService {
         .emit(OrderService.Events.SHIPMENT_CREATED, {
           id: orderId,
           fulfillment_id: shipmentRes.id,
+          no_notification: order.no_notification
         })
 
       return result
@@ -632,6 +634,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
           id: result.id,
+          no_notification: order.no_notification
         })
       return result
     })
@@ -819,6 +822,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.UPDATED, {
           id: orderId,
+          no_notification: order.no_notification
         })
       return result
     })
@@ -869,6 +873,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.CANCELED, {
           id: order.id,
+          no_notification: order.no_notification
         })
       return result
     })
@@ -896,7 +901,7 @@ class OrderService extends BaseService {
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
                   id: orderId,
                   payment_id: p.id,
-                  error: err,
+                  error: err
                 })
             })
 
@@ -922,6 +927,7 @@ class OrderService extends BaseService {
           .withTransaction(manager)
           .emit(OrderService.Events.PAYMENT_CAPTURED, {
             id: result.id,
+            no_notification: order.no_notification
           })
       }
 
@@ -978,6 +984,7 @@ class OrderService extends BaseService {
           "tax_total",
           "gift_card_total",
           "total",
+          "no_notification"
         ],
         relations: [
           "discounts",
@@ -1050,6 +1057,7 @@ class OrderService extends BaseService {
           .emit(OrderService.Events.FULFILLMENT_CREATED, {
             id: orderId,
             fulfillment_id: fulfillment.id,
+            no_notification: order.no_notification
           })
       }
 
@@ -1108,7 +1116,7 @@ class OrderService extends BaseService {
   async createRefund(orderId, refundAmount, reason, note) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        select: ["refundable_amount", "total", "refunded_total"],
+        select: ["refundable_amount", "total", "refunded_total", "no_notification"],
         relations: ["payments"],
       })
 
@@ -1127,6 +1135,7 @@ class OrderService extends BaseService {
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
         refund_id: refund.id,
+        no_notification: order.no_notification
       })
       return result
     })
@@ -1207,7 +1216,7 @@ class OrderService extends BaseService {
   async registerReturnReceived(orderId, receivedReturn, customRefundAmount) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        select: ["total", "refunded_total", "refundable_amount"],
+        select: ["total", "refunded_total", "refundable_amount", "no_notification"],
         relations: ["items", "returns", "payments"],
       })
 
@@ -1230,6 +1239,7 @@ class OrderService extends BaseService {
           .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
             id: result.id,
             return_id: receivedReturn.id,
+            no_notification: order.no_notification
           })
         return result
       }
@@ -1261,6 +1271,7 @@ class OrderService extends BaseService {
         .emit(OrderService.Events.ITEMS_RETURNED, {
           id: order.id,
           return_id: receivedReturn.id,
+          no_notification: order.no_notification
         })
       return result
     })
