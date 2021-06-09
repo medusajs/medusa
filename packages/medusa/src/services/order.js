@@ -1112,7 +1112,7 @@ class OrderService extends BaseService {
   /**
    * Refunds a given amount back to the customer.
    */
-  async createRefund(orderId, refundAmount, reason, note) {
+  async createRefund(orderId, refundAmount, reason, note, noNotification) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total", "no_notification"],
@@ -1131,10 +1131,13 @@ class OrderService extends BaseService {
         .refundPayment(order.payments, refundAmount, reason, note)
 
       const result = await this.retrieve(orderId)
+
+      const evaluatedNoNotification = noNotification != undefined ? noNotification : order.no_notification
+
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
         refund_id: refund.id,
-        no_notification: order.no_notification
+        no_notification: evaluatedNoNotification
       })
       return result
     })

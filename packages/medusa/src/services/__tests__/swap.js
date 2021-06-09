@@ -57,6 +57,7 @@ const testOrder = generateOrder(
     currency_code: "dkk",
     region_id: IdMap.getId("region"),
     tax_rate: 0,
+    no_notification: true,
     shipping_address: {
       first_name: "test",
       last_name: "testson",
@@ -327,6 +328,7 @@ describe("SwapService", () => {
           order_id: IdMap.getId("test"),
           fulfillment_status: "not_fulfilled",
           payment_status: "not_paid",
+          no_notification: true,
           additional_items: [
             {
               unit_price: 100,
@@ -342,8 +344,7 @@ describe("SwapService", () => {
       it.each([
         [true, true],
         [false, false],
-        [undefined, undefined]
-      ])( "passes correct notification to eventBus with %s", async (input, expected) => {
+      ])( "passes correct no_notification to eventBus with %s", async (input, expected) => {
 
         await swapService.create(
           testOrder,
@@ -357,11 +358,28 @@ describe("SwapService", () => {
         )
 
         expect(eventBusService.emit).toHaveBeenCalledWith(
-          expect.anything(),
+          expect.any(String),
           {"id": undefined, "no_notification": expected})
       })
+
+      it("passes inherited value of order when no no_notification value is given ", async () => {
+        await swapService.create(
+          testOrder,
+          [{ item_id: IdMap.getId("line"), quantity: 1 }],
+          [{ variant_id: IdMap.getId("new-variant"), quantity: 1 }],
+          {
+            id: IdMap.getId("return-shipping"),
+            price: 20,
+          }
+        )
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(
+          expect.anything(),
+          {"id": undefined, "no_notification": true})
+      })
+
+      })
     })
-  })
 
   describe("receiveReturn", () => {
     beforeEach(() => {

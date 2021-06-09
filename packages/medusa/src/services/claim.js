@@ -235,7 +235,7 @@ class ClaimService extends BaseService {
         )
       )
 
-      const evaluatedNoNotification = noNotification ? noNotification : order.no_notification
+      const evaluatedNoNotification = no_notification ? no_notification : order.no_notification
 
       const created = claimRepo.create({
         shipping_address_id: addressId,
@@ -293,7 +293,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.CREATED, {
           id: result.id,
-          no_notification: claim.no_notification
+          no_notification: result.no_notification
         })
 
       return result
@@ -437,7 +437,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.REFUND_PROCESSED, {
           id,
-          no_notification: claim.no_notification
+          no_notification: result.no_notification
         })
 
       return result
@@ -482,7 +482,7 @@ class ClaimService extends BaseService {
         .emit(ClaimService.Events.SHIPMENT_CREATED, {
           id,
           fulfillment_id: shipment.id,
-          no_notification: claim.no_notification
+          no_notification: result.no_notification
         })
 
       return result
@@ -533,7 +533,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.CANCELED, {
           id: result.id,
-          no_notification: claim.no_notification
+          no_notification: result.no_notification
         })
 
       return result
