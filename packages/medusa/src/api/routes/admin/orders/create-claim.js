@@ -91,6 +91,9 @@ import { defaultRelations, defaultFields } from "./"
  *           refund_amount:
  *             description: The amount to refund the Customer when the Claim type is `refund`.
  *             type: integer
+ *           no_notification:
+ *             description: If set to true no notification will be send related to this Claim.
+ *             type: boolean
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -155,6 +158,7 @@ export default async (req, res) => {
       .integer()
       .optional(),
     shipping_address: Validator.object().optional(),
+    no_notification: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
   })
 
@@ -212,6 +216,7 @@ export default async (req, res) => {
                 return_shipping: value.return_shipping,
                 additional_items: value.additional_items,
                 shipping_methods: value.shipping_methods,
+                no_notification: value.no_notification,
                 metadata: value.metadata,
               })
 
