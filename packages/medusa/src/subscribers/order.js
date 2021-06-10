@@ -63,10 +63,9 @@ class OrderSubscriber {
 
   updateDraftOrder = async data => {
     const order = await this.orderService_.retrieve(data.id)
-
-    const draftOrder = await this.draftOrderService_.retrieveByCartId(
-      order.cart_id
-    )
+    const draftOrder = await this.draftOrderService_
+      .retrieveByCartId(order.cart_id)
+      .catch(_ => null)
 
     if (draftOrder) {
       await this.draftOrderService_.registerCartCompletion(
