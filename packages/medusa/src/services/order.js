@@ -1133,7 +1133,7 @@ class OrderService extends BaseService {
 
       const result = await this.retrieve(orderId)
 
-      const evaluatedNoNotification = noNotification != undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
