@@ -1081,6 +1081,7 @@ describe("OrderService", () => {
           paid_total: 100,
           refundable_amount: 100,
           refunded_total: 0,
+          no_notification: true,
         })
       },
     })
@@ -1130,18 +1131,21 @@ describe("OrderService", () => {
       ).rejects.toThrow("Cannot refund more than the original order amount")
     })
 
-    it("emits correct no_notification option", async () => {
+    it.each([
+      [false, false],
+      [undefined, true],
+    ],"emits correct no_notification option", async (input, expected) => {
       await orderService.createRefund(
         IdMap.getId("order_123"),
         100,
         "discount",
         "note",
-        false
+        input
       )
 
       expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
         id: expect.any(String),
-        no_notification: false,
+        no_notification: expected,
         refund_id: expect.any(String)
       } )
     })
