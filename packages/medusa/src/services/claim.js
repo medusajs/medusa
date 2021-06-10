@@ -235,7 +235,7 @@ class ClaimService extends BaseService {
         )
       )
 
-      const evaluatedNoNotification = no_notification ? no_notification : order.no_notification
+      const evaluatedNoNotification = no_notification !== undefined ? no_notification : order.no_notification
 
       const created = claimRepo.create({
         shipping_address_id: addressId,
