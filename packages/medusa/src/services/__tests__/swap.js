@@ -344,6 +344,7 @@ describe("SwapService", () => {
       it.each([
         [true, true],
         [false, false],
+        [undefined, true],
       ])( "passes correct no_notification to eventBus with %s", async (input, expected) => {
 
         await swapService.create(
@@ -361,23 +362,6 @@ describe("SwapService", () => {
           expect.any(String),
           {"id": undefined, "no_notification": expected})
       })
-
-      it("passes inherited value of order when no no_notification value is given ", async () => {
-        await swapService.create(
-          testOrder,
-          [{ item_id: IdMap.getId("line"), quantity: 1 }],
-          [{ variant_id: IdMap.getId("new-variant"), quantity: 1 }],
-          {
-            id: IdMap.getId("return-shipping"),
-            price: 20,
-          }
-        )
-
-        expect(eventBusService.emit).toHaveBeenCalledWith(
-          expect.anything(),
-          {"id": undefined, "no_notification": true})
-      })
-
       })
     })
 
