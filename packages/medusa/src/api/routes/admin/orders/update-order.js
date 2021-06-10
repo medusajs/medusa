@@ -22,7 +22,8 @@ export default async (req, res) => {
       price: Validator.number(),
       data: Validator.object(),
       items: Validator.array(),
-    })
+    }),
+    no_notification: Validator.boolean(),
   })
 
   const { value, error } = schema.validate(req.body)
