@@ -308,8 +308,11 @@ class OrderService extends BaseService {
    * @return {Promise<Order>} the order document
    */
   async retrieve(orderId, config = {}) {
+
+
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
+
 
     const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
       config
@@ -330,7 +333,6 @@ class OrderService extends BaseService {
     const rels = query.relations
     delete query.relations
     const raw = await orderRepo.findOneWithRelations(rels, query)
-
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -983,7 +985,6 @@ class OrderService extends BaseService {
           "tax_total",
           "gift_card_total",
           "total",
-          "no_notification"
         ],
         relations: [
           "discounts",
@@ -1132,7 +1133,7 @@ class OrderService extends BaseService {
 
       const result = await this.retrieve(orderId)
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification = noNotification !== undefined && noNotification !== null ? noNotification : order.no_notification
 
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,

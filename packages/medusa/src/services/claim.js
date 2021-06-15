@@ -101,7 +101,7 @@ class ClaimService extends BaseService {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
-      const { claim_items, shipping_methods, metadata } = data
+      const { claim_items, shipping_methods, metadata, no_notification } = data
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, metadata)
@@ -135,6 +135,11 @@ class ClaimService extends BaseService {
         }
       }
 
+      if(no_notification !== undefined || no_notification !== null){
+        claim.no_notification = no_notification
+        await claimRepo.save(claim)
+      }
+
       if (claim_items) {
         for (const i of claim_items) {
           if (i.id) {
@@ -144,6 +149,7 @@ class ClaimService extends BaseService {
           }
         }
       }
+
 
       await this.eventBus_
         .withTransaction(manager)
@@ -235,7 +241,7 @@ class ClaimService extends BaseService {
         )
       )
 
-      const evaluatedNoNotification = no_notification !== undefined ? no_notification : order.no_notification
+      const evaluatedNoNotification = no_notification !== undefined && no_notification !== null ? no_notification : order.no_notification
 
       const created = claimRepo.create({
         shipping_address_id: addressId,
