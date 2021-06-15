@@ -6,7 +6,13 @@ const IGNORE_THRESHOLD = 2 // seconds
 
 class ContentfulService extends BaseService {
   constructor(
-    { productService, redisClient, productVariantService, eventBusService },
+    {
+      regionService,
+      productService,
+      redisClient,
+      productVariantService,
+      eventBusService,
+    },
     options
   ) {
     super()
@@ -14,6 +20,8 @@ class ContentfulService extends BaseService {
     this.productService_ = productService
 
     this.productVariantService_ = productVariantService
+
+    this.regionService_ = regionService
 
     this.eventBus_ = eventBusService
 
@@ -306,28 +314,31 @@ class ContentfulService extends BaseService {
       return
     }
     try {
-      const r = await this.regionService_.retrieve(data.id, {
+      const r = await this.regionService_.retrieve(region.id, {
         relations: ["countries", "payment_providers", "fulfillment_providers"],
       })
 
       const environment = await this.getContentfulEnvironment_()
 
       const fields = {
+        [this.getCustomField("medusaId", "product")]: {
+          "en-US": r.id,
+        },
         [this.getCustomField("name", "region")]: {
           "en-US": r.name,
         },
         [this.getCustomField("countries", "region")]: {
           "en-US": r.countries,
         },
-        [this.getCustomField("payment_providers", "region")]: {
+        [this.getCustomField("paymentProviders", "region")]: {
           "en-US": r.payment_providers,
         },
-        [this.getCustomField("fulfillment_providers", "region")]: {
+        [this.getCustomField("fulfillmentProviders", "region")]: {
           "en-US": r.fulfillment_providers,
         },
       }
 
-      const result = await environment.createEntryWithId("region", p.id, {
+      const result = await environment.createEntryWithId("region", r.id, {
         fields,
       })
 
@@ -385,10 +396,10 @@ class ContentfulService extends BaseService {
         [this.getCustomField("countries", "region")]: {
           "en-US": r.countries,
         },
-        [this.getCustomField("payment_providers", "region")]: {
+        [this.getCustomField("paymentProviders", "region")]: {
           "en-US": r.payment_providers,
         },
-        [this.getCustomField("fulfillment_providers", "region")]: {
+        [this.getCustomField("fulfillmentProviders", "region")]: {
           "en-US": r.fulfillment_providers,
         },
       }
