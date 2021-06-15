@@ -215,9 +215,10 @@ describe("ClaimService", () => {
     it.each(
       [
         [false, false],
-        [undefined, true]
-      ],
-      "passes correct no_notification status to event bus", async (input, expected) => {
+        [undefined, true],
+        [null, true],
+      ])
+      ("passes correct no_notification status to event bus, with '%s'", async (input, expected) => {
         await claimService.create({
            ...testClaim,
            no_notification: input,
@@ -227,7 +228,6 @@ describe("ClaimService", () => {
           id: expect.any(String),
           no_notification: expected
         })
-
     })
   })
 

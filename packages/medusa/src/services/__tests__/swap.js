@@ -345,7 +345,8 @@ describe("SwapService", () => {
         [true, true],
         [false, false],
         [undefined, true],
-      ])( "passes correct no_notification to eventBus with %s", async (input, expected) => {
+        [null, true],
+      ])( "passes correct no_notification to eventBus with '%s'", async (input, expected) => {
 
         await swapService.create(
           testOrder,

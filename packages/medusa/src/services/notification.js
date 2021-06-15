@@ -164,6 +164,7 @@ class NotificationService extends BaseService {
     if (!subs) {
       return
     }
+
     if(data['no_notification'] === true) {
       return
     }

@@ -149,7 +149,7 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id)
 
-              const evaluatedNoNotification = value.no_notification !== undefined ? value.no_notification : order.no_notification
+              const evaluatedNoNotification = value.no_notification !== undefined && value.no_notification !== null ? value.no_notification : order.no_notification
               returnObj.no_notification = evaluatedNoNotification
 
               const createdReturn = await returnService
