@@ -2,7 +2,7 @@ import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { createClient } from "contentful-management"
 
-const IGNORE_THRESHOLD = 1 // seconds
+const IGNORE_THRESHOLD = 2 // seconds
 
 class ContentfulService extends BaseService {
   constructor(
@@ -28,7 +28,12 @@ class ContentfulService extends BaseService {
 
   async addIgnore_(id, side) {
     const key = `${id}_ignore_${side}`
-    return await this.redis_.set(key, 1, "EX", IGNORE_THRESHOLD)
+    return await this.redis_.set(
+      key,
+      1,
+      "EX",
+      this.options_.ignore_threshold || IGNORE_THRESHOLD
+    )
   }
 
   async shouldIgnore_(id, side) {
@@ -288,6 +293,114 @@ class ContentfulService extends BaseService {
       // ignoreIds.push(v.id)
       // this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
       return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async createRegionInContentful(region) {
+    const hasType = await this.getType("region")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      return
+    }
+    try {
+      const r = await this.regionService_.retrieve(data.id, {
+        relations: ["countries", "payment_providers", "fulfillment_providers"],
+      })
+
+      const environment = await this.getContentfulEnvironment_()
+
+      const fields = {
+        [this.getCustomField("name", "region")]: {
+          "en-US": r.name,
+        },
+        [this.getCustomField("countries", "region")]: {
+          "en-US": r.countries,
+        },
+        [this.getCustomField("payment_providers", "region")]: {
+          "en-US": r.payment_providers,
+        },
+        [this.getCustomField("fulfillment_providers", "region")]: {
+          "en-US": r.fulfillment_providers,
+        },
+      }
+
+      const result = await environment.createEntryWithId("region", p.id, {
+        fields,
+      })
+
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateRegionInContentful(data) {
+    const hasType = await this.getType("region")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      return
+    }
+
+    const updateFields = [
+      "name",
+      "currency_code",
+      "countries",
+      "payment_providers",
+      "fulfillment_providers",
+    ]
+
+    const found = data.fields.find((f) => updateFields.includes(f))
+    if (!found) {
+      return
+    }
+
+    try {
+      const ignore = await this.shouldIgnore_(data.id, "contentful")
+      if (ignore) {
+        return
+      }
+
+      const r = await this.regionService_.retrieve(data.id, {
+        relations: ["countries", "payment_providers", "fulfillment_providers"],
+      })
+
+      const environment = await this.getContentfulEnvironment_()
+      // check if product exists
+      let regionEntry = undefined
+      try {
+        regionEntry = await environment.getEntry(data.id)
+      } catch (error) {
+        return this.createRegionInContentful(r)
+      }
+
+      const regionEntryFields = {
+        ...regionEntry.fields,
+        [this.getCustomField("name", "region")]: {
+          "en-US": r.name,
+        },
+        [this.getCustomField("countries", "region")]: {
+          "en-US": r.countries,
+        },
+        [this.getCustomField("payment_providers", "region")]: {
+          "en-US": r.payment_providers,
+        },
+        [this.getCustomField("fulfillment_providers", "region")]: {
+          "en-US": r.fulfillment_providers,
+        },
+      }
+
+      regionEntry.fields = regionEntryFields
+
+      const updatedEntry = await regionEntry.update()
+      const publishedEntry = await updatedEntry.publish()
+
+      await this.addIgnore_(data.id, "medusa")
+
+      return publishedEntry
     } catch (error) {
       throw error
     }
