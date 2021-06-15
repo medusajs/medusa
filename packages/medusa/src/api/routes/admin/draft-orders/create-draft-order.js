@@ -59,6 +59,9 @@ import { defaultFields, defaultRelations } from "."
  *           customer_id:
  *             description: The id of the customer to add on the draft order
  *             type: string
+ *           no_notification_order:
+ *             description: An optional flag passed to the resulting order to determine use of notifications.
+ *             type: boolean
  *           shipping_methods:
  *             description: The shipping methods for the draft order
  *             type: array
@@ -119,6 +122,7 @@ export default async (req, res) => {
       })
       .optional(),
     customer_id: Validator.string().optional(),
+    no_notification_order: Validator.boolean().optional(),
     shipping_methods: Validator.array()
       .items({
         option_id: Validator.string().required(),

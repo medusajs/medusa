@@ -507,6 +507,7 @@ class OrderService extends BaseService {
           .retrieveByCartId(cart.id)
 
         toCreate.draft_order_id = draft.id
+        toCreate.no_notification = draft.no_notification_order
       }
 
       const o = await orderRepo.create(toCreate)
@@ -552,7 +553,8 @@ class OrderService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
-          id: result.id
+          id: result.id,
+          no_notification: result.no_notification
         })
 
       return result
