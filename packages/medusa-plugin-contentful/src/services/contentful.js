@@ -380,7 +380,8 @@ class ContentfulService extends BaseService {
       })
 
       const environment = await this.getContentfulEnvironment_()
-      // check if product exists
+
+      // check if region exists
       let regionEntry = undefined
       try {
         regionEntry = await environment.getEntry(data.id)
