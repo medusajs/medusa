@@ -238,7 +238,7 @@ class SwapService extends BaseService {
         })
       )
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification = noNotification !== undefined && noNotification !== null ? noNotification : order.no_notification
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const created = swapRepo.create({
@@ -361,6 +361,10 @@ class SwapService extends BaseService {
 
       if ("metadata" in update) {
         swap.metadata = this.setMetadata_(swap, update.metadata)
+      }
+
+      if("no_notification" in update){
+        swap.no_notification = update.no_notification
       }
 
       if ("shipping_address" in update) {
