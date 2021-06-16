@@ -2,9 +2,17 @@ import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { createClient } from "contentful-management"
 
+const IGNORE_THRESHOLD = 2 // seconds
+
 class ContentfulService extends BaseService {
   constructor(
-    { productService, redisClient, productVariantService, eventBusService },
+    {
+      regionService,
+      productService,
+      redisClient,
+      productVariantService,
+      eventBusService,
+    },
     options
   ) {
     super()
@@ -12,6 +20,8 @@ class ContentfulService extends BaseService {
     this.productService_ = productService
 
     this.productVariantService_ = productVariantService
+
+    this.regionService_ = regionService
 
     this.eventBus_ = eventBusService
 
@@ -24,16 +34,19 @@ class ContentfulService extends BaseService {
     this.redis_ = redisClient
   }
 
-  async getIgnoreIds_(type) {
-    return new Promise((resolve, reject) => {
-      this.redis_.get(`${type}_ignore_ids`, (err, reply) => {
-        if (err) {
-          return reject(err)
-        }
+  async addIgnore_(id, side) {
+    const key = `${id}_ignore_${side}`
+    return await this.redis_.set(
+      key,
+      1,
+      "EX",
+      this.options_.ignore_threshold || IGNORE_THRESHOLD
+    )
+  }
 
-        return resolve(JSON.parse(reply))
-      })
-    })
+  async shouldIgnore_(id, side) {
+    const key = `${id}_ignore_${side}`
+    return await this.redis_.get(key)
   }
 
   async getContentfulEnvironment_() {
@@ -46,12 +59,17 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async getVariantEntries_(variants) {
+  async getVariantEntries_(variants, config = { publish: false }) {
     try {
       const contentfulVariants = await Promise.all(
-        variants.map((variant) =>
-          this.updateProductVariantInContentful(variant)
-        )
+        variants.map(async (variant) => {
+          let updated = await this.updateProductVariantInContentful(variant)
+          if (config.publish) {
+            updated = updated.publish()
+          }
+
+          return updated
+        })
       )
 
       return contentfulVariants
@@ -137,12 +155,20 @@ class ContentfulService extends BaseService {
       })
 
       const environment = await this.getContentfulEnvironment_()
-      const variantEntries = await this.getVariantEntries_(p.variants)
+      const variantEntries = await this.getVariantEntries_(p.variants, {
+        publish: true,
+      })
       const variantLinks = this.getVariantLinks_(variantEntries)
 
       const fields = {
         [this.getCustomField("title", "product")]: {
           "en-US": p.title,
+        },
+        [this.getCustomField("subtitle", "product")]: {
+          "en-US": p.subtitle,
+        },
+        [this.getCustomField("description", "product")]: {
+          "en-US": p.description,
         },
         [this.getCustomField("variants", "product")]: {
           "en-US": variantLinks,
@@ -157,7 +183,14 @@ class ContentfulService extends BaseService {
 
       if (p.images.length > 0) {
         const imageLinks = await this.createImageAssets(product)
+        if (imageLinks) {
+          fields.images = {
+            "en-US": imageLinks,
+          }
+        }
+      }
 
+      if (p.thumbnail) {
         const thumbnailAsset = await environment.createAsset({
           fields: {
             title: {
@@ -176,7 +209,7 @@ class ContentfulService extends BaseService {
           },
         })
 
-        await thumbnailAsset.processForAllLocales()
+        await thumbnailAsset.processForAllLocales().then((a) => a.publish())
 
         const thumbnailLink = {
           sys: {
@@ -188,12 +221,6 @@ class ContentfulService extends BaseService {
 
         fields.thumbnail = {
           "en-US": thumbnailLink,
-        }
-
-        if (imageLinks) {
-          fields.images = {
-            "en-US": imageLinks,
-          }
         }
       }
 
@@ -233,9 +260,6 @@ class ContentfulService extends BaseService {
         fields,
       })
 
-      // const ignoreIds = (await this.getIgnoreIds_("product")) || []
-      // ignoreIds.push(product.id)
-      // this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
       return result
     } catch (error) {
       throw error
@@ -282,12 +306,125 @@ class ContentfulService extends BaseService {
     }
   }
 
+  async createRegionInContentful(region) {
+    const hasType = await this.getType("region")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      return
+    }
+    try {
+      const r = await this.regionService_.retrieve(region.id, {
+        relations: ["countries", "payment_providers", "fulfillment_providers"],
+      })
+
+      const environment = await this.getContentfulEnvironment_()
+
+      const fields = {
+        [this.getCustomField("medusaId", "product")]: {
+          "en-US": r.id,
+        },
+        [this.getCustomField("name", "region")]: {
+          "en-US": r.name,
+        },
+        [this.getCustomField("countries", "region")]: {
+          "en-US": r.countries,
+        },
+        [this.getCustomField("paymentProviders", "region")]: {
+          "en-US": r.payment_providers,
+        },
+        [this.getCustomField("fulfillmentProviders", "region")]: {
+          "en-US": r.fulfillment_providers,
+        },
+      }
+
+      const result = await environment.createEntryWithId("region", r.id, {
+        fields,
+      })
+
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateRegionInContentful(data) {
+    const hasType = await this.getType("region")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      return
+    }
+
+    const updateFields = [
+      "name",
+      "currency_code",
+      "countries",
+      "payment_providers",
+      "fulfillment_providers",
+    ]
+
+    const found = data.fields.find((f) => updateFields.includes(f))
+    if (!found) {
+      return
+    }
+
+    try {
+      const ignore = await this.shouldIgnore_(data.id, "contentful")
+      if (ignore) {
+        return
+      }
+
+      const r = await this.regionService_.retrieve(data.id, {
+        relations: ["countries", "payment_providers", "fulfillment_providers"],
+      })
+
+      const environment = await this.getContentfulEnvironment_()
+
+      // check if region exists
+      let regionEntry = undefined
+      try {
+        regionEntry = await environment.getEntry(data.id)
+      } catch (error) {
+        return this.createRegionInContentful(r)
+      }
+
+      const regionEntryFields = {
+        ...regionEntry.fields,
+        [this.getCustomField("name", "region")]: {
+          "en-US": r.name,
+        },
+        [this.getCustomField("countries", "region")]: {
+          "en-US": r.countries,
+        },
+        [this.getCustomField("paymentProviders", "region")]: {
+          "en-US": r.payment_providers,
+        },
+        [this.getCustomField("fulfillmentProviders", "region")]: {
+          "en-US": r.fulfillment_providers,
+        },
+      }
+
+      regionEntry.fields = regionEntryFields
+
+      const updatedEntry = await regionEntry.update()
+      const publishedEntry = await updatedEntry.publish()
+
+      await this.addIgnore_(data.id, "medusa")
+
+      return publishedEntry
+    } catch (error) {
+      throw error
+    }
+  }
+
   async updateProductInContentful(data) {
     const updateFields = [
       "variants",
       "options",
       "tags",
       "title",
+      "subtitle",
       "tags",
       "type",
       "type_id",
@@ -302,16 +439,10 @@ class ContentfulService extends BaseService {
     }
 
     try {
-      // const ignoreIds = (await this.getIgnoreIds_("product")) || []
-
-      // if (ignoreIds.includes(product.id)) {
-      //   const newIgnoreIds = ignoreIds.filter((id) => id !== product.id)
-      //   this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
-      //   return
-      // } else {
-      //   ignoreIds.push(product.id)
-      //   this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
-      // }
+      const ignore = await this.shouldIgnore_(data.id, "contentful")
+      if (ignore) {
+        return
+      }
 
       const p = await this.productService_.retrieve(data.id, {
         relations: [
@@ -340,6 +471,12 @@ class ContentfulService extends BaseService {
         ...productEntry.fields,
         [this.getCustomField("title", "product")]: {
           "en-US": p.title,
+        },
+        [this.getCustomField("subtitle", "product")]: {
+          "en-US": p.subtitle,
+        },
+        [this.getCustomField("description", "product")]: {
+          "en-US": p.description,
         },
         [this.getCustomField("options", "product")]: {
           "en-US": p.options,
@@ -376,7 +513,7 @@ class ContentfulService extends BaseService {
           },
         })
 
-        await thumbnailAsset.processForAllLocales()
+        await thumbnailAsset.processForAllLocales().then((a) => a.publish())
 
         const thumbnailLink = {
           sys: {
@@ -430,6 +567,8 @@ class ContentfulService extends BaseService {
       const updatedEntry = await productEntry.update()
       const publishedEntry = await updatedEntry.publish()
 
+      await this.addIgnore_(data.id, "medusa")
+
       return publishedEntry
     } catch (error) {
       throw error
@@ -460,19 +599,10 @@ class ContentfulService extends BaseService {
     }
 
     try {
-      // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
-
-      //if (ignoreIds.includes(variant.id)) {
-      //  const newIgnoreIds = ignoreIds.filter((id) => id !== variant.id)
-      //  this.redis_.set(
-      //    "product_variant_ignore_ids",
-      //    JSON.stringify(newIgnoreIds)
-      //  )
-      //  return
-      //} else {
-      //  ignoreIds.push(variant.id)
-      //  this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
-      //}
+      const ignore = await this.shouldIgnore_(variant.id, "contentful")
+      if (ignore) {
+        return
+      }
 
       const environment = await this.getContentfulEnvironment_()
       // check if product exists
@@ -512,6 +642,8 @@ class ContentfulService extends BaseService {
       const updatedEntry = await variantEntry.update()
       const publishedEntry = await updatedEntry.publish()
 
+      await this.addIgnore_(variant.id, "medusa")
+
       return publishedEntry
     } catch (error) {
       throw error
@@ -519,27 +651,40 @@ class ContentfulService extends BaseService {
   }
 
   async sendContentfulProductToAdmin(productId) {
+    const ignore = await this.shouldIgnore_(productId, "medusa")
+    if (ignore) {
+      return
+    }
+
     try {
       const environment = await this.getContentfulEnvironment_()
       const productEntry = await environment.getEntry(productId)
 
       const product = await this.productService_.retrieve(productId)
 
-      //const ignoreIds = (await this.getIgnoreIds_("product")) || []
-      //if (ignoreIds.includes(productId)) {
-      //  const newIgnoreIds = ignoreIds.filter((id) => id !== productId)
-      //  this.redis_.set("product_ignore_ids", JSON.stringify(newIgnoreIds))
-      //  return
-      //} else {
-      //  ignoreIds.push(productId)
-      //  this.redis_.set("product_ignore_ids", JSON.stringify(ignoreIds))
-      //}
-
       let update = {}
+
       const title =
         productEntry.fields[this.getCustomField("title", "product")]["en-US"]
+
+      const subtitle =
+        productEntry.fields[this.getCustomField("subtitle", "product")]["en-US"]
+
+      const description =
+        productEntry.fields[this.getCustomField("description", "product")][
+          "en-US"
+        ]
+
       if (product.title !== title) {
         update.title = title
+      }
+
+      if (product.subtitle !== subtitle) {
+        update.subtitle = subtitle
+      }
+
+      if (product.description !== description) {
+        update.description = description
       }
 
       // Get the thumbnail, if present
@@ -556,7 +701,9 @@ class ContentfulService extends BaseService {
       }
 
       if (!_.isEmpty(update)) {
-        await this.productService_.update(productId, update)
+        await this.productService_.update(productId, update).then(async () => {
+          return await this.addIgnore_(productId, "contentful")
+        })
       }
     } catch (error) {
       throw error
@@ -564,32 +711,25 @@ class ContentfulService extends BaseService {
   }
 
   async sendContentfulProductVariantToAdmin(variantId) {
+    const ignore = this.shouldIgnore_(variantId, "medusa")
+    if (ignore) {
+      return
+    }
+
     try {
       const environment = await this.getContentfulEnvironment_()
       const variantEntry = await environment.getEntry(variantId)
 
-      // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
-      // if (ignoreIds.includes(variantId)) {
-      //   const newIgnoreIds = ignoreIds.filter((id) => id !== variantId)
-      //   this.redis_.set(
-      //     "product_variant_ignore_ids",
-      //     JSON.stringify(newIgnoreIds)
-      //   )
-      //   return
-      // } else {
-      //   ignoreIds.push(variantId)
-      //   this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
-      // }
-
-      const updatedVariant = await this.productVariantService_.update(
-        variantId,
-        {
+      const updatedVariant = await this.productVariantService_
+        .update(variantId, {
           title:
             variantEntry.fields[this.getCustomField("title", "variant")][
               "en-US"
             ],
-        }
-      )
+        })
+        .then(async () => {
+          return await this.addIgnore_(variantId, "contentful")
+        })
 
       return updatedVariant
     } catch (error) {
