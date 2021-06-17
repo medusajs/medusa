@@ -5,8 +5,10 @@ const { Region } = require("@medusajs/medusa");
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
 const { initDb } = require("../../../helpers/use-db");
+const { expectRelations } = require("../../helpers/expect-relations");
 
 const cartSeeder = require("../../helpers/cart-seeder");
+const productSeeder = require("../../helpers/product-seeder");
 
 jest.setTimeout(30000);
 
@@ -328,6 +330,58 @@ describe("/store/carts", () => {
 
       expect(response.data.cart.customer_id).toEqual(customer.data.customer.id);
       expect(response.status).toEqual(200);
+    });
+  });
+
+  describe("get-cart returns expected relations", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection);
+        await cartSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await doAfterEach(manager);
+    });
+
+  
+    it("returns default relations", async () => {
+      const api = useApi();
+
+      const expectedRelations = [
+        "gift_cards",
+        "region",
+        "items.variant.prices",
+        "payment",
+        "shipping_address",
+        "billing_address",
+        "region.countries",
+        "region.payment_providers",
+        "payment_sessions",
+        "shipping_methods.shipping_option",
+        "discounts",
+      ]
+
+      await api.post("/store/carts/test-cart/line-items", {
+        quantity: 1,
+        variant_id: "test-variant",
+      })
+
+      // await api.post("/store/carts/test-cart/shipping-methods", {
+      //   option_id: "test-option"
+      // })
+
+
+      const response = await api.get("/store/carts/test-cart")
+
+      console.log(response.data.cart)
+      expectRelations(expectedRelations, response.data.cart)
+
     });
   });
 });
