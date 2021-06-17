@@ -135,7 +135,7 @@ class ClaimService extends BaseService {
         }
       }
 
-      if(no_notification !== undefined || no_notification !== null){
+      if(no_notification !== undefined){
         claim.no_notification = no_notification
         await claimRepo.save(claim)
       }

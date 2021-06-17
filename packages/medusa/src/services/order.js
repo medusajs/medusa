@@ -805,6 +805,10 @@ class OrderService extends BaseService {
         await this.updateBillingAddress_(order, update.billing_address)
       }
 
+      if("no_notification" in update){
+        order.no_notification = update.no_notification
+      }
+
       if ("items" in update) {
         for (const item of update.items) {
           await this.lineItemService_.withTransaction(manager).create({
