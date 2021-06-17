@@ -321,7 +321,7 @@ class ContentfulService extends BaseService {
       const environment = await this.getContentfulEnvironment_()
 
       const fields = {
-        [this.getCustomField("medusaId", "product")]: {
+        [this.getCustomField("medusaId", "region")]: {
           "en-US": r.id,
         },
         [this.getCustomField("name", "region")]: {
