@@ -263,6 +263,10 @@ class DraftOrderService extends BaseService {
         .withTransaction(manager)
         .create({ type: "draft_order", ...rest })
 
+      await this.cartService_
+        .withTransaction(manager)
+        .create(createdCart.id, rest)
+
       const draftOrder = draftOrderRepo.create({ cart_id: createdCart.id })
       const result = await draftOrderRepo.save(draftOrder)
 
