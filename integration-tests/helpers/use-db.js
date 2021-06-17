@@ -36,8 +36,10 @@ module.exports = {
     );
 
     const databaseName = "medusa-integration";
-    await createDatabase({ databaseName });
 
+    await createDatabase({ databaseName });
+    
+ 
     const connection = await createConnection({
       type: "postgres",
       url: "postgres://localhost/medusa-integration",
@@ -66,6 +68,7 @@ module.exports = {
 
     instance.setDb(dbConnection);
     return dbConnection;
+    
   },
   useDb: function () {
     return instance;
