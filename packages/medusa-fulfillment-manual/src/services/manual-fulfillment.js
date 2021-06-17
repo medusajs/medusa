@@ -31,11 +31,6 @@ class ManualFulfillmentService extends FulfillmentService {
     throw Error("Manual Fulfillment service cannot calculatePrice")
   }
 
-  createReturn() {
-    // No data is being sent anywhere
-    return Promise.resolve({})
-  }
-
   createOrder() {
     // No data is being sent anywhere
     return Promise.resolve({})
