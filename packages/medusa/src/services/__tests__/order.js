@@ -1134,12 +1134,7 @@ describe("OrderService", () => {
     it.each([
       [false, false],
       [undefined, true],
-<<<<<<< HEAD
-      [null, true],
     ])("emits correct no_notification option with '%s'", async (input, expected) => {
-=======
-    ],"emits correct no_notification option", async (input, expected) => {
->>>>>>> 04fe5292f7e9dcd14cb1a4ea17db8978f9b52c03
       await orderService.createRefund(
         IdMap.getId("order_123"),
         100,
