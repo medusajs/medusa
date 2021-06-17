@@ -508,6 +508,7 @@ class OrderService extends BaseService {
 
         toCreate.draft_order_id = draft.id
         toCreate.no_notification = draft.no_notification_order
+        
       }
 
       const o = await orderRepo.create(toCreate)
@@ -991,7 +992,6 @@ class OrderService extends BaseService {
           "tax_total",
           "gift_card_total",
           "total",
-          "no_notification"
         ],
         relations: [
           "discounts",
