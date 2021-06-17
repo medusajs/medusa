@@ -345,26 +345,26 @@ class DraftOrderService extends BaseService {
    */
   async update(doId, data){
     return this.atomicPhase_(async manager => {
-      const doRepo = manager.getCustomRepository(this.draftOrderRepository_)
-      const draftOrder = await this.retrieve(doId)
-      let touched = false
+      // const doRepo = manager.getCustomRepository(this.draftOrderRepository_)
+      // const draftOrder = await this.retrieve(doId)
+      // let touched = false
       
-      if(data.no_notification_order !== undefined){
-        touched = true
-        draftOrder.no_notification_order = data.no_notification_order
-      }
+      // if(data.no_notification_order !== undefined){
+      //   touched = true
+      //   draftOrder.no_notification_order = data.no_notification_order
+      // }
 
-      if(touched){
-        doRepo.save(draftOrder)
+      // if(touched){
+      //   doRepo.save(draftOrder)
 
-        await this.eventBus_
-        .withTransaction(manager)
-        .emit(DraftOrderService.Events.UPDATED, {
-          id: draftOrder.id
-        })
-      }
+      //   await this.eventBus_
+      //   .withTransaction(manager)
+      //   .emit(DraftOrderService.Events.UPDATED, {
+      //     id: draftOrder.id
+      //   })
+      // }
       
-      return draftOrder
+      // return draftOrder
     })
   }
 }
