@@ -169,7 +169,7 @@ export class Return {
  *     type: string
  *     format: date-time
  *   no_notification:
- *     description: "Flag for describing whether or not notifications related to this should be send."
+ *     description: "When set to true, no notification will be sent related to this return."
  *     type: boolean
  *   metadata:
  *     description: "An optional key-value map with additional information."
