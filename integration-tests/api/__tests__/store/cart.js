@@ -17,6 +17,7 @@ describe("/store/carts", () => {
   let dbConnection;
 
   const doAfterEach = async (manager) => {
+    await manager.query(`DELETE FROM "line_item"`);
     await manager.query(`DELETE FROM "discount"`);
     await manager.query(`DELETE FROM "discount_rule"`);
     await manager.query(`DELETE FROM "shipping_method"`);
@@ -366,20 +367,20 @@ describe("/store/carts", () => {
         "shipping_methods.shipping_option",
         "discounts",
       ]
+  
 
       await api.post("/store/carts/test-cart/line-items", {
         quantity: 1,
         variant_id: "test-variant",
       })
 
-      // await api.post("/store/carts/test-cart/shipping-methods", {
-      //   option_id: "test-option"
-      // })
+      await api.post("/store/carts/test-cart/shipping-methods", {
+        option_id: "test-option"
+      })
 
 
       const response = await api.get("/store/carts/test-cart")
 
-      console.log(response.data.cart)
       expectRelations(expectedRelations, response.data.cart)
 
     });
