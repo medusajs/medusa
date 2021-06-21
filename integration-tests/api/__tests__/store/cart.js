@@ -344,13 +344,12 @@ describe("/store/carts", () => {
         throw err;
       }
     });
-
+    
     afterEach(async () => {
       const manager = dbConnection.manager;
       await doAfterEach(manager);
     });
 
-  
     it("returns default relations", async () => {
       const api = useApi();
 
@@ -368,7 +367,6 @@ describe("/store/carts", () => {
         "discounts",
       ]
   
-
       await api.post("/store/carts/test-cart/line-items", {
         quantity: 1,
         variant_id: "test-variant",
@@ -377,7 +375,6 @@ describe("/store/carts", () => {
       await api.post("/store/carts/test-cart/shipping-methods", {
         option_id: "test-option"
       })
-
 
       const response = await api.get("/store/carts/test-cart")
 
