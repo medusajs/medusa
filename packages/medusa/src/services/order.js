@@ -467,9 +467,9 @@ class OrderService extends BaseService {
           )
         }
 
-        const paymentStatus = await this.paymentProviderService_.getStatus(
-          payment
-        )
+        const paymentStatus = await this.paymentProviderService_
+          .withTransaction(manager)
+          .getStatus(payment)
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
