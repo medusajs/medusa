@@ -25,6 +25,12 @@ export default (app, container) => {
   route.post("/:id", middlewares.wrap(require("./update-cart").default))
 
   route.post(
+    "/:id/complete",
+    middlewares.wrap(require("./complete-cart").default)
+  )
+
+  // DEPRECATION
+  route.post(
     "/:id/complete-cart",
     middlewares.wrap(require("./complete-cart").default)
   )
@@ -55,7 +61,7 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/payment-session/update",
+    "/:id/payment-sessions/:provider_id",
     middlewares.wrap(require("./update-payment-session").default)
   )
 
