@@ -52,7 +52,9 @@ export default async (req, res) => {
         value.quantity,
         { metadata: value.metadata }
       )
+
       await cartService.withTransaction(m).addLineItem(id, line)
+
 
       const updated = await cartService.withTransaction(m).retrieve(id, {
         relations: ["payment_sessions"],
