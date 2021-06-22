@@ -1,6 +1,6 @@
 {
   "name": "medusa-test-utils",
-  "version": "1.1.18-next.9+db9d6c0",
+  "version": "1.1.18",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
-    "medusa-core-utils": "^1.1.15-next.9+db9d6c0",
+    "medusa-core-utils": "^1.1.15",
     "randomatic": "^3.1.1"
   },
   "gitHead": "db9d6c0cf55ff60a90415b16bc7582cc4795768f"

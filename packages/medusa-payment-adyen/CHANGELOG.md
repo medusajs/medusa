@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.18](https://github.com/medusajs/medusa/compare/medusa-payment-adyen@1.1.17...medusa-payment-adyen@1.1.18) (2021-06-22)
+
+
+### Bug Fixes
+
+* mobile pay support ([91511cb](https://github.com/medusajs/medusa/commit/91511cbdf8bc66f5688a36ecf56edb16a220cc82))
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.17](https://github.com/medusajs/medusa/compare/medusa-payment-adyen@1.1.16...medusa-payment-adyen@1.1.17) (2021-06-09)
 
 **Note:** Version bump only for package medusa-payment-adyen
