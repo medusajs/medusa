@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.19](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.18...medusa-plugin-contentful@1.1.19) (2021-06-22)
+
+
+### Bug Fixes
+
+* region sync ([8e29e6e](https://github.com/medusajs/medusa/commit/8e29e6e63c305b684a37d817b504b3e471d697bd))
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+* typo ([4b6445a](https://github.com/medusajs/medusa/commit/4b6445a1b0509dd0c00f240a4ae287caf1a46ebf))
+* wrong custom field ([05bda95](https://github.com/medusajs/medusa/commit/05bda956d97bd0a5f2c43f4c727be569170168c6))
+
+
+
+
+
 ## [1.1.18](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.17...medusa-plugin-contentful@1.1.18) (2021-06-09)
 
 **Note:** Version bump only for package medusa-plugin-contentful
