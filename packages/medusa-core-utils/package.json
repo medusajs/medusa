@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.1.14",
+  "version": "1.1.15-next.9+db9d6c0",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -33,5 +33,5 @@
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1"
   },
-  "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"
+  "gitHead": "db9d6c0cf55ff60a90415b16bc7582cc4795768f"
 }
