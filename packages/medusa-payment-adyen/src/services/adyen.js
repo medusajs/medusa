@@ -60,7 +60,14 @@ class AdyenService extends BaseService {
       config,
     })
 
-    client.setEnvironment(this.options_.environment)
+    if (this.options_.liveEndpointPrefix) {
+      client.setEnvironment(
+        this.options_.environment,
+        this.options_.liveEndpointPrefix
+      )
+    } else {
+      client.setEnvironment(this.options_.environment)
+    }
 
     return client
   }
