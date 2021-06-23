@@ -140,13 +140,31 @@ class BrightpearlService extends BaseService {
     }
 
     if (bpProducts.length) {
-      const productRange = bpProducts
-        .map(({ productId }) => productId)
-        .join(",")
+      let availabilities = {}
+      const perChunk = 100
+      const chunkedProducts = bpProducts.reduce((resultArray, item, index) => {
+        const chunkIndex = Math.floor(index / perChunk)
 
-      const availabilities = await client.products.retrieveAvailability(
-        productRange
-      )
+        if (!resultArray[chunkIndex]) {
+          resultArray[chunkIndex] = [] // start a new chunk
+        }
+
+        resultArray[chunkIndex].push(item)
+
+        return resultArray
+      }, [])
+
+      // For large product catalogues we get 414 Too long URI so to avoid this
+      // we chunk things up
+      for (const chunk of chunkedProducts) {
+        const productRange = chunk.map(({ productId }) => productId).join(",")
+
+        const chunkAvails = await client.products.retrieveAvailability(
+          productRange
+        )
+
+        availabilities = Object.assign(availabilities, chunkAvails)
+      }
 
       return Promise.all(
         bpProducts.map(async (bpProduct) => {
