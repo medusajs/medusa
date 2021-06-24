@@ -309,10 +309,8 @@ class OrderService extends BaseService {
    */
   async retrieve(orderId, config = {}) {
 
-
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
-
 
     const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
       config
