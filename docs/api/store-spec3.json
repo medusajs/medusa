@@ -258,7 +258,7 @@
         }
       }
     },
-    "/carts/{id}/complete": {
+    "/carts/{id}/complete-cart": {
       "post": {
         "summary": "Complete a Cart",
         "operationId": "PostCartsCartComplete",
@@ -673,9 +673,9 @@
         }
       },
       "post": {
-        "operationId": "PostCartsCartPaymentSessionUpdate",
-        "summary": "Update a Payment Session",
-        "description": "Updates a Payment Session with additional data.",
+        "operationId": "PostCartsCartPaymentSessionsSession",
+        "summary": "Refresh a Payment Session",
+        "description": "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary.",
         "parameters": [
           {
             "in": "path",
@@ -690,7 +690,7 @@
             "in": "path",
             "name": "provider_id",
             "required": true,
-            "description": "The id of the payment provider.",
+            "description": "The id of the Payment Provider that created the Payment Session to be refreshed.",
             "schema": {
               "type": "string"
             }
@@ -709,29 +709,6 @@
                     "cart": {
                       "$ref": "#/components/schemas/cart"
                     }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "provider_id",
-                  "data"
-                ],
-                "properties": {
-                  "provider_id": {
-                    "type": "string",
-                    "description": "The id of the Payment Provider responsible for the Payment Session to update."
-                  },
-                  "data": {
-                    "type": "object",
-                    "description": "The data to update the payment session with."
                   }
                 }
               }
@@ -939,24 +916,24 @@
         }
       }
     },
-    "/gift-cards/{code}": {
-      "get": {
-        "operationId": "GetGiftCardsCode",
-        "summary": "Retrieve Gift Card by Code",
-        "description": "Retrieves a Gift Card by its associated unqiue code.",
+    "/carts/{id}/payment-session/update": {
+      "post": {
+        "operationId": "PostCartsCartPaymentSessionUpdate",
+        "summary": "Update a Payment Session",
+        "description": "Updates a Payment Session with additional data.",
         "parameters": [
           {
             "in": "path",
-            "name": "code",
+            "name": "id",
             "required": true,
-            "description": "The unique Gift Card code.",
+            "description": "The id of the Cart.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Gift Card"
+          "Cart"
         ],
         "responses": {
           "200": {
@@ -965,21 +942,32 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "id": {
-                      "description": "The id of the Gift Card"
-                    },
-                    "code": {
-                      "description": "The code of the Gift Card"
-                    },
-                    "value": {
-                      "description": "The original value of the Gift Card."
-                    },
-                    "balance": {
-                      "description": "The current balanace of the Gift Card"
-                    },
-                    "region": {
-                      "$ref": "#/components/schemas/region"
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
                     }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "provider_id",
+                  "data"
+                ],
+                "properties": {
+                  "provider_id": {
+                    "type": "string",
+                    "description": "The id of the Payment Provider responsible for the Payment Session to update."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The data to update the payment session with."
                   }
                 }
               }
@@ -1493,24 +1481,24 @@
         }
       }
     },
-    "/orders/cart/{cart_id}": {
+    "/gift-cards/{code}": {
       "get": {
-        "operationId": "GetOrdersOrderCartId",
-        "summary": "Retrieves Order by Cart id",
-        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
+        "operationId": "GetGiftCardsCode",
+        "summary": "Retrieve Gift Card by Code",
+        "description": "Retrieves a Gift Card by its associated unqiue code.",
         "parameters": [
           {
             "in": "path",
-            "name": "cart_id",
+            "name": "code",
             "required": true,
-            "description": "The id of Cart.",
+            "description": "The unique Gift Card code.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Order"
+          "Gift Card"
         ],
         "responses": {
           "200": {
@@ -1519,91 +1507,20 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieves an Order",
-        "description": "Retrieves an Order",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders": {
-      "get": {
-        "operationId": "GetOrders",
-        "summary": "Look Up an Order",
-        "description": "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "display_id",
-            "required": true,
-            "description": "The display id given to the Order.",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "required": true,
-            "description": "The email of the Order with the given display_id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
+                    "id": {
+                      "description": "The id of the Gift Card"
+                    },
+                    "code": {
+                      "description": "The code of the Gift Card"
+                    },
+                    "value": {
+                      "description": "The original value of the Gift Card."
+                    },
+                    "balance": {
+                      "description": "The current balanace of the Gift Card"
+                    },
+                    "region": {
+                      "$ref": "#/components/schemas/region"
                     }
                   }
                 }
@@ -1682,72 +1599,6 @@
                       "items": {
                         "$ref": "#/components/schemas/product"
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns": {
-      "post": {
-        "operationId": "PostReturns",
-        "summary": "Create Return",
-        "description": "Creates a Return for an Order.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "order_id": {
-                    "type": "string",
-                    "description": "The id of the Order to create the Return from."
-                  },
-                  "items": {
-                    "description": "The items to include in the Return.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item from the Order.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity to return.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "return_shipping": {
-                    "description": "If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.",
-                    "type": "object",
-                    "properties": {
-                      "option_id": {
-                        "type": "string",
-                        "description": "The id of the Shipping Option to create the Shipping Method from."
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return": {
-                      "$ref": "#/components/schemas/return"
                     }
                   }
                 }
@@ -1901,24 +1752,24 @@
         }
       }
     },
-    "/swaps/{cart_id}": {
+    "/orders/cart/{cart_id}": {
       "get": {
-        "operationId": "GetSwapsSwapCartId",
-        "summary": "Retrieve Swap by Cart id",
-        "description": "Retrieves a Swap by the id of the Cart used to confirm the Swap.",
+        "operationId": "GetOrdersOrderCartId",
+        "summary": "Retrieves Order by Cart id",
+        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
         "parameters": [
           {
             "in": "path",
             "name": "cart_id",
             "required": true,
-            "description": "The id of the Cart",
+            "description": "The id of Cart.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Swap"
+          "Order"
         ],
         "responses": {
           "200": {
@@ -1927,8 +1778,157 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "swap": {
-                      "$ref": "#/components/schemas/swap"
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "operationId": "GetOrdersOrder",
+        "summary": "Retrieves an Order",
+        "description": "Retrieves an Order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "operationId": "GetOrders",
+        "summary": "Look Up an Order",
+        "description": "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "display_id",
+            "required": true,
+            "description": "The display id given to the Order.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "description": "The email of the Order with the given display_id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns": {
+      "post": {
+        "operationId": "PostReturns",
+        "summary": "Create Return",
+        "description": "Creates a Return for an Order.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "order_id": {
+                    "type": "string",
+                    "description": "The id of the Order to create the Return from."
+                  },
+                  "items": {
+                    "description": "The items to include in the Return.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item from the Order.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity to return.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "return_shipping": {
+                    "description": "If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.",
+                    "type": "object",
+                    "properties": {
+                      "option_id": {
+                        "type": "string",
+                        "description": "The id of the Shipping Option to create the Shipping Method from."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/return"
                     }
                   }
                 }
@@ -2024,6 +2024,43 @@
                       "items": {
                         "$ref": "#/components/schemas/shipping_option"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/swaps/{cart_id}": {
+      "get": {
+        "operationId": "GetSwapsSwapCartId",
+        "summary": "Retrieve Swap by Cart id",
+        "description": "Retrieves a Swap by the id of the Cart used to confirm the Swap.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "required": true,
+            "description": "The id of the Cart",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Swap"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "swap": {
+                      "$ref": "#/components/schemas/swap"
                     }
                   }
                 }
@@ -2468,10 +2505,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "no_notification": {
-            "description": "Flag for describing whether or not notifications related to this should be send.",
-            "type": "boolean"
-          },
           "metadata": {
             "type": "object"
           }
@@ -2663,6 +2696,10 @@
               "$ref": "#/components/schemas/product"
             }
           },
+          "usage_limit": {
+            "description": "The maximum number of times that a discount can be used.",
+            "type": "integer"
+          },
           "created_at": {
             "description": "The date with timezone at which the resource was created.",
             "type": "string",
@@ -2734,14 +2771,6 @@
               "$ref": "#/components/schemas/region"
             }
           },
-          "usage_limit": {
-            "description": "The maximum number of times that a discount can be used.",
-            "type": "integer"
-          },
-          "usage_count": {
-            "description": "The number of times a discount has been used.",
-            "type": "integer"
-          },
           "created_at": {
             "description": "The date with timezone at which the resource was created.",
             "type": "string",
@@ -2760,75 +2789,6 @@
           "metadata": {
             "description": "An optional key-value map with additional information.",
             "type": "object"
-          }
-        }
-      },
-      "draft-order": {
-        "title": "DraftOrder",
-        "description": "Represents a draft order",
-        "x-resourceId": "draft-order",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "open",
-              "completed"
-            ]
-          },
-          "display_id": {
-            "type": "string"
-          },
-          "cart_id": {
-            "type": "string"
-          },
-          "cart": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/cart"
-              }
-            ]
-          },
-          "order_id": {
-            "type": "string"
-          },
-          "order": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/order"
-              }
-            ]
-          },
-          "canceled_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "update_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "deleted_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "completed_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "no_notification_order": {
-            "type": "boolean"
-          },
-          "metadata": {
-            "type": "object"
-          },
-          "idempotency_key": {
-            "type": "string"
           }
         }
       },
@@ -3585,13 +3545,6 @@
           },
           "gift_card_total": {
             "type": "integer"
-          },
-          "paid_total": {
-            "type": "integer"
-          },
-          "no_notification": {
-            "description": "Flag for describing whether or not notifications related to this should be send.",
-            "type": "boolean"
           }
         }
       },
@@ -4447,10 +4400,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "no_notification": {
-            "description": "When set to true, no notification will be sent related to this return.",
-            "type": "boolean"
-          },
           "metadata": {
             "description": "An optional key-value map with additional information.",
             "type": "object"
@@ -4828,10 +4777,6 @@
             "description": "The date with timezone at which the resource was last updated.",
             "type": "string",
             "format": "date-time"
-          },
-          "no_notification": {
-            "description": "If set to true, no notification will be sent related to this swap",
-            "type": "boolean"
           },
           "metadata": {
             "description": "An optional key-value map with additional information.",
