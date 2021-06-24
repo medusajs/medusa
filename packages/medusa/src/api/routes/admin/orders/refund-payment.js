@@ -54,6 +54,7 @@ export default async (req, res) => {
   })
 
   const { value, error } = schema.validate(req.body)
+
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
