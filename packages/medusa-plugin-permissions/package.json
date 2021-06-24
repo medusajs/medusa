@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-permissions",
-  "version": "1.1.13",
+  "version": "1.1.17",
   "description": "Role permission for Medusa core",
   "main": "dist/index.js",
   "repository": {
@@ -32,8 +32,8 @@
     "medusa-interfaces": "1.x"
   },
   "dependencies": {
-    "medusa-core-utils": "^1.1.10",
-    "medusa-test-utils": "^1.1.13",
+    "medusa-core-utils": "^1.1.14",
+    "medusa-test-utils": "^1.1.17",
     "mongoose": "^5.8.0"
   },
   "gitHead": "982da259ed93fe1b618800c8693a5c9dfe312532"

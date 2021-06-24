@@ -25,7 +25,6 @@ export default async (req, res) => {
 
       if (shipping_address) {
         const shippingAddress = {
-          ...cart.shipping_address,
           first_name: shipping_address.given_name,
           last_name: shipping_address.family_name,
           address_1: shipping_address.street_address,
@@ -45,13 +44,6 @@ export default async (req, res) => {
           country_code: shipping_address.country,
           postal_code: shipping_address.postal_code,
           phone: shipping_address.phone,
-        }
-
-        if (cart.billing_address) {
-          billingAddress = {
-            ...billingAddress,
-            ...cart.billing_address,
-          }
         }
 
         await cartService.update(cart.id, {

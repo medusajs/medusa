@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.8...@medusajs/medusa-cli@1.1.9) (2021-06-09)
+
+
+### Bug Fixes
+
+* better cli ([953747f](https://github.com/medusajs/medusa/commit/953747f3d2409cef82faf926ad316a384e6667b4))
+* setup to allow login to Medusa Cloud ([bbd2f02](https://github.com/medusajs/medusa/commit/bbd2f02d549330df160c76cf1f4e4d5e7d08f246))
+
+
+### Features
+
+* **cli:** adds seed script ([5136c77](https://github.com/medusajs/medusa/commit/5136c7740137afcda52393131ef931eb76ea9f5d))
+
+
+
+
+
+## [1.1.8](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.8...@medusajs/medusa-cli@1.1.8) (2021-06-09)
+
+
+### Bug Fixes
+
+* better cli ([953747f](https://github.com/medusajs/medusa/commit/953747f3d2409cef82faf926ad316a384e6667b4))
+* setup to allow login to Medusa Cloud ([bbd2f02](https://github.com/medusajs/medusa/commit/bbd2f02d549330df160c76cf1f4e4d5e7d08f246))
+
+
+### Features
+
+* **cli:** adds seed script ([5136c77](https://github.com/medusajs/medusa/commit/5136c7740137afcda52393131ef931eb76ea9f5d))
+
+
+
+
+
+## [1.1.7](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.8...@medusajs/medusa-cli@1.1.7) (2021-06-09)
+
+
+### Bug Fixes
+
+* better cli ([953747f](https://github.com/medusajs/medusa/commit/953747f3d2409cef82faf926ad316a384e6667b4))
+* setup to allow login to Medusa Cloud ([bbd2f02](https://github.com/medusajs/medusa/commit/bbd2f02d549330df160c76cf1f4e4d5e7d08f246))
+
+
+### Features
+
+* **cli:** adds seed script ([5136c77](https://github.com/medusajs/medusa/commit/5136c7740137afcda52393131ef931eb76ea9f5d))
+
+
+
+
+
+## [1.1.6](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.8...@medusajs/medusa-cli@1.1.6) (2021-06-09)
+
+
+### Bug Fixes
+
+* better cli ([953747f](https://github.com/medusajs/medusa/commit/953747f3d2409cef82faf926ad316a384e6667b4))
+* setup to allow login to Medusa Cloud ([bbd2f02](https://github.com/medusajs/medusa/commit/bbd2f02d549330df160c76cf1f4e4d5e7d08f246))
+
+
+### Features
+
+* **cli:** adds seed script ([5136c77](https://github.com/medusajs/medusa/commit/5136c7740137afcda52393131ef931eb76ea9f5d))
+
+
+
+
+
 ## [1.1.5](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.8...@medusajs/medusa-cli@1.1.5) (2021-06-08)
 
 
