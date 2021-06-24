@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.20](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.19...medusa-plugin-segment@1.1.20) (2021-06-09)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.19](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.18...medusa-plugin-segment@1.1.19) (2021-06-09)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.18](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.17...medusa-plugin-segment@1.1.18) (2021-06-09)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
+## [1.1.17](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.16...medusa-plugin-segment@1.1.17) (2021-06-09)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
 ## [1.1.16](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.15...medusa-plugin-segment@1.1.16) (2021-06-08)
 
 **Note:** Version bump only for package medusa-plugin-segment
