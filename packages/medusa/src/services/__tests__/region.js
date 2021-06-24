@@ -1,6 +1,14 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import RegionService from "../region"
 
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function() {
+    return this
+  },
+}
+
+
 describe("RegionService", () => {
   describe("create", () => {
     const regionRepository = MockRepository({})
@@ -58,6 +66,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       currencyRepository,
@@ -168,6 +177,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       regionRepository,
     })
 
@@ -237,6 +247,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       regionRepository,
@@ -335,6 +346,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       regionRepository,
@@ -380,6 +392,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       regionRepository,
     })
 
@@ -429,6 +442,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       regionRepository,
       countryRepository,
     })
@@ -473,6 +487,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       regionRepository,
     })
 
@@ -522,6 +537,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       regionRepository,
@@ -582,6 +598,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       fulfillmentProviderRepository: fpRepository,
       regionRepository,
     })
@@ -631,6 +648,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       regionRepository,
     })
 
@@ -665,6 +683,7 @@ describe("RegionService", () => {
 
     const regionService = new RegionService({
       manager: MockManager,
+      eventBusService,
       regionRepository,
     })
 

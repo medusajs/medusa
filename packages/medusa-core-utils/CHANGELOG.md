@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.14...medusa-core-utils@1.1.15) (2021-06-22)
+
+
+### Bug Fixes
+
+* adds transformer to map field names to field_id names ([88d96a2](https://github.com/medusajs/medusa/commit/88d96a29fd8dbc44ed7ba25154850d417577acad))
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.14](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.13...medusa-core-utils@1.1.14) (2021-06-09)
 
 **Note:** Version bump only for package medusa-core-utils

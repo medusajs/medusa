@@ -23,10 +23,8 @@ export default async (req, res) => {
   // handle payment intent events
   switch (event.type) {
     case "payment_intent.succeeded":
-      if (order) {
-        await orderService.update(order.id, {
-          payment_status: "captured",
-        })
+      if (order && order.payment_status !== "captured") {
+        await orderService.capturePayment(order.id)
       }
       break
     //case "payment_intent.canceled":
@@ -41,8 +39,9 @@ export default async (req, res) => {
       break
     case "payment_intent.amount_capturable_updated":
       if (!order) {
-        const cart = await cartService.retrieve(cartId)
-        await orderService.createFromCart(cart)
+        await cartService.setPaymentSession(cartId, "stripe")
+        await cartService.authorizePayment(cartId)
+        await orderService.createFromCart(cartId)
       }
       break
     default:

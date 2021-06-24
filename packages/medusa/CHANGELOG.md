@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.28](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.27...@medusajs/medusa@1.1.28) (2021-06-24)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.27](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.26...@medusajs/medusa@1.1.27) (2021-06-22)
+
+
+### Bug Fixes
+
+* adds transformer to map field names to field_id names ([88d96a2](https://github.com/medusajs/medusa/commit/88d96a29fd8dbc44ed7ba25154850d417577acad))
+* giftcard-order relation ([c88c407](https://github.com/medusajs/medusa/commit/c88c4070960ad1a8126e65b1e9f60d7ba929246a))
+* lint ([5829550](https://github.com/medusajs/medusa/commit/58295505178209d511046089d736395d121b9732))
+* mobile pay support ([91511cb](https://github.com/medusajs/medusa/commit/91511cbdf8bc66f5688a36ecf56edb16a220cc82))
+* region sync ([8e29e6e](https://github.com/medusajs/medusa/commit/8e29e6e63c305b684a37d817b504b3e471d697bd))
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.26](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.25...@medusajs/medusa@1.1.26) (2021-06-10)
 
 
