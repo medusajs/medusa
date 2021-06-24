@@ -1,6 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { OrderServiceMock } from "../../../../../services/__mocks__/order"
+import { EventBusServiceMock } from "../../../../../services/__mocks__/event-bus"
 
 describe("POST /admin/orders/:id/fulfillment", () => {
   describe("successfully fulfills an order", () => {
@@ -42,6 +43,7 @@ describe("POST /admin/orders/:id/fulfillment", () => {
             quantity: 1,
           },
         ],
+        undefined,
         undefined
       )
     })
@@ -51,5 +53,6 @@ describe("POST /admin/orders/:id/fulfillment", () => {
       expect(subject.body.order.id).toEqual(IdMap.getId("test-order"))
       expect(subject.body.order.fulfillment_status).toEqual("fulfilled")
     })
+
   })
 })

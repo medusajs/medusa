@@ -348,6 +348,13 @@ class DraftOrderService extends BaseService {
       const doRepo = manager.getCustomRepository(this.draftOrderRepository_)
       const draftOrder = await this.retrieve(doId)
       let touched = false
+     
+      if(draftOrder.status === "completed"){
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't update a draft order which is complete"
+        )
+      }
       
       if(data.no_notification_order !== undefined){
         touched = true

@@ -24,6 +24,9 @@ import { defaultRelations, defaultFields } from "./"
  *                 quantity:
  *                   description: The quantity of the Line Item to fulfill.
  *                   type: integer
+ *           no_notification:
+ *             description: If set to true no notification will be send related to this Swap.
+ *             type: boolean
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -49,6 +52,7 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .required(),
+    no_notification: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
   })
 
@@ -60,7 +64,7 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
 
-    await orderService.createFulfillment(id, value.items, value.metadata)
+    await orderService.createFulfillment(id, value.items, value.no_notification, value.metadata)
 
     const order = await orderService.retrieve(id, {
       select: defaultFields,

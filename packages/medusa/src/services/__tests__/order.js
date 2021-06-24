@@ -1,5 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("OrderService", () => {
   const totalsService = {
@@ -711,6 +712,7 @@ describe("OrderService", () => {
     const order = {
       fulfillments: [],
       shipping_methods: [{ id: "ship" }],
+      no_notification: true,
       items: [
         {
           id: "item_1",
@@ -859,7 +861,31 @@ describe("OrderService", () => {
         fulfillment_status: "partially_fulfilled",
       })
     })
+
+    it.each([
+      [true, true],
+      [false, false],
+      [undefined, true],
+    ])("emits correct no_notification option with '%s'", async (input, expected) => {
+      await orderService.createFulfillment(
+        "test-order", 
+        [
+          {
+            item_id: "item_1",
+            quantity: 1,
+          },
+        ],
+      input
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
+        id: expect.any(String),
+        no_notification: expected,
+      })  
+    })
   })
+
+    
 
   describe("registerReturnReceived", () => {
     const order = {
@@ -975,6 +1001,7 @@ describe("OrderService", () => {
           fulfilled_quantity: 0,
         },
       ],
+      no_notification: true,
     }
 
     const orderRepo = MockRepository({
@@ -1047,6 +1074,25 @@ describe("OrderService", () => {
         ...order,
         fulfillment_status: "shipped",
       })
+    })
+
+    it.each([
+      [true, true],
+      [false, false],
+      [undefined, true],
+    ])("2emits correct no_notification option with '%s'", async (input, expected) => {
+      await orderService.createShipment(
+        IdMap.getId("test"),
+        IdMap.getId("fulfillment"),
+        [{ tracking_number: "1234" }, { tracking_number: "2345" }],
+        input,
+        {}
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
+        id: expect.any(String),
+        no_notification: expected,
+      })  
     })
   })
 
