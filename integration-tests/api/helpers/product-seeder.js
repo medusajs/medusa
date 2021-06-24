@@ -53,6 +53,7 @@ module.exports = async (connection, data = {}) => {
 
   const p = manager.create(Product, {
     id: "test-product",
+    handle: "test-product",
     title: "Test product",
     profile_id: defaultProfile.id,
     description: "test-product-description",

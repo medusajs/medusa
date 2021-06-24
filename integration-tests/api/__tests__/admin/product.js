@@ -224,4 +224,103 @@ describe("/admin/products", () => {
       );
     });
   });
+  describe("DELETE /admin/products/:id", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection);
+        await adminSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "product_option_value"`);
+      await manager.query(`DELETE FROM "product_option"`);
+      await manager.query(`DELETE FROM "image"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "product_collection"`);
+      await manager.query(`DELETE FROM "product_tag"`);
+      await manager.query(`DELETE FROM "product_type"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("successfully deletes a product", async () => {
+      const api = useApi();
+
+      const response = await api
+        .delete("/admin/products/test-product", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          id: "test-product",
+          deleted: true,
+        })
+      );
+    });
+
+    it("successfully creates product with soft-deleted product handle", async () => {
+      const api = useApi();
+
+      // First we soft-delete the product
+      const response = await api
+        .delete("/admin/products/test-product", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.id).toEqual("test-product");
+
+      // Lets try to create a product with same handle as deleted one
+      const payload = {
+        title: "Test product",
+        handle: "test-product",
+        description: "test-product-description",
+        type: { value: "test-type" },
+        images: ["test-image.png", "test-image-2.png"],
+        collection_id: "test-collection",
+        tags: [{ value: "123" }, { value: "456" }],
+        options: [{ title: "size" }, { title: "color" }],
+        variants: [
+          {
+            title: "Test variant",
+            inventory_quantity: 10,
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+          },
+        ],
+      };
+
+      const res = await api.post("/admin/products", payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      });
+
+      expect(res.status).toEqual(200);
+      expect(res.data.product.handle).toEqual("test-product");
+    });
+  });
 });
