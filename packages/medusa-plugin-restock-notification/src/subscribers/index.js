@@ -19,6 +19,8 @@ class VariantSubscriber {
             .triggerRestock(id)
       )
     }
+
+    return Promise.resolve()
   }
 }
 
