@@ -105,7 +105,6 @@ class AdyenSubscriber {
 
       await this.paymentRepository_.save(updatedPayment)
     } catch (error) {
-      console.log(error)
       await this.manager_.transaction(async (manager) => {
         const session = {
           pspReference: notification.pspReference,

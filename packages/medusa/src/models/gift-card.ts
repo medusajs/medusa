@@ -8,7 +8,6 @@ import {
   Column,
   PrimaryColumn,
   ManyToOne,
-  OneToOne,
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
@@ -43,7 +42,7 @@ export class GiftCard {
   @Column({ nullable: true })
   order_id: string
 
-  @OneToOne(() => Order)
+  @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
   order: Order
 
