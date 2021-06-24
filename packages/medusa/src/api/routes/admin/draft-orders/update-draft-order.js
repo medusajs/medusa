@@ -36,7 +36,7 @@ import { defaultCartFields, defaultCartRelations, defaultFields } from "."
  *                   description: "The code that a Discount is identifed by."
  *                   type: string
  *           no_notification_order:
- *             description: "An optional flag passed to the resulting order to determine use of notifications.""
+ *             description: "An optional flag passed to the resulting order to determine use of notifications."
  *             type: boolean
  *           customer_id:
  *             description: "The id of the Customer to associate the Draft Order with."
