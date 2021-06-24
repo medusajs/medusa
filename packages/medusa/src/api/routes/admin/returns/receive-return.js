@@ -54,9 +54,12 @@ export default async (req, res) => {
   })
 
   const { value, error } = schema.validate(req.body)
+
   if (error) {
+    console.log(error)
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
+
 
   try {
     const returnService = req.scope.resolve("returnService")
