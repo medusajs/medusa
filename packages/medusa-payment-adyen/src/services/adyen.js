@@ -28,7 +28,7 @@ class AdyenService extends BaseService {
     /** @private @constant {AxiosClient} */
     this.adyenClient_ = this.initAdyenClient()
 
-    /** @private @constant {AdyenClient} */
+    /** @private @constant {AxiosClient} */
     this.adyenPaymentApi = this.initPaymentClient()
   }
 
@@ -51,16 +51,6 @@ class AdyenService extends BaseService {
     return this.options_
   }
 
-  initPaymentClient() {
-    return axios.create({
-      baseURL: this.options_.payment_endpoint,
-      headers: {
-        "Content-Type": "application/json",
-        "x-API-key": this.options_.api_key,
-      },
-    })
-  }
-
   initAdyenClient() {
     const config = new Config()
     config.apiKey = this.options_.api_key
@@ -70,12 +60,27 @@ class AdyenService extends BaseService {
       config,
     })
 
-    client.setEnvironment(
-      this.options_.environment,
-      this.options_.live_endpoint_prefix
-    )
+    if (this.options_.live_endpoint_prefix) {
+      client.setEnvironment(
+        this.options_.environment,
+        this.options_.live_endpoint_prefix
+      )
+    } else {
+      client.setEnvironment(this.options_.environment)
+    }
 
     return client
+  }
+
+  initPaymentClient() {
+    return axios.create({
+      baseURL:
+        this.options_.payment_endpoint || "https://checkout-test.adyen.com/v67",
+      headers: {
+        "Content-Type": "application/json",
+        "x-API-key": this.options_.api_key,
+      },
+    })
   }
 
   /**
@@ -90,6 +95,7 @@ class AdyenService extends BaseService {
       notification,
       this.options_.notification_hmac
     )
+
     return validated
   }
 
@@ -228,6 +234,10 @@ class AdyenService extends BaseService {
 
     const status = this.getStatus(sessionData)
 
+    if (sessionData.resultCode === "RedirectShopper") {
+      return { data: sessionData, status: "requires_more" }
+    }
+
     // If session data is present, we already called authorize once.
     // Therefore, this is most likely a call for getting additional details
     if (status === "requires_more") {
@@ -253,36 +263,26 @@ class AdyenService extends BaseService {
       value: cart.total,
     }
 
+    let paymentData = sessionData.paymentData
+    if (!paymentData) {
+      paymentData = {
+        paymentMethod: {
+          type: sessionData.type,
+        },
+      }
+    }
+
     let request = {
       amount,
+      merchantAccount: this.options_.merchant_account,
       shopperIP: context.ip_address || "",
       shopperReference: cart.customer_id,
-      paymentMethod: sessionData.paymentData.paymentMethod,
-      reference: cart.id,
-      merchantAccount: this.options_.merchant_account,
       returnUrl: this.options_.return_url,
-      origin: this.options_.origin,
-      channel: "Web",
-      redirectFromIssuerMethod: "GET",
-      browserInfo: sessionData.browserInfo || {},
-      billingAddress: {
-        city: cart.shipping_address.city,
-        country: cart.shipping_address.country_code,
-        houseNumberOrName: cart.shipping_address.address_2 || "",
-        postalCode: cart.shipping_address.postal_code,
-        stateOrProvice: cart.shipping_address.province || "",
-        street: cart.shipping_address.address_1,
-      },
+      paymentMethod: paymentData.paymentMethod,
+      reference: cart.id,
       metadata: {
         cart_id: cart.id,
       },
-    }
-
-    // If customer chose to save the payment method
-    if (sessionData.storePaymentMethod) {
-      request.storePaymentMethod = "true"
-      request.shopperInteraction = "Ecommerce"
-      request.recurringProcessingModel = "CardOnFile"
     }
 
     const checkout = new CheckoutAPI(this.adyenClient_)
@@ -344,31 +344,34 @@ class AdyenService extends BaseService {
    * @returns {string} status = processing_captures
    */
   async capturePayment(payment) {
+    if (payment.captured_at !== null) {
+      return
+    }
+
     const { pspReference, merchantReference } = payment.data
     const { amount, currency_code } = payment
 
     try {
-      const captured = await this.adyenPaymentApi.post("/capture", {
-        originalReference: pspReference,
-        modificationAmount: {
-          value: amount,
-          currency: currency_code.toUpperCase(),
-        },
-        merchantAccount: this.options_.merchant_account,
-        reference: merchantReference,
-      })
+      const captured = await this.adyenPaymentApi.post(
+        `/payments/${pspReference}/captures`,
+        {
+          merchantAccount: this.options_.merchant_account,
+          amount: {
+            value: amount,
+            currency: currency_code.toUpperCase(),
+          },
+          reference: merchantReference,
+        }
+      )
 
-      if (
-        captured.data.pspReference &&
-        captured.data.response !== "[capture-received]"
-      ) {
+      if (captured.data.pspReference && captured.data.status !== "received") {
         throw new MedusaError(
           MedusaError.Types.INVALID_ARGUMENT,
           "Could not process capture"
         )
       }
 
-      return { originalReference: pspReference, ...captured.data }
+      return { pspReference }
     } catch (error) {
       throw error
     }
@@ -381,7 +384,7 @@ class AdyenService extends BaseService {
    * @returns {object} payment data result of refund
    */
   async refundPayment(payment, amountToRefund) {
-    const { originalReference, merchantReference } = payment.data
+    const { pspReference } = payment.data
     const { currency_code } = payment
 
     const refundAmount = {
@@ -390,14 +393,12 @@ class AdyenService extends BaseService {
     }
 
     try {
-      const refunded = await this.adyenPaymentApi.post("/refund", {
-        originalReference,
+      await this.adyenPaymentApi.post(`/payments/${pspReference}/refunds`, {
         merchantAccount: this.options_.merchant_account,
-        modificationAmount: refundAmount,
-        reference: merchantReference,
+        amount: refundAmount,
       })
 
-      return { originalReference, ...refunded.data }
+      return { pspReference }
     } catch (error) {
       throw error
     }

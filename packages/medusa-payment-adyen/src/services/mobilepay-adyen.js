@@ -15,7 +15,9 @@ class MobilePayAdyenService extends PaymentService {
   }
 
   async createPayment(data) {
-    return this.adyenService_.createPayment(data)
+    const raw = await this.adyenService_.createPayment(data)
+    raw.type = "mobilepay"
+    return raw
   }
 
   async authorizePayment(sessionData, context) {
