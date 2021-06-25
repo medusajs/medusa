@@ -25,7 +25,6 @@ export default async (req, res) => {
     const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
 
-
     const selector = {}
 
     if ("q" in req.query && parseInt(req.query.q)) {
