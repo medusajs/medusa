@@ -224,7 +224,7 @@ describe("/admin/products", () => {
       );
     });
   });
-  describe("DELETE /admin/products/:id", () => {
+  describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection);
@@ -321,6 +321,56 @@ describe("/admin/products", () => {
 
       expect(res.status).toEqual(200);
       expect(res.data.product.handle).toEqual("test-product");
+    });
+
+    it("successfully deletes product collection", async () => {
+      const api = useApi();
+
+      // First we soft-delete the product collection
+      const response = await api
+        .delete("/admin/collections/test-collection", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.id).toEqual("test-collection");
+    });
+
+    it("successfully creates soft-deleted product collection", async () => {
+      const api = useApi();
+
+      const response = await api
+        .delete("/admin/collections/test-collection", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.id).toEqual("test-collection");
+
+      // Lets try to create a product collection with same handle as deleted one
+      const payload = {
+        title: "Another test collection",
+        handle: "test-collection",
+      };
+
+      const res = await api.post("/admin/collections", payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      });
+
+      expect(res.status).toEqual(200);
+      expect(res.data.collection.handle).toEqual("test-collection");
     });
   });
 });

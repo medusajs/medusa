@@ -18,6 +18,7 @@ module.exports = async (connection, data = {}) => {
 
   const coll = manager.create(ProductCollection, {
     id: "test-collection",
+    handle: "test-collection",
     title: "Test collection",
   });
 
