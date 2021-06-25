@@ -88,6 +88,9 @@ class GiftCardService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
+    const rels = query.relations
+    delete query.relations
+
     if(q) {
       const where = query.where
       delete where.id
@@ -99,15 +102,15 @@ class GiftCardService extends BaseService {
         .where(where)
         .andWhere(
           new Brackets(qb => {
-            qb.where(`gift_card.id ILIKE :q`, {q: `%${q}%`})
-            .orWhere(`order.display_id ILIKE :q`, {q: `%${q}%`})
+            qb.where(`gift_card.code ILIKE :q`, {q: `%${q}%`})
+            .orWhere(`order.display_id = :d`, {d: q})
           })
         )
         .getMany()
       
-      return productRepo.find(raw.map(i => i.id))
+      return giftCardRepo.findWithRelations(rels, raw.map(i => i.id))
     }
-    return giftCardRepo.find(query)
+    return giftCardRepo.findWithRelations(rels, query)
   }
 
   async createTransaction(data) {

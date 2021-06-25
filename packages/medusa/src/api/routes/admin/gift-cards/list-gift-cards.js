@@ -25,18 +25,11 @@ export default async (req, res) => {
     const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
 
+
     const selector = {}
 
-    if ("q" in req.query) {
+    if ("q" in req.query && parseInt(req.query.q)) {
       selector.q = req.query.q
-    }
-
-    console.log("req" + req.query)
-    
-    const selector = {}
-
-    if("q" in value){
-      selector.q = value.q
     }
 
     const giftCardService = req.scope.resolve("giftCardService")
