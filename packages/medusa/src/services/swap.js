@@ -257,6 +257,7 @@ class SwapService extends BaseService {
         order_id: order.id,
         items: returnItems,
         shipping_method: returnShipping,
+        no_notification: evaluatedNoNotification,
       })
 
       await this.eventBus_
@@ -300,19 +301,24 @@ class SwapService extends BaseService {
         } catch (err) {
           swap.payment_status = "requires_action"
           const result = await swapRepo.save(swap)
+
+          // TODO: event payload should not contain full result but just { id: result.id ... }
           await this.eventBus_
             .withTransaction(manager)
             .emit(SwapService.Events.PROCESS_REFUND_FAILED, result)
-          return result
+          
+            return result
         }
 
         swap.payment_status = "difference_refunded"
 
         const result = await swapRepo.save(swap)
 
+        // TODO: event payload should not contain full result but just { id: result.id ... }
         await this.eventBus_
           .withTransaction(manager)
           .emit(SwapService.Events.REFUND_PROCESSED, result)
+
         return result
       } else if (swap.difference_due === 0) {
         if (swap.payment_status === "difference_refunded") {
@@ -322,9 +328,12 @@ class SwapService extends BaseService {
         swap.payment_status = "difference_refunded"
 
         const result = await swapRepo.save(swap)
+
+        // TODO: event payload should not contain full result but just { id: result.id ... }
         await this.eventBus_
           .withTransaction(manager)
           .emit(SwapService.Events.REFUND_PROCESSED, result)
+
         return result
       }
 
@@ -339,19 +348,25 @@ class SwapService extends BaseService {
       } catch (err) {
         swap.payment_status = "requires_action"
         const result = await swapRepo.save(swap)
+
+        // TODO: event payload should not contain full result but just { id: result.id ... }
         await this.eventBus_
           .withTransaction(manager)
           .emit(SwapService.Events.PAYMENT_CAPTURE_FAILED, result)
+
         return result
       }
 
       swap.payment_status = "captured"
 
       const result = await swapRepo.save(swap)
+
+      // TODO: event payload should not contain full result but just { id: result.id ... }
       await this.eventBus_
         .withTransaction(manager)
         .emit(SwapService.Events.PAYMENT_CAPTURED, result)
-      return result
+      
+        return result
     })
   }
 
@@ -707,6 +722,9 @@ class SwapService extends BaseService {
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
+
+      // TODO: EMIT swap.fulfillment_created
+
       return result
     })
   }
