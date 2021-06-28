@@ -1,3 +1,4 @@
+import { metadata } from "core-js/fn/reflect"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -572,7 +573,12 @@ class OrderService extends BaseService {
    *   the fulfillment
    * @return {order} the resulting order following the update.
    */
-  async createShipment(orderId, fulfillmentId, trackingLinks, noNotification = undefined, metadata = {}) {
+  async createShipment(orderId, fulfillmentId, trackingLinks, config = {
+    metadata: {},
+    noNotification: undefined,
+  }) {
+    const { metadata, noNotification } = config
+
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, { relations: ["items"] })
       const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
@@ -584,9 +590,11 @@ class OrderService extends BaseService {
         )
       }
 
+      const evaluatedNoNotification = noNotification !== undefined ? noNotification : shipment.no_notification
+
       const shipmentRes = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingLinks, metadata)
+        .createShipment(fulfillmentId, trackingLinks, {metadata, noNotification: evaluatedNoNotification})
 
       order.fulfillment_status = "shipped"
       for (const item of order.items) {
@@ -609,8 +617,6 @@ class OrderService extends BaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
-
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
       await this.eventBus_
         .withTransaction(manager)
@@ -983,7 +989,12 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of order to cancel.
    * @return {Promise} result of the update operation.
    */
-  async createFulfillment(orderId, itemsToFulfill, noNotification = undefined, metadata = {}) {
+  async createFulfillment(orderId, itemsToFulfill, config = {
+      noNotification: undefined,
+      metadata: {},
+    }) {
+    const { metadata, noNotification } = config
+
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
         select: [
@@ -1011,18 +1022,23 @@ class OrderService extends BaseService {
         ],
       })
 
+
+      console.log("metadata:" + metadata)
+
       if (!order.shipping_methods?.length) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot fulfill an order that lacks shipping methods"
         )
       }
+      
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(order, itemsToFulfill, {
           metadata,
           order_id: orderId,
+          no_notification: noNotification
         })
       let successfullyFulfilled = []
       for (const f of fulfillments) {
@@ -1125,7 +1141,11 @@ class OrderService extends BaseService {
   /**
    * Refunds a given amount back to the customer.
    */
-  async createRefund(orderId, refundAmount, reason, note, noNotification = undefined) {
+  async createRefund(orderId, refundAmount, reason, note, config = {
+    noNotification: undefined,
+  }) {
+    const { noNotification } = config
+
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],

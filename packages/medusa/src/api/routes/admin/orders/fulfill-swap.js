@@ -17,6 +17,9 @@ import { defaultRelations, defaultFields } from "./"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ *           no_notification:
+ *             description: If set to true no notification will be send related to this Claim.
+ *             type: boolean
  * tags:
  *   - Order
  * responses:
@@ -34,6 +37,7 @@ export default async (req, res) => {
 
   const schema = Validator.object().keys({
     metadata: Validator.object().optional(),
+    no_notification: Validator.boolean().optional,
   })
 
   const { value, error } = schema.validate(req.body)
@@ -49,7 +53,10 @@ export default async (req, res) => {
     await entityManager.transaction(async manager => {
       await swapService
         .withTransaction(manager)
-        .createFulfillment(swap_id, value.metadata)
+        .createFulfillment(swap_id, {
+          metadata: value.metadata,
+          noNotification: value.no_notification,
+        })
 
       const order = await orderService.withTransaction(manager).retrieve(id, {
         select: defaultFields,

@@ -44,7 +44,7 @@ export default async (req, res) => {
     tracking_numbers: Validator.array()
       .items(Validator.string())
       .optional(),
-      no_notification: Validator.boolean().optional(),
+    no_notification: Validator.boolean().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -59,7 +59,7 @@ export default async (req, res) => {
       id,
       value.fulfillment_id,
       value.tracking_numbers.map(n => ({ tracking_number: n })),
-      value.no_notification,
+      {noNotification: value.no_notification},
     )
 
     const order = await orderService.retrieve(id, {

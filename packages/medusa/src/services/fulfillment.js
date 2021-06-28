@@ -165,10 +165,15 @@ class FulfillmentService extends BaseService {
    * those partitions.
    * @param {Order} order - order to create fulfillment for
    * @param {{ item_id: string, quantity: number}[]} itemsToFulfill - the items in the order to fulfill
-   * @param {object} metadata - potential metadata to add
+   * @param {object} config - potential configurations, including metadata to add
    * @return {Fulfillment[]} the created fulfillments
    */
-  async createFulfillment(order, itemsToFulfill, custom = {}) {
+  async createFulfillment(order, itemsToFulfill, config = {
+    noNotification: undefined, 
+    custom: {},
+  }) {
+    const {custom, noNotification} = config
+
     return this.atomicPhase_(async manager => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
@@ -179,6 +184,8 @@ class FulfillmentService extends BaseService {
         itemsToFulfill,
         this.validateFulfillmentLineItem_
       )
+
+      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
       const { shipping_methods } = order
 
@@ -191,6 +198,7 @@ class FulfillmentService extends BaseService {
             ...custom,
             provider_id: shipping_method.shipping_option.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
+            no_notification: evaluatedNoNotification,
             data: {},
           })
 

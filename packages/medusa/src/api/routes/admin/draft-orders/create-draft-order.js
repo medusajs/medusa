@@ -155,7 +155,7 @@ export default async (req, res) => {
     draftOrder = await draftOrderService.retrieve(draftOrder.id, {
       relations: defaultRelations,
       select: defaultFields,
-    })
+    }) //
 
     res.status(200).json({ draft_order: draftOrder })
   } catch (err) {
