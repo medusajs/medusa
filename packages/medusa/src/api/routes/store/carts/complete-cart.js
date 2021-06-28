@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /carts/{id}/complete-cart
+ * @oas [post] /carts/{id}/complete
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: "Completes a cart. The following steps will be performed. Payment

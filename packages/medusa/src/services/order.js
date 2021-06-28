@@ -110,10 +110,13 @@ class OrderService extends BaseService {
       shippingOptionService: this.shippingOptionService_,
       shippingProfileService: this.shippingProfileService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
+      fulfillmentService: this.fulfillmentService_,
+      customerService: this.customerService_,
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       cartService: this.cartService_,
       giftCardService: this.giftCardService_,
+      addressRepository: this.addressRepository_,
       draftOrderService: this.draftOrderService_,
     })
 
@@ -467,9 +470,9 @@ class OrderService extends BaseService {
           )
         }
 
-        const paymentStatus = await this.paymentProviderService_.getStatus(
-          payment
-        )
+        const paymentStatus = await this.paymentProviderService_
+          .withTransaction(manager)
+          .getStatus(payment)
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
