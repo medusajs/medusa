@@ -90,6 +90,8 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
+  console.log("..>")
+
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -138,8 +140,7 @@ export default async (req, res) => {
                   value.return_items,
                   value.additional_items,
                   value.return_shipping,
-                  value.no_notification,
-                  { idempotency_key: idempotencyKey.idempotency_key }
+                  { idempotency_key: idempotencyKey.idempotency_key, noNotification: value.no_notification }
                 )
 
               await swapService.withTransaction(manager).createCart(swap.id)

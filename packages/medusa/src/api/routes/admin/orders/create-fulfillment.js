@@ -64,7 +64,10 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
 
-    await orderService.createFulfillment(id, value.items, value.no_notification, value.metadata)
+    await orderService.createFulfillment(id, value.items, {
+      metadata: value.metadata, 
+      noNotification: value.no_notification 
+    })
 
     const order = await orderService.retrieve(id, {
       select: defaultFields,

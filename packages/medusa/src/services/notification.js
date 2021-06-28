@@ -28,7 +28,7 @@ class NotificationService extends BaseService {
     this.notificationProviderRepository_ = notificationProviderRepository
 
     this.subscribers_ = {}
-    this.attachmentGenerator_ = null
+    this.attachmentGenerator_ = null 
   }
 
   /**
