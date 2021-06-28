@@ -215,12 +215,8 @@ class SwapService extends BaseService {
     returnItems,
     additionalItems,
     returnShipping,
-    config = {
-      custom: {},
-      noNotification: undefined,
-    }
+    custom = {}
   ) {
-    const { noNotification, custom } = config
 
     return this.atomicPhase_(async manager => {
       if (
@@ -243,11 +239,13 @@ class SwapService extends BaseService {
         })
       )
 
+      const { noNotification, ...rest } = custom
+
       const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const created = swapRepo.create({
-        ...custom,
+        ...rest ,
         fulfillment_status: "not_fulfilled",
         payment_status: "not_paid",
         order_id: order.id,
