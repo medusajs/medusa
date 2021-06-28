@@ -111,10 +111,13 @@ class OrderService extends BaseService {
       shippingOptionService: this.shippingOptionService_,
       shippingProfileService: this.shippingProfileService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
+      fulfillmentService: this.fulfillmentService_,
+      customerService: this.customerService_,
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       cartService: this.cartService_,
       giftCardService: this.giftCardService_,
+      addressRepository: this.addressRepository_,
       draftOrderService: this.draftOrderService_,
     })
 

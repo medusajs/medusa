@@ -162,7 +162,7 @@ class NotificationService extends BaseService {
   handleEvent(eventName, data) {
     const subs = this.subscribers_[eventName]
     if (!subs) {
-      return
+      return Promise.resolve()
     }
     if(data['no_notification'] === true) {
       return

@@ -19,6 +19,9 @@ import { Product } from "./product"
 import { MoneyAmount } from "./money-amount"
 import { ProductOptionValue } from "./product-option-value"
 
+
+
+
 @Entity()
 export class ProductVariant {
   @PrimaryColumn()
