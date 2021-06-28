@@ -65,7 +65,7 @@ export default (app, container, config) => {
   returnRoutes(route)
   variantRoutes(route)
   draftOrderRoutes(route)
-  collectionRoutes(route)
+  collectionRoutes(route) //test
   notificationRoutes(route)
   returnReasonRoutes(route)
 

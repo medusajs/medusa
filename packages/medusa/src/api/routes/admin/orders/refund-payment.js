@@ -62,7 +62,7 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
 
-    await orderService.createRefund(id, value.amount, value.reason, value.note, value.no_notification)
+    await orderService.createRefund(id, value.amount, value.reason, value.note, {noNotification: value.no_notification})
 
     const order = await orderService.retrieve(id, {
       select: defaultFields,

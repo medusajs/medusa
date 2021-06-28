@@ -135,7 +135,7 @@ class ClaimService extends BaseService {
         }
       }
 
-      if(no_notification !== undefined){
+      if( no_notification !== undefined ){
         claim.no_notification = no_notification
         await claimRepo.save(claim)
       }
@@ -306,7 +306,12 @@ class ClaimService extends BaseService {
     })
   }
 
-  createFulfillment(id, metadata = {}) {
+  createFulfillment(id, config = {
+    metadata: {},
+    noNotification: undefined,
+  }) {
+    const { metadata, noNotification } = config
+
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
         relations: [
@@ -343,6 +348,8 @@ class ClaimService extends BaseService {
         )
       }
 
+      const evaluatedNoNotification = noNotification !== undefined ? noNotification : claim.no_notification
+
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(
@@ -359,6 +366,7 @@ class ClaimService extends BaseService {
             items: claim.additional_items,
             shipping_methods: claim.shipping_methods,
             is_claim: true,
+            no_notification: evaluatedNoNotification,
           },
           claim.additional_items.map(i => ({
             item_id: i.id,
@@ -450,15 +458,22 @@ class ClaimService extends BaseService {
     })
   }
 
-  async createShipment(id, fulfillmentId, trackingLinks, metadata = []) {
+  async createShipment(id, fulfillmentId, trackingLinks, config = {
+    metadata: [],
+    noNotification: undefined,
+  }) {
+    const { metadata, noNotification } = config
+  
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
         relations: ["additional_items"],
       })
 
+      const evaluatedNoNotification = noNotification !== undefined ? noNotification : claim.no_notification
+
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingLinks, metadata)
+        .createShipment(fulfillmentId, trackingLinks, {metadata, noNotification: evaluatedNoNotification})
 
       claim.fulfillment_status = "shipped"
 
