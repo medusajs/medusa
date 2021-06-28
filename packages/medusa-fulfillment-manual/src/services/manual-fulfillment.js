@@ -12,6 +12,10 @@ class ManualFulfillmentService extends FulfillmentService {
       {
         id: "manual-fulfillment",
       },
+      {
+        id: "manual-fulfillment-return",
+        is_return: true,
+      },
     ]
   }
 
@@ -32,6 +36,11 @@ class ManualFulfillmentService extends FulfillmentService {
   }
 
   createOrder() {
+    // No data is being sent anywhere
+    return Promise.resolve({})
+  }
+
+  createReturn() {
     // No data is being sent anywhere
     return Promise.resolve({})
   }
