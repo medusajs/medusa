@@ -90,8 +90,6 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  console.log("..>")
-
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""

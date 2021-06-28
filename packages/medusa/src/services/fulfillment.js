@@ -168,12 +168,7 @@ class FulfillmentService extends BaseService {
    * @param {object} config - potential configurations, including metadata to add
    * @return {Fulfillment[]} the created fulfillments
    */
-  async createFulfillment(order, itemsToFulfill, config = {
-    noNotification: undefined, 
-    custom: {},
-  }) {
-    const {custom, noNotification} = config
-
+  async createFulfillment(order, itemsToFulfill, custom = {}) {
     return this.atomicPhase_(async manager => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
@@ -185,6 +180,8 @@ class FulfillmentService extends BaseService {
         this.validateFulfillmentLineItem_
       )
 
+      const { noNotification, ...rest} = custom
+
       const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
       const { shipping_methods } = order
@@ -195,7 +192,7 @@ class FulfillmentService extends BaseService {
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
           const ful = fulfillmentRepository.create({
-            ...custom,
+            ...rest,
             provider_id: shipping_method.shipping_option.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
             no_notification: evaluatedNoNotification,
