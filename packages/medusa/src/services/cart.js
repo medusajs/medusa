@@ -306,8 +306,8 @@ class CartService extends BaseService {
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
-      if (data.shipping_address && typeof data.shipping_address === `string`) {
-        const addr = await addressRepo.findOne(data.shipping_address)
+      if (data.shipping_address_id) {
+        const addr = await addressRepo.findOne(data.shipping_address_id)
         data.shipping_address = addr
       }
 
@@ -650,16 +650,14 @@ class CartService extends BaseService {
       }
 
       const addrRepo = manager.getCustomRepository(this.addressRepository_)
-      if ("shipping_address" in update) {
-        await this.updateShippingAddress_(
-          cart,
-          update.shipping_address,
-          addrRepo
-        )
+      if ("shipping_address_id" in update || "shipping_address" in update) {
+        const address = update.shipping_address_id || update.shipping_address
+        await this.updateShippingAddress_(cart, address, addrRepo)
       }
 
-      if ("billing_address" in update) {
-        await this.updateBillingAddress_(cart, update.billing_address, addrRepo)
+      if ("billing_address_id" in update || "billing_address" in update) {
+        const address = update.billing_address_id || update.billing_address
+        await this.updateBillingAddress_(cart, address, addrRepo)
       }
 
       if ("discounts" in update) {

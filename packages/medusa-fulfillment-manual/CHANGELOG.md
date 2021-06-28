@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/medusajs/medusa/compare/medusa-fulfillment-manual@1.1.14...medusa-fulfillment-manual@1.1.15) (2021-06-22)
+
+
+### Bug Fixes
+
+* Adds manual return option ([#290](https://github.com/medusajs/medusa/issues/290)) ([350603a](https://github.com/medusajs/medusa/commit/350603ac579027bd96d6855b9a78750a46d857a3))
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.14](https://github.com/medusajs/medusa/compare/medusa-fulfillment-manual@1.1.13...medusa-fulfillment-manual@1.1.14) (2021-06-09)
 
 **Note:** Version bump only for package medusa-fulfillment-manual
