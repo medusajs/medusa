@@ -297,9 +297,6 @@ class ContentfulService extends BaseService {
         }
       )
 
-      // const ignoreIds = (await this.getIgnoreIds_("product_variant")) || []
-      // ignoreIds.push(v.id)
-      // this.redis_.set("product_variant_ignore_ids", JSON.stringify(ignoreIds))
       return result
     } catch (error) {
       throw error
@@ -311,7 +308,7 @@ class ContentfulService extends BaseService {
       .then(() => true)
       .catch(() => false)
     if (!hasType) {
-      return
+      return Promise.resolve()
     }
     try {
       const r = await this.regionService_.retrieve(region.id, {
@@ -353,7 +350,7 @@ class ContentfulService extends BaseService {
       .then(() => true)
       .catch(() => false)
     if (!hasType) {
-      return
+      return Promise.resolve()
     }
 
     const updateFields = [
@@ -435,13 +432,13 @@ class ContentfulService extends BaseService {
 
     const found = data.fields.find((f) => updateFields.includes(f))
     if (!found) {
-      return
+      return Promise.resolve()
     }
 
     try {
       const ignore = await this.shouldIgnore_(data.id, "contentful")
       if (ignore) {
-        return
+        return Promise.resolve()
       }
 
       const p = await this.productService_.retrieve(data.id, {
@@ -594,14 +591,14 @@ class ContentfulService extends BaseService {
     if (variant.fields) {
       const found = variant.fields.find((f) => updateFields.includes(f))
       if (!found) {
-        return
+        return Promise.resolve()
       }
     }
 
     try {
       const ignore = await this.shouldIgnore_(variant.id, "contentful")
       if (ignore) {
-        return
+        return Promise.resolve()
       }
 
       const environment = await this.getContentfulEnvironment_()
