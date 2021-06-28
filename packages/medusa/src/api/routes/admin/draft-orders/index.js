@@ -49,6 +49,8 @@ export const defaultRelations = ["order", "cart"]
 export const defaultCartRelations = [
   "region",
   "items",
+  "items.variant",
+  "items.variant.prices",
   "payment",
   "shipping_address",
   "billing_address",
