@@ -318,6 +318,13 @@ class CustomerService extends BaseService {
 
       const existing = await this.retrieveByEmail(email).catch(err => undefined)
 
+      if (existing && existing.has_account) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          "A customer with the given email already has an account. Log in instead"
+        )
+      }
+
       if (existing && password && !existing.has_account) {
         const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
