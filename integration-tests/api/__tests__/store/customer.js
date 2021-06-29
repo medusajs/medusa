@@ -108,7 +108,6 @@ describe("/store/customers", () => {
 
       const customerId = authResponse.data.customer.id;
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";");
-      console.log(authCookie);
 
       const response = await api.post(
         `/store/customers/${customerId}`,
