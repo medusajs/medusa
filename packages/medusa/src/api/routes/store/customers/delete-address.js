@@ -1,3 +1,5 @@
+import { defaultRelations, defaultFields } from "./"
+
 /**
  * @oas [delete] /customers/{id}/addresses/{address_id}
  * operationId: DeleteCustomersCustomerAddressesAddress
@@ -25,7 +27,8 @@ export default async (req, res) => {
   try {
     await customerService.removeAddress(id, address_id)
     customer = await customerService.retrieve(id, {
-      relations: ["shipping_addresses"],
+      relations: defaultRelations,
+      select: defaultFields,
     })
 
     res.json({ customer })
