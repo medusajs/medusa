@@ -1215,10 +1215,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@medusajs/medusa@1.1.23-dev-1623081876060":
-  version "1.1.23"
-  resolved "http://localhost:4873/@medusajs%2fmedusa/-/medusa-1.1.23.tgz#420eae69b20bc3b5a4c8f81825ba46252a1f1c92"
-  integrity sha512-1n9unNwt1jQV0SGd7053BIIb5P/PzPhX3fFgpwT4OzVbMOewnF6CLNMDaiQ1gI53JbkFY1rbjUPsRZk+9jVrYg==
+"@medusajs/medusa@1.1.28-dev-1624965921528":
+  version "1.1.28-dev-1624965921528"
+  resolved "http://localhost:4873/@medusajs%2fmedusa/-/medusa-1.1.28-dev-1624965921528.tgz#f01db1e56c0dc98e02b64d197ca7df7f8041e5a1"
+  integrity sha512-SBD+fe1neJSJ0EF1oZGsnspB1aU59+qhqxjMAnWung2VJ0VIcraT0cQLkKgsED2XCTkqJQwOYK7X1AW+fZYecg==
   dependencies:
     "@hapi/joi" "^16.1.8"
     "@types/lodash" "^4.14.168"
@@ -1239,8 +1239,8 @@
     joi "^17.3.0"
     joi-objectid "^3.0.1"
     jsonwebtoken "^8.5.1"
-    medusa-core-utils "^1.1.9"
-    medusa-test-utils "^1.1.12"
+    medusa-core-utils "1.1.15-dev-1624965921528"
+    medusa-test-utils "1.1.18-dev-1624965921528"
     morgan "^1.9.1"
     multer "^1.4.2"
     passport "^0.4.0"
@@ -1696,10 +1696,10 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
-babel-preset-medusa-package@1.1.3-dev-1623168481467:
-  version "1.1.3-dev-1623168481467"
-  resolved "http://localhost:4873/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.3-dev-1623168481467.tgz#ae9167644267c52c1016c4695294d81059dfc2ff"
-  integrity sha512-QombHh4IHvYll+DwUgeL93+uNCcFCSW6/rv/rrmcS4MMB+TeZ5iQrK+i1Gf/ns10v1WH2q0+VdExu9GDrdwU3Q==
+babel-preset-medusa-package@1.1.9-dev-1624965921528:
+  version "1.1.9-dev-1624965921528"
+  resolved "http://localhost:4873/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.9-dev-1624965921528.tgz#e8aaba99cdf6edd524a0db0346e030782da451e0"
+  integrity sha512-5waz8A/kFh9wNqr48m0pA85rEmModR+/yih4yVRJoP240ZcIoG793XCtDZPHhcy7vIxp6Ab+dv5+TnuhYIDBIQ==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-decorators" "^7.12.1"
@@ -4150,28 +4150,28 @@ media-typer@0.3.0:
   resolved "http://localhost:4873/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^1.1.9:
-  version "1.1.9"
-  resolved "http://localhost:4873/medusa-core-utils/-/medusa-core-utils-1.1.9.tgz#7b93c72d9c318ff4ab971381401158eee7d3edd9"
-  integrity sha512-XBxwpCQT82gi/S92Bc0qfCSYyD5Hj+zstUbyOCKGp7nhwFPvYwJ0hp6NPKDSwHZ1uPEmb4rdHcW2qyf1bM4L1Q==
+medusa-core-utils@1.1.15-dev-1624965921528:
+  version "1.1.15-dev-1624965921528"
+  resolved "http://localhost:4873/medusa-core-utils/-/medusa-core-utils-1.1.15-dev-1624965921528.tgz#7da932df2423e9656ed4e800971fbc00d5124b3c"
+  integrity sha512-2iuVowwgGfygjDGW1NwR2ubtG/TFVVqBiNECn+N7/rNajN2DIIa863bVTd9qZAy6uFX6CrT1gjBqQNdPUsTitA==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@1.1.10-dev-1623081876060:
-  version "1.1.10"
-  resolved "http://localhost:4873/medusa-interfaces/-/medusa-interfaces-1.1.10.tgz#e81b885e11d6c2f05db8d2971edf30b8f8e7ddaa"
-  integrity sha512-FJSpX3CE5jx2mYqRARFSp5C6x5Hq+MEZ6p2UikuWnm40qjGsbHNl4naZFdBS1u/vSnXq+607oHuZnCNnpRDrPQ==
+medusa-interfaces@1.1.16-dev-1624965921528:
+  version "1.1.16-dev-1624965921528"
+  resolved "http://localhost:4873/medusa-interfaces/-/medusa-interfaces-1.1.16-dev-1624965921528.tgz#4fa2e25bba5ecb1bdcdaa8da788e204435c53e69"
+  integrity sha512-WKSfrCEAbkJ4I1NetiRULRURCmGY59Mue16cT7RZ2yb8U1Wnskui0OsG/EaS5JdV9HZq/iViEgzWIRTALNT1EQ==
   dependencies:
-    medusa-core-utils "^1.1.9"
+    medusa-core-utils "1.1.15-dev-1624965921528"
 
-medusa-test-utils@^1.1.12:
-  version "1.1.12"
-  resolved "http://localhost:4873/medusa-test-utils/-/medusa-test-utils-1.1.12.tgz#1a731a3bd0c7266105b75d88dce7c09657432002"
-  integrity sha512-h/xpN0Mq1DRS7pDzEDjHfkZtpw1iLDKnytwBd12Lzs9RsWpQOJArfqSocAqdDrIO7GbxykhkFDCdl3Yi/q59gw==
+medusa-test-utils@1.1.18-dev-1624965921528:
+  version "1.1.18-dev-1624965921528"
+  resolved "http://localhost:4873/medusa-test-utils/-/medusa-test-utils-1.1.18-dev-1624965921528.tgz#d94926109b349b62d5deb6329f0d46f5f5e953eb"
+  integrity sha512-P28P5pBV6HBXNiNUQbYgSaOrHcnq7GCNAIFuBmLYqDiZnNL8zfU+IxcWo3+xucXyLfX3flGCirpO4g7h65JGWQ==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.1.9"
+    medusa-core-utils "1.1.15-dev-1624965921528"
     randomatic "^3.1.1"
 
 merge-descriptors@1.0.1:
