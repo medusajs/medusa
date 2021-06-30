@@ -372,5 +372,60 @@ describe("/admin/products", () => {
       expect(res.status).toEqual(200);
       expect(res.data.collection.handle).toEqual("test-collection");
     });
+
+    it("successfully creates soft-deleted product variant", async () => {
+      const api = useApi();
+
+      const response = await api
+        .delete("/admin/products/test-product/variants/test-variant", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.variant_id).toEqual("test-variant");
+
+      // Lets try to create a product collection with same handle as deleted one
+      const payload = {
+        title: "Second variant",
+        sku: "test-sku",
+        ean: "test-ean",
+        upc: "test-upc",
+        barcode: "test-barcode",
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 100,
+          },
+        ],
+      };
+
+      const res = await api.post(
+        "/admin/products/test-product/variants",
+        payload,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      expect(res.status).toEqual(200);
+      expect(res.data.product.variants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "Second variant",
+            sku: "test-sku",
+            ean: "test-ean",
+            upc: "test-upc",
+            barcode: "test-barcode",
+          }),
+        ])
+      );
+    });
   });
 });
