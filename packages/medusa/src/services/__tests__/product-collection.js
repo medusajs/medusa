@@ -135,8 +135,8 @@ describe("ProductCollectionService", () => {
     it("successfully removes a product collection", async () => {
       await productCollectionService.delete(IdMap.getId("bathrobe"))
 
-      expect(productCollectionRepository.remove).toHaveBeenCalledTimes(1)
-      expect(productCollectionRepository.remove).toHaveBeenCalledWith({
+      expect(productCollectionRepository.softRemove).toHaveBeenCalledTimes(1)
+      expect(productCollectionRepository.softRemove).toHaveBeenCalledWith({
         id: IdMap.getId("bathrobe"),
       })
     })
