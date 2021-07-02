@@ -99,7 +99,7 @@ export class LineItem {
   @Column({ nullable: true })
   variant_id: string
 
-  @ManyToOne(() => ProductVariant)
+  @ManyToOne(() => ProductVariant, { eager: true })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
