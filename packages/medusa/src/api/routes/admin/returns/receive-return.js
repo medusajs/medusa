@@ -59,7 +59,6 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-
   try {
     const returnService = req.scope.resolve("returnService")
     const orderService = req.scope.resolve("orderService")
