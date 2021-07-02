@@ -1,4 +1,3 @@
-import { metadata } from "core-js/fn/reflect"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -312,7 +311,6 @@ class OrderService extends BaseService {
    * @return {Promise<Order>} the order document
    */
   async retrieve(orderId, config = {}) {
-
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
@@ -409,7 +407,7 @@ class OrderService extends BaseService {
         OrderService.Events.COMPLETED,
         {
           id: orderId,
-          no_notification: order.no_notification 
+          no_notification: order.no_notification,
         }
       )
 
@@ -510,7 +508,6 @@ class OrderService extends BaseService {
 
         toCreate.draft_order_id = draft.id
         toCreate.no_notification = draft.no_notification_order
-        
       }
 
       const o = await orderRepo.create(toCreate)
@@ -557,7 +554,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
           id: result.id,
-          no_notification: result.no_notification
+          no_notification: result.no_notification,
         })
 
       return result
@@ -576,10 +573,15 @@ class OrderService extends BaseService {
    *   the fulfillment
    * @return {order} the resulting order following the update.
    */
-  async createShipment(orderId, fulfillmentId, trackingLinks, config = {
-    metadata: {},
-    noNotification: undefined,
-  }) {
+  async createShipment(
+    orderId,
+    fulfillmentId,
+    trackingLinks,
+    config = {
+      metadata: {},
+      noNotification: undefined,
+    }
+  ) {
     const { metadata, noNotification } = config
 
     return this.atomicPhase_(async manager => {
@@ -593,11 +595,15 @@ class OrderService extends BaseService {
         )
       }
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : shipment.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : shipment.no_notification
 
       const shipmentRes = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingLinks, {metadata, noNotification: evaluatedNoNotification})
+        .createShipment(fulfillmentId, trackingLinks, {
+          metadata,
+          noNotification: evaluatedNoNotification,
+        })
 
       order.fulfillment_status = "shipped"
       for (const item of order.items) {
@@ -626,7 +632,7 @@ class OrderService extends BaseService {
         .emit(OrderService.Events.SHIPMENT_CREATED, {
           id: orderId,
           fulfillment_id: shipmentRes.id,
-          no_notification: evaluatedNoNotification
+          no_notification: evaluatedNoNotification,
         })
 
       return result
@@ -647,7 +653,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
           id: result.id,
-          no_notification: order.no_notification
+          no_notification: order.no_notification,
         })
       return result
     })
@@ -815,7 +821,7 @@ class OrderService extends BaseService {
         await this.updateBillingAddress_(order, update.billing_address)
       }
 
-      if("no_notification" in update){
+      if ("no_notification" in update) {
         order.no_notification = update.no_notification
       }
 
@@ -839,7 +845,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.UPDATED, {
           id: orderId,
-          no_notification: order.no_notification
+          no_notification: order.no_notification,
         })
       return result
     })
@@ -890,7 +896,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.CANCELED, {
           id: order.id,
-          no_notification: order.no_notification
+          no_notification: order.no_notification,
         })
       return result
     })
@@ -919,7 +925,7 @@ class OrderService extends BaseService {
                   id: orderId,
                   payment_id: p.id,
                   error: err,
-                  no_notification: order.no_notification
+                  no_notification: order.no_notification,
                 })
             })
 
@@ -945,7 +951,7 @@ class OrderService extends BaseService {
           .withTransaction(manager)
           .emit(OrderService.Events.PAYMENT_CAPTURED, {
             id: result.id,
-            no_notification: order.no_notification
+            no_notification: order.no_notification,
           })
       }
 
@@ -992,10 +998,14 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of order to cancel.
    * @return {Promise} result of the update operation.
    */
-  async createFulfillment(orderId, itemsToFulfill, config = {
+  async createFulfillment(
+    orderId,
+    itemsToFulfill,
+    config = {
       noNotification: undefined,
       metadata: {},
-    }) {
+    }
+  ) {
     const { metadata, noNotification } = config
 
     return this.atomicPhase_(async manager => {
@@ -1031,7 +1041,6 @@ class OrderService extends BaseService {
           "Cannot fulfill an order that lacks shipping methods"
         )
       }
-      
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
@@ -1077,7 +1086,8 @@ class OrderService extends BaseService {
       order.fulfillments = [...order.fulfillments, ...fulfillments]
       const result = await orderRepo.save(order)
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : order.no_notification
 
       for (const fulfillment of fulfillments) {
         await this.eventBus_
@@ -1085,7 +1095,7 @@ class OrderService extends BaseService {
           .emit(OrderService.Events.FULFILLMENT_CREATED, {
             id: orderId,
             fulfillment_id: fulfillment.id,
-            no_notification: evaluatedNoNotification
+            no_notification: evaluatedNoNotification,
           })
       }
 
@@ -1141,9 +1151,15 @@ class OrderService extends BaseService {
   /**
    * Refunds a given amount back to the customer.
    */
-  async createRefund(orderId, refundAmount, reason, note, config = {
-    noNotification: undefined,
-  }) {
+  async createRefund(
+    orderId,
+    refundAmount,
+    reason,
+    note,
+    config = {
+      noNotification: undefined,
+    }
+  ) {
     const { noNotification } = config
 
     return this.atomicPhase_(async manager => {
@@ -1165,12 +1181,13 @@ class OrderService extends BaseService {
 
       const result = await this.retrieve(orderId)
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : order.no_notification
 
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
         refund_id: refund.id,
-        no_notification: evaluatedNoNotification
+        no_notification: evaluatedNoNotification,
       })
       return result
     })
@@ -1274,7 +1291,7 @@ class OrderService extends BaseService {
           .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
             id: result.id,
             return_id: receivedReturn.id,
-            no_notification: receivedReturn.no_notification
+            no_notification: receivedReturn.no_notification,
           })
         return result
       }
@@ -1306,7 +1323,7 @@ class OrderService extends BaseService {
         .emit(OrderService.Events.ITEMS_RETURNED, {
           id: order.id,
           return_id: receivedReturn.id,
-          no_notification: receivedReturn.no_notification
+          no_notification: receivedReturn.no_notification,
         })
       return result
     })

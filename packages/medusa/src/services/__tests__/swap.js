@@ -355,7 +355,7 @@ describe("SwapService", () => {
             id: IdMap.getId("return-shipping"),
             price: 20,
           },
-          input
+          {noNotification: input}
         )
 
         expect(eventBusService.emit).toHaveBeenCalledWith(

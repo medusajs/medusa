@@ -215,19 +215,21 @@ describe("ClaimService", () => {
     it.each(
       [
         [false, false],
-        [undefined, true]
+        [undefined, true],
       ],
-      "passes correct no_notification status to event bus", async (input, expected) => {
+      "passes correct no_notification status to event bus",
+      async (input, expected) => {
         await claimService.create({
-           ...testClaim,
-           no_notification: input,
-          })
-
-        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
-          id: expect.any(String),
-          no_notification: expected
+          ...testClaim,
+          no_notification: input,
         })
-    })
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
   })
 
   describe("retrieve", () => {
@@ -314,7 +316,9 @@ describe("ClaimService", () => {
     })
 
     it("successfully creates fulfillment", async () => {
-      await claimService.createFulfillment("claim_id", { meta: "data" })
+      await claimService.createFulfillment("claim_id", {
+        metadata: { meta: "data" },
+      })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
       expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
@@ -434,7 +438,10 @@ describe("ClaimService", () => {
       )
 
       await claimService.createShipment("claim", "ful_123", ["track1234"], {
-        meta: "data",
+        metadata: {
+          meta: "data",
+        },
+        noNotification: false,
       })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
@@ -446,7 +453,12 @@ describe("ClaimService", () => {
       expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
         "ful_123",
         ["track1234"],
-        { meta: "data" }
+        {
+          metadata: {
+            meta: "data",
+          },
+          noNotification: false,
+        }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)

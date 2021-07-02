@@ -866,26 +866,27 @@ describe("OrderService", () => {
       [true, true],
       [false, false],
       [undefined, true],
-    ])("emits correct no_notification option with '%s'", async (input, expected) => {
-      await orderService.createFulfillment(
-        "test-order", 
-        [
-          {
-            item_id: "item_1",
-            quantity: 1,
-          },
-        ],
-      input
-      )
+    ])(
+      "emits correct no_notification option with '%s'",
+      async (input, expected) => {
+        await orderService.createFulfillment(
+          "test-order",
+          [
+            {
+              item_id: "item_1",
+              quantity: 1,
+            },
+          ],
+          { noNotification: input }
+        )
 
-      expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
-        id: expect.any(String),
-        no_notification: expected,
-      })  
-    })
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
   })
-
-    
 
   describe("registerReturnReceived", () => {
     const order = {
@@ -1023,7 +1024,11 @@ describe("OrderService", () => {
     }
 
     const fulfillmentService = {
-      retrieve: () => Promise.resolve({ order_id: IdMap.getId("test") }),
+      retrieve: () =>
+        Promise.resolve({
+          order_id: IdMap.getId("test"),
+          no_notification: true,
+        }),
       createShipment: jest
         .fn()
         .mockImplementation((shipmentId, tracking, meta) => {
@@ -1063,10 +1068,12 @@ describe("OrderService", () => {
       )
 
       expect(fulfillmentService.createShipment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
+      expect(
+        fulfillmentService.createShipment
+      ).toHaveBeenCalledWith(
         IdMap.getId("fulfillment"),
         [{ tracking_number: "1234" }, { tracking_number: "2345" }],
-        {}
+        { metadata: undefined, noNotification: true }
       )
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
@@ -1080,20 +1087,22 @@ describe("OrderService", () => {
       [true, true],
       [false, false],
       [undefined, true],
-    ])("2emits correct no_notification option with '%s'", async (input, expected) => {
-      await orderService.createShipment(
-        IdMap.getId("test"),
-        IdMap.getId("fulfillment"),
-        [{ tracking_number: "1234" }, { tracking_number: "2345" }],
-        input,
-        {}
-      )
+    ])(
+      "emits correct no_notification option with '%s'",
+      async (input, expected) => {
+        await orderService.createShipment(
+          IdMap.getId("test"),
+          IdMap.getId("fulfillment"),
+          [{ tracking_number: "1234" }, { tracking_number: "2345" }],
+          { noNotification: input }
+        )
 
-      expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
-        id: expect.any(String),
-        no_notification: expected,
-      })  
-    })
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
   })
 
   describe("createRefund", () => {
@@ -1180,20 +1189,23 @@ describe("OrderService", () => {
     it.each([
       [false, false],
       [undefined, true],
-    ])("emits correct no_notification option with '%s'", async (input, expected) => {
-      await orderService.createRefund(
-        IdMap.getId("order_123"),
-        100,
-        "discount",
-        "note",
-        input
-      )
+    ])(
+      "emits correct no_notification option with '%s'",
+      async (input, expected) => {
+        await orderService.createRefund(
+          IdMap.getId("order_123"),
+          100,
+          "discount",
+          "note",
+          { noNotification: input }
+        )
 
-      expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String),{
-        id: expect.any(String),
-        no_notification: expected,
-        refund_id: expect.any(String)
-      } )
-    })
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+          refund_id: expect.any(String),
+        })
+      }
+    )
   })
 })
