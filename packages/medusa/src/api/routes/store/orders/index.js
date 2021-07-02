@@ -33,7 +33,6 @@ export const defaultRelations = [
   "items",
   "items.variant",
   "items.variant.product",
-  "items.variant.prices",
   "shipping_methods",
   "discounts",
   "customer",
