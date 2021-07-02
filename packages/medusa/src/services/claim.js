@@ -135,7 +135,7 @@ class ClaimService extends BaseService {
         }
       }
 
-      if( no_notification !== undefined ){
+      if (no_notification !== undefined) {
         claim.no_notification = no_notification
         await claimRepo.save(claim)
       }
@@ -150,12 +150,11 @@ class ClaimService extends BaseService {
         }
       }
 
-
       await this.eventBus_
         .withTransaction(manager)
         .emit(ClaimService.Events.UPDATED, {
           id: claim.id,
-          no_notification: claim.no_notification
+          no_notification: claim.no_notification,
         })
 
       return claim
@@ -241,7 +240,8 @@ class ClaimService extends BaseService {
         )
       )
 
-      const evaluatedNoNotification = no_notification !== undefined ? no_notification : order.no_notification
+      const evaluatedNoNotification =
+        no_notification !== undefined ? no_notification : order.no_notification
 
       const created = claimRepo.create({
         shipping_address_id: addressId,
@@ -251,7 +251,7 @@ class ClaimService extends BaseService {
         type,
         additional_items: newItems,
         order_id: order.id,
-        no_notification: evaluatedNoNotification
+        no_notification: evaluatedNoNotification,
       })
 
       const result = await claimRepo.save(created)
@@ -292,6 +292,7 @@ class ClaimService extends BaseService {
             metadata: ci.metadata,
           })),
           shipping_method: return_shipping,
+          no_notification: evaluatedNoNotification,
         })
       }
 
@@ -299,17 +300,20 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.CREATED, {
           id: result.id,
-          no_notification: result.no_notification
+          no_notification: result.no_notification,
         })
 
       return result
     })
   }
 
-  createFulfillment(id, config = {
-    metadata: {},
-    noNotification: undefined,
-  }) {
+  createFulfillment(
+    id,
+    config = {
+      metadata: {},
+      noNotification: undefined,
+    }
+  ) {
     const { metadata, noNotification } = config
 
     return this.atomicPhase_(async manager => {
@@ -348,7 +352,8 @@ class ClaimService extends BaseService {
         )
       }
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : claim.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : claim.no_notification
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
@@ -415,7 +420,7 @@ class ClaimService extends BaseService {
           .emit(ClaimService.Events.FULFILLMENT_CREATED, {
             id: id,
             fulfillment_id: fulfillment.id,
-            no_notification: claim.no_notification
+            no_notification: claim.no_notification,
           })
       }
 
@@ -451,29 +456,38 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.REFUND_PROCESSED, {
           id,
-          no_notification: result.no_notification
+          no_notification: result.no_notification,
         })
 
       return result
     })
   }
 
-  async createShipment(id, fulfillmentId, trackingLinks, config = {
-    metadata: {},
-    noNotification: undefined,
-  }) {
+  async createShipment(
+    id,
+    fulfillmentId,
+    trackingLinks,
+    config = {
+      metadata: {},
+      noNotification: undefined,
+    }
+  ) {
     const { metadata, noNotification } = config
-  
+
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
         relations: ["additional_items"],
       })
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : claim.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : claim.no_notification
 
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingLinks, {metadata, noNotification: evaluatedNoNotification})
+        .createShipment(fulfillmentId, trackingLinks, {
+          metadata,
+          noNotification: evaluatedNoNotification,
+        })
 
       claim.fulfillment_status = "shipped"
 
@@ -503,7 +517,7 @@ class ClaimService extends BaseService {
         .emit(ClaimService.Events.SHIPMENT_CREATED, {
           id,
           fulfillment_id: shipment.id,
-          no_notification: evaluatedNoNotification
+          no_notification: evaluatedNoNotification,
         })
 
       return result
@@ -554,7 +568,7 @@ class ClaimService extends BaseService {
         .withTransaction(manager)
         .emit(ClaimService.Events.CANCELED, {
           id: result.id,
-          no_notification: result.no_notification
+          no_notification: result.no_notification,
         })
 
       return result

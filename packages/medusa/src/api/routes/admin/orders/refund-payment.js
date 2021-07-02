@@ -26,7 +26,7 @@ import { defaultRelations, defaultFields } from "./"
  *             description: A not with additional details about the Refund.
  *             type: string
  *           no_notification:
- *             description: If set to true no notification will be send related to this Swap.
+ *             description: If set to true no notification will be send related to this Refund.
  *             type: boolean
  * tags:
  *   - Order
@@ -62,7 +62,13 @@ export default async (req, res) => {
   try {
     const orderService = req.scope.resolve("orderService")
 
-    await orderService.createRefund(id, value.amount, value.reason, value.note, {noNotification: value.no_notification})
+    await orderService.createRefund(
+      id,
+      value.amount,
+      value.reason,
+      value.note,
+      { noNotification: value.no_notification }
+    )
 
     const order = await orderService.retrieve(id, {
       select: defaultFields,
