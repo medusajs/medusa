@@ -27,5 +27,12 @@ module.exports = {
         path: `${__dirname}/../docs/api`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/data/pages`,
+        name: "pages",
+      },
+    },
   ],
 }
