@@ -1,8 +1,7 @@
 import _ from "lodash"
 import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
-import { MedusaError } from "medusa-core-utils"
-import { Brackets } from "typeorm"
+import { Validator, MedusaError } from "medusa-core-utils"
 
 /**
  * Provides layer to manipulate gift cards.
@@ -80,37 +79,8 @@ class GiftCardService extends BaseService {
       this.giftCardRepository_
     )
 
-    let q
-    if ("q" in selector){
-      q = selector.q
-      delete selector.q
-    }
-
     const query = this.buildQuery_(selector, config)
-
-    const rels = query.relations
-    delete query.relations
-
-    if(q) {
-      const where = query.where
-      delete where.id
-
-      const raw = await giftCardRepo
-        .createQueryBuilder("gift_card")
-        .leftJoinAndSelect("gift_card.order", "order")
-        .select(["gift_card.id"])
-        .where(where)
-        .andWhere(
-          new Brackets(qb => {
-            qb.where(`gift_card.code ILIKE :q`, {q: `%${q}%`})
-            .orWhere(`order.display_id = :d`, {d: q})
-          })
-        )
-        .getMany()
-      
-      return giftCardRepo.findWithRelations(rels, raw.map(i => i.id))
-    }
-    return giftCardRepo.findWithRelations(rels, query)
+    return giftCardRepo.find(query)
   }
 
   async createTransaction(data) {
@@ -239,23 +209,13 @@ class GiftCardService extends BaseService {
 
       const giftCard = await this.retrieve(giftCardId)
 
-      const { region_id, balance, metadata, ...rest } = update
+      const { region_id, metadata, ...rest } = update
 
       if (region_id && region_id !== giftCard.region_id) {
         const region = await this.regionService_.retrieve(region_id)
         giftCard.region_id = region.id
       }
 
-      if (balance){
-        if(balance < 0 || giftCard.value < balance){
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "new balance is invalid"
-          )
-        } 
-        giftCard.balance = balance
-      }
-      
       if (metadata) {
         giftCard.metadata = await this.setMetadata_(giftCard.id, metadata)
       }
