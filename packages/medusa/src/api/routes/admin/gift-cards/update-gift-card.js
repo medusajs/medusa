@@ -1,5 +1,4 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
 
 /**
  * @oas [post] /gift-cards/{id}
