@@ -1,5 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
+import { defaultFields, defaultRelations } from "../"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
 describe("POST /store/customers/:id", () => {
@@ -42,7 +43,7 @@ describe("POST /store/customers/:id", () => {
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
-        { relations: ["shipping_addresses"] }
+        { relations: defaultRelations, select: defaultFields }
       )
     })
 
