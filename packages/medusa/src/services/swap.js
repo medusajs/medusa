@@ -205,8 +205,8 @@ class SwapService extends BaseService {
    *  the customer.
    * @param {ReturnShipping?} returnShipping - an optional shipping method for
    *  returning the returnItems.
-   * @param {boolean?} noNotification - an optional flag to disable sending 
-   * notification when creating swap. If set, it overrules the attribute inherited 
+   * @param {boolean?} noNotification - an optional flag to disable sending
+   * notification when creating swap. If set, it overrules the attribute inherited
    * from the order.
    * @returns {Promise<Swap>} the newly created swap.
    */
@@ -216,10 +216,10 @@ class SwapService extends BaseService {
     additionalItems,
     returnShipping,
     custom = {
-      noNotification: undefined
+      noNotification: undefined,
     }
-  ){
-    const { noNotification, ...rest } = custom
+  ) {
+    const { noNotification, ...rest } = custom
     return this.atomicPhase_(async manager => {
       if (
         order.fulfillment_status === "not_fulfilled" ||
@@ -241,16 +241,17 @@ class SwapService extends BaseService {
         })
       )
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : order.no_notification
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const created = swapRepo.create({
-        ...rest ,
+        ...rest,
         fulfillment_status: "not_fulfilled",
         payment_status: "not_paid",
         order_id: order.id,
         additional_items: newItems,
-        no_notification: evaluatedNoNotification
+        no_notification: evaluatedNoNotification,
       })
 
       const result = await swapRepo.save(created)
@@ -311,8 +312,8 @@ class SwapService extends BaseService {
               id: result.id,
               no_notification: swap.no_notification,
             })
-          
-            return result
+
+          return result
         }
 
         swap.payment_status = "difference_refunded"
@@ -378,8 +379,8 @@ class SwapService extends BaseService {
           id: result.id,
           no_notification: swap.no_notification,
         })
-      
-        return result
+
+      return result
     })
   }
 
@@ -387,15 +388,15 @@ class SwapService extends BaseService {
     return this.atomicPhase_(async manager => {
       const swap = await this.retrieve(swapId)
 
-      if ( "metadata" in update ) {
+      if ("metadata" in update) {
         swap.metadata = this.setMetadata_(swap, update.metadata)
       }
 
-      if( "no_notification" in update ){
+      if ("no_notification" in update) {
         swap.no_notification = update.no_notification
       }
 
-      if ( "shipping_address" in update ) {
+      if ("shipping_address" in update) {
         await this.updateShippingAddress_(swap, update.shipping_address)
       }
 
@@ -596,7 +597,7 @@ class SwapService extends BaseService {
         .withTransaction(manager)
         .emit(SwapService.Events.PAYMENT_COMPLETED, {
           id: swap.id,
-          no_notification: swap.no_notification
+          no_notification: swap.no_notification,
         })
 
       return result
@@ -644,13 +645,16 @@ class SwapService extends BaseService {
    * Fulfills the addtional items associated with the swap. Will call the
    * fulfillment providers associated with the shipping methods.
    * @param {string} swapId - the id of the swap to fulfill,
-   * @param {object} metadata - optional metadata to attach to the fulfillment.
+   * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag.
    * @returns {Promise<Swap>} the updated swap with new status and fulfillments.
    */
-  async createFulfillment(swapId, config = {
-    metadata: {},
-    noNotification: undefined
-  }) {
+  async createFulfillment(
+    swapId,
+    config = {
+      metadata: {},
+      noNotification: undefined,
+    }
+  ) {
     const { metadata, noNotification } = config
 
     return this.atomicPhase_(async manager => {
@@ -682,7 +686,8 @@ class SwapService extends BaseService {
         )
       }
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : swap.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : swap.no_notification
 
       swap.fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
@@ -744,15 +749,15 @@ class SwapService extends BaseService {
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(SwapService.Events.FULFILLMENT_CREATED, 
-          
-          {
+      await this.eventBus_.withTransaction(manager).emit(
+        SwapService.Events.FULFILLMENT_CREATED,
+
+        {
           id: swapId,
           fulfillment_id: result.id,
-          no_notification: evaluatedNoNotification
-        })
+          no_notification: evaluatedNoNotification,
+        }
+      )
 
       return result
     })
@@ -765,13 +770,18 @@ class SwapService extends BaseService {
    *   has been shipped
    * @param {TrackingLink[]} trackingLinks - the tracking numbers associated
    *   with the shipment
-   * @param {object} metadata - optional metadata to attach to the shipment.
+   * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag.
    * @returns {Promise<Swap>} the updated swap with new fulfillments and status.
    */
-  async createShipment(swapId, fulfillmentId, trackingLinks, config = {
-    metadata: {},
-    noNotification: undefined,
-  } ) {
+  async createShipment(
+    swapId,
+    fulfillmentId,
+    trackingLinks,
+    config = {
+      metadata: {},
+      noNotification: undefined,
+    }
+  ) {
     const { metadata, noNotification } = config
 
     return this.atomicPhase_(async manager => {
@@ -779,12 +789,16 @@ class SwapService extends BaseService {
         relations: ["additional_items"],
       })
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : swap.no_notification
+      const evaluatedNoNotification =
+        noNotification !== undefined ? noNotification : swap.no_notification
 
       // Update the fulfillment to register
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingLinks, {metadata, noNotification: evaluatedNoNotification})
+        .createShipment(fulfillmentId, trackingLinks, {
+          metadata,
+          noNotification: evaluatedNoNotification,
+        })
 
       swap.fulfillment_status = "shipped"
 
@@ -814,7 +828,7 @@ class SwapService extends BaseService {
         .emit(SwapService.Events.SHIPMENT_CREATED, {
           id: swapId,
           fulfillment_id: shipment.id,
-          no_notification: swap.no_notification
+          no_notification: swap.no_notification,
         })
       return result
     })
@@ -871,7 +885,7 @@ class SwapService extends BaseService {
         .emit(SwapService.Events.RECEIVED, {
           id: id,
           order_id: result.order_id,
-          no_notification: swap.no_notification
+          no_notification: swap.no_notification,
         })
 
       return result
