@@ -22,7 +22,7 @@ import { defaultRelations, defaultFields } from "./"
  *             items:
  *               type: string
  *           no_notification:
- *             description: If set to true no notification will be send related to this Claim.
+ *             description: If set to true no notification will be send related to this Shipment.
  *             type: boolean
  * tags:
  *   - Order
@@ -59,7 +59,7 @@ export default async (req, res) => {
       id,
       value.fulfillment_id,
       value.tracking_numbers.map(n => ({ tracking_number: n })),
-      {noNotification: value.no_notification},
+      { noNotification: value.no_notification }
     )
 
     const order = await orderService.retrieve(id, {
