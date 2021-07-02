@@ -30,6 +30,7 @@ export default app => {
 export const defaultRelations = [
   "shipping_address",
   "fulfillments",
+  "fulfillments.tracking_links",
   "items",
   "items.variant",
   "items.variant.product",
@@ -66,6 +67,7 @@ export const defaultFields = [
 export const allowedRelations = [
   "shipping_address",
   "fulfillments",
+  "fulfillments.tracking_links",
   "billing_address",
   "items",
   "items.variant",
