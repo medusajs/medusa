@@ -215,9 +215,11 @@ class SwapService extends BaseService {
     returnItems,
     additionalItems,
     returnShipping,
-    custom = {}
-  ) {
-
+    custom = {
+      noNotification: undefined
+    }
+  ){
+    const { noNotification, ...rest } = custom
     return this.atomicPhase_(async manager => {
       if (
         order.fulfillment_status === "not_fulfilled" ||
@@ -238,8 +240,6 @@ class SwapService extends BaseService {
           )
         })
       )
-
-      const { noNotification, ...rest } = custom
 
       const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
 
@@ -746,9 +746,11 @@ class SwapService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(SwapService.Events.FULFILLMENT_CREATED, {
+        .emit(SwapService.Events.FULFILLMENT_CREATED, 
+          
+          {
           id: swapId,
-          fulfillment_id: shipment.id,
+          fulfillment_id: result.id,
           no_notification: evaluatedNoNotification
         })
 
