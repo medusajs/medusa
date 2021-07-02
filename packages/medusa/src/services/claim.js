@@ -459,7 +459,7 @@ class ClaimService extends BaseService {
   }
 
   async createShipment(id, fulfillmentId, trackingLinks, config = {
-    metadata: [],
+    metadata: {},
     noNotification: undefined,
   }) {
     const { metadata, noNotification } = config
@@ -503,7 +503,7 @@ class ClaimService extends BaseService {
         .emit(ClaimService.Events.SHIPMENT_CREATED, {
           id,
           fulfillment_id: shipment.id,
-          no_notification: result.no_notification
+          no_notification: evaluatedNoNotification
         })
 
       return result
