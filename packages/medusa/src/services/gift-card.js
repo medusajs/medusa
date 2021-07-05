@@ -196,7 +196,7 @@ class GiftCardService extends BaseService {
     const rels = query.relations
     delete query.relations
 
-    const giftCard = await giftCardRepo.findOneWithRelations(query, rels)
+    const giftCard = await giftCardRepo.findOneWithRelations(rels, query)
 
     if (!giftCard) {
       throw new MedusaError(
@@ -228,7 +228,7 @@ class GiftCardService extends BaseService {
     const rels = query.relations
     delete query.relations
 
-    const giftCard = await giftCardRepo.findOneWithRelations(query, rels)
+    const giftCard = await giftCardRepo.findOneWithRelations(rels, query)
 
     if (!giftCard) {
       throw new MedusaError(

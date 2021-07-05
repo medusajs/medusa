@@ -97,13 +97,13 @@ describe("GiftCardService", () => {
 
       expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
       expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
+        ["region"],
         {
           where: {
             id: IdMap.getId("gift-card"),
           },
           select: ["id"],
-        },
-        ["region"]
+        }
       )
     })
   })
@@ -132,13 +132,13 @@ describe("GiftCardService", () => {
 
       expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
       expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
+        ["region"],
         {
           where: {
             code: "1234-1234-1234-1234",
           },
           select: ["id"],
-        },
-        ["region"]
+        }
       )
     })
   })
