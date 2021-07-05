@@ -103,10 +103,10 @@ class GiftCardService extends BaseService {
         .where(where)
         .andWhere(
           new Brackets(qb => {
-            let brackets = qb.where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
-            if (parseInt(q)) {
-              brackets = brackets.orWhere(`order.display_id = :d`, { d: q })
-            }
+            let brackets = qb
+              .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+
             return brackets
           })
         )
