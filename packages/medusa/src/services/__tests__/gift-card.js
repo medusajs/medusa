@@ -76,9 +76,17 @@ describe("GiftCardService", () => {
   })
 
   describe("retrieve", () => {
-    it("test1", async () => {
-      fail("impl")
+    const giftCardRepo = {
+      findOne: () => {
+        return Promise.resolve({})
+      },
+    }
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
     })
+
+    it("it calls order model functions", async () => {})
   })
 
   describe("retrieveByCode", () => {
