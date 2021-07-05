@@ -145,6 +145,7 @@ describe("GiftCardService", () => {
       region_id: IdMap.getId("region-id"),
       order_id: IdMap.getId("order-id"),
       is_disabled: true,
+      value: 5000,
     }
 
     const giftCardRepo = MockRepository({
@@ -188,8 +189,20 @@ describe("GiftCardService", () => {
         region_id: IdMap.getId("other-region"),
         order_id: IdMap.getId("order-id"),
         is_disabled: false,
+        value: 5000,
       })
     })
+
+    it.each([[-100], [6000]])(
+      "fails to update balance with illegal input '%s'",
+      async input => {
+        await expect(
+          giftCardService.update(IdMap.getId("giftcard-id"), {
+            balance: input,
+          })
+        ).rejects.toThrow("new balance is invalid")
+      }
+    )
   })
 
   describe("delete", () => {
