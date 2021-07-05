@@ -114,6 +114,7 @@ describe("ClaimService", () => {
             quantity: 1,
           },
         ],
+        no_notification: true,
       })
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
