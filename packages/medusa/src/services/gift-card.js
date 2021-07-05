@@ -103,9 +103,11 @@ class GiftCardService extends BaseService {
         .where(where)
         .andWhere(
           new Brackets(qb => {
-            qb.where(`gift_card.code ILIKE :q`, {
-              q: `%${q}%`,
-            }).orWhere(`order.display_id = :d`, { d: q })
+            let brackets = qb.where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
+            if (parseInt(q)) {
+              brackets = brackets.orWhere(`order.display_id = :d`, { d: q })
+            }
+            return brackets
           })
         )
         .getMany()
@@ -191,7 +193,10 @@ class GiftCardService extends BaseService {
       query.relations = config.relations
     }
 
-    const giftCard = await giftCardRepo.findOne(query)
+    const rels = query.relations
+    delete query.relations
+
+    const giftCard = await giftCardRepo.findOneWithRelations(query, rels)
 
     if (!giftCard) {
       throw new MedusaError(
@@ -220,7 +225,10 @@ class GiftCardService extends BaseService {
       query.relations = config.relations
     }
 
-    const giftCard = await giftCardRepo.findOne(query)
+    const rels = query.relations
+    delete query.relations
+
+    const giftCard = await giftCardRepo.findOneWithRelations(query, rels)
 
     if (!giftCard) {
       throw new MedusaError(

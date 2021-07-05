@@ -1,5 +1,4 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import mockRepository from "medusa-test-utils/dist/mock-repository"
 
 import GiftCardService from "../gift-card"
 
@@ -76,7 +75,7 @@ describe("GiftCardService", () => {
 
   describe("retrieve", () => {
     const giftCardRepo = MockRepository({
-      findOne: () => {
+      findOneWithRelations: () => {
         return Promise.resolve({})
       },
     })
@@ -96,20 +95,22 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
-        where: {
-          id: IdMap.getId("gift-card"),
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
+        {
+          where: {
+            id: IdMap.getId("gift-card"),
+          },
+          select: ["id"],
         },
-        relations: ["region"],
-        select: ["id"],
-      })
+        ["region"]
+      )
     })
   })
 
   describe("retrieveByCode", () => {
     const giftCardRepo = MockRepository({
-      findOne: () => {
+      findOneWithRelations: () => {
         return Promise.resolve({})
       },
     })
@@ -129,14 +130,16 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
-        where: {
-          code: "1234-1234-1234-1234",
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
+        {
+          where: {
+            code: "1234-1234-1234-1234",
+          },
+          select: ["id"],
         },
-        relations: ["region"],
-        select: ["id"],
-      })
+        ["region"]
+      )
     })
   })
 
@@ -149,7 +152,7 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOne: s => {
+      findOneWithRelations: s => {
         return Promise.resolve(giftCard)
       },
       save: s => {

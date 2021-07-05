@@ -27,7 +27,7 @@ export default async (req, res) => {
 
     const selector = {}
 
-    if ("q" in req.query && parseInt(req.query.q)) {
+    if ("q" in req.query) {
       selector.q = req.query.q
     }
 
