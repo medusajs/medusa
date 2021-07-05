@@ -386,7 +386,7 @@ export const countries = [
   { alpha2: "UZ", name: "Uzbekistan", alpha3: "UZB", numeric: "860" },
   { alpha2: "VU", name: "Vanuatu", alpha3: "VUT", numeric: "548" },
   { alpha2: "VE", name: "Venezuela", alpha3: "VEN", numeric: "862" },
-  { alpha2: "VN", name: "Viet Nam", alpha3: "VNM", numeric: "704" },
+  { alpha2: "VN", name: "Vietnam", alpha3: "VNM", numeric: "704" },
   {
     alpha2: "VG",
     name: "Virgin Islands, British",
