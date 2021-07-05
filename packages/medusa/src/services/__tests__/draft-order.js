@@ -1,8 +1,7 @@
 import _ from "lodash"
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { MockRepository, MockManager } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import DraftOrderService from "../draft-order"
-
 
 const eventBusService = {
   emit: jest.fn(),
@@ -209,7 +208,6 @@ describe("DraftOrderService", () => {
   })
 
   describe("update", () => {
-
     const testOrder = {
       region_id: "test-region",
       shipping_address_id: "test-shipping",
@@ -226,7 +224,7 @@ describe("DraftOrderService", () => {
 
     const completedOrder = {
       status: "completed",
-      ...testOrder
+      ...testOrder,
     }
 
     const draftOrderRepository = MockRepository({
@@ -237,16 +235,15 @@ describe("DraftOrderService", () => {
         id: "test-draft-order",
         ...d,
       }),
-      findOne: (q) => {
+      findOne: q => {
         switch (q.where.id) {
           case "completed":
             return Promise.resolve(completedOrder)
           default:
             return Promise.resolve(testOrder)
         }
-      }
+      },
     })
-
 
     const draftOrderService = new DraftOrderService({
       manager: MockManager,
@@ -263,7 +260,7 @@ describe("DraftOrderService", () => {
     beforeEach(async () => {
       jest.clearAllMocks()
     })
-  
+
     it("calls draftOrder model functions", async () => {
       await draftOrderService.update("test-draft-order", {
         no_notification_order: true,
@@ -274,26 +271,28 @@ describe("DraftOrderService", () => {
         no_notification_order: true,
         billing_address_id: "test-billing",
         customer_id: "test-customer",
-        items: [ {
-          metadata: {},
-          quantity: 2,
-          variant_id: "test-variant"
-        }],
+        items: [
+          {
+            metadata: {},
+            quantity: 2,
+            variant_id: "test-variant",
+          },
+        ],
         region_id: "test-region",
         shipping_address_id: "test-shipping",
-        shipping_methods: [{
-          data: {},
-          option_id: "test-option"
-        }]
+        shipping_methods: [
+          {
+            data: {},
+            option_id: "test-option",
+          },
+        ],
       })
     })
 
     it("fails to update draftOrder when already complete", async () => {
-      await expect(
-        draftOrderService.update("completed", {})
-      ).rejects.toThrow("Can't update a draft order which is complete")
-
+      await expect(draftOrderService.update("completed", {})).rejects.toThrow(
+        "Can't update a draft order which is complete"
+      )
     })
   })
-
 })

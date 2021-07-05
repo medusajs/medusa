@@ -1,9 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { orders } from "../../../../../services/__mocks__/order"
 import { ReturnService } from "../../../../../services/__mocks__/return"
 import { EventBusServiceMock } from "../../../../../services/__mocks__/event-bus"
-import { OrderServiceMock } from "../../../../../services/__mocks__/order"
 
 describe("POST /admin/orders/:id/return", () => {
   describe("successfully returns full order", () => {
@@ -244,11 +242,14 @@ describe("POST /admin/orders/:id/return", () => {
           },
         }
       )
-      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(expect.any(String),{
-        id: expect.any(String), 
-        no_notification: false, 
-        return_id: expect.any(String)
-      })
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        expect.any(String),
+        {
+          id: expect.any(String),
+          no_notification: false,
+          return_id: expect.any(String),
+        }
+      )
     })
   })
 
@@ -280,11 +281,14 @@ describe("POST /admin/orders/:id/return", () => {
         }
       )
 
-      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(expect.any(String),{
-        id: expect.any(String), 
-        no_notification: true, 
-        return_id: expect.any(String)
-      })
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        expect.any(String),
+        {
+          id: expect.any(String),
+          no_notification: true,
+          return_id: expect.any(String),
+        }
+      )
     })
   })
 })

@@ -1,6 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("OrderService", () => {
   const totalsService = {
