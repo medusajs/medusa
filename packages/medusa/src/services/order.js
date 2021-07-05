@@ -603,7 +603,7 @@ class OrderService extends BaseService {
       const shipmentRes = await this.fulfillmentService_
         .withTransaction(manager)
         .createShipment(fulfillmentId, trackingLinks, {
-          metadata: metadata,
+          metadata,
           no_notification: evaluatedNoNotification,
         })
 
