@@ -94,10 +94,60 @@ describe("FulfillmentService", () => {
     })
   })
 
+  describe("cancelFulfillment", () => {
+    const fulfillmentRepository = MockRepository({
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ canceled_at: new Date() })
+          default:
+            return Promise.resolve({})
+        }
+      },
+      save: f => f,
+    })
+
+    const fulfillmentProviderService = {
+      cancelFulfillment: f => f,
+    }
+
+    const fulfillmentService = new FulfillmentService({
+      manager: MockManager,
+      fulfillmentRepository,
+      fulfillmentProviderService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("correctly cancels fulfillment", async () => {
+      await fulfillmentService.cancelFulfillment(IdMap.getId("fulfillment"))
+
+      expect(fulfillmentRepository.save).toHaveBeenCalledTimes(1)
+      expect(fulfillmentRepository.save).toHaveBeenCalledWith({
+        canceled_at: expect.any(Date),
+      })
+    })
+
+    it("fails to cancel fulfillment if already canceled", async () => {
+      await expect(
+        fulfillmentService.cancelFulfillment(IdMap.getId("canceled"))
+      ).rejects.toThrow("Fulfillment has already been canceled")
+    })
+  })
+
   describe("createShipment", () => {
     const trackingLinkRepository = MockRepository({ create: c => c })
     const fulfillmentRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("fulfillment") }),
+      findOne: q => {
+        switch (q.where.id) {
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ canceled_at: new Date() })
+          default:
+            return Promise.resolve({ id: IdMap.getId("fulfillment") })
+        }
+      },
     })
 
     const fulfillmentService = new FulfillmentService({
@@ -129,6 +179,16 @@ describe("FulfillmentService", () => {
         metadata: {},
         shipped_at: now,
       })
+    })
+
+    it("fails when status is canceled", async () => {
+      await expect(
+        fulfillmentService.createShipment(
+          IdMap.getId("canceled"),
+          [({ tracking_number: "1234" }, { tracking_number: "2345" })],
+          {}
+        )
+      ).rejects.toThrow("Fulfillment has been canceled")
     })
   })
 })

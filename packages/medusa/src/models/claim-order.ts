@@ -27,6 +27,12 @@ export enum ClaimType {
   REPLACE = "replace",
 }
 
+export enum ClaimStatus {
+  PENDING = "pending",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
+}
+
 export enum ClaimPaymentStatus {
   NA = "na",
   NOT_REFUNDED = "not_refunded",
@@ -49,6 +55,9 @@ export enum ClaimFulfillmentStatus {
 export class ClaimOrder {
   @PrimaryColumn()
   id: string
+
+  @Column({ type: "enum", enum: ClaimStatus, default: "pending" })
+  status: ClaimStatus
 
   @Column({
     type: "enum",

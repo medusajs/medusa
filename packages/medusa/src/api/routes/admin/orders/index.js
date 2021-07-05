@@ -63,6 +63,14 @@ export default app => {
   )
 
   /**
+   * Cancel a fulfillment related to an order.
+   */
+  route.post(
+    "/:id/fulfillments/:fulfillment_id/cancel",
+    middlewares.wrap(require("./cancel-fulfillment").default)
+  )
+
+  /**
    * Create a shipment.
    */
   route.post(

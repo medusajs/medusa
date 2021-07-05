@@ -25,6 +25,12 @@ import { Cart } from "./cart"
 import { Payment } from "./payment"
 import { ShippingMethod } from "./shipping-method"
 
+export enum SwapStatus {
+  PENDING = "pending",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
+}
+
 export enum FulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   FULFILLED = "fulfilled",
@@ -48,6 +54,9 @@ export enum PaymentStatus {
 export class Swap {
   @PrimaryColumn()
   id: string
+
+  @Column({ type: "enum", enum: SwapStatus, default: "pending" })
+  status: SwapStatus
 
   @Column({ type: "enum", enum: FulfillmentStatus })
   fulfillment_status: FulfillmentStatus

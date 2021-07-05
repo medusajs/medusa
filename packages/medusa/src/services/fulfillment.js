@@ -224,9 +224,16 @@ class FulfillmentService extends BaseService {
       }
       const fulfillment = await this.retrieve(id)
 
+      if (fulfillment.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Fulfillment has already been canceled"
+        )
+      }
+
       await this.fulfillmentProviderService_.cancelFulfillment(fulfillment)
 
-      fulfillment.status = "canceled"
+      fulfillment.canceled_at = new Date()
 
       const fulfillmentRepo = manager.getCustomRepository(
         this.fulfillmentRepository_
@@ -256,6 +263,13 @@ class FulfillmentService extends BaseService {
       const fulfillment = await this.retrieve(fulfillmentId, {
         relations: ["items"],
       })
+
+      if (fulfillment.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Fulfillment has been canceled"
+        )
+      }
 
       const now = new Date()
       fulfillment.shipped_at = now
