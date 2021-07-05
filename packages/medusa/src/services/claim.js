@@ -311,10 +311,10 @@ class ClaimService extends BaseService {
     id,
     config = {
       metadata: {},
-      noNotification: undefined,
+      no_notification: undefined,
     }
   ) {
-    const { metadata, noNotification } = config
+    const { metadata, no_notification } = config
 
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
@@ -353,7 +353,7 @@ class ClaimService extends BaseService {
       }
 
       const evaluatedNoNotification =
-        noNotification !== undefined ? noNotification : claim.no_notification
+        no_notification !== undefined ? no_notification : claim.no_notification
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
@@ -469,10 +469,10 @@ class ClaimService extends BaseService {
     trackingLinks,
     config = {
       metadata: {},
-      noNotification: undefined,
+      no_notification: undefined,
     }
   ) {
-    const { metadata, noNotification } = config
+    const { metadata, no_notification } = config
 
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
@@ -480,13 +480,13 @@ class ClaimService extends BaseService {
       })
 
       const evaluatedNoNotification =
-        noNotification !== undefined ? noNotification : claim.no_notification
+        no_notification !== undefined ? no_notification : claim.no_notification
 
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
         .createShipment(fulfillmentId, trackingLinks, {
           metadata,
-          noNotification: evaluatedNoNotification,
+          no_notification: evaluatedNoNotification,
         })
 
       claim.fulfillment_status = "shipped"

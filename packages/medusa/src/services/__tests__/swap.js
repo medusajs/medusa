@@ -340,30 +340,33 @@ describe("SwapService", () => {
 
         expect(returnService.create).toHaveBeenCalledTimes(1)
       })
-      
+
       it.each([
         [true, true],
         [false, false],
         [undefined, true],
-      ])( "passes correct no_notification to eventBus with %s", async (input, expected) => {
+      ])(
+        "passes correct no_notification to eventBus with %s",
+        async (input, expected) => {
+          await swapService.create(
+            testOrder,
+            [{ item_id: IdMap.getId("line"), quantity: 1 }],
+            [{ variant_id: IdMap.getId("new-variant"), quantity: 1 }],
+            {
+              id: IdMap.getId("return-shipping"),
+              price: 20,
+            },
+            { no_notification: input }
+          )
 
-        await swapService.create(
-          testOrder,
-          [{ item_id: IdMap.getId("line"), quantity: 1 }],
-          [{ variant_id: IdMap.getId("new-variant"), quantity: 1 }],
-          {
-            id: IdMap.getId("return-shipping"),
-            price: 20,
-          },
-          {noNotification: input}
-        )
-
-        expect(eventBusService.emit).toHaveBeenCalledWith(
-          expect.any(String),
-          {"id": undefined, "no_notification": expected})
-      })
-      })
+          expect(eventBusService.emit).toHaveBeenCalledWith(
+            expect.any(String),
+            { id: undefined, no_notification: expected }
+          )
+        }
+      )
     })
+  })
 
   describe("receiveReturn", () => {
     beforeEach(() => {

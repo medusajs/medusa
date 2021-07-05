@@ -442,7 +442,7 @@ describe("ClaimService", () => {
         metadata: {
           meta: "data",
         },
-        noNotification: false,
+        no_notification: false,
       })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
@@ -458,7 +458,7 @@ describe("ClaimService", () => {
           metadata: {
             meta: "data",
           },
-          noNotification: false,
+          no_notification: false,
         }
       )
 

@@ -51,12 +51,10 @@ export default async (req, res) => {
     const entityManager = req.scope.resolve("manager")
 
     await entityManager.transaction(async manager => {
-      await claimService
-        .withTransaction(manager)
-        .createFulfillment(claim_id, {
-          metadata: value.metadata, 
-          noNotification: value.no_notification,
-        })
+      await claimService.withTransaction(manager).createFulfillment(claim_id, {
+        metadata: value.metadata,
+        no_notification: value.no_notification,
+      })
     })
 
     const order = await orderService.retrieve(id, {

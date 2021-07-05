@@ -43,7 +43,7 @@ describe("POST /admin/orders/:id/fulfillment", () => {
             quantity: 1,
           },
         ],
-        {"metadata": undefined, "noNotification": undefined}
+        { metadata: undefined, no_notification: undefined }
       )
     })
 
@@ -52,6 +52,5 @@ describe("POST /admin/orders/:id/fulfillment", () => {
       expect(subject.body.order.id).toEqual(IdMap.getId("test-order"))
       expect(subject.body.order.fulfillment_status).toEqual("fulfilled")
     })
-
   })
 })

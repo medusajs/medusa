@@ -579,10 +579,10 @@ class OrderService extends BaseService {
     trackingLinks,
     config = {
       metadata: {},
-      noNotification: undefined,
+      no_notification: undefined,
     }
   ) {
-    const { metadata, noNotification } = config
+    const { metadata, no_notification } = config
 
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, { relations: ["items"] })
@@ -596,13 +596,15 @@ class OrderService extends BaseService {
       }
 
       const evaluatedNoNotification =
-        noNotification !== undefined ? noNotification : shipment.no_notification
+        no_notification !== undefined
+          ? no_notification
+          : shipment.no_notification
 
       const shipmentRes = await this.fulfillmentService_
         .withTransaction(manager)
         .createShipment(fulfillmentId, trackingLinks, {
           metadata,
-          noNotification: evaluatedNoNotification,
+          no_notification: evaluatedNoNotification,
         })
 
       order.fulfillment_status = "shipped"
@@ -1002,11 +1004,11 @@ class OrderService extends BaseService {
     orderId,
     itemsToFulfill,
     config = {
-      noNotification: undefined,
+      no_notification: undefined,
       metadata: {},
     }
   ) {
-    const { metadata, noNotification } = config
+    const { metadata, no_notification } = config
 
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
@@ -1046,7 +1048,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .createFulfillment(order, itemsToFulfill, {
           metadata,
-          noNotification: noNotification,
+          no_notification: no_notification,
           order_id: orderId,
         })
       let successfullyFulfilled = []
@@ -1087,7 +1089,7 @@ class OrderService extends BaseService {
       const result = await orderRepo.save(order)
 
       const evaluatedNoNotification =
-        noNotification !== undefined ? noNotification : order.no_notification
+        no_notification !== undefined ? no_notification : order.no_notification
 
       for (const fulfillment of fulfillments) {
         await this.eventBus_
@@ -1157,10 +1159,10 @@ class OrderService extends BaseService {
     reason,
     note,
     config = {
-      noNotification: undefined,
+      no_notification: undefined,
     }
   ) {
-    const { noNotification } = config
+    const { no_notification } = config
 
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
@@ -1182,7 +1184,7 @@ class OrderService extends BaseService {
       const result = await this.retrieve(orderId)
 
       const evaluatedNoNotification =
-        noNotification !== undefined ? noNotification : order.no_notification
+        no_notification !== undefined ? no_notification : order.no_notification
 
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
