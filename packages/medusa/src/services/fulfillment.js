@@ -165,7 +165,7 @@ class FulfillmentService extends BaseService {
    * those partitions.
    * @param {Order} order - order to create fulfillment for
    * @param {{ item_id: string, quantity: number}[]} itemsToFulfill - the items in the order to fulfill
-   * @param {object} config - potential configurations, including metadata to add
+   * @param {object} metadata - potential metadata to add
    * @return {Fulfillment[]} the created fulfillments
    */
   async createFulfillment(order, itemsToFulfill, custom = {}) {
@@ -180,11 +180,6 @@ class FulfillmentService extends BaseService {
         this.validateFulfillmentLineItem_
       )
 
-      const { no_notification, ...rest } = custom
-
-      const evaluatedNoNotification =
-        no_notification !== undefined ? no_notification : order.no_notification
-
       const { shipping_methods } = order
 
       // partition order items to their dedicated shipping method
@@ -193,10 +188,9 @@ class FulfillmentService extends BaseService {
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
           const ful = fulfillmentRepository.create({
-            ...rest,
+            ...custom,
             provider_id: shipping_method.shipping_option.provider_id,
             items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
-            no_notification: evaluatedNoNotification,
             data: {},
           })
 
@@ -247,10 +241,19 @@ class FulfillmentService extends BaseService {
    * tracking numbers and potentially more metadata.
    * @param {Order} fulfillmentId - the fulfillment to ship
    * @param {TrackingLink[]} trackingNumbers - tracking numbers for the shipment
-   * @param {object} metadata - potential metadata to add
+   * @param {object} config - potential configuration settings, such as no_notification and metadata
    * @return {Fulfillment} the shipped fulfillment
    */
-  async createShipment(fulfillmentId, trackingLinks, metadata) {
+  async createShipment(
+    fulfillmentId,
+    trackingLinks,
+    config = {
+      metadata: {},
+      no_notification: undefined,
+    }
+  ) {
+    const { metadata, no_notification } = config
+
     return this.atomicPhase_(async manager => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
@@ -269,6 +272,10 @@ class FulfillmentService extends BaseService {
       fulfillment.tracking_links = trackingLinks.map(tl =>
         trackingLinkRepo.create(tl)
       )
+
+      if (no_notification) {
+        fulfillment.no_notification = no_notification
+      }
 
       fulfillment.metadata = {
         ...fulfillment.metadata,
