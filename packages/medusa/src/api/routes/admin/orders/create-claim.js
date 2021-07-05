@@ -110,8 +110,7 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
-  const { id } = req.params 
-
+  const { id } = req.params
   const schema = Validator.object().keys({
     type: Validator.string()
       .valid("replace", "refund")
@@ -165,8 +164,7 @@ export default async (req, res) => {
   const { value, error } = schema.validate(req.body)
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  } 
-
+  }
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""

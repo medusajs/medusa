@@ -67,7 +67,7 @@ export default async (req, res) => {
       value.amount,
       value.reason,
       value.note,
-      { noNotification: value.no_notification }
+      { no_notification: value.no_notification }
     )
 
     const order = await orderService.retrieve(id, {

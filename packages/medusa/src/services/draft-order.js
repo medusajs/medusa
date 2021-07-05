@@ -253,7 +253,7 @@ class DraftOrderService extends BaseService {
         items,
         shipping_methods,
         discounts,
-        no_notification_order = undefined,
+        no_notification_order,
         ...rest
       } = data
 
@@ -345,6 +345,7 @@ class DraftOrderService extends BaseService {
       await draftOrderRepo.save(draftOrder)
     })
   }
+
   /**
    * Updates a draft order with the given data
    * @param {String} doId - id of the draft order
