@@ -1,5 +1,4 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import idMap from "medusa-test-utils/dist/id-map"
 import mockRepository from "medusa-test-utils/dist/mock-repository"
 
 import GiftCardService from "../gift-card"
@@ -13,7 +12,7 @@ describe("GiftCardService", () => {
   }
 
   describe("create", () => {
-    const giftCardRepo = mockRepository({
+    const giftCardRepo = MockRepository({
       create: s => {
         return Promise.resolve(s)
       },
@@ -42,7 +41,7 @@ describe("GiftCardService", () => {
 
     const giftCard = {
       region_id: IdMap.getId("region-id"),
-      order_id: "order-id",
+      order_id: IdMap.getId("order-id"),
       is_disabled: true,
     }
 
@@ -56,7 +55,7 @@ describe("GiftCardService", () => {
       expect(giftCardRepo.create).toHaveBeenCalledTimes(1)
       expect(giftCardRepo.create).toHaveBeenCalledWith({
         region_id: IdMap.getId("region-id"),
-        order_id: "order-id",
+        order_id: IdMap.getId("order-id"),
         is_disabled: true,
         code: expect.any(String),
       })
@@ -76,34 +75,166 @@ describe("GiftCardService", () => {
   })
 
   describe("retrieve", () => {
-    const giftCardRepo = {
+    const giftCardRepo = MockRepository({
       findOne: () => {
         return Promise.resolve({})
       },
-    }
+    })
 
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("it calls order model functions", async () => {})
+    const giftCardService = new GiftCardService({
+      manager: MockManager,
+      giftCardRepository: giftCardRepo,
+    })
+
+    it("it calls order model functions", async () => {
+      await giftCardService.retrieve(IdMap.getId("gift-card"), {
+        relations: ["region"],
+        select: ["id"],
+      })
+
+      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
+        where: {
+          id: IdMap.getId("gift-card"),
+        },
+        relations: ["region"],
+        select: ["id"],
+      })
+    })
   })
 
   describe("retrieveByCode", () => {
-    it("test1", async () => {
-      fail("impl")
+    const giftCardRepo = MockRepository({
+      findOne: () => {
+        return Promise.resolve({})
+      },
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    const giftCardService = new GiftCardService({
+      manager: MockManager,
+      giftCardRepository: giftCardRepo,
+    })
+
+    it("it calls order model functions", async () => {
+      await giftCardService.retrieveByCode("1234-1234-1234-1234", {
+        relations: ["region"],
+        select: ["id"],
+      })
+
+      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
+        where: {
+          code: "1234-1234-1234-1234",
+        },
+        relations: ["region"],
+        select: ["id"],
+      })
     })
   })
 
   describe("update", () => {
-    it("test1", async () => {
-      fail("impl")
+    const giftCard = {
+      region_id: IdMap.getId("region-id"),
+      order_id: IdMap.getId("order-id"),
+      is_disabled: true,
+    }
+
+    const giftCardRepo = MockRepository({
+      findOne: s => {
+        return Promise.resolve(giftCard)
+      },
+      save: s => {
+        return Promise.resolve(s)
+      },
+    })
+
+    const regionService = {
+      withTransaction: function() {
+        return this
+      },
+      retrieve: () => {
+        return Promise.resolve({
+          id: IdMap.getId("other-region"),
+        })
+      },
+    }
+
+    const giftCardService = new GiftCardService({
+      manager: MockManager,
+      giftCardRepository: giftCardRepo,
+      regionService: regionService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls order model functions", async () => {
+      await giftCardService.update(IdMap.getId("giftcard-id"), {
+        is_disabled: false,
+        region_id: IdMap.getId("other-region"),
+      })
+
+      expect(giftCardRepo.save).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.save).toHaveBeenCalledWith({
+        region_id: IdMap.getId("other-region"),
+        order_id: IdMap.getId("order-id"),
+        is_disabled: false,
+      })
     })
   })
 
   describe("delete", () => {
-    it("test1", async () => {
-      fail("impl")
+    const giftCard = {
+      region_id: IdMap.getId("region-id"),
+      order_id: IdMap.getId("order-id"),
+    }
+
+    const giftCardRepo = MockRepository({
+      findOne: s => {
+        switch (s.where.id) {
+          case IdMap.getId("gift-card"):
+            return Promise.resolve(giftCard)
+          default:
+            return Promise.resolve()
+        }
+      },
+      softRemove: s => {
+        return Promise.resolve()
+      },
+    })
+
+    const giftCardService = new GiftCardService({
+      manager: MockManager,
+      giftCardRepository: giftCardRepo,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully deletes existing gift-card", async () => {
+      await giftCardService.delete(IdMap.getId("gift-card"))
+
+      expect(giftCardRepo.softRemove).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.softRemove).toHaveBeenCalledWith({
+        region_id: IdMap.getId("region-id"),
+        order_id: IdMap.getId("order-id"),
+      })
+    })
+
+    it("returns if no gift-card found", async () => {
+      await giftCardService.delete(IdMap.getId("other"))
+
+      expect(giftCardRepo.softRemove).toHaveBeenCalledTimes(0)
     })
   })
 })
