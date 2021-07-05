@@ -180,9 +180,10 @@ class FulfillmentService extends BaseService {
         this.validateFulfillmentLineItem_
       )
 
-      const { noNotification, ...rest} = custom
+      const { no_notification, ...rest } = custom
 
-      const evaluatedNoNotification = noNotification !== undefined ? noNotification : order.no_notification
+      const evaluatedNoNotification =
+        no_notification !== undefined ? no_notification : order.no_notification
 
       const { shipping_methods } = order
 

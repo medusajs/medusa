@@ -877,7 +877,7 @@ describe("OrderService", () => {
               quantity: 1,
             },
           ],
-          { noNotification: input }
+          { no_notification: input }
         )
 
         expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
@@ -1073,7 +1073,7 @@ describe("OrderService", () => {
       ).toHaveBeenCalledWith(
         IdMap.getId("fulfillment"),
         [{ tracking_number: "1234" }, { tracking_number: "2345" }],
-        { metadata: undefined, noNotification: true }
+        { metadata: undefined, no_notification: true }
       )
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
@@ -1094,7 +1094,7 @@ describe("OrderService", () => {
           IdMap.getId("test"),
           IdMap.getId("fulfillment"),
           [{ tracking_number: "1234" }, { tracking_number: "2345" }],
-          { noNotification: input }
+          { no_notification: input }
         )
 
         expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
@@ -1197,7 +1197,7 @@ describe("OrderService", () => {
           100,
           "discount",
           "note",
-          { noNotification: input }
+          { no_notification: input }
         )
 
         expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {

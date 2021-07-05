@@ -92,7 +92,12 @@ export default async (req, res) => {
       )
     }
 
-    await draftOrderService.update(draftOrder.id, value)
+    if ("no_notification_order" in value) {
+      await draftOrderService.update(draftOrder.id, {
+        no_notification_order: value.no_notification_order,
+      })
+      delete value.no_notification_order
+    }
 
     await cartService.update(draftOrder.cart_id, value)
 

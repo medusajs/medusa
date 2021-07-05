@@ -59,7 +59,7 @@ export default async (req, res) => {
       id,
       value.fulfillment_id,
       value.tracking_numbers.map(n => ({ tracking_number: n })),
-      { noNotification: value.no_notification }
+      { no_notification: value.no_notification }
     )
 
     const order = await orderService.retrieve(id, {

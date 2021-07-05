@@ -51,12 +51,10 @@ export default async (req, res) => {
     const entityManager = req.scope.resolve("manager")
 
     await entityManager.transaction(async manager => {
-      await swapService
-        .withTransaction(manager)
-        .createFulfillment(swap_id, {
-          metadata: value.metadata,
-          noNotification: value.no_notification,
-        })
+      await swapService.withTransaction(manager).createFulfillment(swap_id, {
+        metadata: value.metadata,
+        no_notification: value.no_notification,
+      })
 
       const order = await orderService.withTransaction(manager).retrieve(id, {
         select: defaultFields,

@@ -68,7 +68,7 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
-      }) 
+      })
       .required(),
     return_shipping: Validator.object()
       .keys({
@@ -82,7 +82,7 @@ export default async (req, res) => {
       variant_id: Validator.string().required(),
       quantity: Validator.number().required(),
     }),
-    no_notification: Validator.boolean().optional()
+    no_notification: Validator.boolean().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -138,7 +138,10 @@ export default async (req, res) => {
                   value.return_items,
                   value.additional_items,
                   value.return_shipping,
-                  { idempotency_key: idempotencyKey.idempotency_key, noNotification: value.no_notification }
+                  {
+                    idempotency_key: idempotencyKey.idempotency_key,
+                    no_notification: value.no_notification,
+                  }
                 )
 
               await swapService.withTransaction(manager).createCart(swap.id)
