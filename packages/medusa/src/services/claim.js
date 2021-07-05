@@ -485,7 +485,7 @@ class ClaimService extends BaseService {
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
         .createShipment(fulfillmentId, trackingLinks, {
-          metadata,
+          metadata: metadata,
           no_notification: evaluatedNoNotification,
         })
 
