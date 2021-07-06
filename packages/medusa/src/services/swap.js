@@ -647,8 +647,9 @@ class SwapService extends BaseService {
       })
 
       if (
-        (swap.payment && swap.payment.amount_refunded > 0) ||
-        (swap.return_order && swap.return_order.refund_amount > 0)
+        swap.payment_status === "difference_refunded" ||
+        swap.payment_status === "partially_refunded" ||
+        swap.payment_status === "refunded"
       ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,

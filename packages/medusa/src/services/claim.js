@@ -511,27 +511,10 @@ class ClaimService extends BaseService {
   async cancel(id) {
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
-        relations: ["return_order", "fulfillments"],
+        relations: ["return_order", "fulfillments", "order", "order.refunds"],
       })
 
-      if (
-        claim.fulfillment_status === "shipped" ||
-        claim.fulfillment_status === "partially_shipped"
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel a claim that has been shipped.`
-        )
-      }
-
-      if (claim.return_order?.status === "received") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel a claim that has a received return.`
-        )
-      }
-
-      if (claim.return_order && claim.return_order.refund_amount > 0) {
+      if (claim.order?.refunds?.length > 0) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Claim with a refund cannot be canceled"

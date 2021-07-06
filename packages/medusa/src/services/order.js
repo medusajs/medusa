@@ -2,6 +2,7 @@ import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
+import swaps from "../api/routes/admin/swaps"
 
 class OrderService extends BaseService {
   static Events = {
@@ -403,6 +404,13 @@ class OrderService extends BaseService {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId)
 
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot be completed"
+        )
+      }
+
       // Run all other registered events
       const completeOrderJob = await this.eventBus_.emit(
         OrderService.Events.COMPLETED,
@@ -576,6 +584,13 @@ class OrderService extends BaseService {
       const order = await this.retrieve(orderId, { relations: ["items"] })
       const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
 
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot be fulfilled as shipped"
+        )
+      }
+
       if (!shipment || shipment.order_id !== orderId) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
@@ -721,6 +736,13 @@ class OrderService extends BaseService {
       })
       const { shipping_methods } = order
 
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A shipping method cannot be added to a canceled order"
+        )
+      }
+
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
         .createShippingMethod(optionId, data, { order, ...config })
@@ -761,6 +783,13 @@ class OrderService extends BaseService {
   async update(orderId, update) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId)
+
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot be updated"
+        )
+      }
 
       if (
         (update.payment || update.items) &&
@@ -836,15 +865,37 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: ["fulfillments", "payments"],
+        relations: [
+          "fulfillments",
+          "payments",
+          "returns",
+          "claims",
+          "swaps",
+          "returns",
+        ],
       })
 
-      if (order.payment_status !== "awaiting") {
+      if (order.refunds?.length > 0) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Can't cancel an order with a processed payment"
+          "Order with refund(s) cannot be canceled"
         )
       }
+
+      const throwErrorIf = (arr, pred, type) =>
+        arr?.filter(pred).find(_ => {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `All ${type} must be canceled before canceling an order`
+          )
+        })
+      const notCanceled = o => !o.canceled_at
+
+      throwErrorIf(order.swaps, notCanceled, "swaps")
+      throwErrorIf(order.claims, notCanceled, "claims")
+      throwErrorIf(order.fulfillments, notCanceled, "fulfillments")
+      throwErrorIf(order.payments, notCanceled, "payments")
+      throwErrorIf(order.returns, r => r.status !== "canceled", "returns")
 
       await Promise.all(
         order.fulfillments.map(fulfillment =>
@@ -885,6 +936,13 @@ class OrderService extends BaseService {
     return this.atomicPhase_(async manager => {
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
+
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot capture payment"
+        )
+      }
 
       const payments = []
       for (const p of order.payments) {
@@ -995,6 +1053,13 @@ class OrderService extends BaseService {
           "payments",
         ],
       })
+
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot be fulfilled"
+        )
+      }
 
       if (!order.shipping_methods?.length) {
         throw new MedusaError(
@@ -1114,6 +1179,13 @@ class OrderService extends BaseService {
         relations: ["payments"],
       })
 
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot be refunded"
+        )
+      }
+
       if (refundAmount > order.refundable_amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
@@ -1212,6 +1284,13 @@ class OrderService extends BaseService {
         select: ["total", "refunded_total", "refundable_amount"],
         relations: ["items", "returns", "payments"],
       })
+
+      if (order.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "A canceled order cannot be registered as received"
+        )
+      }
 
       if (!receivedReturn || receivedReturn.order_id !== orderId) {
         throw new MedusaError(

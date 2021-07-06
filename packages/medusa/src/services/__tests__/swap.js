@@ -1024,8 +1024,8 @@ describe("SwapService", () => {
 
   describe("cancel", () => {
     const now = new Date()
-    const payment = { amount_refunded: 0, canceled_at: now }
-    const return_order = { refund_amount: 0, status: "canceled" }
+    const payment = { canceled_at: now }
+    const return_order = { status: "canceled" }
     const fulfillment = { canceled_at: now }
 
     const swapRepo = MockRepository({
@@ -1046,10 +1046,13 @@ describe("SwapService", () => {
             swap.return_order.status = "received"
             return Promise.resolve(swap)
           case IdMap.getId("fail-refund-1"):
-            swap.payment.amount_refunded = 5
+            swap.payment_status = "difference_refunded"
             return Promise.resolve(swap)
           case IdMap.getId("fail-refund-2"):
-            swap.payment.amount_refunded = 5
+            swap.payment_status = "partially_refunded"
+            return Promise.resolve(swap)
+          case IdMap.getId("fail-refund-3"):
+            swap.payment_status = "refunded"
             return Promise.resolve(swap)
           default:
             return Promise.resolve(swap)
@@ -1103,7 +1106,7 @@ describe("SwapService", () => {
       )
     })
 
-    it.each([["fail-refund-1"], ["fail-refund-2"]])(
+    it.each([["fail-refund-1"], ["fail-refund-2"], ["fail-refund-3"]])(
       "fails to cancel swap when contains refund",
       async input => {
         await expect(swapService.cancel(IdMap.getId(input))).rejects.toThrow(

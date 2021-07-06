@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _, { reject } from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ClaimService from "../claim"
 
@@ -509,7 +509,31 @@ describe("ClaimService", () => {
       },
     }
 
-    const claimRepo = MockRepository()
+    const now = new Date()
+    const ret_order = { id: "ret", status: "canceled" }
+    const fulfillment = { id: "ful_21", canceled_at: now }
+
+    const claimRepo = MockRepository({
+      findOne: q => {
+        const claim = {
+          return_order: { ...ret_order },
+          fulfillments: [{ ...fulfillment }],
+        }
+        switch (q.where.id) {
+          case IdMap.getId("fail-fulfillment"):
+            claim.fulfillments[0].canceled_at = undefined
+            return Promise.resolve(claim)
+          case IdMap.getId("fail-return"):
+            claim.return_order.status = "requested"
+            return Promise.resolve(claim)
+          case IdMap.getId("fail-refund"):
+            claim.order = { refunds: [{}] }
+            return Promise.resolve(claim)
+          default:
+            return Promise.resolve(claim)
+        }
+      },
+    })
 
     const claimService = new ClaimService({
       manager: MockManager,
@@ -524,20 +548,6 @@ describe("ClaimService", () => {
     })
 
     it("calls fulfillment service", async () => {
-      claimRepo.setFindOne(() =>
-        Promise.resolve({
-          return_order: {
-            id: "ret",
-            status: "requested",
-          },
-          fulfillments: [
-            {
-              id: "ful_21",
-            },
-          ],
-        })
-      )
-
       await claimService.cancel("claim")
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
@@ -548,37 +558,33 @@ describe("ClaimService", () => {
       expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
       expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
         id: "ful_21",
+        canceled_at: now,
       })
 
       expect(returnService.cancel).toHaveBeenCalledTimes(1)
       expect(returnService.cancel).toHaveBeenCalledWith("ret")
     })
 
-    it("fails if fulfillment is shipped", async () => {
-      claimRepo.setFindOne(() =>
-        Promise.resolve({
-          fulfillment_status: "shipped",
-        })
-      )
-
-      await expect(claimService.cancel("id")).rejects.toThrow(
-        "Cannot cancel a claim that has been shipped."
+    it("fails if fulfillment isn't canceled", async () => {
+      await expect(
+        claimService.cancel(IdMap.getId("fail-fulfillment"))
+      ).rejects.toThrow(
+        "All fulfillments must be canceled before the claim can be canceled"
       )
     })
 
-    it("fails if return is received", async () => {
-      claimRepo.setFindOne(() =>
-        Promise.resolve({
-          return_order: {
-            id: "ret",
-            status: "received",
-          },
-        })
+    it("fails if return isn't canceled", async () => {
+      await expect(
+        claimService.cancel(IdMap.getId("fail-return"))
+      ).rejects.toThrow(
+        "Return must be canceled before the claim can be canceled"
       )
+    })
 
-      await expect(claimService.cancel("id")).rejects.toThrow(
-        "Cannot cancel a claim that has a received return."
-      )
+    it("fails if associated with a refund", async () => {
+      await expect(
+        claimService.cancel(IdMap.getId("fail-refund"))
+      ).rejects.toThrow("Claim with a refund cannot be canceled")
     })
   })
 })
