@@ -360,6 +360,10 @@ describe("ReturnService", () => {
       returnRepository,
     })
 
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
     it("successfully cancels return", async () => {
       await returnService.cancel(IdMap.getId("test-return"))
 
@@ -402,6 +406,10 @@ describe("ReturnService", () => {
       returnRepository,
     })
 
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
     it("fails to fulfill when return is canceled", async () => {
       await expect(
         returnService.fulfill(IdMap.getId("test-return"))
@@ -426,6 +434,10 @@ describe("ReturnService", () => {
     const returnService = new ReturnService({
       manager: MockManager,
       returnRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
     })
 
     it("fails to update when return is canceled", async () => {
