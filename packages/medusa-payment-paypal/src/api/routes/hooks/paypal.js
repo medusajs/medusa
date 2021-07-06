@@ -40,15 +40,40 @@ export default async (req, res) => {
     const orderService = req.scope.resolve("orderService")
 
     await manager.transaction(async (m) => {
-      const order = await orderService
-        .withTransaction(m)
-        .retrieveByCartId(cartId)
-        .catch((_) => undefined)
+      const cart = await cartService.withTransaction(m).retrieve(cartId)
 
-      if (!order) {
-        await cartService.withTransaction(m).setPaymentSession(cartId, "paypal")
-        await cartService.withTransaction(m).authorizePayment(cartId)
-        await orderService.withTransaction(m).createFromCart(cartId)
+      switch (cart.type) {
+        case "swap": {
+          const swap = await swapService
+            .withTransaction(m)
+            .retrieveByCartId(cartId)
+            .catch((_) => undefined)
+
+          if (swap && swap.confirmed_at === null) {
+            await cartService
+              .withTransaction(m)
+              .setPaymentSession(cartId, "paypal")
+            await cartService.withTransaction(m).authorizePayment(cartId)
+            await swapService.withTransaction(m).registerCartCompletion(swap.id)
+          }
+          break
+        }
+
+        default: {
+          const order = await orderService
+            .withTransaction(m)
+            .retrieveByCartId(cartId)
+            .catch((_) => undefined)
+
+          if (!order) {
+            await cartService
+              .withTransaction(m)
+              .setPaymentSession(cartId, "paypal")
+            await cartService.withTransaction(m).authorizePayment(cartId)
+            await orderService.withTransaction(m).createFromCart(cartId)
+          }
+          break
+        }
       }
     })
 
