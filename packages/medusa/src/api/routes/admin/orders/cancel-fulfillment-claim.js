@@ -1,14 +1,14 @@
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /claims/{id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
  * summary: "Cancels a fulfilmment related to a Claim"
  * description: "Registers a Fulfillment as canceled."
  * parameters:
- *   - (path) id=* {string} The id of the Claim which the Fulfillment relates to.
- *   - (path) fulfillment_id=* {string} The id of the Fulfillment
- *
+ *   - (path) id=* {string} The id of the Order which the Claim relates to.
+ *   - (path) claim_id=* {string} The id of the Claim which the Fulfillment relates to.
+ *   - (path) fulfillment_id=* {string} The id of the Fulfillment.
  * tags:
  *   - Fulfillment
  * responses:
@@ -24,17 +24,27 @@ import { MedusaError } from "medusa-core-utils"
  *               $ref: "#/components/schemas/fulfillment"
  */
 export default async (req, res) => {
-  const { id, fulfillment_id } = req.params
+  const { id, claim_id, fulfillment_id } = req.params
 
   try {
     const fulfillmentService = req.scope.resolve("fulfillmentService")
+    const claimService = req.scope.resolve("claimService")
 
     const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 
-    if (fulfillment.claim_id !== id) {
+    if (fulfillment.claim_id !== claim_id) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `no fulfillment was found with the id: ${fulfillment_id} related to swap: ${id}`
+        `no fulfillment was found with the id: ${fulfillment_id} related to claim: ${claim_id}`
+      )
+    }
+
+    const claim = await claimService.retrieve(claim_id)
+
+    if (claim.order_id !== id) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `no claim was found with the id: ${claim_id} related to order: ${id}`
       )
     }
 

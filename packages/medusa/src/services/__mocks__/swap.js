@@ -11,7 +11,15 @@ export const SwapServiceMock = {
     return Promise.resolve()
   }),
   retrieve: jest.fn().mockImplementation(data => {
-    return Promise.resolve({ id: "test-swap" })
+    switch (data) {
+      case IdMap.getId("test-swap"):
+        return Promise.resolve({
+          id: "test-swap",
+          order_id: IdMap.getId("test-order"),
+        })
+      default:
+        return Promise.resolve({ id: "test-swap" })
+    }
   }),
 }
 

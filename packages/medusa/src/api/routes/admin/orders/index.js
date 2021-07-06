@@ -71,6 +71,22 @@ export default app => {
   )
 
   /**
+   * Cancel a fulfillment related to a swap.
+   */
+  route.post(
+    "/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
+    middlewares.wrap(require("./cancel-fulfillment-swap").default)
+  )
+
+  /**
+   * Cancel a fulfillment related to a claim.
+   */
+  route.post(
+    "/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
+    middlewares.wrap(require("./cancel-fulfillment-claim").default)
+  )
+
+  /**
    * Create a shipment.
    */
   route.post(

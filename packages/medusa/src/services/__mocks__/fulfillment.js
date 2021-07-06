@@ -1,5 +1,4 @@
 import { IdMap } from "medusa-test-utils"
-import idMap from "medusa-test-utils/dist/id-map"
 
 export const FulfillmentServiceMock = {
   withTransaction: function() {
@@ -8,15 +7,15 @@ export const FulfillmentServiceMock = {
   retrieve: jest.fn().mockImplementation(data => {
     switch (data) {
       case IdMap.getId("order-fulfillment"):
-        return Promise.resolve({ order_id: idMap.getId("test-order") })
+        return Promise.resolve({ order_id: IdMap.getId("test-order") })
       case IdMap.getId("swap-fulfillment"):
-        return Promise.resolve({ swap_id: idMap.getId("test-swap") })
+        return Promise.resolve({ swap_id: IdMap.getId("test-swap") })
       case IdMap.getId("claim-fulfillment"):
-        return Promise.resolve({ swap_id: idMap.getId("test-claim") })
+        return Promise.resolve({ claim_id: IdMap.getId("test-claim") })
     }
   }),
   cancel: jest.fn().mockImplementation(data => {
-    return Promise.resolve({ order_id: idMap.getId("test-order") })
+    return Promise.resolve({ order_id: IdMap.getId("test-order") })
   }),
 }
 

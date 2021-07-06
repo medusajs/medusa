@@ -8,7 +8,6 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The id of the Order which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The id of the Fulfillment
- *
  * tags:
  *   - Fulfillment
  * responses:
