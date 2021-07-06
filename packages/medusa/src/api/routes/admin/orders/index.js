@@ -129,6 +129,14 @@ export default app => {
   route.post("/:id/swaps", middlewares.wrap(require("./create-swap").default))
 
   /**
+   * Cancels a swap.
+   */
+  route.post(
+    "/:id/swaps/:swap_id/cancel",
+    middlewares.wrap(require("./cancel-swap").default)
+  )
+
+  /**
    * Receives the inventory to return from a swap
    */
   route.post(
@@ -164,6 +172,14 @@ export default app => {
    * Creates a claim
    */
   route.post("/:id/claims", middlewares.wrap(require("./create-claim").default))
+
+  /**
+   * Cancels a claim
+   */
+  route.post(
+    "/:id/claims/:claim_id/cancel",
+    middlewares.wrap(require("./cancel-claim").default)
+  )
 
   /**
    * Updates a claim

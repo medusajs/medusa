@@ -636,7 +636,7 @@ class SwapService extends BaseService {
   /**
    * Cancels a given swap if possible. A swap can only be canceled if all
    * related returns, fulfillments, and payments have been canceled. If a swap
-   * has been refunded, it cannot be canceled.
+   * is associated with a refund, it cannot be canceled.
    * @param {string} swapId - the id of the swap to cancel.
    * @returns {Promise<Swap>} the canceled swap.
    */

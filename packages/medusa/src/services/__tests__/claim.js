@@ -342,6 +342,16 @@ describe("ClaimService", () => {
       ).rejects.toThrow(`Cannot fulfill a claim without a shipping method.`)
     })
 
+    it("fails if claim is canceled", async () => {
+      claimRepo.setFindOne(() =>
+        Promise.resolve({ ...claim, canceled_at: new Date() })
+      )
+
+      await expect(
+        claimService.createFulfillment("claim_id", {})
+      ).rejects.toThrow("Canceled claim cannot be fulfilled")
+    })
+
     it("fails if already fulfilled", async () => {
       claimRepo.setFindOne(() =>
         Promise.resolve({ ...claim, fulfillment_status: "fulfilled" })
@@ -358,6 +368,23 @@ describe("ClaimService", () => {
       await expect(
         claimService.createFulfillment("claim_id", { meta: "data" })
       ).rejects.toThrow(`Claims with the type "refund" can not be fulfilled`)
+    })
+  })
+
+  describe("processRefund", () => {
+    const claimRepo = MockRepository({
+      findOne: () => Promise.resolve({ canceled_at: new Date() }),
+    })
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+    })
+
+    it("fails when claim is canceled", async () => {
+      await expect(
+        claimService.processRefund(IdMap.getId("claim-id"))
+      ).rejects.toThrow("Canceled claim cannot be processed")
     })
   })
 
@@ -433,6 +460,35 @@ describe("ClaimService", () => {
       expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
         shipped_quantity: 1,
       })
+    })
+
+    it("fails if claim is canceled", async () => {
+      claimRepo.setFindOne(() => Promise.resolve({ canceled_at: new Date() }))
+
+      await expect(
+        claimService.createShipment("claim", "ful_123", ["track1234"], {})
+      ).rejects.toThrow("Canceled claim cannot be fulfilled as shipped")
+    })
+  })
+
+  describe("update", () => {
+    const claimRepo = MockRepository({
+      findOne: () => Promise.resolve({ canceled_at: new Date() }),
+    })
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("fails when claim is canceled", async () => {
+      await expect(
+        claimService.update(IdMap.getId("claim-id"))
+      ).rejects.toThrow("Canceled claim cannot be updated")
     })
   })
 

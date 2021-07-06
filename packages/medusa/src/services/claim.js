@@ -101,6 +101,13 @@ class ClaimService extends BaseService {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be updated"
+        )
+      }
+
       const { claim_items, shipping_methods, metadata } = data
 
       if (metadata) {
@@ -308,6 +315,13 @@ class ClaimService extends BaseService {
         ],
       })
 
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be fulfilled"
+        )
+      }
+
       const order = claim.order
 
       if (claim.fulfillment_status !== "not_fulfilled") {
@@ -408,6 +422,13 @@ class ClaimService extends BaseService {
         relations: ["order", "order.payments"],
       })
 
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be processed"
+        )
+      }
+
       if (claim.type !== "refund") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
@@ -441,6 +462,13 @@ class ClaimService extends BaseService {
       const claim = await this.retrieve(id, {
         relations: ["additional_items"],
       })
+
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be fulfilled as shipped"
+        )
+      }
 
       const shipment = await this.fulfillmentService_
         .withTransaction(manager)
@@ -496,10 +524,35 @@ class ClaimService extends BaseService {
         )
       }
 
-      if (claim?.return_order?.status === "received") {
+      if (claim.return_order?.status === "received") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           `Cannot cancel a claim that has a received return.`
+        )
+      }
+
+      if (claim.return_order && claim.return_order.refund_amount > 0) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Claim with a refund cannot be canceled"
+        )
+      }
+
+      if (claim.fulfillments) {
+        for (const i in claim.fulfillments) {
+          if (!claim.fulfillments[i].canceled_at) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "All fulfillments must be canceled before the claim can be canceled"
+            )
+          }
+        }
+      }
+
+      if (claim.return_order && claim.return_order.status !== "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Return must be canceled before the claim can be canceled"
         )
       }
 
