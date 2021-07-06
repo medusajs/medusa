@@ -656,16 +656,10 @@ class SwapService extends BaseService {
           "Swap with a refund cannot be canceled"
         )
       }
-      if (swap.payment && !swap.payment.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Payment must be canceled before the swap can be canceled"
-        )
-      }
 
       if (swap.fulfillments) {
-        for (const i in swap.fulfillments) {
-          if (!swap.fulfillments[i].canceled_at) {
+        for (const f of swap.fulfillments) {
+          if (!f.canceled_at) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
               "All fulfillments must be canceled before the swap can be canceled"
@@ -682,6 +676,10 @@ class SwapService extends BaseService {
       }
 
       swap.canceled_at = new Date()
+
+      await this.paymentProviderService_
+        .withTransaction(manager)
+        .cancelPayment(swap.payment)
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)

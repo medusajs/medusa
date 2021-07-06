@@ -1,3 +1,4 @@
+import paymentService from "medusa-interfaces/dist/payment-service"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import SwapService from "../swap"
 
@@ -1024,9 +1025,16 @@ describe("SwapService", () => {
 
   describe("cancel", () => {
     const now = new Date()
-    const payment = { canceled_at: now }
+    const payment = { id: IdMap.getId("payment") }
     const return_order = { status: "canceled" }
     const fulfillment = { canceled_at: now }
+
+    const paymentProviderService = {
+      cancelPayment: jest.fn(() => Promise.resolve({})),
+      withTransaction: function() {
+        return this
+      },
+    }
 
     const swapRepo = MockRepository({
       findOneWithRelations: (_, q) => {
@@ -1036,9 +1044,6 @@ describe("SwapService", () => {
           fulfillments: [{ ...fulfillment }, { ...fulfillment }],
         }
         switch (q.where.id) {
-          case IdMap.getId("fail-payment"):
-            swap.payment.canceled_at = undefined
-            return Promise.resolve(swap)
           case IdMap.getId("fail-fulfillment"):
             swap.fulfillments[1].canceled_at = undefined
             return Promise.resolve(swap)
@@ -1064,6 +1069,7 @@ describe("SwapService", () => {
     const swapService = new SwapService({
       manager: MockManager,
       swapRepository: swapRepo,
+      paymentProviderService,
     })
 
     beforeEach(async () => {
@@ -1080,14 +1086,10 @@ describe("SwapService", () => {
         payment: expect.anything(),
         return_order: expect.anything(),
       })
-    })
-
-    it("fails to cancel swap when payment not canceled", async () => {
-      await expect(
-        swapService.cancel(IdMap.getId("fail-payment"))
-      ).rejects.toThrow(
-        "Payment must be canceled before the swap can be canceled"
-      )
+      expect(paymentProviderService.cancelPayment).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.cancelPayment).toHaveBeenCalledWith({
+        id: IdMap.getId("payment"),
+      })
     })
 
     it("fails to cancel swap when fulfillment not canceled", async () => {

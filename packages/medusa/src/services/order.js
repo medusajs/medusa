@@ -894,7 +894,6 @@ class OrderService extends BaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
       throwErrorIf(order.fulfillments, notCanceled, "fulfillments")
-      throwErrorIf(order.payments, notCanceled, "payments")
       throwErrorIf(order.returns, r => r.status !== "canceled", "returns")
 
       await Promise.all(

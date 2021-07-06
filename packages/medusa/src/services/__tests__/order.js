@@ -457,6 +457,10 @@ describe("OrderService", () => {
               payment_status: "awaiting",
               status: "pending",
             })
+          case IdMap.getId("canceled-order"):
+            return Promise.resolve({
+              status: "canceled",
+            })
           default:
             return Promise.resolve({
               fulfillment_status: "not_fulfilled",
@@ -526,9 +530,17 @@ describe("OrderService", () => {
         "Can't update shipping, billing, items and payment method when order is processed"
       )
     })
+
+    it("throws if order is canceled", async () => {
+      await expect(
+        orderService.update(IdMap.getId("canceled-order"), {})
+      ).rejects.toThrow("A canceled order cannot be updated")
+    })
   })
 
   describe("cancel", () => {
+    const now = new Date()
+
     const orderRepo = MockRepository({
       findOneWithRelations: (rel, q) => {
         switch (q.where.id) {
@@ -543,7 +555,7 @@ describe("OrderService", () => {
               fulfillment_status: "not_fulfilled",
               payment_status: "awaiting",
               status: "pending",
-              fulfillments: [{ id: "fulfillment_test" }],
+              fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
               payments: [{ id: "payment_test" }],
             })
         }
@@ -588,6 +600,7 @@ describe("OrderService", () => {
       expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
       expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
         id: "fulfillment_test",
+        canceled_at: now,
       })
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
@@ -595,15 +608,9 @@ describe("OrderService", () => {
         fulfillment_status: "canceled",
         payment_status: "canceled",
         status: "canceled",
-        fulfillments: [{ id: "fulfillment_test" }],
+        fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
         payments: [{ id: "payment_test" }],
       })
-    })
-
-    it("throws if order payment is captured", async () => {
-      await expect(
-        orderService.cancel(IdMap.getId("paid-order"))
-      ).rejects.toThrow("Can't cancel an order with a processed payment")
     })
   })
 
@@ -616,7 +623,8 @@ describe("OrderService", () => {
               payment_status: "awaiting",
               payments: [{ id: "payment_fail", captured_at: null }],
             })
-
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ status: "canceled" })
           default:
             return Promise.resolve({
               fulfillment_status: "not_fulfilled",
@@ -688,6 +696,12 @@ describe("OrderService", () => {
         payments: [{ id: "payment_fail", captured_at: null }],
       })
     })
+
+    it("fails if order is canceled", async () => {
+      await expect(
+        orderService.capturePayment(IdMap.getId("canceled"))
+      ).rejects.toThrow("A canceled order cannot capture payment")
+    })
   })
 
   describe("createFulfillment", () => {
@@ -725,6 +739,8 @@ describe("OrderService", () => {
         switch (q.where.id) {
           case "partial":
             return Promise.resolve(partialOrder)
+          case "canceled":
+            return Promise.resolve({ status: "canceled", ...order })
           default:
             return Promise.resolve(order)
         }
@@ -859,6 +875,17 @@ describe("OrderService", () => {
         fulfillment_status: "partially_fulfilled",
       })
     })
+
+    it("fails if order is canceled", async () => {
+      await expect(
+        orderService.createFulfillment("canceled", [
+          {
+            item_id: "item_1",
+            quantity: 1,
+          },
+        ])
+      ).rejects.toThrow("A canceled order cannot be fulfilled")
+    })
   })
 
   describe("registerReturnReceived", () => {
@@ -879,6 +906,8 @@ describe("OrderService", () => {
     const orderRepo = MockRepository({
       findOneWithRelations: (rel, q) => {
         switch (q.where.id) {
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ status: "canceled", ...order })
           default:
             return Promise.resolve(order)
         }
@@ -949,6 +978,87 @@ describe("OrderService", () => {
         "return"
       )
     })
+
+    it("fails when order is canceled", async () => {
+      await expect(
+        orderService.registerReturnReceived(IdMap.getId("canceled"), {})
+      ).rejects.toThrow("A canceled order cannot be registered as received")
+    })
+  })
+
+  describe("completeOrder", () => {
+    const orderRepo = MockRepository({
+      findOneWithRelations: (rel, q) => {
+        switch (q.where.id) {
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ status: "canceled" })
+          default:
+            return Promise.resolve({ id: IdMap.getId("order") })
+        }
+      },
+      save: jest.fn().mockImplementation(f => f),
+    })
+
+    const eventBus = {
+      emit: () =>
+        Promise.resolve({
+          finished: () => Promise.resolve({}),
+        }),
+    }
+
+    const orderService = new OrderService({
+      manager: MockManager,
+      orderRepository: orderRepo,
+      eventBusService: eventBus,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates order", async () => {
+      await orderService.completeOrder(IdMap.getId("order"))
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        id: IdMap.getId("order"),
+        status: "completed",
+      })
+    })
+
+    it("fails when order is canceled", async () => {
+      await expect(
+        orderService.completeOrder(IdMap.getId("canceled"))
+      ).rejects.toThrow("A canceled order cannot be completed")
+    })
+  })
+
+  describe("addShippingMethod", () => {
+    const orderRepo = MockRepository({
+      findOneWithRelations: (rel, q) => {
+        switch (q.where.id) {
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ status: "canceled" })
+          default:
+            return Promise.resolve({ id: IdMap.getId("order") })
+        }
+      },
+      save: jest.fn().mockImplementation(f => f),
+    })
+
+    const orderService = new OrderService({
+      manager: MockManager,
+      orderRepository: orderRepo,
+      eventBusService: eventBus,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully adds shipping method", async () => {
+      fail("implement")
+    })
   })
 
   describe("createShipment", () => {
@@ -982,6 +1092,8 @@ describe("OrderService", () => {
         switch (q.where.id) {
           case IdMap.getId("partial"):
             return Promise.resolve(partialOrder)
+          case IdMap.getId("canceled"):
+            return Promise.resolve({ status: "canceled" })
           default:
             return Promise.resolve(order)
         }
@@ -1048,6 +1160,19 @@ describe("OrderService", () => {
         fulfillment_status: "shipped",
       })
     })
+
+    it("fails when order is canceled", async () => {
+      await expect(
+        orderService.createShipment(
+          IdMap.getId(
+            "canceled",
+            IdMap.getId("fulfillment"),
+            [{ tracking_number: "1234" }],
+            {}
+          )
+        )
+      ).rejects.toThrow("A canceled order cannot be fulfilled as shipped")
+    })
   })
 
   describe("createRefund", () => {
@@ -1057,31 +1182,36 @@ describe("OrderService", () => {
 
     const orderRepo = MockRepository({
       findOneWithRelations: (rel, q) => {
-        if (q.where.id === IdMap.getId("cannot")) {
-          return Promise.resolve({
-            id: IdMap.getId("order"),
-            payments: [
-              {
-                id: "payment",
-              },
-            ],
-            total: 100,
-            refunded_total: 100,
-          })
+        switch (q.where.id) {
+          case IdMap.getId("cannot"):
+            return Promise.resolve({
+              id: IdMap.getId("order"),
+              payments: [
+                {
+                  id: "payment",
+                },
+              ],
+              total: 100,
+              refunded_total: 100,
+            })
+          case IdMap.getId("canceled"):
+            return Promise.resolve({
+              status: "canceled",
+            })
+          default:
+            return Promise.resolve({
+              id: IdMap.getId("order_123"),
+              payments: [
+                {
+                  id: "payment",
+                },
+              ],
+              total: 100,
+              paid_total: 100,
+              refundable_amount: 100,
+              refunded_total: 0,
+            })
         }
-
-        return Promise.resolve({
-          id: IdMap.getId("order_123"),
-          payments: [
-            {
-              id: "payment",
-            },
-          ],
-          total: 100,
-          paid_total: 100,
-          refundable_amount: 100,
-          refunded_total: 0,
-        })
       },
     })
 
@@ -1128,6 +1258,16 @@ describe("OrderService", () => {
           "note"
         )
       ).rejects.toThrow("Cannot refund more than the original order amount")
+    })
+    it("fails when order is canceled", async () => {
+      await expect(
+        orderService.createRefund(
+          IdMap.getId("canceled"),
+          100,
+          "discount",
+          "note"
+        )
+      ).rejects.toThrow("A canceled order cannot be refunded")
     })
   })
 })
