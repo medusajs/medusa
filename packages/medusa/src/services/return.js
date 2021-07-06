@@ -113,6 +113,39 @@ class ReturnService extends BaseService {
   }
 
   /**
+   * Cancels a return if possible. Returns can be canceled if it has not been received,
+   * or does not have a refund associated with it.
+   * @param {string} returnId - the id of the return to cancel.
+   * @return {Promise<Return>} the updated Return
+   */
+  async cancel(returnId) {
+    return this.atomicPhase_(async manager => {
+      const ret = await this.retrieve(returnId)
+
+      if (ret.status === "received") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't cancel a return which has been returned"
+        )
+      }
+
+      if (ret.refund_amount > 0) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't cancel a return which requires refunding"
+        )
+      }
+
+      const retRepo = manager.getCustomRepository(this.returnRepository_)
+
+      ret.status = "canceled"
+
+      const result = retRepo.save(ret)
+      return result
+    })
+  }
+
+  /**
    * Checks that an order has the statuses necessary to complete a return.
    * fulfillment_status cannot be not_fulfilled or returned.
    * payment_status must be captured.
@@ -231,6 +264,13 @@ class ReturnService extends BaseService {
   async update(returnId, update) {
     return this.atomicPhase_(async manager => {
       const ret = await this.retrieve(returnId)
+
+      if (ret.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot update a canceled return"
+        )
+      }
 
       const { metadata, ...rest } = update
 
@@ -365,6 +405,13 @@ class ReturnService extends BaseService {
         ],
       })
 
+      if (returnOrder.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot fulfill a canceled return"
+        )
+      }
+
       let returnData = { ...returnOrder }
 
       const items = await this.lineItemService_.list({
@@ -423,6 +470,13 @@ class ReturnService extends BaseService {
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
       })
+
+      if (returnObj.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot receive a canceled return"
+        )
+      }
 
       let orderId = returnObj.order_id
       // check if return is requested on a swap

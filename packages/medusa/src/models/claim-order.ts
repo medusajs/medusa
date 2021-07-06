@@ -27,12 +27,6 @@ export enum ClaimType {
   REPLACE = "replace",
 }
 
-export enum ClaimStatus {
-  PENDING = "pending",
-  COMPLETED = "completed",
-  CANCELED = "canceled",
-}
-
 export enum ClaimPaymentStatus {
   NA = "na",
   NOT_REFUNDED = "not_refunded",
@@ -55,9 +49,6 @@ export enum ClaimFulfillmentStatus {
 export class ClaimOrder {
   @PrimaryColumn()
   id: string
-
-  @Column({ type: "enum", enum: ClaimStatus, default: "pending" })
-  status: ClaimStatus
 
   @Column({
     type: "enum",
@@ -223,6 +214,10 @@ export class ClaimOrder {
  *   refund_amount:
  *     description: "The amount that will be refunded in conjunction with the claim"
  *     type: integer
+ *   canceled_at:
+ *     description: "The date with timezone at which the Swap was canceled."
+ *     type: string
+ *     format: date-time
  *   created_at:
  *     type: string
  *     format: date-time

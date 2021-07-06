@@ -25,12 +25,6 @@ import { Cart } from "./cart"
 import { Payment } from "./payment"
 import { ShippingMethod } from "./shipping-method"
 
-export enum SwapStatus {
-  PENDING = "pending",
-  COMPLETED = "completed",
-  CANCELED = "canceled",
-}
-
 export enum FulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   FULFILLED = "fulfilled",
@@ -54,9 +48,6 @@ export enum PaymentStatus {
 export class Swap {
   @PrimaryColumn()
   id: string
-
-  @Column({ type: "enum", enum: SwapStatus, default: "pending" })
-  status: SwapStatus
 
   @Column({ type: "enum", enum: FulfillmentStatus })
   fulfillment_status: FulfillmentStatus
@@ -138,6 +129,9 @@ export class Swap {
 
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
+
+  @Column({ type: "timestamptz", nullable: true })
+  canceled_at: Date
 
   @Column({ type: "jsonb", nullable: true })
   metadata: any
@@ -231,6 +225,10 @@ export class Swap {
  *     format: date-time
  *   updated_at:
  *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ *   canceled_at:
+ *     description: "The date with timezone at which the Swap was canceled."
  *     type: string
  *     format: date-time
  *   metadata:

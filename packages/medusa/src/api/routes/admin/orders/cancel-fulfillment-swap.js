@@ -18,8 +18,6 @@ import { MedusaError } from "medusa-core-utils"
  *       application/json:
  *         schema:
  *           properties:
- *             order:
- *               $ref: "#/components/schemas/swap"
  *             fulfillment:
  *               $ref: "#/components/schemas/fulfillment"
  */
