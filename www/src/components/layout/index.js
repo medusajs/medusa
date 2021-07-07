@@ -1,7 +1,7 @@
 import React from "react"
 import { Flex, Box } from "rebass"
 
-import Header from "../components/header"
+import Header from "../header"
 
 const Layout = ({ children }) => {
   return (

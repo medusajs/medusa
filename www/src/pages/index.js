@@ -8,9 +8,15 @@ import Intro from "../components/intro-section"
 import TabsPanel from "../components/tabs/tabs-panel"
 
 const CARDS_DATA = [
-  { type: "guide", title: "guide mock item" },
-  { type: "tutorial", title: "tutorial mock item" },
-  { type: "reference", title: "reference mock item" },
+  { type: "guide", title: "guide mock item", key: "guides" },
+  { type: "tutorial", title: "tutorial mock item", key: "tutorials" },
+  { type: "guide", title: "second guide mock item", key: "guides" },
+  { type: "reference", title: "reference mock item", key: "reference" },
+  {
+    type: "contributing",
+    title: "contributing mock item",
+    key: "contributing",
+  },
 ]
 
 export default function Home() {

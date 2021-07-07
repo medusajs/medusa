@@ -1,9 +1,10 @@
 import React from "react"
 import { Card, Flex, Text } from "rebass"
 
-const TabItem = ({ title }) => {
+const TabItem = ({ title, isOverviewCard, items }) => {
+  const overviewModeList = () => items.map(item => <Text>{item.title}</Text>)
   return (
-    <Flex>
+    <Flex sx={{ marginRight: "10px" }}>
       <Card
         mx="auto"
         sx={{
@@ -14,7 +15,16 @@ const TabItem = ({ title }) => {
           padding: "20px 13px",
         }}
       >
-        <Text>{title}</Text>
+        <Flex
+          height="100%"
+          justifyContent="space-between"
+          flexDirection="column"
+        >
+          <Text>{title}</Text>
+          <Flex flexDirection="column">
+            {isOverviewCard && overviewModeList()}
+          </Flex>
+        </Flex>
       </Card>
     </Flex>
   )

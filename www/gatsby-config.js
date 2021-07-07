@@ -5,6 +5,12 @@
  */
 
 module.exports = {
+  siteMetadata: {
+    title: "Medusa",
+    description: "Open-source headless commerce engine",
+    author: "Medusa core team",
+    menuItems: [{ path: "/docs", title: "Docs" }],
+  },
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
