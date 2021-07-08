@@ -42,7 +42,7 @@ module.exports = async (connection, data = {}) => {
         amount: 10000,
         currency_code: "usd",
         amount_refunded: 0,
-        provider_id: "test",
+        provider_id: "test-pay",
         data: {},
       },
     ],
@@ -90,7 +90,7 @@ module.exports = async (connection, data = {}) => {
       amount: 10000,
       currency_code: "usd",
       amount_refunded: 0,
-      provider_id: "test",
+      provider_id: "test-pay",
       data: {},
     },
     additional_items: [
@@ -108,6 +108,40 @@ module.exports = async (connection, data = {}) => {
   });
 
   await manager.save(swap);
+
+  const swapWithFulfillmentsAndReturn = manager.create(Swap, {
+    id: "swap-w-f-and-r",
+    order_id: orderWithSwap.id,
+    fulfillment_status: "fulfilled",
+    payment_status: "not_paid",
+    payment: {
+      id: "test-payment-swap2",
+      amount: 5000,
+      currency_code: "usd",
+      amount_refunded: 0,
+      provider_id: "test-pay",
+      data: {},
+    },
+    return_order: {
+      id: "return",
+      status: "requested",
+      refund_amount: 0,
+    },
+    fulfillments: [
+      {
+        id: "fulfillment-1",
+        data: {},
+        provider_id: "test-ful",
+      },
+      {
+        id: "fulfillment-2",
+        data: {},
+        provider_id: "test-ful",
+      },
+    ],
+  });
+
+  await manager.save(swapWithFulfillmentsAndReturn);
 
   const swapOnSwap = manager.create(Swap, {
     id: "swap-on-swap",
@@ -130,7 +164,7 @@ module.exports = async (connection, data = {}) => {
       amount: 10000,
       currency_code: "usd",
       amount_refunded: 0,
-      provider_id: "test",
+      provider_id: "test-pay",
       data: {},
     },
     additional_items: [

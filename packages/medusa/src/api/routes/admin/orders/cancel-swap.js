@@ -27,8 +27,6 @@ export default async (req, res) => {
     const swapService = req.scope.resolve("swapService")
     const swap = await swapService.retrieve(swap_id)
 
-    throw new Error(swap)
-
     if (swap.order_id !== id) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -37,6 +35,7 @@ export default async (req, res) => {
     }
 
     const result = await swapService.cancel(swap_id)
+    console.error(result)
 
     res.json({ result })
   } catch (error) {

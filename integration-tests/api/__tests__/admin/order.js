@@ -1141,22 +1141,67 @@ describe("/admin/orders", () => {
 
       expect(received.status).toEqual(200);
     });
-  });
 
-  it("only allows canceling swap after canceling payment and fulfillment", async () => {
-    const api = useApi();
-    const error = await api.post(
-      `/admin/order/order-with-swap/swaps/test-swap/cancel`,
-      {},
-      {
+    it("doesn't allow canceling swap without canceled payment and fulfillment", async () => {
+      const api = useApi();
+
+      await expect(
+        api.post(
+          `/admin/orders/order-with-swap/swaps/swap-w-f-and-r/cancel`,
+          {},
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+      ).rejects.toThrow("Request failed with status code 400");
+    });
+
+    it("only allows canceling swap after canceling payment and fulfillment", async () => {
+      const api = useApi();
+      const header = {
         headers: {
           authorization: "Bearer test_token",
         },
-      }
-    );
-  });
+      };
 
-  it("only allows canceling order after canceling swap", async () => {
-    fail("implement");
+      const swap_id = "swap-w-f-and-r";
+
+      const swap = (await api.get(`/admin/swaps/${swap_id}`, header)).data
+        .order;
+
+      const { order_id } = swap;
+
+      for (const f of swap.fulfillments) {
+        const canceledFulfillment = await api.post(
+          `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
+          {},
+          header
+        );
+
+        expect(canceledFulfillment.status).toEqual(200);
+      }
+
+      const canceledReturn = await api.post(
+        `/admin/returns/${swap.return_order.id}/cancel`,
+        {},
+        header
+      );
+
+      expect(canceledReturn.status).toEqual(200);
+
+      const result = await api.post(
+        `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
+        {},
+        header
+      );
+
+      expect(result.status).toEqual(200);
+    });
+
+    it("only allows canceling order after canceling swap", async () => {
+      fail("implement");
+    });
   });
 });

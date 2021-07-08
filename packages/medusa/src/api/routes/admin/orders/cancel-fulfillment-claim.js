@@ -46,7 +46,7 @@ export default async (req, res) => {
       )
     }
 
-    await fulfillmentService.cancel(fulfillment_id)
+    await fulfillmentService.cancelFulfillment(fulfillment_id)
 
     const result = await fulfillmentService.retrieve(fulfillment_id)
 

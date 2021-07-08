@@ -244,6 +244,25 @@ class FulfillmentService extends BaseService {
   }
 
   /**
+   * Cancels the given fulfillment
+   * @param {string} fulfillmentId
+   * @returns {Fulfillment} the canceled fulfillment
+   */
+  async cancel(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const fulfillmentService = manager.getCustomRepository(
+        this.fulfillmentRepository_
+      )
+
+      const fulfillment = await fulfillmentService.retrieve(fulfillmentId)
+      fulfillment.canceled_at = new Date()
+
+      const result = await fulfillmentService.save(fulfillment)
+      return result
+    })
+  }
+
+  /**
    * Creates a shipment by marking a fulfillment as shipped. Adds
    * tracking numbers and potentially more metadata.
    * @param {Order} fulfillmentId - the fulfillment to ship

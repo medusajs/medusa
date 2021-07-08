@@ -1354,6 +1354,7 @@ describe("OrderService", () => {
               paid_total: 100,
               refundable_amount: 100,
               refunded_total: 0,
+              no_notification: true,
             })
         }
       },

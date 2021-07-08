@@ -1,7 +1,7 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
- * @oas [post] /returns/{id}receive
+ * @oas [post] /returns/{id}/cancel
  * operationId: "PostReturnsReturnCancel"
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."
