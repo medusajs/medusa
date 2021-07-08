@@ -9,7 +9,7 @@ const Intro = ({ title, desc }) => {
       <p>{title}</p>
       <Heading>Quickstart</Heading>
       <p>{desc}</p>
-      <Link to="/docs">Get started now</Link>
+      <Link to="/intro">Get started now</Link>
     </Flex>
   )
 }

@@ -1,0 +1,12 @@
+- title: Intro
+  items:
+    - id: getting-started
+      title: Intro
+- title: Lorem
+  items:
+    - id: lorem
+      title: Lorem
+- title: Ipsum
+  items:
+    - id: ipsum
+      title: Ipsum

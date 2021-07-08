@@ -1,6 +1,7 @@
 import React from "react"
 import { Flex } from "rebass"
 import { Helmet } from "react-helmet"
+import { useStaticQuery, graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import Banner from "../components/cta-banner"
@@ -20,6 +21,32 @@ const CARDS_DATA = [
 ]
 
 export default function Home() {
+  const data = useStaticQuery(graphql`
+    query IndexPageData {
+      markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
+        frontmatter {
+          pageTitle
+          introTtitle
+          introSubtitle
+          introDescriptionTitle
+          introDescriptionSubtitle
+        }
+        html
+      }
+    }
+  `)
+  const {
+    markdownRemark: {
+      frontmatter: {
+        pageTitle,
+        introTtitle,
+        introSubtitle,
+        introDescriptionTitle,
+        introDescriptionSubtitle,
+      },
+    },
+  } = data
+
   return (
     <Layout>
       <Helmet>
