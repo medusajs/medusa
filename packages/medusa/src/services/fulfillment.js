@@ -241,10 +241,19 @@ class FulfillmentService extends BaseService {
    * tracking numbers and potentially more metadata.
    * @param {Order} fulfillmentId - the fulfillment to ship
    * @param {TrackingLink[]} trackingNumbers - tracking numbers for the shipment
-   * @param {object} metadata - potential metadata to add
+   * @param {object} config - potential configuration settings, such as no_notification and metadata
    * @return {Fulfillment} the shipped fulfillment
    */
-  async createShipment(fulfillmentId, trackingLinks, metadata) {
+  async createShipment(
+    fulfillmentId,
+    trackingLinks,
+    config = {
+      metadata: {},
+      no_notification: undefined,
+    }
+  ) {
+    const { metadata, no_notification } = config
+
     return this.atomicPhase_(async manager => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
@@ -263,6 +272,10 @@ class FulfillmentService extends BaseService {
       fulfillment.tracking_links = trackingLinks.map(tl =>
         trackingLinkRepo.create(tl)
       )
+
+      if (no_notification) {
+        fulfillment.no_notification = no_notification
+      }
 
       fulfillment.metadata = {
         ...fulfillment.metadata,

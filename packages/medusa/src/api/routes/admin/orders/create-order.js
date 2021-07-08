@@ -27,6 +27,7 @@ export default async (req, res) => {
         items: Validator.array().optional(),
       })
       .required(),
+    no_notification: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
   })
 
