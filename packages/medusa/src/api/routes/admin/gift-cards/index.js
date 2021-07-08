@@ -33,7 +33,10 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = ["region"]
+export const defaultRelations = [
+  "region", 
+  "order",
+]
 
 export const allowedFields = [
   "id",

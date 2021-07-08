@@ -1,7 +1,8 @@
 import _ from "lodash"
 import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { Brackets } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * Provides layer to manipulate gift cards.
@@ -72,6 +73,7 @@ class GiftCardService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
@@ -79,8 +81,41 @@ class GiftCardService extends BaseService {
       this.giftCardRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
-    return giftCardRepo.find(query)
+
+    const rels = query.relations
+    delete query.relations
+
+    if (q) {
+      const where = query.where
+      delete where.id
+
+      const raw = await giftCardRepo
+        .createQueryBuilder("gift_card")
+        .leftJoinAndSelect("gift_card.order", "order")
+        .select(["gift_card.id"])
+        .where(where)
+        .andWhere(
+          new Brackets(qb => {
+            return qb
+              .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+          })
+        )
+        .getMany()
+
+      return giftCardRepo.findWithRelations(
+        rels,
+        raw.map(i => i.id)
+      )
+    }
+    return giftCardRepo.findWithRelations(rels, query)
   }
 
   async createTransaction(data) {
@@ -156,7 +191,10 @@ class GiftCardService extends BaseService {
       query.relations = config.relations
     }
 
-    const giftCard = await giftCardRepo.findOne(query)
+    const rels = query.relations
+    delete query.relations
+
+    const giftCard = await giftCardRepo.findOneWithRelations(rels, query)
 
     if (!giftCard) {
       throw new MedusaError(
@@ -185,7 +223,10 @@ class GiftCardService extends BaseService {
       query.relations = config.relations
     }
 
-    const giftCard = await giftCardRepo.findOne(query)
+    const rels = query.relations
+    delete query.relations
+
+    const giftCard = await giftCardRepo.findOneWithRelations(rels, query)
 
     if (!giftCard) {
       throw new MedusaError(
@@ -209,7 +250,7 @@ class GiftCardService extends BaseService {
 
       const giftCard = await this.retrieve(giftCardId)
 
-      const { region_id, metadata, ...rest } = update
+      const { region_id, metadata, balance, ...rest } = update
 
       if (region_id && region_id !== giftCard.region_id) {
         const region = await this.regionService_.retrieve(region_id)
@@ -218,6 +259,16 @@ class GiftCardService extends BaseService {
 
       if (metadata) {
         giftCard.metadata = await this.setMetadata_(giftCard.id, metadata)
+      }
+
+      if (balance) {
+        if (balance < 0 || giftCard.value < balance) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            "new balance is invalid"
+          )
+        }
+        giftCard.balance = balance
       }
 
       for (const [key, value] of Object.entries(rest)) {
