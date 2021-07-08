@@ -9,6 +9,7 @@ const { initDb } = require("../../../helpers/use-db");
 const orderSeeder = require("../../helpers/order-seeder");
 const swapSeeder = require("../../helpers/swap-seeder");
 const adminSeeder = require("../../helpers/admin-seeder");
+const { fail } = require("assert");
 
 jest.setTimeout(30000);
 
@@ -1140,5 +1141,23 @@ describe("/admin/orders", () => {
 
       expect(received.status).toEqual(200);
     });
+  });
+
+  it("only allows canceling swap after canceling payment and fulfillment", async () => {
+    const api = useApi();
+    const error = await api.post(
+      `/admin/order/order-with-swap/swaps/test-swap/cancel`,
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    );
+
+    expect(error.status).toEqual(200);
+  });
+
+  it("only allows canceling order after canceling swap", async () => {
+    fail("implement");
   });
 });
