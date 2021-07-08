@@ -522,8 +522,8 @@ class ClaimService extends BaseService {
       }
 
       if (claim.fulfillments) {
-        for (const i in claim.fulfillments) {
-          if (!claim.fulfillments[i].canceled_at) {
+        for (const f of claim.fulfillments) {
+          if (!f.canceled_at) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
               "All fulfillments must be canceled before the claim can be canceled"

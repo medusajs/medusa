@@ -1040,16 +1040,38 @@ describe("OrderService", () => {
           case IdMap.getId("canceled"):
             return Promise.resolve({ status: "canceled" })
           default:
-            return Promise.resolve({ id: IdMap.getId("order") })
+            return Promise.resolve({
+              id: IdMap.getId("order"),
+              shipping_methods: [
+                { shipping_option: { profile_id: IdMap.getId("method1") } },
+              ],
+            })
         }
       },
       save: jest.fn().mockImplementation(f => f),
     })
 
+    const optionService = {
+      createShippingMethod: jest
+        .fn()
+        .mockImplementation((optionId, data, config) =>
+          Promise.resolve({ shipping_option: { profile_id: optionId } })
+        ),
+      deleteShippingMethod: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve({})),
+
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
-      eventBusService: eventBus,
+      eventBusService: eventBusService,
+      shippingOptionService: optionService,
+      totalsService,
     })
 
     beforeEach(async () => {
@@ -1057,7 +1079,77 @@ describe("OrderService", () => {
     })
 
     it("successfully adds shipping method", async () => {
-      fail("implement")
+      await orderService.addShippingMethod(
+        IdMap.getId("order"),
+        IdMap.getId("option"),
+        { some: "data" },
+        {}
+      )
+
+      expect(optionService.createShippingMethod).toHaveBeenCalledTimes(1)
+      expect(optionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("option"),
+        { some: "data" },
+        {
+          order: {
+            id: IdMap.getId("order"),
+            shipping_methods: [
+              {
+                shipping_option: {
+                  profile_id: IdMap.getId("method1"),
+                },
+              },
+            ],
+            subtotal: 0,
+          },
+        }
+      )
+
+      expect(optionService.deleteShippingMethod).not.toHaveBeenCalled()
+    })
+
+    it("successfully removes shipping method if same option profile", async () => {
+      await orderService.addShippingMethod(
+        IdMap.getId("order"),
+        IdMap.getId("method1"),
+        { some: "data" }
+      )
+
+      expect(optionService.createShippingMethod).toHaveBeenCalledTimes(1)
+      expect(optionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("method1"),
+        { some: "data" },
+        {
+          order: {
+            id: IdMap.getId("order"),
+            shipping_methods: [
+              {
+                shipping_option: {
+                  profile_id: IdMap.getId("method1"),
+                },
+              },
+            ],
+            subtotal: 0,
+          },
+        }
+      )
+
+      expect(optionService.deleteShippingMethod).toHaveBeenCalledTimes(1)
+      expect(optionService.deleteShippingMethod).toHaveBeenCalledWith({
+        shipping_option: {
+          profile_id: IdMap.getId("method1"),
+        },
+      })
+    })
+
+    it("fails if order is canceled", async () => {
+      await expect(
+        orderService.addShippingMethod(
+          IdMap.getId("canceled"),
+          IdMap.getId("option"),
+          { some: "data" }
+        )
+      ).rejects.toThrow("A shipping method cannot be added to a canceled order")
     })
   })
 
