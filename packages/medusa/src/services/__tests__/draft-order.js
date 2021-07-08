@@ -88,7 +88,6 @@ describe("DraftOrderService", () => {
           ...data,
         })
       ),
-      update: jest.fn(),
       addShippingMethod: jest.fn(),
       withTransaction: function() {
         return this
