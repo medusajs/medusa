@@ -1,10 +1,12 @@
 const axios = require("axios").default
+const inquirer = require("inquirer")
 const open = require("open")
 const resolveCwd = require(`resolve-cwd`)
 const { getToken } = require("../util/token-store")
 
 module.exports = {
   link: async argv => {
+    const port = process.env.PORT || 9000
     const appHost =
       process.env.MEDUSA_APP_HOST || "https://app.medusa-commerce.com"
 
@@ -34,7 +36,7 @@ module.exports = {
       process.exit(1)
     }
 
-    // Get the currenty logged in user; we will be using the Cloud user id to
+    // Get the currently logged in user; we will be using the Cloud user id to
     // create a user in the local DB with the same user id; allowing you to
     // authenticate to the local API.
     const { data: auth } = await axios
@@ -55,22 +57,37 @@ module.exports = {
         directory: argv.directory,
         id: auth.user.id,
         email: auth.user.email,
+        keepAlive: true,
       })
     }
 
-    // This step sets the Cloud link by opening a browser
-    const bo = await open(
-      `${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`,
+    const qs = [
       {
+        type: "input",
+        name: "open",
+        message: "Press enter key to open browser for linking or n to exit",
+      },
+    ]
+
+    await inquirer.prompt(qs).then(async a => {
+      if (a.open === "n") {
+        process.exit(0)
+      }
+
+      const params = `lurl=http://localhost:${port}&ltoken=${auth.user.id}`
+
+      // This step sets the Cloud link by opening a browser
+      const bo = await open(`${appHost}/local-link?${encodeURI(params)}`, {
         app: "browser",
         wait: false,
-      }
-    )
-    bo.on("error", err => {
-      console.warn(err)
-      console.log(
-        `Could not open browser go to: ${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`
-      )
+      })
+
+      bo.on("error", err => {
+        console.warn(err)
+        console.log(
+          `Could not open browser go to: ${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`
+        )
+      })
     })
   },
 }

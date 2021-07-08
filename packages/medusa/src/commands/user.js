@@ -5,7 +5,7 @@ import express from "express"
 
 import loaders from "../loaders"
 
-export default async function({ directory, id, email, password }) {
+export default async function({ directory, id, email, password, keepAlive }) {
   const app = express()
   const { container } = await loaders({
     directory,
@@ -15,5 +15,7 @@ export default async function({ directory, id, email, password }) {
   const userService = container.resolve("userService")
   await userService.create({ id, email }, password)
 
-  process.exit()
+  if (!keepAlive) {
+    process.exit()
+  }
 }
