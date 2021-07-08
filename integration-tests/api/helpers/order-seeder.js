@@ -183,4 +183,92 @@ module.exports = async (connection, data = {}) => {
     price: 1000,
     data: {},
   });
+
+  const orderWithClaimAndSwapAndFulfillmentAndReturn = manager.create(Order, {
+    id: "test-order-w-c-and-s",
+    customer_id: "test-customer",
+    email: "test@email.com",
+    payment_status: "not_paid",
+    fulfillment_status: "not_fulfilled",
+    billing_address: {
+      id: "test-billing-address",
+      first_name: "lebron",
+    },
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    tax_rate: 0,
+    discounts: [],
+    payments: [
+      {
+        id: "test-payment",
+        amount: 10000,
+        currency_code: "usd",
+        amount_refunded: 0,
+        provider_id: "test-pay",
+        data: {},
+      },
+    ],
+    items: [],
+    claims: [
+      {
+        type: "replace",
+        id: "claim-1",
+        payment_status: "na",
+        fulfillment_status: "not_fulfilled",
+      },
+      {
+        type: "replace",
+        id: "claim-2",
+        payment_status: "na",
+        fulfillment_status: "not_fulfilled",
+      },
+    ],
+    swaps: [
+      {
+        id: "swap-1",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "not_paid",
+      },
+      {
+        id: "swap-2",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "not_paid",
+      },
+    ],
+    fulfillments: [
+      {
+        id: "fulfillment-1",
+        data: {},
+        provider_id: "test-ful",
+      },
+      {
+        id: "fulfillment-2",
+        data: {},
+        provider_id: "test-ful",
+      },
+    ],
+    returns: [
+      {
+        id: "return-1",
+        status: "requested",
+        refund_amount: 0,
+        items: [],
+      },
+      {
+        id: "return-2",
+        status: "requested",
+        refund_amount: 0,
+        items: [],
+      },
+    ],
+
+    ...data,
+  });
+
+  await manager.save(orderWithClaimAndSwapAndFulfillmentAndReturn);
 };

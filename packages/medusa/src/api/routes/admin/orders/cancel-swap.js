@@ -35,7 +35,6 @@ export default async (req, res) => {
     }
 
     const result = await swapService.cancel(swap_id)
-    console.error(result)
 
     res.json({ result })
   } catch (error) {

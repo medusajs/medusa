@@ -150,7 +150,7 @@ module.exports = async (connection, data = {}) => {
     fulfillment_status: "fulfilled",
     return_order: {
       id: "return-on-swap",
-      refund_amount: 9000,
+      refund_amount: 0,
       items: [
         {
           return_id: "return-on-swap",

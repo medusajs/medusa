@@ -717,8 +717,6 @@ class SwapService extends BaseService {
         )
       }
 
-      console.error(">>>")
-
       swap.canceled_at = new Date()
 
       await this.paymentProviderService_

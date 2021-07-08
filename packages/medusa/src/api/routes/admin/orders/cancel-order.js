@@ -22,7 +22,7 @@ export default async (req, res) => {
 
   try {
     const orderService = req.scope.resolve("orderService")
-    await orderService.cancelFulfillment(id)
+    await orderService.cancel(id)
 
     const order = await orderService.retrieve(id, {
       relations: ["region", "customer", "swaps"],

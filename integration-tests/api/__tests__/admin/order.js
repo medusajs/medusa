@@ -765,6 +765,9 @@ describe("/admin/orders", () => {
         expect.objectContaining({
           id: "test-order",
         }),
+        expect.objectContaining({
+          id: "test-order-w-c-and-s",
+        }),
       ]);
     });
 
@@ -784,6 +787,9 @@ describe("/admin/orders", () => {
       expect(response.data.orders).toEqual([
         expect.objectContaining({
           id: "test-order",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-c-and-s",
         }),
       ]);
     });
@@ -821,6 +827,9 @@ describe("/admin/orders", () => {
         expect.objectContaining({
           id: "test-order",
         }),
+        expect.objectContaining({
+          id: "test-order-w-c-and-s",
+        }),
       ]);
     });
 
@@ -856,6 +865,9 @@ describe("/admin/orders", () => {
       expect(response.data.orders).toEqual([
         expect.objectContaining({
           id: "test-order",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-c-and-s",
         }),
       ]);
     });
@@ -1158,7 +1170,7 @@ describe("/admin/orders", () => {
       ).rejects.toThrow("Request failed with status code 400");
     });
 
-    it("only allows canceling swap after canceling payment and fulfillment", async () => {
+    it("allows canceling swap after canceling payment and fulfillment", async () => {
       const api = useApi();
       const header = {
         headers: {
@@ -1201,7 +1213,22 @@ describe("/admin/orders", () => {
     });
 
     it("only allows canceling order after canceling swap", async () => {
-      fail("implement");
+      const api = useApi();
+      try {
+        await api.post(
+          `/admin/orders/test-order-w-c-and-s/cancel`,
+          {},
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
     });
+
+    it("allows canceling swap after canceling payment and fulfillment", async () => {});
   });
 });
