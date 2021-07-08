@@ -108,7 +108,6 @@ class ClaimService extends BaseService {
         )
       }
 
-      const { claim_items, shipping_methods, metadata } = data
       const { claim_items, shipping_methods, metadata, no_notification } = data
 
       if (metadata) {

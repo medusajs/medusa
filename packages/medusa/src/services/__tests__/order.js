@@ -877,7 +877,6 @@ describe("OrderService", () => {
       })
     })
 
-<<<<<<< HEAD
     it("fails if order is canceled", async () => {
       await expect(
         orderService.createFulfillment("canceled", [
@@ -888,7 +887,6 @@ describe("OrderService", () => {
         ])
       ).rejects.toThrow("A canceled order cannot be fulfilled")
     })
-=======
     it.each([
       [true, true],
       [false, false],
@@ -913,7 +911,6 @@ describe("OrderService", () => {
         })
       }
     )
->>>>>>> develop
   })
 
   describe("registerReturnReceived", () => {
@@ -1288,7 +1285,6 @@ describe("OrderService", () => {
       })
     })
 
-<<<<<<< HEAD
     it("fails when order is canceled", async () => {
       await expect(
         orderService.createShipment(
@@ -1301,7 +1297,6 @@ describe("OrderService", () => {
         )
       ).rejects.toThrow("A canceled order cannot be fulfilled as shipped")
     })
-=======
     it.each([
       [true, true],
       [false, false],
@@ -1322,7 +1317,6 @@ describe("OrderService", () => {
         })
       }
     )
->>>>>>> develop
   })
 
   describe("createRefund", () => {
@@ -1362,23 +1356,6 @@ describe("OrderService", () => {
               refunded_total: 0,
             })
         }
-<<<<<<< HEAD
-=======
-
-        return Promise.resolve({
-          id: IdMap.getId("order_123"),
-          payments: [
-            {
-              id: "payment",
-            },
-          ],
-          total: 100,
-          paid_total: 100,
-          refundable_amount: 100,
-          refunded_total: 0,
-          no_notification: true,
-        })
->>>>>>> develop
       },
     })
 
@@ -1426,7 +1403,6 @@ describe("OrderService", () => {
         )
       ).rejects.toThrow("Cannot refund more than the original order amount")
     })
-<<<<<<< HEAD
     it("fails when order is canceled", async () => {
       await expect(
         orderService.createRefund(
@@ -1437,7 +1413,6 @@ describe("OrderService", () => {
         )
       ).rejects.toThrow("A canceled order cannot be refunded")
     })
-=======
 
     it.each([
       [false, false],
@@ -1460,6 +1435,5 @@ describe("OrderService", () => {
         })
       }
     )
->>>>>>> develop
   })
 })
