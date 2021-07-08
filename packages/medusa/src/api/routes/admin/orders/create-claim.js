@@ -91,6 +91,9 @@ import { defaultRelations, defaultFields } from "./"
  *           refund_amount:
  *             description: The amount to refund the Customer when the Claim type is `refund`.
  *             type: integer
+ *           no_notification:
+ *             description: If set to true no notification will be send related to this Claim.
+ *             type: boolean
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -108,7 +111,6 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { id } = req.params
-
   const schema = Validator.object().keys({
     type: Validator.string()
       .valid("replace", "refund")
@@ -155,6 +157,7 @@ export default async (req, res) => {
       .integer()
       .optional(),
     shipping_address: Validator.object().optional(),
+    no_notification: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
   })
 
@@ -162,7 +165,6 @@ export default async (req, res) => {
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
-
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -212,6 +214,7 @@ export default async (req, res) => {
                 return_shipping: value.return_shipping,
                 additional_items: value.additional_items,
                 shipping_methods: value.shipping_methods,
+                no_notification: value.no_notification,
                 metadata: value.metadata,
               })
 
