@@ -23,6 +23,7 @@ export default async (req, res) => {
       data: Validator.object(),
       items: Validator.array(),
     }),
+    no_notification: Validator.boolean(),
   })
 
   const { value, error } = schema.validate(req.body)

@@ -62,6 +62,9 @@ export class Fulfillment {
   @JoinColumn({ name: "order_id" })
   order: Order
 
+  @Column({ type: "boolean", nullable: true})
+  no_notification: Boolean
+
   @Index()
   @Column()
   provider_id: string
@@ -157,6 +160,9 @@ export class Fulfillment {
  *     description: "The date with timezone at which the Fulfillment was shipped."
  *     type: string
  *     format: date-time
+ *   no_notification:
+ *     description: "Flag for describing whether or not notifications related to this should be send."
+ *     type: boolean
  *   canceled_at:
  *     description: "The date with timezone at which the Fulfillment was canceled."
  *     type: string
