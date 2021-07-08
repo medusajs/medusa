@@ -725,6 +725,7 @@ describe("OrderService", () => {
     const order = {
       fulfillments: [],
       shipping_methods: [{ id: "ship" }],
+      no_notification: true,
       items: [
         {
           id: "item_1",
@@ -876,6 +877,7 @@ describe("OrderService", () => {
       })
     })
 
+<<<<<<< HEAD
     it("fails if order is canceled", async () => {
       await expect(
         orderService.createFulfillment("canceled", [
@@ -886,6 +888,32 @@ describe("OrderService", () => {
         ])
       ).rejects.toThrow("A canceled order cannot be fulfilled")
     })
+=======
+    it.each([
+      [true, true],
+      [false, false],
+      [undefined, true],
+    ])(
+      "emits correct no_notification option with '%s'",
+      async (input, expected) => {
+        await orderService.createFulfillment(
+          "test-order",
+          [
+            {
+              item_id: "item_1",
+              quantity: 1,
+            },
+          ],
+          { no_notification: input }
+        )
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
+>>>>>>> develop
   })
 
   describe("registerReturnReceived", () => {
@@ -1177,6 +1205,7 @@ describe("OrderService", () => {
           fulfilled_quantity: 0,
         },
       ],
+      no_notification: true,
     }
 
     const orderRepo = MockRepository({
@@ -1200,7 +1229,11 @@ describe("OrderService", () => {
     }
 
     const fulfillmentService = {
-      retrieve: () => Promise.resolve({ order_id: IdMap.getId("test") }),
+      retrieve: () =>
+        Promise.resolve({
+          order_id: IdMap.getId("test"),
+          no_notification: true,
+        }),
       createShipment: jest
         .fn()
         .mockImplementation((shipmentId, tracking, meta) => {
@@ -1240,10 +1273,12 @@ describe("OrderService", () => {
       )
 
       expect(fulfillmentService.createShipment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
+      expect(
+        fulfillmentService.createShipment
+      ).toHaveBeenCalledWith(
         IdMap.getId("fulfillment"),
         [{ tracking_number: "1234" }, { tracking_number: "2345" }],
-        {}
+        { metadata: undefined, no_notification: true }
       )
 
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
@@ -1253,6 +1288,7 @@ describe("OrderService", () => {
       })
     })
 
+<<<<<<< HEAD
     it("fails when order is canceled", async () => {
       await expect(
         orderService.createShipment(
@@ -1265,6 +1301,28 @@ describe("OrderService", () => {
         )
       ).rejects.toThrow("A canceled order cannot be fulfilled as shipped")
     })
+=======
+    it.each([
+      [true, true],
+      [false, false],
+      [undefined, true],
+    ])(
+      "emits correct no_notification option with '%s'",
+      async (input, expected) => {
+        await orderService.createShipment(
+          IdMap.getId("test"),
+          IdMap.getId("fulfillment"),
+          [{ tracking_number: "1234" }, { tracking_number: "2345" }],
+          { no_notification: input }
+        )
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
+>>>>>>> develop
   })
 
   describe("createRefund", () => {
@@ -1304,6 +1362,23 @@ describe("OrderService", () => {
               refunded_total: 0,
             })
         }
+<<<<<<< HEAD
+=======
+
+        return Promise.resolve({
+          id: IdMap.getId("order_123"),
+          payments: [
+            {
+              id: "payment",
+            },
+          ],
+          total: 100,
+          paid_total: 100,
+          refundable_amount: 100,
+          refunded_total: 0,
+          no_notification: true,
+        })
+>>>>>>> develop
       },
     })
 
@@ -1351,6 +1426,7 @@ describe("OrderService", () => {
         )
       ).rejects.toThrow("Cannot refund more than the original order amount")
     })
+<<<<<<< HEAD
     it("fails when order is canceled", async () => {
       await expect(
         orderService.createRefund(
@@ -1361,5 +1437,29 @@ describe("OrderService", () => {
         )
       ).rejects.toThrow("A canceled order cannot be refunded")
     })
+=======
+
+    it.each([
+      [false, false],
+      [undefined, true],
+    ])(
+      "emits correct no_notification option with '%s'",
+      async (input, expected) => {
+        await orderService.createRefund(
+          IdMap.getId("order_123"),
+          100,
+          "discount",
+          "note",
+          { no_notification: input }
+        )
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+          refund_id: expect.any(String),
+        })
+      }
+    )
+>>>>>>> develop
   })
 })

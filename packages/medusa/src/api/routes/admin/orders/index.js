@@ -277,6 +277,7 @@ export const defaultFields = [
   "total",
   "paid_total",
   "refundable_amount",
+  "no_notification",
 ]
 
 export const allowedFields = [
@@ -305,6 +306,7 @@ export const allowedFields = [
   "total",
   "paid_total",
   "refundable_amount",
+  "no_notification",
 ]
 
 export const allowedRelations = [
