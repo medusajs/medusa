@@ -453,7 +453,7 @@ class OrderService extends BaseService {
       const exists = await this.existsByCartId(cart.id)
       if (exists) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
+          MedusaError.Types.DUPLICATE_ERROR,
           "Order from cart already exists"
         )
       }

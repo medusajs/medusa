@@ -178,7 +178,7 @@ class SwapService extends BaseService {
       // The item must exist in the order
       if (!item) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.NOT_FOUND,
           "Item does not exist on order"
         )
       }
@@ -399,7 +399,7 @@ class SwapService extends BaseService {
 
       if (swap.cart_id) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
+          MedusaError.Types.DUPLICATE_ERROR,
           "A cart has already been created for the swap"
         )
       }

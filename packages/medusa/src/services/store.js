@@ -126,7 +126,7 @@ class StoreService extends BaseService {
 
         if (!curr) {
           throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
+            MedusaError.Types.NOT_FOUND,
             `Currency ${default_currency_code} not found`
           )
         }
@@ -182,14 +182,14 @@ class StoreService extends BaseService {
 
       if (!curr) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.NOT_FOUND,
           `Currency ${code} not found`
         )
       }
 
       if (store.currencies.map(c => c.code).includes(curr.code.toLowerCase())) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.DUPLICATE_ERROR,
           `Currency already added`
         )
       }
