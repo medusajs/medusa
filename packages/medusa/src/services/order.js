@@ -1011,6 +1011,10 @@ class OrderService extends BaseService {
     const { metadata, no_notification } = config
 
     return this.atomicPhase_(async manager => {
+      // NOTE: we are telling the service to calculate all totals for us which
+      // will add to what is fetched from the database. We want this to happen
+      // so that we get all order details. These will thereafter be forwarded
+      // to the fulfillment provider.
       const order = await this.retrieve(orderId, {
         select: [
           "subtotal",
@@ -1018,8 +1022,6 @@ class OrderService extends BaseService {
           "discount_total",
           "tax_total",
           "gift_card_total",
-          "no_notification",
-          "id",
           "total",
         ],
         relations: [
