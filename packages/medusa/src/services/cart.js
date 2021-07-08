@@ -306,6 +306,16 @@ class CartService extends BaseService {
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
+      if (data.customer_id) {
+        const customer = await this.customerService_
+          .withTransaction(this.transactionManager_)
+          .retrieve(customerId)
+
+        data.customer = customer
+        data.customer_id = customer.id
+        data.email = customer.email
+      }
+
       if (data.shipping_address_id) {
         const addr = await addressRepo.findOne(data.shipping_address_id)
         data.shipping_address = addr

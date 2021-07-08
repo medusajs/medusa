@@ -158,17 +158,6 @@ describe("DraftOrderService", () => {
         type: "draft_order",
       })
 
-      expect(cartService.update).toHaveBeenCalledTimes(1)
-      expect(cartService.update).toHaveBeenCalledWith(
-        "test-cart", 
-        {
-          region_id: "test-region",
-          shipping_address_id: "test-shipping",
-          billing_address_id: "test-billing",
-          customer_id: "test-customer",
-        }
-      )
-
       expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)
       expect(cartService.addShippingMethod).toHaveBeenCalledWith(
         "test-cart",
