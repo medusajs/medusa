@@ -141,7 +141,7 @@ class SegmentService extends BaseService {
             { relations: ["collection", "type"] }
           )
 
-          return {
+          const toReturn = {
             name,
             variant,
             price: this.rounded_(
@@ -155,6 +155,19 @@ class SegmentService extends BaseService {
             sku,
             quantity: item.quantity,
           }
+
+          // If we are building a refund order include details about
+          // the reason for return
+          if (item.reason) {
+            toReturn.reason_id = item.reason.id
+            toReturn.reason_value = item.reason.value
+          }
+
+          if (item.note) {
+            toReturn.note = item.note
+          }
+
+          return toReturn
         })
       ),
     }

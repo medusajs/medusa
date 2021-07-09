@@ -134,6 +134,68 @@ describe("SegmentService", () => {
       })
     })
 
+    it("successfully adds return reason and note on buildOrder", async () => {
+      jest.clearAllMocks()
+
+      const order = orderFactory()
+      order.items = order.items.map((i) => {
+        i.note = "testing 1234"
+        i.reason = {
+          value: "test_reason",
+          id: "rr_test",
+        }
+        return i
+      })
+      const segmentOrder = await segmentService.buildOrder(order)
+
+      expect(segmentOrder).toEqual({
+        checkout_id: "cart_13",
+        coupon: undefined,
+        currency: "DKK",
+        discount: 0,
+        email: "test@example.com",
+        order_id: "12355",
+        payment_provider: "",
+        products: [
+          {
+            category: "Collection",
+            name: "Test",
+            price: 4.47,
+            product_id: "prod_123",
+            quantity: 2,
+            reporting_revenue: 8.94,
+            sku: "",
+            subtitle: "Subtitle",
+            type: "Type",
+            variant: "TEST",
+            reason_id: "rr_test",
+            reason_value: "test_reason",
+            note: "testing 1234",
+          },
+        ],
+        region_id: "reg_123",
+        reporting_discount: 0,
+        reporting_revenue: 123.99,
+        reporting_shipping: 123.99,
+        reporting_subtotal: 22,
+        reporting_tax: 0,
+        reporting_total: 123.99,
+        revenue: 123.99,
+        shipping: 123.99,
+        shipping_city: undefined,
+        shipping_country: "DK",
+        shipping_methods: [
+          {
+            name: "standard",
+            price: 12399,
+          },
+        ],
+        subtotal: 22,
+        tax: 0,
+        total: 123.99,
+      })
+    })
+
     it("successfully builds order with zero decimal currency", async () => {
       jest.clearAllMocks()
 
