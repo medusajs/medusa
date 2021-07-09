@@ -22,7 +22,8 @@ export default async (req, res) => {
   }
 
   try {
-    const authId = req.body.resource.id
+    const body = req.body
+    const authId = body.resource.id
     const auth = await paypalService.retrieveAuthorization(authId)
 
     const order = await paypalService.retrieveOrderFromAuth(auth)
@@ -37,6 +38,7 @@ export default async (req, res) => {
 
     const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
+    const swapService = req.scope.resolve("swapService")
     const orderService = req.scope.resolve("orderService")
 
     await manager.transaction(async (m) => {
