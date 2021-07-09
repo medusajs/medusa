@@ -48,22 +48,26 @@ describe("/admin/orders", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "fulfillment_item"`);
       await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
       await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "claim_order"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
+      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "claim_order"`);
       await manager.query(`DELETE FROM "money_amount"`);
       await manager.query(`DELETE FROM "product_variant"`);
       await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "refund"`);
       await manager.query(`DELETE FROM "order"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
@@ -94,6 +98,7 @@ describe("/admin/orders", () => {
       try {
         await adminSeeder(dbConnection);
         await orderSeeder(dbConnection);
+        await swapSeeder(dbConnection);
       } catch (err) {
         console.log(err);
         throw err;
@@ -102,24 +107,26 @@ describe("/admin/orders", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "fulfillment_item"`);
       await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
       await manager.query(`DELETE FROM "claim_item"`);
       await manager.query(`DELETE FROM "shipping_method"`);
       await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
       await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "claim_order"`);
       await manager.query(`DELETE FROM "money_amount"`);
       await manager.query(`DELETE FROM "product_variant"`);
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "refund"`);
       await manager.query(`DELETE FROM "order"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
@@ -650,25 +657,26 @@ describe("/admin/orders", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "fulfillment_item"`);
       await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return_item"`);
-      await manager.query(`DELETE FROM "return_reason"`);
-      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
       await manager.query(`DELETE FROM "claim_item"`);
       await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
+      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "claim_order"`);
       await manager.query(`DELETE FROM "money_amount"`);
       await manager.query(`DELETE FROM "product_variant"`);
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "refund"`);
       await manager.query(`DELETE FROM "order"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
@@ -730,23 +738,26 @@ describe("/admin/orders", () => {
 
     afterEach(async () => {
       const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "fulfillment_item"`);
       await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
       await manager.query(`DELETE FROM "claim_item"`);
       await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
+      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "cart"`);
       await manager.query(`DELETE FROM "claim_order"`);
       await manager.query(`DELETE FROM "money_amount"`);
       await manager.query(`DELETE FROM "product_variant"`);
       await manager.query(`DELETE FROM "product"`);
       await manager.query(`DELETE FROM "shipping_option"`);
       await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "refund"`);
       await manager.query(`DELETE FROM "order"`);
       await manager.query(`DELETE FROM "customer"`);
       await manager.query(
@@ -894,13 +905,13 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager;
       await manager.query(`DELETE FROM "fulfillment_item"`);
       await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "return_item"`);
-      await manager.query(`DELETE FROM "return_reason"`);
-      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "claim_image"`);
       await manager.query(`DELETE FROM "claim_tag"`);
       await manager.query(`DELETE FROM "claim_item"`);
       await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "return_item"`);
+      await manager.query(`DELETE FROM "return_reason"`);
+      await manager.query(`DELETE FROM "return"`);
       await manager.query(`DELETE FROM "line_item"`);
       await manager.query(`DELETE FROM "payment"`);
       await manager.query(`DELETE FROM "swap"`);

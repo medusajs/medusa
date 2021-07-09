@@ -248,12 +248,12 @@ module.exports = async (connection, data = {}) => {
   await manager.save(swap1);
   await manager.save(swap2);
 
-  // await manager.insert(Payment, {
-  //   order_id: "test-order-w-c-and-s",
-  //   id: "test-payment-5",
-  //   amount: 10000,
-  //   currency_code: "usd",
-  //   provider_id: "test-pay",
-  //   data: {},
-  // });
+  await manager.insert(Payment, {
+    order_id: "test-order-w-c-and-s",
+    id: "test-payment-5",
+    amount: 10000,
+    currency_code: "usd",
+    provider_id: "test-pay",
+    data: {},
+  });
 };
