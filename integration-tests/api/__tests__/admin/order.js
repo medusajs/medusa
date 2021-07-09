@@ -83,6 +83,60 @@ describe("/admin/orders", () => {
     });
   });
 
+  describe("GET /admin/orders", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection);
+        await orderSeeder(dbConnection);
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await manager.query(`DELETE FROM "cart"`);
+      await manager.query(`DELETE FROM "fulfillment"`);
+      await manager.query(`DELETE FROM "swap"`);
+      await manager.query(`DELETE FROM "return"`);
+      await manager.query(`DELETE FROM "claim_image"`);
+      await manager.query(`DELETE FROM "claim_tag"`);
+      await manager.query(`DELETE FROM "claim_item"`);
+      await manager.query(`DELETE FROM "claim_order"`);
+      await manager.query(`DELETE FROM "line_item"`);
+      await manager.query(`DELETE FROM "money_amount"`);
+      await manager.query(`DELETE FROM "product_variant"`);
+      await manager.query(`DELETE FROM "product"`);
+      await manager.query(`DELETE FROM "shipping_method"`);
+      await manager.query(`DELETE FROM "shipping_option"`);
+      await manager.query(`DELETE FROM "discount"`);
+      await manager.query(`DELETE FROM "payment"`);
+      await manager.query(`DELETE FROM "order"`);
+      await manager.query(`DELETE FROM "customer"`);
+      await manager.query(
+        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
+      );
+      await manager.query(`DELETE FROM "region"`);
+      await manager.query(`DELETE FROM "user"`);
+    });
+
+    it("cancels an order", async () => {
+      const api = useApi();
+
+      const response = await api
+        .post(`/admin/orders/test-order-not-payed/cancel`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      expect(response.status).toEqual(200);
+    });
+  });
+
   describe("POST /admin/orders/:id/claims", () => {
     beforeEach(async () => {
       try {
@@ -153,6 +207,18 @@ describe("/admin/orders", () => {
         }
       );
       expect(response.status).toEqual(200);
+
+      const variant = await api.get("/admin/products", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      });
+
+      // find test variant and verifu that its inventory quantity has changed
+      const toTest = variant.data.products[0].variants.find(
+        (v) => v.id === "test-variant"
+      );
+      expect(toTest.inventory_quantity).toEqual(0);
 
       expect(response.data.order.claims[0].shipping_address_id).toEqual(
         "test-shipping-address"
@@ -620,6 +686,43 @@ describe("/admin/orders", () => {
         }),
       ]);
     });
+
+    it("fails to creates a claim due to no stock on additional items", async () => {
+      const api = useApi();
+      try {
+        await api.post(
+          "/admin/orders/test-order/claims",
+          {
+            type: "replace",
+            claim_items: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant",
+                quantity: 2,
+              },
+            ],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        );
+      } catch (e) {
+        expect(e.response.status).toEqual(400);
+        expect(e.response.data.message).toEqual(
+          "Variant with id: test-variant does not have the required inventory"
+        );
+      }
+    });
   });
 
   describe("POST /admin/orders/:id/return", () => {
@@ -704,6 +807,36 @@ describe("/admin/orders", () => {
           note: "TOO SMALL",
         }),
       ]);
+    });
+
+    it("increases inventory_quantity when return is received", async () => {
+      const api = useApi();
+
+      const returned = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          receive_now: true,
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      //Find variant that should have its inventory_quantity updated
+      const toTest = returned.data.order.items.find(
+        (i) => i.id === "test-item"
+      );
+
+      expect(returned.status).toEqual(200);
+      expect(toTest.variant.inventory_quantity).toEqual(2);
     });
   });
 
@@ -967,8 +1100,13 @@ describe("/admin/orders", () => {
         }
       );
 
+      // find item to test returned quantiy for
+      const toTest = returnedOrderSecond.data.order.items.find(
+        (i) => i.id === "test-item-many"
+      );
+
       expect(returnedOrderSecond.status).toEqual(200);
-      expect(returnedOrderSecond.data.order.items[1].returned_quantity).toBe(3);
+      expect(toTest.returned_quantity).toBe(3);
     });
 
     it("creates a swap and receives the items", async () => {

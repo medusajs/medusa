@@ -30,6 +30,7 @@ class SwapService extends BaseService {
     shippingOptionService,
     fulfillmentService,
     orderService,
+    inventoryService,
   }) {
     super()
 
@@ -63,6 +64,9 @@ class SwapService extends BaseService {
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
+    /** @private @const {InventoryService} */
+    this.inventoryService_ = inventoryService
+
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
   }
@@ -83,6 +87,7 @@ class SwapService extends BaseService {
       paymentProviderService: this.paymentProviderService_,
       shippingOptionService: this.shippingOptionService_,
       orderService: this.orderService_,
+      inventoryService: this.inventoryService_,
       fulfillmentService: this.fulfillmentService_,
     })
 
@@ -508,6 +513,14 @@ class SwapService extends BaseService {
 
       const cart = swap.cart
 
+      const items = swap.cart.items
+
+      for (const item of items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .confirmInventory(item.variant_id, item.quantity)
+      }
+
       const total = await this.totalsService_.getTotal(cart)
 
       if (total > 0) {
@@ -538,6 +551,12 @@ class SwapService extends BaseService {
             swap_id: swapId,
             order_id: swap.order_id,
           })
+
+        for (const item of items) {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .adjustInventory(item.variant_id, -item.quantity)
+        }
       }
 
       const now = new Date()

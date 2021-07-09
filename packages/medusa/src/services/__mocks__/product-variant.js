@@ -111,6 +111,46 @@ const giftCardVar = {
   title: "100 USD",
 }
 
+const outOfStockBackOrder = {
+  id: "bo",
+  title: "variant_popular",
+  inventory_quantity: 0,
+  allow_backorder: true,
+  manage_inventory: true,
+}
+
+const outOfStockNoBackOrder = {
+  id: "no_bo",
+  title: "variant_popular",
+  inventory_quantity: 0,
+  allow_backorder: false,
+  manage_inventory: true,
+}
+
+const outOfStockNoManage = {
+  id: "no_manage",
+  title: "variant_popular",
+  inventory_quantity: 0,
+  allow_backorder: false,
+  manage_inventory: false,
+}
+
+const StockOf10Manage = {
+  id: "10_man",
+  title: "variant_popular",
+  inventory_quantity: 10,
+  allow_backorder: false,
+  manage_inventory: true,
+}
+
+const StockOf1Manage = {
+  id: "1_man",
+  title: "variant_popular",
+  inventory_quantity: 1,
+  allow_backorder: false,
+  manage_inventory: true,
+}
+
 export const variants = {
   one: variant1,
   two: variant2,
@@ -124,20 +164,20 @@ export const variants = {
 }
 
 export const ProductVariantServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(testVariant)
   }),
-  publish: jest.fn().mockImplementation(_ => {
+  publish: jest.fn().mockImplementation((_) => {
     return Promise.resolve({
       id: IdMap.getId("publish"),
       name: "Product Variant",
       published: true,
     })
   }),
-  retrieve: jest.fn().mockImplementation(variantId => {
+  retrieve: jest.fn().mockImplementation((variantId) => {
     if (variantId === IdMap.getId("giftCardVar")) {
       return Promise.resolve(variants.giftCard)
     }
@@ -170,6 +210,21 @@ export const ProductVariantServiceMock = {
     }
     if (variantId === IdMap.getId("testVariant")) {
       return Promise.resolve(testVariant)
+    }
+    if (variantId === "bo") {
+      return Promise.resolve(outOfStockBackOrder)
+    }
+    if (variantId === "no_bo") {
+      return Promise.resolve(outOfStockNoBackOrder)
+    }
+    if (variantId === "no_manage") {
+      return Promise.resolve(outOfStockNoManage)
+    }
+    if (variantId === "10_man") {
+      return Promise.resolve(StockOf10Manage)
+    }
+    if (variantId === "1_man") {
+      return Promise.resolve(StockOf1Manage)
     }
   }),
   canCoverQuantity: jest.fn().mockImplementation((variantId, quantity) => {
@@ -214,7 +269,7 @@ export const ProductVariantServiceMock = {
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})
   }),
-  list: jest.fn().mockImplementation(data => {
+  list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([testVariant])
   }),
   deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {

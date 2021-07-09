@@ -31,6 +31,7 @@ class CartService extends BaseService {
     totalsService,
     addressRepository,
     paymentSessionRepository,
+    inventoryService,
   }) {
     super()
 
@@ -84,6 +85,9 @@ class CartService extends BaseService {
 
     /** @private @const {PaymentSessionRepository} */
     this.paymentSessionRepository_ = paymentSessionRepository
+
+    /** @private @const {InventoryService} */
+    this.inventoryService_ = inventoryService
   }
 
   withTransaction(transactionManager) {
@@ -109,6 +113,7 @@ class CartService extends BaseService {
       totalsService: this.totalsService_,
       addressRepository: this.addressRepository_,
       giftCardService: this.giftCardService_,
+      inventoryService: this.inventoryService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -134,27 +139,6 @@ class CartService extends BaseService {
    * A collection of contents grouped in the same line item
    * @typedef {LineItemContent[]} LineItemContentArray
    */
-
-  /**
-   * Confirms if the contents of a line item is covered by the inventory.
-   * To be covered a variant must either not have its inventory managed or it
-   * must allow backorders or it must have enough inventory to cover the request.
-   * If the content is made up of multiple variants it will return true if all
-   * variants can be covered. If the content consists of a single variant it will
-   * return true if the variant is covered.
-   * @param {(LineItemContent | LineItemContentArray)} - the content of the line
-   *     item
-   * @param {number} - the quantity of the line item
-   * @return {boolean} true if the inventory covers the line item.
-   */
-  async confirmInventory_(variantId, quantity) {
-    // If the line item is not stock tracked we don't have double check it
-    if (!variantId) {
-      return true
-    }
-
-    return this.productVariantService_.canCoverQuantity(variantId, quantity)
-  }
 
   transformQueryForTotals_(config) {
     let { select, relations } = config
@@ -455,18 +439,11 @@ class CartService extends BaseService {
       if (currentItem) {
         const newQuantity = currentItem.quantity + lineItem.quantity
 
-        // Confirm inventory
-        const hasInventory = await this.confirmInventory_(
+        // Confirm inventory or throw error
+        await this.inventoryService_.confirmInventory(
           lineItem.variant_id,
           newQuantity
         )
-
-        if (!hasInventory) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Inventory doesn't cover the desired quantity"
-          )
-        }
 
         await this.lineItemService_
           .withTransaction(manager)
@@ -474,18 +451,11 @@ class CartService extends BaseService {
             quantity: newQuantity,
           })
       } else {
-        // Confirm inventory
-        const hasInventory = await this.confirmInventory_(
+        // Confirm inventory or throw error
+        await this.inventoryService_.confirmInventory(
           lineItem.variant_id,
           lineItem.quantity
         )
-
-        if (!hasInventory) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Inventory doesn't cover the desired quantity"
-          )
-        }
 
         await this.lineItemService_.withTransaction(manager).create({
           ...lineItem,
@@ -541,7 +511,7 @@ class CartService extends BaseService {
       }
 
       if (lineItemUpdate.quantity) {
-        const hasInventory = await this.confirmInventory_(
+        const hasInventory = await this.inventoryService_.confirmInventory(
           lineItemExists.variant_id,
           lineItemUpdate.quantity
         )

@@ -16,6 +16,7 @@ class ReturnService extends BaseService {
     shippingOptionService,
     returnReasonService,
     fulfillmentProviderService,
+    inventoryService,
     orderService,
   }) {
     super()
@@ -43,6 +44,8 @@ class ReturnService extends BaseService {
 
     this.returnReasonService_ = returnReasonService
 
+    this.inventoryService_ = inventoryService
+
     /** @private @const {OrderService} */
     this.orderService_ = orderService
   }
@@ -61,6 +64,7 @@ class ReturnService extends BaseService {
       shippingOptionService: this.shippingOptionService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
       returnReasonService: this.returnReasonService_,
+      inventoryService: this.inventoryService_,
       orderService: this.orderService_,
     })
 
@@ -481,6 +485,15 @@ class ReturnService extends BaseService {
         }
       })
 
+      // newLines.map(async l => {
+      //   const orderItem = order.items.find(i => i.id === l.item_id)
+      //   if (orderItem) {
+      //     await this.inventoryService_
+      //       .withTransaction(manager)
+      //       .adjustInventory(orderItem.variant_id, l.received_quantity)
+      //   }
+      // })
+
       let returnStatus = "received"
 
       const isMatching = newLines.every(l => l.is_requested)
@@ -510,6 +523,15 @@ class ReturnService extends BaseService {
         await this.lineItemService_.withTransaction(manager).update(i.item_id, {
           returned_quantity: returnedQuantity,
         })
+      }
+
+      for (const line of newLines) {
+        const orderItem = order.items.find(i => i.id === line.item_id)
+        if (orderItem) {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .adjustInventory(orderItem.variant_id, line.received_quantity)
+        }
       }
 
       return result
