@@ -892,14 +892,7 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: [
-          "fulfillments",
-          "payments",
-          "returns",
-          "claims",
-          "swaps",
-          "returns",
-        ],
+        relations: ["fulfillments", "payments", "returns", "claims", "swaps"],
       })
 
       if (order.refunds?.length > 0) {
@@ -918,18 +911,10 @@ class OrderService extends BaseService {
         })
       const notCanceled = o => !o.canceled_at
 
-      throwErrorIf(order.swaps, notCanceled, "swaps")
-      throwErrorIf(order.claims, notCanceled, "claims")
       throwErrorIf(order.fulfillments, notCanceled, "fulfillments")
       throwErrorIf(order.returns, r => r.status !== "canceled", "returns")
-
-      await Promise.all(
-        order.fulfillments.map(fulfillment =>
-          this.fulfillmentService_
-            .withTransaction(manager)
-            .cancelFulfillment(fulfillment)
-        )
-      )
+      throwErrorIf(order.swaps, notCanceled, "swaps")
+      throwErrorIf(order.claims, notCanceled, "claims")
 
       for (const p of order.payments) {
         await this.paymentProviderService_

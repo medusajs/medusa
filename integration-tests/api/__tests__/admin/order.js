@@ -9,7 +9,12 @@ const { initDb } = require("../../../helpers/use-db");
 const orderSeeder = require("../../helpers/order-seeder");
 const swapSeeder = require("../../helpers/swap-seeder");
 const adminSeeder = require("../../helpers/admin-seeder");
-const { fail } = require("assert");
+
+const {
+  expectPostCallToReturn,
+  expectAllPostCallsToReturn,
+  getObj,
+} = require("../../helpers/call-assertions");
 
 jest.setTimeout(30000);
 
@@ -1170,7 +1175,32 @@ describe("/admin/orders", () => {
       ).rejects.toThrow("Request failed with status code 400");
     });
 
-    it("allows canceling swap after canceling payment and fulfillment", async () => {
+    it("Only allow canceling swap after canceling payment and fulfillment", async () => {
+      const swap_id = "swap-w-f-and-r";
+
+      const swap = await getObj(`/admin/swaps/${swap_id}`, "order");
+
+      const { order_id } = swap;
+
+      await expectAllPostCallsToReturn({
+        code: 200,
+        col: swap.fulfillments,
+        pathf: (f) =>
+          `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
+      });
+
+      await expectPostCallToReturn({
+        code: 200,
+        path: `/admin/returns/${swap.return_order.id}/cancel`,
+      });
+
+      await expectPostCallToReturn({
+        code: 200,
+        path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
+      });
+    });
+
+    it("Only allows canceling order after canceling contained elements", async () => {
       const api = useApi();
       const header = {
         headers: {
@@ -1178,57 +1208,49 @@ describe("/admin/orders", () => {
         },
       };
 
-      const swap_id = "swap-w-f-and-r";
+      const order_id = "test-order-w-c-and-s";
 
-      const swap = (await api.get(`/admin/swaps/${swap_id}`, header)).data
+      const order = (await api.get(`/admin/orders/${order_id}`, header)).data
         .order;
 
-      const { order_id } = swap;
+      const expectCancelToSucceed = async (bool) =>
+        await expectPostCallToReturn({
+          code: bool ? 200 : 400,
+          path: `/admin/orders/${order_id}/cancel`,
+        });
 
-      for (const f of swap.fulfillments) {
-        const canceledFulfillment = await api.post(
-          `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
-          {},
-          header
-        );
+      const expectAllInCollectionSucceeds = async (col, pathf) =>
+        await expectAllPostCallsToReturn({ code: 200, col, pathf });
 
-        expect(canceledFulfillment.status).toEqual(200);
-      }
+      await expectCancelToSucceed(false);
 
-      const canceledReturn = await api.post(
-        `/admin/returns/${swap.return_order.id}/cancel`,
-        {},
-        header
+      await expectAllInCollectionSucceeds(
+        order.fulfillments,
+        (f) => `/admin/orders/${order_id}/fulfillments/${f.id}/cancel`
       );
 
-      expect(canceledReturn.status).toEqual(200);
+      await expectCancelToSucceed(false);
 
-      const result = await api.post(
-        `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
-        {},
-        header
+      await expectAllInCollectionSucceeds(
+        order.returns,
+        (r) => `/admin/returns/${r.id}/cancel`
       );
 
-      expect(result.status).toEqual(200);
-    });
+      await expectCancelToSucceed(false);
 
-    it("only allows canceling order after canceling swap", async () => {
-      const api = useApi();
-      try {
-        await api.post(
-          `/admin/orders/test-order-w-c-and-s/cancel`,
-          {},
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    });
+      await expectAllInCollectionSucceeds(
+        order.swaps,
+        (s) => `/admin/orders/${order_id}/swaps/${s.id}/cancel`
+      );
 
-    it("allows canceling swap after canceling payment and fulfillment", async () => {});
+      await expectCancelToSucceed(false);
+
+      await expectAllInCollectionSucceeds(
+        order.claims,
+        (c) => `/admin/orders/${order_id}/claims/${c.id}/cancel`
+      );
+
+      await expectCancelToSucceed(true);
+    });
   });
 });

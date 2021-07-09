@@ -595,6 +595,7 @@ class ClaimService extends BaseService {
       )
 
       claim.fulfillment_status = "canceled"
+      claim.canceled_at = new Date()
 
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const result = await claimRepo.save(claim)

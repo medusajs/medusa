@@ -9,6 +9,7 @@ const {
   Product,
   ProductVariant,
   Region,
+  Payment,
   Order,
   Swap,
   Return,
@@ -123,7 +124,7 @@ module.exports = async (connection, data = {}) => {
       data: {},
     },
     return_order: {
-      id: "return",
+      id: "return-id",
       status: "requested",
       refund_amount: 0,
     },
@@ -150,7 +151,7 @@ module.exports = async (connection, data = {}) => {
     fulfillment_status: "fulfilled",
     return_order: {
       id: "return-on-swap",
-      refund_amount: 0,
+      refund_amount: 9000,
       items: [
         {
           return_id: "return-on-swap",

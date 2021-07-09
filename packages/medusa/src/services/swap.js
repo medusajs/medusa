@@ -717,6 +717,8 @@ class SwapService extends BaseService {
         )
       }
 
+      swap.payment_status = "canceled"
+      swap.fulfillment_status = "canceled"
       swap.canceled_at = new Date()
 
       await this.paymentProviderService_
