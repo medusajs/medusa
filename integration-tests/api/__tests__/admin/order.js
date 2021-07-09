@@ -125,11 +125,15 @@ describe("/admin/orders", () => {
       const api = useApi();
 
       const response = await api
-        .post(`/admin/orders/test-order-not-payed/cancel`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          `/admin/orders/test-order-not-payed/cancel`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
         .catch((err) => {
           console.log(err);
         });

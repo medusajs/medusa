@@ -853,10 +853,10 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
-        relations: ["fulfillments", "payments"],
+        relations: ["fulfillments", "payments", "items"],
       })
 
-      if (order.payment_status !== "awaiting") {
+      if (order.payment_status !== "not_paid") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Can't cancel an order with a processed payment"
