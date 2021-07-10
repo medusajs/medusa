@@ -1,4 +1,3 @@
-import _, { reject } from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ClaimService from "../claim"
 

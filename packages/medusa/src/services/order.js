@@ -2,7 +2,6 @@ import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
-import swaps from "../api/routes/admin/swaps"
 
 class OrderService extends BaseService {
   static Events = {

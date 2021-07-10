@@ -666,15 +666,6 @@ describe("/admin/orders", () => {
         path: `/admin/returns/${claim.return_order.id}/cancel`,
       });
 
-      // console.log(
-      //   (
-      //     await callGet({
-      //       path: `/admin/orders/${order_id}`,
-      //       get: "order",
-      //     })
-      //   ).claims[0]
-      // );
-
       await expectCancelToReturn({ code: 200 });
     });
   });
