@@ -1253,22 +1253,6 @@ describe("/admin/orders", () => {
       expect(received.status).toEqual(200);
     });
 
-    it("doesn't allow canceling swap without canceled payment and fulfillment", async () => {
-      const api = useApi();
-
-      await expect(
-        api.post(
-          `/admin/orders/order-with-swap/swaps/swap-w-f-and-r/cancel`,
-          {},
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
-        )
-      ).rejects.toThrow("Request failed with status code 400");
-    });
-
     it("Only allow canceling swap after canceling return and fulfillment", async () => {
       const swap_id = "swap-w-f-and-r";
 
