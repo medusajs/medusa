@@ -11,10 +11,10 @@ export const FulfillmentServiceMock = {
       case IdMap.getId("swap-fulfillment"):
         return Promise.resolve({ swap_id: IdMap.getId("test-swap") })
       case IdMap.getId("claim-fulfillment"):
-        return Promise.resolve({ claim_id: IdMap.getId("test-claim") })
+        return Promise.resolve({ claim_order_id: IdMap.getId("test-claim") })
     }
   }),
-  cancel: jest.fn().mockImplementation(data => {
+  cancelFulfillment: jest.fn().mockImplementation(data => {
     return Promise.resolve({ order_id: IdMap.getId("test-order") })
   }),
 }

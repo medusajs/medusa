@@ -582,18 +582,6 @@ class ClaimService extends BaseService {
         )
       }
 
-      if (claim.return_order) {
-        await this.returnService_
-          .withTransaction(manager)
-          .cancel(claim.return_order.id)
-      }
-
-      await Promise.all(
-        claim.fulfillments.map(f =>
-          this.fulfillmentService_.withTransaction(manager).cancelFulfillment(f)
-        )
-      )
-
       claim.fulfillment_status = "canceled"
       claim.canceled_at = new Date()
 

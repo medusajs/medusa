@@ -224,13 +224,6 @@ class FulfillmentService extends BaseService {
       }
       const fulfillment = await this.retrieve(id)
 
-      if (fulfillment.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Fulfillment has already been canceled"
-        )
-      }
-
       await this.fulfillmentProviderService_.cancelFulfillment(fulfillment)
 
       fulfillment.canceled_at = new Date()
@@ -239,25 +232,6 @@ class FulfillmentService extends BaseService {
         this.fulfillmentRepository_
       )
       const result = await fulfillmentRepo.save(fulfillment)
-      return result
-    })
-  }
-
-  /**
-   * Cancels the given fulfillment
-   * @param {string} fulfillmentId
-   * @returns {Fulfillment} the canceled fulfillment
-   */
-  async cancel(fulfillmentId) {
-    return this.atomicPhase_(async manager => {
-      const fulfillmentService = manager.getCustomRepository(
-        this.fulfillmentRepository_
-      )
-
-      const fulfillment = await fulfillmentService.retrieve(fulfillmentId)
-      fulfillment.canceled_at = new Date()
-
-      const result = await fulfillmentService.save(fulfillment)
       return result
     })
   }

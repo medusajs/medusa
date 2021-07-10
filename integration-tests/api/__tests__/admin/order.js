@@ -9,12 +9,14 @@ const { initDb } = require("../../../helpers/use-db");
 const orderSeeder = require("../../helpers/order-seeder");
 const swapSeeder = require("../../helpers/swap-seeder");
 const adminSeeder = require("../../helpers/admin-seeder");
+const claimSeeder = require("../../helpers/claim-seeder");
 
 const {
   expectPostCallToReturn,
   expectAllPostCallsToReturn,
-  getObj,
-} = require("../../helpers/call-assertions");
+  callGet,
+  partial,
+} = require("../../helpers/call-helpers");
 
 jest.setTimeout(30000);
 
@@ -99,6 +101,7 @@ describe("/admin/orders", () => {
         await adminSeeder(dbConnection);
         await orderSeeder(dbConnection);
         await swapSeeder(dbConnection);
+        await claimSeeder(dbConnection);
       } catch (err) {
         console.log(err);
         throw err;
@@ -633,6 +636,47 @@ describe("/admin/orders", () => {
         }),
       ]);
     });
+
+    it("Only allow canceling claim after canceling return and fulfillment", async () => {
+      const order_id = "order-with-claim";
+
+      const order = await callGet({
+        path: `/admin/orders/${order_id}`,
+        get: "order",
+      });
+
+      const claim = order.claims[0];
+      const claim_id = claim.id;
+
+      const expectCancelToReturn = partial(expectPostCallToReturn, {
+        path: `/admin/orders/${order_id}/claims/${claim_id}/cancel`,
+      });
+
+      await expectCancelToReturn({ code: 400 });
+
+      await expectAllPostCallsToReturn({
+        code: 200,
+        col: claim.fulfillments,
+        pathf: (f) =>
+          `/admin/orders/${order_id}/claims/${claim_id}/fulfillments/${f.id}/cancel`,
+      });
+
+      await expectPostCallToReturn({
+        code: 200,
+        path: `/admin/returns/${claim.return_order.id}/cancel`,
+      });
+
+      // console.log(
+      //   (
+      //     await callGet({
+      //       path: `/admin/orders/${order_id}`,
+      //       get: "order",
+      //     })
+      //   ).claims[0]
+      // );
+
+      await expectCancelToReturn({ code: 200 });
+    });
   });
 
   describe("POST /admin/orders/:id/return", () => {
@@ -886,6 +930,54 @@ describe("/admin/orders", () => {
           id: "test-order-w-c-and-s",
         }),
       ]);
+    });
+
+    it("Only allows canceling order after canceling contained elements", async () => {
+      const order_id = "test-order-w-c-and-s";
+
+      const order = await callGet({
+        path: `/admin/orders/${order_id}`,
+        get: "order",
+      });
+
+      const expectCanceltoReturn = partial(expectPostCallToReturn, {
+        path: `/admin/orders/${order_id}/cancel`,
+      });
+
+      const expectAllInCollectionSucceeds = partial(
+        expectAllPostCallsToReturn,
+        { code: 200 }
+      );
+
+      await expectCanceltoReturn({ code: 400 });
+
+      await expectAllInCollectionSucceeds({
+        col: order.fulfillments,
+        pathf: (f) => `/admin/orders/${order_id}/fulfillments/${f.id}/cancel`,
+      });
+
+      await expectCanceltoReturn({ code: 400 });
+
+      await expectAllInCollectionSucceeds({
+        col: order.returns,
+        pathf: (r) => `/admin/returns/${r.id}/cancel`,
+      });
+
+      await expectCanceltoReturn({ code: 400 });
+
+      await expectAllInCollectionSucceeds({
+        col: order.swaps,
+        pathf: (s) => `/admin/orders/${order_id}/swaps/${s.id}/cancel`,
+      });
+
+      await expectCanceltoReturn({ code: 400 });
+
+      await expectAllInCollectionSucceeds({
+        col: order.claims,
+        pathf: (c) => `/admin/orders/${order_id}/claims/${c.id}/cancel`,
+      });
+
+      await expectCanceltoReturn({ code: 200 });
     });
   });
 
@@ -1186,12 +1278,21 @@ describe("/admin/orders", () => {
       ).rejects.toThrow("Request failed with status code 400");
     });
 
-    it("Only allow canceling swap after canceling payment and fulfillment", async () => {
+    it("Only allow canceling swap after canceling return and fulfillment", async () => {
       const swap_id = "swap-w-f-and-r";
 
-      const swap = await getObj(`/admin/swaps/${swap_id}`, "order");
+      const swap = await callGet({
+        path: `/admin/swaps/${swap_id}`,
+        get: "order",
+      });
 
       const { order_id } = swap;
+
+      const expectCancelToReturn = partial(expectPostCallToReturn, {
+        path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
+      });
+
+      await expectCancelToReturn({ code: 400 });
 
       await expectAllPostCallsToReturn({
         code: 200,
@@ -1205,63 +1306,7 @@ describe("/admin/orders", () => {
         path: `/admin/returns/${swap.return_order.id}/cancel`,
       });
 
-      await expectPostCallToReturn({
-        code: 200,
-        path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
-      });
-    });
-
-    it("Only allows canceling order after canceling contained elements", async () => {
-      const api = useApi();
-      const header = {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      };
-
-      const order_id = "test-order-w-c-and-s";
-
-      const order = (await api.get(`/admin/orders/${order_id}`, header)).data
-        .order;
-
-      const expectCancelToSucceed = async (bool) =>
-        await expectPostCallToReturn({
-          code: bool ? 200 : 400,
-          path: `/admin/orders/${order_id}/cancel`,
-        });
-
-      const expectAllInCollectionSucceeds = async (col, pathf) =>
-        await expectAllPostCallsToReturn({ code: 200, col, pathf });
-
-      await expectCancelToSucceed(false);
-
-      await expectAllInCollectionSucceeds(
-        order.fulfillments,
-        (f) => `/admin/orders/${order_id}/fulfillments/${f.id}/cancel`
-      );
-
-      await expectCancelToSucceed(false);
-
-      await expectAllInCollectionSucceeds(
-        order.returns,
-        (r) => `/admin/returns/${r.id}/cancel`
-      );
-
-      await expectCancelToSucceed(false);
-
-      await expectAllInCollectionSucceeds(
-        order.swaps,
-        (s) => `/admin/orders/${order_id}/swaps/${s.id}/cancel`
-      );
-
-      await expectCancelToSucceed(false);
-
-      await expectAllInCollectionSucceeds(
-        order.claims,
-        (c) => `/admin/orders/${order_id}/claims/${c.id}/cancel`
-      );
-
-      await expectCancelToSucceed(true);
+      await expectCancelToReturn({ code: 200 });
     });
   });
 });

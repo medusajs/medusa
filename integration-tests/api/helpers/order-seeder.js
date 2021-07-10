@@ -194,17 +194,38 @@ module.exports = async (connection, data = {}) => {
     region_id: "test-region",
     currency_code: "usd",
     tax_rate: 0,
-    // claims: [
-    //   {
-    //     type: "replace",
-    //     id: "claim-1",
-    //     payment_status: "na",
-    //     fulfillment_status: "not_fulfilled",
-    //     payment_provider: "test_pay",
-    //   },
-    // ],
-    returns: [],
-    fulfillments: [],
+    claims: [
+      {
+        type: "replace",
+        id: "claim-1",
+        payment_status: "na",
+        fulfillment_status: "not_fulfilled",
+        payment_provider: "test-pay",
+      },
+    ],
+    returns: [
+      {
+        id: "return-on-order-1",
+        refund_amount: 0,
+      },
+      {
+        id: "return-on-order-2",
+        refund_amount: 0,
+      },
+    ],
+    fulfillments: [
+      {
+        id: "fulfillment-on-order-1",
+        data: {},
+        provider_id: "test-ful",
+      },
+      {
+        id: "fulfillment-on-order-2",
+        data: {},
+        provider_id: "test-ful",
+      },
+    ],
+    ...data,
   });
 
   await manager.save(orderWithClaimAndSwapAndFulfillmentAndReturn);

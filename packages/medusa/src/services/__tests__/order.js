@@ -597,12 +597,6 @@ describe("OrderService", () => {
         id: "payment_test",
       })
 
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
-        id: "fulfillment_test",
-        canceled_at: now,
-      })
-
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
       expect(orderRepo.save).toHaveBeenCalledWith({
         fulfillment_status: "canceled",

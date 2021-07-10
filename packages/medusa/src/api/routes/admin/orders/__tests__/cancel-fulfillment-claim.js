@@ -27,8 +27,8 @@ describe("POST /admin/orders/:id/claims/:claim_id/fulfillments/:fulfillment_id/c
     })
 
     it("calls FulfillmentService cancel", () => {
-      expect(FulfillmentServiceMock.cancel).toHaveBeenCalledTimes(1)
-      expect(FulfillmentServiceMock.cancel).toHaveBeenCalledWith(
+      expect(FulfillmentServiceMock.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(FulfillmentServiceMock.cancelFulfillment).toHaveBeenCalledWith(
         IdMap.getId("claim-fulfillment")
       )
     })

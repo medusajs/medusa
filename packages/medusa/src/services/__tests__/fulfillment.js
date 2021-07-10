@@ -129,12 +129,6 @@ describe("FulfillmentService", () => {
         canceled_at: expect.any(Date),
       })
     })
-
-    it("fails to cancel fulfillment if already canceled", async () => {
-      await expect(
-        fulfillmentService.cancelFulfillment(IdMap.getId("canceled"))
-      ).rejects.toThrow("Fulfillment has already been canceled")
-    })
   })
 
   describe("createShipment", () => {

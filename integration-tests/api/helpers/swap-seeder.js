@@ -116,7 +116,7 @@ module.exports = async (connection, data = {}) => {
     fulfillment_status: "fulfilled",
     payment_status: "not_paid",
     payment: {
-      id: "test-payment-swap2",
+      id: "test-payment-on-swap",
       amount: 5000,
       currency_code: "usd",
       amount_refunded: 0,
@@ -140,6 +140,7 @@ module.exports = async (connection, data = {}) => {
         provider_id: "test-ful",
       },
     ],
+    ...data,
   });
 
   await manager.save(swapWithFulfillmentsAndReturn);

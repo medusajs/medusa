@@ -580,24 +580,6 @@ describe("ClaimService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls fulfillment service", async () => {
-      await claimService.cancel("claim")
-
-      expect(withTransactionMock).toHaveBeenCalledTimes(3)
-      expect(withTransactionMock).toHaveBeenCalledWith("fulfillment")
-      expect(withTransactionMock).toHaveBeenCalledWith("return")
-      expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
-
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
-        id: "ful_21",
-        canceled_at: now,
-      })
-
-      expect(returnService.cancel).toHaveBeenCalledTimes(1)
-      expect(returnService.cancel).toHaveBeenCalledWith("ret")
-    })
-
     it("fails if fulfillment isn't canceled", async () => {
       await expect(
         claimService.cancel(IdMap.getId("fail-fulfillment"))

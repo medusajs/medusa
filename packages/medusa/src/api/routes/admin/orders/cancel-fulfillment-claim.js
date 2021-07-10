@@ -30,7 +30,7 @@ export default async (req, res) => {
 
     const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 
-    if (fulfillment.claim_id !== claim_id) {
+    if (fulfillment.claim_order_id !== claim_id) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `no fulfillment was found with the id: ${fulfillment_id} related to claim: ${claim_id}`

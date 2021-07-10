@@ -1108,6 +1108,8 @@ describe("SwapService", () => {
 
       expect(swapRepo.save).toHaveBeenCalledTimes(1)
       expect(swapRepo.save).toHaveBeenCalledWith({
+        payment_status: "canceled",
+        fulfillment_status: "canceled",
         canceled_at: expect.any(Date),
         fulfillments: expect.anything(),
         payment: expect.anything(),
