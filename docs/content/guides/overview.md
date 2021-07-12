@@ -1,5 +1,5 @@
 ---
-title: Ipsum
+title: Overview
 ---
 
 ## Second docs item
