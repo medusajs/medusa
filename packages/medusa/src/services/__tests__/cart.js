@@ -200,11 +200,23 @@ describe("CartService", () => {
 
     const addressRepository = MockRepository({ create: c => c })
     const cartRepository = MockRepository()
+    const customerService = {
+      retrieve: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: IdMap.getId("customer"),
+          email: "email",
+        })
+      ),
+      withTransaction: function() {
+        return this
+      },
+    }
     const cartService = new CartService({
       manager: MockManager,
       addressRepository,
       totalsService,
       cartRepository,
+      customerService,
       regionService,
       eventBusService,
     })
@@ -216,12 +228,18 @@ describe("CartService", () => {
     it("successfully creates a cart", async () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
+        customer_id: IdMap.getId("customer"),
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.created",
         expect.any(Object)
+      )
+
+      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
+      expect(customerService.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("customer")
       )
 
       expect(addressRepository.create).toHaveBeenCalledTimes(1)
@@ -235,6 +253,9 @@ describe("CartService", () => {
         shipping_address: {
           country_code: "us",
         },
+        customer_id: IdMap.getId("customer"),
+        email: "email",
+        customer: expect.any(Object),
       })
 
       expect(cartRepository.save).toHaveBeenCalledTimes(1)

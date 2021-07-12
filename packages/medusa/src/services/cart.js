@@ -306,11 +306,8 @@ class CartService extends BaseService {
 
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
-      if (data.customer_id) {
-        const customer = await this.customerService_
-          .withTransaction(this.transactionManager_)
-          .retrieve(customerId)
-
+      if (data.email) {
+        const customer = await this.createOrFetchUserFromEmail_(data.email)
         data.customer = customer
         data.customer_id = customer.id
         data.email = customer.email
@@ -655,7 +652,10 @@ class CartService extends BaseService {
         await this.updateCustomerId_(cart, update.customer_id)
       } else {
         if ("email" in update) {
-          await this.updateEmail_(cart, update.email)
+          const customer = await this.createOrFetchUserFromEmail_(update.email)
+          cart.customer = customer
+          cart.customer_id = customer.id
+          cart.customer_email = customer.email
         }
       }
 
@@ -714,6 +714,8 @@ class CartService extends BaseService {
 
       const result = await cartRepo.save(cart)
 
+      console.error(">><", cart)
+
       if ("email" in update || "customer_id" in update) {
         await this.eventBus_
           .withTransaction(manager)
@@ -745,12 +747,11 @@ class CartService extends BaseService {
   }
 
   /**
-   * Sets the email of a cart
-   * @param {string} cartId - the id of the cart to add email to
-   * @param {string} email - the email to add to cart
-   * @return {Promise} the result of the update operation
+   * Creates or fetches a user based on an email.
+   * @param {string} email - the email to use
+   * @return {Promise} the resultign customer object
    */
-  async updateEmail_(cart, email) {
+  async createOrFetchUserFromEmail_(email) {
     const schema = Validator.string()
       .email()
       .required()
@@ -773,9 +774,26 @@ class CartService extends BaseService {
         .create({ email })
     }
 
-    cart.email = value
-    cart.customer = customer
-    cart.customer_id = customer.id
+    return customer
+  }
+
+  async createUserFromEmail_(email) {
+    const schema = Validator.string()
+      .email()
+      .required()
+    const { value, error } = schema.validate(email.toLowerCase())
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The email is not valid"
+      )
+    }
+
+    const customer = await this.customerService_
+      .withTransaction(this.transactionManager_)
+      .create({ email })
+
+    return customer
   }
 
   /**
