@@ -40,8 +40,6 @@ exports.createPages = async ({ graphql, actions }) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node
     const next = index === 0 ? null : posts[index - 1].node
 
-    console.log({ next, previous })
-
     createPage({
       path: node.fields.slug,
       component: path.resolve(`./src/templates/docs.js`),

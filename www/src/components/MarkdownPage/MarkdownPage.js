@@ -1,21 +1,11 @@
 import React from "react"
 import { Box, Flex } from "rebass"
-import { Footer } from "../Footer"
-import { Sidebar, Toc } from "../Sidebar"
-import { Link } from "gatsby"
+import { Footer } from "../../components/Footer"
+import { Sidebar, Toc } from "../../components/Sidebar"
+import { NavigationFooter } from "../NavigationFooter"
+import { FeedbackFooter } from "../FeedbackFooter/"
 
 const MarkdownPage = ({ markdownRemark, navList, previous, next }) => {
-  const nextArticle = next && (
-    <Link to={next.fields.slug} rel="next">
-      {next.frontmatter.title} →
-    </Link>
-  )
-  const prevArticle = previous && (
-    <Link to={previous.fields.slug} rel="prev">
-      ← {previous.frontmatter.title}
-    </Link>
-  )
-
   return (
     <Flex>
       <Box flex="0 0 270px" px={2}>
@@ -28,20 +18,15 @@ const MarkdownPage = ({ markdownRemark, navList, previous, next }) => {
               {markdownRemark.frontmatter.title}
             </h1>
             <div dangerouslySetInnerHTML={{ __html: markdownRemark.html }} />
-            <Flex pt={4}>
-              <Box pr={2}>Was this helpful?</Box>
-              <Box pr={1}>Yes</Box>
-              <Box>No</Box>
-            </Flex>
+            <Box pt={3}>
+              <FeedbackFooter />
+            </Box>
             <Box pt={3}>
               <hr />
             </Box>
-            <nav>
-              <ul>
-                <li>{nextArticle}</li>
-                <li>{prevArticle}</li>
-              </ul>
-            </nav>
+            <Box pt={2}>
+              <NavigationFooter previous={previous} next={next} />
+            </Box>
             <Box pt={3}>
               <hr />
             </Box>
