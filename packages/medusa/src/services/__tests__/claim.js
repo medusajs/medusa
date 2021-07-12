@@ -23,6 +23,7 @@ describe("ClaimService", () => {
       order: {
         id: "1234",
         region_id: "order_region",
+        no_notification: true,
         items: [
           {
             id: "itm_1",
@@ -123,6 +124,7 @@ describe("ClaimService", () => {
             quantity: 1,
           },
         ],
+        no_notification: true,
       })
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
@@ -160,6 +162,7 @@ describe("ClaimService", () => {
       expect(claimRepo.create).toHaveBeenCalledTimes(1)
       expect(claimRepo.create).toHaveBeenCalledWith({
         payment_status: "not_refunded",
+        no_notification: true,
         refund_amount: 1000,
         type: "refund",
         order_id: "1234",
@@ -178,6 +181,7 @@ describe("ClaimService", () => {
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith("claim.created", {
         id: "claim_134",
+        no_notification: true,
       })
     })
 
@@ -249,6 +253,24 @@ describe("ClaimService", () => {
         )
       }
     })
+    it.each(
+      [
+        [false, false],
+        [undefined, true],
+      ],
+      "passes correct no_notification status to event bus",
+      async (input, expected) => {
+        await claimService.create({
+          ...testClaim,
+          no_notification: input,
+        })
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
   })
 
   describe("retrieve", () => {
@@ -335,7 +357,9 @@ describe("ClaimService", () => {
     })
 
     it("successfully creates fulfillment", async () => {
-      await claimService.createFulfillment("claim_id", { meta: "data" })
+      await claimService.createFulfillment("claim_id", {
+        metadata: { meta: "data" },
+      })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
       expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
@@ -455,7 +479,10 @@ describe("ClaimService", () => {
       )
 
       await claimService.createShipment("claim", "ful_123", ["track1234"], {
-        meta: "data",
+        metadata: {
+          meta: "data",
+        },
+        no_notification: false,
       })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
@@ -467,7 +494,12 @@ describe("ClaimService", () => {
       expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
         "ful_123",
         ["track1234"],
-        { meta: "data" }
+        {
+          metadata: {
+            meta: "data",
+          },
+          no_notification: false,
+        }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
