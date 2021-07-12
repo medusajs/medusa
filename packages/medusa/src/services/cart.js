@@ -769,7 +769,7 @@ class CartService extends BaseService {
     if (!customer) {
       customer = await this.customerService_
         .withTransaction(this.transactionManager_)
-        .create({ email })
+        .create({ email: value })
     }
 
     return customer
