@@ -486,15 +486,6 @@ class ReturnService extends BaseService {
         }
       })
 
-      // newLines.map(async l => {
-      //   const orderItem = order.items.find(i => i.id === l.item_id)
-      //   if (orderItem) {
-      //     await this.inventoryService_
-      //       .withTransaction(manager)
-      //       .adjustInventory(orderItem.variant_id, l.received_quantity)
-      //   }
-      // })
-
       let returnStatus = "received"
 
       const isMatching = newLines.every(l => l.is_requested)
