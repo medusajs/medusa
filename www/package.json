@@ -22,6 +22,7 @@
     "gatsby-plugin-anchor-links": "^1.1.1",
     "gatsby-plugin-emotion": "^5.0.0",
     "gatsby-plugin-react-helmet": "^3.3.12",
+    "gatsby-remark-autolink-headers": "^4.6.0",
     "gatsby-source-filesystem": "^2.3.31",
     "gatsby-transformer-json": "^3.0.0",
     "gatsby-transformer-remark": "^4.6.0",

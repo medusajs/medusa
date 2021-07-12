@@ -47,6 +47,18 @@ module.exports = {
         name: `pages`,
       },
     },
-    `gatsby-transformer-remark`,
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-autolink-headers`,
+            options: {
+              elements: [`h2`, `h3`, `h4`],
+            },
+          },
+        ],
+      },
+    },
   ],
 }
