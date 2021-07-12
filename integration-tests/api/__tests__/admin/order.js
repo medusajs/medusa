@@ -1,6 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { ReturnReason } = require("@medusajs/medusa");
+const { ReturnReason, Order, LineItem } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -92,6 +92,76 @@ describe("/admin/orders", () => {
         console.log(err);
         throw err;
       }
+
+      const manager = dbConnection.manager;
+
+      const order2 = manager.create(Order, {
+        id: "test-order-not-payed",
+        customer_id: "test-customer",
+        email: "test@email.com",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "awaiting",
+        billing_address: {
+          id: "test-billing-address",
+          first_name: "lebron",
+        },
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        discounts: [
+          {
+            id: "test-discount",
+            code: "TEST134",
+            is_dynamic: false,
+            rule: {
+              id: "test-rule",
+              description: "Test Discount",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            is_disabled: false,
+            regions: [
+              {
+                id: "test-region",
+              },
+            ],
+          },
+        ],
+        payments: [
+          {
+            id: "test-payment",
+            amount: 10000,
+            currency_code: "usd",
+            amount_refunded: 0,
+            provider_id: "test-pay",
+            data: {},
+          },
+        ],
+        items: [],
+      });
+
+      await manager.save(order2);
+
+      const li2 = manager.create(LineItem, {
+        id: "test-item",
+        fulfilled_quantity: 0,
+        returned_quantity: 0,
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 1,
+        variant_id: "test-variant",
+        order_id: "test-order-not-payed",
+      });
+
+      await manager.save(li2);
     });
 
     afterEach(async () => {
@@ -121,8 +191,13 @@ describe("/admin/orders", () => {
       await manager.query(`DELETE FROM "user"`);
     });
 
-    it("cancels an order", async () => {
+    it("cancels an order and increments inventory_quantity", async () => {
       const api = useApi();
+      const manager = dbConnection.manager;
+
+      const initialInventoryRes = await api.get("/store/variants/test-variant");
+
+      expect(initialInventoryRes.data.variant.inventory_quantity).toEqual(1);
 
       const response = await api
         .post(
@@ -138,6 +213,10 @@ describe("/admin/orders", () => {
           console.log(err);
         });
       expect(response.status).toEqual(200);
+
+      const secondInventoryRes = await api.get("/store/variants/test-variant");
+
+      expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(2);
     });
   });
 
