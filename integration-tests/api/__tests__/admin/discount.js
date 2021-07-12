@@ -105,8 +105,8 @@ describe("/admin/discounts", () => {
   });
 
   describe("testing for soft-deletion + uniqueness on discount codes", () => {
-    const manager = dbConnection.manager;
     beforeEach(async () => {
+      const manager = dbConnection.manager;
       try {
         await adminSeeder(dbConnection);
         await manager.insert(DiscountRule, {
@@ -127,6 +127,7 @@ describe("/admin/discounts", () => {
     });
 
     afterEach(async () => {
+      const manager = dbConnection.manager;
       await manager.query(`DELETE FROM "discount"`);
       await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "user"`);

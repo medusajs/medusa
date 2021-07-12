@@ -164,20 +164,20 @@ export const variants = {
 }
 
 export const ProductVariantServiceMock = {
-  withTransaction: function () {
+  withTransaction: function() {
     return this
   },
-  create: jest.fn().mockImplementation((data) => {
+  create: jest.fn().mockImplementation(data => {
     return Promise.resolve(testVariant)
   }),
-  publish: jest.fn().mockImplementation((_) => {
+  publish: jest.fn().mockImplementation(_ => {
     return Promise.resolve({
       id: IdMap.getId("publish"),
       name: "Product Variant",
       published: true,
     })
   }),
-  retrieve: jest.fn().mockImplementation((variantId) => {
+  retrieve: jest.fn().mockImplementation(variantId => {
     if (variantId === IdMap.getId("giftCardVar")) {
       return Promise.resolve(variants.giftCard)
     }
@@ -227,17 +227,6 @@ export const ProductVariantServiceMock = {
       return Promise.resolve(StockOf1Manage)
     }
   }),
-  canCoverQuantity: jest.fn().mockImplementation((variantId, quantity) => {
-    if (variantId === IdMap.getId("can-cover")) {
-      return Promise.resolve(true)
-    }
-
-    if (variantId === IdMap.getId("cannot-cover")) {
-      return Promise.resolve(false)
-    }
-
-    return Promise.reject(new Error("Not found"))
-  }),
   getRegionPrice: jest.fn().mockImplementation((variantId, regionId) => {
     if (variantId === IdMap.getId("eur-10-us-12")) {
       if (regionId === IdMap.getId("region-france")) {
@@ -269,7 +258,7 @@ export const ProductVariantServiceMock = {
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})
   }),
-  list: jest.fn().mockImplementation((data) => {
+  list: jest.fn().mockImplementation(data => {
     return Promise.resolve([testVariant])
   }),
   deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {

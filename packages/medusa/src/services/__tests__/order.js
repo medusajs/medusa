@@ -643,6 +643,10 @@ describe("OrderService", () => {
 
     it("calls order model functions", async () => {
       try {
+        const order = await orderService.retrieve(
+          IdMap.getId("not-fulfilled-order")
+        )
+        console.warn(order)
         await orderService.cancel(IdMap.getId("not-fulfilled-order"))
       } catch (e) {
         console.warn(e)
