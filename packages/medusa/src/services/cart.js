@@ -655,7 +655,7 @@ class CartService extends BaseService {
           const customer = await this.createOrFetchUserFromEmail_(update.email)
           cart.customer = customer
           cart.customer_id = customer.id
-          cart.customer_email = customer.email
+          cart.email = customer.email
         }
       }
 
@@ -713,8 +713,6 @@ class CartService extends BaseService {
       }
 
       const result = await cartRepo.save(cart)
-
-      console.error(">><", cart)
 
       if ("email" in update || "customer_id" in update) {
         await this.eventBus_
