@@ -120,6 +120,8 @@ describe("/admin/discounts", () => {
           id: "test-discount",
           code: "TESTING",
           rule_id: "test-discount-rule",
+          is_dynamic: false,
+          is_disabled: false,
         });
       } catch (err) {
         throw err;
@@ -174,7 +176,7 @@ describe("/admin/discounts", () => {
       expect(response.status).toEqual(200);
       expect(response.data.discount).toEqual(
         expect.objectContaining({
-          code: "HELLOWORLD",
+          code: "TESTING",
           usage_limit: 10,
         })
       );

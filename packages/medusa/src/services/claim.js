@@ -251,16 +251,13 @@ class ClaimService extends BaseService {
         )
       )
 
-<<<<<<< HEAD
       for (const newItem of newItems) {
         await this.inventoryService_
           .withTransaction(manager)
           .adjustInventory(newItem.variant_id, -newItem.quantity)
       }
-=======
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
->>>>>>> origin/develop
 
       const created = claimRepo.create({
         shipping_address_id: addressId,
