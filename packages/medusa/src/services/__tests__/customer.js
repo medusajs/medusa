@@ -168,8 +168,14 @@ describe("CustomerService", () => {
       },
     })
 
+    const addressRepository = MockRepository({
+      create: data => data,
+      save: data => Promise.resolve(data),
+    })
+
     const customerService = new CustomerService({
       manager: MockManager,
+      addressRepository,
       customerRepository,
       eventBusService,
     })
@@ -233,7 +239,7 @@ describe("CustomerService", () => {
           last_name: "Juhl",
           address_1: "Laksegade",
           city: "Copenhagen",
-          country_code: "DK",
+          country_code: "dk",
           postal_code: "2100",
           phone: "+1 (222) 333 4444",
         },
