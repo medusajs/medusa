@@ -16,11 +16,7 @@ import defaultsLoader from "./defaults"
 import Logger from "./logger"
 import { getManager } from "typeorm"
 
-export default async ({ directory: rootDirectory, expressApp, logLevel }) => {
-  if (logLevel) {
-    Logger.setLogLevel(logLevel)
-  }
-
+export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule, configFilePath } = getConfigFile(
     rootDirectory,
     `medusa-config`
