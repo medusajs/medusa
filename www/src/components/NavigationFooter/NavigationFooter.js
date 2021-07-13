@@ -2,15 +2,15 @@ import React from "react"
 import { Box, Flex } from "rebass"
 import { Link } from "gatsby"
 
-const NavigationFooter = ({ next, previous }) => {
+const NavigationFooter = ({ next, prev }) => {
   const nextArticle = next && (
-    <Link to={next.fields.slug} rel="next">
-      {next.frontmatter.title} →
+    <Link to={next.slug} rel="next">
+      {next.title} →
     </Link>
   )
-  const prevArticle = previous && (
-    <Link to={previous.fields.slug} rel="prev">
-      ← {previous.frontmatter.title}
+  const prevArticle = prev && (
+    <Link to={prev.slug} rel="prev">
+      ← {prev.title}
     </Link>
   )
   return (

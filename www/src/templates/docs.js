@@ -4,16 +4,10 @@ import Layout from "../components/layout"
 import navList from "../../../docs/content/nav.yml"
 import { MarkdownPage } from "../components/MarkdownPage"
 
-export default function DocsTemplate({ data, pageContext }) {
-  const { previous, next } = pageContext
+export default function DocsTemplate({ data }) {
   return (
     <Layout>
-      <MarkdownPage
-        next={next}
-        previous={previous}
-        navList={navList}
-        markdownRemark={data.markdownRemark}
-      />
+      <MarkdownPage navList={navList} markdownRemark={data.markdownRemark} />
     </Layout>
   )
 }
