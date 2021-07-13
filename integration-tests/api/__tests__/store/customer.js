@@ -1,6 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { Customer } = require("@medusajs/medusa");
+const { Address, Customer } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -15,8 +15,8 @@ describe("/store/customers", () => {
   let dbConnection;
 
   const doAfterEach = async (manager) => {
-    await manager.query(`DELETE FROM "address"`);
     await manager.query(`DELETE FROM "customer"`);
+    await manager.query(`DELETE FROM "address"`);
   };
 
   beforeAll(async () => {
@@ -35,6 +35,7 @@ describe("/store/customers", () => {
   describe("POST /store/customers", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager;
+
       await manager.insert(Customer, {
         id: "test_customer",
         first_name: "John",
@@ -82,6 +83,17 @@ describe("/store/customers", () => {
   describe("POST /store/customers/:id", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager;
+      await manager.insert(Address, {
+        id: "addr_test",
+        first_name: "String",
+        last_name: "Stringson",
+        address_1: "String st",
+        city: "Stringville",
+        postal_code: "1236",
+        province: "ca",
+        country_code: "us",
+      });
+
       await manager.insert(Customer, {
         id: "test_customer",
         first_name: "John",
@@ -127,6 +139,90 @@ describe("/store/customers", () => {
       expect(response.data.customer).toEqual(
         expect.objectContaining({
           metadata: { key: "value" },
+        })
+      );
+    });
+
+    it("updates customer billing address", async () => {
+      const api = useApi();
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@deere.com",
+        password: "test",
+      });
+
+      const customerId = authResponse.data.customer.id;
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";");
+
+      const response = await api.post(
+        `/store/customers/${customerId}`,
+        {
+          billing_address: {
+            first_name: "test",
+            last_name: "testson",
+            address_1: "Test st",
+            city: "Testion",
+            postal_code: "1235",
+            province: "ca",
+            country_code: "us",
+          },
+        },
+        {
+          headers: {
+            Cookie: authCookie,
+          },
+        }
+      );
+
+      expect(response.status).toEqual(200);
+      expect(response.data.customer).not.toHaveProperty("password_hash");
+      expect(response.data.customer.billing_address).toEqual(
+        expect.objectContaining({
+          first_name: "test",
+          last_name: "testson",
+          address_1: "Test st",
+          city: "Testion",
+          postal_code: "1235",
+          province: "ca",
+          country_code: "us",
+        })
+      );
+    });
+
+    it("updates customer billing address with string", async () => {
+      const api = useApi();
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@deere.com",
+        password: "test",
+      });
+
+      const customerId = authResponse.data.customer.id;
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";");
+
+      const response = await api.post(
+        `/store/customers/${customerId}`,
+        {
+          billing_address: "addr_test",
+        },
+        {
+          headers: {
+            Cookie: authCookie,
+          },
+        }
+      );
+
+      expect(response.status).toEqual(200);
+      expect(response.data.customer).not.toHaveProperty("password_hash");
+      expect(response.data.customer.billing_address).toEqual(
+        expect.objectContaining({
+          first_name: "String",
+          last_name: "Stringson",
+          address_1: "String st",
+          city: "Stringville",
+          postal_code: "1236",
+          province: "ca",
+          country_code: "us",
         })
       );
     });
