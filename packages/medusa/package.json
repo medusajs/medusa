@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
+    "@medusajs/medusa-cli": "^1.1.11",
     "@types/lodash": "^4.14.168",
     "awilix": "^4.2.3",
     "body-parser": "^1.19.0",

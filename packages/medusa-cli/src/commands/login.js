@@ -2,6 +2,7 @@ const axios = require("axios").default
 const open = require("open")
 const inquirer = require("inquirer")
 
+const logger = require("../logger").default
 const { setToken } = require("../util/token-store")
 
 /**
@@ -21,6 +22,8 @@ module.exports = {
 
     const { data: urls } = await axios.post(authHost)
 
+    const loginUri = `${loginHost}${urls.browser_url}`
+
     const qs = [
       {
         type: "input",
@@ -29,52 +32,58 @@ module.exports = {
       },
     ]
 
+    console.log()
+    console.log("Login to Medusa Cloud")
+    console.log()
+
     await inquirer.prompt(qs).then(async a => {
       if (a.open === "n") {
         process.exit(0)
       }
 
-      const bo = await open(`${loginHost}${urls.browser_url}`, {
+      const bo = await open(loginUri, {
         app: "browser",
         wait: false,
       })
       bo.on("error", err => {
         console.warn(err)
-        console.log(
-          `Could not open browser go to: ${loginHost}${urls.browser_url}`
-        )
+        console.log(`Could not open browser go to: ${loginUri}`)
+      })
+    })
+
+    const spinner = logger.activity(`Waiting for login at ${loginUri}`)
+    const fetchAuth = async (retries = 3) => {
+      try {
+        const { data: auth } = await axios.get(`${authHost}${urls.cli_url}`, {
+          headers: { authorization: `Bearer ${urls.cli_token}` },
+        })
+        return auth
+      } catch (err) {
+        if (retries > 0 && err.http && err.http.statusCode > 500)
+          return fetchAuth(retries - 1)
+        throw err
+      }
+    }
+    const auth = await fetchAuth()
+
+    // This is kept alive for several seconds until the user has authenticated
+    // in the browser.
+    const { data: user } = await axios
+      .get(`${apiHost}/auth`, {
+        headers: {
+          authorization: `Bearer ${auth.password}`,
+        },
+      })
+      .catch(err => {
+        console.log(err)
+        process.exit(1)
       })
 
-      const fetchAuth = async (retries = 3) => {
-        try {
-          const { data: auth } = await axios.get(`${authHost}${urls.cli_url}`, {
-            headers: { authorization: `Bearer ${urls.cli_token}` },
-          })
-          return auth
-        } catch (err) {
-          if (retries > 0 && err.http && err.http.statusCode > 500)
-            return fetchAuth(retries - 1)
-          throw err
-        }
-      }
-      const auth = await fetchAuth()
-
-      // This is kept alive for several seconds until the user has authenticated
-      // in the browser.
-      const { data: user } = await axios
-        .get(`${apiHost}/auth`, {
-          headers: {
-            authorization: `Bearer ${auth.password}`,
-          },
-        })
-        .catch(err => {
-          console.log(err)
-          process.exit(1)
-        })
-
-      if (user) {
-        setToken(auth.password)
-      }
-    })
+    if (user) {
+      logger.success(spinner, "Log in succeeded.")
+      setToken(auth.password)
+    } else {
+      logger.failure(spinner, "Log in failed.")
+    }
   },
 }
