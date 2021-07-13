@@ -54,6 +54,7 @@
     "ora": "^5.4.1",
     "regenerator-runtime": "^0.13.5",
     "resolve-cwd": "^3.0.0",
+    "stack-trace": "^0.0.10",
     "ulid": "^2.3.0",
     "winston": "^3.3.3",
     "yargs": "^15.3.1"
