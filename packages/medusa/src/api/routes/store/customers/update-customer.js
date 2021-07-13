@@ -19,6 +19,10 @@ import { defaultRelations, defaultFields } from "./"
  *           last_name:
  *             description: "The Customer's last name."
  *             type: string
+ *           billing_address:
+ *             description: "The Address to be used for billing purposes."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
  *           password:
  *             description: "The Customer's password."
  *             type: string
