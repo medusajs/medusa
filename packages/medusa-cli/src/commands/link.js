@@ -1,8 +1,10 @@
 const axios = require("axios").default
 const inquirer = require("inquirer")
 const open = require("open")
+const execa = require("execa")
 const resolveCwd = require(`resolve-cwd`)
 const { getToken } = require("../util/token-store")
+const logger = require("../logger").default
 
 module.exports = {
   link: async argv => {
@@ -50,16 +52,35 @@ module.exports = {
         process.exit(1)
       })
 
+    const linkActivity = logger.activity("Linking local project")
+
     // Create the user with the user id
     if (!argv.skipLocalUser && auth.user) {
-      const localCmd = resolveLocalCommand(`user`)
-      await localCmd({
-        directory: argv.directory,
-        id: auth.user.id,
-        email: auth.user.email,
-        keepAlive: true,
-      })
+      let proc
+      try {
+        proc = await execa(
+          `medusa`,
+          [`user`, `--id`, auth.user.id, `--email`, auth.user.email],
+          {
+            env: {
+              ...process.env,
+              NODE_ENV: "command",
+            },
+          }
+        )
+      } catch (error) {
+        logger.failure(linkActivity, "Failed to perform local linking")
+        process.exit(1)
+      }
     }
+
+    logger.success(linkActivity, "Local project linked")
+
+    console.log()
+    console.log(
+      "Link Medusa Cloud to your local server. This will open the browser"
+    )
+    console.log()
 
     const qs = [
       {

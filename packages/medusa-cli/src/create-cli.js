@@ -198,11 +198,17 @@ function buildLocalCommands(cli, isLocalProject) {
           alias: `email`,
           type: `string`,
           describe: `User's email.`,
-        }).option(`p`, {
-          alias: `password`,
-          type: `string`,
-          describe: `User's password.`,
-        }),
+        })
+          .option(`p`, {
+            alias: `password`,
+            type: `string`,
+            describe: `User's password.`,
+          })
+          .option(`i`, {
+            alias: `id`,
+            type: `string`,
+            describe: `User's id.`,
+          }),
       handler: handlerP(
         getCommandHandler(`user`, (args, cmd) => {
           cmd(args)
