@@ -1,2 +1,2 @@
-import logger from "@medusajs/medusa-cli/dist/logger"
+import logger from "@medusajs/medusa-cli/dist/reporter"
 export default logger

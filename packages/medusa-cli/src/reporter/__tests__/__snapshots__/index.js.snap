@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reporter handles "Error" signature correctly 1`] = `
+Object {
+  "level": "error",
+  "message": "Error",
+  "stack": Any<Array>,
+}
+`;
+
+exports[`Reporter handles "String" signature correctly 1`] = `
+Object {
+  "level": "error",
+  "message": "Test log",
+}
+`;
+
+exports[`Reporter handles "String, Error" signature correctly 1`] = `
+Object {
+  "level": "error",
+  "message": "Test log",
+  "stack": Any<Array>,
+}
+`;
