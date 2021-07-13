@@ -367,6 +367,7 @@ class CustomerService extends BaseService {
       const customerRepository = manager.getCustomRepository(
         this.customerRepository_
       )
+      const addrRepo = manager.getCustomRepository(this.addressRepository_)
 
       const customer = await this.retrieve(customerId)
 
@@ -375,6 +376,7 @@ class CustomerService extends BaseService {
         password,
         password_hash,
         billing_address,
+        billing_address_id,
         metadata,
         ...rest
       } = update
@@ -387,8 +389,9 @@ class CustomerService extends BaseService {
         customer.email = this.validateEmail_(email)
       }
 
-      if (billing_address) {
-        customer.billing_address = this.validateBillingAddress_(billing_address)
+      if ("billing_address_id" in update || "billing_address" in update) {
+        const address = update.billing_address_id || update.billing_address
+        await this.updateBillingAddress_(customer, address, addrRepo)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -400,11 +403,47 @@ class CustomerService extends BaseService {
       }
 
       const updated = await customerRepository.save(customer)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(CustomerService.Events.UPDATED, updated)
       return updated
     })
+  }
+
+  /**
+   * Updates the cart's billing address.
+   * @param {Customer} customer - the Customer to update
+   * @param {object} address - the value to set the billing address to
+   * @return {Promise} the result of the update operation
+   */
+  async updateBillingAddress_(customer, addressOrId, addrRepo) {
+    if (typeof addressOrId === `string`) {
+      addressOrId = await addrRepo.findOne({
+        where: { id: addressOrId },
+      })
+    }
+
+    addressOrId.country_code = addressOrId.country_code.toLowerCase()
+
+    if (addressOrId.id) {
+      customer.billing_address_id = addressOrId.id
+      customer.billing_address = addressOrId
+    } else {
+      if (customer.billing_address_id) {
+        const addr = await addrRepo.findOne({
+          where: { id: customer.billing_address_id },
+        })
+
+        await addrRepo.save({ ...addr, ...addressOrId })
+      } else {
+        const created = addrRepo.create({
+          ...addressOrId,
+        })
+        const saved = await addrRepo.save(created)
+        customer.billing_address = saved
+      }
+    }
   }
 
   async updateAddress(customerId, addressId, address) {
