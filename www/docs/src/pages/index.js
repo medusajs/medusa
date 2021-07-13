@@ -1,34 +1,42 @@
 import React from "react"
-import { Flex } from "rebass"
-// import { Helmet } from "react-helmet"
-import Layout from "../components/layout"
-import Banner from "../components/cta-banner"
-import Intro from "../components/intro-section"
-import TabsPanel from "../components/tabs/tabs-panel"
+import clsx from "clsx"
+import Layout from "@theme/Layout"
+import Link from "@docusaurus/Link"
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
+import styles from "./index.module.css"
+import HomepageFeatures from "../components/HomepageFeatures"
 
-const CARDS_DATA = [
-  { type: "guide", title: "guide mock item", key: "guides" },
-  { type: "tutorial", title: "tutorial mock item", key: "tutorials" },
-  { type: "guide", title: "second guide mock item", key: "guides" },
-  { type: "reference", title: "reference mock item", key: "reference" },
-  {
-    type: "contributing",
-    title: "contributing mock item",
-    key: "contributing",
-  },
-]
+function HomepageHeader() {
+  const { siteConfig } = useDocusaurusContext()
+  return (
+    <header className={clsx("hero hero--primary", styles.heroBanner)}>
+      <div className="container">
+        <h1 className="hero__title">{siteConfig.title}</h1>
+        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/tutorials/overview"
+          >
+            Docusaurus Tutorial - 5min ⏱️
+          </Link>
+        </div>
+      </div>
+    </header>
+  )
+}
 
 export default function Home() {
+  const { siteConfig } = useDocusaurusContext()
   return (
-    <Layout>
-      <Flex flexDirection="column" sx={{ minWidth: "867px;" }}>
-        <Banner />
-        <Intro
-          title="Explore and learn how to use Medusa."
-          desc="Get up and running within 5 minutes, with helpful starters that lay the foundation for growth."
-        />
-        <TabsPanel items={CARDS_DATA} />
-      </Flex>
+    <Layout
+      title={`Hello from ${siteConfig.title}`}
+      description="Description will go into a meta tag in <head />"
+    >
+      <HomepageHeader />
+      <main>
+        <HomepageFeatures />
+      </main>
     </Layout>
   )
 }
