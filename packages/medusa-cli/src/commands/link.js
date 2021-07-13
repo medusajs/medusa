@@ -110,5 +110,12 @@ module.exports = {
         )
       })
     })
+
+    if (argv.develop) {
+      const proc = execa(`medusa`, [`develop`])
+      proc.stdout.pipe(process.stdout)
+      proc.stderr.pipe(process.stderr)
+      await proc
+    }
   },
 }
