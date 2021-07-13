@@ -1,8 +1,8 @@
 import React from "react"
 import { Box, Flex } from "rebass"
-import { Footer } from "../../components/Footer"
-import { Sidebar, Toc } from "../../components/Sidebar"
-import { NavigationFooter } from "../NavigationFooter"
+import { Footer } from "../../components/Footer/"
+import { Sidebar, Toc } from "../../components/Sidebar/"
+import { NavigationFooter } from "../NavigationFooter/"
 import { FeedbackFooter } from "../FeedbackFooter/"
 
 const MarkdownPage = ({ markdownRemark, navList, previous, next }) => {
