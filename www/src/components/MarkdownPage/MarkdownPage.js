@@ -1,7 +1,7 @@
 import React from "react"
 import { Box, Flex } from "rebass"
-import { Footer } from "../../components/Footer/"
-import { Sidebar, Toc } from "../../components/Sidebar/"
+import { Footer } from "../Footer/"
+import { Sidebar, Toc } from "../Sidebar/"
 import { NavigationFooter } from "../NavigationFooter/"
 import { FeedbackFooter } from "../FeedbackFooter/"
 
