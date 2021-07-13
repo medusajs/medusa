@@ -112,11 +112,15 @@ function buildLocalCommands(cli, isLocalProject) {
       command: `link`,
       desc: `Creates your Medusa Cloud user in your local database for local testing.`,
       builder: _ =>
-        _.option(`skip-local-user`, {
-          alias: `skipLocalUser`,
+        _.option(`su`, {
+          alias: `skip-local-user`,
           type: `boolean`,
           default: false,
           describe: `If set a user will not be created in the database.`,
+        }).option(`develop`, {
+          type: `boolean`,
+          default: false,
+          describe: `If set medusa develop will be run after successful linking.`,
         }),
       handler: handlerP(argv => {
         if (!isLocalProject) {
