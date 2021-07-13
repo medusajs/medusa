@@ -19,6 +19,10 @@ import { defaultRelations, defaultFields } from "./"
  *           last_name:
  *             description: "The Customer's last name."
  *             type: string
+ *           billing_address:
+ *             description: "The Address to be used for billing purposes."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
  *           password:
  *             description: "The Customer's password."
  *             type: string
@@ -44,6 +48,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
+    billing_address: Validator.address().optional(),
     first_name: Validator.string().optional(),
     last_name: Validator.string().optional(),
     password: Validator.string().optional(),
