@@ -412,7 +412,7 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * Updates the cart's billing address.
+   * Updates the customers's billing address.
    * @param {Customer} customer - the Customer to update
    * @param {object} address - the value to set the billing address to
    * @return {Promise} the result of the update operation
