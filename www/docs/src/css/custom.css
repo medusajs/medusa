@@ -6,6 +6,8 @@
  */
 
 /* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
 :root {
   --ifm-color-primary: #4e101f;
   --ifm-color-primary-dark: #460e1c;
@@ -22,6 +24,7 @@
   --ifm-sidebar-bg: #f0f0f0;
   --ifm-navbar-shadow: 0px 1px 0px 0px #A6ACB5;
   --ifm-docs-page-max-width: 700px;
+  --ifm-font-family-base: 'Open Sans';
   /* --ifm-navbar-height: 20px */
 }
 
