@@ -5,6 +5,7 @@ import DocsItem from "./docs-item"
 
 const DocsReader = ({ tags, spec }) => {
   const data = Object.entries(tags)
+
   return (
     <Flex flexDirection="column" width="100%">
       {data.map(([tagName, endpoints]) => (
