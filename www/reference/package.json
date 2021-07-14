@@ -34,6 +34,7 @@
     "react-highlight.js": "^1.0.7",
     "react-intersection-observer": "^8.29.0",
     "react-markdown": "^5.0.3",
+    "react-virtualized": "^9.22.3",
     "rebass": "^4.0.7",
     "theme-ui": "^0.10.0"
   },

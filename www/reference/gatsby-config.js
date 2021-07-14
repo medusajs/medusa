@@ -9,7 +9,6 @@ module.exports = {
     title: "Medusa",
     description: "Open-source headless commerce engine",
     author: "Medusa core team",
-    menuItems: [{ path: "/docs", title: "Docs" }],
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -24,26 +23,26 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/../docs/api/store`,
+        path: `${__dirname}/../../docs/api/store`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/../docs/api`,
+        path: `${__dirname}/../../docs/api`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `docs`,
-        path: `${__dirname}/../docs/content/`,
+        path: `${__dirname}/../../docs/content/`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/../docs/pages`,
+        path: `${__dirname}/../../docs/pages`,
         name: `pages`,
       },
     },

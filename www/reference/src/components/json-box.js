@@ -5,7 +5,7 @@ import Highlight from "react-highlight.js"
 
 import "highlight.js/styles/a11y-light.css"
 
-import fixtures from "../../../docs/api/fixtures.json"
+import fixtures from "../../../../docs/api/fixtures.json"
 
 import { deref } from "../utils/deref"
 
