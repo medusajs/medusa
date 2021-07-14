@@ -13,6 +13,22 @@ module.exports = {
   organizationName: "medusajs", // Usually your GitHub org/user name.
   projectName: "medusajs/www", // Usually your repo name.
   themeConfig: {
+    algolia: {
+      apiKey: "YOUR_API_KEY",
+      indexName: "YOUR_INDEX_NAME",
+      placeholder: "Search docs...",
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // Optional: see doc section below
+      appId: "YOUR_APP_ID",
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+
+      //... other Algolia params
+    },
     navbar: {
       hideOnScroll: true,
       // title: "Medusa Docs",
@@ -22,6 +38,10 @@ module.exports = {
         srcDark: "img/logo.svg",
       },
       items: [
+        {
+          type: "search",
+          position: "right",
+        },
         {
           type: "doc",
           docId: "tutorials/overview",
@@ -96,7 +116,7 @@ module.exports = {
       copyright: `© ${new Date().getFullYear()} Medusa Commerce`,
     },
     prism: {
-      theme: lightCodeTheme,
+      theme: darkCodeTheme,
       darkTheme: darkCodeTheme,
     },
   },
