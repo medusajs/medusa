@@ -22,8 +22,11 @@
   --ifm-sidebar-bg: #f0f0f0;
   --ifm-navbar-shadow: 0px 1px 0px 0px #A6ACB5;
   --ifm-docs-page-max-width: 700px;
-
   /* --ifm-navbar-height: 20px */
+}
+
+html[data-theme='light'] {
+  --docsearch-searchbox-background: #fff;
 }
 
 html[data-theme='dark'] {
