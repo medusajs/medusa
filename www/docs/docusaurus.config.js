@@ -96,7 +96,7 @@ module.exports = {
       copyright: `© ${new Date().getFullYear()} Medusa Commerce`,
     },
     prism: {
-      theme: lightCodeTheme,
+      theme: darkCodeTheme,
       darkTheme: darkCodeTheme,
     },
   },
