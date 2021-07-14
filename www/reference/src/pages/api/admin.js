@@ -2,7 +2,7 @@ import React from "react"
 import { Flex } from "rebass"
 import { Helmet } from "react-helmet"
 
-import rawSpec from "../../../../docs/api/store-spec3.json"
+import rawSpec from "../../../../../docs/api/admin-spec3.json"
 
 import Layout from "../../components/layout"
 import SideBar from "../../components/sidebar"
@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <Layout>
       <Helmet>
-        <title>Storefront API Docs | Medusa Commerce</title>
+        <title>Admin API Docs | Medusa Commerce</title>
       </Helmet>
       <Flex>
         <SideBar tags={tags} />

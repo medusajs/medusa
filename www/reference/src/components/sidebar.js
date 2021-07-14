@@ -19,7 +19,6 @@ const StyledNavItem = styled(Flex)`
   cursor: pointer;
   margin-bottom: 5px;
   height: 25px;
-
   &:hover {
     background-color: #e0e0e059;
   }
@@ -58,7 +57,7 @@ const SideBarContainer = styled(Flex)`
   top: 0;
   height: 100vh;
   overflow-y: scroll;
-
+  background-color: #f0f0f0;
   min-width: 250px;
   flex-direction: column;
 `
@@ -69,7 +68,7 @@ const SideBar = ({ tags }) => {
   useEffect(() => {
     const pathname = window.location.pathname
     const matches = pathname.match(/api\/(store|admin)/)
-    if (pathname.length > 1 && pathname !== "/docs") {
+    if (pathname.length > 1) {
       setApi(matches[1])
     }
   }, [])
