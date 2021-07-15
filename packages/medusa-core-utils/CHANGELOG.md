@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.17](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.16...medusa-core-utils@1.1.17) (2021-07-15)
+
+
+### Bug Fixes
+
+* better store/customer support ([6342e68](https://github.com/medusajs/medusa/commit/6342e68d069636e5eb4877c7ebf7aac952b5e363))
+
+
+
+
+
 ## [1.1.16](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.15...medusa-core-utils@1.1.16) (2021-07-02)
 
 **Note:** Version bump only for package medusa-core-utils
