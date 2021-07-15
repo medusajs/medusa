@@ -1182,7 +1182,7 @@ class BrightpearlService extends BaseService {
       return this.orderService_
         .withTransaction(m)
         .createFulfillment(order.externalRef, lines, {
-          goods_out_note: id,
+          metadata: { goods_out_note: id },
         })
     }, "SERIALIZABLE")
   }
