@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
 import { Validator, MedusaError } from "medusa-core-utils"
 import config from "../../../../config"
+import { defaultRelations, defaultFields } from "./"
 
 /**
  * @oas [post] /customers
@@ -40,6 +41,7 @@ export default async (req, res) => {
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
+
   try {
     const customerService = req.scope.resolve("customerService")
     let customer = await customerService.create(value)
@@ -50,7 +52,8 @@ export default async (req, res) => {
     })
 
     customer = await customerService.retrieve(customer.id, {
-      relations: ["shipping_addresses"],
+      relations: defaultRelations,
+      select: defaultFields,
     })
 
     res.status(200).json({ customer })

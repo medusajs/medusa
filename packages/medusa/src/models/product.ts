@@ -39,7 +39,7 @@ export class Product {
   @Column({ nullable: true })
   description: string
 
-  @Index({ unique: true })
+  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   @Column({ nullable: true })
   handle: string
 

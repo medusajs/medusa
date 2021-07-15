@@ -35,7 +35,7 @@ Body
 }
 ```
 
-The endpoint responds with `200 OK` on succesful signups. If a signup for an already in stock item is attempted the endpoint will have a 400 response code.
+The endpoint responds with `200 OK` on successful signups. If a signup for an already in stock item is attempted the endpoint will have a 400 response code.
 
 
 ## Restock events

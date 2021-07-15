@@ -35,6 +35,9 @@ import { defaultCartFields, defaultCartRelations, defaultFields } from "."
  *                 code:
  *                   description: "The code that a Discount is identifed by."
  *                   type: string
+ *           no_notification_order:
+ *             description: "An optional flag passed to the resulting order to determine use of notifications."
+ *             type: boolean
  *           customer_id:
  *             description: "The id of the Customer to associate the Draft Order with."
  *             type: string
@@ -68,6 +71,7 @@ export default async (req, res) => {
       })
       .optional(),
     customer_id: Validator.string().optional(),
+    no_notification_order: Validator.boolean().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -86,6 +90,13 @@ export default async (req, res) => {
         MedusaError.Types.NOT_ALLOWED,
         "You are only allowed to update open draft orders"
       )
+    }
+
+    if ("no_notification_order" in value) {
+      await draftOrderService.update(draftOrder.id, {
+        no_notification_order: value.no_notification_order,
+      })
+      delete value.no_notification_order
     }
 
     await cartService.update(draftOrder.cart_id, value)

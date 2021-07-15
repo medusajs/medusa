@@ -36,7 +36,7 @@ The steps can be done in any order. The standard path would probably be:
 
 Assuming that shipping methods are static within each region we can display all shipping methods at checkout time. If shipping is dynamically calculated the price of the shipping method may change, we will ask the fulfillment provider for new rates. 
 
-Payment details can be entered at any point as long as the final amount is known. If the final amount changes afer the payment details are entered the payment method may therefore be invalidated.
+Payment details can be entered at any point as long as the final amount is known. If the final amount changes after the payment details are entered the payment method may therefore be invalidated.
 
 Within the store UI you could imagine each step being taken care of by a single button click, which calls all endpoints.
 
