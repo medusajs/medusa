@@ -21,6 +21,9 @@ import { defaultRelations, defaultFields } from "./"
  *             type: array
  *             items:
  *               type: string
+ *           no_notification:
+ *             description: If set to true no notification will be send related to this Shipment.
+ *             type: boolean
  * tags:
  *   - Order
  * responses:
@@ -41,6 +44,7 @@ export default async (req, res) => {
     tracking_numbers: Validator.array()
       .items(Validator.string())
       .optional(),
+    no_notification: Validator.boolean().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -54,7 +58,8 @@ export default async (req, res) => {
     await orderService.createShipment(
       id,
       value.fulfillment_id,
-      value.tracking_numbers.map(n => ({ tracking_number: n }))
+      value.tracking_numbers.map(n => ({ tracking_number: n })),
+      { no_notification: value.no_notification }
     )
 
     const order = await orderService.retrieve(id, {

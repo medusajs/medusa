@@ -76,6 +76,7 @@ module.exports = {
         ],
       },
     },
+    // `gatsby-plugin-preact`,
     // {
     //   resolve: `gatsby-source-openapi-aggregate`,
     //   options: {

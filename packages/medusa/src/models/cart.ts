@@ -246,7 +246,7 @@ export class Cart {
 
   @Column({ type: "jsonb", nullable: true })
   context: any
-
+  
   // Total fields
   shipping_total: number
   discount_total: number
