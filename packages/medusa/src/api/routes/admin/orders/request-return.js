@@ -43,6 +43,9 @@ import { defaultRelations, defaultFields } from "./"
  *           receive_now:
  *             description: A flag to indicate if the Return should be registerd as received immediately.
  *             type: boolean
+ *           no_notification:
+ *             description: A flag to indicate if no notifications should be emitted related to the requested Return.
+ *             type: boolean
  *           refund:
  *             description: The amount to refund.
  *             type: integer
@@ -79,6 +82,7 @@ export default async (req, res) => {
       })
       .optional(),
     receive_now: Validator.boolean().default(false),
+    no_notification: Validator.boolean().optional(),
     refund: Validator.number()
       .integer()
       .optional(),
@@ -141,6 +145,13 @@ export default async (req, res) => {
                 }
               }
 
+              let order = await orderService
+                .withTransaction(manager)
+                .retrieve(id)
+
+              const evaluatedNoNotification = value.no_notification !== undefined ? value.no_notification : order.no_notification
+              returnObj.no_notification = evaluatedNoNotification
+
               const createdReturn = await returnService
                 .withTransaction(manager)
                 .create(returnObj)
@@ -150,12 +161,13 @@ export default async (req, res) => {
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)
               }
-
+              
               await eventBus
                 .withTransaction(manager)
                 .emit("order.return_requested", {
                   id,
                   return_id: createdReturn.id,
+                  no_notification: evaluatedNoNotification
                 })
 
               return {

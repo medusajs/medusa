@@ -18,6 +18,7 @@ module.exports = async (connection, data = {}) => {
 
   const coll = manager.create(ProductCollection, {
     id: "test-collection",
+    handle: "test-collection",
     title: "Test collection",
   });
 
@@ -53,6 +54,7 @@ module.exports = async (connection, data = {}) => {
 
   const p = manager.create(Product, {
     id: "test-product",
+    handle: "test-product",
     title: "Test product",
     profile_id: defaultProfile.id,
     description: "test-product-description",
@@ -73,6 +75,10 @@ module.exports = async (connection, data = {}) => {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",
+    sku: "test-sku",
+    ean: "test-ean",
+    upc: "test-upc",
+    barcode: "test-barcode",
     product_id: "test-product",
     prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
     options: [{ id: "test-variant-option", value: "Default variant" }],

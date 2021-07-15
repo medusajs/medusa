@@ -1,4 +1,5 @@
 import { Validator, MedusaError } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "./"
 
 /**
  * @oas [post] /customers/{id}
@@ -18,12 +19,19 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *           last_name:
  *             description: "The Customer's last name."
  *             type: string
+ *           billing_address:
+ *             description: "The Address to be used for billing purposes."
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address"
  *           password:
  *             description: "The Customer's password."
  *             type: string
  *           phone:
  *             description: "The Customer's phone number."
  *             type: string
+ *           metadata:
+ *             description: "Metadata about the customer."
+ *             type: object
  * tags:
  *   - Customer
  * responses:
@@ -40,10 +48,12 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
+    billing_address: Validator.address().optional(),
     first_name: Validator.string().optional(),
     last_name: Validator.string().optional(),
     password: Validator.string().optional(),
     phone: Validator.string().optional(),
+    metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -56,7 +66,8 @@ export default async (req, res) => {
     let customer = await customerService.update(id, value)
 
     customer = await customerService.retrieve(customer.id, {
-      relations: ["shipping_addresses"],
+      relations: defaultRelations,
+      select: defaultFields,
     })
 
     res.status(200).json({ customer })

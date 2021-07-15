@@ -99,6 +99,9 @@ export class Return {
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
+  @Column({ type: "boolean", nullable: true})
+  no_notification: Boolean
+
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
@@ -165,6 +168,9 @@ export class Return {
  *     description: "The date with timezone at which the resource was last updated."
  *     type: string
  *     format: date-time
+ *   no_notification:
+ *     description: "When set to true, no notification will be sent related to this return."
+ *     type: boolean
  *   metadata:
  *     description: "An optional key-value map with additional information."
  *     type: object
