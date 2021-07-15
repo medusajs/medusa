@@ -163,7 +163,9 @@ class OrderSubscriber {
           ],
         })
 
-        const ret = await this.returnService_.retrieve(return_id)
+        const ret = await this.returnService_.retrieve(return_id, {
+          relations: ["items", "items.reason"],
+        })
 
         const shipping = []
         if (ret.shipping_method && ret.shipping_method.price) {
@@ -185,7 +187,17 @@ class OrderSubscriber {
         const toBuildFrom = {
           ...order,
           shipping_methods: shipping,
-          items: ret.items.map((i) => merged.find((l) => l.id === i.item_id)),
+          items: ret.items.map((i) => {
+            const li = merged.find((l) => l.id === i.item_id)
+            if (i.reason) {
+              li.reason = i.reason
+            }
+
+            if (i.note) {
+              li.note = i.note
+            }
+            return li
+          }),
         }
 
         const orderData = await segmentService.buildOrder(toBuildFrom)

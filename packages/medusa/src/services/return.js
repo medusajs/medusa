@@ -330,6 +330,7 @@ class ReturnService extends BaseService {
           reason_id: i.reason_id,
           note: i.note,
           metadata: i.metadata,
+          no_notification: data.no_notification,
         })
       )
 

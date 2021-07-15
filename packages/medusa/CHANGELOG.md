@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.29...@medusajs/medusa@1.1.30) (2021-07-15)
+
+
+### Bug Fixes
+
+* adds tracking links to customer orders ([c013270](https://github.com/medusajs/medusa/commit/c0132700b78d171d6c7e29e2604b99129c5a1921))
+* allow updating billing address on customer ([5a1cbc6](https://github.com/medusajs/medusa/commit/5a1cbc68b721fe80d223e4ff611ebc81346333d7))
+* better store/customer support ([6342e68](https://github.com/medusajs/medusa/commit/6342e68d069636e5eb4877c7ebf7aac952b5e363))
+* create fulfillment ([0603a86](https://github.com/medusajs/medusa/commit/0603a86d65a528af86bdbdc46227faa2f48a93bb))
+* **medusa:** Resolve issue with soft-delete and unique indexes in DB ([#296](https://github.com/medusajs/medusa/issues/296)) ([6358f8f](https://github.com/medusajs/medusa/commit/6358f8fc756291710a82ce39a47d0cbec1395b87))
+
+
+
+
+
 ## [1.1.29](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.28...@medusajs/medusa@1.1.29) (2021-07-02)
 
 **Note:** Version bump only for package @medusajs/medusa
