@@ -23,3 +23,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 966px) {
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+}

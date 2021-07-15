@@ -1,5 +1,5 @@
-const lightCodeTheme = require("prism-react-renderer/themes/github")
-const darkCodeTheme = require("prism-react-renderer/themes/dracula")
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -35,12 +35,12 @@ module.exports = {
       logo: {
         alt: "Medusa Commerce",
         src: "img/logo.svg",
-        srcDark: "img/logo.svg",
+        srcDark: "img/logo_dark.svg",
       },
       items: [
         {
           type: "search",
-          position: "right",
+          position: "left",
         },
         {
           type: "doc",
@@ -55,8 +55,8 @@ module.exports = {
         },
         // { to: "/blog", label: "Blog", position: "left" },
         {
+          className: "navbar-github-link",
           href: "https://github.com/medusajs/medusa/",
-          label: "GitHub",
           position: "right",
         },
       ],
@@ -141,4 +141,4 @@ module.exports = {
       },
     ],
   ],
-}
+};
