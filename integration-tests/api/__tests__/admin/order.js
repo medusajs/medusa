@@ -334,7 +334,7 @@ describe("/admin/orders", () => {
         },
       });
 
-      // find test variant and verifu that its inventory quantity has changed
+      // find test variant and verify that its inventory quantity has changed
       const toTest = variant.data.products[0].variants.find(
         (v) => v.id === "test-variant"
       );
