@@ -1168,13 +1168,13 @@ class BrightpearlService extends BaseService {
           return this.claimService_
             .withTransaction(m)
             .createFulfillment(partId, {
-              goods_out_note: id,
+              metadata: { goods_out_note: id },
             })
         } else {
           return this.swapService_
             .withTransaction(m)
             .createFulfillment(partId, {
-              goods_out_note: id,
+              metadata: { goods_out_note: id },
             })
         }
       }
@@ -1182,7 +1182,7 @@ class BrightpearlService extends BaseService {
       return this.orderService_
         .withTransaction(m)
         .createFulfillment(order.externalRef, lines, {
-          goods_out_note: id,
+          metadata: { goods_out_note: id },
         })
     }, "SERIALIZABLE")
   }
