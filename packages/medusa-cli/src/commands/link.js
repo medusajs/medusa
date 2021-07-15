@@ -4,7 +4,7 @@ const open = require("open")
 const execa = require("execa")
 const resolveCwd = require(`resolve-cwd`)
 const { getToken } = require("../util/token-store")
-const logger = require("../logger").default
+const logger = require("../reporter").default
 
 module.exports = {
   link: async argv => {

@@ -6,7 +6,7 @@ import ora from "ora"
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
 
 const transports = []
-if (process.env.NODE_ENV !== "development") {
+if (process.env.NODE_ENV && process.env.NODE_ENV !== "development") {
   transports.push(new winston.transports.Console())
 } else {
   transports.push(
@@ -38,6 +38,14 @@ export class Reporter {
     this.activities_ = []
     this.loggerInstance_ = logger
     this.ora_ = activityLogger
+  }
+
+  panic = error => {
+    this.loggerInstance_.log({
+      level: "error",
+      details: error,
+    })
+    process.exit(1)
   }
 
   /**

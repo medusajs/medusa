@@ -1,18 +1,14 @@
-import opn from "better-opn"
 import { execSync } from "child_process"
 import execa from "execa"
 import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
-import { trackCli, trackError } from "gatsby-telemetry"
 import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
 import sysPath from "path"
 import prompts from "prompts"
 import url from "url"
-import { updateSiteMetadata } from "gatsby-core-utils"
-import report from "../reporter"
-import { getPackageManager, setPackageManager } from "./util/package-manager"
-import reporter from "./reporter"
+import reporter from "../reporter"
+import { getPackageManager, setPackageManager } from "../util/package-manager"
 
 const spawnWithArgs = (file, args, options) =>
   execa(file, args, { stdio: `inherit`, preferLocal: false, ...options })
@@ -45,7 +41,7 @@ const isAlreadyGitRepository = async () => {
 
 // Initialize newly cloned directory as a git repo
 const gitInit = async rootPath => {
-  report.info(`Initialising git in ${rootPath}`)
+  reporter.info(`Initialising git in ${rootPath}`)
 
   return await spawn(`git init`, { cwd: rootPath })
 }
@@ -56,16 +52,19 @@ const maybeCreateGitIgnore = async rootPath => {
     return
   }
 
-  report.info(`Creating minimal .gitignore in ${rootPath}`)
+  const gignore = reporter.activity(
+    `Creating minimal .gitignore in ${rootPath}`
+  )
   await fs.writeFile(
     sysPath.join(rootPath, `.gitignore`),
     `.cache\nnode_modules\npublic\n`
   )
+  reporter.success(gignore, `Created .gitignore in ${rootPath}`)
 }
 
 // Create an initial git commit in the new directory
 const createInitialGitCommit = async (rootPath, starterUrl) => {
-  report.info(`Create initial git commit in ${rootPath}`)
+  reporter.info(`Create initial git commit in ${rootPath}`)
 
   await spawn(`git add -A`, { cwd: rootPath })
   // use execSync instead of spawn to handle git clients using
@@ -76,7 +75,7 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
     })
   } catch {
     // Remove git support if initial commit fails
-    report.info(`Initial git commit failed - removing git support\n`)
+    reporter.warn(`Initial git commit failed - removing git support\n`)
     fs.removeSync(sysPath.join(rootPath, `.git`))
   }
 }
@@ -85,7 +84,7 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
 const install = async rootPath => {
   const prevDir = process.cwd()
 
-  report.info(`Installing packages...`)
+  reporter.info(`Installing packages...`)
   process.chdir(rootPath)
 
   const npmConfigUserAgent = process.env.npm_config_user_agent
@@ -127,17 +126,19 @@ const copy = async (starterPath, rootPath) => {
       `You can't create a starter from the existing directory. If you want to
       create a new site in the current directory, the trailing dot isn't
       necessary. If you want to create a new site from a local starter, run
-      something like "gatsby new new-gatsby-site ../my-gatsby-starter"`
+      something like "medusa new my-medusa-store ../local-medusa-starter"`
     )
   }
 
-  report.info(`Creating new site from local starter: ${starterPath}`)
+  reporter.info(`Creating new site from local starter: ${starterPath}`)
 
-  report.log(`Copying local starter to ${rootPath} ...`)
+  const copyActivity = reporter.activity(
+    `Copying local starter to ${rootPath} ...`
+  )
 
   await fs.copy(starterPath, rootPath, { filter: ignored })
 
-  report.success(`Created starter directory layout`)
+  reporter.success(copyActivity, `Created starter directory layout`)
 
   await install(rootPath)
 
@@ -157,7 +158,7 @@ const clone = async (hostInfo, rootPath) => {
 
   const branch = hostInfo.committish ? [`-b`, hostInfo.committish] : []
 
-  report.info(`Creating new site from git: ${url}`)
+  const createAct = reporter.activity(`Creating new site from git: ${url}`)
 
   const args = [
     `clone`,
@@ -170,7 +171,7 @@ const clone = async (hostInfo, rootPath) => {
 
   await spawnWithArgs(`git`, args)
 
-  report.success(`Created starter directory layout`)
+  reporter.success(createAct, `Created starter directory layout`)
 
   await fs.remove(sysPath.join(rootPath, `.git`))
 
@@ -214,7 +215,7 @@ const getPaths = async (starterPath, rootPath) => {
 }
 
 const successMessage = path => {
-  report.info(`
+  reporter.info(`
 Your new Medusa project is ready for you! To start developing run:
 
   cd ${path}
@@ -225,29 +226,17 @@ Your new Medusa project is ready for you! To start developing run:
 /**
  * Main function that clones or copies the starter.
  */
-export async function initStarter(starter, root) {
-  const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
-    starter,
-    root
-  )
+export const newStarter = async (starter, root) => {
+  const { starterPath, rootPath } = await getPaths(starter, root)
 
   const urlObject = url.parse(rootPath)
 
-  if (selectedOtherStarter) {
-    report.info(
-      `Opening the starter library at https://gatsby.dev/starters?v=2...\nThe starter library has a variety of options for starters you can browse\n\nYou can then use the gatsby new command with the link to a repository of a starter you'd like to use, for example:\ngatsby new ${rootPath} https://github.com/gatsbyjs/gatsby-starter-default`
-    )
-    opn(`https://gatsby.dev/starters?v=2`)
-    return
-  }
   if (urlObject.protocol && urlObject.host) {
-    trackError(`NEW_PROJECT_NAME_MISSING`)
-
     const isStarterAUrl =
       starter && !url.parse(starter).hostname && !url.parse(starter).protocol
 
-    if (/gatsby-starter/gi.test(rootPath) && isStarterAUrl) {
-      report.panic({
+    if (/medusa-starter/gi.test(rootPath) && isStarterAUrl) {
+      reporter.panic({
         id: `11610`,
         context: {
           starter,
@@ -256,7 +245,7 @@ export async function initStarter(starter, root) {
       })
       return
     }
-    report.panic({
+    reporter.panic({
       id: `11611`,
       context: {
         rootPath,
@@ -266,7 +255,7 @@ export async function initStarter(starter, root) {
   }
 
   if (!isValid(rootPath)) {
-    report.panic({
+    reporter.panic({
       id: `11612`,
       context: {
         path: sysPath.resolve(rootPath),
@@ -276,8 +265,7 @@ export async function initStarter(starter, root) {
   }
 
   if (existsSync(sysPath.join(rootPath, `package.json`))) {
-    trackError(`NEW_PROJECT_IS_NPM_PROJECT`)
-    report.panic({
+    reporter.panic({
       id: `11613`,
       context: {
         rootPath,
@@ -287,35 +275,21 @@ export async function initStarter(starter, root) {
   }
 
   const hostedInfo = hostedGitInfo.fromUrl(starterPath)
-
-  trackCli(`NEW_PROJECT`, {
-    starterName: hostedInfo ? hostedInfo.shortcut() : `local:starter`,
-  })
   if (hostedInfo) {
     await clone(hostedInfo, rootPath)
   } else {
     await copy(starterPath, rootPath)
   }
 
-  const sitePath = sysPath.resolve(rootPath)
+  // const sitePath = sysPath.resolve(rootPath)
 
-  const sitePackageJson = await fs
-    .readJSON(sysPath.join(sitePath, `package.json`))
-    .catch(() => {
-      reporter.verbose(
-        `Could not read "${sysPath.join(sitePath, `package.json`)}"`
-      )
-    })
-
-  await updateSiteMetadata(
-    {
-      name: sitePackageJson?.name || rootPath,
-      sitePath,
-      lastRun: Date.now(),
-    },
-    false
-  )
+  // const sitePackageJson = await fs
+  //   .readJSON(sysPath.join(sitePath, `package.json`))
+  //   .catch(() => {
+  //     reporter.verbose(
+  //       `Could not read "${sysPath.join(sitePath, `package.json`)}"`
+  //     )
+  //   })
 
   successMessage(rootPath)
-  trackCli(`NEW_PROJECT_END`)
 }
