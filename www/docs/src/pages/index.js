@@ -1,4 +1,3 @@
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import React from "react";
 import { Banner } from "../components/Banner/";
 import { Intro } from "../components/Intro/";
@@ -19,9 +18,6 @@ const CARDS_DATA = [
 ];
 
 export default function Home() {
-  const context = useDocusaurusContext();
-  console.log({ context });
-
   return (
     <Layout title={`Docs`} description="some description...">
       <div className={styles.container}>
