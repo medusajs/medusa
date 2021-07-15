@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.22...medusa-plugin-segment@1.1.23) (2021-07-15)
+
+
+### Bug Fixes
+
+* sends return reasons to segment on Order Refunded event ([55ba9ba](https://github.com/medusajs/medusa/commit/55ba9bae05527d602d654f99d678b610c5ba7229))
+
+
+
+
+
 ## [1.1.22](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.21...medusa-plugin-segment@1.1.22) (2021-07-02)
 
 **Note:** Version bump only for package medusa-plugin-segment
