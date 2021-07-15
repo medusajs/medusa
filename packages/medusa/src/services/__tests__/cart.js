@@ -315,7 +315,8 @@ describe("CartService", () => {
     }
 
     const inventoryService = {
-      confirmInventory: jest.fn().mockImplementation((variantId, quantity) => {
+      ...InventoryServiceMock,
+      confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
         if (variantId !== IdMap.getId("cannot-cover")) {
           return true
         } else {

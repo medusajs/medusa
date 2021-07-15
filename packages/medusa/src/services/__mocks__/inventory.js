@@ -1,10 +1,10 @@
 import { MedusaError } from "medusa-core-utils"
 
 export const InventoryServiceMock = {
-  withTransaction: function () {
+  withTransaction: function() {
     return this
   },
-  adjustInventory: jest.fn().mockReturnValue((variantId, quantity) => {
+  adjustInventory: jest.fn().mockReturnValue((_variantId, _quantity) => {
     return Promise.resolve({})
   }),
   confirmInventory: jest.fn().mockImplementation((variantId, quantity) => {

@@ -35,13 +35,21 @@ class InventoryService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async adjustInventory(variantId, adjustment) {
-    return this.atomicPhase_(async (manager) => {
+    //if variantId is undefined – ergo. a custom item – then do nothing
+    if (typeof variantId === "undefined") {
+      return
+    }
+
+    return this.atomicPhase_(async manager => {
       const variant = await this.productVariantService_.retrieve(variantId)
-      return await this.productVariantService_
-        .withTransaction(manager)
-        .update(variant, {
-          inventory_quantity: variant.inventory_quantity + adjustment,
-        })
+      //if inventory is managed then update
+      if (variant.manage_inventory) {
+        return await this.productVariantService_
+          .withTransaction(manager)
+          .update(variant, {
+            inventory_quantity: variant.inventory_quantity + adjustment,
+          })
+      }
     })
   }
   /**
@@ -53,8 +61,13 @@ class InventoryService extends BaseService {
    * @return {boolean} true if the inventory covers the quantity
    */
   async confirmInventory(variantId, quantity) {
-    const variant = await this.productVariantService_.retrieve(variantId)
+    //if variantId is undefined then confirm inventory as it
+    //is a custom item that is not managed
+    if (typeof variantId === "undefined") {
+      return true
+    }
 
+    const variant = await this.productVariantService_.retrieve(variantId)
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     const isCovered =
       !manage_inventory || allow_backorder || inventory_quantity >= quantity

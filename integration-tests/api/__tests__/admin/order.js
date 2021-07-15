@@ -1,6 +1,11 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { ReturnReason, Order, LineItem } = require("@medusajs/medusa");
+const {
+  ReturnReason,
+  Order,
+  LineItem,
+  ProductVariant,
+} = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -217,6 +222,38 @@ describe("/admin/orders", () => {
       const secondInventoryRes = await api.get("/store/variants/test-variant");
 
       expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(2);
+    });
+
+    it("cancels an order but does not increment inventory_quantity of unmanaged variant", async () => {
+      const api = useApi();
+      const manager = dbConnection.manager;
+
+      await manager.query(
+        `UPDATE "product_variant" SET manage_inventory=false WHERE id = 'test-variant'`
+      );
+
+      const initialInventoryRes = await api.get("/store/variants/test-variant");
+
+      expect(initialInventoryRes.data.variant.inventory_quantity).toEqual(1);
+
+      const response = await api
+        .post(
+          `/admin/orders/test-order-not-payed/cancel`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
+      expect(response.status).toEqual(200);
+
+      const secondInventoryRes = await api.get("/store/variants/test-variant");
+
+      expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(1);
     });
   });
 
@@ -920,6 +957,41 @@ describe("/admin/orders", () => {
 
       expect(returned.status).toEqual(200);
       expect(toTest.variant.inventory_quantity).toEqual(2);
+    });
+
+    it("does not increases inventory_quantity when return is received when inventory is not managed", async () => {
+      const api = useApi();
+      const manager = dbConnection.manager;
+
+      await manager.query(
+        `UPDATE "product_variant" SET manage_inventory=false WHERE id = 'test-variant'`
+      );
+
+      const returned = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          receive_now: true,
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      );
+
+      //Find variant that should have its inventory_quantity updated
+      const toTest = returned.data.order.items.find(
+        (i) => i.id === "test-item"
+      );
+
+      expect(returned.status).toEqual(200);
+      expect(toTest.variant.inventory_quantity).toEqual(1);
     });
   });
 

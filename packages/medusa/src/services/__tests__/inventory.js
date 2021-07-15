@@ -50,6 +50,11 @@ describe("InventoryService", () => {
       jest.clearAllMocks()
     })
 
+    it("should not call update in productVariantService because variant is not managed", async () => {
+      await inventoryService.adjustInventory("no_manage", 1000)
+      expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(0)
+    })
+
     it("should call update in productVariantService once", async () => {
       await inventoryService.adjustInventory("10_man", 10)
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
