@@ -2,7 +2,7 @@ const axios = require("axios").default
 const open = require("open")
 const inquirer = require("inquirer")
 
-const logger = require("../logger").default
+const logger = require("../reporter").default
 const { setToken } = require("../util/token-store")
 
 /**
