@@ -11,10 +11,10 @@ import { graphql } from "gatsby"
 import Section from "../components/section"
 
 export default function Home({ data }) {
-  const { apiNode } = data
-  console.log("api node: ", apiNode)
+  console.log("api node: ", data)
+  const { store } = data
 
-  const Sections = apiNode.sections.map(({ section }) => (
+  const Sections = store.sections.map(({ section }) => (
     <Section
       id={section.section_name}
       key={section.section_name}
@@ -33,10 +33,10 @@ export default function Home({ data }) {
 
 export const data = graphql`
   query MyQuery {
-    apiNode {
+    store {
       sections {
         section {
-          ...section
+          ...StoreSection
         }
       }
     }

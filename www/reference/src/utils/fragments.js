@@ -1,43 +1,43 @@
 import { graphql } from "gatsby"
 
-export const sections = graphql`
-  fragment sections on ApiNodeSections {
+export const StoreSections = graphql`
+  fragment StoreSections on StoreSections {
     sections {
-      ...section
+      ...StoreSection
     }
   }
 `
 
-export const section = graphql`
-  fragment section on ApiNodeSectionsSection {
+export const StoreSection = graphql`
+  fragment StoreSection on StoreSectionsSection {
     section_name
     paths {
-      ...path
+      ...StorePath
     }
   }
 `
 
-export const path = graphql`
-  fragment path on ApiNodeSectionsSectionPaths {
+export const StorePath = graphql`
+  fragment StorePath on StoreSectionsSectionPaths {
     name
     methods {
-      ...method
+      ...StoreMethod
     }
   }
 `
 
-export const method = graphql`
-  fragment method on ApiNodeSectionsSectionPathsMethods {
+export const StoreMethod = graphql`
+  fragment StoreMethod on StoreSectionsSectionPathsMethods {
     tags
     summary
     description
     method
     operationId
     responses {
-      ...response
+      ...StoreResponse
     }
     requestBody {
-      ...requestBody
+      ...StoreRequestBody
     }
 
     parameters {
@@ -52,8 +52,99 @@ export const method = graphql`
   }
 `
 
-export const response = graphql`
-  fragment response on ApiNodeSectionsSectionPathsMethodsResponses {
+export const StoreResponse = graphql`
+  fragment StoreResponse on StoreSectionsSectionPathsMethodsResponses {
+    status
+    description
+    content {
+      _ref
+      property
+      description
+      items {
+        _ref
+      }
+    }
+  }
+`
+
+export const StoreRequestBody = graphql`
+  fragment StoreRequestBody on StoreSectionsSectionPathsMethodsRequestBody {
+    type
+    required
+    properties {
+      description
+      property
+      type
+      items {
+        properties {
+          property
+          description
+        }
+      }
+      properties {
+        option_id {
+          type
+          description
+        }
+      }
+    }
+  }
+`
+
+export const AdminSections = graphql`
+  fragment AdminSections on AdminSections {
+    sections {
+      ...AdminSection
+    }
+  }
+`
+
+export const AdminSection = graphql`
+  fragment AdminSection on AdminSectionsSection {
+    section_name
+    paths {
+      ...AdminPath
+    }
+  }
+`
+
+export const AdminPath = graphql`
+  fragment AdminPath on AdminSectionsSectionPaths {
+    name
+    methods {
+      ...AdminMethod
+    }
+  }
+`
+
+export const AdminMethod = graphql`
+  fragment AdminMethod on AdminSectionsSectionPathsMethods {
+    tags
+    summary
+    description
+    method
+    operationId
+    responses {
+      ...AdminResponse
+    }
+    requestBody {
+      ...AdminRequestBody
+    }
+
+    parameters {
+      description
+      in
+      name
+      required
+      schema {
+        type
+      }
+    }
+  }
+`
+
+export const AdminResponse = graphql`
+  fragment AdminResponse on AdminSectionsSectionPathsMethodsResponses {
     status
     description
     content {
@@ -69,8 +160,8 @@ export const response = graphql`
   }
 `
 
-export const requestBody = graphql`
-  fragment requestBody on ApiNodeSectionsSectionPathsMethodsRequestBody {
+export const AdminRequestBody = graphql`
+  fragment AdminRequestBody on AdminSectionsSectionPathsMethodsRequestBody {
     type
     required
     properties {
