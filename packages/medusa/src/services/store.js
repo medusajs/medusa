@@ -189,7 +189,7 @@ class StoreService extends BaseService {
 
       if (store.currencies.map(c => c.code).includes(curr.code.toLowerCase())) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.DUPLICATE_ERROR,
           `Currency already added`
         )
       }

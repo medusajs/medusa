@@ -328,7 +328,7 @@ class RegionService extends BaseService {
 
     if (country.region_id && country.region_id !== regionId) {
       throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
+        MedusaError.Types.DUPLICATE_ERROR,
         `${country.name} already exists in ${country.name}, delete it in that region before adding it`
       )
     }

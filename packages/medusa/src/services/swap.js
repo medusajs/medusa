@@ -440,7 +440,7 @@ class SwapService extends BaseService {
 
       if (swap.cart_id) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
+          MedusaError.Types.DUPLICATE_ERROR,
           "A cart has already been created for the swap"
         )
       }

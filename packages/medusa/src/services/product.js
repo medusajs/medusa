@@ -492,7 +492,7 @@ class ProductService extends BaseService {
 
       if (product.options.find(o => o.title === optionTitle)) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.DUPLICATE_ERROR,
           `An option with the title: ${optionTitle} already exists`
         )
       }
@@ -631,7 +631,7 @@ class ProductService extends BaseService {
       if (!productOption) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Option with id: ${optionId} deos not exists`
+          `Option with id: ${optionId} does not exists`
         )
       }
 
