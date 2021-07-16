@@ -1,0 +1,40 @@
+{
+  "name": "medusa-payment-manual",
+  "version": "1.0.0",
+  "description": "A dummy payment provider to be used for testing or manual payments",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-payment-manual"
+  },
+  "author": "Sebastian Rindom",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/plugin-transform-classes": "^7.9.5",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/register": "^7.7.4",
+    "@babel/runtime": "^7.9.6",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0",
+    "jest": "^25.5.2",
+    "medusa-test-utils": "^1.1.21"
+  },
+  "scripts": {
+    "build": "babel src -d . --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "medusa-interfaces": "1.x"
+  },
+  "gitHead": "db9d6c0cf55ff60a90415b16bc7582cc4795768f"
+}
