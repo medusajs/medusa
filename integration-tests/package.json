@@ -1,0 +1,14 @@
+{
+  "name": "integration-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zakaria S. El Asri",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^10.0.0"
+  }
+}
