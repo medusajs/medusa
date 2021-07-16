@@ -8,10 +8,9 @@ class ManualPaymentService extends PaymentService {
   }
 
   /**
-   * Fetches Stripe payment intent. Check its status and returns the
-   * corresponding Medusa status.
+   * Returns the currently held status.
    * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * @returns {string} the status of the payment
    */
   async getStatus(paymentData) {
     const { status } = paymentData
@@ -19,29 +18,25 @@ class ManualPaymentService extends PaymentService {
   }
 
   /**
-   * Creates a Stripe payment intent.
-   * If customer is not registered in Stripe, we do so.
+   * Creates a manual payment with status "pending"
    * @param {object} cart - cart to create a payment for
-   * @returns {object} Stripe payment intent
+   * @returns {object} an object with staus
    */
   async createPayment() {
     return { status: "pending" }
   }
 
   /**
-   * Retrieves Stripe payment intent.
+   * Retrieves payment
    * @param {object} data - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @returns {Promise<object>} returns data
    */
   async retrievePayment(data) {
     return data
   }
 
   /**
-   * Authorizes Stripe payment intent by simply returning
-   * the status for the payment intent in use.
-   * @param {object} sessionData - payment session data
-   * @param {object} context - properties relevant to current context
+   * Updates the payment status to authorized
    * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment() {
@@ -49,12 +44,11 @@ class ManualPaymentService extends PaymentService {
   }
 
   /**
-   * Updates Stripe payment intent.
+   * Noop, simply returns existing data.
    * @param {object} sessionData - payment session data.
-   * @param {object} update - objec to update intent with
-   * @returns {object} Stripe payment intent
+   * @returns {object} same data
    */
-  async updatePayment(sessionData, cart) {
+  async updatePayment(sessionData) {
     return sessionData.data
   }
 
@@ -63,32 +57,35 @@ class ManualPaymentService extends PaymentService {
   }
 
   /**
-   * Captures payment for Stripe payment intent.
+   * Updates the payment status to captured
    * @param {object} paymentData - payment method data from cart
-   * @returns {object} Stripe payment intent
+   * @returns {object} object with updated status
    */
   async capturePayment() {
     return { status: "captured" }
   }
 
+  /**
+   * Returns the data currently held in a status
+   * @param {object} paymentData - payment method data from cart
+   * @returns {object} the current data
+   */
   async getPaymentData(session) {
     return session.data
   }
 
   /**
-   * Refunds payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
-   * @param {number} amountToRefund - amount to refund
-   * @returns {string} refunded payment intent
+   * Noop, resolves to allow manual refunds.
+   * @param {object} payment - payment method data from cart
+   * @returns {string} same data
    */
   async refundPayment(payment) {
     return payment.data
   }
 
   /**
-   * Cancels payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {object} canceled payment intent
+   * Updates the payment status to cancled
+   * @returns {object} object with canceled status
    */
   async cancelPayment() {
     return { status: "canceled" }
