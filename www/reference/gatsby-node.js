@@ -179,25 +179,3 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 }
-
-fs.writeFile(
-  "./data/admin-api.json",
-  JSON.stringify(useSpec(adminDoc)),
-  function (err) {
-    if (err) {
-      return console.log(err)
-    }
-    console.log("THE JSON FILE WAS CREATED!!!!")
-  }
-)
-
-fs.writeFile(
-  "./data/storefront-api.json",
-  JSON.stringify(useSpec(storeFront)),
-  function (err) {
-    if (err) {
-      return console.log(err)
-    }
-    console.log("THE JSON FILE WAS CREATED!!!!")
-  }
-)

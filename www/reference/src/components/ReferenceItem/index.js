@@ -4,8 +4,9 @@ import styled from "@emotion/styled"
 
 const Container = styled(Flex)``
 
-const Section = ({ id, name }) => {
-  return <Container id={id}>{name}</Container>
+const ReferenceItem = ({ data }) => {
+  console.log(data)
+  return <Container>lalala</Container>
 }
 
-export default Section
+export default ReferenceItem

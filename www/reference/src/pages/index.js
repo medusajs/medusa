@@ -1,18 +1,17 @@
 import React from "react"
-import { Flex } from "rebass"
 import { Helmet } from "react-helmet"
+import { Flex, Box } from "theme-ui"
 
 import Layout from "../components/layout"
-import SideBar from "../components/sidebar"
-import DocsReader from "../components/docs-reader"
-
-import AdminApi from "../../data/admin-api.json"
 import { graphql } from "gatsby"
 import Section from "../components/section"
+import ReferenceItem from "../components/ReferenceItem"
 
 export default function Home({ data }) {
   const { apiNode } = data
-  console.log("api node: ", apiNode)
+  const {
+    apiNode: { sections },
+  } = data
 
   const Sections = apiNode.sections.map(({ section }) => (
     <Section
@@ -21,12 +20,21 @@ export default function Home({ data }) {
       name={section.section_name}
     />
   ))
+
+  const ReferenceItems = sections.map(({ section }) => (
+    <ReferenceItem data={section} />
+  ))
   return (
     <Layout>
       <Helmet>
         <title>API Docs | Medusa Commerce</title>
       </Helmet>
-      <main>{Sections}</main>
+      <main>
+        <Flex>
+          <Box>{Sections}</Box>
+          <Box>{ReferenceItems}</Box>
+        </Flex>
+      </main>
     </Layout>
   )
 }
