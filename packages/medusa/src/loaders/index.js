@@ -39,6 +39,10 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     return this
   }.bind(container)
 
+  container.register("paymentProviders", asArray([]))
+  container.register("fulfillmentProviders", asArray([]))
+  container.register("notificationProviders", asArray([]))
+
   // Economical way of dealing with redis clients
   const client = new Redis(configModule.projectConfig.redis_url)
   const subscriber = new Redis(configModule.projectConfig.redis_url)
