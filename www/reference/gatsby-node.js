@@ -58,14 +58,54 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       return {
         name: path,
         methods: Object.entries(values).map(([method, values]) => {
+          const requestBodyValues =
+            values?.requestBody?.content?.["application/json"]?.schema
+
           return {
             method: method,
             ...values,
+            requestBody: {
+              required: requestBodyValues?.required,
+              type: requestBodyValues?.type,
+              properties: Object.entries(
+                requestBodyValues?.properties || {}
+              ).map(([property, values]) => {
+                const items = values.items
+
+                return {
+                  ...values,
+                  property: property,
+
+                  items: {
+                    ...items,
+                    type: items?.type,
+                    properties: items?.properties
+                      ? Object.entries(items?.properties).map(
+                          ([property, values]) => {
+                            return {
+                              property: property,
+                              ...values,
+                            }
+                          }
+                        )
+                      : null,
+                  },
+                }
+              }),
+            },
+
             responses: Object.entries(values.responses).map(
               ([response, values]) => {
+                const properties =
+                  values.content?.["application/json"]?.schema?.properties
                 return {
                   status: response,
-                  ...values,
+                  content: properties
+                    ? Object.entries(properties).map(([property, values]) => {
+                        return { property: property, ...values }
+                      })
+                    : null,
+                  description: values.description,
                 }
               }
             ),
