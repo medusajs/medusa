@@ -441,7 +441,7 @@ class CartService extends BaseService {
         // Confirm inventory or throw error
         await this.inventoryService_
           .withTransaction(manager)
-          .confirmInventory(lineItem.variant_id, lineItem.quantity)
+          .confirmInventory(lineItem.variant_id, newQuantity)
 
         await this.lineItemService_
           .withTransaction(manager)
@@ -449,6 +449,11 @@ class CartService extends BaseService {
             quantity: newQuantity,
           })
       } else {
+        // Confirm inventory or throw error
+        await this.inventoryService_
+          .withTransaction(manager)
+          .confirmInventory(lineItem.variant_id, lineItem.quantity)
+
         await this.lineItemService_.withTransaction(manager).create({
           ...lineItem,
           has_shipping: false,

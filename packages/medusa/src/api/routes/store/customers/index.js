@@ -58,7 +58,7 @@ export default (app, container) => {
   return app
 }
 
-export const defaultRelations = ["shipping_addresses"]
+export const defaultRelations = ["shipping_addresses", "billing_address"]
 
 export const defaultFields = [
   "id",
