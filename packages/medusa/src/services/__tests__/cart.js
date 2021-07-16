@@ -200,11 +200,23 @@ describe("CartService", () => {
 
     const addressRepository = MockRepository({ create: c => c })
     const cartRepository = MockRepository()
+    const customerService = {
+      retrieveByEmail: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: IdMap.getId("customer"),
+          email: "email@test.com",
+        })
+      ),
+      withTransaction: function() {
+        return this
+      },
+    }
     const cartService = new CartService({
       manager: MockManager,
       addressRepository,
       totalsService,
       cartRepository,
+      customerService,
       regionService,
       eventBusService,
     })
@@ -216,6 +228,7 @@ describe("CartService", () => {
     it("successfully creates a cart", async () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
+        email: "email@test.com",
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
@@ -235,6 +248,9 @@ describe("CartService", () => {
         shipping_address: {
           country_code: "us",
         },
+        customer_id: IdMap.getId("customer"),
+        email: "email@test.com",
+        customer: expect.any(Object),
       })
 
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
@@ -715,11 +731,17 @@ describe("CartService", () => {
         if (email === "no@mail.com") {
           return Promise.reject()
         }
-        return Promise.resolve({ id: IdMap.getId("existing") })
+        return Promise.resolve({
+          id: IdMap.getId("existing"),
+          email,
+        })
       }),
-      create: jest
-        .fn()
-        .mockReturnValue(Promise.resolve({ id: IdMap.getId("newCus") })),
+      create: jest.fn().mockImplementation(data =>
+        Promise.resolve({
+          id: IdMap.getId("newCus"),
+          email: data.email,
+        })
+      ),
       withTransaction: function() {
         return this
       },
@@ -755,6 +777,7 @@ describe("CartService", () => {
         customer_id: IdMap.getId("existing"),
         customer: {
           id: IdMap.getId("existing"),
+          email: "test@testdom.com",
         },
         email: "test@testdom.com",
         discount_total: 0,
@@ -779,7 +802,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith({
         customer_id: IdMap.getId("newCus"),
-        customer: { id: IdMap.getId("newCus") },
+        customer: { id: IdMap.getId("newCus"), email: "no@mail.com" },
         email: "no@mail.com",
         discount_total: 0,
         shipping_total: 0,
