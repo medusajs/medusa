@@ -84,8 +84,26 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
         return acc
       }
 
-      const existingSection = acc.find(s => s.section_name === section)
+      const existingSection = acc.find(s => s.section.section_name === section)
 
+      /** We want the query to return the following:
+       *
+       * sections [
+       *  section: {
+       *    section_name: Orders
+       *    paths: [<array-of-paths>]
+       *  }
+       * ]
+       *
+       * The reason that we wrap it in a section is so the query returns Section type, the alternative is
+       * sections [
+       *  Order: {...},
+       *  Customer: {...}
+       *  ...
+       * ]
+       *
+       * Which isn't structured as a reuseable type
+       */
       if (!existingSection) {
         acc.push({
           section: {
@@ -94,7 +112,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
           },
         })
       } else {
-        existingSection.paths.push({ ...current })
+        existingSection.section.paths.push({ ...current })
       }
 
       //acc[section].section[current.name] = { ...current }
@@ -102,9 +120,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       return acc
     }, [])
 
-    console.log("sections: ", nodeSections)
-
-    //console.log(nodePaths)
     const result = {
       name: `api-nodes`,
       paths: nodePaths,
