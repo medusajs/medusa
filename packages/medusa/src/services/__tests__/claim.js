@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ClaimService from "../claim"
+import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const withTransactionMock = jest.fn()
 const eventBusService = {
@@ -73,6 +74,14 @@ describe("ClaimService", () => {
       },
     }
 
+    const inventoryService = {
+      ...InventoryServiceMock,
+      withTransaction: function() {
+        withTransactionMock("inventory")
+        return this
+      },
+    }
+
     const claimItemService = {
       create: jest.fn(),
       withTransaction: function() {
@@ -88,6 +97,7 @@ describe("ClaimService", () => {
       returnService,
       lineItemService,
       claimItemService,
+      inventoryService,
       eventBusService,
     })
 
@@ -123,6 +133,18 @@ describe("ClaimService", () => {
         "var_123",
         "order_region",
         1
+      )
+
+      expect(inventoryService.confirmInventory).toHaveBeenCalledTimes(1)
+      expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
+        "var_123",
+        1
+      )
+      expect(withTransactionMock).toHaveBeenCalledWith("inventory")
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(1)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "var_123",
+        -1
       )
 
       expect(withTransactionMock).toHaveBeenCalledWith("claimItem")
@@ -213,6 +235,24 @@ describe("ClaimService", () => {
       ).rejects.toThrow(`Claims must have at least one claim item.`)
     })
 
+    it("fails if additional items are not in stock", async () => {
+      try {
+        const res = await claimService.create({
+          ...testClaim,
+          additional_items: [
+            {
+              variant_id: "var_123",
+              quantity: 25,
+            },
+          ],
+        })
+        console.warn(res)
+      } catch (e) {
+        expect(e.message).toEqual(
+          `Variant with id: var_123 does not have the required inventory`
+        )
+      }
+    })
     it.each(
       [
         [false, false],

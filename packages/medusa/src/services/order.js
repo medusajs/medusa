@@ -39,6 +39,7 @@ class OrderService extends BaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
+    inventoryService,
     eventBusService,
   }) {
     super()
@@ -93,6 +94,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {DraftOrderService} */
     this.draftOrderService_ = draftOrderService
+
+    /** @private @constant {InventoryService} */
+    this.inventoryService_ = inventoryService
   }
 
   withTransaction(manager) {
@@ -118,6 +122,7 @@ class OrderService extends BaseService {
       giftCardService: this.giftCardService_,
       addressRepository: this.addressRepository_,
       draftOrderService: this.draftOrderService_,
+      inventoryService: this.inventoryService_,
     })
 
     cloned.transactionManager_ = manager
@@ -451,6 +456,21 @@ class OrderService extends BaseService {
         )
       }
 
+      const { payment, region, total } = cart
+
+      for (const item of cart.items) {
+        try {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .confirmInventory(item.variant_id, item.quantity)
+        } catch (err) {
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .cancelPayment(payment)
+          throw err
+        }
+      }
+
       const exists = await this.existsByCartId(cart.id)
       if (exists) {
         throw new MedusaError(
@@ -459,7 +479,6 @@ class OrderService extends BaseService {
         )
       }
 
-      const { payment, region, total } = cart
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
@@ -549,6 +568,12 @@ class OrderService extends BaseService {
         await this.lineItemService_
           .withTransaction(manager)
           .update(item.id, { order_id: result.id })
+      }
+
+      for (const item of cart.items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(item.variant_id, -item.quantity)
       }
 
       await this.eventBus_
@@ -864,7 +889,7 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: ["fulfillments", "payments"],
+        relations: ["fulfillments", "payments", "items"],
       })
 
       if (order.payment_status !== "awaiting") {
@@ -881,6 +906,12 @@ class OrderService extends BaseService {
             .cancelFulfillment(fulfillment)
         )
       )
+
+      for (const item of order.items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(item.variant_id, item.quantity)
+      }
 
       for (const p of order.payments) {
         await this.paymentProviderService_

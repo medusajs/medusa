@@ -260,7 +260,7 @@ class ProductVariantService extends BaseService {
         )
       }
 
-      const { prices, options, metadata, ...rest } = update
+      const { prices, options, metadata, inventory_quantity, ...rest } = update
 
       if (prices) {
         for (const price of prices) {
@@ -291,11 +291,16 @@ class ProductVariantService extends BaseService {
         variant.metadata = this.setMetadata_(variant, metadata)
       }
 
+      if (typeof inventory_quantity === "number") {
+        variant.inventory_quantity = inventory_quantity
+      }
+
       for (const [key, value] of Object.entries(rest)) {
         variant[key] = value
       }
 
       const result = await variantRepo.save(variant)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductVariantService.Events.UPDATED, {
@@ -516,23 +521,6 @@ class ProductVariantService extends BaseService {
 
       return Promise.resolve()
     })
-  }
-
-  /**
-   * Checks if the inventory of a variant can cover a given quantity. Will
-   * return true if the variant doesn't have managed inventory or if the variant
-   * allows backorders or if the inventory quantity is greater than `quantity`.
-   * @params {string} variantId - the id of the variant to check
-   * @params {number} quantity - the number of units to check availability for
-   * @return {boolean} true if the inventory covers the quantity
-   */
-  async canCoverQuantity(variantId, quantity) {
-    const variant = await this.retrieve(variantId)
-
-    const { inventory_quantity, allow_backorder, manage_inventory } = variant
-    return (
-      !manage_inventory || allow_backorder || inventory_quantity >= quantity
-    )
   }
 
   /**
