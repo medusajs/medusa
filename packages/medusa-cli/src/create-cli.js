@@ -6,6 +6,7 @@ const existsSync = require(`fs-exists-cached`).sync
 const { getLocalMedusaVersion } = require(`./util/version`)
 const { didYouMean } = require(`./did-you-mean`)
 
+const { newStarter } = require("./commands/new")
 const { whoami } = require("./commands/whoami")
 const { login } = require("./commands/login")
 const { link } = require("./commands/link")
@@ -66,6 +67,13 @@ function buildLocalCommands(cli, isLocalProject) {
   }
 
   cli
+    .command({
+      command: `new [rootPath] [starter]`,
+      desc: `Create a new Medusa project.`,
+      handler: handlerP(async ({ rootPath, starter }) => {
+        return await newStarter(starter, rootPath)
+      }),
+    })
     .command({
       command: `seed`,
       desc: `Migrates and populates the database with the provided file.`,
