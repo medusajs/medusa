@@ -81,7 +81,7 @@ class ManualPaymentService extends PaymentService {
    * @param {number} amountToRefund - amount to refund
    * @returns {string} refunded payment intent
    */
-  async refundPayment() {
+  async refundPayment(payment) {
     return payment.data
   }
 
