@@ -1,20 +1,15 @@
 import React from "react"
-import { Flex } from "rebass"
+import { graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 
 import Layout from "../components/layout"
-import SideBar from "../components/sidebar"
-import DocsReader from "../components/docs-reader"
-
-import AdminApi from "../../data/admin-api.json"
-import { graphql } from "gatsby"
 import Section from "../components/section"
 
 export default function Home({ data }) {
   console.log("api node: ", data)
-  const { store } = data
+  const { admin, store } = data
 
-  const Sections = store.sections.map(({ section }) => (
+  const Sections = admin.sections.map(({ section }) => (
     <Section
       id={section.section_name}
       key={section.section_name}
@@ -33,6 +28,19 @@ export default function Home({ data }) {
 
 export const data = graphql`
   query MyQuery {
+    admin {
+      sections {
+        section {
+          ...AdminSection
+        }
+      }
+    }
+  }
+`
+
+/**query store example:
+ * export const data = graphql`
+  query MyQuery {
     store {
       sections {
         section {
@@ -42,3 +50,4 @@ export const data = graphql`
     }
   }
 `
+ */
