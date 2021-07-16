@@ -1447,7 +1447,7 @@
     "@docusaurus/types" "2.0.0-beta.3"
     tslib "^2.1.0"
 
-"@docusaurus/theme-search-algolia@2.0.0-beta.3":
+"@docusaurus/theme-search-algolia@2.0.0-beta.3", "@docusaurus/theme-search-algolia@^2.0.0-beta.3":
   version "2.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-search-algolia/-/theme-search-algolia-2.0.0-beta.3.tgz#9ca8142fe4686d262d546c9ba309d02d9d4d59a9"
   integrity sha512-fxWxcXGmqjwuA7zYRAbwqSANx3PVVjYUehV9SI28u5qq8U2tSYflhd1nGogM6guiV+Er6u8gwO91PL6wg3/vBA==
