@@ -1,19 +1,17 @@
 import React from "react"
+import { graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 import { Flex, Box } from "theme-ui"
 
 import Layout from "../components/layout"
-import { graphql } from "gatsby"
 import Section from "../components/section"
 import ReferenceItem from "../components/ReferenceItem"
 
 export default function Home({ data }) {
-  const { apiNode } = data
-  const {
-    apiNode: { sections },
-  } = data
+  console.log("api node: ", data)
+  const { admin, store } = data
 
-  const Sections = apiNode.sections.map(({ section }) => (
+  const Sections = admin.sections.map(({ section }) => (
     <Section
       id={section.section_name}
       key={section.section_name}
@@ -41,12 +39,26 @@ export default function Home({ data }) {
 
 export const data = graphql`
   query MyQuery {
-    apiNode {
+    admin {
       sections {
         section {
-          ...section
+          ...AdminSection
         }
       }
     }
   }
 `
+
+/**query store example:
+ * export const data = graphql`
+  query MyQuery {
+    store {
+      sections {
+        section {
+          ...StoreSection
+        }
+      }
+    }
+  }
+`
+ */
