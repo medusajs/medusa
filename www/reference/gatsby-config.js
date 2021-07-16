@@ -36,12 +36,7 @@ module.exports = {
     },
     `gatsby-transformer-json`,
     `gatsby-plugin-emotion`,
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/../../docs/api/store`,
-      },
-    },
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {

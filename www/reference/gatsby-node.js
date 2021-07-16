@@ -43,7 +43,7 @@ const useSpec = raw => {
 }
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
-  const { createNodeField } = actions
+  const { createNodeField, createNode } = actions
   if (node.internal.type === `MarkdownRemark`) {
     const slug = createFilePath({ node, getNode })
     createNodeField({
@@ -51,6 +51,51 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       name: `slug`,
       value: slug,
     })
+  }
+
+  if (node.internal.type === "ApiJson" && node.components) {
+    console.log("HERE: ", node)
+    console.log("Paths")
+
+    const nodePaths = Object.entries(node.paths).map(([path, values]) => {
+      return {
+        name: path,
+        methods: Object.entries(values).map(([method, values]) => {
+          return {
+            method: method,
+            ...values,
+            responses: Object.entries(values.responses).map(
+              ([response, values]) => {
+                return {
+                  status: response,
+                  ...values,
+                }
+              }
+            ),
+          }
+        }),
+      }
+    })
+    console.log(nodePaths)
+    const result = {
+      name: `api-nodes`,
+      paths: nodePaths,
+      rawNode: node,
+
+      // required fields
+      id: `api-nodes`,
+      parent: null, // or null if it's a source node without a parent
+      children: [],
+      internal: {
+        type: `ApiNode`,
+        contentDigest: `store-api-${node.internal.contentDigest}`,
+        mediaType: node.internal.mediaType, // optional
+        content: node.internal.content, // optional
+        description: `A cleaned version of file-system-api json files`, // optional
+      },
+    }
+
+    createNode(result)
   }
 }
 
