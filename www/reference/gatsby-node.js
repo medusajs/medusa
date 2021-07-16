@@ -76,10 +76,39 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
         }),
       }
     })
-    console.log(nodePaths)
+
+    const nodeSections = nodePaths.reduce((acc, current) => {
+      const section = current.methods.find(method => method.tags).tags[0]
+
+      if (!section) {
+        return acc
+      }
+
+      const existingSection = acc.find(s => s.section_name === section)
+
+      if (!existingSection) {
+        acc.push({
+          section: {
+            section_name: section,
+            paths: [{ ...current }],
+          },
+        })
+      } else {
+        existingSection.paths.push({ ...current })
+      }
+
+      //acc[section].section[current.name] = { ...current }
+
+      return acc
+    }, [])
+
+    console.log("sections: ", nodeSections)
+
+    //console.log(nodePaths)
     const result = {
       name: `api-nodes`,
       paths: nodePaths,
+      sections: nodeSections,
       rawNode: node,
 
       // required fields
