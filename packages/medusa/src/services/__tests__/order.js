@@ -100,6 +100,7 @@ describe("OrderService", () => {
         return Promise.resolve(payment.status || "authorized")
       },
       updatePayment: jest.fn(),
+      cancelPayment: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -450,9 +451,14 @@ describe("OrderService", () => {
         total: 100,
       }
       orderService.cartService_.retrieve = () => Promise.resolve(cart)
-      await expect(orderService.createFromCart(cart)).rejects.toThrow(
+      const res = orderService.createFromCart(cart)
+      await expect(res).rejects.toThrow(
         "Variant with id: variant-1 does not have the required inventory"
       )
+      //check to see if payment is cancelled
+      expect(
+        orderService.paymentProviderService_.cancelPayment
+      ).toHaveBeenCalledTimes(1)
     })
   })
 

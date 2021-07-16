@@ -455,10 +455,19 @@ class OrderService extends BaseService {
         )
       }
 
+      const { payment, region, total } = cart
+
       for (const item of cart.items) {
-        await this.inventoryService_
-          .withTransaction(manager)
-          .confirmInventory(item.variant_id, item.quantity)
+        try {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .confirmInventory(item.variant_id, item.quantity)
+        } catch (err) {
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .cancelPayment(payment)
+          throw err
+        }
       }
 
       const exists = await this.existsByCartId(cart.id)
@@ -469,7 +478,6 @@ class OrderService extends BaseService {
         )
       }
 
-      const { payment, region, total } = cart
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
