@@ -54,9 +54,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 
   if (node.internal.type === "ApiJson" && node.components) {
-    console.log("HERE: ", node)
-    console.log("Paths")
-
     const nodePaths = Object.entries(node.paths).map(([path, values]) => {
       return {
         name: path,
@@ -78,6 +75,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     })
 
     const nodeSections = nodePaths.reduce((acc, current) => {
+      // Not bulleproof and kind of naive
       const section = current.methods.find(method => method.tags).tags[0]
 
       if (!section) {
@@ -121,13 +119,13 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     }, [])
 
     const result = {
-      name: `api-nodes`,
+      name: `apiNodes`,
       paths: nodePaths,
       sections: nodeSections,
       rawNode: node,
 
       // required fields
-      id: `api-nodes`,
+      id: `apiNodes`,
       parent: null, // or null if it's a source node without a parent
       children: [],
       internal: {

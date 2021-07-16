@@ -7,17 +7,27 @@ import SideBar from "../components/sidebar"
 import DocsReader from "../components/docs-reader"
 
 import AdminApi from "../../data/admin-api.json"
+import { graphql } from "gatsby"
 
-export default function Home() {
+export default function Home({ data }) {
+  console.log("data: ", data)
   return (
     <Layout>
       <Helmet>
         <title>API Docs | Medusa Commerce</title>
       </Helmet>
-      <Flex>
-        <SideBar tags={AdminApi.tags} />
-        <DocsReader tags={AdminApi.tags} spec={AdminApi.spec} />
-      </Flex>
     </Layout>
   )
 }
+
+export const data = graphql`
+  query MyQuery {
+    apiNode {
+      sections {
+        section {
+          ...section
+        }
+      }
+    }
+  }
+`
