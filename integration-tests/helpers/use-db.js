@@ -4,8 +4,8 @@ require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { dropDatabase, createDatabase } = require("pg-god");
 const { createConnection } = require("typeorm");
 
-const DB_USERNAME = process.env.DB_USERNAME;
-const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_USERNAME = process.env.DB_USERNAME || "postgres";
+const DB_PASSWORD = process.env.DB_PASSWORD || "";
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration`;
 const pgGodCredentials = {
   user: DB_USERNAME,

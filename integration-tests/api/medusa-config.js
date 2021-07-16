@@ -1,5 +1,5 @@
-const DB_USERNAME = process.env.DB_USERNAME;
-const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_USERNAME = process.env.DB_USERNAME || "postgres";
+const DB_PASSWORD = process.env.DB_PASSWORD || "";
 
 module.exports = {
   plugins: [],
