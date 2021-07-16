@@ -287,6 +287,7 @@ class OrderService extends BaseService {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("swaps")
+      relationSet.add("swaps.additional_items")
       relationSet.add("discounts")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
