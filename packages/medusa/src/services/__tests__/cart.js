@@ -1,4 +1,3 @@
-import { ConsoleWriter } from "istanbul-lib-report"
 import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import CartService from "../cart"

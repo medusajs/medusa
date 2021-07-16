@@ -434,15 +434,14 @@ class CartService extends BaseService {
         })
       }
 
-      // Confirm inventory or throw error
-      await this.inventoryService_
-        .withTransaction(manager)
-        .confirmInventory(lineItem.variant_id, lineItem.quantity)
-
       // If content matches one of the line items currently in the cart we can
       // simply update the quantity of the existing line item
       if (currentItem) {
         const newQuantity = currentItem.quantity + lineItem.quantity
+        // Confirm inventory or throw error
+        await this.inventoryService_
+          .withTransaction(manager)
+          .confirmInventory(lineItem.variant_id, lineItem.quantity)
 
         await this.lineItemService_
           .withTransaction(manager)
@@ -504,10 +503,9 @@ class CartService extends BaseService {
       }
 
       if (lineItemUpdate.quantity) {
-        const hasInventory = await this.inventoryService_.confirmInventory(
-          lineItemExists.variant_id,
-          lineItemUpdate.quantity
-        )
+        const hasInventory = await this.inventoryService_
+          .withTransaction(manager)
+          .confirmInventory(lineItemExists.variant_id, lineItemUpdate.quantity)
 
         if (!hasInventory) {
           throw new MedusaError(
