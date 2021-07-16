@@ -1,8 +1,6 @@
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 
-console.log(DB_USERNAME, DB_PASSWORD);
-
 module.exports = {
   plugins: [],
   projectConfig: {
