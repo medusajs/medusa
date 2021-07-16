@@ -126,10 +126,11 @@ export class Reporter {
         activity.text = message
       } else {
         toLog.activity_id = activity_id
+        this.loggerInstance_.log(toLog)
       }
+    } else {
+      this.loggerInstance_.log(toLog)
     }
-
-    this.loggerInstance_.log(toLog)
   }
 
   /**
@@ -179,10 +180,11 @@ export class Reporter {
       } else {
         toLog.duration = time - activity.start
         toLog.activity_id = activityId
+        this.loggerInstance_.log(toLog)
       }
+    } else {
+      this.loggerInstance_.log(toLog)
     }
-
-    this.loggerInstance_.log(toLog)
   }
 
   /**
@@ -206,10 +208,11 @@ export class Reporter {
       } else {
         toLog.duration = time - activity.start
         toLog.activity_id = activityId
+        this.loggerInstance_.log(toLog)
       }
+    } else {
+      this.loggerInstance_.log(toLog)
     }
-
-    this.loggerInstance_.log(toLog)
   }
 
   /**
@@ -242,8 +245,9 @@ export class Reporter {
   }
 }
 
-export const logger = new Reporter({
+const logger = new Reporter({
   logger: loggerInstance,
   activityLogger: ora,
 })
+
 export default logger
