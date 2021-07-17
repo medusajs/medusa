@@ -2,9 +2,9 @@ export default async (req, res) => {
   const { id } = req.params
 
   try {
-    const orderService = req.scope.resolve("orderService")
+    const swapService = req.scope.resolve("swapService")
 
-    const order = await orderService.retrieve(id, {
+    const swap = await swapService.retrieve(id, {
       relations: [
         "order",
         "additional_items",
@@ -17,7 +17,7 @@ export default async (req, res) => {
       ],
     })
 
-    res.json({ order })
+    res.json({ swap })
   } catch (error) {
     throw error
   }

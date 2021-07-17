@@ -27,6 +27,7 @@ export enum ReturnStatus {
   REQUESTED = "requested",
   RECEIVED = "received",
   REQUIRES_ACTION = "requires_action",
+  CANCELED = "canceled",
 }
 
 @Entity()

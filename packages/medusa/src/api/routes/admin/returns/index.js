@@ -16,5 +16,10 @@ export default app => {
     middlewares.wrap(require("./receive-return").default)
   )
 
+  route.post(
+    "/:id/cancel",
+    middlewares.wrap(require("./cancel-return").default)
+  )
+
   return app
 }

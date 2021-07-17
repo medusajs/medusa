@@ -62,7 +62,7 @@ export class Fulfillment {
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
   @Index()

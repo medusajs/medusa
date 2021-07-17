@@ -130,7 +130,10 @@ export class Swap {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "timestamptz", nullable: true })
+  canceled_at: Date
+
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
   @Column({ type: "jsonb", nullable: true })
@@ -225,6 +228,10 @@ export class Swap {
  *     format: date-time
  *   updated_at:
  *     description: "The date with timezone at which the resource was last updated."
+ *     type: string
+ *     format: date-time
+ *   canceled_at:
+ *     description: "The date with timezone at which the Swap was canceled."
  *     type: string
  *     format: date-time
  *   no_notification:

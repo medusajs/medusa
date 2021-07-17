@@ -9,6 +9,7 @@ const {
   Product,
   ProductVariant,
   Region,
+  Payment,
   Order,
   Swap,
   Return,
@@ -42,7 +43,7 @@ module.exports = async (connection, data = {}) => {
         amount: 10000,
         currency_code: "usd",
         amount_refunded: 0,
-        provider_id: "test",
+        provider_id: "test-pay",
         data: {},
       },
     ],
@@ -90,7 +91,7 @@ module.exports = async (connection, data = {}) => {
       amount: 10000,
       currency_code: "usd",
       amount_refunded: 0,
-      provider_id: "test",
+      provider_id: "test-pay",
       data: {},
     },
     additional_items: [
@@ -108,6 +109,53 @@ module.exports = async (connection, data = {}) => {
   });
 
   await manager.save(swap);
+
+  const swapTemplate = () => {
+    return {
+      order_id: orderWithSwap.id,
+      fulfillment_status: "fulfilled",
+      payment_status: "not_paid",
+      payment: {
+        amount: 5000,
+        currency_code: "usd",
+        amount_refunded: 0,
+        provider_id: "test-pay",
+        data: {},
+      },
+      ...data,
+    };
+  };
+
+  const swapWithFulfillments = manager.create(Swap, {
+    id: "swap-w-f",
+    fulfillments: [
+      {
+        id: "fulfillment-1",
+        data: {},
+        provider_id: "test-ful",
+      },
+      {
+        id: "fulfillment-2",
+        data: {},
+        provider_id: "test-ful",
+      },
+    ],
+    ...swapTemplate(),
+  });
+
+  await manager.save(swapWithFulfillments);
+
+  const swapWithReturn = manager.create(Swap, {
+    id: "swap-w-r",
+    return_order: {
+      id: "return-id",
+      status: "requested",
+      refund_amount: 0,
+    },
+    ...swapTemplate(),
+  });
+
+  await manager.save(swapWithReturn);
 
   const swapOnSwap = manager.create(Swap, {
     id: "swap-on-swap",
@@ -130,7 +178,7 @@ module.exports = async (connection, data = {}) => {
       amount: 10000,
       currency_code: "usd",
       amount_refunded: 0,
-      provider_id: "test",
+      provider_id: "test-pay",
       data: {},
     },
     additional_items: [

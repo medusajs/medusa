@@ -1215,10 +1215,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@medusajs/medusa@1.1.29-dev-1626162503472":
-  version "1.1.29-dev-1626162503472"
-  resolved "http://localhost:4873/@medusajs%2fmedusa/-/medusa-1.1.29-dev-1626162503472.tgz#973ec19d02a66864c8cc11ac3e045cda2a82215d"
-  integrity sha512-8JDjTzOh056panREJIpN6uh2nwhauKqJHeGopG0Kdaw7sxOS3GJMBIfkwmUeNjju+cnpzj0nKlnJ56UgNMZSvA==
+"@medusajs/medusa@^1.1.29":
+  version "1.1.29"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa/-/medusa-1.1.29.tgz#f60a9142efd18e6408560c3a1e4d0cf47db10b41"
+  integrity sha512-RQ36y3OaMN4C/r4cWm3v1ytMj/x3BZNvDLfW3JH0dWm9EZGn80WO3AEHPTi26O+KFc6BtPPp/DMT/7ccVo6ucQ==
   dependencies:
     "@hapi/joi" "^16.1.8"
     "@types/lodash" "^4.14.168"
@@ -1239,8 +1239,8 @@
     joi "^17.3.0"
     joi-objectid "^3.0.1"
     jsonwebtoken "^8.5.1"
-    medusa-core-utils "1.1.16-dev-1626162503472"
-    medusa-test-utils "1.1.19-dev-1626162503472"
+    medusa-core-utils "^1.1.16"
+    medusa-test-utils "^1.1.19"
     morgan "^1.9.1"
     multer "^1.4.2"
     passport "^0.4.0"
@@ -1696,10 +1696,10 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
-babel-preset-medusa-package@1.1.10-dev-1626162503472:
-  version "1.1.10-dev-1626162503472"
-  resolved "http://localhost:4873/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.10-dev-1626162503472.tgz#65bba4e47361d9298b894fe9c08122fd60e0fd54"
-  integrity sha512-kQIZbFKnCnngCxxnPI3Ri+TC+6sadQOPgPGSMxd2X3yLm/W9RU+BLxRCLPEQcvvt6jeUA8dil8n0NUSl51cQnQ==
+babel-preset-medusa-package@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.10.tgz#03198af89e5bb0b1d8692135c2e89a35bc7d5bb9"
+  integrity sha512-pbIqysvp76lTc3DvYhhNtKiX3y22pzYA+3dKgKqKV8bXVRdmR02wG/gtrzw3sBpORN6MwxfzdEzoMOnEO62dfg==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-decorators" "^7.12.1"
@@ -4150,10 +4150,10 @@ media-typer@0.3.0:
   resolved "http://localhost:4873/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@1.1.16-dev-1626162503472:
-  version "1.1.16-dev-1626162503472"
-  resolved "http://localhost:4873/medusa-core-utils/-/medusa-core-utils-1.1.16-dev-1626162503472.tgz#f72029605508928f689df3e35969db8c90be9cfd"
-  integrity sha512-AsI8UNF2VaJIUppJHjipsQnO6o7O/HNjIx5yPamriZRHatevZpWnRAD3aCejz25gaPvUQHWZ66b+UunPz1YKmQ==
+medusa-core-utils@^1.1.16:
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.16.tgz#e7002d861aebf81dec7bd0654615eefbd55cb530"
+  integrity sha512-O176mtAILLbwahxJu2dAOZRnz9AzrX6Oa1NDhrtbBvaPuaFZlhxiajwZkP3KM58bGZ9feKfJ4mVuY2Mtsgj3YA==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
