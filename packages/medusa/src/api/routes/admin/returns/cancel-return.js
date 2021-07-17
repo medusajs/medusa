@@ -1,3 +1,4 @@
+import { result } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "../orders"
 
@@ -27,7 +28,15 @@ export default async (req, res) => {
     const returnService = req.scope.resolve("returnService")
     const orderService = req.scope.resolve("orderService")
 
-    const result = await returnService.cancel(id)
+    let result = await returnService.cancel(id)
+
+    if (result.swap_id) {
+      const swapService = req.scope.resolve("swapService")
+      result = await swapService.retrieve(result.swap_id)
+    } else if (result.claim_order_id) {
+      const claimService = req.scope.resolve("claimService")
+      result = await claimService.retrieve(result.claim_order_id)
+    }
 
     const order = await orderService.retrieve(result.order_id, {
       select: defaultFields,

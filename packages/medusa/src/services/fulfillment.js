@@ -233,8 +233,6 @@ class FulfillmentService extends BaseService {
 
       const lineItemService = this.lineItemService_.withTransaction(manager)
 
-      console.log(fulfillment)
-
       for (const fItem of fulfillment.items) {
         const item = await lineItemService.retrieve(fItem.item_id)
         const fulfilledQuantity = item.fulfilled_quantity - fItem.quantity

@@ -10,9 +10,14 @@ const resolveCall = async (path, payload, header) => {
   const api = useApi();
   let res;
   try {
-    res = (await api.post(path, payload, header)).status;
-  } catch (e) {
-    res = e.response.status;
+    const resp = await api.post(path, payload, header);
+    res = resp.status;
+  } catch (expectedException) {
+    try {
+      res = expectedException.response.status;
+    } catch (_) {
+      console.error(expectedException);
+    }
   }
   return res;
 };

@@ -1,3 +1,5 @@
+import { defaultFields, defaultRelations } from "."
+
 /**
  * @oas [post] /orders/{id}/cancel
  * operationId: "PostOrdersOrderCancel"
@@ -25,7 +27,8 @@ export default async (req, res) => {
     await orderService.cancel(id)
 
     const order = await orderService.retrieve(id, {
-      relations: ["region", "customer", "swaps"],
+      select: defaultFields,
+      relations: defaultRelations,
     })
 
     res.json({ order })

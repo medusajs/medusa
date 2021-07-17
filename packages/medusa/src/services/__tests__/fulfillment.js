@@ -96,7 +96,7 @@ describe("FulfillmentService", () => {
 
   describe("cancelFulfillment", () => {
     const fulfillmentRepository = MockRepository({
-      findOne: q =>
+      findOne: () =>
         Promise.resolve({
           canceled_at: new Date(),
           items: [{ item_id: 1, quantity: 2 }],

@@ -1167,6 +1167,8 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
 
+      console.error("we got here>>")
+
       if (!canceled.order_id) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
