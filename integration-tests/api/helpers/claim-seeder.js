@@ -72,8 +72,8 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(li2);
 
-  const claimWithFulfillmentAndReturn = manager.create(ClaimOrder, {
-    id: "claim-w-f-and-r",
+  const claimWithFulfillment = manager.create(ClaimOrder, {
+    id: "claim-w-f",
     type: "replace",
     payment_status: "na",
     fulfillment_status: "not_fulfilled",
@@ -93,13 +93,24 @@ module.exports = async (connection, data = {}) => {
     provider_id: "test-ful",
   });
 
-  claimWithFulfillmentAndReturn.fulfillments = [ful1, ful2];
+  claimWithFulfillment.fulfillments = [ful1, ful2];
 
-  await manager.save(claimWithFulfillmentAndReturn);
+  await manager.save(claimWithFulfillment);
+
+  const claimWithReturn = manager.create(ClaimOrder, {
+    id: "claim-w-r",
+    type: "replace",
+    payment_status: "na",
+    fulfillment_status: "not_fulfilled",
+    order_id: "order-with-claim",
+    ...data,
+  });
+
+  await manager.save(claimWithReturn);
 
   await manager.insert(Return, {
     id: "return-id-2",
-    claim_order_id: "claim-w-f-and-r",
+    claim_order_id: "claim-w-r",
     status: "requested",
     refund_amount: 0,
     data: {},

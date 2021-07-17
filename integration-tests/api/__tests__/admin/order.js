@@ -637,7 +637,7 @@ describe("/admin/orders", () => {
       ]);
     });
 
-    it("Only allow canceling claim after canceling return and fulfillment", async () => {
+    it("Only allow canceling claim after canceling fulfillments", async () => {
       const order_id = "order-with-claim";
 
       const order = await callGet({
@@ -645,7 +645,7 @@ describe("/admin/orders", () => {
         get: "order",
       });
 
-      const claim = order.claims[0];
+      const claim = order.claims.filter((s) => s.id === "claim-w-f")[0];
       const claim_id = claim.id;
 
       const expectCancelToReturn = partial(expectPostCallToReturn, {
@@ -660,6 +660,26 @@ describe("/admin/orders", () => {
         pathf: (f) =>
           `/admin/orders/${order_id}/claims/${claim_id}/fulfillments/${f.id}/cancel`,
       });
+
+      await expectCancelToReturn({ code: 200 });
+    });
+
+    it("Only allow canceling claim after canceling returns", async () => {
+      const order_id = "order-with-claim";
+
+      const order = await callGet({
+        path: `/admin/orders/${order_id}`,
+        get: "order",
+      });
+
+      const claim = order.claims.filter((c) => c.id === "claim-w-r")[0];
+      const claim_id = claim.id;
+
+      const expectCancelToReturn = partial(expectPostCallToReturn, {
+        path: `/admin/orders/${order_id}/claims/${claim_id}/cancel`,
+      });
+
+      await expectCancelToReturn({ code: 400 });
 
       await expectPostCallToReturn({
         code: 200,
@@ -816,8 +836,19 @@ describe("/admin/orders", () => {
         expect.objectContaining({
           id: "test-order",
         }),
+
         expect.objectContaining({
-          id: "test-order-w-c-and-s",
+          id: "test-order-w-c",
+        }),
+
+        expect.objectContaining({
+          id: "test-order-w-s",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-f",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-r",
         }),
       ]);
     });
@@ -840,7 +871,17 @@ describe("/admin/orders", () => {
           id: "test-order",
         }),
         expect.objectContaining({
-          id: "test-order-w-c-and-s",
+          id: "test-order-w-c",
+        }),
+
+        expect.objectContaining({
+          id: "test-order-w-s",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-f",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-r",
         }),
       ]);
     });
@@ -879,7 +920,17 @@ describe("/admin/orders", () => {
           id: "test-order",
         }),
         expect.objectContaining({
-          id: "test-order-w-c-and-s",
+          id: "test-order-w-c",
+        }),
+
+        expect.objectContaining({
+          id: "test-order-w-s",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-f",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-r",
         }),
       ]);
     });
@@ -918,7 +969,17 @@ describe("/admin/orders", () => {
           id: "test-order",
         }),
         expect.objectContaining({
-          id: "test-order-w-c-and-s",
+          id: "test-order-w-c",
+        }),
+
+        expect.objectContaining({
+          id: "test-order-w-s",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-f",
+        }),
+        expect.objectContaining({
+          id: "test-order-w-r",
         }),
       ]);
     });
@@ -1256,8 +1317,8 @@ describe("/admin/orders", () => {
       expect(received.status).toEqual(200);
     });
 
-    it("Only allow canceling swap after canceling return and fulfillment", async () => {
-      const swap_id = "swap-w-f-and-r";
+    it("Only allows canceling swap after canceling fulfillments", async () => {
+      const swap_id = "swap-w-f";
 
       const swap = await callGet({
         path: `/admin/swaps/${swap_id}`,
@@ -1278,6 +1339,25 @@ describe("/admin/orders", () => {
         pathf: (f) =>
           `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
       });
+
+      await expectCancelToReturn({ code: 200 });
+    });
+
+    it("Only allows canceling swap after canceling return", async () => {
+      const swap_id = "swap-w-r";
+
+      const swap = await callGet({
+        path: `/admin/swaps/${swap_id}`,
+        get: "swap",
+      });
+
+      const { order_id } = swap;
+
+      const expectCancelToReturn = partial(expectPostCallToReturn, {
+        path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
+      });
+
+      await expectCancelToReturn({ code: 400 });
 
       await expectPostCallToReturn({
         code: 200,
