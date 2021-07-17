@@ -907,6 +907,59 @@ describe("OrderService", () => {
     )
   })
 
+  describe("cancelFulfillment", () => {
+    const orderRepo = MockRepository({
+      findOneWithRelations: () => Promise.resolve({}),
+      save: f => Promise.resolve(f),
+    })
+
+    const fulfillmentService = {
+      cancelFulfillment: jest.fn().mockImplementation(f => {
+        switch (f) {
+          case IdMap.getId("no-order"):
+            return Promise.resolve({})
+          default:
+            return Promise.resolve({
+              order_id: IdMap.getId("order-id"),
+            })
+        }
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const orderService = new OrderService({
+      manager: MockManager,
+      orderRepository: orderRepo,
+      fulfillmentService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully cancels fulfillment and corrects order status", async () => {
+      await orderService.cancelFulfillment(IdMap.getId("order"))
+
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith(
+        IdMap.getId("order")
+      )
+
+      expect(orderRepo.save).toHaveBeenCalledTimes(1)
+      expect(orderRepo.save).toHaveBeenCalledWith({
+        fulfillment_status: "canceled",
+      })
+    })
+
+    it("fails to cancel fulfillment when not related to an order", async () => {
+      await expect(
+        orderService.cancelFulfillment(IdMap.getId("no-order"))
+      ).rejects.toThrow(`Fufillment not related to an order`)
+    })
+  })
+
   describe("registerReturnReceived", () => {
     const order = {
       items: [

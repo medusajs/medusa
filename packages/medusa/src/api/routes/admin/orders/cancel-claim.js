@@ -1,4 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "."
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/cancel
@@ -25,6 +26,7 @@ export default async (req, res) => {
 
   try {
     const claimService = req.scope.resolve("claimService")
+    const orderService = req.scope.resolve("orderService")
 
     const claim = await claimService.retrieve(claim_id)
 
@@ -35,9 +37,14 @@ export default async (req, res) => {
       )
     }
 
-    const result = await claimService.cancel(claim_id)
+    await claimService.cancel(claim_id)
 
-    res.json({ result })
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
+
+    res.json({ order })
   } catch (error) {
     throw error
   }

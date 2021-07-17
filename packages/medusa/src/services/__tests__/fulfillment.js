@@ -96,16 +96,25 @@ describe("FulfillmentService", () => {
 
   describe("cancelFulfillment", () => {
     const fulfillmentRepository = MockRepository({
-      findOne: q => {
-        switch (q.where.id) {
-          case IdMap.getId("canceled"):
-            return Promise.resolve({ canceled_at: new Date() })
-          default:
-            return Promise.resolve({})
-        }
-      },
+      findOne: q =>
+        Promise.resolve({
+          canceled_at: new Date(),
+          items: [{ item_id: 1, quantity: 2 }],
+        }),
       save: f => f,
     })
+
+    const lineItemService = {
+      retrieve: jest
+        .fn()
+        .mockImplementation(() =>
+          Promise.resolve({ id: 1, fulfilled_quantity: 2 })
+        ),
+      update: jest.fn(),
+      withTransaction: function() {
+        return this
+      },
+    }
 
     const fulfillmentProviderService = {
       cancelFulfillment: f => f,
@@ -113,8 +122,9 @@ describe("FulfillmentService", () => {
 
     const fulfillmentService = new FulfillmentService({
       manager: MockManager,
-      fulfillmentRepository,
       fulfillmentProviderService,
+      fulfillmentRepository,
+      lineItemService,
     })
 
     beforeEach(async () => {
@@ -127,6 +137,14 @@ describe("FulfillmentService", () => {
       expect(fulfillmentRepository.save).toHaveBeenCalledTimes(1)
       expect(fulfillmentRepository.save).toHaveBeenCalledWith({
         canceled_at: expect.any(Date),
+        items: expect.any(Array),
+      })
+
+      expect(lineItemService.retrieve).toHaveBeenCalledTimes(1)
+      expect(lineItemService.retrieve).toHaveBeenCalledWith(1)
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledWith(1, {
+        fulfilled_quantity: 0,
       })
     })
   })

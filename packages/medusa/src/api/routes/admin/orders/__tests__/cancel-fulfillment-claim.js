@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { FulfillmentServiceMock } from "../../../../../services/__mocks__/fulfillment"
+import { ClaimServiceMock } from "../../../../../services/__mocks__/claim"
 
 describe("POST /admin/orders/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel", () => {
   describe("successfully cancels a fulfillment", () => {
@@ -26,9 +26,9 @@ describe("POST /admin/orders/:id/claims/:claim_id/fulfillments/:fulfillment_id/c
       jest.clearAllMocks()
     })
 
-    it("calls FulfillmentService cancel", () => {
-      expect(FulfillmentServiceMock.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(FulfillmentServiceMock.cancelFulfillment).toHaveBeenCalledWith(
+    it("calls claimService cancelFulfillment", () => {
+      expect(ClaimServiceMock.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(ClaimServiceMock.cancelFulfillment).toHaveBeenCalledWith(
         IdMap.getId("claim-fulfillment")
       )
     })

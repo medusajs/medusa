@@ -4,7 +4,7 @@ export default async (req, res) => {
   try {
     const swapService = req.scope.resolve("swapService")
 
-    const order = await swapService.retrieve(id, {
+    const swap = await swapService.retrieve(id, {
       relations: [
         "order",
         "additional_items",
@@ -17,7 +17,7 @@ export default async (req, res) => {
       ],
     })
 
-    res.json({ order })
+    res.json({ swap })
   } catch (error) {
     throw error
   }

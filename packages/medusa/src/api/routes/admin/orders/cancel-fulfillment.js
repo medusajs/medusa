@@ -1,7 +1,8 @@
 import { MedusaError } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "."
 
 /**
- * @oas [post] /{id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersOrderFulfillmentsCancel"
  * summary: "Cancels a fulfilmment"
  * description: "Registers a Fulfillment as canceled."
@@ -25,6 +26,7 @@ export default async (req, res) => {
 
   try {
     const fulfillmentService = req.scope.resolve("fulfillmentService")
+    const orderService = req.scope.resolve("orderService")
 
     const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 
@@ -35,11 +37,14 @@ export default async (req, res) => {
       )
     }
 
-    await fulfillmentService.cancelFulfillment(fulfillment_id)
+    await orderService.cancelFulfillment(fulfillment_id)
 
-    const result = await fulfillmentService.retrieve(fulfillment_id)
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
-    res.json({ result })
+    res.json({ order })
   } catch (error) {
     throw error
   }

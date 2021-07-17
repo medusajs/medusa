@@ -1136,6 +1136,7 @@ class OrderService extends BaseService {
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
       order.fulfillments = [...order.fulfillments, ...fulfillments]
+
       const result = await orderRepo.save(order)
 
       const evaluatedNoNotification =
@@ -1152,6 +1153,34 @@ class OrderService extends BaseService {
       }
 
       return result
+    })
+  }
+
+  /**
+   * Cancels a fulfillment (if related to an order)
+   * @param {string} fulfillmentId - the ID of the fulfillment to cancel
+   * @returns updated order
+   */
+  async cancelFulfillment(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const canceled = await this.fulfillmentService_
+        .withTransaction(manager)
+        .cancelFulfillment(fulfillmentId)
+
+      if (!canceled.order_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Fufillment not related to an order`
+        )
+      }
+
+      const order = await this.retrieve(canceled.order_id)
+
+      order.fulfillment_status = "canceled"
+
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const updated = await orderRepo.save(order)
+      return updated
     })
   }
 

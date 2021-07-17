@@ -21,7 +21,13 @@ export const SwapServiceMock = {
         return Promise.resolve({ id: "test-swap" })
     }
   }),
-  cancel: jest.fn().mockImplementation(f => f),
+  cancel: jest.fn().mockImplementation(f => {
+    return Promise.resolve({ f })
+  }),
+
+  cancelFulfillment: jest.fn().mockImplementation(f => {
+    return Promise.resolve({ f })
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

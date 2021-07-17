@@ -769,7 +769,10 @@ class SwapService extends BaseService {
         )
       }
 
-      if (swap.fulfillment_status !== "not_fulfilled") {
+      if (
+        swap.fulfillment_status !== "not_fulfilled" &&
+        swap.fulfillment_status !== "canceled"
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "The swap was already fulfilled"
@@ -857,6 +860,34 @@ class SwapService extends BaseService {
       )
 
       return result
+    })
+  }
+
+  /**
+   * Cancels a fulfillment (if related to a swap)
+   * @param {string} fulfillmentId - the ID of the fulfillment to cancel
+   * @returns updated swap
+   */
+  async cancelFulfillment(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const canceled = await this.fulfillmentService_
+        .withTransaction(manager)
+        .cancelFulfillment(fulfillmentId)
+
+      if (!canceled.swap_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Fufillment not related to a swap`
+        )
+      }
+
+      const swap = await this.retrieve(canceled.swap_id)
+
+      swap.fulfillment_status = "canceled"
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const updated = await swapRepo.save(swap)
+      return updated
     })
   }
 

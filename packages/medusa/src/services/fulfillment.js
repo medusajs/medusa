@@ -195,6 +195,7 @@ class FulfillmentService extends BaseService {
           })
 
           let result = await fulfillmentRepository.save(ful)
+
           result.data = await this.fulfillmentProviderService_.createFulfillment(
             shipping_method,
             items,
@@ -222,17 +223,31 @@ class FulfillmentService extends BaseService {
       if (typeof fulfillmentOrId === "object") {
         id = fulfillmentOrId.id
       }
-      const fulfillment = await this.retrieve(id)
+      const fulfillment = await this.retrieve(id, {
+        relations: ["items", "claim_order", "swap"],
+      })
 
       await this.fulfillmentProviderService_.cancelFulfillment(fulfillment)
 
       fulfillment.canceled_at = new Date()
 
+      const lineItemService = this.lineItemService_.withTransaction(manager)
+
+      console.log(fulfillment)
+
+      for (const fItem of fulfillment.items) {
+        const item = await lineItemService.retrieve(fItem.item_id)
+        const fulfilledQuantity = item.fulfilled_quantity - fItem.quantity
+        await lineItemService.update(item.id, {
+          fulfilled_quantity: fulfilledQuantity,
+        })
+      }
+
       const fulfillmentRepo = manager.getCustomRepository(
         this.fulfillmentRepository_
       )
-      const result = await fulfillmentRepo.save(fulfillment)
-      return result
+      const canceled = await fulfillmentRepo.save(fulfillment)
+      return canceled
     })
   }
 

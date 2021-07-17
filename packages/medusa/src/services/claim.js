@@ -108,7 +108,13 @@ class ClaimService extends BaseService {
         )
       }
 
-      const { claim_items, shipping_methods, metadata, no_notification } = data
+      const {
+        claim_items,
+        shipping_methods,
+        metadata,
+        fulfillment_status,
+        no_notification,
+      } = data
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, metadata)
@@ -345,7 +351,10 @@ class ClaimService extends BaseService {
 
       const order = claim.order
 
-      if (claim.fulfillment_status !== "not_fulfilled") {
+      if (
+        claim.fulfillment_status !== "not_fulfilled" &&
+        claim.fulfillment_status !== "canceled"
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "The claim has already been fulfilled."
@@ -439,6 +448,29 @@ class ClaimService extends BaseService {
       }
 
       return result
+    })
+  }
+
+  async cancelFulfillment(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const canceled = await this.fulfillmentService_
+        .withTransaction(manager)
+        .cancelFulfillment(fulfillmentId)
+
+      if (!canceled.claim_order_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Fufillment not related to a claim`
+        )
+      }
+
+      const claim = await this.retrieve(canceled.claim_order_id)
+
+      claim.fulfillment_status = "canceled"
+
+      const claimRepo = manager.getCustomRepository(this.claimRepository_)
+      const updated = await claimRepo.save(claim)
+      return updated
     })
   }
 

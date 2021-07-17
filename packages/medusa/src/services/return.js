@@ -113,8 +113,7 @@ class ReturnService extends BaseService {
   }
 
   /**
-   * Cancels a return if possible. Returns can be canceled if it has not been received,
-   * or does not have a refund associated with it.
+   * Cancels a return if possible. Returns can be canceled if it has not been received.
    * @param {string} returnId - the id of the return to cancel.
    * @return {Promise<Return>} the updated Return
    */
@@ -126,13 +125,6 @@ class ReturnService extends BaseService {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Can't cancel a return which has been returned"
-        )
-      }
-
-      if (ret.refund_amount > 0) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Can't cancel a return which requires refunding"
         )
       }
 

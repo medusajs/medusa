@@ -642,7 +642,7 @@ describe("/admin/orders", () => {
 
       const order = await callGet({
         path: `/admin/orders/${order_id}`,
-        get: "order",
+        get: "swap",
       });
 
       const claim = order.claims[0];

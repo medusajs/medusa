@@ -1,4 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
+import { defaultRelations, defaultFields } from "."
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
@@ -25,6 +26,8 @@ export default async (req, res) => {
 
   try {
     const swapService = req.scope.resolve("swapService")
+    const orderService = req.scope.resolve("orderService")
+
     const swap = await swapService.retrieve(swap_id)
 
     if (swap.order_id !== id) {
@@ -34,9 +37,14 @@ export default async (req, res) => {
       )
     }
 
-    const result = await swapService.cancel(swap_id)
+    await swapService.cancel(swap_id)
 
-    res.json({ result })
+    const order = await orderService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
+
+    res.json({ order })
   } catch (error) {
     throw error
   }

@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { FulfillmentServiceMock } from "../../../../../services/__mocks__/fulfillment"
+import { SwapServiceMock } from "../../../../../services/__mocks__/swap"
 
 describe("POST /admin/orders/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel", () => {
   describe("successfully cancels a fulfillment", () => {
@@ -26,9 +26,9 @@ describe("POST /admin/orders/:id/swaps/:swap_id/fulfillments/:fulfillment_id/can
       jest.clearAllMocks()
     })
 
-    it("calls FulfillmentService cancel", () => {
-      expect(FulfillmentServiceMock.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(FulfillmentServiceMock.cancelFulfillment).toHaveBeenCalledWith(
+    it("calls SwapService cancelFulfillment", () => {
+      expect(SwapServiceMock.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(SwapServiceMock.cancelFulfillment).toHaveBeenCalledWith(
         IdMap.getId("swap-fulfillment")
       )
     })

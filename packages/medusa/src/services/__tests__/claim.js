@@ -395,6 +395,59 @@ describe("ClaimService", () => {
     })
   })
 
+  describe("cancelFulfillment", () => {
+    const claimRepo = MockRepository({
+      findOne: () => Promise.resolve({}),
+      save: f => Promise.resolve(f),
+    })
+
+    const fulfillmentService = {
+      cancelFulfillment: jest.fn().mockImplementation(f => {
+        switch (f) {
+          case IdMap.getId("no-claim"):
+            return Promise.resolve({})
+          default:
+            return Promise.resolve({
+              claim_order_id: IdMap.getId("claim-id"),
+            })
+        }
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+      fulfillmentService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully cancels fulfillment and corrects claim status", async () => {
+      await claimService.cancelFulfillment(IdMap.getId("claim"))
+
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith(
+        IdMap.getId("claim")
+      )
+
+      expect(claimRepo.save).toHaveBeenCalledTimes(1)
+      expect(claimRepo.save).toHaveBeenCalledWith({
+        fulfillment_status: "canceled",
+      })
+    })
+
+    it("fails to cancel fulfillment when not related to a claim", async () => {
+      await expect(
+        claimService.cancelFulfillment(IdMap.getId("no-claim"))
+      ).rejects.toThrow(`Fufillment not related to a claim`)
+    })
+  })
+
   describe("processRefund", () => {
     const claimRepo = MockRepository({
       findOne: () => Promise.resolve({ canceled_at: new Date() }),

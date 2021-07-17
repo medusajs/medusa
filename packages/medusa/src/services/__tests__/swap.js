@@ -613,6 +613,59 @@ describe("SwapService", () => {
     })
   })
 
+  describe("cancelFulfillment", () => {
+    const swapRepo = MockRepository({
+      findOneWithRelations: () => Promise.resolve({}),
+      save: f => Promise.resolve(f),
+    })
+
+    const fulfillmentService = {
+      cancelFulfillment: jest.fn().mockImplementation(f => {
+        switch (f) {
+          case IdMap.getId("no-swap"):
+            return Promise.resolve({})
+          default:
+            return Promise.resolve({
+              swap_id: IdMap.getId("swap-id"),
+            })
+        }
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const swapService = new SwapService({
+      manager: MockManager,
+      swapRepository: swapRepo,
+      fulfillmentService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully cancels fulfillment and corrects swap status", async () => {
+      await swapService.cancelFulfillment(IdMap.getId("swap"))
+
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith(
+        IdMap.getId("swap")
+      )
+
+      expect(swapRepo.save).toHaveBeenCalledTimes(1)
+      expect(swapRepo.save).toHaveBeenCalledWith({
+        fulfillment_status: "canceled",
+      })
+    })
+
+    it("fails to cancel fulfillment when not related to a swap", async () => {
+      await expect(
+        swapService.cancelFulfillment(IdMap.getId("no-swap"))
+      ).rejects.toThrow(`Fufillment not related to a swap`)
+    })
+  })
+
   describe("createShipment", () => {
     beforeEach(() => {
       jest.clearAllMocks()

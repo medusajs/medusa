@@ -343,11 +343,6 @@ describe("ReturnService", () => {
               status: "received",
               refund_amount: 0,
             })
-          case IdMap.getId("test-return-3"):
-            return Promise.resolve({
-              status: "pending",
-              refund_amount: 1000,
-            })
           default:
             return Promise.resolve({})
         }
@@ -378,12 +373,6 @@ describe("ReturnService", () => {
       await expect(
         returnService.cancel(IdMap.getId("test-return-2"))
       ).rejects.toThrow("Can't cancel a return which has been returned")
-    })
-
-    it("fails to cancel return when refund pending", async () => {
-      await expect(
-        returnService.cancel(IdMap.getId("test-return-3"))
-      ).rejects.toThrow("Can't cancel a return which requires refunding")
     })
   })
 

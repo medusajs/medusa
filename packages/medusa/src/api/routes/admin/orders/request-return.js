@@ -140,7 +140,7 @@ export default async (req, res) => {
               if (typeof value.refund !== "undefined" && value.refund < 0) {
                 returnObj.refund_amount = 0
               } else {
-                if (value.refund) {
+                if (value.refund >= 0) {
                   returnObj.refund_amount = value.refund
                 }
               }
@@ -149,7 +149,10 @@ export default async (req, res) => {
                 .withTransaction(manager)
                 .retrieve(id)
 
-              const evaluatedNoNotification = value.no_notification !== undefined ? value.no_notification : order.no_notification
+              const evaluatedNoNotification =
+                value.no_notification !== undefined
+                  ? value.no_notification
+                  : order.no_notification
               returnObj.no_notification = evaluatedNoNotification
 
               const createdReturn = await returnService
@@ -161,13 +164,13 @@ export default async (req, res) => {
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)
               }
-              
+
               await eventBus
                 .withTransaction(manager)
                 .emit("order.return_requested", {
                   id,
                   return_id: createdReturn.id,
-                  no_notification: evaluatedNoNotification
+                  no_notification: evaluatedNoNotification,
                 })
 
               return {

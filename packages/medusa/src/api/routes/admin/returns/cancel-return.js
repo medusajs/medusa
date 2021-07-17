@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "../orders"
 
 /**
  * @oas [post] /returns/{id}/cancel
@@ -17,17 +18,23 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *         schema:
  *           properties:
  *             return:
- *               $ref: "#/components/schemas/return"
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id } = req.params
 
   try {
     const returnService = req.scope.resolve("returnService")
+    const orderService = req.scope.resolve("orderService")
 
     const result = await returnService.cancel(id)
 
-    res.status(200).json({ return: result })
+    const order = await orderService.retrieve(result.order_id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
+
+    res.status(200).json({ order })
   } catch (err) {
     throw err
   }
