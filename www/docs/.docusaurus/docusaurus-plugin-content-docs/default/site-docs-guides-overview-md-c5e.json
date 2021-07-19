@@ -1,0 +1,25 @@
+{
+  "unversionedId": "guides/overview",
+  "id": "guides/overview",
+  "isDocsHomePage": false,
+  "title": "Overview",
+  "description": "Second docs item",
+  "source": "@site/docs/guides/overview.md",
+  "sourceDirName": "guides",
+  "slug": "/guides/overview",
+  "permalink": "/docs/guides/overview",
+  "editUrl": "https://github.com/medusajs/medusa/edit/master/www/docs/guides/overview.md",
+  "version": "current",
+  "frontMatter": {
+    "title": "Overview"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Lorem",
+    "permalink": "/docs/tutorials/lorem"
+  },
+  "next": {
+    "title": "Create a Page",
+    "permalink": "/docs/tutorial-basics/create-a-page"
+  }
+}

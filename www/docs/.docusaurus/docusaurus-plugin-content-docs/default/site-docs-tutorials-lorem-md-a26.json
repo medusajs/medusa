@@ -1,0 +1,25 @@
+{
+  "unversionedId": "tutorials/lorem",
+  "id": "tutorials/lorem",
+  "isDocsHomePage": false,
+  "title": "Lorem",
+  "description": "Third doc item",
+  "source": "@site/docs/tutorials/lorem.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/lorem",
+  "permalink": "/docs/tutorials/lorem",
+  "editUrl": "https://github.com/medusajs/medusa/edit/master/www/docs/tutorials/lorem.md",
+  "version": "current",
+  "frontMatter": {
+    "title": "Lorem"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Set up your development environment",
+    "permalink": "/docs/tutorials/set-up-your-development-environment"
+  },
+  "next": {
+    "title": "Overview",
+    "permalink": "/docs/guides/overview"
+  }
+}

@@ -1,6 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { Region, LineItem } = require("@medusajs/medusa");
+const { Region, LineItem, Payment } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -248,6 +248,13 @@ describe("/store/carts", () => {
           "Variant with id: test-variant-2 does not have the required inventory"
         );
       }
+
+      //check to see if payment has been cancelled
+      const res = await api.get(`/store/carts/test-cart-2`);
+      const pay = await manager.findOne(Payment, {
+        where: { id: res.data.cart.payment.id },
+      });
+      console.error(pay);
     });
   });
 

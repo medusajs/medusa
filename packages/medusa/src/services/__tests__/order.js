@@ -100,7 +100,9 @@ describe("OrderService", () => {
         return Promise.resolve(payment.status || "authorized")
       },
       updatePayment: jest.fn(),
-      cancelPayment: jest.fn(),
+      cancelPayment: jest.fn().mockImplementation(payment => {
+        return Promise.resolve({ ...payment, status: "cancelled" })
+      }),
       withTransaction: function() {
         return this
       },
