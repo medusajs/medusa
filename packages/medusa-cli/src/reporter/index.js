@@ -4,6 +4,7 @@ import winston from "winston"
 import ora from "ora"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
+const NODE_ENV = process.env.NODE_ENV || "development"
 
 const transports = []
 if (process.env.NODE_ENV && process.env.NODE_ENV !== "development") {
@@ -84,7 +85,7 @@ export class Reporter {
    */
   activity = message => {
     const id = ulid()
-    if (process.env.NODE_ENV === "development" && this.shouldLog("info")) {
+    if (NODE_ENV === "development" && this.shouldLog("info")) {
       const activity = this.ora_(message).start()
 
       this.activities_[id] = {
@@ -125,7 +126,7 @@ export class Reporter {
       if (activity.activity) {
         activity.text = message
       } else {
-        toLog.activity_id = activity_id
+        toLog.activity_id = activityId
         this.loggerInstance_.log(toLog)
       }
     } else {

@@ -58,7 +58,7 @@ module.exports = {
     if (!argv.skipLocalUser && auth.user) {
       let proc
       try {
-        proc = await execa(
+        proc = execa(
           `medusa`,
           [`user`, `--id`, auth.user.id, `--email`, auth.user.email],
           {
@@ -68,8 +68,10 @@ module.exports = {
             },
           }
         )
+        await proc
       } catch (error) {
         logger.failure(linkActivity, "Failed to perform local linking")
+        console.error(error.stderr)
         process.exit(1)
       }
     }
