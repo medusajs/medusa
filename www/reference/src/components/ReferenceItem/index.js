@@ -6,7 +6,7 @@ const Container = styled(Flex)``
 
 const ReferenceItem = ({ data }) => {
   console.log(data)
-  return <Container>lalala</Container>
+  return <Container>Place for a refrence item markup</Container>
 }
 
 export default ReferenceItem

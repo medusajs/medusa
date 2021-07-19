@@ -19,9 +19,6 @@ export default function Home({ data }) {
     />
   ))
 
-  const ReferenceItems = sections.map(({ section }) => (
-    <ReferenceItem data={section} />
-  ))
   return (
     <Layout>
       <Helmet>
@@ -30,7 +27,6 @@ export default function Home({ data }) {
       <main>
         <Flex>
           <Box>{Sections}</Box>
-          <Box>{ReferenceItems}</Box>
         </Flex>
       </main>
     </Layout>
