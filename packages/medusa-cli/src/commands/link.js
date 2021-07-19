@@ -4,7 +4,7 @@ const open = require("open")
 const execa = require("execa")
 const resolveCwd = require(`resolve-cwd`)
 const { getToken } = require("../util/token-store")
-const logger = require("../logger").default
+const logger = require("../reporter").default
 
 module.exports = {
   link: async argv => {
@@ -58,7 +58,7 @@ module.exports = {
     if (!argv.skipLocalUser && auth.user) {
       let proc
       try {
-        proc = await execa(
+        proc = execa(
           `medusa`,
           [`user`, `--id`, auth.user.id, `--email`, auth.user.email],
           {
@@ -68,8 +68,10 @@ module.exports = {
             },
           }
         )
+        await proc
       } catch (error) {
         logger.failure(linkActivity, "Failed to perform local linking")
+        console.error(error.stderr)
         process.exit(1)
       }
     }

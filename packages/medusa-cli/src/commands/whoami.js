@@ -1,6 +1,6 @@
 const axios = require("axios").default
 const { getToken } = require("../util/token-store")
-const logger = require("../logger").default
+const logger = require("../reporter").default
 
 /**
  * Fetches the locally logged in user.
