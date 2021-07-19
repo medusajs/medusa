@@ -79,8 +79,8 @@ curl -X GET localhost:9000/store/products | python -m json.tool
 
 ## What's next?
 
-Add custom endpoint to your Medusa project (Insert link)
+Add custom endpoint to your Medusa project
 
-Install and configure additional plugins (Insert link)
+Install and configure additional plugins
 
-Build a storefront using our Gatsby starter (Insert link)
+Build a storefront using our [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
