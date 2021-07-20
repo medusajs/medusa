@@ -6,28 +6,17 @@ import { Flex, Box } from "theme-ui"
 import Layout from "../components/layout"
 import Section from "../components/section"
 import ReferenceItem from "../components/ReferenceItem"
+import Sidebar from "../components/new/components/sidebar"
 
 export default function Home({ data }) {
-  console.log("api node: ", data)
-  const { admin, store } = data
-
-  const Sections = admin.sections.map(({ section }) => (
-    <Section
-      id={section.section_name}
-      key={section.section_name}
-      name={section.section_name}
-    />
-  ))
-
+  console.log(data.admin)
   return (
     <Layout>
       <Helmet>
         <title>API Docs | Medusa Commerce</title>
       </Helmet>
       <main>
-        <Flex>
-          <Box>{Sections}</Box>
-        </Flex>
+        <Sidebar data={data} />
       </main>
     </Layout>
   )
@@ -39,6 +28,13 @@ export const data = graphql`
       sections {
         section {
           ...AdminSection
+        }
+      }
+    }
+    store {
+      sections {
+        section {
+          ...StoreSection
         }
       }
     }
