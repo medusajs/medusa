@@ -125,7 +125,7 @@ module.exports = {
     })
 
     if (argv.develop) {
-      const proc = execa(`medusa`, [`develop`])
+      const proc = execa(`./node_modules/@medusajs/medusa/cli.js`, [`develop`])
       proc.stdout.pipe(process.stdout)
       proc.stderr.pipe(process.stderr)
       await proc
