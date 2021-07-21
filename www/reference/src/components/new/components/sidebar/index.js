@@ -15,6 +15,11 @@ const StyledList = styled.ul`
 
   li {
     padding: 5px 0;
+    div.Collapsible ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
     div.Collapsible li {
       padding-left: 1rem;
       ${Typography.Small}
@@ -23,12 +28,14 @@ const StyledList = styled.ul`
 `
 
 const StyledHeader = styled(Flex)`
-  border-bottom: 1px solid lightgrey;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 80px;
+  width: 250px;
   flex-direction: column;
-`
-
-const StyledSelect = styled.select`
-  margin-bottom: 1rem;
+  padding-left: 1rem;
+  z-index: 6;
 `
 
 const StyledImageContainer = styled(Box)`
@@ -36,8 +43,31 @@ const StyledImageContainer = styled(Box)`
 `
 
 const StyledFlex = styled(Flex)`
+  min-width: 220px;
+  position: sticky;
+  height: 100vh;
+  top: 0;
+  box-shadow: -1px 0 0 0 grey inset;
+  background: #f0f0f0;
+`
+
+const StyledNavigation = styled(Flex)`
+  position: absolute;
   padding: 1rem;
-  width: 220px;
+  top: 80px;
+  width: 100%;
+  left: 0;
+  overflow-y: auto;
+  height: 100%;
+`
+
+const FadeBox = styled(Box)`
+  position: absolute;
+  top: 80px;
+  height: 50px;
+  width: 219px;
+  box-shadow: inset 0 50px 25px calc(-1 * 25px) white;
+  z-index: 5;
 `
 
 const isItemActive = (location, link) => {
@@ -48,11 +78,9 @@ const SidebarItem = ({ to, title }) => {
   const location = useLocation()
   const isActive = isItemActive(location, to)
   return (
-    <li>
-      <Link style={isActive ? { color: "green" } : {}} to={to}>
-        {title}
-      </Link>
-    </li>
+    <Link style={isActive ? { color: "green" } : {}} to={to}>
+      {title}
+    </Link>
   )
 }
 
@@ -85,15 +113,18 @@ const SidebarList = ({ item, directory = "" }) => {
             navigate(`/#${item.section_name.replace(/ /g, "_").toLowerCase()}`)
           }
         >
-          {subItems.map(i => {
-            return (
-              <SidebarItem
-                key={i.title}
-                title={i.title}
-                to={`/${directory}/#${i.to}`}
-              />
-            )
-          })}
+          <ul>
+            {subItems.map((item, index) => {
+              return (
+                <li key={index}>
+                  <SidebarItem
+                    title={item.title}
+                    to={`/${directory}/#${item.to}`}
+                  />
+                </li>
+              )
+            })}
+          </ul>
         </Collapsible>
       ) : (
         <SidebarItem
@@ -115,15 +146,23 @@ const Sidebar = ({ data }) => {
     switch (selected) {
       case "Admin":
         setSections(
-          admin.sections.map(({ section }) => (
-            <SidebarList item={section} directory={selected.toLowerCase()} />
+          admin.sections.map(({ section }, i) => (
+            <SidebarList
+              key={i}
+              item={section}
+              directory={selected.toLowerCase()}
+            />
           ))
         )
         break
       case "Store":
         setSections(
-          store.sections.map(({ section }) => (
-            <SidebarList item={section} directory={selected.toLowerCase()} />
+          store.sections.map(({ section }, i) => (
+            <SidebarList
+              key={i}
+              item={section}
+              directory={selected.toLowerCase()}
+            />
           ))
         )
         break
@@ -139,7 +178,7 @@ const Sidebar = ({ data }) => {
     <StyledFlex flexDirection="column">
       <StyledHeader flexDirection="column">
         <StyledImageContainer>
-          <Image src={Logo} />
+          <Image src={Logo} height="24px" />
         </StyledImageContainer>
         <Select
           onChange={handleSelect}
@@ -149,7 +188,10 @@ const Sidebar = ({ data }) => {
           <option key="store">Store</option>
         </Select>
       </StyledHeader>
-      <StyledList>{sections}</StyledList>
+      <FadeBox />
+      <StyledNavigation>
+        <StyledList>{sections}</StyledList>
+      </StyledNavigation>
     </StyledFlex>
   )
 }

@@ -60,6 +60,13 @@ const SideBarContainer = styled(Flex)`
   background-color: #f0f0f0;
   min-width: 250px;
   flex-direction: column;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  &:-webkit-scrollbar {
+    /* WebKit */
+    width: 0;
+    height: 0;
+  }
 `
 
 const SideBar = ({ tags }) => {

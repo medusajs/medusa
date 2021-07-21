@@ -7,6 +7,7 @@ import Layout from "../components/layout"
 import Section from "../components/section"
 import ReferenceItem from "../components/ReferenceItem"
 import Sidebar from "../components/new/components/sidebar"
+import Content from "../components/new/components/content"
 
 export default function Home({ data }) {
   console.log(data.admin)
@@ -16,7 +17,10 @@ export default function Home({ data }) {
         <title>API Docs | Medusa Commerce</title>
       </Helmet>
       <main>
-        <Sidebar data={data} />
+        <Flex>
+          <Sidebar data={data} />
+          <Content data={data} />
+        </Flex>
       </main>
     </Layout>
   )
