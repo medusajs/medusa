@@ -14,7 +14,8 @@ export default async function({ port, directory }) {
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  let child = spawn("medusa", [`start`, ...args], {
+  const cliPath = "./node_modules/@medusajs/medusa/cli.js"
+  let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
     env: process.env,
     stdio: ["pipe", process.stdout, process.stderr],
@@ -32,7 +33,7 @@ export default async function({ port, directory }) {
 
     Logger.info("Rebuilt")
 
-    child = spawn("medusa", [`start`, ...args], {
+    child = spawn(cliPath, [`start`, ...args], {
       cwd: directory,
       env: process.env,
       stdio: ["pipe", process.stdout, process.stderr],
