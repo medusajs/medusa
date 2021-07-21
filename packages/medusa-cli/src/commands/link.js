@@ -59,7 +59,7 @@ module.exports = {
       let proc
       try {
         proc = execa(
-          `medusa`,
+          `./node_modules/@medusajs/medusa/cli.js`,
           [`user`, `--id`, auth.user.id, `--email`, auth.user.email],
           {
             env: {
@@ -68,10 +68,21 @@ module.exports = {
             },
           }
         )
-        await proc
+        const res = await proc
+        if (res.stderr) {
+          const err = new Error("stderr error")
+          err.stderr = res.stderr
+          throw err
+        }
       } catch (error) {
         logger.failure(linkActivity, "Failed to perform local linking")
-        console.error(error.stderr)
+        if (error.stderr) {
+          console.error(error.stderr)
+        } else if (error.code === "ENOENT") {
+          logger.error(
+            `Couldn't find the Medusa CLI - please make sure that you have installed it globally`
+          )
+        }
         process.exit(1)
       }
     }
