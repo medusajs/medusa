@@ -2,6 +2,7 @@ const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
 const createCustomNode = ({ name, node, createNode }) => {
+  const tags = node.tags
   const nodePaths = Object.entries(node.paths).map(([path, values]) => {
     return {
       name: path,
@@ -72,6 +73,35 @@ const createCustomNode = ({ name, node, createNode }) => {
 
     const existingSection = acc.find(s => s.section.section_name === section)
 
+    //Because section_name does not always equal the resourceId
+    const tag = tags.find(
+      tag => tag.name.toLowerCase() === section.toLowerCase()
+    )
+
+    let resourceId
+    if (tag) resourceId = tag["x-resourceId"]
+
+    const schema =
+      node.components.schemas[section.toLowerCase()] ||
+      node.components.schemas[resourceId] ||
+      null
+
+    //Create a schemaNode so we can access descriptions and attributes of objects
+    let schemaNode
+    if (schema) {
+      let properties = []
+      Object.entries(schema.properties).map(([key, values]) => {
+        properties.push({
+          property: key,
+          ...values,
+        })
+      })
+      schemaNode = {
+        description: schema.description,
+        properties: properties,
+      }
+    }
+
     /** We want the query to return the following:
      *
      * sections [
@@ -95,6 +125,7 @@ const createCustomNode = ({ name, node, createNode }) => {
         section: {
           section_name: section,
           paths: [{ ...current }],
+          schema: schemaNode,
         },
       })
     } else {

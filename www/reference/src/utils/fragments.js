@@ -14,6 +14,15 @@ export const StoreSection = graphql`
     paths {
       ...StorePath
     }
+    schema {
+      description
+      properties {
+        property
+        type
+        description
+        format
+      }
+    }
   }
 `
 
@@ -104,6 +113,15 @@ export const AdminSection = graphql`
     section_name
     paths {
       ...AdminPath
+    }
+    schema {
+      description
+      properties {
+        property
+        type
+        description
+        format
+      }
     }
   }
 `

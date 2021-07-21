@@ -55,7 +55,7 @@ const Parameters = ({ params }) => {
                   </Text>
                 )}
               </Flex>
-              <MarkdownText fontSize={0}>
+              <MarkdownText fontSize={0} lineHeight="26px">
                 <Markdown>{prop.description}</Markdown>
               </MarkdownText>
               {prop.items.properties && (

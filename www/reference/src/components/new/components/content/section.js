@@ -1,5 +1,5 @@
 import React from "react"
-import { Flex, Box, Heading } from "rebass"
+import { Flex, Box, Heading, Text } from "rebass"
 import Method from "./method"
 
 const convertToKebabCase = string => {
@@ -8,6 +8,7 @@ const convertToKebabCase = string => {
 
 const Section = ({ data }) => {
   const { section } = data
+  console.log(section)
   return (
     <Box
       sx={{
@@ -20,6 +21,7 @@ const Section = ({ data }) => {
         id={convertToKebabCase(section.section_name)}
       >
         <Heading>{section.section_name}</Heading>
+        <Text>{section.schema?.description}</Text>
         {section.paths.map((p, i) => {
           return (
             <Flex key={i} flexDirection="column">

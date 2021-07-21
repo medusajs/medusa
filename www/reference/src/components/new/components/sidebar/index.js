@@ -43,12 +43,12 @@ const StyledImageContainer = styled(Box)`
 `
 
 const StyledFlex = styled(Flex)`
+  --bg: #f0f0f0;
   min-width: 220px;
   position: sticky;
   height: 100vh;
   top: 0;
-  box-shadow: -1px 0 0 0 grey inset;
-  background: #f0f0f0;
+  background: var(--bg);
 `
 
 const StyledNavigation = styled(Flex)`
@@ -63,10 +63,11 @@ const StyledNavigation = styled(Flex)`
 
 const FadeBox = styled(Box)`
   position: absolute;
-  top: 80px;
+  top: 50px;
+  left: 0;
   height: 50px;
-  width: 219px;
-  box-shadow: inset 0 50px 25px calc(-1 * 25px) white;
+  width: 205px;
+  box-shadow: inset 0 50px 25px calc(-1 * 25px) var(--bg);
   z-index: 5;
 `
 
