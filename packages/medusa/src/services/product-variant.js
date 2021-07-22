@@ -169,7 +169,7 @@ class ProductVariantService extends BaseService {
 
       if (variantExists) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.DUPLICATE_ERROR,
           `Variant with title ${variantExists.title} with provided options already exists`
         )
       }
