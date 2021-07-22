@@ -134,7 +134,7 @@ Our endpoint controller's implementation will be very simple. It will extract th
 
 ```javascript
 app.post("/welcome/:cart_id", bodyParser.json(), async (req, res) => {
- const { id } = req.params
+ const { cart_id } = req.params
  const { optin } = req.body
  
  // Validate that the optin value was provided. 
@@ -163,7 +163,7 @@ app.post("/welcome/:cart_id", bodyParser.json(), async (req, res) => {
 })
 ```
 
-In the implementation above we are firt validating that the request body is structured correctly so that we can proceed with our opt-in registration. If the validation fails we resond with 400 Bad Request which is an HTTP code that indicates that the client that sent the request has not provided the correct values.
+In the implementation above we are first validating that the request body is structured correctly so that we can proceed with our opt-in registration. If the validation fails we respond with 400 Bad Request which is an HTTP code that indicates that the client that sent the request has not provided the correct values.
 
 After validation is passed we leverage Medusa's container system again to fetch our custom service. When Medusa starts up it places an object on the express `req` object called `scope` which contains the function `resolve` that can be used to get any of the services registered in Medusa by simply providing the registration name as a string. In this case we are resolving our custom `welcomeService`, but you can resolve any service such as the `cartService` or `orderService` using this function.
 
@@ -192,7 +192,7 @@ The response should contain the cart with the metadata field set like this:
   "cart": {
     ...,
     "metadata": {
-      "welcome_optin": false
+      "welcome_optin": true
     },
     ...
   }
@@ -232,4 +232,4 @@ You have now learned how to add custom functionality to your Medusa server, whic
 ### What's next?
 You have now been introduced to many of the key parts of Medusa and with your knowledge of customization you can now begin creating some really powerful commerce experiences. If you have an idea for a cool customization go ahead and make it right now! If you are not completely ready yet you can browse the reference docs further.
 
-In the next part of this tutorial we will look into linking your local project with Medusa Cloud to make develpment smoother while leverage the powerful management tools that merchants use to manage their Medusa store.
+In the next part of this tutorial we will look into linking your local project with Medusa Cloud to make develpment smoother while leveraging the powerful management tools that merchants use to manage their Medusa store.

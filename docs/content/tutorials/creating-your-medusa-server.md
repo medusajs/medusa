@@ -19,7 +19,7 @@ The command will do a number of things:
 - install the dependencies through yarn or npm
 - setup a new git environment for version controlling your project
 - create a database in postgres with the name my-medusa-server
-- the `--seed` flag indicates that the databse should be populated with some test data after the project has been set up
+- the `--seed` flag indicates that the database should be populated with some test data after the project has been set up
 
 If you navigate to the root folder of your new project you will see the following files in your directory:
 ```
