@@ -100,6 +100,17 @@ module.exports = async (connection, data = {}) => {
     data: {},
   });
 
+  await manager.insert(ShippingOption, {
+    id: "test-option-2",
+    name: "test-option-2",
+    provider_id: "test-ful",
+    region_id: "test-region",
+    profile_id: defaultProfile.id,
+    price_type: "flat_rate",
+    amount: 500,
+    data: {},
+  });
+
   const cart = manager.create(Cart, {
     id: "test-cart",
     customer_id: "some-customer",
