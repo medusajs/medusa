@@ -721,9 +721,11 @@ class SwapService extends BaseService {
       swap.fulfillment_status = "canceled"
       swap.canceled_at = new Date()
 
-      await this.paymentProviderService_
-        .withTransaction(manager)
-        .cancelPayment(swap.payment)
+      if (swap.payment) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .cancelPayment(swap.payment)
+      }
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)

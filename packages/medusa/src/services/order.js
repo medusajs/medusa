@@ -10,6 +10,7 @@ class OrderService extends BaseService {
     PAYMENT_CAPTURE_FAILED: "order.payment_capture_failed",
     SHIPMENT_CREATED: "order.shipment_created",
     FULFILLMENT_CREATED: "order.fulfillment_created",
+    FULFILLMENT_CANCELED: "order.fulfillment_canceled",
     RETURN_REQUESTED: "order.return_requested",
     ITEMS_RETURNED: "order.items_returned",
     RETURN_ACTION_REQUIRED: "order.return_action_required",
@@ -1181,6 +1182,15 @@ class OrderService extends BaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const updated = await orderRepo.save(order)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.FULFILLMENT_CANCELED, {
+          id: order.id,
+          fulfillment_id: canceled.id,
+          no_notification: canceled.no_notification,
+        })
+
       return updated
     })
   }
