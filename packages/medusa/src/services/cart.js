@@ -1365,7 +1365,7 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
-    })
+    }, "SERIALIZABLE")
   }
 
   /**
