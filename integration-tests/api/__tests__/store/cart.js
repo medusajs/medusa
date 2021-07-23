@@ -206,6 +206,65 @@ describe("/store/carts", () => {
     });
   });
 
+  describe("POST /store/carts/:id/shipping-methods", () => {
+    beforeEach(async () => {
+      await cartSeeder(dbConnection);
+    });
+
+    afterEach(async () => {
+      const manager = dbConnection.manager;
+      await doAfterEach(manager);
+    });
+
+    it("adds a shipping method to cart", async () => {
+      const api = useApi();
+
+      const cartWithShippingMethod = await api.post(
+        "/store/carts/test-cart/shipping-methods",
+        {
+          option_id: "test-option",
+        },
+        { withCredentials: true }
+      );
+
+      expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
+        expect.objectContaining({ shipping_option_id: "test-option" })
+      );
+      expect(cartWithShippingMethod.status).toEqual(200);
+    });
+
+    it("adds no more than 1 shipping method per shipping profile", async () => {
+      const api = useApi();
+      const addShippingMethod = async (option_id) => {
+        return await api.post(
+          "/store/carts/test-cart/shipping-methods",
+          {
+            option_id,
+          },
+          { withCredentials: true }
+        );
+      };
+
+      await addShippingMethod("test-option");
+      const cartWithAnotherShippingMethod = await addShippingMethod(
+        "test-option-2"
+      );
+
+      expect(
+        cartWithAnotherShippingMethod.data.cart.shipping_methods.length
+      ).toEqual(1);
+      expect(
+        cartWithAnotherShippingMethod.data.cart.shipping_methods
+      ).toContainEqual(
+        expect.objectContaining({
+          shipping_option_id: "test-option-2",
+          price: 500,
+        })
+      );
+      expect(cartWithAnotherShippingMethod.status).toEqual(200);
+    });
+  });
+
   describe("DELETE /store/carts/:id/discounts/:code", () => {
     beforeEach(async () => {
       try {
