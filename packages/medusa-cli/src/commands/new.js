@@ -1,3 +1,7 @@
+/*
+ * Adapted from https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-cli/src/init-starter.ts
+ */
+
 import { execSync } from "child_process"
 import execa from "execa"
 import { sync as existsSync } from "fs-exists-cached"
@@ -7,6 +11,8 @@ import isValid from "is-valid-path"
 import sysPath from "path"
 import prompts from "prompts"
 import url from "url"
+import { createDatabase } from "pg-god"
+
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 
@@ -124,8 +130,8 @@ const copy = async (starterPath, rootPath) => {
   if (starterPath === `.`) {
     throw new Error(
       `You can't create a starter from the existing directory. If you want to
-      create a new site in the current directory, the trailing dot isn't
-      necessary. If you want to create a new site from a local starter, run
+      create a new project in the current directory, the trailing dot isn't
+      necessary. If you want to create a project from a local starter, run
       something like "medusa new my-medusa-store ../local-medusa-starter"`
     )
   }
@@ -223,6 +229,64 @@ Your new Medusa project is ready for you! To start developing run:
 `)
 }
 
+const defaultDBCreds = {
+  user: "postgres",
+  database: "postgres",
+  password: "",
+  port: 5432,
+  host: "localhost",
+}
+
+const setupDB = async (dbName, dbCreds = {}) => {
+  const credentials = Object.assign(defaultDBCreds, dbCreds)
+
+  const dbActivity = reporter.activity(`Setting up database "${dbName}"...`)
+  await createDatabase(
+    {
+      databaseName: dbName,
+      errorIfExist: true,
+    },
+    credentials
+  )
+    .then(() => {
+      reporter.success(dbActivity, `Created database "${dbName}"`)
+    })
+    .catch(err => {
+      if ((err.name = "PDG_ERR::DuplicateDatabase")) {
+        reporter.success(
+          dbActivity,
+          `Database ${dbName} already exists; skipping setup`
+        )
+      } else {
+        reporter.failure(dbActivity, `Skipping database setup.`)
+        reporter.warn(
+          `Failed to setup database; install PostgresQL or make sure to manage your database connection manually`
+        )
+        console.error(err)
+      }
+    })
+}
+
+const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
+  const credentials = Object.assign(defaultDBCreds, dbCreds)
+
+  const templatePath = sysPath.join(rootPath, ".env.template")
+  const destination = sysPath.join(rootPath, ".env")
+  if (existsSync(templatePath)) {
+    fs.renameSync(templatePath, destination)
+    fs.appendFileSync(
+      destination,
+      `DATABASE_URL=postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}\n`
+    )
+  } else {
+    reporter.info(`No .env.template found. Creating .env.`)
+    fs.appendFileSync(
+      destination,
+      `DATABASE_URL=postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}\n`
+    )
+  }
+}
+
 /**
  * Main function that clones or copies the starter.
  */
@@ -280,6 +344,9 @@ export const newStarter = async (starter, root) => {
   } else {
     await copy(starterPath, rootPath)
   }
+
+  await setupDB(root)
+  await setupEnvVars(rootPath, root)
 
   // const sitePath = sysPath.resolve(rootPath)
 

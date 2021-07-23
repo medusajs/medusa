@@ -95,7 +95,7 @@ module.exports = {
     )
     console.log()
 
-    const qs = [
+    const prompts = [
       {
         type: "input",
         name: "open",
@@ -103,7 +103,7 @@ module.exports = {
       },
     ]
 
-    await inquirer.prompt(qs).then(async a => {
+    await inquirer.prompt(prompts).then(async a => {
       if (a.open === "n") {
         process.exit(0)
       }
@@ -111,12 +111,15 @@ module.exports = {
       const params = `lurl=http://localhost:${port}&ltoken=${auth.user.id}`
 
       // This step sets the Cloud link by opening a browser
-      const bo = await open(`${appHost}/local-link?${encodeURI(params)}`, {
-        app: "browser",
-        wait: false,
-      })
+      const browserOpen = await open(
+        `${appHost}/local-link?${encodeURI(params)}`,
+        {
+          app: "browser",
+          wait: false,
+        }
+      )
 
-      bo.on("error", err => {
+      browserOpen.on("error", err => {
         console.warn(err)
         console.log(
           `Could not open browser go to: ${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`

@@ -24,7 +24,7 @@ module.exports = {
 
     const loginUri = `${loginHost}${urls.browser_url}`
 
-    const qs = [
+    const prompts = [
       {
         type: "input",
         name: "open",
@@ -36,16 +36,16 @@ module.exports = {
     console.log("Login to Medusa Cloud")
     console.log()
 
-    await inquirer.prompt(qs).then(async a => {
+    await inquirer.prompt(prompts).then(async a => {
       if (a.open === "n") {
         process.exit(0)
       }
 
-      const bo = await open(loginUri, {
+      const browserOpen = await open(loginUri, {
         app: "browser",
         wait: false,
       })
-      bo.on("error", err => {
+      browserOpen.on("error", err => {
         console.warn(err)
         console.log(`Could not open browser go to: ${loginUri}`)
       })
