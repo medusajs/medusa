@@ -1,6 +1,6 @@
 # Quick Start w. Docker
 
-This quick start is intended for developers, that have already configured their local development environment and familiarised them selves with all the technologies and frameworks used throughout the Medusa eco-system.
+This quick start is intended for developers, that have already configured their local development environment and familiarised themselves with all the technologies and frameworks used throughout the Medusa eco-system.
 
 If this is not the case, please head over to our Getting Started tutorial for a thorough walkthrough.
 
@@ -10,7 +10,7 @@ With all the tools and technologies in place, let's get started by setting up a 
 
 - Stripe as payment provider
 - SendGrid as email notification provider
-- Manual fulfilment as fulfilment provider
+- Manual fulfilment as a fulfilment provider
 
 Additionally, we will spin up a PostgreSQL database and a Redis server, both required for Medusa to run. In this quick start, we will use docker to seamlessly set up these resources.
 
@@ -36,7 +36,7 @@ mv .env.template .env
 
 4. Setup accounts for included plugins. This step is optional but required for placing orders.
 
-Create a Stripe account and add your API key and webhook secret to `.env`
+Create a Stripe account and add your API key and the webhook secret to `.env`
 Create a SendGrid account and add your API key to `.env`
 
 ```bash
