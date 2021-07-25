@@ -350,8 +350,6 @@ const attemptSeed = async rootPath => {
   }
 }
 
-attemptSeed("testing-bby")
-
 /**
  * Main function that clones or copies the starter.
  */
