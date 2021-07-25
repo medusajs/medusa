@@ -164,7 +164,7 @@ const clone = async (hostInfo, rootPath) => {
 
   const branch = hostInfo.committish ? [`-b`, hostInfo.committish] : []
 
-  const createAct = reporter.activity(`Creating new site from git: ${url}`)
+  const createAct = reporter.activity(`Creating new project from git: ${url}`)
 
   const args = [
     `clone`,
@@ -175,9 +175,14 @@ const clone = async (hostInfo, rootPath) => {
     `--depth=1`,
   ].filter(arg => Boolean(arg))
 
-  await spawnWithArgs(`git`, args)
-
-  reporter.success(createAct, `Created starter directory layout`)
+  await execa(`git`, args, {})
+    .then(() => {
+      reporter.success(createAct, `Created starter directory layout`)
+    })
+    .catch(err => {
+      reporter.failure(createAct, `Failed to clone repository`)
+      throw err
+    })
 
   await fs.remove(sysPath.join(rootPath, `.git`))
 
@@ -287,10 +292,92 @@ const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
   }
 }
 
+const runMigrations = async rootPath => {
+  const migrationActivity = reporter.activity("Applying database migrations...")
+
+  const cliPath = sysPath.join(
+    `node_modules`,
+    `@medusajs`,
+    `medusa-cli`,
+    `cli.js`
+  )
+
+  return await execa(cliPath, [`migrations`, `run`], {
+    cwd: rootPath,
+  })
+    .then(() => {
+      reporter.success(migrationActivity, "Database migrations completed.")
+    })
+    .catch(err => {
+      reporter.failure(
+        migrationActivity,
+        "Failed to migrate database you must complete migration manually before starting your server."
+      )
+      console.error(err)
+    })
+}
+
+const attemptSeed = async rootPath => {
+  const seedActivity = reporter.activity("Seeding database")
+
+  const pkgPath = sysPath.resolve(rootPath, "package.json")
+  if (existsSync(pkgPath)) {
+    const pkg = require(pkgPath)
+    if (pkg.scripts && pkg.scripts.seed) {
+      const proc = execa(getPackageManager(), [`run`, `seed`], {
+        cwd: rootPath,
+      })
+
+      // Useful for development
+      // proc.stdout.pipe(process.stdout)
+
+      await proc
+        .then(() => {
+          reporter.success(seedActivity, "Seed completed")
+        })
+        .catch(err => {
+          reporter.failure(seedActivity, "Failed to complete seed; skipping")
+          console.error(err)
+        })
+    } else {
+      reporter.failure(
+        seedActivity,
+        "Starter doesn't provide a seed command; skipping."
+      )
+    }
+  } else {
+    reporter.failure(seedActivity, "Could not find package.json")
+  }
+}
+
+attemptSeed("testing-bby")
+
 /**
  * Main function that clones or copies the starter.
  */
-export const newStarter = async (starter, root) => {
+export const newStarter = async args => {
+  const {
+    starter,
+    root,
+    skipDb,
+    skipMigrations,
+    skipEnv,
+    seed,
+    dbUser,
+    dbDatabase,
+    dbPass,
+    dbPort,
+    dbHost,
+  } = args
+
+  const dbCredentials = {
+    user: dbUser,
+    database: dbDatabase,
+    password: dbPass,
+    port: dbPort,
+    host: dbHost,
+  }
+
   const { starterPath, rootPath } = await getPaths(starter, root)
 
   const urlObject = url.parse(rootPath)
@@ -345,18 +432,21 @@ export const newStarter = async (starter, root) => {
     await copy(starterPath, rootPath)
   }
 
-  await setupDB(root)
-  await setupEnvVars(rootPath, root)
+  if (!skipDb) {
+    await setupDB(root, dbCredentials)
+  }
 
-  // const sitePath = sysPath.resolve(rootPath)
+  if (!skipEnv) {
+    await setupEnvVars(rootPath, root, dbCredentials)
+  }
 
-  // const sitePackageJson = await fs
-  //   .readJSON(sysPath.join(sitePath, `package.json`))
-  //   .catch(() => {
-  //     reporter.verbose(
-  //       `Could not read "${sysPath.join(sitePath, `package.json`)}"`
-  //     )
-  //   })
+  if (!skipMigrations) {
+    await runMigrations(rootPath)
+  }
+
+  if (seed) {
+    await attemptSeed(rootPath)
+  }
 
   successMessage(rootPath)
 }

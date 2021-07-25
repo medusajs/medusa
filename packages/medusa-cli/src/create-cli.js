@@ -68,11 +68,55 @@ function buildLocalCommands(cli, isLocalProject) {
 
   cli
     .command({
-      command: `new [rootPath] [starter]`,
+      command: `new [root] [starter]`,
+      builder: _ =>
+        _.option(`seed`, {
+          type: `boolean`,
+          describe: `If flag is set the command will attempt to seed the database after setup.`,
+          default: false,
+        })
+          .option(`skip-db`, {
+            type: `boolean`,
+            describe: `If flag is set the command will not attempt to complete database setup`,
+            default: false,
+          })
+          .option(`skip-migrations`, {
+            type: `boolean`,
+            describe: `If flag is set the command will not attempt to complete database migration`,
+            default: false,
+          })
+          .option(`skip-env`, {
+            type: `boolean`,
+            describe: `If flag is set the command will not attempt to populate .env`,
+            default: false,
+          })
+          .option(`db-user`, {
+            type: `string`,
+            describe: `The database user to use for database setup and migrations.`,
+            default: `postgres`,
+          })
+          .option(`db-database`, {
+            type: `string`,
+            describe: `The database use for database setup and migrations.`,
+            default: `postgres`,
+          })
+          .option(`db-pass`, {
+            type: `string`,
+            describe: `The database password to use for database setup and migrations.`,
+            default: ``,
+          })
+          .option(`db-port`, {
+            type: `number`,
+            describe: `The database port to use for database setup and migrations.`,
+            default: 5432,
+          })
+          .option(`db-host`, {
+            type: `string`,
+            describe: `The database host to use for database setup and migrations.`,
+            default: `localhost`,
+          }),
       desc: `Create a new Medusa project.`,
-      handler: handlerP(async ({ rootPath, starter }) => {
-        return await newStarter(starter, rootPath)
-      }),
+      handler: handlerP(newStarter),
     })
     .command({
       command: `seed`,
