@@ -3,13 +3,12 @@ import bodyParser from "body-parser"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 export default () => {
-  const app = Router();
+  const app = Router()
 
   app.delete("/:id/wishlist", bodyParser.json(), async (req, res) => {
     const schema = Validator.object().keys({
       index: Validator.number().required(),
     })
-
 
     const { value, error } = schema.validate(req.body)
     if (error) {
@@ -20,20 +19,16 @@ export default () => {
       const customerService = req.scope.resolve("customerService")
 
       let customer = await customerService.retrieve(req.params.id)
-      const wishlist = customer.metadata && customer.metadata.wishlist || []
+      const wishlist = (customer.metadata && customer.metadata.wishlist) || []
 
       const newWishlist = [...wishlist]
       newWishlist.splice(value.index, 1)
 
-      customer = await customerService.setMetadata(customer._id, "wishlist", newWishlist)
+      customer = await customerService.update(customer.id, {
+        metadata: { wishlist: newWishlist },
+      })
 
-      const data = await customerService.decorate(
-        customer,
-        ["email", "first_name", "last_name", "shipping_addresses"],
-        ["orders"]
-      )
-
-      res.json({ customer: data })
+      res.json({ customer })
     } catch (err) {
       throw err
     }
@@ -61,21 +56,17 @@ export default () => {
       if (regions.length) {
         const lineItem = await lineItemService.generate(
           value.variant_id,
-          regions[0]._id,
+          regions[0].id,
           value.quantity
         )
 
-        const wishlist = customer.metadata && customer.metadata.wishlist || []
-        customer = await customerService.setMetadata(customer._id, "wishlist", [...wishlist, lineItem])
+        const wishlist = (customer.metadata && customer.metadata.wishlist) || []
+        customer = await customerService.update(customer.id, {
+          metadata: { wishlist: [...wishlist, lineItem] },
+        })
       }
 
-    const data = await customerService.decorate(
-      customer,
-      ["email", "first_name", "last_name", "shipping_addresses"],
-      ["orders"]
-    )
-
-      res.json({ customer: data })
+      res.json({ customer })
     } catch (err) {
       throw err
     }
