@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.14](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.13...@medusajs/medusa-cli@1.1.14) (2021-07-26)
+
+
+### Features
+
+* CLI + local linking ([#313](https://github.com/medusajs/medusa/issues/313)) ([f4a7138](https://github.com/medusajs/medusa/commit/f4a7138a5888e69e19bebe8f4962afc42e9a945d)), closes [#320](https://github.com/medusajs/medusa/issues/320)
+
+
+
+
+
 ## [1.1.13](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.11...@medusajs/medusa-cli@1.1.13) (2021-07-15)
 
 **Note:** Version bump only for package @medusajs/medusa-cli
