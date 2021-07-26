@@ -61,33 +61,54 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     logger: asValue(Logger),
   })
 
-  await modelsLoader({ container })
-  Logger.info("Models initialized")
+  const modelsActivity = Logger.activity("Initializing models")
+  await modelsLoader({ container, activityId: modelsActivity })
+  Logger.success(modelsActivity, "Models initialized")
 
-  await registerPluginModels({ rootDirectory, container })
-  Logger.info("Models initialized")
+  const pmActivity = Logger.activity("Initializing plugin models")
+  await registerPluginModels({
+    rootDirectory,
+    container,
+    activityId: pmActivity,
+  })
+  Logger.success(pmActivity, "Plugin models initialized")
 
-  await repositoriesLoader({ container })
-  Logger.info("Repositories initialized")
+  const repoActivity = Logger.activity("Initializing repositories")
+  await repositoriesLoader({ container, activityId: repoActivity })
+  Logger.success(repoActivity, "Repositories initialized")
 
-  const dbConnection = await databaseLoader({ container, configModule })
-  Logger.info("Database initialized")
+  const dbActivity = Logger.activity("Initializing database")
+  const dbConnection = await databaseLoader({
+    container,
+    configModule,
+    activityId: dbActivity,
+  })
+  Logger.success(dbActivity, "Database initialized")
 
   container.register({
     manager: asValue(dbConnection.manager),
   })
 
-  await servicesLoader({ container, configModule })
-  Logger.info("Services initialized")
+  const servicesActivity = Logger.activity("Initializing services")
+  await servicesLoader({
+    container,
+    configModule,
+    activityId: servicesActivity,
+  })
+  Logger.success(servicesActivity, "Services initialized")
 
-  await subscribersLoader({ container })
-  Logger.info("Subscribers initialized")
+  const subActivity = Logger.activity("Initializing subscribers")
+  await subscribersLoader({ container, activityId: subActivity })
+  Logger.success(subActivity, "Subscribers initialized")
 
-  await expressLoader({ app: expressApp, configModule })
-  Logger.info("Express Intialized")
-
-  await passportLoader({ app: expressApp, container })
-  Logger.info("Passport initialized")
+  const expActivity = Logger.activity("Initializing express")
+  await expressLoader({
+    app: expressApp,
+    configModule,
+    activityId: expActivity,
+  })
+  await passportLoader({ app: expressApp, container, activityId: expActivity })
+  Logger.success(expActivity, "Express intialized")
 
   // Add the registered services to the request scope
   expressApp.use((req, res, next) => {
@@ -98,14 +119,27 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     next()
   })
 
-  await pluginsLoader({ container, rootDirectory, app: expressApp })
-  Logger.info("Plugins Intialized")
+  const pluginsActivity = Logger.activity("Initializing plugins")
+  await pluginsLoader({
+    container,
+    rootDirectory,
+    app: expressApp,
+    activityId: pluginsActivity,
+  })
+  Logger.success(pluginsActivity, "Plugins intialized")
 
-  await apiLoader({ container, rootDirectory, app: expressApp })
-  Logger.info("API initialized")
+  const apiActivity = Logger.activity("Initializing API")
+  await apiLoader({
+    container,
+    rootDirectory,
+    app: expressApp,
+    activityId: apiActivity,
+  })
+  Logger.success(apiActivity, "API initialized")
 
-  await defaultsLoader({ container })
-  Logger.info("Defaults initialized")
+  const defaultsActivity = Logger.activity("Initializing defaults")
+  await defaultsLoader({ container, activityId: defaultsActivity })
+  Logger.success(defaultsActivity, "Defaults initialized")
 
   return { container, dbConnection, app: expressApp }
 }

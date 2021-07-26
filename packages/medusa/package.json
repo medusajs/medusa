@@ -3,6 +3,9 @@
   "version": "1.1.32",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
+  "bin": {
+    "medusa": "./cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
@@ -41,6 +44,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
+    "@medusajs/medusa-cli": "^1.1.13",
     "@types/lodash": "^4.14.168",
     "awilix": "^4.2.3",
     "body-parser": "^1.19.0",
