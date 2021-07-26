@@ -11,11 +11,12 @@ export default async function({ port, directory }) {
     const app = express()
 
     const { dbConnection } = await loaders({ directory, expressApp: app })
+    const serverActivity = Logger.activity(`Creating server`)
     const server = app.listen(port, err => {
       if (err) {
         return
       }
-      Logger.info(`Server is ready on port: ${port}!`)
+      Logger.success(serverActivity, `Server is ready on port: ${port}`)
     })
 
     return { dbConnection, server }
