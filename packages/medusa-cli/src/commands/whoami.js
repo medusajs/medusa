@@ -1,5 +1,6 @@
 const axios = require("axios").default
 const { getToken } = require("../util/token-store")
+const logger = require("../reporter").default
 
 /**
  * Fetches the locally logged in user.
@@ -18,6 +19,8 @@ module.exports = {
       process.exit(0)
     }
 
+    const activity = logger.activity("checking login details")
+
     const { data: auth } = await axios
       .get(`${apiHost}/auth`, {
         headers: {
@@ -25,12 +28,17 @@ module.exports = {
         },
       })
       .catch(err => {
-        console.log(err)
+        logger.failure(activity, "Couldn't gather login details")
+        logger.error(err)
         process.exit(1)
       })
 
     if (auth.user) {
-      console.log(`Hi, ${auth.user.first_name}! Here are your details:`)
+      logger.success(
+        activity,
+        `Hi, ${auth.user.first_name}! Here are your details:`
+      )
+
       console.log(`id: ${auth.user.id}`)
       console.log(`email: ${auth.user.email}`)
       console.log(`first_name: ${auth.user.first_name}`)

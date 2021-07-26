@@ -8,13 +8,13 @@ module.exports = {
       config = new ConfigStore(`medusa`, {}, { globalConfigPath: true })
     }
 
-    return config.get("login_token")
+    return config.get("cloud.login_token")
   },
   setToken: function(token) {
     if (!config) {
       config = new ConfigStore(`medusa`, {}, { globalConfigPath: true })
     }
 
-    return config.set("login_token", token)
+    return config.set("cloud.login_token", token)
   },
 }

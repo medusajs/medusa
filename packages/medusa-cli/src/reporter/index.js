@@ -1,0 +1,254 @@
+import stackTrace from "stack-trace"
+import { ulid } from "ulid"
+import winston from "winston"
+import ora from "ora"
+
+const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
+const NODE_ENV = process.env.NODE_ENV || "development"
+
+const transports = []
+if (process.env.NODE_ENV && process.env.NODE_ENV !== "development") {
+  transports.push(new winston.transports.Console())
+} else {
+  transports.push(
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.cli(),
+        winston.format.splat()
+      ),
+    })
+  )
+}
+
+const loggerInstance = winston.createLogger({
+  level: LOG_LEVEL,
+  levels: winston.config.npm.levels,
+  format: winston.format.combine(
+    winston.format.timestamp({
+      format: "YYYY-MM-DD HH:mm:ss",
+    }),
+    winston.format.errors({ stack: true }),
+    winston.format.splat(),
+    winston.format.json()
+  ),
+  transports,
+})
+
+export class Reporter {
+  constructor({ logger, activityLogger }) {
+    this.activities_ = []
+    this.loggerInstance_ = logger
+    this.ora_ = activityLogger
+  }
+
+  panic = error => {
+    this.loggerInstance_.log({
+      level: "error",
+      details: error,
+    })
+    process.exit(1)
+  }
+
+  /**
+   * Determines if the logger should log at a given level.
+   * @param {string} level - the level to check if logger is configured for
+   * @return {boolean} whether we should log
+   */
+  shouldLog = level => {
+    level = this.loggerInstance_.levels[level]
+    const logLevel = this.loggerInstance_.levels[this.loggerInstance_.level]
+    return level <= logLevel
+  }
+
+  /**
+   * Sets the log level of the logger.
+   * @param {string} level - the level to set the logger to
+   */
+  setLogLevel = level => {
+    this.loggerInstance_.level = level
+  }
+
+  /**
+   * Resets the logger to the value specified by the LOG_LEVEL env var. If no
+   * LOG_LEVEL is set it defaults to "silly".
+   */
+  unsetLogLevel = () => {
+    this.loggerInstance_.level = LOG_LEVEL
+  }
+
+  /**
+   * Begin an activity. In development an activity is displayed as a spinner;
+   * in other environments it will log the activity at the info level.
+   * @param {string} message - the message to log the activity under
+   * @returns {string} the id of the activity; this should be passed to do
+   *   further operations on the activity such as success, failure, progress.
+   */
+  activity = message => {
+    const id = ulid()
+    if (NODE_ENV === "development" && this.shouldLog("info")) {
+      const activity = this.ora_(message).start()
+
+      this.activities_[id] = {
+        activity,
+        start: Date.now(),
+      }
+
+      return id
+    } else {
+      this.activities_[id] = {
+        start: Date.now(),
+      }
+      this.loggerInstance_.log({
+        activity_id: id,
+        level: "info",
+        message,
+      })
+
+      return id
+    }
+  }
+
+  /**
+   * Reports progress on an activity. In development this will update the
+   * activity log message, in other environments a log message will be issued
+   * at the info level. Logging will include the activityId.
+   * @param {string} activityId - the id of the activity as returned by activity
+   * @param {string} message - the message to log
+   */
+  progress = (activityId, message) => {
+    const toLog = {
+      level: "info",
+      message,
+    }
+
+    if (typeof activityId === "string" && this.activities_[activityId]) {
+      const activity = this.activities_[activityId]
+      if (activity.activity) {
+        activity.text = message
+      } else {
+        toLog.activity_id = activityId
+        this.loggerInstance_.log(toLog)
+      }
+    } else {
+      this.loggerInstance_.log(toLog)
+    }
+  }
+
+  /**
+   * Logs an error. If an error object is provided the stack trace for the error
+   * will also be logged.
+   * @param {String | Error} messageOrError - can either be a string with a
+   *   message to log the error under; or an error object.
+   * @param {Error?} error - an error object to log message with
+   */
+  error = (messageOrError, error) => {
+    let message = messageOrError
+    if (typeof messageOrError === "object") {
+      message = messageOrError.message
+      error = messageOrError
+    }
+
+    const toLog = {
+      level: "error",
+      message,
+    }
+
+    if (error) {
+      toLog.stack = stackTrace.parse(error)
+    }
+
+    this.loggerInstance_.log(toLog)
+  }
+
+  /**
+   * Reports failure of an activity. In development the activity will be udpated
+   * with the failure message in other environments the failure will be logged
+   * at the error level.
+   * @param {string} activityId - the id of the activity as returned by activity
+   * @param {string} message - the message to log
+   */
+  failure = (activityId, message) => {
+    const toLog = {
+      level: "error",
+      message,
+    }
+
+    if (typeof activityId === "string" && this.activities_[activityId]) {
+      const time = Date.now()
+      const activity = this.activities_[activityId]
+      if (activity.activity) {
+        activity.activity.fail(`${message} – ${time - activity.start}`)
+      } else {
+        toLog.duration = time - activity.start
+        toLog.activity_id = activityId
+        this.loggerInstance_.log(toLog)
+      }
+    } else {
+      this.loggerInstance_.log(toLog)
+    }
+  }
+
+  /**
+   * Reports success of an activity. In development the activity will be udpated
+   * with the failure message in other environments the failure will be logged
+   * at the info level.
+   * @param {string} activityId - the id of the activity as returned by activity
+   * @param {string} message - the message to log
+   */
+  success = (activityId, message) => {
+    const toLog = {
+      level: "info",
+      message,
+    }
+
+    if (typeof activityId === "string" && this.activities_[activityId]) {
+      const time = Date.now()
+      const activity = this.activities_[activityId]
+      if (activity.activity) {
+        activity.activity.succeed(`${message} – ${time - activity.start}ms`)
+      } else {
+        toLog.duration = time - activity.start
+        toLog.activity_id = activityId
+        this.loggerInstance_.log(toLog)
+      }
+    } else {
+      this.loggerInstance_.log(toLog)
+    }
+  }
+
+  /**
+   * Logs a message at the info level.
+   * @param {string} message - the message to log
+   */
+  info = message => {
+    this.loggerInstance_.log({
+      level: "info",
+      message,
+    })
+  }
+
+  /**
+   * Logs a message at the warn level.
+   * @param {string} message - the message to log
+   */
+  warn = message => {
+    this.loggerInstance_.warn({
+      level: "warn",
+      message,
+    })
+  }
+
+  /**
+   * A wrapper around winston's log method.
+   */
+  log = (...args) => {
+    this.loggerInstance_.log(...args)
+  }
+}
+
+const logger = new Reporter({
+  logger: loggerInstance,
+  activityLogger: ora,
+})
+
+export default logger
