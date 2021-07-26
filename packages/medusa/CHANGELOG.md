@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.33](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.32...@medusajs/medusa@1.1.33) (2021-07-26)
+
+
+### Bug Fixes
+
+* enforce 1 shipping method per profile ([#322](https://github.com/medusajs/medusa/issues/322)) ([b378a4f](https://github.com/medusajs/medusa/commit/b378a4f8bc8b57189c368fadb1a14ea2e5ea896e))
+* parameterize integration tests' db credentials ([#319](https://github.com/medusajs/medusa/issues/319)) ([06fd882](https://github.com/medusajs/medusa/commit/06fd882a671b2808ef906430f6afd31be2d03280))
+
+
+### Features
+
+* CLI + local linking ([#313](https://github.com/medusajs/medusa/issues/313)) ([f4a7138](https://github.com/medusajs/medusa/commit/f4a7138a5888e69e19bebe8f4962afc42e9a945d)), closes [#320](https://github.com/medusajs/medusa/issues/320)
+
+
+
+
+
 ## [1.1.32](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.31...@medusajs/medusa@1.1.32) (2021-07-16)
 
 **Note:** Version bump only for package @medusajs/medusa
