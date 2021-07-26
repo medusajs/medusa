@@ -18,3 +18,38 @@ export default app => {
 
   return app
 }
+
+export const defaultRelations = [
+  "order",
+  "additional_items",
+  "return_order",
+  "fulfillments",
+  "payment",
+  "shipping_address",
+  "shipping_methods",
+  "cart",
+  "cart.items",
+  "cart.region",
+  "cart.shipping_methods",
+  "cart.gift_cards",
+  "cart.discounts",
+  "cart.payment",
+]
+
+export const defaultFields = [
+  "id",
+  "fulfillment_status",
+  "payment_status",
+  "order_id",
+  "difference_due",
+  "cart_id",
+  "created_at",
+  "updated_at",
+  "metadata",
+  "subtotal",
+  "tax_total",
+  "shipping_total",
+  "discount_total",
+  "gift_card_total",
+  "total",
+]
