@@ -21,7 +21,7 @@ import formatRegistrationName from "../utils/format-registration-name"
 /**
  * Registers all services in the services directory
  */
-export default async ({ rootDirectory, container, app }) => {
+export default async ({ rootDirectory, container, app, activityId }) => {
   const resolved = getResolvedPlugins(rootDirectory)
 
   await Promise.all(
@@ -29,7 +29,7 @@ export default async ({ rootDirectory, container, app }) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory, container)
+      registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
     })
@@ -159,9 +159,18 @@ function registerCoreRouters(pluginDetails, container) {
 /**
  * Registers the plugin's api routes.
  */
-function registerApi(pluginDetails, app, rootDirectory = "", container) {
+function registerApi(
+  pluginDetails,
+  app,
+  rootDirectory = "",
+  container,
+  activityId
+) {
   const logger = container.resolve("logger")
-  logger.info(`Registering custom endpoints for ${pluginDetails.name}`)
+  logger.progress(
+    activityId,
+    `Registering custom endpoints for ${pluginDetails.name}`
+  )
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
     if (routes) {
@@ -170,10 +179,10 @@ function registerApi(pluginDetails, app, rootDirectory = "", container) {
     return app
   } catch (err) {
     if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
-      logger.warn(
-        `An error occured while registering customer endpoints for ${pluginDetails.name}`
+      logger.progress(
+        activityId,
+        `No customer endpoints registered for ${pluginDetails.name}`
       )
-      logger.error(err.stack)
     }
     return app
   }
