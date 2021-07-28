@@ -80,7 +80,7 @@ async sendWelcome(orderId) {
     select: ["id"]
   })
   
-  if (prevOrders.length > 0) {
+  if (prevOrders.length > 1) {
     // We only send welcomes to new customers. This customer
     // has already completed an order before so we can stop.
     return 
@@ -149,7 +149,7 @@ app.post("/welcome/:cart_id", bodyParser.json(), async (req, res) => {
  const welcomeService = req.scope.resolve("welcomeService")
  
  try {
-   await welcomeService.registerOptin(id, optin)
+   await welcomeService.registerOptin(cart_id, optin)
    
    res.status(200).json({
      success: true
