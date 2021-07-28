@@ -23,7 +23,7 @@ const Content = ({ data }) => {
           <Link to={"/sign_in"}>Sign in</Link>
         </Box>
       </TopBar>
-      {data.admin.sections.map((s, i) => {
+      {data.sections.map((s, i) => {
         return <Section key={i} data={s} />
       })}
     </StyledFlex>

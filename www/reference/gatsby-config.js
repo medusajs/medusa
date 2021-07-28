@@ -31,7 +31,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-anchor-links`,
       options: {
-        offset: -300,
+        offset: -500,
       },
     },
     `gatsby-transformer-json`,

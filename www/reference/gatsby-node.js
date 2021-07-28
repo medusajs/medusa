@@ -1,5 +1,6 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const fixtures = require("../../docs/api/fixtures.json")
 
 const createCustomNode = ({ name, node, createNode }) => {
   const tags = node.tags
@@ -18,26 +19,57 @@ const createCustomNode = ({ name, node, createNode }) => {
             type: requestBodyValues?.type,
             properties: Object.entries(requestBodyValues?.properties || {}).map(
               ([property, values]) => {
-                const items = values.items
-
+                let ref = null
+                let component_id = null
+                let nestedModelNode = null
+                const { items, anyOf, oneOf, ...rest } = values
+                if (items || anyOf || oneOf) {
+                  if (items?.anyOf) {
+                    component_id = items.anyOf[0]["$ref"].substring(
+                      items.anyOf[0]["$ref"].lastIndexOf("/") + 1
+                    )
+                    ref = node.components.schemas[component_id]
+                  } else if (items) {
+                    const refPath = items["$ref"]
+                    if (refPath) {
+                      component_id = refPath.substring(
+                        items["$ref"].lastIndexOf("/") + 1
+                      )
+                      ref = node.components.schemas[component_id]
+                    }
+                  } else if (anyOf) {
+                    component_id = anyOf[0]["$ref"].substring(
+                      anyOf[0]["$ref"].lastIndexOf("/") + 1
+                    )
+                    ref = node.components.schemas[component_id]
+                  } else if (oneOf) {
+                    component_id = oneOf[0]["$ref"].substring(
+                      oneOf[0]["$ref"].lastIndexOf("/") + 1
+                    )
+                    ref = node.components.schemas[component_id]
+                    console.log(ref)
+                  }
+                }
+                if (ref) {
+                  const { properties, ...rest } = ref
+                  let nestedModelProperties = []
+                  if (properties) {
+                    Object.entries(properties).map(([key, values]) => {
+                      nestedModelProperties.push({
+                        property: key,
+                        ...values,
+                      })
+                    })
+                    nestedModelNode = {
+                      properties: nestedModelProperties,
+                      ...rest,
+                    }
+                  }
+                }
                 return {
-                  ...values,
                   property: property,
-
-                  items: {
-                    ...items,
-                    type: items?.type,
-                    properties: items?.properties
-                      ? Object.entries(items?.properties).map(
-                          ([property, values]) => {
-                            return {
-                              property: property,
-                              ...values,
-                            }
-                          }
-                        )
-                      : null,
-                  },
+                  nestedModel: nestedModelNode,
+                  ...rest,
                 }
               }
             ),
@@ -51,7 +83,46 @@ const createCustomNode = ({ name, node, createNode }) => {
                 status: response,
                 content: properties
                   ? Object.entries(properties).map(([property, values]) => {
-                      return { property: property, ...values }
+                      const toSet = {}
+                      let concept
+                      if (values.items && values.items["$ref"]) {
+                        const [, ...path] = values.items["$ref"].split("/")
+                        concept = path[path.length - 1]
+                        if (values.type === "array") {
+                          if (concept in fixtures.resources) {
+                            //make the array key plural
+                            let prop
+                            if (property.slice(-1) !== "s") {
+                              prop = property + "s"
+                            } else {
+                              prop = property
+                            }
+
+                            toSet[prop] = [fixtures.resources[concept]]
+                          }
+                        } else if (concept in fixtures.resources) {
+                          toSet[property] = fixtures.resources[concept]
+                        }
+                      } else {
+                        if (fixtures.resources[property]) {
+                          toSet[property] = fixtures.resources[property]
+                        } else if (values["$ref"]) {
+                          const [, ...path] = values["$ref"].split("/")
+                          toSet[property] =
+                            fixtures.resources[path[path.length - 1]]
+                        }
+                      }
+
+                      const json =
+                        Object.keys(toSet).length > 0
+                          ? JSON.stringify(toSet, undefined, 2)
+                          : null
+
+                      return {
+                        property: property,
+                        json: json,
+                        ...values,
+                      }
                     })
                   : null,
                 description: values.description,
@@ -89,16 +160,66 @@ const createCustomNode = ({ name, node, createNode }) => {
     //Create a schemaNode so we can access descriptions and attributes of objects
     let schemaNode
     if (schema) {
-      let properties = []
+      let props = []
+
       Object.entries(schema.properties).map(([key, values]) => {
-        properties.push({
+        let ref = null
+        let component_id = null
+        let nestedModelNode = null
+
+        let { items, anyOf, oneOf, ...rest } = values
+        if (items || anyOf || oneOf) {
+          if (items?.anyOf) {
+            component_id = items.anyOf[0]["$ref"].substring(
+              items.anyOf[0]["$ref"].lastIndexOf("/") + 1
+            )
+            ref = node.components.schemas[component_id]
+          } else if (items) {
+            const refPath = items["$ref"]
+            if (refPath) {
+              component_id = refPath.substring(
+                items["$ref"].lastIndexOf("/") + 1
+              )
+              ref = node.components.schemas[component_id]
+            }
+          } else if (anyOf) {
+            component_id = anyOf[0]["$ref"].substring(
+              anyOf[0]["$ref"].lastIndexOf("/") + 1
+            )
+            ref = node.components.schemas[component_id]
+          }
+          if (ref) {
+            const { properties, ...rest } = ref
+            let nestedModelProperties = []
+            if (properties) {
+              Object.entries(properties).map(([key, values]) => {
+                nestedModelProperties.push({
+                  property: key,
+                  ...values,
+                })
+              })
+              nestedModelNode = {
+                properties: nestedModelProperties,
+                ...rest,
+              }
+            }
+          }
+        }
+        props.push({
           property: key,
-          ...values,
+          nestedModel: nestedModelNode,
+          ...rest,
         })
       })
+
+      let object = fixtures.resources[resourceId] || null
+
+      if (object) object = JSON.stringify(object, undefined, 2)
+
       schemaNode = {
+        object: object,
         description: schema.description,
-        properties: properties,
+        properties: props,
       }
     }
 
@@ -137,7 +258,6 @@ const createCustomNode = ({ name, node, createNode }) => {
     return acc
   }, [])
 
-  console.log("Creating result")
   const result = {
     name: name,
     paths: nodePaths,
@@ -157,8 +277,6 @@ const createCustomNode = ({ name, node, createNode }) => {
     },
   }
 
-  console.log("Result: ", result)
-
   createNode(result)
 }
 
@@ -174,9 +292,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 
   if (node.internal.type === "ApiJson" && node.components) {
-    console.log(node.info)
     if (node.info.title === "Medusa Storefront API") {
-      console.log("creating node")
       createCustomNode({ name: "Store", node: node, createNode: createNode })
     }
     if (node.info.title === "Medusa Admin API") {

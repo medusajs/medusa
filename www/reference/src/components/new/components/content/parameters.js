@@ -1,53 +1,31 @@
 import React from "react"
 import { Flex, Text, Box } from "rebass"
 import Markdown from "react-markdown"
-import Collapsible from "react-collapsible"
-import styled from "@emotion/styled"
+import NestedCollapsible from "./collapsible"
+import Description from "./description"
 
-const MarkdownText = styled(Text)`
-  & code {
-    background-color: #e3e8ee;
-    border-radius: 5px;
-    padding: 4px;
-  }
-`
-
-const NestedParameters = ({ params }) => {
+const Parameters = ({ params, type }) => {
   return (
-    <Collapsible trigger="Show nested parameters">
-      <Box></Box>
-    </Collapsible>
-  )
-}
-
-const Parameters = ({ params }) => {
-  return (
-    <Flex flexDirection="column" mt={4}>
-      <Text
-        pb="12px"
-        sx={{
-          borderBottom: "hairline",
-        }}
-      >
-        Parameters
-      </Text>
+    <Flex flexDirection="column">
+      <Text pb="12px">{type === "attr" ? "Attributes" : "Parameters"}</Text>
       {params.properties.length > 0 ? (
         params.properties.map((prop, i) => {
+          const nested = prop.nestedModel || prop.items?.properties || null
           return (
             <Box
               py={2}
               sx={{
-                borderBottom: "hairline",
+                borderTop: "hairline",
               }}
               fontFamily="monospace"
               key={i}
             >
               <Flex alignItems="baseline">
                 <Text mr={2} fontSize={"12px"}>
-                  {prop.property}
+                  {prop.property || prop.name}
                 </Text>
                 <Text color={"gray"} fontSize={"10px"}>
-                  {prop.type}
+                  {prop.type || prop.schema?.type || nested?.title}
                 </Text>
                 {params.required && params.required.includes(prop.property) && (
                   <Text ml={1} fontSize={"10px"} variant="labels.required">
@@ -55,28 +33,22 @@ const Parameters = ({ params }) => {
                   </Text>
                 )}
               </Flex>
-              <MarkdownText fontSize={0} lineHeight="26px">
-                <Markdown>{prop.description}</Markdown>
-              </MarkdownText>
-              {prop.items.properties && (
-                <>
-                  <Collapsible trigger="Show nested parameters">
-                    {prop.items.properties.map((nested, i) => {
-                      return <div key={i}>{nested.property}</div>
-                    })}
-                  </Collapsible>
-                </>
+              <Description>
+                <Text fontSize={0} lineHeight="26px" fontFamily="body">
+                  <Markdown>{prop.description}</Markdown>
+                </Text>
+              </Description>
+              {nested?.properties && (
+                <NestedCollapsible
+                  properties={nested.properties}
+                  title={nested.title}
+                />
               )}
             </Box>
           )
         })
       ) : (
-        <Text
-          fontSize="12px"
-          py={3}
-          fontFamily="monospace"
-          sx={{ borderBottom: "hairline" }}
-        >
+        <Text fontSize="12px" py={3} fontFamily="monospace">
           No parameters
         </Text>
       )}

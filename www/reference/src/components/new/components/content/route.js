@@ -1,15 +1,15 @@
 import React from "react"
 import { Flex, Text } from "rebass"
+import { formatRoute } from "../../../../utils/format-route"
 
 const Route = ({ method, path }) => {
-  // const fixedPath = path.replaceAll("{", ":").replaceAll("}", "")
   const fixedMethod = method.toUpperCase()
   return (
     <Flex fontFamily="monospace">
       <Text variant={`labels.${fixedMethod}`} mr={1}>
         {fixedMethod}
       </Text>
-      <Text>{path}</Text>
+      <Text>{formatRoute(path)}</Text>
     </Flex>
   )
 }

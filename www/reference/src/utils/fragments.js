@@ -15,12 +15,20 @@ export const StoreSection = graphql`
       ...StorePath
     }
     schema {
+      object
       description
       properties {
         property
         type
         description
         format
+        nestedModel {
+          title
+          properties {
+            property
+            type
+          }
+        }
       }
     }
   }
@@ -69,6 +77,7 @@ export const StoreResponse = graphql`
       _ref
       property
       description
+      json
       items {
         _ref
       }
@@ -84,16 +93,11 @@ export const StoreRequestBody = graphql`
       description
       property
       type
-      items {
+      nestedModel {
+        title
         properties {
           property
-          description
-        }
-      }
-      properties {
-        option_id {
           type
-          description
         }
       }
     }
@@ -115,12 +119,21 @@ export const AdminSection = graphql`
       ...AdminPath
     }
     schema {
+      object
       description
       properties {
         property
         type
         description
         format
+        nestedModel {
+          title
+          properties {
+            property
+            type
+            description
+          }
+        }
       }
     }
   }
@@ -170,6 +183,7 @@ export const AdminResponse = graphql`
       type
       property
       description
+      json
       items {
         type
         _ref
@@ -186,33 +200,12 @@ export const AdminRequestBody = graphql`
       description
       enum
       format
-      oneOf {
-        _ref
-      }
       property
       type
-      items {
-        type
+      nestedModel {
+        title
         properties {
-          type
           property
-          enum
-          description
-          items {
-            type
-          }
-        }
-      }
-      properties {
-        price {
-          type
-          description
-        }
-        option_id {
-          type
-          description
-        }
-        value {
           type
           description
         }

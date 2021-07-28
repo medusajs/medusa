@@ -1,8 +1,12 @@
 import React from "react"
 import Markdown from "react-markdown"
-import { Flex, Text } from "rebass"
+import { Flex, Text, Box, Heading } from "rebass"
+import { convertToKebabCase } from "../../../../utils/convert-to-kebab-case"
 import Parameters from "./parameters"
 import Route from "./route"
+import JsonContainer from "./json-container"
+import Description from "./description"
+import ResponsiveContainer from "./responsive-container"
 
 const Method = ({ data, pathname }) => {
   return (
@@ -10,17 +14,32 @@ const Method = ({ data, pathname }) => {
       flexDirection="column"
       py={4}
       sx={{
-        borderBottom: "hairline",
+        borderTop: "hairline",
       }}
+      id={convertToKebabCase(data.summary)}
     >
-      <Text mb={3} fontSize={3}>
+      <Heading as="h1" mb={4} fontSize={4} fontWeight={500}>
         {data.summary}
-      </Text>
-      <Route path={pathname} method={data.method} />
-      <Text lineHeight="26px">
-        <Markdown>{data.description}</Markdown>
-      </Text>
-      <Parameters params={data.requestBody} />
+      </Heading>
+      <ResponsiveContainer>
+        <Flex className="info" flexDirection="column" pr={5}>
+          <Route path={pathname} method={data.method} />
+          <Description>
+            <Text lineHeight="26px" mt={3}>
+              <Markdown>{data.description}</Markdown>
+            </Text>
+          </Description>
+          <Box mt={4}>
+            <Parameters params={data.requestBody} />
+          </Box>
+        </Flex>
+        <Box className="code">
+          <JsonContainer
+            json={data.responses[0].content?.[0].json}
+            header={"RESPONSE"}
+          />
+        </Box>
+      </ResponsiveContainer>
     </Flex>
   )
 }
