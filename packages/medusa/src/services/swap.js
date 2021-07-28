@@ -103,12 +103,12 @@ class SwapService extends BaseService {
     }
 
     const totalFields = [
-      "subtotal",
-      "tax_total",
-      "shipping_total",
-      "discount_total",
-      "gift_card_total",
-      "total",
+      "cart.subtotal",
+      "cart.tax_total",
+      "cart.shipping_total",
+      "cart.discount_total",
+      "cart.gift_card_total",
+      "cart.total",
     ]
 
     const totalsToSelect = select.filter(v => totalFields.includes(v))
@@ -134,22 +134,22 @@ class SwapService extends BaseService {
   }
 
   async decorateTotals_(cart, totalsFields = []) {
-    if (totalsFields.includes("shipping_total")) {
+    if (totalsFields.includes("cart.shipping_total")) {
       cart.shipping_total = await this.totalsService_.getShippingTotal(cart)
     }
-    if (totalsFields.includes("discount_total")) {
+    if (totalsFields.includes("cart.discount_total")) {
       cart.discount_total = await this.totalsService_.getDiscountTotal(cart)
     }
-    if (totalsFields.includes("tax_total")) {
+    if (totalsFields.includes("cart.tax_total")) {
       cart.tax_total = await this.totalsService_.getTaxTotal(cart)
     }
-    if (totalsFields.includes("gift_card_total")) {
+    if (totalsFields.includes("cart.gift_card_total")) {
       cart.gift_card_total = await this.totalsService_.getGiftCardTotal(cart)
     }
-    if (totalsFields.includes("subtotal")) {
+    if (totalsFields.includes("cart.subtotal")) {
       cart.subtotal = await this.totalsService_.getSubtotal(cart)
     }
-    if (totalsFields.includes("total")) {
+    if (totalsFields.includes("cart.total")) {
       cart.total = await this.totalsService_.getTotal(cart)
     }
     return cart

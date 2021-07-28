@@ -29,12 +29,12 @@ const defaultFields = [
   "created_at",
   "updated_at",
   "metadata",
-  "subtotal",
-  "tax_total",
-  "shipping_total",
-  "discount_total",
-  "gift_card_total",
-  "total",
+  "cart.subtotal",
+  "cart.tax_total",
+  "cart.shipping_total",
+  "cart.discount_total",
+  "cart.gift_card_total",
+  "cart.total",
 ]
 
 describe("GET /admin/swaps/:id", () => {
