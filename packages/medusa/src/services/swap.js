@@ -92,6 +92,69 @@ class SwapService extends BaseService {
     return cloned
   }
 
+  transformQueryForTotals_(config) {
+    let { select, relations } = config
+
+    if (!select) {
+      return {
+        ...config,
+        totalsToSelect: [],
+      }
+    }
+
+    const totalFields = [
+      "cart.subtotal",
+      "cart.tax_total",
+      "cart.shipping_total",
+      "cart.discount_total",
+      "cart.gift_card_total",
+      "cart.total",
+    ]
+
+    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    if (totalsToSelect.length > 0) {
+      const relationSet = new Set(relations)
+      relationSet.add("cart")
+      relationSet.add("cart.items")
+      relationSet.add("cart.gift_cards")
+      relationSet.add("cart.discounts")
+      relationSet.add("cart.shipping_methods")
+      relationSet.add("cart.region")
+      relations = [...relationSet]
+
+      select = select.filter(v => !totalFields.includes(v))
+    }
+
+    return {
+      ...config,
+      relations,
+      select,
+      totalsToSelect,
+    }
+  }
+
+  async decorateTotals_(cart, totalsFields = []) {
+    if (totalsFields.includes("cart.shipping_total")) {
+      cart.shipping_total = await this.totalsService_.getShippingTotal(cart)
+    }
+    if (totalsFields.includes("cart.discount_total")) {
+      cart.discount_total = await this.totalsService_.getDiscountTotal(cart)
+    }
+    if (totalsFields.includes("cart.tax_total")) {
+      cart.tax_total = await this.totalsService_.getTaxTotal(cart)
+    }
+    if (totalsFields.includes("cart.gift_card_total")) {
+      cart.gift_card_total = await this.totalsService_.getGiftCardTotal(cart)
+    }
+    if (totalsFields.includes("cart.subtotal")) {
+      cart.subtotal = await this.totalsService_.getSubtotal(cart)
+    }
+    if (totalsFields.includes("cart.total")) {
+      cart.total = await this.totalsService_.getTotal(cart)
+    }
+    return cart
+  }
+
   /**
    * Retrieves a swap with the given id.
    * @param {string} id - the id of the swap to retrieve
@@ -102,7 +165,11 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const { totalsToSelect, ...newConfig } = this.transformQueryForTotals_(
+      config
+    )
+
+    const query = this.buildQuery_({ id: validatedId }, newConfig)
 
     const rels = query.relations
     delete query.relations
@@ -110,6 +177,11 @@ class SwapService extends BaseService {
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
+    }
+
+    if (rels && rels.includes("cart")) {
+      const cart = await this.decorateTotals_(swap.cart, totalsToSelect)
+      swap.cart = cart
     }
 
     return swap
