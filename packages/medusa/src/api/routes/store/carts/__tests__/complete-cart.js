@@ -78,7 +78,7 @@ describe("POST /store/carts/:id", () => {
     })
 
     it("returns the created order", () => {
-      expect(subject.body.data.id).toEqual("test-swap")
+      expect(subject.body.data.id).toEqual(IdMap.getId("test-swap"))
     })
   })
 
