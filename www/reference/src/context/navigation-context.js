@@ -1,0 +1,130 @@
+import React, { useEffect, useReducer } from "react"
+import { globalHistory } from "@reach/router"
+
+export const defaultNavigationContext = {
+  api: "store",
+  setApi: () => {},
+  currentSection: null,
+  updateSection: () => {},
+  currentHash: null,
+  updateHash: () => {},
+  openSections: [],
+  openSection: () => {},
+  reset: () => {},
+}
+
+const NavigationContext = React.createContext(defaultNavigationContext)
+export default NavigationContext
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setApi": {
+      return {
+        ...state,
+        api: action.payload,
+      }
+    }
+    case "updateHash":
+      return {
+        ...state,
+        currentHash: action.payload,
+      }
+    case "updateSection":
+      return {
+        ...state,
+        currentSection: action.payload,
+      }
+    case "openSection":
+      const obj = state.openSections
+      obj.push(action.payload)
+      return {
+        ...state,
+        openSections: obj,
+      }
+    case "reset":
+      return {
+        openSections: [],
+      }
+    default:
+      return state
+  }
+}
+
+export const NavigationProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, defaultNavigationContext)
+
+  useEffect(() => {
+    globalHistory.listen(({ location }) => {
+      console.log(location.hash.slice(1))
+      updateHash(location.hash.slice(1))
+    })
+  }, [])
+
+  const setApi = api => {
+    dispatch({ type: "setApi", payload: api })
+  }
+
+  const updateHash = (section, method) => {
+    dispatch({ type: "updateHash", payload: method })
+    window.history.replaceState(
+      null,
+      "",
+      `/api/${state.api}/${section}/${method}`
+    )
+  }
+
+  const updateSection = section => {
+    dispatch({ type: "updateSection", payload: section })
+    window.history.replaceState(null, "", `/api/${state.api}/${section}`)
+  }
+
+  const openSection = sectionName => {
+    dispatch({ type: "openSection", payload: sectionName })
+  }
+
+  const goTo = to => {
+    const { section, method } = to
+    dispatch({ type: "openSection", payload: section })
+
+    if (method) {
+      const element = document.querySelector(`#${method}`)
+      console.log(element, method)
+      if (element) {
+        element.scrollIntoView({
+          block: "start",
+          inline: "nearest",
+        })
+      }
+    } else {
+      const element = document.querySelector(`#${section}`)
+      console.log(element, section)
+      if (element) {
+        element.scrollIntoView({
+          block: "start",
+          inline: "nearest",
+        })
+      }
+    }
+  }
+
+  const reset = () => {
+    dispatch({ type: "reset" })
+  }
+
+  return (
+    <NavigationContext.Provider
+      value={{
+        ...state,
+        openSection,
+        updateSection,
+        updateHash,
+        setApi,
+        goTo,
+        reset,
+        dispatch,
+      }}
+    >
+      {children}
+    </NavigationContext.Provider>
+  )
+}

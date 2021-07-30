@@ -2,6 +2,15 @@ const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 const fixtures = require("../../docs/api/fixtures.json")
 
+const convertToKebabCase = string => {
+  return string
+    .replace(/\s+/g, "-")
+    .replace("'", "")
+    .replace(".", "")
+    .replace('"', "")
+    .toLowerCase()
+}
+
 const createCustomNode = ({ name, node, createNode }) => {
   const tags = node.tags
   const nodePaths = Object.entries(node.paths).map(([path, values]) => {
@@ -47,7 +56,6 @@ const createCustomNode = ({ name, node, createNode }) => {
                       oneOf[0]["$ref"].lastIndexOf("/") + 1
                     )
                     ref = node.components.schemas[component_id]
-                    console.log(ref)
                   }
                 }
                 if (ref) {
@@ -299,4 +307,247 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       createCustomNode({ name: "Admin", node: node, createNode: createNode })
     }
   }
+}
+
+const createAllPages = (sections, api, siteData, createPage, template) => {
+  sections.forEach(edge => {
+    const baseURL = convertToKebabCase(edge.section.section_name)
+    createPage({
+      path: `api/${api}/${baseURL}`,
+      component: template,
+      context: {
+        data: siteData.data[api],
+        api: api,
+        title: edge.section.section_name,
+        description: edge.section.schema?.description || "",
+        to: { section: baseURL, method: null },
+      },
+    })
+    edge.section.paths.forEach(p => {
+      p.methods.forEach(method => {
+        const methodURL = convertToKebabCase(method.summary)
+        createPage({
+          path: `api/${api}/${baseURL}/${methodURL}`,
+          component: template,
+          context: {
+            data: siteData.data.admin,
+            api: api,
+            title: method.summary,
+            description: method.description || "",
+            to: { section: baseURL, method: methodURL },
+          },
+        })
+      })
+    })
+  })
+}
+
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions
+  const template = path.resolve(`src/templates/reference-page.js`)
+  // Query for markdown nodes to use in creating pages.
+  // You can query for whatever data you want to create pages for e.g.
+  // products, portfolio items, landing pages, etc.
+  // Variables can be added as the second function parameter
+  return graphql(
+    `
+      query Pages {
+        admin {
+          sections {
+            section {
+              section_name
+              paths {
+                name
+                methods {
+                  tags
+                  summary
+                  description
+                  method
+                  operationId
+                  responses {
+                    status
+                    description
+                    content {
+                      _ref
+                      type
+                      property
+                      description
+                      json
+                      items {
+                        type
+                        _ref
+                      }
+                    }
+                  }
+                  requestBody {
+                    type
+                    required
+                    properties {
+                      description
+                      enum
+                      format
+                      property
+                      type
+                      nestedModel {
+                        title
+                        properties {
+                          property
+                          type
+                          description
+                        }
+                      }
+                    }
+                  }
+
+                  parameters {
+                    description
+                    in
+                    name
+                    required
+                    schema {
+                      type
+                    }
+                  }
+                }
+              }
+              schema {
+                object
+                description
+                properties {
+                  property
+                  type
+                  description
+                  format
+                  nestedModel {
+                    title
+                    properties {
+                      property
+                      type
+                      description
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        store {
+          sections {
+            section {
+              section_name
+              paths {
+                name
+                methods {
+                  tags
+                  summary
+                  description
+                  method
+                  operationId
+                  responses {
+                    status
+                    description
+                    content {
+                      _ref
+                      property
+                      description
+                      json
+                      items {
+                        _ref
+                      }
+                    }
+                  }
+                  requestBody {
+                    type
+                    required
+                    properties {
+                      description
+                      property
+                      type
+                      nestedModel {
+                        title
+                        properties {
+                          property
+                          type
+                        }
+                      }
+                    }
+                  }
+                  parameters {
+                    description
+                    in
+                    name
+                    required
+                    schema {
+                      type
+                    }
+                  }
+                }
+              }
+              schema {
+                object
+                description
+                properties {
+                  property
+                  type
+                  description
+                  format
+                  nestedModel {
+                    title
+                    properties {
+                      property
+                      type
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+    { limit: 1000 }
+  ).then(result => {
+    if (result.errors) {
+      throw result.errors
+    }
+
+    //create entrypoint
+    createPage({
+      path: `api`,
+      component: template,
+      context: {
+        data: result.data.store,
+        api: "store",
+        title: "Store",
+        description: "Storefront API",
+      },
+    })
+
+    const apis = [
+      { title: "Store", description: "Storefront API", slug: "store" },
+      { title: "Admin", description: "Admin API", slug: "admin" },
+    ]
+
+    apis.forEach(api => {
+      //create main page for API
+      createPage({
+        path: `api/${api.slug}`,
+        component: template,
+        context: {
+          data: result.data[api.slug],
+          api: api.slug,
+          title: api.title,
+          description: api.description,
+        },
+      })
+      //create pages for all sections and methods
+      createAllPages(
+        result.data[api.slug].sections,
+        api.slug,
+        result,
+        createPage,
+        template
+      )
+    })
+  })
 }

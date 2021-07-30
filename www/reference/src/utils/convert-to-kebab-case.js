@@ -3,5 +3,6 @@ export const convertToKebabCase = string => {
     .replace(/\s+/g, "-")
     .replace("'", "")
     .replace(".", "")
+    .replace('"', "")
     .toLowerCase()
 }

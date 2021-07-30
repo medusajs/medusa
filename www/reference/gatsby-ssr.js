@@ -1,6 +1,6 @@
 import React from "react"
-import { ThemeProvider as Provider } from "./src/theme"
+import { NavigationProvider } from "./src/context/navigation-context"
 
 export const wrapPageElement = ({ element }) => {
-  return <Provider>{element}</Provider>
+  return <NavigationProvider>{element}</NavigationProvider>
 }

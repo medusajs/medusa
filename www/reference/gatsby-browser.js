@@ -1,5 +1,5 @@
 import React from "react"
-import { ThemeProvider as Provider } from "./src/theme"
+import { NavigationProvider } from "./src/context/navigation-context"
 
 export const onServiceWorkerUpdateReady = () => {
   const answer = window.confirm(
@@ -12,5 +12,5 @@ export const onServiceWorkerUpdateReady = () => {
 }
 
 export const wrapPageElement = ({ element }) => {
-  return <Provider>{element}</Provider>
+  return <NavigationProvider>{element}</NavigationProvider>
 }

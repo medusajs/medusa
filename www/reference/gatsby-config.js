@@ -31,7 +31,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-anchor-links`,
       options: {
-        offset: -500,
+        offset: -100,
+        duration: 1000,
       },
     },
     `gatsby-transformer-json`,
@@ -76,6 +77,16 @@ module.exports = {
             },
           },
         ],
+      },
+    },
+    `gatsby-plugin-theme-ui`,
+    {
+      resolve: `gatsby-plugin-algolia-docsearch`,
+      options: {
+        apiKey: process.env.ALGOLIA_DOCSEARCH_API_KEY, // required
+        indexName: process.env.ALGOLIA_DOCSEARCH_INDEX_NAME, // required
+        inputSelector: "#algolia-doc-search", // required
+        debug: false, // (bool) Optional. Default `false`
       },
     },
     // `gatsby-plugin-preact`,
