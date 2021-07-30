@@ -18,7 +18,7 @@ const Method = ({ data, section, pathname }) => {
 
   const [containerRef, isInView] = useInView({
     root: null,
-    rootMargin: "-200px 0px -200px 0px",
+    rootMargin: "0px 0px -80% 0px",
     threshold: 0,
   })
 
@@ -36,7 +36,6 @@ const Method = ({ data, section, pathname }) => {
         flexDirection: "column",
       }}
       id={convertToKebabCase(summary)}
-      ref={containerRef}
     >
       <Heading
         as="h2"
@@ -45,6 +44,7 @@ const Method = ({ data, section, pathname }) => {
           fontSize: "4",
           fontWeight: "500",
         }}
+        ref={containerRef}
       >
         {summary}
       </Heading>

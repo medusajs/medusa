@@ -63,9 +63,13 @@ const StyledAnchorLink = styled(AnchorLink)`
 `
 
 const SideBarItem = ({ item }) => {
-  const { openSection, openSections, currentHash, currentSection } = useContext(
-    NavigationContext
-  )
+  const {
+    openSection,
+    openSections,
+    currentHash,
+    currentSection,
+    api,
+  } = useContext(NavigationContext)
   const { section } = item
   const subItems = section.paths
     .map(p => {

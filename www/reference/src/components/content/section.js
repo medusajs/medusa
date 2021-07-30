@@ -66,7 +66,7 @@ const Section = ({ data }) => {
 
   const [containerRef, isInView] = useInView({
     root: null,
-    rootMargin: "0px",
+    rootMargin: "0px 0px -80% 0px",
     threshold: 1.0,
   })
 
@@ -84,7 +84,6 @@ const Section = ({ data }) => {
           padding: "5vw",
         }}
         bg={isExpanded ? "transparent" : "var(--faded-contrast)"}
-        ref={containerRef}
       >
         <SectionHeader
           as="h1"
@@ -93,6 +92,7 @@ const Section = ({ data }) => {
             fontWeight: "500",
             fontSize: "22",
           }}
+          ref={containerRef}
           className={`header-${convertToKebabCase(section.section_name)}`}
         >
           {section.section_name}
