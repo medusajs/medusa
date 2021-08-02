@@ -2,6 +2,7 @@ import removeSlash from "remove-trailing-slash"
 import axios from "axios"
 import axiosRetry from "axios-retry"
 
+import showAnalyticsNotification from "./show-notification"
 import Store from "../store"
 import isTruthy from "./is-truthy"
 
@@ -37,7 +38,7 @@ class TelemetryDispatcher {
     if (this.trackingEnabled !== undefined) {
       return this.trackingEnabled
     }
-    let enabled = this.store_.getConfig(`telemetry.enabled`) || null
+    let enabled = this.store_.getConfig(`telemetry.enabled`)
     if (enabled === undefined || enabled === null) {
       showAnalyticsNotification()
       enabled = true

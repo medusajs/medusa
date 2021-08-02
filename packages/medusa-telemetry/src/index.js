@@ -5,10 +5,16 @@ const telemeter = new Telemeter()
 
 export const flush = createFlush(telemeter.isTrackingEnabled())
 
-process.on(`exit`, flush)
+if (flush) {
+  process.on(`exit`, flush)
+}
 
 export const track = (event, data = {}) => {
   telemeter.track(event, data)
+}
+
+export const setTelemetryEnabled = (enabled = true) => {
+  telemeter.setTelemetryEnabled(enabled)
 }
 
 export { default as Telemeter } from "./telemeter"

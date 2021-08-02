@@ -43,7 +43,7 @@ class Telemeter {
     if (this.trackingEnabled !== undefined) {
       return this.trackingEnabled
     }
-    let enabled = this.store_.getConfig(`telemetry.enabled`) || null
+    let enabled = this.store_.getConfig(`telemetry.enabled`)
     if (enabled === undefined || enabled === null) {
       showAnalyticsNotification()
       enabled = true
@@ -106,6 +106,11 @@ class Telemeter {
     return `-0.0.0`
   }
 
+  setTelemetryEnabled(enabled) {
+    this.trackingEnabled = enabled
+    this.store_.setConfig(`telemetry.enabled`, enabled)
+  }
+
   track(event, data) {
     return this.enqueue_(event, data)
   }
@@ -132,12 +137,14 @@ class Telemeter {
 
     if (hasReachedQueueSize || hasReachedFlushAt) {
       const flush = createFlush(this.isTrackingEnabled())
-      flush()
+      flush && flush()
     }
 
     if (this.flushInterval && !this.timer) {
       const flush = createFlush(this.isTrackingEnabled())
-      this.timer = setTimeout(flush, this.flushInterval)
+      if (flush) {
+        this.timer = setTimeout(flush, this.flushInterval)
+      }
     }
   }
 }
