@@ -12,7 +12,7 @@ class TelemetryDispatcher {
     this.store_ = new Store()
 
     this.host = removeSlash(
-      options.host || "https://events.medusa-commerce.com"
+      options.host || "https://telemetry.medusa-commerce.com"
     )
     this.path = removeSlash(options.path || "/batch")
 
