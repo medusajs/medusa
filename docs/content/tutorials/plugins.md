@@ -1,20 +1,20 @@
 # Plugins
 
-The purpose of this guide is to give an introduction to the structure of a plugin and the steps required to create one. It builds upon our article describing the process of adding custom functionality. It can be seen as the proceeding steps for extracting your custom functionality to a reusable package for other developers to use.
+The purpose of this guide is to give an introduction to the structure of a plugin and the steps required to create one. It builds upon our article describing the process of [adding custom functionality](https://docs.medusa-commerce.com/tutorials/adding-custom-functionality). It can be seen as the proceeding steps for extracting your custom functionality to a reusable package for other developers to use.
 
 ## What is a plugin?
 
 Plugins offer a way to extend and integrate the core functionality of Medusa.
 
-In most commerce solutions, you can extend the basic features but it often comes with the expense of having to build standalone web applications. Our architecture is built such that plugins run within the same process as the core eliminating the need for extra server capability and maintenance. As a result, the plugins can use all other services as dependencies and access the database.
+In most commerce solutions, you can extend the basic features but it often comes with the expense of having to build standalone web applications. Our architecture is built such that plugins run within the same process as the core eliminating the need for extra server capacaity, infrastructure and maintenance. As a result, the plugins can use all other services as dependencies and access the database.
 
-Note: You will notice that plugins vary in naming. The name should signal what functionality they provide.
+> You will notice that plugins vary in naming. The name should signal what functionality they provide.
 
 In the following sections, we will go through the basics of implementing a generic plugin. And finally, how to use it as part of your commerce setup.
 
 ## Building a plugin
 
-Plugins are essentially a Node.js project of their own. They contain a file in root, `package.json`, that holds all metadata and dependencies of the project.
+A plugin is essentially a Node.js project of their own. They contain a file in root, `package.json`, that holds all metadata and dependencies of the project.
 
 The first step in creating a plugin is to initialize the Node.js project:
 
@@ -28,9 +28,27 @@ This command will ask you to fill out your project's metadata, which will eventu
 
 We've already gone through the process of building custom services, endpoints, and subscribers in another tutorial, so this will not be repeated. The process is the same for the logic within a plugin, meaning that the functionality is loaded as part of the core if the correct naming convention is followed.
 
-What is worth mentioning, is the difference between building a generic and a non-generic plugin. A non-generic plugin has a specific purpose such as processing payments or creating fulfillments. Medusa core depends on a specific implementation from such plugins, which is why we've created interfaces that enforce this. These can be found in `@medusajs/medusa/packages/medusa-interfaces`.
+To quickly get started with the implementation, we advise you to copy `/services/welcome.js`, `/api/index.js`, `/subscribers/welcome.js` and the config files from the tutorial and add them in `/src`. As a result, you should have the following folder structure:
 
-Note: Non-generic plugins are required to extend the correct interface, otherwise they will not be loaded correctly as part of your Medusa setup.
+```js
+.
+├── src
+│   ├── api
+│       └── index.js
+│   └── services
+│       └── welcome.js
+│   └── subscribers
+│       └── welcome.js
+├── .babelrc
+├── .gitignore
+├── medusa-config.js
+├── README.md
+└── package.json
+```
+
+It is worth mentioning the difference between building a generic and a non-generic plugin. A non-generic plugin has a specific purpose such as processing payments or creating fulfillments. Medusa core depends on a specific implementation from such plugins, which is why we've created interfaces that enforce this. These can be found in `medusa-interfaces`.
+
+> Note: Non-generic plugins are required to extend the correct interface, otherwise they will not be loaded correctly as part of your Medusa setup.
 
 For a more comprehensive walkthrough of the implementation of such plugins, see our guides:
 
@@ -59,7 +77,7 @@ Finally, you should add a README for the plugin, such that the community underst
 
 ## Installation and configuration
 
-Official Medusa plugins can be found within the mono repo `@medusajs/medusa/packages/` and community plugins can be found by searching NPM for keywords such as `medusa` or `medusa-plugin`.
+Official Medusa plugins can be found within the [mono repo](https://github.com/medusajs/medusa/tree/master/packages) and community plugins can be found by searching NPM for keywords such as `medusa` or `medusa-plugin`.
 
 Note: For plugins to become a part of the mono repo, we require you to submit a PR request. If approved, we will publish it under the Medusa organisation on Github.
 
@@ -74,7 +92,7 @@ The following steps will install the official Contentful plugin for your Medusa 
 First, we add the plugin as a dependency to your project:
 
 ```bash
-yarn add @medusajs/medusa-plugin-contentful
+yarn add medusa-plugin-contentful
 ```
 
 ### Step 2: Configuration
@@ -83,16 +101,15 @@ In the README of the plugin, you will see the options for the plugin. Some are r
 
 In your `medusa-config.js`, add the plugin and the required options:
 
-```jsx
+```js
 const plugins = [
 	...
 	{
     resolve: `medusa-plugin-contentful`,
     options: {
-      redis_url: REDIS_URL,
-      space_id: CONTENTFUL_SPACE_ID,
-      access_token: CONTENTFUL_ACCESS_TOKEN,
-      environment: CONTENTFUL_ENV,
+      space_id: "some_space_id",
+      access_token: "some_access_token",
+      environment: "some_environment",
     },
   },
 	...
