@@ -12,6 +12,7 @@ import sysPath from "path"
 import prompts from "prompts"
 import url from "url"
 import { createDatabase } from "pg-god"
+import { track } from "medusa-telemetry"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
@@ -275,21 +276,24 @@ const setupDB = async (dbName, dbCreds = {}) => {
 const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
   const credentials = Object.assign(defaultDBCreds, dbCreds)
 
+  let dbUrl = ""
+  if (
+    credentials.user !== defaultDBCreds.user ||
+    credentials.password !== defaultDBCreds.password
+  ) {
+    dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
+  } else {
+    dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
+  }
+
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
     fs.renameSync(templatePath, destination)
-    fs.appendFileSync(
-      destination,
-      `DATABASE_URL=postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}\n`
-    )
   } else {
     reporter.info(`No .env.template found. Creating .env.`)
-    fs.appendFileSync(
-      destination,
-      `DATABASE_URL=postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}\n`
-    )
   }
+  fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
 }
 
 const runMigrations = async rootPath => {
@@ -354,6 +358,8 @@ const attemptSeed = async rootPath => {
  * Main function that clones or copies the starter.
  */
 export const newStarter = async args => {
+  track("CLI_NEW")
+
   const {
     starter,
     root,
@@ -430,21 +436,28 @@ export const newStarter = async args => {
     await copy(starterPath, rootPath)
   }
 
+  track("CLI_NEW_LAYOUT_COMPLETED")
+
   if (!skipDb) {
+    track("CLI_NEW_SETUP_DB")
     await setupDB(root, dbCredentials)
   }
 
   if (!skipEnv) {
+    track("CLI_NEW_SETUP_ENV")
     await setupEnvVars(rootPath, root, dbCredentials)
   }
 
   if (!skipMigrations) {
+    track("CLI_NEW_RUN_MIGRATIONS")
     await runMigrations(rootPath)
   }
 
   if (seed) {
+    track("CLI_NEW_SEED_DB")
     await attemptSeed(rootPath)
   }
 
   successMessage(rootPath)
+  track("CLI_NEW_SUCCEEDED")
 }

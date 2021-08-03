@@ -50,7 +50,7 @@ export class Reporter {
     })
 
     track("PANIC_ERROR_REACHED", {
-      code: data.code,
+      id: data.id,
     })
 
     process.exit(1)
