@@ -136,6 +136,9 @@ export class Product {
   })
   tags: ProductTag[]
 
+  @Column({ default: true })
+  discountable: boolean
+
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 

@@ -36,6 +36,7 @@ describe("GET /admin/products/:id", () => {
             "description",
             "handle",
             "is_giftcard",
+            "discountable",
             "thumbnail",
             "profile_id",
             "collection_id",

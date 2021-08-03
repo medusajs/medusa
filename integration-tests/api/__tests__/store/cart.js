@@ -18,8 +18,12 @@ describe("/store/carts", () => {
     await manager.query(`DELETE FROM "discount"`);
     await manager.query(`DELETE FROM "discount_rule"`);
     await manager.query(`DELETE FROM "shipping_method"`);
-    await manager.query(`DELETE FROM "shipping_option"`);
+    await manager.query(`DELETE FROM "line_item"`);
     await manager.query(`DELETE FROM "cart"`);
+    await manager.query(`DELETE FROM "money_amount"`);
+    await manager.query(`DELETE FROM "product_variant"`);
+    await manager.query(`DELETE FROM "product"`);
+    await manager.query(`DELETE FROM "shipping_option"`);
     await manager.query(`DELETE FROM "address"`);
     await manager.query(`DELETE FROM "customer"`);
     await manager.query(
@@ -231,6 +235,34 @@ describe("/store/carts", () => {
         expect.objectContaining({ shipping_option_id: "test-option" })
       );
       expect(cartWithShippingMethod.status).toEqual(200);
+    });
+
+    it("adds a giftcard to cart, but ensures discount does not effect total", async () => {
+      const api = useApi();
+
+      let cartWithGiftcard = await api.post(
+        "/store/carts/test-cart/line-items",
+        {
+          variant_id: "giftcard-denom",
+          quantity: 1,
+        },
+        { withCredentials: true }
+      );
+
+      cartWithGiftcard = await api.post(
+        "/store/carts/test-cart",
+        {
+          discounts: [{ code: "10PERCENT" }],
+        },
+        { withCredentials: true }
+      );
+
+      expect(cartWithGiftcard.data.cart.items[0]).toEqual(
+        expect.objectContaining({ variant_id: "giftcard-denom" })
+      );
+      expect(cartWithGiftcard.data.cart.total).toBe(1000);
+      expect(cartWithGiftcard.data.cart.discount_total).toBe(0);
+      expect(cartWithGiftcard.status).toEqual(200);
     });
 
     it("adds no more than 1 shipping method per shipping profile", async () => {
