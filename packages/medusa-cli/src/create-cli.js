@@ -155,6 +155,7 @@ function buildLocalCommands(cli, isLocalProject) {
           alias: `seed-file`,
           type: `string`,
           describe: `Path to the file where the seed is defined.`,
+          required: true,
         }).option(`m`, {
           alias: `migrate`,
           type: `boolean`,
