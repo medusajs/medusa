@@ -45,7 +45,7 @@ export class Reporter {
   panic = data => {
     this.loggerInstance_.log({
       level: "error",
-      details: error,
+      details: data,
       message: data.error && data.error.message,
     })
 

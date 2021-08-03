@@ -76,6 +76,12 @@ function buildLocalCommands(cli, isLocalProject) {
           describe: `If flag is set the command will attempt to seed the database after setup.`,
           default: false,
         })
+          .option(`y`, {
+            type: `boolean`,
+            alias: "useDefaults",
+            describe: `If flag is set the command will not interactively collect database credentials`,
+            default: false,
+          })
           .option(`skip-db`, {
             type: `boolean`,
             describe: `If flag is set the command will not attempt to complete database setup`,
