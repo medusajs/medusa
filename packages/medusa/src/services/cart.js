@@ -660,6 +660,10 @@ class CartService extends BaseService {
         }
       }
 
+      if ("metadata" in update) {
+        cart.metadata = this.setMetadata_(cart, update.metadata)
+      }
+
       if ("context" in update) {
         const prevContext = cart.context || {}
         cart.context = {
@@ -1331,7 +1335,7 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
-    })
+    }, "SERIALIZABLE")
   }
 
   /**
