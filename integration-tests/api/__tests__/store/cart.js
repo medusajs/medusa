@@ -237,10 +237,21 @@ describe("/store/carts", () => {
       expect(cartWithShippingMethod.status).toEqual(200);
     });
 
-    it("adds a giftcard to cart, but ensures discount does not effect total", async () => {
+    it("adds a giftcard to cart, but ensures discount only applied to discountable items", async () => {
       const api = useApi();
 
-      let cartWithGiftcard = await api.post(
+      // Add standard line item to cart
+      await api.post(
+        "/store/carts/test-cart/line-items",
+        {
+          variant_id: "test-variant",
+          quantity: 1,
+        },
+        { withCredentials: true }
+      );
+
+      // Add gift card to cart
+      await api.post(
         "/store/carts/test-cart/line-items",
         {
           variant_id: "giftcard-denom",
@@ -249,7 +260,8 @@ describe("/store/carts", () => {
         { withCredentials: true }
       );
 
-      cartWithGiftcard = await api.post(
+      // Add a 10% discount to the cart
+      const cartWithGiftcard = await api.post(
         "/store/carts/test-cart",
         {
           discounts: [{ code: "10PERCENT" }],
@@ -257,11 +269,9 @@ describe("/store/carts", () => {
         { withCredentials: true }
       );
 
-      expect(cartWithGiftcard.data.cart.items[0]).toEqual(
-        expect.objectContaining({ variant_id: "giftcard-denom" })
-      );
-      expect(cartWithGiftcard.data.cart.total).toBe(1000);
-      expect(cartWithGiftcard.data.cart.discount_total).toBe(0);
+      // Ensure that the discount is only applied to the standard item
+      expect(cartWithGiftcard.data.cart.total).toBe(1900); // 1000 (giftcard) + 900 (standard item with 10% discount)
+      expect(cartWithGiftcard.data.cart.discount_total).toBe(100);
       expect(cartWithGiftcard.status).toEqual(200);
     });
 

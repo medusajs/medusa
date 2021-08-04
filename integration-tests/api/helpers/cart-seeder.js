@@ -169,6 +169,33 @@ module.exports = async (connection, data = {}) => {
     ],
   });
 
+  await manager.insert(Product, {
+    id: "test-product",
+    title: "test product",
+    profile_id: defaultProfile.id,
+    options: [{ id: "test-option", title: "Size" }],
+  });
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant",
+    title: "test variant",
+    product_id: "test-product",
+    inventory_quantity: 1,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
+  });
+
+  const ma = manager.create(MoneyAmount, {
+    variant_id: "test-variant",
+    currency_code: "usd",
+    amount: 1000,
+  });
+  await manager.save(ma);
+
   const ma2 = manager.create(MoneyAmount, {
     variant_id: "giftcard-denom",
     currency_code: "usd",

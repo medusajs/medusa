@@ -92,6 +92,8 @@ describe("/admin/products", () => {
       expect(response.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
+          discountable: true,
+          is_giftcard: false,
           handle: "test-product",
           images: expect.arrayContaining([
             expect.objectContaining({
