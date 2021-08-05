@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.20](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.19...medusa-core-utils@1.1.20) (2021-08-05)
+
+
+### Features
+
+* In band inventory updates ([#311](https://github.com/medusajs/medusa/issues/311)) ([f07cc0f](https://github.com/medusajs/medusa/commit/f07cc0fa406d8f0fe33f9088fe6cb3ce8e78b05f))
+
+
+
+
+
 ## [1.1.19](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.18...medusa-core-utils@1.1.19) (2021-07-26)
 
 **Note:** Version bump only for package medusa-core-utils
