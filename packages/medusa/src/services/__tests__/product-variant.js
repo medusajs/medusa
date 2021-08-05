@@ -384,6 +384,29 @@ describe("ProductVariantService", () => {
       })
     })
 
+    it("successfully updates variant inventory_quantity", async () => {
+      await productVariantService.update(IdMap.getId("ironman"), {
+        title: "new title",
+        inventory_quantity: 98,
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-variant.updated",
+        {
+          id: IdMap.getId("ironman"),
+          fields: ["title", "inventory_quantity"],
+        }
+      )
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("ironman"),
+        inventory_quantity: 98,
+        title: "new title",
+      })
+    })
+
     it("successfully updates variant prices", async () => {
       await productVariantService.update(IdMap.getId("ironman"), {
         title: "new title",
@@ -807,75 +830,6 @@ describe("ProductVariantService", () => {
       )
 
       expect(result).toBe(undefined)
-    })
-  })
-
-  describe("canCoverQuantity", () => {
-    const productVariantRepository = MockRepository({
-      findOne: query => {
-        if (query.where.id === IdMap.getId("no-manageable-ironman")) {
-          return Promise.resolve({ manage_inventory: false })
-        }
-        if (query.where.id === IdMap.getId("backorder-ironman")) {
-          return Promise.resolve({ allow_backorder: true })
-        }
-        if (query.where.id === IdMap.getId("no-ironman")) {
-          return Promise.resolve({
-            inventory_quantity: 5,
-            manage_inventory: true,
-            allow_backorder: false,
-          })
-        }
-        return Promise.resolve({
-          inventory_quantity: 20,
-        })
-      },
-    })
-
-    const productVariantService = new ProductVariantService({
-      manager: MockManager,
-      eventBusService,
-      productVariantRepository,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("returns true if there is more inventory than requested", async () => {
-      const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("ironman"),
-        10
-      )
-
-      expect(res).toEqual(true)
-    })
-
-    it("returns true if inventory not managed", async () => {
-      const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("no-manageable-ironman"),
-        10
-      )
-
-      expect(res).toEqual(true)
-    })
-
-    it("returns true if backorders allowed", async () => {
-      const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("backorder-ironman"),
-        10
-      )
-
-      expect(res).toEqual(true)
-    })
-
-    it("returns false if insufficient inventory", async () => {
-      const res = await productVariantService.canCoverQuantity(
-        IdMap.getId("no-ironman"),
-        20
-      )
-
-      expect(res).toEqual(false)
     })
   })
 })

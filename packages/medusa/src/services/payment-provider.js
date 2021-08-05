@@ -253,6 +253,7 @@ class PaymentProviderService extends BaseService {
         amount: total,
         currency_code: region.currency_code,
         data: paymentData,
+        cart_id: cart.id,
       })
 
       return paymentRepo.save(created)
