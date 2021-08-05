@@ -288,6 +288,11 @@ class ProductService extends BaseService {
         rest.thumbnail = images[0]
       }
 
+      // if product is a giftcard, we should disallow discounts
+      if (rest.is_giftcard) {
+        rest.discountable = false
+      }
+
       let product = productRepo.create(rest)
 
       if (images && images.length) {
