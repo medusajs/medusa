@@ -115,10 +115,18 @@ export default async (req, res) => {
     inventory_quantity: Validator.number().default(0),
     allow_backorder: Validator.boolean().optional(),
     manage_inventory: Validator.boolean().optional(),
-    weight: Validator.number().optional(),
-    length: Validator.number().optional(),
-    height: Validator.number().optional(),
-    width: Validator.number().optional(),
+    weight: Validator.number()
+      .allow(null)
+      .optional(),
+    length: Validator.number()
+      .allow(null)
+      .optional(),
+    height: Validator.number()
+      .allow(null)
+      .optional(),
+    width: Validator.number()
+      .allow(null)
+      .optional(),
     origin_country: Validator.string().allow(""),
     mid_code: Validator.string().allow(""),
     material: Validator.string().allow(""),
@@ -127,7 +135,7 @@ export default async (req, res) => {
       .items(
         Validator.object()
           .keys({
-            region_id: Validator.string(),
+            region_id: Validator.string().empty(null),
             currency_code: Validator.string().required(),
             amount: Validator.number()
               .integer()
