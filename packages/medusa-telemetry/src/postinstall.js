@@ -1,3 +1,5 @@
+const { isCI } = require("./util/is-cli")
+
 try {
   const showAnalyticsNotification = require(`./util/show-notification`)
   const Store = require(`./store`)
@@ -5,7 +7,7 @@ try {
   const eventStorage = new Store()
   const disabled = eventStorage.disabled_
   const enabledInConfig = eventStorage.getConfig(`telemetry.enabled`)
-  if (enabledInConfig === undefined && !disabled) {
+  if (enabledInConfig === undefined && !disabled && !isCI()) {
     showAnalyticsNotification()
   }
 } catch (e) {

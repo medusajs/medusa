@@ -5,9 +5,10 @@ import isDocker from "is-docker"
 import { v4 as uuidv4 } from "uuid"
 
 import createFlush from "./util/create-flush"
-import showAnalyticsNotification from "./util/show-notification"
-import isTruthy from "./util/is-truthy"
 import getTermProgram from "./util/get-term-program"
+import isTruthy from "./util/is-truthy"
+import showAnalyticsNotification from "./util/show-notification"
+import { isCI, getCIName } from "./util/is-cli"
 import Store from "./store"
 
 const MEDUSA_TELEMETRY_VERBOSE = process.env.MEDUSA_TELEMETRY_VERBOSE || false
@@ -45,7 +46,9 @@ class Telemeter {
     }
     let enabled = this.store_.getConfig(`telemetry.enabled`)
     if (enabled === undefined || enabled === null) {
-      showAnalyticsNotification()
+      if (!isCI()) {
+        showAnalyticsNotification()
+      }
       enabled = true
       this.store_.setConfig(`telemetry.enabled`, enabled)
     }
@@ -63,6 +66,8 @@ class Telemeter {
       platform: os.platform(),
       release: os.release(),
       cpus: (cpus && cpus.length > 0 && cpus[0].model) || undefined,
+      is_ci: isCI(),
+      ci_name: getCIName(),
       arch: os.arch(),
       docker: isDocker(),
       term_program: getTermProgram(),
