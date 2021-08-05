@@ -583,6 +583,7 @@ class SwapService extends BaseService {
           variant_id: lineItem.variant_id,
           unit_price: -1 * lineItem.unit_price,
           quantity: r.quantity,
+          allow_discounts: lineItem.allow_discounts,
           metadata: {
             ...lineItem.metadata,
             is_return_line: true,
