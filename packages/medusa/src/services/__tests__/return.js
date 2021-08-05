@@ -1,5 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import idMap from "medusa-test-utils/dist/id-map"
 import ReturnService from "../return"
+import { InventoryServiceMock } from "../__mocks__/inventory"
 
 describe("ReturnService", () => {
   // describe("requestReturn", () => {
@@ -196,11 +198,13 @@ describe("ReturnService", () => {
               id: IdMap.getId("test-line"),
               quantity: 10,
               returned_quantity: 0,
+              variant_id: "test-variant",
             },
             {
               id: IdMap.getId("test-line-2"),
               quantity: 10,
               returned_quantity: 0,
+              variant_id: "test-variant-2",
             },
           ],
           payments: [{ id: "payment_test" }],
@@ -221,12 +225,29 @@ describe("ReturnService", () => {
       },
     }
 
+    const inventoryService = {
+      adjustInventory: jest.fn((variantId, quantity) => {
+        return Promise.resolve({})
+      }),
+      confirmInventory: jest.fn((variantId, quantity) => {
+        if (quantity < 10) {
+          return true
+        } else {
+          return false
+        }
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const returnService = new ReturnService({
       manager: MockManager,
       totalsService,
       lineItemService,
       orderService,
       returnRepository,
+      inventoryService,
     })
 
     beforeEach(async () => {
@@ -268,6 +289,12 @@ describe("ReturnService", () => {
           returned_quantity: 10,
         }
       )
+
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(1)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "test-variant",
+        10
+      )
     })
 
     it("successfully receives a return with requires_action status", async () => {
@@ -278,6 +305,16 @@ describe("ReturnService", () => {
           { item_id: IdMap.getId("test-line-2"), quantity: 10 },
         ],
         1000
+      )
+
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "test-variant",
+        10
+      )
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "test-variant-2",
+        10
       )
 
       expect(returnRepository.save).toHaveBeenCalledTimes(1)

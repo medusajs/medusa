@@ -1,5 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
+import { InventoryServiceMock } from "../__mocks__/inventory"
 
 describe("OrderService", () => {
   const totalsService = {
@@ -35,6 +36,10 @@ describe("OrderService", () => {
     withTransaction: function() {
       return this
     },
+  }
+
+  const inventoryService = {
+    ...InventoryServiceMock,
   }
 
   describe("create", () => {
@@ -95,6 +100,9 @@ describe("OrderService", () => {
         return Promise.resolve(payment.status || "authorized")
       },
       updatePayment: jest.fn(),
+      cancelPayment: jest.fn().mockImplementation(payment => {
+        return Promise.resolve({ ...payment, status: "cancelled" })
+      }),
       withTransaction: function() {
         return this
       },
@@ -153,6 +161,7 @@ describe("OrderService", () => {
       regionService,
       eventBusService,
       cartService,
+      inventoryService,
     })
 
     beforeEach(async () => {
@@ -186,7 +195,10 @@ describe("OrderService", () => {
         gift_cards: [],
         discounts: [],
         shipping_methods: [{ id: "method_1" }],
-        items: [{ id: "item_1" }, { id: "item_2" }],
+        items: [
+          { id: "item_1", variant_id: "variant-1", quantity: 1 },
+          { id: "item_2", variant_id: "variant-2", quantity: 1 },
+        ],
         total: 100,
       }
 
@@ -231,6 +243,16 @@ describe("OrderService", () => {
         }
       )
 
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "variant-2",
+        -1
+      )
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "variant-1",
+        -1
+      )
+
       expect(lineItemService.update).toHaveBeenCalledTimes(2)
       expect(lineItemService.update).toHaveBeenCalledWith("item_1", {
         order_id: "id",
@@ -272,7 +294,10 @@ describe("OrderService", () => {
         ],
         discounts: [],
         shipping_methods: [{ id: "method_1" }],
-        items: [{ id: "item_1" }, { id: "item_2" }],
+        items: [
+          { id: "item_1", variant_id: "variant-1", quantity: 1 },
+          { id: "item_2", variant_id: "variant-2", quantity: 1 },
+        ],
         subtotal: 100,
         total: 100,
       }
@@ -361,7 +386,10 @@ describe("OrderService", () => {
         billing_address_id: "1234",
         discounts: [],
         shipping_methods: [{ id: "method_1" }],
-        items: [{ id: "item_1" }, { id: "item_2" }],
+        items: [
+          { id: "item_1", variant_id: "variant-1", quantity: 1 },
+          { id: "item_2", variant_id: "variant-2", quantity: 1 },
+        ],
         total: 0,
       }
       orderService.cartService_.retrieve = () => Promise.resolve(cart)
@@ -394,6 +422,45 @@ describe("OrderService", () => {
       })
 
       expect(orderRepo.save).toHaveBeenCalledWith(order)
+    })
+
+    it("fails because an item does not have the required inventory", async () => {
+      const cart = {
+        id: "cart_id",
+        email: "test@test.com",
+        customer_id: "cus_1234",
+        payment: {
+          id: "testpayment",
+          amount: 100,
+          status: "authorized",
+        },
+        region_id: "test",
+        region: {
+          id: "test",
+          currency_code: "eur",
+          name: "test",
+          tax_rate: 25,
+        },
+        gift_cards: [],
+        shipping_address_id: "1234",
+        billing_address_id: "1234",
+        discounts: [],
+        shipping_methods: [{ id: "method_1" }],
+        items: [
+          { id: "item_1", variant_id: "variant-1", quantity: 12 },
+          { id: "item_2", variant_id: "variant-2", quantity: 1 },
+        ],
+        total: 100,
+      }
+      orderService.cartService_.retrieve = () => Promise.resolve(cart)
+      const res = orderService.createFromCart(cart)
+      await expect(res).rejects.toThrow(
+        "Variant with id: variant-1 does not have the required inventory"
+      )
+      //check to see if payment is cancelled
+      expect(
+        orderService.paymentProviderService_.cancelPayment
+      ).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -545,6 +612,10 @@ describe("OrderService", () => {
               status: "pending",
               fulfillments: [{ id: "fulfillment_test" }],
               payments: [{ id: "payment_test" }],
+              items: [
+                { id: "item_1", variant_id: "variant-1", quantity: 12 },
+                { id: "item_2", variant_id: "variant-2", quantity: 1 },
+              ],
             })
         }
       },
@@ -571,6 +642,7 @@ describe("OrderService", () => {
       paymentProviderService,
       fulfillmentService,
       eventBusService,
+      inventoryService,
     })
 
     beforeEach(async () => {
@@ -578,7 +650,15 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.cancel(IdMap.getId("not-fulfilled-order"))
+      try {
+        const order = await orderService.retrieve(
+          IdMap.getId("not-fulfilled-order")
+        )
+        console.warn(order)
+        await orderService.cancel(IdMap.getId("not-fulfilled-order"))
+      } catch (e) {
+        console.warn(e)
+      }
 
       expect(paymentProviderService.cancelPayment).toHaveBeenCalledTimes(1)
       expect(paymentProviderService.cancelPayment).toHaveBeenCalledWith({
@@ -590,6 +670,16 @@ describe("OrderService", () => {
         id: "fulfillment_test",
       })
 
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "variant-1",
+        12
+      )
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "variant-2",
+        1
+      )
+
       expect(orderRepo.save).toHaveBeenCalledTimes(1)
       expect(orderRepo.save).toHaveBeenCalledWith({
         fulfillment_status: "canceled",
@@ -597,6 +687,18 @@ describe("OrderService", () => {
         status: "canceled",
         fulfillments: [{ id: "fulfillment_test" }],
         payments: [{ id: "payment_test" }],
+        items: [
+          {
+            id: "item_1",
+            quantity: 12,
+            variant_id: "variant-1",
+          },
+          {
+            id: "item_2",
+            quantity: 1,
+            variant_id: "variant-2",
+          },
+        ],
       })
     })
 

@@ -1,6 +1,6 @@
 const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { Region } = require("@medusajs/medusa");
+const { Region, LineItem, Payment } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -15,15 +15,21 @@ describe("/store/carts", () => {
   let dbConnection;
 
   const doAfterEach = async (manager) => {
+    await manager.query(`DELETE FROM "line_item"`);
+    await manager.query(`DELETE FROM "money_amount"`);
     await manager.query(`DELETE FROM "discount"`);
     await manager.query(`DELETE FROM "discount_rule"`);
-    await manager.query(`DELETE FROM "shipping_method"`);
-    await manager.query(`DELETE FROM "line_item"`);
-    await manager.query(`DELETE FROM "cart"`);
-    await manager.query(`DELETE FROM "money_amount"`);
     await manager.query(`DELETE FROM "product_variant"`);
     await manager.query(`DELETE FROM "product"`);
+    await manager.query(`DELETE FROM "shipping_method"`);
     await manager.query(`DELETE FROM "shipping_option"`);
+    await manager.query(`DELETE FROM "payment_provider"`);
+    await manager.query(`DELETE FROM "payment_session"`);
+    await manager.query(`UPDATE "payment" SET order_id=NULL`);
+    await manager.query(`DELETE FROM "order"`);
+    await manager.query(`UPDATE "payment" SET cart_id=NULL`);
+    await manager.query(`DELETE FROM "cart"`);
+    await manager.query(`DELETE FROM "payment"`);
     await manager.query(`DELETE FROM "address"`);
     await manager.query(`DELETE FROM "customer"`);
     await manager.query(
@@ -207,6 +213,65 @@ describe("/store/carts", () => {
 
       expect(cart.data.cart.shipping_total).toBe(1000);
       expect(cart.status).toEqual(200);
+    });
+
+    it("complete cart with items inventory covered", async () => {
+      const api = useApi();
+      const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`);
+
+      expect(getRes.status).toEqual(200);
+
+      const variantRes = await api.get("/store/variants/test-variant");
+      expect(variantRes.data.variant.inventory_quantity).toEqual(0);
+    });
+
+    it("returns early, if cart is already completed", async () => {
+      const manager = dbConnection.manager;
+      const api = useApi();
+      await manager.query(
+        `UPDATE "cart" SET completed_at=current_timestamp WHERE id = 'test-cart-2'`
+      );
+      try {
+        await api.post(`/store/carts/test-cart-2/complete-cart`);
+      } catch (error) {
+        expect(error.response.data).toMatchSnapshot({
+          code: "not_allowed",
+          message: "Cart has already been completed",
+          code: "cart_incompatible_state",
+        });
+        expect(error.response.status).toEqual(409);
+      }
+    });
+
+    it("fails to complete cart with items inventory not/partially covered", async () => {
+      const manager = dbConnection.manager;
+
+      const li = manager.create(LineItem, {
+        id: "test-item",
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 99,
+        variant_id: "test-variant-2",
+        cart_id: "test-cart-2",
+      });
+      await manager.save(li);
+
+      const api = useApi();
+
+      try {
+        await api.post(`/store/carts/test-cart-2/complete-cart`);
+      } catch (e) {
+        expect(e.response.data).toMatchSnapshot({
+          code: "insufficient_inventory",
+        });
+        expect(e.response.status).toBe(409);
+      }
+
+      //check to see if payment has been cancelled
+      const res = await api.get(`/store/carts/test-cart-2`);
+      expect(res.data.cart.payment.canceled_at).not.toBe(null);
     });
   });
 
