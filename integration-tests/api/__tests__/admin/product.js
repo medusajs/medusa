@@ -92,6 +92,8 @@ describe("/admin/products", () => {
       expect(response.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
+          discountable: true,
+          is_giftcard: false,
           handle: "test-product",
           images: expect.arrayContaining([
             expect.objectContaining({
@@ -144,6 +146,43 @@ describe("/admin/products", () => {
               ],
             }),
           ],
+        })
+      );
+    });
+
+    it("creates a giftcard", async () => {
+      const api = useApi();
+
+      const payload = {
+        title: "Test Giftcard",
+        is_giftcard: true,
+        description: "test-giftcard-description",
+        options: [{ title: "Denominations" }],
+        variants: [
+          {
+            title: "Test variant",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "100" }],
+          },
+        ],
+      };
+
+      const response = await api
+        .post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          title: "Test Giftcard",
+          discountable: false,
         })
       );
     });
