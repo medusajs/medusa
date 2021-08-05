@@ -148,7 +148,7 @@ class IdempotencyKeyService extends BaseService {
    */
   async workStage(idempotencyKey, func) {
     try {
-      return this.atomicPhase_(async manager => {
+      return await this.atomicPhase_(async manager => {
         let key
 
         const { recovery_point, response_code, response_body } = await func(

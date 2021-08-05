@@ -225,6 +225,24 @@ describe("/store/carts", () => {
       expect(variantRes.data.variant.inventory_quantity).toEqual(0);
     });
 
+    it("returns early, if cart is already completed", async () => {
+      const manager = dbConnection.manager;
+      const api = useApi();
+      await manager.query(
+        `UPDATE "cart" SET completed_at=current_timestamp WHERE id = 'test-cart-2'`
+      );
+      try {
+        await api.post(`/store/carts/test-cart-2/complete-cart`);
+      } catch (error) {
+        expect(error.response.data).toMatchSnapshot({
+          code: "not_allowed",
+          message: "Cart has already been completed",
+          code: "cart_incompatible_state",
+        });
+        expect(error.response.status).toEqual(409);
+      }
+    });
+
     it("fails to complete cart with items inventory not/partially covered", async () => {
       const manager = dbConnection.manager;
 
@@ -245,18 +263,15 @@ describe("/store/carts", () => {
       try {
         await api.post(`/store/carts/test-cart-2/complete-cart`);
       } catch (e) {
-        expect(e.response.data.message).toEqual(
-          "Variant with id: test-variant-2 does not have the required inventory"
-        );
+        expect(e.response.data).toMatchSnapshot({
+          code: "insufficient_inventory",
+        });
+        expect(e.response.status).toBe(409);
       }
 
       //check to see if payment has been cancelled
       const res = await api.get(`/store/carts/test-cart-2`);
-      const pay = await manager.findOne(Payment, {
-        where: { id: res.data.cart.payment.id },
-      });
-
-      expect(pay.canceled_at).not.toBe(null);
+      expect(res.data.cart.payment.canceled_at).not.toBe(null);
     });
   });
 

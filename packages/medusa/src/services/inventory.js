@@ -75,7 +75,8 @@ class InventoryService extends BaseService {
     if (!isCovered) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Variant with id: ${variant.id} does not have the required inventory`
+        `Variant with id: ${variant.id} does not have the required inventory`,
+        MedusaError.Codes.INSUFFICIENT_INVENTORY
       )
     }
 

@@ -191,6 +191,7 @@ module.exports = async (connection, data = {}) => {
     },
     region_id: "test-region",
     currency_code: "usd",
+    completed_at: null,
     items: [],
   });
 
