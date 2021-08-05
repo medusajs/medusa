@@ -1,4 +1,4 @@
-const { isCI } = require("./util/is-cli")
+const { isCI } = require("./util/is-ci")
 
 try {
   const showAnalyticsNotification = require(`./util/show-notification`)
