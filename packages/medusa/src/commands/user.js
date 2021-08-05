@@ -6,6 +6,7 @@ import express from "express"
 import loaders from "../loaders"
 
 export default async function({ directory, id, email, password, keepAlive }) {
+  track("CLI_USER", { with_id: !!id })
   const app = express()
   try {
     const { container } = await loaders({
@@ -19,6 +20,8 @@ export default async function({ directory, id, email, password, keepAlive }) {
     console.error(err)
     process.exit(1)
   }
+
+  track("CLI_USER_COMPLETED", { with_id: !!id })
 
   if (!keepAlive) {
     process.exit()

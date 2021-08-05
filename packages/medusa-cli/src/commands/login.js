@@ -1,6 +1,7 @@
 const axios = require("axios").default
 const open = require("open")
 const inquirer = require("inquirer")
+const { track } = require("medusa-telemetry")
 
 const logger = require("../reporter").default
 const { setToken } = require("../util/token-store")
@@ -12,6 +13,7 @@ const { setToken } = require("../util/token-store")
  */
 module.exports = {
   login: async _ => {
+    track("CLI_LOGIN")
     const apiHost =
       process.env.MEDUSA_API_HOST || "https://api.medusa-commerce.com"
 
@@ -80,9 +82,11 @@ module.exports = {
       })
 
     if (user) {
+      track("CLI_LOGIN_SUCCEEDED")
       logger.success(spinner, "Log in succeeded.")
       setToken(auth.password)
     } else {
+      track("CLI_LOGIN_FAILED")
       logger.failure(spinner, "Log in failed.")
     }
   },
