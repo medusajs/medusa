@@ -210,11 +210,20 @@ export default async (req, res) => {
       })
       .optional(),
     handle: Validator.string().optional(),
-    weight: Validator.number().optional(),
-    length: Validator.number().optional(),
-    height: Validator.number().optional(),
-    width: Validator.number().optional(),
+    weight: Validator.number()
+      .allow(null)
+      .optional(),
+    length: Validator.number()
+      .allow(null)
+      .optional(),
+    height: Validator.number()
+      .allow(null)
+      .optional(),
+    width: Validator.number()
+      .allow(null)
+      .optional(),
     origin_country: Validator.string().allow(null, ""),
+    hs_code: Validator.string().allow(null, ""),
     mid_code: Validator.string().allow(null, ""),
     material: Validator.string().allow(null, ""),
     images: Validator.array()
@@ -250,10 +259,18 @@ export default async (req, res) => {
         inventory_quantity: Validator.number().allow(null),
         allow_backorder: Validator.boolean().allow(null),
         manage_inventory: Validator.boolean().allow(null),
-        weight: Validator.number().optional(),
-        length: Validator.number().optional(),
-        height: Validator.number().optional(),
-        width: Validator.number().optional(),
+        weight: Validator.number()
+          .allow(null)
+          .optional(),
+        length: Validator.number()
+          .allow(null)
+          .optional(),
+        height: Validator.number()
+          .allow(null)
+          .optional(),
+        width: Validator.number()
+          .allow(null)
+          .optional(),
         hs_code: Validator.string()
           .optional()
           .allow(null, ""),
