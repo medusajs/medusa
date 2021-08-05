@@ -28,7 +28,6 @@ describe("/admin/discounts", () => {
 
   describe("POST /admin/discounts", () => {
     beforeEach(async () => {
-      const manager = dbConnection.manager;
       try {
         await adminSeeder(dbConnection);
       } catch (err) {
@@ -105,8 +104,9 @@ describe("/admin/discounts", () => {
   });
 
   describe("testing for soft-deletion + uniqueness on discount codes", () => {
-    const manager = dbConnection.manager;
+    let manager;
     beforeEach(async () => {
+      manager = dbConnection.manager;
       try {
         await adminSeeder(dbConnection);
         await manager.insert(DiscountRule, {
@@ -120,6 +120,8 @@ describe("/admin/discounts", () => {
           id: "test-discount",
           code: "TESTING",
           rule_id: "test-discount-rule",
+          is_dynamic: false,
+          is_disabled: false,
         });
       } catch (err) {
         throw err;
@@ -127,6 +129,7 @@ describe("/admin/discounts", () => {
     });
 
     afterEach(async () => {
+      manager = dbConnection.manager;
       await manager.query(`DELETE FROM "discount"`);
       await manager.query(`DELETE FROM "discount_rule"`);
       await manager.query(`DELETE FROM "user"`);
@@ -173,7 +176,7 @@ describe("/admin/discounts", () => {
       expect(response.status).toEqual(200);
       expect(response.data.discount).toEqual(
         expect.objectContaining({
-          code: "HELLOWORLD",
+          code: "TESTING",
           usage_limit: 10,
         })
       );
