@@ -3,29 +3,20 @@ const inquirer = require("inquirer")
 const open = require("open")
 const execa = require("execa")
 const resolveCwd = require(`resolve-cwd`)
+const { track } = require("medusa-telemetry")
+
 const { getToken } = require("../util/token-store")
 const logger = require("../reporter").default
 
 module.exports = {
   link: async argv => {
+    track("CLI_LINK", { args: argv })
     const port = process.env.PORT || 9000
     const appHost =
       process.env.MEDUSA_APP_HOST || "https://app.medusa-commerce.com"
 
     const apiHost =
       process.env.MEDUSA_API_HOST || "https://api.medusa-commerce.com"
-
-    function resolveLocalCommand(command) {
-      try {
-        const cmdPath = resolveCwd.silent(
-          `@medusajs/medusa/dist/commands/${command}`
-        )
-        return require(cmdPath).default
-      } catch (err) {
-        console.log("Could not find local user command.")
-        process.exit(1)
-      }
-    }
 
     // Checks if there is already a token from a previous log in; this is
     // necessary to redirect the customer to the page where local linking is
@@ -88,6 +79,7 @@ module.exports = {
     }
 
     logger.success(linkActivity, "Local project linked")
+    track("CLI_LINK_COMPLETED")
 
     console.log()
     console.log(
@@ -125,6 +117,8 @@ module.exports = {
           `Could not open browser go to: ${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`
         )
       })
+
+      track("CLI_LINK_BROWSER_OPENED")
     })
 
     if (argv.develop) {
