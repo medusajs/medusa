@@ -8,9 +8,12 @@ const {
   ShippingOption,
   ShippingMethod,
   Address,
-  ProductVariant,
   Product,
+  ProductVariant,
   MoneyAmount,
+  LineItem,
+  Payment,
+  PaymentSession,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -189,19 +192,42 @@ module.exports = async (connection, data = {}) => {
     ],
   });
 
+  await manager.insert(ProductVariant, {
+    id: "test-variant-2",
+    title: "test variant 2",
+    product_id: "test-product",
+    inventory_quantity: 0,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
+  });
+
   const ma = manager.create(MoneyAmount, {
     variant_id: "test-variant",
     currency_code: "usd",
     amount: 1000,
   });
+
   await manager.save(ma);
 
   const ma2 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-2",
+    currency_code: "usd",
+    amount: 8000,
+  });
+
+  await manager.save(ma2);
+
+  const ma3 = manager.create(MoneyAmount, {
     variant_id: "giftcard-denom",
     currency_code: "usd",
     amount: 1000,
   });
-  await manager.save(ma2);
+
+  await manager.save(ma3);
 
   const cart = manager.create(Cart, {
     id: "test-cart",
@@ -219,6 +245,45 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(cart);
 
+  const cart2 = manager.create(Cart, {
+    id: "test-cart-2",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+  });
+
+  const pay = manager.create(Payment, {
+    id: "test-payment",
+    amount: 10000,
+    currency_code: "usd",
+    amount_refunded: 0,
+    provider_id: "test-pay",
+    data: {},
+  });
+
+  await manager.save(pay);
+
+  cart2.payment = pay;
+
+  await manager.save(cart2);
+
+  await manager.insert(PaymentSession, {
+    id: "test-session",
+    cart_id: "test-cart-2",
+    provider_id: "test-pay",
+    is_selected: true,
+    data: {},
+    status: "authorized",
+  });
+
   await manager.insert(ShippingMethod, {
     id: "test-method",
     shipping_option_id: "test-option",
@@ -226,4 +291,16 @@ module.exports = async (connection, data = {}) => {
     price: 1000,
     data: {},
   });
+
+  const li = manager.create(LineItem, {
+    id: "test-item",
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    cart_id: "test-cart-2",
+  });
+  await manager.save(li);
 };

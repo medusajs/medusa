@@ -1265,10 +1265,10 @@
     winston "^3.3.3"
     yargs "^15.3.1"
 
-"@medusajs/medusa@1.1.33-dev-1627995051381":
-  version "1.1.33-dev-1627995051381"
-  resolved "http://localhost:4873/@medusajs%2fmedusa/-/medusa-1.1.33-dev-1627995051381.tgz#def214374c31daca1f37c2dd5ee55f119236555f"
-  integrity sha512-yeH/YscYfWn4jYF+YSPyexMgAaDOfjvKm2xH95C+T9w4Ct08z06uBw0G0klIKPatNTirfD7HVgvg2vWb+ChDWA==
+"@medusajs/medusa@1.1.33-dev-1628079986095":
+  version "1.1.33-dev-1628079986095"
+  resolved "http://localhost:4873/@medusajs%2fmedusa/-/medusa-1.1.33-dev-1628079986095.tgz#0e8aa3bd83174366d1266823f093f21968b0f6e4"
+  integrity sha512-zqvz8+NL5+3Ba5uRS6Z2SaXpRTF2r6B+o0HGY8TjkAmvf2pMKyfIOGpBLtnhezDpDb9mkLdiHqrV23lNE+5pAw==
   dependencies:
     "@hapi/joi" "^16.1.8"
     "@medusajs/medusa-cli" "^1.1.14"
