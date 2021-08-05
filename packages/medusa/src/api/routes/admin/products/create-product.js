@@ -222,10 +222,18 @@ export default async (req, res) => {
       inventory_quantity: Validator.number().default(0),
       allow_backorder: Validator.boolean().optional(),
       manage_inventory: Validator.boolean().optional(),
-      weight: Validator.number().optional(),
-      length: Validator.number().optional(),
-      height: Validator.number().optional(),
-      width: Validator.number().optional(),
+      weight: Validator.number()
+        .allow(null)
+        .optional(),
+      length: Validator.number()
+        .allow(null)
+        .optional(),
+      height: Validator.number()
+        .allow(null)
+        .optional(),
+      width: Validator.number()
+        .allow(null)
+        .optional(),
       origin_country: Validator.string()
         .optional()
         .allow("")
@@ -259,10 +267,18 @@ export default async (req, res) => {
         })
         .default([]),
     }),
-    weight: Validator.number().optional(),
-    length: Validator.number().optional(),
-    height: Validator.number().optional(),
-    width: Validator.number().optional(),
+    weight: Validator.number()
+      .allow(null)
+      .optional(),
+    length: Validator.number()
+      .allow(null)
+      .optional(),
+    height: Validator.number()
+      .allow(null)
+      .optional(),
+    width: Validator.number()
+      .allow(null)
+      .optional(),
     hs_code: Validator.string()
       .optional()
       .allow(""),
