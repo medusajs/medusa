@@ -91,13 +91,6 @@ export class Reporter {
    *   further operations on the activity such as success, failure, progress.
    */
   activity = (message, config = {}) => {
-    if (config.code) {
-      track("activity_started", {
-        code: config.code,
-        message,
-      })
-    }
-
     const id = ulid()
     if (NODE_ENV === "development" && this.shouldLog("info")) {
       const activity = this.ora_(message).start()
@@ -145,13 +138,6 @@ export class Reporter {
       } else {
         toLog.activity_id = activityId
         this.loggerInstance_.log(toLog)
-      }
-
-      if (activity.config && activity.config.code) {
-        track("activity_progressed", {
-          code: activity.config.code,
-          message,
-        })
       }
     } else {
       this.loggerInstance_.log(toLog)
@@ -208,14 +194,6 @@ export class Reporter {
         toLog.activity_id = activityId
         this.loggerInstance_.log(toLog)
       }
-
-      if (activity.config && activity.config.code) {
-        track("activity_failed", {
-          code: activity.config.code,
-          duration: time - activity.start,
-          message,
-        })
-      }
     } else {
       this.loggerInstance_.log(toLog)
     }
@@ -254,14 +232,6 @@ export class Reporter {
         toLog.duration = time - activity.start
         toLog.activity_id = activityId
         this.loggerInstance_.log(toLog)
-      }
-
-      if (activity.config && activity.config.code) {
-        track("activity_succeeded", {
-          code: activity.config.code,
-          duration: time - activity.start,
-          message,
-        })
       }
     } else {
       this.loggerInstance_.log(toLog)
