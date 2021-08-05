@@ -8,6 +8,9 @@ const {
   ShippingOption,
   ShippingMethod,
   Address,
+  ProductVariant,
+  Product,
+  MoneyAmount,
 } = require("@medusajs/medusa");
 
 module.exports = async (connection, data = {}) => {
@@ -15,6 +18,10 @@ module.exports = async (connection, data = {}) => {
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
     type: "default",
+  });
+
+  const gcProfile = await manager.findOne(ShippingProfile, {
+    type: "gift_card",
   });
 
   await manager.insert(Address, {
@@ -47,8 +54,26 @@ module.exports = async (connection, data = {}) => {
 
   freeDisc.regions = [r];
   freeDisc.rule = freeRule;
-
   await manager.save(freeDisc);
+
+  const tenPercentRule = manager.create(DiscountRule, {
+    id: "tenpercent-rule",
+    description: "Ten percent rule",
+    type: "percentage",
+    value: 10,
+    allocation: "total",
+  });
+
+  const tenPercent = manager.create(Discount, {
+    id: "10Percent",
+    code: "10PERCENT",
+    is_dynamic: false,
+    is_disabled: false,
+  });
+
+  tenPercent.regions = [r];
+  tenPercent.rule = tenPercentRule;
+  await manager.save(tenPercent);
 
   const d = await manager.create(Discount, {
     id: "test-discount",
@@ -101,6 +126,17 @@ module.exports = async (connection, data = {}) => {
   });
 
   await manager.insert(ShippingOption, {
+    id: "gc-option",
+    name: "Digital copy",
+    provider_id: "test-ful",
+    region_id: "test-region",
+    profile_id: gcProfile.id,
+    price_type: "flat_rate",
+    amount: 0,
+    data: {},
+  });
+
+  await manager.insert(ShippingOption, {
     id: "test-option-2",
     name: "test-option-2",
     provider_id: "test-ful",
@@ -110,6 +146,62 @@ module.exports = async (connection, data = {}) => {
     amount: 500,
     data: {},
   });
+
+  await manager.insert(Product, {
+    id: "giftcard-product",
+    title: "Giftcard",
+    is_giftcard: true,
+    discountable: false,
+    profile_id: gcProfile.id,
+    options: [{ id: "denom", title: "Denomination" }],
+  });
+
+  await manager.insert(ProductVariant, {
+    id: "giftcard-denom",
+    title: "1000",
+    product_id: "giftcard-product",
+    inventory_quantity: 1,
+    options: [
+      {
+        option_id: "denom",
+        value: "1000",
+      },
+    ],
+  });
+
+  await manager.insert(Product, {
+    id: "test-product",
+    title: "test product",
+    profile_id: defaultProfile.id,
+    options: [{ id: "test-option", title: "Size" }],
+  });
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant",
+    title: "test variant",
+    product_id: "test-product",
+    inventory_quantity: 1,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
+  });
+
+  const ma = manager.create(MoneyAmount, {
+    variant_id: "test-variant",
+    currency_code: "usd",
+    amount: 1000,
+  });
+  await manager.save(ma);
+
+  const ma2 = manager.create(MoneyAmount, {
+    variant_id: "giftcard-denom",
+    currency_code: "usd",
+    amount: 1000,
+  });
+  await manager.save(ma2);
 
   const cart = manager.create(Cart, {
     id: "test-cart",

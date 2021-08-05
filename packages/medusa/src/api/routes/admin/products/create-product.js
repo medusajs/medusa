@@ -23,6 +23,9 @@ import { defaultRelations, defaultFields } from "."
  *           is_giftcard:
  *             description: A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.
  *             type: boolean
+ *           discountable:
+ *             description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
+ *             type: boolean
  *           images:
  *             description: Images of the Product.
  *             type: array
@@ -184,6 +187,7 @@ export default async (req, res) => {
     subtitle: Validator.string().allow(""),
     description: Validator.string().allow(""),
     is_giftcard: Validator.boolean().default(false),
+    discountable: Validator.boolean().default(true),
     images: Validator.array()
       .items(Validator.string())
       .optional(),
