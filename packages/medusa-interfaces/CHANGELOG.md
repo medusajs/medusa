@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.21](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.20...medusa-interfaces@1.1.21) (2021-08-05)
+
+**Note:** Version bump only for package medusa-interfaces
+
+
+
+
+
 ## [1.1.20](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.19...medusa-interfaces@1.1.20) (2021-07-26)
 
 **Note:** Version bump only for package medusa-interfaces

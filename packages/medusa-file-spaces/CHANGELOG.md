@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.22...medusa-file-spaces@1.1.23) (2021-08-05)
+
+**Note:** Version bump only for package medusa-file-spaces
+
+
+
+
+
 ## [1.1.22](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.21...medusa-file-spaces@1.1.22) (2021-07-26)
 
 **Note:** Version bump only for package medusa-file-spaces

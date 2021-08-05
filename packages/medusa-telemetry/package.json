@@ -1,6 +1,6 @@
 {
   "name": "medusa-telemetry",
-  "version": "0.0.2-alpha.1074+cfe19f7f",
+  "version": "0.0.2",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
