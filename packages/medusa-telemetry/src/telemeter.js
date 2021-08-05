@@ -8,7 +8,7 @@ import createFlush from "./util/create-flush"
 import getTermProgram from "./util/get-term-program"
 import isTruthy from "./util/is-truthy"
 import showAnalyticsNotification from "./util/show-notification"
-import { isCI, getCIName } from "./util/is-cli"
+import { isCI, getCIName } from "./util/is-ci"
 import Store from "./store"
 
 const MEDUSA_TELEMETRY_VERBOSE = process.env.MEDUSA_TELEMETRY_VERBOSE || false
