@@ -1,6 +1,6 @@
 {
   "name": "medusa-telemetry",
-  "version": "0.0.1",
+  "version": "0.0.2-alpha.1074+cfe19f7f",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -42,5 +42,6 @@
     "is-docker": "^2.2.1",
     "remove-trailing-slash": "^0.1.1",
     "uuid": "^8.3.2"
-  }
+  },
+  "gitHead": "cfe19f7f9d3bb17425348362b148a0b4b7a649ef"
 }
