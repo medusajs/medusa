@@ -10,8 +10,11 @@ import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
 import sysPath from "path"
 import prompts from "prompts"
+import { Pool } from "pg"
 import url from "url"
 import { createDatabase } from "pg-god"
+import { track } from "medusa-telemetry"
+import inquirer from "inquirer"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
@@ -76,7 +79,7 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
   // use execSync instead of spawn to handle git clients using
   // pgp signatures (with password)
   try {
-    execSync(`git commit -m "Initial commit from gatsby: (${starterUrl})"`, {
+    execSync(`git commit -m "Initial commit from medusa: (${starterUrl})"`, {
       cwd: rootPath,
     })
   } catch {
@@ -91,6 +94,8 @@ const install = async rootPath => {
   const prevDir = process.cwd()
 
   reporter.info(`Installing packages...`)
+  console.log() // Add some space
+
   process.chdir(rootPath)
 
   const npmConfigUserAgent = process.env.npm_config_user_agent
@@ -145,6 +150,7 @@ const copy = async (starterPath, rootPath) => {
   await fs.copy(starterPath, rootPath, { filter: ignored })
 
   reporter.success(copyActivity, `Created starter directory layout`)
+  console.log() // Add some space
 
   await install(rootPath)
 
@@ -242,8 +248,122 @@ const defaultDBCreds = {
   host: "localhost",
 }
 
+const verifyPgCreds = async creds => {
+  const pool = new Pool(creds)
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT NOW()", (err, res) => {
+      pool.end()
+      if (err) {
+        reject(err)
+      } else {
+        resolve(res)
+      }
+    })
+  })
+}
+
+const interactiveDbCreds = async (dbName, dbCreds = {}) => {
+  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
+  let collecting = true
+  while (collecting) {
+    const result = await inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "continueWithDefault",
+          message: `
+
+Will attempt to setup database "${dbName}" with credentials:
+  user: ${credentials.user}
+  password: ***
+  database: ${credentials.database}
+  port: ${credentials.port}
+  host: ${credentials.host}
+Do you wish to continue with these credentials?
+
+          `,
+          choices: [`Continue`, `Change credentials`, `Skip database setup`],
+        },
+        {
+          type: "input",
+          when: ({ continueWithDefault }) =>
+            continueWithDefault === `Change credentials`,
+          name: "user",
+          default: credentials.user,
+          message: `DB user`,
+        },
+        {
+          type: "password",
+          when: ({ continueWithDefault }) =>
+            continueWithDefault === `Change credentials`,
+          name: "password",
+          default: credentials.password,
+          message: `DB password`,
+        },
+        {
+          type: "number",
+          when: ({ continueWithDefault }) =>
+            continueWithDefault === `Change credentials`,
+          name: "port",
+          default: credentials.port,
+          message: `DB port`,
+        },
+        {
+          type: "input",
+          when: ({ continueWithDefault }) =>
+            continueWithDefault === `Change credentials`,
+          name: "host",
+          default: credentials.host,
+          message: `DB host`,
+        },
+        {
+          type: "input",
+          when: ({ continueWithDefault }) =>
+            continueWithDefault === `Change credentials`,
+          name: "database",
+          default: credentials.database,
+          message: `DB database`,
+        },
+      ])
+      .then(async answers => {
+        const collectedCreds = Object.assign({}, credentials, {
+          user: answers.user,
+          password: answers.password,
+          host: answers.host,
+          port: answers.port,
+          database: answers.database,
+        })
+
+        switch (answers.continueWithDefault) {
+          case "Continue": {
+            const done = await verifyPgCreds(credentials).catch(_ => false)
+            if (done) {
+              return credentials
+            }
+            return false
+          }
+          case "Change credentials": {
+            const done = await verifyPgCreds(collectedCreds).catch(_ => false)
+            if (done) {
+              return collectedCreds
+            }
+            return false
+          }
+          default:
+            return null
+        }
+      })
+
+    if (result !== false) {
+      return result
+    }
+
+    console.log("\n\nCould not verify DB credentials - please try again\n\n")
+  }
+}
+
 const setupDB = async (dbName, dbCreds = {}) => {
-  const credentials = Object.assign(defaultDBCreds, dbCreds)
+  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
 
   const dbActivity = reporter.activity(`Setting up database "${dbName}"...`)
   await createDatabase(
@@ -257,7 +377,7 @@ const setupDB = async (dbName, dbCreds = {}) => {
       reporter.success(dbActivity, `Created database "${dbName}"`)
     })
     .catch(err => {
-      if ((err.name = "PDG_ERR::DuplicateDatabase")) {
+      if (err.name === "PDG_ERR::DuplicateDatabase") {
         reporter.success(
           dbActivity,
           `Database ${dbName} already exists; skipping setup`
@@ -273,23 +393,26 @@ const setupDB = async (dbName, dbCreds = {}) => {
 }
 
 const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
-  const credentials = Object.assign(defaultDBCreds, dbCreds)
+  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
+
+  let dbUrl = ""
+  if (
+    credentials.user !== defaultDBCreds.user ||
+    credentials.password !== defaultDBCreds.password
+  ) {
+    dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
+  } else {
+    dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
+  }
 
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
     fs.renameSync(templatePath, destination)
-    fs.appendFileSync(
-      destination,
-      `DATABASE_URL=postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}\n`
-    )
   } else {
     reporter.info(`No .env.template found. Creating .env.`)
-    fs.appendFileSync(
-      destination,
-      `DATABASE_URL=postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}\n`
-    )
   }
+  fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
 }
 
 const runMigrations = async rootPath => {
@@ -354,6 +477,8 @@ const attemptSeed = async rootPath => {
  * Main function that clones or copies the starter.
  */
 export const newStarter = async args => {
+  track("CLI_NEW")
+
   const {
     starter,
     root,
@@ -361,6 +486,7 @@ export const newStarter = async args => {
     skipMigrations,
     skipEnv,
     seed,
+    useDefaults,
     dbUser,
     dbDatabase,
     dbPass,
@@ -430,21 +556,38 @@ export const newStarter = async args => {
     await copy(starterPath, rootPath)
   }
 
-  if (!skipDb) {
-    await setupDB(root, dbCredentials)
+  track("CLI_NEW_LAYOUT_COMPLETED")
+
+  let creds = dbCredentials
+
+  if (!useDefaults && !skipDb && !skipEnv) {
+    creds = await interactiveDbCreds(root, dbCredentials)
   }
 
-  if (!skipEnv) {
-    await setupEnvVars(rootPath, root, dbCredentials)
-  }
+  if (creds === null) {
+    reporter.info("Skipping automatic database setup")
+  } else {
+    if (!skipDb) {
+      track("CLI_NEW_SETUP_DB")
+      await setupDB(root, creds)
+    }
 
-  if (!skipMigrations) {
-    await runMigrations(rootPath)
-  }
+    if (!skipEnv) {
+      track("CLI_NEW_SETUP_ENV")
+      await setupEnvVars(rootPath, root, creds)
+    }
 
-  if (seed) {
-    await attemptSeed(rootPath)
+    if (!skipMigrations) {
+      track("CLI_NEW_RUN_MIGRATIONS")
+      await runMigrations(rootPath)
+    }
+
+    if (seed) {
+      track("CLI_NEW_SEED_DB")
+      await attemptSeed(rootPath)
+    }
   }
 
   successMessage(rootPath)
+  track("CLI_NEW_SUCCEEDED")
 }

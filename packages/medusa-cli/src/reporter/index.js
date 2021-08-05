@@ -2,6 +2,7 @@ import stackTrace from "stack-trace"
 import { ulid } from "ulid"
 import winston from "winston"
 import ora from "ora"
+import { track } from "medusa-telemetry"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
 const NODE_ENV = process.env.NODE_ENV || "development"
@@ -41,11 +42,17 @@ export class Reporter {
     this.ora_ = activityLogger
   }
 
-  panic = error => {
+  panic = data => {
     this.loggerInstance_.log({
       level: "error",
-      details: error,
+      details: data,
+      message: data.error && data.error.message,
     })
+
+    track("PANIC_ERROR_REACHED", {
+      id: data.id,
+    })
+
     process.exit(1)
   }
 
@@ -83,13 +90,14 @@ export class Reporter {
    * @returns {string} the id of the activity; this should be passed to do
    *   further operations on the activity such as success, failure, progress.
    */
-  activity = message => {
+  activity = (message, config = {}) => {
     const id = ulid()
     if (NODE_ENV === "development" && this.shouldLog("info")) {
       const activity = this.ora_(message).start()
 
       this.activities_[id] = {
         activity,
+        config,
         start: Date.now(),
       }
 
@@ -97,10 +105,12 @@ export class Reporter {
     } else {
       this.activities_[id] = {
         start: Date.now(),
+        config,
       }
       this.loggerInstance_.log({
         activity_id: id,
         level: "info",
+        config,
         message,
       })
 
@@ -166,15 +176,16 @@ export class Reporter {
    * at the error level.
    * @param {string} activityId - the id of the activity as returned by activity
    * @param {string} message - the message to log
+   * @returns {object} data about the activity
    */
   failure = (activityId, message) => {
+    const time = Date.now()
     const toLog = {
       level: "error",
       message,
     }
 
     if (typeof activityId === "string" && this.activities_[activityId]) {
-      const time = Date.now()
       const activity = this.activities_[activityId]
       if (activity.activity) {
         activity.activity.fail(`${message} – ${time - activity.start}`)
@@ -186,6 +197,16 @@ export class Reporter {
     } else {
       this.loggerInstance_.log(toLog)
     }
+
+    if (this.activities_[activityId]) {
+      const activity = this.activities_[activityId]
+      return {
+        ...activity,
+        duration: time - activity.start,
+      }
+    }
+
+    return null
   }
 
   /**
@@ -194,15 +215,16 @@ export class Reporter {
    * at the info level.
    * @param {string} activityId - the id of the activity as returned by activity
    * @param {string} message - the message to log
+   * @returns {object} data about the activity
    */
   success = (activityId, message) => {
+    const time = Date.now()
     const toLog = {
       level: "info",
       message,
     }
 
     if (typeof activityId === "string" && this.activities_[activityId]) {
-      const time = Date.now()
       const activity = this.activities_[activityId]
       if (activity.activity) {
         activity.activity.succeed(`${message} – ${time - activity.start}ms`)
@@ -214,6 +236,16 @@ export class Reporter {
     } else {
       this.loggerInstance_.log(toLog)
     }
+
+    if (this.activities_[activityId]) {
+      const activity = this.activities_[activityId]
+      return {
+        ...activity,
+        duration: time - activity.start,
+      }
+    }
+
+    return null
   }
 
   /**

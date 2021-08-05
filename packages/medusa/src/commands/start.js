@@ -2,12 +2,15 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 
 import express from "express"
+import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
 export default async function({ port, directory }) {
   async function start() {
+    track("CLI_START")
+
     const app = express()
 
     const { dbConnection } = await loaders({ directory, expressApp: app })
@@ -17,6 +20,7 @@ export default async function({ port, directory }) {
         return
       }
       Logger.success(serverActivity, `Server is ready on port: ${port}`)
+      track("CLI_START_COMPLETED")
     })
 
     return { dbConnection, server }
