@@ -11,6 +11,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Cart } from "./cart"
 import { Order } from "./order"
@@ -25,7 +26,7 @@ export class DraftOrder {
   @PrimaryColumn()
   id: string
 
-  @Column({ type: "enum", enum: DraftOrderStatus, default: "open" })
+  @DbAwareColumn({ type: "enum", enum: DraftOrderStatus, default: "open" })
   status: DraftOrderStatus
 
   @Index()
@@ -49,22 +50,22 @@ export class DraftOrder {
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @Column({ nullable: true, type: "timestamptz" })
+  @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date
 
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   no_notification_order: boolean
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

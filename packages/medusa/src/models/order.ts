@@ -15,6 +15,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Address } from "./address"
 import { LineItem } from "./line-item"
@@ -69,13 +70,17 @@ export class Order {
   @PrimaryColumn()
   id: string
 
-  @Column({ type: "enum", enum: OrderStatus, default: "pending" })
+  @DbAwareColumn({ type: "enum", enum: OrderStatus, default: "pending" })
   status: OrderStatus
 
-  @Column({ type: "enum", enum: FulfillmentStatus, default: "not_fulfilled" })
+  @DbAwareColumn({
+    type: "enum",
+    enum: FulfillmentStatus,
+    default: "not_fulfilled",
+  })
   fulfillment_status: FulfillmentStatus
 
-  @Column({ type: "enum", enum: PaymentStatus, default: "not_paid" })
+  @DbAwareColumn({ type: "enum", enum: PaymentStatus, default: "not_paid" })
   payment_status: PaymentStatus
 
   @Index()
@@ -233,19 +238,19 @@ export class Order {
   )
   gift_card_transactions: GiftCardTransaction[]
 
-  @Column({ nullable: true, type: "timestamptz" })
+  @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
   @Column({ nullable: true })

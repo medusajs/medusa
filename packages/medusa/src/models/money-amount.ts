@@ -16,6 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 import { ProductVariant } from "./product-variant"
@@ -55,13 +56,13 @@ export class MoneyAmount {
   @JoinColumn({ name: "region_id" })
   region: Region
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
   @BeforeInsert()

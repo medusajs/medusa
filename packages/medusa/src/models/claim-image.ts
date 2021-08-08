@@ -14,6 +14,8 @@ import { ulid } from "ulid"
 
 import { ClaimItem } from "./claim-item"
 
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+
 @Entity()
 export class ClaimImage {
   @PrimaryColumn()
@@ -33,16 +35,16 @@ export class ClaimImage {
   @Column()
   url: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()

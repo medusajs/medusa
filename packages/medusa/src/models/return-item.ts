@@ -15,6 +15,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ReturnReason } from "./return-reason"
 import { Return } from "./return"
@@ -58,7 +59,7 @@ export class ReturnItem {
   @Column({ nullable: true })
   note: string
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 }
 

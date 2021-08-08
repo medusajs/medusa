@@ -18,10 +18,7 @@ import defaultsLoader from "./defaults"
 import Logger from "./logger"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
-  const { configModule, configFilePath } = getConfigFile(
-    rootDirectory,
-    `medusa-config`
-  )
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
   container.registerAdd = function(name, registration) {
