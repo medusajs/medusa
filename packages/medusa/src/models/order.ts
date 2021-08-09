@@ -15,7 +15,11 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import {
+  resolveDbType,
+  resolveDbGenerationStrategy,
+  DbAwareColumn,
+} from "../utils/db-aware-column"
 
 import { Address } from "./address"
 import { LineItem } from "./line-item"
@@ -85,7 +89,7 @@ export class Order {
 
   @Index()
   @Column()
-  @Generated("increment")
+  @Generated(resolveDbGenerationStrategy("increment"))
   display_id: number
 
   @Index()

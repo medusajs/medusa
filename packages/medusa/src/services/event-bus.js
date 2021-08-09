@@ -16,10 +16,13 @@ class EventBusService {
       createClient: type => {
         switch (type) {
           case "client":
+            console.log(">>>>>>>> client")
             return redisClient
           case "subscriber":
+            console.log(">>>>>>> sub")
             return redisSubscriber
           default:
+            console.log(">>>>>>>>   defaulting")
             return new Redis(config.projectConfig.redis_url)
         }
       },

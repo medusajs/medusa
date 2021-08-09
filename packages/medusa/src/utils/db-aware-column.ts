@@ -3,19 +3,41 @@ import { Column, ColumnOptions, ColumnType } from "typeorm"
 import { getConfigFile } from "medusa-core-utils"
 
 const pgSqliteTypeMapping: { [key: string]: ColumnType } = {
+  increment: "rowid",
   timestamptz: "datetime",
-  jsonb: "text",
+  jsonb: "simple-json",
   enum: "text",
 }
 
-export function resolveDbType(pgSqlType: ColumnType): ColumnType {
-  const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
+const pgSqliteGenerationMapping: {
+  [key: string]: "increment" | "uuid" | "rowid"
+} = {
+  increment: "rowid",
+}
 
-  console.log(configModule)
-  const dbType = configModule.projectConfig.database_type
+let dbType: string
+export function resolveDbType(pgSqlType: ColumnType): ColumnType {
+  if (!dbType) {
+    const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
+    dbType = configModule.projectConfig.database_type
+  }
 
   if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {
     return pgSqliteTypeMapping[pgSqlType.toString()]
+  }
+  return pgSqlType
+}
+
+export function resolveDbGenerationStrategy(
+  pgSqlType: "increment" | "uuid" | "rowid"
+): "increment" | "uuid" | "rowid" {
+  if (!dbType) {
+    const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
+    dbType = configModule.projectConfig.database_type
+  }
+
+  if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {
+    return pgSqliteGenerationMapping[pgSqlType]
   }
   return pgSqlType
 }

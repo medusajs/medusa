@@ -1,4 +1,4 @@
-import { createConnection, Connection, DefaultNamingStrategy } from "typeorm"
+import { createConnection } from "typeorm"
 
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 
@@ -13,10 +13,15 @@ export default async ({ container, configModule }) => {
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
     entities,
-    synchronize: isSqlite,
     namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
   })
+
+  if (isSqlite) {
+    await connection.query(`PRAGMA foreign_keys = OFF`)
+    await connection.synchronize()
+    await connection.query(`PRAGMA foreign_keys = ON`)
+  }
 
   return connection
 }
