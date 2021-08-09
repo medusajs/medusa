@@ -36,7 +36,7 @@ class InventoryService extends BaseService {
    */
   async adjustInventory(variantId, adjustment) {
     //if variantId is undefined – ergo. a custom item – then do nothing
-    if (typeof variantId === "undefined") {
+    if (typeof variantId === "undefined" || variantId === null) {
       return
     }
 
@@ -63,7 +63,7 @@ class InventoryService extends BaseService {
   async confirmInventory(variantId, quantity) {
     //if variantId is undefined then confirm inventory as it
     //is a custom item that is not managed
-    if (typeof variantId === "undefined") {
+    if (typeof variantId === "undefined" || variantId === null) {
       return true
     }
 
