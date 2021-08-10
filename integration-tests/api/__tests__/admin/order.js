@@ -1,4 +1,3 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 const {
   ReturnReason,
@@ -9,7 +8,7 @@ const {
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const orderSeeder = require("../../helpers/order-seeder");
 const swapSeeder = require("../../helpers/swap-seeder");
@@ -28,8 +27,8 @@ describe("/admin/orders", () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
+    const db = useDb();
+    await db.shutdown();
 
     medusaProcess.kill();
   });
@@ -46,30 +45,8 @@ describe("/admin/orders", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "claim_image"`);
-      await manager.query(`DELETE FROM "claim_tag"`);
-      await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "claim_order"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("gets orders", async () => {
@@ -170,30 +147,8 @@ describe("/admin/orders", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "claim_image"`);
-      await manager.query(`DELETE FROM "claim_tag"`);
-      await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "claim_order"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("cancels an order and increments inventory_quantity", async () => {
@@ -269,32 +224,8 @@ describe("/admin/orders", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "fulfillment_item"`);
-      await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "claim_image"`);
-      await manager.query(`DELETE FROM "claim_tag"`);
-      await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "return_item"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "claim_order"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a claim", async () => {
@@ -866,33 +797,8 @@ describe("/admin/orders", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "fulfillment_item"`);
-      await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return_item"`);
-      await manager.query(`DELETE FROM "return_reason"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "claim_image"`);
-      await manager.query(`DELETE FROM "claim_tag"`);
-      await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "claim_order"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a return", async () => {
@@ -1011,31 +917,8 @@ describe("/admin/orders", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "fulfillment_item"`);
-      await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "claim_image"`);
-      await manager.query(`DELETE FROM "claim_tag"`);
-      await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "claim_order"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("lists all orders", async () => {
@@ -1161,34 +1044,8 @@ describe("/admin/orders", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "fulfillment_item"`);
-      await manager.query(`DELETE FROM "fulfillment"`);
-      await manager.query(`DELETE FROM "return_item"`);
-      await manager.query(`DELETE FROM "return_reason"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "claim_image"`);
-      await manager.query(`DELETE FROM "claim_tag"`);
-      await manager.query(`DELETE FROM "claim_item"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "swap"`);
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "claim_order"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "refund"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a swap", async () => {
