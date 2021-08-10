@@ -37,7 +37,7 @@ const StyledNavItem = styled(Flex)`
   }
 `
 
-const StyledAnchorLink = styled(AnchorLink)`
+const StyledAnchorLink = styled(Box)`
   display: flex;
   margin-left: 10px;
   padding-left: 10px;
@@ -99,6 +99,27 @@ const SideBarItem = ({ item }) => {
     }
   }
 
+  const handleSubClick = path => {
+    const id = convertToKebabCase(section.section_name)
+    const element = document.querySelector(`#${id}`)
+    if (element) {
+      element.scrollIntoView({
+        block: "start",
+        inline: "nearest",
+      })
+      if (!openSections.includes(id)) {
+        openSection(id)
+      }
+    }
+    const method = document.querySelector(`#${path}`)
+    if (method) {
+      method.scrollIntoView({
+        block: "start",
+        inline: "nearest",
+      })
+    }
+  }
+
   return (
     <Container>
       <StyledCollapsible
@@ -125,9 +146,8 @@ const SideBarItem = ({ item }) => {
           return (
             <StyledAnchorLink
               key={i}
-              to={`#${si.path}`}
               className={currentHash === si.path ? "active" : null}
-              onAnchorLinkClick={handleClick}
+              onClick={() => handleSubClick(convertToKebabCase(si.path))}
             >
               <Text
                 sx={{

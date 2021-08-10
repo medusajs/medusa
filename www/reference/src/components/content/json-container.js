@@ -18,7 +18,7 @@ const JsonContainer = ({ json, header }) => {
   if (typeof json !== "string" || json === "{}") return null
 
   return (
-    <Box ref={jsonRef}>
+    <Box ref={jsonRef} sx={{ position: "sticky", top: "20px" }}>
       <CodeBox header={header}>
         <pre>
           <code className={"language-json"}>{json}</code>
