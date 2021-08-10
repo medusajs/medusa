@@ -1,4 +1,3 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 const {
   Region,
@@ -14,7 +13,7 @@ const {
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 jest.setTimeout(30000);
 
@@ -29,9 +28,8 @@ describe("/store/carts", () => {
   });
 
   afterAll(async () => {
-    dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
   });
 
@@ -124,22 +122,8 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`DELETE FROM "return_item"`);
-      await manager.query(`DELETE FROM "return_reason"`);
-      await manager.query(`DELETE FROM "return"`);
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(`DELETE FROM "region"`);
-
-      await manager.query(`DELETE FROM "product_option_value"`);
-      await manager.query(`DELETE FROM "product_option"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a return", async () => {
