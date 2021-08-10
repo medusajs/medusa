@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Flex, Image, Box } from "theme-ui"
 import styled from "@emotion/styled"
 import Logo from "../../assets/logo.svg"
 import SideBarItem from "./sidebar-item"
 import SideBarSelector from "./sidebar-selector"
+import NavigationContext from "../../context/navigation-context"
 
 const SideBarContainer = styled(Flex)`
   --side-bar-header-height: 100px;
@@ -28,10 +29,7 @@ const SideBarList = styled(Flex)`
   flex-direction: column;
   overflow-y: scroll;
   padding-right: 6px;
-
-  /* IDEA: Change to react-custom-scrollbars-2*/
   scrollbar-color: var(--faded) var(--light);
-
   &::-webkit-scrollbar {
     width: 11px;
   }
@@ -65,6 +63,7 @@ const SideBarHeader = styled(Flex)`
 
 const Sidebar = ({ data, api }) => {
   const [scrollPos, setScrollPos] = useState(0)
+  // const {} = useContext(NavigationContext)
 
   useEffect(() => {
     const nav = document.querySelector("#nav")
@@ -97,7 +96,13 @@ const Sidebar = ({ data, api }) => {
         </Flex>
       </SideBarHeader>
       <SideBarFade opacity={scrollPos} />
-      <SideBarList px={3} pb={3} id="nav">
+      <SideBarList
+        id="nav"
+        sx={{
+          px: "3",
+          pb: "3",
+        }}
+      >
         {data.sections.map((s, i) => {
           return <SideBarItem item={s} api={api} key={i} />
         })}

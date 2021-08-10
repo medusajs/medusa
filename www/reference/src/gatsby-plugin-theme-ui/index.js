@@ -113,7 +113,12 @@ export default {
   },
   forms,
   buttons,
+  radii: {
+    small: "8px",
+  },
+  sizes: {
+    sideBarHeaderHeight: "100px",
+    sideBarWidthS: "220px",
+    sideBarWidthL: "280px",
+  },
 }
-// export const ThemeProvider = ({ children }) => (
-//   <Provider theme={theme}>{children}</Provider>
-// )

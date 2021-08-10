@@ -1,4 +1,3 @@
-import styled from "@emotion/styled"
 import React from "react"
 import { Flex, Text } from "theme-ui"
 import CodeBox from "./code-box"
@@ -7,7 +6,7 @@ const EndpointContainer = ({ endpoints }) => {
   if (!endpoints) return null
 
   return (
-    <CodeBox header="ENDPOINTS" sticky={false}>
+    <CodeBox header="ENDPOINTS">
       <Flex
         py={2}
         sx={{

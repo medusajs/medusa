@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react"
+import React, { useEffect, useReducer, useState } from "react"
 import { globalHistory } from "@reach/router"
 
 export const defaultNavigationContext = {
@@ -50,15 +50,33 @@ const reducer = (state, action) => {
   }
 }
 
+const scrollNav = id => {
+  const nav = document.querySelector("#nav")
+  if (nav) {
+    const element = nav.querySelector(`#nav-${id}`)
+    console.log(element)
+    if (element) {
+      const childOffset = element.offsetTop
+      console.log("offset", childOffset)
+      nav.scroll({
+        top: childOffset - 300,
+        left: 0,
+        behavior: "smooth",
+      })
+    }
+  }
+}
+
 export const NavigationProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultNavigationContext)
 
-  useEffect(() => {
-    globalHistory.listen(({ location }) => {
-      console.log(location.hash.slice(1))
-      updateHash(location.hash.slice(1))
-    })
-  }, [])
+  // useEffect(() => {
+  //   globalHistory.listen(({ location }) => {
+  //     console.log(location.hash.slice(1))
+  //     console.log("HASH", location.hash)
+  //     updateHash(location.hash.slice(1))
+  //   })
+  // }, [])
 
   const setApi = api => {
     dispatch({ type: "setApi", payload: api })
@@ -66,16 +84,16 @@ export const NavigationProvider = ({ children }) => {
 
   const updateHash = (section, method) => {
     dispatch({ type: "updateHash", payload: method })
-    window.history.replaceState(
-      null,
-      "",
-      `/api/${state.api}/${section}/${method}`
-    )
+    const newLocation = `/api/${state.api}/${section}/${method}`
+    console.log(newLocation)
+    window.history.replaceState(null, "", newLocation)
+    scrollNav(method)
   }
 
   const updateSection = section => {
     dispatch({ type: "updateSection", payload: section })
     window.history.replaceState(null, "", `/api/${state.api}/${section}`)
+    scrollNav(section)
   }
 
   const openSection = sectionName => {

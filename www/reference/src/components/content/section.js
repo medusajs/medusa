@@ -4,7 +4,6 @@ import Method from "./method"
 import Parameters from "./parameters"
 import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import EndpointContainer from "./endpoint-container"
-import styled from "@emotion/styled"
 import Markdown from "react-markdown"
 import JsonContainer from "./json-container"
 import ResponsiveContainer from "./responsive-container"
@@ -12,11 +11,6 @@ import Description from "./description"
 import NavigationContext from "../../context/navigation-context"
 import ChevronDown from "../icons/chevron-down"
 import useInView from "../../hooks/use-in-view"
-
-const SectionHeader = styled(Heading)`
-  /* top: -1px;
-  padding-top: 1px; */
-`
 
 const Section = ({ data }) => {
   const { section } = data
@@ -85,18 +79,18 @@ const Section = ({ data }) => {
         }}
         bg={isExpanded ? "transparent" : "var(--faded-contrast)"}
       >
-        <SectionHeader
+        <Heading
           as="h1"
-          mb={3}
           sx={{
             fontWeight: "500",
             fontSize: "22",
+            mb: "3",
           }}
           ref={containerRef}
           className={`header-${convertToKebabCase(section.section_name)}`}
         >
           {section.section_name}
-        </SectionHeader>
+        </Heading>
         <Flex
           sx={{
             flexDirection: "column",

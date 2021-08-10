@@ -16,7 +16,7 @@ const NestedCollapsible = ({ properties, title }) => {
           p: "6px 10px",
           boxSizing: "border-box",
           width: "max-content",
-          borderRadius: "var(--border-radius-8)",
+          borderRadius: "small",
           border: "1px solid var(--faded)",
         },
 
@@ -66,7 +66,7 @@ const NestedCollapsible = ({ properties, title }) => {
         <Box
           sx={{
             padding: "2",
-            borderRadius: "var(--border-radius-8)",
+            borderRadius: "small",
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             border: "hairline",

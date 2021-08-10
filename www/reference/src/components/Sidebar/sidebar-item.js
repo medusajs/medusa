@@ -121,7 +121,7 @@ const SideBarItem = ({ item }) => {
   }
 
   return (
-    <Container>
+    <Container id={`nav-${convertToKebabCase(section.section_name)}`}>
       <StyledCollapsible
         trigger={
           <StyledNavItem
@@ -143,11 +143,13 @@ const SideBarItem = ({ item }) => {
         transitionTime={1}
       >
         {subItems.map((si, i) => {
+          const path = convertToKebabCase(si.path)
           return (
             <StyledAnchorLink
               key={i}
-              className={currentHash === si.path ? "active" : null}
-              onClick={() => handleSubClick(convertToKebabCase(si.path))}
+              className={currentHash === path ? "active" : null}
+              onClick={() => handleSubClick(path)}
+              id={`nav-${path}`}
             >
               <Text
                 sx={{

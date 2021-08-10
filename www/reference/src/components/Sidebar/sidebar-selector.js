@@ -17,14 +17,16 @@ const SideBarSelector = () => {
 
   useEffect(() => {
     const pathname = window.location.pathname
-    const matches = pathname.match(/api\/(store|admin)/)
+    const matches = pathname.match(/api\/(store|admin)\/w*/)
     if (matches?.length > 1) {
+      console.log(matches)
       setApi(matches[1])
     }
   }, [])
 
   const handleSelect = e => {
     reset()
+    console.log("target value", e.target.value)
     navigate(`/api/${e.target.value}`)
   }
 
@@ -33,7 +35,7 @@ const SideBarSelector = () => {
       <Select
         arrow={<ChevronDown fill={"dark"} styles={{ ml: "-28px" }} />}
         sx={{
-          borderRadius: "var(--border-radius-8)",
+          borderRadius: "small",
           borderColor: "faded",
           width: "100%",
           fontSize: "1",
