@@ -33,6 +33,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         currentSection: action.payload,
+        currentHash: null,
       }
     case "openSection":
       const obj = state.openSections
@@ -58,8 +59,9 @@ const scrollNav = id => {
     if (element) {
       const childOffset = element.offsetTop
       console.log("offset", childOffset)
+      const offset = element.offsetTop - 350
       nav.scroll({
-        top: childOffset - 300,
+        top: offset > 0 ? offset : 0,
         left: 0,
         behavior: "smooth",
       })
