@@ -20,6 +20,7 @@ import {
   resolveDbGenerationStrategy,
   DbAwareColumn,
 } from "../utils/db-aware-column"
+import { manualAutoIncrement } from "../utils/manual-auto-increment"
 
 import { Address } from "./address"
 import { LineItem } from "./line-item"
@@ -272,10 +273,15 @@ export class Order {
   gift_card_total: number
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `order_${id}`
+  private async beforeInsert() {
+    if (!this.id) {
+      const id = ulid()
+      this.id = `order_${id}`
+    }
+
+    if (process.env.NODE_ENV === "development" && !this.display_id) {
+      this.display_id = await manualAutoIncrement("order")
+    }
   }
 }
 

@@ -16,6 +16,7 @@ import {
   resolveDbGenerationStrategy,
   DbAwareColumn,
 } from "../utils/db-aware-column"
+import { manualAutoIncrement } from "../utils/manual-auto-increment"
 
 import { Cart } from "./cart"
 import { Order } from "./order"
@@ -76,10 +77,15 @@ export class DraftOrder {
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `dorder_${id}`
+  private async beforeInsert() {
+    if (!this.id) {
+      const id = ulid()
+      this.id = `dorder_${id}`
+    }
+
+    if (process.env.NODE_ENV === "development" && !this.display_id) {
+      this.display_id = await manualAutoIncrement("draft_order")
+    }
   }
 }
 
