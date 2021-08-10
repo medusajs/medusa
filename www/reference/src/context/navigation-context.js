@@ -57,8 +57,6 @@ const scrollNav = id => {
     const element = nav.querySelector(`#nav-${id}`)
     console.log(element)
     if (element) {
-      const childOffset = element.offsetTop
-      console.log("offset", childOffset)
       const offset = element.offsetTop - 350
       nav.scroll({
         top: offset > 0 ? offset : 0,
