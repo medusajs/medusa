@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.36](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.35...@medusajs/medusa@1.1.36) (2021-08-11)
+
+
+### Bug Fixes
+
+* improves integration tests ([#332](https://github.com/medusajs/medusa/issues/332)) ([9a701ff](https://github.com/medusajs/medusa/commit/9a701ff22906e58465a00574c39e2cc284ee0e1a))
+
+
+
+
+
 ## [1.1.35](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.34...@medusajs/medusa@1.1.35) (2021-08-09)
 
 **Note:** Version bump only for package @medusajs/medusa
