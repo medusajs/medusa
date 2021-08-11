@@ -1,5 +1,5 @@
 import { asValue } from "awilix"
-import * as RealRedis from "ioredis"
+import RealRedis from "ioredis"
 import FakeRedis from "ioredis-mock"
 
 const redisLoader = async ({ container, configModule, logger }) => {
