@@ -428,27 +428,32 @@ const setupDB = async (dbName, dbCreds = {}) => {
     })
 }
 
-const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
-  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
-
-  let dbUrl = ""
-  if (
-    credentials.user !== defaultDBCreds.user ||
-    credentials.password !== defaultDBCreds.password
-  ) {
-    dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
-  } else {
-    dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
-  }
-
+const setupEnvVars = async (
+  rootPath,
+  dbName,
+  dbCreds = {},
+  isPostgres = true
+) => {
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
     fs.renameSync(templatePath, destination)
-  } else {
-    reporter.info(`No .env.template found. Creating .env.`)
   }
-  fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
+
+  if (isPostgres) {
+    const credentials = Object.assign({}, defaultDBCreds, dbCreds)
+    let dbUrl = ""
+    if (
+      credentials.user !== defaultDBCreds.user ||
+      credentials.password !== defaultDBCreds.password
+    ) {
+      dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
+    } else {
+      dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
+    }
+
+    fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
+  }
 }
 
 const runMigrations = async rootPath => {
@@ -630,9 +635,9 @@ medusa new ${rootPath} [url-to-starter]
       await setupDB(rootPath, creds)
     }
 
-    if (!skipEnv && isPostgres) {
+    if (!skipEnv) {
       track("CLI_NEW_SETUP_ENV")
-      await setupEnvVars(rootPath, rootPath, creds)
+      await setupEnvVars(rootPath, rootPath, creds, isPostgres)
     }
 
     if (!skipMigrations && isPostgres) {
