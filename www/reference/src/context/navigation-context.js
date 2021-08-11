@@ -67,6 +67,20 @@ const scrollNav = id => {
   }
 }
 
+const scrollToMethod = async method => {
+  const element = document.querySelector(`#${method}`)
+  if (element) {
+    element.scrollIntoView({
+      block: "start",
+      inline: "nearest",
+    })
+  } else {
+    setTimeout(() => {
+      scrollToMethod(method)
+    }, 200)
+  }
+}
+
 export const NavigationProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultNavigationContext)
 
@@ -102,26 +116,16 @@ export const NavigationProvider = ({ children }) => {
 
   const goTo = to => {
     const { section, method } = to
-    dispatch({ type: "openSection", payload: section })
-
-    if (method) {
-      const element = document.querySelector(`#${method}`)
-      console.log(element, method)
-      if (element) {
-        element.scrollIntoView({
-          block: "start",
-          inline: "nearest",
-        })
-      }
+    console.log(section, method)
+    if (!state.openSections.includes(section)) {
+      console.log(
+        `opening section: ${section} and scrolling to method: ${method}`
+      )
+      openSection(section)
+      scrollToMethod(method)
     } else {
-      const element = document.querySelector(`#${section}`)
-      console.log(element, section)
-      if (element) {
-        element.scrollIntoView({
-          block: "start",
-          inline: "nearest",
-        })
-      }
+      console.log(`Scrolling to method: ${method}`)
+      scrollToMethod(method)
     }
   }
 

@@ -68,7 +68,7 @@ const SideBarItem = ({ item }) => {
     openSections,
     currentHash,
     currentSection,
-    api,
+    goTo,
   } = useContext(NavigationContext)
   const { section } = item
   const subItems = section.paths
@@ -101,23 +101,7 @@ const SideBarItem = ({ item }) => {
 
   const handleSubClick = path => {
     const id = convertToKebabCase(section.section_name)
-    const element = document.querySelector(`#${id}`)
-    if (element) {
-      element.scrollIntoView({
-        block: "start",
-        inline: "nearest",
-      })
-      if (!openSections.includes(id)) {
-        openSection(id)
-      }
-    }
-    const method = document.querySelector(`#${path}`)
-    if (method) {
-      method.scrollIntoView({
-        block: "start",
-        inline: "nearest",
-      })
-    }
+    goTo({ section: id, method: path })
   }
 
   return (
