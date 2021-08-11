@@ -284,8 +284,6 @@ const defaultDBCreds = {
   host: "localhost",
 }
 
-console.log(defaultDBCreds)
-
 const verifyPgCreds = async creds => {
   const pool = new Pool(creds)
   return new Promise((resolve, reject) => {
