@@ -1,10 +1,9 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 const { Address, Customer } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const customerSeeder = require("../../helpers/customer-seeder");
 
@@ -14,9 +13,9 @@ describe("/store/customers", () => {
   let medusaProcess;
   let dbConnection;
 
-  const doAfterEach = async (manager) => {
-    await manager.query(`DELETE FROM "customer"`);
-    await manager.query(`DELETE FROM "address"`);
+  const doAfterEach = async () => {
+    const db = useDb();
+    await db.teardown();
   };
 
   beforeAll(async () => {
@@ -26,9 +25,8 @@ describe("/store/customers", () => {
   });
 
   afterAll(async () => {
-    dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
   });
 
@@ -46,8 +44,7 @@ describe("/store/customers", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("creates a customer", async () => {
@@ -106,8 +103,7 @@ describe("/store/customers", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("updates a customer", async () => {

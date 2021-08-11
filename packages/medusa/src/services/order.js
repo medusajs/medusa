@@ -464,9 +464,11 @@ class OrderService extends BaseService {
             .withTransaction(manager)
             .confirmInventory(item.variant_id, item.quantity)
         } catch (err) {
-          await this.paymentProviderService_
-            .withTransaction(manager)
-            .cancelPayment(payment)
+          if (payment) {
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .cancelPayment(payment)
+          }
           throw err
         }
       }
@@ -534,11 +536,13 @@ class OrderService extends BaseService {
 
       const result = await orderRepo.save(o)
 
-      await this.paymentProviderService_
-        .withTransaction(manager)
-        .updatePayment(payment.id, {
-          order_id: result.id,
-        })
+      if (total !== 0) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .updatePayment(payment.id, {
+            order_id: result.id,
+          })
+      }
 
       let gcBalance = cart.subtotal
       for (const g of cart.gift_cards) {

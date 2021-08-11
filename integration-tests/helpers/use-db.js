@@ -12,6 +12,15 @@ const pgGodCredentials = {
   password: DB_PASSWORD,
 };
 
+const keepTables = [
+  "staged_job",
+  "shipping_profile",
+  "fulfillment_provider",
+  "payment_provider",
+  "country",
+  "currency",
+];
+
 const DbTestUtil = {
   db_: null,
 
@@ -19,13 +28,29 @@ const DbTestUtil = {
     this.db_ = connection;
   },
 
-  clear: function () {
-    return this.db_.synchronize(true);
+  clear: async function () {
+    this.db_.synchronize(true);
+  },
+
+  teardown: async function () {
+    const entities = this.db_.entityMetadatas;
+    const manager = this.db_.manager;
+
+    await manager.query(`SET session_replication_role = 'replica';`);
+    for (const entity of entities) {
+      if (keepTables.includes(entity.tableName)) {
+        continue;
+      }
+
+      await manager.query(`DELETE FROM "${entity.tableName}";`);
+    }
+    await manager.query(`SET session_replication_role = 'origin';`);
   },
 
   shutdown: async function () {
     await this.db_.close();
-    return dropDatabase({ databaseName }, pgGodCredentials);
+    const databaseName = "medusa-integration";
+    return await dropDatabase({ databaseName }, pgGodCredentials);
   },
 };
 

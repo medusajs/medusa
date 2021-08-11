@@ -1,10 +1,9 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 const { Region, GiftCard } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 jest.setTimeout(30000);
 
@@ -19,9 +18,8 @@ describe("/store/gift-cards", () => {
   });
 
   afterAll(async () => {
-    dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
   });
 
@@ -44,9 +42,8 @@ describe("/store/gift-cards", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "gift_card"`);
-      await manager.query(`DELETE FROM "region"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("retrieves a gift card", async () => {
