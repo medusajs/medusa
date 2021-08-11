@@ -118,13 +118,9 @@ export const NavigationProvider = ({ children }) => {
     const { section, method } = to
     console.log(section, method)
     if (!state.openSections.includes(section)) {
-      console.log(
-        `opening section: ${section} and scrolling to method: ${method}`
-      )
       openSection(section)
       scrollToMethod(method)
     } else {
-      console.log(`Scrolling to method: ${method}`)
       scrollToMethod(method)
     }
   }
