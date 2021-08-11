@@ -1,9 +1,8 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const adminSeeder = require("../../helpers/admin-seeder");
 
@@ -20,8 +19,8 @@ describe("/admin/return-reasons", () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
+    const db = useDb();
+    await db.shutdown();
 
     medusaProcess.kill();
   });
@@ -37,9 +36,8 @@ describe("/admin/return-reasons", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "return_reason"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a return_reason", async () => {
@@ -157,9 +155,6 @@ describe("/admin/return-reasons", () => {
         });
 
       expect(response.status).toEqual(200);
-
-      console.log(response.data);
-
       expect(response.data.return_reasons).toEqual([
         expect.objectContaining({
           value: "too_big",

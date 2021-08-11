@@ -1,9 +1,8 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const draftOrderSeeder = require("../../helpers/draft-order-seeder");
 const { create } = require("domain");
@@ -21,8 +20,8 @@ describe("/store/carts (draft-orders)", () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
+    const db = useDb();
+    await db.shutdown();
 
     medusaProcess.kill();
   });
@@ -38,36 +37,8 @@ describe("/store/carts (draft-orders)", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "line_item"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "shipping_method"`);
-      await manager.query(`DELETE FROM "shipping_option_requirement"`);
-      await manager.query(`DELETE FROM "shipping_option"`);
-      await manager.query(`UPDATE "discount" SET rule_id=NULL`);
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(`DELETE FROM "payment_provider"`);
-      await manager.query(`DELETE FROM "payment_session"`);
-      await manager.query(`UPDATE "payment" SET order_id=NULL`);
-      await manager.query(`UPDATE "draft_order" SET order_id=NULL`);
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "draft_order"`);
-      await manager.query(`DELETE FROM "cart"`);
-      await manager.query(`DELETE FROM "payment"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(`DELETE FROM "address"`);
-
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'de'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("completes a cart for a draft order thereby creating an order for the draft order", async () => {

@@ -3,7 +3,7 @@ const { spawn } = require("child_process");
 
 const { setPort } = require("./use-api");
 
-module.exports = ({ cwd }) => {
+module.exports = ({ cwd, verbose }) => {
   const serverPath = path.join(__dirname, "test-server.js");
 
   return new Promise((resolve, reject) => {
@@ -15,7 +15,9 @@ module.exports = ({ cwd }) => {
         JWT_SECRET: "test",
         COOKIE_SECRET: "test",
       },
-      stdio: ["ignore", "ignore", "inherit", "ipc"],
+      stdio: verbose
+        ? ["inherit", "inherit", "inherit", "ipc"]
+        : ["ignore", "ignore", "ignore", "ipc"],
     });
 
     medusaProcess.on("uncaughtException", (err) => {
