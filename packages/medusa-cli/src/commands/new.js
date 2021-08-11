@@ -19,6 +19,14 @@ import inquirer from "inquirer"
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 
+const removeUndefined = obj => {
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+  )
+}
+
 const spawnWithArgs = (file, args, options) =>
   execa(file, args, { stdio: `inherit`, preferLocal: false, ...options })
 
@@ -205,7 +213,6 @@ const getMedusaConfig = rootPath => {
     if (existsSync(configPath)) {
       const resolved = sysPath.resolve(configPath)
       const configModule = require(resolved)
-      console.log(configModule)
       return configModule
     }
     throw Error()
@@ -230,7 +237,18 @@ const getPaths = async (starterPath, rootPath) => {
         message: `What is your project called?`,
         initial: `my-medusa-store`,
       },
+      {
+        type: `select`,
+        name: `starter`,
+        message: `What starter would you like to use?`,
+        choices: [
+          { title: `medusa-starter-default`, value: `medusa-starter-default` },
+          { title: `(Use a different starter)`, value: `different` },
+        ],
+        initial: 0,
+      },
     ])
+
     // exit gracefully if responses aren't provided
     if (!response.starter || !response.path.trim()) {
       throw new Error(
@@ -239,7 +257,7 @@ const getPaths = async (starterPath, rootPath) => {
     }
 
     selectedOtherStarter = response.starter === `different`
-    starterPath = `medusajs/medusa-starter-default`
+    starterPath = `medusajs/${response.starter}`
     rootPath = response.path
   }
 
@@ -251,8 +269,7 @@ const getPaths = async (starterPath, rootPath) => {
 }
 
 const successMessage = path => {
-  reporter.info(`
-Your new Medusa project is ready for you! To start developing run:
+  reporter.info(`Your new Medusa project is ready for you! To start developing run:
 
   cd ${path}
   medusa develop
@@ -266,6 +283,8 @@ const defaultDBCreds = {
   port: 5432,
   host: "localhost",
 }
+
+console.log(defaultDBCreds)
 
 const verifyPgCreds = async creds => {
   const pool = new Pool(creds)
@@ -513,17 +532,31 @@ export const newStarter = async args => {
     dbHost,
   } = args
 
-  const dbCredentials = {
+  const dbCredentials = removeUndefined({
     user: dbUser,
     database: dbDatabase,
     password: dbPass,
     port: dbPort,
     host: dbHost,
-  }
+  })
 
-  const { starterPath, rootPath } = await getPaths(starter, root)
+  const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
+    starter,
+    root
+  )
 
   const urlObject = url.parse(rootPath)
+
+  if (selectedOtherStarter) {
+    reporter.info(
+      `Find the url of the Medusa starter you wish to create and run:
+
+medusa new ${rootPath} [url-to-starter]
+
+`
+    )
+    return
+  }
 
   if (urlObject.protocol && urlObject.host) {
     const isStarterAUrl =
@@ -588,7 +621,7 @@ export const newStarter = async args => {
   let creds = dbCredentials
 
   if (isPostgres && !useDefaults && !skipDb && !skipEnv) {
-    creds = await interactiveDbCreds(root, dbCredentials)
+    creds = await interactiveDbCreds(rootPath, dbCredentials)
   }
 
   if (creds === null) {
@@ -596,12 +629,12 @@ export const newStarter = async args => {
   } else {
     if (!skipDb && isPostgres) {
       track("CLI_NEW_SETUP_DB")
-      await setupDB(root, creds)
+      await setupDB(rootPath, creds)
     }
 
     if (!skipEnv && isPostgres) {
       track("CLI_NEW_SETUP_ENV")
-      await setupEnvVars(rootPath, root, creds)
+      await setupEnvVars(rootPath, rootPath, creds)
     }
 
     if (!skipMigrations && isPostgres) {
