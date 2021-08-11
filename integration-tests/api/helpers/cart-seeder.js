@@ -303,4 +303,40 @@ module.exports = async (connection, data = {}) => {
     cart_id: "test-cart-2",
   });
   await manager.save(li);
+
+  const cart3 = manager.create(Cart, {
+    id: "test-cart-3",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+  });
+  await manager.save(cart3);
+
+  await manager.insert(ShippingMethod, {
+    id: "test-method-2",
+    shipping_option_id: "test-option",
+    cart_id: "test-cart-3",
+    price: 0,
+    data: {},
+  });
+
+  const li2 = manager.create(LineItem, {
+    id: "test-item-2",
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    cart_id: "test-cart-3",
+  });
+  await manager.save(li2);
 };

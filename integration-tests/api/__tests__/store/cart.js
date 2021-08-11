@@ -1,10 +1,9 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { Region, LineItem, Payment } = require("@medusajs/medusa");
+const { Region, LineItem, GiftCard } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const cartSeeder = require("../../helpers/cart-seeder");
 
@@ -14,40 +13,20 @@ describe("/store/carts", () => {
   let medusaProcess;
   let dbConnection;
 
-  const doAfterEach = async (manager) => {
-    await manager.query(`DELETE FROM "line_item"`);
-    await manager.query(`DELETE FROM "money_amount"`);
-    await manager.query(`DELETE FROM "discount"`);
-    await manager.query(`DELETE FROM "discount_rule"`);
-    await manager.query(`DELETE FROM "product_variant"`);
-    await manager.query(`DELETE FROM "product"`);
-    await manager.query(`DELETE FROM "shipping_method"`);
-    await manager.query(`DELETE FROM "shipping_option"`);
-    await manager.query(`DELETE FROM "payment_provider"`);
-    await manager.query(`DELETE FROM "payment_session"`);
-    await manager.query(`UPDATE "payment" SET order_id=NULL`);
-    await manager.query(`DELETE FROM "order"`);
-    await manager.query(`UPDATE "payment" SET cart_id=NULL`);
-    await manager.query(`DELETE FROM "cart"`);
-    await manager.query(`DELETE FROM "payment"`);
-    await manager.query(`DELETE FROM "address"`);
-    await manager.query(`DELETE FROM "customer"`);
-    await manager.query(
-      `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-    );
-    await manager.query(`DELETE FROM "region"`);
+  const doAfterEach = async () => {
+    const db = useDb();
+    return await db.teardown();
   };
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."));
     dbConnection = await initDb({ cwd });
-    medusaProcess = await setupServer({ cwd });
+    medusaProcess = await setupServer({ cwd, verbose: true });
   });
 
   afterAll(async () => {
-    dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
   });
 
@@ -66,8 +45,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("creates a cart", async () => {
@@ -125,8 +103,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("fails on apply discount if limit has been reached", async () => {
@@ -215,6 +192,32 @@ describe("/store/carts", () => {
       expect(cart.status).toEqual(200);
     });
 
+    it("complete cart with giftcard total 0", async () => {
+      const manager = dbConnection.manager;
+      await manager.insert(GiftCard, {
+        id: "gift_test",
+        code: "GC_TEST",
+        value: 20000,
+        balance: 20000,
+        region_id: "test-region",
+      });
+
+      const api = useApi();
+
+      await api.post(`/store/carts/test-cart-3`, {
+        gift_cards: [{ code: "GC_TEST" }],
+      });
+
+      const getRes = await api
+        .post(`/store/carts/test-cart-3/complete`)
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+
+      expect(getRes.status).toEqual(200);
+      expect(getRes.data.type).toEqual("order");
+    });
+
     it("complete cart with items inventory covered", async () => {
       const api = useApi();
       const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`);
@@ -281,8 +284,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("adds a shipping method to cart", async () => {
@@ -386,8 +388,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("removes free shipping and updates shipping total", async () => {
@@ -424,8 +425,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("updates empty cart.customer_id on cart retrieval", async () => {
