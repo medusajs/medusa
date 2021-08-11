@@ -199,6 +199,25 @@ const clone = async (hostInfo, rootPath) => {
   if (!isGit) await createInitialGitCommit(rootPath, url)
 }
 
+const getMedusaConfig = rootPath => {
+  try {
+    const configPath = sysPath.join(rootPath, "medusa-config.js")
+    if (existsSync(configPath)) {
+      const resolved = sysPath.resolve(configPath)
+      const configModule = require(resolved)
+      console.log(configModule)
+      return configModule
+    }
+    throw Error()
+  } catch (err) {
+    console.log(err)
+    reporter.warn(
+      `Couldn't find a medusa-config.js file; please double check that you have the correct starter installed`
+    )
+  }
+  return {}
+}
+
 const getPaths = async (starterPath, rootPath) => {
   let selectedOtherStarter = false
 
@@ -241,7 +260,7 @@ Your new Medusa project is ready for you! To start developing run:
 }
 
 const defaultDBCreds = {
-  user: "postgres",
+  user: process.env.USER || "postgres",
   database: "postgres",
   password: "",
   port: 5432,
@@ -556,28 +575,36 @@ export const newStarter = async args => {
     await copy(starterPath, rootPath)
   }
 
+  const medusaConfig = getMedusaConfig(rootPath)
+
+  let isPostgres = false
+  if (medusaConfig && medusaConfig.projectConfig) {
+    const databaseType = medusaConfig.projectConfig.database_type
+    isPostgres = databaseType === "postgres"
+  }
+
   track("CLI_NEW_LAYOUT_COMPLETED")
 
   let creds = dbCredentials
 
-  if (!useDefaults && !skipDb && !skipEnv) {
+  if (isPostgres && !useDefaults && !skipDb && !skipEnv) {
     creds = await interactiveDbCreds(root, dbCredentials)
   }
 
   if (creds === null) {
     reporter.info("Skipping automatic database setup")
   } else {
-    if (!skipDb) {
+    if (!skipDb && isPostgres) {
       track("CLI_NEW_SETUP_DB")
       await setupDB(root, creds)
     }
 
-    if (!skipEnv) {
+    if (!skipEnv && isPostgres) {
       track("CLI_NEW_SETUP_ENV")
       await setupEnvVars(rootPath, root, creds)
     }
 
-    if (!skipMigrations) {
+    if (!skipMigrations && isPostgres) {
       track("CLI_NEW_RUN_MIGRATIONS")
       await runMigrations(rootPath)
     }
