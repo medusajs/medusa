@@ -52,7 +52,7 @@ export class ReturnItem {
   @Column({ nullable: true })
   reason_id: string
 
-  @ManyToOne(() => ReturnReason, { eager: true })
+  @ManyToOne(() => ReturnReason)
   @JoinColumn({ name: "reason_id" })
   reason: ReturnReason
 

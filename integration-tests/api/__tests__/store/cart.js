@@ -1,5 +1,5 @@
 const path = require("path");
-const { Region, LineItem, Payment } = require("@medusajs/medusa");
+const { Region, LineItem, GiftCard } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -21,7 +21,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."));
     dbConnection = await initDb({ cwd });
-    medusaProcess = await setupServer({ cwd });
+    medusaProcess = await setupServer({ cwd, verbose: true });
   });
 
   afterAll(async () => {
@@ -190,6 +190,32 @@ describe("/store/carts", () => {
 
       expect(cart.data.cart.shipping_total).toBe(1000);
       expect(cart.status).toEqual(200);
+    });
+
+    it("complete cart with giftcard total 0", async () => {
+      const manager = dbConnection.manager;
+      await manager.insert(GiftCard, {
+        id: "gift_test",
+        code: "GC_TEST",
+        value: 20000,
+        balance: 20000,
+        region_id: "test-region",
+      });
+
+      const api = useApi();
+
+      await api.post(`/store/carts/test-cart-3`, {
+        gift_cards: [{ code: "GC_TEST" }],
+      });
+
+      const getRes = await api
+        .post(`/store/carts/test-cart-3/complete`)
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+
+      expect(getRes.status).toEqual(200);
+      expect(getRes.data.type).toEqual("order");
     });
 
     it("complete cart with items inventory covered", async () => {
