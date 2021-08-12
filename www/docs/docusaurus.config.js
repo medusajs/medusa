@@ -6,7 +6,7 @@ module.exports = {
   title: "Medusa Commerce",
   tagline: "Explore and learn how to use Medusa",
   url: "https://your-docusaurus-test-site.com",
-  baseUrl: "https://docs.medusa-commerce.com",
+  baseUrl: "https://laughing-cori-67ba88.netlify.app",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",

@@ -2,6 +2,20 @@
 
 const execa = require("execa");
 
+const installDeps = async () => {
+  await Promise.all([
+    execa("yarn", ["install"], {
+      cwd: "./reference",
+      stdio: "inherit",
+    }),
+
+    execa("yarn", ["install"], {
+      cwd: "./docs",
+      stdio: "inherit",
+    }),
+  ]);
+};
+
 const buildGatsby = async () => {
   await execa("./node_modules/.bin/gatsby", ["build"], {
     cwd: "./reference",
@@ -17,6 +31,7 @@ const buildDocusaurus = async () => {
 };
 
 const buildSite = async () => {
+  await installDeps();
   await buildGatsby();
   await buildDocusaurus();
 
