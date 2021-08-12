@@ -44,7 +44,10 @@ const reducer = (state, action) => {
       }
     case "reset":
       return {
+        ...state,
         openSections: [],
+        currentSection: null,
+        currentHash: null,
       }
     default:
       return state

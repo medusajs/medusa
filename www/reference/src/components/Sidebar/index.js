@@ -92,7 +92,7 @@ const Sidebar = ({ data, api }) => {
           />
         </Flex>
         <Flex py={3}>
-          <SideBarSelector />
+          <SideBarSelector api={api} />
         </Flex>
       </SideBarHeader>
       <SideBarFade opacity={scrollPos} />

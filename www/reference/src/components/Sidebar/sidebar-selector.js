@@ -11,22 +11,11 @@ const Container = styled(Flex)`
   }
 `
 
-const SideBarSelector = () => {
-  const [api, setApi] = useState("store")
+const SideBarSelector = ({ api }) => {
   const { reset } = useContext(NavigationContext)
-
-  useEffect(() => {
-    const pathname = window.location.pathname
-    const matches = pathname.match(/api\/(store|admin)\/w*/)
-    if (matches?.length > 1) {
-      console.log(matches)
-      setApi(matches[1])
-    }
-  }, [])
 
   const handleSelect = e => {
     reset()
-    console.log("target value", e.target.value)
     navigate(`/api/${e.target.value}`)
   }
 
