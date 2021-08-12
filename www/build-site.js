@@ -3,17 +3,15 @@
 const execa = require("execa");
 
 const installDeps = async () => {
-  await Promise.all([
-    execa("yarn", ["install"], {
-      cwd: "./reference",
-      stdio: "inherit",
-    }),
+  await execa("yarn", ["install"], {
+    cwd: "./reference",
+    stdio: "inherit",
+  });
 
-    execa("yarn", ["install"], {
-      cwd: "./docs",
-      stdio: "inherit",
-    }),
-  ]);
+  await execa("yarn", ["install"], {
+    cwd: "./docs",
+    stdio: "inherit",
+  });
 };
 
 const buildGatsby = async () => {
