@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import Markdown from "react-markdown"
 import { Flex, Text, Box, Heading } from "theme-ui"
 import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
@@ -14,7 +14,8 @@ import NavigationContext from "../../context/navigation-context"
 const Method = ({ data, section, pathname }) => {
   const { parameters, requestBody, description, method, summary } = data
   const jsonResponse = data.responses[0].content?.[0].json
-  const { updateHash } = useContext(NavigationContext)
+  const { updateHash, updateMetaData } = useContext(NavigationContext)
+  const methodRef = useRef(null)
 
   const [containerRef, isInView] = useInView({
     root: null,
@@ -28,6 +29,20 @@ const Method = ({ data, section, pathname }) => {
     }
   }, [isInView])
 
+  const handleMetaChange = () => {
+    updateMetaData({
+      title: summary,
+      description: description,
+    })
+    if (methodRef.current) {
+      methodRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      })
+    }
+  }
+
   return (
     <Flex
       py={"5vw"}
@@ -36,18 +51,23 @@ const Method = ({ data, section, pathname }) => {
         flexDirection: "column",
       }}
       id={convertToKebabCase(summary)}
+      ref={methodRef}
     >
-      <Heading
-        as="h2"
-        mb={4}
-        sx={{
-          fontSize: "4",
-          fontWeight: "500",
-        }}
-        ref={containerRef}
-      >
-        {summary}
-      </Heading>
+      <Flex>
+        <Heading
+          as="h2"
+          mb={4}
+          sx={{
+            fontSize: "4",
+            fontWeight: "500",
+            cursor: "pointer",
+          }}
+          ref={containerRef}
+          onClick={() => handleMetaChange()}
+        >
+          {summary}
+        </Heading>
+      </Flex>
       <ResponsiveContainer>
         <Flex
           className="info"

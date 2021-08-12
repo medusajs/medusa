@@ -89,10 +89,7 @@ const SideBarItem = ({ item }) => {
     const id = convertToKebabCase(section.section_name)
     const element = document.querySelector(`#${id}`)
     if (element) {
-      element.scrollIntoView({
-        block: "start",
-        inline: "nearest",
-      })
+      element.scrollIntoView()
       if (!openSections.includes(id)) {
         openSection(id)
       }

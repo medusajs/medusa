@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
 
 import Layout from "../components/layout"
@@ -8,7 +8,11 @@ import NavigationContext from "../context/navigation-context"
 export default function ReferencePage({
   pageContext: { data, api, title, description, to },
 }) {
-  const { setApi, goTo } = useContext(NavigationContext)
+  const { setApi, goTo, metaData } = useContext(NavigationContext)
+  const [metadata, setMetadata] = useState({
+    title: title,
+    description: description,
+  })
 
   useEffect(() => {
     setApi(api)
@@ -16,11 +20,21 @@ export default function ReferencePage({
       goTo(to)
     }
   }, [])
+
+  useEffect(() => {
+    if (metaData) {
+      setMetadata({
+        title: metaData.title,
+        description: metaData.description,
+      })
+    }
+  }, [metaData])
+
   return (
     <Layout data={data} api={api}>
       <Helmet>
-        <title>{`${title} | Medusa Commerce API Reference`}</title>
-        <meta name="description" content={description} />
+        <title>{`${metadata.title} | Medusa Commerce API Reference`}</title>
+        <meta name="description" content={metadata.description} />
       </Helmet>
       <Content data={data} />
     </Layout>

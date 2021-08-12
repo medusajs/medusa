@@ -10,6 +10,8 @@ export const defaultNavigationContext = {
   updateHash: () => {},
   openSections: [],
   openSection: () => {},
+  metaData: null,
+  updateMetaData: () => {},
   reset: () => {},
 }
 
@@ -49,6 +51,14 @@ const reducer = (state, action) => {
         currentSection: null,
         currentHash: null,
       }
+    case "updateMetaData":
+      return {
+        ...state,
+        metaData: {
+          title: action.payload.title,
+          description: action.payload.description,
+        },
+      }
     default:
       return state
   }
@@ -58,8 +68,13 @@ const scrollNav = id => {
   const nav = document.querySelector("#nav")
   if (nav) {
     const element = nav.querySelector(`#nav-${id}`)
-    console.log(element)
     if (element) {
+      /**
+       * FIXME: This value is semi random and is error prone. Most of the
+       * time it will result in the current section/method being shown
+       * close to the center of the sidebar, but scrolling very fast can result in
+       * it having janky movements, going to random sections etc.
+       */
       const offset = element.offsetTop - 350
       nav.scroll({
         top: offset > 0 ? offset : 0,
@@ -70,8 +85,8 @@ const scrollNav = id => {
   }
 }
 
-const scrollToMethod = async method => {
-  const element = document.querySelector(`#${method}`)
+const scrollToElement = async id => {
+  const element = document.querySelector(`#${id}`)
   if (element) {
     element.scrollIntoView({
       block: "start",
@@ -79,31 +94,29 @@ const scrollToMethod = async method => {
     })
   } else {
     setTimeout(() => {
-      scrollToMethod(method)
-    }, 200)
+      scrollToElement(id)
+    }, 100)
   }
 }
 
 export const NavigationProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultNavigationContext)
 
-  // useEffect(() => {
-  //   globalHistory.listen(({ location }) => {
-  //     console.log(location.hash.slice(1))
-  //     console.log("HASH", location.hash)
-  //     updateHash(location.hash.slice(1))
-  //   })
-  // }, [])
-
   const setApi = api => {
     dispatch({ type: "setApi", payload: api })
   }
 
+  const updateMetaData = metadata => {
+    dispatch({ type: "updateMetaData", payload: metadata })
+  }
+
   const updateHash = (section, method) => {
     dispatch({ type: "updateHash", payload: method })
-    const newLocation = `/api/${state.api}/${section}/${method}`
-    console.log(newLocation)
-    window.history.replaceState(null, "", newLocation)
+    window.history.replaceState(
+      null,
+      "",
+      `/api/${state.api}/${section}/${method}`
+    )
     scrollNav(method)
   }
 
@@ -119,12 +132,13 @@ export const NavigationProvider = ({ children }) => {
 
   const goTo = to => {
     const { section, method } = to
-    console.log(section, method)
-    if (!state.openSections.includes(section)) {
+    if (!state.openSections.includes(section) && method) {
       openSection(section)
-      scrollToMethod(method)
+      scrollToElement(method)
+    } else if (!state.openSections.includes(section) && !method) {
+      scrollToElement(section)
     } else {
-      scrollToMethod(method)
+      scrollToElement(method)
     }
   }
 
@@ -142,6 +156,7 @@ export const NavigationProvider = ({ children }) => {
         setApi,
         goTo,
         reset,
+        updateMetaData,
         dispatch,
       }}
     >

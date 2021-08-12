@@ -326,6 +326,8 @@ const createAllPages = (sections, api, siteData, createPage, template) => {
     edge.section.paths.forEach(p => {
       p.methods.forEach(method => {
         const methodURL = convertToKebabCase(method.summary)
+        console.log("BASE URL", baseURL)
+        console.log("METHOD URL", methodURL)
         createPage({
           path: `api/${api}/${baseURL}/${methodURL}`,
           component: template,

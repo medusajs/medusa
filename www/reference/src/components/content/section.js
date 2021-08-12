@@ -15,7 +15,9 @@ import useInView from "../../hooks/use-in-view"
 const Section = ({ data }) => {
   const { section } = data
   const [isExpanded, setIsExpanded] = useState(false)
-  const { openSections, updateSection, api } = useContext(NavigationContext)
+  const { openSections, updateSection, updateMetaData } = useContext(
+    NavigationContext
+  )
 
   const endpoints = section.paths
     .map(p => {
@@ -41,8 +43,6 @@ const Section = ({ data }) => {
       if (sectionRef.current) {
         sectionRef.current.scrollIntoView({
           behavior: "smooth",
-          block: "start",
-          inline: "nearest",
         })
       }
     }
@@ -70,6 +70,14 @@ const Section = ({ data }) => {
     }
   }, [isInView])
 
+  const handleMetaChange = () => {
+    updateMetaData({
+      title: section.section_name,
+      description: section.schema?.description,
+    })
+    handleExpand()
+  }
+
   return (
     <section ref={sectionRef} id={convertToKebabCase(section.section_name)}>
       <Box
@@ -79,18 +87,22 @@ const Section = ({ data }) => {
         }}
         bg={isExpanded ? "transparent" : "var(--faded-contrast)"}
       >
-        <Heading
-          as="h1"
-          sx={{
-            fontWeight: "500",
-            fontSize: "22",
-            mb: "3",
-          }}
-          ref={containerRef}
-          className={`header-${convertToKebabCase(section.section_name)}`}
-        >
-          {section.section_name}
-        </Heading>
+        <Flex>
+          <Heading
+            as="h1"
+            sx={{
+              fontWeight: "500",
+              fontSize: "22",
+              mb: "3",
+              cursor: "pointer",
+            }}
+            ref={containerRef}
+            className={`header-${convertToKebabCase(section.section_name)}`}
+            onClick={() => handleMetaChange()}
+          >
+            {section.section_name}
+          </Heading>
+        </Flex>
         <Flex
           sx={{
             flexDirection: "column",
