@@ -6,7 +6,7 @@ module.exports = {
   title: "Medusa Commerce",
   tagline: "Explore and learn how to use Medusa",
   url: "https://your-docusaurus-test-site.com",
-  baseUrl: "/",
+  baseUrl: "https://docs.medusa-commerce.com",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
@@ -82,8 +82,7 @@ module.exports = {
           items: [
             {
               label: "Stack Overflow",
-              href:
-                "https://stackoverflow.com/questions/tagged/medusa-commerce",
+              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
               label: "Discord",
