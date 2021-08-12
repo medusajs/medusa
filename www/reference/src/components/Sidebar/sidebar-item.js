@@ -1,7 +1,6 @@
 import React, { useContext } from "react"
 import Collapsible from "react-collapsible"
 import { Flex, Box, Text } from "theme-ui"
-import { AnchorLink } from "gatsby-plugin-anchor-links"
 import styled from "@emotion/styled"
 import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import ChevronDown from "../icons/chevron-down"
@@ -16,49 +15,6 @@ const Container = styled(Box)`
     svg {
       transform: rotate(180deg);
     }
-  }
-`
-
-const StyledNavItem = styled(Flex)`
-  padding-left: 16px;
-  padding-right: 10px;
-  align-items: center;
-  border-radius: var(--border-radius-8);
-  cursor: pointer;
-  margin-right: 4px;
-  height: 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-  &:hover,
-  &.active {
-    background-color: var(--faded);
-  }
-`
-
-const StyledAnchorLink = styled(Box)`
-  display: flex;
-  margin-left: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  align-items: center;
-  border-radius: var(--border-radius-8);
-  cursor: pointer;
-  margin-bottom: 8px;
-  text-decoration: none;
-  align-items: center;
-  color: black;
-  height: 25px;
-  &:hover {
-    ${props =>
-      !props.active &&
-      `
-      background-color: var(--faded);
-    `}
-  }
-  &.active {
-    background-color: var(--faded);
   }
 `
 
@@ -105,8 +61,22 @@ const SideBarItem = ({ item }) => {
     <Container id={`nav-${convertToKebabCase(section.section_name)}`}>
       <StyledCollapsible
         trigger={
-          <StyledNavItem
-            sx={{ fontSize: "1" }}
+          <Flex
+            sx={{
+              fontSize: "1",
+              paddingLeft: "16px",
+              paddingRight: "10px",
+              alignItems: "center",
+              borderRadius: "small",
+              cursor: "pointer",
+              mr: "4px",
+              mb: "5px",
+              height: "25px",
+              justifyContent: "space-between",
+              "&:hover, &.active": {
+                backgroundColor: "faded",
+              },
+            }}
             className={
               currentSection === convertToKebabCase(section.section_name)
                 ? "active"
@@ -114,7 +84,7 @@ const SideBarItem = ({ item }) => {
             }
           >
             {section.section_name} <ChevronDown />
-          </StyledNavItem>
+          </Flex>
         }
         open={
           currentSection === convertToKebabCase(section.section_name) ||
@@ -126,11 +96,29 @@ const SideBarItem = ({ item }) => {
         {subItems.map((si, i) => {
           const path = convertToKebabCase(si.path)
           return (
-            <StyledAnchorLink
+            <Flex
               key={i}
               className={currentHash === path ? "active" : null}
               onClick={() => handleSubClick(path)}
               id={`nav-${path}`}
+              sx={{
+                ml: "10px",
+                pl: "10px",
+                pr: "10px",
+                alignItems: "center",
+                borderRadius: "small",
+                cursor: "pointer",
+                mb: "8px",
+                textDecoration: "none",
+                color: "black",
+                height: "25px",
+                "&:hover": {
+                  backgroundColor: "faded",
+                },
+                "&.active": {
+                  backgroundColor: "faded",
+                },
+              }}
             >
               <Text
                 sx={{
@@ -139,7 +127,7 @@ const SideBarItem = ({ item }) => {
               >
                 {si.title}
               </Text>
-            </StyledAnchorLink>
+            </Flex>
           )
         })}
       </StyledCollapsible>

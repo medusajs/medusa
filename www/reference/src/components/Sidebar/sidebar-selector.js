@@ -1,15 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { Flex, Select } from "theme-ui"
 import { navigate } from "gatsby-link"
-import styled from "@emotion/styled"
 import NavigationContext from "../../context/navigation-context"
 import ChevronDown from "../icons/chevron-down"
-
-const Container = styled(Flex)`
-  div {
-    width: 100%;
-  }
-`
 
 const SideBarSelector = ({ api }) => {
   const { reset } = useContext(NavigationContext)
@@ -20,7 +13,14 @@ const SideBarSelector = ({ api }) => {
   }
 
   return (
-    <Container sx={{ width: "100%" }}>
+    <Flex
+      sx={{
+        width: "100%",
+        "& div": {
+          width: "100%",
+        },
+      }}
+    >
       <Select
         arrow={<ChevronDown fill={"dark"} styles={{ ml: "-28px" }} />}
         sx={{
@@ -45,7 +45,7 @@ const SideBarSelector = ({ api }) => {
         <option value="admin">Admin</option>
         <option value="store">Storefront</option>
       </Select>
-    </Container>
+    </Flex>
   )
 }
 

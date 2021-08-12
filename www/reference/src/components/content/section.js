@@ -65,9 +65,12 @@ const Section = ({ data }) => {
   })
 
   useEffect(() => {
-    if (isInView) {
-      updateSection(convertToKebabCase(section.section_name))
+    const handleInView = () => {
+      if (isInView) {
+        updateSection(convertToKebabCase(section.section_name))
+      }
     }
+    handleInView()
   }, [isInView])
 
   const handleMetaChange = () => {

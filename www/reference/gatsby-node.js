@@ -332,7 +332,7 @@ const createAllPages = (sections, api, siteData, createPage, template) => {
           path: `api/${api}/${baseURL}/${methodURL}`,
           component: template,
           context: {
-            data: siteData.data.admin,
+            data: siteData.data[api],
             api: api,
             title: method.summary,
             description: method.description || "",

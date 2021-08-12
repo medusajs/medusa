@@ -17,6 +17,7 @@ export default function ReferencePage({
   useEffect(() => {
     setApi(api)
     if (to) {
+      console.log(to)
       goTo(to)
     }
   }, [])

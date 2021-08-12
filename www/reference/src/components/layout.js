@@ -33,19 +33,21 @@ const StyledLayout = styled(Flex)`
 const Layout = ({ data, api, children }) => {
   const [visible, setVisible] = useState(false)
 
-  useEffect(() => {
-    function handleKeyPress(e) {
-      if (!visible && e.metaKey && e.key === "f") {
-        e.preventDefault()
-        setVisible(true)
-      } else if (visible && e.metaKey && e.key === "f") {
-        e.preventDefault()
-        setVisible(false)
-      }
-    }
-    window.addEventListener("keydown", handleKeyPress)
-    return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [visible])
+  console.log(api, data)
+
+  // useEffect(() => {
+  //   function handleKeyPress(e) {
+  //     if (!visible && e.metaKey && e.key === "f") {
+  //       e.preventDefault()
+  //       setVisible(true)
+  //     } else if (visible && e.metaKey && e.key === "f") {
+  //       e.preventDefault()
+  //       setVisible(false)
+  //     }
+  //   }
+  //   window.addEventListener("keydown", handleKeyPress)
+  //   return () => window.removeEventListener("keydown", handleKeyPress)
+  // }, [visible])
 
   return (
     <StyledLayout>

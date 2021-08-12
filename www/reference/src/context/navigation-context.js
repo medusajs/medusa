@@ -1,8 +1,7 @@
-import React, { useEffect, useReducer, useState } from "react"
-import { globalHistory } from "@reach/router"
+import React, { useReducer } from "react"
 
 export const defaultNavigationContext = {
-  api: "store",
+  api: "null",
   setApi: () => {},
   currentSection: null,
   updateSection: () => {},
@@ -132,14 +131,11 @@ export const NavigationProvider = ({ children }) => {
 
   const goTo = to => {
     const { section, method } = to
-    if (!state.openSections.includes(section) && method) {
+
+    if (!state.openSections.includes(section)) {
       openSection(section)
-      scrollToElement(method)
-    } else if (!state.openSections.includes(section) && !method) {
-      scrollToElement(section)
-    } else {
-      scrollToElement(method)
     }
+    scrollToElement(method || section)
   }
 
   const reset = () => {
