@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   pill: `
       rgba(0, 0, 0, 0) 0px 0px 0px 0px,
@@ -108,4 +109,8 @@ export default {
       rgba(62, 207, 142, 0.25) 0px 3px 9px 0px;
       rgba(62, 207, 142, 0.25) 0px 2px 5px 0px;
     `,
+
+  sidebarShadow: `
+    inset -1px 0 0 0 #eef0f5
+  `,
 }

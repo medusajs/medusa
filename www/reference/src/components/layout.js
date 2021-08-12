@@ -1,39 +1,21 @@
-import styled from "@emotion/styled"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Flex, Box } from "theme-ui"
 import Sidebar from "./sidebar"
 
-const StyledSearch = styled(Box)`
-  width: 300px;
-  min-height: 200px;
-  position: fixed;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -10%);
-  background: var(--faded);
-  border-radius: 8px;
-  z-index: 99;
-`
-
-const StyledLayout = styled(Flex)`
-  --dark: #0a3149;
-  --dark-contrast: #0a314990;
-  --light: #ffffff;
-
-  --faded: #eef0f5;
-  --faded-contrast: #eef0f540;
-
-  --border-radius-8: 8px;
-
-  padding: 0;
-  margin: 0;
-  scroll-behavior: smooth;
-`
+// const StyledSearch = styled(Box)`
+//   width: 300px;
+//   min-height: 200px;
+//   position: fixed;
+//   top: 10%;
+//   left: 50%;
+//   transform: translate(-50%, -10%);
+//   background: var(--faded);
+//   border-radius: 8px;
+//   z-index: 99;
+// `
 
 const Layout = ({ data, api, children }) => {
-  const [visible, setVisible] = useState(false)
-
-  console.log(api, data)
+  // const [visible, setVisible] = useState(false)
 
   // useEffect(() => {
   //   function handleKeyPress(e) {
@@ -50,12 +32,13 @@ const Layout = ({ data, api, children }) => {
   // }, [visible])
 
   return (
-    <StyledLayout>
-      <StyledSearch
+    <Flex sx={{ p: "0", m: "0" }}>
+      {/* IMPLEMENT: Algolia Docsearch */}
+      {/* <StyledSearch
         sx={{
           display: visible ? "flex" : "none",
         }}
-      ></StyledSearch>
+      ></StyledSearch> */}
       <Flex
         sx={{
           position: "absolute",
@@ -71,7 +54,7 @@ const Layout = ({ data, api, children }) => {
         <Sidebar data={data} api={api} />
         <Box>{children}</Box>
       </Flex>
-    </StyledLayout>
+    </Flex>
   )
 }
 

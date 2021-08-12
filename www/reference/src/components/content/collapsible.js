@@ -17,7 +17,8 @@ const NestedCollapsible = ({ properties, title }) => {
           boxSizing: "border-box",
           width: "max-content",
           borderRadius: "small",
-          border: "1px solid var(--faded)",
+          border: "1px solid",
+          borderColor: "faded",
         },
 
         "& .child-attrs.is-open": {
@@ -70,7 +71,7 @@ const NestedCollapsible = ({ properties, title }) => {
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             border: "hairline",
-            borderColor: "var(--faded)",
+            borderColor: "faded",
           }}
           mb="2"
         >

@@ -9,36 +9,8 @@ const SideBarContainer = styled(Flex)`
   --side-bar-header-height: 100px;
   --side-bar-width: 220px;
 
-  position: sticky;
-  top: 0;
-  bottom: 0;
-  height: 100vh;
-  background-color: var(--light);
-  box-shadow: inset -1px 0 0 0 var(--faded);
-  min-width: var(--side-bar-width);
-  flex-direction: column;
-
   @media screen and (min-width: 1680px) {
     --side-bar-width: 280px;
-  }
-`
-
-const SideBarList = styled(Flex)`
-  margin-right: 1px;
-  flex-direction: column;
-  overflow-y: scroll;
-  padding-right: 6px;
-  scrollbar-color: var(--faded) var(--light);
-  &::-webkit-scrollbar {
-    width: 11px;
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--light);
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--faded);
-    border-radius: 6px;
-    border: 3px solid var(--light);
   }
 `
 
@@ -48,16 +20,8 @@ const SideBarFade = styled(Box)`
   left: 0;
   width: calc(var(--side-bar-width) - 1px);
   height: 50px;
-  box-shadow: inset 0 50px 25px calc(-1 * 25px) var(--light);
   pointer-events: none;
-`
-
-const SideBarHeader = styled(Flex)`
-  min-height: var(--side-bar-header-height);
-  height: var(--side-bar-header-height);
-  background: var(--light);
-  width: calc(var(--side-bar-width) - 1px);
-  flex-direction: column;
+  box-shadow: inset 0 50px 25px calc(-1 * 25px) white;
 `
 
 const Sidebar = ({ data, api }) => {
@@ -78,8 +42,29 @@ const Sidebar = ({ data, api }) => {
   }, [])
 
   return (
-    <SideBarContainer>
-      <SideBarHeader px={4} pt={3}>
+    <SideBarContainer
+      sx={{
+        position: "sticky",
+        top: "0",
+        bottom: "0",
+        height: "100vh",
+        backgroundColor: "light",
+        boxShadow: "sidebarShadow",
+        minWidth: "var(--side-bar-width)",
+        flexDirection: "column",
+      }}
+    >
+      <Flex
+        sx={{
+          px: "4",
+          pt: "3",
+          minHeight: "var(--side-bar-header-height)",
+          height: "var(--side-bar-header-height)",
+          background: "light",
+          width: "calc(var(--side-bar-width) - 1px)",
+          flexDirection: "column",
+        }}
+      >
         <Flex>
           <Image
             src={Logo}
@@ -92,19 +77,36 @@ const Sidebar = ({ data, api }) => {
         <Flex py={3}>
           <SideBarSelector api={api} />
         </Flex>
-      </SideBarHeader>
+      </Flex>
       <SideBarFade opacity={scrollPos} />
-      <SideBarList
+      <Flex
         id="nav"
         sx={{
           px: "3",
           pb: "3",
+          mr: "1px",
+          flexDirection: "column",
+          overflowY: "scroll",
+          pr: "6px",
+          scrollbarColor: "faded light",
+          "&::-webkit-scrollbar": {
+            width: "11px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "light",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "faded",
+            borderRadius: "6px",
+            border: "3px solid",
+            borderColor: "light",
+          },
         }}
       >
         {data.sections.map((s, i) => {
           return <SideBarItem item={s} key={i} />
         })}
-      </SideBarList>
+      </Flex>
     </SideBarContainer>
   )
 }

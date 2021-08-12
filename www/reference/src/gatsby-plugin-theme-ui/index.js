@@ -7,6 +7,7 @@ import shadows from "./shadows"
 import forms from "./forms"
 import labels from "./labels"
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   text: {
     labels,
@@ -115,10 +116,5 @@ export default {
   buttons,
   radii: {
     small: "8px",
-  },
-  sizes: {
-    sideBarHeaderHeight: "100px",
-    sideBarWidthS: "220px",
-    sideBarWidthL: "280px",
   },
 }

@@ -27,6 +27,7 @@ const Method = ({ data, section, pathname }) => {
     if (isInView) {
       updateHash(section, convertToKebabCase(summary))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView])
 
   const handleMetaChange = () => {
@@ -37,8 +38,6 @@ const Method = ({ data, section, pathname }) => {
     if (methodRef.current) {
       methodRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "start",
-        inline: "nearest",
       })
     }
   }

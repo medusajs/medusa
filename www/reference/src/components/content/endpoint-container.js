@@ -31,7 +31,7 @@ const EndpointContainer = ({ endpoints }) => {
               >
                 {method}
               </Text>
-              <Text sx={{ color: "var(--dark)" }}>
+              <Text sx={{ color: "dark" }}>
                 {endpoint.replace(/{(.*?)}/g, ":$1")}
               </Text>
             </Flex>

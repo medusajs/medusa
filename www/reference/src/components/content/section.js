@@ -34,17 +34,26 @@ const Section = ({ data }) => {
 
   const sectionRef = useRef(null)
 
+  const scrollIntoView = () => {
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({
+        behavior: "smooth",
+      })
+    }
+  }
+
   const handleExpand = () => {
+    updateMetaData({
+      title: section.section_name,
+      description: section.schema?.description,
+    })
     setIsExpanded(true)
+    scrollIntoView()
   }
 
   useEffect(() => {
     if (isExpanded) {
-      if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({
-          behavior: "smooth",
-        })
-      }
+      scrollIntoView()
     }
   }, [isExpanded])
 
@@ -71,15 +80,8 @@ const Section = ({ data }) => {
       }
     }
     handleInView()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView])
-
-  const handleMetaChange = () => {
-    updateMetaData({
-      title: section.section_name,
-      description: section.schema?.description,
-    })
-    handleExpand()
-  }
 
   return (
     <section ref={sectionRef} id={convertToKebabCase(section.section_name)}>
@@ -87,8 +89,8 @@ const Section = ({ data }) => {
         sx={{
           borderBottom: "hairline",
           padding: "5vw",
+          backgroundColor: isExpanded ? "transparent" : "fadedContrast",
         }}
-        bg={isExpanded ? "transparent" : "var(--faded-contrast)"}
       >
         <Flex>
           <Heading
@@ -101,7 +103,7 @@ const Section = ({ data }) => {
             }}
             ref={containerRef}
             className={`header-${convertToKebabCase(section.section_name)}`}
-            onClick={() => handleMetaChange()}
+            onClick={handleExpand}
           >
             {section.section_name}
           </Heading>

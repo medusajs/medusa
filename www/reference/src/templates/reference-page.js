@@ -20,6 +20,7 @@ export default function ReferencePage({
       console.log(to)
       goTo(to)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

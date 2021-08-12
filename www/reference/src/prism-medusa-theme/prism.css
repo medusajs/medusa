@@ -1,6 +1,6 @@
 code[class*="language-"],
 pre[class*="language-"] {
-  color: var(--dark);
+  color: #0a3149;
   background: none;
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   font-size: 12px;
@@ -49,7 +49,7 @@ pre[class*="language-"] {
 }
 
 .token.punctuation {
-  color: var(--dark);
+  color: #0a3149;
 }
 
 .token.namespace {
@@ -61,7 +61,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: var(--dark);
+  color: #0a3149;
 }
 
 .token.number {
@@ -87,7 +87,7 @@ pre[class*="language-"] {
 .language-css .token.string,
 .style .token.string,
 .token.variable {
-  color: var(--dark);
+  color: #0a3149;
 }
 
 .token.atrule,
