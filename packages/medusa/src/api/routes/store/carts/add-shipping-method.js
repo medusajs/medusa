@@ -42,17 +42,13 @@ export default async (req, res) => {
     const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
 
-    console.log("console.log hit")
     await manager.transaction(async m => {
       const txCartService = cartService.withTransaction(m)
-      console.log("txCartCreated")
       await txCartService.addShippingMethod(id, value.option_id, value.data)
-      console.log("method added")
       const updated = await txCartService.retrieve(id, {
         relations: ["payment_sessions"],
       })
 
-      console.log("updated")
       if (updated.payment_sessions?.length) {
         await txCartService.setPaymentSessions(id)
       }
