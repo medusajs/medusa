@@ -38,7 +38,7 @@ Medusa is an open-source headless commerce engine that enables developers to cre
     
 4. **Use the API**
     ```bash
-    curl -X GET localhost:9000/store/products | python -m json.tool
+    curl localhost:9000/store/products | python -m json.tool
     ```
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
