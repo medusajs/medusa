@@ -1,3 +1,4 @@
+import path from "path"
 import { spawn, execSync } from "child_process"
 import chokidar from "chokidar"
 
@@ -9,12 +10,13 @@ export default async function({ port, directory }) {
   args.shift()
   args.shift()
 
-  execSync("./node_modules/.bin/babel src -d dist", {
+  const babelPath = path.join(directory, "node_modules", ".bin", "babel")
+  execSync(`${babelPath} src -d dist`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  const cliPath = "./node_modules/.bin/medusa"
+  const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
   let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
     env: process.env,
