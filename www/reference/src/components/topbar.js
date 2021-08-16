@@ -21,9 +21,6 @@ const Topbar = ({ data, api }) => {
     }
   }
 
-  useEffect(() => {
-    console.log(currentSection)
-  }, [currentSection])
   return (
     <Flex
       sx={{
