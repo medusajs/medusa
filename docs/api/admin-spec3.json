@@ -5111,7 +5111,7 @@
         }
       }
     },
-    "/returns/{id}receive": {
+    "/returns/{id}/receive": {
       "post": {
         "operationId": "PostReturnsReturnReceive",
         "summary": "Receive a Return",
