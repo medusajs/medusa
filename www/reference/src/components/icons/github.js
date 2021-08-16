@@ -1,4 +1,4 @@
-import { Box, Image } from "@theme-ui/components"
+import { Image } from "@theme-ui/components"
 import React from "react"
 
 import Logo from "../../assets/github.svg"

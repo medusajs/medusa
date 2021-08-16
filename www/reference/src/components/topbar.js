@@ -1,5 +1,5 @@
-import { Flex, Box, Link, Select, Text } from "@theme-ui/components"
-import React, { useContext, useEffect } from "react"
+import { Flex, Box, Link, Select } from "@theme-ui/components"
+import React, { useContext } from "react"
 import { navigate } from "gatsby-link"
 
 import GitHub from "../components/icons/github"
