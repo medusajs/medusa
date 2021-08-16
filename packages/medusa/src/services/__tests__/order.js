@@ -1035,6 +1035,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       fulfillmentService,
+      eventBusService,
     })
 
     beforeEach(async () => {

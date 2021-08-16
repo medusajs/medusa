@@ -212,7 +212,9 @@ class FulfillmentService extends BaseService {
   }
 
   /**
-   * Cancels a fulfillment with the fulfillment provider.
+   * Cancels a fulfillment with the fulfillment provider. Will decrement the
+   * fulfillment_quantity on the line items associated with the fulfillment.
+   * Throws if the fulfillment has already been shipped.
    * @param {Fulfillment|string} fulfillmentOrId - the fulfillment object or id.
    * @return {Promise} the result of the save operation
    *
@@ -226,6 +228,13 @@ class FulfillmentService extends BaseService {
       const fulfillment = await this.retrieve(id, {
         relations: ["items", "claim_order", "swap"],
       })
+
+      if (fulfillment.shipped_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment has already been shipped. Shipped fulfillments cannot be canceled`
+        )
+      }
 
       await this.fulfillmentProviderService_.cancelFulfillment(fulfillment)
 
