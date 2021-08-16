@@ -775,25 +775,6 @@ class CartService extends BaseService {
     return customer
   }
 
-  async createUserFromEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
-    const { value, error } = schema.validate(email.toLowerCase())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The email is not valid"
-      )
-    }
-
-    const customer = await this.customerService_
-      .withTransaction(this.transactionManager_)
-      .create({ email })
-
-    return customer
-  }
-
   /**
    * Updates the cart's billing address.
    * @param {string} cartId - the id of the cart to update
