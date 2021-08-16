@@ -4,6 +4,8 @@ import winston from "winston"
 import ora from "ora"
 import { track } from "medusa-telemetry"
 
+import { panicHandler } from "./panic-handler"
+
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
 const NODE_ENV = process.env.NODE_ENV || "development"
 const IS_DEV = NODE_ENV === "development"
@@ -44,10 +46,12 @@ export class Reporter {
   }
 
   panic = data => {
+    const parsedPanic = panicHandler(data)
+
     this.loggerInstance_.log({
       level: "error",
       details: data,
-      message: data.error && data.error.message,
+      message: parsedPanic.message,
     })
 
     track("PANIC_ERROR_REACHED", {

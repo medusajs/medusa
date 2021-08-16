@@ -567,7 +567,7 @@ medusa new ${rootPath} [url-to-starter]
 
     if (/medusa-starter/gi.test(rootPath) && isStarterAUrl) {
       reporter.panic({
-        id: `11610`,
+        id: `10000`,
         context: {
           starter,
           rootPath,
@@ -576,7 +576,7 @@ medusa new ${rootPath} [url-to-starter]
       return
     }
     reporter.panic({
-      id: `11611`,
+      id: `10001`,
       context: {
         rootPath,
       },
@@ -586,7 +586,7 @@ medusa new ${rootPath} [url-to-starter]
 
   if (!isValid(rootPath)) {
     reporter.panic({
-      id: `11612`,
+      id: `10002`,
       context: {
         path: sysPath.resolve(rootPath),
       },
@@ -596,7 +596,7 @@ medusa new ${rootPath} [url-to-starter]
 
   if (existsSync(sysPath.join(rootPath, `package.json`))) {
     reporter.panic({
-      id: `11613`,
+      id: `10003`,
       context: {
         rootPath,
       },
