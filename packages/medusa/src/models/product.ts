@@ -15,6 +15,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Image } from "./image"
 import { ProductCollection } from "./product-collection"
@@ -139,16 +140,16 @@ export class Product {
   @Column({ default: true })
   discountable: boolean
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()

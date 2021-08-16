@@ -43,27 +43,27 @@ export default async (req, res) => {
     const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
 
-    let cart = await cartService.retrieve(id)
-
     await manager.transaction(async m => {
-      const line = await lineItemService.generate(
-        value.variant_id,
-        cart.region_id,
-        value.quantity,
-        { metadata: value.metadata }
-      )
-      await cartService.withTransaction(m).addLineItem(id, line)
+      const txCartService = cartService.withTransaction(m)
+      const cart = await txCartService.retrieve(id)
 
-      const updated = await cartService.withTransaction(m).retrieve(id, {
+      const line = await lineItemService
+        .withTransaction(m)
+        .generate(value.variant_id, cart.region_id, value.quantity, {
+          metadata: value.metadata,
+        })
+      await txCartService.addLineItem(id, line)
+
+      const updated = await txCartService.retrieve(id, {
         relations: ["payment_sessions"],
       })
 
       if (updated.payment_sessions?.length) {
-        await cartService.withTransaction(m).setPaymentSessions(id)
+        await txCartService.setPaymentSessions(id)
       }
     })
 
-    cart = await cartService.retrieve(id, {
+    const cart = await cartService.retrieve(id, {
       select: defaultFields,
       relations: defaultRelations,
     })

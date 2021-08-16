@@ -11,6 +11,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Product } from "./product"
 
@@ -33,7 +34,7 @@ export class DiscountRule {
   @Column({ nullable: true })
   description: string
 
-  @Column({
+  @DbAwareColumn({
     type: "enum",
     enum: DiscountRuleType,
   })
@@ -42,7 +43,7 @@ export class DiscountRule {
   @Column()
   value: number
 
-  @Column({
+  @DbAwareColumn({
     type: "enum",
     enum: AllocationType,
     nullable: true,
@@ -63,16 +64,16 @@ export class DiscountRule {
   })
   valid_for: Product[]
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()

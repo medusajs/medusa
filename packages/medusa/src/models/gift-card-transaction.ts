@@ -10,6 +10,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType } from "../utils/db-aware-column"
 
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
@@ -38,7 +39,7 @@ export class GiftCardTransaction {
   @Column("int")
   amount: number
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
   @BeforeInsert()

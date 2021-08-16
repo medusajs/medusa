@@ -8,6 +8,8 @@ const { track } = require("medusa-telemetry")
 const { getToken } = require("../util/token-store")
 const logger = require("../reporter").default
 
+const MEDUSA_CLI_DEBUG = process.env.MEDUSA_CLI_DEBUG || false
+
 module.exports = {
   link: async argv => {
     track("CLI_LINK", { args: argv })
@@ -59,6 +61,12 @@ module.exports = {
             },
           }
         )
+
+        if (MEDUSA_CLI_DEBUG) {
+          proc.stderr.pipe(process.stderr)
+          proc.stdout.pipe(process.stdout)
+        }
+
         const res = await proc
         if (res.stderr) {
           const err = new Error("stderr error")
