@@ -189,7 +189,7 @@ export class Product {
  *     description: "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased."
  *     type: boolean
  *   discountable:
- *     description: "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.
+ *     description: "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`."
  *     type: boolean
  *   images:
  *     description: "Images of the Product"

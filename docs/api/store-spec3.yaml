@@ -40,87 +40,6 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Authenticate Customer
-      description: >-
-        Logs a Customer in and authorizes them to view their details. Successful
-        authentication will set a session cookie in the Customer's browser.
-      parameters: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                password:
-                  type: string
-                  description: The Customer's password.
-    delete:
-      operationId: DeleteAuth
-      summary: Log out
-      description: Destroys a Customer's authenticated session.
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-    get:
-      operationId: GetAuth
-      summary: Get Session
-      description: Gets the currently logged in Customer.
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/auth/{email}':
-    get:
-      operationId: GetAuthEmail
-      summary: Check if email has account
-      description: Checks if a Customer with the given email has signed up.
-      parameters:
-        - in: path
-          name: email
-          required: true
-          description: The Customer's email.
-          schema:
-            type: string
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  exists:
-                    type: boolean
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -162,7 +81,7 @@ paths:
                     process the fulfillment of the order. Look at the
                     documentation for your installed fulfillment providers to
                     find out what to send.
-  '/carts/{id}/complete-cart':
+  '/carts/{id}/complete':
     post:
       summary: Complete a Cart
       operationId: PostCartsCartComplete
@@ -457,11 +376,9 @@ paths:
                   cart:
                     $ref: '#/components/schemas/cart'
     post:
-      operationId: PostCartsCartPaymentSessionsSession
-      summary: Refresh a Payment Session
-      description: >-
-        Refreshes a Payment Session to ensure that it is in sync with the Cart -
-        this is usually not necessary.
+      operationId: PostCartsCartPaymentSessionUpdate
+      summary: Update a Payment Session
+      description: Updates a Payment Session with additional data.
       parameters:
         - in: path
           name: id
@@ -472,9 +389,7 @@ paths:
         - in: path
           name: provider_id
           required: true
-          description: >-
-            The id of the Payment Provider that created the Payment Session to
-            be refreshed.
+          description: The id of the payment provider.
           schema:
             type: string
       tags:
@@ -488,6 +403,23 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_id
+                - data
+              properties:
+                provider_id:
+                  type: string
+                  description: >-
+                    The id of the Payment Provider responsible for the Payment
+                    Session to update.
+                data:
+                  type: object
+                  description: The data to update the payment session with.
   '/carts/{id}':
     get:
       operationId: GetCartsCart
@@ -614,46 +546,6 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-  '/carts/{id}/payment-session/update':
-    post:
-      operationId: PostCartsCartPaymentSessionUpdate
-      summary: Update a Payment Session
-      description: Updates a Payment Session with additional data.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - provider_id
-                - data
-              properties:
-                provider_id:
-                  type: string
-                  description: >-
-                    The id of the Payment Provider responsible for the Payment
-                    Session to update.
-                data:
-                  type: object
-                  description: The data to update the payment session with.
   '/customers/{id}/addresses':
     post:
       operationId: PostCustomersCustomerAddresses
@@ -842,12 +734,19 @@ paths:
                 last_name:
                   description: The Customer's last name.
                   type: string
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
                 password:
                   description: The Customer's password.
                   type: string
                 phone:
                   description: The Customer's phone number.
                   type: string
+                metadata:
+                  description: Metadata about the customer.
+                  type: object
       tags:
         - Customer
       responses:
@@ -986,6 +885,87 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate Customer
+      description: >-
+        Logs a Customer in and authorizes them to view their details. Successful
+        authentication will set a session cookie in the Customer's browser.
+      parameters: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                password:
+                  type: string
+                  description: The Customer's password.
+    delete:
+      operationId: DeleteAuth
+      summary: Log out
+      description: Destroys a Customer's authenticated session.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      description: Gets the currently logged in Customer.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/auth/{email}':
+    get:
+      operationId: GetAuthEmail
+      summary: Check if email has account
+      description: Checks if a Customer with the given email has signed up.
+      parameters:
+        - in: path
+          name: email
+          required: true
+          description: The Customer's email.
+          schema:
+            type: string
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  exists:
+                    type: boolean
   '/gift-cards/{code}':
     get:
       operationId: GetGiftCardsCode
@@ -1147,47 +1127,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
-  '/return-reasons/{id}':
-    get:
-      operationId: GetReturnReasonsReason
-      summary: Retrieve a Return Reason
-      description: Retrieves a Return Reason.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Return Reason.
-          schema:
-            type: string
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-  /return-reasons:
-    get:
-      operationId: GetReturnReasons
-      summary: List Return Reasons
-      description: Retrieves a list of Return Reasons.
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reasons:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return_reason'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1238,6 +1177,47 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+  /return-reasons:
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
   /returns:
     post:
       operationId: PostReturns
@@ -1682,6 +1662,11 @@ components:
         deleted_at:
           type: string
           format: date-time
+        no_notification:
+          description: >-
+            Flag for describing whether or not notifications related to this
+            should be send.
+          type: boolean
         metadata:
           type: object
     claim_tag:
@@ -1829,9 +1814,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/product'
-        usage_limit:
-          description: The maximum number of times that a discount can be used.
-          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -1894,6 +1876,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/region'
+        usage_limit:
+          description: The maximum number of times that a discount can be used.
+          type: integer
+        usage_count:
+          description: The number of times a discount has been used.
+          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -1909,6 +1897,51 @@ components:
         metadata:
           description: An optional key-value map with additional information.
           type: object
+    draft-order:
+      title: DraftOrder
+      description: Represents a draft order
+      x-resourceId: draft-order
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - open
+            - completed
+        display_id:
+          type: string
+        cart_id:
+          type: string
+        cart:
+          anyOf:
+            - $ref: '#/components/schemas/cart'
+        order_id:
+          type: string
+        order:
+          anyOf:
+            - $ref: '#/components/schemas/order'
+        canceled_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        update_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        no_notification_order:
+          type: boolean
+        metadata:
+          type: object
+        idempotency_key:
+          type: string
     fulfillment_item:
       title: Fulfillment Item
       description: >-
@@ -2001,6 +2034,11 @@ components:
           description: The date with timezone at which the Fulfillment was shipped.
           type: string
           format: date-time
+        no_notification:
+          description: >-
+            Flag for describing whether or not notifications related to this
+            should be send.
+          type: boolean
         canceled_at:
           description: The date with timezone at which the Fulfillment was canceled.
           type: string
@@ -2527,6 +2565,13 @@ components:
           type: integer
         gift_card_total:
           type: integer
+        paid_total:
+          type: integer
+        no_notification:
+          description: >-
+            Flag for describing whether or not notifications related to this
+            should be send.
+          type: boolean
     payment_provider:
       title: Payment Provider
       description: Represents a Payment Provider plugin and holds its installation status.
@@ -2993,6 +3038,11 @@ components:
             Gift Cards will automatically generate a redeemable Gift Card code
             once they are purchased.
           type: boolean
+        discountable:
+          description: >-
+            Whether the Product can be discounted. Discounts will not apply to
+            Line Items of this Product when this flag is set to `false`.
+          type: boolean
         images:
           description: Images of the Product
           type: array
@@ -3332,6 +3382,11 @@ components:
           description: The date with timezone at which the resource was last updated.
           type: string
           format: date-time
+        no_notification:
+          description: >-
+            When set to true, no notification will be sent related to this
+            return.
+          type: boolean
         metadata:
           description: An optional key-value map with additional information.
           type: object
@@ -3692,6 +3747,9 @@ components:
           description: The date with timezone at which the resource was last updated.
           type: string
           format: date-time
+        no_notification:
+          description: 'If set to true, no notification will be sent related to this swap'
+          type: boolean
         metadata:
           description: An optional key-value map with additional information.
           type: object
