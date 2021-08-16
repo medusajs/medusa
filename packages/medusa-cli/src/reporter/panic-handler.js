@@ -11,11 +11,11 @@ export const panicHandler = (panicData = {}) => {
       }
     case "10002":
       return {
-        message: `Could not create project because ${path} is not a valid path.`,
+        message: `Could not create project because ${context.path} is not a valid path.`,
       }
     case "10003":
       return {
-        message: `Directory ${rootPath} is already a Node project.`,
+        message: `Directory ${context.rootPath} is already a Node project.`,
       }
     default:
       return {
