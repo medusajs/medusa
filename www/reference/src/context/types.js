@@ -5,7 +5,6 @@ const types = {
   OPEN_SECTION: "OPEN_SECTION",
   RESET: "RESET",
   UPDATE_METADATA: "UPDATE_METADATA",
-  ADD_REF: "ADD_REF",
 }
 
 export default types
