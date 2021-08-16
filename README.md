@@ -80,7 +80,7 @@ In production Medusa requires Postgres and Redis, but SQLite is supported for de
 - [Install PostgreSQL](https://www.postgresql.org/download/)
 - [Install Redis](https://redis.io/download)
 
-To use Postgre and Redis you should provide a `database_url` and `redis_url` in your `medusa-config.js`.
+To use Postgres and Redis you should provide a `database_url` and `redis_url` in your `medusa-config.js`.
 
 ## Contribution
 
