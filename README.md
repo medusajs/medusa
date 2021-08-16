@@ -19,7 +19,7 @@ Medusa is an open-source headless commerce engine that enables developers to cre
   <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
-  <a href="https://discord.gg/vnaaf6vGUq">
+  <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
   <a href="https://twitter.com/intent/follow?screen_name=medusajs">
