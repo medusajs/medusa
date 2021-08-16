@@ -478,6 +478,9 @@ paths:
                   type: array
                   items:
                     type: string
+                usage_limit:
+                  type: number
+                  description: Maximum times the discount can be used
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -695,6 +698,421 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  '/discounts/code/{code}':
+    get:
+      operationId: GetDiscountsDiscountCode
+      summary: Retrieve a Discount by code
+      description: Retrieves a Discount by its discount code
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The code of the Discount
+          schema:
+            type: string
+      tags:
+        - Discount
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  discount:
+                    $ref: '#/components/schemas/discount'
+  /draft-orders:
+    post:
+      operationId: PostDraftOrders
+      summary: Create a Draft Order
+      description: Creates a Draft Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                status:
+                  description: The status of the draft order
+                  type: string
+                email:
+                  description: The email of the customer of the draft order
+                  type: string
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: >-
+                          The id of the Product Variant to generate the Line
+                          Item from.
+                        type: string
+                      unit_price:
+                        description: The potential custom price of the item.
+                        type: integer
+                      title:
+                        description: The potential custom title of the item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                      metadata:
+                        description: >-
+                          The optional key-value map with additional details
+                          about the Line Item.
+                        type: object
+                region_id:
+                  description: The id of the region for the draft order
+                  type: string
+                discounts:
+                  description: The discounts to add on the draft order
+                  type: array
+                  items:
+                    properties:
+                      code:
+                        description: The code of the discount to apply
+                        type: string
+                customer_id:
+                  description: The id of the customer to add on the draft order
+                  type: string
+                no_notification_order:
+                  description: >-
+                    An optional flag passed to the resulting order to determine
+                    use of notifications.
+                  type: boolean
+                shipping_methods:
+                  description: The shipping methods for the draft order
+                  type: array
+                  items:
+                    properties:
+                      option_id:
+                        description: The id of the shipping option in use
+                        type: string
+                      data:
+                        description: >-
+                          The optional additional data needed for the shipping
+                          method
+                        type: object
+                      price:
+                        description: The potential custom price of the shipping
+                        type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Draft Order.
+                  type: object
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+    get:
+      operationId: GetDraftOrders
+      summary: List Draft Orders
+      description: Retrieves an list of Draft Orders
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+  '/draft-orders/{id}/line-items':
+    post:
+      operationId: PostDraftOrdersDraftOrderLineItems
+      summary: Create a Line Item for Draft Order
+      description: Creates a Line Item for the Draft Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                variant_id:
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                  type: string
+                unit_price:
+                  description: The potential custom price of the item.
+                  type: integer
+                title:
+                  description: The potential custom title of the item.
+                  type: string
+                quantity:
+                  description: The quantity of the Line Item.
+                  type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Line Item.
+                  type: object
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+  '/draft-orders/{id}':
+    delete:
+      operationId: DeleteDraftOrdersDraftOrder
+      summary: Delete a Draft Order
+      description: Deletes a Draft Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Draft Order.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetDraftOrdersDraftOrder
+      summary: Retrieve a Draft Order
+      description: Retrieves a Draft Order.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+  '/draft-orders/{id}/line-items/{line_id}':
+    delete:
+      operationId: DeleteDraftOrdersDraftOrderLineItemsItem
+      summary: Delete a Line Item
+      description: Removes a Line Item from a Draft Order.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+    post:
+      operationId: PostDraftOrdersDraftOrderLineItemsItem
+      summary: Update a Line Item for a Draft Order
+      description: Updates a Line Item for a Draft Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                unit_price:
+                  description: The potential custom price of the item.
+                  type: integer
+                title:
+                  description: The potential custom title of the item.
+                  type: string
+                quantity:
+                  description: The quantity of the Line Item.
+                  type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Line Item.
+                  type: object
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+  '/draft-orders/{id}/register-payment':
+    post:
+      summary: Registers a payment for a Draft Order
+      operationId: PostDraftOrdersDraftOrderRegisterPayment
+      description: Registers a payment for a Draft Order.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Draft Order id.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+  '/admin/draft-orders/{id}':
+    post:
+      operationId: PostDraftOrdersDraftOrder
+      summary: Update a Draft Order"
+      description: Updates a Draft Order.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Draft Order in.
+                email:
+                  type: string
+                  description: An email to be used on the Draft Order.
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                discounts:
+                  description: An array of Discount codes to add to the Draft Order.
+                  type: array
+                  items:
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                no_notification_order:
+                  description: >-
+                    An optional flag passed to the resulting order to determine
+                    use of notifications.
+                  type: boolean
+                customer_id:
+                  description: The id of the Customer to associate the Draft Order with.
+                  type: string
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+  /notifications:
+    get:
+      operationId: GetNotifications
+      summary: List Notifications
+      description: Retrieves a list of Notifications.
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/notification'
+  '/notifications/{id}/resend':
+    post:
+      operationId: PostNotificationsNotificationResend
+      summary: Resend Notification
+      description: >-
+        Resends a previously sent notifications, with the same data but
+        optionally to a different address
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Notification
+          schema:
+            type: string
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification:
+                    $ref: '#/components/schemas/notification'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -867,49 +1285,6 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
-  /notifications:
-    get:
-      operationId: GetNotifications
-      summary: List Notifications
-      description: Retrieves a list of Notifications.
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notifications:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/notification'
-  '/notifications/{id}/resend':
-    post:
-      operationId: PostNotificationsNotificationResend
-      summary: Resend Notification
-      description: >-
-        Resends a previously sent notifications, with the same data but
-        optionally to a different address
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Notification
-          schema:
-            type: string
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notification:
-                    $ref: '#/components/schemas/notification'
   '/orders/{id}/shipping-methods':
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -1158,11 +1533,21 @@ paths:
                       price:
                         description: The price to charge for the Shipping Method
                         type: integer
+                shipping_address:
+                  type: object
+                  description: >-
+                    An optional shipping address to send the claim to. Defaults
+                    to the parent order's shipping address
                 refund_amount:
                   description: >-
                     The amount to refund the Customer when the Claim type is
                     `refund`.
                   type: integer
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Claim.
+                  type: boolean
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -1209,6 +1594,11 @@ paths:
                       quantity:
                         description: The quantity of the Line Item to fulfill.
                         type: integer
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Swap.
+                  type: boolean
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -1250,6 +1640,11 @@ paths:
                   type: array
                   items:
                     type: string
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Shipment.
+                  type: boolean
       tags:
         - Order
       responses:
@@ -1292,6 +1687,11 @@ paths:
                   type: array
                   items:
                     type: string
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Claim.
+                  type: boolean
       tags:
         - Order
       responses:
@@ -1356,6 +1756,11 @@ paths:
                       quantity:
                         description: The quantity of the Product Variant to ship.
                         type: integer
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Swap.
+                  type: boolean
       tags:
         - Order
       responses:
@@ -1424,6 +1829,11 @@ paths:
                     An optional set of key-value pairs to hold additional
                     information.
                   type: object
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Claim.
+                  type: boolean
       tags:
         - Order
       responses:
@@ -1463,6 +1873,11 @@ paths:
                     An optional set of key-value pairs to hold additional
                     information.
                   type: object
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Claim.
+                  type: boolean
       tags:
         - Order
       responses:
@@ -1536,54 +1951,6 @@ paths:
           description: The id of the Swap.
           schema:
             type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}/returns/{return_id}/receive':
-    post:
-      operationId: PostOrdersOrderReturnsReturnReceive
-      summary: Receive a Return
-      description: Registers a Return as received.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-        - in: path
-          name: return_id
-          required: true
-          description: The id of the Return.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                refund:
-                  description: The amount to refund.
-                  type: integer
       tags:
         - Order
       responses:
@@ -1669,6 +2036,11 @@ paths:
                 note:
                   description: A not with additional details about the Refund.
                   type: string
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Refund.
+                  type: boolean
       tags:
         - Order
       responses:
@@ -1734,6 +2106,11 @@ paths:
                   description: >-
                     A flag to indicate if the Return should be registerd as
                     received immediately.
+                  type: boolean
+                no_notification:
+                  description: >-
+                    A flag to indicate if no notifications should be emitted
+                    related to the requested Return.
                   type: boolean
                 refund:
                   description: The amount to refund.
@@ -1826,6 +2203,11 @@ paths:
                       price:
                         description: The price to charge for the Shipping Method
                         type: integer
+                no_notification:
+                  description: >-
+                    If set to true no notification will be send related to this
+                    Swap.
+                  type: boolean
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -1899,6 +2281,11 @@ paths:
                     A flag to indicate if the Product represents a Gift Card.
                     Purchasing Products with this flag set to `true` will result
                     in a Gift Card being created.
+                  type: boolean
+                discountable:
+                  description: >-
+                    A flag to indicate if discounts can be applied to the
+                    LineItems generated from this Product
                   type: boolean
                 images:
                   description: Images of the Product.
@@ -2399,6 +2786,11 @@ paths:
                     A flag to indicate if the Product represents a Gift Card.
                     Purchasing Products with this flag set to `true` will result
                     in a Gift Card being created.
+                  type: boolean
+                discountable:
+                  description: >-
+                    A flag to indicate if discounts can be applied to the
+                    LineItems generated from this Product
                   type: boolean
                 images:
                   description: Images of the Product.
@@ -3297,6 +3689,50 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/return'
+  '/returns/{id}receive':
+    post:
+      operationId: PostReturnsReturnReceive
+      summary: Receive a Return
+      description: >-
+        Registers a Return as received. Updates statuses on Orders and Swaps
+        accordingly.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                refund:
+                  description: The amount to refund.
+                  type: integer
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return:
+                    $ref: '#/components/schemas/return'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -3718,6 +4154,29 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/store'
+  '/swaps/{id}':
+    get:
+      operationId: GetSwapsSwap
+      summary: Retrieve a Swap
+      description: Retrieves a Swap.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Swap.
+          schema:
+            type: string
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
   /swaps:
     get:
       operationId: GetSwaps
@@ -4020,6 +4479,11 @@ components:
         deleted_at:
           type: string
           format: date-time
+        no_notification:
+          description: >-
+            Flag for describing whether or not notifications related to this
+            should be send.
+          type: boolean
         metadata:
           type: object
     claim_tag:
@@ -4167,9 +4631,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/product'
-        usage_limit:
-          description: The maximum number of times that a discount can be used.
-          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -4232,6 +4693,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/region'
+        usage_limit:
+          description: The maximum number of times that a discount can be used.
+          type: integer
+        usage_count:
+          description: The number of times a discount has been used.
+          type: integer
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -4247,6 +4714,51 @@ components:
         metadata:
           description: An optional key-value map with additional information.
           type: object
+    draft-order:
+      title: DraftOrder
+      description: Represents a draft order
+      x-resourceId: draft-order
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - open
+            - completed
+        display_id:
+          type: string
+        cart_id:
+          type: string
+        cart:
+          anyOf:
+            - $ref: '#/components/schemas/cart'
+        order_id:
+          type: string
+        order:
+          anyOf:
+            - $ref: '#/components/schemas/order'
+        canceled_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        update_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        no_notification_order:
+          type: boolean
+        metadata:
+          type: object
+        idempotency_key:
+          type: string
     fulfillment_item:
       title: Fulfillment Item
       description: >-
@@ -4339,6 +4851,11 @@ components:
           description: The date with timezone at which the Fulfillment was shipped.
           type: string
           format: date-time
+        no_notification:
+          description: >-
+            Flag for describing whether or not notifications related to this
+            should be send.
+          type: boolean
         canceled_at:
           description: The date with timezone at which the Fulfillment was canceled.
           type: string
@@ -4865,6 +5382,13 @@ components:
           type: integer
         gift_card_total:
           type: integer
+        paid_total:
+          type: integer
+        no_notification:
+          description: >-
+            Flag for describing whether or not notifications related to this
+            should be send.
+          type: boolean
     payment_provider:
       title: Payment Provider
       description: Represents a Payment Provider plugin and holds its installation status.
@@ -5331,6 +5855,11 @@ components:
             Gift Cards will automatically generate a redeemable Gift Card code
             once they are purchased.
           type: boolean
+        discountable:
+          description: >-
+            Whether the Product can be discounted. Discounts will not apply to
+            Line Items of this Product when this flag is set to `false`.
+          type: boolean
         images:
           description: Images of the Product
           type: array
@@ -5670,6 +6199,11 @@ components:
           description: The date with timezone at which the resource was last updated.
           type: string
           format: date-time
+        no_notification:
+          description: >-
+            When set to true, no notification will be sent related to this
+            return.
+          type: boolean
         metadata:
           description: An optional key-value map with additional information.
           type: object
@@ -6030,6 +6564,9 @@ components:
           description: The date with timezone at which the resource was last updated.
           type: string
           format: date-time
+        no_notification:
+          description: 'If set to true, no notification will be sent related to this swap'
+          type: boolean
         metadata:
           description: An optional key-value map with additional information.
           type: object

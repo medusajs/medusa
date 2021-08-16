@@ -1,7 +1,7 @@
 import { defaultFields, defaultRelations } from "./"
 
 /**
- * @oas [get] /discounts/code/{id}
+ * @oas [get] /discounts/code/{code}
  * operationId: "GetDiscountsDiscountCode"
  * summary: "Retrieve a Discount by code"
  * description: "Retrieves a Discount by its discount code"
