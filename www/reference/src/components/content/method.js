@@ -72,8 +72,11 @@ const Method = ({ data, section, pathname }) => {
           className="info"
           sx={{
             flexDirection: "column",
+            pr: "5",
+            "@media screen and (max-width: 848px)": {
+              pr: "0",
+            },
           }}
-          pr={5}
         >
           <Route path={pathname} method={method} />
           <Description>

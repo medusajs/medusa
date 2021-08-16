@@ -115,9 +115,15 @@ const Section = ({ data }) => {
         >
           <ResponsiveContainer>
             <Flex
-              sx={{ flexDirection: "column", lineHeight: "26px" }}
+              sx={{
+                flexDirection: "column",
+                lineHeight: "26px",
+                pr: "5",
+                "@media screen and (max-width: 848px)": {
+                  pr: "0",
+                },
+              }}
               className="info"
-              pr={5}
             >
               <Description>
                 <Text mb={4}>

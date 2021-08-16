@@ -21,7 +21,7 @@ const Layout = ({ data, api, children }) => {
   // }, [visible])
 
   return (
-    <Flex sx={{ p: "0", m: "0" }}>
+    <Flex sx={{ p: "0", m: "0", overflow: "hidden" }}>
       {/* IMPLEMENT: Algolia Docsearch */}
       {/* <Flex
         sx={{

@@ -64,8 +64,8 @@ const SideBarItem = ({ item }) => {
           <Flex
             sx={{
               fontSize: "1",
-              paddingLeft: "16px",
-              paddingRight: "10px",
+              pl: "16px",
+              pr: "10px",
               alignItems: "center",
               borderRadius: "small",
               cursor: "pointer",
