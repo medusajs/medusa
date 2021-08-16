@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 
-const QUERY_RUNNER_RELEASED = "QueryRunnerProviderAlreadyReleasedError"
+const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
 const TRANSACTION_STARTED = "TransactionAlreadyStartedError"
 const TRANSACTION_NOT_STARTED = "TransactionNotStartedError"
 
