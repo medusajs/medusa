@@ -15,6 +15,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 import { Fulfillment } from "./fulfillment"
@@ -49,10 +50,10 @@ export class Swap {
   @PrimaryColumn()
   id: string
 
-  @Column({ type: "enum", enum: FulfillmentStatus })
+  @DbAwareColumn({ type: "enum", enum: FulfillmentStatus })
   fulfillment_status: FulfillmentStatus
 
-  @Column({ type: "enum", enum: PaymentStatus })
+  @DbAwareColumn({ type: "enum", enum: PaymentStatus })
   payment_status: PaymentStatus
 
   @Index()
@@ -118,22 +119,22 @@ export class Swap {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   confirmed_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

@@ -14,6 +14,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
@@ -48,10 +49,13 @@ export class Discount {
   @JoinColumn({ name: "parent_discount_id" })
   parent_discount: Discount
 
-  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
+  @Column({
+    type: resolveDbType("timestamptz"),
+    default: () => "CURRENT_TIMESTAMP",
+  })
   starts_at: Date
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   ends_at: Date
 
   @ManyToMany(() => Region, { cascade: true })
@@ -74,16 +78,16 @@ export class Discount {
   @Column({ default: 0 })
   usage_count: number
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()

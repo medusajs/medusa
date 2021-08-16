@@ -102,6 +102,7 @@ import {
   BeforeUpdate,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Region } from "./region"
 import { Address } from "./address"
@@ -223,30 +224,30 @@ export class Cart {
   )
   shipping_methods: ShippingMethod[]
 
-  @Column({ type: "enum", enum: CartType, default: "default" })
+  @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
   type: boolean
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })
   idempotency_key: string
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   context: any
-  
+
   // Total fields
   shipping_total: number
   discount_total: number

@@ -10,6 +10,7 @@ import {
   Index,
 } from "typeorm"
 import { ulid } from "ulid"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ClaimOrder } from "./claim-order"
 import { Order } from "./order"
@@ -81,7 +82,7 @@ export class ShippingMethod {
   @Column({ type: "int" })
   price: number
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
   @BeforeInsert()

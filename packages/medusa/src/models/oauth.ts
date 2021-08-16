@@ -16,6 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class Oauth {
@@ -35,7 +36,7 @@ export class Oauth {
   @Column({ nullable: true })
   uninstall_url: string
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   data: any
 
   @BeforeInsert()
