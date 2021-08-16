@@ -34,6 +34,10 @@ export default async (req, res) => {
       selector.is_dynamic = req.query.is_dynamic === "true"
     }
 
+    if ("is_disabled" in req.query) {
+      selector.is_disabled = req.query.is_disabled === "true"
+    }
+
     const listConfig = {
       select: defaultFields,
       relations: defaultRelations,

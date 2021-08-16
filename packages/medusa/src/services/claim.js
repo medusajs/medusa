@@ -26,6 +26,7 @@ class ClaimService extends BaseService {
     shippingOptionService,
     claimItemService,
     regionService,
+    inventoryService,
     eventBusService,
   }) {
     super()
@@ -63,6 +64,9 @@ class ClaimService extends BaseService {
     /** @private @constant {TotalsService} */
     this.totalsService_ = totalsService
 
+    /** @private @constant {InventoryService} */
+    this.inventoryService_ = inventoryService
+
     /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
 
@@ -88,6 +92,7 @@ class ClaimService extends BaseService {
       claimItemService: this.claimItemService_,
       eventBusService: this.eventBus_,
       totalsService: this.totalsService_,
+      inventoryService: this.inventoryService_,
       shippingOptionService: this.shippingOptionService_,
     })
 
@@ -245,6 +250,12 @@ class ClaimService extends BaseService {
         toRefund = await this.totalsService_.getRefundTotal(order, lines)
       }
 
+      for (const item of additional_items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .confirmInventory(item.variant_id, item.quantity)
+      }
+
       const newItems = await Promise.all(
         additional_items.map(i =>
           this.lineItemService_
@@ -253,6 +264,11 @@ class ClaimService extends BaseService {
         )
       )
 
+      for (const newItem of newItems) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(newItem.variant_id, -newItem.quantity)
+      }
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 

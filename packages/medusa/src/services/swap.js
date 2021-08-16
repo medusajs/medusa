@@ -31,6 +31,7 @@ class SwapService extends BaseService {
     shippingOptionService,
     fulfillmentService,
     orderService,
+    inventoryService,
   }) {
     super()
 
@@ -64,6 +65,9 @@ class SwapService extends BaseService {
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
 
+    /** @private @const {InventoryService} */
+    this.inventoryService_ = inventoryService
+
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
   }
@@ -84,12 +88,76 @@ class SwapService extends BaseService {
       paymentProviderService: this.paymentProviderService_,
       shippingOptionService: this.shippingOptionService_,
       orderService: this.orderService_,
+      inventoryService: this.inventoryService_,
       fulfillmentService: this.fulfillmentService_,
     })
 
     cloned.transactionManager_ = transactionManager
 
     return cloned
+  }
+
+  transformQueryForTotals_(config) {
+    let { select, relations } = config
+
+    if (!select) {
+      return {
+        ...config,
+        totalsToSelect: [],
+      }
+    }
+
+    const totalFields = [
+      "cart.subtotal",
+      "cart.tax_total",
+      "cart.shipping_total",
+      "cart.discount_total",
+      "cart.gift_card_total",
+      "cart.total",
+    ]
+
+    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    if (totalsToSelect.length > 0) {
+      const relationSet = new Set(relations)
+      relationSet.add("cart")
+      relationSet.add("cart.items")
+      relationSet.add("cart.gift_cards")
+      relationSet.add("cart.discounts")
+      relationSet.add("cart.shipping_methods")
+      relationSet.add("cart.region")
+      relations = [...relationSet]
+
+      select = select.filter(v => !totalFields.includes(v))
+    }
+
+    return {
+      ...config,
+      relations,
+      select,
+      totalsToSelect,
+    }
+  }
+
+  async decorateTotals_(cart, totalsFields = []) {
+    if (totalsFields.includes("cart.shipping_total")) {
+      cart.shipping_total = await this.totalsService_.getShippingTotal(cart)
+    }
+    if (totalsFields.includes("cart.discount_total")) {
+      cart.discount_total = await this.totalsService_.getDiscountTotal(cart)
+    }
+    if (totalsFields.includes("cart.tax_total")) {
+      cart.tax_total = await this.totalsService_.getTaxTotal(cart)
+    }
+    if (totalsFields.includes("cart.gift_card_total")) {
+      cart.gift_card_total = await this.totalsService_.getGiftCardTotal(cart)
+    }
+    if (totalsFields.includes("cart.subtotal")) {
+      cart.subtotal = await this.totalsService_.getSubtotal(cart)
+    }
+    if (totalsFields.includes("cart.total")) {
+      cart.total = await this.totalsService_.getTotal(cart)
+    }
+    return cart
   }
 
   /**
@@ -102,7 +170,11 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const { totalsToSelect, ...newConfig } = this.transformQueryForTotals_(
+      config
+    )
+
+    const query = this.buildQuery_({ id: validatedId }, newConfig)
 
     const rels = query.relations
     delete query.relations
@@ -110,6 +182,11 @@ class SwapService extends BaseService {
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
+    }
+
+    if (rels && rels.includes("cart")) {
+      const cart = await this.decorateTotals_(swap.cart, totalsToSelect)
+      swap.cart = cart
     }
 
     return swap
@@ -454,7 +531,7 @@ class SwapService extends BaseService {
 
       if (swap.cart_id) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
+          MedusaError.Types.DUPLICATE_ERROR,
           "A cart has already been created for the swap"
         )
       }
@@ -520,6 +597,7 @@ class SwapService extends BaseService {
           variant_id: lineItem.variant_id,
           unit_price: -1 * lineItem.unit_price,
           quantity: r.quantity,
+          allow_discounts: lineItem.allow_discounts,
           metadata: {
             ...lineItem.metadata,
             is_return_line: true,
@@ -570,6 +648,14 @@ class SwapService extends BaseService {
 
       const cart = swap.cart
 
+      const items = swap.cart.items
+
+      for (const item of items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .confirmInventory(item.variant_id, item.quantity)
+      }
+
       const total = await this.totalsService_.getTotal(cart)
 
       if (total > 0) {
@@ -600,6 +686,12 @@ class SwapService extends BaseService {
             swap_id: swapId,
             order_id: swap.order_id,
           })
+
+        for (const item of items) {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .adjustInventory(item.variant_id, -item.quantity)
+        }
       }
 
       const now = new Date()

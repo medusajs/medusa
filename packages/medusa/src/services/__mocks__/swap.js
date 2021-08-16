@@ -26,7 +26,13 @@ export const SwapServiceMock = {
   }),
 
   cancelFulfillment: jest.fn().mockImplementation(f => {
-    return Promise.resolve({ f })
+    return Promise.resolve({ id: IdMap.getId("test-swap") })
+  }),
+  list: jest.fn().mockImplementation((...args) => {
+    return Promise.resolve([
+      { id: IdMap.getId("test-swap") },
+      { id: IdMap.getId("test-swap-1") },
+    ])
   }),
 }
 

@@ -71,7 +71,20 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async manager => {
-              const cart = await cartService
+              let cart = await cartService.withTransaction(manager).retrieve(id)
+
+              if (cart.completed_at) {
+                return {
+                  response_code: 409,
+                  response_body: {
+                    code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
+                    message: "Cart has already been completed",
+                    type: MedusaError.Types.NOT_ALLOWED,
+                  },
+                }
+              }
+
+              cart = await cartService
                 .withTransaction(manager)
                 .authorizePayment(id, {
                   ...req.request_context,
@@ -85,7 +98,11 @@ export default async (req, res) => {
                 ) {
                   return {
                     response_code: 200,
-                    response_body: { data: cart },
+                    response_body: {
+                      data: cart,
+                      payment_status: cart.payment_session.status,
+                      type: "cart",
+                    },
                   }
                 }
               }
@@ -122,17 +139,17 @@ export default async (req, res) => {
               switch (cart.type) {
                 case "swap": {
                   const swapId = cart.metadata?.swap_id
-                  order = await swapService
+                  let swap = await swapService
                     .withTransaction(manager)
                     .registerCartCompletion(swapId)
 
-                  order = await swapService
+                  swap = await swapService
                     .withTransaction(manager)
-                    .retrieve(order.id, { relations: ["shipping_address"] })
+                    .retrieve(swap.id, { relations: ["shipping_address"] })
 
                   return {
                     response_code: 200,
-                    response_body: { data: order },
+                    response_body: { data: swap, type: "swap" },
                   }
                 }
                 // case "payment_link":
@@ -168,7 +185,19 @@ export default async (req, res) => {
 
                       return {
                         response_code: 200,
-                        response_body: { data: order },
+                        response_body: { data: order, type: "order" },
+                      }
+                    } else if (
+                      error &&
+                      error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
+                    ) {
+                      return {
+                        response_code: 409,
+                        response_body: {
+                          message: error.message,
+                          type: error.type,
+                          code: error.code,
+                        },
                       }
                     } else {
                       throw error
@@ -192,7 +221,7 @@ export default async (req, res) => {
 
               return {
                 response_code: 200,
-                response_body: { data: order },
+                response_body: { data: order, type: "order" },
               }
             }
           )
@@ -230,7 +259,6 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (error) {
-    console.log(error)
     throw error
   }
 }

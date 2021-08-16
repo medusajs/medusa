@@ -1,6 +1,7 @@
 import paymentService from "medusa-interfaces/dist/payment-service"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import SwapService from "../swap"
+import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -804,44 +805,51 @@ describe("SwapService", () => {
       Date.now = jest.fn(() => 1572393600000)
     })
 
+    const eventBusService = {
+      emit: jest.fn().mockReturnValue(Promise.resolve()),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const totalsService = {
+      getTotal: () => {
+        return Promise.resolve(100)
+      },
+    }
+
+    const shippingOptionService = {
+      updateShippingMethod: () => {
+        return Promise.resolve()
+      },
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const paymentProviderService = {
+      getStatus: jest.fn(() => {
+        return Promise.resolve("authorized")
+      }),
+      updatePayment: jest.fn(() => {
+        return Promise.resolve()
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const inventoryService = {
+      ...InventoryServiceMock,
+      withTransaction: function() {
+        return this
+      },
+    }
+
     describe("success", () => {
-      const eventBusService = {
-        emit: jest.fn().mockReturnValue(Promise.resolve()),
-        withTransaction: function() {
-          return this
-        },
-      }
-
-      const totalsService = {
-        getTotal: () => {
-          return Promise.resolve(100)
-        },
-      }
-
-      const shippingOptionService = {
-        updateShippingMethod: () => {
-          return Promise.resolve()
-        },
-        withTransaction: function() {
-          return this
-        },
-      }
-
-      const paymentProviderService = {
-        getStatus: jest.fn(() => {
-          return Promise.resolve("authorized")
-        }),
-        updatePayment: jest.fn(() => {
-          return Promise.resolve()
-        }),
-        withTransaction: function() {
-          return this
-        },
-      }
-
       const existing = {
         cart: {
-          items: [{ id: "1" }],
+          items: [{ id: "1", variant_id: "variant", quantity: 2 }],
           shipping_methods: [{ id: "method_1" }],
           payment: {
             good: "yes",
@@ -863,6 +871,7 @@ describe("SwapService", () => {
         paymentProviderService,
         eventBusService,
         shippingOptionService,
+        inventoryService,
       })
 
       it("creates a shipment", async () => {
@@ -871,6 +880,15 @@ describe("SwapService", () => {
         expect(paymentProviderService.getStatus).toHaveBeenCalledWith({
           good: "yes",
         })
+
+        expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
+          "variant",
+          2
+        )
+        expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+          "variant",
+          -2
+        )
 
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing,
@@ -881,21 +899,58 @@ describe("SwapService", () => {
       })
     })
 
+    
+
     describe("failure", () => {
-      const swapRepo = MockRepository({
-        findOneWithRelations: () =>
-          Promise.resolve({ canceled_at: new Date() }),
+
+      const existing = {
+        cart: {
+          items: [{ id: "1", variant_id: "variant", quantity: 25 }],
+          shipping_methods: [{ id: "method_1" }],
+          payment: {
+            good: "yes",
+          },
+          shipping_address_id: 1234,
+        },
+        other: "data",
+      }
+
+      const swapReo = MockRepository({
+        findOneWithRelations: (rels, q) => {
+          switch(q.where.id){
+            case IdMap.getId("canceled"):
+              return Promise.resolve({ canceled_at: new Date()})
+            default:
+              return Promise.resolve(existing)
+          }
+        } 
       })
 
       const swapService = new SwapService({
         manager: MockManager,
+        swapRepo: swapRepo,
+        eventBusService,
         swapRepository: swapRepo,
+        totalsService,
+        paymentProviderService,
+        eventBusService,
+        shippingOptionService,
+        inventoryService,
       })
 
       it("fails to register cart completion when swap is canceled", async () => {
         await expect(
-          swapService.registerCartCompletion(IdMap.getId("swap"))
+          swapService.registerCartCompletion(IdMap.getId("canceled"))
         ).rejects.toThrow("Cart related to canceled swap cannot be completed")
+
+      it("throws an error because inventory is to low", async () => {
+        try {
+          await swapService.registerCartCompletion(IdMap.getId("swap"))
+        } catch (e) {
+          expect(e.message).toEqual(
+            `Variant with id: variant does not have the required inventory`
+          )
+        }
       })
     })
   })

@@ -23,6 +23,9 @@ import { defaultRelations, defaultFields } from "."
  *           is_giftcard:
  *             description: A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.
  *             type: boolean
+ *           discountable:
+ *             description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
+ *             type: boolean
  *           images:
  *             description: Images of the Product.
  *             type: array
@@ -184,6 +187,7 @@ export default async (req, res) => {
     subtitle: Validator.string().allow(""),
     description: Validator.string().allow(""),
     is_giftcard: Validator.boolean().default(false),
+    discountable: Validator.boolean().default(true),
     images: Validator.array()
       .items(Validator.string())
       .optional(),
@@ -218,10 +222,18 @@ export default async (req, res) => {
       inventory_quantity: Validator.number().default(0),
       allow_backorder: Validator.boolean().optional(),
       manage_inventory: Validator.boolean().optional(),
-      weight: Validator.number().optional(),
-      length: Validator.number().optional(),
-      height: Validator.number().optional(),
-      width: Validator.number().optional(),
+      weight: Validator.number()
+        .allow(null)
+        .optional(),
+      length: Validator.number()
+        .allow(null)
+        .optional(),
+      height: Validator.number()
+        .allow(null)
+        .optional(),
+      width: Validator.number()
+        .allow(null)
+        .optional(),
       origin_country: Validator.string()
         .optional()
         .allow("")
@@ -255,10 +267,18 @@ export default async (req, res) => {
         })
         .default([]),
     }),
-    weight: Validator.number().optional(),
-    length: Validator.number().optional(),
-    height: Validator.number().optional(),
-    width: Validator.number().optional(),
+    weight: Validator.number()
+      .allow(null)
+      .optional(),
+    length: Validator.number()
+      .allow(null)
+      .optional(),
+    height: Validator.number()
+      .allow(null)
+      .optional(),
+    width: Validator.number()
+      .allow(null)
+      .optional(),
     hs_code: Validator.string()
       .optional()
       .allow(""),

@@ -2,10 +2,13 @@ const path = require(`path`)
 const resolveCwd = require(`resolve-cwd`)
 const yargs = require(`yargs`)
 const existsSync = require(`fs-exists-cached`).sync
+const { setTelemetryEnabled } = require("medusa-telemetry")
 
 const { getLocalMedusaVersion } = require(`./util/version`)
 const { didYouMean } = require(`./did-you-mean`)
 
+const reporter = require("./reporter").default
+const { newStarter } = require("./commands/new")
 const { whoami } = require("./commands/whoami")
 const { login } = require("./commands/login")
 const { link } = require("./commands/link")
@@ -60,12 +63,90 @@ function buildLocalCommands(cli, isLocalProject) {
       const localCmd = resolveLocalCommand(command)
       const args = { ...argv, ...projectInfo, useYarn }
 
-      // report.verbose(`running command: ${command}`)
       return handler ? handler(args, localCmd) : localCmd(args)
     }
   }
 
   cli
+    .command({
+      command: `new [root] [starter]`,
+      builder: _ =>
+        _.option(`seed`, {
+          type: `boolean`,
+          describe: `If flag is set the command will attempt to seed the database after setup.`,
+          default: false,
+        })
+          .option(`y`, {
+            type: `boolean`,
+            alias: "useDefaults",
+            describe: `If flag is set the command will not interactively collect database credentials`,
+            default: false,
+          })
+          .option(`skip-db`, {
+            type: `boolean`,
+            describe: `If flag is set the command will not attempt to complete database setup`,
+            default: false,
+          })
+          .option(`skip-migrations`, {
+            type: `boolean`,
+            describe: `If flag is set the command will not attempt to complete database migration`,
+            default: false,
+          })
+          .option(`skip-env`, {
+            type: `boolean`,
+            describe: `If flag is set the command will not attempt to populate .env`,
+            default: false,
+          })
+          .option(`db-user`, {
+            type: `string`,
+            describe: `The database user to use for database setup and migrations.`,
+            default: `postgres`,
+          })
+          .option(`db-database`, {
+            type: `string`,
+            describe: `The database use for database setup and migrations.`,
+            default: `postgres`,
+          })
+          .option(`db-pass`, {
+            type: `string`,
+            describe: `The database password to use for database setup and migrations.`,
+            default: ``,
+          })
+          .option(`db-port`, {
+            type: `number`,
+            describe: `The database port to use for database setup and migrations.`,
+            default: 5432,
+          })
+          .option(`db-host`, {
+            type: `string`,
+            describe: `The database host to use for database setup and migrations.`,
+            default: `localhost`,
+          }),
+      desc: `Create a new Medusa project.`,
+      handler: handlerP(newStarter),
+    })
+    .command({
+      command: `telemetry`,
+      describe: `Enable or disable collection of anonymous usage data.`,
+      builder: yargs =>
+        yargs
+          .option(`enable`, {
+            type: `boolean`,
+            description: `Enable telemetry (default)`,
+          })
+          .option(`disable`, {
+            type: `boolean`,
+            description: `Disable telemetry`,
+          }),
+
+      handler: handlerP(({ enable, disable }) => {
+        const enabled = Boolean(enable) || !disable
+        setTelemetryEnabled(enabled)
+        reporter.info(
+          `Telemetry collection ${enabled ? `enabled` : `disabled`}`
+        )
+      }),
+    })
     .command({
       command: `seed`,
       desc: `Migrates and populates the database with the provided file.`,
@@ -74,6 +155,7 @@ function buildLocalCommands(cli, isLocalProject) {
           alias: `seed-file`,
           type: `string`,
           describe: `Path to the file where the seed is defined.`,
+          required: true,
         }).option(`m`, {
           alias: `migrate`,
           type: `boolean`,
@@ -112,11 +194,15 @@ function buildLocalCommands(cli, isLocalProject) {
       command: `link`,
       desc: `Creates your Medusa Cloud user in your local database for local testing.`,
       builder: _ =>
-        _.option(`skip-local-user`, {
-          alias: `skipLocalUser`,
+        _.option(`su`, {
+          alias: `skip-local-user`,
           type: `boolean`,
           default: false,
           describe: `If set a user will not be created in the database.`,
+        }).option(`develop`, {
+          type: `boolean`,
+          default: false,
+          describe: `If set medusa develop will be run after successful linking.`,
         }),
       handler: handlerP(argv => {
         if (!isLocalProject) {
@@ -198,11 +284,17 @@ function buildLocalCommands(cli, isLocalProject) {
           alias: `email`,
           type: `string`,
           describe: `User's email.`,
-        }).option(`p`, {
-          alias: `password`,
-          type: `string`,
-          describe: `User's password.`,
-        }),
+        })
+          .option(`p`, {
+            alias: `password`,
+            type: `string`,
+            describe: `User's password.`,
+          })
+          .option(`i`, {
+            alias: `id`,
+            type: `string`,
+            describe: `User's id.`,
+          }),
       handler: handlerP(
         getCommandHandler(`user`, (args, cmd) => {
           cmd(args)
@@ -302,8 +394,8 @@ module.exports = argv => {
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
       cli.showHelp()
-      // report.log(suggestion)
-      // report.log(msg)
+      reporter.info(suggestion)
+      reporter.info(msg)
     })
     .parse(argv.slice(2))
 }

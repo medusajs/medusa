@@ -1,4 +1,3 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 const {
   Region,
@@ -9,11 +8,18 @@ const {
   ProductVariant,
   MoneyAmount,
   LineItem,
+  Payment,
+  Cart,
+  ShippingMethod,
+  Swap,
 } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
+
+const swapSeeder = require("../../helpers/swap-seeder");
+const cartSeeder = require("../../helpers/cart-seeder");
 
 jest.setTimeout(30000);
 
@@ -28,10 +34,70 @@ describe("/store/carts", () => {
   });
 
   afterAll(async () => {
-    dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
+  });
+
+  describe("/store/swaps", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection);
+        await swapSeeder(dbConnection);
+
+        const manager = dbConnection.manager;
+        await manager.query(
+          `UPDATE "swap" SET cart_id='test-cart-2' WHERE id = 'test-swap'`
+        );
+        await manager.query(
+          `UPDATE "payment" SET swap_id=NULL WHERE id = 'test-payment-swap'`
+        );
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const db = useDb();
+      await db.teardown();
+    });
+
+    it("creates a swap from a cart id", async () => {
+      const api = useApi();
+
+      const getRes = await api.post("/store/swaps", {
+        cart_id: "test-cart-2",
+      });
+      expect(getRes.status).toEqual(200);
+    });
+
+    it("fails due to partial inventory", async () => {
+      const api = useApi();
+      const manager = dbConnection.manager;
+
+      const li = manager.create(LineItem, {
+        id: "test-item-with-no-stock",
+        title: "No Stock Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 1,
+        variant_id: "test-variant-2",
+        cart_id: "test-cart-2",
+      });
+      await manager.save(li);
+
+      try {
+        await api.post("/store/swaps", {
+          cart_id: "test-cart-2",
+        });
+      } catch (e) {
+        expect(e.response.data.message).toEqual(
+          "Variant with id: test-variant-2 does not have the required inventory"
+        );
+      }
+    });
   });
 
   describe("GET /store/orders", () => {
@@ -96,18 +162,8 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "line_item"`);
-
-      await manager.query(`DELETE FROM "order"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(`DELETE FROM "region"`);
-
-      await manager.query(`DELETE FROM "product_option_value"`);
-      await manager.query(`DELETE FROM "product_option"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("looks up order", async () => {
