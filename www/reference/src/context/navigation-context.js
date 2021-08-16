@@ -1,4 +1,6 @@
 import React, { useReducer } from "react"
+import scrollParent from "../utils/scroll-parent"
+import types from "./types"
 
 export const defaultNavigationContext = {
   api: "null",
@@ -9,8 +11,8 @@ export const defaultNavigationContext = {
   updateHash: () => {},
   openSections: [],
   openSection: () => {},
-  metaData: null,
-  updateMetaData: () => {},
+  metadata: null,
+  updateMetadata: () => {},
   reset: () => {},
 }
 
@@ -19,41 +21,42 @@ export default NavigationContext
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "setApi": {
+    case types.SET_API: {
       return {
         ...state,
         api: action.payload,
       }
     }
-    case "updateHash":
+    case types.UPDATE_HASH:
       return {
         ...state,
-        currentHash: action.payload,
+        currentSection: action.payload.section,
+        currentHash: action.payload.method,
       }
-    case "updateSection":
+    case types.UPDATE_SECTION:
       return {
         ...state,
         currentSection: action.payload,
         currentHash: null,
       }
-    case "openSection":
+    case types.OPEN_SECTION:
       const obj = state.openSections
       obj.push(action.payload)
       return {
         ...state,
         openSections: obj,
       }
-    case "reset":
+    case types.RESET:
       return {
         ...state,
         openSections: [],
         currentSection: null,
         currentHash: null,
       }
-    case "updateMetaData":
+    case types.UPDATE_METADATA:
       return {
         ...state,
-        metaData: {
+        metadata: {
           title: action.payload.title,
           description: action.payload.description,
         },
@@ -68,18 +71,7 @@ const scrollNav = id => {
   if (nav) {
     const element = nav.querySelector(`#nav-${id}`)
     if (element) {
-      /**
-       * FIXME: This value is semi random and is error prone. Most of the
-       * time it will result in the current section/method being shown
-       * close to the center of the sidebar, but scrolling very fast can result in
-       * it having janky movements, going to random sections etc.
-       */
-      const offset = element.offsetTop - 350
-      nav.scroll({
-        top: offset > 0 ? offset : 0,
-        left: 0,
-        behavior: "smooth",
-      })
+      scrollParent(nav, element)
     }
   }
 }
@@ -102,15 +94,18 @@ export const NavigationProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultNavigationContext)
 
   const setApi = api => {
-    dispatch({ type: "setApi", payload: api })
+    dispatch({ type: types.SET_API, payload: api })
   }
 
-  const updateMetaData = metadata => {
-    dispatch({ type: "updateMetaData", payload: metadata })
+  const updateMetadata = metadata => {
+    dispatch({ type: types.UPDATE_METADATA, payload: metadata })
   }
 
   const updateHash = (section, method) => {
-    dispatch({ type: "updateHash", payload: method })
+    dispatch({
+      type: types.UPDATE_HASH,
+      payload: { method: method, section: section },
+    })
     window.history.replaceState(
       null,
       "",
@@ -120,13 +115,13 @@ export const NavigationProvider = ({ children }) => {
   }
 
   const updateSection = section => {
-    dispatch({ type: "updateSection", payload: section })
+    dispatch({ type: types.UPDATE_SECTION, payload: section })
     window.history.replaceState(null, "", `/api/${state.api}/${section}`)
     scrollNav(section)
   }
 
   const openSection = sectionName => {
-    dispatch({ type: "openSection", payload: sectionName })
+    dispatch({ type: types.OPEN_SECTION, payload: sectionName })
   }
 
   const goTo = to => {
@@ -139,7 +134,7 @@ export const NavigationProvider = ({ children }) => {
   }
 
   const reset = () => {
-    dispatch({ type: "reset" })
+    dispatch({ type: types.RESET })
   }
 
   return (
@@ -152,7 +147,7 @@ export const NavigationProvider = ({ children }) => {
         setApi,
         goTo,
         reset,
-        updateMetaData,
+        updateMetadata,
         dispatch,
       }}
     >

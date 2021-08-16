@@ -31,6 +31,7 @@
     "gatsby-transformer-json": "^3.0.0",
     "gatsby-transformer-remark": "^4.6.0",
     "gatsby-transformer-yaml": "^2.4.13",
+    "lodash.throttle": "^4.1.1",
     "preact": "^10.5.14",
     "preact-render-to-string": "^5.1.19",
     "prismjs": "^1.24.1",

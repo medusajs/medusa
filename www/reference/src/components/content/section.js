@@ -15,7 +15,7 @@ import useInView from "../../hooks/use-in-view"
 const Section = ({ data }) => {
   const { section } = data
   const [isExpanded, setIsExpanded] = useState(false)
-  const { openSections, updateSection, updateMetaData } = useContext(
+  const { openSections, updateSection, updateMetadata } = useContext(
     NavigationContext
   )
 
@@ -43,7 +43,7 @@ const Section = ({ data }) => {
   }
 
   const handleExpand = () => {
-    updateMetaData({
+    updateMetadata({
       title: section.section_name,
       description: section.schema?.description,
     })

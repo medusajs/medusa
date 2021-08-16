@@ -14,7 +14,7 @@ import NavigationContext from "../../context/navigation-context"
 const Method = ({ data, section, pathname }) => {
   const { parameters, requestBody, description, method, summary } = data
   const jsonResponse = data.responses[0].content?.[0].json
-  const { updateHash, updateMetaData } = useContext(NavigationContext)
+  const { updateHash, updateMetadata } = useContext(NavigationContext)
   const methodRef = useRef(null)
 
   const [containerRef, isInView] = useInView({
@@ -31,7 +31,7 @@ const Method = ({ data, section, pathname }) => {
   }, [isInView])
 
   const handleMetaChange = () => {
-    updateMetaData({
+    updateMetadata({
       title: summary,
       description: description,
     })

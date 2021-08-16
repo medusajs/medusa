@@ -2,21 +2,10 @@ import React from "react"
 import { Flex, Box } from "theme-ui"
 import Sidebar from "./sidebar"
 
-// const StyledSearch = styled(Box)`
-//   width: 300px;
-//   min-height: 200px;
-//   position: fixed;
-//   top: 10%;
-//   left: 50%;
-//   transform: translate(-50%, -10%);
-//   background: var(--faded);
-//   border-radius: 8px;
-//   z-index: 99;
-// `
-
 const Layout = ({ data, api, children }) => {
   // const [visible, setVisible] = useState(false)
 
+  //SEARCH ON CMD/CTRL + F
   // useEffect(() => {
   //   function handleKeyPress(e) {
   //     if (!visible && e.metaKey && e.key === "f") {
@@ -34,11 +23,11 @@ const Layout = ({ data, api, children }) => {
   return (
     <Flex sx={{ p: "0", m: "0" }}>
       {/* IMPLEMENT: Algolia Docsearch */}
-      {/* <StyledSearch
+      {/* <Flex
         sx={{
           display: visible ? "flex" : "none",
         }}
-      ></StyledSearch> */}
+      ></Flex> */}
       <Flex
         sx={{
           position: "absolute",
