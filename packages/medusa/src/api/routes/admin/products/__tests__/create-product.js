@@ -135,7 +135,7 @@ describe("POST /admin/products", () => {
     })
 
     it("returns error details", () => {
-      expect(subject.body.name).toEqual("invalid_data")
+      expect(subject.body.type).toEqual("invalid_data")
       expect(subject.body.message[0].message).toEqual(`"title" is required`)
     })
   })
