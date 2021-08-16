@@ -9,6 +9,14 @@ import labels from "./labels"
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  links: {
+    topbar: {
+      fontFamily: "body",
+      fontSize: "1",
+      textDecoration: "none",
+      color: "dark",
+    },
+  },
   text: {
     labels,
     largest: {
