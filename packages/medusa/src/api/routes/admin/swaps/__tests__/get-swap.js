@@ -72,7 +72,7 @@ describe("GET /admin/swaps/:id", () => {
 
     it("returns swap", () => {
       expect(subject.status).toEqual(200)
-      expect(subject.body.swap.id).toEqual(IdMap.getId("test-swap"))
+      expect(subject.body.swap.id).toEqual("test-swap")
     })
   })
 })

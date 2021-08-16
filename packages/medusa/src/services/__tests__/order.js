@@ -677,11 +677,6 @@ describe("OrderService", () => {
         id: "payment_test",
       })
 
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
-        id: "fulfillment_test",
-      })
-
       expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)
       expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
         "variant-1",

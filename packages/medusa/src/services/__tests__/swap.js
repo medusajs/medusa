@@ -899,10 +899,7 @@ describe("SwapService", () => {
       })
     })
 
-    
-
     describe("failure", () => {
-
       const existing = {
         cart: {
           items: [{ id: "1", variant_id: "variant", quantity: 25 }],
@@ -915,15 +912,15 @@ describe("SwapService", () => {
         other: "data",
       }
 
-      const swapReo = MockRepository({
-        findOneWithRelations: (rels, q) => {
-          switch(q.where.id){
+      const swapRepo = MockRepository({
+        findOneWithRelations: (rels, q) => {
+          switch (q.where.id) {
             case IdMap.getId("canceled"):
-              return Promise.resolve({ canceled_at: new Date()})
+              return Promise.resolve({ canceled_at: new Date() })
             default:
               return Promise.resolve(existing)
           }
-        } 
+        },
       })
 
       const swapService = new SwapService({
@@ -942,7 +939,7 @@ describe("SwapService", () => {
         await expect(
           swapService.registerCartCompletion(IdMap.getId("canceled"))
         ).rejects.toThrow("Cart related to canceled swap cannot be completed")
-
+      })
       it("throws an error because inventory is to low", async () => {
         try {
           await swapService.registerCartCompletion(IdMap.getId("swap"))
