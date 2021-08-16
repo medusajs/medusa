@@ -1005,9 +1005,7 @@
             }
           }
         ],
-        "tags": [
-          "Discount"
-        ],
+        "tags": ["Discount"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1141,9 +1139,7 @@
             }
           }
         },
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1165,9 +1161,7 @@
         "operationId": "GetDraftOrders",
         "summary": "List Draft Orders",
         "description": "Retrieves an list of Draft Orders",
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1221,9 +1215,7 @@
             }
           }
         },
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1258,9 +1250,7 @@
             }
           }
         ],
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1301,9 +1291,7 @@
             }
           }
         ],
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1347,9 +1335,7 @@
             }
           }
         ],
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1397,9 +1383,7 @@
             }
           }
         },
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1434,9 +1418,7 @@
             }
           }
         ],
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1525,9 +1507,7 @@
             }
           }
         },
-        "tags": [
-          "Draft Order"
-        ],
+        "tags": ["Draft Order"],
         "responses": {
           "200": {
             "description": "OK",
@@ -2754,83 +2734,6 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/orders/{id}/returns/{return_id}/receive": {
-      "post": {
-        "operationId": "PostOrdersOrderReturnsReturnReceive",
-        "summary": "Receive a Return",
-        "description": "Registers a Return as received.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "return_id",
-            "required": true,
-            "description": "The id of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "refund": {
-                    "description": "The amount to refund.",
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Order"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-=======
->>>>>>> develop
     "/orders/{id}/swaps/{swap_id}/receive": {
       "post": {
         "operationId": "PostOrdersOrderSwapsSwapReceive",
@@ -5254,9 +5157,7 @@
             }
           }
         },
-        "tags": [
-          "Return"
-        ],
+        "tags": ["Return"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5893,9 +5794,7 @@
             }
           }
         ],
-        "tags": [
-          "Swap"
-        ],
+        "tags": ["Swap"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6614,10 +6513,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "open",
-              "completed"
-            ]
+            "enum": ["open", "completed"]
           },
           "display_id": {
             "type": "string"

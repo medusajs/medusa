@@ -1230,17 +1230,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-<<<<<<< HEAD
-"@medusajs/medusa@1.1.29-dev-1626162503472":
-  version "1.1.29-dev-1626162503472"
-  resolved "http://localhost:4873/@medusajs%2fmedusa/-/medusa-1.1.29-dev-1626162503472.tgz#973ec19d02a66864c8cc11ac3e045cda2a82215d"
-  integrity sha512-8JDjTzOh056panREJIpN6uh2nwhauKqJHeGopG0Kdaw7sxOS3GJMBIfkwmUeNjju+cnpzj0nKlnJ56UgNMZSvA==
-=======
 "@medusajs/medusa-cli@1.1.15-dev-1629109473927":
   version "1.1.15-dev-1629109473927"
   resolved "http://localhost:4873/@medusajs%2fmedusa-cli/-/medusa-cli-1.1.15-dev-1629109473927.tgz#d7d170daab4fc471f78841d55799f8d0c426c3a9"
   integrity sha512-VOaMDt1vkB/13dXqr9eeW6fKspI5sOzh1hAMZvJZ8Y3k0+2/eHr7imzxwBwOHW9qbgzCASq31hNGRl5SG+GigQ==
->>>>>>> develop
   dependencies:
     "@babel/polyfill" "^7.8.7"
     "@babel/runtime" "^7.9.6"
