@@ -1,23 +1,36 @@
+import { defaultFields, defaultRelations } from "./"
+
+/**
+ * @oas [get] /swaps/{id}
+ * operationId: "GetSwapsSwap"
+ * summary: "Retrieve a Swap"
+ * description: "Retrieves a Swap."
+ * parameters:
+ *   - (path) id=* {string} The id of the Swap.
+ * tags:
+ *   - Swap
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             swap:
+ *               $ref: "#/components/schemas/swap"
+ */
 export default async (req, res) => {
   const { id } = req.params
 
   try {
-    const orderService = req.scope.resolve("orderService")
+    const swapService = req.scope.resolve("swapService")
 
-    const order = await orderService.retrieve(id, {
-      relations: [
-        "order",
-        "additional_items",
-        "return_order",
-        "fulfillments",
-        "payment",
-        "shipping_address",
-        "shipping_methods",
-        "cart",
-      ],
+    const swap = await swapService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
     })
 
-    res.json({ order })
+    res.json({ swap })
   } catch (error) {
     throw error
   }

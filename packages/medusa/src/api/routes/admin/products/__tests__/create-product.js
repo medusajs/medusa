@@ -35,6 +35,7 @@ describe("POST /admin/products", () => {
       expect(ProductServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.create).toHaveBeenCalledWith({
         title: "Test Product",
+        discountable: true,
         description: "Test Description",
         tags: [{ id: "test", value: "test" }],
         handle: "test-product",
@@ -92,6 +93,7 @@ describe("POST /admin/products", () => {
       expect(ProductServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.create).toHaveBeenCalledWith({
         title: "Gift Card",
+        discountable: true,
         description: "make someone happy",
         options: [{ title: "Denominations" }],
         handle: "test-gift-card",

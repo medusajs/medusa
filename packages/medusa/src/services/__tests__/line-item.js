@@ -30,6 +30,7 @@ describe("LineItemService", () => {
               title: "Test product",
               thumbnail: "",
               is_giftcard: true,
+              discountable: false,
             },
           }
         }

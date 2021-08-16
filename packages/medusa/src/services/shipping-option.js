@@ -523,7 +523,7 @@ class ShippingOptionService extends BaseService {
 
       if (option.requirements.find(r => r.type === validatedReq.type)) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.DUPLICATE_ERROR,
           `A requirement with type: ${validatedReq.type} already exists`
         )
       }

@@ -114,7 +114,7 @@ export default async (req, res) => {
     prices: Validator.array().items(
       Validator.object()
         .keys({
-          region_id: Validator.string(),
+          region_id: Validator.string().empty(null),
           currency_code: Validator.string(),
           amount: Validator.number()
             .integer()
@@ -133,10 +133,18 @@ export default async (req, res) => {
     inventory_quantity: Validator.number().optional(),
     allow_backorder: Validator.boolean().optional(),
     manage_inventory: Validator.boolean().optional(),
-    weight: Validator.number().optional(),
-    length: Validator.number().optional(),
-    height: Validator.number().optional(),
-    width: Validator.number().optional(),
+    weight: Validator.number()
+      .allow(null)
+      .optional(),
+    length: Validator.number()
+      .allow(null)
+      .optional(),
+    height: Validator.number()
+      .allow(null)
+      .optional(),
+    width: Validator.number()
+      .allow(null)
+      .optional(),
     hs_code: Validator.string()
       .optional()
       .allow(null, ""),

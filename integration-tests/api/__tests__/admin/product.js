@@ -1,9 +1,8 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const adminSeeder = require("../../helpers/admin-seeder");
 const productSeeder = require("../../helpers/product-seeder");
@@ -21,8 +20,8 @@ describe("/admin/products", () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
+    const db = useDb();
+    await db.shutdown();
 
     medusaProcess.kill();
   });
@@ -39,21 +38,8 @@ describe("/admin/products", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "product_option_value"`);
-      await manager.query(`DELETE FROM "product_option"`);
-      await manager.query(`DELETE FROM "image"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "product_collection"`);
-      await manager.query(`DELETE FROM "product_tag"`);
-      await manager.query(`DELETE FROM "product_type"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a product", async () => {
@@ -92,6 +78,8 @@ describe("/admin/products", () => {
       expect(response.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
+          discountable: true,
+          is_giftcard: false,
           handle: "test-product",
           images: expect.arrayContaining([
             expect.objectContaining({
@@ -144,6 +132,43 @@ describe("/admin/products", () => {
               ],
             }),
           ],
+        })
+      );
+    });
+
+    it("creates a giftcard", async () => {
+      const api = useApi();
+
+      const payload = {
+        title: "Test Giftcard",
+        is_giftcard: true,
+        description: "test-giftcard-description",
+        options: [{ title: "Denominations" }],
+        variants: [
+          {
+            title: "Test variant",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "100" }],
+          },
+        ],
+      };
+
+      const response = await api
+        .post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          title: "Test Giftcard",
+          discountable: false,
         })
       );
     });
@@ -236,21 +261,8 @@ describe("/admin/products", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "product_option_value"`);
-      await manager.query(`DELETE FROM "product_option"`);
-      await manager.query(`DELETE FROM "image"`);
-      await manager.query(`DELETE FROM "money_amount"`);
-      await manager.query(`DELETE FROM "product_variant"`);
-      await manager.query(`DELETE FROM "product"`);
-      await manager.query(`DELETE FROM "product_collection"`);
-      await manager.query(`DELETE FROM "product_tag"`);
-      await manager.query(`DELETE FROM "product_type"`);
-      await manager.query(
-        `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-      );
-      await manager.query(`DELETE FROM "region"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("successfully deletes a product", async () => {

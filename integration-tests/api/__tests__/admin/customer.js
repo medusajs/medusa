@@ -3,7 +3,7 @@ const path = require("path");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { useDb, initDb } = require("../../../helpers/use-db");
 
 const customerSeeder = require("../../helpers/customer-seeder");
 const adminSeeder = require("../../helpers/admin-seeder");
@@ -21,8 +21,8 @@ describe("/admin/customers", () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
+    const db = useDb();
+    await db.shutdown();
 
     medusaProcess.kill();
   });
@@ -39,10 +39,8 @@ describe("/admin/customers", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "address"`);
-      await manager.query(`DELETE FROM "customer"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("lists customers and query count", async () => {
@@ -115,7 +113,6 @@ describe("/admin/customers", () => {
 
       expect(response.status).toEqual(200);
       expect(response.data.count).toEqual(1);
-      console.log(response.data.customers);
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
