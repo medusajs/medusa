@@ -16,6 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 import { Swap } from "./swap"
@@ -34,7 +35,11 @@ export class Return {
   @PrimaryColumn()
   id: string
 
-  @Column({ type: "enum", enum: ReturnStatus, default: ReturnStatus.REQUESTED })
+  @DbAwareColumn({
+    type: "enum",
+    enum: ReturnStatus,
+    default: ReturnStatus.REQUESTED,
+  })
   status: ReturnStatus
 
   @OneToMany(
@@ -84,25 +89,25 @@ export class Return {
   )
   shipping_method: ShippingMethod
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   shipping_data: any
 
   @Column({ type: "int" })
   refund_amount: number
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   received_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

@@ -100,27 +100,22 @@ function buildLocalCommands(cli, isLocalProject) {
           .option(`db-user`, {
             type: `string`,
             describe: `The database user to use for database setup and migrations.`,
-            default: `postgres`,
           })
           .option(`db-database`, {
             type: `string`,
             describe: `The database use for database setup and migrations.`,
-            default: `postgres`,
           })
           .option(`db-pass`, {
             type: `string`,
             describe: `The database password to use for database setup and migrations.`,
-            default: ``,
           })
           .option(`db-port`, {
             type: `number`,
             describe: `The database port to use for database setup and migrations.`,
-            default: 5432,
           })
           .option(`db-host`, {
             type: `string`,
             describe: `The database host to use for database setup and migrations.`,
-            default: `localhost`,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
