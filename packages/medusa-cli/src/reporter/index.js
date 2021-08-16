@@ -6,9 +6,10 @@ import { track } from "medusa-telemetry"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
 const NODE_ENV = process.env.NODE_ENV || "development"
+const IS_DEV = NODE_ENV === "development"
 
 const transports = []
-if (process.env.NODE_ENV && process.env.NODE_ENV !== "development") {
+if (!IS_DEV) {
   transports.push(new winston.transports.Console())
 } else {
   transports.push(
@@ -92,7 +93,7 @@ export class Reporter {
    */
   activity = (message, config = {}) => {
     const id = ulid()
-    if (NODE_ENV === "development" && this.shouldLog("info")) {
+    if (IS_DEV && this.shouldLog("info")) {
       const activity = this.ora_(message).start()
 
       this.activities_[id] = {
@@ -168,6 +169,11 @@ export class Reporter {
     }
 
     this.loggerInstance_.log(toLog)
+
+    // Give stack traces and details in dev
+    if (error && IS_DEV) {
+      console.log(error)
+    }
   }
 
   /**

@@ -25,8 +25,6 @@ export default async (req, res) => {
   try {
     const cartService = req.scope.resolve("cartService")
 
-    console.log("started pmsessions")
-
     await cartService.setPaymentSessions(id)
 
     const cart = await cartService.retrieve(id, {

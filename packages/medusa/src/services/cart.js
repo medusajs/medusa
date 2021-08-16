@@ -1294,13 +1294,11 @@ class CartService extends BaseService {
           "items.variant.product",
         ],
       })
-      console.log("retrieved")
       const { shipping_methods } = cart
 
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
         .createShippingMethod(optionId, data, { cart })
-      console.log("createdMethod")
 
       const methods = [newMethod]
       if (shipping_methods.length) {
@@ -1312,7 +1310,6 @@ class CartService extends BaseService {
             await this.shippingOptionService_
               .withTransaction(manager)
               .deleteShippingMethod(sm)
-            console.log("deletedMethod")
           } else {
             methods.push(sm)
           }
@@ -1323,7 +1320,6 @@ class CartService extends BaseService {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           has_shipping: this.validateLineItemShipping_(methods, item),
         })
-        console.log("lineItemUpdated")
       }
 
       const result = await this.retrieve(cartId, {
