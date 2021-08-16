@@ -1,10 +1,9 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
 const { Region, DiscountRule, Discount } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 const adminSeeder = require("../../helpers/admin-seeder");
 
 jest.setTimeout(30000);
@@ -20,15 +19,13 @@ describe("/admin/discounts", () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
   });
 
   describe("POST /admin/discounts", () => {
     beforeEach(async () => {
-      const manager = dbConnection.manager;
       try {
         await adminSeeder(dbConnection);
       } catch (err) {
@@ -38,10 +35,8 @@ describe("/admin/discounts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a discount and updates it", async () => {
@@ -104,6 +99,84 @@ describe("/admin/discounts", () => {
     });
   });
 
+  describe("testing for soft-deletion + uniqueness on discount codes", () => {
+    let manager;
+    beforeEach(async () => {
+      manager = dbConnection.manager;
+      try {
+        await adminSeeder(dbConnection);
+        await manager.insert(DiscountRule, {
+          id: "test-discount-rule",
+          description: "Test discount rule",
+          type: "percentage",
+          value: 10,
+          allocation: "total",
+        });
+        await manager.insert(Discount, {
+          id: "test-discount",
+          code: "TESTING",
+          rule_id: "test-discount-rule",
+          is_dynamic: false,
+          is_disabled: false,
+        });
+      } catch (err) {
+        throw err;
+      }
+    });
+
+    afterEach(async () => {
+      const db = useDb();
+      await db.teardown();
+    });
+
+    it("successfully creates discount with soft-deleted discount code", async () => {
+      const api = useApi();
+
+      // First we soft-delete the discount
+      await api
+        .delete("/admin/discounts/test-discount", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // Lets try to create a discount with same code as deleted one
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "TESTING",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "TESTING",
+          usage_limit: 10,
+        })
+      );
+    });
+  });
+
   describe("POST /admin/discounts/:discount_id/dynamic-codes", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager;
@@ -130,10 +203,8 @@ describe("/admin/discounts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await manager.query(`DELETE FROM "discount"`);
-      await manager.query(`DELETE FROM "discount_rule"`);
-      await manager.query(`DELETE FROM "user"`);
+      const db = useDb();
+      await db.teardown();
     });
 
     it("creates a dynamic discount", async () => {

@@ -1,7 +1,25 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
+
 const { dropDatabase, createDatabase } = require("pg-god");
 const { createConnection } = require("typeorm");
 
-const path = require("path");
+const DB_USERNAME = process.env.DB_USERNAME || "postgres";
+const DB_PASSWORD = process.env.DB_PASSWORD || "";
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration`;
+const pgGodCredentials = {
+  user: DB_USERNAME,
+  password: DB_PASSWORD,
+};
+
+const keepTables = [
+  "staged_job",
+  "shipping_profile",
+  "fulfillment_provider",
+  "payment_provider",
+  "country",
+  "currency",
+];
 
 const DbTestUtil = {
   db_: null,
@@ -10,13 +28,29 @@ const DbTestUtil = {
     this.db_ = connection;
   },
 
-  clear: function () {
-    return this.db_.synchronize(true);
+  clear: async function () {
+    this.db_.synchronize(true);
+  },
+
+  teardown: async function () {
+    const entities = this.db_.entityMetadatas;
+    const manager = this.db_.manager;
+
+    await manager.query(`SET session_replication_role = 'replica';`);
+    for (const entity of entities) {
+      if (keepTables.includes(entity.tableName)) {
+        continue;
+      }
+
+      await manager.query(`DELETE FROM "${entity.tableName}";`);
+    }
+    await manager.query(`SET session_replication_role = 'origin';`);
   },
 
   shutdown: async function () {
     await this.db_.close();
-    return dropDatabase({ databaseName });
+    const databaseName = "medusa-integration";
+    return await dropDatabase({ databaseName }, pgGodCredentials);
   },
 };
 
@@ -36,11 +70,11 @@ module.exports = {
     );
 
     const databaseName = "medusa-integration";
-    await createDatabase({ databaseName });
+    await createDatabase({ databaseName }, pgGodCredentials);
 
     const connection = await createConnection({
       type: "postgres",
-      url: "postgres://localhost/medusa-integration",
+      url: DB_URL,
       migrations: [`${migrationDir}/*.js`],
     });
 
@@ -60,7 +94,7 @@ module.exports = {
     const entities = modelsLoader({}, { register: false });
     const dbConnection = await createConnection({
       type: "postgres",
-      url: "postgres://localhost/medusa-integration",
+      url: DB_URL,
       entities,
     });
 

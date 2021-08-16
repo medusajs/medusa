@@ -3,6 +3,76 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.28](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.27...medusa-plugin-brightpearl@1.1.28) (2021-08-05)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+
+
+
+
+## [1.1.27](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.26...medusa-plugin-brightpearl@1.1.27) (2021-07-26)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+
+
+
+
+## [1.1.26](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.24...medusa-plugin-brightpearl@1.1.26) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+
+
+
+
+## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.24...medusa-plugin-brightpearl@1.1.25) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+
+
+
+
+## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.23...medusa-plugin-brightpearl@1.1.24) (2021-07-02)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+
+
+
+
+## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.22...medusa-plugin-brightpearl@1.1.23) (2021-06-24)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+
+
+
+
+## [1.1.22](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.21...medusa-plugin-brightpearl@1.1.22) (2021-06-23)
+
+
+### Bug Fixes
+
+* **brightpearl:** chunked product availabilities in sync ([fd82de6](https://github.com/medusajs/medusa/commit/fd82de6ef919a53dc25d387a809f7eea998b5e04))
+
+
+
+
+
+## [1.1.21](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.20...medusa-plugin-brightpearl@1.1.21) (2021-06-22)
+
+
+### Bug Fixes
+
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.20](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.19...medusa-plugin-brightpearl@1.1.20) (2021-06-09)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl

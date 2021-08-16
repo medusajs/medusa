@@ -39,6 +39,7 @@ class OrderService extends BaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
+    inventoryService,
     eventBusService,
   }) {
     super()
@@ -93,6 +94,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {DraftOrderService} */
     this.draftOrderService_ = draftOrderService
+
+    /** @private @constant {InventoryService} */
+    this.inventoryService_ = inventoryService
   }
 
   withTransaction(manager) {
@@ -110,11 +114,15 @@ class OrderService extends BaseService {
       shippingOptionService: this.shippingOptionService_,
       shippingProfileService: this.shippingProfileService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
+      fulfillmentService: this.fulfillmentService_,
+      customerService: this.customerService_,
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       cartService: this.cartService_,
       giftCardService: this.giftCardService_,
+      addressRepository: this.addressRepository_,
       draftOrderService: this.draftOrderService_,
+      inventoryService: this.inventoryService_,
     })
 
     cloned.transactionManager_ = manager
@@ -284,6 +292,7 @@ class OrderService extends BaseService {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("swaps")
+      relationSet.add("swaps.additional_items")
       relationSet.add("discounts")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
@@ -330,7 +339,6 @@ class OrderService extends BaseService {
     const rels = query.relations
     delete query.relations
     const raw = await orderRepo.findOneWithRelations(rels, query)
-
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -405,6 +413,7 @@ class OrderService extends BaseService {
         OrderService.Events.COMPLETED,
         {
           id: orderId,
+          no_notification: order.no_notification,
         }
       )
 
@@ -447,15 +456,31 @@ class OrderService extends BaseService {
         )
       }
 
+      const { payment, region, total } = cart
+
+      for (const item of cart.items) {
+        try {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .confirmInventory(item.variant_id, item.quantity)
+        } catch (err) {
+          if (payment) {
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .cancelPayment(payment)
+          }
+          throw err
+        }
+      }
+
       const exists = await this.existsByCartId(cart.id)
       if (exists) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
+          MedusaError.Types.DUPLICATE_ERROR,
           "Order from cart already exists"
         )
       }
 
-      const { payment, region, total } = cart
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
@@ -467,9 +492,9 @@ class OrderService extends BaseService {
           )
         }
 
-        const paymentStatus = await this.paymentProviderService_.getStatus(
-          payment
-        )
+        const paymentStatus = await this.paymentProviderService_
+          .withTransaction(manager)
+          .getStatus(payment)
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
@@ -504,17 +529,20 @@ class OrderService extends BaseService {
           .retrieveByCartId(cart.id)
 
         toCreate.draft_order_id = draft.id
+        toCreate.no_notification = draft.no_notification_order
       }
 
       const o = await orderRepo.create(toCreate)
 
       const result = await orderRepo.save(o)
 
-      await this.paymentProviderService_
-        .withTransaction(manager)
-        .updatePayment(payment.id, {
-          order_id: result.id,
-        })
+      if (total !== 0) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .updatePayment(payment.id, {
+            order_id: result.id,
+          })
+      }
 
       let gcBalance = cart.subtotal
       for (const g of cart.gift_cards) {
@@ -546,10 +574,17 @@ class OrderService extends BaseService {
           .update(item.id, { order_id: result.id })
       }
 
+      for (const item of cart.items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(item.variant_id, -item.quantity)
+      }
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
           id: result.id,
+          no_notification: result.no_notification,
         })
 
       return result
@@ -568,7 +603,17 @@ class OrderService extends BaseService {
    *   the fulfillment
    * @return {order} the resulting order following the update.
    */
-  async createShipment(orderId, fulfillmentId, trackingLinks, metadata = {}) {
+  async createShipment(
+    orderId,
+    fulfillmentId,
+    trackingLinks,
+    config = {
+      metadata: {},
+      no_notification: undefined,
+    }
+  ) {
+    const { metadata, no_notification } = config
+
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, { relations: ["items"] })
       const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
@@ -580,9 +625,17 @@ class OrderService extends BaseService {
         )
       }
 
+      const evaluatedNoNotification =
+        no_notification !== undefined
+          ? no_notification
+          : shipment.no_notification
+
       const shipmentRes = await this.fulfillmentService_
         .withTransaction(manager)
-        .createShipment(fulfillmentId, trackingLinks, metadata)
+        .createShipment(fulfillmentId, trackingLinks, {
+          metadata,
+          no_notification: evaluatedNoNotification,
+        })
 
       order.fulfillment_status = "shipped"
       for (const item of order.items) {
@@ -611,6 +664,7 @@ class OrderService extends BaseService {
         .emit(OrderService.Events.SHIPMENT_CREATED, {
           id: orderId,
           fulfillment_id: shipmentRes.id,
+          no_notification: evaluatedNoNotification,
         })
 
       return result
@@ -631,6 +685,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
           id: result.id,
+          no_notification: order.no_notification,
         })
       return result
     })
@@ -798,6 +853,10 @@ class OrderService extends BaseService {
         await this.updateBillingAddress_(order, update.billing_address)
       }
 
+      if ("no_notification" in update) {
+        order.no_notification = update.no_notification
+      }
+
       if ("items" in update) {
         for (const item of update.items) {
           await this.lineItemService_.withTransaction(manager).create({
@@ -818,6 +877,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.UPDATED, {
           id: orderId,
+          no_notification: order.no_notification,
         })
       return result
     })
@@ -833,7 +893,7 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: ["fulfillments", "payments"],
+        relations: ["fulfillments", "payments", "items"],
       })
 
       if (order.payment_status !== "awaiting") {
@@ -850,6 +910,12 @@ class OrderService extends BaseService {
             .cancelFulfillment(fulfillment)
         )
       )
+
+      for (const item of order.items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(item.variant_id, item.quantity)
+      }
 
       for (const p of order.payments) {
         await this.paymentProviderService_
@@ -868,6 +934,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .emit(OrderService.Events.CANCELED, {
           id: order.id,
+          no_notification: order.no_notification,
         })
       return result
     })
@@ -896,6 +963,7 @@ class OrderService extends BaseService {
                   id: orderId,
                   payment_id: p.id,
                   error: err,
+                  no_notification: order.no_notification,
                 })
             })
 
@@ -921,6 +989,7 @@ class OrderService extends BaseService {
           .withTransaction(manager)
           .emit(OrderService.Events.PAYMENT_CAPTURED, {
             id: result.id,
+            no_notification: order.no_notification,
           })
       }
 
@@ -967,8 +1036,21 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of order to cancel.
    * @return {Promise} result of the update operation.
    */
-  async createFulfillment(orderId, itemsToFulfill, metadata = {}) {
+  async createFulfillment(
+    orderId,
+    itemsToFulfill,
+    config = {
+      no_notification: undefined,
+      metadata: {},
+    }
+  ) {
+    const { metadata, no_notification } = config
+
     return this.atomicPhase_(async manager => {
+      // NOTE: we are telling the service to calculate all totals for us which
+      // will add to what is fetched from the database. We want this to happen
+      // so that we get all order details. These will thereafter be forwarded
+      // to the fulfillment provider.
       const order = await this.retrieve(orderId, {
         select: [
           "subtotal",
@@ -1004,6 +1086,7 @@ class OrderService extends BaseService {
         .withTransaction(manager)
         .createFulfillment(order, itemsToFulfill, {
           metadata,
+          no_notification: no_notification,
           order_id: orderId,
         })
       let successfullyFulfilled = []
@@ -1043,12 +1126,16 @@ class OrderService extends BaseService {
       order.fulfillments = [...order.fulfillments, ...fulfillments]
       const result = await orderRepo.save(order)
 
+      const evaluatedNoNotification =
+        no_notification !== undefined ? no_notification : order.no_notification
+
       for (const fulfillment of fulfillments) {
         await this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.FULFILLMENT_CREATED, {
             id: orderId,
             fulfillment_id: fulfillment.id,
+            no_notification: evaluatedNoNotification,
           })
       }
 
@@ -1104,7 +1191,17 @@ class OrderService extends BaseService {
   /**
    * Refunds a given amount back to the customer.
    */
-  async createRefund(orderId, refundAmount, reason, note) {
+  async createRefund(
+    orderId,
+    refundAmount,
+    reason,
+    note,
+    config = {
+      no_notification: undefined,
+    }
+  ) {
+    const { no_notification } = config
+
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],
@@ -1123,9 +1220,14 @@ class OrderService extends BaseService {
         .refundPayment(order.payments, refundAmount, reason, note)
 
       const result = await this.retrieve(orderId)
+
+      const evaluatedNoNotification =
+        no_notification !== undefined ? no_notification : order.no_notification
+
       this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
         refund_id: refund.id,
+        no_notification: evaluatedNoNotification,
       })
       return result
     })
@@ -1229,6 +1331,7 @@ class OrderService extends BaseService {
           .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
             id: result.id,
             return_id: receivedReturn.id,
+            no_notification: receivedReturn.no_notification,
           })
         return result
       }
@@ -1260,6 +1363,7 @@ class OrderService extends BaseService {
         .emit(OrderService.Events.ITEMS_RETURNED, {
           id: order.id,
           return_id: receivedReturn.id,
+          no_notification: receivedReturn.no_notification,
         })
       return result
     })

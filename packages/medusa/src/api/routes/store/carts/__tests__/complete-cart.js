@@ -78,7 +78,7 @@ describe("POST /store/carts/:id", () => {
     })
 
     it("returns the created order", () => {
-      expect(subject.body.data.id).toEqual("test-swap")
+      expect(subject.body.data.id).toEqual(IdMap.getId("test-swap"))
     })
   })
 
@@ -104,8 +104,8 @@ describe("POST /store/carts/:id", () => {
       )
     })
 
-    it("Call CartService retrieve 0 times", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(0)
+    it("Call CartService retrieve 1 time", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {

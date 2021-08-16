@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ClaimService from "../claim"
+import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const withTransactionMock = jest.fn()
 const eventBusService = {
@@ -22,6 +23,7 @@ describe("ClaimService", () => {
       order: {
         id: "1234",
         region_id: "order_region",
+        no_notification: true,
         items: [
           {
             id: "itm_1",
@@ -72,6 +74,14 @@ describe("ClaimService", () => {
       },
     }
 
+    const inventoryService = {
+      ...InventoryServiceMock,
+      withTransaction: function() {
+        withTransactionMock("inventory")
+        return this
+      },
+    }
+
     const claimItemService = {
       create: jest.fn(),
       withTransaction: function() {
@@ -87,6 +97,7 @@ describe("ClaimService", () => {
       returnService,
       lineItemService,
       claimItemService,
+      inventoryService,
       eventBusService,
     })
 
@@ -113,6 +124,7 @@ describe("ClaimService", () => {
             quantity: 1,
           },
         ],
+        no_notification: true,
       })
 
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
@@ -121,6 +133,18 @@ describe("ClaimService", () => {
         "var_123",
         "order_region",
         1
+      )
+
+      expect(inventoryService.confirmInventory).toHaveBeenCalledTimes(1)
+      expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
+        "var_123",
+        1
+      )
+      expect(withTransactionMock).toHaveBeenCalledWith("inventory")
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(1)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "var_123",
+        -1
       )
 
       expect(withTransactionMock).toHaveBeenCalledWith("claimItem")
@@ -138,6 +162,7 @@ describe("ClaimService", () => {
       expect(claimRepo.create).toHaveBeenCalledTimes(1)
       expect(claimRepo.create).toHaveBeenCalledWith({
         payment_status: "not_refunded",
+        no_notification: true,
         refund_amount: 1000,
         type: "refund",
         order_id: "1234",
@@ -156,6 +181,7 @@ describe("ClaimService", () => {
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith("claim.created", {
         id: "claim_134",
+        no_notification: true,
       })
     })
 
@@ -208,6 +234,43 @@ describe("ClaimService", () => {
         })
       ).rejects.toThrow(`Claims must have at least one claim item.`)
     })
+
+    it("fails if additional items are not in stock", async () => {
+      try {
+        const res = await claimService.create({
+          ...testClaim,
+          additional_items: [
+            {
+              variant_id: "var_123",
+              quantity: 25,
+            },
+          ],
+        })
+        console.warn(res)
+      } catch (e) {
+        expect(e.message).toEqual(
+          `Variant with id: var_123 does not have the required inventory`
+        )
+      }
+    })
+    it.each(
+      [
+        [false, false],
+        [undefined, true],
+      ],
+      "passes correct no_notification status to event bus",
+      async (input, expected) => {
+        await claimService.create({
+          ...testClaim,
+          no_notification: input,
+        })
+
+        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
+          id: expect.any(String),
+          no_notification: expected,
+        })
+      }
+    )
   })
 
   describe("retrieve", () => {
@@ -294,7 +357,9 @@ describe("ClaimService", () => {
     })
 
     it("successfully creates fulfillment", async () => {
-      await claimService.createFulfillment("claim_id", { meta: "data" })
+      await claimService.createFulfillment("claim_id", {
+        metadata: { meta: "data" },
+      })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
       expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
@@ -414,7 +479,10 @@ describe("ClaimService", () => {
       )
 
       await claimService.createShipment("claim", "ful_123", ["track1234"], {
-        meta: "data",
+        metadata: {
+          meta: "data",
+        },
+        no_notification: false,
       })
 
       expect(withTransactionMock).toHaveBeenCalledTimes(3)
@@ -426,7 +494,12 @@ describe("ClaimService", () => {
       expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
         "ful_123",
         ["track1234"],
-        { meta: "data" }
+        {
+          metadata: {
+            meta: "data",
+          },
+          no_notification: false,
+        }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)

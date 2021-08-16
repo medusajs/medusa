@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/medusajs/medusa/compare/medusa-plugin-discount-generator@1.1.12...medusa-plugin-discount-generator@1.1.13) (2021-07-26)
+
+**Note:** Version bump only for package medusa-plugin-discount-generator
+
+
+
+
+
+## [1.1.12](https://github.com/medusajs/medusa/compare/medusa-plugin-discount-generator@1.1.10...medusa-plugin-discount-generator@1.1.12) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-discount-generator
+
+
+
+
+
+## [1.1.11](https://github.com/medusajs/medusa/compare/medusa-plugin-discount-generator@1.1.10...medusa-plugin-discount-generator@1.1.11) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-discount-generator
+
+
+
+
+
+## [1.1.10](https://github.com/medusajs/medusa/compare/medusa-plugin-discount-generator@1.1.9...medusa-plugin-discount-generator@1.1.10) (2021-07-02)
+
+**Note:** Version bump only for package medusa-plugin-discount-generator
+
+
+
+
+
+## [1.1.9](https://github.com/medusajs/medusa/compare/medusa-plugin-discount-generator@1.1.8...medusa-plugin-discount-generator@1.1.9) (2021-06-22)
+
+
+### Bug Fixes
+
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.8](https://github.com/medusajs/medusa/compare/medusa-plugin-discount-generator@1.1.7...medusa-plugin-discount-generator@1.1.8) (2021-06-09)
 
 **Note:** Version bump only for package medusa-plugin-discount-generator

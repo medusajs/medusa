@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.16](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.15...medusa-plugin-restock-notification@0.0.16) (2021-08-05)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.15](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.14...medusa-plugin-restock-notification@0.0.15) (2021-07-26)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.14](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.12...medusa-plugin-restock-notification@0.0.14) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.13](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.12...medusa-plugin-restock-notification@0.0.13) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.12](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.11...medusa-plugin-restock-notification@0.0.12) (2021-07-02)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.11](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.10...medusa-plugin-restock-notification@0.0.11) (2021-06-24)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.10](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.9...medusa-plugin-restock-notification@0.0.10) (2021-06-22)
+
+
+### Bug Fixes
+
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [0.0.9](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.8...medusa-plugin-restock-notification@0.0.9) (2021-06-09)
 
 **Note:** Version bump only for package medusa-plugin-restock-notification

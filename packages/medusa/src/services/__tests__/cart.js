@@ -1,6 +1,8 @@
 import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import CartService from "../cart"
+import { InventoryServiceMock } from "../__mocks__/inventory"
+import { MedusaError } from "medusa-core-utils"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -327,10 +329,18 @@ describe("CartService", () => {
       },
     }
 
-    const productVariantService = {
-      canCoverQuantity: jest
-        .fn()
-        .mockImplementation(id => id !== IdMap.getId("cannot-cover")),
+    const inventoryService = {
+      ...InventoryServiceMock,
+      confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
+        if (variantId !== IdMap.getId("cannot-cover")) {
+          return true
+        } else {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Variant with id: ${variantId} does not have the required inventory`
+          )
+        }
+      }),
     }
 
     const cartRepository = MockRepository({
@@ -365,9 +375,9 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       lineItemService,
-      productVariantService,
       eventBusService,
       shippingOptionService,
+      inventoryService,
     })
 
     beforeEach(() => {
@@ -465,7 +475,11 @@ describe("CartService", () => {
 
       await expect(
         cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      ).rejects.toThrow(`Inventory doesn't cover the desired quantity`)
+      ).rejects.toThrow(
+        `Variant with id: ${IdMap.getId(
+          "cannot-cover"
+        )} does not have the required inventory`
+      )
     })
 
     it("throws if inventory isn't covered", async () => {
@@ -479,7 +493,11 @@ describe("CartService", () => {
 
       await expect(
         cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      ).rejects.toThrow(`Inventory doesn't cover the desired quantity`)
+      ).rejects.toThrow(
+        `Variant with id: ${IdMap.getId(
+          "cannot-cover"
+        )} does not have the required inventory`
+      )
     })
   })
 
@@ -651,8 +669,9 @@ describe("CartService", () => {
         return this
       },
     }
-    const productVariantService = {
-      canCoverQuantity: jest
+    const inventoryService = {
+      ...InventoryServiceMock,
+      confirmInventory: jest
         .fn()
         .mockImplementation(id => id !== IdMap.getId("cannot-cover")),
     }
@@ -685,9 +704,9 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
-      productVariantService,
       lineItemService,
       eventBusService,
+      inventoryService,
     })
 
     beforeEach(() => {

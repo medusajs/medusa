@@ -293,8 +293,14 @@ class StripeProviderService extends PaymentService {
   async capturePayment(payment) {
     const { id } = payment.data
     try {
-      return this.stripe_.paymentIntents.capture(id)
+      const intent = await this.stripe_.paymentIntents.capture(id)
+      return intent
     } catch (error) {
+      if (error.code === "payment_intent_unexpected_state") {
+        if (error.payment_intent.status === "succeeded") {
+          return error.payment_intent
+        }
+      }
       throw error
     }
   }

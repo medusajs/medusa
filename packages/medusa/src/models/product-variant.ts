@@ -47,19 +47,19 @@ export class ProductVariant {
   prices: MoneyAmount[]
 
   @Column({ nullable: true })
-  @Index({ unique: true })
+  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   sku: string
 
-  @Index({ unique: true })
   @Column({ nullable: true })
+  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   barcode: string
 
-  @Index({ unique: true })
   @Column({ nullable: true })
+  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   ean: string
 
-  @Index({ unique: true })
   @Column({ nullable: true })
+  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   upc: string
 
   @Column({ type: "int" })

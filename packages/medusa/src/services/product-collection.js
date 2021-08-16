@@ -129,7 +129,7 @@ class ProductCollectionService extends BaseService {
 
       if (!collection) return Promise.resolve()
 
-      await productCollectionRepo.remove(collection)
+      await productCollectionRepo.softRemove(collection)
 
       return Promise.resolve()
     })

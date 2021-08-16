@@ -3,6 +3,126 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.36](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.35...@medusajs/medusa@1.1.36) (2021-08-11)
+
+
+### Bug Fixes
+
+* improves integration tests ([#332](https://github.com/medusajs/medusa/issues/332)) ([9a701ff](https://github.com/medusajs/medusa/commit/9a701ff22906e58465a00574c39e2cc284ee0e1a))
+
+
+
+
+
+## [1.1.35](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.34...@medusajs/medusa@1.1.35) (2021-08-09)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.34](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.33...@medusajs/medusa@1.1.34) (2021-08-05)
+
+
+### Bug Fixes
+
+* canary assist ([b988b67](https://github.com/medusajs/medusa/commit/b988b67118553c88ef6c6d53ae99ef1ad9d67305))
+* product and variant api route validation ([#331](https://github.com/medusajs/medusa/issues/331)) ([b101725](https://github.com/medusajs/medusa/commit/b101725396ed568666dcbae99a480db793cd20d1))
+* return lines allow_discounts ([1295ceb](https://github.com/medusajs/medusa/commit/1295ceb7929f212937a5894ca62c3f87499d1d7b))
+
+
+### Features
+
+* Add discountable flag to product ([#329](https://github.com/medusajs/medusa/issues/329)) ([6053c4a](https://github.com/medusajs/medusa/commit/6053c4a8ddbc010d1c2a466b0406791a1dc02f3e))
+* add route for retrieving a swap ([#326](https://github.com/medusajs/medusa/issues/326)) ([821d8be](https://github.com/medusajs/medusa/commit/821d8be7337608f28e87d96d71cc7aa3a161f117))
+* In band inventory updates ([#311](https://github.com/medusajs/medusa/issues/311)) ([f07cc0f](https://github.com/medusajs/medusa/commit/f07cc0fa406d8f0fe33f9088fe6cb3ce8e78b05f))
+* medusa-telemetry ([#328](https://github.com/medusajs/medusa/issues/328)) ([cfe19f7](https://github.com/medusajs/medusa/commit/cfe19f7f9d3bb17425348362b148a0b4b7a649ef))
+
+
+
+
+
+## [1.1.33](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.32...@medusajs/medusa@1.1.33) (2021-07-26)
+
+
+### Bug Fixes
+
+* enforce 1 shipping method per profile ([#322](https://github.com/medusajs/medusa/issues/322)) ([b378a4f](https://github.com/medusajs/medusa/commit/b378a4f8bc8b57189c368fadb1a14ea2e5ea896e))
+* parameterize integration tests' db credentials ([#319](https://github.com/medusajs/medusa/issues/319)) ([06fd882](https://github.com/medusajs/medusa/commit/06fd882a671b2808ef906430f6afd31be2d03280))
+
+
+### Features
+
+* CLI + local linking ([#313](https://github.com/medusajs/medusa/issues/313)) ([f4a7138](https://github.com/medusajs/medusa/commit/f4a7138a5888e69e19bebe8f4962afc42e9a945d)), closes [#320](https://github.com/medusajs/medusa/issues/320)
+
+
+
+
+
+## [1.1.32](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.31...@medusajs/medusa@1.1.32) (2021-07-16)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.31](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.29...@medusajs/medusa@1.1.31) (2021-07-15)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.30](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.29...@medusajs/medusa@1.1.30) (2021-07-15)
+
+
+### Bug Fixes
+
+* adds tracking links to customer orders ([c013270](https://github.com/medusajs/medusa/commit/c0132700b78d171d6c7e29e2604b99129c5a1921))
+* allow updating billing address on customer ([5a1cbc6](https://github.com/medusajs/medusa/commit/5a1cbc68b721fe80d223e4ff611ebc81346333d7))
+* better store/customer support ([6342e68](https://github.com/medusajs/medusa/commit/6342e68d069636e5eb4877c7ebf7aac952b5e363))
+* create fulfillment ([0603a86](https://github.com/medusajs/medusa/commit/0603a86d65a528af86bdbdc46227faa2f48a93bb))
+* **medusa:** Resolve issue with soft-delete and unique indexes in DB ([#296](https://github.com/medusajs/medusa/issues/296)) ([6358f8f](https://github.com/medusajs/medusa/commit/6358f8fc756291710a82ce39a47d0cbec1395b87))
+
+
+
+
+
+## [1.1.29](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.28...@medusajs/medusa@1.1.29) (2021-07-02)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.28](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.27...@medusajs/medusa@1.1.28) (2021-06-24)
+
+**Note:** Version bump only for package @medusajs/medusa
+
+
+
+
+
+## [1.1.27](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.26...@medusajs/medusa@1.1.27) (2021-06-22)
+
+
+### Bug Fixes
+
+* adds transformer to map field names to field_id names ([88d96a2](https://github.com/medusajs/medusa/commit/88d96a29fd8dbc44ed7ba25154850d417577acad))
+* giftcard-order relation ([c88c407](https://github.com/medusajs/medusa/commit/c88c4070960ad1a8126e65b1e9f60d7ba929246a))
+* lint ([5829550](https://github.com/medusajs/medusa/commit/58295505178209d511046089d736395d121b9732))
+* mobile pay support ([91511cb](https://github.com/medusajs/medusa/commit/91511cbdf8bc66f5688a36ecf56edb16a220cc82))
+* region sync ([8e29e6e](https://github.com/medusajs/medusa/commit/8e29e6e63c305b684a37d817b504b3e471d697bd))
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.26](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.25...@medusajs/medusa@1.1.26) (2021-06-10)
 
 

@@ -39,7 +39,7 @@ export class Product {
   @Column({ nullable: true })
   description: string
 
-  @Index({ unique: true })
+  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   @Column({ nullable: true })
   handle: string
 
@@ -136,6 +136,9 @@ export class Product {
   })
   tags: ProductTag[]
 
+  @Column({ default: true })
+  discountable: boolean
+
   @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
@@ -183,6 +186,9 @@ export class Product {
  *     type: string
  *   is_giftcard:
  *     description: "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased."
+ *     type: boolean
+ *   discountable:
+ *     description: "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.
  *     type: boolean
  *   images:
  *     description: "Images of the Product"

@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.22...medusa-plugin-wishlist@1.1.23) (2021-08-05)
+
+**Note:** Version bump only for package medusa-plugin-wishlist
+
+
+
+
+
+## [1.1.22](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.21...medusa-plugin-wishlist@1.1.22) (2021-07-26)
+
+
+### Bug Fixes
+
+* support wishlist ([#325](https://github.com/medusajs/medusa/issues/325)) ([4e003be](https://github.com/medusajs/medusa/commit/4e003bebaac0d84bedf5a2ed6ca94b728b50a9d9))
+
+
+
+
+
+## [1.1.21](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.19...medusa-plugin-wishlist@1.1.21) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-wishlist
+
+
+
+
+
+## [1.1.20](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.19...medusa-plugin-wishlist@1.1.20) (2021-07-15)
+
+**Note:** Version bump only for package medusa-plugin-wishlist
+
+
+
+
+
+## [1.1.19](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.18...medusa-plugin-wishlist@1.1.19) (2021-07-02)
+
+**Note:** Version bump only for package medusa-plugin-wishlist
+
+
+
+
+
+## [1.1.18](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.17...medusa-plugin-wishlist@1.1.18) (2021-06-22)
+
+
+### Bug Fixes
+
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.1.17](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.16...medusa-plugin-wishlist@1.1.17) (2021-06-09)
 
 **Note:** Version bump only for package medusa-plugin-wishlist

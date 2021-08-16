@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.24](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.23...medusa-payment-paypal@1.0.24) (2021-08-05)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+
+
+
+
+## [1.0.23](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.22...medusa-payment-paypal@1.0.23) (2021-07-26)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+
+
+
+
+## [1.0.22](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.20...medusa-payment-paypal@1.0.22) (2021-07-15)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+
+
+
+
+## [1.0.21](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.20...medusa-payment-paypal@1.0.21) (2021-07-15)
+
+
+### Bug Fixes
+
+* paypal order ([1f6ee0f](https://github.com/medusajs/medusa/commit/1f6ee0fc00024c25d6628e6531097f93f54f8a1b))
+* support for hook completion of swap carts ([fca29cc](https://github.com/medusajs/medusa/commit/fca29cc5cc0d6f20d01fada7445d32da85291cd8))
+
+
+
+
+
+## [1.0.20](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.19...medusa-payment-paypal@1.0.20) (2021-07-02)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+
+
+
+
+## [1.0.19](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.18...medusa-payment-paypal@1.0.19) (2021-06-22)
+
+
+### Bug Fixes
+
+* release assist ([668e8a7](https://github.com/medusajs/medusa/commit/668e8a740200847fc2a41c91d2979097f1392532))
+
+
+
+
+
 ## [1.0.18](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.17...medusa-payment-paypal@1.0.18) (2021-06-09)
 
 **Note:** Version bump only for package medusa-payment-paypal

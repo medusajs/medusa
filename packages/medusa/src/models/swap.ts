@@ -130,6 +130,9 @@ export class Swap {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
+  @Column({ type: "boolean", nullable: true})
+  no_notification: Boolean
+
   @Column({ type: "jsonb", nullable: true })
   metadata: any
 
@@ -224,6 +227,9 @@ export class Swap {
  *     description: "The date with timezone at which the resource was last updated."
  *     type: string
  *     format: date-time
+ *   no_notification:
+ *     description: "If set to true, no notification will be sent related to this swap"
+ *     type: boolean
  *   metadata:
  *     description: "An optional key-value map with additional information."
  *     type: object
