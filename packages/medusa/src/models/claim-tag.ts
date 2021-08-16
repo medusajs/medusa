@@ -12,6 +12,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class ClaimTag {
@@ -22,16 +23,16 @@ export class ClaimTag {
   @Column()
   value: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()

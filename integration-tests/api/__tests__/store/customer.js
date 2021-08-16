@@ -72,7 +72,7 @@ describe("/store/customers", () => {
         })
         .catch((err) => err.response);
 
-      expect(response.status).toEqual(409);
+      expect(response.status).toEqual(402);
     });
   });
 

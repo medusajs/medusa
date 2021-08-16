@@ -1,4 +1,3 @@
-import express from "express"
 import session from "express-session"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
@@ -18,8 +17,24 @@ export default async ({ app, configModule }) => {
     sameSite = "none"
   }
 
-  const RedisStore = createStore(session)
-  const redisClient = redis.createClient(configModule.projectConfig.redis_url)
+  let sessionOpts = {
+    resave: true,
+    saveUninitialized: true,
+    cookieName: "session",
+    proxy: true,
+    secret: config.cookieSecret,
+    cookie: {
+      sameSite,
+      secure,
+      maxAge: 10 * 60 * 60 * 1000,
+    },
+  }
+
+  if (configModule.projectConfig.redis_url) {
+    const RedisStore = createStore(session)
+    const redisClient = redis.createClient(configModule.projectConfig.redis_url)
+    sessionOpts.store = new RedisStore({ client: redisClient })
+  }
 
   app.set("trust proxy", 1)
   app.use(
@@ -28,21 +43,7 @@ export default async ({ app, configModule }) => {
     })
   )
   app.use(cookieParser())
-  app.use(
-    session({
-      store: new RedisStore({ client: redisClient }),
-      resave: true,
-      saveUninitialized: true,
-      cookieName: "session",
-      proxy: true,
-      secret: config.cookieSecret,
-      cookie: {
-        sameSite,
-        secure,
-        maxAge: 10 * 60 * 60 * 1000,
-      },
-    })
-  )
+  app.use(session(sessionOpts))
 
   app.get("/health", (req, res) => {
     res.status(200).send("OK")

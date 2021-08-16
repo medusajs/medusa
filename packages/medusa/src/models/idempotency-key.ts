@@ -7,6 +7,7 @@ import {
   PrimaryColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class IdempotencyKey {
@@ -17,16 +18,16 @@ export class IdempotencyKey {
   @Column()
   idempotency_key: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @Column({ type: "timestamptz", nullable: true })
+  @DbAwareColumn({ type: "timestamptz", nullable: true })
   locked_at: Date
 
   @Column({ nullable: true })
   request_method: string
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   request_params: any
 
   @Column({ nullable: true })
@@ -35,7 +36,7 @@ export class IdempotencyKey {
   @Column({ type: "int", nullable: true })
   response_code: number
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   response_body: any
 
   @Column({ default: "started" })

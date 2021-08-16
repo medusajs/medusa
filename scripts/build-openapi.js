@@ -14,6 +14,7 @@ swaggerInline(
   const oas = new OAS(gen);
   oas.validate((err, genObj) => {
     if (err) {
+      console.log("Error in store");
       console.error(err);
       return;
     }
@@ -41,6 +42,7 @@ swaggerInline(
   const oas = new OAS(gen);
   oas.validate((err, genObj) => {
     if (err) {
+      console.log("Error in admin");
       console.error(err);
       return;
     }
