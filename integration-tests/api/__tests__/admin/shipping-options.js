@@ -87,9 +87,6 @@ describe("/admin/shipping-options", () => {
           amount: 1000,
           is_return: false,
         });
-
-        //   const query = await manager.query('SELECT * FROM "shipping_option"');
-        //   console.log(query);
       } catch (err) {
         console.error(err);
         throw err;

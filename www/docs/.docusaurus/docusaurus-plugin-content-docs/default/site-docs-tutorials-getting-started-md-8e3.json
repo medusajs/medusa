@@ -1,0 +1,27 @@
+{
+  "unversionedId": "tutorials/getting-started",
+  "id": "tutorials/getting-started",
+  "isDocsHomePage": false,
+  "title": "Getting started",
+  "description": "Quick Start w. Docker",
+  "source": "@site/docs/tutorials/getting-started.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/getting-started",
+  "permalink": "/docs/tutorials/getting-started",
+  "editUrl": "https://github.com/medusajs/medusa/edit/master/www/docs/tutorials/getting-started.md",
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Getting started",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/docs/tutorials/overview"
+  },
+  "next": {
+    "title": "Set up your development environment",
+    "permalink": "/docs/tutorials/set-up-your-development-environment"
+  }
+}

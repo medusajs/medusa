@@ -1,0 +1,26 @@
+{
+  "unversionedId": "tutorial-basics/create-a-page",
+  "id": "tutorial-basics/create-a-page",
+  "isDocsHomePage": false,
+  "title": "Create a Page",
+  "description": "Add Markdown or React files to src/pages to create a standalone page:",
+  "source": "@site/docs/tutorial-basics/create-a-page.md",
+  "sourceDirName": "tutorial-basics",
+  "slug": "/tutorial-basics/create-a-page",
+  "permalink": "/docs/tutorial-basics/create-a-page",
+  "editUrl": "https://github.com/medusajs/medusa/edit/master/www/docs/tutorial-basics/create-a-page.md",
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/docs/guides/overview"
+  },
+  "next": {
+    "title": "Create a Document",
+    "permalink": "/docs/tutorial-basics/create-a-document"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": "none",
+  "isLast": true,
+  "docsSidebars": {
+    "tutorialSidebar": [
+      {
+        "type": "category",
+        "label": "Tutorials",
+        "items": [
+          {
+            "type": "link",
+            "label": "Overview",
+            "href": "/docs/tutorials/overview"
+          },
+          {
+            "type": "link",
+            "label": "Getting started",
+            "href": "/docs/tutorials/getting-started"
+          },
+          {
+            "type": "link",
+            "label": "Set up your development environment",
+            "href": "/docs/tutorials/set-up-your-development-environment"
+          },
+          {
+            "type": "link",
+            "label": "Lorem",
+            "href": "/docs/tutorials/lorem"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "type": "category",
+        "label": "Guides",
+        "items": [
+          {
+            "type": "link",
+            "label": "Overview",
+            "href": "/docs/guides/overview"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "type": "category",
+        "label": "Tutorial - Basics",
+        "items": [
+          {
+            "type": "link",
+            "label": "Create a Page",
+            "href": "/docs/tutorial-basics/create-a-page"
+          },
+          {
+            "type": "link",
+            "label": "Create a Document",
+            "href": "/docs/tutorial-basics/create-a-document"
+          },
+          {
+            "type": "link",
+            "label": "Create a Blog Post",
+            "href": "/docs/tutorial-basics/create-a-blog-post"
+          },
+          {
+            "type": "link",
+            "label": "Markdown Features",
+            "href": "/docs/tutorial-basics/markdown-features"
+          },
+          {
+            "type": "link",
+            "label": "Deploy your site",
+            "href": "/docs/tutorial-basics/deploy-your-site"
+          },
+          {
+            "type": "link",
+            "label": "Congratulations!",
+            "href": "/docs/tutorial-basics/congratulations"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "type": "category",
+        "label": "Tutorial - Extras",
+        "items": [
+          {
+            "type": "link",
+            "label": "Manage Docs Versions",
+            "href": "/docs/tutorial-extras/manage-docs-versions"
+          },
+          {
+            "type": "link",
+            "label": "Translate your site",
+            "href": "/docs/tutorial-extras/translate-your-site"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "type": "link",
+        "label": "Contributing",
+        "href": "/docs/contributing"
+      }
+    ]
+  },
+  "permalinkToSidebar": {
+    "/docs/contributing": "tutorialSidebar",
+    "/docs/guides/overview": "tutorialSidebar",
+    "/docs/tutorial-basics/congratulations": "tutorialSidebar",
+    "/docs/tutorial-basics/create-a-blog-post": "tutorialSidebar",
+    "/docs/tutorial-basics/create-a-document": "tutorialSidebar",
+    "/docs/tutorial-basics/create-a-page": "tutorialSidebar",
+    "/docs/tutorial-basics/deploy-your-site": "tutorialSidebar",
+    "/docs/tutorial-basics/markdown-features": "tutorialSidebar",
+    "/docs/tutorial-extras/manage-docs-versions": "tutorialSidebar",
+    "/docs/tutorial-extras/translate-your-site": "tutorialSidebar",
+    "/docs/tutorials/getting-started": "tutorialSidebar",
+    "/docs/tutorials/lorem": "tutorialSidebar",
+    "/docs/tutorials/overview": "tutorialSidebar",
+    "/docs/tutorials/set-up-your-development-environment": "tutorialSidebar"
+  }
+}
