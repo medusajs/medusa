@@ -81,7 +81,7 @@ export class Return {
   @OneToOne(
     () => ShippingMethod,
     method => method.return_order,
-    { eager: true, cascade: true }
+    { cascade: true }
   )
   shipping_method: ShippingMethod
 
@@ -100,7 +100,7 @@ export class Return {
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
   @Column({ type: "jsonb", nullable: true })

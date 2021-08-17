@@ -227,6 +227,7 @@ describe("/admin/orders", () => {
       try {
         await adminSeeder(dbConnection);
         await orderSeeder(dbConnection);
+        await claimSeeder(dbConnection);
       } catch (err) {
         console.log(err);
         throw err;
@@ -421,6 +422,7 @@ describe("/admin/orders", () => {
           },
         }
       );
+
       expect(response.status).toEqual(200);
 
       expect(response.data.order.claims[0].claim_items).toEqual(
@@ -798,6 +800,8 @@ describe("/admin/orders", () => {
       });
 
       await expectCancelToReturn({ code: 200 });
+    });
+
     it("fails to creates a claim due to no stock on additional items", async () => {
       const api = useApi();
       try {
@@ -1456,29 +1460,33 @@ describe("/admin/orders", () => {
     });
 
     it("Only allows canceling swap after canceling fulfillments", async () => {
-      const swap_id = "swap-w-f";
+      try {
+        const swap_id = "swap-w-f";
 
-      const swap = await callGet({
-        path: `/admin/swaps/${swap_id}`,
-        get: "swap",
-      });
+        const swap = await callGet({
+          path: `/admin/swaps/${swap_id}`,
+          get: "swap",
+        });
 
-      const { order_id } = swap;
+        const { order_id } = swap;
 
-      const expectCancelToReturn = partial(expectPostCallToReturn, {
-        path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
-      });
+        const expectCancelToReturn = partial(expectPostCallToReturn, {
+          path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
+        });
 
-      await expectCancelToReturn({ code: 400 });
+        await expectCancelToReturn({ code: 400 });
 
-      await expectAllPostCallsToReturn({
-        code: 200,
-        col: swap.fulfillments,
-        pathf: (f) =>
-          `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
-      });
+        await expectAllPostCallsToReturn({
+          code: 200,
+          col: swap.fulfillments,
+          pathf: (f) =>
+            `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
+        });
 
-      await expectCancelToReturn({ code: 200 });
+        await expectCancelToReturn({ code: 200 });
+      } catch (e) {
+        console.log(e);
+      }
     });
 
     it("Only allows canceling swap after canceling return", async () => {

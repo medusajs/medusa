@@ -101,11 +101,29 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(swap);
 
-  const swapTemplate = () => {
+  const cartTemplate = async (cartId) => {
+    const cart = manager.create(Cart, {
+      id: cartId,
+      customer_id: "test-customer",
+      email: "test-customer@email.com",
+      shipping_address_id: "test-shipping-address",
+      billing_address_id: "test-billing-address",
+      region_id: "test-region",
+      type: "swap",
+      metadata: {},
+      ...data,
+    });
+
+    await manager.save(cart);
+  };
+
+  const swapTemplate = async (cartId) => {
+    await cartTemplate(cartId);
     return {
       order_id: orderWithSwap.id,
       fulfillment_status: "fulfilled",
       payment_status: "not_paid",
+      cart_id: cartId,
       payment: {
         amount: 5000,
         currency_code: "usd",
@@ -131,7 +149,7 @@ module.exports = async (connection, data = {}) => {
         provider_id: "test-ful",
       },
     ],
-    ...swapTemplate(),
+    ...(await swapTemplate("sc-w-f")),
   });
 
   await manager.save(swapWithFulfillments);
@@ -143,7 +161,7 @@ module.exports = async (connection, data = {}) => {
       status: "requested",
       refund_amount: 0,
     },
-    ...swapTemplate(),
+    ...(await swapTemplate("sc-w-r")),
   });
 
   await manager.save(swapWithReturn);

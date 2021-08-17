@@ -187,7 +187,6 @@ class ClaimService extends BaseService {
   create(data) {
     return this.atomicPhase_(async manager => {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
-
       const {
         type,
         claim_items,
