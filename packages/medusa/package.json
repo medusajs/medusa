@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.36",
+  "version": "1.1.37",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": {
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
-    "@medusajs/medusa-cli": "^1.1.15",
+    "@medusajs/medusa-cli": "^1.1.16",
     "@types/lodash": "^4.14.168",
     "awilix": "^4.2.3",
     "body-parser": "^1.19.0",
