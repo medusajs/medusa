@@ -55,6 +55,7 @@
     "cookie-parser": "^1.4.4",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
+    "cross-spawn": "^7.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",

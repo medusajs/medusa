@@ -1229,10 +1229,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@medusajs/medusa-cli@^1.1.15":
-  version "1.1.15"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.1.15.tgz#01837aeb8850349b204a85cb2bbac0d5ce166eeb"
-  integrity sha512-WxToDuksYZWSUvrKhOvETwzBGgOqhd9q2l2kGLOV997bMu/elj90Nhzrf0jZ+ioNsXmebq7aw6/fCrmZc9KxbQ==
+"@medusajs/medusa-cli@^1.1.16":
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.1.16.tgz#3ddcd5b16388a387c430116b962bb27a933ee85e"
+  integrity sha512-QvE7IYkR3NFiy4seZklfX+Xs/dJannVLbKfxLQbxCV2Sso3ZtJbSJt1BpTUwDxYjOFWXyTxRRjO1kEnA1yqCBA==
   dependencies:
     "@babel/polyfill" "^7.8.7"
     "@babel/runtime" "^7.9.6"
@@ -1251,7 +1251,7 @@
     joi-objectid "^3.0.1"
     meant "^1.0.1"
     medusa-core-utils "^0.1.27"
-    medusa-telemetry "^0.0.2"
+    medusa-telemetry "^0.0.3"
     netrc-parser "^3.1.6"
     open "^8.0.6"
     ora "^5.4.1"
@@ -5247,10 +5247,10 @@ medusa-interfaces@^1.1.21:
   dependencies:
     medusa-core-utils "^1.1.20"
 
-medusa-telemetry@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/medusa-telemetry/-/medusa-telemetry-0.0.2.tgz#f3324eb3703b3f877f472dce450b5ad600a9a8f1"
-  integrity sha512-pZYYcXWPBkfoDSvReR9Aph3pKiXHf6sBiijtI+eSTvA1RmuPGktL7xpiKdGOG6IBKQpeqQRRfX0rV9bptu/PRg==
+medusa-telemetry@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/medusa-telemetry/-/medusa-telemetry-0.0.3.tgz#c11e5e0f3cc969f3eaee41d1c24f78a5c0715362"
+  integrity sha512-Qb/sgOwO8t2Sjjo4nKyBa6hKZ/SjniT4eEWenygEaJDqXZhfogVYGhWc5gn4tLlFFNEHXzDTlrqX2LvzfEJWIw==
   dependencies:
     axios "^0.21.1"
     axios-retry "^3.1.9"
