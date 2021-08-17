@@ -49,7 +49,25 @@ Medusa is an open-source headless commerce engine that enables developers to cre
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
-## 🛒 Setting up a storefront for your Medusa engine
+## ⭐️ Features
+Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
+- **Headless**: Medusa is a highly customizable commerce API which means that you may use any presentation layer such as a website, app, chat bots, etc.
+- **Regions** allow you to specify currencies, payment providers, shipping providers, tax rates and more for one or more countries for truly international sales.
+- **Orders** come with all the functionality necessary to perform powerful customer service operations with ease.
+- **Carts** allow customers to collect products for purchase, add shipping details and complete payments.
+- **Products** come with relevant fields for customs, stock keeping and sales. Medusa supports multiple options and unlimited variants.
+- **Swaps** allow customers to exchange products after purchase (e.g. for incorrect sizes). Accounting, payment and fulfillment plugins handle all the tedious work for you for automated customer service.
+- **Claims** can be created if customers experience problems with one of their products. Plugins make sure to automate sending out replacements, handling refunds and collecting valuable data for analysis.
+- **Returns** allow customers to send back products and can be configured to function in a 100% automated flow through accounting and payment plugins.
+- **Fulfillment API** makes it easy to integrate with any fulfillment provider by creating fulfillment plugins, check the `/packages` directory for a full list of plugins.
+- **Payments API** makes it easy to integrate with any payment provider by creatingn payment plugins, we already support Stripe, Paypal and Klarna.
+- **Notification API** allow integrations with email providers, chat bots, Slack channels etc. 
+- **Customer Login** to give customers a way of managing their data, viewing their orders and saving payment details. 
+- **Shipping Options & Profiles** enable powerful rules for free shipping limits, multiple fulfillment methods and more.
+- **Medusa's Plugin Architecture** makes it intuitive and easy to manage your integrations, switch providers and grow with ease.
+- **Customization** is supported for those special use cases that all the other ecommerce platforms can't accommodate.
+
+## 🛒 Setting up a storefront for your Medusa project
 Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.
 
 To provide a quick way to get you started with a storefront install one of our traditional e-commerce starters:
@@ -90,7 +108,7 @@ To use Postgres and Redis you should provide a `database_url` and `redis_url` in
 
 ## Contribution
 
-Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market. Whether its fixing bugs, improving our documentation or simply spreading the word, please feel free to join in.
+Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market. Whether its fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
 
 ## Repository structure
 
@@ -101,3 +119,21 @@ The Medusa repository is a mono-repository managed using Lerna. Lerna allows us 
 Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/master/LICENSE)
 
 ## Thank you!
+
+<p>
+  <a href="https://www.medusa-commerce.com">
+    Website
+  </a> 
+  |
+  <a href="https://medusajs.notion.site/medusajs/Medusa-Home-3485f8605d834a07949b17d1a9f7eafd">
+    Notion Home
+  </a>
+  |
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    Twitter
+  </a>
+  |
+  <a href="https://docs.medusa-commerce.com">
+    Docs
+  </a>
+</p>
