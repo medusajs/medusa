@@ -77,7 +77,9 @@
         "summary": "Authenticate a User",
         "description": "Logs a User in and authorizes them to manage Store settings.",
         "parameters": [],
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -99,7 +101,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["email", "password"],
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "properties": {
                   "email": {
                     "type": "string",
@@ -119,7 +124,9 @@
         "operationId": "GetAuth",
         "summary": "Get Session",
         "description": "Gets the currently logged in User.",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -147,7 +154,9 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["title"],
+                "required": [
+                  "title"
+                ],
                 "properties": {
                   "title": {
                     "type": "string",
@@ -166,7 +175,9 @@
             }
           }
         },
-        "tags": ["Collection"],
+        "tags": [
+          "Collection"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -188,7 +199,9 @@
         "operationId": "GetCollections",
         "summary": "List Product Collections",
         "description": "Retrieve a list of Product Collection.",
-        "tags": ["Collection"],
+        "tags": [
+          "Collection"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -223,7 +236,9 @@
             }
           }
         ],
-        "tags": ["Collection"],
+        "tags": [
+          "Collection"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -264,7 +279,9 @@
             }
           }
         ],
-        "tags": ["Collection"],
+        "tags": [
+          "Collection"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -319,7 +336,9 @@
             }
           }
         },
-        "tags": ["Collection"],
+        "tags": [
+          "Collection"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -344,7 +363,9 @@
         "summary": "Create a Customer",
         "description": "Creates a Customer.",
         "parameters": [],
-        "tags": ["Customer"],
+        "tags": [
+          "Customer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -366,7 +387,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["email", "first_name", "last_name"],
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name"
+                ],
                 "properties": {
                   "email": {
                     "type": "string",
@@ -394,7 +419,9 @@
         "operationId": "GetCustomers",
         "summary": "List Customers",
         "description": "Retrieves a list of Customers.",
-        "tags": ["Customer"],
+        "tags": [
+          "Customer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -429,7 +456,9 @@
             }
           }
         ],
-        "tags": ["Customer"],
+        "tags": [
+          "Customer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -484,7 +513,9 @@
             }
           }
         },
-        "tags": ["Customer"],
+        "tags": [
+          "Customer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -528,7 +559,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -570,7 +603,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -614,7 +649,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -693,7 +730,9 @@
             }
           }
         },
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -715,7 +754,9 @@
         "operationId": "GetDiscounts",
         "summary": "List Discounts",
         "description": "Retrieves a list of Discounts",
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -750,7 +791,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -772,7 +815,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["code"],
+                "required": [
+                  "code"
+                ],
                 "properties": {
                   "code": {
                     "type": "string",
@@ -805,7 +850,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -846,7 +893,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -926,7 +975,9 @@
             }
           }
         },
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -970,7 +1021,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1005,7 +1058,9 @@
             }
           }
         ],
-        "tags": ["Discount"],
+        "tags": [
+          "Discount"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1139,7 +1194,9 @@
             }
           }
         },
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1161,7 +1218,9 @@
         "operationId": "GetDraftOrders",
         "summary": "List Draft Orders",
         "description": "Retrieves an list of Draft Orders",
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1215,7 +1274,9 @@
             }
           }
         },
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1250,7 +1311,9 @@
             }
           }
         ],
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1291,7 +1354,9 @@
             }
           }
         ],
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1335,7 +1400,9 @@
             }
           }
         ],
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1383,7 +1450,9 @@
             }
           }
         },
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1418,7 +1487,9 @@
             }
           }
         ],
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1507,7 +1578,9 @@
             }
           }
         },
-        "tags": ["Draft Order"],
+        "tags": [
+          "Draft Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1565,7 +1638,9 @@
             }
           }
         },
-        "tags": ["Gift Card"],
+        "tags": [
+          "Gift Card"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1587,7 +1662,9 @@
         "operationId": "GetGiftCards",
         "summary": "List Gift Cards",
         "description": "Retrieves a list of Gift Cards.",
-        "tags": ["Gift Card"],
+        "tags": [
+          "Gift Card"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1625,7 +1702,9 @@
             }
           }
         ],
-        "tags": ["Gift Card"],
+        "tags": [
+          "Gift Card"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1666,7 +1745,9 @@
             }
           }
         ],
-        "tags": ["Gift Card"],
+        "tags": [
+          "Gift Card"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1733,7 +1814,9 @@
             }
           }
         },
-        "tags": ["Gift Card"],
+        "tags": [
+          "Gift Card"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1757,7 +1840,9 @@
         "operationId": "GetNotifications",
         "summary": "List Notifications",
         "description": "Retrieves a list of Notifications.",
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1795,7 +1880,9 @@
             }
           }
         ],
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1830,7 +1917,9 @@
             }
           }
         ],
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1852,7 +1941,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["price", "option_id", "data"],
+                "required": [
+                  "price",
+                  "option_id",
+                  "data"
+                ],
                 "properties": {
                   "price": {
                     "type": "integer",
@@ -1889,7 +1982,9 @@
             }
           }
         ],
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1924,7 +2019,9 @@
             }
           }
         ],
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1989,7 +2086,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2032,7 +2131,10 @@
                   "type": {
                     "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
                     "type": "string",
-                    "enum": ["replace", "refund"]
+                    "enum": [
+                      "replace",
+                      "refund"
+                    ]
                   },
                   "claim_items": {
                     "description": "The Claim Items that the Claim will consist of.",
@@ -2148,7 +2250,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2217,7 +2321,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2277,7 +2383,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2346,7 +2454,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2441,7 +2551,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2485,7 +2597,9 @@
             }
           }
         ],
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2547,7 +2661,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2609,7 +2725,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2644,7 +2762,9 @@
             }
           }
         ],
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2668,7 +2788,9 @@
         "operationId": "GetOrders",
         "summary": "List Orders",
         "description": "Retrieves a list of Orders",
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2715,7 +2837,9 @@
             }
           }
         ],
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2785,7 +2909,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2824,7 +2950,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["amount", "reason"],
+                "required": [
+                  "amount",
+                  "reason"
+                ],
                 "properties": {
                   "amount": {
                     "description": "The amount to refund.",
@@ -2847,7 +2976,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2942,7 +3073,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3071,7 +3204,9 @@
             }
           }
         },
-        "tags": ["Order"],
+        "tags": [
+          "Order"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3120,7 +3255,9 @@
             }
           }
         },
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3373,7 +3510,9 @@
             }
           }
         },
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3395,7 +3534,9 @@
         "operationId": "GetProducts",
         "summary": "List Product",
         "description": "Retrieves a list of Product",
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3561,7 +3702,9 @@
             }
           }
         },
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3594,7 +3737,9 @@
             }
           }
         ],
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3641,7 +3786,9 @@
             }
           }
         ],
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3708,7 +3855,9 @@
             }
           }
         },
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3743,7 +3892,9 @@
             }
           }
         ],
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3784,7 +3935,9 @@
             }
           }
         ],
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4046,7 +4199,9 @@
             }
           }
         },
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4090,7 +4245,9 @@
             }
           }
         ],
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4256,7 +4413,9 @@
             }
           }
         },
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4280,7 +4439,9 @@
         "operationId": "GetProductsTypes",
         "summary": "List Product Types",
         "description": "Retrieves a list of Product Types.",
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4332,7 +4493,9 @@
             }
           }
         },
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4381,7 +4544,9 @@
             }
           }
         },
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4430,7 +4595,9 @@
             }
           }
         },
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4501,7 +4668,9 @@
             }
           }
         },
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4523,7 +4692,9 @@
         "operationId": "GetRegions",
         "summary": "List Regions",
         "description": "Retrieves a list of Regions.",
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4570,7 +4741,9 @@
             }
           }
         ],
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4605,7 +4778,9 @@
             }
           }
         ],
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4646,7 +4821,9 @@
             }
           }
         ],
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4726,7 +4903,9 @@
             }
           }
         },
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4761,7 +4940,9 @@
             }
           }
         ],
-        "tags": ["Product"],
+        "tags": [
+          "Product"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4808,7 +4989,9 @@
             }
           }
         ],
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4852,7 +5035,9 @@
             }
           }
         ],
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4896,7 +5081,9 @@
             }
           }
         ],
-        "tags": ["Region"],
+        "tags": [
+          "Region"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4946,7 +5133,9 @@
             }
           }
         },
-        "tags": ["Return Reason"],
+        "tags": [
+          "Return Reason"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4968,7 +5157,9 @@
         "operationId": "GetReturnReasons",
         "summary": "List Return Reasons",
         "description": "Retrieves a list of Return Reasons.",
-        "tags": ["Return Reason"],
+        "tags": [
+          "Return Reason"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5006,7 +5197,9 @@
             }
           }
         ],
-        "tags": ["Return Reason"],
+        "tags": [
+          "Return Reason"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5065,7 +5258,9 @@
             }
           }
         },
-        "tags": ["Return Reason"],
+        "tags": [
+          "Return Reason"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5089,7 +5284,9 @@
         "operationId": "GetReturns",
         "summary": "List Returns",
         "description": "Retrieves a list of Returns",
-        "tags": ["Return"],
+        "tags": [
+          "Return"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5157,7 +5354,9 @@
             }
           }
         },
-        "tags": ["Return"],
+        "tags": [
+          "Return"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5209,7 +5408,10 @@
                   "price_type": {
                     "description": "The type of the Shipping Option price.",
                     "type": "string",
-                    "enum": ["flat_rate", "calculated"]
+                    "enum": [
+                      "flat_rate",
+                      "calculated"
+                    ]
                   },
                   "amount": {
                     "description": "The amount to charge for the Shipping Option.",
@@ -5223,7 +5425,10 @@
                         "type": {
                           "description": "The type of the requirement",
                           "type": "string",
-                          "enum": ["max_subtotal", "min_subtotal"]
+                          "enum": [
+                            "max_subtotal",
+                            "min_subtotal"
+                          ]
                         },
                         "amount": {
                           "description": "The amount to compare with.",
@@ -5241,7 +5446,9 @@
             }
           }
         },
-        "tags": ["Shipping Option"],
+        "tags": [
+          "Shipping Option"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5263,7 +5470,9 @@
         "operationId": "GetShippingOptions",
         "summary": "List Shipping Options",
         "description": "Retrieves a list of Shipping Options.",
-        "tags": ["Shipping Option"],
+        "tags": [
+          "Shipping Option"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5301,7 +5510,9 @@
             }
           }
         ],
-        "tags": ["Shipping Option"],
+        "tags": [
+          "Shipping Option"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5342,7 +5553,9 @@
             }
           }
         ],
-        "tags": ["Shipping Option"],
+        "tags": [
+          "Shipping Option"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5396,7 +5609,10 @@
                         "type": {
                           "description": "The type of the requirement",
                           "type": "string",
-                          "enum": ["max_subtotal", "min_subtotal"]
+                          "enum": [
+                            "max_subtotal",
+                            "min_subtotal"
+                          ]
                         },
                         "amount": {
                           "description": "The amount to compare with.",
@@ -5410,7 +5626,9 @@
             }
           }
         },
-        "tags": ["Shipping Option"],
+        "tags": [
+          "Shipping Option"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5448,7 +5666,9 @@
             }
           }
         },
-        "tags": ["Shipping Profile"],
+        "tags": [
+          "Shipping Profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5470,7 +5690,9 @@
         "operationId": "GetShippingProfiles",
         "summary": "List Shipping Profiles",
         "description": "Retrieves a list of Shipping Profile.",
-        "tags": ["Shipping Profile"],
+        "tags": [
+          "Shipping Profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5508,7 +5730,9 @@
             }
           }
         ],
-        "tags": ["Shipping Profile"],
+        "tags": [
+          "Shipping Profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5549,7 +5773,9 @@
             }
           }
         ],
-        "tags": ["Shipping Profile"],
+        "tags": [
+          "Shipping Profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5596,7 +5822,9 @@
             }
           }
         },
-        "tags": ["Shipping Profile"],
+        "tags": [
+          "Shipping Profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5631,7 +5859,9 @@
             }
           }
         ],
-        "tags": ["Store"],
+        "tags": [
+          "Store"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5664,7 +5894,9 @@
             }
           }
         ],
-        "tags": ["Store"],
+        "tags": [
+          "Store"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5688,7 +5920,9 @@
         "operationId": "GetStore",
         "summary": "Retrieve Store details.",
         "description": "Retrieves the Store details",
-        "tags": ["Store"],
+        "tags": [
+          "Store"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5732,7 +5966,9 @@
             }
           }
         },
-        "tags": ["Store"],
+        "tags": [
+          "Store"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5756,7 +5992,9 @@
         "operationId": "GetStorePaymentProviders",
         "summary": "Retrieve configured Payment Providers",
         "description": "Retrieves the configured Payment Providers",
-        "tags": ["Store"],
+        "tags": [
+          "Store"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5794,7 +6032,9 @@
             }
           }
         ],
-        "tags": ["Swap"],
+        "tags": [
+          "Swap"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5818,7 +6058,9 @@
         "operationId": "GetSwaps",
         "summary": "List Swaps",
         "description": "Retrieves a list of Swaps.",
-        "tags": ["Swap"],
+        "tags": [
+          "Swap"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5845,7 +6087,9 @@
         "operationId": "GetVariants",
         "summary": "List Product Variants",
         "description": "Retrieves a list of Product Variants",
-        "tags": ["Product Variant"],
+        "tags": [
+          "Product Variant"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5980,7 +6224,11 @@
           },
           "type": {
             "type": "string",
-            "enum": ["default", "swap", "payment_link"]
+            "enum": [
+              "default",
+              "swap",
+              "payment_link"
+            ]
           },
           "completed_at": {
             "type": "string",
@@ -6135,11 +6383,18 @@
           },
           "type": {
             "type": "string",
-            "enum": ["refund", "replace"]
+            "enum": [
+              "refund",
+              "replace"
+            ]
           },
           "payment_status": {
             "type": "string",
-            "enum": ["na", "not_refunded", "refunded"]
+            "enum": [
+              "na",
+              "not_refunded",
+              "refunded"
+            ]
           },
           "fulfillment_status": {
             "type": "string",
@@ -6381,7 +6636,11 @@
           "type": {
             "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.",
             "type": "string",
-            "enum": ["fixed", "percentage", "free_shipping"]
+            "enum": [
+              "fixed",
+              "percentage",
+              "free_shipping"
+            ]
           },
           "description": {
             "description": "A short description of the discount",
@@ -6394,7 +6653,10 @@
           "allocation": {
             "description": "The scope that the discount should apply to.",
             "type": "string",
-            "enum": ["total", "item"]
+            "enum": [
+              "total",
+              "item"
+            ]
           },
           "valid_for": {
             "description": "A set of Products that the discount can be used for.",
@@ -6513,7 +6775,10 @@
           },
           "status": {
             "type": "string",
-            "enum": ["open", "completed"]
+            "enum": [
+              "open",
+              "completed"
+            ]
           },
           "display_id": {
             "type": "string"
@@ -7940,7 +8205,13 @@
           "reason": {
             "description": "The reason given for the Refund, will automatically be set when processed as part of a Swap, Claim or Return.",
             "type": "string",
-            "enum": ["discount", "return", "swap", "claim", "other"]
+            "enum": [
+              "discount",
+              "return",
+              "swap",
+              "claim",
+              "other"
+            ]
           },
           "created_at": {
             "description": "The date with timezone at which the resource was created.",
@@ -8134,7 +8405,11 @@
           "status": {
             "description": "Status of the Return.",
             "type": "string",
-            "enum": ["requested", "received", "requires_action"]
+            "enum": [
+              "requested",
+              "received",
+              "requires_action"
+            ]
           },
           "items": {
             "description": "The Return Items that will be shipped back to the warehouse. type: array items: $ref: "
@@ -8259,7 +8534,10 @@
           "type": {
             "description": "The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.",
             "type": "string",
-            "enum": ["min_subtotal", "max_subtotal"]
+            "enum": [
+              "min_subtotal",
+              "max_subtotal"
+            ]
           },
           "amount": {
             "description": "The amount to compare the Cart subtotal to.",
@@ -8303,7 +8581,10 @@
           "price_type": {
             "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
             "type": "string",
-            "enum": ["flat_rate", "calculated"]
+            "enum": [
+              "flat_rate",
+              "calculated"
+            ]
           },
           "amount": {
             "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
@@ -8361,7 +8642,11 @@
           "type": {
             "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
             "type": "string",
-            "enum": ["default", "gift_card", "custom"]
+            "enum": [
+              "default",
+              "gift_card",
+              "custom"
+            ]
           },
           "products": {
             "description": "The Products that the Shipping Profile defines Shipping Options for.",
