@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.38](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.37...@medusajs/medusa@1.1.38) (2021-08-17)
+
+
+### Bug Fixes
+
+* add cross-spawn ([#341](https://github.com/medusajs/medusa/issues/341)) ([8f60f43](https://github.com/medusajs/medusa/commit/8f60f430cc3af7ffccd620cb84ebf8339c2e57d5))
+
+
+
+
+
+## [1.1.37](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.36...@medusajs/medusa@1.1.37) (2021-08-17)
+
+
+### Bug Fixes
+
+* build openapi ([#338](https://github.com/medusajs/medusa/issues/338)) ([9467f7e](https://github.com/medusajs/medusa/commit/9467f7ecbd1df5bcd86a15f3cef3ed5968b34e5b))
+
+
+
+
+
 ## [1.1.36](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.35...@medusajs/medusa@1.1.36) (2021-08-11)
 
 
