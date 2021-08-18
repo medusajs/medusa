@@ -1,6 +1,9 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
+const path = require("path");
+const docsPath = path.join(__dirname, "../../docs/content");
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Medusa Commerce",
@@ -82,8 +85,7 @@ module.exports = {
           items: [
             {
               label: "Stack Overflow",
-              href:
-                "https://stackoverflow.com/questions/tagged/medusa-commerce",
+              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
               label: "Discord",
@@ -128,6 +130,7 @@ module.exports = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           editUrl: "https://github.com/medusajs/medusa/edit/master/www/",
+          path: docsPath,
         },
         // blog: {
         //   showReadingTime: true,
