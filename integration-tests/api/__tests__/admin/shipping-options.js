@@ -108,7 +108,7 @@ describe("/admin/shipping-options", () => {
           },
           {
             type: "max_subtotal",
-            amount: 1,
+            amount: 2,
           },
         ],
       };
@@ -134,7 +134,7 @@ describe("/admin/shipping-options", () => {
         expect.objectContaining({
           type: "max_subtotal",
           shipping_option_id: "test-out",
-          amount: 1,
+          amount: 2,
         })
       );
     });
@@ -154,7 +154,7 @@ describe("/admin/shipping-options", () => {
           {
             id: "really_not_allowed",
             type: "max_subtotal",
-            amount: 1,
+            amount: 2,
           },
         ],
       };
@@ -180,16 +180,14 @@ describe("/admin/shipping-options", () => {
         requirements: [
           {
             id: "option-req",
-            // shipping_option_id: "test-option-req",
             type: "min_subtotal",
             amount: 15,
           },
-          // {
-          //   id: "option-req-2",
-          //   // shipping_option_id: "test-option-req",
-          //   type: "max_subtotal",
-          //   amount: 20,
-          // },
+          {
+            id: "option-req-2",
+            type: "max_subtotal",
+            amount: 20,
+          },
         ],
         amount: 200,
       };
@@ -204,10 +202,100 @@ describe("/admin/shipping-options", () => {
           console.log(err.response.data.message);
         });
 
-      // console.error(res.data);
+      expect(res.status).toEqual(200);
+    });
 
-      // expect(res.status).toEqual(200);
-      // console.error(res);
+    it("it succesfully updates a set of existing requirements by updating one and deleting the other", async () => {
+      const api = useApi();
+
+      const payload = {
+        requirements: [
+          {
+            id: "option-req",
+            type: "min_subtotal",
+            amount: 15,
+          },
+        ],
+      };
+
+      const res = await api
+        .post(`/admin/shipping-options/test-option-req`, payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+        });
+
+      expect(res.status).toEqual(200);
+    });
+
+    it("succesfully updates a set of requirements because max. subtotal >= min. subtotal", async () => {
+      const api = useApi();
+
+      const payload = {
+        requirements: [
+          {
+            id: "option-req",
+            type: "min_subtotal",
+            amount: 150,
+          },
+          {
+            id: "option-req-2",
+            type: "max_subtotal",
+            amount: 200,
+          },
+        ],
+      };
+
+      const res = await api
+        .post(`/admin/shipping-options/test-option-req`, payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+        });
+
+      expect(res.status).toEqual(200);
+      expect(res.data.shipping_option.requirements[0].amount).toEqual(150);
+      expect(res.data.shipping_option.requirements[1].amount).toEqual(200);
+    });
+
+    it("fails to updates a set of requirements because max. subtotal <= min. subtotal", async () => {
+      const api = useApi();
+
+      const payload = {
+        requirements: [
+          {
+            id: "option-req",
+            type: "min_subtotal",
+            amount: 1500,
+          },
+          {
+            id: "option-req-2",
+            type: "max_subtotal",
+            amount: 200,
+          },
+        ],
+      };
+
+      const res = await api
+        .post(`/admin/shipping-options/test-option-req`, payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          return err.response;
+        });
+
+      expect(res.status).toEqual(400);
+      expect(res.data.message).toEqual(
+        "Max. subtotal must be greater than Min. subtotal"
+      );
     });
   });
 });
