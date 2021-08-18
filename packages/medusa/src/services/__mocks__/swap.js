@@ -11,7 +11,13 @@ export const SwapServiceMock = {
     return Promise.resolve()
   }),
   retrieve: jest.fn().mockImplementation(data => {
-    return Promise.resolve({ id: "test-swap" })
+    return Promise.resolve({ id: IdMap.getId("test-swap") })
+  }),
+  list: jest.fn().mockImplementation((...args) => {
+    return Promise.resolve([
+      { id: IdMap.getId("test-swap") },
+      { id: IdMap.getId("test-swap-1") },
+    ])
   }),
 }
 

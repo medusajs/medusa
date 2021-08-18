@@ -5,16 +5,11 @@ import {
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  RelationId,
   PrimaryColumn,
-  OneToOne,
   OneToMany,
-  ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
 import { Product } from "./product"
@@ -33,7 +28,7 @@ export class ShippingProfile {
   @Column()
   name: string
 
-  @Column({ type: "enum", enum: ShippingProfileType })
+  @DbAwareColumn({ type: "enum", enum: ShippingProfileType })
   type: ShippingProfileType
 
   @OneToMany(
@@ -48,16 +43,16 @@ export class ShippingProfile {
   )
   shipping_options: ShippingOption[]
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()

@@ -1,10 +1,9 @@
-const { dropDatabase } = require("pg-god");
 const path = require("path");
-const { Region } = require("@medusajs/medusa");
+const { Region, LineItem, GiftCard } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
-const { initDb } = require("../../../helpers/use-db");
+const { initDb, useDb } = require("../../../helpers/use-db");
 
 const cartSeeder = require("../../helpers/cart-seeder");
 
@@ -14,18 +13,9 @@ describe("/store/carts", () => {
   let medusaProcess;
   let dbConnection;
 
-  const doAfterEach = async (manager) => {
-    await manager.query(`DELETE FROM "discount"`);
-    await manager.query(`DELETE FROM "discount_rule"`);
-    await manager.query(`DELETE FROM "shipping_method"`);
-    await manager.query(`DELETE FROM "shipping_option"`);
-    await manager.query(`DELETE FROM "cart"`);
-    await manager.query(`DELETE FROM "address"`);
-    await manager.query(`DELETE FROM "customer"`);
-    await manager.query(
-      `UPDATE "country" SET region_id=NULL WHERE iso_2 = 'us'`
-    );
-    await manager.query(`DELETE FROM "region"`);
+  const doAfterEach = async () => {
+    const db = useDb();
+    return await db.teardown();
   };
 
   beforeAll(async () => {
@@ -35,9 +25,8 @@ describe("/store/carts", () => {
   });
 
   afterAll(async () => {
-    dbConnection.close();
-    await dropDatabase({ databaseName: "medusa-integration" });
-
+    const db = useDb();
+    await db.shutdown();
     medusaProcess.kill();
   });
 
@@ -56,8 +45,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("creates a cart", async () => {
@@ -115,8 +103,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("fails on apply discount if limit has been reached", async () => {
@@ -204,6 +191,187 @@ describe("/store/carts", () => {
       expect(cart.data.cart.shipping_total).toBe(1000);
       expect(cart.status).toEqual(200);
     });
+
+    it("complete cart with giftcard total 0", async () => {
+      const manager = dbConnection.manager;
+      await manager.insert(GiftCard, {
+        id: "gift_test",
+        code: "GC_TEST",
+        value: 20000,
+        balance: 20000,
+        region_id: "test-region",
+      });
+
+      const api = useApi();
+
+      await api.post(`/store/carts/test-cart-3`, {
+        gift_cards: [{ code: "GC_TEST" }],
+      });
+
+      const getRes = await api
+        .post(`/store/carts/test-cart-3/complete`)
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+
+      expect(getRes.status).toEqual(200);
+      expect(getRes.data.type).toEqual("order");
+    });
+
+    it("complete cart with items inventory covered", async () => {
+      const api = useApi();
+      const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`);
+
+      expect(getRes.status).toEqual(200);
+
+      const variantRes = await api.get("/store/variants/test-variant");
+      expect(variantRes.data.variant.inventory_quantity).toEqual(0);
+    });
+
+    it("returns early, if cart is already completed", async () => {
+      const manager = dbConnection.manager;
+      const api = useApi();
+      await manager.query(
+        `UPDATE "cart" SET completed_at=current_timestamp WHERE id = 'test-cart-2'`
+      );
+      try {
+        await api.post(`/store/carts/test-cart-2/complete-cart`);
+      } catch (error) {
+        expect(error.response.data).toMatchSnapshot({
+          code: "not_allowed",
+          message: "Cart has already been completed",
+          code: "cart_incompatible_state",
+        });
+        expect(error.response.status).toEqual(409);
+      }
+    });
+
+    it("fails to complete cart with items inventory not/partially covered", async () => {
+      const manager = dbConnection.manager;
+
+      const li = manager.create(LineItem, {
+        id: "test-item",
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 99,
+        variant_id: "test-variant-2",
+        cart_id: "test-cart-2",
+      });
+      await manager.save(li);
+
+      const api = useApi();
+
+      try {
+        await api.post(`/store/carts/test-cart-2/complete-cart`);
+      } catch (e) {
+        expect(e.response.data).toMatchSnapshot({
+          code: "insufficient_inventory",
+        });
+        expect(e.response.status).toBe(409);
+      }
+
+      //check to see if payment has been cancelled
+      const res = await api.get(`/store/carts/test-cart-2`);
+      expect(res.data.cart.payment.canceled_at).not.toBe(null);
+    });
+  });
+
+  describe("POST /store/carts/:id/shipping-methods", () => {
+    beforeEach(async () => {
+      await cartSeeder(dbConnection);
+    });
+
+    afterEach(async () => {
+      await doAfterEach();
+    });
+
+    it("adds a shipping method to cart", async () => {
+      const api = useApi();
+
+      const cartWithShippingMethod = await api.post(
+        "/store/carts/test-cart/shipping-methods",
+        {
+          option_id: "test-option",
+        },
+        { withCredentials: true }
+      );
+
+      expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
+        expect.objectContaining({ shipping_option_id: "test-option" })
+      );
+      expect(cartWithShippingMethod.status).toEqual(200);
+    });
+
+    it("adds a giftcard to cart, but ensures discount only applied to discountable items", async () => {
+      const api = useApi();
+
+      // Add standard line item to cart
+      await api.post(
+        "/store/carts/test-cart/line-items",
+        {
+          variant_id: "test-variant",
+          quantity: 1,
+        },
+        { withCredentials: true }
+      );
+
+      // Add gift card to cart
+      await api.post(
+        "/store/carts/test-cart/line-items",
+        {
+          variant_id: "giftcard-denom",
+          quantity: 1,
+        },
+        { withCredentials: true }
+      );
+
+      // Add a 10% discount to the cart
+      const cartWithGiftcard = await api.post(
+        "/store/carts/test-cart",
+        {
+          discounts: [{ code: "10PERCENT" }],
+        },
+        { withCredentials: true }
+      );
+
+      // Ensure that the discount is only applied to the standard item
+      expect(cartWithGiftcard.data.cart.total).toBe(1900); // 1000 (giftcard) + 900 (standard item with 10% discount)
+      expect(cartWithGiftcard.data.cart.discount_total).toBe(100);
+      expect(cartWithGiftcard.status).toEqual(200);
+    });
+
+    it("adds no more than 1 shipping method per shipping profile", async () => {
+      const api = useApi();
+      const addShippingMethod = async (option_id) => {
+        return await api.post(
+          "/store/carts/test-cart/shipping-methods",
+          {
+            option_id,
+          },
+          { withCredentials: true }
+        );
+      };
+
+      await addShippingMethod("test-option");
+      const cartWithAnotherShippingMethod = await addShippingMethod(
+        "test-option-2"
+      );
+
+      expect(
+        cartWithAnotherShippingMethod.data.cart.shipping_methods.length
+      ).toEqual(1);
+      expect(
+        cartWithAnotherShippingMethod.data.cart.shipping_methods
+      ).toContainEqual(
+        expect.objectContaining({
+          shipping_option_id: "test-option-2",
+          price: 500,
+        })
+      );
+      expect(cartWithAnotherShippingMethod.status).toEqual(200);
+    });
   });
 
   describe("DELETE /store/carts/:id/discounts/:code", () => {
@@ -220,8 +388,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("removes free shipping and updates shipping total", async () => {
@@ -258,8 +425,7 @@ describe("/store/carts", () => {
     });
 
     afterEach(async () => {
-      const manager = dbConnection.manager;
-      await doAfterEach(manager);
+      await doAfterEach();
     });
 
     it("updates empty cart.customer_id on cart retrieval", async () => {

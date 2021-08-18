@@ -16,6 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 import { FulfillmentProvider } from "./fulfillment-provider"
@@ -62,7 +63,7 @@ export class Fulfillment {
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
   @Index()
@@ -87,25 +88,25 @@ export class Fulfillment {
   )
   tracking_links: TrackingLink[]
 
-  @Column({ type: "jsonb", default: [] })
+  @DbAwareColumn({ type: "jsonb", default: [] })
   tracking_numbers: string[]
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   shipped_at: Date
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

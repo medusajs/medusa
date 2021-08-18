@@ -12,6 +12,10 @@ const SideBarContainer = styled(Flex)`
   @media screen and (min-width: 1680px) {
     --side-bar-width: 280px;
   }
+
+  @media screen and (max-width: 848px) {
+    display: none;
+  }
 `
 
 const SideBarFade = styled(Box)`

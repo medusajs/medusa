@@ -1,4 +1,6 @@
-import { spawn, execSync } from "child_process"
+import path from "path"
+import { execSync } from "child_process"
+import spawn from "cross-spawn"
 import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
@@ -9,12 +11,14 @@ export default async function({ port, directory }) {
   args.shift()
   args.shift()
 
-  execSync("babel src -d dist", {
+  const babelPath = path.join(directory, "node_modules", ".bin", "babel")
+  execSync(`${babelPath} src -d dist`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  let child = spawn("medusa", [`start`, ...args], {
+  const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
+  let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
     env: process.env,
     stdio: ["pipe", process.stdout, process.stderr],
@@ -25,14 +29,14 @@ export default async function({ port, directory }) {
     Logger.info(`${f} changed: restarting...`)
     child.kill("SIGINT")
 
-    execSync(`babel src -d dist`, {
+    execSync(`${babelPath} src -d dist`, {
       cwd: directory,
       stdio: ["pipe", process.stdout, process.stderr],
     })
 
     Logger.info("Rebuilt")
 
-    child = spawn("medusa", [`start`, ...args], {
+    child = spawn(cliPath, [`start`, ...args], {
       cwd: directory,
       env: process.env,
       stdio: ["pipe", process.stdout, process.stderr],

@@ -8,8 +8,8 @@ import NavigationContext from "../context/navigation-context"
 export default function ReferencePage({
   pageContext: { data, api, title, description, to },
 }) {
-  const { setApi, goTo, metaData } = useContext(NavigationContext)
-  const [metadata, setMetadata] = useState({
+  const { setApi, goTo, metadata } = useContext(NavigationContext)
+  const [siteData, setSiteData] = useState({
     title: title,
     description: description,
   })
@@ -17,28 +17,27 @@ export default function ReferencePage({
   useEffect(() => {
     setApi(api)
     if (to) {
-      console.log(to)
       goTo(to)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if (metaData) {
-      setMetadata({
-        title: metaData.title,
-        description: metaData.description,
+    if (metadata) {
+      setSiteData({
+        title: metadata.title,
+        description: metadata.description,
       })
     }
-  }, [metaData])
+  }, [metadata])
 
   return (
     <Layout data={data} api={api}>
       <Helmet>
-        <title>{`${metadata.title} | Medusa Commerce API Reference`}</title>
-        <meta name="description" content={metadata.description} />
+        <title>{`${siteData.title} | Medusa Commerce API Reference`}</title>
+        <meta name="description" content={siteData.description} />
       </Helmet>
-      <Content data={data} />
+      <Content data={data} api={api} />
     </Layout>
   )
 }

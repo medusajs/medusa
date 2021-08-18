@@ -39,6 +39,7 @@ class OrderService extends BaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
+    inventoryService,
     eventBusService,
   }) {
     super()
@@ -93,6 +94,9 @@ class OrderService extends BaseService {
 
     /** @private @constant {DraftOrderService} */
     this.draftOrderService_ = draftOrderService
+
+    /** @private @constant {InventoryService} */
+    this.inventoryService_ = inventoryService
   }
 
   withTransaction(manager) {
@@ -118,6 +122,7 @@ class OrderService extends BaseService {
       giftCardService: this.giftCardService_,
       addressRepository: this.addressRepository_,
       draftOrderService: this.draftOrderService_,
+      inventoryService: this.inventoryService_,
     })
 
     cloned.transactionManager_ = manager
@@ -287,6 +292,7 @@ class OrderService extends BaseService {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("swaps")
+      relationSet.add("swaps.additional_items")
       relationSet.add("discounts")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
@@ -450,15 +456,31 @@ class OrderService extends BaseService {
         )
       }
 
+      const { payment, region, total } = cart
+
+      for (const item of cart.items) {
+        try {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .confirmInventory(item.variant_id, item.quantity)
+        } catch (err) {
+          if (payment) {
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .cancelPayment(payment)
+          }
+          throw err
+        }
+      }
+
       const exists = await this.existsByCartId(cart.id)
       if (exists) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
+          MedusaError.Types.DUPLICATE_ERROR,
           "Order from cart already exists"
         )
       }
 
-      const { payment, region, total } = cart
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
@@ -514,11 +536,13 @@ class OrderService extends BaseService {
 
       const result = await orderRepo.save(o)
 
-      await this.paymentProviderService_
-        .withTransaction(manager)
-        .updatePayment(payment.id, {
-          order_id: result.id,
-        })
+      if (total !== 0) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .updatePayment(payment.id, {
+            order_id: result.id,
+          })
+      }
 
       let gcBalance = cart.subtotal
       for (const g of cart.gift_cards) {
@@ -548,6 +572,12 @@ class OrderService extends BaseService {
         await this.lineItemService_
           .withTransaction(manager)
           .update(item.id, { order_id: result.id })
+      }
+
+      for (const item of cart.items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(item.variant_id, -item.quantity)
       }
 
       await this.eventBus_
@@ -863,7 +893,7 @@ class OrderService extends BaseService {
   async cancel(orderId) {
     return this.atomicPhase_(async manager => {
       const order = await this.retrieve(orderId, {
-        relations: ["fulfillments", "payments"],
+        relations: ["fulfillments", "payments", "items"],
       })
 
       if (order.payment_status !== "awaiting") {
@@ -880,6 +910,12 @@ class OrderService extends BaseService {
             .cancelFulfillment(fulfillment)
         )
       )
+
+      for (const item of order.items) {
+        await this.inventoryService_
+          .withTransaction(manager)
+          .adjustInventory(item.variant_id, item.quantity)
+      }
 
       for (const p of order.payments) {
         await this.paymentProviderService_

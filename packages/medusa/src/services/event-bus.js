@@ -20,7 +20,10 @@ class EventBusService {
           case "subscriber":
             return redisSubscriber
           default:
-            return new Redis(config.projectConfig.redis_url)
+            if (config.projectConfig.redis_url) {
+              return new Redis(config.projectConfig.redis_url)
+            }
+            return redisClient
         }
       },
     }

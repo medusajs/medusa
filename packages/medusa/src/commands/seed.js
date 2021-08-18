@@ -4,6 +4,7 @@ import express from "express"
 import { createConnection } from "typeorm"
 import { sync as existsSync } from "fs-exists-cached"
 import { getConfigFile } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
 
 import Logger from "../loaders/logger"
 import loaders from "../loaders"
@@ -11,6 +12,7 @@ import loaders from "../loaders"
 import getMigrations from "./utils/get-migrations"
 
 const t = async function({ directory, migrate, seedFile }) {
+  track("CLI_SEED")
   let resolvedPath = seedFile
 
   // If we are already given an absolute path we can skip resolution step
@@ -25,11 +27,13 @@ const t = async function({ directory, migrate, seedFile }) {
     }
   }
 
-  if (migrate) {
+  const { configModule } = getConfigFile(directory, `medusa-config`)
+  const dbType = configModule.projectConfig.database_type
+  if (migrate && dbType !== "sqlite") {
     const migrationDirs = getMigrations(directory)
-    const { configModule } = getConfigFile(directory, `medusa-config`)
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
+      database: configModule.projectConfig.database_database,
       url: configModule.projectConfig.database_url,
       extra: configModule.projectConfig.database_extra || {},
       migrations: migrationDirs,
@@ -138,6 +142,8 @@ const t = async function({ directory, migrate, seedFile }) {
       }
     }
   })
+
+  track("CLI_SEED_COMPLETED")
 }
 
 export default t

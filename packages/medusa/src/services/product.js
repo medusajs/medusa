@@ -288,6 +288,11 @@ class ProductService extends BaseService {
         rest.thumbnail = images[0]
       }
 
+      // if product is a giftcard, we should disallow discounts
+      if (rest.is_giftcard) {
+        rest.discountable = false
+      }
+
       let product = productRepo.create(rest)
 
       if (images && images.length) {
@@ -492,7 +497,7 @@ class ProductService extends BaseService {
 
       if (product.options.find(o => o.title === optionTitle)) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.DUPLICATE_ERROR,
           `An option with the title: ${optionTitle} already exists`
         )
       }
@@ -631,7 +636,7 @@ class ProductService extends BaseService {
       if (!productOption) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Option with id: ${optionId} deos not exists`
+          `Option with id: ${optionId} does not exists`
         )
       }
 

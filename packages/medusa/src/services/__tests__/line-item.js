@@ -13,6 +13,9 @@ describe("LineItemService", () => {
     })
 
     const regionService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-region"),
@@ -21,6 +24,9 @@ describe("LineItemService", () => {
     }
 
     const productVariantService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: query => {
         if (query === IdMap.getId("test-giftcard")) {
           return {
@@ -30,6 +36,7 @@ describe("LineItemService", () => {
               title: "Test product",
               thumbnail: "",
               is_giftcard: true,
+              discountable: false,
             },
           }
         }

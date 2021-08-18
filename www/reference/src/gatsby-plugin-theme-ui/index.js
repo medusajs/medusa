@@ -9,6 +9,17 @@ import labels from "./labels"
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  sizes: {
+    headerHeight: "50px",
+  },
+  links: {
+    topbar: {
+      fontFamily: "body",
+      fontSize: "2",
+      textDecoration: "none",
+      color: "dark",
+    },
+  },
   text: {
     labels,
     largest: {

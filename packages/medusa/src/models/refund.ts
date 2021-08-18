@@ -11,6 +11,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 import { Cart } from "./cart"
@@ -46,16 +47,16 @@ export class Refund {
   @Column({ nullable: true })
   note: string
 
-  @Column({ type: "enum", enum: RefundReason })
+  @DbAwareColumn({ type: "enum", enum: RefundReason })
   reason: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

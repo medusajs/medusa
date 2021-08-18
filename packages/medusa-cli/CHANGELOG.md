@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.16](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.15...@medusajs/medusa-cli@1.1.16) (2021-08-17)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
+
+
+
+
+## [1.1.15](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.14...@medusajs/medusa-cli@1.1.15) (2021-08-05)
+
+
+### Bug Fixes
+
+* canary assist ([b988b67](https://github.com/medusajs/medusa/commit/b988b67118553c88ef6c6d53ae99ef1ad9d67305))
+
+
+### Features
+
+* medusa-telemetry ([#328](https://github.com/medusajs/medusa/issues/328)) ([cfe19f7](https://github.com/medusajs/medusa/commit/cfe19f7f9d3bb17425348362b148a0b4b7a649ef))
+
+
+
+
+
+## [1.1.14](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.13...@medusajs/medusa-cli@1.1.14) (2021-07-26)
+
+
+### Features
+
+* CLI + local linking ([#313](https://github.com/medusajs/medusa/issues/313)) ([f4a7138](https://github.com/medusajs/medusa/commit/f4a7138a5888e69e19bebe8f4962afc42e9a945d)), closes [#320](https://github.com/medusajs/medusa/issues/320)
+
+
+
+
+
 ## [1.1.13](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.11...@medusajs/medusa-cli@1.1.13) (2021-07-15)
 
 **Note:** Version bump only for package @medusajs/medusa-cli
