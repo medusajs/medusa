@@ -455,6 +455,20 @@ class ShippingOptionService extends BaseService {
             )
           }
 
+          if (
+            acc.find(
+              raw =>
+                (raw.type === "max_subtotal" &&
+                  validated.amount > raw.amount) ||
+                (raw.type === "min_subtotal" && validated.amount < raw.amount)
+            )
+          ) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Max. subtotal must be greater than Min. subtotal"
+            )
+          }
+
           acc.push(validated)
         }
         option.requirements = acc
@@ -483,13 +497,16 @@ class ShippingOptionService extends BaseService {
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      try {
-        const result = await optionRepo.save(option)
-        return result
-      } catch (err) {
-        throw new Error(JSON.stringify({ option }))
-      }
-      // return result
+      /**
+       * ERROR: When trying to update with a single requirement (meaning that if there
+       * was previously two, there should now only be one) it fails with the following
+       * Postgres/TypeOrm error "null value in column 'shipping_option_id' of relation
+       * 'shipping_option_requirement' violates not-null constraint". I have tried to
+       * perform a remove on the requirement that should no longer be used, using the
+       * requirementRepo, before saving the option but the error still occurs.
+       */
+      const result = await optionRepo.save(option)
+      return result
     })
   }
 
