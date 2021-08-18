@@ -1,5 +1,10 @@
 const path = require("path");
-const { Region, ShippingProfile, ShippingOption } = require("@medusajs/medusa");
+const {
+  Region,
+  ShippingProfile,
+  ShippingOption,
+  ShippingOptionRequirement,
+} = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
 const { useApi } = require("../../../helpers/use-api");
@@ -38,13 +43,6 @@ describe("/admin/shipping-options", () => {
           tax_rate: 0,
         });
 
-        await manager.insert(Region, {
-          id: "region2",
-          name: "Test Region 2",
-          currency_code: "usd",
-          tax_rate: 0,
-        });
-
         const defaultProfile = await manager.findOne(ShippingProfile, {
           type: "default",
         });
@@ -55,7 +53,6 @@ describe("/admin/shipping-options", () => {
           profile_id: defaultProfile.id,
           region_id: "region",
           provider_id: "test-ful",
-          requirements: [],
           data: {},
           price_type: "flat_rate",
           amount: 2000,
@@ -63,29 +60,29 @@ describe("/admin/shipping-options", () => {
         });
 
         await manager.insert(ShippingOption, {
-          id: "test-return",
-          name: "Test ret",
+          id: "test-option-req",
+          name: "With req",
           profile_id: defaultProfile.id,
           region_id: "region",
           provider_id: "test-ful",
-          requirements: [],
           data: {},
           price_type: "flat_rate",
-          amount: 1000,
-          is_return: true,
+          amount: 2000,
+          is_return: false,
         });
 
-        await manager.insert(ShippingOption, {
-          id: "test-region2",
-          name: "Test region 2",
-          profile_id: defaultProfile.id,
-          region_id: "region2",
-          provider_id: "test-ful",
-          requirements: [],
-          data: {},
-          price_type: "flat_rate",
-          amount: 1000,
-          is_return: false,
+        await manager.insert(ShippingOptionRequirement, {
+          id: "option-req",
+          shipping_option_id: "test-option-req",
+          type: "min_subtotal",
+          amount: 5,
+        });
+
+        await manager.insert(ShippingOptionRequirement, {
+          id: "option-req-2",
+          shipping_option_id: "test-option-req",
+          type: "max_subtotal",
+          amount: 10,
         });
       } catch (err) {
         console.error(err);
@@ -106,12 +103,56 @@ describe("/admin/shipping-options", () => {
         amount: 100,
         requirements: [
           {
-            id: "yes",
             type: "min_subtotal",
             amount: 1,
           },
           {
-            id: "yes_1",
+            type: "max_subtotal",
+            amount: 1,
+          },
+        ],
+      };
+
+      const res = await api.post(`/admin/shipping-options/test-out`, payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      });
+
+      const requirements = res.data.shipping_option.requirements;
+
+      expect(res.status).toEqual(200);
+      expect(requirements.length).toEqual(2);
+      expect(requirements[0]).toEqual(
+        expect.objectContaining({
+          type: "min_subtotal",
+          shipping_option_id: "test-out",
+          amount: 1,
+        })
+      );
+      expect(requirements[1]).toEqual(
+        expect.objectContaining({
+          type: "max_subtotal",
+          shipping_option_id: "test-out",
+          amount: 1,
+        })
+      );
+    });
+
+    it("fails as it is not allowed to set id from client side", async () => {
+      const api = useApi();
+
+      const payload = {
+        name: "Test option",
+        amount: 100,
+        requirements: [
+          {
+            id: "not_allowed",
+            type: "min_subtotal",
+            amount: 1,
+          },
+          {
+            id: "really_not_allowed",
             type: "max_subtotal",
             amount: 1,
           },
@@ -125,25 +166,48 @@ describe("/admin/shipping-options", () => {
           },
         })
         .catch((err) => {
-          console.error(err);
+          return err.response;
         });
 
-      const requirements = res.data.shipping_option.requirements;
+      expect(res.status).toEqual(400);
+      expect(res.data.message).toEqual("ID does not exist");
+    });
 
-      expect(res.status).toEqual(200);
-      expect(requirements.length).toEqual(2);
-      expect(requirements[0]).toEqual({
-        id: "yes",
-        type: "min_subtotal",
-        shipping_option_id: "test-out",
-        amount: 1,
-      });
-      expect(requirements[1]).toEqual({
-        id: "yes_1",
-        type: "max_subtotal",
-        shipping_option_id: "test-out",
-        amount: 1,
-      });
+    it("it succesfully updates a set of existing requirements", async () => {
+      const api = useApi();
+
+      const payload = {
+        requirements: [
+          {
+            id: "option-req",
+            // shipping_option_id: "test-option-req",
+            type: "min_subtotal",
+            amount: 15,
+          },
+          // {
+          //   id: "option-req-2",
+          //   // shipping_option_id: "test-option-req",
+          //   type: "max_subtotal",
+          //   amount: 20,
+          // },
+        ],
+        amount: 200,
+      };
+
+      const res = await api
+        .post(`/admin/shipping-options/test-option-req`, payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+        });
+
+      // console.error(res.data);
+
+      // expect(res.status).toEqual(200);
+      // console.error(res);
     });
   });
 });
