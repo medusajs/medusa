@@ -1,11 +1,14 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
+const path = require("path");
+const docsPath = path.join(__dirname, "../../docs/content");
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Medusa Commerce",
   tagline: "Explore and learn how to use Medusa",
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://docs.medusa-commerce.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -13,6 +16,7 @@ module.exports = {
   organizationName: "medusajs", // Usually your GitHub org/user name.
   projectName: "medusajs/www", // Usually your repo name.
   themeConfig: {
+    disableSwitch: true,
     algolia: {
       apiKey: "YOUR_API_KEY",
       indexName: "YOUR_INDEX_NAME",
@@ -35,7 +39,7 @@ module.exports = {
       logo: {
         alt: "Medusa Commerce",
         src: "img/logo.svg",
-        srcDark: "img/logo_dark.svg",
+        srcDark: "img/logo.svg",
       },
       items: [
         {
@@ -44,7 +48,7 @@ module.exports = {
         },
         {
           type: "doc",
-          docId: "tutorials/overview",
+          docId: "tutorials/set-up-your-development-environment",
           position: "right",
           label: "Tutorial",
         },
@@ -53,7 +57,6 @@ module.exports = {
           position: "right",
           label: "API Reference",
         },
-        // { to: "/blog", label: "Blog", position: "left" },
         {
           className: "navbar-github-link",
           href: "https://github.com/medusajs/medusa/",
@@ -82,8 +85,7 @@ module.exports = {
           items: [
             {
               label: "Stack Overflow",
-              href:
-                "https://stackoverflow.com/questions/tagged/medusa-commerce",
+              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
               label: "Discord",
@@ -108,7 +110,7 @@ module.exports = {
             },
             {
               label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              href: "https://github.com/medusajs/medusa",
             },
           ],
         },
@@ -117,7 +119,7 @@ module.exports = {
     },
     prism: {
       theme: darkCodeTheme,
-      darkTheme: darkCodeTheme,
+      // darkTheme: darkCodeTheme,
     },
   },
   presets: [
@@ -126,15 +128,10 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
           editUrl: "https://github.com/medusajs/medusa/edit/master/www/",
+          path: docsPath,
+          routeBasePath: "/",
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   editUrl:
-        //     "https://github.com/facebook/docusaurus/edit/master/website/blog/",
-        // },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
