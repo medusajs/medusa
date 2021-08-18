@@ -85,7 +85,6 @@ export default async (req, res) => {
 
     res.status(200).json({ shipping_option: data })
   } catch (err) {
-    console.error("Error object: ", err)
     throw err
   }
 }

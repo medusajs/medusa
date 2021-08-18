@@ -92,19 +92,27 @@ class ShippingOptionService extends BaseService {
       where: { id: requirement.id },
     })
 
+    if (!existingReq && requirement.id) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "ID does not exist")
+    }
+
     let req
     if (existingReq) {
-      req = await reqRepo.save({
-        ...existingReq,
-        ...requirement,
-      })
+      // throw new Error(JSON.stringify({ ...existingReq, ...requirement }))
+      try {
+        req = await reqRepo.save({
+          ...existingReq,
+          ...requirement,
+        })
+      } catch (err) {
+        return { message: "error here" }
+      }
     } else {
       req = await reqRepo.create({
         shipping_option_id: optionId,
         ...requirement,
       })
     }
-
     return req
   }
 
@@ -475,8 +483,13 @@ class ShippingOptionService extends BaseService {
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const result = await optionRepo.save(option)
-      return result
+      try {
+        const result = await optionRepo.save(option)
+        return result
+      } catch (err) {
+        throw new Error(JSON.stringify({ option }))
+      }
+      // return result
     })
   }
 
