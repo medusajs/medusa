@@ -8,8 +8,8 @@ const docsPath = path.join(__dirname, "../../docs/content");
 module.exports = {
   title: "Medusa Commerce",
   tagline: "Explore and learn how to use Medusa",
-  url: "https://your-docusaurus-test-site.com",
-  baseUrl: "https://laughing-cori-67ba88.netlify.app",
+  url: "https://laughing-cori-67ba88.netlify.app",
+  baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
@@ -47,12 +47,12 @@ module.exports = {
         },
         {
           type: "doc",
-          docId: "tutorials/overview",
+          docId: "tutorials/set-up-your-development-environment",
           position: "right",
           label: "Tutorial",
         },
         {
-          href: "http://localhost:8000/api/store",
+          href: "https://laughing-cori-67ba88.netlify.app/api/store",
           position: "right",
           label: "API Reference",
         },
@@ -72,11 +72,7 @@ module.exports = {
           items: [
             {
               label: "Tutorials",
-              to: "/tutorials/overview",
-            },
-            {
-              label: "Guides",
-              to: "/guides/overview",
+              to: "/tutorials/set-up-your-development-environment",
             },
           ],
         },
@@ -85,7 +81,8 @@ module.exports = {
           items: [
             {
               label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
+              href:
+                "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
               label: "Discord",
@@ -110,7 +107,7 @@ module.exports = {
             },
             {
               label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              href: "https://github.com/medusajs/medusa",
             },
           ],
         },
@@ -131,6 +128,7 @@ module.exports = {
           // Please change this to your repo.
           editUrl: "https://github.com/medusajs/medusa/edit/master/www/",
           path: docsPath,
+          routeBasePath: "/",
         },
         // blog: {
         //   showReadingTime: true,

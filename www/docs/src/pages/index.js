@@ -24,7 +24,7 @@ export default function Home() {
         <Banner />
         <Intro
           title="Explore and learn how to use Medusa."
-          desc="Get up and running within 5 minutes, with helpful starters that lay the foundation for growth."
+          desc="Get up and running within 5 minutes."
         />
         <TabsPanel items={CARDS_DATA} />
       </div>
