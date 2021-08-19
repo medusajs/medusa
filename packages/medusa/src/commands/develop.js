@@ -1,5 +1,6 @@
 import path from "path"
-import { spawn, execSync } from "child_process"
+import { execSync } from "child_process"
+import spawn from "cross-spawn"
 import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
@@ -28,7 +29,7 @@ export default async function({ port, directory }) {
     Logger.info(`${f} changed: restarting...`)
     child.kill("SIGINT")
 
-    execSync(`./node_modules/.bin/babel src -d dist`, {
+    execSync(`${babelPath} src -d dist`, {
       cwd: directory,
       stdio: ["pipe", process.stdout, process.stderr],
     })
