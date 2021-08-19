@@ -12,3 +12,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+.cardContent p {
+  font-size: 18px;
+}

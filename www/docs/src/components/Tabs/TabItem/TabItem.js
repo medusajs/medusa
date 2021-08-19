@@ -8,7 +8,7 @@ const TabItem = ({ title, isOverviewCard, items }) => {
     <div className="col col--4 padding-right--md padding-bottom--md">
       <div className={styles.card}>
         <div className={styles.cardContent}>
-          <p>{title}</p>
+          <h3>{title}</h3>
           <div>{isOverviewCard && overviewModeList()}</div>
         </div>
       </div>

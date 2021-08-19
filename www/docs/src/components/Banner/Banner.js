@@ -43,9 +43,9 @@ const Banner = (props) => {
               would love to jump on a call with you and help you get set up!
             </p>
           </div>
-          <div style={{ cursor: "pointer" }} onClick={handleDismissBanner}>
+          {/* <div style={{ cursor: "pointer" }} onClick={handleDismissBanner}>
             <CloseIcon fill={isDarkTheme ? "white" : "black"} />
-          </div>
+          </div> */}
         </div>
       </div>
     )

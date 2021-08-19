@@ -1,4 +1,5 @@
 import React from "react";
+import { groupBy } from "lodash";
 import { Banner } from "../components/Banner/";
 import { Intro } from "../components/Intro/";
 import { Layout } from "../components/Layout/";
@@ -14,12 +15,6 @@ const CARDS_DATA = [
 ];
 
 export default function Home() {
-  const data = useGlobalData();
-
-  const content = data["docusaurus-plugin-content-docs"][
-    "default"
-  ].versions.find((v) => v.isLast);
-
   return (
     <Layout title={`Docs`} description="some description...">
       <div className={styles.container}>
@@ -28,7 +23,7 @@ export default function Home() {
           title="Explore and learn how to use Medusa."
           desc="Get up and running within 5 minutes."
         />
-        <TabsPanel items={CARDS_DATA} />
+        {/* <TabsPanel items={CARDS_DATA} /> */}
       </div>
     </Layout>
   );

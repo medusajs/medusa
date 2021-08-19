@@ -6,7 +6,7 @@
   border-radius: 5px;
 }
 
-.bannerContainer img {
+.bannerContainer svg {
   max-width: 100px;
   margin-left: 15px;
 }
