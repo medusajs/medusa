@@ -1,14 +1,17 @@
-import { Flex, Box, Link, Select } from "@theme-ui/components"
-import React, { useContext } from "react"
+import { Flex, Link, Select } from "@theme-ui/components"
+import React, { useContext, useEffect, useState } from "react"
+import { convertToKebabCase } from "../utils/convert-to-kebab-case"
+import ChevronDown from "./icons/chevron-down"
 import { navigate } from "gatsby-link"
+import { DocSearch } from "@docsearch/react"
+import "../medusa-plugin-themes/docsearch/theme.css"
 
 import GitHub from "../components/icons/github"
 import NavigationContext from "../context/navigation-context"
-import { convertToKebabCase } from "../utils/convert-to-kebab-case"
-import ChevronDown from "./icons/chevron-down"
 
 const Topbar = ({ data, api }) => {
   const { goTo, reset, currentSection } = useContext(NavigationContext)
+  const [isMobile, setIsMobile] = useState(false)
 
   const handleChange = e => {
     const parts = e.target.value.split(" ")
@@ -21,10 +24,21 @@ const Topbar = ({ data, api }) => {
     }
   }
 
+  useEffect(() => {
+    const reportWindowSize = () => {
+      if (window && window.innerWidth <= 848) {
+        setIsMobile(true)
+      } else {
+        setIsMobile(false)
+      }
+    }
+    window.addEventListener("resize", reportWindowSize)
+    return () => window.removeEventListener("resize", reportWindowSize)
+  }, [])
+
   return (
     <Flex
       sx={{
-        justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
         px: "5vw",
@@ -35,21 +49,20 @@ const Topbar = ({ data, api }) => {
           top: "0",
           left: "0",
           right: "0",
-          zIndex: "9999",
+          zIndex: "200",
           backgroundColor: "light",
         },
       }}
     >
-      <Box>
-        <Box
-          sx={{
-            display: "none",
-            alignItems: "center",
-            "@media screen and (max-width: 848px)": {
-              display: "block",
-            },
-          }}
-        >
+      <Flex
+        sx={{
+          width: "100%",
+          "@media screen and (max-width: 848px)": {
+            justifyContent: "space-between",
+          },
+        }}
+      >
+        {isMobile && (
           <Select
             arrow={<ChevronDown fill={"dark"} />}
             sx={{
@@ -88,25 +101,45 @@ const Topbar = ({ data, api }) => {
               }`}</option>
             </optgroup>
           </Select>
-        </Box>
-      </Box>
-      <Flex
-        sx={{
-          alignItems: "center",
-        }}
-      >
-        <Link variant="topbar" mr={3} href="https://docs.medusa-commerce.com">
-          Docs
-        </Link>
-        <Link
+        )}
+        <Flex
           sx={{
-            pt: "4px",
+            justifyContent: "space-between",
+            width: "100%",
+            alignItems: "center",
+            "@media screen and (max-width: 848px)": {
+              justifyContent: "flex-end",
+            },
           }}
-          variant="topbar"
-          href="https://github.com/medusajs/medusa"
         >
-          <GitHub />
-        </Link>
+          <DocSearch
+            indexName="docsearch"
+            apiKey="25626fae796133dc1e734c6bcaaeac3c"
+            placeholder="Search API reference"
+          />
+          <Flex
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            <Link
+              variant="topbar"
+              mr={3}
+              href="https://docs.medusa-commerce.com"
+            >
+              Docs
+            </Link>
+            <Link
+              sx={{
+                pt: "4px",
+              }}
+              variant="topbar"
+              href="https://github.com/medusajs/medusa"
+            >
+              <GitHub />
+            </Link>
+          </Flex>
+        </Flex>
       </Flex>
     </Flex>
   )
