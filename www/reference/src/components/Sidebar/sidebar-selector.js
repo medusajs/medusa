@@ -15,7 +15,9 @@ const SideBarSelector = ({ api }) => {
   return (
     <Flex
       sx={{
-        width: "100%",
+        marginLeft: "-16px",
+        marginRight: "-10px",
+        width: "calc(100% + 26px)",
         "& div": {
           width: "100%",
         },
@@ -24,6 +26,8 @@ const SideBarSelector = ({ api }) => {
       <Select
         arrow={<ChevronDown fill={"dark"} styles={{ ml: "-28px" }} />}
         sx={{
+          paddingLeft: "16px",
+          marginRight: "-5px",
           borderRadius: "small",
           borderColor: "faded",
           width: "100%",

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react"
 import { Flex, Image, Box } from "theme-ui"
 import styled from "@emotion/styled"
 import Logo from "../../assets/logo.svg"
+import LogoMuted from "../../assets/logo-muted.svg"
 import SideBarItem from "./sidebar-item"
 import SideBarSelector from "./sidebar-selector"
 
 const SideBarContainer = styled(Flex)`
-  --side-bar-header-height: 100px;
   --side-bar-width: 220px;
 
   @media screen and (min-width: 1680px) {
@@ -20,7 +20,7 @@ const SideBarContainer = styled(Flex)`
 
 const SideBarFade = styled(Box)`
   position: absolute;
-  top: var(--side-bar-header-height);
+  top: 0;
   left: 0;
   width: calc(var(--side-bar-width) - 1px);
   height: 50px;
@@ -62,8 +62,6 @@ const Sidebar = ({ data, api }) => {
         sx={{
           px: "4",
           pt: "3",
-          minHeight: "var(--side-bar-header-height)",
-          height: "var(--side-bar-header-height)",
           background: "light",
           width: "calc(var(--side-bar-width) - 1px)",
           flexDirection: "column",
@@ -74,18 +72,19 @@ const Sidebar = ({ data, api }) => {
             src={Logo}
             alt="Medusa logo"
             sx={{
-              height: "24px",
+              height: "28px",
             }}
           />
         </Flex>
-        <Flex py={3}>
+        <Flex py={4}>
           <SideBarSelector api={api} />
         </Flex>
       </Flex>
-      <SideBarFade opacity={scrollPos} />
       <Flex
         id="nav"
         sx={{
+          flex: 1,
+          position: "relative",
           px: "3",
           pb: "3",
           mr: "1px",
@@ -93,23 +92,15 @@ const Sidebar = ({ data, api }) => {
           overflowY: "scroll",
           pr: "6px",
           scrollbarColor: "faded light",
-          "&::-webkit-scrollbar": {
-            width: "11px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "light",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "faded",
-            borderRadius: "6px",
-            border: "3px solid",
-            borderColor: "light",
-          },
         }}
       >
+        <SideBarFade opacity={scrollPos} />
         {data.sections.map((s, i) => {
           return <SideBarItem item={s} key={i} />
         })}
+      </Flex>
+      <Flex sx={{ py: 4, px: 4, borderTop: "1px solid #efefef" }}>
+        <Image src={LogoMuted} alt="Medusa Type" sx={{ height: "10px" }} />
       </Flex>
     </SideBarContainer>
   )
