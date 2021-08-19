@@ -98,21 +98,19 @@ class ShippingOptionService extends BaseService {
 
     let req
     if (existingReq) {
-      // throw new Error(JSON.stringify({ ...existingReq, ...requirement }))
-      try {
-        req = await reqRepo.save({
-          ...existingReq,
-          ...requirement,
-        })
-      } catch (err) {
-        return { message: "error here" }
-      }
+      req = await reqRepo.save({
+        ...existingReq,
+        ...requirement,
+      })
     } else {
-      req = await reqRepo.create({
+      const created = reqRepo.create({
         shipping_option_id: optionId,
         ...requirement,
       })
+
+      req = await reqRepo.save(created)
     }
+
     return req
   }
 
@@ -471,7 +469,6 @@ class ShippingOptionService extends BaseService {
 
           acc.push(validated)
         }
-        option.requirements = acc
       }
 
       if ("price_type" in update) {
@@ -497,14 +494,6 @@ class ShippingOptionService extends BaseService {
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      /**
-       * ERROR: When trying to update with a single requirement (meaning that if there
-       * was previously two, there should now only be one) it fails with the following
-       * Postgres/TypeOrm error "null value in column 'shipping_option_id' of relation
-       * 'shipping_option_requirement' violates not-null constraint". I have tried to
-       * perform a remove on the requirement that should no longer be used, using the
-       * requirementRepo, before saving the option but the error still occurs.
-       */
       const result = await optionRepo.save(option)
       return result
     })
