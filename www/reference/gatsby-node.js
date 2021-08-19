@@ -261,8 +261,6 @@ const createCustomNode = ({ name, node, createNode }) => {
       existingSection.section.paths.push({ ...current })
     }
 
-    //acc[section].section[current.name] = { ...current }
-
     return acc
   }, [])
 
