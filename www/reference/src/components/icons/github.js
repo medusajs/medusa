@@ -8,7 +8,7 @@ const GitHub = () => {
     <Image
       src={Logo}
       sx={{
-        height: "20px",
+        height: "25px",
         fill: "#000",
       }}
     />
