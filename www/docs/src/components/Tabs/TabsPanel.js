@@ -1,14 +1,12 @@
 import clsx from "clsx";
 import React, { useState } from "react";
 import { TabItem } from "./TabItem/";
-import styles from "./tabs.module.css";
 
 const BUTTONS_DATA = [
   { buttonTitle: "Overview", value: "overview" },
   { buttonTitle: "Tutorials", value: "tutorial" },
   { buttonTitle: "Guides", value: "guide" },
   { buttonTitle: "Reference", value: "reference" },
-  { buttonTitle: "Contributing", value: "contributing" },
 ];
 
 const OVERVIEW_DATA = ["Tutorials", "Guides", "Reference"];

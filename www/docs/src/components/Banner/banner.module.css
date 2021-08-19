@@ -1,9 +1,14 @@
 .bannerContainer {
-  height: 102px;
+  height: 150px;
   padding: 10px 0px;
   margin-bottom: 50px;
   background-color: var(--ifm-medusa-gray);
   border-radius: 5px;
+}
+
+.bannerContainer img {
+  max-width: 100px;
+  margin-left: 15px;
 }
 
 .banner {
