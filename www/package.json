@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "Medusa documentation site",
   "main": "index.js",
-  "author": "Sebastian Rindom",
   "license": "MIT",
   "dependencies": {
     "execa": "^5.1.1",

@@ -19,7 +19,6 @@
     "@rebass/forms": "^4.0.6",
     "emotion-theming": "^10.0.27",
     "gatsby": "^3.9.1",
-    "gatsby-cli": "^3.11.0",
     "gatsby-plugin-algolia-docsearch": "^1.0.5",
     "gatsby-plugin-anchor-links": "^1.1.1",
     "gatsby-plugin-emotion": "^5.0.0",
