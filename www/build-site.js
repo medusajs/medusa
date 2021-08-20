@@ -33,9 +33,10 @@ const buildSite = async () => {
   await buildGatsby();
   await buildDocusaurus();
 
+  await execa("rm", ["-rf", "build"]);
   await execa("mkdir", ["build"]);
-  await execa("cp", ["./reference/public/*", "./build"]);
-  await execa("cp", ["./docs/build/*", "./build"]);
+  await execa("cp", ["-a", `reference/public/.`, `build/`]);
+  await execa("cp", ["-a", `docs/build/.`, `build/`]);
 };
 
 buildSite();
