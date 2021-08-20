@@ -33,7 +33,6 @@ describe("/store/customers", () => {
   describe("POST /store/customers", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager;
-
       await manager.insert(Customer, {
         id: "test_customer",
         first_name: "John",
@@ -73,7 +72,7 @@ describe("/store/customers", () => {
         })
         .catch((err) => err.response);
 
-      expect(response.status).toEqual(409);
+      expect(response.status).toEqual(402);
     });
   });
 

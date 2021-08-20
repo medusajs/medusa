@@ -15,6 +15,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Image } from "./image"
 import { ProductCollection } from "./product-collection"
@@ -139,16 +140,16 @@ export class Product {
   @Column({ default: true })
   discountable: boolean
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()
@@ -188,7 +189,7 @@ export class Product {
  *     description: "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased."
  *     type: boolean
  *   discountable:
- *     description: "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.
+ *     description: "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`."
  *     type: boolean
  *   images:
  *     description: "Images of the Product"

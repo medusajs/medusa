@@ -11,6 +11,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Customer } from "./customer"
 import { NotificationProvider } from "./notification-provider"
@@ -42,7 +43,7 @@ export class Notification {
   @Column()
   to: string
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
   @Column({ nullable: true })
@@ -65,10 +66,10 @@ export class Notification {
   @JoinColumn({ name: "provider_id" })
   provider: NotificationProvider
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
   @BeforeInsert()

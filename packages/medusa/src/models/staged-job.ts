@@ -15,6 +15,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class StagedJob {
@@ -24,7 +25,7 @@ export class StagedJob {
   @Column()
   event_name: string
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
   @BeforeInsert()

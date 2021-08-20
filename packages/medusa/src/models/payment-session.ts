@@ -11,6 +11,7 @@ import {
   Unique,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
@@ -45,16 +46,16 @@ export class PaymentSession {
   @Column({ nullable: true })
   is_selected: boolean
 
-  @Column({ type: "enum", enum: PaymentSessionStatus })
+  @DbAwareColumn({ type: "enum", enum: PaymentSessionStatus })
   status: string
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
   @Column({ nullable: true })

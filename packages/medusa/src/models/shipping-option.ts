@@ -17,6 +17,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingProfile } from "./shipping-profile"
 import { Region } from "./region"
@@ -61,7 +62,7 @@ export class ShippingOption {
   @JoinColumn({ name: "provider_id" })
   provider: FulfillmentProvider
 
-  @Column({ type: "enum", enum: ShippingOptionPriceType })
+  @DbAwareColumn({ type: "enum", enum: ShippingOptionPriceType })
   price_type: ShippingOptionPriceType
 
   @Column({ type: "int", nullable: true })
@@ -80,19 +81,19 @@ export class ShippingOption {
   )
   requirements: ShippingOptionRequirement[]
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()
