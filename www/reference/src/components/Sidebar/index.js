@@ -40,7 +40,6 @@ const Sidebar = ({ data, api }) => {
         setScrollPos(pos)
       }
     }
-
     nav.addEventListener("scroll", handleScroll)
     return () => nav.removeEventListener("scroll", handleScroll)
   }, [])
