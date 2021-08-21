@@ -13,29 +13,20 @@ module.exports = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
-  organizationName: "medusajs", // Usually your GitHub org/user name.
-  projectName: "medusajs/www", // Usually your repo name.
+  organizationName: "medusajs",
+  projectName: "medusajs/www",
   themeConfig: {
     disableSwitch: true,
     algolia: {
       apiKey: "YOUR_API_KEY",
       indexName: "YOUR_INDEX_NAME",
       placeholder: "Search docs...",
-
-      // Optional: see doc section below
       contextualSearch: true,
-
-      // Optional: see doc section below
       appId: "YOUR_APP_ID",
-
-      // Optional: Algolia search parameters
       searchParameters: {},
-
-      //... other Algolia params
     },
     navbar: {
       hideOnScroll: true,
-      // title: "Medusa Docs",
       logo: {
         alt: "Medusa Commerce",
         src: "img/logo.svg",
@@ -53,7 +44,7 @@ module.exports = {
           label: "Tutorial",
         },
         {
-          href: "https://laughing-cori-67ba88.netlify.app/api/store",
+          to: "/api/store",
           position: "right",
           label: "API Reference",
         },
@@ -116,7 +107,6 @@ module.exports = {
     },
     prism: {
       theme: darkCodeTheme,
-      // darkTheme: darkCodeTheme,
     },
   },
   presets: [
