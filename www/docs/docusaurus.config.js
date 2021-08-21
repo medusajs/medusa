@@ -44,7 +44,8 @@ module.exports = {
           label: "Tutorial",
         },
         {
-          to: "/api/store",
+          href: `https://laughing-cori-67ba88.netlify.app/api/store`,
+          target: "_self",
           position: "right",
           label: "API Reference",
         },
