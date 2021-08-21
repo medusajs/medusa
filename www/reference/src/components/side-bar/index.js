@@ -71,7 +71,7 @@ const Sidebar = ({ data, api }) => {
             src={Logo}
             alt="Medusa logo"
             sx={{
-              height: "28px",
+              height: "32px",
             }}
           />
         </Flex>

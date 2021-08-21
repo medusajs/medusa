@@ -8,7 +8,7 @@ const docsPath = path.join(__dirname, "../../docs/content");
 module.exports = {
   title: "Medusa Commerce",
   tagline: "Explore and learn how to use Medusa",
-  url: "https://laughing-cori-67ba88.netlify.app",
+  url: "https://docs.medusa-commerce.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -44,7 +44,7 @@ module.exports = {
           label: "Tutorial",
         },
         {
-          href: `https://laughing-cori-67ba88.netlify.app/api/store`,
+          href: `https://docs.medusa-commerce.com/api/store`,
           target: "_self",
           position: "right",
           label: "API Reference",
