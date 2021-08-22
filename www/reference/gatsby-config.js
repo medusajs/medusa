@@ -61,8 +61,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-algolia-docsearch`,
       options: {
-        apiKey: process.env.ALGOLIA_DOCSEARCH_API_KEY, // required
-        indexName: process.env.ALGOLIA_DOCSEARCH_INDEX_NAME, // required
+        appId: process.env.ALGOLIA_APP_ID || "temp",
+        apiKey: process.env.ALGOLIA_API_KEY || "temp", // required
+        indexName: "medusa-commerce", // required
         inputSelector: "#algolia-doc-search", // required
         debug: false, // (bool) Optional. Default `false`
       },

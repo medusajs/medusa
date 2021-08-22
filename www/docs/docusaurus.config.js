@@ -4,6 +4,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const path = require("path");
 const docsPath = path.join(__dirname, "../../docs/content");
 
+const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp";
+const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp";
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Medusa Commerce",
@@ -15,15 +18,22 @@ module.exports = {
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
+  plugins: [
+    [
+      "docusaurus2-dotenv",
+      {
+        path: "./.env", // The path to your environment variables.
+        systemvars: true, // Set to true if you would rather load all system variables as well (useful for CI purposes)
+      },
+    ],
+  ],
   themeConfig: {
     disableSwitch: true,
     algolia: {
-      apiKey: "YOUR_API_KEY",
-      indexName: "YOUR_INDEX_NAME",
+      apiKey: algoliaApiKey,
+      indexName: "medusa-commerce",
       placeholder: "Search docs...",
-      contextualSearch: true,
-      appId: "YOUR_APP_ID",
-      searchParameters: {},
+      appId: algoliaAppId,
     },
     navbar: {
       hideOnScroll: true,

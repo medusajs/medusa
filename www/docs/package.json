@@ -20,6 +20,7 @@
     "@mdx-js/react": "^1.6.21",
     "@svgr/webpack": "^5.5.0",
     "clsx": "^1.1.1",
+    "docusaurus2-dotenv": "^1.4.0",
     "file-loader": "^6.2.0",
     "lodash": "^4.17.21",
     "prism-react-renderer": "^1.2.1",
