@@ -9,6 +9,9 @@ const Banner = (props) => {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
   const { isDarkTheme } = useThemeContext();
 
+  console.log(process.env.ALGOLIA_APP_ID);
+  console.log(process.env.ALGOLIA_API_KEY);
+
   const handleDismissBanner = () => {
     setIsBannerVisible(false);
     if (localStorage) {

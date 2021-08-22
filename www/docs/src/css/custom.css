@@ -165,10 +165,12 @@ footer .footer__item a:hover {
   color: white;
 }
 
-footer .footer__col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@media screen and (min-width: 966px) {
+  footer .footer__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 footer .footer__items li {

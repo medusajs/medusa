@@ -33,7 +33,7 @@ const Intro = ({ title, desc }) => {
           Create your very own Medusa server →
         </Link>
       </div>
-      <div className={`margin-top--md`}>
+      <div className={`margin-top--md margin-bottom--xl`}>
         <Link to="tutorials/plugins" className={`${styles.docsLink}`}>
           Explore plugins →
         </Link>

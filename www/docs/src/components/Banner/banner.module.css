@@ -1,7 +1,7 @@
 .bannerContainer {
-  height: 150px;
+  height: 100%;
   padding: 10px 0px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   background-color: var(--ifm-medusa-gray);
   border-radius: 5px;
 }

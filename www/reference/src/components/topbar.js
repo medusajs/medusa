@@ -60,6 +60,7 @@ const Topbar = ({ data, api }) => {
               fontWeight: "500",
               flexGrow: "1",
               px: "0",
+              backgroundColor: "light",
               transition: "all .1s ease-in-out",
               "&:focus": {
                 outline: "none !important",
