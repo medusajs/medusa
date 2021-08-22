@@ -222,7 +222,7 @@ class TotalsService extends BaseService {
   getAllocationItemDiscounts(discount, cart) {
     const discounts = []
     for (const item of cart.items) {
-      if (discount.rule.valid_for.length > 0) {
+      if (discount.rule.valid_for?.length > 0) {
         discount.rule.valid_for.map(({ id }) => {
           if (item.variant.product_id === id) {
             discounts.push(

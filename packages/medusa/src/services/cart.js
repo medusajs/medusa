@@ -860,6 +860,7 @@ class CartService extends BaseService {
     ])
 
     const rule = discount.rule
+    console.log(cart)
 
     // if limit is set and reached, we make an early exit
     if (discount.usage_limit) {
