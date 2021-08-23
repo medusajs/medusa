@@ -4,12 +4,12 @@ import { TabItem } from "./TabItem/";
 
 const BUTTONS_DATA = [
   { buttonTitle: "Overview", value: "overview" },
-  { buttonTitle: "Tutorials", value: "tutorial" },
+  { buttonTitle: "Tutorial", value: "tutorial" },
   { buttonTitle: "Guides", value: "guide" },
   { buttonTitle: "Reference", value: "reference" },
 ];
 
-const OVERVIEW_DATA = ["Tutorials", "Guides", "Reference"];
+const OVERVIEW_DATA = ["Tutorial", "Guides", "Reference"];
 
 const TabsPanel = ({ items }) => {
   const [sort, setSort] = useState("overview");

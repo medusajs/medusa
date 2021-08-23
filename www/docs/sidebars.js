@@ -33,28 +33,33 @@ module.exports = {
       items: [
         {
           type: "doc",
-          id: "tutorials/set-up-your-development-environment",
-          label: "Set up your development environment",
+          id: "tutorial/set-up-your-development-environment",
         },
         {
           type: "doc",
-          id: "tutorials/creating-your-medusa-server",
-          label: "Creating your Medusa server",
+          id: "tutorial/creating-your-medusa-server",
         },
         {
           type: "doc",
-          id: "tutorials/adding-custom-functionality",
-          label: "Adding custom functionality",
+          id: "tutorial/adding-custom-functionality",
         },
         {
           type: "doc",
-          id: "tutorials/linking-your-local-project-with-medusa-cloud",
-          label: "Linking your local project with Medusa Cloud",
+          id: "tutorial/linking-your-local-project-with-medusa-cloud",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "How to",
+      items: [
+        {
+          type: "doc",
+          id: "how-to/plugins",
         },
         {
           type: "doc",
-          id: "tutorials/plugins",
-          label: "Plugins in Medusa",
+          id: "how-to/notification-api",
         },
       ],
     },

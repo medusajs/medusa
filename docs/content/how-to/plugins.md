@@ -1,3 +1,7 @@
+---
+title: Plugins in Medusa
+---
+
 # Plugins
 
 The purpose of this guide is to give an introduction to the structure of a plugin and the steps required to create one. It builds upon our article describing the process of [adding custom functionality](https://docs.medusa-commerce.com/tutorials/adding-custom-functionality). It can be seen as the proceeding steps for extracting your custom functionality to a reusable package for other developers to use.

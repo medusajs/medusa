@@ -49,7 +49,7 @@ module.exports = {
         },
         {
           type: "doc",
-          docId: "tutorials/set-up-your-development-environment",
+          docId: "tutorial/set-up-your-development-environment",
           position: "right",
           label: "Tutorial",
         },
@@ -73,8 +73,8 @@ module.exports = {
           title: "Docs",
           items: [
             {
-              label: "Tutorials",
-              to: "/tutorials/set-up-your-development-environment",
+              label: "Tutorial",
+              to: "/tutorial/set-up-your-development-environment",
             },
           ],
         },

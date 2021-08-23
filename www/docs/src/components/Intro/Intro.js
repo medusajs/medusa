@@ -11,7 +11,7 @@ const Intro = ({ title, desc }) => {
       <p className={styles.description}>{desc}</p>
       <div>
         <Link
-          to="https://github.com/medusajs/medusa#-quickstart"
+          to="quickstart/quick-start"
           className="margin-top--md margin-bottom--sm button button--lg button--primary"
         >
           Quickstart
@@ -19,7 +19,7 @@ const Intro = ({ title, desc }) => {
       </div>
       <div className={` margin-top--md`}>
         <Link
-          to="tutorials/set-up-your-development-environment"
+          to="tutorial/set-up-your-development-environment"
           className={`${styles.docsLink}`}
         >
           Set up your own local environment →
@@ -27,14 +27,14 @@ const Intro = ({ title, desc }) => {
       </div>
       <div className={`margin-top--md`}>
         <Link
-          to="tutorials/creating-your-medusa-server"
+          to="tutorial/creating-your-medusa-server"
           className={`${styles.docsLink}`}
         >
           Create your very own Medusa server →
         </Link>
       </div>
       <div className={`margin-top--md margin-bottom--xl`}>
-        <Link to="tutorials/plugins" className={`${styles.docsLink}`}>
+        <Link to="how-to/plugins" className={`${styles.docsLink}`}>
           Explore plugins →
         </Link>
       </div>

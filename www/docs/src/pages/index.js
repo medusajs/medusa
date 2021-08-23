@@ -1,18 +1,8 @@
 import React from "react";
-import { groupBy } from "lodash";
 import { Banner } from "../components/Banner/";
 import { Intro } from "../components/Intro/";
 import { Layout } from "../components/Layout/";
-import { TabsPanel } from "../components/Tabs";
 import styles from "./index.module.css";
-import useGlobalData from "@docusaurus/useGlobalData";
-
-const CARDS_DATA = [
-  { type: "guide", title: "guide mock item", key: "guides" },
-  { type: "tutorial", title: "tutorial mock item", key: "tutorials" },
-  { type: "guide", title: "second guide mock item", key: "guides" },
-  { type: "reference", title: "reference mock item", key: "reference" },
-];
 
 export default function Home() {
   return (
