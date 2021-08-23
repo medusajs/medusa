@@ -5,6 +5,7 @@ import Logo from "../../assets/logo.svg"
 import LogoMuted from "../../assets/logo-muted.svg"
 import SideBarItem from "./sidebar-item"
 import SideBarSelector from "./sidebar-selector"
+import { navigate } from "gatsby"
 
 const SideBarContainer = styled(Flex)`
   --side-bar-width: 220px;
@@ -70,8 +71,10 @@ const Sidebar = ({ data, api }) => {
           <Image
             src={Logo}
             alt="Medusa logo"
+            onClick={() => navigate("/")}
             sx={{
               height: "32px",
+              cursor: "pointer",
             }}
           />
         </Flex>
