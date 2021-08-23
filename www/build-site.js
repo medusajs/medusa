@@ -27,6 +27,11 @@ const buildGatsby = async () => {
 };
 
 const buildDocusaurus = async () => {
+  await execa("./node_modules/.bin/docusaurus", ["clear"], {
+    cwd: "./docs",
+    stdio: "inherit",
+  });
+
   await execa("./node_modules/.bin/docusaurus", ["build"], {
     cwd: "./docs",
     stdio: "inherit",
