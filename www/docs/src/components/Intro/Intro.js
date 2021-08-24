@@ -1,6 +1,7 @@
-import React from "react";
-import Link from "@docusaurus/Link";
-import styles from "./intro.module.css";
+import React from "react"
+import Link from "@docusaurus/Link"
+import CodeBlock from "@theme/CodeBlock"
+import styles from "./intro.module.css"
 
 const Intro = ({ title, desc }) => {
   return (
@@ -9,12 +10,16 @@ const Intro = ({ title, desc }) => {
       <p className={styles.title}>{title}</p>
       <h2 className="margin-top--lg margin-bottom--sm">Quickstart</h2>
       <p className={styles.description}>{desc}</p>
+      <CodeBlock>
+        {`yarn global add @medusajs/medusa-cli
+medusa new my-awesome-store`}
+      </CodeBlock>
       <div>
         <Link
           to="quickstart/quick-start"
           className="margin-top--md margin-bottom--sm button button--lg button--primary"
         >
-          Quickstart
+          Quickstart Guide →
         </Link>
       </div>
       <div className={` margin-top--md`}>
@@ -39,7 +44,7 @@ const Intro = ({ title, desc }) => {
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Intro;
+export default Intro

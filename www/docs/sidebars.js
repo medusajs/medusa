@@ -12,21 +12,21 @@
 module.exports = {
   tutorialSidebar: [
     {
-      type: "category",
+      type: "doc",
+      id: "quickstart/quick-start",
       label: "Quickstart",
-      items: [
-        {
-          type: "doc",
-          id: "quickstart/quick-start",
-          label: "Quickstart",
-        },
-        {
-          type: "doc",
-          id: "quickstart/quick-start-docker",
-          label: "Quickstart w. Docker (Coming soon!)",
-        },
-      ],
     },
+    // {
+    //   type: 'category',
+    //   label: 'Quickstart',
+    //   items: [
+    //     {
+    //       type: 'doc',
+    //       id: 'quickstart/quick-start-docker',
+    //       label: 'Quickstart w. Docker (Coming soon!)',
+    //     },
+    //   ],
+    // },
     {
       type: "category",
       label: "Tutorials",
@@ -61,7 +61,17 @@ module.exports = {
           type: "doc",
           id: "how-to/notification-api",
         },
+        {
+          type: "category",
+          label: "Gatsby + Contentful + Medusa",
+          items: [
+            {
+              type: "doc",
+              id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
+            },
+          ],
+        },
       ],
     },
   ],
-};
+}

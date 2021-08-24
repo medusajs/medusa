@@ -1,8 +1,8 @@
-import React from "react";
-import { Banner } from "../components/Banner/";
-import { Intro } from "../components/Intro/";
-import { Layout } from "../components/Layout/";
-import styles from "./index.module.css";
+import React from "react"
+import { Banner } from "../components/Banner/"
+import { Intro } from "../components/Intro/"
+import { Layout } from "../components/Layout/"
+import styles from "./index.module.css"
 
 export default function Home() {
   return (
@@ -16,5 +16,5 @@ export default function Home() {
         {/* <TabsPanel items={CARDS_DATA} /> */}
       </div>
     </Layout>
-  );
+  )
 }
