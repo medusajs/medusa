@@ -17,76 +17,87 @@ const createCustomNode = ({ name, node, createNode }) => {
     return {
       name: path,
       methods: Object.entries(values).map(([method, values]) => {
-        const requestBodyValues =
-          values?.requestBody?.content?.["application/json"]?.schema
+        let requestBodyValues = undefined
+
+        if (values.requestBody && values.requestBody.content) {
+          requestBodyValues =
+            values.requestBody.content["application/json"].schema
+        }
 
         return {
           method: method,
           ...values,
           requestBody: {
-            required: requestBodyValues?.required,
-            type: requestBodyValues?.type,
-            properties: Object.entries(requestBodyValues?.properties || {}).map(
-              ([property, values]) => {
-                let ref = null
-                let component_id = null
-                let nestedModelNode = null
-                const { items, anyOf, oneOf, ...rest } = values
-                if (items || anyOf || oneOf) {
-                  if (items?.anyOf) {
-                    component_id = items.anyOf[0]["$ref"].substring(
-                      items.anyOf[0]["$ref"].lastIndexOf("/") + 1
-                    )
-                    ref = node.components.schemas[component_id]
-                  } else if (items) {
-                    const refPath = items["$ref"]
-                    if (refPath) {
-                      component_id = refPath.substring(
-                        items["$ref"].lastIndexOf("/") + 1
-                      )
-                      ref = node.components.schemas[component_id]
-                    }
-                  } else if (anyOf) {
-                    component_id = anyOf[0]["$ref"].substring(
-                      anyOf[0]["$ref"].lastIndexOf("/") + 1
-                    )
-                    ref = node.components.schemas[component_id]
-                  } else if (oneOf) {
-                    component_id = oneOf[0]["$ref"].substring(
-                      oneOf[0]["$ref"].lastIndexOf("/") + 1
+            required: requestBodyValues
+              ? requestBodyValues.required
+              : undefined,
+            type: requestBodyValues ? requestBodyValues.type : undefined,
+            properties: Object.entries(
+              requestBodyValues ? requestBodyValues.properties : {}
+            ).map(([property, values]) => {
+              let ref = null
+              let component_id = null
+              let nestedModelNode = null
+              const { items, anyOf, oneOf, ...rest } = values
+              if (items || anyOf || oneOf) {
+                if (items && items.anyOf) {
+                  component_id = items.anyOf[0]["$ref"].substring(
+                    items.anyOf[0]["$ref"].lastIndexOf("/") + 1
+                  )
+                  ref = node.components.schemas[component_id]
+                } else if (items) {
+                  const refPath = items["$ref"]
+                  if (refPath) {
+                    component_id = refPath.substring(
+                      items["$ref"].lastIndexOf("/") + 1
                     )
                     ref = node.components.schemas[component_id]
                   }
-                }
-                if (ref) {
-                  const { properties, ...rest } = ref
-                  let nestedModelProperties = []
-                  if (properties) {
-                    Object.entries(properties).map(([key, values]) => {
-                      nestedModelProperties.push({
-                        property: key,
-                        ...values,
-                      })
-                    })
-                    nestedModelNode = {
-                      properties: nestedModelProperties,
-                      ...rest,
-                    }
-                  }
-                }
-                return {
-                  property: property,
-                  nestedModel: nestedModelNode,
-                  ...rest,
+                } else if (anyOf) {
+                  component_id = anyOf[0]["$ref"].substring(
+                    anyOf[0]["$ref"].lastIndexOf("/") + 1
+                  )
+                  ref = node.components.schemas[component_id]
+                } else if (oneOf) {
+                  component_id = oneOf[0]["$ref"].substring(
+                    oneOf[0]["$ref"].lastIndexOf("/") + 1
+                  )
+                  ref = node.components.schemas[component_id]
                 }
               }
-            ),
+              if (ref) {
+                const { properties, ...rest } = ref
+                let nestedModelProperties = []
+                if (properties) {
+                  Object.entries(properties).map(([key, values]) => {
+                    nestedModelProperties.push({
+                      property: key,
+                      ...values,
+                    })
+                  })
+                  nestedModelNode = {
+                    properties: nestedModelProperties,
+                    ...rest,
+                  }
+                }
+              }
+              return {
+                property: property,
+                nestedModel: nestedModelNode,
+                ...rest,
+              }
+            }),
           },
 
           responses: Object.entries(values.responses).map(
             ([response, values]) => {
-              const properties =
-                values.content?.["application/json"]?.schema?.properties
+              let properties = undefined
+
+              if (values && values.content) {
+                properties =
+                  values.content["application/json"].schema.properties
+              }
+
               return {
                 status: response,
                 content: properties
@@ -177,7 +188,7 @@ const createCustomNode = ({ name, node, createNode }) => {
 
         let { items, anyOf, oneOf, ...rest } = values
         if (items || anyOf || oneOf) {
-          if (items?.anyOf) {
+          if (items && items.anyOf) {
             component_id = items.anyOf[0]["$ref"].substring(
               items.anyOf[0]["$ref"].lastIndexOf("/") + 1
             )
@@ -261,6 +272,8 @@ const createCustomNode = ({ name, node, createNode }) => {
       existingSection.section.paths.push({ ...current })
     }
 
+    //acc[section].section[current.name] = { ...current }
+
     return acc
   }, [])
 
@@ -317,7 +330,7 @@ const createAllPages = (sections, api, siteData, createPage, template) => {
         data: siteData.data[api],
         api: api,
         title: edge.section.section_name,
-        description: edge.section.schema?.description || "",
+        description: edge.section.schema ? edge.section.schema.description : "",
         to: { section: baseURL, method: null },
       },
     })

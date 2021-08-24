@@ -34,7 +34,7 @@ export default function ReferencePage({
   return (
     <Layout data={data} api={api}>
       <Helmet>
-        <title>{`${siteData.title} | Medusa Commerce API Reference`}</title>
+        <title>{`API | Medusa Commerce API Reference`}</title>
         <meta name="description" content={siteData.description} />
       </Helmet>
       <Content data={data} api={api} />
