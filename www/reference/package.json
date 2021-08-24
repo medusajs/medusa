@@ -6,7 +6,7 @@
   "license": "0BSD",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop",
+    "develop": "gatsby clean && gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
@@ -14,6 +14,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "@docsearch/react": "^3.0.0-alpha.40",
     "@emotion/react": "^11.1.2",
     "@emotion/styled": "^11.0.0",
     "@rebass/forms": "^4.0.6",

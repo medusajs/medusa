@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react"
 import { Box } from "theme-ui"
-import "../../prism-medusa-theme/prism.css"
+import "../../medusa-plugin-themes/prism/theme.css"
 import Prism from "prismjs"
 import "prismjs/components/prism-json"
 import CodeBox from "./code-box"
