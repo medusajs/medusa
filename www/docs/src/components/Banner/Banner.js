@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react";
-import CloseIcon from "../close-icon";
-import styles from "./banner.module.css";
-import clsx from "clsx";
-import useThemeContext from "@theme/hooks/useThemeContext";
-import ConfLogo from "../../../static/img/logo.svg";
+import React, { useEffect, useState } from "react"
+import CloseIcon from "../close-icon"
+import styles from "./banner.module.css"
+import clsx from "clsx"
+import useThemeContext from "@theme/hooks/useThemeContext"
+import ConfLogo from "../../../static/img/logo.svg"
 
 const Banner = (props) => {
-  const [isBannerVisible, setIsBannerVisible] = useState(true);
-  const { isDarkTheme } = useThemeContext();
+  const [isBannerVisible, setIsBannerVisible] = useState(true)
+  const { isDarkTheme } = useThemeContext()
 
   const handleDismissBanner = () => {
-    setIsBannerVisible(false);
+    setIsBannerVisible(false)
     if (localStorage) {
-      localStorage.setItem("mc::banner", false);
+      localStorage.setItem("mc::banner", false)
     }
-  };
+  }
 
   useEffect(() => {
     if (localStorage) {
-      const shouldShow = localStorage.getItem("mc::banner");
+      const shouldShow = localStorage.getItem("mc::banner")
       if (!shouldShow) {
-        setIsBannerVisible(true);
+        setIsBannerVisible(true)
       }
 
       if (shouldShow === "false") {
-        setIsBannerVisible(false);
+        setIsBannerVisible(false)
       }
     }
-  }, []);
+  }, [])
 
   return (
     isBannerVisible && (
@@ -49,7 +49,7 @@ const Banner = (props) => {
         </div>
       </div>
     )
-  );
-};
+  )
+}
 
-export default Banner;
+export default Banner

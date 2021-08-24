@@ -12,9 +12,9 @@
 module.exports = {
   tutorialSidebar: [
     {
-      type: 'doc',
-      id: 'quickstart/quick-start',
-      label: 'Quickstart',
+      type: "doc",
+      id: "quickstart/quick-start",
+      label: "Quickstart",
     },
     // {
     //   type: 'category',
@@ -28,51 +28,50 @@ module.exports = {
     //   ],
     // },
     {
-      type: 'category',
-      label: 'Tutorials',
+      type: "category",
+      label: "Tutorials",
       items: [
         {
-          type: 'doc',
-          id: 'tutorial/set-up-your-development-environment',
+          type: "doc",
+          id: "tutorial/set-up-your-development-environment",
         },
         {
-          type: 'doc',
-          id: 'tutorial/creating-your-medusa-server',
+          type: "doc",
+          id: "tutorial/creating-your-medusa-server",
         },
         {
-          type: 'doc',
-          id: 'tutorial/adding-custom-functionality',
+          type: "doc",
+          id: "tutorial/adding-custom-functionality",
         },
         {
-          type: 'doc',
-          id: 'tutorial/linking-your-local-project-with-medusa-cloud',
+          type: "doc",
+          id: "tutorial/linking-your-local-project-with-medusa-cloud",
         },
       ],
     },
     {
-      type: 'category',
-      label: 'How to',
+      type: "category",
+      label: "How to",
       items: [
         {
-          type: 'doc',
-          id: 'how-to/plugins',
+          type: "doc",
+          id: "how-to/plugins",
         },
         {
-          type: 'doc',
-          id: 'how-to/notification-api',
+          type: "doc",
+          id: "how-to/notification-api",
         },
         {
-          type: 'category',
-          label: 'Gatsby + Contentful + Medusa',
+          type: "category",
+          label: "Gatsby + Contentful + Medusa",
           items: [
             {
-              type: 'doc',
-              id:
-                'how-to/headless-ecommerce-store-with-gatsby-contentful-medusa',
+              type: "doc",
+              id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
             },
           ],
         },
       ],
     },
   ],
-};
+}
