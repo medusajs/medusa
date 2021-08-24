@@ -1,9 +1,9 @@
-import React from "react";
-import styles from "./tab.module.css";
+import React from "react"
+import styles from "./tab.module.css"
 
 const TabItem = ({ title, isOverviewCard, items }) => {
   const overviewModeList = () =>
-    items.map((item) => <p className="margin-bottom--xs">{item.title}</p>);
+    items.map((item) => <p className="margin-bottom--xs">{item.title}</p>)
   return (
     <div className="col col--4 padding-right--md padding-bottom--md">
       <div className={styles.card}>
@@ -13,7 +13,7 @@ const TabItem = ({ title, isOverviewCard, items }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TabItem;
+export default TabItem

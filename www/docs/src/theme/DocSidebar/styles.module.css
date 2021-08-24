@@ -79,16 +79,16 @@
     transform: rotate(180deg);
     margin-top: 4px;
   }
-  html[dir='rtl'] .collapseSidebarButtonIcon {
+  html[dir="rtl"] .collapseSidebarButtonIcon {
     transform: rotate(0);
   }
 
-  html[data-theme='dark'] .collapseSidebarButton {
+  html[data-theme="dark"] .collapseSidebarButton {
     background-color: var(--collapse-button-bg-color-dark);
   }
 
-  html[data-theme='dark'] .collapseSidebarButton:hover,
-  html[data-theme='dark'] .collapseSidebarButton:focus {
+  html[data-theme="dark"] .collapseSidebarButton:hover,
+  html[data-theme="dark"] .collapseSidebarButton:focus {
     background-color: var(--ifm-color-emphasis-200);
   }
 }

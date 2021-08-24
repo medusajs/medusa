@@ -1,11 +1,11 @@
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const lightCodeTheme = require("prism-react-renderer/themes/github")
+const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 
-const path = require("path");
-const docsPath = path.join(__dirname, "../../docs/content");
+const path = require("path")
+const docsPath = path.join(__dirname, "../../docs/content")
 
-const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp";
-const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp";
+const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
+const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -83,8 +83,7 @@ module.exports = {
           items: [
             {
               label: "Stack Overflow",
-              href:
-                "https://stackoverflow.com/questions/tagged/medusa-commerce",
+              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
               label: "Discord",
@@ -136,4 +135,4 @@ module.exports = {
       },
     ],
   ],
-};
+}

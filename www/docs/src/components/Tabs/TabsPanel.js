@@ -1,18 +1,18 @@
-import clsx from "clsx";
-import React, { useState } from "react";
-import { TabItem } from "./TabItem/";
+import clsx from "clsx"
+import React, { useState } from "react"
+import { TabItem } from "./TabItem/"
 
 const BUTTONS_DATA = [
   { buttonTitle: "Overview", value: "overview" },
   { buttonTitle: "Tutorial", value: "tutorial" },
   { buttonTitle: "Guides", value: "guide" },
   { buttonTitle: "Reference", value: "reference" },
-];
+]
 
-const OVERVIEW_DATA = ["Tutorial", "Guides", "Reference"];
+const OVERVIEW_DATA = ["Tutorial", "Guides", "Reference"]
 
 const TabsPanel = ({ items }) => {
-  const [sort, setSort] = useState("overview");
+  const [sort, setSort] = useState("overview")
 
   const buttons = BUTTONS_DATA.map((item) => (
     // <button
@@ -32,10 +32,10 @@ const TabsPanel = ({ items }) => {
     >
       {item.buttonTitle}
     </li>
-  ));
+  ))
 
   const getOverviewCardItemsSet = (currentCard) =>
-    items.filter((item) => item.key === currentCard.toLowerCase());
+    items.filter((item) => item.key === currentCard.toLowerCase())
 
   const overviewCardsSet = () =>
     OVERVIEW_DATA.map((item) => (
@@ -44,22 +44,22 @@ const TabsPanel = ({ items }) => {
         title={item}
         items={getOverviewCardItemsSet(item)}
       />
-    ));
+    ))
 
   const getSortedArray = () => {
-    return items.filter((entry) => entry.type === sort);
-  };
+    return items.filter((entry) => entry.type === sort)
+  }
 
   const renderTabItems = () => {
-    if (sort === "overview") return overviewCardsSet();
+    if (sort === "overview") return overviewCardsSet()
     return getSortedArray().length > 0 ? (
       getSortedArray().map((item) => {
-        return <TabItem title={item.title} />;
+        return <TabItem title={item.title} />
       })
     ) : (
       <p>hold tight! we are building these things</p>
-    );
-  };
+    )
+  }
 
   return (
     <div className="padding-bottom--xl">
@@ -71,7 +71,7 @@ const TabsPanel = ({ items }) => {
         <div className="row row--no-gutters">{renderTabItems()}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TabsPanel;
+export default TabsPanel
