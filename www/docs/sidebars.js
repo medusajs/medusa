@@ -12,54 +12,65 @@
 module.exports = {
   tutorialSidebar: [
     {
-      type: "category",
-      label: "Quickstart",
+      type: 'doc',
+      id: 'quickstart/quick-start',
+      label: 'Quickstart',
+    },
+    // {
+    //   type: 'category',
+    //   label: 'Quickstart',
+    //   items: [
+    //     {
+    //       type: 'doc',
+    //       id: 'quickstart/quick-start-docker',
+    //       label: 'Quickstart w. Docker (Coming soon!)',
+    //     },
+    //   ],
+    // },
+    {
+      type: 'category',
+      label: 'Tutorials',
       items: [
         {
-          type: "doc",
-          id: "quickstart/quick-start",
-          label: "Quickstart",
+          type: 'doc',
+          id: 'tutorial/set-up-your-development-environment',
         },
         {
-          type: "doc",
-          id: "quickstart/quick-start-docker",
-          label: "Quickstart w. Docker (Coming soon!)",
+          type: 'doc',
+          id: 'tutorial/creating-your-medusa-server',
+        },
+        {
+          type: 'doc',
+          id: 'tutorial/adding-custom-functionality',
+        },
+        {
+          type: 'doc',
+          id: 'tutorial/linking-your-local-project-with-medusa-cloud',
         },
       ],
     },
     {
-      type: "category",
-      label: "Tutorials",
+      type: 'category',
+      label: 'How to',
       items: [
         {
-          type: "doc",
-          id: "tutorial/set-up-your-development-environment",
+          type: 'doc',
+          id: 'how-to/plugins',
         },
         {
-          type: "doc",
-          id: "tutorial/creating-your-medusa-server",
+          type: 'doc',
+          id: 'how-to/notification-api',
         },
         {
-          type: "doc",
-          id: "tutorial/adding-custom-functionality",
-        },
-        {
-          type: "doc",
-          id: "tutorial/linking-your-local-project-with-medusa-cloud",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "How to",
-      items: [
-        {
-          type: "doc",
-          id: "how-to/plugins",
-        },
-        {
-          type: "doc",
-          id: "how-to/notification-api",
+          type: 'category',
+          label: 'Gatsby + Contentful + Medusa',
+          items: [
+            {
+              type: 'doc',
+              id:
+                'how-to/headless-ecommerce-store-with-gatsby-contentful-medusa',
+            },
+          ],
         },
       ],
     },
