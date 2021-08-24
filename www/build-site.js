@@ -15,11 +15,6 @@ const installDeps = async () => {
 };
 
 const buildGatsby = async () => {
-  await execa("./node_modules/.bin/gatsby", ["clean"], {
-    cwd: "./reference",
-    stdio: "inherit",
-  });
-
   await execa("./node_modules/.bin/gatsby", ["build"], {
     cwd: "./reference",
     stdio: "inherit",
@@ -27,11 +22,6 @@ const buildGatsby = async () => {
 };
 
 const buildDocusaurus = async () => {
-  await execa("./node_modules/.bin/docusaurus", ["clear"], {
-    cwd: "./docs",
-    stdio: "inherit",
-  });
-
   await execa("./node_modules/.bin/docusaurus", ["build"], {
     cwd: "./docs",
     stdio: "inherit",
