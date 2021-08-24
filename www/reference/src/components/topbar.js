@@ -109,7 +109,8 @@ const Topbar = ({ data, api }) => {
         >
           <GitHub />
         </Link>
-        <Search />
+        {/* Re-add once indexing has been fine tuned */}
+        {/* <Search /> */}
       </Flex>
     </Flex>
   )
