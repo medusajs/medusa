@@ -14,7 +14,7 @@ import useInView from "../../hooks/use-in-view"
 
 const Section = ({ data }) => {
   const { section } = data
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const { openSections, updateSection, updateMetadata } = useContext(
     NavigationContext
   )
@@ -52,10 +52,8 @@ const Section = ({ data }) => {
   }
 
   useEffect(() => {
-    if (isExpanded) {
-      scrollIntoView()
-    }
-  }, [isExpanded])
+    setIsExpanded(false)
+  }, [])
 
   useEffect(() => {
     const shouldOpen = openSections.includes(
@@ -84,7 +82,11 @@ const Section = ({ data }) => {
   }, [isInView])
 
   return (
-    <section ref={sectionRef} id={convertToKebabCase(section.section_name)}>
+    <section
+      ref={sectionRef}
+      id={convertToKebabCase(section.section_name)}
+      className="DocSearch-content"
+    >
       <Box
         sx={{
           borderBottom: "hairline",
@@ -149,7 +151,29 @@ const Section = ({ data }) => {
               ) : null}
             </Flex>
           </ResponsiveContainer>
-          {isExpanded ? (
+          {!isExpanded ? (
+            <Flex
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+              mt={4}
+            >
+              <Button
+                onClick={handleExpand}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: "24px",
+                  bg: "light",
+                  fontWeight: "500",
+                }}
+              >
+                SHOW <ChevronDown fill={"dark"} styles={{ mr: "-10px" }} />
+              </Button>
+            </Flex>
+          ) : (
             <Box mt={4}>
               {section.paths.map((p, i) => {
                 return (
@@ -173,28 +197,6 @@ const Section = ({ data }) => {
                 )
               })}
             </Box>
-          ) : (
-            <Flex
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-              }}
-              mt={4}
-            >
-              <Button
-                onClick={handleExpand}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: "24px",
-                  bg: "light",
-                  fontWeight: "500",
-                }}
-              >
-                SHOW <ChevronDown fill={"dark"} styles={{ mr: "-10px" }} />
-              </Button>
-            </Flex>
           )}
         </Flex>
       </Box>
