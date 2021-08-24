@@ -14,6 +14,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "@docsearch/react": "^3.0.0-alpha.40",
     "@emotion/react": "^11.1.2",
     "@emotion/styled": "^11.0.0",
     "@rebass/forms": "^4.0.6",
