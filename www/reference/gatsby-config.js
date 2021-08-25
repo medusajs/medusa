@@ -59,19 +59,9 @@ module.exports = {
     },
     `gatsby-plugin-theme-ui`,
     {
-      resolve: `gatsby-plugin-algolia-docsearch`,
-      options: {
-        appId: process.env.ALGOLIA_APP_ID || "temp",
-        apiKey: process.env.ALGOLIA_API_KEY || "temp", // required
-        indexName: "medusa-commerce", // required
-        inputSelector: "#algolia-doc-search", // required
-        debug: false, // (bool) Optional. Default `false`
-      },
-    },
-    {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        allowList: ["ALGOLIA_APP_ID"],
+        allowList: ["ALGOLIA_API_KEY"],
       },
     },
     // `gatsby-plugin-preact`,
