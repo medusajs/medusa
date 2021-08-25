@@ -1,5 +1,4 @@
-const lightCodeTheme = require("prism-react-renderer/themes/github")
-const darkCodeTheme = require("prism-react-renderer/themes/dracula")
+const prismTheme = require("./src/prism-themes/nord")
 
 const path = require("path")
 const docsPath = path.join(__dirname, "../../docs/content")
@@ -116,7 +115,7 @@ module.exports = {
       copyright: `© ${new Date().getFullYear()} Medusa Commerce`,
     },
     prism: {
-      theme: darkCodeTheme,
+      theme: prismTheme,
     },
   },
   presets: [
