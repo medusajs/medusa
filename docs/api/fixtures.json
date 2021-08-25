@@ -953,6 +953,74 @@
       "deleted_at": null,
       "metadata": null,
       "idempotency_key": "10804103-2f4f-41ef-b44e-7049459f157d"
+    },
+    "admin.GetCustomersCustomer": {
+      "id": "cus_01FDWSJESKZARAV94AXG491N1F",
+      "email": "test1@email.com",
+      "first_name": null,
+      "last_name": null,
+      "billing_address_id": null,
+      "shipping_addresses": [],
+      "password_hash": null,
+      "phone": null,
+      "has_account": false,
+      "orders": [],
+      "created_at": "2021-08-24T19:18:10.482Z",
+      "updated_at": "2021-08-24T19:18:10.482Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "undefined": {
+      "id": {
+        "id": "cus_01FDWSN4PMVJTV3M336FHSKD1A",
+        "email": "test1@email.com",
+        "first_name": null,
+        "last_name": null,
+        "billing_address_id": null,
+        "shipping_addresses": [],
+        "password_hash": null,
+        "phone": null,
+        "has_account": false,
+        "orders": [],
+        "created_at": "2021-08-24T19:19:38.452Z",
+        "updated_at": "2021-08-24T19:19:38.452Z",
+        "deleted_at": null,
+        "metadata": null
+      },
+      "undefined": {
+        "id": "cus_01FDWSP4D8GS44PYHKMA8AT0D4",
+        "email": "test1@email.com",
+        "first_name": null,
+        "last_name": null,
+        "billing_address_id": null,
+        "shipping_addresses": [],
+        "password_hash": null,
+        "phone": null,
+        "has_account": false,
+        "orders": [],
+        "created_at": "2021-08-24T19:20:10.919Z",
+        "updated_at": "2021-08-24T19:20:10.919Z",
+        "deleted_at": null,
+        "metadata": null
+      }
+    },
+    "admin": {
+      "GetCustomersCustomer": {
+        "id": "cus_01FDWSS0CQ68T33GTP5CKNSK9X",
+        "email": "test1@email.com",
+        "first_name": null,
+        "last_name": null,
+        "billing_address_id": null,
+        "shipping_addresses": [],
+        "password_hash": null,
+        "phone": null,
+        "has_account": false,
+        "orders": [],
+        "created_at": "2021-08-24T19:21:45.110Z",
+        "updated_at": "2021-08-24T19:21:45.110Z",
+        "deleted_at": null,
+        "metadata": null
+      }
     }
   }
 }

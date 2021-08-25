@@ -467,7 +467,75 @@
                 "schema": {
                   "properties": {
                     "customer": {
-                      "$ref": "#/components/schemas/customer"
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "orders": {
+                          "description": "The Customer's orders.",
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/order"
+                          }
+                        },
+                        "billing_address_id": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "billing_address": {
+                          "nullable": true,
+                          "description": "The Customer's billing address.",
+                          "anyOf": [
+                            {
+                              "$ref": "#/components/schemas/address"
+                            },
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "shipping_addresses": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/address"
+                          }
+                        },
+                        "first_name": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "phone": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "has_account": {
+                          "type": "boolean"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "nullable": true
+                        }
+                      }
                     }
                   }
                 }
@@ -5308,7 +5376,7 @@
         }
       }
     },
-    "/returns/{id}/receive": {
+    "/returns/{id}receive": {
       "post": {
         "operationId": "PostReturnsReturnReceive",
         "summary": "Receive a Return",
@@ -5881,7 +5949,7 @@
       },
       "delete": {
         "operationId": "DeleteStoreCurrenciesCode",
-        "summary": "Remove a Currency Code",
+        "summary": "Remvoe a Currency Code",
         "description": "Removes a Currency Code from the available currencies.",
         "parameters": [
           {
@@ -6085,7 +6153,7 @@
     "/variants": {
       "get": {
         "operationId": "GetVariants",
-        "summary": "List Product Variants",
+        "summary": "List Product Variants.",
         "description": "Retrieves a list of Product Variants",
         "tags": [
           "Product Variant"
@@ -6578,14 +6646,15 @@
           "email": {
             "type": "string"
           },
-          "billing_address_id": {
-            "type": "string"
-          },
           "billing_address": {
+            "nullable": true,
             "description": "The Customer's billing address.",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/address"
+              },
+              {
+                "type": "string"
               }
             ]
           },
@@ -6596,13 +6665,16 @@
             }
           },
           "first_name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "last_name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "phone": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "has_account": {
             "type": "boolean"
@@ -6617,7 +6689,8 @@
           },
           "deleted_at": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "metadata": {
             "type": "object"
@@ -7546,7 +7619,7 @@
           "swaps": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/swap"
+              "$ref": "#/components/schemas/refund"
             }
           },
           "gift_card_transactions": {

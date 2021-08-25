@@ -303,7 +303,53 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      orders:
+                        description: The Customer's orders.
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/order'
+                      billing_address_id:
+                        type: string
+                        nullable: true
+                      billing_address:
+                        nullable: true
+                        description: The Customer's billing address.
+                        anyOf:
+                          - $ref: '#/components/schemas/address'
+                          - type: string
+                      shipping_addresses:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/address'
+                      first_name:
+                        type: string
+                        nullable: true
+                      last_name:
+                        type: string
+                        nullable: true
+                      phone:
+                        type: string
+                        nullable: true
+                      has_account:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
+                      metadata:
+                        type: object
+                        nullable: true
     post:
       operationId: PostCustomersCustomer
       summary: Update a Customer
@@ -1070,49 +1116,6 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
-  /notifications:
-    get:
-      operationId: GetNotifications
-      summary: List Notifications
-      description: Retrieves a list of Notifications.
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notifications:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/notification'
-  '/notifications/{id}/resend':
-    post:
-      operationId: PostNotificationsNotificationResend
-      summary: Resend Notification
-      description: >-
-        Resends a previously sent notifications, with the same data but
-        optionally to a different address
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Notification
-          schema:
-            type: string
-      tags:
-        - Notification
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notification:
-                    $ref: '#/components/schemas/notification'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -1285,6 +1288,49 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+  /notifications:
+    get:
+      operationId: GetNotifications
+      summary: List Notifications
+      description: Retrieves a list of Notifications.
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/notification'
+  '/notifications/{id}/resend':
+    post:
+      operationId: PostNotificationsNotificationResend
+      summary: Resend Notification
+      description: >-
+        Resends a previously sent notifications, with the same data but
+        optionally to a different address
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Notification
+          schema:
+            type: string
+      tags:
+        - Notification
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification:
+                    $ref: '#/components/schemas/notification'
   '/orders/{id}/shipping-methods':
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -4563,22 +4609,25 @@ components:
           type: string
         email:
           type: string
-        billing_address_id:
-          type: string
         billing_address:
+          nullable: true
           description: The Customer's billing address.
           anyOf:
             - $ref: '#/components/schemas/address'
+            - type: string
         shipping_addresses:
           type: array
           items:
             $ref: '#/components/schemas/address'
         first_name:
           type: string
+          nullable: true
         last_name:
           type: string
+          nullable: true
         phone:
           type: string
+          nullable: true
         has_account:
           type: boolean
         created_at:
@@ -4590,6 +4639,7 @@ components:
         deleted_at:
           type: string
           format: date-time
+          nullable: true
         metadata:
           type: object
     discount_rule:
