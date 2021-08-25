@@ -95,6 +95,9 @@ const Topbar = ({ data, api }) => {
       <Flex
         sx={{
           alignItems: "center",
+          maxWidth: "400px",
+          flexGrow: "1",
+          justifyContent: "flex-end",
         }}
       >
         <Link variant="topbar" mr={3} href="https://docs.medusa-commerce.com">
@@ -109,8 +112,7 @@ const Topbar = ({ data, api }) => {
         >
           <GitHub />
         </Link>
-        {/* Re-add once indexing has been fine tuned */}
-        {/* <Search /> */}
+        <Search />
       </Flex>
     </Flex>
   )

@@ -68,6 +68,12 @@ module.exports = {
         debug: false, // (bool) Optional. Default `false`
       },
     },
+    {
+      resolve: `gatsby-plugin-env-variables`,
+      options: {
+        allowList: ["ALGOLIA_APP_ID"],
+      },
+    },
     // `gatsby-plugin-preact`,
     // {
     //   resolve: `gatsby-source-openapi-aggregate`,
