@@ -82,7 +82,7 @@ const Section = ({ data }) => {
   }, [isInView])
 
   return (
-    <section
+    <main
       ref={sectionRef}
       id={convertToKebabCase(section.section_name)}
       className="DocSearch-content"
@@ -200,7 +200,7 @@ const Section = ({ data }) => {
           )}
         </Flex>
       </Box>
-    </section>
+    </main>
   )
 }
 
