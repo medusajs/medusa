@@ -1,0 +1,29 @@
+{
+  "gift_card": {
+    "id": "gift_01FDZ0KV75KCX0BEFTR1PTKDW1",
+    "code": "3C17-CAR0-0ASQ-ETXS",
+    "value": 1000,
+    "balance": 1000,
+    "region_id": "reg_01FDZ0KV5M99CX9W4YZB594V2P",
+    "region": {
+      "id": "reg_01FDZ0KV5M99CX9W4YZB594V2P",
+      "name": "United States",
+      "currency_code": "usd",
+      "tax_rate": "0",
+      "tax_code": null,
+      "payment_providers": [],
+      "fulfillment_providers": [],
+      "created_at": "2021-08-25T15:59:44.820Z",
+      "updated_at": "2021-08-25T15:59:44.820Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "order": null,
+    "is_disabled": false,
+    "ends_at": null,
+    "created_at": "2021-08-25T15:59:44.855Z",
+    "updated_at": "2021-08-25T15:59:44.855Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}
