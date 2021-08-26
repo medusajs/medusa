@@ -26,13 +26,9 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
- *           return_shipping:
- *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
- *             type: object
- *             properties:
- *               option_id:
- *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *           return_shipping_option:
+ *             type: string
+ *             description: The id of the Shipping Option to create the Shipping Method from.
  *           additional_items:
  *             description: "The items to exchange the returned items to."
  *             type: array
@@ -67,11 +63,7 @@ export default async (req, res) => {
         note: Validator.string().optional(),
       })
       .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-      })
-      .optional(),
+    return_shipping_option: Validator.string().optional(),
     additional_items: Validator.array().items({
       variant_id: Validator.string().required(),
       quantity: Validator.number().required(),
@@ -124,13 +116,20 @@ export default async (req, res) => {
                   relations: ["items", "swaps", "swaps.additional_items"],
                 })
 
+              let returnShipping
+              if (value.return_shipping_option) {
+                returnShipping = {
+                  option_id: value.return_shipping_option,
+                }
+              }
+
               const swap = await swapService
                 .withTransaction(manager)
                 .create(
                   order,
                   value.return_items,
                   value.additional_items,
-                  value.return_shipping,
+                  returnShipping,
                   {
                     idempotency_key: idempotencyKey.idempotency_key,
                     no_notification: true,
