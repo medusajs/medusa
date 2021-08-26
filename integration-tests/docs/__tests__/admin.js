@@ -9,8 +9,20 @@ const discountTest = require("../test-input/admin/discount")
 const doTest = require("../test-input/admin/draft-order")
 const gcTest = require("../test-input/admin/gift-card")
 const orderTest = require("../test-input/admin/order")
+const productTest = require("../test-input/admin/product")
+const rrTest = require("../test-input/admin/return-reason")
+const swapTest = require("../test-input/admin/swap")
 
-const toTest = [customerTest, discountTest, doTest, gcTest, orderTest]
+const toTest = [
+  customerTest,
+  discountTest,
+  doTest,
+  gcTest,
+  orderTest,
+  productTest,
+  rrTest,
+  swapTest,
+]
 
 jest.setTimeout(30000)
 

@@ -1,0 +1,92 @@
+{
+  "product": {
+    "id": "prod_01FE0FQA65K1Q0B3MWAS1Q8CBK",
+    "title": "Basic Tee",
+    "subtitle": null,
+    "description": null,
+    "handle": "basic-tee",
+    "is_giftcard": false,
+    "images": [],
+    "thumbnail": null,
+    "options": [
+      {
+        "id": "opt_01FE0FQA6RNZMCDX1AMVSZ049A",
+        "title": "Size",
+        "product_id": "prod_01FE0FQA65K1Q0B3MWAS1Q8CBK",
+        "created_at": "2021-08-26T05:43:01.592Z",
+        "updated_at": "2021-08-26T05:43:01.592Z",
+        "deleted_at": null,
+        "metadata": null
+      }
+    ],
+    "variants": [
+      {
+        "id": "variant_01FE0FQA6ZWFF3FA7RAA2KH8NH",
+        "title": "One Size",
+        "product_id": "prod_01FE0FQA65K1Q0B3MWAS1Q8CBK",
+        "prices": [
+          {
+            "id": "ma_01FE0FQA7Q3DRXGY9BDKBN93P1",
+            "currency_code": "usd",
+            "amount": 8000,
+            "sale_amount": null,
+            "variant_id": "variant_01FE0FQA6ZWFF3FA7RAA2KH8NH",
+            "region_id": null,
+            "created_at": "2021-08-26T05:43:01.623Z",
+            "updated_at": "2021-08-26T05:43:01.623Z",
+            "deleted_at": null
+          }
+        ],
+        "sku": null,
+        "barcode": null,
+        "ean": null,
+        "upc": null,
+        "inventory_quantity": 1,
+        "allow_backorder": false,
+        "manage_inventory": true,
+        "hs_code": null,
+        "origin_country": null,
+        "mid_code": null,
+        "material": null,
+        "weight": null,
+        "length": null,
+        "height": null,
+        "width": null,
+        "options": [
+          {
+            "id": "optval_01FE0FQA6ZYDYNB6WW3MJX7ERB",
+            "value": "Size",
+            "option_id": "opt_01FE0FQA6RNZMCDX1AMVSZ049A",
+            "variant_id": "variant_01FE0FQA6ZWFF3FA7RAA2KH8NH",
+            "created_at": "2021-08-26T05:43:01.599Z",
+            "updated_at": "2021-08-26T05:43:01.599Z",
+            "deleted_at": null,
+            "metadata": null
+          }
+        ],
+        "created_at": "2021-08-26T05:43:01.599Z",
+        "updated_at": "2021-08-26T05:43:01.599Z",
+        "deleted_at": null,
+        "metadata": null
+      }
+    ],
+    "profile_id": "sp_01FE0FQA4MAJZEBWAB37J4DSG7",
+    "weight": null,
+    "length": null,
+    "height": null,
+    "width": null,
+    "hs_code": null,
+    "origin_country": null,
+    "mid_code": null,
+    "material": null,
+    "collection_id": null,
+    "collection": null,
+    "type_id": null,
+    "type": null,
+    "tags": [],
+    "discountable": true,
+    "created_at": "2021-08-26T05:43:01.573Z",
+    "updated_at": "2021-08-26T05:43:01.573Z",
+    "metadata": null
+  }
+}
