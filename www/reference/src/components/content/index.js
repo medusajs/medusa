@@ -20,9 +20,11 @@ const Content = ({ data, api }) => {
           },
         }}
       >
-        {data.sections.map((s, i) => {
-          return <Section key={i} data={s} />
-        })}
+        <main className="DocSearch-content">
+          {data.sections.map((s, i) => {
+            return <Section key={i} data={s} />
+          })}
+        </main>
       </Box>
     </Flex>
   )
