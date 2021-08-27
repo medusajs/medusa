@@ -5308,7 +5308,7 @@
         }
       }
     },
-    "/returns/{id}receive": {
+    "/returns/{id}/receive": {
       "post": {
         "operationId": "PostReturnsReturnReceive",
         "summary": "Receive a Return",
@@ -5881,7 +5881,7 @@
       },
       "delete": {
         "operationId": "DeleteStoreCurrenciesCode",
-        "summary": "Remvoe a Currency Code",
+        "summary": "Remove a Currency Code",
         "description": "Removes a Currency Code from the available currencies.",
         "parameters": [
           {
@@ -6085,7 +6085,7 @@
     "/variants": {
       "get": {
         "operationId": "GetVariants",
-        "summary": "List Product Variants.",
+        "summary": "List Product Variants",
         "description": "Retrieves a list of Product Variants",
         "tags": [
           "Product Variant"
@@ -7546,7 +7546,7 @@
           "swaps": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/refund"
+              "$ref": "#/components/schemas/swap"
             }
           },
           "gift_card_transactions": {
