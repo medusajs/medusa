@@ -6,8 +6,7 @@ import NavigationContext from "../../context/navigation-context"
 import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import { navigate } from "gatsby-link"
 
-const algoliaApiKey =
-  process.env.ALGOLIA_API_KEY || "17c3025cfa880392f2660aa2d69414b8"
+const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
 const Search = () => {
   const { goTo, api } = useContext(NavigationContext)
@@ -67,8 +66,7 @@ const Search = () => {
   return (
     <DocSearch
       apiKey={algoliaApiKey}
-      indexName="medusa-commerce-local"
-      appId="QADS2SO5TY"
+      indexName="medusa-commerce"
       hitComponent={HitComponent}
       navigator={{
         navigate({ item }) {

@@ -30,12 +30,10 @@ module.exports = {
   themeConfig: {
     disableSwitch: true,
     algolia: {
-      // apiKey: algoliaApiKey,
-      apiKey: "17c3025cfa880392f2660aa2d69414b8",
-      indexName: "medusa-commerce-local",
+      apiKey: algoliaApiKey,
+      indexName: "medusa-commerce",
       placeholder: "Search docs...",
-      // appId: algoliaAppId,
-      appId: "QADS2SO5TY",
+      appId: algoliaAppId,
     },
     navbar: {
       hideOnScroll: true,
