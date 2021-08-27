@@ -30,10 +30,12 @@ module.exports = {
   themeConfig: {
     disableSwitch: true,
     algolia: {
-      apiKey: algoliaApiKey,
-      indexName: "medusa-commerce",
+      // apiKey: algoliaApiKey,
+      apiKey: "17c3025cfa880392f2660aa2d69414b8",
+      indexName: "medusa-commerce-local",
       placeholder: "Search docs...",
-      appId: algoliaAppId,
+      // appId: algoliaAppId,
+      appId: "QADS2SO5TY",
     },
     navbar: {
       hideOnScroll: true,
@@ -83,7 +85,8 @@ module.exports = {
           items: [
             {
               label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
+              href:
+                "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
               label: "Discord",
