@@ -93,7 +93,7 @@ export default () => {
         throw new MedusaError(Medusa.Types.INVALID_DATA, "invalid data", 400)
       }
 
-      const token = jwt.sign(
+      const token = await jwt.sign(
         {
           customer_id: customer.id,
         },

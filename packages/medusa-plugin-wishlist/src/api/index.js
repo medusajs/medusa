@@ -1,25 +1,55 @@
 import { Router } from "express"
-import bodyParser from "body-parser"
 import jwt from "jsonwebtoken"
+import cors from "cors"
+import express from "express"
+import { getConfigFile, MedusaError } from "medusa-core-utils"
 
 const app = Router()
-export default () => {
-  app.get("/wishlists/:token", bodyParser.json(), async (req, res) => {
-    const { token } = req.params
+export default (rootDirectory) => {
+  const { configModule } = getConfigFile(rootDirectory, "medusa-config")
+  const { projectConfig } = configModule
+  const corsOptions = {
+    origin: projectConfig.store_cors.split(","),
+    credentials: true,
+  }
+  const JWT_SECRET = process.env.JWT_SECRET || ""
 
-    const JWT_SECRET = process.env.JWT_SECRET || ""
+  app.use("/wishlists/:token", cors(corsOptions))
+  app.get(
+    "/wishlists/:token",
+    cors(corsOptions),
+    express.json(),
+    async (req, res) => {
+      const customerService = req.scope.resolve("customerService")
+      const { token } = req.params
+      let decode
 
-    // decorde token with decode = jwt.decode(token, secret)
-    const decode = jwt.decode(token, JWT_SECRET)
-    console.log(decode)
-    // fetch customer.retrieve(decode.customer_id)
-    // get customer.metadata.wishlist
+      try {
+        decode = jwt.decode(token, JWT_SECRET)
 
-    // respond with
-    // wishlist
-    // first_name
-    res.sendStatus(200)
-  })
+        if (!decode || !decode.customer_id) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            "Invalid token",
+            400
+          )
+        }
+      } catch (err) {
+        res.status(400).json(err)
+      }
+      try {
+        const customer = await customerService.retrieve(decode.customer_id)
+        const response = {
+          wishlist: customer.metadata.wishlist,
+          first_name: customer.first_name,
+        }
+
+        res.status(200).json({ response })
+      } catch (err) {
+        res.status(400).json(err)
+      }
+    }
+  )
 
   return app
 }
