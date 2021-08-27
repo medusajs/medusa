@@ -83,17 +83,15 @@ export default () => {
 
       let customer = await customerService.retrieve(req.params.id)
 
-      // check customer exists else throw 404
-      if (!customer?.id) {
-        throw new MedusaError(Medusa.Types.NOT_FOUND, "not found", 404)
-      }
-
       // check customer has wishlist else throw 400 bad request
       if (!customer?.metadata?.wishlist) {
-        throw new MedusaError(Medusa.Types.INVALID_DATA, "invalid data", 400)
+        throw new MedusaError(
+          Medusa.Types.INVALID_DATA,
+          "Invalid data - Customer doesn't have a wishlist"
+        )
       }
 
-      const token = await jwt.sign(
+      const token = jwt.sign(
         {
           customer_id: customer.id,
         },

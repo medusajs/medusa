@@ -28,25 +28,21 @@ export default (rootDirectory) => {
         decode = jwt.decode(token, JWT_SECRET)
 
         if (!decode || !decode.customer_id) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            "Invalid token",
-            400
-          )
+          throw new MedusaError(MedusaError.Types.NOT_FOUND, "Invalid token")
         }
       } catch (err) {
-        res.status(400).json(err)
+        res.status(400).json({ message: err.message })
       }
       try {
         const customer = await customerService.retrieve(decode.customer_id)
-        const response = {
-          wishlist: customer.metadata.wishlist,
+        const wishlist = {
+          items: customer.metadata.wishlist,
           first_name: customer.first_name,
         }
 
-        res.status(200).json({ response })
+        res.status(200).json({ wishlist })
       } catch (err) {
-        res.status(400).json(err)
+        res.status(400).json({ message: err.message })
       }
     }
   )
