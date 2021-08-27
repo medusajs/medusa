@@ -469,6 +469,9 @@ class OrderService extends BaseService {
               .withTransaction(manager)
               .cancelPayment(payment)
           }
+          await this.cartService_
+            .withTransaction(manager)
+            .update({ completed_at: null })
           throw err
         }
       }
