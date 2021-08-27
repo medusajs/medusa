@@ -2,8 +2,10 @@ export default async (req, res) => {
   try {
     const strapiService = req.scope.resolve("strapiService")
 
-    const strapiType = req.body.sys.contentType.sys.id
-    const entryId = req.body.sys.id
+    // find Strapi entry type from body of webhook
+    const strapiType = null
+    // get the ID
+    const entryId = ""
 
     let updated = {}
     switch (strapiType) {

@@ -62,67 +62,23 @@ class StrapiService extends BaseService {
         variants.map(async (variant) => {
           // update product variant in strapi
           let updated = await this.updateProductVariantInContentful(variant)
-          if (config.publish) {
-            updated = updated.publish()
-          }
-
           return updated
         })
       )
 
-      return contentfulVariants
+      return strapiVariants
     } catch (error) {
       throw error
     }
   }
 
-  getVariantLinks_(variantEntries) {
-    return variantEntries.map((v) => ({
-      sys: {
-        type: "Link",
-        linkType: "Entry",
-        id: v.sys.id,
-      },
-    }))
-  }
-
   async createImageAssets(product) {
-    const environment = await this.getContentfulEnvironment_()
-
     let assets = []
     await Promise.all(
       product.images
         .filter((image) => image.url !== product.thumbnail)
         .map(async (image, i) => {
-          const asset = await environment.createAsset({
-            fields: {
-              title: {
-                "en-US": `${product.title} - ${i}`,
-              },
-              description: {
-                "en-US": "",
-              },
-              file: {
-                "en-US": {
-                  contentType: "image/xyz",
-                  fileName: image.url,
-                  upload: image.url,
-                },
-              },
-            },
-          })
-
-          const finalAsset = await asset
-            .processForAllLocales()
-            .then((ast) => ast.publish())
-
-          assets.push({
-            sys: {
-              type: "Link",
-              linkType: "Asset",
-              id: finalAsset.sys.id,
-            },
-          })
+          // create image in Strapi
         })
     )
 
@@ -140,6 +96,13 @@ class StrapiService extends BaseService {
   }
 
   async createProductInStrapi(product) {
+    const hasType = await this.getType("product")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      return Promise.resolve()
+    }
+
     try {
       const p = await this.productService_.retrieve(product.id, {
         relations: [
@@ -152,110 +115,42 @@ class StrapiService extends BaseService {
         ],
       })
 
+      // update or create all variants for the product
       const variantEntries = await this.getVariantEntries_(p.variants, {
         publish: true,
       })
-      const variantLinks = this.getVariantLinks_(variantEntries)
 
-      const fields = {
-        [this.getCustomField("title", "product")]: {
-          "en-US": p.title,
-        },
-        [this.getCustomField("subtitle", "product")]: {
-          "en-US": p.subtitle,
-        },
-        [this.getCustomField("description", "product")]: {
-          "en-US": p.description,
-        },
-        [this.getCustomField("variants", "product")]: {
-          "en-US": variantLinks,
-        },
-        [this.getCustomField("options", "product")]: {
-          "en-US": p.options,
-        },
-        [this.getCustomField("medusaId", "product")]: {
-          "en-US": p.id,
-        },
-      }
+      // initiate the fields for the product in Strapi
+      const fields = {}
 
       if (p.images.length > 0) {
-        const imageLinks = await this.createImageAssets(product)
-        if (imageLinks) {
-          fields.images = {
-            "en-US": imageLinks,
-          }
-        }
+        const images = await this.createImageAssets(product)
+        // add images to Strapi product
       }
 
       if (p.thumbnail) {
-        const thumbnailAsset = await environment.createAsset({
-          fields: {
-            title: {
-              "en-US": `${p.title}`,
-            },
-            description: {
-              "en-US": "",
-            },
-            file: {
-              "en-US": {
-                contentType: "image/xyz",
-                fileName: p.thumbnail,
-                upload: p.thumbnail,
-              },
-            },
-          },
-        })
-
-        await thumbnailAsset.processForAllLocales().then((a) => a.publish())
-
-        const thumbnailLink = {
-          sys: {
-            type: "Link",
-            linkType: "Asset",
-            id: thumbnailAsset.sys.id,
-          },
-        }
-
-        fields.thumbnail = {
-          "en-US": thumbnailLink,
-        }
+        // create thumbnail image in Strapi
+        const thumbnail = null
       }
 
       if (p.type) {
-        const type = {
-          "en-US": p.type.value,
-        }
-
-        fields[this.getCustomField("type", "product")] = type
+        // add type to product
       }
 
       if (p.collection) {
-        const collection = {
-          "en-US": p.collection.title,
-        }
-
-        fields[this.getCustomField("collection", "product")] = collection
+        // add collection to product
       }
 
       if (p.tags) {
-        const tags = {
-          "en-US": p.tags,
-        }
-
-        fields[this.getCustomField("tags", "product")] = tags
+        // add tags to product
       }
 
       if (p.handle) {
-        const handle = {
-          "en-US": p.handle,
-        }
-
-        fields[this.getCustomField("handle", "product")] = handle
+        // add handle to product
       }
 
-      const result = await environment.createEntryWithId("product", p.id, {
-        fields,
-      })
+      // create product in Strapi with product id and fields object
+      const result = null
 
       return result
     } catch (error) {
@@ -263,36 +158,22 @@ class StrapiService extends BaseService {
     }
   }
 
-  async createProductVariantInContentful(variant) {
+  async createProductVariantInStrapi(variant) {
+    const hasType = await this.getType("productVariant")
+      .then(() => true)
+      .catch(() => false)
+
+    if (!hasType) {
+      return Promise.resolve()
+    }
+
     try {
       const v = await this.productVariantService_.retrieve(variant.id, {
         relations: ["prices", "options"],
       })
 
-      const environment = await this.getContentfulEnvironment_()
-      const result = await environment.createEntryWithId(
-        "productVariant",
-        v.id,
-        {
-          fields: {
-            [this.getCustomField("title", "variant")]: {
-              "en-US": v.title,
-            },
-            [this.getCustomField("sku", "variant")]: {
-              "en-US": v.sku,
-            },
-            [this.getCustomField("prices", "variant")]: {
-              "en-US": v.prices,
-            },
-            [this.getCustomField("options", "variant")]: {
-              "en-US": v.options,
-            },
-            [this.getCustomField("medusaId", "variant")]: {
-              "en-US": v.id,
-            },
-          },
-        }
-      )
+      // create variant in Strapi with variant id and variant properties
+      const result = null
 
       return result
     } catch (error) {
@@ -300,41 +181,24 @@ class StrapiService extends BaseService {
     }
   }
 
-  async createRegionInContentful(region) {
+  async createRegionInStrapi(region) {
     const hasType = await this.getType("region")
       .then(() => true)
       .catch(() => false)
     if (!hasType) {
       return Promise.resolve()
     }
+
     try {
       const r = await this.regionService_.retrieve(region.id, {
         relations: ["countries", "payment_providers", "fulfillment_providers"],
       })
 
-      const environment = await this.getContentfulEnvironment_()
+      // initiate the fields for the region in Strapi
+      const fields = {}
 
-      const fields = {
-        [this.getCustomField("medusaId", "region")]: {
-          "en-US": r.id,
-        },
-        [this.getCustomField("name", "region")]: {
-          "en-US": r.name,
-        },
-        [this.getCustomField("countries", "region")]: {
-          "en-US": r.countries,
-        },
-        [this.getCustomField("paymentProviders", "region")]: {
-          "en-US": r.payment_providers,
-        },
-        [this.getCustomField("fulfillmentProviders", "region")]: {
-          "en-US": r.fulfillment_providers,
-        },
-      }
-
-      const result = await environment.createEntryWithId("region", r.id, {
-        fields,
-      })
+      // create the region in Strapi with region id and fields object
+      const result = null
 
       return result
     } catch (error) {
@@ -342,7 +206,7 @@ class StrapiService extends BaseService {
     }
   }
 
-  async updateRegionInContentful(data) {
+  async updateRegionInStrapi(data) {
     const hasType = await this.getType("region")
       .then(() => true)
       .catch(() => false)
@@ -358,13 +222,14 @@ class StrapiService extends BaseService {
       "fulfillment_providers",
     ]
 
-    const found = data.fields.find((f) => updateFields.includes(f))
+    // check if update contains any fields in Strapi to minimize runs
+    const found = data.find((f) => updateFields.includes(f))
     if (!found) {
       return
     }
 
     try {
-      const ignore = await this.shouldIgnore_(data.id, "contentful")
+      const ignore = await this.shouldIgnore_(data.id, "strapi")
       if (ignore) {
         return
       }
@@ -373,46 +238,31 @@ class StrapiService extends BaseService {
         relations: ["countries", "payment_providers", "fulfillment_providers"],
       })
 
-      const environment = await this.getContentfulEnvironment_()
-
       // check if region exists
       let regionEntry = undefined
       try {
-        regionEntry = await environment.getEntry(data.id)
+        // fetch from Strapi
+        regionEntry = null
       } catch (error) {
         return this.createRegionInContentful(r)
       }
 
       const regionEntryFields = {
-        ...regionEntry.fields,
-        [this.getCustomField("name", "region")]: {
-          "en-US": r.name,
-        },
-        [this.getCustomField("countries", "region")]: {
-          "en-US": r.countries,
-        },
-        [this.getCustomField("paymentProviders", "region")]: {
-          "en-US": r.payment_providers,
-        },
-        [this.getCustomField("fulfillmentProviders", "region")]: {
-          "en-US": r.fulfillment_providers,
-        },
+        // previous fields and new fields
       }
 
-      regionEntry.fields = regionEntryFields
+      // update entry in Strapi
+      const updatedEntry = null
 
-      const updatedEntry = await regionEntry.update()
-      const publishedEntry = await updatedEntry.publish()
+      await this.addIgnore_(data.id, "medusa-strapi")
 
-      await this.addIgnore_(data.id, "medusa")
-
-      return publishedEntry
+      return updatedEntry
     } catch (error) {
       throw error
     }
   }
 
-  async updateProductInContentful(data) {
+  async updateProductInStrapi(data) {
     const updateFields = [
       "variants",
       "options",
@@ -427,13 +277,14 @@ class StrapiService extends BaseService {
       "thumbnail",
     ]
 
-    const found = data.fields.find((f) => updateFields.includes(f))
+    // check if update contains any fields in Strapi to minimize runs
+    const found = data.find((f) => updateFields.includes(f))
     if (!found) {
       return Promise.resolve()
     }
 
     try {
-      const ignore = await this.shouldIgnore_(data.id, "contentful")
+      const ignore = await this.shouldIgnore_(data.id, "strapi")
       if (ignore) {
         return Promise.resolve()
       }
@@ -449,121 +300,49 @@ class StrapiService extends BaseService {
         ],
       })
 
-      const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let productEntry = undefined
       try {
-        productEntry = await environment.getEntry(data.id)
+        // fetch entry in Strapi
+        productEntry = null
       } catch (error) {
-        return this.createProductInContentful(p)
+        return this.createProductInStrapi(p)
       }
 
+      // update or create all variants for the product
       const variantEntries = await this.getVariantEntries_(p.variants)
-      const variantLinks = this.getVariantLinks_(variantEntries)
 
       const productEntryFields = {
-        ...productEntry.fields,
-        [this.getCustomField("title", "product")]: {
-          "en-US": p.title,
-        },
-        [this.getCustomField("subtitle", "product")]: {
-          "en-US": p.subtitle,
-        },
-        [this.getCustomField("description", "product")]: {
-          "en-US": p.description,
-        },
-        [this.getCustomField("options", "product")]: {
-          "en-US": p.options,
-        },
-        [this.getCustomField("variants", "product")]: {
-          "en-US": variantLinks,
-        },
-        [this.getCustomField("medusaId", "product")]: {
-          "en-US": p.id,
-        },
+        // previous fields and new fields
       }
 
-      if (data.fields.includes("thumbnail") && p.thumbnail) {
-        let url = p.thumbnail
-        if (p.thumbnail.startsWith("//")) {
-          url = `https:${url}`
-        }
-
-        const thumbnailAsset = await environment.createAsset({
-          fields: {
-            title: {
-              "en-US": `${p.title}`,
-            },
-            description: {
-              "en-US": "",
-            },
-            file: {
-              "en-US": {
-                contentType: "image/xyz",
-                fileName: url,
-                upload: url,
-              },
-            },
-          },
-        })
-
-        await thumbnailAsset.processForAllLocales().then((a) => a.publish())
-
-        const thumbnailLink = {
-          sys: {
-            type: "Link",
-            linkType: "Asset",
-            id: thumbnailAsset.sys.id,
-          },
-        }
-
-        productEntryFields.thumbnail = {
-          "en-US": thumbnailLink,
-        }
+      // if data contains thumbnail, we update it
+      if (data.includes("thumbnail") && p.thumbnail) {
+        let thumbnail = null
       }
 
       if (p.type) {
-        const type = {
-          "en-US": p.type.value,
-        }
-
-        productEntryFields[this.getCustomField("type", "product")] = type
+        // add type to product
       }
 
       if (p.collection) {
-        const collection = {
-          "en-US": p.collection.title,
-        }
-
-        productEntryFields[
-          this.getCustomField("collection", "product")
-        ] = collection
+        // add collection to product
       }
 
       if (p.tags) {
-        const tags = {
-          "en-US": p.tags,
-        }
-
-        productEntryFields[this.getCustomField("tags", "product")] = tags
+        // add tags to product
       }
 
       if (p.handle) {
-        const handle = {
-          "en-US": p.handle,
-        }
-
-        productEntryFields[this.getCustomField("handle", "product")] = handle
+        // add handle to product
       }
 
-      productEntry.fields = productEntryFields
+      // update entry in Strapi
+      const updatedEntry = null
 
-      const updatedEntry = await productEntry.update()
-      const publishedEntry = await updatedEntry.publish()
+      await this.addIgnore_(data.id, "medusa-strapi")
 
-      await this.addIgnore_(data.id, "medusa")
-
-      return publishedEntry
+      return updatedEntry
     } catch (error) {
       throw error
     }
@@ -598,7 +377,7 @@ class StrapiService extends BaseService {
         return Promise.resolve()
       }
 
-      // check if product exists
+      // check if variant exists
       let variantEntry = undefined
       // if not, we create a new one
       try {
@@ -614,61 +393,38 @@ class StrapiService extends BaseService {
       })
 
       const variantEntryFields = {
-        ...variantEntry.fields,
-        [this.getCustomField("title", "variant")]: {
-          "en-US": v.title,
-        },
-        [this.getCustomField("sku", "variant")]: {
-          "en-US": v.sku,
-        },
-        [this.getCustomField("options", "variant")]: {
-          "en-US": v.options,
-        },
-        [this.getCustomField("prices", "variant")]: {
-          "en-US": v.prices,
-        },
-        [this.getCustomField("medusaId", "variant")]: {
-          "en-US": v.id,
-        },
+        // previous fields and new fields
       }
 
-      variantEntry.fields = variantEntryFields
+      // update entry in Strapi
+      const updatedEntry = null
 
-      const updatedEntry = await variantEntry.update()
-      const publishedEntry = await updatedEntry.publish()
+      await this.addIgnore_(variant.id, "medusa-strapi")
 
-      await this.addIgnore_(variant.id, "medusa")
-
-      return publishedEntry
+      return updatedEntry
     } catch (error) {
       throw error
     }
   }
 
-  async sendContentfulProductToAdmin(productId) {
-    const ignore = await this.shouldIgnore_(productId, "medusa")
+  async sendStrapiProductToAdmin(productId) {
+    const ignore = await this.shouldIgnore_(productId, "medusa-strapi")
     if (ignore) {
       return
     }
 
     try {
-      const environment = await this.getContentfulEnvironment_()
-      const productEntry = await environment.getEntry(productId)
+      // get entry from Strapi
+      const productEntry = null
 
       const product = await this.productService_.retrieve(productId)
 
       let update = {}
 
-      const title =
-        productEntry.fields[this.getCustomField("title", "product")]["en-US"]
-
-      const subtitle =
-        productEntry.fields[this.getCustomField("subtitle", "product")]["en-US"]
-
-      const description =
-        productEntry.fields[this.getCustomField("description", "product")][
-          "en-US"
-        ]
+      // update Medusa product with Strapi product fields
+      const title = ""
+      const subtitle = ""
+      const description = ""
 
       if (product.title !== title) {
         update.title = title
@@ -683,21 +439,14 @@ class StrapiService extends BaseService {
       }
 
       // Get the thumbnail, if present
-      if (productEntry.fields.thumbnail) {
-        const thumb = await environment.getAsset(
-          productEntry.fields.thumbnail["en-US"].sys.id
-        )
-
-        if (thumb.fields.file["en-US"].url) {
-          if (!product.thumbnail.includes(thumb.fields.file["en-US"].url)) {
-            update.thumbnail = thumb.fields.file["en-US"].url
-          }
-        }
+      if (productEntry.thumbnail) {
+        const thumb = null
+        update.thumbnail = thumb
       }
 
       if (!_.isEmpty(update)) {
         await this.productService_.update(productId, update).then(async () => {
-          return await this.addIgnore_(productId, "contentful")
+          return await this.addIgnore_(productId, "strapi")
         })
       }
     } catch (error) {
@@ -705,25 +454,22 @@ class StrapiService extends BaseService {
     }
   }
 
-  async sendContentfulProductVariantToAdmin(variantId) {
-    const ignore = this.shouldIgnore_(variantId, "medusa")
+  async sendStrapiProductVariantToAdmin(variantId) {
+    const ignore = this.shouldIgnore_(variantId, "medusa-strapi")
     if (ignore) {
       return
     }
 
     try {
-      const environment = await this.getContentfulEnvironment_()
-      const variantEntry = await environment.getEntry(variantId)
+      // get entry from Strapi
+      const variantEntry = null
 
       const updatedVariant = await this.productVariantService_
         .update(variantId, {
-          title:
-            variantEntry.fields[this.getCustomField("title", "variant")][
-              "en-US"
-            ],
+          title: "", // update variant title in Medusa
         })
         .then(async () => {
-          return await this.addIgnore_(variantId, "contentful")
+          return await this.addIgnore_(variantId, "strapi")
         })
 
       return updatedVariant
@@ -733,8 +479,7 @@ class StrapiService extends BaseService {
   }
 
   async getType(type) {
-    const environment = await this.getContentfulEnvironment_()
-    return environment.getContentType(type)
+    // fetch type from Strapi to validate that it exists
   }
 }
 
