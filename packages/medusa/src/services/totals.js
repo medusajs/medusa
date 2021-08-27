@@ -122,7 +122,7 @@ class TotalsService extends BaseService {
 
     const discount = discounts.find(({ rule }) => rule.type !== "free_shipping")
 
-    if (!discount) {
+    if (!discount || !lineItem.allow_discounts) {
       return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
     }
 
@@ -168,6 +168,7 @@ class TotalsService extends BaseService {
 
       return this.getLineItemRefund(order, i)
     })
+
     return this.rounded(refunds.reduce((acc, next) => acc + next, 0))
   }
 
