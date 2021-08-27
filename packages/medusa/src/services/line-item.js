@@ -90,50 +90,45 @@ class LineItemService extends BaseService {
   }
 
   async generate(variantId, regionId, quantity, config = {}) {
-    return this.atomicPhase_(async (manager) => {
-      const variant = await this.productVariantService_
-        .withTransaction(manager)
-        .retrieve(variantId, {
-          relations: ["product"],
-        })
-
-      const region = await this.regionService_
-        .withTransaction(manager)
-        .retrieve(regionId)
-
-      let price
-      let shouldMerge = true
-
-      if (config.unit_price && typeof config.unit_price !== `undefined`) {
-        // if custom unit_price, we ensure positive values
-        // and we choose to not merge the items
-        shouldMerge = false
-        if (config.unit_price < 0) {
-          price = 0
-        } else {
-          price = config.unit_price
-        }
-      } else {
-        price = await this.productVariantService_
-          .withTransaction(manager)
-          .getRegionPrice(variant.id, region.id)
-      }
-
-      const toCreate = {
-        unit_price: price,
-        title: variant.product.title,
-        description: variant.title,
-        thumbnail: variant.product.thumbnail,
-        variant_id: variant.id,
-        quantity: quantity || 1,
-        allow_discounts: variant.product.discountable,
-        is_giftcard: variant.product.is_giftcard,
-        metadata: config?.metadata || {},
-        should_merge: shouldMerge,
-      }
-
-      return toCreate
+    const variant = await this.productVariantService_.retrieve(variantId, {
+      relations: ["product"],
     })
+
+    const region = await this.regionService_.retrieve(regionId)
+
+    let price
+    let shouldMerge = true
+
+    if (config.unit_price && typeof config.unit_price !== `undefined`) {
+      // if custom unit_price, we ensure positive values
+      // and we choose to not merge the items
+      shouldMerge = false
+      if (config.unit_price < 0) {
+        price = 0
+      } else {
+        price = config.unit_price
+      }
+    } else {
+      price = await this.productVariantService_.getRegionPrice(
+        variant.id,
+        region.id
+      )
+    }
+
+    const toCreate = {
+      unit_price: price,
+      title: variant.product.title,
+      description: variant.title,
+      thumbnail: variant.product.thumbnail,
+      variant_id: variant.id,
+      quantity: quantity || 1,
+      allow_discounts: !variant.product.is_giftcard,
+      is_giftcard: variant.product.is_giftcard,
+      metadata: config?.metadata || {},
+      should_merge: shouldMerge,
+    }
+
+    return toCreate
   }
 
   /**
@@ -142,7 +137,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the created line item
    */
   async create(lineItem) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -160,7 +155,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the update line item
    */
   async update(id, update) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -188,7 +183,7 @@ class LineItemService extends BaseService {
    * @return {Promise} the result of the delete operation
    */
   async delete(id) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
