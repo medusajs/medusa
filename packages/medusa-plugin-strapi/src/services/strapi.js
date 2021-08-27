@@ -1,10 +1,10 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { createClient } from "contentful-management"
+import axios from "axios"
 
 const IGNORE_THRESHOLD = 2 // seconds
 
-class ContentfulService extends BaseService {
+class StrapiService extends BaseService {
   constructor(
     {
       regionService,
@@ -27,11 +27,18 @@ class ContentfulService extends BaseService {
 
     this.options_ = options
 
-    this.contentful_ = createClient({
-      accessToken: options.access_token,
-    })
+    // init Strapi client
+    this.strapi_ = this.createClient()
 
     this.redis_ = redisClient
+  }
+
+  createClient() {
+    const client = axios.create({
+      baseURL: process.env.STRAPI_URL || "http://localhost:1337",
+    })
+
+    return client
   }
 
   async addIgnore_(id, side) {
@@ -49,20 +56,11 @@ class ContentfulService extends BaseService {
     return await this.redis_.get(key)
   }
 
-  async getContentfulEnvironment_() {
-    try {
-      const space = await this.contentful_.getSpace(this.options_.space_id)
-      const environment = await space.getEnvironment(this.options_.environment)
-      return environment
-    } catch (error) {
-      throw error
-    }
-  }
-
   async getVariantEntries_(variants, config = { publish: false }) {
     try {
-      const contentfulVariants = await Promise.all(
+      const strapiVariants = await Promise.all(
         variants.map(async (variant) => {
+          // update product variant in strapi
           let updated = await this.updateProductVariantInContentful(variant)
           if (config.publish) {
             updated = updated.publish()
@@ -141,7 +139,7 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async createProductInContentful(product) {
+  async createProductInStrapi(product) {
     try {
       const p = await this.productService_.retrieve(product.id, {
         relations: [
@@ -154,7 +152,6 @@ class ContentfulService extends BaseService {
         ],
       })
 
-      const environment = await this.getContentfulEnvironment_()
       const variantEntries = await this.getVariantEntries_(p.variants, {
         publish: true,
       })
@@ -572,7 +569,7 @@ class ContentfulService extends BaseService {
     }
   }
 
-  async updateProductVariantInContentful(variant) {
+  async updateProductVariantInStrapi(variant) {
     const updateFields = [
       "title",
       "prices",
@@ -596,19 +593,20 @@ class ContentfulService extends BaseService {
     }
 
     try {
-      const ignore = await this.shouldIgnore_(variant.id, "contentful")
+      const ignore = await this.shouldIgnore_(variant.id, "strapi")
       if (ignore) {
         return Promise.resolve()
       }
 
-      const environment = await this.getContentfulEnvironment_()
       // check if product exists
       let variantEntry = undefined
       // if not, we create a new one
       try {
-        variantEntry = await environment.getEntry(variant.id)
+        // fetch variant in Strapi
+        variantEntry = null
       } catch (error) {
-        return this.createProductVariantInContentful(variant)
+        // if we fail to find the variant, we create it
+        return this.createProductVariantInStrapi(variant)
       }
 
       const v = await this.productVariantService_.retrieve(variant.id, {
@@ -740,4 +738,4 @@ class ContentfulService extends BaseService {
   }
 }
 
-export default ContentfulService
+export default StrapiService
