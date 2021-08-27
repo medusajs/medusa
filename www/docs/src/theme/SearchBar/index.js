@@ -20,8 +20,33 @@ import styles from "./styles.module.css"
 
 let DocSearchModal = null
 
+const convertToKebabCase = (string) => {
+  return string
+    .replace(/\s+/g, "-")
+    .replace("'", "")
+    .replace(".", "")
+    .replace('"', "")
+    .toLowerCase()
+}
+
+const replaceUrl = (item) => {
+  let { url, hierarchy } = item
+  if (url.includes("api/store") || url.includes("/api/admin")) {
+    url = url.replace("#", "/")
+    if (hierarchy.lvl2) {
+      const index = url.lastIndexOf("/")
+      url =
+        url.substring(0, index) +
+        `/${convertToKebabCase(hierarchy.lvl1)}` +
+        url.substring(index)
+    }
+  }
+  return url
+}
+
 function Hit({ hit, children }) {
-  return <Link to={hit.url}>{children}</Link>
+  let url = replaceUrl(hit)
+  return <Link to={url}>{children}</Link>
 }
 
 function ResultsFooter({ state, onClose }) {
@@ -101,8 +126,22 @@ function DocSearch({ contextualSearch, ...props }) {
   )
 
   const navigator = useRef({
-    navigate({ itemUrl }) {
-      history.push(itemUrl)
+    navigate({ item }) {
+      let url = replaceUrl(item)
+      history.push(url)
+    },
+    navigateNewTab({ item }) {
+      let url = replaceUrl(item)
+      const windowReference = window.open(url, "_blank", "noopener")
+
+      if (windowReference) {
+        windowReference.focus()
+      }
+    },
+    navigateNewWindow({ item }) {
+      const url = replaceUrl(item)
+
+      window.open(url, "_blank", "noopener")
     },
   }).current
 
