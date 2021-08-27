@@ -49,24 +49,6 @@ Medusa is an open-source headless commerce engine that enables developers to cre
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
-## ⭐️ Features
-Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
-- **Headless**: Medusa is a highly customizable commerce API which means that you may use any presentation layer such as a website, app, chatbots, etc.
-- **Regions** allow you to specify currencies, payment providers, shipping providers, tax rates and more for one or more countries for truly international sales.
-- **Orders** come with all the functionality necessary to perform powerful customer service operations with ease.
-- **Carts** allow customers to collect products for purchase, add shipping details and complete payments.
-- **Products** come with relevant fields for customs, stock keeping and sales. Medusa supports multiple options and unlimited variants.
-- **Swaps** allow customers to exchange products after purchase (e.g. for incorrect sizes). Accounting, payment and fulfillment plugins handle all the tedious work for you for automated customer service.
-- **Claims** can be created if customers experience problems with one of their products. Plugins make sure to automate sending out replacements, handling refunds and collecting valuable data for analysis.
-- **Returns** allow customers to send back products and can be configured to function in a 100% automated flow through accounting and payment plugins.
-- **Fulfillment API** makes it easy to integrate with any fulfillment provider by creating fulfillment plugins, check the `/packages` directory for a full list of plugins.
-- **Payments API** makes it easy to integrate with any payment provider by creating payment plugins, we already support Stripe, Paypal and Klarna.
-- **Notification API** allow integrations with email providers, chatbots, Slack channels, etc. 
-- **Customer Login** to give customers a way of managing their data, viewing their orders and saving payment details. 
-- **Shipping Options & Profiles** enable powerful rules for free shipping limits, multiple fulfillment methods and more.
-- **Medusa's Plugin Architecture** makes it intuitive and easy to manage your integrations, switch providers and grow with ease.
-- **Customization** is supported for those special use cases that all the other e-commerce platforms can't accommodate.
-
 ## 🛒 Setting up a storefront for your Medusa project
 Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.
 
@@ -97,6 +79,24 @@ With your project in local development you can link your Medusa instance to Medu
    ```
 
 You can now navigate to Orders in Medusa Cloud to view the orders in your local Medusa project, just like you would if your store was running in production.
+
+## ⭐️ Features
+Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
+- **Headless**: Medusa is a highly customizable commerce API which means that you may use any presentation layer such as a website, app, chatbots, etc.
+- **Regions** allow you to specify currencies, payment providers, shipping providers, tax rates and more for one or more countries for truly international sales.
+- **Orders** come with all the functionality necessary to perform powerful customer service operations with ease.
+- **Carts** allow customers to collect products for purchase, add shipping details and complete payments.
+- **Products** come with relevant fields for customs, stock keeping and sales. Medusa supports multiple options and unlimited variants.
+- **Swaps** allow customers to exchange products after purchase (e.g. for incorrect sizes). Accounting, payment and fulfillment plugins handle all the tedious work for you for automated customer service.
+- **Claims** can be created if customers experience problems with one of their products. Plugins make sure to automate sending out replacements, handling refunds and collecting valuable data for analysis.
+- **Returns** allow customers to send back products and can be configured to function in a 100% automated flow through accounting and payment plugins.
+- **Fulfillment API** makes it easy to integrate with any fulfillment provider by creating fulfillment plugins, check the `/packages` directory for a full list of plugins.
+- **Payments API** makes it easy to integrate with any payment provider by creating payment plugins, we already support Stripe, Paypal and Klarna.
+- **Notification API** allow integrations with email providers, chatbots, Slack channels, etc. 
+- **Customer Login** to give customers a way of managing their data, viewing their orders and saving payment details. 
+- **Shipping Options & Profiles** enable powerful rules for free shipping limits, multiple fulfillment methods and more.
+- **Medusa's Plugin Architecture** makes it intuitive and easy to manage your integrations, switch providers and grow with ease.
+- **Customization** is supported for those special use cases that all the other e-commerce platforms can't accommodate.
 
 ## Database support
 In production Medusa requires Postgres and Redis, but SQLite is supported for development and testing purposes. If you plan on using Medusa for a project it is recommended that you install Postgres and Redis on your dev machine.
