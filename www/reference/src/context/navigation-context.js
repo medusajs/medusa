@@ -1,4 +1,5 @@
 import React, { useReducer } from "react"
+import { checkDisplay } from "../utils/check-display"
 import scrollParent from "../utils/scroll-parent"
 import types from "./types"
 
@@ -79,10 +80,16 @@ const scrollNav = id => {
 const scrollToElement = async id => {
   const element = document.querySelector(`#${id}`)
   if (element) {
-    element.scrollIntoView({
-      block: "start",
-      inline: "nearest",
-    })
+    if (checkDisplay(element)) {
+      element.scrollIntoView({
+        block: "start",
+        inline: "nearest",
+      })
+    } else {
+      setTimeout(() => {
+        scrollToElement(id)
+      }, 100)
+    }
   } else {
     setTimeout(() => {
       scrollToElement(id)

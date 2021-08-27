@@ -14,7 +14,7 @@ import useInView from "../../hooks/use-in-view"
 
 const Section = ({ data }) => {
   const { section } = data
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
   const { openSections, updateSection, updateMetadata } = useContext(
     NavigationContext
   )
@@ -52,10 +52,6 @@ const Section = ({ data }) => {
   }
 
   useEffect(() => {
-    setIsExpanded(false)
-  }, [])
-
-  useEffect(() => {
     const shouldOpen = openSections.includes(
       convertToKebabCase(section.section_name)
     )
@@ -82,11 +78,7 @@ const Section = ({ data }) => {
   }, [isInView])
 
   return (
-    <main
-      ref={sectionRef}
-      id={convertToKebabCase(section.section_name)}
-      className="DocSearch-content"
-    >
+    <section ref={sectionRef} id={convertToKebabCase(section.section_name)}>
       <Box
         sx={{
           borderBottom: "hairline",
@@ -151,7 +143,7 @@ const Section = ({ data }) => {
               ) : null}
             </Flex>
           </ResponsiveContainer>
-          {!isExpanded ? (
+          {!isExpanded && (
             <Flex
               sx={{
                 justifyContent: "center",
@@ -173,34 +165,39 @@ const Section = ({ data }) => {
                 SHOW <ChevronDown fill={"dark"} styles={{ mr: "-10px" }} />
               </Button>
             </Flex>
-          ) : (
-            <Box mt={4}>
-              {section.paths.map((p, i) => {
-                return (
-                  <Flex
-                    key={i}
-                    sx={{
-                      flexDirection: "column",
-                    }}
-                  >
-                    {p.methods.map((m, i) => {
-                      return (
-                        <Method
-                          key={i}
-                          data={m}
-                          section={convertToKebabCase(section.section_name)}
-                          pathname={p.name}
-                        />
-                      )
-                    })}
-                  </Flex>
-                )
-              })}
-            </Box>
           )}
+          <Box
+            id="method-container"
+            mt={4}
+            sx={{
+              display: isExpanded ? "block" : "none",
+            }}
+          >
+            {section.paths.map((p, i) => {
+              return (
+                <Flex
+                  key={i}
+                  sx={{
+                    flexDirection: "column",
+                  }}
+                >
+                  {p.methods.map((m, i) => {
+                    return (
+                      <Method
+                        key={i}
+                        data={m}
+                        section={convertToKebabCase(section.section_name)}
+                        pathname={p.name}
+                      />
+                    )
+                  })}
+                </Flex>
+              )
+            })}
+          </Box>
         </Flex>
       </Box>
-    </main>
+    </section>
   )
 }
 
