@@ -1230,6 +1230,13 @@
     slash "^3.0.0"
     strip-ansi "^6.0.0"
 
+"@jest/create-cache-key-function@^27.0.2":
+  version "27.0.6"
+  resolved "https://registry.yarnpkg.com/@jest/create-cache-key-function/-/create-cache-key-function-27.0.6.tgz#28d2058b0f8553a59c95a712ca77394b299eeb28"
+  integrity sha512-lDksBmA5/VkfVGs+GqF8DSM3HbJLmF5l57BqETj1CAceOVZTZI3FZQEegVNTDDnJ9bl8I0TFdc6fv1QjycQprA==
+  dependencies:
+    "@jest/types" "^27.0.6"
+
 "@jest/environment@^27.0.6":
   version "27.0.6"
   resolved "https://registry.yarnpkg.com/@jest/environment/-/environment-27.0.6.tgz#ee293fe996db01d7d663b8108fa0e1ff436219d2"

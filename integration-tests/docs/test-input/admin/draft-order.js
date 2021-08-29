@@ -157,12 +157,6 @@ module.exports = {
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^prod_*/),
-              product: {
-                id: expect.stringMatching(/^prod_*/),
-                profile_id: expect.stringMatching(/^sp_*/),
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
             },
           },
         ],

@@ -1,6 +1,6 @@
 {
   "customer": {
-    "id": "cus_01FDYXM7NHSS6G25HVEHE76RQ9",
+    "id": "cus_01FE9YKS8N7726NVY2D3JHF0T8",
     "email": "test1@email.com",
     "first_name": null,
     "last_name": null,
@@ -10,8 +10,8 @@
     "phone": null,
     "has_account": false,
     "orders": [],
-    "created_at": "2021-08-25T15:07:31.888Z",
-    "updated_at": "2021-08-25T15:07:31.888Z",
+    "created_at": "2021-08-29T21:56:24.468Z",
+    "updated_at": "2021-08-29T21:56:24.468Z",
     "deleted_at": null,
     "metadata": null
   }

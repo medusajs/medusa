@@ -1,28 +1,28 @@
 {
   "gift_card": {
-    "id": "gift_01FDZ0KV75KCX0BEFTR1PTKDW1",
-    "code": "3C17-CAR0-0ASQ-ETXS",
+    "id": "gift_01FE9YM2KHCG7A8JKAG3W8HAH1",
+    "code": "H1TI-24PU-5RMC-KCGR",
     "value": 1000,
     "balance": 1000,
-    "region_id": "reg_01FDZ0KV5M99CX9W4YZB594V2P",
+    "region_id": "reg_01FE9YM2GJ742HK24DFQWVKDZ1",
     "region": {
-      "id": "reg_01FDZ0KV5M99CX9W4YZB594V2P",
+      "id": "reg_01FE9YM2GJ742HK24DFQWVKDZ1",
       "name": "United States",
       "currency_code": "usd",
       "tax_rate": "0",
       "tax_code": null,
       "payment_providers": [],
       "fulfillment_providers": [],
-      "created_at": "2021-08-25T15:59:44.820Z",
-      "updated_at": "2021-08-25T15:59:44.820Z",
+      "created_at": "2021-08-29T21:56:33.936Z",
+      "updated_at": "2021-08-29T21:56:33.936Z",
       "deleted_at": null,
       "metadata": null
     },
     "order": null,
     "is_disabled": false,
     "ends_at": null,
-    "created_at": "2021-08-25T15:59:44.855Z",
-    "updated_at": "2021-08-25T15:59:44.855Z",
+    "created_at": "2021-08-29T21:56:34.018Z",
+    "updated_at": "2021-08-29T21:56:34.018Z",
     "deleted_at": null,
     "metadata": null
   }

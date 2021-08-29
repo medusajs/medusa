@@ -1,6 +1,6 @@
 {
   "product": {
-    "id": "prod_01FE0FQA65K1Q0B3MWAS1Q8CBK",
+    "id": "prod_01FE9YM90YN5CDE7PSKST5K7P8",
     "title": "Basic Tee",
     "subtitle": null,
     "description": null,
@@ -10,30 +10,30 @@
     "thumbnail": null,
     "options": [
       {
-        "id": "opt_01FE0FQA6RNZMCDX1AMVSZ049A",
+        "id": "opt_01FE9YM913X9JCN7X7KJZ2JSM9",
         "title": "Size",
-        "product_id": "prod_01FE0FQA65K1Q0B3MWAS1Q8CBK",
-        "created_at": "2021-08-26T05:43:01.592Z",
-        "updated_at": "2021-08-26T05:43:01.592Z",
+        "product_id": "prod_01FE9YM90YN5CDE7PSKST5K7P8",
+        "created_at": "2021-08-29T21:56:40.611Z",
+        "updated_at": "2021-08-29T21:56:40.611Z",
         "deleted_at": null,
         "metadata": null
       }
     ],
     "variants": [
       {
-        "id": "variant_01FE0FQA6ZWFF3FA7RAA2KH8NH",
+        "id": "variant_01FE9YM91A3FZJ0QBARZGYH4N3",
         "title": "One Size",
-        "product_id": "prod_01FE0FQA65K1Q0B3MWAS1Q8CBK",
+        "product_id": "prod_01FE9YM90YN5CDE7PSKST5K7P8",
         "prices": [
           {
-            "id": "ma_01FE0FQA7Q3DRXGY9BDKBN93P1",
+            "id": "ma_01FE9YM91FFY71GN2D8PJQF43B",
             "currency_code": "usd",
             "amount": 8000,
             "sale_amount": null,
-            "variant_id": "variant_01FE0FQA6ZWFF3FA7RAA2KH8NH",
+            "variant_id": "variant_01FE9YM91A3FZJ0QBARZGYH4N3",
             "region_id": null,
-            "created_at": "2021-08-26T05:43:01.623Z",
-            "updated_at": "2021-08-26T05:43:01.623Z",
+            "created_at": "2021-08-29T21:56:40.623Z",
+            "updated_at": "2021-08-29T21:56:40.623Z",
             "deleted_at": null
           }
         ],
@@ -54,23 +54,23 @@
         "width": null,
         "options": [
           {
-            "id": "optval_01FE0FQA6ZYDYNB6WW3MJX7ERB",
+            "id": "optval_01FE9YM91ATFWNGSHTSAGG40EQ",
             "value": "Size",
-            "option_id": "opt_01FE0FQA6RNZMCDX1AMVSZ049A",
-            "variant_id": "variant_01FE0FQA6ZWFF3FA7RAA2KH8NH",
-            "created_at": "2021-08-26T05:43:01.599Z",
-            "updated_at": "2021-08-26T05:43:01.599Z",
+            "option_id": "opt_01FE9YM913X9JCN7X7KJZ2JSM9",
+            "variant_id": "variant_01FE9YM91A3FZJ0QBARZGYH4N3",
+            "created_at": "2021-08-29T21:56:40.618Z",
+            "updated_at": "2021-08-29T21:56:40.618Z",
             "deleted_at": null,
             "metadata": null
           }
         ],
-        "created_at": "2021-08-26T05:43:01.599Z",
-        "updated_at": "2021-08-26T05:43:01.599Z",
+        "created_at": "2021-08-29T21:56:40.618Z",
+        "updated_at": "2021-08-29T21:56:40.618Z",
         "deleted_at": null,
         "metadata": null
       }
     ],
-    "profile_id": "sp_01FE0FQA4MAJZEBWAB37J4DSG7",
+    "profile_id": "sp_01FE9YM909RS7NC0T1QRC8W1WE",
     "weight": null,
     "length": null,
     "height": null,
@@ -85,8 +85,8 @@
     "type": null,
     "tags": [],
     "discountable": true,
-    "created_at": "2021-08-26T05:43:01.573Z",
-    "updated_at": "2021-08-26T05:43:01.573Z",
+    "created_at": "2021-08-29T21:56:40.606Z",
+    "updated_at": "2021-08-29T21:56:40.606Z",
     "metadata": null
   }
 }
