@@ -1,6 +1,8 @@
 import { request } from "../../../../../helpers/test-request"
 import { IdMap } from "medusa-test-utils"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import { defaultRelations } from ".."
+import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("Get product by id", () => {
   describe("get product by id successfull", () => {
@@ -20,12 +22,45 @@ describe("Get product by id", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("product1"),
-        { relations: ["images", "variants", "options"] }
+        { relations: defaultRelations }
       )
     })
 
     it("returns product decorated", () => {
       expect(subject.body.product.id).toEqual(IdMap.getId("product1"))
+    })
+  })
+
+  describe("Query products with relations", () => {
+    let subject
+
+    beforeAll(async () => {
+      subject = await request(
+        "GET",
+        `/store/products/${IdMap.getId("variantsWithPrices")}`
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls retrieve() once", () => {
+      expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
+    })
+
+    it("endpoint called with defaultRelations", () => {
+      expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("variantsWithPrices"),
+        { relations: defaultRelations }
+      )
+    })
+
+    it("returns product with variant prices", () => {
+      expect(
+        subject.body.product.variants.some(variant => variant.prices)
+      ).toEqual(true)
+      expect(subject.body.product.variants[0].prices[0].amount).toEqual(100)
     })
   })
 })

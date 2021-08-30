@@ -1,3 +1,5 @@
+import { defaultRelations } from "."
+
 /**
  * @oas [get] /products
  * operationId: GetProducts
@@ -40,7 +42,7 @@ export default async (req, res) => {
     }
 
     const listConfig = {
-      relations: ["variants", "options", "images"],
+      relations: defaultRelations,
       skip: offset,
       take: limit,
     }
