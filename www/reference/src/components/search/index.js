@@ -19,7 +19,7 @@ const Search = () => {
   const replaceUrl = item => {
     let { url, hierarchy } = item
     if (url.includes("api/store") || url.includes("/api/admin")) {
-      url = url.replace("#", "/")
+      url = url.replace("#", "")
       if (hierarchy.lvl2) {
         const index = url.lastIndexOf("/")
         url =
@@ -65,6 +65,7 @@ const Search = () => {
 
   return (
     <DocSearch
+      // apiKey={algoliaApiKey}
       apiKey={algoliaApiKey}
       indexName="medusa-commerce"
       hitComponent={HitComponent}
