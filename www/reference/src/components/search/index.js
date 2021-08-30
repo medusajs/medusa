@@ -65,7 +65,6 @@ const Search = () => {
 
   return (
     <DocSearch
-      // apiKey={algoliaApiKey}
       apiKey={algoliaApiKey}
       indexName="medusa-commerce"
       hitComponent={HitComponent}
