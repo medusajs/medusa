@@ -3,39 +3,39 @@ const ServerTestUtil = {
   app_: null,
 
   setApp: function (app) {
-    this.app_ = app;
+    this.app_ = app
   },
 
   start: async function () {
     this.server_ = await new Promise((resolve, reject) => {
       const s = this.app_.listen(PORT, (err) => {
         if (err) {
-          reject(err);
+          reject(err)
         }
-      });
-      resolve(s);
-    });
+      })
+      resolve(s)
+    })
   },
 
   kill: function () {
     return new Promise((resolve, _) => {
       if (this.server_) {
-        this.server_.close(() => resolve());
+        this.server_.close(() => resolve())
       }
-      resolve();
-    });
+      resolve()
+    })
   },
-};
+}
 
-const instance = ServerTestUtil;
+const instance = ServerTestUtil
 
 module.exports = {
   setApp: function (app) {
-    instance.setApp(app);
-    return instance;
+    instance.setApp(app)
+    return instance
   },
 
   useServer: function () {
-    return instance;
+    return instance
   },
-};
+}
