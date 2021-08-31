@@ -47,7 +47,8 @@ const replaceUrl = (item) => {
 function Hit({ hit, children }) {
   if (hit.url.includes("/api/store") || hit.url.includes("/api/admin")) {
     let url = replaceUrl(hit)
-    return <a href={url}>{children}</a>
+    //Need to type the link explicitly to escape the docusaurus site
+    return <a href={`https://docs.medusa-commerce.com${url}`}>{children}</a>
   }
 
   return <Link to={hit.url}>{children}</Link>
