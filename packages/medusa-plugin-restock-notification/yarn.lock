@@ -4088,13 +4088,6 @@ medusa-core-utils@^1.1.20:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^1.1.21:
-  version "1.1.21"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.21.tgz#ca86808e939b7ecc21a6d316008a4e41f163619f"
-  integrity sha512-mlHHoMIOFBc+Exs+uVIQsfeEP2C1Pi6IZHcpbm7O00tYBdQdqRjJre9+Z/I/Z37wt5IwA28/TIoVkYG71iQYxw==
-  dependencies:
-    medusa-core-utils "^1.1.20"
-
 medusa-test-utils@^1.1.23:
   version "1.1.23"
   resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.23.tgz#e8380df499979cd0b97a5bb87779662f4da9d722"
