@@ -1,5 +1,3 @@
-import { defaultRelations } from "."
-
 /**
  * @oas [get] /products/{id}
  * operationId: GetProductsProduct
@@ -24,7 +22,7 @@ export default async (req, res) => {
 
   const productService = req.scope.resolve("productService")
   let product = await productService.retrieve(id, {
-    relations: defaultRelations,
+    relations: ["images", "variants", "options"],
   })
 
   res.json({ product })
