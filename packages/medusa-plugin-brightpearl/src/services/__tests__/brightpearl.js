@@ -1,7 +1,7 @@
 jest.unmock("axios")
 
 import BrightpearlService from "../brightpearl"
-import { mockCreateOrder } from "../../utils/brightpearl"
+import { mockCreateOrder, mockCreateCredit } from "../../utils/brightpearl"
 import MockAdapter from "axios-mock-adapter"
 
 jest.mock("../../utils/brightpearl")
@@ -32,6 +32,47 @@ const order = {
   },
   tax_rate: 23.1,
   currency_code: "DKK",
+  display_id: "1234",
+  id: "12355",
+  discounts: [],
+  shipping_address: {
+    first_name: "Test",
+    last_name: "Testson",
+    address_1: "Test",
+    address_2: "TEst",
+    postal_code: "1234",
+    country_code: "DK",
+    phone: "12345678",
+  },
+  email: "test@example.com",
+}
+
+const krwOrder = {
+  region: {
+    tax_code: "1234",
+  },
+  items: [
+    {
+      title: "Test",
+      variant: {
+        sku: "TEST",
+      },
+      unit_price: 1100,
+      quantity: 2,
+    },
+  ],
+  shipping_total: 12399,
+  shipping_methods: [
+    {
+      name: "standard",
+      price: 12399,
+    },
+  ],
+  payment_method: {
+    id: "123",
+  },
+  tax_rate: 0,
+  currency_code: "KRW",
   display_id: "1234",
   id: "12355",
   discounts: [],
@@ -396,6 +437,34 @@ describe("BrightpearlService", () => {
           },
         ],
       })
+    })
+  })
+
+  describe("bpnum_", () => {
+    const bpService = new BrightpearlService(
+      {
+        orderService: OrderService,
+        totalsService: TotalsService,
+        oauthService: OAuthService,
+        regionService: RegionService,
+      },
+      { account: "test" }
+    )
+
+    it("sales credit diff. calc - KRW", async () => {
+      jest.clearAllMocks()
+      const total = 100000
+      const refund_amount = 100000
+      const difference = bpService.bpnum_(refund_amount, "krw") - total
+      expect(difference).toEqual(0)
+    })
+
+    it("sales credit diff. calc - DKK", async () => {
+      jest.clearAllMocks()
+      const total = 100000
+      const refund_amount = 100000
+      const difference = bpService.bpnum_(refund_amount, "dkk") - total
+      expect(difference).toEqual(-99000)
     })
   })
 })

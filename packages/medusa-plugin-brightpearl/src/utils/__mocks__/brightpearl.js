@@ -3,6 +3,10 @@ export const mockCreateOrder = jest
   .fn()
   .mockReturnValue(Promise.resolve("1234"))
 
+export const mockCreateCredit = jest
+  .fn()
+  .mockReturnValue(Promise.resolve("1234"))
+
 const mock = jest.fn().mockImplementation(function (options) {
   this.tokenStore_ = options.token_store
   this.token_ = options.access_token
@@ -65,6 +69,7 @@ const mock = jest.fn().mockImplementation(function (options) {
   }
   this.orders = {
     create: mockCreateOrder,
+    createCredit: mockCreateCredit,
     retrieve: jest.fn().mockReturnValue(Promise.resolve()),
   }
   this.products = {
