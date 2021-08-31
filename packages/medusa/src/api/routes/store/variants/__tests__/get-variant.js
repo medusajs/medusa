@@ -1,4 +1,3 @@
-import { IdMap } from "../../../../../../../medusa-test-utils/dist"
 import { request } from "../../../../../helpers/test-request"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
@@ -22,27 +21,6 @@ describe("Get variant by id", () => {
 
     it("returns variant decorated", () => {
       expect(subject.body.variant.id).toEqual("1")
-    })
-  })
-
-  describe("get variant with prices", () => {
-    let subject
-    beforeAll(async () => {
-      subject = await request(
-        "GET",
-        `/store/variants/${IdMap.getId("variantWithPrices")}`
-      )
-    })
-    it("calls endpoint with 'variantWithPrices' returns succesfull", async () => {
-      expect(subject.status).toEqual(200)
-    })
-
-    it("calls endpoint with 'variantWithPrices' returns prices array", async () => {
-      expect(Array.isArray(subject.body.variant.prices)).toEqual(true)
-    })
-
-    it("calls endpoint with 'variantWithPrices' prices[0].amount equals 100", async () => {
-      expect(subject.body.variant.prices[0].amount).toEqual(100)
     })
   })
 })
