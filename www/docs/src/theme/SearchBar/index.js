@@ -32,7 +32,7 @@ const convertToKebabCase = (string) => {
 const replaceUrl = (item) => {
   let { url, hierarchy } = item
   if (url.includes("api/store") || url.includes("/api/admin")) {
-    url = url.replace("#", "/")
+    url = url.replace("#", "")
     if (hierarchy.lvl2) {
       const index = url.lastIndexOf("/")
       url =
