@@ -9,6 +9,8 @@ const {
   ProductVariant,
   ShippingOption,
   LineItem,
+  Discount,
+  DiscountRule,
 } = require("@medusajs/medusa");
 
 const setupServer = require("../../../helpers/setup-server");
@@ -63,6 +65,38 @@ describe("/store/carts", () => {
         tax_rate: 0,
         currency_code: "usd",
       });
+
+      await manager.insert(DiscountRule, {
+        id: "discount_rule_id",
+        description: "test description",
+        value: 10,
+        allocation: "total",
+        type: "percentage",
+      });
+
+      const d = manager.create(Discount, {
+        id: "test-discount",
+        code: "TEST",
+        is_dynamic: false,
+        is_disabled: false,
+        rule_id: "discount_rule_id",
+      });
+
+      await manager.save(d);
+
+      const ord = manager.create(Order, {
+        id: "order_with_discount",
+        email: "test@email.com",
+        display_id: 112,
+        customer_id: "cus_1234",
+        region_id: "region",
+        tax_rate: 0,
+        currency_code: "usd",
+      });
+
+      ord.discounts = [d];
+
+      await manager.save(ord);
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
         type: "default",
@@ -144,6 +178,35 @@ describe("/store/carts", () => {
         });
       expect(response.status).toEqual(200);
 
+      expect(response.data.return.refund_amount).toEqual(8000);
+    });
+
+    it("creates a return with discount and non-discountable item", async () => {
+      const api = useApi();
+
+      await dbConnection.manager.query(
+        `UPDATE line_item set allow_discounts=false where id='test-item'`
+      );
+
+      await dbConnection.manager.query(
+        `UPDATE line_item set order_id='order_with_discount' where id='test-item'`
+      );
+
+      const response = await api
+        .post("/store/returns", {
+          order_id: "order_with_discount",
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => {
+          return err.response;
+        });
+
+      expect(response.status).toEqual(200);
       expect(response.data.return.refund_amount).toEqual(8000);
     });
 

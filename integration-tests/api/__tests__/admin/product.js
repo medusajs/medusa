@@ -173,12 +173,18 @@ describe("/admin/products", () => {
       );
     });
 
-    it("updates a product (update tags, delete collection, delete type, replaces images)", async () => {
+    it("updates a product (update prices, tags, delete collection, delete type, replaces images)", async () => {
       const api = useApi();
 
       const payload = {
         collection_id: null,
         type: null,
+        variants: [
+          {
+            id: "test-variant",
+            prices: [{ currency_code: "usd", amount: 100, sale_amount: 75 }],
+          },
+        ],
         tags: [{ value: "123" }],
         images: ["test-image-2.png"],
         type: { value: "test-type-2" },
@@ -207,6 +213,16 @@ describe("/admin/products", () => {
           tags: [
             expect.objectContaining({
               value: "123",
+            }),
+          ],
+          variants: [
+            expect.objectContaining({
+              prices: [
+                expect.objectContaining({
+                  sale_amount: 75,
+                  amount: 100,
+                }),
+              ],
             }),
           ],
           type: null,
