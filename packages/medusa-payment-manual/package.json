@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-manual",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A dummy payment provider to be used for testing or manual payments",
   "main": "index.js",
   "repository": {
@@ -36,5 +36,5 @@
   "peerDependencies": {
     "medusa-interfaces": "1.x"
   },
-  "gitHead": "db9d6c0cf55ff60a90415b16bc7582cc4795768f"
+  "gitHead": "cb44b73a4ec0319c77058816022367183f28857c"
 }
