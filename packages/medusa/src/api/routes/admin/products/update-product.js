@@ -246,6 +246,7 @@ export default async (req, res) => {
               amount: Validator.number()
                 .integer()
                 .required(),
+              sale_amount: Validator.number().optional(),
             })
             .xor("region_id", "currency_code")
         ),

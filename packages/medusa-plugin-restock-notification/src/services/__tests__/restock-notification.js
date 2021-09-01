@@ -16,6 +16,12 @@ describe("RestockNotificationService", () => {
           emails: ["test@tesmail.com"],
         })
       }
+      if (q.where.variant_id === "variant_low_inventory") {
+        return Promise.resolve({
+          variant_id: "variant_low_inventory",
+          email: ["test@tesmail.com"],
+        })
+      }
       return Promise.resolve()
     },
   })
@@ -32,6 +38,12 @@ describe("RestockNotificationService", () => {
         return {
           id,
           inventory_quantity: 10,
+        }
+      }
+      if (id === "variant_low_inventory") {
+        return {
+          id,
+          inventory_quantity: 2,
         }
       }
 
@@ -161,6 +173,51 @@ describe("RestockNotificationService", () => {
       expect(RestockNotificationModel.delete).toHaveBeenCalledWith(
         "variant_1234"
       )
+    })
+
+    it("options inventory_required takes precedence if given", async () => {
+      jest.clearAllMocks()
+      const service = new RestockNotificationService(
+        {
+          manager: MockManager,
+          productVariantService: ProductVariantService,
+          restockNotificationModel: RestockNotificationModel,
+          eventBusService: EventBusService,
+        },
+        { inventory_required: 5 }
+      )
+
+      await service.triggerRestock("variant_1234")
+
+      expect(EventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusService.emit).toHaveBeenCalledWith(
+        "restock-notification.restocked",
+        {
+          variant_id: "variant_1234",
+          emails: ["test@tesmail.com"],
+        }
+      )
+      expect(RestockNotificationModel.delete).toHaveBeenCalledTimes(1)
+      expect(RestockNotificationModel.delete).toHaveBeenCalledWith(
+        "variant_1234"
+      )
+    })
+    it("Inventory requires 5, wont emit when called with variant inventory 2", async () => {
+      jest.clearAllMocks()
+      const service = new RestockNotificationService(
+        {
+          manager: MockManager,
+          productVariantService: ProductVariantService,
+          restockNotificationModel: RestockNotificationModel,
+          eventBusService: EventBusService,
+        },
+        { inventory_required: 5 }
+      )
+
+      await service.triggerRestock("variant_low_inventory")
+
+      expect(EventBusService.emit).toHaveBeenCalledTimes(0)
+      expect(RestockNotificationModel.delete).toHaveBeenCalledTimes(0)
     })
   })
 })
