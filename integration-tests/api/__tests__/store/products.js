@@ -21,6 +21,42 @@ describe("/store/products", () => {
     medusaProcess.kill()
   })
 
+  describe("List products", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Lists all products, returns status 200", async () => {
+      const api = useApi()
+      const response = await api.get("/store/products")
+
+      expect(response.status).toEqual(200)
+    })
+
+    it("Lists all products. Contains products with variants and prices", async () => {
+      const api = useApi()
+      const response = await api.get("/store/products")
+
+      const products = response.data.products
+
+      expect(
+        products.some((product) =>
+          product.variants.some((variant) => variant.prices)
+        )
+      ).toEqual(true)
+    })
+  })
+
   describe("/store/products/:id", () => {
     beforeEach(async () => {
       try {
