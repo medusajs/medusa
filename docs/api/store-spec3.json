@@ -2008,6 +2008,88 @@
         }
       }
     },
+    "/swaps": {
+      "post": {
+        "operationId": "PostSwaps",
+        "summary": "Create a Swap",
+        "description": "Creates a Swap on an Order by providing some items to return along with some items to send back",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "order_id": {
+                    "type": "string",
+                    "description": "The id of the Order to create the Swap for."
+                  },
+                  "return_items": {
+                    "description": "The items to include in the Return.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item from the Order.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity to return.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "return_shipping": {
+                    "description": "If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.",
+                    "type": "object",
+                    "properties": {
+                      "option_id": {
+                        "type": "string",
+                        "description": "The id of the Shipping Option to create the Shipping Method from."
+                      }
+                    }
+                  },
+                  "additional_items": {
+                    "description": "The items to exchange the returned items to.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "variant_id": {
+                          "description": "The id of the Product Variant to send.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity to send of the variant.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Swap"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "swap": {
+                      "$ref": "#/components/schemas/swap"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/swaps/{cart_id}": {
       "get": {
         "operationId": "GetSwapsSwapCartId",

@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-wishlist",
-  "version": "1.1.23",
+  "version": "1.1.24",
   "description": "Provides /customers/:id/wishlist to add items to a customr's wishlist",
   "main": "index.js",
   "repository": {
@@ -36,9 +36,10 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "medusa-core-utils": "^1.1.20",
     "medusa-test-utils": "^1.1.23"
   },
-  "gitHead": "db9d6c0cf55ff60a90415b16bc7582cc4795768f"
+  "gitHead": "cb44b73a4ec0319c77058816022367183f28857c"
 }
