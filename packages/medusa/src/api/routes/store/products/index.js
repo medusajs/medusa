@@ -17,4 +17,7 @@ export const defaultRelations = [
   "variants.prices",
   "options",
   "images",
+  "tags",
+  "collection",
+  "type",
 ]

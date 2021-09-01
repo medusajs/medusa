@@ -133,26 +133,5 @@ describe("/store/products", () => {
         expect(product.variants.options).toBeUndefined()
       })
     })
-
-    // describe("Fetch data with additional relations", () => {
-    //   it("Extends relations with variant options succesfully", async () => {
-    //     const api = useApi()
-
-    //     const response = await api.get("/store/products/test-product", {
-    //       params: {
-    //         id: "test-product",
-    //         relations: ["variants.options"],
-    //       },
-    //     })
-    //     console.log(response)
-
-    //     const product = response.data.product
-
-    //     expect(response.status).toEqual(200)
-    //     expect(product.variants).toBeDefined()
-    //     expect(product.variants).not.toBeNull()
-    //     expect(product.variants.options).toBeDefined()
-    //   })
-    // })
   })
 })
