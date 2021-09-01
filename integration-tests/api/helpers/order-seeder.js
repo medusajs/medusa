@@ -11,21 +11,21 @@ const {
   Region,
   Order,
   Swap,
-} = require("@medusajs/medusa");
+} = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
-  const manager = connection.manager;
+  const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
     type: "default",
-  });
+  })
 
   await manager.insert(Product, {
     id: "test-product",
     title: "test product",
     profile_id: defaultProfile.id,
     options: [{ id: "test-option", title: "Size" }],
-  });
+  })
 
   await manager.insert(ProductVariant, {
     id: "test-variant",
@@ -38,7 +38,7 @@ module.exports = async (connection, data = {}) => {
         value: "Size",
       },
     ],
-  });
+  })
 
   await manager.insert(ProductVariant, {
     id: "test-variant-2",
@@ -51,37 +51,37 @@ module.exports = async (connection, data = {}) => {
         value: "Large",
       },
     ],
-  });
+  })
 
   const ma2 = manager.create(MoneyAmount, {
     variant_id: "test-variant-2",
     currency_code: "usd",
     amount: 8000,
-  });
-  await manager.save(ma2);
+  })
+  await manager.save(ma2)
 
   const ma = manager.create(MoneyAmount, {
     variant_id: "test-variant",
     currency_code: "usd",
     amount: 8000,
-  });
-  await manager.save(ma);
+  })
+  await manager.save(ma)
 
   await manager.insert(Region, {
     id: "test-region",
     name: "Test Region",
     currency_code: "usd",
     tax_rate: 0,
-  });
+  })
 
   await manager.query(
     `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
-  );
+  )
 
   await manager.insert(Customer, {
     id: "test-customer",
     email: "test@email.com",
-  });
+  })
 
   await manager.insert(ShippingOption, {
     id: "test-option",
@@ -92,7 +92,7 @@ module.exports = async (connection, data = {}) => {
     price_type: "flat_rate",
     amount: 1000,
     data: {},
-  });
+  })
 
   await manager.insert(ShippingOption, {
     id: "test-return-option",
@@ -104,7 +104,7 @@ module.exports = async (connection, data = {}) => {
     price_type: "flat_rate",
     amount: 1000,
     is_return: true,
-  });
+  })
 
   const order = manager.create(Order, {
     id: "test-order",
@@ -156,9 +156,9 @@ module.exports = async (connection, data = {}) => {
     ],
     items: [],
     ...data,
-  });
+  })
 
-  await manager.save(order);
+  await manager.save(order)
 
   const li = manager.create(LineItem, {
     id: "test-item",
@@ -171,9 +171,9 @@ module.exports = async (connection, data = {}) => {
     quantity: 1,
     variant_id: "test-variant",
     order_id: "test-order",
-  });
+  })
 
-  await manager.save(li);
+  await manager.save(li)
 
   await manager.insert(ShippingMethod, {
     id: "test-method",
@@ -182,5 +182,5 @@ module.exports = async (connection, data = {}) => {
     order_id: "test-order",
     price: 1000,
     data: {},
-  });
-};
+  })
+}

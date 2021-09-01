@@ -4,9 +4,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const productSeeder = require("../../helpers/product-seeder")
-
 jest.setTimeout(30000)
-
 describe("/store/products", () => {
   let medusaProcess
   let dbConnection
@@ -38,83 +36,123 @@ describe("/store/products", () => {
       await db.teardown()
     })
 
-    it("simple product", async () => {
+    it("Fetching successfull product gives status code 200", async () => {
       const api = useApi()
+      const response = await api.get("/store/products/test-product")
 
-      const response = await api
-        .get("/store/products/test-product")
-        .catch((err) => {
-          console.log(err.response.data.message)
-        })
+      expect(response.status).toEqual(200)
+    })
 
-      expect(response.data).toMatchSnapshot({
-        product: {
-          id: "test-product",
-          variants: [
-            {
-              id: "test-variant",
-              inventory_quantity: 10,
-              title: "Test variant",
-              sku: "test-sku",
-              ean: "test-ean",
-              upc: "test-upc",
-              barcode: "test-barcode",
-              product_id: "test-product",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              product: {
-                profile_id: expect.stringMatching(/^sp_*/),
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-              prices: [
-                {
-                  id: "test-price",
-                  currency_code: "usd",
-                  amount: 100,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-            },
-          ],
-          handle: "test-product",
-          title: "Test product",
-          profile_id: expect.stringMatching(/^sp_*/),
-          description: "test-product-description",
-          collection_id: "test-collection",
-          type: {
-            id: "test-type",
-            value: "test-type",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          tags: [
-            {
-              id: "tag1",
-              value: "123",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-            {
-              tag: "tag2",
-              value: "456",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          options: [
-            {
-              id: "test-option",
-              title: "Default value",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
+    it("Fetching non-existing product rejects", async () => {
+      const api = useApi()
+      const response = async () =>
+        await api.get("/store/products/non-existing-product")
+
+      expect(response()).rejects.toBeDefined()
+    })
+
+    describe("Fetch product has default relations", () => {
+      it("Includes collections", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.collection).toBeDefined()
+      })
+
+      it("Includes type", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.type).toBeDefined()
+      })
+      it("Includes tags", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.tags).toBeDefined()
+        expect(product.tags.every((tag) => tag.id)).toEqual(true)
+      })
+      it("Includes images", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.images).toBeDefined()
+        expect(product.images.every((image) => image.id)).toEqual(true)
+      })
+      it("Includes options", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.options).toBeDefined()
+        expect(product.options.every((option) => option.id)).toEqual(true)
+      })
+      it("Includes variants with prices", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.variants).toBeDefined()
+        expect(product.variants).not.toBeNull()
+        expect(product.variants.some((variant) => variant.prices)).toEqual(true)
       })
     })
+    describe("Fetch data without relation descriptions", () => {
+      it("Does not include variant options", async () => {
+        const api = useApi()
+
+        const response = await api.get("/store/products/test-product")
+
+        const product = response.data.product
+
+        expect(response.status).toEqual(200)
+        expect(product.variants).toBeDefined()
+        expect(product.variants).not.toBeNull()
+        expect(product.variants.options).toBeUndefined()
+      })
+    })
+
+    // describe("Fetch data with additional relations", () => {
+    //   it("Extends relations with variant options succesfully", async () => {
+    //     const api = useApi()
+
+    //     const response = await api.get("/store/products/test-product", {
+    //       params: {
+    //         id: "test-product",
+    //         relations: ["variants.options"],
+    //       },
+    //     })
+    //     console.log(response)
+
+    //     const product = response.data.product
+
+    //     expect(response.status).toEqual(200)
+    //     expect(product.variants).toBeDefined()
+    //     expect(product.variants).not.toBeNull()
+    //     expect(product.variants.options).toBeDefined()
+    //   })
+    // })
   })
 })
