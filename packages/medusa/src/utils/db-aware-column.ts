@@ -18,8 +18,9 @@ const pgSqliteGenerationMapping: {
 let dbType: string
 export function resolveDbType(pgSqlType: ColumnType): ColumnType {
   if (!dbType) {
+    console.log(path.resolve("."))
     const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
-    dbType = configModule.projectConfig.database_type
+    dbType = configModule?.projectConfig?.database_type || "postgres"
   }
 
   if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {

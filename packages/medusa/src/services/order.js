@@ -471,7 +471,7 @@ class OrderService extends BaseService {
           }
           await this.cartService_
             .withTransaction(manager)
-            .update({ completed_at: null })
+            .update(cart.id, { completed_at: null })
           throw err
         }
       }
