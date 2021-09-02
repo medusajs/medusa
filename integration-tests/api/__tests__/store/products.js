@@ -1,3 +1,4 @@
+const { Product } = require("@medusajs/medusa")
 const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -41,98 +42,7 @@ describe("/store/products", () => {
       const response = await api.get("/store/products")
 
       expect(response.data).toMatchSnapshot({
-        products: [
-          {
-            id: "test-product",
-            variants: [
-              {
-                id: "test-variant",
-                inventory_quantity: 10,
-                title: "Test variant",
-                sku: "test-sku",
-                ean: "test-ean",
-                upc: "test-upc",
-                barcode: "test-barcode",
-                product_id: "test-product",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                product: {
-                  id: "test-product",
-                  profile_id: expect.stringMatching(/^sp_*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-                prices: [
-                  {
-                    id: "test-money-amount",
-                    created_at: expect.any(String),
-                    updated_at: expect.any(String),
-                  },
-                ],
-              },
-            ],
-            images: [
-              {
-                id: "test-image",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-            ],
-            handle: "test-product",
-            title: "Test product",
-            profile_id: expect.stringMatching(/^sp_*/),
-            description: "test-product-description",
-            collection_id: "test-collection",
-            collection: {
-              id: "test-collection",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-            type: {
-              id: "test-type",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-            tags: [
-              {
-                id: "tag1",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-            ],
-            options: [
-              {
-                id: "test-option",
-                values: [
-                  {
-                    id: "test-option-value_1",
-                    value: "test-option-value_1",
-                    option_id: "test-option",
-                    variant_id: "test-variant",
-                    metadata: null,
-                    deleted_at: null,
-                    created_at: expect.any(String),
-                    updated_at: expect.any(String),
-                  },
-                  {
-                    id: "test-option-value_2",
-                    value: "test-option-value_2",
-                    option_id: "test-option",
-                    variant_id: "test-variant",
-                    metadata: null,
-                    deleted_at: null,
-                    created_at: expect.any(String),
-                    updated_at: expect.any(String),
-                  },
-                ],
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-            ],
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-        ],
+        products: [ProductWithRelationsMatcher],
       })
     })
   })
@@ -158,97 +68,109 @@ describe("/store/products", () => {
       const response = await api.get("/store/products/test-product")
 
       expect(response.data).toMatchSnapshot({
-        product: {
-          id: "test-product",
-          variants: [
-            {
-              id: "test-variant",
-              inventory_quantity: 10,
-              title: "Test variant",
-              sku: "test-sku",
-              ean: "test-ean",
-              upc: "test-upc",
-              barcode: "test-barcode",
-              product_id: "test-product",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              product: {
-                id: "test-product",
-                profile_id: expect.stringMatching(/^sp_*/),
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-              prices: [
-                {
-                  id: "test-money-amount",
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-            },
-          ],
-          images: [
-            {
-              id: "test-image",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          handle: "test-product",
-          title: "Test product",
-          profile_id: expect.stringMatching(/^sp_*/),
-          description: "test-product-description",
-          collection_id: "test-collection",
-          collection: {
-            id: "test-collection",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          type: {
-            id: "test-type",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          tags: [
-            {
-              id: "tag1",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          options: [
-            {
-              id: "test-option",
-              values: [
-                {
-                  id: "test-option-value_1",
-                  value: "test-option-value_1",
-                  option_id: "test-option",
-                  variant_id: "test-variant",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-                {
-                  id: "test-option-value_2",
-                  value: "test-option-value_2",
-                  option_id: "test-option",
-                  variant_id: "test-variant",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
+        product: ProductWithRelationsMatcher,
       })
+    })
+
+    it("Fetching variant options without additional relation fails", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products/test-product")
+
+      const product = response.data.product
+
+      expect(product.variants.some((variant) => variant.options)).toEqual(false)
     })
   })
 })
+
+const ProductWithRelationsMatcher = {
+  id: "test-product",
+  variants: [
+    {
+      id: "test-variant",
+      inventory_quantity: 10,
+      title: "Test variant",
+      sku: "test-sku",
+      ean: "test-ean",
+      upc: "test-upc",
+      barcode: "test-barcode",
+      product_id: "test-product",
+      created_at: expect.any(String),
+      updated_at: expect.any(String),
+      product: {
+        id: "test-product",
+        profile_id: expect.stringMatching(/^sp_*/),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      },
+      prices: [
+        {
+          id: "test-money-amount",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+      ],
+    },
+  ],
+  images: [
+    {
+      id: "test-image",
+      created_at: expect.any(String),
+      updated_at: expect.any(String),
+    },
+  ],
+  handle: "test-product",
+  title: "Test product",
+  profile_id: expect.stringMatching(/^sp_*/),
+  description: "test-product-description",
+  collection_id: "test-collection",
+  collection: {
+    id: "test-collection",
+    created_at: expect.any(String),
+    updated_at: expect.any(String),
+  },
+  type: {
+    id: "test-type",
+    created_at: expect.any(String),
+    updated_at: expect.any(String),
+  },
+  tags: [
+    {
+      id: "tag1",
+      created_at: expect.any(String),
+      updated_at: expect.any(String),
+    },
+  ],
+  options: [
+    {
+      id: "test-option",
+      values: [
+        {
+          id: "test-option-value_1",
+          value: "test-option-value_1",
+          option_id: "test-option",
+          variant_id: "test-variant",
+          metadata: null,
+          deleted_at: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        {
+          id: "test-option-value_2",
+          value: "test-option-value_2",
+          option_id: "test-option",
+          variant_id: "test-variant",
+          metadata: null,
+          deleted_at: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+      ],
+      created_at: expect.any(String),
+      updated_at: expect.any(String),
+    },
+  ],
+  created_at: expect.any(String),
+  updated_at: expect.any(String),
+}
