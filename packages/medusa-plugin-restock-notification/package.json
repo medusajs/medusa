@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-restock-notification",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "index.js",
   "repository": {
     "type": "git",
