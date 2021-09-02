@@ -72,101 +72,80 @@ describe("/store/products", () => {
       await db.teardown()
     })
 
-    it("Fetching successfull product gives status code 200", async () => {
+    it("includes default relations", async () => {
       const api = useApi()
+
       const response = await api.get("/store/products/test-product")
 
-      expect(response.status).toEqual(200)
-    })
-
-    it("Fetching non-existing product rejects", async () => {
-      const api = useApi()
-      const response = async () =>
-        await api.get("/store/products/non-existing-product")
-
-      expect(response()).rejects.toBeDefined()
-    })
-
-    describe("Fetch product has default relations", () => {
-      it("Includes collections", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.collection).toBeDefined()
-      })
-
-      it("Includes type", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.type).toBeDefined()
-      })
-      it("Includes tags", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.tags).toBeDefined()
-        expect(product.tags.every((tag) => tag.id)).toEqual(true)
-      })
-      it("Includes images", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.images).toBeDefined()
-        expect(product.images.every((image) => image.id)).toEqual(true)
-      })
-      it("Includes options", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.options).toBeDefined()
-        expect(product.options.every((option) => option.id)).toEqual(true)
-      })
-      it("Includes variants with prices", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.variants).toBeDefined()
-        expect(product.variants).not.toBeNull()
-        expect(product.variants.some((variant) => variant.prices)).toEqual(true)
-      })
-    })
-    describe("Fetch data without relation descriptions", () => {
-      it("Does not include variant options", async () => {
-        const api = useApi()
-
-        const response = await api.get("/store/products/test-product")
-
-        const product = response.data.product
-
-        expect(response.status).toEqual(200)
-        expect(product.variants).toBeDefined()
-        expect(product.variants).not.toBeNull()
-        expect(product.variants.options).toBeUndefined()
+      expect(response.data).toMatchSnapshot({
+        product: {
+          id: "test-product",
+          variants: [
+            {
+              id: "test-variant",
+              inventory_quantity: 10,
+              title: "Test variant",
+              sku: "test-sku",
+              ean: "test-ean",
+              upc: "test-upc",
+              barcode: "test-barcode",
+              product_id: "test-product",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              product: {
+                id: "test-product",
+                profile_id: expect.stringMatching(/^sp_*/),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              },
+              prices: [
+                {
+                  id: "test-money-amount",
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+          ],
+          images: [
+            {
+              id: "test-image",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          handle: "test-product",
+          title: "Test product",
+          profile_id: expect.stringMatching(/^sp_*/),
+          description: "test-product-description",
+          collection_id: "test-collection",
+          collection: {
+            id: "test-collection",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          type: {
+            id: "test-type",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          tags: [
+            {
+              id: "tag1",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          options: [
+            {
+              id: "test-option",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
       })
     })
   })
