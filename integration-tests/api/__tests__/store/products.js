@@ -36,24 +36,13 @@ describe("/store/products", () => {
       await db.teardown()
     })
 
-    it("Lists all products, returns status 200", async () => {
+    it("includes default relations", async () => {
       const api = useApi()
       const response = await api.get("/store/products")
 
-      expect(response.status).toEqual(200)
-    })
-
-    it("Lists all products. Contains products with variants and prices", async () => {
-      const api = useApi()
-      const response = await api.get("/store/products")
-
-      const products = response.data.products
-
-      expect(
-        products.some((product) =>
-          product.variants.some((variant) => variant.prices)
-        )
-      ).toEqual(true)
+      expect(response.data).toMatchSnapshot({
+        products: [{ id: "test-product" }],
+      })
     })
   })
 
