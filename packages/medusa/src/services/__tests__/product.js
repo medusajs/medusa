@@ -148,6 +148,15 @@ describe("ProductService", () => {
         if (query.where.id === "123") {
           return undefined
         }
+        if (query.where.id === "ranking test") {
+          return Promise.resolve({
+            id: "ranking test",
+            variants: [
+              { id: "test_321", title: "Greener", rank: 1 },
+              { id: "test_123", title: "Blueer", rank: 0 },
+            ],
+          })
+        }
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
@@ -165,7 +174,12 @@ describe("ProductService", () => {
       withTransaction: function() {
         return this
       },
-      update: () => Promise.resolve(),
+      update: (variant, update) => {
+        if (variant.id) {
+          return update
+        }
+        return Promise.resolve()
+      },
     }
 
     const productTagRepository = MockRepository({
@@ -245,6 +259,30 @@ describe("ProductService", () => {
           id: IdMap.getId("test"),
           value: "test",
         },
+      })
+    })
+
+    it("successfully updates variant ranking", async () => {
+      await productService.update("ranking test", {
+        variants: [
+          { id: "test_321", title: "Greener", rank: 1 },
+          { id: "test_123", title: "Blueer", rank: 0 },
+        ],
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product.updated",
+        expect.any(Object)
+      )
+
+      expect(productRepository.save).toHaveBeenCalledTimes(1)
+      expect(productRepository.save).toHaveBeenCalledWith({
+        id: "ranking test",
+        variants: [
+          { id: "test_321", title: "Greener", rank: 0 },
+          { id: "test_123", title: "Blueer", rank: 1 },
+        ],
       })
     })
 
