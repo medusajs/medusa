@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.28...medusa-plugin-brightpearl@1.1.30) (2021-09-02)
+
+
+### Bug Fixes
+
+* account for non-division currencies in sales credit ([#342](https://github.com/medusajs/medusa/issues/342)) ([bd1e115](https://github.com/medusajs/medusa/commit/bd1e115696cf020a29bbfe07e5e85a3e0314bf78))
+
+
+
+
+
 ## [1.1.29](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.28...medusa-plugin-brightpearl@1.1.29) (2021-08-31)
 
 
