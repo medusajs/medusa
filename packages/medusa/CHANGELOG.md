@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.40](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.38...@medusajs/medusa@1.1.40) (2021-09-02)
+
+
+### Bug Fixes
+
+* Account for non-discountable items in getRefundTotal ([#347](https://github.com/medusajs/medusa/issues/347)) ([fd14e24](https://github.com/medusajs/medusa/commit/fd14e243daf2724ce91aaf85c29806f22f3b6623))
+
+
+### Features
+
+* creates support for swaps on the storefront ([#355](https://github.com/medusajs/medusa/issues/355)) ([ae82cfc](https://github.com/medusajs/medusa/commit/ae82cfc70a94655ff03fcf1d9b8596f14e8c2840))
+
+
+
+
+
 ## [1.1.39](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.38...@medusajs/medusa@1.1.39) (2021-08-31)
 
 
