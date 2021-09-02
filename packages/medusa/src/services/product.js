@@ -410,7 +410,9 @@ class ProductService extends BaseService {
         }
 
         const newVariants = []
-        for (const newVariant of variants) {
+        for (const [i, newVariant] of variants.entries()) {
+          newVariant.rank = i
+
           if (newVariant.id) {
             const variant = product.variants.find(v => v.id === newVariant.id)
 
