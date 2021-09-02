@@ -5129,10 +5129,10 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
-babel-preset-medusa-package@1.1.13-dev-1630484439928:
-  version "1.1.13-dev-1630484439928"
-  resolved "http://localhost:4873/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.13-dev-1630484439928.tgz#400a520b7eb02f804e947de2a6a647e325fd41cb"
-  integrity sha512-988TAk6TCVsZi1foxibA4/YsS2ne0uVq/Q85hy76x8apHNRBx0IzQ/u7P8QYFhyWxNQUynxJ9hp5CwCulhCwLw==
+babel-preset-medusa-package@^1.0.0:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.13.tgz#9dc4e64e08436fb7b3536cef0f363a535e126474"
+  integrity sha512-Q9t06udxwMnfwyx7gyxoUKiZj/dtYSSXBtQ+K4ntY1hzMhOK2hBBInuiTgnLQS1cxc4j+FN2oYYPCpspX/acaw==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-decorators" "^7.12.1"
