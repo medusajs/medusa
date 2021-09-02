@@ -101,8 +101,15 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.insert(ProductOptionValue, {
-    id: "variant-test-option",
-    value: "test-value",
+    id: "test-option-value_1",
+    value: "test-option-value_1",
+    option_id: "test-option",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(ProductOptionValue, {
+    id: "test-option-value_2",
+    value: "test-option-value_2",
     option_id: "test-option",
     variant_id: "test-variant",
   })
