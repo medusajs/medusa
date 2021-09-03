@@ -327,7 +327,13 @@ export default async (req, res) => {
         .withTransaction(manager)
         .create({ ...value, profile_id: shippingProfile.id })
 
+      // console.log(variants)
+      // console.log(value)
+      // console.log(newProduct)
+
       if (variants) {
+        for (const [i, variant] of variants.entries()) variant.rank = i
+
         const optionIds = value.options.map(
           o => newProduct.options.find(newO => newO.title === o.title).id
         )
@@ -341,6 +347,7 @@ export default async (req, res) => {
                 option_id: optionIds[index],
               })),
             }
+
             await productVariantService
               .withTransaction(manager)
               .create(newProduct.id, variant)
@@ -349,13 +356,18 @@ export default async (req, res) => {
       }
     })
 
+    // console.log("got to after variants")
+
     const product = await productService.retrieve(newProduct.id, {
       select: defaultFields,
       relations: defaultRelations,
     })
 
+    // console.log(product)
+
     res.json({ product })
   } catch (err) {
+    // console.log(err)
     throw err
   }
 }
