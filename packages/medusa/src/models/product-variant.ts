@@ -43,7 +43,7 @@ export class ProductVariant {
   @OneToMany(
     () => MoneyAmount,
     ma => ma.variant,
-    { cascade: true }
+    { cascade: true, onDelete: "CASCADE" }
   )
   prices: MoneyAmount[]
 
