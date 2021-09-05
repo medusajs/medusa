@@ -44,7 +44,11 @@ export class MoneyAmount {
   @Column({ nullable: true })
   variant_id: string
 
-  @ManyToOne(() => ProductVariant)
+  @ManyToOne(
+    () => ProductVariant,
+    variant => variant.prices,
+    { onDelete: "cascade" }
+  )
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
