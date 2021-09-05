@@ -185,10 +185,11 @@ class ProductService extends BaseService {
       )
     }
 
-    if (product.variants)
+    if (product.variants) {
       product.variants.sort(
         (variant1, variant2) => variant1.rank - variant2.rank
       )
+    }
 
     return product
   }

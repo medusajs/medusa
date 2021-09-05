@@ -74,7 +74,6 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-
       expect(response.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
@@ -523,8 +522,6 @@ describe("/admin/products", () => {
     it("successfully creates soft-deleted product variant", async () => {
       const api = useApi()
 
-      console.log("test")
-
       const product = await api
         .get("/admin/products/test-product", {
           headers: {
@@ -534,7 +531,6 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-      console.log(product.data.product)
 
       const response = await api
         .delete("/admin/products/test-product/variants/test-variant", {

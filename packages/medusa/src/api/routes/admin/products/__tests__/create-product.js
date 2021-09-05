@@ -96,7 +96,6 @@ describe("POST /admin/products", () => {
     })
 
     it("returns created product draft", () => {
-      console.log(subject.body)
       expect(subject.body.product.id).toEqual(IdMap.getId("product1"))
     })
 
