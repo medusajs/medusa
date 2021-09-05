@@ -327,10 +327,6 @@ export default async (req, res) => {
         .withTransaction(manager)
         .create({ ...value, profile_id: shippingProfile.id })
 
-      // console.log(variants)
-      // console.log(value)
-      // console.log(newProduct)
-
       if (variants) {
         for (const [i, variant] of variants.entries()) variant.rank = i
 
@@ -356,18 +352,13 @@ export default async (req, res) => {
       }
     })
 
-    // console.log("got to after variants")
-
     const product = await productService.retrieve(newProduct.id, {
       select: defaultFields,
       relations: defaultRelations,
     })
 
-    // console.log(product)
-
     res.json({ product })
   } catch (err) {
-    // console.log(err)
     throw err
   }
 }

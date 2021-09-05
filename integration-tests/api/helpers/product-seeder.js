@@ -69,18 +69,15 @@ module.exports = async (connection, data = {}) => {
     ],
   })
 
-  const productOption = manager.create(ProductOption, {
-    id: "test-option",
-    title: "test-option",
-  })
-
-  await manager.save(productOption)
-
-  p.options = [productOption]
-
   p.images = [image]
 
   await manager.save(p)
+
+  await manager.save(ProductOption, {
+    id: "test-option",
+    title: "test-option",
+    product_id: "test-product",
+  })
 
   const variant1 = await manager.create(ProductVariant, {
     id: "test-variant",
@@ -93,21 +90,27 @@ module.exports = async (connection, data = {}) => {
     barcode: "test-barcode",
     product_id: "test-product",
     prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
-    // options: [{ id: "test-variant-option", value: "Default variant" }],
+    options: [
+      {
+        id: "test-variant-option",
+        value: "Default variant",
+        option_id: "test-option",
+      },
+    ],
   })
 
-  const variantOption_1 = manager.create(ProductOptionValue, {
-    id: "test-option-variant1",
-    option_id: "test-option",
-    value: "test-option1",
-    variant_id: "test-variant",
-    // product_id: "test-product",
-  })
+  // const variantOption_1 = manager.create(ProductOptionValue, {
+  //   id: "test-option-variant1",
+  //   option_id: "test-option",
+  //   value: "test-option1",
+  //   variant_id: "test-variant",
+  //   // product_id: "test-product",
+  // })
 
   // variant1.options = [variantOption_1]
 
   await manager.save(variant1)
-  await manager.save(variantOption_1)
+  // await manager.save(variantOption_1)
 
   const variant2 = await manager.create(ProductVariant, {
     id: "test-variant_1",
@@ -120,19 +123,25 @@ module.exports = async (connection, data = {}) => {
     barcode: "test-barcode 1",
     product_id: "test-product",
     prices: [{ id: "test-price1", currency_code: "usd", amount: 100 }],
-    // options: [{ id: "test-variant-option-1", value: "Default variant 1" }],
+    options: [
+      {
+        id: "test-variant-option-1",
+        value: "Default variant 1",
+        option_id: "test-option",
+      },
+    ],
   })
 
-  const variantOption_2 = manager.create(ProductOptionValue, {
-    id: "test-option-variant2",
-    option_id: "test-option",
-    value: "test-option2",
-    variant_id: "test-variant_1",
-    // product_id: "test-product",
-  })
+  // const variantOption_2 = manager.create(ProductOptionValue, {
+  //   id: "test-option-variant2",
+  //   option_id: "test-option",
+  //   value: "test-option2",
+  //   variant_id: "test-variant_1",
+  //   // product_id: "test-product",
+  // })
   await manager.save(variant2)
 
-  await manager.save(variantOption_2)
+  // await manager.save(variantOption_2)
 
   // variant2.options = [variantOption_2]
 
@@ -146,28 +155,34 @@ module.exports = async (connection, data = {}) => {
     upc: "test-upc2",
     product_id: "test-product",
     prices: [{ id: "test-price2", currency_code: "usd", amount: 100 }],
-    // options: [{ id: "test-variant-option-2", value: "Default variant 2" }],
+    options: [
+      {
+        id: "test-variant-option-2",
+        value: "Default variant 2",
+        option_id: "test-option",
+      },
+    ],
   })
 
-  const variantOption_3 = manager.create(ProductOptionValue, {
-    id: "test-option-variant3",
-    option_id: "test-option",
-    value: "test-option3",
-    variant_id: "test-variant_2",
-    // product_id: "test-product",
-  })
+  // const variantOption_3 = manager.create(ProductOptionValue, {
+  //   id: "test-option-variant3",
+  //   option_id: "test-option",
+  //   value: "test-option3",
+  //   variant_id: "test-variant_2",
+  //   // product_id: "test-product",
+  // })
 
   await manager.save(variant3)
-  await manager.save(variantOption_3)
+  // await manager.save(variantOption_3)
 
   // variant3.options = [variantOption_3]
 
-  const moneyAmount = await manager.create(MoneyAmount, {
-    id: "money_amount",
-    amount: 100,
-    currency_code: "usd",
-    variant_id: "test-variant",
-  })
+  // const moneyAmount = await manager.create(MoneyAmount, {
+  //   id: "money_amount",
+  //   amount: 100,
+  //   currency_code: "usd",
+  //   variant_id: "test-variant",
+  // })
 
-  await manager.save(moneyAmount)
+  // await manager.save(moneyAmount)
 }
