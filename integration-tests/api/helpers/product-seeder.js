@@ -3,13 +3,11 @@ const {
   ProductTag,
   ProductType,
   ProductOption,
-  ProductOptionValue,
   Region,
   Product,
   ShippingProfile,
   ProductVariant,
   Image,
-  MoneyAmount,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
