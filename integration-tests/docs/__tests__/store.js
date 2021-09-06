@@ -15,11 +15,22 @@ test.each(toTest)(
     const db = useDb()
 
     const manager = db.connection.manager
-    const id = await setup(manager, api)
+    const idOrConfig = await setup(manager, api)
 
-    const response = await api.get(buildEndpoint(id)).catch((err) => {
-      console.log(err)
-    })
+    let config = idOrConfig
+    if (typeof idOrConfig === "string") {
+      config = {
+        id: idOrConfig,
+      }
+    }
+
+    const response = await api
+      .get(buildEndpoint(config.id), {
+        headers: config.headers,
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
     expect(response.data).toMatchSnapshot(snapshotMatch)
 
