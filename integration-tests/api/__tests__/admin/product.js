@@ -180,11 +180,11 @@ describe("/admin/products", () => {
           variants: [
             expect.objectContaining({
               title: "Test variant 1",
-              rank: 0,
+              variant_rank: 0,
             }),
             expect.objectContaining({
               title: "Test variant 2",
-              rank: 1,
+              variant_rank: 1,
             }),
           ],
         })
@@ -332,17 +332,17 @@ describe("/admin/products", () => {
           variants: [
             expect.objectContaining({
               id: "test-variant",
-              rank: 0,
+              variant_rank: 0,
               title: "Test variant",
             }),
             expect.objectContaining({
               id: "test-variant_1",
-              rank: 1,
+              variant_rank: 1,
               title: "Test variant rank (1)",
             }),
             expect.objectContaining({
               id: "test-variant_2",
-              rank: 2,
+              variant_rank: 2,
               title: "Test variant rank (2)",
             }),
           ],

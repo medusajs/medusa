@@ -36,6 +36,8 @@ export const ProductServiceMock = {
     if (data.title === "Test Product") {
       return Promise.resolve(products.product1)
     }
+    if (data.title === "Test Product with variants")
+      return Promise.resolve(products.productWithOptions)
 
     return Promise.resolve({ ...data })
   }),

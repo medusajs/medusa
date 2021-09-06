@@ -187,7 +187,7 @@ class ProductService extends BaseService {
 
     if (product.variants) {
       product.variants.sort(
-        (variant1, variant2) => variant1.rank - variant2.rank
+        (variant1, variant2) => variant1.variant_rank - variant2.variant_rank
       )
     }
 
@@ -300,7 +300,8 @@ class ProductService extends BaseService {
       }
 
       if (rest.variants)
-        for (const [i, variant] of rest.variants.entries()) variant.rank = i
+        for (const [i, variant] of rest.variants.entries())
+          variant.variant_rank = i
 
       let product = productRepo.create(rest)
 
@@ -420,7 +421,7 @@ class ProductService extends BaseService {
 
         const newVariants = []
         for (const [i, newVariant] of variants.entries()) {
-          newVariant.rank = i
+          newVariant.variant_rank = i
 
           if (newVariant.id) {
             const variant = product.variants.find(v => v.id === newVariant.id)
