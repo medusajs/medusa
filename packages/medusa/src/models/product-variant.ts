@@ -64,7 +64,7 @@ export class ProductVariant {
   upc: string
 
   @Column()
-  rank: number
+  variant_rank: number
 
   @Column({ type: "int" })
   inventory_quantity: number

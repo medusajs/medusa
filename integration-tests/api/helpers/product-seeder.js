@@ -83,7 +83,7 @@ module.exports = async (connection, data = {}) => {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",
-    rank: 0,
+    variant_rank: 0,
     sku: "test-sku",
     ean: "test-ean",
     upc: "test-upc",
@@ -99,24 +99,13 @@ module.exports = async (connection, data = {}) => {
     ],
   })
 
-  // const variantOption_1 = manager.create(ProductOptionValue, {
-  //   id: "test-option-variant1",
-  //   option_id: "test-option",
-  //   value: "test-option1",
-  //   variant_id: "test-variant",
-  //   // product_id: "test-product",
-  // })
-
-  // variant1.options = [variantOption_1]
-
   await manager.save(variant1)
-  // await manager.save(variantOption_1)
 
   const variant2 = await manager.create(ProductVariant, {
     id: "test-variant_1",
     inventory_quantity: 10,
     title: "Test variant rank (1)",
-    rank: 2,
+    variant_rank: 2,
     sku: "test-sku1",
     ean: "test-ean1",
     upc: "test-upc1",
@@ -132,24 +121,13 @@ module.exports = async (connection, data = {}) => {
     ],
   })
 
-  // const variantOption_2 = manager.create(ProductOptionValue, {
-  //   id: "test-option-variant2",
-  //   option_id: "test-option",
-  //   value: "test-option2",
-  //   variant_id: "test-variant_1",
-  //   // product_id: "test-product",
-  // })
   await manager.save(variant2)
-
-  // await manager.save(variantOption_2)
-
-  // variant2.options = [variantOption_2]
 
   const variant3 = await manager.create(ProductVariant, {
     id: "test-variant_2",
     inventory_quantity: 10,
     title: "Test variant rank (2)",
-    rank: 1,
+    variant_rank: 1,
     sku: "test-sku2",
     ean: "test-ean2",
     upc: "test-upc2",
@@ -164,25 +142,5 @@ module.exports = async (connection, data = {}) => {
     ],
   })
 
-  // const variantOption_3 = manager.create(ProductOptionValue, {
-  //   id: "test-option-variant3",
-  //   option_id: "test-option",
-  //   value: "test-option3",
-  //   variant_id: "test-variant_2",
-  //   // product_id: "test-product",
-  // })
-
   await manager.save(variant3)
-  // await manager.save(variantOption_3)
-
-  // variant3.options = [variantOption_3]
-
-  // const moneyAmount = await manager.create(MoneyAmount, {
-  //   id: "money_amount",
-  //   amount: 100,
-  //   currency_code: "usd",
-  //   variant_id: "test-variant",
-  // })
-
-  // await manager.save(moneyAmount)
 }
