@@ -6,7 +6,7 @@ title: 2. Adding custom functionality
 
 ## Introduction
 
-In the previous part of the tutorial we set up your Medusa project using the `medusa new` and started your Medusa server locally. In this part we will start adding some custom functionality that extends the core. In particular this tutorial will take you through adding custom serverices, custom endpoints and subscribers. The custom functionality that we will be adding will create an endpoint called `/welcome/:cart_id` which customers of your store can use to opt-in to receiving a welcome in their email inbox after completing their order.
+In the previous part of the tutorial we set up your Medusa project using the `medusa new` and started your Medusa server locally. In this part we will start adding some custom functionality that extends the core. In particular this tutorial will take you through adding custom services, custom endpoints and subscribers. The custom functionality that we will be adding will create an endpoint called `/welcome/:cart_id` which customers of your store can use to opt-in to receiving a welcome in their email inbox after completing their order.
 
 The custom functionality will do a number of things:
 
@@ -111,7 +111,7 @@ In the above implementation we are first retrieving the order that we need to ch
 
 After retrieving the order we list all orders that have the same `customer_id` as the order we just retrieved. We are only interested in the count of these orders so it is sufficient for us to just select the ids of these orders.
 
-We then check if the number of previous orders is 0, indicating that the customer has not previously purchased anything from our store. If the number of previous orders is greater than 0 we can exit our function prematurely as we only send welcomes to new customers.
+We then check if the number of previous orders is greater than 1, indicating that the customer has previously purchased anything from our store. If the number of previous orders is greater than 1 we can exit our function prematurely as we only send welcomes to new customers.
 
 The final part of the implementation checks if the `welcome_optin` metadata has been set to true. If the customer has opted in we use `someEmailService.send` to trigger and email dispatch to the email stored on the order. In this case `someEmailSender` could be any email service for example Sendgrid, SES, Mailgun, etc.
 
