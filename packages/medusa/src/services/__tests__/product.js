@@ -16,14 +16,14 @@ describe("ProductService", () => {
           return {
             id: "test id with variants",
             variants: [
-              { id: "test_321", title: "Green", rank: 1 },
-              { id: "test_123", title: "Blue", rank: 0 },
+              { id: "test_321", title: "Green", variant_rank: 1 },
+              { id: "test_123", title: "Blue", variant_rank: 0 },
             ],
           }
         if (query.where.id === "test id one variant")
           return {
             id: "test id one variant",
-            variants: [{ id: "test_123", title: "Blue", rank: 0 }],
+            variants: [{ id: "test_123", title: "Blue", variant_rank: 0 }],
           }
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
@@ -54,8 +54,8 @@ describe("ProductService", () => {
       const expected = {
         id: "test id with variants",
         variants: [
-          { id: "test_123", title: "Blue", rank: 0 },
-          { id: "test_321", title: "Green", rank: 1 },
+          { id: "test_123", title: "Blue", variant_rank: 0 },
+          { id: "test_321", title: "Green", variant_rank: 1 },
         ],
       }
 
@@ -138,8 +138,14 @@ describe("ProductService", () => {
         tags: [{ value: "title" }, { value: "title2" }],
         type: "type-1",
         variants: [
-          { id: "test1", title: "green", rank: 0 },
-          { id: "test2", title: "blue", rank: 0 },
+          {
+            id: "test1",
+            title: "green",
+          },
+          {
+            id: "test2",
+            title: "blue",
+          },
         ],
       })
 
@@ -153,8 +159,16 @@ describe("ProductService", () => {
       expect(productRepository.create).toHaveBeenCalledWith({
         title: "Suit",
         variants: [
-          { id: "test1", title: "green", rank: 0 },
-          { id: "test2", title: "blue", rank: 1 },
+          {
+            id: "test1",
+            title: "green",
+            variant_rank: 0,
+          },
+          {
+            id: "test2",
+            title: "blue",
+            variant_rank: 1,
+          },
         ],
       })
 
@@ -172,8 +186,14 @@ describe("ProductService", () => {
         title: "Suit",
         options: [],
         tags: [
-          { id: "tag-1", value: "title" },
-          { id: "tag-2", value: "title2" },
+          {
+            id: "tag-1",
+            value: "title",
+          },
+          {
+            id: "tag-2",
+            value: "title2",
+          },
         ],
         type_id: "type",
         collection: {
@@ -181,8 +201,16 @@ describe("ProductService", () => {
           title: "Suits",
         },
         variants: [
-          { id: "test1", title: "green", rank: 0 },
-          { id: "test2", title: "blue", rank: 1 },
+          {
+            id: "test1",
+            title: "green",
+            variant_rank: 0,
+          },
+          {
+            id: "test2",
+            title: "blue",
+            variant_rank: 1,
+          },
         ],
       })
     })
@@ -204,8 +232,8 @@ describe("ProductService", () => {
           return Promise.resolve({
             id: "ranking test",
             variants: [
-              { id: "test_321", title: "Greener", rank: 1 },
-              { id: "test_123", title: "Blueer", rank: 0 },
+              { id: "test_321", title: "Greener", variant_rank: 1 },
+              { id: "test_123", title: "Blueer", variant_rank: 0 },
             ],
           })
         }
@@ -317,8 +345,8 @@ describe("ProductService", () => {
     it("successfully updates variant ranking", async () => {
       await productService.update("ranking test", {
         variants: [
-          { id: "test_321", title: "Greener", rank: 1 },
-          { id: "test_123", title: "Blueer", rank: 0 },
+          { id: "test_321", title: "Greener", variant_rank: 1 },
+          { id: "test_123", title: "Blueer", variant_rank: 0 },
         ],
       })
 
@@ -332,8 +360,8 @@ describe("ProductService", () => {
       expect(productRepository.save).toHaveBeenCalledWith({
         id: "ranking test",
         variants: [
-          { id: "test_321", title: "Greener", rank: 0 },
-          { id: "test_123", title: "Blueer", rank: 1 },
+          { id: "test_321", title: "Greener", variant_rank: 0 },
+          { id: "test_123", title: "Blueer", variant_rank: 1 },
         ],
       })
     })

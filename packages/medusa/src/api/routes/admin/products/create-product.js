@@ -328,7 +328,7 @@ export default async (req, res) => {
         .create({ ...value, profile_id: shippingProfile.id })
 
       if (variants) {
-        for (const [i, variant] of variants.entries()) variant.rank = i
+        for (const [i, variant] of variants.entries()) variant.variant_rank = i
 
         const optionIds = value.options.map(
           o => newProduct.options.find(newO => newO.title === o.title).id

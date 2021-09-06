@@ -41,6 +41,10 @@ describe("POST /admin/products", () => {
       })
     })
 
+    afterAll(async () => {
+      jest.clearAllMocks()
+    })
+
     it("returns 200", () => {
       expect(subject.status).toEqual(200)
     })
@@ -51,7 +55,7 @@ describe("POST /admin/products", () => {
         IdMap.getId("productWithOptions"),
         {
           title: "Test",
-          rank: 0,
+          variant_rank: 0,
           prices: [
             {
               currency_code: "USD",
@@ -67,7 +71,6 @@ describe("POST /admin/products", () => {
           inventory_quantity: 0,
         }
       )
-      expect(true).toEqual(true)
     })
   })
 
@@ -112,19 +115,6 @@ describe("POST /admin/products", () => {
         profile_id: IdMap.getId("default_shipping_profile"),
       })
     })
-
-    // it("calls productvariantservice create", () => {
-    //   expect(ProductServiceMock.create).toHaveBeenCalledTimes(1)
-    //   expect(ProductServiceMock.create).toHaveBeenCalledWith({
-    //     title: "Test Product",
-    //     discountable: true,
-    //     description: "Test Description",
-    //     tags: [{ id: "test", value: "test" }],
-    //     handle: "test-product",
-    //     is_giftcard: false,
-    //     profile_id: IdMap.getId("default_shipping_profile"),
-    //   })
-    // })
 
     it("calls shipping profile default", () => {
       expect(ShippingProfileServiceMock.retrieveDefault).toHaveBeenCalledTimes(

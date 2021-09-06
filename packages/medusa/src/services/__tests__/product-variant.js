@@ -148,6 +148,7 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.create).toHaveBeenCalledWith({
         id: IdMap.getId("v2"),
         product_id: IdMap.getId("ironman"),
+        variant_rank: 0,
         options: [
           {
             id: IdMap.getId("test"),
