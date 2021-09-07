@@ -20,17 +20,9 @@ const getMachineId = (): string => {
   return machineId
 }
 
-export interface ITrackCliArgs {
-  name?: string
-  valueString?: string
-  exitCode?: number
-  valueStringArray?: Array<string>
-  siteHash?: string
-}
-
 const sessionId = uuidv4()
 
-export const track = (eventType: string, args?: ITrackCliArgs): void => {
+export const track = (eventType: string, args?: any): void => {
   fetch(analyticsApi, {
     method: `POST`,
     headers: {

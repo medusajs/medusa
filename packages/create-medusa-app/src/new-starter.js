@@ -7,13 +7,12 @@ import isValid from "is-valid-path"
 import sysPath from "path"
 import url from "url"
 
-import { track } from "./track"
 import { reporter } from "./reporter"
 import { getConfigStore } from "./get-config-store"
 
 const packageManagerConfigKey = `cli.packageManager`
 
-export const getPackageManager = npmConfigUserAgent => {
+export const getPackageManager = (npmConfigUserAgent) => {
   const configStore = getConfigStore()
   const actualPackageManager = configStore.get(packageManagerConfigKey)
 
@@ -30,7 +29,7 @@ export const getPackageManager = npmConfigUserAgent => {
   return `npm`
 }
 
-const removeUndefined = obj => {
+const removeUndefined = (obj) => {
   return Object.fromEntries(
     Object.entries(obj)
       .filter(([_, v]) => v != null)
@@ -61,21 +60,21 @@ const isAlreadyGitRepository = async () => {
   try {
     return await spawn(`git rev-parse --is-inside-work-tree`, {
       stdio: `pipe`,
-    }).then(output => output.stdout === `true`)
+    }).then((output) => output.stdout === `true`)
   } catch (err) {
     return false
   }
 }
 
 // Initialize newly cloned directory as a git repo
-const gitInit = async rootPath => {
+const gitInit = async (rootPath) => {
   reporter.info(`Initialising git in ${rootPath}`)
 
   return await spawn(`git init`, { cwd: rootPath })
 }
 
 // Create a .gitignore file if it is missing in the new directory
-const maybeCreateGitIgnore = async rootPath => {
+const maybeCreateGitIgnore = async (rootPath) => {
   if (existsSync(sysPath.join(rootPath, `.gitignore`))) {
     return
   }
@@ -107,7 +106,7 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
 }
 
 // Executes `npm install` or `yarn install` in rootPath.
-const install = async rootPath => {
+const install = async (rootPath) => {
   const prevDir = process.cwd()
 
   reporter.info(`Installing packages...`)
@@ -130,7 +129,7 @@ const install = async rootPath => {
   }
 }
 
-const ignored = path => !/^\.(git|hg)$/.test(sysPath.basename(path))
+const ignored = (path) => !/^\.(git|hg)$/.test(sysPath.basename(path))
 
 // Copy starter from file system.
 const copy = async (starterPath, rootPath) => {
@@ -187,13 +186,13 @@ const clone = async (hostInfo, rootPath) => {
     rootPath,
     `--recursive`,
     `--depth=1`,
-  ].filter(arg => Boolean(arg))
+  ].filter((arg) => Boolean(arg))
 
   await execa(`git`, args, {})
     .then(() => {
       reporter.success(`Created starter directory layout`)
     })
-    .catch(err => {
+    .catch((err) => {
       reporter.error(`Failed to clone repository`)
       throw err
     })
@@ -207,7 +206,7 @@ const clone = async (hostInfo, rootPath) => {
   if (!isGit) await createInitialGitCommit(rootPath, url)
 }
 
-const getMedusaConfig = rootPath => {
+const getMedusaConfig = (rootPath) => {
   try {
     const configPath = sysPath.join(rootPath, "medusa-config.js")
     if (existsSync(configPath)) {
@@ -217,10 +216,7 @@ const getMedusaConfig = rootPath => {
     }
     throw Error()
   } catch (err) {
-    console.log(err)
-    reporter.warn(
-      `Couldn't find a medusa-config.js file; please double check that you have the correct starter installed`
-    )
+    return null
   }
   return {}
 }
@@ -235,7 +231,7 @@ const getPaths = async (starterPath, rootPath) => {
   return { starterPath, rootPath, selectedOtherStarter }
 }
 
-const successMessage = path => {
+const successMessage = (path) => {
   reporter.info(`Your new Medusa project is ready for you! To start developing run:
 
   cd ${path}
@@ -243,7 +239,7 @@ const successMessage = path => {
 `)
 }
 
-const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
+const setupEnvVars = async (rootPath) => {
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
@@ -251,25 +247,27 @@ const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
   }
 }
 
-const attemptSeed = async rootPath => {
+const attemptSeed = async (rootPath) => {
   reporter.info("Seeding database")
 
   const pkgPath = sysPath.resolve(rootPath, "package.json")
   if (existsSync(pkgPath)) {
     const pkg = require(pkgPath)
     if (pkg.scripts && pkg.scripts.seed) {
+      await setupEnvVars(rootPath)
+
       const proc = execa(getPackageManager(), [`run`, `seed`], {
         cwd: rootPath,
       })
 
       // Useful for development
-      // proc.stdout.pipe(process.stdout)
+      proc.stdout.pipe(process.stdout)
 
       await proc
         .then(() => {
           reporter.success("Seed completed")
         })
-        .catch(err => {
+        .catch((err) => {
           reporter.error("Failed to complete seed; skipping")
           console.error(err)
         })
@@ -284,9 +282,7 @@ const attemptSeed = async rootPath => {
 /**
  * Main function that clones or copies the starter.
  */
-export const newStarter = async args => {
-  track("CLI_NEW")
-
+export const newStarter = async (args) => {
   const { starter, root, skipDb, skipMigrations, skipEnv, seed, dbHost } = args
 
   const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
@@ -347,20 +343,15 @@ export const newStarter = async args => {
   }
 
   const medusaConfig = getMedusaConfig(rootPath)
+  if (medusaConfig) {
+    let isPostgres = false
+    if (medusaConfig.projectConfig) {
+      const databaseType = medusaConfig.projectConfig.database_type
+      isPostgres = databaseType === "postgres"
+    }
 
-  let isPostgres = false
-  if (medusaConfig && medusaConfig.projectConfig) {
-    const databaseType = medusaConfig.projectConfig.database_type
-    isPostgres = databaseType === "postgres"
+    if (!isPostgres && seed) {
+      await attemptSeed(rootPath)
+    }
   }
-
-  track("CLI_NEW_LAYOUT_COMPLETED")
-
-  if (!isPostgres && seed) {
-    track("CLI_NEW_SEED_DB")
-    await attemptSeed(rootPath)
-  }
-
-  successMessage(rootPath)
-  track("CLI_NEW_SUCCEEDED")
 }
