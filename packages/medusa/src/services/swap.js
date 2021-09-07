@@ -314,8 +314,6 @@ class SwapService extends BaseService {
         )
       }
 
-      console.log(">>", returnItems)
-
       for (const item of returnItems) {
         const line = await this.lineItemService_.retrieve(item.item_id, {
           relations: ["order", "swap", "claim_order"],
