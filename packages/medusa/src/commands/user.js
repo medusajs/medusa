@@ -2,6 +2,7 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 
 import express from "express"
+import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
 

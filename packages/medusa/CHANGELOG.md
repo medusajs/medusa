@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.39](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.38...@medusajs/medusa@1.1.39) (2021-08-31)
+
+
+### Bug Fixes
+
+* Account for non-discountable items in getRefundTotal ([#347](https://github.com/medusajs/medusa/issues/347)) ([fd14e24](https://github.com/medusajs/medusa/commit/fd14e243daf2724ce91aaf85c29806f22f3b6623))
+
+
+### Features
+
+* creates support for swaps on the storefront ([#355](https://github.com/medusajs/medusa/issues/355)) ([ae82cfc](https://github.com/medusajs/medusa/commit/ae82cfc70a94655ff03fcf1d9b8596f14e8c2840))
+
+
+
+
+
+## [1.1.38](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.37...@medusajs/medusa@1.1.38) (2021-08-17)
+
+
+### Bug Fixes
+
+* add cross-spawn ([#341](https://github.com/medusajs/medusa/issues/341)) ([8f60f43](https://github.com/medusajs/medusa/commit/8f60f430cc3af7ffccd620cb84ebf8339c2e57d5))
+
+
+
+
+
+## [1.1.37](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.36...@medusajs/medusa@1.1.37) (2021-08-17)
+
+
+### Bug Fixes
+
+* build openapi ([#338](https://github.com/medusajs/medusa/issues/338)) ([9467f7e](https://github.com/medusajs/medusa/commit/9467f7ecbd1df5bcd86a15f3cef3ed5968b34e5b))
+
+
+
+
+
 ## [1.1.36](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.35...@medusajs/medusa@1.1.36) (2021-08-11)
 
 

@@ -11,6 +11,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Swap } from "./swap"
 import { Currency } from "./currency"
@@ -67,22 +68,22 @@ export class Payment {
   @Column()
   provider_id: string
 
-  @Column({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb" })
   data: any
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   captured_at: Date
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

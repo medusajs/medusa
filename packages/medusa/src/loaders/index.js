@@ -1,11 +1,11 @@
 import { createContainer, asValue } from "awilix"
-import Redis from "ioredis"
 import requestIp from "request-ip"
 import { getManager } from "typeorm"
 import { getConfigFile } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 
 import expressLoader from "./express"
+import redisLoader from "./redis"
 import databaseLoader from "./database"
 import repositoriesLoader from "./repositories"
 import apiLoader from "./api"
@@ -18,10 +18,7 @@ import defaultsLoader from "./defaults"
 import Logger from "./logger"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
-  const { configModule, configFilePath } = getConfigFile(
-    rootDirectory,
-    `medusa-config`
-  )
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
   container.registerAdd = function(name, registration) {
@@ -40,10 +37,6 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     return this
   }.bind(container)
 
-  // Economical way of dealing with redis clients
-  const client = new Redis(configModule.projectConfig.redis_url)
-  const subscriber = new Redis(configModule.projectConfig.redis_url)
-
   // Add additional information to context of request
   expressApp.use((req, res, next) => {
     const ipAddress = requestIp.getClientIp(req)
@@ -57,10 +50,10 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   })
 
   container.register({
-    redisClient: asValue(client),
-    redisSubscriber: asValue(subscriber),
     logger: asValue(Logger),
   })
+
+  await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")

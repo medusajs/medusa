@@ -1,0 +1,18 @@
+.bannerContainer {
+  height: 100%;
+  padding: 10px 0px;
+  margin-bottom: 20px;
+  background-color: var(--ifm-medusa-gray);
+  border-radius: 5px;
+}
+
+.bannerContainer svg {
+  max-width: 100px;
+  margin-left: 15px;
+}
+
+.banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

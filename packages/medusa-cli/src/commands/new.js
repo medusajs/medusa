@@ -19,6 +19,14 @@ import inquirer from "inquirer"
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 
+const removeUndefined = obj => {
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+  )
+}
+
 const spawnWithArgs = (file, args, options) =>
   execa(file, args, { stdio: `inherit`, preferLocal: false, ...options })
 
@@ -199,6 +207,24 @@ const clone = async (hostInfo, rootPath) => {
   if (!isGit) await createInitialGitCommit(rootPath, url)
 }
 
+const getMedusaConfig = rootPath => {
+  try {
+    const configPath = sysPath.join(rootPath, "medusa-config.js")
+    if (existsSync(configPath)) {
+      const resolved = sysPath.resolve(configPath)
+      const configModule = require(resolved)
+      return configModule
+    }
+    throw Error()
+  } catch (err) {
+    console.log(err)
+    reporter.warn(
+      `Couldn't find a medusa-config.js file; please double check that you have the correct starter installed`
+    )
+  }
+  return {}
+}
+
 const getPaths = async (starterPath, rootPath) => {
   let selectedOtherStarter = false
 
@@ -211,7 +237,18 @@ const getPaths = async (starterPath, rootPath) => {
         message: `What is your project called?`,
         initial: `my-medusa-store`,
       },
+      {
+        type: `select`,
+        name: `starter`,
+        message: `What starter would you like to use?`,
+        choices: [
+          { title: `medusa-starter-default`, value: `medusa-starter-default` },
+          { title: `(Use a different starter)`, value: `different` },
+        ],
+        initial: 0,
+      },
     ])
+
     // exit gracefully if responses aren't provided
     if (!response.starter || !response.path.trim()) {
       throw new Error(
@@ -220,7 +257,7 @@ const getPaths = async (starterPath, rootPath) => {
     }
 
     selectedOtherStarter = response.starter === `different`
-    starterPath = `medusajs/medusa-starter-default`
+    starterPath = `medusajs/${response.starter}`
     rootPath = response.path
   }
 
@@ -232,8 +269,7 @@ const getPaths = async (starterPath, rootPath) => {
 }
 
 const successMessage = path => {
-  reporter.info(`
-Your new Medusa project is ready for you! To start developing run:
+  reporter.info(`Your new Medusa project is ready for you! To start developing run:
 
   cd ${path}
   medusa develop
@@ -241,7 +277,7 @@ Your new Medusa project is ready for you! To start developing run:
 }
 
 const defaultDBCreds = {
-  user: "postgres",
+  user: process.env.USER || "postgres",
   database: "postgres",
   password: "",
   port: 5432,
@@ -392,27 +428,32 @@ const setupDB = async (dbName, dbCreds = {}) => {
     })
 }
 
-const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
-  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
-
-  let dbUrl = ""
-  if (
-    credentials.user !== defaultDBCreds.user ||
-    credentials.password !== defaultDBCreds.password
-  ) {
-    dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
-  } else {
-    dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
-  }
-
+const setupEnvVars = async (
+  rootPath,
+  dbName,
+  dbCreds = {},
+  isPostgres = true
+) => {
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
     fs.renameSync(templatePath, destination)
-  } else {
-    reporter.info(`No .env.template found. Creating .env.`)
   }
-  fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
+
+  if (isPostgres) {
+    const credentials = Object.assign({}, defaultDBCreds, dbCreds)
+    let dbUrl = ""
+    if (
+      credentials.user !== defaultDBCreds.user ||
+      credentials.password !== defaultDBCreds.password
+    ) {
+      dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
+    } else {
+      dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
+    }
+
+    fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
+  }
 }
 
 const runMigrations = async rootPath => {
@@ -494,17 +535,31 @@ export const newStarter = async args => {
     dbHost,
   } = args
 
-  const dbCredentials = {
+  const dbCredentials = removeUndefined({
     user: dbUser,
     database: dbDatabase,
     password: dbPass,
     port: dbPort,
     host: dbHost,
-  }
+  })
 
-  const { starterPath, rootPath } = await getPaths(starter, root)
+  const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
+    starter,
+    root
+  )
 
   const urlObject = url.parse(rootPath)
+
+  if (selectedOtherStarter) {
+    reporter.info(
+      `Find the url of the Medusa starter you wish to create and run:
+
+medusa new ${rootPath} [url-to-starter]
+
+`
+    )
+    return
+  }
 
   if (urlObject.protocol && urlObject.host) {
     const isStarterAUrl =
@@ -512,7 +567,7 @@ export const newStarter = async args => {
 
     if (/medusa-starter/gi.test(rootPath) && isStarterAUrl) {
       reporter.panic({
-        id: `11610`,
+        id: `10000`,
         context: {
           starter,
           rootPath,
@@ -521,7 +576,7 @@ export const newStarter = async args => {
       return
     }
     reporter.panic({
-      id: `11611`,
+      id: `10001`,
       context: {
         rootPath,
       },
@@ -531,7 +586,7 @@ export const newStarter = async args => {
 
   if (!isValid(rootPath)) {
     reporter.panic({
-      id: `11612`,
+      id: `10002`,
       context: {
         path: sysPath.resolve(rootPath),
       },
@@ -541,7 +596,7 @@ export const newStarter = async args => {
 
   if (existsSync(sysPath.join(rootPath, `package.json`))) {
     reporter.panic({
-      id: `11613`,
+      id: `10003`,
       context: {
         rootPath,
       },
@@ -556,28 +611,36 @@ export const newStarter = async args => {
     await copy(starterPath, rootPath)
   }
 
+  const medusaConfig = getMedusaConfig(rootPath)
+
+  let isPostgres = false
+  if (medusaConfig && medusaConfig.projectConfig) {
+    const databaseType = medusaConfig.projectConfig.database_type
+    isPostgres = databaseType === "postgres"
+  }
+
   track("CLI_NEW_LAYOUT_COMPLETED")
 
   let creds = dbCredentials
 
-  if (!useDefaults && !skipDb && !skipEnv) {
-    creds = await interactiveDbCreds(root, dbCredentials)
+  if (isPostgres && !useDefaults && !skipDb && !skipEnv) {
+    creds = await interactiveDbCreds(rootPath, dbCredentials)
   }
 
   if (creds === null) {
     reporter.info("Skipping automatic database setup")
   } else {
-    if (!skipDb) {
+    if (!skipDb && isPostgres) {
       track("CLI_NEW_SETUP_DB")
-      await setupDB(root, creds)
+      await setupDB(rootPath, creds)
     }
 
     if (!skipEnv) {
       track("CLI_NEW_SETUP_ENV")
-      await setupEnvVars(rootPath, root, creds)
+      await setupEnvVars(rootPath, rootPath, creds, isPostgres)
     }
 
-    if (!skipMigrations) {
+    if (!skipMigrations && isPostgres) {
       track("CLI_NEW_RUN_MIGRATIONS")
       await runMigrations(rootPath)
     }

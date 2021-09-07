@@ -13,6 +13,7 @@ import {
   JoinColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Fulfillment } from "./fulfillment"
 import { LineItem } from "./line-item"
@@ -50,14 +51,14 @@ export class ClaimOrder {
   @PrimaryColumn()
   id: string
 
-  @Column({
+  @DbAwareColumn({
     type: "enum",
     enum: ClaimPaymentStatus,
     default: ClaimPaymentStatus.NA,
   })
   payment_status: ClaimPaymentStatus
 
-  @Column({
+  @DbAwareColumn({
     type: "enum",
     enum: ClaimFulfillmentStatus,
     default: ClaimFulfillmentStatus.NOT_FULFILLED,
@@ -77,7 +78,7 @@ export class ClaimOrder {
   )
   additional_items: LineItem[]
 
-  @Column({ type: "enum", enum: ClaimType })
+  @DbAwareColumn({ type: "enum", enum: ClaimType })
   type: ClaimType
 
   @Index()
@@ -122,22 +123,22 @@ export class ClaimOrder {
   @Column({ type: "int", nullable: true })
   refund_amount: number
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "boolean", nullable: true})
+  @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @Column({ nullable: true })

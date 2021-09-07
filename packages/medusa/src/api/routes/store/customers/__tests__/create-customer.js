@@ -61,7 +61,7 @@ describe("POST /store/customers", () => {
     })
 
     it("returns product decorated", () => {
-      expect(subject.body.name).toEqual("invalid_data")
+      expect(subject.body.type).toEqual("invalid_data")
     })
   })
 })

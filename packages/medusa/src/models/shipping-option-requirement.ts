@@ -16,6 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
 
@@ -37,7 +38,7 @@ export class ShippingOptionRequirement {
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption
 
-  @Column({ type: "enum", enum: RequirementType })
+  @DbAwareColumn({ type: "enum", enum: RequirementType })
   type: RequirementType
 
   @Column({ type: "int" })
