@@ -131,7 +131,7 @@ export class Swap {
   @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
-  @Column({ type: "timestamptz", nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
   @Column({ type: "boolean", nullable: true })
