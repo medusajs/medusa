@@ -314,6 +314,26 @@ class SwapService extends BaseService {
         )
       }
 
+      console.log(">>", returnItems)
+
+      for (const item of returnItems) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order"],
+        })
+        console.log(line)
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a swap on a canceled item.`
+          )
+        }
+      }
+
       const newItems = await Promise.all(
         additionalItems.map(({ variant_id, quantity }) => {
           return this.lineItemService_.generate(

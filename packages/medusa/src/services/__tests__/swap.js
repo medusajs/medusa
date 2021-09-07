@@ -173,6 +173,7 @@ describe("SwapService", () => {
       const lineItemService = {
         create: jest.fn().mockImplementation(d => Promise.resolve(d)),
         update: jest.fn().mockImplementation(d => Promise.resolve(d)),
+        retrieve: () => Promise.resolve({}),
         withTransaction: function() {
           return this
         },
@@ -297,6 +298,7 @@ describe("SwapService", () => {
               quantity,
             }
           }),
+        retrieve: () => Promise.resolve({}),
       }
       const swapRepo = MockRepository()
       const returnService = {
@@ -542,6 +544,7 @@ describe("SwapService", () => {
 
       const lineItemService = {
         update: jest.fn(),
+        retrieve: () => Promise.resolve({}),
         withTransaction: function() {
           return this
         },
@@ -732,6 +735,7 @@ describe("SwapService", () => {
 
       const lineItemService = {
         update: jest.fn(),
+        retrieve: () => Promise.resolve({}),
         withTransaction: function() {
           return this
         },

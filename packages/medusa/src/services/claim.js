@@ -187,6 +187,7 @@ class ClaimService extends BaseService {
   create(data) {
     return this.atomicPhase_(async manager => {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
+
       const {
         type,
         claim_items,
@@ -200,6 +201,23 @@ class ClaimService extends BaseService {
         no_notification,
         ...rest
       } = data
+
+      for (const item of claim_items) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order"],
+        })
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a claim on a canceled item.`
+          )
+        }
+      }
 
       let addressId = shipping_address_id || order.shipping_address_id
       if (shipping_address) {
@@ -603,8 +621,7 @@ class ClaimService extends BaseService {
       const claim = await this.retrieve(id, {
         relations: ["return_order", "fulfillments", "order", "order.refunds"],
       })
-
-      if (claim.order?.refunds?.length > 0) {
+      if (claim.refund_amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Claim with a refund cannot be canceled"

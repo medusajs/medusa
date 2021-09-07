@@ -67,6 +67,7 @@ describe("ClaimService", () => {
 
     const lineItemService = {
       generate: jest.fn((d, _, q) => ({ variant_id: d, quantity: q })),
+      retrieve: () => Promise.resolve({}),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -337,6 +338,7 @@ describe("ClaimService", () => {
 
     const lineItemService = {
       update: jest.fn(),
+      retrieve: () => Promise.resolve({}),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -525,6 +527,7 @@ describe("ClaimService", () => {
 
     const lineItemService = {
       update: jest.fn(),
+      retrieve: () => Promise.resolve({}),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -652,7 +655,7 @@ describe("ClaimService", () => {
             claim.return_order.status = "requested"
             return Promise.resolve(claim)
           case IdMap.getId("fail-refund"):
-            claim.order = { refunds: [{}] }
+            claim.refund_amount = 123
             return Promise.resolve(claim)
           default:
             return Promise.resolve(claim)

@@ -304,6 +304,23 @@ class ReturnService extends BaseService {
         delete data.order_id
       }
 
+      for (const item of data.items) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order"],
+        })
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a return for a canceled item.`
+          )
+        }
+      }
+
       const order = await this.orderService_
         .withTransaction(manager)
         .retrieve(orderId, {
