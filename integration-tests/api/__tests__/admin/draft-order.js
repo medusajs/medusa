@@ -76,6 +76,46 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200);
     });
 
+    it("creates a draft order cart and creates new user", async () => {
+      const api = useApi();
+
+      const payload = {
+        email: "non-existing@test.dk",
+        customer_id: "non-existing",
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      };
+
+      const response = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      expect(response.status).toEqual(200);
+
+      const draftOrder = response.data.draft_order;
+
+      expect(draftOrder.cart.customer_id).toBeDefined();
+      expect(draftOrder.cart.email).toEqual("non-existing@test.dk");
+    });
+
     it("fails to create a draft order with option requirement", async () => {
       const api = useApi();
 
