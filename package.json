@@ -32,6 +32,7 @@
     "bootstrap": "lerna bootstrap",
     "jest": "jest",
     "test": "jest",
+    "prettier": "prettier",
     "test:integration": "jest --config=integration-tests/jest.config.js --runInBand",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
   },

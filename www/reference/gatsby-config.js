@@ -59,12 +59,9 @@ module.exports = {
     },
     `gatsby-plugin-theme-ui`,
     {
-      resolve: `gatsby-plugin-algolia-docsearch`,
+      resolve: `gatsby-plugin-env-variables`,
       options: {
-        apiKey: process.env.ALGOLIA_DOCSEARCH_API_KEY, // required
-        indexName: process.env.ALGOLIA_DOCSEARCH_INDEX_NAME, // required
-        inputSelector: "#algolia-doc-search", // required
-        debug: false, // (bool) Optional. Default `false`
+        allowList: ["ALGOLIA_API_KEY"],
       },
     },
     // `gatsby-plugin-preact`,

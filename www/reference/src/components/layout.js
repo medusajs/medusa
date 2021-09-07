@@ -1,6 +1,6 @@
 import React from "react"
 import { Flex, Box } from "theme-ui"
-import Sidebar from "./sidebar"
+import Sidebar from "./side-bar"
 
 const Layout = ({ data, api, children }) => {
   return (
