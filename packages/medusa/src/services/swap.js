@@ -644,7 +644,7 @@ class SwapService extends BaseService {
             }
             await this.cartService_
               .withTransaction(manager)
-              .update({ completed_at: null })
+              .update(cart.id, { payment_authorized_at: null })
             throw err
           }
         }

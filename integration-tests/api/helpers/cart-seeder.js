@@ -315,6 +315,15 @@ module.exports = async (connection, data = {}) => {
     status: "authorized",
   })
 
+  await manager.insert(PaymentSession, {
+    id: "test-swap-session",
+    cart_id: "swap-cart",
+    provider_id: "test-pay",
+    is_selected: true,
+    data: {},
+    status: "authorized",
+  })
+
   await manager.insert(ShippingMethod, {
     id: "test-method",
     shipping_option_id: "test-option",

@@ -23,7 +23,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -281,7 +281,7 @@ describe("/store/carts", () => {
       //check to see if payment has been cancelled and cart is not completed
       const res = await api.get(`/store/carts/test-cart-2`)
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
-      expect(res.data.cart.completed_at).not.toBe(null)
+      expect(res.data.cart.completed_at).toBe(null)
     })
 
     it("fails to complete swap cart with items inventory not/partially covered", async () => {
@@ -295,7 +295,7 @@ describe("/store/carts", () => {
         unit_price: 8000,
         quantity: 99,
         variant_id: "test-variant-2",
-        cart_id: "test-cart-2",
+        cart_id: "swap-cart",
       })
       await manager.save(li)
 
@@ -315,7 +315,42 @@ describe("/store/carts", () => {
       }
 
       //check to see if payment has been cancelled and cart is not completed
-      const res = await api.get(`/store/carts/test-cart-2`)
+      const res = await api.get(`/store/carts/swap-cart`)
+      expect(res.data.cart.payment_authorized_at).toBe(null)
+      expect(res.data.cart.payment.canceled_at).not.toBe(null)
+    })
+
+    it("successfully completes swap cart with items inventory not/partially covered due to backorder flag", async () => {
+      const manager = dbConnection.manager
+
+      const li = manager.create(LineItem, {
+        id: "test-item",
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 99,
+        variant_id: "test-variant-2",
+        cart_id: "swap-cart",
+      })
+      await manager.save(li)
+
+      await manager.query(
+        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'"
+      )
+
+      await manager.query(
+        "UPDATE swap SET allow_backorder=true where id='test-swap'"
+      )
+
+      const api = useApi()
+
+      const completedSwap = await api.post(
+        `/store/carts/swap-cart/complete-cart`
+      )
+
+      //check to see if payment has been cancelled and cart is not completed
+      const res = await api.get(`/store/carts/swap-cart`)
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
       expect(res.data.cart.completed_at).not.toBe(null)
     })
