@@ -42,7 +42,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it.only("returns a list of products with child entities", async () => {
+    it("returns a list of products with child entities", async () => {
       const api = useApi()
 
       const response = await api
@@ -54,15 +54,6 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-
-      const testProduct = response.data.products[0]
-
-      console.log(JSON.stringify(testProduct, null, 2))
-
-      const testProduct1 = response.data.products[1]
-
-      console.log(JSON.stringify(testProduct1, null, 2))
-      // console.log(testProduct.variants)
 
       expect(response.data.products).toMatchSnapshot([
         {
@@ -85,10 +76,9 @@ describe("/admin/products", () => {
           ],
           variants: [
             {
-              id: expect.stringMatching(/^test-variant*/),
+              id: "test-variant", //expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              variant_rank: 0,
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
@@ -109,10 +99,9 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: expect.stringMatching(/^test-variant*/),
+              id: "test-variant_2", //expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              variant_rank: 1,
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
@@ -133,10 +122,9 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: expect.stringMatching(/^test-variant*/),
+              id: "test-variant_1", // expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              variant_rank: 2,
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
@@ -184,10 +172,9 @@ describe("/admin/products", () => {
           options: [],
           variants: [
             {
-              id: expect.stringMatching(/^test-variant*/),
+              id: "test-variant_4", //expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              variant_rank: 0,
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
@@ -208,10 +195,9 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: expect.stringMatching(/^test-variant*/),
+              id: "test-variant_3", //expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              variant_rank: 1,
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
@@ -393,7 +379,7 @@ describe("/admin/products", () => {
         ],
       }
 
-      const response = await api
+      const creationResponse = await api
         .post("/admin/products", payload, {
           headers: {
             Authorization: "Bearer test_token",
@@ -403,7 +389,19 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
+      expect(creationResponse.status).toEqual(200)
+
+      const productId = creationResponse.data.product.id
+
+      const response = await api
+        .get(`/admin/products/${productId}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
 
       expect(response.data.product).toEqual(
         expect.objectContaining({
@@ -411,11 +409,9 @@ describe("/admin/products", () => {
           variants: [
             expect.objectContaining({
               title: "Test variant 1",
-              variant_rank: 0,
             }),
             expect.objectContaining({
               title: "Test variant 2",
-              variant_rank: 1,
             }),
           ],
         })
@@ -563,17 +559,14 @@ describe("/admin/products", () => {
           variants: [
             expect.objectContaining({
               id: "test-variant",
-              variant_rank: 0,
               title: "Test variant",
             }),
             expect.objectContaining({
               id: "test-variant_1",
-              variant_rank: 1,
               title: "Test variant rank (1)",
             }),
             expect.objectContaining({
               id: "test-variant_2",
-              variant_rank: 2,
               title: "Test variant rank (2)",
             }),
           ],
