@@ -63,7 +63,7 @@ export class ProductVariant {
   @Index({ unique: true, where: "deleted_at IS NOT NULL" })
   upc: string
 
-  @Column()
+  @Column({ nullable: true, default: 0, select:false })
   variant_rank: number
 
   @Column({ type: "int" })
