@@ -16,14 +16,14 @@ describe("ProductService", () => {
           return {
             id: "test id with variants",
             variants: [
-              { id: "test_321", title: "Green", variant_rank: 1 },
-              { id: "test_123", title: "Blue", variant_rank: 0 },
+              { id: "test_321", title: "Green" },
+              { id: "test_123", title: "Blue" },
             ],
           }
         if (query.where.id === "test id one variant")
           return {
             id: "test id one variant",
-            variants: [{ id: "test_123", title: "Blue", variant_rank: 0 }],
+            variants: [{ id: "test_123", title: "Blue" }],
           }
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
@@ -36,30 +36,6 @@ describe("ProductService", () => {
 
     beforeEach(async () => {
       jest.clearAllMocks()
-    })
-
-    it("Orders variants according to rank when retrieving a product", async () => {
-      const result = await productService.retrieve("test id with variants", {
-        relations: ["Variants"],
-      })
-
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith(
-        ["Variants"],
-        {
-          where: { id: "test id with variants" },
-        }
-      )
-
-      const expected = {
-        id: "test id with variants",
-        variants: [
-          { id: "test_123", title: "Blue", variant_rank: 0 },
-          { id: "test_321", title: "Green", variant_rank: 1 },
-        ],
-      }
-
-      expect(result).toEqual(expected)
     })
 
     it("successfully retrieves a product", async () => {
@@ -162,12 +138,10 @@ describe("ProductService", () => {
           {
             id: "test1",
             title: "green",
-            variant_rank: 0,
           },
           {
             id: "test2",
             title: "blue",
-            variant_rank: 1,
           },
         ],
       })
@@ -204,12 +178,10 @@ describe("ProductService", () => {
           {
             id: "test1",
             title: "green",
-            variant_rank: 0,
           },
           {
             id: "test2",
             title: "blue",
-            variant_rank: 1,
           },
         ],
       })
