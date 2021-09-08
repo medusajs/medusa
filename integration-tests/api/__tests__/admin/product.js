@@ -16,7 +16,7 @@ describe("/admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -24,6 +24,237 @@ describe("/admin/products", () => {
     await db.shutdown()
 
     medusaProcess.kill()
+  })
+
+  describe("GET /admin/products", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it.only("returns a list of products with child entities", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const testProduct = response.data.products[0]
+
+      console.log(JSON.stringify(testProduct, null, 2))
+
+      const testProduct1 = response.data.products[1]
+
+      console.log(JSON.stringify(testProduct1, null, 2))
+      // console.log(testProduct.variants)
+
+      expect(response.data.products).toMatchSnapshot([
+        {
+          id: expect.stringMatching(/^test-*/),
+          created_at: expect.any(String),
+          options: [
+            {
+              id: expect.stringMatching(/^test-*/),
+              product_id: expect.stringMatching(/^test-*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          images: [
+            {
+              id: expect.stringMatching(/^test-*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          variants: [
+            {
+              id: expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              variant_rank: 0,
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+            {
+              id: expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              variant_rank: 1,
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+            {
+              id: expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              variant_rank: 2,
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+          ],
+          tags: [
+            {
+              id: expect.stringMatching(/^tag*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          type: {
+            id: expect.stringMatching(/^test-*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          collection: {
+            id: expect.stringMatching(/^test-*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        {
+          id: expect.stringMatching(/^test-*/),
+          created_at: expect.any(String),
+          options: [],
+          variants: [
+            {
+              id: expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              variant_rank: 0,
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+            {
+              id: expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              variant_rank: 1,
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+          ],
+          tags: [
+            {
+              id: expect.stringMatching(/^tag*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          type: {
+            id: expect.stringMatching(/^test-*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          collection: {
+            id: expect.stringMatching(/^test-*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+      ])
+    })
   })
 
   describe("POST /admin/products", () => {
