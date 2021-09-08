@@ -141,4 +141,62 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(variant3)
+
+  const p1 = manager.create(Product, {
+    id: "test-product1",
+    handle: "test-product1",
+    title: "Test product1",
+    profile_id: defaultProfile.id,
+    description: "test-product-description1",
+    collection_id: "test-collection",
+    type: { id: "test-type", value: "test-type" },
+    tags: [
+      { id: "tag1", value: "123" },
+      { tag: "tag2", value: "456" },
+    ],
+  })
+
+  await manager.save(p1)
+
+  const variant4 = await manager.create(ProductVariant, {
+    id: "test-variant_3",
+    inventory_quantity: 10,
+    title: "Test variant rank (2)",
+    variant_rank: 1,
+    sku: "test-sku3",
+    ean: "test-ean3",
+    upc: "test-upc3",
+    product_id: "test-product1",
+    prices: [{ id: "test-price3", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-3",
+        value: "Default variant 3",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(variant4)
+
+  const variant5 = await manager.create(ProductVariant, {
+    id: "test-variant_4",
+    inventory_quantity: 10,
+    title: "Test variant rank (2)",
+    variant_rank: 0,
+    sku: "test-sku4",
+    ean: "test-ean4",
+    upc: "test-upc4",
+    product_id: "test-product1",
+    prices: [{ id: "test-price4", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-4",
+        value: "Default variant 3",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(variant5)
 }
