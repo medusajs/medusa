@@ -66,20 +66,6 @@ To provide a quick way to get you started with a storefront install one of our t
 
 With your starter and your Medusa store running you can open http://localhost:8000 (for Gatsby) or http://localhost:3000 (for Nextjs) in your browser and view the products in your store, build a cart, add shipping details and pay and complete an order.
 
-## ☁️ Linking development to Medusa Cloud
-With your project in local development you can link your Medusa instance to Medusa Cloud - this will allow you to manage your store, view orders and test out the amazing functionalities that you are building. Linking your project to Medusa Cloud requires that you have a Medusa Cloud account.
-
-1. **Authenticate your CLI with Medusa Cloud:**
-   ```
-   medusa login
-   ```
-2. **Link project**
-   ```
-   medusa link --develop
-   ```
-
-You can now navigate to Orders in Medusa Cloud to view the orders in your local Medusa project, just like you would if your store was running in production.
-
 ## ⭐️ Features
 Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
 - **Headless**: Medusa is a highly customizable commerce API which means that you may use any presentation layer such as a website, app, chatbots, etc.
