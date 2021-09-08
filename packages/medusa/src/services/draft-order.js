@@ -250,21 +250,22 @@ class DraftOrderService extends BaseService {
       }
 
       const {
-        items,
         shipping_methods,
         discounts,
         no_notification_order,
-        ...rest
+        ...tmp
       } = data
 
       if (discounts) {
         for (const { code } of discounts) {
-          rest.discounts = []
+          tmp.discounts = []
           await this.cartService_
             .withTransaction(manager)
-            .applyDiscount(rest, code)
+            .applyDiscount(tmp, code)
         }
       }
+
+      const { items, ...rest } = tmp
 
       const createdCart = await this.cartService_
         .withTransaction(manager)

@@ -294,6 +294,8 @@ class OrderService extends BaseService {
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("discounts")
+      relationSet.add("discounts.rule")
+      relationSet.add("discounts.rule.valid_for")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
       relationSet.add("refunds")
@@ -444,6 +446,8 @@ class OrderService extends BaseService {
             "payment",
             "items",
             "discounts",
+            "discounts.rule",
+            "discounts.rule.valid_for",
             "gift_cards",
             "shipping_methods",
           ],
@@ -1062,6 +1066,8 @@ class OrderService extends BaseService {
         ],
         relations: [
           "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
           "region",
           "fulfillments",
           "shipping_address",
