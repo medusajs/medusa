@@ -47,17 +47,17 @@ class EconomicService extends BaseService {
 
   decideCustomerAndVatNumber_(country_code) {
     const upperCased = country_code.toUpperCase()
-    if (EUCountries.includes(upperCased)) {
-      return {
-        vat: this.options_.vatzone_number_eu,
-        customer: this.options_.customer_number_eu,
-      }
-    }
-
     if (upperCased === "DK") {
       return {
         vat: this.options_.vatzone_number_dk,
         customer: this.options_.customer_number_dk,
+      }
+    }
+
+    if (EUCountries.includes(upperCased)) {
+      return {
+        vat: this.options_.vatzone_number_eu,
+        customer: this.options_.customer_number_eu,
       }
     }
 
@@ -84,52 +84,33 @@ class EconomicService extends BaseService {
     }
 
     order.items.forEach((item) => {
-      // For bundles, we create an order line for each item in the bundle
-      if (Array.isArray(item.content)) {
-        item.content.forEach((c) => {
-          const total_amount = c.unit_price * c.quantity * (taxRate + 1)
+      const total_amount = item.unit_price * item.quantity
 
-          order_lines.push({
-            lineNumber: order_lines.length + 1,
-            sortKey: 1,
-            unit: {
-              unitNumber: this.options_.unit_number,
-            },
-            product: {
-              productNumber: c.product.sku,
-            },
-            quantity: c.quantity,
-            // Do we include taxes on this bad boy?
-            unitNetPrice: total_amount,
-          })
-        })
-      } else {
-        const total_amount = item.content.unit_price * item.content.quantity
+      // Find the discount for current item and default to 0
+      const itemDiscount =
+        (itemDiscounts &&
+          itemDiscounts.find((el) => el.lineItem.id === item.id)) ||
+        0
 
-        // Find the discount for current item and default to 0
-        const itemDiscount =
-          (itemDiscounts &&
-            itemDiscounts.find((el) => el.lineItem._id === item._id)) ||
-          0
+      // Withdraw discount from the total item amount
+      const total_discounted_amount = total_amount - itemDiscount
 
-        // Withdraw discount from the total item amount
-        const total_discount_amount = total_amount - itemDiscount
-
-        order_lines.push({
-          lineNumber: order_lines.length + 1,
-          sortKey: 1,
-          unit: {
-            unitNumber: this.options_.unit_number,
-          },
-          product: {
-            productNumber: item.content.product.sku,
-          },
-          quantity: item.content.quantity,
-          // Do we include taxes on this bad boy?
-          unitNetPrice: total_discount_amount,
-        })
-      }
+      order_lines.push({
+        lineNumber: order_lines.length + 1,
+        sortKey: 1,
+        unit: {
+          unitNumber: this.options_.unit_number,
+        },
+        product: {
+          productNumber: item.variant.sku,
+        },
+        quantity: item.quantity,
+        // Do we include taxes on this bad boy?
+        unitNetPrice: total_discounted_amount,
+      })
     })
+
+    return order_lines
   }
 
   async createInvoiceFromOrder(order) {
@@ -151,7 +132,7 @@ class EconomicService extends BaseService {
         paymentTermsNumber: this.options_.payment_terms_number,
       },
       references: {
-        other: order._id,
+        other: order.id,
       },
       customer: {
         customerNumber: vatZoneAndCustomer.customer,
