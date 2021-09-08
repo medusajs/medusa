@@ -1,5 +1,6 @@
 import { execSync } from "child_process"
 import execa from "execa"
+import { spin } from "tiny-spin"
 import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
@@ -38,7 +39,7 @@ const removeUndefined = (obj) => {
 }
 
 const spawnWithArgs = (file, args, options) =>
-  execa(file, args, { stdio: `inherit`, preferLocal: false, ...options })
+  execa(file, args, { stdio: "ignore", preferLocal: false, ...options })
 
 const spawn = (cmd, options) => {
   const [file, ...args] = cmd.split(/\s+/)
@@ -106,10 +107,10 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
 }
 
 // Executes `npm install` or `yarn install` in rootPath.
-const install = async (rootPath) => {
+const install = async (rootPath, verbose) => {
   const prevDir = process.cwd()
 
-  reporter.info(`Installing packages...`)
+  const stop = spin(`Installing packages...`)
   console.log() // Add some space
 
   process.chdir(rootPath)
@@ -119,12 +120,15 @@ const install = async (rootPath) => {
   try {
     if (getPackageManager() === `yarn` && checkForYarn()) {
       await fs.remove(`package-lock.json`)
-      await spawn(`yarnpkg`)
+      await spawn(`yarnpkg`, { stdio: verbose ? `inherit` : `ignore` })
     } else {
       await fs.remove(`yarn.lock`)
-      await spawn(`npm install`)
+      await spawn(`npm install`, { stdio: verbose ? `inherit` : `ignore` })
     }
   } finally {
+    stop()
+    console.log()
+    reporter.success(`Packages installed`)
     process.chdir(prevDir)
   }
 }
@@ -150,12 +154,14 @@ const copy = async (starterPath, rootPath) => {
     )
   }
 
-  reporter.info(`Creating new site from local starter: ${starterPath}`)
+  const stop = spin(`Creating new site from local starter: ${starterPath}`)
 
   reporter.info(`Copying local starter to ${rootPath} ...`)
 
   await fs.copy(starterPath, rootPath, { filter: ignored })
 
+  stop()
+  console.log()
   reporter.success(`Created starter directory layout`)
   console.log() // Add some space
 
@@ -165,7 +171,7 @@ const copy = async (starterPath, rootPath) => {
 }
 
 // Clones starter from URI.
-const clone = async (hostInfo, rootPath) => {
+const clone = async (hostInfo, rootPath, keepGit, verbose = false) => {
   let url
   // Let people use private repos accessed over SSH.
   if (hostInfo.getDefaultRepresentation() === `sshurl`) {
@@ -177,7 +183,7 @@ const clone = async (hostInfo, rootPath) => {
 
   const branch = hostInfo.committish ? [`-b`, hostInfo.committish] : []
 
-  reporter.info(`Creating new project from git: ${url}`)
+  const stop = spin(`Creating new project from git: ${url}`)
 
   const args = [
     `clone`,
@@ -190,16 +196,22 @@ const clone = async (hostInfo, rootPath) => {
 
   await execa(`git`, args, {})
     .then(() => {
+      stop()
+      console.log()
       reporter.success(`Created starter directory layout`)
     })
     .catch((err) => {
+      stop()
+      console.log()
       reporter.error(`Failed to clone repository`)
       throw err
     })
 
-  await fs.remove(sysPath.join(rootPath, `.git`))
+  if (!keepGit) {
+    await fs.remove(sysPath.join(rootPath, `.git`))
+  }
 
-  await install(rootPath)
+  await install(rootPath, verbose)
   const isGit = await isAlreadyGitRepository()
   if (!isGit) await gitInit(rootPath)
   await maybeCreateGitIgnore(rootPath)
@@ -248,7 +260,7 @@ const setupEnvVars = async (rootPath) => {
 }
 
 const attemptSeed = async (rootPath) => {
-  reporter.info("Seeding database")
+  const stop = spin("Seeding database")
 
   const pkgPath = sysPath.resolve(rootPath, "package.json")
   if (existsSync(pkgPath)) {
@@ -265,16 +277,24 @@ const attemptSeed = async (rootPath) => {
 
       await proc
         .then(() => {
+          stop()
+          console.log()
           reporter.success("Seed completed")
         })
         .catch((err) => {
+          stop()
+          console.log()
           reporter.error("Failed to complete seed; skipping")
           console.error(err)
         })
     } else {
+      stop()
+      console.log()
       reporter.error("Starter doesn't provide a seed command; skipping.")
     }
   } else {
+    stop()
+    console.log()
     reporter.error("Could not find package.json")
   }
 }
@@ -283,7 +303,7 @@ const attemptSeed = async (rootPath) => {
  * Main function that clones or copies the starter.
  */
 export const newStarter = async (args) => {
-  const { starter, root, skipDb, skipMigrations, skipEnv, seed, dbHost } = args
+  const { starter, root, verbose, seed, keepGit } = args
 
   const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
     starter,
@@ -337,9 +357,9 @@ export const newStarter = async (args) => {
 
   const hostedInfo = hostedGitInfo.fromUrl(starterPath)
   if (hostedInfo) {
-    await clone(hostedInfo, rootPath)
+    await clone(hostedInfo, rootPath, keepGit, verbose)
   } else {
-    await copy(starterPath, rootPath)
+    await copy(starterPath, rootPath, verbose)
   }
 
   const medusaConfig = getMedusaConfig(rootPath)

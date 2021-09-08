@@ -41,12 +41,7 @@ const questions = {
   },
 }
 
-interface CreateCLI {
-  starterUrl?: string
-  seed?: boolean
-}
-
-const program = <CreateCLI>new Commander.Command(pkg.name)
+const program = new Commander.Command(pkg.name)
   .version(pkg.version)
   .action((name) => (projectPath = name))
   .option(`-r --root`, `The directory to install your Medusa app`)
@@ -58,6 +53,7 @@ const program = <CreateCLI>new Commander.Command(pkg.name)
     `--seed`,
     `If run with the seed flag the script will automatically attempt to seed the database upon setup`
   )
+  .option(`-v --verbose`, `Show all installation output`)
   .parse(process.argv)
 
 export const run = async (): Promise<void> => {
@@ -84,7 +80,9 @@ export const run = async (): Promise<void> => {
   }
   track("STARTER_SELECTED", { starter })
 
-  const { seed } = (await prompt(questions.seed)) as { seed: boolean }
+  const progOptions = program.opts()
+
+  const seed = progOptions.seed
   track("SEED_SELECTED", { seed })
 
   const { storefront } = (await prompt(questions.storefront)) as {
@@ -96,6 +94,7 @@ export const run = async (): Promise<void> => {
     starter,
     root: path.join(projectRoot, `backend`),
     seed,
+    verbose: progOptions.verbose,
   })
 
   const hasStorefront = storefront.toLowerCase() !== "none"
@@ -107,11 +106,14 @@ export const run = async (): Promise<void> => {
     await newStarter({
       starter: storefrontStarter,
       root: path.join(projectRoot, `storefront`),
+      verbose: progOptions.verbose,
     })
   }
   await newStarter({
     starter: "https://github.com/medusajs/admin",
     root: path.join(projectRoot, `admin`),
+    keepGit: true,
+    verbose: progOptions.verbose,
   })
 
   console.log(`
@@ -128,9 +130,9 @@ export const run = async (): Promise<void> => {
 
   if (hasStorefront) {
     console.log(`
-      Storefront
-      cd ${projectRoot}/storefront
-      yarn start
+    Storefront
+    cd ${projectRoot}/storefront
+    yarn start
     `)
   }
 }
