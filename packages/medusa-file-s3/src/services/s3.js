@@ -7,7 +7,7 @@ class S3Service extends FileService {
     super()
 
     this.bucket_ = options.bucket
-    this.spacesUrl_ = options.spaces_url
+    this.s3Url_ = options.s3_url
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
