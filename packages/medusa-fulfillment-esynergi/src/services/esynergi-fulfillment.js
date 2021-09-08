@@ -1,7 +1,6 @@
 import { FulfillmentService } from "medusa-interfaces"
-import Webshipper from "../utils/webshipper"
 
-class WebshipperFulfillmentService extends FulfillmentService {
+class EsynergiFulfillmentService extends FulfillmentService {
   static identifier = "esynergi"
 
   constructor({ logger, claimService, swapService, orderService }, options) {
@@ -32,10 +31,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
     this.claimService_ = claimService
 
     /** @private @const {AxiosClient} */
-    this.client_ = new Webshipper({
-      account: this.options_.account,
-      token: this.options_.api_token,
-    })
+    // this.client_ =
   }
 
   registerInvoiceGenerator(service) {
@@ -103,4 +99,4 @@ class WebshipperFulfillmentService extends FulfillmentService {
   async cancelFulfillment(data) {}
 }
 
-export default WebshipperFulfillmentService
+export default EsynergiFulfillmentService
