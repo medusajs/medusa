@@ -111,11 +111,7 @@ class EconomicService extends BaseService {
       })
     })
 
-    const free_shipping = order.discounts.find(
-      ({ rule }) => rule.type === "free_shipping"
-    )
-
-    if (!free_shipping) {
+    if (!order.discounts.some(({ rule }) => rule.type === "free_shipping")) {
       for (const shipping_method of order.shipping_methods) {
         order_lines.push({
           lineNumber: order_lines.length + 1,
@@ -127,7 +123,6 @@ class EconomicService extends BaseService {
             productNumber: this.options_.shipping_product,
           },
           quantity: 1,
-          // Do we include taxes on this bad boy?
           unitNetPrice: shipping_method.price / 100,
         })
       }
