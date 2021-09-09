@@ -34,13 +34,16 @@ class RestockNotificationService extends BaseService {
       return this
     }
 
-    const cloned = new RestockNotificationService({
-      manager: transactionManager,
-      options: this.options_,
-      eventBusService: this.eventBus_,
-      productVariantService: this.productVariantService_,
-      restockNotificationModel: this.restockNotificationModel_,
-    })
+    const cloned = new RestockNotificationService(
+      {
+        manager: transactionManager,
+        options: this.options_,
+        eventBusService: this.eventBus_,
+        productVariantService: this.productVariantService_,
+        restockNotificationModel: this.restockNotificationModel_,
+      },
+      this.options_
+    )
 
     cloned.transactionManager_ = transactionManager
 
