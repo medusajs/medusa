@@ -4,20 +4,20 @@ exports[`economic service tests createInvoiceFromOrder creates order with correc
 Object {
   "currency": "DKK",
   "customer": Object {
-    "customerNumber": 12,
+    "customerNumber": 1,
   },
   "date": Any<String>,
   "layout": Object {
-    "layoutNumber": 42,
+    "layoutNumber": 21,
   },
   "lines": Array [],
   "paymentTerms": Object {
-    "paymentTermsNumber": 42,
+    "paymentTermsNumber": 1,
   },
   "recipient": Object {
     "name": "Webshop customer",
     "vatZone": Object {
-      "vatZoneNumber": 42,
+      "vatZoneNumber": 1,
     },
   },
   "references": Object {

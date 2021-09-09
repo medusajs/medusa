@@ -4,16 +4,17 @@ describe("economic service tests", () => {
   const options_ = {
     secret_token: "foo",
     agreement_token: "bar",
-    customer_number_dk: 12,
-    customer_number_eu: 345,
-    customer_number_world: 678,
-    unit_number: 42,
-    payment_terms_number: 42,
-    layout_number: 42,
-    vatzone_number_eu: 41,
-    vatzone_number_dk: 42,
-    vatzone_number_world: 43,
+    customer_number_dk: 1,
+    customer_number_eu: 1,
+    customer_number_world: 1,
+    unit_number: 1,
+    payment_terms_number: 1,
+    layout_number: 21,
+    vatzone_number_eu: 2,
+    vatzone_number_dk: 1,
+    vatzone_number_world: 3,
     recipient_name: "Webshop customer",
+    shipping_product: "shipping",
   }
 
   afterEach(() => {
@@ -39,6 +40,7 @@ describe("economic service tests", () => {
           id: "draft order",
           region_id: "dk",
           billing_address: { country_code: "dk" },
+          shipping_methods: [{ price: 1000 }],
           discounts: [
             {
               rule: {
@@ -63,7 +65,8 @@ describe("economic service tests", () => {
       }
       return { metadata: { economicDraftId: "123" } }
     },
-    setMetadata: jest.fn(),
+    // setMetadata: jest.fn(),
+    update: jest.fn(),
   }
 
   const totalsServiceMock = {
@@ -200,7 +203,7 @@ describe("economic service tests", () => {
             productNumber: "10",
           },
           quantity: 1,
-          unitNetPrice: 9900,
+          unitNetPrice: 99,
         },
       ])
     })
@@ -212,6 +215,7 @@ describe("economic service tests", () => {
         id: "draft order no lines",
         region_id: "dk",
         billing_address: { country_code: "dk" },
+        shipping_methods: [],
         discounts: [],
         items: [],
       }
@@ -243,7 +247,7 @@ describe("economic service tests", () => {
     })
   })
 
-  describe("drafEconomicInvoice", () => {
+  describe("draftEconomicInvoice", () => {
     it("creates economic draft", async () => {
       const result = await service.draftEconomicInvoice("draft order")
 
@@ -255,14 +259,17 @@ describe("economic service tests", () => {
         "https://restapi.e-conomic.com/invoices/drafts",
         expectedInvoice
       )
-      expect(orderServiceMock.setMetadata).toHaveBeenCalledWith(
-        "draft order",
-        "economicDraftId",
-        "10"
-      )
+      expect(orderServiceMock.update).toHaveBeenCalledWith("draft order", {
+        metadata: { economicDraftId: "10" },
+      })
       expect(result).toEqual({
         id: "draft order",
         region_id: "dk",
+        shipping_methods: [
+          {
+            price: 1000,
+          },
+        ],
         billing_address: { country_code: "dk" },
         discounts: [
           {
