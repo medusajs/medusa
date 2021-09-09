@@ -85,12 +85,12 @@ class EconomicService extends BaseService {
 
     order.items.forEach((item) => {
       const total_amount = item.unit_price * item.quantity
-
       // Find the discount for current item and default to 0
       const itemDiscount =
-        (itemDiscounts &&
-          itemDiscounts.find((el) => el.lineItem.id === item.id)) ||
-        0
+        (
+          itemDiscounts &&
+          itemDiscounts.find((el) => el.lineItem.id === item.id)
+        ).amount || 0
 
       // Withdraw discount from the total item amount
       const total_discounted_amount = total_amount - itemDiscount
@@ -153,6 +153,7 @@ class EconomicService extends BaseService {
   async draftEconomicInvoice(orderId) {
     const order = await this.orderService_.retrieve(orderId)
     const invoice = await this.createInvoiceFromOrder(order)
+
     try {
       const draftInvoice = await this.economic_.post(
         `${ECONOMIC_BASE_URL}/invoices/drafts`,
@@ -160,12 +161,12 @@ class EconomicService extends BaseService {
       )
 
       await this.orderService_.setMetadata(
-        order._id,
+        order.id,
         "economicDraftId",
         draftInvoice.data.draftInvoiceNumber
       )
 
-      const invoiceOrder = await this.orderService_.retrieve(order._id)
+      const invoiceOrder = await this.orderService_.retrieve(order.id)
       return invoiceOrder
     } catch (error) {
       throw error
