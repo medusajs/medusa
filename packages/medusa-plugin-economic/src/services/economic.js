@@ -22,6 +22,7 @@ class EconomicService extends BaseService {
    *      vatzone_number_dk: 42,
    *      vatzone_number_world: 42,
    *      recipient_name: "Webshop customer"
+   *      shipping_product: "shipping"
    *    }
    */
   constructor({ orderService, totalsService, regionService }, options) {
@@ -90,7 +91,7 @@ class EconomicService extends BaseService {
         (
           itemDiscounts &&
           itemDiscounts.find((el) => el.lineItem.id === item.id)
-        ).amount || 0
+        )?.amount || 0
 
       // Withdraw discount from the total item amount
       const total_discounted_amount = total_amount - itemDiscount
@@ -106,9 +107,31 @@ class EconomicService extends BaseService {
         },
         quantity: item.quantity,
         // Do we include taxes on this bad boy?
-        unitNetPrice: total_discounted_amount,
+        unitNetPrice: total_discounted_amount / 100,
       })
     })
+
+    const free_shipping = order.discounts.find(
+      ({ rule }) => rule.type === "free_shipping"
+    )
+
+    if (!free_shipping) {
+      for (const shipping_method of order.shipping_methods) {
+        order_lines.push({
+          lineNumber: order_lines.length + 1,
+          sortKey: 1,
+          unit: {
+            unitNumber: this.options_.unit_number,
+          },
+          product: {
+            productNumber: this.options_.shipping_product,
+          },
+          quantity: 1,
+          // Do we include taxes on this bad boy?
+          unitNetPrice: shipping_method.price / 100,
+        })
+      }
+    }
 
     return order_lines
   }
@@ -151,20 +174,27 @@ class EconomicService extends BaseService {
   }
 
   async draftEconomicInvoice(orderId) {
-    const order = await this.orderService_.retrieve(orderId)
+    const order = await this.orderService_.retrieve(orderId, {
+      relations: [
+        "billing_address",
+        "discounts",
+        "shipping_methods",
+        "items",
+        "items.variant",
+      ],
+    })
     const invoice = await this.createInvoiceFromOrder(order)
 
     try {
-      const draftInvoice = await this.economic_.post(
-        `${ECONOMIC_BASE_URL}/invoices/drafts`,
-        invoice
-      )
+      const draftInvoice = await this.economic_
+        .post(`${ECONOMIC_BASE_URL}/invoices/drafts`, invoice)
+        .catch((err) => {
+          throw err
+        })
 
-      await this.orderService_.setMetadata(
-        order.id,
-        "economicDraftId",
-        draftInvoice.data.draftInvoiceNumber
-      )
+      await this.orderService_.update(order.id, {
+        metadata: { economicDraftId: draftInvoice.data.draftInvoiceNumber },
+      })
 
       const invoiceOrder = await this.orderService_.retrieve(order.id)
       return invoiceOrder
