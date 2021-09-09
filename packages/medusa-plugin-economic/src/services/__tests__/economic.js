@@ -1,5 +1,4 @@
 import EconomicService from "../economic"
-import { MedusaError } from "medusa-core-utils"
 
 describe("economic service tests", () => {
   const options_ = {
@@ -24,7 +23,6 @@ describe("economic service tests", () => {
   const orderServiceMock = {
     retrieve: async (orderid) => {
       if (orderid === "order no metadata") {
-        // console.log("requesting no metadata")
         return { metadata: {} }
       }
       if (orderid === "draft order no lines") {
