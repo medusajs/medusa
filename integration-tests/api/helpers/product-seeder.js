@@ -2,14 +2,12 @@ const {
   ProductCollection,
   ProductTag,
   ProductType,
+  ProductOption,
   Region,
   Product,
   ShippingProfile,
   ProductVariant,
   Image,
-  ProductOption,
-  ProductOptionValue,
-  MoneyAmount,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -73,41 +71,132 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(p)
 
-  await manager.insert(ProductOption, {
+  await manager.save(ProductOption, {
     id: "test-option",
-    title: "Test option",
+    title: "test-option",
     product_id: "test-product",
   })
 
-  await manager.insert(ProductVariant, {
+  const variant1 = await manager.create(ProductVariant, {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",
+    variant_rank: 0,
     sku: "test-sku",
     ean: "test-ean",
     upc: "test-upc",
     barcode: "test-barcode",
     product_id: "test-product",
+    prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option",
+        value: "Default variant",
+        option_id: "test-option",
+      },
+    ],
   })
 
-  await manager.insert(MoneyAmount, {
-    id: "test-money-amount",
-    currency_code: "usd",
-    amount: 100,
-    variant_id: "test-variant",
+  await manager.save(variant1)
+
+  const variant2 = await manager.create(ProductVariant, {
+    id: "test-variant_1",
+    inventory_quantity: 10,
+    title: "Test variant rank (1)",
+    variant_rank: 2,
+    sku: "test-sku1",
+    ean: "test-ean1",
+    upc: "test-upc1",
+    barcode: "test-barcode 1",
+    product_id: "test-product",
+    prices: [{ id: "test-price1", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-1",
+        value: "Default variant 1",
+        option_id: "test-option",
+      },
+    ],
   })
 
-  await manager.insert(ProductOptionValue, {
-    id: "test-option-value_1",
-    value: "test-option-value_1",
-    option_id: "test-option",
-    variant_id: "test-variant",
+  await manager.save(variant2)
+
+  const variant3 = await manager.create(ProductVariant, {
+    id: "test-variant_2",
+    inventory_quantity: 10,
+    title: "Test variant rank (2)",
+    variant_rank: 1,
+    sku: "test-sku2",
+    ean: "test-ean2",
+    upc: "test-upc2",
+    product_id: "test-product",
+    prices: [{ id: "test-price2", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-2",
+        value: "Default variant 2",
+        option_id: "test-option",
+      },
+    ],
   })
 
-  await manager.insert(ProductOptionValue, {
-    id: "test-option-value_2",
-    value: "test-option-value_2",
-    option_id: "test-option",
-    variant_id: "test-variant",
+  await manager.save(variant3)
+
+  const p1 = manager.create(Product, {
+    id: "test-product1",
+    handle: "test-product1",
+    title: "Test product1",
+    profile_id: defaultProfile.id,
+    description: "test-product-description1",
+    collection_id: "test-collection",
+    type: { id: "test-type", value: "test-type" },
+    tags: [
+      { id: "tag1", value: "123" },
+      { tag: "tag2", value: "456" },
+    ],
   })
+
+  await manager.save(p1)
+
+  const variant4 = await manager.create(ProductVariant, {
+    id: "test-variant_3",
+    inventory_quantity: 10,
+    title: "Test variant rank (2)",
+    variant_rank: 1,
+    sku: "test-sku3",
+    ean: "test-ean3",
+    upc: "test-upc3",
+    product_id: "test-product1",
+    prices: [{ id: "test-price3", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-3",
+        value: "Default variant 3",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(variant4)
+
+  const variant5 = await manager.create(ProductVariant, {
+    id: "test-variant_4",
+    inventory_quantity: 10,
+    title: "Test variant rank (2)",
+    variant_rank: 0,
+    sku: "test-sku4",
+    ean: "test-ean4",
+    upc: "test-upc4",
+    product_id: "test-product1",
+    prices: [{ id: "test-price4", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-4",
+        value: "Default variant 4",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(variant5)
 }
