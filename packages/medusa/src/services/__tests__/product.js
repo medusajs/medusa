@@ -12,7 +12,7 @@ describe("ProductService", () => {
   describe("retrieve", () => {
     const productRepo = MockRepository({
       findOneWithRelations: (rels, query) => {
-        if (query.where.id === "test id with variants")
+        if (query.where.id === "test id with variants") {
           return {
             id: "test id with variants",
             variants: [
@@ -20,11 +20,13 @@ describe("ProductService", () => {
               { id: "test_123", title: "Blue" },
             ],
           }
-        if (query.where.id === "test id one variant")
+        }
+        if (query.where.id === "test id one variant") {
           return {
             id: "test id one variant",
             variants: [{ id: "test_123", title: "Blue" }],
           }
+        }
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
