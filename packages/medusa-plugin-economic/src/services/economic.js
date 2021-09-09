@@ -186,11 +186,10 @@ class EconomicService extends BaseService {
     const invoice = await this.createInvoiceFromOrder(order)
 
     try {
-      const draftInvoice = await this.economic_
-        .post(`${ECONOMIC_BASE_URL}/invoices/drafts`, invoice)
-        .catch((err) => {
-          throw err
-        })
+      const draftInvoice = await this.economic_.post(
+        `${ECONOMIC_BASE_URL}/invoices/drafts`,
+        invoice
+      )
 
       await this.orderService_.update(order.id, {
         metadata: { economicDraftId: draftInvoice.data.draftInvoiceNumber },
