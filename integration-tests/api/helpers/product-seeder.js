@@ -11,9 +11,6 @@ const {
   ProductOptionValue,
   MoneyAmount,
 } = require("@medusajs/medusa")
-const {
-  ShippingProfileType,
-} = require("@medusajs/medusa/dist/models/shipping-profile")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager

@@ -33,15 +33,8 @@ describe("Get variant by id", () => {
         `/store/variants/${IdMap.getId("variantWithPrices")}`
       )
     })
-    it("calls endpoint with 'variantWithPrices' returns succesfull", async () => {
+    it("successfully retrieves variants with prices", async () => {
       expect(subject.status).toEqual(200)
-    })
-
-    it("calls endpoint with 'variantWithPrices' returns prices array", async () => {
-      expect(Array.isArray(subject.body.variant.prices)).toEqual(true)
-    })
-
-    it("calls endpoint with 'variantWithPrices' prices[0].amount equals 100", async () => {
       expect(subject.body.variant.prices[0].amount).toEqual(100)
     })
   })
