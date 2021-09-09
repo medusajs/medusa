@@ -61,9 +61,7 @@ class MeilisearchSubscriber {
   }
 
   handleProductVariantChange = async (data) => {
-    console.log({ change: data })
     const product = await this.retrieveProduct_(data.product_id)
-    console.log(product.variants)
     await this.meilisearchService_.addDocuments([product])
   }
 }
