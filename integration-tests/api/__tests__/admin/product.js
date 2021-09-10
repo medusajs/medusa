@@ -7,7 +7,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("/admin/products", () => {
   let medusaProcess
@@ -263,7 +263,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const payload = {
-        title: "Test product",
+        title: "Test",
         description: "test-product-description",
         type: { value: "test-type" },
         images: ["test-image.png", "test-image-2.png"],
@@ -293,10 +293,10 @@ describe("/admin/products", () => {
       expect(response.status).toEqual(200)
       expect(response.data.product).toEqual(
         expect.objectContaining({
-          title: "Test product",
+          title: "Test",
           discountable: true,
           is_giftcard: false,
-          handle: "test-product",
+          handle: "test",
           images: expect.arrayContaining([
             expect.objectContaining({
               url: "test-image.png",
@@ -646,7 +646,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it("successfully creates product with soft-deleted product handle", async () => {
+    it("successfully creates product with soft-deleted product handle and deletes it again", async () => {
       const api = useApi()
 
       // First we soft-delete the product
@@ -691,6 +691,56 @@ describe("/admin/products", () => {
 
       expect(res.status).toEqual(200)
       expect(res.data.product.handle).toEqual("test-product")
+
+      // Delete product again to ensure uniqueness is enforced in all cases
+      const response2 = await api
+        .delete("/admin/products/test-product", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response2.status).toEqual(200)
+      expect(response2.data.id).toEqual("test-product")
+    })
+
+    it("should fail when creating a product with a handle that already exists", async () => {
+      const api = useApi()
+
+      // Lets try to create a product with same handle as deleted one
+      const payload = {
+        title: "Test product",
+        handle: "test-product",
+        description: "test-product-description",
+        type: { value: "test-type" },
+        images: ["test-image.png", "test-image-2.png"],
+        collection_id: "test-collection",
+        tags: [{ value: "123" }, { value: "456" }],
+        options: [{ title: "size" }, { title: "color" }],
+        variants: [
+          {
+            title: "Test variant",
+            inventory_quantity: 10,
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+          },
+        ],
+      }
+
+      try {
+        await api.post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.data.message).toMatch(
+          /duplicate key value violates unique constraint/i
+        )
+      }
     })
 
     it("successfully deletes product collection", async () => {
@@ -743,6 +793,28 @@ describe("/admin/products", () => {
       expect(res.data.collection.handle).toEqual("test-collection")
     })
 
+    it("should fail when creating a collection with a handle that already exists", async () => {
+      const api = useApi()
+
+      // Lets try to create a collection with same handle as deleted one
+      const payload = {
+        title: "Another test collection",
+        handle: "test-collection",
+      }
+
+      try {
+        await api.post("/admin/collections", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.data.message).toMatch(
+          /duplicate key value violates unique constraint/i
+        )
+      }
+    })
+
     it("successfully creates soft-deleted product variant", async () => {
       const api = useApi()
 
@@ -769,7 +841,6 @@ describe("/admin/products", () => {
       expect(response.status).toEqual(200)
       expect(response.data.variant_id).toEqual("test-variant")
 
-      // Lets try to create a product collection with same handle as deleted one
       const payload = {
         title: "Second variant",
         sku: "test-sku",
