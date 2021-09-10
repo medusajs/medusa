@@ -16,7 +16,7 @@
   "devDependencies": {
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
-    "@babel/preset-typescript": "^7.13.0",
+    "@babel/preset-typescript": "^7.15.0",
     "babel-preset-medusa-package": "^1.1.13",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
@@ -40,6 +40,7 @@
     "boxen": "^5.0.1",
     "ci-info": "^3.2.0",
     "configstore": "5.0.1",
+    "global": "^4.4.0",
     "is-docker": "^2.2.1",
     "remove-trailing-slash": "^0.1.1",
     "uuid": "^8.3.2"

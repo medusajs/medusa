@@ -218,6 +218,10 @@ export class ClaimOrder {
  *   refund_amount:
  *     description: "The amount that will be refunded in conjunction with the claim"
  *     type: integer
+ *   canceled_at:
+ *     description: "The date with timezone at which the Swap was canceled."
+ *     type: string
+ *     format: date-time
  *   created_at:
  *     type: string
  *     format: date-time
