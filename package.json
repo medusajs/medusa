@@ -21,6 +21,7 @@
     "import-from": "^3.0.0",
     "jest": "^26.6.3",
     "lerna": "^3.22.1",
+    "microbundle": "^0.13.3",
     "mongoose": "^5.10.15",
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
