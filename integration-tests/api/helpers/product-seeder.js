@@ -192,7 +192,7 @@ module.exports = async (connection, data = {}) => {
     options: [
       {
         id: "test-variant-option-4",
-        value: "Default variant 3",
+        value: "Default variant 4",
         option_id: "test-option",
       },
     ],

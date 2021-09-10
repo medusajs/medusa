@@ -26,6 +26,40 @@ export const products = {
       },
     ],
   },
+  variantsWithPrices: {
+    id: IdMap.getId("variantsWithPrices"),
+    title: "Variant with prices",
+    variants: [
+      {
+        id: IdMap.getId("variant_with_prices"),
+        title: "Variant with prices",
+        prices: [
+          {
+            id: "price_1",
+            currency_code: "usd",
+            amount: 100,
+            sale_amount: null,
+            variant_id: "variant_with_prices",
+            region_id: null,
+            created_at: "2021-03-16T21:24:13.657Z",
+            updated_at: "2021-03-16T21:24:13.657Z",
+            deleted_at: null,
+          },
+          {
+            id: "price_2",
+            currency_code: "dk",
+            amount: 100,
+            sale_amount: null,
+            variant_id: "variant_with_prices",
+            region_id: null,
+            created_at: "2021-03-16T21:24:13.657Z",
+            updated_at: "2021-03-16T21:24:13.657Z",
+            deleted_at: null,
+          },
+        ],
+      },
+    ],
+  },
 }
 
 export const ProductServiceMock = {
@@ -92,6 +126,9 @@ export const ProductServiceMock = {
     }
     if (productId === IdMap.getId("productWithOptions")) {
       return Promise.resolve(products.productWithOptions)
+    }
+    if (productId === IdMap.getId("variantsWithPrices")) {
+      return Promise.resolve(products.variantsWithPrices)
     }
     return Promise.resolve(undefined)
   }),
