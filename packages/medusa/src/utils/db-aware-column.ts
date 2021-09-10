@@ -15,7 +15,8 @@ const pgSqliteGenerationMapping: {
   increment: "rowid",
 }
 
-let dbType: string
+// Default to Postgres to allow for migrations to run
+let dbType: string = "postgres"
 export function resolveDbType(pgSqlType: ColumnType): ColumnType {
   if (!dbType) {
     const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
