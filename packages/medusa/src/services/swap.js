@@ -314,6 +314,24 @@ class SwapService extends BaseService {
         )
       }
 
+      for (const item of returnItems) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order"],
+        })
+        console.log(line)
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a swap on a canceled item.`
+          )
+        }
+      }
+
       const newItems = await Promise.all(
         additionalItems.map(({ variant_id, quantity }) => {
           return this.lineItemService_.generate(
@@ -363,6 +381,13 @@ class SwapService extends BaseService {
       const swap = await this.retrieve(swapId, {
         relations: ["payment", "order", "order.payments"],
       })
+
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled swap cannot be processed"
+        )
+      }
 
       if (!swap.confirmed_at) {
         throw new MedusaError(
@@ -515,6 +540,13 @@ class SwapService extends BaseService {
         ],
       })
 
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled swap cannot be used to create a cart"
+        )
+      }
+
       if (swap.cart_id) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
@@ -625,6 +657,13 @@ class SwapService extends BaseService {
         return swap
       }
 
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cart related to canceled swap cannot be completed"
+        )
+      }
+
       const cart = swap.cart
 
       const items = swap.cart.items
@@ -716,6 +755,13 @@ class SwapService extends BaseService {
     return this.atomicPhase_(async manager => {
       const swap = await this.retrieve(swapId, { relations: ["return_order"] })
 
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled swap cannot be registered as received"
+        )
+      }
+
       const returnId = swap.return_order && swap.return_order.id
       if (!returnId) {
         throw new MedusaError(
@@ -736,6 +782,64 @@ class SwapService extends BaseService {
       }
 
       return this.retrieve(swapId)
+    })
+  }
+
+  /**
+   * Cancels a given swap if possible. A swap can only be canceled if all
+   * related returns, fulfillments, and payments have been canceled. If a swap
+   * is associated with a refund, it cannot be canceled.
+   * @param {string} swapId - the id of the swap to cancel.
+   * @returns {Promise<Swap>} the canceled swap.
+   */
+  async cancel(swapId) {
+    return this.atomicPhase_(async manager => {
+      const swap = await this.retrieve(swapId, {
+        relations: ["payment", "fulfillments", "return_order"],
+      })
+
+      if (
+        swap.payment_status === "difference_refunded" ||
+        swap.payment_status === "partially_refunded" ||
+        swap.payment_status === "refunded"
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Swap with a refund cannot be canceled"
+        )
+      }
+
+      if (swap.fulfillments) {
+        for (const f of swap.fulfillments) {
+          if (!f.canceled_at) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "All fulfillments must be canceled before the swap can be canceled"
+            )
+          }
+        }
+      }
+
+      if (swap.return_order && swap.return_order.status !== "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Return must be canceled before the swap can be canceled"
+        )
+      }
+
+      swap.payment_status = "canceled"
+      swap.fulfillment_status = "canceled"
+      swap.canceled_at = new Date()
+
+      if (swap.payment) {
+        await this.paymentProviderService_
+          .withTransaction(manager)
+          .cancelPayment(swap.payment)
+      }
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const result = await swapRepo.save(swap)
+      return result
     })
   }
 
@@ -770,7 +874,17 @@ class SwapService extends BaseService {
       })
       const order = swap.order
 
-      if (swap.fulfillment_status !== "not_fulfilled") {
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled swap cannot be fulfilled"
+        )
+      }
+
+      if (
+        swap.fulfillment_status !== "not_fulfilled" &&
+        swap.fulfillment_status !== "canceled"
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "The swap was already fulfilled"
@@ -862,6 +976,34 @@ class SwapService extends BaseService {
   }
 
   /**
+   * Cancels a fulfillment (if related to a swap)
+   * @param {string} fulfillmentId - the ID of the fulfillment to cancel
+   * @returns updated swap
+   */
+  async cancelFulfillment(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const canceled = await this.fulfillmentService_
+        .withTransaction(manager)
+        .cancelFulfillment(fulfillmentId)
+
+      if (!canceled.swap_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Fufillment not related to a swap`
+        )
+      }
+
+      const swap = await this.retrieve(canceled.swap_id)
+
+      swap.fulfillment_status = "canceled"
+
+      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const updated = await swapRepo.save(swap)
+      return updated
+    })
+  }
+
+  /**
    * Marks a fulfillment as shipped and attaches tracking numbers.
    * @param {string} swapId - the id of the swap that has been shipped.
    * @param {string} fulfillmentId - the id of the specific fulfillment that
@@ -887,6 +1029,12 @@ class SwapService extends BaseService {
         relations: ["additional_items"],
       })
 
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled swap cannot be fulfilled as shipped"
+        )
+      }
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : swap.no_notification
 
@@ -968,6 +1116,13 @@ class SwapService extends BaseService {
       const swap = await this.retrieve(id, {
         relations: ["return_order", "return_order.items"],
       })
+
+      if (swap.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled swap cannot be registered as received"
+        )
+      }
 
       if (swap.return_order.status !== "received") {
         throw new MedusaError(
