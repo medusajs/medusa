@@ -221,7 +221,7 @@ describe("economic service tests", () => {
       }
       const result = await service.createInvoiceFromOrder(order)
 
-      expect(result).toMatchSnapshot({
+      expect(result).toEqual({
         date: expect.any(String),
         currency: "DKK",
         paymentTerms: {
