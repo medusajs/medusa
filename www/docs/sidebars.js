@@ -43,10 +43,10 @@ module.exports = {
           type: "doc",
           id: "tutorial/adding-custom-functionality",
         },
-        {
-          type: "doc",
-          id: "tutorial/linking-your-local-project-with-medusa-cloud",
-        },
+        // {
+        //   type: "doc",
+        //   id: "tutorial/linking-your-local-project-with-medusa-cloud",
+        // },
       ],
     },
     {
