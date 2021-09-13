@@ -3,7 +3,7 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default (app) => {
+export default app => {
   app.use("/swaps", route)
 
   route.get(
@@ -19,6 +19,7 @@ export const defaultRelations = [
   "order",
   "additional_items",
   "return_order",
+  "return_order.shipping_method",
   "fulfillments",
   "payment",
   "shipping_address",
