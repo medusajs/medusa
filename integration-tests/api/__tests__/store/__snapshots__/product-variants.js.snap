@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/store/variants /test-variant 1`] = `
+Object {
+  "variant": Object {
+    "allow_backorder": false,
+    "barcode": "test-barcode",
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "ean": "test-ean",
+    "height": null,
+    "hs_code": null,
+    "id": "test-variant",
+    "inventory_quantity": 10,
+    "length": null,
+    "manage_inventory": true,
+    "material": null,
+    "metadata": null,
+    "mid_code": null,
+    "origin_country": null,
+    "prices": Array [
+      Object {
+        "amount": 100,
+        "created_at": Any<String>,
+        "currency_code": "usd",
+        "deleted_at": null,
+        "id": "test-price",
+        "region_id": null,
+        "sale_amount": null,
+        "updated_at": Any<String>,
+        "variant_id": "test-variant",
+      },
+    ],
+    "product": Any<Object>,
+    "product_id": "test-product",
+    "sku": "test-sku",
+    "title": "Test variant",
+    "upc": "test-upc",
+    "updated_at": Any<String>,
+    "weight": null,
+    "width": null,
+  },
+}
+`;
+
+exports[`/store/variants includes default relations 1`] = `
+Object {
+  "variants": Array [
+    Object {
+      "allow_backorder": false,
+      "barcode": "test-barcode",
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "ean": "test-ean",
+      "height": null,
+      "hs_code": null,
+      "id": "test-variant",
+      "inventory_quantity": 10,
+      "length": null,
+      "manage_inventory": true,
+      "material": null,
+      "metadata": null,
+      "mid_code": null,
+      "origin_country": null,
+      "prices": Array [
+        Object {
+          "amount": 100,
+          "created_at": Any<String>,
+          "currency_code": "usd",
+          "deleted_at": null,
+          "id": "test-price",
+          "region_id": null,
+          "sale_amount": null,
+          "updated_at": Any<String>,
+          "variant_id": "test-variant",
+        },
+      ],
+      "product": Any<Object>,
+      "product_id": "test-product",
+      "sku": "test-sku",
+      "title": "Test variant",
+      "upc": "test-upc",
+      "updated_at": Any<String>,
+      "weight": null,
+      "width": null,
+    },
+  ],
+}
+`;
