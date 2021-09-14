@@ -899,7 +899,7 @@ describe("/admin/orders", () => {
       ])
     })
 
-    it("increases inventory_quantity when return is received and flag set", async () => {
+    it("increases inventory_quantity when return is received and flag is set", async () => {
       const api = useApi()
 
       const returned = await api.post(
