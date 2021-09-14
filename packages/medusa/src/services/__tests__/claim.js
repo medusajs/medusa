@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ClaimService from "../claim"
 import { InventoryServiceMock } from "../__mocks__/inventory"
@@ -68,6 +67,7 @@ describe("ClaimService", () => {
 
     const lineItemService = {
       generate: jest.fn((d, _, q) => ({ variant_id: d, quantity: q })),
+      retrieve: () => Promise.resolve({}),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -338,6 +338,7 @@ describe("ClaimService", () => {
 
     const lineItemService = {
       update: jest.fn(),
+      retrieve: () => Promise.resolve({}),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -407,6 +408,16 @@ describe("ClaimService", () => {
       ).rejects.toThrow(`Cannot fulfill a claim without a shipping method.`)
     })
 
+    it("fails if claim is canceled", async () => {
+      claimRepo.setFindOne(() =>
+        Promise.resolve({ ...claim, canceled_at: new Date() })
+      )
+
+      await expect(
+        claimService.createFulfillment("claim_id", {})
+      ).rejects.toThrow("Canceled claim cannot be fulfilled")
+    })
+
     it("fails if already fulfilled", async () => {
       claimRepo.setFindOne(() =>
         Promise.resolve({ ...claim, fulfillment_status: "fulfilled" })
@@ -423,6 +434,76 @@ describe("ClaimService", () => {
       await expect(
         claimService.createFulfillment("claim_id", { meta: "data" })
       ).rejects.toThrow(`Claims with the type "refund" can not be fulfilled`)
+    })
+  })
+
+  describe("cancelFulfillment", () => {
+    const claimRepo = MockRepository({
+      findOne: () => Promise.resolve({}),
+      save: f => Promise.resolve(f),
+    })
+
+    const fulfillmentService = {
+      cancelFulfillment: jest.fn().mockImplementation(f => {
+        switch (f) {
+          case IdMap.getId("no-claim"):
+            return Promise.resolve({})
+          default:
+            return Promise.resolve({
+              claim_order_id: IdMap.getId("claim-id"),
+            })
+        }
+      }),
+      withTransaction: function() {
+        return this
+      },
+    }
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+      fulfillmentService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully cancels fulfillment and corrects claim status", async () => {
+      await claimService.cancelFulfillment(IdMap.getId("claim"))
+
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith(
+        IdMap.getId("claim")
+      )
+
+      expect(claimRepo.save).toHaveBeenCalledTimes(1)
+      expect(claimRepo.save).toHaveBeenCalledWith({
+        fulfillment_status: "canceled",
+      })
+    })
+
+    it("fails to cancel fulfillment when not related to a claim", async () => {
+      await expect(
+        claimService.cancelFulfillment(IdMap.getId("no-claim"))
+      ).rejects.toThrow(`Fufillment not related to a claim`)
+    })
+  })
+
+  describe("processRefund", () => {
+    const claimRepo = MockRepository({
+      findOne: () => Promise.resolve({ canceled_at: new Date() }),
+    })
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+    })
+
+    it("fails when claim is canceled", async () => {
+      await expect(
+        claimService.processRefund(IdMap.getId("claim-id"))
+      ).rejects.toThrow("Canceled claim cannot be processed")
     })
   })
 
@@ -446,6 +527,7 @@ describe("ClaimService", () => {
 
     const lineItemService = {
       update: jest.fn(),
+      retrieve: () => Promise.resolve({}),
       withTransaction: function() {
         withTransactionMock("lineItem")
         return this
@@ -507,6 +589,35 @@ describe("ClaimService", () => {
         shipped_quantity: 1,
       })
     })
+
+    it("fails if claim is canceled", async () => {
+      claimRepo.setFindOne(() => Promise.resolve({ canceled_at: new Date() }))
+
+      await expect(
+        claimService.createShipment("claim", "ful_123", ["track1234"], {})
+      ).rejects.toThrow("Canceled claim cannot be fulfilled as shipped")
+    })
+  })
+
+  describe("update", () => {
+    const claimRepo = MockRepository({
+      findOne: () => Promise.resolve({ canceled_at: new Date() }),
+    })
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("fails when claim is canceled", async () => {
+      await expect(
+        claimService.update(IdMap.getId("claim-id"))
+      ).rejects.toThrow("Canceled claim cannot be updated")
+    })
   })
 
   describe("cancel", () => {
@@ -526,7 +637,31 @@ describe("ClaimService", () => {
       },
     }
 
-    const claimRepo = MockRepository()
+    const now = new Date()
+    const ret_order = { id: "ret", status: "canceled" }
+    const fulfillment = { id: "ful_21", canceled_at: now }
+
+    const claimRepo = MockRepository({
+      findOne: q => {
+        const claim = {
+          return_order: { ...ret_order },
+          fulfillments: [{ ...fulfillment }],
+        }
+        switch (q.where.id) {
+          case IdMap.getId("fail-fulfillment"):
+            claim.fulfillments[0].canceled_at = undefined
+            return Promise.resolve(claim)
+          case IdMap.getId("fail-return"):
+            claim.return_order.status = "requested"
+            return Promise.resolve(claim)
+          case IdMap.getId("fail-refund"):
+            claim.refund_amount = 123
+            return Promise.resolve(claim)
+          default:
+            return Promise.resolve(claim)
+        }
+      },
+    })
 
     const claimService = new ClaimService({
       manager: MockManager,
@@ -540,62 +675,26 @@ describe("ClaimService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls fulfillment service", async () => {
-      claimRepo.setFindOne(() =>
-        Promise.resolve({
-          return_order: {
-            id: "ret",
-            status: "requested",
-          },
-          fulfillments: [
-            {
-              id: "ful_21",
-            },
-          ],
-        })
-      )
-
-      await claimService.cancel("claim")
-
-      expect(withTransactionMock).toHaveBeenCalledTimes(3)
-      expect(withTransactionMock).toHaveBeenCalledWith("fulfillment")
-      expect(withTransactionMock).toHaveBeenCalledWith("return")
-      expect(withTransactionMock).toHaveBeenCalledWith("eventBus")
-
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.cancelFulfillment).toHaveBeenCalledWith({
-        id: "ful_21",
-      })
-
-      expect(returnService.cancel).toHaveBeenCalledTimes(1)
-      expect(returnService.cancel).toHaveBeenCalledWith("ret")
-    })
-
-    it("fails if fulfillment is shipped", async () => {
-      claimRepo.setFindOne(() =>
-        Promise.resolve({
-          fulfillment_status: "shipped",
-        })
-      )
-
-      await expect(claimService.cancel("id")).rejects.toThrow(
-        "Cannot cancel a claim that has been shipped."
+    it("fails if fulfillment isn't canceled", async () => {
+      await expect(
+        claimService.cancel(IdMap.getId("fail-fulfillment"))
+      ).rejects.toThrow(
+        "All fulfillments must be canceled before the claim can be canceled"
       )
     })
 
-    it("fails if return is received", async () => {
-      claimRepo.setFindOne(() =>
-        Promise.resolve({
-          return_order: {
-            id: "ret",
-            status: "received",
-          },
-        })
+    it("fails if return isn't canceled", async () => {
+      await expect(
+        claimService.cancel(IdMap.getId("fail-return"))
+      ).rejects.toThrow(
+        "Return must be canceled before the claim can be canceled"
       )
+    })
 
-      await expect(claimService.cancel("id")).rejects.toThrow(
-        "Cannot cancel a claim that has a received return."
-      )
+    it("fails if associated with a refund", async () => {
+      await expect(
+        claimService.cancel(IdMap.getId("fail-refund"))
+      ).rejects.toThrow("Claim with a refund cannot be canceled")
     })
   })
 })

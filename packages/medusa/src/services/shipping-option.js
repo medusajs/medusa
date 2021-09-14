@@ -92,6 +92,10 @@ class ShippingOptionService extends BaseService {
       where: { id: requirement.id },
     })
 
+    if (!existingReq && requirement.id) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "ID does not exist")
+    }
+
     let req
     if (existingReq) {
       req = await reqRepo.save({
@@ -99,10 +103,12 @@ class ShippingOptionService extends BaseService {
         ...requirement,
       })
     } else {
-      req = await reqRepo.create({
+      const created = reqRepo.create({
         shipping_option_id: optionId,
         ...requirement,
       })
+
+      req = await reqRepo.save(created)
     }
 
     return req
@@ -447,9 +453,22 @@ class ShippingOptionService extends BaseService {
             )
           }
 
+          if (
+            acc.find(
+              raw =>
+                (raw.type === "max_subtotal" &&
+                  validated.amount > raw.amount) ||
+                (raw.type === "min_subtotal" && validated.amount < raw.amount)
+            )
+          ) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Max. subtotal must be greater than Min. subtotal"
+            )
+          }
+
           acc.push(validated)
         }
-        option.requirements = acc
       }
 
       if ("price_type" in update) {
