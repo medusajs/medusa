@@ -26,7 +26,7 @@
  *                     description: The data needed for the Payment Provider to use the saved payment method.
  */
 export default async (req, res) => {
-  const { id } = req.params
+  const id = req.user.customer_id
   try {
     const storeService = req.scope.resolve("storeService")
     const paymentProviderService = req.scope.resolve("paymentProviderService")

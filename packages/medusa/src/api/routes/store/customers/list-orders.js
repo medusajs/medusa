@@ -28,7 +28,7 @@ import {
  *                 $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
-  const { id } = req.params
+  const id = req.user.customer_id
   try {
     const orderService = req.scope.resolve("orderService")
 

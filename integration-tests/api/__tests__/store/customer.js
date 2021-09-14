@@ -76,7 +76,7 @@ describe("/store/customers", () => {
     });
   });
 
-  describe("POST /store/customers/:id", () => {
+  describe("POST /store/customers/me", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager;
       await manager.insert(Address, {
