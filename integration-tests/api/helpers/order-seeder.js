@@ -9,6 +9,7 @@ const {
   Product,
   ProductVariant,
   Region,
+  Payment,
   Order,
   Swap,
 } = require("@medusajs/medusa");
@@ -182,5 +183,141 @@ module.exports = async (connection, data = {}) => {
     order_id: "test-order",
     price: 1000,
     data: {},
+  });
+
+  const orderTemplate = () => {
+    return {
+      customer_id: "test-customer",
+      email: "test@gmail.com",
+      payment_status: "not_paid",
+      fulfillment_status: "not_fulfilled",
+      region_id: "test-region",
+      currency_code: "usd",
+      tax_rate: 0,
+      ...data,
+    };
+  };
+
+  const paymentTemplate = () => {
+    return {
+      amount: 10000,
+      currency_code: "usd",
+      provider_id: "test-pay",
+      data: {},
+    };
+  };
+
+  const orderWithClaim = manager.create(Order, {
+    id: "test-order-w-c",
+    claims: [
+      {
+        type: "replace",
+        id: "claim-1",
+        payment_status: "na",
+        fulfillment_status: "not_fulfilled",
+        payment_provider: "test-pay",
+      },
+    ],
+    ...orderTemplate(),
+  });
+
+  await manager.save(orderWithClaim);
+
+  await manager.insert(Payment, {
+    order_id: "test-order-w-c",
+    id: "o-pay1",
+    ...paymentTemplate(),
+  });
+
+  const orderWithSwap = manager.create(Order, {
+    id: "test-order-w-s",
+    ...orderTemplate(),
+  });
+
+  await manager.save(orderWithSwap);
+
+  await manager.insert(Payment, {
+    order_id: "test-order-w-s",
+    id: "o-pay2",
+    ...paymentTemplate(),
+  });
+
+  const swap1 = manager.create(Swap, {
+    id: "swap-1",
+    order_id: "test-order-w-s",
+    fulfillment_status: "not_fulfilled",
+    payment_status: "not_paid",
+  });
+
+  const pay1 = manager.create(Payment, {
+    id: "pay1",
+    ...paymentTemplate(),
+  });
+
+  swap1.payment = pay1;
+
+  const swap2 = manager.create(Swap, {
+    id: "swap-2",
+    order_id: "test-order-w-s",
+    fulfillment_status: "not_fulfilled",
+    payment_status: "not_paid",
+  });
+
+  const pay2 = manager.create(Payment, {
+    id: "pay2",
+    ...paymentTemplate(),
+  });
+
+  swap2.payment = pay2;
+
+  await manager.save(swap1);
+  await manager.save(swap2);
+
+  const orderWithFulfillment = manager.create(Order, {
+    id: "test-order-w-f",
+    fulfillments: [
+      {
+        id: "fulfillment-on-order-1",
+        data: {},
+        provider_id: "test-ful",
+      },
+      {
+        id: "fulfillment-on-order-2",
+        data: {},
+        provider_id: "test-ful",
+      },
+    ],
+    ...orderTemplate(),
+  });
+
+  await manager.save(orderWithFulfillment);
+
+  await manager.insert(Payment, {
+    order_id: "test-order-w-f",
+    id: "o-pay3",
+    ...paymentTemplate(),
+  });
+
+  const orderWithReturn = manager.create(Order, {
+    id: "test-order-w-r",
+    returns: [
+      {
+        id: "return-on-order-1",
+        refund_amount: 0,
+      },
+      {
+        id: "return-on-order-2",
+        refund_amount: 0,
+      },
+    ],
+    ...orderTemplate(),
+  });
+
+  await manager.save(orderWithReturn);
+
+  await manager.insert(Payment, {
+    order_id: "test-order-w-r",
+    id: "o-pay4",
+    ...paymentTemplate(),
   });
 };
