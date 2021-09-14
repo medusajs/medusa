@@ -63,6 +63,30 @@ export default app => {
   )
 
   /**
+   * Cancel a fulfillment related to an order.
+   */
+  route.post(
+    "/:id/fulfillments/:fulfillment_id/cancel",
+    middlewares.wrap(require("./cancel-fulfillment").default)
+  )
+
+  /**
+   * Cancel a fulfillment related to a swap.
+   */
+  route.post(
+    "/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
+    middlewares.wrap(require("./cancel-fulfillment-swap").default)
+  )
+
+  /**
+   * Cancel a fulfillment related to a claim.
+   */
+  route.post(
+    "/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
+    middlewares.wrap(require("./cancel-fulfillment-claim").default)
+  )
+
+  /**
    * Create a shipment.
    */
   route.post(
@@ -105,6 +129,14 @@ export default app => {
   route.post("/:id/swaps", middlewares.wrap(require("./create-swap").default))
 
   /**
+   * Cancels a swap.
+   */
+  route.post(
+    "/:id/swaps/:swap_id/cancel",
+    middlewares.wrap(require("./cancel-swap").default)
+  )
+
+  /**
    * Receives the inventory to return from a swap
    */
   route.post(
@@ -140,6 +172,14 @@ export default app => {
    * Creates a claim
    */
   route.post("/:id/claims", middlewares.wrap(require("./create-claim").default))
+
+  /**
+   * Cancels a claim
+   */
+  route.post(
+    "/:id/claims/:claim_id/cancel",
+    middlewares.wrap(require("./cancel-claim").default)
+  )
 
   /**
    * Updates a claim
@@ -193,6 +233,7 @@ export const defaultRelations = [
   "gift_card_transactions",
   "claims",
   "claims.return_order",
+  "claims.return_order.shipping_method",
   "claims.shipping_methods",
   "claims.shipping_address",
   "claims.additional_items",

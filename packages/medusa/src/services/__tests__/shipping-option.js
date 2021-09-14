@@ -84,14 +84,11 @@ describe("ShippingOptionService", () => {
       await optionService.update(IdMap.getId("option"), { requirements })
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
-      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
-        requirements: [
-          {
-            shipping_option_id: IdMap.getId("option"),
-            type: "min_subtotal",
-            amount: 1,
-          },
-        ],
+      expect(shippingOptionRequirementRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRequirementRepository.save).toHaveBeenCalledWith({
+        shipping_option_id: IdMap.getId("option"),
+        type: "min_subtotal",
+        amount: 1,
       })
     })
 

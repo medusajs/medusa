@@ -9,6 +9,7 @@ const {
   Product,
   ProductVariant,
   Region,
+  Payment,
   Order,
   Swap,
   Cart,
@@ -43,7 +44,7 @@ module.exports = async (connection, data = {}) => {
         amount: 10000,
         currency_code: "usd",
         amount_refunded: 0,
-        provider_id: "test",
+        provider_id: "test-pay",
         data: {},
       },
     ],
@@ -80,7 +81,7 @@ module.exports = async (connection, data = {}) => {
       amount: 10000,
       currency_code: "usd",
       amount_refunded: 0,
-      provider_id: "test",
+      provider_id: "test-pay",
       data: {},
     },
     additional_items: [
@@ -100,6 +101,70 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(swap);
 
+  const cartTemplate = async (cartId) => {
+    const cart = manager.create(Cart, {
+      id: cartId,
+      customer_id: "test-customer",
+      email: "test-customer@email.com",
+      shipping_address_id: "test-shipping-address",
+      billing_address_id: "test-billing-address",
+      region_id: "test-region",
+      type: "swap",
+      metadata: {},
+      ...data,
+    });
+
+    await manager.save(cart);
+  };
+
+  const swapTemplate = async (cartId) => {
+    await cartTemplate(cartId);
+    return {
+      order_id: orderWithSwap.id,
+      fulfillment_status: "fulfilled",
+      payment_status: "not_paid",
+      cart_id: cartId,
+      payment: {
+        amount: 5000,
+        currency_code: "usd",
+        amount_refunded: 0,
+        provider_id: "test-pay",
+        data: {},
+      },
+      ...data,
+    };
+  };
+
+  const swapWithFulfillments = manager.create(Swap, {
+    id: "swap-w-f",
+    fulfillments: [
+      {
+        id: "fulfillment-1",
+        data: {},
+        provider_id: "test-ful",
+      },
+      {
+        id: "fulfillment-2",
+        data: {},
+        provider_id: "test-ful",
+      },
+    ],
+    ...(await swapTemplate("sc-w-f")),
+  });
+
+  await manager.save(swapWithFulfillments);
+
+  const swapWithReturn = manager.create(Swap, {
+    id: "swap-w-r",
+    return_order: {
+      id: "return-id",
+      status: "requested",
+      refund_amount: 0,
+    },
+    ...(await swapTemplate("sc-w-r")),
+  });
+
+  await manager.save(swapWithReturn);
   const li = manager.create(LineItem, {
     id: "return-item-1",
     fulfilled_quantity: 1,
@@ -175,7 +240,7 @@ module.exports = async (connection, data = {}) => {
       amount: 10000,
       currency_code: "usd",
       amount_refunded: 0,
-      provider_id: "test",
+      provider_id: "test-pay",
       data: {},
     },
     additional_items: [
