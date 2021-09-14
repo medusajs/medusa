@@ -909,30 +909,6 @@ class CartService extends BaseService {
       )
     }
 
-    if (rule.allocation === "item") {
-      const products = await Promise.all(
-        cart.items.map(
-          async i => await this.productVariantService_.retrieve(i.variant_id)
-        )
-      )
-
-      const res = _.differenceWith(
-        rule.valid_for,
-        products,
-        ({ id }, { product_id }) => {
-          console.log(">>>", id, product_id)
-          return product_id !== id
-        }
-      )
-
-      if (res.length === 0) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "The discount is not applicable on the content of the cart"
-        )
-      }
-    }
-
     // if discount is already there, we simply resolve
     if (cart.discounts.find(({ id }) => id === discount.id)) {
       return Promise.resolve()
