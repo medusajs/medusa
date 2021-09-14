@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.26](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.25...medusa-plugin-contentful@1.1.26) (2021-09-14)
+
+
+### Bug Fixes
+
+* adds transform medusa ids ([#385](https://github.com/medusajs/medusa/issues/385)) ([0812aca](https://github.com/medusajs/medusa/commit/0812acaf0db19664028cabf08ffd11d67de42f3a))
+* typo ([5d5c659](https://github.com/medusajs/medusa/commit/5d5c659f8ae9bd96cc0cc565167f3d926e8253ff))
+
+
+
+
+
 ## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.24...medusa-plugin-contentful@1.1.25) (2021-08-05)
 
 **Note:** Version bump only for package medusa-plugin-contentful
