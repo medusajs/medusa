@@ -26,6 +26,9 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *           refund:
  *             description: The amount to refund.
  *             type: integer
+ *           write_off_inventory:
+ *             description: A flag to describe whether or not the received return impacts the inventory.
+ *             type: boolean
  * tags:
  *   - Return
  * responses:
@@ -51,6 +54,7 @@ export default async (req, res) => {
     refund: Validator.number()
       .integer()
       .optional(),
+    write_off_inventory: Validator.boolean().optional(),
   })
 
   const { value, error } = schema.validate(req.body)

@@ -264,7 +264,7 @@ describe("ReturnService", () => {
       await returnService.receive(
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
-        1000
+        { refundAmount: 1000, writeOffInventory: true }
       )
 
       expect(returnRepository.save).toHaveBeenCalledTimes(1)
@@ -303,6 +303,17 @@ describe("ReturnService", () => {
       )
     })
 
+    it("does not update inventory, when writeOffInventory is not set", async () => {
+      await returnService.receive(
+        IdMap.getId("test-return"),
+        [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
+        { refundAmount: 1000 }
+      )
+      expect(inventoryService.adjustInventory).not.toHaveBeenCalled()
+    })
+
+    await returnRepository.save(updateObj)
+
     it("successfully receives a return with requires_action status", async () => {
       await returnService.receive(
         IdMap.getId("test-return-2"),
@@ -310,7 +321,7 @@ describe("ReturnService", () => {
           { item_id: IdMap.getId("test-line"), quantity: 10 },
           { item_id: IdMap.getId("test-line-2"), quantity: 10 },
         ],
-        1000
+        { refundAmount: 1000, writeOffInventory: true }
       )
 
       expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)

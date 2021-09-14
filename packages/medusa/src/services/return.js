@@ -473,13 +473,25 @@ class ReturnService extends BaseService {
    * mismatches.
    * @param {string} orderId - the order to return.
    * @param {string[]} lineItems - the line items to return
+   * @param {object} config - can contain refundAmount, allowMismatch, and
+   * writeOffInventory.
    * @return {Promise} the result of the update operation
    */
-  async receive(returnId, receivedItems, refundAmount, allowMismatch = false) {
+  async receive(
+    returnId,
+    receivedItems,
+    config = {
+      refundAmount: undefined,
+      allowMismatch: false,
+      writeOffInventory: false,
+    }
+  ) {
     return this.atomicPhase_(async manager => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
       )
+
+      const { refundAmount, allowMismatch, writeOffInventory } = config
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -580,12 +592,14 @@ class ReturnService extends BaseService {
         })
       }
 
-      for (const line of newLines) {
-        const orderItem = order.items.find(i => i.id === line.item_id)
-        if (orderItem) {
-          await this.inventoryService_
-            .withTransaction(manager)
-            .adjustInventory(orderItem.variant_id, line.received_quantity)
+      if (writeOffInventory) {
+        for (const line of newLines) {
+          const orderItem = order.items.find(i => i.id === line.item_id)
+          if (orderItem) {
+            await this.inventoryService_
+              .withTransaction(manager)
+              .adjustInventory(orderItem.variant_id, line.received_quantity)
+          }
         }
       }
 
