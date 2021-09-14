@@ -1,7 +1,7 @@
 {
   "name": "medusa-dev-cli",
   "description": "CLI helpers for contributors working on Medusa",
-  "version": "0.0.19-next.51+41a54254",
+  "version": "0.0.19",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "bin": {
     "medusa-dev": "./dist/index.js"
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
-    "babel-preset-medusa-package": "^1.1.14-next.51+41a54254",
+    "babel-preset-medusa-package": "^1.1.14",
     "cross-env": "^7.0.3"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",

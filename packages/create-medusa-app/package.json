@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "0.0.1-next.1167+41a54254",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "bin": "cli.js",
   "license": "MIT",

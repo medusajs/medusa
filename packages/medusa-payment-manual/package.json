@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-manual",
-  "version": "1.0.3-next.39+41a54254",
+  "version": "1.0.3",
   "description": "A dummy payment provider to be used for testing or manual payments",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.1.24-next.39+41a54254"
+    "medusa-test-utils": "^1.1.24"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__",
