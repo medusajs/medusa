@@ -1,6 +1,6 @@
 {
   "name": "medusa-telemetry",
-  "version": "0.0.3",
+  "version": "0.0.4-next.31+41a54254",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -17,7 +17,7 @@
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/preset-typescript": "^7.15.0",
-    "babel-preset-medusa-package": "^1.1.13",
+    "babel-preset-medusa-package": "^1.1.14-next.51+41a54254",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
@@ -45,5 +45,5 @@
     "remove-trailing-slash": "^0.1.1",
     "uuid": "^8.3.2"
   },
-  "gitHead": "cfe19f7f9d3bb17425348362b148a0b4b7a649ef"
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }
