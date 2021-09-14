@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-import { Brackets } from "typeorm"
+import { Brackets, ILike } from "typeorm"
 
 /**
  * Handles draft orders
@@ -186,17 +186,10 @@ class DraftOrderService extends BaseService {
       }
 
       query.where = qb => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets(qb => {
-            qb.where(`cart.email ILIKE :q`, {
-              q: `%${q}%`,
-            }).orWhere(`draft_order.display_id::varchar(255) ILIKE :dId`, {
-              dId: `${q}`,
-            })
-          })
-        )
+        qb.where(where).andWhere([
+          { cart: { email: ILike(`%${q}%`) } },
+          { display_id: ILike(`%${q}%`) },
+        ])
       }
     }
 

@@ -2,6 +2,7 @@ import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
+import { Product } from "../models/product"
 
 /**
  * Provides layer to manipulate products.

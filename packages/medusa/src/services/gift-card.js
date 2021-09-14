@@ -1,7 +1,7 @@
 import _ from "lodash"
 import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
+import { Brackets, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 /**
@@ -101,13 +101,10 @@ class GiftCardService extends BaseService {
         .leftJoinAndSelect("gift_card.order", "order")
         .select(["gift_card.id"])
         .where(where)
-        .andWhere(
-          new Brackets(qb => {
-            return qb
-              .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
-          })
-        )
+        .andWhere([
+          { code: ILike(`%${q}%`) },
+          { order: { display_id: ILike(`%${q}%`) } },
+        ])
         .getMany()
 
       return giftCardRepo.findWithRelations(
