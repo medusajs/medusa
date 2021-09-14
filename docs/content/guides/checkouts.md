@@ -6,7 +6,7 @@ The purpose of this guide is to describe a checkout flow in Medusa. We assume th
 - **Cart**: An object containing all the information required in the checkout flow. We add items, discounts, shipping methods, payment sessions, customers, and potentially more to this object as we go through the checkout. Upon completion, we use the cart to create the order.
 - **LineItem**: An object being added to the `items` of the cart with a quantity. Contains product or custom information.
 - **PaymentSession**: An object representing a payment session for all payment providers (Stripe, Adyen, Paypal, etc.), that are installed in your Medusa project. Upon completion, we use the session to create a payment. In the `data` property of the session, we hold provider specific information.
-- **ShippingMethod**: An object describing how and with whom the order will be sent. In the `data` property of the session, we hold provider specific information.
+- **ShippingMethod**: An object describing how and with whom the order will be sent. In the `data` property of the method, we hold provider specific information.
 - **ShippingOption**: An object representing a way for the items to be sent. Upon selecting a shipping option for the cart, the ShippingMethod will be created.
 
 ## Checkout flow
@@ -19,7 +19,7 @@ const { cart } = await medusa.carts.createPaymentSessions("cart_id")
 ```
 This will create sessions for all the providers installed in your project and attach them to your cart. In the case of Stripe, the `data` of a session would contain a [Stripe PaymentIntent](https://stripe.com/docs/api/payment_intents). 
 #### Adding customer information
-After initializing the checkout flow, you would typically have one big step or several smaller steps for gatherig user information; email, address, country, and more. All is added to the cart.
+After initializing the checkout flow, you would typically have one big step or several smaller steps for gathering user information; email, address, country, and more. All is added to the cart.
 ```javascript=
 const { cart } = await medusa.carts.update("cart_id", {
     email: "lebron@james.com",
