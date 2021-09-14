@@ -453,6 +453,7 @@ describe("OrderService", () => {
         total: 100,
       }
       orderService.cartService_.retrieve = () => Promise.resolve(cart)
+      orderService.cartService_.update = () => Promise.resolve()
       const res = orderService.createFromCart(cart)
       await expect(res).rejects.toThrow(
         "Variant with id: variant-1 does not have the required inventory"
