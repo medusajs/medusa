@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "0.0.0",
+  "version": "0.0.1-next.1167+41a54254",
   "main": "dist/index.js",
   "bin": "cli.js",
   "license": "MIT",
@@ -16,7 +16,6 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@ascorbic/worker-threads-shim": "^1.0.0",
     "@babel/runtime": "^7.15.4",
@@ -56,5 +55,6 @@
   "author": "Sebastian Rindom <seb@medusa-commerce.com>",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }

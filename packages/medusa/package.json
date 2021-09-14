@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.40",
+  "version": "1.1.39-next.29+41a54254",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": {
@@ -20,11 +20,11 @@
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/preset-typescript": "^7.13.0",
-    "babel-preset-medusa-package": "^1.1.13",
+    "babel-preset-medusa-package": "^1.1.14-next.51+41a54254",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-interfaces": "^1.1.21",
+    "medusa-interfaces": "^1.1.22-next.39+41a54254",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "sqlite3": "^5.0.2",
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
-    "@medusajs/medusa-cli": "^1.1.16",
+    "@medusajs/medusa-cli": "^1.1.17-next.31+41a54254",
     "@types/lodash": "^4.14.168",
     "awilix": "^4.2.3",
     "body-parser": "^1.19.0",
@@ -66,8 +66,8 @@
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.1.20",
-    "medusa-test-utils": "^1.1.23",
+    "medusa-core-utils": "^1.1.21-next.39+41a54254",
+    "medusa-test-utils": "^1.1.24-next.39+41a54254",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
@@ -86,5 +86,5 @@
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "cb44b73a4ec0319c77058816022367183f28857c"
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }
