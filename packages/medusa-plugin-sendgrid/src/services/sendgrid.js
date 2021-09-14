@@ -609,8 +609,6 @@ class SendGridService extends NotificationService {
         "discounts",
         "discounts.rule",
         "discounts.rule.valid_for",
-        "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_address",
         "swaps",
         "swaps.additional_items",
@@ -699,8 +697,6 @@ class SendGridService extends NotificationService {
       relations: [
         "items",
         "discounts",
-        "discounts.rule",
-        "discounts.rule.valid_for",
         "discounts.rule",
         "discounts.rule.valid_for",
         "swaps",
