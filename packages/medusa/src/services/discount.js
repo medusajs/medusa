@@ -296,6 +296,14 @@ class DiscountService extends BaseService {
         discount.rule = this.validateDiscountRule_(rule)
       }
 
+      if (rule?.valid_for) {
+        discount.rule.valid_for = await Promise.all(
+          rule.valid_for.map(id =>
+            this.productService_.withTransaction(manager).retrieve(id)
+          )
+        )
+      }
+
       for (const [key, value] of Object.entries(rest)) {
         discount[key] = value
       }
