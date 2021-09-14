@@ -312,8 +312,6 @@ describe("ReturnService", () => {
       expect(inventoryService.adjustInventory).not.toHaveBeenCalled()
     })
 
-    await returnRepository.save(updateObj)
-
     it("successfully receives a return with requires_action status", async () => {
       await returnService.receive(
         IdMap.getId("test-return-2"),

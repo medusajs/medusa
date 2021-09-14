@@ -43,6 +43,9 @@ import { defaultRelations, defaultFields } from "./"
  *           receive_now:
  *             description: A flag to indicate if the Return should be registerd as received immediately.
  *             type: boolean
+ *           write_off_inventory:
+ *             description: A flag to describe whether or not a recieve_now return should update the inventory.
+ *             type: boolean
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the requested Return.
  *             type: boolean
@@ -82,6 +85,7 @@ export default async (req, res) => {
       })
       .optional(),
     receive_now: Validator.boolean().default(false),
+    write_off_inventory: Validator.boolean().default(false),
     no_notification: Validator.boolean().optional(),
     refund: Validator.number()
       .integer()
@@ -216,7 +220,10 @@ export default async (req, res) => {
 
                 order = await returnService
                   .withTransaction(manager)
-                  .receive(ret.id, value.items, value.refund)
+                  .receive(ret.id, value.items, {
+                    refundAmount: value.refund,
+                    writeOffInventory: value.write_off_inventory,
+                  })
               }
 
               order = await orderService.withTransaction(manager).retrieve(id, {

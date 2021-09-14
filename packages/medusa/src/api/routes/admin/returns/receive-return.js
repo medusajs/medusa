@@ -54,7 +54,7 @@ export default async (req, res) => {
     refund: Validator.number()
       .integer()
       .optional(),
-    write_off_inventory: Validator.boolean().optional(),
+    write_off_inventory: Validator.boolean().default(false),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -79,7 +79,11 @@ export default async (req, res) => {
 
       receivedReturn = await returnService
         .withTransaction(manager)
-        .receive(id, value.items, refundAmount, true)
+        .receive(id, value.items, {
+          refundAmount,
+          allowMismatch: true,
+          writeOffInventory: value.write_off_inventory,
+        })
 
       if (receivedReturn.order_id) {
         await orderService

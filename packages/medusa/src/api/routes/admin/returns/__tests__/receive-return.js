@@ -38,8 +38,11 @@ describe("POST /admin/returns/:id/receive", () => {
       expect(ReturnService.receive).toHaveBeenCalledWith(
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test"), quantity: 2 }],
-        undefined,
-        true
+        {
+          allowMismatch: true,
+          refundAmount: undefined,
+          writeOffInventory: false,
+        }
       )
     })
 
