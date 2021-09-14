@@ -71,6 +71,20 @@ module.exports = {
             },
           ],
         },
+        {
+          type: "doc",
+          id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Guides",
+      items: [
+        {
+          type: "doc",
+          id: "guides/fulfillment-api",
+        },
       ],
     },
   ],

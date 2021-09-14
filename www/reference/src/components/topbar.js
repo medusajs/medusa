@@ -36,7 +36,7 @@ const Topbar = ({ data, api }) => {
           top: "0",
           left: "0",
           right: "0",
-          zIndex: "9999",
+          zIndex: "100",
           backgroundColor: "light",
         },
       }}
