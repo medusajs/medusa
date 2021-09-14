@@ -45,8 +45,12 @@ const replaceUrl = (item) => {
 }
 
 function Hit({ hit, children }) {
-  let url = replaceUrl(hit)
-  return <Link to={url}>{children}</Link>
+  if (hit.url.includes("/api/store") || hit.url.includes("/api/admin")) {
+    let url = replaceUrl(hit)
+    return <a href={url}>{children}</a>
+  }
+
+  return <Link to={hit.url}>{children}</Link>
 }
 
 function ResultsFooter({ state, onClose }) {
@@ -128,7 +132,9 @@ function DocSearch({ contextualSearch, ...props }) {
   const navigator = useRef({
     navigate({ item }) {
       let url = replaceUrl(item)
-      history.push(url)
+      //Need to type out the entire URL to prevent it from attempting to open the page
+      //as part of the docusaurus project. Which will fail.
+      window.location = `https://docs.medusa-commerce.com${url}`
     },
     navigateNewTab({ item }) {
       let url = replaceUrl(item)

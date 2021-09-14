@@ -19,7 +19,12 @@ export class ProductRepository extends Repository<Product> {
     }
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations = {}
+    if (entitiesIds.length === 0) {
+      // no need to continue
+      return []
+    }
+
+    const groupedRelations: { [toplevel: string]: string[] } = {}
     for (const rel of relations) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
@@ -30,17 +35,51 @@ export class ProductRepository extends Repository<Product> {
     }
 
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(([_, rels]) => {
-        return this.findByIds(entitiesIds, {
-          select: ["id"],
-          relations: rels as string[],
-        })
+      Object.entries(groupedRelations).map(([toplevel, rels]) => {
+        let querybuilder = this.createQueryBuilder("products")
+
+        if (toplevel === "variants") {
+          querybuilder = querybuilder
+            .leftJoinAndSelect(
+              `products.${toplevel}`,
+              toplevel,
+              "variants.deleted_at IS NULL"
+            )
+            .orderBy({
+              "variants.variant_rank": "ASC",
+            })
+        } else {
+          querybuilder = querybuilder.leftJoinAndSelect(
+            `products.${toplevel}`,
+            toplevel
+          )
+        }
+
+        for (const rel of rels) {
+          const [_, rest] = rel.split(".")
+          if (!rest) {
+            continue
+          }
+          // Regex matches all '.' except the rightmost
+          querybuilder = querybuilder.leftJoinAndSelect(
+            rel.replace(/\.(?=[^.]*\.)/g, "__"),
+            rel.replace(".", "__")
+          )
+        }
+
+        return querybuilder
+          .where(
+            "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
+            { entitiesIds }
+          )
+          .getMany()
       })
     ).then(flatten)
+
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, entityAndRelations =>
+    return map(entitiesAndRelationsById, (entityAndRelations) =>
       merge({}, ...entityAndRelations)
     )
   }

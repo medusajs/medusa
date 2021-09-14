@@ -582,7 +582,10 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }
 
     if (order) {
-      if (order.data.attributes.status !== "pending") {
+      if (
+        order.data.attributes.status !== "pending" &&
+        order.data.attributes.status !== "missing_rate"
+      ) {
         if (order.data.attributes.status === "cancelled") {
           return Promise.resolve(order)
         }
