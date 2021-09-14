@@ -49,13 +49,13 @@ To find the applicable options, we perform the following validation as part of t
 - Ensure that potential shipping option requirements are respected.
     - E.g. free shipping limit
 
-Choosing a shipping option, will create a shipping method and attach is to the cart. The second argument to the function in the snippet below holds the id of the selected option.
+Choosing a shipping option, will create a shipping method and attach it to the cart. The second argument to the function in the snippet below holds the id of the selected option.
 ```javascript=
 const { shipping_options } = await medusa.carts.addShippingMethod("cart_id", { option_id: "option_id"})
 ```
 
 #### Collecting payment details
-Payment information is not handled by Medusa. You should always use a frontend library for capturing this type of data.
+Payment information is not handled by Medusa. You should always use a client library for capturing this type of data.
 The following snippet shows, how we use Stripe to collect payment details from the customer. Please note, that we are using the `client_secret` from the Stripe PaymentIntent in `data` on the payment session and this is required by Stripe.
 ```javascript=
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
