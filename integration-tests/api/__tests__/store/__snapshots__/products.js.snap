@@ -101,6 +101,7 @@ Object {
     ],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
+    "status": "draft",
     "subtitle": null,
     "tags": Array [
       Object {
