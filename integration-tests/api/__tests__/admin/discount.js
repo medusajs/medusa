@@ -14,14 +14,18 @@ describe("/admin/discounts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    try {
+      dbConnection = await initDb({ cwd })
+      medusaProcess = await setupServer({ cwd })
+    } catch (err) {
+      console.log(err)
+    }
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await medusaProcess.kill()
   })
 
   describe("POST /admin/discounts", () => {
@@ -62,7 +66,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err)
+          console.log(err.response)
         })
 
       expect(response.status).toEqual(200)
@@ -86,7 +90,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err)
+          console.log(err.response.data)
         })
 
       expect(updated.status).toEqual(200)
@@ -96,6 +100,158 @@ describe("/admin/discounts", () => {
           usage_limit: 20,
         })
       )
+    })
+
+    it("creates a discount with start and end dates", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+            starts_at: new Date("09/15/2021 11:50"),
+            ends_at: new Date("09/15/2021 17:50"),
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          starts_at: expect.any(String),
+          ends_at: expect.any(String),
+        })
+      )
+
+      expect(new Date(response.data.discount.starts_at)).toEqual(
+        new Date("09/15/2021 11:50")
+      )
+
+      expect(new Date(response.data.discount.ends_at)).toEqual(
+        new Date("09/15/2021 17:50")
+      )
+
+      const updated = await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            starts_at: new Date("09/14/2021 11:50"),
+            ends_at: new Date("09/17/2021 17:50"),
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 20,
+          starts_at: expect.any(String),
+          ends_at: expect.any(String),
+        })
+      )
+
+      expect(new Date(updated.data.discount.starts_at)).toEqual(
+        new Date("09/14/2021 11:50")
+      )
+
+      expect(new Date(updated.data.discount.ends_at)).toEqual(
+        new Date("09/17/2021 17:50")
+      )
+    })
+
+    it("fails to update end date to a date before start date", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+            starts_at: new Date("09/15/2021 11:50"),
+            ends_at: new Date("09/15/2021 17:50"),
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          starts_at: expect.any(String),
+          ends_at: expect.any(String),
+        })
+      )
+
+      expect(new Date(response.data.discount.starts_at)).toEqual(
+        new Date("09/15/2021 11:50")
+      )
+
+      expect(new Date(response.data.discount.ends_at)).toEqual(
+        new Date("09/15/2021 17:50")
+      )
+
+      const updated = await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            ends_at: new Date("09/11/2021 17:50"),
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.error.message).toEqual(
+            `"ends_at" must be greater than "starts_at"`
+          )
+          return
+        })
+      expect(true).toBe(false)
     })
   })
 
