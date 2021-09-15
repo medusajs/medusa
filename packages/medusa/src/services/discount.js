@@ -3,6 +3,7 @@ import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { Brackets } from "typeorm"
+import { MedusaErrorCodes } from "medusa-core-utils/dist/errors"
 
 /**
  * Provides layer to manipulate discounts.
@@ -273,6 +274,16 @@ class DiscountService extends BaseService {
       const discount = await this.retrieve(discountId)
 
       const { rule, metadata, regions, ...rest } = update
+
+      if (update.ends_at) {
+        if (discount.starts_at >= new Date(update.ends_at)) {
+          throw new MedusaError(MedusaError.Types.INVALID_DATA, {
+            code: 400,
+            type: "invalid_data",
+            message: `"ends_at" must be greater than "starts_at"`,
+          })
+        }
+      }
 
       if (regions) {
         discount.regions = await Promise.all(

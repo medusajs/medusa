@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
+import { parse, toSeconds } from "iso8601-duration"
 import { BaseService } from "medusa-interfaces"
 
 /**
@@ -877,6 +878,35 @@ class CartService extends BaseService {
           MedusaError.Types.NOT_ALLOWED,
           "Discount has been used maximum allowed times"
         )
+    }
+
+    const today = new Date()
+    if (discount.starts_at > today) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is not valid yet"
+      )
+    }
+
+    if (discount.ends_at && discount.ends_at < today) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is expired"
+      )
+    }
+
+    if (discount.is_dynamic) {
+      const date = new Date(discount.starts_at)
+      date.setSeconds(
+        date.getSeconds() + toSeconds(parse(discount.valid_duration))
+      )
+
+      if (Date.UTC(date) < Date.UTC(today)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Dynamic discount is expired"
+        )
+      }
     }
 
     let regions = discount.regions
