@@ -71,7 +71,9 @@ class NoteService extends BaseService {
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
-    return noteRepo.find({ where: { resource_id: resourceId } })
+
+    const query = this.buildQuery_({ resource_id: resourceId }, config)
+    return noteRepo.find(query)
   }
 
   async create(resourceId, resourceType, value, config = { metadata: {} }) {
