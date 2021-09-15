@@ -193,6 +193,9 @@ export default async (req, res) => {
       .optional(),
     thumbnail: Validator.string().optional(),
     handle: Validator.string().optional(),
+    status: Validator.string()
+      .valid("proposed", "draft", "published", "rejected")
+      .default("draft"),
     type: Validator.object()
       .keys({
         id: Validator.string().optional(),

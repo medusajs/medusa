@@ -1,3 +1,4 @@
+import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations } from "."
 
 /**
@@ -40,6 +41,15 @@ export default async (req, res) => {
     if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
       selector.is_giftcard = req.query.is_giftcard === "true"
     }
+
+    //We only want to list products that are published
+    //but to ensure backwards compatibility we also
+    //allow the value to be null for "old" products
+    //that don't have a status field. New products
+    //will always have a status, and it is not possible
+    //to update a status to anything but proposed | draft
+    //| published | rejected
+    selector.status = ["published", null]
 
     const listConfig = {
       relations: defaultRelations,
