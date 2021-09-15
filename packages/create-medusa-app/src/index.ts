@@ -28,11 +28,6 @@ const questions = {
     name: "starterUrl",
     message: "Where is the starter located? (URL or path)",
   },
-  seed: {
-    type: "confirm",
-    name: "seed",
-    message: "Should we attempt to seed your database?",
-  },
   storefront: {
     type: "select",
     name: "storefront",
@@ -50,8 +45,8 @@ const program = new Commander.Command(pkg.name)
     `A GitHub URL to a repository that contains a Medusa starter project to bootstrap from`
   )
   .option(
-    `--seed`,
-    `If run with the seed flag the script will automatically attempt to seed the database upon setup`
+    `--no-seed`,
+    `If run with the no-seed flag the script will skip seeding the database upon setup`
   )
   .option(`-v --verbose`, `Show all installation output`)
   .parse(process.argv)
@@ -82,8 +77,8 @@ export const run = async (): Promise<void> => {
 
   const progOptions = program.opts()
 
-  const seed = progOptions.seed
-  track("SEED_SELECTED", { seed })
+  const noSeed = progOptions.noSeed
+  track("SEED_SELECTED", { seed: !noSeed })
 
   const { storefront } = (await prompt(questions.storefront)) as {
     storefront: string
@@ -93,7 +88,7 @@ export const run = async (): Promise<void> => {
   await newStarter({
     starter,
     root: path.join(projectRoot, `backend`),
-    seed,
+    seed: !noSeed,
     verbose: progOptions.verbose,
   })
 
