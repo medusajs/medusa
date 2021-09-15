@@ -1,36 +1,46 @@
-import { BaseService } from "medusa-interfaces"
+import { SearchService } from "medusa-interfaces"
 import { MeiliSearch } from "meilisearch"
 
-class MeilisearchService extends BaseService {
-  constructor({ eventBusService }, options) {
+class MeiliSearchService extends SearchService {
+  constructor(container, options) {
     super()
-
-    this.eventBus_ = eventBusService
 
     this.options_ = options
 
-    this.client_ = new MeiliSearch(options.config).index("products")
+    this.client_ = new MeiliSearch(options.config)
   }
 
-  deleteAllDocuments() {
-    return this.client_.deleteAllDocuments()
+  createIndex(indexName, options) {
+    return this.client_.createIndex(indexName, options)
   }
 
-  addDocuments(documents) {
-    return this.client_.addDocuments(documents)
+  getIndex(indexName) {
+    return this.client_.index(indexName)
   }
 
-  deleteDocument(document_id) {
-    return this.client_.deleteDocument(document_id)
+  addDocuments(indexName, documents) {
+    return this.client_.index(indexName).addDocuments(documents)
   }
 
-  search(query, options) {
-    return this.client_.search(query, options)
+  replaceDocuments(indexName, documents) {
+    return this.client_.index(indexName).addDocuments(documents)
   }
 
-  updateSettings() {
-    return this.client_.updateSettings(this.options_.settings)
+  deleteDocument(indexName, document_id) {
+    return this.client_.index(indexName).deleteDocument(document_id)
+  }
+
+  deleteAllDocuments(indexName) {
+    return this.client_.index(indexName).deleteAllDocuments()
+  }
+
+  search(indexName, query, options) {
+    return this.client_.index(indexName).search(query, options)
+  }
+
+  updateSettings(indexName, settings) {
+    return this.client_.index(indexName).updateSettings(settings)
   }
 }
 
-export default MeilisearchService
+export default MeiliSearchService

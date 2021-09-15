@@ -15,6 +15,7 @@ import returnReasonRoutes from "./return-reasons"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
 import giftCardRoutes from "./gift-cards"
+import searchRoutes from "./search"
 
 const route = Router()
 
@@ -43,6 +44,7 @@ export default (app, container, config) => {
   returnRoutes(route)
   giftCardRoutes(route)
   returnReasonRoutes(route)
+  searchRoutes(route)
 
   return app
 }

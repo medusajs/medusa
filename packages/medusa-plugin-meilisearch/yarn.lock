@@ -3777,20 +3777,20 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-medusa-core-utils@^1.1.20:
-  version "1.1.20"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.20.tgz#676c0dc863a206b80cc53299a984c532d07df65f"
-  integrity sha512-gf+/L5eeqHea3xgjwD7YZEzfUGlxbjfvaeiiGWi3Wfu0dLa+G1B4S0TsX+upR+oVeWPmk66VMqWC80h3e4csqw==
+medusa-core-utils@^1.1.22:
+  version "1.1.22"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.22.tgz#84ce0af0a7c672191d758ea462056e30a39d08b1"
+  integrity sha512-kMuRkWOuNG4Bw6epg/AYu95UJuE+rjHTeTWRLbEPrYGjWREV82tLWVDI21/QcccmaHmMU98Rkw2z9JwyFZIiyw==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^1.1.21:
-  version "1.1.21"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.21.tgz#ca86808e939b7ecc21a6d316008a4e41f163619f"
-  integrity sha512-mlHHoMIOFBc+Exs+uVIQsfeEP2C1Pi6IZHcpbm7O00tYBdQdqRjJre9+Z/I/Z37wt5IwA28/TIoVkYG71iQYxw==
+medusa-interfaces@^1.1.23:
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.23.tgz#b552a8c1d0eaddeff30472ab238652b9e1a56e73"
+  integrity sha512-dHCOnsyYQvjrtRd3p0ZqQZ4M/zmo4M/BAgVfRrYSyGrMdQ86TK9Z1DQDCHEzM1216AxEfXz2JYUD7ilTfG2iHQ==
   dependencies:
-    medusa-core-utils "^1.1.20"
+    medusa-core-utils "^1.1.22"
 
 meilisearch@^0.20.0:
   version "0.20.0"

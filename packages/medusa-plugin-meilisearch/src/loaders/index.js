@@ -1,25 +1,14 @@
-import {
-  defaultProductFields,
-  defaultProductRelations,
-  flattenSkus,
-} from "../utils"
+const INDEX_NS = "medusa-commerce"
 
 export default async (container, options) => {
   try {
-    const meilisearchService = container.resolve("meilisearchService")
-    const productService = container.resolve("productService")
+    const searchService = container.resolve("searchService")
 
-    const products = await productService.list(
-      {},
-      {
-        select: defaultProductFields,
-        relations: defaultProductRelations,
-      }
+    await Promise.all(
+      Object.entries(options.settings).map(([key, value]) =>
+        searchService.updateSettings(`${INDEX_NS}_${key}`, value)
+      )
     )
-    const productsWithSkus = products.map((product) => flattenSkus(product))
-
-    await meilisearchService.updateSettings()
-    await meilisearchService.addDocuments(productsWithSkus)
   } catch (err) {
     console.log(err)
   }
