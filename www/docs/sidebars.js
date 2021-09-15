@@ -75,6 +75,10 @@ module.exports = {
           type: "doc",
           id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
         },
+        {
+          type: "doc",
+          id: "how-to/create-medusa-app"
+        }
       ],
     },
     {
