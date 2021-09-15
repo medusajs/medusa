@@ -267,25 +267,34 @@ describe("/store/products", () => {
     it("lists all published products", async () => {
       const api = useApi()
 
-      const payload = {
-        status: "published",
-      }
-
-      //update test-product status to proposed
+      //update test-product status to published
       await api
-        .post("/admin/products/test-product", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
+        .post(
+          "/admin/products/test-product",
+          {
+            status: "published",
           },
-        })
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
         .catch((err) => {
           console.log(err)
         })
 
       const response = await api.get("/store/products")
 
-      console.log(response.data.products)
       expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "published",
+          }),
+        ])
+      )
     })
   })
 })
