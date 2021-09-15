@@ -598,6 +598,10 @@ class OrderService extends BaseService {
           no_notification: result.no_notification,
         })
 
+      await this.cartService_
+        .withTransaction(manager)
+        .update(cart.id, { completed_at: new Date() })
+
       return result
     })
   }

@@ -750,6 +750,10 @@ class SwapService extends BaseService {
           no_notification: swap.no_notification,
         })
 
+      await this.cartService_
+        .withTransaction(manager)
+        .update(cart.id, { completed_at: new Date() })
+
       return result
     })
   }
