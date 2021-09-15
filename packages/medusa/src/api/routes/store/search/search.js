@@ -1,9 +1,11 @@
 import { Validator, MedusaError } from "medusa-core-utils"
+import { INDEX_NS } from "../../../../utils/index-ns"
 
 export default async (req, res) => {
   const schema = Validator.object()
     .keys({
       q: Validator.string().required(),
+      indexName: Validator.string().required(),
     })
     .options({ allowUnknown: true })
 
@@ -13,11 +15,15 @@ export default async (req, res) => {
   }
 
   try {
-    const { q, ...options } = value
+    const { q, indexName, ...options } = value
 
-    const meiliSearchService = req.scope.resolve("meilisearchService")
+    const searchService = req.scope.resolve("searchService")
 
-    const results = await meiliSearchService.search(q, options)
+    const results = await searchService.search(
+      `${INDEX_NS}_${indexName}`,
+      q,
+      options
+    )
 
     res.status(200).send(results)
   } catch (error) {
