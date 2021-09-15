@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.41](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.40...@medusajs/medusa@1.1.41) (2021-09-15)
+
+
+### Bug Fixes
+
+* 404 product ([8c8c589](https://github.com/medusajs/medusa/commit/8c8c589b0fa720225a02005f9880ad7d1fbf5042))
+* add default relations to variants to include prices ([#394](https://github.com/medusajs/medusa/issues/394)) ([d477ca9](https://github.com/medusajs/medusa/commit/d477ca9842eb58cc561e9e0fa9d01e2d0d2f6756))
+* Ensure uniqueness for products, variants, collections and discounts ([#382](https://github.com/medusajs/medusa/issues/382)) ([2715095](https://github.com/medusajs/medusa/commit/27150959ffa70819cf3c4ad176288a1c70287942))
+* make shipping_option_id on requirements optional ([#340](https://github.com/medusajs/medusa/issues/340)) ([16b0fa3](https://github.com/medusajs/medusa/commit/16b0fa377a577abd7976c2beaff83e2030969df8))
+
+
+### Features
+
+* update and cancel swaps, claims, and returns ([#310](https://github.com/medusajs/medusa/issues/310)) ([cf66f97](https://github.com/medusajs/medusa/commit/cf66f97758003a41737602d4b1b1051b266d4f81))
+
+
+
+
+
 ## [1.1.40](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.40...@medusajs/medusa@1.1.40) (2021-09-15)
 
 
