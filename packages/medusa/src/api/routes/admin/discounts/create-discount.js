@@ -74,6 +74,13 @@ export default async (req, res) => {
     ends_at: Validator.date()
       .greater(Validator.ref("starts_at"))
       .optional(),
+    valid_duration: Validator.string()
+      .isoDuration()
+      .when("is_dynamic", {
+        is: true,
+        then: Validator.required(),
+        otherwise: Validator.optional(),
+      }),
     usage_limit: Validator.number()
       .positive()
       .optional(),
