@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.28](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.27...medusa-plugin-segment@1.1.28) (2021-09-15)
+
+**Note:** Version bump only for package medusa-plugin-segment
+
+
+
+
+
 ## [1.1.27](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.26...medusa-plugin-segment@1.1.27) (2021-09-14)
 
 **Note:** Version bump only for package medusa-plugin-segment

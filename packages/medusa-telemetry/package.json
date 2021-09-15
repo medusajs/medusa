@@ -1,6 +1,6 @@
 {
   "name": "medusa-telemetry",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -17,7 +17,7 @@
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/preset-typescript": "^7.15.0",
-    "babel-preset-medusa-package": "^1.1.14",
+    "babel-preset-medusa-package": "^1.1.15",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
