@@ -561,7 +561,7 @@ class ProductVariantService extends BaseService {
         qb.where(where).andWhere([
           { sku: ILike(`%${q}%`) },
           { title: ILike(`%${q}%`) },
-          { product: ILike(`%${q}%`) },
+          { product: { title: ILike(`%${q}%`) } },
         ])
       }
     }
