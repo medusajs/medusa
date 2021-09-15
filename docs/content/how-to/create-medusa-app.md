@@ -1,7 +1,7 @@
 ---
 title: Using create-medusa-app
 ---
-
+# Using create-medusa-app
 With the new `create-medusa-app` tool you will get your [Medusa](https://github.com/medusajs/medusa) development environment ready within a couple of minutes. After completion, you will have a Medusa backend, a Gatsby or Next.js storefront, and an admin dashboard up and running on your local machine.
 
 Starting a new e-commerce project just got easier, now with one command.
