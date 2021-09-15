@@ -111,22 +111,18 @@ class EconomicService extends BaseService {
       })
     })
 
-    if (!order.discounts.some(({ rule }) => rule.type === "free_shipping")) {
-      for (const shipping_method of order.shipping_methods) {
-        order_lines.push({
-          lineNumber: order_lines.length + 1,
-          sortKey: 1,
-          unit: {
-            unitNumber: this.options_.unit_number,
-          },
-          product: {
-            productNumber: this.options_.shipping_product,
-          },
-          quantity: 1,
-          unitNetPrice: shipping_method.price / 100,
-        })
-      }
-    }
+    order_lines.push({
+      lineNumber: order_lines.length + 1,
+      sortKey: 1,
+      unit: {
+        unitNumber: this.options_.unit_number,
+      },
+      product: {
+        productNumber: this.options_.shipping_product,
+      },
+      quantity: 1,
+      unitNetPrice: order.shipping_total / 100,
+    })
 
     return order_lines
   }
