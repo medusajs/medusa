@@ -47,6 +47,9 @@ export class Product {
   @Column({ default: false })
   is_giftcard: boolean
 
+  @Column({ nullable: true, default: "draft" })
+  status: "proposed" | "draft" | "published" | "rejected"
+
   @ManyToMany(() => Image, { cascade: ["insert"] })
   @JoinTable({
     name: "product_images",
