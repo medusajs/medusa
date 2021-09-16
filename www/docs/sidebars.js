@@ -77,8 +77,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "how-to/create-medusa-app"
-        }
+          id: "how-to/create-medusa-app",
+        },
       ],
     },
     {
@@ -88,6 +88,16 @@ module.exports = {
         {
           type: "doc",
           id: "guides/fulfillment-api",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deploy",
+      items: [
+        {
+          type: "doc",
+          id: "how-to/deploying-on-heroku",
         },
       ],
     },
