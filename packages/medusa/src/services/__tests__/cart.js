@@ -1569,6 +1569,7 @@ describe("CartService", () => {
           return Promise.resolve({
             id: IdMap.getId("10off"),
             code: "10%OFF",
+            is_dynamic: true,
             regions: [{ id: IdMap.getId("good") }],
             rule: {
               type: "percentage",
@@ -1580,6 +1581,7 @@ describe("CartService", () => {
         if (code === "ExpiredDynamicDiscountEndDate") {
           return Promise.resolve({
             id: IdMap.getId("10off"),
+            is_dynamic: true,
             code: "10%OFF",
             regions: [{ id: IdMap.getId("good") }],
             rule: {
