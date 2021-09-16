@@ -14,18 +14,14 @@ describe("/admin/discounts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    try {
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
-    } catch (err) {
-      console.log(err)
-    }
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    await medusaProcess.kill()
+    medusaProcess.kill()
   })
 
   describe("POST /admin/discounts", () => {
