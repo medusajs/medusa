@@ -64,14 +64,11 @@ export default async (req, res) => {
         )
         .single()
 
-      const { value, error } = schema.validate(req.query.status)
+      const { value } = schema.validate(req.query.status)
 
-      if (error) {
-        throw new MedusaError(MedusaError.Types.INVALID_DATA, value)
+      if (value) {
+        selector.status = value
       }
-
-      console.error(value)
-      selector.status = value
     }
 
     const listConfig = {
