@@ -2,12 +2,10 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
 /**
- * @oas [post] /customers/{id}
+ * @oas [post] /customers/me
  * operationId: PostCustomersCustomer
  * summary: Update Customer details
  * description: "Updates a Customer's saved details."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
  * requestBody:
  *   content:
  *     application/json:

@@ -2,12 +2,11 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
 /**
- * @oas [post] /customers/{id}/addresses/{address_id}
+ * @oas [post] /customers/me/addresses/{address_id}
  * operationId: PostCustomersCustomerAddressesAddress
  * summary: "Update a Shipping Address"
  * description: "Updates a Customer's saved Shipping Address."
  * parameters:
- *   - (path) id=* {String} The Customer id.
  *   - (path) address_id=* {String} The id of the Address to update.
  * requestBody:
  *   content:

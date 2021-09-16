@@ -1,12 +1,10 @@
 import { defaultRelations, defaultFields } from "./"
 
 /**
- * @oas [get] /customers/{id}
+ * @oas [get] /customers/me
  * operationId: GetCustomersCustomer
  * summary: Retrieves a Customer
  * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
  * tags:
  *   - Customer
  * responses:
