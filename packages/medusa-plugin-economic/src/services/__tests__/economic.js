@@ -205,6 +205,18 @@ describe("economic service tests", () => {
           quantity: 1,
           unitNetPrice: 99,
         },
+        {
+          lineNumber: 2,
+          product: {
+            productNumber: "shipping",
+          },
+          quantity: 1,
+          sortKey: 1,
+          unit: {
+            unitNumber: 1,
+          },
+          unitNetPrice: 0,
+        },
       ])
     })
   })
@@ -242,7 +254,20 @@ describe("economic service tests", () => {
         layout: {
           layoutNumber: options_.layout_number,
         },
-        lines: [],
+        lines: [
+          {
+            lineNumber: 1,
+            product: {
+              productNumber: "shipping",
+            },
+            quantity: 1,
+            sortKey: 1,
+            unit: {
+              unitNumber: 1,
+            },
+            unitNetPrice: 0,
+          },
+        ],
       })
     })
   })
