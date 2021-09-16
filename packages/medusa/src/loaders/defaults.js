@@ -20,9 +20,6 @@ const silentResolution = (container, name, logger) => {
         case "fulfillmentProviders":
           identifier = "fulfillment"
           break
-        case "searchService":
-          identifier = "search"
-          break
         default:
           identifier = name
       }
