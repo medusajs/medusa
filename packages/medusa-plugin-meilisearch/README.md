@@ -8,12 +8,13 @@ Meilisearch Plugin for Medusa to search for products.
   config: {
     host: [your meilisearch host],
   },
-  settings: [meilisearch settings passed to meilisearch's `updateSettings()` method on an index:
-  //example
-  {
-    searchableAttributes: ["title", "description", "sku"],
-    displayedAttributes: ["title", "description", "sku"],
+  settings: {
+    [indexName]: [meilisearch settings passed to meilisearch's `updateSettings()` method]
+    // example
+    products: {
+      searchableAttributes: ["title", "description", "sku"],
+      displayedAttributes: ["title", "description", "sku"],
+    }
   }
-  ],
 }
 ```
