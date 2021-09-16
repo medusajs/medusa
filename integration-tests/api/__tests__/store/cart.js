@@ -350,10 +350,9 @@ describe("/store/carts", () => {
         console.log(error)
       }
 
-      //check to see if payment has been cancelled and cart is not completed
+      //check to see if payment is authorized and cart is completed
       const res = await api.get(`/store/carts/swap-cart`)
-      console.log(res.data.cart)
-      // expect(res.data.cart.payment.canceled_at).not.toBe(null)
+      expect(res.data.cart.payment_authorized_at).not.toBe(null)
       expect(res.data.cart.completed_at).not.toBe(null)
     })
   })
