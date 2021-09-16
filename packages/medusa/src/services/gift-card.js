@@ -1,8 +1,7 @@
-import _ from "lodash"
-import randomize from "randomatic"
-import { BaseService } from "medusa-interfaces"
-import { Brackets, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import randomize from "randomatic"
+import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate gift cards.
@@ -101,10 +100,13 @@ class GiftCardService extends BaseService {
         .leftJoinAndSelect("gift_card.order", "order")
         .select(["gift_card.id"])
         .where(where)
-        .andWhere([
-          { code: ILike(`%${q}%`) },
-          { order: { display_id: ILike(`%${q}%`) } },
-        ])
+        .andWhere(
+          new Brackets(qb => {
+            return qb
+              .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+          })
+        )
         .getMany()
 
       return giftCardRepo.findWithRelations(

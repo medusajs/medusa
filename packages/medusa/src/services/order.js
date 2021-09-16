@@ -1,7 +1,6 @@
-import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, ILike } from "typeorm"
+import { Brackets } from "typeorm"
 
 class OrderService extends BaseService {
   static Events = {
@@ -233,11 +232,17 @@ class OrderService extends BaseService {
       }
 
       query.where = qb => {
-        qb.where(where).andWhere([
-          { shipping_address: { first_name: ILike(`%${q}%`) } },
-          { email: ILike(`%${q}%`) },
-          { display_id: ILike(`%${q}%`) },
-        ])
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`shipping_address.first_name ILIKE :qfn`, {
+              qfn: `%${q}%`,
+            })
+              .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+          })
+        )
       }
     }
 

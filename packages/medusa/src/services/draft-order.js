@@ -186,10 +186,17 @@ class DraftOrderService extends BaseService {
       }
 
       query.where = qb => {
-        qb.where(where).andWhere([
-          { cart: { email: ILike(`%${q}%`) } },
-          { display_id: ILike(`%${q}%`) },
-        ])
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets(qb => {
+            qb.where(`cart.email ILIKE :q`, {
+              q: `%${q}%`,
+            }).orWhere(`draft_order.display_id::varchar(255) ILIKE :dId`, {
+              dId: `${q}`,
+            })
+          })
+        )
       }
     }
 
