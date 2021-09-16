@@ -77,7 +77,11 @@ export default async (req, res) => {
     }),
     valid_duration: Validator.string()
       .isoDuration()
-      .optional(),
+      .when("is_dynamic", {
+        is: true,
+        then: Validator.required(),
+        otherwise: Validator.optional(),
+      }),
     usage_limit: Validator.number()
       .positive()
       .optional(),
