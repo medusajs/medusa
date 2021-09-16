@@ -896,12 +896,12 @@ class CartService extends BaseService {
     }
 
     if (discount.is_dynamic) {
-      const date = new Date(discount.starts_at)
-      date.setSeconds(
-        date.getSeconds() + toSeconds(parse(discount.valid_duration))
+      const startsAtDate = new Date(discount.starts_at)
+      startsAtDate.setSeconds(
+        startsAtDate.getSeconds() + toSeconds(parse(discount.valid_duration))
       )
 
-      if (Date.UTC(date) < Date.UTC(today)) {
+      if (Date.UTC(startsAtDate) < Date.UTC(today)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Dynamic discount is expired"
