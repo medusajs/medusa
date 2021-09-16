@@ -253,6 +253,40 @@ describe("/admin/discounts", () => {
         })
       expect(true).toBe(false)
     })
+
+    it("fails to create discount with end date before start date", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+            starts_at: new Date("09/15/2021 11:50"),
+            ends_at: new Date("09/14/2021 17:50"),
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(400)
+      expect(error.response.data.message).toEqual(
+        `"ends_at" must be greater than "ref:starts_at"`
+      )
+    })
   })
 
   describe("testing for soft-deletion + uniqueness on discount codes", () => {
