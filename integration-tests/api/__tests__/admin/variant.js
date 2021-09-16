@@ -108,7 +108,6 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      console.log(response.request)
       expect(response.status).toEqual(200)
       expect(response.data.variants.length).toEqual(1)
       expect(response.data.variants).toEqual(
