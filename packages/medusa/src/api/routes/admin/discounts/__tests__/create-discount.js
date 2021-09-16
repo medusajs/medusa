@@ -234,40 +234,4 @@ describe("POST /admin/discounts", () => {
       )
     })
   })
-
-  describe("fails when creating a dynamic discount without setting 'is_dynamic'", () => {
-    let subject
-
-    beforeAll(async () => {
-      subject = await request("POST", "/admin/discounts", {
-        payload: {
-          code: "TEST",
-          rule: {
-            description: "Test",
-            type: "fixed",
-            value: 10,
-            allocation: "total",
-          },
-          valid_duration: "P1Y",
-          starts_at: "03/14/2021",
-        },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
-      })
-    })
-
-    it("returns 400", () => {
-      // console.log(subject)
-      expect(subject.status).toEqual(400)
-    })
-
-    it("returns error", () => {
-      expect(subject.body.message[0].message).toEqual(
-        `"valid_duration" is not allowed`
-      )
-    })
-  })
 })
