@@ -121,7 +121,7 @@ class EconomicService extends BaseService {
         productNumber: this.options_.shipping_product,
       },
       quantity: 1,
-      unitNetPrice: order.shipping_total / 100,
+      unitNetPrice: (order.shipping_total || 0) / 100,
     })
 
     return order_lines
