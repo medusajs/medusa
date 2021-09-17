@@ -44,12 +44,18 @@ class ReturnReasonService extends BaseService {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
       const reason = await this.retrieve(id)
 
-      if ("description" in data) {
+      const { description, label, parent_return_reason_id } = data
+
+      if (description) {
         reason.description = data.description
       }
 
-      if ("label" in data) {
+      if (label) {
         reason.label = data.label
+      }
+
+      if (parent_return_reason_id) {
+        reason.parent_return_reason_id = parent_return_reason_id
       }
 
       await rrRepo.save(reason)
