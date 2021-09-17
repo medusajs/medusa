@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const DOMAIN = "desaucestore"
-const PASSWORD = "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"
+const PASSWORD = process.env.SHOPIFY_PASSWORD || "temp"
 
 const headers = {
   "Content-Type": "application/json",
