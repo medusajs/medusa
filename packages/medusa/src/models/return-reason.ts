@@ -7,6 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryColumn,
+  ManyToOne, 
+  JoinColumn
 } from "typeorm"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
@@ -25,6 +27,13 @@ export class ReturnReason {
 
   @Column({ nullable: true })
   description: string
+
+  @Column({ nullable: true })
+  parent_return_reason_id: string
+
+  @ManyToOne(() => ReturnReason)
+  @JoinColumn({ name: "parent_return_reason_id" })
+  parent_return_reason: ReturnReason
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
