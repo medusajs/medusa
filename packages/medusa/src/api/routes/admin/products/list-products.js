@@ -64,9 +64,9 @@ export default async (req, res) => {
         )
         .single()
 
-      const { value } = schema.validate(req.query.status)
+      const { value, error } = schema.validate(req.query.status)
 
-      if (value) {
+      if (value && !error) {
         selector.status = value
       }
     }
