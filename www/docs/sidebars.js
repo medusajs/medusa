@@ -99,6 +99,10 @@ module.exports = {
           type: "doc",
           id: "how-to/deploying-on-heroku",
         },
+        {
+          type: "doc",
+          id: "how-to/deploying-on-qovery",
+        },
       ],
     },
   ],
