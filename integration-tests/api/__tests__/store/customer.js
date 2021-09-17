@@ -1,67 +1,67 @@
-const path = require("path");
-const { Address, Customer } = require("@medusajs/medusa");
+const path = require("path")
+const { Address, Customer } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server");
-const { useApi } = require("../../../helpers/use-api");
-const { initDb, useDb } = require("../../../helpers/use-db");
+const setupServer = require("../../../helpers/setup-server")
+const { useApi } = require("../../../helpers/use-api")
+const { initDb, useDb } = require("../../../helpers/use-db")
 
-const customerSeeder = require("../../helpers/customer-seeder");
+const customerSeeder = require("../../helpers/customer-seeder")
 
-jest.setTimeout(30000);
+jest.setTimeout(30000)
 
 describe("/store/customers", () => {
-  let medusaProcess;
-  let dbConnection;
+  let medusaProcess
+  let dbConnection
 
   const doAfterEach = async () => {
-    const db = useDb();
-    await db.teardown();
-  };
+    const db = useDb()
+    await db.teardown()
+  }
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."));
-    dbConnection = await initDb({ cwd });
-    medusaProcess = await setupServer({ cwd });
-  });
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
+  })
 
   afterAll(async () => {
-    const db = useDb();
-    await db.shutdown();
-    medusaProcess.kill();
-  });
+    const db = useDb()
+    await db.shutdown()
+    medusaProcess.kill()
+  })
 
   describe("POST /store/customers", () => {
     beforeEach(async () => {
-      const manager = dbConnection.manager;
+      const manager = dbConnection.manager
       await manager.insert(Customer, {
         id: "test_customer",
         first_name: "John",
         last_name: "Deere",
         email: "john@deere.com",
         has_account: true,
-      });
-    });
+      })
+    })
 
     afterEach(async () => {
-      await doAfterEach();
-    });
+      await doAfterEach()
+    })
 
     it("creates a customer", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const response = await api.post("/store/customers", {
         first_name: "James",
         last_name: "Bond",
         email: "james@bond.com",
         password: "test",
-      });
+      })
 
-      expect(response.status).toEqual(200);
-      expect(response.data.customer).not.toHaveProperty("password_hash");
-    });
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).not.toHaveProperty("password_hash")
+    })
 
     it("responds 409 on duplicate", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const response = await api
         .post("/store/customers", {
@@ -70,15 +70,15 @@ describe("/store/customers", () => {
           email: "john@deere.com",
           password: "test",
         })
-        .catch((err) => err.response);
+        .catch((err) => err.response)
 
-      expect(response.status).toEqual(402);
-    });
-  });
+      expect(response.status).toEqual(402)
+    })
+  })
 
-  describe("POST /store/customers/:id", () => {
+  describe("POST /store/customers/me", () => {
     beforeEach(async () => {
-      const manager = dbConnection.manager;
+      const manager = dbConnection.manager
       await manager.insert(Address, {
         id: "addr_test",
         first_name: "String",
@@ -88,7 +88,7 @@ describe("/store/customers", () => {
         postal_code: "1236",
         province: "ca",
         country_code: "us",
-      });
+      })
 
       await manager.insert(Customer, {
         id: "test_customer",
@@ -98,26 +98,26 @@ describe("/store/customers", () => {
         password_hash:
           "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
         has_account: true,
-      });
-    });
+      })
+    })
 
     afterEach(async () => {
-      await doAfterEach();
-    });
+      await doAfterEach()
+    })
 
     it("updates a customer", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const authResponse = await api.post("/store/auth", {
         email: "john@deere.com",
         password: "test",
-      });
+      })
 
-      const customerId = authResponse.data.customer.id;
-      const [authCookie] = authResponse.headers["set-cookie"][0].split(";");
+      const customerId = authResponse.data.customer.id
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api.post(
-        `/store/customers/${customerId}`,
+        `/store/customers/me`,
         {
           password: "test",
           metadata: { key: "value" },
@@ -127,30 +127,30 @@ describe("/store/customers", () => {
             Cookie: authCookie,
           },
         }
-      );
+      )
 
-      expect(response.status).toEqual(200);
-      expect(response.data.customer).not.toHaveProperty("password_hash");
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).not.toHaveProperty("password_hash")
       expect(response.data.customer).toEqual(
         expect.objectContaining({
           metadata: { key: "value" },
         })
-      );
-    });
+      )
+    })
 
     it("updates customer billing address", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const authResponse = await api.post("/store/auth", {
         email: "john@deere.com",
         password: "test",
-      });
+      })
 
-      const customerId = authResponse.data.customer.id;
-      const [authCookie] = authResponse.headers["set-cookie"][0].split(";");
+      const customerId = authResponse.data.customer.id
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api.post(
-        `/store/customers/${customerId}`,
+        `/store/customers/me`,
         {
           billing_address: {
             first_name: "test",
@@ -167,10 +167,10 @@ describe("/store/customers", () => {
             Cookie: authCookie,
           },
         }
-      );
+      )
 
-      expect(response.status).toEqual(200);
-      expect(response.data.customer).not.toHaveProperty("password_hash");
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).not.toHaveProperty("password_hash")
       expect(response.data.customer.billing_address).toEqual(
         expect.objectContaining({
           first_name: "test",
@@ -181,22 +181,22 @@ describe("/store/customers", () => {
           province: "ca",
           country_code: "us",
         })
-      );
-    });
+      )
+    })
 
     it("updates customer billing address with string", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const authResponse = await api.post("/store/auth", {
         email: "john@deere.com",
         password: "test",
-      });
+      })
 
-      const customerId = authResponse.data.customer.id;
-      const [authCookie] = authResponse.headers["set-cookie"][0].split(";");
+      const customerId = authResponse.data.customer.id
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api.post(
-        `/store/customers/${customerId}`,
+        `/store/customers/me`,
         {
           billing_address: "addr_test",
         },
@@ -205,10 +205,10 @@ describe("/store/customers", () => {
             Cookie: authCookie,
           },
         }
-      );
+      )
 
-      expect(response.status).toEqual(200);
-      expect(response.data.customer).not.toHaveProperty("password_hash");
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).not.toHaveProperty("password_hash")
       expect(response.data.customer.billing_address).toEqual(
         expect.objectContaining({
           first_name: "String",
@@ -219,7 +219,7 @@ describe("/store/customers", () => {
           province: "ca",
           country_code: "us",
         })
-      );
-    });
-  });
-});
+      )
+    })
+  })
+})
