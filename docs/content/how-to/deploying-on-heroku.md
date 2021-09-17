@@ -44,7 +44,7 @@ heroku login
 
 ### 3. Create an app on Heroku
 
-From your Medusa project directory run the following commands to create an app on Heroku and add it as a remote origin, that we can push to.
+From your Medusa project directory run the following commands to create an app on Heroku and add it as a remote origin.
 
 ```shell=
 heroku create medusa-test-app
@@ -82,17 +82,13 @@ You can find more informations, plans and pricing about Redis To Go [here](https
 ### 5. Configure environment variables on Heroku
 
 Medusa requires a set of environment variables. From you project repository run the following commands:.
-:::info
-Please change the value of `JWT_SECRET` and `COOKIE_SECRET` to proper secrets.
-:::
-
 ```shell=
 heroku config:set NODE_ENV=production
 heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
-
+> Make sure to use actual secrets in a production environment.
 Additionally, we need to set the buildpack to Node.js
 
 ```shell=
@@ -194,5 +190,5 @@ You now have a production ready application running on DigitalOcean. This can be
 
 Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- [Deploy Admin on Netlify](https://hackmd.io/@1cszcoYoSc-3cPnP9sk4oA/deploy-medusa-admin-netlify)
-- [Deploy Admin on Gatsby Cloud](https://hackmd.io/@1cszcoYoSc-3cPnP9sk4oA/deploy-medusa-admin-gatsby-cloud)
+- Deploy Admin on Netlify (Coming soon)
+- Deploy Admin on Gatsby Cloud (Coming soon)
