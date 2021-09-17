@@ -9,8 +9,8 @@ Create an account on [Qovery](https://www.qovery.com/) on their free community p
 - Create a new project and give it a name (e.g. Medusa)
 - Create a new environment and give it a name (e.g. `dev`)
 
-### 3. Add your Medusa 
-Add a new app to your Qovery environment and connect the Git repository that holds your Medusa project. The port should be 9000, unless something different is specified in your setup.
+### 3. Add your Medusa app
+Add a new app to your Qovery environment and connect the Git repository that holds your Medusa project. The port should be 9000, unless something different is specified in your own setup.
 > If you used our `npx` starter, your repository will most likely hold all components; storefront, admin and backend. Ensure that **Root application path** in Qovery is pointing to your Medusa project (`/backend`).
 
 
@@ -28,7 +28,7 @@ Our Medusa project needs a bit of configuration to fit the needs of Qovery.
 
 #### Update `medusa-config.js`
 
-First, add the Postgres and Redis database url to your `medusa-config.js`. In Qovery, click on your Medusa app in the environment overview. Navigate to environment variables in the sidebar on the left. Among the secret variables you should find your database urls. They shook look something like this:
+First, add the Postgres and Redis database url to your `medusa-config.js`. In Qovery, click on your Medusa app in the environment overview. Navigate to environment variables in the sidebar on the left. Among the secret variables you should find your database urls. They should look something like this:
 ```javascript=
 QOVERY_REDIS_123456789_DATABASE_URL
 QOVERY_POSTGRESQL_123456789_DATABASE_URL
@@ -52,7 +52,7 @@ module.exports = {
   plugins,
 };
 ```
-> **IMPORTANT**: We are using the Qovery Community plan, that does not allow SSL connections for the database, so this is disabled. 
+> **IMPORTANT**: We are using the Qovery community plan, that does not allow SSL connections for the database, so this is disabled. 
 > 
 > In a production environment, you would need the following in the config:
 > `database_extra: { ssl: { rejectUnauthorized: false } }`
@@ -67,7 +67,7 @@ COOKIE_SECRET=something_secret_cookie
 > Make sure to use actual secrets in a production environment.
 
 #### Update `package.json`
-Update `scripts` to have the following:
+Update `scripts` to the following:
 ```json=
 "scripts": {
     "serve": "medusa start",
@@ -87,12 +87,12 @@ git push
 Finally, your app should be deploying to Qovery. If your Postgres database was previously shut down, make sure to redeploy this.
 
 ### 6. Try it out!
-In Qovery, click on your Medusa app in the environment overview. In the top right you are able to open up your application. Navigate to `https://your-qovery-url.com/health` to ensure, that the app is running.
+In Qovery, click on your Medusa app in the environment overview. In the top right you are able to open up your application. Navigate to `/health` to ensure, that the app is running.
 
 ### What's next?
-You now have an application running on Qovery. This can be scaled and configured to fit your business needs. As mentioned, we used the community plan, so this should be upgrade when moving to production.
+You now have an application running on Qovery. This can be scaled and configured to fit your business needs. As mentioned, we used the community plan, so this should be upgraded when moving to production.
 
-Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
+Furthermore, you can deploy Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- [Deploy Admin on Netlify](https://hackmd.io/@1cszcoYoSc-3cPnP9sk4oA/deploy-medusa-admin-netlify)
-- [Deploy Admin on Gatsby Cloud](https://hackmd.io/@1cszcoYoSc-3cPnP9sk4oA/deploy-medusa-admin-gatsby-cloud)
+- Deploy Admin on Netlify (Coming soon)
+- Deploy Admin on Gatsby Cloud (Coming soon)
