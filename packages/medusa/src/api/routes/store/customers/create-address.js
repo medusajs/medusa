@@ -30,7 +30,7 @@ import { defaultRelations, defaultFields } from "./"
  *              $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const { id } = req.params
+  const id = req.user.customer_id
 
   const schema = Validator.object().keys({
     address: Validator.address().required(),
