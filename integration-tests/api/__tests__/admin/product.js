@@ -42,6 +42,34 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
+    it("returns a list of products with all statuses when no status or invalid status is provided", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/products?status%5B%5D=null", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "draft",
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+            status: "draft",
+          }),
+        ])
+      )
+    })
+
     it("returns a list of products where status is proposed", async () => {
       const api = useApi()
 
