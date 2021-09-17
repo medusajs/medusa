@@ -81,18 +81,14 @@ You can find more informations, plans and pricing about Redis To Go [here](https
 
 ### 5. Configure environment variables on Heroku
 
-Medusa requires a set of environment variables. From you project repository run the following commands:.
-:::info
-Please change the value of `JWT_SECRET` and `COOKIE_SECRET` to proper secrets.
-:::
-
+Medusa requires a set of environment variables. From you project repository run the following commands:
 ```shell=
 heroku config:set NODE_ENV=production
 heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
-
+> Please change the value of `JWT_SECRET` and `COOKIE_SECRET` to proper secrets
 Additionally, we need to set the buildpack to Node.js
 
 ```shell=
