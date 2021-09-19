@@ -682,6 +682,14 @@ class CartService extends BaseService {
         }
       }
 
+      if ("completed_at" in update) {
+        cart.completed_at = update.completed_at
+      }
+
+      if ("payment_authorized_at" in update) {
+        cart.payment_authorized_at = update.payment_authorized_at
+      }
+
       const result = await cartRepo.save(cart)
 
       if ("email" in update || "customer_id" in update) {
@@ -1027,7 +1035,7 @@ class CartService extends BaseService {
 
       // If cart total is 0, we don't perform anything payment related
       if (cart.total <= 0) {
-        cart.completed_at = new Date()
+        cart.payment_authorized_at = new Date()
         return cartRepository.save(cart)
       }
 
@@ -1046,7 +1054,7 @@ class CartService extends BaseService {
           .createPayment(freshCart)
 
         freshCart.payment = payment
-        freshCart.completed_at = new Date()
+        freshCart.payment_authorized_at = new Date()
       }
 
       const updated = await cartRepository.save(freshCart)
@@ -1352,7 +1360,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async setRegion_(cart, regionId, countryCode) {
-    if (cart.completed_at) {
+    if (cart.completed_at || cart.payment_authorized_at) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot change the region of a completed cart"
@@ -1491,6 +1499,13 @@ class CartService extends BaseService {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Completed carts cannot be deleted"
+        )
+      }
+
+      if (cart.payment_authorized_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't delete a cart with an authorized payment"
         )
       }
 
