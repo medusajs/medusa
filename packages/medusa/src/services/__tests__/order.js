@@ -203,6 +203,7 @@ describe("OrderService", () => {
       }
 
       orderService.cartService_.retrieve = jest.fn(() => Promise.resolve(cart))
+      orderService.cartService_.update = jest.fn(() => Promise.resolve())
 
       await orderService.createFromCart("cart_id")
       const order = {
@@ -305,6 +306,7 @@ describe("OrderService", () => {
       orderService.cartService_.retrieve = () => {
         return Promise.resolve(cart)
       }
+      orderService.cartService_.update = () => Promise.resolve()
 
       await orderService.createFromCart("cart_id")
       const order = {
@@ -453,6 +455,7 @@ describe("OrderService", () => {
         total: 100,
       }
       orderService.cartService_.retrieve = () => Promise.resolve(cart)
+      orderService.cartService_.update = () => Promise.resolve()
       const res = orderService.createFromCart(cart)
       await expect(res).rejects.toThrow(
         "Variant with id: variant-1 does not have the required inventory"
