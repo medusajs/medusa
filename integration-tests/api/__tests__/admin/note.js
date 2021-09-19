@@ -14,7 +14,7 @@ const note = {
   value: "note text",
   resource_id: "resource1",
   resource_type: "type",
-  author: "author",
+  author: { id: "admin_user" },
 }
 
 describe("/admin/notes", () => {
@@ -65,7 +65,7 @@ describe("/admin/notes", () => {
           resource_id: "resource1",
           resource_type: "type",
           value: "note text",
-          author: "author",
+          author: { id: "admin_user" },
         },
       })
     })
@@ -95,7 +95,7 @@ describe("/admin/notes", () => {
             resource_id: "resource-id",
             resource_type: "resource-type",
             value: "my note",
-            author: "author",
+            author: "admin_user",
           },
           {
             headers: {
@@ -113,7 +113,7 @@ describe("/admin/notes", () => {
           resource_id: "resource-id",
           resource_type: "resource-type",
           value: "my note",
-          author: "author",
+          author: { id: "admin_user" },
         },
       })
     })
@@ -162,14 +162,14 @@ describe("/admin/notes", () => {
             resource_id: "resource1",
             resource_type: "type",
             value: "note text",
-            author: "author",
+            author: { id: "admin_user" },
           },
           {
             id: "note2",
             resource_id: "resource1",
             resource_type: "type",
             value: "note text",
-            author: "author",
+            author: { id: "admin_user" },
           },
         ],
       })

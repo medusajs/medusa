@@ -1,6 +1,6 @@
 /**
  * @oas [get] /notes/resource/{resource_id}
- * operationId: "GetNotesNote"
+ * operationId: "GetNotesResourceResource"
  * summary: "List Notes"
  * description: "Retrieves all notes related to a resource_id"
  * parameters:
@@ -30,6 +30,7 @@ export default async (req, res) => {
     const notes = await noteService.listByResource(resource_id, {
       take: limit,
       skip: offset,
+      relations: ["author"],
     })
 
     res.status(200).json({ notes })

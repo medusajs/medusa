@@ -2,7 +2,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
  * @oas [post] /notes
- * operationId: "PostNotesNote"
+ * operationId: "PostNotes"
  * summary: "Creates a Note"
  * description: "Creates a Note which can be associated with any resource as required."
  * requestBody:
@@ -21,7 +21,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *            description: The content of the Note to create.
  *          author:
  *            type: string
- *            description: The author of the note to create.
+ *            description: The id of the user which authors the note.
  * tags:
  *   - Note
  * responses:
@@ -50,12 +50,12 @@ export default async (req, res) => {
 
   try {
     const noteService = req.scope.resolve("noteService")
-    const result = await noteService.create(
-      value.resource_id,
-      value.resource_type,
-      value.value,
-      value.author
-    )
+    const result = await noteService.create({
+      resourceId: value.resource_id,
+      resourceType: value.resource_type,
+      value: value.value,
+      author: value.author,
+    })
 
     res.status(200).json({ note: result })
   } catch (err) {

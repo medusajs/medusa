@@ -6,16 +6,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
   JoinColumn,
-  JoinTable,
+  PrimaryColumn,
+  ManyToOne,
 } from "typeorm"
 import { ulid } from "ulid"
+import { User } from "./user"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
@@ -34,8 +30,11 @@ export class Note {
   @Column()
   resource_id: string
 
-  @Column()
-  author: string
+  author_id: string
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "author_id" })
+  author: User
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -77,7 +76,7 @@ export class Note {
  *     type: string
  *   author:
  *     description: "The author of the note."
- *     type: string
+ *     type: User
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

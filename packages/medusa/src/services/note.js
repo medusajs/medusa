@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import _ from "lodash"
-import { Transaction, TransactionManager } from "typeorm"
+import { TransactionManager } from "typeorm"
 
 class NoteService extends BaseService {
   static Events = {
@@ -10,7 +10,7 @@ class NoteService extends BaseService {
     DELETED: "note.deleted",
   }
 
-  constructor({ manager, noteRepository, eventBusService }) {
+  constructor({ manager, noteRepository, eventBusService, userService }) {
     super()
 
     /** @private @const {EntityManager} */
@@ -18,6 +18,9 @@ class NoteService extends BaseService {
 
     /** @private @const {noteRepository} */
     this.noteRepository_ = noteRepository
+
+    /** @private @const {userService} */
+    this.userService_ = userService
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -36,12 +39,20 @@ class NoteService extends BaseService {
     const cloned = new NoteService({
       manager: transactionManager,
       noteRepository: this.noteRepository_,
+      userRepository: this.userRepository_,
+      eventBus: this.eventBus_,
     })
 
     cloned.transactionManager_ = transactionManager
     return cloned
   }
 
+  /**
+   * Retrieves a specific note.
+   * @param {*} id - the id of the note to retrieve.
+   * @param {*} config - any options needed to query for the result.
+   * @returns {Promise} which resolves to the requested note.
+   */
   async retrieve(id, config = {}) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
@@ -61,38 +72,49 @@ class NoteService extends BaseService {
   }
 
   /**
-   *
+   * Lists notes related to a given resource
    * @param {string} resourceId - the id of the resource to retrieve
    * notes related to.
    * @return {Promise<Note[]>} related notes.
    */
   async listByResource(
     resourceId,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+    config = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
   ) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
     const query = this.buildQuery_({ resource_id: resourceId }, config)
+
     return noteRepo.find(query)
   }
 
-  async create(
-    resourceId,
-    resourceType,
-    value,
-    author,
-    config = { metadata: {} }
-  ) {
+  /**
+   * Creates a note associated with a given author
+   * @param {object} data - the note to create
+   * @param {*} config - any configurations if needed, including meta data
+   * @returns {Promise} resolves to the creation result
+   */
+  async create(data, config = { metadata: {} }) {
     const { metadata } = config
+
+    const { resourceId, resourceType, value, author } = data
 
     return this.atomicPhase_(async manager => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
+
+      const user = await this.userService_
+        .withTransaction(manager)
+        .retrieve(author)
 
       const toCreate = {
         resource_id: resourceId,
         resource_type: resourceType,
         value,
-        author,
+        author: user,
         metadata,
       }
 
@@ -107,11 +129,17 @@ class NoteService extends BaseService {
     })
   }
 
+  /**
+   * Updates a given note with a new value
+   * @param {*} noteId - the id of the note to update
+   * @param {*} value - the new value
+   * @returns {Promise} resolves to the updated element
+   */
   async update(noteId, value) {
     return this.atomicPhase_(async manager => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
-      const note = await this.retrieve(noteId)
+      const note = await this.retrieve(noteId, { relations: ["author"] })
 
       note.value = value
 
@@ -125,6 +153,11 @@ class NoteService extends BaseService {
     })
   }
 
+  /**
+   * Deletes a given note
+   * @param {*} noteId - id of the note to delete
+   * @returns {Promise}
+   */
   async delete(noteId) {
     return this.atomicPhase_(async manager => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)

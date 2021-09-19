@@ -22,17 +22,15 @@ describe("NoteService", () => {
     })
 
     it("calls note model functions", async () => {
-      await noteService.listByResource(IdMap.getId("note"))
+      await noteService.listByResource(IdMap.getId("note"), {
+        relations: ["author"],
+      })
       expect(noteRepo.find).toHaveBeenCalledTimes(1)
       expect(noteRepo.find).toHaveBeenCalledWith({
         where: {
           resource_id: IdMap.getId("note"),
         },
-        order: {
-          created_at: "DESC",
-        },
-        skip: 0,
-        take: 50,
+        relations: ["author"],
       })
     })
   })
@@ -62,10 +60,12 @@ describe("NoteService", () => {
     })
 
     it("calls note model functions", async () => {
-      await noteService.retrieve(IdMap.getId("note"))
+      await noteService.retrieve(IdMap.getId("note"), { relations: ["author"] })
+
       expect(noteRepo.findOne).toHaveBeenCalledTimes(1)
       expect(noteRepo.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("note") },
+        relations: ["author"],
       })
     })
 
@@ -79,16 +79,29 @@ describe("NoteService", () => {
   })
 
   describe("create", () => {
-    const note = { id: IdMap.getId("note") }
+    const note = {
+      id: IdMap.getId("note"),
+      author: { id: IdMap.getId("user") },
+    }
 
     const noteRepo = MockRepository({
       create: f => Promise.resolve(note),
       save: f => Promise.resolve(note),
     })
 
+    const userService = {
+      retrieve: (id, config) => {
+        return Promise.resolve({ id: IdMap.getId("user") })
+      },
+      withTransaction: function() {
+        return this
+      },
+    }
+
     const noteService = new NoteService({
       manager: MockManager,
       noteRepository: noteRepo,
+      userService,
       eventBusService: EventBusServiceMock,
     })
 
@@ -97,25 +110,30 @@ describe("NoteService", () => {
     })
 
     it("calls note model functions", async () => {
-      await noteService.create(
-        IdMap.getId("resource-id"),
-        "type",
-        "my note",
-        "author"
-      )
+      await noteService.create({
+        resourceId: IdMap.getId("resource-id"),
+        resourceType: "type",
+        value: "my note",
+        author: IdMap.getId("user"),
+      })
 
       expect(noteRepo.create).toHaveBeenCalledTimes(1)
       expect(noteRepo.create).toHaveBeenCalledWith({
         resource_id: IdMap.getId("resource-id"),
         resource_type: "type",
         value: "my note",
-        author: "author",
+        author: {
+          id: IdMap.getId("user"),
+        },
         metadata: {},
       })
 
       expect(noteRepo.save).toHaveBeenCalledTimes(1)
       expect(noteRepo.save).toHaveBeenCalledWith({
         id: IdMap.getId("note"),
+        author: {
+          id: IdMap.getId("user"),
+        },
       })
 
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
@@ -146,11 +164,6 @@ describe("NoteService", () => {
 
     it("calls note model functions", async () => {
       await noteService.update(IdMap.getId("note"), "new note")
-
-      expect(noteRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(noteRepo.findOne).toHaveBeenCalledWith({
-        where: { id: IdMap.getId("note") },
-      })
 
       expect(noteRepo.save).toHaveBeenCalledTimes(1)
       expect(noteRepo.save).toHaveBeenCalledWith({
@@ -186,11 +199,6 @@ describe("NoteService", () => {
 
     it("calls note model functions", async () => {
       await noteService.delete(IdMap.getId("note"))
-
-      expect(noteRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(noteRepo.findOne).toHaveBeenCalledWith({
-        where: { id: IdMap.getId("note") },
-      })
 
       expect(noteRepo.softRemove).toHaveBeenCalledTimes(1)
       expect(noteRepo.softRemove).toHaveBeenCalledWith(note)
