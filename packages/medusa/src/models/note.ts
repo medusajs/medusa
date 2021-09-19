@@ -34,6 +34,9 @@ export class Note {
   @Column()
   resource_id: string
 
+  @Column()
+  author: string
+
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
@@ -71,6 +74,9 @@ export class Note {
  *     type: string
  *   value:
  *     description: "The contents of the note."
+ *     type: string
+ *   author:
+ *     description: "The author of the note."
  *     type: string
  *   created_at:
  *     description: "The date with timezone at which the resource was created."

@@ -76,7 +76,13 @@ class NoteService extends BaseService {
     return noteRepo.find(query)
   }
 
-  async create(resourceId, resourceType, value, config = { metadata: {} }) {
+  async create(
+    resourceId,
+    resourceType,
+    value,
+    author,
+    config = { metadata: {} }
+  ) {
     const { metadata } = config
 
     return this.atomicPhase_(async manager => {
@@ -86,6 +92,7 @@ class NoteService extends BaseService {
         resource_id: resourceId,
         resource_type: resourceType,
         value,
+        author,
         metadata,
       }
 

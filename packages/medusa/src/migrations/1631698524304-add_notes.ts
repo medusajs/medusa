@@ -5,7 +5,7 @@ export class addNotes1631698524304 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "note" ("id" character varying NOT NULL, "value" character varying NOT NULL, "resource_type" character varying NOT NULL, "resource_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_96d0c172a4fba276b1bbed43058" PRIMARY KEY ("id"))`
+      `CREATE TABLE "note" ("id" character varying NOT NULL, "value" character varying NOT NULL, "author" character varying NOT NULL, "resource_type" character varying NOT NULL, "resource_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_96d0c172a4fba276b1bbed43058" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_f74980b411cf94af523a72af7d" ON "note" ("resource_type") `

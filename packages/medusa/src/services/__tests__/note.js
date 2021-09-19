@@ -97,13 +97,19 @@ describe("NoteService", () => {
     })
 
     it("calls note model functions", async () => {
-      await noteService.create(IdMap.getId("resource-id"), "type", "my note")
+      await noteService.create(
+        IdMap.getId("resource-id"),
+        "type",
+        "my note",
+        "author"
+      )
 
       expect(noteRepo.create).toHaveBeenCalledTimes(1)
       expect(noteRepo.create).toHaveBeenCalledWith({
         resource_id: IdMap.getId("resource-id"),
         resource_type: "type",
         value: "my note",
+        author: "author",
         metadata: {},
       })
 
