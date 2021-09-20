@@ -39,7 +39,7 @@ export default async (req, res) => {
     value: Validator.string(),
   })
 
-  const userId = req.user.id
+  const userId = req.user.id || req.user.userId
 
   const { value, error } = schema.validate(req.body)
   if (error) {
