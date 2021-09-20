@@ -186,7 +186,7 @@ heroku logs -n 500000 --remote heroku --tail
 
 ### What's next?
 
-You now have a production ready application running on DigitalOcean. This can be scaled and configured to fit your business needs.
+You now have a production ready application running on Heroku. This can be scaled and configured to fit your business needs.
 
 Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
 
