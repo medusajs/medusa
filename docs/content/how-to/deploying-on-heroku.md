@@ -116,10 +116,10 @@ Remove the username from the Redis URL:
 redis://r̶e̶d̶i̶s̶t̶o̶g̶o̶:some_password_123@sole.redistogo.com:9660/
 ```
 
-Set the new environment variable for `REDISTOGO_URL`
+Set the new environment variable for `REDIS_URL`
 
 ```shell=
-heroku config:set REDISTOGO_URL=redis://:some_password_123@sole.redistogo.com:9660/
+heroku config:set REDIS_URL=redis://:some_password_123@sole.redistogo.com:9660/
 ```
 
 ### 6. Configure Medusa
