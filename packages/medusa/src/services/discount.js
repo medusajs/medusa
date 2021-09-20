@@ -4,6 +4,7 @@ import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { Brackets } from "typeorm"
 import { MedusaErrorCodes } from "medusa-core-utils/dist/errors"
+import { parse, toSeconds } from "iso8601-duration"
 
 /**
  * Provides layer to manipulate discounts.
@@ -334,6 +335,11 @@ class DiscountService extends BaseService {
         )
       }
 
+      const lastValidDate = new Date()
+      lastValidDate.setSeconds(
+        lastValidDate.getSeconds() + toSeconds(parse(discount.valid_duration))
+      )
+
       const toCreate = {
         ...data,
         rule_id: discount.rule_id,
@@ -342,6 +348,7 @@ class DiscountService extends BaseService {
         code: data.code.toUpperCase(),
         parent_discount_id: discount.id,
         usage_limit: discount.usage_limit,
+        ends_at: lastValidDate,
       }
 
       const created = await discountRepo.create(toCreate)

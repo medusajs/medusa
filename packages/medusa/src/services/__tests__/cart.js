@@ -1575,7 +1575,7 @@ describe("CartService", () => {
               type: "percentage",
             },
             starts_at: getOffsetDate(-10),
-            valid_duration: "P0Y0M1D",
+            ends_at: getOffsetDate(-1),
           })
         }
         if (code === "ExpiredDynamicDiscountEndDate") {
@@ -1813,7 +1813,7 @@ describe("CartService", () => {
         cartService.update(IdMap.getId("cart"), {
           discounts: [{ code: "ExpiredDynamicDiscount" }],
         })
-      ).rejects.toThrow("Dynamic discount is expired")
+      ).rejects.toThrow("Discount is expired")
     })
 
     it("throws if expired dynamic discount is applied after ends_at", async () => {

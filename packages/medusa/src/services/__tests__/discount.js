@@ -444,6 +444,7 @@ describe("DiscountService", () => {
           id: "parent",
           is_dynamic: true,
           rule_id: "parent_rule",
+          valid_duration: "P1Y",
         }),
     })
 
@@ -480,6 +481,8 @@ describe("DiscountService", () => {
         rule_id: "parent_rule",
         parent_discount_id: "parent",
         code: "HI",
+        usage_limit: undefined,
+        ends_at: expect.any(Date),
       })
     })
   })
