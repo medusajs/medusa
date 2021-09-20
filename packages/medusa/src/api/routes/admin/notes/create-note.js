@@ -19,9 +19,6 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *          value:
  *            type: string
  *            description: The content of the Note to create.
- *          author:
- *            type: string
- *            description: The id of the user which authors the note.
  * tags:
  *   - Note
  * responses:
@@ -40,8 +37,9 @@ export default async (req, res) => {
     resource_id: Validator.string(),
     resource_type: Validator.string(),
     value: Validator.string(),
-    author: Validator.string(),
   })
+
+  const userId = req.user.id
 
   const { value, error } = schema.validate(req.body)
   if (error) {
@@ -54,7 +52,7 @@ export default async (req, res) => {
       resourceId: value.resource_id,
       resourceType: value.resource_type,
       value: value.value,
-      author: value.author,
+      author: userId,
     })
 
     res.status(200).json({ note: result })

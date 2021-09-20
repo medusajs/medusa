@@ -95,7 +95,6 @@ describe("/admin/notes", () => {
             resource_id: "resource-id",
             resource_type: "resource-type",
             value: "my note",
-            author: "admin_user",
           },
           {
             headers: {
