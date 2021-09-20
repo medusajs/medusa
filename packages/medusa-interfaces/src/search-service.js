@@ -11,8 +11,8 @@ class SearchService extends BaseService {
 
   /**
    * Used to create an index
-   * @param indexName {string} - the index name.
-   * @param [options] {string} - the index name.
+   * @param indexName {string} - the index name
+   * @param [options] {string} - the index name
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   createIndex(indexName, options) {
@@ -29,8 +29,8 @@ class SearchService extends BaseService {
   }
 
   /**
-   * Used to index documents by the search engine provider.
-   * @param indexName {string} - the index name.
+   * Used to index documents by the search engine provider
+   * @param indexName {string} - the index name
    * @param documents {Array.<Object>} - documents array to be indexed
    * @return {Promise<{object}>} - returns response from search engine provider
    */
@@ -50,8 +50,8 @@ class SearchService extends BaseService {
 
   /**
    * Used to delete document
-   * @param indexName {string} - the index name.
-   * @param document_id {string} - the id of the document.
+   * @param indexName {string} - the index name
+   * @param document_id {string} - the id of the document
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   deleteDocument(indexName, document_id) {
@@ -60,7 +60,7 @@ class SearchService extends BaseService {
 
   /**
    * Used to delete all documents
-   * @param indexName {string} - the index name.
+   * @param indexName {string} - the index name
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   deleteAllDocuments(indexName) {
@@ -69,10 +69,10 @@ class SearchService extends BaseService {
 
   /**
    * Used to search for a document in an index
-   * @param indexName {string} - the index name.
-   * @param query {string} - the search query.
+   * @param indexName {string} - the index name
+   * @param query {string} - the search query
    * @param options {object} - any options passed to the request object other than the query and indexName
-   * e.g. pagination options, filtering options, etc.
+   * e.g. pagination options, filtering options, etc
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   search(indexName, query, options) {
@@ -81,7 +81,7 @@ class SearchService extends BaseService {
 
   /**
    * Used to update the settings of an index
-   * @param indexName {string} - the index name.
+   * @param indexName {string} - the index name
    * @param settings {object} - settings object
    * @return {Promise<{object}>} - returns response from search engine provider
    */
