@@ -216,9 +216,7 @@ describe("/store/carts", () => {
       const response = await api
         .post("/store/returns", {
           order_id: "order_test",
-          return_shipping: {
-            option_id: "test-option",
-          },
+          return_shipping_option: "test-option",
           items: [
             {
               item_id: "test-item",

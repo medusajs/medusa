@@ -24,13 +24,9 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
- *           return_shipping:
- *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
- *             type: object
- *             properties:
- *               option_id:
- *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *           return_shipping_option
+ *             description: The id of the Shipping Option to create the Shipping Method from.
+ *             type: string             
  * tags:
  *   - Return
  * responses:
@@ -54,11 +50,7 @@ export default async (req, res) => {
         note: Validator.string().optional(),
       })
       .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-      })
-      .optional(),
+    return_shipping_option: Validator.string().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
