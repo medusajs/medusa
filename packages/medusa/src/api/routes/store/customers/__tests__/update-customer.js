@@ -7,21 +7,17 @@ describe("POST /store/customers/:id", () => {
   describe("successfully updates a customer", () => {
     let subject
     beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/customers/${IdMap.getId("lebron")}`,
-        {
-          payload: {
-            first_name: "LeBron",
-            last_name: "James",
+      subject = await request("POST", `/store/customers/me`, {
+        payload: {
+          first_name: "LeBron",
+          last_name: "James",
+        },
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
           },
-          clientSession: {
-            jwt: {
-              customer_id: IdMap.getId("lebron"),
-            },
-          },
-        }
-      )
+        },
+      })
     })
 
     afterAll(() => {
@@ -59,20 +55,16 @@ describe("POST /store/customers/:id", () => {
   describe("successfully updates a customer with billing address id", () => {
     let subject
     beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/customers/${IdMap.getId("lebron")}`,
-        {
-          payload: {
-            billing_address: "test",
+      subject = await request("POST", `/store/customers/me`, {
+        payload: {
+          billing_address: "test",
+        },
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
           },
-          clientSession: {
-            jwt: {
-              customer_id: IdMap.getId("lebron"),
-            },
-          },
-        }
-      )
+        },
+      })
     })
 
     afterAll(() => {
@@ -97,28 +89,24 @@ describe("POST /store/customers/:id", () => {
   describe("successfully updates a customer with billing address object", () => {
     let subject
     beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/customers/${IdMap.getId("lebron")}`,
-        {
-          payload: {
-            billing_address: {
-              first_name: "Olli",
-              last_name: "Juhl",
-              address_1: "Laksegade",
-              city: "Copenhagen",
-              country_code: "dk",
-              postal_code: "2100",
-              phone: "+1 (222) 333 4444",
-            },
+      subject = await request("POST", `/store/customers/me`, {
+        payload: {
+          billing_address: {
+            first_name: "Olli",
+            last_name: "Juhl",
+            address_1: "Laksegade",
+            city: "Copenhagen",
+            country_code: "dk",
+            postal_code: "2100",
+            phone: "+1 (222) 333 4444",
           },
-          clientSession: {
-            jwt: {
-              customer_id: IdMap.getId("lebron"),
-            },
+        },
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
           },
-        }
-      )
+        },
+      })
     })
 
     afterAll(() => {
@@ -145,35 +133,6 @@ describe("POST /store/customers/:id", () => {
 
     it("status code 200", () => {
       expect(subject.status).toEqual(200)
-    })
-  })
-
-  describe("fails if not authenticated", () => {
-    let subject
-    beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/customers/${IdMap.getId("customer1")}`,
-        {
-          payload: {
-            first_name: "LeBron",
-            last_name: "James",
-          },
-          clientSession: {
-            jwt: {
-              customer_id: IdMap.getId("lebron"),
-            },
-          },
-        }
-      )
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("status code 400", () => {
-      expect(subject.status).toEqual(400)
     })
   })
 })

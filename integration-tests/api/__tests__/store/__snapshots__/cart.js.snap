@@ -8,6 +8,14 @@ Object {
 }
 `;
 
+exports[`/store/carts POST /store/carts/:id fails to complete swap cart with items inventory not/partially covered 1`] = `
+Object {
+  "code": "insufficient_inventory",
+  "message": "Variant with id: test-variant-2 does not have the required inventory",
+  "type": "not_allowed",
+}
+`;
+
 exports[`/store/carts POST /store/carts/:id returns early, if cart is already completed 1`] = `
 Object {
   "code": "cart_incompatible_state",
