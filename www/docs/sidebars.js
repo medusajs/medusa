@@ -77,8 +77,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "how-to/create-medusa-app"
-        }
+          id: "how-to/create-medusa-app",
+        },
       ],
     },
     {
@@ -88,6 +88,14 @@ module.exports = {
         {
           type: "doc",
           id: "guides/fulfillment-api",
+        },
+        {
+          type: "doc",
+          id: "guides/checkouts",
+        },
+        {
+          type: "doc",
+          id: "guides/carts-in-medusa",
         },
       ],
     },

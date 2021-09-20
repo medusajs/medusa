@@ -1,10 +1,15 @@
+---
+title: Carts in Medusa
+---
+
 # Carts in Medusa
 
-In Medusa a Cart serves the purpose of collecting the information needed to create an Order, including what products to purchase, what address to send the products to and which payment method the purchase will be processed by. 
+In Medusa a Cart serves the purpose of collecting the information needed to create an Order, including what products to purchase, what address to send the products to and which payment method the purchase will be processed by.
 
 To create a cart using the `@medusajs/medusa-js` SDK you can use:
+
 ```javascript
-const client = new Medusa({ baseUrl: "http://localhost:9000"})
+const client = new Medusa({ baseUrl: "http://localhost:9000" })
 const { cart } = await client.carts.create()
 ```
 
@@ -44,16 +49,17 @@ A Cart will always belong to a Region and you may provide a `region_id` upon Car
 
 ## Adding products to the Cart
 
-Customers can add products to the Cart in order to start gathering the items that will eventually be purchased. In Medusa adding a product to a Cart will result in a *Line Item* being generated. To add a product using the SDK use:
+Customers can add products to the Cart in order to start gathering the items that will eventually be purchased. In Medusa adding a product to a Cart will result in a _Line Item_ being generated. To add a product using the SDK use:
 
 ```javascript
 const { cart } = await client.carts.lineItems.create(cartId, {
   variant_id: "[id-of-variant-to-add]",
-  quantity: 1
+  quantity: 1,
 })
 ```
 
 The resulting response will look something like this:
+
 ```json
 {
   "cart": {
@@ -117,14 +123,15 @@ const { cart } = await client.carts.update(cartId, {
     country_code: "us",
     city: "Los Angeles",
     region: "CA",
-  }
+  },
 })
 ```
 
 Note that the country code in the shipping address must be the country code for one of the countries in a Region - otherwise this method will fail.
 
 ## Initializing Payment Sessions
-In Medusa payments are handled through the long lived entities called *Payment Sessions*. Payment Sessions cary provider specific data that can later be used to authorize the payments, which is the step required before an order can be created. The SDK provides a `createPaymentSessions` method that can be used to initialize the payment sessions with the Payment Providers available in the Region.
+
+In Medusa payments are handled through the long lived entities called _Payment Sessions_. Payment Sessions cary provider specific data that can later be used to authorize the payments, which is the step required before an order can be created. The SDK provides a `createPaymentSessions` method that can be used to initialize the payment sessions with the Payment Providers available in the Region.
 
 ```javascript
 const { cart } = await client.carts.createPaymentSessions(cartId)
@@ -133,11 +140,12 @@ const { cart } = await client.carts.createPaymentSessions(cartId)
 You can read more about Payment Sessions in our [guide to checkouts](https://docs.medusa-commerce.com/guides/checkouts).
 
 ## Changing the Cart region
-To update the Region that the cart belongs to you should also use the `update` method from the SDK. 
+
+To update the Region that the cart belongs to you should also use the `update` method from the SDK.
 
 ```javascript
 const { cart } = await client.carts.update(cartId, {
-  region_id: "[id-of-region-to-switch-to]"
+  region_id: "[id-of-region-to-switch-to]",
 })
 ```
 
@@ -149,6 +157,7 @@ When changing the Cart region you should be aware of a couple of things:
 - If the Cart already has initialized payment sessions all of these will be canceled and a new call to `createPaymentSessions` will have to be made
 
 ## What's next?
+
 Carts are at the core of the shopping process in Medusa and provide all the necessary functionality to gather products for purchase. If you want to read a more detailed guide about how to complete checkouts please go to our [Checkout Guide](https://docs.medusa-commerce.com/guides/checkout).
 
 If you have questions or issues feel free to reach out via our [Discord server](https://discord.gg/xpCwq3Kfn8) for direct access to the Medusa engineering team.
