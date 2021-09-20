@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
@@ -31,6 +30,20 @@ class ReturnReasonService extends BaseService {
   create(data) {
     return this.atomicPhase_(async manager => {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
+
+      if (data.parent_return_reason_id && data.parent_return_reason_id !== "") {
+        const parentReason = await this.retrieve(data.parent_return_reason_id)
+
+        if (
+          parentReason.parent_return_reason_id &&
+          parentReason.parent_return_reason_id !== ""
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Doubly nested return reasons is not supported"
+          )
+        }
+      }
 
       const created = rrRepo.create(data)
 
@@ -97,6 +110,19 @@ class ReturnReasonService extends BaseService {
     }
 
     return item
+  }
+
+  async delete(returnReasonId) {
+    return this.atomicPhase_(async manager => {
+      const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
+      const reason = await this.retrieve(returnReasonId)
+
+      if (!reason) return Promise.resolve()
+
+      await rrRepo.softRemove(reason)
+
+      return Promise.resolve()
+    })
   }
 }
 
