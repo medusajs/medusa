@@ -26,6 +26,11 @@ export default app => {
    */
   route.post("/:id", middlewares.wrap(require("./update-reason").default))
 
+  /**
+   * Delete a reason
+   */
+  route.delete("/:id", middlewares.wrap(require("./delete-reason").default))
+
   return app
 }
 
@@ -40,4 +45,7 @@ export const defaultFields = [
   "deleted_at",
 ]
 
-export const defaultRelations = ["parent_return_reason"]
+export const defaultRelations = [
+  "parent_return_reason",
+  "return_reason_children",
+]
