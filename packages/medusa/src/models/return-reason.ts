@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   PrimaryColumn,
   ManyToOne, 
+  OneToMany,
   JoinColumn
 } from "typeorm"
 import { ulid } from "ulid"
@@ -34,6 +35,13 @@ export class ReturnReason {
   @ManyToOne(() => ReturnReason)
   @JoinColumn({ name: "parent_return_reason_id" })
   parent_return_reason: ReturnReason
+
+  @OneToMany(
+    () => ReturnReason,
+    return_reason => return_reason.parent_return_reason,
+    { cascade: ["insert"] }
+  )
+  return_reason_children: ReturnReason[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
