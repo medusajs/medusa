@@ -749,41 +749,59 @@ class ProductService extends BaseService {
     return product
   }
 
+  /**
+   * Loads all products into the search engine
+   */
+
   async loadIntoSearchEngine() {
     if (this.searchService_.isDefault) return
 
-    const products = await this.list(
-      {},
-      {
-        select: [
-          "id",
-          "title",
-          "subtitle",
-          "description",
-          "handle",
-          "is_giftcard",
-          "discountable",
-          "thumbnail",
-          "profile_id",
-          "collection_id",
-          "type_id",
-          "origin_country",
-          "created_at",
-          "updated_at",
-        ],
-        relations: ["variants", "tags", "type", "collection"],
-      }
-    )
-    const flattenSkus = product => {
-      product.sku = flattenField(product.variants, "sku").filter(Boolean)
-      return product
-    }
-    const productsWithSkus = products.map(product => flattenSkus(product))
+    const TAKE = 20
+    const totalCount = await this.count()
+    let iterCount = 0,
+      lastSeenId = ""
 
-    await this.searchService_.addDocuments(
-      ProductService.IndexName,
-      productsWithSkus
-    )
+    while (iterCount < totalCount) {
+      console.log({ lastSeenId })
+      const products = await this.list(
+        { id: { gte: lastSeenId } },
+        {
+          select: [
+            "id",
+            "title",
+            "subtitle",
+            "description",
+            "handle",
+            "is_giftcard",
+            "discountable",
+            "thumbnail",
+            "profile_id",
+            "collection_id",
+            "type_id",
+            "origin_country",
+            "created_at",
+            "updated_at",
+          ],
+          relations: ["variants", "tags", "type", "collection"],
+          take: TAKE,
+          order: { id: "ASC" },
+        }
+      )
+      const flattenSkus = product => {
+        product.sku = flattenField(product.variants, "sku").filter(Boolean)
+        return product
+      }
+
+      const productsWithSkus = products.map(product => flattenSkus(product))
+
+      await this.searchService_.addDocuments(
+        ProductService.IndexName,
+        productsWithSkus
+      )
+
+      iterCount += TAKE
+      lastSeenId = products.at(-1).id
+    }
   }
 }
 

@@ -1,11 +1,10 @@
 import { Validator, MedusaError } from "medusa-core-utils"
-import { INDEX_NS } from "../../../../utils/index-ns"
+import ProductService from "../../../../services/product"
 
 export default async (req, res) => {
   const schema = Validator.object()
     .keys({
       q: Validator.string().required(),
-      indexName: Validator.string().required(),
     })
     .options({ allowUnknown: true })
 
@@ -20,7 +19,7 @@ export default async (req, res) => {
     const searchService = req.scope.resolve("searchService")
 
     const results = await searchService.search(
-      `${INDEX_NS}_${indexName}`,
+      ProductService.IndexName,
       q,
       options
     )

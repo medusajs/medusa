@@ -2,7 +2,7 @@ import ProductService from "../services/product"
 import ProductVariantService from "../services/product-variant"
 import { flattenField } from "../utils/flatten-field"
 
-class SearchSubscriber {
+class ProductSearchSubscriber {
   constructor({ eventBusService, searchService, productService }, options) {
     this.eventBus_ = eventBusService
 
@@ -86,4 +86,4 @@ class SearchSubscriber {
   }
 }
 
-export default SearchSubscriber
+export default ProductSearchSubscriber

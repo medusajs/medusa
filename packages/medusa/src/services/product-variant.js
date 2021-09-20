@@ -203,6 +203,7 @@ class ProductVariantService extends BaseService {
         .withTransaction(manager)
         .emit(ProductVariantService.Events.CREATED, {
           id: result.id,
+          product_id: result.product_id,
         })
 
       return result
