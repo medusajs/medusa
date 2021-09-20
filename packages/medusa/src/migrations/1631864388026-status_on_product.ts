@@ -22,9 +22,7 @@ export class statusOnProduct1631864388026 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "public"."product" DROP COLUMN "status"`
-    )
-    await queryRunner.query(`DROP TYPE "public"."product_status_enum"`)
+    await queryRunner.query(`ALTER TABLE "product" DROP COLUMN "status"`)
+    await queryRunner.query(`DROP TYPE "product_status_enum"`)
   }
 }
