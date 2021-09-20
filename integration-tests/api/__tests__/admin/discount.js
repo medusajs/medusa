@@ -182,6 +182,8 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to update end date to a date before start date", async () => {
+      expect.assertions(6)
+
       const api = useApi()
 
       const response = await api
@@ -242,15 +244,14 @@ describe("/admin/discounts", () => {
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
-          expect(err.response.data.error.message).toEqual(
+          expect(err.response.data.message).toEqual(
             `"ends_at" must be greater than "starts_at"`
           )
-          return
         })
-      expect(true).toBe(false)
     })
 
     it("fails to create discount with end date before start date", async () => {
+      expect.assertions(2)
       const api = useApi()
 
       const response = await api
@@ -275,13 +276,13 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err)
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual([
+            expect.objectContaining({
+              message: `"ends_at" must be greater than "ref:starts_at"`,
+            }),
+          ])
         })
-
-      expect(response.status).toEqual(400)
-      expect(error.response.data.message).toEqual(
-        `"ends_at" must be greater than "ref:starts_at"`
-      )
     })
   })
 
@@ -411,6 +412,7 @@ describe("/admin/discounts", () => {
           is_dynamic: true,
           is_disabled: false,
           rule_id: "test-discount-rule",
+          valid_duration: "P2Y",
         })
       } catch (err) {
         console.log(err)
