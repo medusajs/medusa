@@ -4,7 +4,7 @@ import { carts, CartServiceMock } from "../../../../../services/__mocks__/cart"
 import { ShippingProfileServiceMock } from "../../../../../services/__mocks__/shipping-profile"
 
 describe("GET /store/shipping-options", () => {
-  describe("retrieves shipping options", () => {
+  describe("retrieves shipping options when cart type is not swap and not claim", () => {
     let subject
 
     beforeAll(async () => {
@@ -50,6 +50,56 @@ describe("GET /store/shipping-options", () => {
     it("returns the shippingOptions", () => {
       expect(subject.body.shipping_options[0].id).toEqual(
         IdMap.getId("cartShippingOption")
+      )
+    })
+  })
+
+  describe("retrieves shipping options when cart type is swap", () => {
+    let subject
+
+    beforeAll(async () => {
+      subject = await request(
+        "GET",
+        `/store/shipping-options/${IdMap.getId("swap-cart")}`
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
+        IdMap.getId("swap-cart"),
+        {
+          select: ["subtotal"],
+          relations: [
+            "region",
+            "items",
+            "items.variant",
+            "items.variant.product",
+          ],
+        }
+      )
+    })
+
+    it("calls ShippingProfileService fetchRMAOptions", () => {
+      expect(ShippingProfileServiceMock.fetchRMAOptions).toHaveBeenCalledTimes(
+        1
+      )
+      expect(ShippingProfileServiceMock.fetchRMAOptions).toHaveBeenCalledWith(
+        carts.testSwapCart
+      )
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns the RMAshippingOptions", () => {
+      expect(subject.body.shipping_options[0].id).toEqual(
+        IdMap.getId("cartRMAShippingOption")
       )
     })
   })

@@ -23,9 +23,9 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService addShipping", () => {
-      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledWith(
+    it("calls CartService addRMAMethod", () => {
+      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
         IdMap.getId("freeShipping"),
         {}
@@ -42,6 +42,50 @@ describe("POST /store/carts/:id/shipping-methods", () => {
 
     it("returns the cart", () => {
       expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
+    })
+  })
+
+  describe("successfully adds a RMA shipping method", () => {
+    let subject
+
+    beforeAll(async () => {
+      const cartId = IdMap.getId("swap-cart")
+      subject = await request(
+        "POST",
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          payload: {
+            option_id: IdMap.getId("freeShipping"),
+          },
+        }
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CartService addRMAMethod", () => {
+      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledWith(
+        IdMap.getId("swap-cart"),
+        IdMap.getId("freeShipping"),
+        {}
+      )
+    })
+
+    it("calls CartService retrieve", () => {
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns the cart", () => {
+      expect(subject.body.cart).toEqual(
+        expect.objectContaining({ type: "swap", id: IdMap.getId("test-swap") })
+      )
     })
   })
 
@@ -68,9 +112,9 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService addShipping", () => {
-      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledWith(
+    it("calls CartService addRMAMethod", () => {
+      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
         IdMap.getId("freeShipping"),
         {

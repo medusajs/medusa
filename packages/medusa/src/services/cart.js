@@ -24,7 +24,6 @@ class CartService extends BaseService {
     regionService,
     lineItemService,
     shippingOptionService,
-    shippingProfileService,
     customerService,
     discountService,
     giftCardService,
@@ -32,6 +31,7 @@ class CartService extends BaseService {
     addressRepository,
     paymentSessionRepository,
     inventoryService,
+    RMAShippingOptionRepository,
   }) {
     super()
 
@@ -62,9 +62,6 @@ class CartService extends BaseService {
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
 
-    /** @private @const {ShippingProfileService} */
-    this.shippingProfileService_ = shippingProfileService
-
     /** @private @const {CustomerService} */
     this.customerService_ = customerService
 
@@ -88,6 +85,8 @@ class CartService extends BaseService {
 
     /** @private @const {InventoryService} */
     this.inventoryService_ = inventoryService
+
+    this.rmaShippingOptionRepository_ = RMAShippingOptionRepository
   }
 
   withTransaction(transactionManager) {
@@ -107,13 +106,13 @@ class CartService extends BaseService {
       regionService: this.regionService_,
       lineItemService: this.lineItemService_,
       shippingOptionService: this.shippingOptionService_,
-      shippingProfileService: this.shippingProfileService_,
       customerService: this.customerService_,
       discountService: this.discountService_,
       totalsService: this.totalsService_,
       addressRepository: this.addressRepository_,
       giftCardService: this.giftCardService_,
       inventoryService: this.inventoryService_,
+      RMAShippingOptionRepository: this.rmaShippingOptionRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -1303,9 +1302,13 @@ class CartService extends BaseService {
       })
       const { shipping_methods } = cart
 
+      const customPrice = data.price ? { price: data.price } : {}
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
-        .createShippingMethod(optionId, data, { cart })
+        .createShippingMethod(optionId, data, {
+          cart,
+          ...customPrice,
+        })
 
       const methods = [newMethod]
       if (shipping_methods.length) {
@@ -1343,6 +1346,35 @@ class CartService extends BaseService {
         .emit(CartService.Events.UPDATED, result)
       return result
     }, "SERIALIZABLE")
+  }
+
+  /**
+   * Adds the corresponding shipping method either from a normal or rma shipping option to the list of shipping methods associated with
+   * the cart.
+   * @param {string} cartId - the id of the cart to add shipping method to
+   * @param {string} optionIdOrRmaOptionId - id of the normal or rma shipping option to add as valid method
+   * @param {Object} data - the fulmillment data for the method
+   * @return {Promise} the result of the update operation
+   */
+  async addRMAMethod(cartId, optionIdOrRmaOptionId, data) {
+    return this.atomicPhase_(async manager => {
+      const rmaShippingOptionRepo = manager.getCustomRepository(
+        this.rmaShippingOptionRepository_
+      )
+
+      const rmaOption = await rmaShippingOptionRepo.findOne({
+        where: { id: optionIdOrRmaOptionId },
+      })
+
+      if (rmaOption) {
+        await this.addShippingMethod(cartId, rmaOption.shipping_option_id, {
+          ...data,
+          price: rmaOption.price,
+        })
+      } else {
+        await this.addShippingMethod(cartId, optionIdOrRmaOptionId, data)
+      }
+    })
   }
 
   /**

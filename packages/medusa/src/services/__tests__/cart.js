@@ -1467,6 +1467,76 @@ describe("CartService", () => {
     })
   })
 
+  describe("addRMAMethod", () => {
+    const rmaSO = {
+      id: IdMap.getId("rmaso-option"),
+      shipping_option_id: IdMap.getId("regular-so-option"),
+      price: 0,
+    }
+
+    const RMAShippingOptionRepository = MockRepository({
+      findOne: q => {
+        if (q.where.id === IdMap.getId("rmaso-option")) {
+          return Promise.resolve(rmaSO)
+        }
+        return Promise.resolve(null)
+      },
+    })
+
+    const cartService = new CartService({
+      manager: MockManager,
+      totalsService,
+      RMAShippingOptionRepository,
+      eventBusService,
+    })
+
+    cartService.addShippingMethod = jest.fn().mockImplementation(() => {
+      return Promise.resolve({})
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("when a normal shipping option id is provided, then it should call addShippingMethod", async () => {
+      const data = {
+        id: "test",
+        extra: "yes",
+      }
+
+      await cartService.addRMAMethod(
+        IdMap.getId("cart"),
+        IdMap.getId("regular-so-option"),
+        data
+      )
+      expect(cartService.addShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("cart"),
+        IdMap.getId("regular-so-option"),
+        data
+      )
+    })
+
+    it("when a rma shipping option is provided, then it should call addShippingOption with a custom price", async () => {
+      const data = {
+        id: "testshipperid",
+      }
+      await cartService.addRMAMethod(
+        IdMap.getId("cart"),
+        IdMap.getId("rmaso-option"),
+        data
+      )
+
+      expect(cartService.addShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("cart"),
+        IdMap.getId("regular-so-option"),
+        expect.objectContaining({
+          ...data,
+          price: 0,
+        })
+      )
+    })
+  })
+
   describe("applyDiscount", () => {
     const cartRepository = MockRepository({
       findOneWithRelations: (rels, q) => {
