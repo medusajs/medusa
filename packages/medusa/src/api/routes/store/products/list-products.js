@@ -42,7 +42,7 @@ export default async (req, res) => {
       selector.is_giftcard = req.query.is_giftcard === "true"
     }
 
-    selector.status = ["published", null]
+    selector.status = ["published"]
 
     const listConfig = {
       relations: defaultRelations,
