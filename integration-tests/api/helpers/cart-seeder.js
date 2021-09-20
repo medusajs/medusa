@@ -129,8 +129,6 @@ module.exports = async (connection, data = {}) => {
     ends_at: yesterday,
   })
 
-  console.log(expiredDisc)
-
   expiredDisc.regions = [r]
   expiredDisc.rule = expiredRule
   await manager.save(expiredDisc)
