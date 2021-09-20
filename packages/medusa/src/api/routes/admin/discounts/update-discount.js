@@ -108,12 +108,12 @@ export default async (req, res) => {
 
     res.status(200).json({ discount })
   } catch (err) {
-    if (err.type === MedusaError.Types.INVALID_DATA) {
-      res.status(400)
-      res.send({ error: err.message })
-      return
-    } else {
-      throw err
-    }
+    // if (err.type === MedusaError.Types.INVALID_DATA) {
+    //   res.status(400)
+    //   res.send({ error: err.message })
+    //   return
+    // } else {
+    throw err
+    // }
   }
 }
