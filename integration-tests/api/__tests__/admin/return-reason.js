@@ -129,6 +129,87 @@ describe("/admin/return-reasons", () => {
       )
     })
 
+    it("fails to create a doubly nested return reason", async () => {
+      expect.assertions(7)
+
+      const api = useApi()
+
+      const payload = {
+        label: "Wrong size",
+        description: "Use this if the size was too big",
+        value: "wrong_size",
+      }
+
+      const response = await api
+        .post("/admin/return-reasons", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.return_reason).toEqual(
+        expect.objectContaining({
+          label: "Wrong size",
+          description: "Use this if the size was too big",
+          value: "wrong_size",
+        })
+      )
+
+      const nested_payload = {
+        parent_return_reason_id: response.data.return_reason.id,
+        label: "Too Big",
+        description: "Use this if the size was too big",
+        value: "too_big",
+      }
+
+      const nested_response = await api
+        .post("/admin/return-reasons", nested_payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(nested_response.status).toEqual(200)
+
+      expect(nested_response.data.return_reason).toEqual(
+        expect.objectContaining({
+          parent_return_reason_id: response.data.return_reason.id,
+          label: "Too Big",
+          description: "Use this if the size was too big",
+          value: "too_big",
+        })
+      )
+
+      const dbl_nested_payload = {
+        parent_return_reason_id: nested_response.data.return_reason.id,
+        label: "Too large size",
+        description: "Use this if the size was too big",
+        value: "large_size",
+      }
+
+      const dbl_nested_response = await api
+        .post("/admin/return-reasons", dbl_nested_payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("invalid_data")
+          expect(err.response.data.message).toEqual(
+            "Doubly nested return reasons is not supported"
+          )
+        })
+    })
+
     it("deletes a return_reason", async () => {
       const api = useApi()
 
