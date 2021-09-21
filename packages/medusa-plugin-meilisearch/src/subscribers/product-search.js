@@ -1,4 +1,4 @@
-import { transformProduct } from "../utils/transform-products"
+import { transformProduct } from "../utils/transform-product"
 
 class ProductSearchSubscriber {
   constructor(
