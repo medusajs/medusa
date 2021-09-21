@@ -8,10 +8,7 @@ export default app => {
 
   route.get("/:id", middlewares.wrap(require("./get-note").default))
 
-  route.get(
-    "/resource/:resource_id",
-    middlewares.wrap(require("./list-notes").default)
-  )
+  route.get("/", middlewares.wrap(require("./list-notes").default))
 
   route.post("/", middlewares.wrap(require("./create-note").default))
 

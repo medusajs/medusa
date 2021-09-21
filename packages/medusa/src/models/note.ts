@@ -30,6 +30,7 @@ export class Note {
   @Column()
   resource_id: string
 
+  @Column({ nullable: true })
   author_id: string
 
   @ManyToOne(() => User)

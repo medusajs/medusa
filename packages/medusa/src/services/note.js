@@ -16,11 +16,8 @@ class NoteService extends BaseService {
     /** @private @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {noteRepository} */
+    /** @private @const {NoteRepository} */
     this.noteRepository_ = noteRepository
-
-    /** @private @const {userService} */
-    this.userService_ = userService
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
@@ -39,7 +36,6 @@ class NoteService extends BaseService {
     const cloned = new NoteService({
       manager: transactionManager,
       noteRepository: this.noteRepository_,
-      userRepository: this.userRepository_,
       eventBus: this.eventBus_,
     })
 
@@ -71,23 +67,22 @@ class NoteService extends BaseService {
     return note
   }
 
-  /**
-   * Lists notes related to a given resource
-   * @param {string} resourceId - the id of the resource to retrieve
-   * notes related to.
-   * @return {Promise<Note[]>} related notes.
+  /** Fetches all notes related to the given selector
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return {Promise<Note[]>} notes related to the given search.
    */
-  async listByResource(
-    resourceId,
+  async list(
+    selector,
     config = {
       skip: 0,
       take: 50,
-      order: { created_at: "DESC" },
+      relations: [],
     }
   ) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
-    const query = this.buildQuery_({ resource_id: resourceId }, config)
+    const query = this.buildQuery_(selector, config)
 
     return noteRepo.find(query)
   }
@@ -101,20 +96,16 @@ class NoteService extends BaseService {
   async create(data, config = { metadata: {} }) {
     const { metadata } = config
 
-    const { resourceId, resourceType, value, author } = data
+    const { resourceId, resourceType, value, authorId } = data
 
     return this.atomicPhase_(async manager => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
-
-      const user = await this.userService_
-        .withTransaction(manager)
-        .retrieve(author)
 
       const toCreate = {
         resource_id: resourceId,
         resource_type: resourceType,
         value,
-        author: user,
+        author_id: authorId,
         metadata,
       }
 

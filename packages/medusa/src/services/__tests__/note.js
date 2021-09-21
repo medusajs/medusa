@@ -3,7 +3,7 @@ import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("NoteService", () => {
-  describe("listByResource", () => {
+  describe("list", () => {
     const noteRepo = MockRepository({
       find: q => {
         return Promise.resolve([
@@ -22,9 +22,12 @@ describe("NoteService", () => {
     })
 
     it("calls note model functions", async () => {
-      await noteService.listByResource(IdMap.getId("note"), {
-        relations: ["author"],
-      })
+      await noteService.list(
+        { resource_id: IdMap.getId("note") },
+        {
+          relations: ["author"],
+        }
+      )
       expect(noteRepo.find).toHaveBeenCalledTimes(1)
       expect(noteRepo.find).toHaveBeenCalledWith({
         where: {
@@ -81,7 +84,7 @@ describe("NoteService", () => {
   describe("create", () => {
     const note = {
       id: IdMap.getId("note"),
-      author: { id: IdMap.getId("user") },
+      author_id: IdMap.getId("user"),
     }
 
     const noteRepo = MockRepository({
@@ -89,19 +92,9 @@ describe("NoteService", () => {
       save: f => Promise.resolve(note),
     })
 
-    const userService = {
-      retrieve: (id, config) => {
-        return Promise.resolve({ id: IdMap.getId("user") })
-      },
-      withTransaction: function() {
-        return this
-      },
-    }
-
     const noteService = new NoteService({
       manager: MockManager,
       noteRepository: noteRepo,
-      userService,
       eventBusService: EventBusServiceMock,
     })
 
@@ -114,7 +107,7 @@ describe("NoteService", () => {
         resourceId: IdMap.getId("resource-id"),
         resourceType: "type",
         value: "my note",
-        author: IdMap.getId("user"),
+        authorId: IdMap.getId("user"),
       })
 
       expect(noteRepo.create).toHaveBeenCalledTimes(1)
@@ -122,18 +115,14 @@ describe("NoteService", () => {
         resource_id: IdMap.getId("resource-id"),
         resource_type: "type",
         value: "my note",
-        author: {
-          id: IdMap.getId("user"),
-        },
+        author_id: IdMap.getId("user"),
         metadata: {},
       })
 
       expect(noteRepo.save).toHaveBeenCalledTimes(1)
       expect(noteRepo.save).toHaveBeenCalledWith({
         id: IdMap.getId("note"),
-        author: {
-          id: IdMap.getId("user"),
-        },
+        author_id: IdMap.getId("user"),
       })
 
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)

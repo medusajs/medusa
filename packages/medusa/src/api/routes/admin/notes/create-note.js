@@ -52,7 +52,7 @@ export default async (req, res) => {
       resourceId: value.resource_id,
       resourceType: value.resource_type,
       value: value.value,
-      author: userId,
+      authorId: userId,
     })
 
     res.status(200).json({ note: result })

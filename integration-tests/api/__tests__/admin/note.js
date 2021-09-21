@@ -112,13 +112,13 @@ describe("/admin/notes", () => {
           resource_id: "resource-id",
           resource_type: "resource-type",
           value: "my note",
-          author: { id: "admin_user" },
+          author_id: "admin_user",
         },
       })
     })
   })
 
-  describe("GET /admin/notes/resource/:resource_id", () => {
+  describe("GET /admin/notes", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
       try {
@@ -144,7 +144,7 @@ describe("/admin/notes", () => {
     it("lists notes only related to wanted resource", async () => {
       const api = useApi()
       const response = await api
-        .get("/admin/notes/resource/resource1", {
+        .get("/admin/notes?resource_id=resource1", {
           headers: {
             authorization: "Bearer test_token",
           },
