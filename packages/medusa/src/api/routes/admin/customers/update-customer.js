@@ -12,6 +12,9 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *     application/json:
  *       schema:
  *         properties:
+ *           email:
+ *             type: string
+ *             description: The Customer's email. Only providable if user not registered.
  *           first_name:
  *             type: string
  *             description:  The Customer's first name.
@@ -37,6 +40,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
+    email: Validator.string().optional(),
     first_name: Validator.string().optional(),
     last_name: Validator.string().optional(),
     password: Validator.string().optional(),
