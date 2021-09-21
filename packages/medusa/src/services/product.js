@@ -2,7 +2,6 @@ import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
-import { flattenField } from "../utils/flatten-field"
 import { INDEX_NS } from "../utils/index-ns"
 
 /**
@@ -747,61 +746,6 @@ class ProductService extends BaseService {
 
     // const final = await this.runDecorators_(decorated)
     return product
-  }
-
-  /**
-   * Loads all products into the search engine
-   */
-
-  async loadIntoSearchEngine() {
-    if (this.searchService_.isDefault) return
-
-    const TAKE = 20
-    const totalCount = await this.count()
-    let iterCount = 0,
-      lastSeenId = ""
-
-    while (iterCount < totalCount) {
-      console.log({ lastSeenId })
-      const products = await this.list(
-        { id: { gte: lastSeenId } },
-        {
-          select: [
-            "id",
-            "title",
-            "subtitle",
-            "description",
-            "handle",
-            "is_giftcard",
-            "discountable",
-            "thumbnail",
-            "profile_id",
-            "collection_id",
-            "type_id",
-            "origin_country",
-            "created_at",
-            "updated_at",
-          ],
-          relations: ["variants", "tags", "type", "collection"],
-          take: TAKE,
-          order: { id: "ASC" },
-        }
-      )
-      const flattenSkus = product => {
-        product.sku = flattenField(product.variants, "sku").filter(Boolean)
-        return product
-      }
-
-      const productsWithSkus = products.map(product => flattenSkus(product))
-
-      await this.searchService_.addDocuments(
-        ProductService.IndexName,
-        productsWithSkus
-      )
-
-      iterCount += TAKE
-      lastSeenId = products.at(-1).id
-    }
   }
 }
 
