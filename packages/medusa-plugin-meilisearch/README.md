@@ -12,8 +12,8 @@ Meilisearch Plugin for Medusa to search for products.
     [indexName]: [meilisearch settings passed to meilisearch's `updateSettings()` method]
     // example
     products: {
-      searchableAttributes: ["title", "description", "sku"],
-      displayedAttributes: ["title", "description", "sku"],
+      searchableAttributes: ["title", "description", "variant_sku", "type_value"],
+      displayedAttributes: ["title", "description", "variant_sku", "type_value"],
     }
   }
 }
