@@ -54,9 +54,19 @@ export default async (req, res) => {
 
   try {
     const customerService = req.scope.resolve("customerService")
+
+    let customer = await customerService.retrieve(id)
+
+    if (value.email && customer.has_account) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Email cannot be changed when the user has registered their account"
+      )
+    }
+
     await customerService.update(id, value)
 
-    const customer = await customerService.retrieve(id, {
+    customer = await customerService.retrieve(id, {
       relations: ["orders"],
     })
     res.status(200).json({ customer })

@@ -1,5 +1,4 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { add } from "winston"
 import CustomerService from "../customer"
 
 const eventBusService = {
@@ -164,15 +163,7 @@ describe("CustomerService", () => {
   describe("update", () => {
     const customerRepository = MockRepository({
       findOne: query => {
-        switch (query.where.id) {
-          case IdMap.getId("has_account"):
-            return Promise.resolve({
-              id: IdMap.getId("has_account"),
-              has_account: true,
-            })
-          default:
-            return Promise.resolve({ id: IdMap.getId("ironman") })
-        }
+        return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
 
@@ -252,16 +243,6 @@ describe("CustomerService", () => {
           phone: "+1 (222) 333 4444",
         },
       })
-    })
-
-    it("fails to update email when has_account is set", async () => {
-      await expect(
-        customerService.update(IdMap.getId("has_account"), {
-          email: "test@email.com",
-        })
-      ).rejects.toThrow(
-        "Email cannot be changed when the user has registered their account"
-      )
     })
   })
 

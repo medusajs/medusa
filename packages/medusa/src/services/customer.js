@@ -385,12 +385,6 @@ class CustomerService extends BaseService {
         customer.metadata = this.setMetadata_(customer, metadata)
       }
 
-      if (email && customer.has_account) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Email cannot be changed when the user has registered their account"
-        )
-      }
       if (email) {
         customer.email = this.validateEmail_(email)
       }
