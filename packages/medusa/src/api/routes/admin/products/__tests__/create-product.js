@@ -110,6 +110,7 @@ describe("POST /admin/products", () => {
         description: "Test Description",
         tags: [{ id: "test", value: "test" }],
         handle: "test-product",
+        status: "draft",
         is_giftcard: false,
         options: [{ title: "Denominations" }],
         profile_id: IdMap.getId("default_shipping_profile"),
@@ -170,6 +171,7 @@ describe("POST /admin/products", () => {
         options: [{ title: "Denominations" }],
         handle: "test-gift-card",
         is_giftcard: true,
+        status: "draft",
         profile_id: IdMap.getId("giftCardProfile"),
       })
     })
