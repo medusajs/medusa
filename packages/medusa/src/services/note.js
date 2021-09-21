@@ -96,16 +96,16 @@ class NoteService extends BaseService {
   async create(data, config = { metadata: {} }) {
     const { metadata } = config
 
-    const { resourceId, resourceType, value, authorId } = data
+    const { resource_id, resource_type, value, author_id } = data
 
     return this.atomicPhase_(async manager => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const toCreate = {
-        resource_id: resourceId,
-        resource_type: resourceType,
+        resource_id,
+        resource_type,
         value,
-        author_id: authorId,
+        author_id,
         metadata,
       }
 

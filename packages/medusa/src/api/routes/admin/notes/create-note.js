@@ -48,11 +48,12 @@ export default async (req, res) => {
 
   try {
     const noteService = req.scope.resolve("noteService")
+
     const result = await noteService.create({
-      resourceId: value.resource_id,
-      resourceType: value.resource_type,
+      resource_id: value.resource_id,
+      resource_type: value.resource_type,
       value: value.value,
-      authorId: userId,
+      author_id: userId,
     })
 
     res.status(200).json({ note: result })
