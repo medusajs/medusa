@@ -42,6 +42,73 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
+    it("returns a list of products with all statuses when no status or invalid status is provided", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/products?status%5B%5D=null", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "draft",
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+            status: "draft",
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of products where status is proposed", async () => {
+      const api = useApi()
+
+      const payload = {
+        status: "proposed",
+      }
+
+      //update test-product status to proposed
+      await api
+        .post("/admin/products/test-product", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const response = await api
+        .get("/admin/products?status%5B%5D=proposed", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "proposed",
+          }),
+        ])
+      )
+    })
+
     it("returns a list of products with child entities", async () => {
       const api = useApi()
 
@@ -297,6 +364,7 @@ describe("/admin/products", () => {
           discountable: true,
           is_giftcard: false,
           handle: "test",
+          status: "draft",
           images: expect.arrayContaining([
             expect.objectContaining({
               url: "test-image.png",
@@ -455,7 +523,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it("updates a product (update prices, tags, delete collection, delete type, replaces images)", async () => {
+    it("updates a product (update prices, tags, update status, delete collection, delete type, replaces images)", async () => {
       const api = useApi()
 
       const payload = {
@@ -476,6 +544,7 @@ describe("/admin/products", () => {
         tags: [{ value: "123" }],
         images: ["test-image-2.png"],
         type: { value: "test-type-2" },
+        status: "published",
       }
 
       const response = await api
@@ -514,12 +583,32 @@ describe("/admin/products", () => {
             }),
           ],
           type: null,
+          status: "published",
           collection: null,
           type: expect.objectContaining({
             value: "test-type-2",
           }),
         })
       )
+    })
+
+    it("fails to update product with invalid status", async () => {
+      const api = useApi()
+
+      const payload = {
+        status: null,
+      }
+
+      try {
+        await api.post("/admin/products/test-product", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (e) {
+        expect(e.response.status).toEqual(400)
+        expect(e.response.data.type).toEqual("invalid_data")
+      }
     })
 
     it("updates a product (variant ordering)", async () => {

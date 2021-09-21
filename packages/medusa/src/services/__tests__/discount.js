@@ -494,9 +494,6 @@ describe("DiscountService", () => {
 
       expect(discountRepository.findAndCount).toHaveBeenCalledTimes(1)
       expect(discountRepository.findAndCount).toHaveBeenCalledWith({
-        join: {
-          alias: "discount",
-        },
         where: expect.anything(),
         skip: 0,
         take: 50,
