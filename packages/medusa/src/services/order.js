@@ -477,6 +477,9 @@ class OrderService extends BaseService {
               .withTransaction(manager)
               .cancelPayment(payment)
           }
+          await this.cartService_
+            .withTransaction(manager)
+            .update(cart.id, { payment_authorized_at: null })
           throw err
         }
       }
@@ -594,6 +597,10 @@ class OrderService extends BaseService {
           id: result.id,
           no_notification: result.no_notification,
         })
+
+      await this.cartService_
+        .withTransaction(manager)
+        .update(cart.id, { completed_at: new Date() })
 
       return result
     })

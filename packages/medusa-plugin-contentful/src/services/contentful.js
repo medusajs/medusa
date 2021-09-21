@@ -743,11 +743,12 @@ class ContentfulService extends BaseService {
 
     let output = []
     for (const obj of input) {
-      let transformed = Object.assign({}, objOrArray)
-      transformed.medusaId = output.id
+      let transformed = Object.assign({}, obj)
+      transformed.medusaId = obj.id
       output.push(transformed)
     }
 
+    console.log(output)
     if (!isArray) {
       return output[0]
     }

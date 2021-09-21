@@ -1,3 +1,5 @@
+import { defaultRelations } from "."
+
 /**
  * @oas [get] /variants/{variant_id}
  * operationId: GetVariantsVariant
@@ -22,7 +24,10 @@ export default async (req, res) => {
 
   try {
     const variantService = req.scope.resolve("productVariantService")
-    let variant = await variantService.retrieve(id, { relations: ["prices"] })
+    let variant = await variantService.retrieve(id, {
+      relations: defaultRelations,
+    })
+
     res.json({ variant })
   } catch (error) {
     throw error
