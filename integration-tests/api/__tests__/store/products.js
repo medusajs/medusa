@@ -5,6 +5,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const productSeeder = require("../../helpers/product-seeder")
+const adminSeeder = require("../../helpers/admin-seeder")
 jest.setTimeout(30000)
 describe("/store/products", () => {
   let medusaProcess
@@ -26,6 +27,7 @@ describe("/store/products", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
       } catch (err) {
         console.log(err)
         throw err
@@ -260,6 +262,39 @@ describe("/store/products", () => {
       const product = response.data.product
 
       expect(product.variants.some((variant) => variant.options)).toEqual(false)
+    })
+
+    it("lists all published products", async () => {
+      const api = useApi()
+
+      //update test-product status to published
+      await api
+        .post(
+          "/admin/products/test-product",
+          {
+            status: "published",
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const response = await api.get("/store/products")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "published",
+          }),
+        ])
+      )
     })
   })
 })
