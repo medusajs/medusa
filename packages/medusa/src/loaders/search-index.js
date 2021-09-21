@@ -7,7 +7,4 @@ export default async ({ container }) => {
     )
     return
   }
-
-  const productService = container.resolve("productService")
-  await productService.loadIntoSearchEngine()
 }
