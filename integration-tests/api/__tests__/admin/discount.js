@@ -24,6 +24,67 @@ describe("/admin/discounts", () => {
     medusaProcess.kill()
   })
 
+  describe("GET /admin/discounts", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      try {
+        await adminSeeder(dbConnection)
+        await manager.insert(DiscountRule, {
+          id: "test-discount-rule",
+          description: "Test discount rule",
+          type: "percentage",
+          value: 10,
+          allocation: "total",
+        })
+        await manager.insert(Discount, {
+          id: "test-discount",
+          code: "TESTING",
+          rule_id: "test-discount-rule",
+          is_dynamic: false,
+          is_disabled: false,
+        })
+        await manager.insert(Discount, {
+          id: "messi-discount",
+          code: "BARCA100",
+          rule_id: "test-discount-rule",
+          is_dynamic: false,
+          is_disabled: false,
+        })
+      } catch (err) {
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should list discounts that match a specific query in a case insensitive manner", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts?q=barca", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "messi-discount",
+            code: "BARCA100",
+          }),
+        ])
+      )
+    })
+  })
+
   describe("POST /admin/discounts", () => {
     beforeEach(async () => {
       try {

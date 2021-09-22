@@ -1013,6 +1013,47 @@ describe("/admin/orders", () => {
       ])
     })
 
+    it("list all orders with matching order email", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?fields=id,email&q=test@email",
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toEqual([
+        expect.objectContaining({
+          id: "test-order",
+          email: "test@email.com",
+        }),
+      ])
+    })
+
+    it("list all orders with matching shipping_address first name", async () => {
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=lebron", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toEqual([
+        expect.objectContaining({
+          id: "test-order",
+          shipping_address: expect.objectContaining({ first_name: "lebron" }),
+        }),
+      ])
+    })
+
     it("successfully lists orders with greater than", async () => {
       const api = useApi()
 
