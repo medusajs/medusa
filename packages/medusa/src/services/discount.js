@@ -180,14 +180,6 @@ class DiscountService extends BaseService {
 
       discount.rule.valid_for = discount.rule.valid_for.map(id => ({ id }))
 
-      // if (discount.rule?.valid_for) {
-      //   discount.rule.valid_for = await Promise.all(
-      //     discount.rule.valid_for.map(id =>
-      //       this.productService_.withTransaction(manager).retrieve(id)
-      //     )
-      //   )
-      // }
-
       const validatedRule = this.validateDiscountRule_(discount.rule)
 
       if (discount.regions) {
@@ -295,14 +287,6 @@ class DiscountService extends BaseService {
       }
 
       discount.rule.valid_for = discount.rule.valid_for.map(id => ({ id }))
-
-      // if (rule?.valid_for) {
-      //   discount.rule.valid_for = await Promise.all(
-      //     rule.valid_for.map(id =>
-      //       this.productService_.withTransaction(manager).retrieve(id)
-      //     )
-      //   )
-      // }
 
       for (const [key, value] of Object.entries(rest)) {
         discount[key] = value
