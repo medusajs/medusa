@@ -1,5 +1,5 @@
 /**
- * @oas [get] /customers/{id}/payment-methods
+ * @oas [get] /customers/me/payment-methods
  * operationId: GetCustomersCustomerPaymentMethods
  * summary: Retrieve saved payment methods
  * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
@@ -26,7 +26,7 @@
  *                     description: The data needed for the Payment Provider to use the saved payment method.
  */
 export default async (req, res) => {
-  const { id } = req.params
+  const id = req.user.customer_id
   try {
     const storeService = req.scope.resolve("storeService")
     const paymentProviderService = req.scope.resolve("paymentProviderService")
@@ -37,11 +37,11 @@ export default async (req, res) => {
     const store = await storeService.retrieve(["payment_providers"])
 
     const methods = await Promise.all(
-      store.payment_providers.map(async next => {
+      store.payment_providers.map(async (next) => {
         const provider = paymentProviderService.retrieveProvider(next)
 
         const pMethods = await provider.retrieveSavedMethods(customer)
-        return pMethods.map(m => ({
+        return pMethods.map((m) => ({
           provider_id: next,
           data: m,
         }))

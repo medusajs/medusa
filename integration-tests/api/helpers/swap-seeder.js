@@ -14,10 +14,10 @@ const {
   Swap,
   Cart,
   Return,
-} = require("@medusajs/medusa");
+} = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
-  const manager = connection.manager;
+  const manager = connection.manager
 
   let orderWithSwap = manager.create(Order, {
     id: "order-with-swap",
@@ -50,12 +50,12 @@ module.exports = async (connection, data = {}) => {
     ],
     items: [],
     ...data,
-  });
+  })
 
-  orderWithSwap = await manager.save(orderWithSwap);
+  orderWithSwap = await manager.save(orderWithSwap)
 
   const cart = manager.create(Cart, {
-    id: "test-cart",
+    id: "test-cart-w-swap",
     customer_id: "test-customer",
     email: "test-customer@email.com",
     shipping_address_id: "test-shipping-address",
@@ -66,16 +66,16 @@ module.exports = async (connection, data = {}) => {
       swap_id: "test-swap",
       parent_order_id: orderWithSwap.id,
     },
-  });
+  })
 
-  await manager.save(cart);
+  await manager.save(cart)
 
   const swap = manager.create(Swap, {
     id: "test-swap",
     order_id: "order-with-swap",
     payment_status: "captured",
     fulfillment_status: "fulfilled",
-    cart_id: "test-cart",
+    cart_id: "test-cart-w-swap",
     payment: {
       id: "test-payment-swap",
       amount: 10000,
@@ -94,12 +94,12 @@ module.exports = async (connection, data = {}) => {
         unit_price: 9000,
         quantity: 1,
         variant_id: "test-variant-2",
-        cart_id: "test-cart",
+        cart_id: "test-cart-w-swap",
       },
     ],
-  });
+  })
 
-  await manager.save(swap);
+  await manager.save(swap)
 
   const cartTemplate = async (cartId) => {
     const cart = manager.create(Cart, {
@@ -176,9 +176,9 @@ module.exports = async (connection, data = {}) => {
     variant_id: "test-variant",
     order_id: orderWithSwap.id,
     cart_id: cart.id,
-  });
+  })
 
-  await manager.save(li);
+  await manager.save(li)
 
   const li2 = manager.create(LineItem, {
     id: "test-item-many",
@@ -190,34 +190,33 @@ module.exports = async (connection, data = {}) => {
     quantity: 4,
     variant_id: "test-variant",
     order_id: orderWithSwap.id,
-  });
+  })
 
-  await manager.save(li2);
+  await manager.save(li2)
 
   const swapReturn = await manager.create(Return, {
     swap_id: swap.id,
     order_id: orderWithSwap.id,
     item_id: li.id,
     refund_amount: li.quantity * li.unit_price,
-    // shipping_method_id: ,
-  });
+  })
 
-  await manager.save(swapReturn);
+  await manager.save(swapReturn)
 
   const return_item1 = manager.create(LineItem, {
     ...li,
     unit_price: -1 * li.unit_price,
-  });
+  })
 
-  await manager.save(return_item1);
+  await manager.save(return_item1)
 
   await manager.insert(ShippingMethod, {
     id: "another-test-method",
     shipping_option_id: "test-option",
-    cart_id: "test-cart",
+    cart_id: "test-cart-w-swap",
     price: 1000,
     data: {},
-  });
+  })
 
   const swapOnSwap = manager.create(Swap, {
     id: "swap-on-swap",
@@ -255,9 +254,9 @@ module.exports = async (connection, data = {}) => {
         variant_id: "test-variant",
       },
     ],
-  });
+  })
 
-  await manager.save(swapOnSwap);
+  await manager.save(swapOnSwap)
 
   await manager.insert(ShippingMethod, {
     id: "test-method-swap-order",
@@ -265,5 +264,5 @@ module.exports = async (connection, data = {}) => {
     order_id: "order-with-swap",
     price: 1000,
     data: {},
-  });
-};
+  })
+}

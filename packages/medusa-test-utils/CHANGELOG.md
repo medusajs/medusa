@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.24...medusa-test-utils@1.1.25) (2021-09-15)
+
+**Note:** Version bump only for package medusa-test-utils
+
+
+
+
+
+## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.23...medusa-test-utils@1.1.24) (2021-09-14)
+
+**Note:** Version bump only for package medusa-test-utils
+
+
+
+
+
 ## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.22...medusa-test-utils@1.1.23) (2021-08-05)
 
 **Note:** Version bump only for package medusa-test-utils

@@ -1,3 +1,4 @@
+import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations } from "."
 
 /**
@@ -40,6 +41,8 @@ export default async (req, res) => {
     if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
       selector.is_giftcard = req.query.is_giftcard === "true"
     }
+
+    selector.status = ["published"]
 
     const listConfig = {
       relations: defaultRelations,

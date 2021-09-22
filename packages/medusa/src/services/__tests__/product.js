@@ -199,6 +199,12 @@ describe("ProductService", () => {
             variants: [{ id: IdMap.getId("green"), title: "Green" }],
           })
         }
+        if (query.where.id === "prod_status") {
+          return Promise.resolve({
+            id: "prod_status",
+            status: "draft",
+          })
+        }
         if (query.where.id === "123") {
           return undefined
         }
@@ -288,6 +294,18 @@ describe("ProductService", () => {
       // Here we just test, that the function reaches its end when updating
       // variants
       expect(productRepository.save).toHaveBeenCalledTimes(1)
+    })
+
+    it("successfully updates product status", async () => {
+      await productService.update(IdMap.getId("ironman"), {
+        status: "published",
+      })
+
+      expect(productRepository.save).toHaveBeenCalledTimes(1)
+      expect(productRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("ironman"),
+        status: "published",
+      })
     })
 
     it("successfully updates product", async () => {
