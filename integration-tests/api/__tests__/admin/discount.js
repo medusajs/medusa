@@ -414,6 +414,20 @@ describe("/admin/discounts", () => {
           rule_id: "test-discount-rule",
           valid_duration: "P2Y",
         })
+        await manager.insert(DiscountRule, {
+          id: "test-discount-rule1",
+          description: "Dynamic rule",
+          type: "percentage",
+          value: 10,
+          allocation: "total",
+        })
+        await manager.insert(Discount, {
+          id: "test-discount1",
+          code: "DYNAMICCode",
+          is_dynamic: true,
+          is_disabled: false,
+          rule_id: "test-discount-rule1",
+        })
       } catch (err) {
         console.log(err)
         throw err
@@ -425,7 +439,7 @@ describe("/admin/discounts", () => {
       await db.teardown()
     })
 
-    it("creates a dynamic discount", async () => {
+    it("creates a dynamic discount with ends_at", async () => {
       const api = useApi()
 
       const response = await api
@@ -441,10 +455,44 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err)
+          console.log(err.response)
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          ends_at: expect.any(String),
+        })
+      )
+    })
+
+    it("creates a dynamic discount without ends_at", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts/test-discount1/dynamic-codes",
+          {
+            code: "HELLOWORLD",
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          // console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          ends_at: null,
+        })
+      )
     })
   })
 })
