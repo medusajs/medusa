@@ -158,6 +158,13 @@ class TotalsService extends BaseService {
       }
     }
 
+    if (order.claims && order.claims.length) {
+      for (const c of order.claims) {
+        const claimItemIds = c.additional_items.map(el => el.id)
+        itemIds = [...itemIds, ...claimItemIds]
+      }
+    }
+
     const refunds = lineItems.map(i => {
       if (!itemIds.includes(i.id)) {
         throw new MedusaError(

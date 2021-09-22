@@ -604,6 +604,10 @@ class SwapService extends BaseService {
           for (const s of order.swaps) {
             allItems = [...allItems, ...s.additional_items]
           }
+
+          for (const c of order.claims) {
+            allItems = [...allItems, ...c.additional_items]
+          }
         }
 
         const lineItem = allItems.find(i => i.id === r.item_id)
