@@ -11,7 +11,7 @@ class ProductSearchSubscriber {
 
     this.productService_ = productService
 
-    this.productIndexName = "medusa-commerce_products"
+    this.productIndexName = productService.constructor.IndexName
 
     this.eventBus_.subscribe("product.created", this.handleProductCreation)
 

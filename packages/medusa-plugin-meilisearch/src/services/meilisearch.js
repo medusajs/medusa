@@ -1,5 +1,6 @@
 import { SearchService } from "medusa-interfaces"
 import { MeiliSearch } from "meilisearch"
+import { transformProduct } from "../utils/transform-product"
 
 class MeiliSearchService extends SearchService {
   constructor(container, options) {
@@ -40,6 +41,11 @@ class MeiliSearchService extends SearchService {
 
   updateSettings(indexName, settings) {
     return this.client_.index(indexName).updateSettings(settings)
+  }
+
+  transformProducts(products) {
+    if (!products) return []
+    return products.map(transformProduct)
   }
 }
 

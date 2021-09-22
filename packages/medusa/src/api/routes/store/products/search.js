@@ -14,7 +14,7 @@ export default async (req, res) => {
   }
 
   try {
-    const { q, indexName, ...options } = value
+    const { q, ...options } = value
 
     const searchService = req.scope.resolve("searchService")
 
