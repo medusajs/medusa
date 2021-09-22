@@ -22,6 +22,7 @@ import variantRoutes from "./variants"
 import draftOrderRoutes from "./draft-orders"
 import collectionRoutes from "./collections"
 import notificationRoutes from "./notifications"
+import noteRoutes from "./notes"
 
 const route = Router()
 
@@ -68,6 +69,7 @@ export default (app, container, config) => {
   collectionRoutes(route)
   notificationRoutes(route)
   returnReasonRoutes(route)
+  noteRoutes(route)
 
   return app
 }
