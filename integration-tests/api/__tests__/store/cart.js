@@ -112,6 +112,24 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
+    // We were experiencing some issues when having created a cart in a region
+    // containing multiple countries. At this point, the cart does not have a shipping
+    // address. Therefore, on subsequent requests to update the cart, the server
+    // would throw a 500 due to missing shipping address id on insertion.
+    it("updates a cart, that does not have a shipping address", async () => {
+      const api = useApi()
+
+      const response = await api.post("/store/carts", {
+        region_id: "test-region-multiple",
+      })
+
+      const getRes = await api.post(`/store/carts/${response.data.cart.id}`, {
+        region_id: "test-region",
+      })
+
+      expect(getRes.status).toEqual(200)
+    })
+
     it("fails on apply discount if limit has been reached", async () => {
       const api = useApi()
 

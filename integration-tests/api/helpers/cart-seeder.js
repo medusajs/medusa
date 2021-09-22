@@ -40,6 +40,22 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
+  // Region with multiple countries
+  const regionWithMultipleCoutries = manager.create(Region, {
+    id: "test-region-multiple",
+    name: "Test Region",
+    currency_code: "eur",
+    tax_rate: 0,
+  })
+
+  await manager.save(regionWithMultipleCoutries)
+  await manager.query(
+    `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'no'`
+  )
+  await manager.query(
+    `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'dk'`
+  )
+
   const freeRule = manager.create(DiscountRule, {
     id: "free-shipping-rule",
     description: "Free shipping rule",
