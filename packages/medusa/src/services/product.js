@@ -2,14 +2,13 @@ import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
-import { INDEX_NS } from "../utils/index-ns"
 
 /**
  * Provides layer to manipulate products.
  * @implements BaseService
  */
 class ProductService extends BaseService {
-  static IndexName = `${INDEX_NS}_products`
+  static IndexName = `products`
   static Events = {
     UPDATED: "product.updated",
     CREATED: "product.created",
