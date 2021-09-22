@@ -39,9 +39,9 @@ describe("POST /admin/returns/:id/receive", () => {
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test"), quantity: 2 }],
         {
-          allowMismatch: true,
-          refundAmount: undefined,
-          writeOffInventory: false,
+          allow_mismatch: true,
+          refund_amount: undefined,
+          write_off_inventory: true,
         }
       )
     })

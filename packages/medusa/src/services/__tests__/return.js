@@ -264,7 +264,7 @@ describe("ReturnService", () => {
       await returnService.receive(
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
-        { refundAmount: 1000, writeOffInventory: true }
+        { refund_amount: 1000 }
       )
 
       expect(returnRepository.save).toHaveBeenCalledTimes(1)
@@ -286,6 +286,7 @@ describe("ReturnService", () => {
         ],
         refund_amount: 1000,
         received_at: expect.anything(),
+        write_off_inventory: true,
       })
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -303,13 +304,23 @@ describe("ReturnService", () => {
       )
     })
 
-    it("does not update inventory, when writeOffInventory is not set", async () => {
+    it("does not update inventory, when write_off_inventory is set to false", async () => {
       await returnService.receive(
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
-        { refundAmount: 1000 }
+        { refund_amount: 1000, write_off_inventory: false }
       )
       expect(inventoryService.adjustInventory).not.toHaveBeenCalled()
+      expect(returnRepository.save).toHaveBeenCalledTimes(1)
+      expect(returnRepository.save).toHaveBeenCalledWith({
+        id: expect.anything(),
+        items: expect.anything(),
+        order: expect.anything(),
+        received_at: expect.any(String),
+        refund_amount: 1000,
+        status: "received",
+        write_off_inventory: false,
+      })
     })
 
     it("successfully receives a return with requires_action status", async () => {
@@ -319,7 +330,7 @@ describe("ReturnService", () => {
           { item_id: IdMap.getId("test-line"), quantity: 10 },
           { item_id: IdMap.getId("test-line-2"), quantity: 10 },
         ],
-        { refundAmount: 1000, writeOffInventory: true }
+        { refund_amount: 1000 }
       )
 
       expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)
@@ -361,6 +372,7 @@ describe("ReturnService", () => {
           },
         ],
         refund_amount: 1000,
+        write_off_inventory: true,
         received_at: expect.anything(),
       })
     })

@@ -54,7 +54,7 @@ export default async (req, res) => {
     refund: Validator.number()
       .integer()
       .optional(),
-    write_off_inventory: Validator.boolean().default(false),
+    write_off_inventory: Validator.boolean().default(true),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -71,18 +71,18 @@ export default async (req, res) => {
 
     let receivedReturn
     await entityManager.transaction(async manager => {
-      let refundAmount = value.refund
+      let refund_amount = value.refund
 
       if (typeof value.refund !== "undefined" && value.refund < 0) {
-        refundAmount = 0
+        refund_amount = 0
       }
 
       receivedReturn = await returnService
         .withTransaction(manager)
         .receive(id, value.items, {
-          refundAmount,
-          allowMismatch: true,
-          writeOffInventory: value.write_off_inventory,
+          refund_amount,
+          allow_mismatch: true,
+          write_off_inventory: value.write_off_inventory,
         })
 
       if (receivedReturn.order_id) {
@@ -91,7 +91,7 @@ export default async (req, res) => {
           .registerReturnReceived(
             receivedReturn.order_id,
             receivedReturn,
-            refundAmount
+            refund_amount
           )
       }
 

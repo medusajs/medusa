@@ -473,17 +473,17 @@ class ReturnService extends BaseService {
    * mismatches.
    * @param {string} orderId - the order to return.
    * @param {string[]} lineItems - the line items to return
-   * @param {object} config - can contain refundAmount, allowMismatch, and
-   * writeOffInventory.
+   * @param {object} config - can contain refund_amount, allow_mismatch, and
+   * write_off_inventory.
    * @return {Promise} the result of the update operation
    */
   async receive(
     returnId,
     receivedItems,
     config = {
-      refundAmount: undefined,
-      allowMismatch: false,
-      writeOffInventory: false,
+      refund_amount: undefined,
+      allow_mismatch: false,
+      write_off_inventory: true,
     }
   ) {
     return this.atomicPhase_(async manager => {
@@ -491,7 +491,11 @@ class ReturnService extends BaseService {
         this.returnRepository_
       )
 
-      const { refundAmount, allowMismatch, writeOffInventory } = config
+      const {
+        refund_amount,
+        allow_mismatch,
+        write_off_inventory = true,
+      } = config
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -564,12 +568,12 @@ class ReturnService extends BaseService {
       let returnStatus = "received"
 
       const isMatching = newLines.every(l => l.is_requested)
-      if (!isMatching && !allowMismatch) {
+      if (!isMatching && !allow_mismatch) {
         // Should update status
         returnStatus = "requires_action"
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount = refund_amount || returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
@@ -578,6 +582,7 @@ class ReturnService extends BaseService {
         items: newLines,
         refund_amount: totalRefundableAmount,
         received_at: now.toISOString(),
+        write_off_inventory,
       }
 
       const result = await returnRepository.save(updateObj)
@@ -592,7 +597,7 @@ class ReturnService extends BaseService {
         })
       }
 
-      if (writeOffInventory) {
+      if (write_off_inventory) {
         for (const line of newLines) {
           const orderItem = order.items.find(i => i.id === line.item_id)
           if (orderItem) {
