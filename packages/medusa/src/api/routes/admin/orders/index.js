@@ -239,9 +239,6 @@ export const defaultRelations = [
   "claims.additional_items",
   "claims.fulfillments",
   "claims.claim_items",
-  "claims.claim_items.variant",
-  "claims.claim_items.variant.product",
-
   "claims.claim_items.images",
   // "claims.claim_items.tags",
   "swaps",

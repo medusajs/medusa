@@ -318,7 +318,6 @@ class SwapService extends BaseService {
         const line = await this.lineItemService_.retrieve(item.item_id, {
           relations: ["order", "swap", "claim_order"],
         })
-        console.log(line)
 
         if (
           line.order?.canceled_at ||
@@ -533,6 +532,8 @@ class SwapService extends BaseService {
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
+          "order.claims",
+          "order.claims.additional_items",
           "additional_items",
           "return_order",
           "return_order.items",
@@ -575,6 +576,8 @@ class SwapService extends BaseService {
         },
       })
 
+      console.log(">>", order.items)
+
       for (const item of swap.additional_items) {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           cart_id: cart.id,
@@ -604,7 +607,9 @@ class SwapService extends BaseService {
           for (const s of order.swaps) {
             allItems = [...allItems, ...s.additional_items]
           }
+        }
 
+        if (order.claims && order.claims.length) {
           for (const c of order.claims) {
             allItems = [...allItems, ...c.additional_items]
           }
