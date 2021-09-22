@@ -334,11 +334,6 @@ class DiscountService extends BaseService {
         )
       }
 
-      const lastValidDate = new Date()
-      lastValidDate.setSeconds(
-        lastValidDate.getSeconds() + toSeconds(parse(discount.valid_duration))
-      )
-
       const toCreate = {
         ...data,
         rule_id: discount.rule_id,
@@ -347,9 +342,15 @@ class DiscountService extends BaseService {
         code: data.code.toUpperCase(),
         parent_discount_id: discount.id,
         usage_limit: discount.usage_limit,
-        ends_at: lastValidDate,
       }
 
+      if (discount.valid_duration) {
+        const lastValidDate = new Date()
+        lastValidDate.setSeconds(
+          lastValidDate.getSeconds() + toSeconds(parse(discount.valid_duration))
+        )
+        toCreate.ends_at = lastValidDate.toUTCString()
+      }
       const created = await discountRepo.create(toCreate)
       const result = await discountRepo.save(created)
       return result
