@@ -52,6 +52,9 @@ export class ReturnItem {
   @Column({ nullable: true })
   reason_id: string
 
+  @Column({ type: "int", nullable: true })
+  write_off_inventory: number
+
   @ManyToOne(() => ReturnReason)
   @JoinColumn({ name: "reason_id" })
   reason: ReturnReason

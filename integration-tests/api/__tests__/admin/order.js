@@ -899,33 +899,40 @@ describe("/admin/orders", () => {
       ])
     })
 
-    it("increases inventory_quantity when return is received and flag is set", async () => {
+    it("increases inventory_quantity when return is received and write off is added", async () => {
       const api = useApi()
 
-      const returned = await api.post(
-        "/admin/orders/test-order/return",
-        {
-          items: [
-            {
-              item_id: "test-item",
-              quantity: 1,
-            },
-          ],
-          receive_now: true,
-          write_off_inventory: true,
-        },
-        {
-          headers: {
-            authorization: "Bearer test_token",
+      const returned = await api
+        .post(
+          "/admin/orders/test-order/return",
+          {
+            items: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+              },
+            ],
+            receive_now: true,
+            write_off_inventory: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+              },
+            ],
           },
-        }
-      )
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((e) => console.log(e))
 
       //Find variant that should have its inventory_quantity updated
       const toTest = returned.data.order.items.find((i) => i.id === "test-item")
 
       expect(returned.status).toEqual(200)
-      expect(toTest.variant.inventory_quantity).toEqual(2)
+      expect(toTest.variant.inventory_quantity).toEqual(1)
     })
 
     it("does not increases inventory_quantity when return is received when inventory is not managed", async () => {

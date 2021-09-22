@@ -105,9 +105,6 @@ export class Return {
   @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Column({ type: "boolean", default: true })
-  write_off_inventory: Boolean
-
   @Column({ type: "boolean", nullable: true })
   no_notification: Boolean
 
@@ -177,9 +174,6 @@ export class Return {
  *     description: "The date with timezone at which the resource was last updated."
  *     type: string
  *     format: date-time
- *   write_off_inventory:
- *     description: "When set to false, the inventory will not be adjusted on return."
- *     type: boolean
  *   no_notification:
  *     description: "When set to true, no notification will be sent related to this return."
  *     type: boolean

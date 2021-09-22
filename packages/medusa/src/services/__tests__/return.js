@@ -286,7 +286,6 @@ describe("ReturnService", () => {
         ],
         refund_amount: 1000,
         received_at: expect.anything(),
-        write_off_inventory: true,
       })
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -304,13 +303,21 @@ describe("ReturnService", () => {
       )
     })
 
-    it("does not update inventory, when write_off_inventory is set to false", async () => {
+    it("updates inventory properly, when write_off_inventory is added for LineItem", async () => {
       await returnService.receive(
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
-        { refund_amount: 1000, write_off_inventory: false }
+        {
+          refund_amount: 1000,
+          write_off_inventory: [
+            {
+              item_id: IdMap.getId("test-line"),
+              quantity: 5,
+            },
+          ],
+        }
       )
-      expect(inventoryService.adjustInventory).not.toHaveBeenCalled()
+
       expect(returnRepository.save).toHaveBeenCalledTimes(1)
       expect(returnRepository.save).toHaveBeenCalledWith({
         id: expect.anything(),
@@ -319,8 +326,31 @@ describe("ReturnService", () => {
         received_at: expect.any(String),
         refund_amount: 1000,
         status: "received",
-        write_off_inventory: false,
       })
+
+      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(1)
+      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
+        "test-variant",
+        5
+      )
+    })
+
+    it("fails to write_off_inventory when trying to write off more than available", async () => {
+      await expect(
+        returnService.receive(
+          IdMap.getId("test-return"),
+          [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
+          {
+            refund_amount: 1000,
+            write_off_inventory: [
+              {
+                item_id: IdMap.getId("test-line"),
+                quantity: 12,
+              },
+            ],
+          }
+        )
+      ).rejects.toThrow("You cannot write off more than available")
     })
 
     it("successfully receives a return with requires_action status", async () => {
@@ -372,7 +402,6 @@ describe("ReturnService", () => {
           },
         ],
         refund_amount: 1000,
-        write_off_inventory: true,
         received_at: expect.anything(),
       })
     })

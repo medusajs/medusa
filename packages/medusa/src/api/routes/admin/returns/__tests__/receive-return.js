@@ -19,6 +19,12 @@ describe("POST /admin/returns/:id/receive", () => {
                 quantity: 2,
               },
             ],
+            write_off_inventory: [
+              {
+                item_id: IdMap.getId("test"),
+                quantity: 1,
+              },
+            ],
           },
           adminSession: {
             jwt: {
@@ -41,7 +47,12 @@ describe("POST /admin/returns/:id/receive", () => {
         {
           allow_mismatch: true,
           refund_amount: undefined,
-          write_off_inventory: true,
+          write_off_inventory: [
+            {
+              item_id: IdMap.getId("test"),
+              quantity: 1,
+            },
+          ],
         }
       )
     })

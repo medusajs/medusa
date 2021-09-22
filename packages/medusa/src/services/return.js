@@ -483,7 +483,7 @@ class ReturnService extends BaseService {
     config = {
       refund_amount: undefined,
       allow_mismatch: false,
-      write_off_inventory: true,
+      write_off_inventory: undefined,
     }
   ) {
     return this.atomicPhase_(async manager => {
@@ -491,11 +491,11 @@ class ReturnService extends BaseService {
         this.returnRepository_
       )
 
-      const {
-        refund_amount,
-        allow_mismatch,
-        write_off_inventory = true,
-      } = config
+      const returnLineRepository = manager.getCustomRepository(
+        this.returnLineRepository_
+      )
+
+      const { refund_amount, allow_mismatch, write_off_inventory } = config
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -582,29 +582,55 @@ class ReturnService extends BaseService {
         items: newLines,
         refund_amount: totalRefundableAmount,
         received_at: now.toISOString(),
-        write_off_inventory,
       }
 
       const result = await returnRepository.save(updateObj)
+
+      const findWriteOff = id =>
+        write_off_inventory?.find(item => item.item_id === id)
 
       for (const i of returnObj.items) {
         const lineItem = await this.lineItemService_
           .withTransaction(manager)
           .retrieve(i.item_id)
         const returnedQuantity = (lineItem.returned_quantity || 0) + i.quantity
-        await this.lineItemService_.withTransaction(manager).update(i.item_id, {
-          returned_quantity: returnedQuantity,
-        })
+
+        const writeOff = findWriteOff(i.item_id)
+        const quantity = writeOff
+          ? returnedQuantity - writeOff.quantity
+          : returnedQuantity
+
+        if (quantity < 0) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "You cannot write off more than available"
+          )
+        }
+
+        const toUpdate = {
+          returned_quantity: quantity,
+        }
+
+        if (writeOff) toUpdate.write_off_inventory = writeOff.quantity
+
+        await this.lineItemService_
+          .withTransaction(manager)
+          .update(i.item_id, toUpdate)
       }
 
-      if (write_off_inventory) {
-        for (const line of newLines) {
-          const orderItem = order.items.find(i => i.id === line.item_id)
-          if (orderItem) {
-            await this.inventoryService_
-              .withTransaction(manager)
-              .adjustInventory(orderItem.variant_id, line.received_quantity)
-          }
+      for (const line of newLines) {
+        const orderItem = order.items.find(i => i.id === line.item_id)
+
+        if (orderItem) {
+          const writeOff = findWriteOff(line.item_id)
+
+          const quantity = writeOff
+            ? line.received_quantity - writeOff.quantity
+            : line.received_quantity
+
+          await this.inventoryService_
+            .withTransaction(manager)
+            .adjustInventory(orderItem.variant_id, quantity)
         }
       }
 
