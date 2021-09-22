@@ -88,6 +88,15 @@ class SearchService extends BaseService {
   updateSettings(indexName, settings) {
     throw Error("updateSettings must be overridden by a child class")
   }
+
+  /**
+   * Used to perform transformations (if any) on products before indexation
+   * @param products {Array.<Object>} - the list of products
+   * @return {Array.<Object>} - returns the transformed products
+   */
+  transformProducts(products) {
+    throw Error("transformProducts must be overridden by a child class")
+  }
 }
 
 export default SearchService

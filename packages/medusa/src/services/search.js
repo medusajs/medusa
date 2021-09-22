@@ -61,6 +61,13 @@ class DefaultSearchService extends SearchService {
       "This is an empty method: updateSettings must be overridden by a child class"
     )
   }
+
+  transformProducts(products) {
+    this.logger_.warn(
+      "This is an empty method: transformProducts must be overridden by a child class"
+    )
+    return products
+  }
 }
 
 export default DefaultSearchService
