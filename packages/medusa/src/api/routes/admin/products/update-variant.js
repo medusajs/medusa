@@ -131,7 +131,10 @@ export default async (req, res) => {
       ).required(),
     }),
     inventory_quantity: Validator.number().optional(),
-    cost_price: Validator.number().allow(null),
+    cost_price: Validator.object().keys({
+      currency_code: Validator.string(),
+      amount: Validator.number(),
+    }),
     allow_backorder: Validator.boolean().optional(),
     manage_inventory: Validator.boolean().optional(),
     weight: Validator.number()

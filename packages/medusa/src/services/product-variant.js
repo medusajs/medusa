@@ -124,7 +124,7 @@ class ProductVariantService extends BaseService {
         this.productVariantRepository_
       )
 
-      const { prices, ...rest } = variant
+      const { prices, cost_price, ...rest } = variant
 
       let product = productOrProductId
 
@@ -176,6 +176,19 @@ class ProductVariantService extends BaseService {
 
       if (!rest.variant_rank) {
         rest.variant_rank = product.variants.length
+      }
+
+      if (cost_price) {
+        const moneyAmountRepo = manager.getCustomRepository(
+          this.moneyAmountRepository_
+        )
+
+        const moneyAmount = moneyAmountRepo.create({
+          currency_code: cost_price.currency_code.toLowerCase(),
+          amount: cost_price.amount,
+        })
+
+        rest.cost_price = moneyAmount
       }
 
       const toCreate = {
@@ -264,7 +277,14 @@ class ProductVariantService extends BaseService {
         )
       }
 
-      const { prices, options, metadata, inventory_quantity, ...rest } = update
+      const {
+        cost_price,
+        prices,
+        options,
+        metadata,
+        inventory_quantity,
+        ...rest
+      } = update
 
       if (prices) {
         for (const price of prices) {
@@ -279,6 +299,19 @@ class ProductVariantService extends BaseService {
             await this.setCurrencyPrice(variant.id, price)
           }
         }
+      }
+
+      if (cost_price) {
+        const moneyAmountRepo = manager.getCustomRepository(
+          this.moneyAmountRepository_
+        )
+
+        const moneyAmount = moneyAmountRepo.create({
+          currency_code: cost_price.currency_code.toLowerCase(),
+          amount: cost_price.amount,
+        })
+
+        variant.cost_price = moneyAmount
       }
 
       if (options) {

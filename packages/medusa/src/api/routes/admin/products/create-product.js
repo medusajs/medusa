@@ -223,6 +223,10 @@ export default async (req, res) => {
       barcode: Validator.string().allow(null),
       hs_code: Validator.string().allow(null),
       inventory_quantity: Validator.number().default(0),
+      cost_price: Validator.object().keys({
+        currency_code: Validator.string(),
+        amount: Validator.number(),
+      }),
       allow_backorder: Validator.boolean().optional(),
       manage_inventory: Validator.boolean().optional(),
       weight: Validator.number()

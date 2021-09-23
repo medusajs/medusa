@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   PrimaryColumn,
   OneToMany,
+  OneToOne,
   ManyToOne,
   ManyToMany,
   JoinColumn,
@@ -55,8 +56,15 @@ export class ProductVariant {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   barcode: string
 
-  @Column({ type: "int", nullable: true })
-  cost_price: number
+  @Column({ nullable: true, select: false })
+  cost_price_id: string
+
+  @OneToOne(() => MoneyAmount, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "cost_price_id" })
+  cost_price: MoneyAmount
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })

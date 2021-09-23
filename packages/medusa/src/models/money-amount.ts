@@ -22,10 +22,18 @@ import { Currency } from "./currency"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
 
+export enum MoneyType {
+  RETAIL = "retail",
+  COST = "cost",
+}
+
 @Entity()
 export class MoneyAmount {
   @PrimaryColumn()
   id: string
+
+  @DbAwareColumn({ type: "enum", enum: MoneyType, default: "retail" })
+  type: MoneyType
 
   @Column()
   currency_code: string

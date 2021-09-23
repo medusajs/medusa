@@ -54,6 +54,7 @@ export default app => {
 export const defaultRelations = [
   "variants",
   "variants.prices",
+  "variants.cost_price",
   "variants.options",
   "images",
   "options",
