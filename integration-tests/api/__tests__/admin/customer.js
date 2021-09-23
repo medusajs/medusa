@@ -80,7 +80,7 @@ describe("/admin/customers", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/customers?q=test2@email.com", {
+        .get("/admin/customers?q=est2@", {
           headers: {
             Authorization: "Bearer test_token",
           },
