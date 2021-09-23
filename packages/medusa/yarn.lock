@@ -1407,7 +1407,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@medusajs/medusa-cli@^1.1.17":
+"@medusajs/medusa-cli@^1.1.18":
   version "1.1.18"
   resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.1.18.tgz#a2b34575a81a7df239d6d06cf0d0b192e2b8c8db"
   integrity sha512-JEvQVjebaGuOF5BsqjZYnewmU4TPbrnhODKVyadPKPb/cxPcCMODg21d5QyoaVlcXood08LgTFe8CfdWoyubVw==
@@ -2046,7 +2046,7 @@ babel-preset-jest@^25.5.0:
     babel-plugin-jest-hoist "^25.5.0"
     babel-preset-current-node-syntax "^0.1.2"
 
-babel-preset-medusa-package@^1.1.14:
+babel-preset-medusa-package@^1.1.15:
   version "1.1.15"
   resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.15.tgz#6917cadd8abe9a1f64c71b5c43ab507df193effc"
   integrity sha512-toA8mFdvLeKbbRJ7KvQvpL6VJnzkKURZv7Yd97cXMMNpdjrhp+SZppcNOL2tk6ywgBAs4NC2LCVjtZInMMBS6Q==
@@ -5462,7 +5462,7 @@ medusa-core-utils@^0.1.27:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-core-utils@^1.1.21, medusa-core-utils@^1.1.22:
+medusa-core-utils@^1.1.22:
   version "1.1.22"
   resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.22.tgz#84ce0af0a7c672191d758ea462056e30a39d08b1"
   integrity sha512-kMuRkWOuNG4Bw6epg/AYu95UJuE+rjHTeTWRLbEPrYGjWREV82tLWVDI21/QcccmaHmMU98Rkw2z9JwyFZIiyw==
@@ -5470,7 +5470,7 @@ medusa-core-utils@^1.1.21, medusa-core-utils@^1.1.22:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^1.1.22:
+medusa-interfaces@^1.1.23:
   version "1.1.23"
   resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.23.tgz#b552a8c1d0eaddeff30472ab238652b9e1a56e73"
   integrity sha512-dHCOnsyYQvjrtRd3p0ZqQZ4M/zmo4M/BAgVfRrYSyGrMdQ86TK9Z1DQDCHEzM1216AxEfXz2JYUD7ilTfG2iHQ==
@@ -5492,7 +5492,7 @@ medusa-telemetry@^0.0.5:
     remove-trailing-slash "^0.1.1"
     uuid "^8.3.2"
 
-medusa-test-utils@^1.1.24:
+medusa-test-utils@^1.1.25:
   version "1.1.25"
   resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.25.tgz#7c4aa8a70ec8a95875304258ffbe7493a1e5a7fc"
   integrity sha512-4xy20KsZBR1XcuzckGRq9A+GJwh+CFHzVw3dajaO4iiNpL/a9K3Yj2N4f/8BgRcQyw5PnkKGJ0pzv+OR8+5GVw==
