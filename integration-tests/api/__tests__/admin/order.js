@@ -902,31 +902,29 @@ describe("/admin/orders", () => {
     it("increases inventory_quantity when return is received and write off is added", async () => {
       const api = useApi()
 
-      const returned = await api
-        .post(
-          "/admin/orders/test-order/return",
-          {
-            items: [
-              {
-                item_id: "test-item",
-                quantity: 1,
-              },
-            ],
-            receive_now: true,
-            write_off_inventory: [
-              {
-                item_id: "test-item",
-                quantity: 1,
-              },
-            ],
-          },
-          {
-            headers: {
-              authorization: "Bearer test_token",
+      const returned = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
             },
-          }
-        )
-        .catch((e) => console.log(e))
+          ],
+          receive_now: true,
+          write_off_inventory: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
 
       //Find variant that should have its inventory_quantity updated
       const toTest = returned.data.order.items.find((i) => i.id === "test-item")

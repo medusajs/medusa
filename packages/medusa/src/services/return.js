@@ -491,10 +491,6 @@ class ReturnService extends BaseService {
         this.returnRepository_
       )
 
-      const returnLineRepository = manager.getCustomRepository(
-        this.returnLineRepository_
-      )
-
       const { refund_amount, allow_mismatch, write_off_inventory } = config
 
       const returnObj = await this.retrieve(returnId, {
