@@ -76,7 +76,7 @@ export default async (req, res) => {
       otherwise: Validator.date().optional(),
     }),
     valid_duration: Validator.string()
-      .isoDuration()
+      .isoDuration().allow(null)
       .optional(),
     usage_limit: Validator.number()
       .positive()
