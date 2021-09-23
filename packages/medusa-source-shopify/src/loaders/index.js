@@ -1,4 +1,9 @@
-import { Router } from "express"
-import { getConfigFile, MedusaError } from "medusa-core-utils"
+export default async (container, options) => {
+  try {
+    const shopifyService = container.resolve("shopifyService")
 
-const app = Router()
+    await Promise.resolve(shopifyService.importShopify())
+  } catch (err) {
+    console.log(err)
+  }
+}
