@@ -1446,7 +1446,7 @@ class CartService extends BaseService {
         }
       }
 
-      await addrRepo.save(updated)
+      await this.updateShippingAddress_(cart, updated, addrRepo)
     }
 
     // Shipping methods are determined by region so the user needs to find a
