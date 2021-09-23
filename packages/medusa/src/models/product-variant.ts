@@ -55,6 +55,9 @@ export class ProductVariant {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   barcode: string
 
+  @Column({ type: "int", nullable: true })
+  cost_price: number
+
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
   ean: string

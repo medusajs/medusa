@@ -263,6 +263,7 @@ export default async (req, res) => {
             Validator.number()
           ).required(),
         }),
+        cost_price: Validator.number().allow(null),
         inventory_quantity: Validator.number().allow(null),
         allow_backorder: Validator.boolean().allow(null),
         manage_inventory: Validator.boolean().allow(null),

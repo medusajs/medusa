@@ -55,6 +55,18 @@ export default async (req, res) => {
     name: Validator.string().required(),
     currency_code: Validator.string().required(),
     tax_code: Validator.string().allow(""),
+    sales_nominal_code: Validator.string()
+      .optional()
+      .allow(""),
+    shipping_nominal_code: Validator.string()
+      .optional()
+      .allow(""),
+    gift_card_nominal_code: Validator.string()
+      .optional()
+      .allow(""),
+    accounts_receivable_nominal_code: Validator.string()
+      .optional()
+      .allow(""),
     tax_rate: Validator.number().required(),
     payment_providers: Validator.array().items(Validator.string()),
     fulfillment_providers: Validator.array().items(Validator.string()),

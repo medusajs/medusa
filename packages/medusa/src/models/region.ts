@@ -41,6 +41,18 @@ export class Region {
   @Column({ nullable: true })
   tax_code: string
 
+  @Column({ nullable: true })
+  sales_nominal_code: string
+
+  @Column({ nullable: true })
+  shipping_nominal_code: string
+
+  @Column({ nullable: true })
+  gift_card_nominal_code: string
+
+  @Column({ nullable: true })
+  accounts_receivable_nominal_code: string
+
   @OneToMany(
     () => Country,
     c => c.region
