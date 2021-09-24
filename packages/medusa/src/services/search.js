@@ -25,13 +25,13 @@ class DefaultSearchService extends SearchService {
     )
   }
 
-  addDocuments(indexName, documents) {
+  addDocuments(indexName, documents, type) {
     this.logger_.warn(
       "This is an empty method: addDocuments must be overridden by a child class"
     )
   }
 
-  replaceDocuments(indexName, documents) {
+  replaceDocuments(indexName, documents, type) {
     this.logger_.warn(
       "This is an empty method: replaceDocuments must be overridden by a child class"
     )
@@ -60,13 +60,6 @@ class DefaultSearchService extends SearchService {
     this.logger_.warn(
       "This is an empty method: updateSettings must be overridden by a child class"
     )
-  }
-
-  transformProducts(products) {
-    this.logger_.warn(
-      "This is an empty method: transformProducts must be overridden by a child class"
-    )
-    return products
   }
 }
 
