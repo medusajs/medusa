@@ -159,6 +159,7 @@ describe("/store/carts", () => {
     })
 
     it("fails on discount before start day", async () => {
+      expect.assertions(2)
       const api = useApi()
 
       try {
@@ -166,7 +167,6 @@ describe("/store/carts", () => {
           discounts: [{ code: "PREM_DISC" }],
         })
       } catch (error) {
-        console.log(error)
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual("Discount is not valid yet")
       }
