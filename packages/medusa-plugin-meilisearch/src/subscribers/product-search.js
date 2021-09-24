@@ -60,7 +60,15 @@ class ProductSearchSubscriber {
         "created_at",
         "updated_at",
       ],
-      relations: ["variants", "tags", "type", "collection"],
+      relations: [
+        "variants",
+        "tags",
+        "type",
+        "collection",
+        "variants.prices",
+        "variants.options",
+        "options",
+      ],
     })
     const transformedProduct = transformProduct(product)
     return transformedProduct
