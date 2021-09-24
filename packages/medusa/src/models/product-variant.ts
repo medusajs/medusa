@@ -33,19 +33,14 @@ export class ProductVariant {
   @Column()
   product_id: string
 
-  @ManyToOne(
-    () => Product,
-    product => product.variants,
-    { eager: true }
-  )
+  @ManyToOne(() => Product, (product) => product.variants, { eager: true })
   @JoinColumn({ name: "product_id" })
   product: Product
 
-  @OneToMany(
-    () => MoneyAmount,
-    ma => ma.variant,
-    { cascade: true, onDelete: "CASCADE" }
-  )
+  @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   prices: MoneyAmount[]
 
   @Column({ nullable: true })
@@ -59,10 +54,7 @@ export class ProductVariant {
   @Column({ nullable: true, select: false })
   cost_price_id: string
 
-  @OneToOne(() => MoneyAmount, {
-    cascade: true,
-    onDelete: "CASCADE",
-  })
+  @OneToOne(() => MoneyAmount, { cascade: true })
   @JoinColumn({ name: "cost_price_id" })
   cost_price: MoneyAmount
 
@@ -110,11 +102,9 @@ export class ProductVariant {
   @Column({ type: "int", nullable: true })
   width: number
 
-  @OneToMany(
-    () => ProductOptionValue,
-    optionValue => optionValue.variant,
-    { cascade: true }
-  )
+  @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
+    cascade: true,
+  })
   options: ProductOptionValue[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })

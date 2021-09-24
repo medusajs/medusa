@@ -72,7 +72,7 @@ class BillyService extends BaseService {
     daybookTransaction.lines = [
       {
         text: `Payment ${payment.provider_id}`,
-        accountId: await this.getCustomerAccountsReceivableId(),
+        accountId: await this.getCustomerAccountsReceivableId(fromOrder.region),
         contraAccountId: await this.getPaymentsAccount(payment),
         amount: humanizeAmount(payment.amount, payment.currency_code),
         currencyId: payment.currency_code,
@@ -136,9 +136,11 @@ class BillyService extends BaseService {
       })
     }
 
-    const result = await this.client_.post("/daybookTransactions", {
-      daybookTransaction,
-    })
+    if (daybookTransaction.lines.length > 0) {
+      return await this.client_.post("/daybookTransactions", {
+        daybookTransaction,
+      })
+    }
   }
 
   /**
@@ -165,13 +167,16 @@ class BillyService extends BaseService {
       if (next.is_giftcard) {
         return acc + next.unit_price * next.quantity
       }
+      return acc
     }, 0)
 
     let lines = [
       {
         text: "Products",
-        accountId: await this.getSalesAccountId(),
-        contraAccountId: await this.getCustomerAccountsReceivableId(),
+        accountId: await this.getSalesAccountId(fromOrder.region),
+        contraAccountId: await this.getCustomerAccountsReceivableId(
+          fromOrder.region
+        ),
         taxRateId: await this.getTaxRateId(fromOrder.region),
         amount: humanizeAmount(
           fromOrder.subtotal - giftCardPurchase - fromOrder.discount_total,
@@ -193,8 +198,10 @@ class BillyService extends BaseService {
     if (giftCardPurchase) {
       lines.push({
         text: "Gift Card Purchase",
-        accountId: await this.getGiftCardAccountId(),
-        contraAccountId: await this.getCustomerAccountsReceivableId(),
+        accountId: await this.getGiftCardAccountId(fromOrder.region),
+        contraAccountId: await this.getCustomerAccountsReceivableId(
+          fromOrder.region
+        ),
         amount: humanizeAmount(giftCardPurchase, fromOrder.currency_code),
         currencyId: fromOrder.currency_code,
         side: "credit",
@@ -204,8 +211,10 @@ class BillyService extends BaseService {
     if (fromOrder.shipping_total) {
       lines.push({
         text: "Shipping",
-        accountId: await this.getShippingAccountId(),
-        contraAccountId: await this.getCustomerAccountsReceivableId(),
+        accountId: await this.getShippingAccountId(fromOrder.region),
+        contraAccountId: await this.getCustomerAccountsReceivableId(
+          fromOrder.region
+        ),
         taxRateId: await this.getTaxRateId(fromOrder.region),
         amount: humanizeAmount(
           fromOrder.shipping_total,
@@ -225,8 +234,8 @@ class BillyService extends BaseService {
     if (fromOrder.gift_card_total) {
       lines.push({
         text: "Gift Card Payment",
-        accountId: await this.getCustomerAccountsReceivableId(),
-        contraAccountId: await this.getGiftCardAccountId(),
+        accountId: await this.getCustomerAccountsReceivableId(fromOrder.region),
+        contraAccountId: await this.getGiftCardAccountId(fromOrder.region),
         amount: humanizeAmount(
           fromOrder.gift_card_total,
           fromOrder.currency_code
@@ -250,7 +259,7 @@ class BillyService extends BaseService {
    * @return {Promise<string>} the id of the Billy account for gift cards
    */
   async getGiftCardAccountId(fromRegion) {
-    return await coalesceAccount(
+    return await this.coalesceAccount(
       fromRegion,
       "gift_card_nominal_code",
       "gift_card_account"
@@ -264,7 +273,7 @@ class BillyService extends BaseService {
    * @return {Promise<string>} the id of the Billy account
    */
   async getShippingAccountId(fromRegion) {
-    return await coalesceAccount(
+    return await this.coalesceAccount(
       fromRegion,
       "shipping_nominal_code",
       "shipping_account"
@@ -278,6 +287,10 @@ class BillyService extends BaseService {
    * @return {Promise<string>} the id of the Billy tax rate
    */
   async getTaxRateId(fromRegion) {
+    if (!fromRegion.tax_code) {
+      return null
+    }
+
     if (fromRegion.tax_code in this.taxRates_) {
       return this.taxRates_[fromRegion.tax_code]
     }
@@ -289,9 +302,10 @@ class BillyService extends BaseService {
       (tr) => tr.abbreviation === fromRegion.tax_code
     )
 
-    this.taxRates_[fromRegion.tax_code] = regionRate.id
+    // It may be the case that no tax rate is configured.
+    this.taxRates_[fromRegion.tax_code] = regionRate?.id
 
-    return regionRate.id
+    return regionRate?.id
   }
 
   /**
@@ -330,7 +344,7 @@ class BillyService extends BaseService {
    * @return {Promise<string>} the id of the Billy account
    */
   async getSalesAccountId(fromRegion) {
-    return await coalesceAccount(
+    return await this.coalesceAccount(
       fromRegion,
       "sales_nominal_code",
       "sales_account"
@@ -344,7 +358,7 @@ class BillyService extends BaseService {
    * @return {Promise<string>} the id of the Billy account
    */
   async getCustomerAccountsReceivableId(fromRegion) {
-    return await coalesceAccount(
+    return await this.coalesceAccount(
       fromRegion,
       "accounts_receivable_nominal_code",
       "customer_accounts_receivable"
@@ -388,7 +402,7 @@ class BillyService extends BaseService {
    * @return {Promise<string>} the id of the Billy account
    */
   async coalesceAccount(fromRegion, regionKey, optionKey) {
-    if (fromRegion[regionKey]) {
+    if (fromRegion && fromRegion[regionKey]) {
       try {
         return await this.getAccountByNumber(fromRegion[regionKey])
       } catch (err) {
