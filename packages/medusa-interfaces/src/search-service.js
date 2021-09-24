@@ -32,9 +32,10 @@ class SearchService extends BaseService {
    * Used to index documents by the search engine provider
    * @param indexName {string} - the index name
    * @param documents {Array.<Object>} - documents array to be indexed
+   * @param type {Array.<Object>} - type of documents to be added (e.g: products, regions, orders, etc)
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  addDocuments(indexName, documents) {
+  addDocuments(indexName, documents, type) {
     throw Error("addDocuments must be overridden by a child class")
   }
 
@@ -42,9 +43,10 @@ class SearchService extends BaseService {
    * Used to replace documents
    * @param indexName {string} - the index name.
    * @param documents {Object} - array of document objects that will replace existing documents
+   * @param type {Array.<Object>} - type of documents to be replaced (e.g: products, regions, orders, etc)
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  replaceDocuments(indexName, documents) {
+  replaceDocuments(indexName, documents, type) {
     throw Error("updateDocument must be overridden by a child class")
   }
 
@@ -87,15 +89,6 @@ class SearchService extends BaseService {
    */
   updateSettings(indexName, settings) {
     throw Error("updateSettings must be overridden by a child class")
-  }
-
-  /**
-   * Used to perform transformations (if any) on products before indexation
-   * @param products {Array.<Object>} - the list of products
-   * @return {Array.<Object>} - returns the transformed products
-   */
-  transformProducts(products) {
-    throw Error("transformProducts must be overridden by a child class")
   }
 }
 

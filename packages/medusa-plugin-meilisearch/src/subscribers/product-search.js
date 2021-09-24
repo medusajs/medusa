@@ -1,3 +1,4 @@
+import { indexTypes } from "medusa-core-utils"
 import { transformProduct } from "../utils/transform-product"
 
 class ProductSearchSubscriber {
@@ -37,9 +38,11 @@ class ProductSearchSubscriber {
 
   handleProductCreation = async (data) => {
     const product = await this.retrieveProduct_(data.id)
-    await this.meilisearchService_.addDocuments(this.productIndexName, [
-      product,
-    ])
+    await this.meilisearchService_.addDocuments(
+      this.productIndexName,
+      [product],
+      indexTypes.products
+    )
   }
 
   retrieveProduct_ = async (product_id) => {
@@ -76,9 +79,11 @@ class ProductSearchSubscriber {
 
   handleProductUpdate = async (data) => {
     const product = await this.retrieveProduct_(data.id)
-    await this.meilisearchService_.addDocuments(this.productIndexName, [
-      product,
-    ])
+    await this.meilisearchService_.addDocuments(
+      this.productIndexName,
+      [product],
+      indexTypes.products
+    )
   }
 
   handleProductDeletion = async (data) => {
@@ -90,9 +95,11 @@ class ProductSearchSubscriber {
 
   handleProductVariantChange = async (data) => {
     const product = await this.retrieveProduct_(data.product_id)
-    await this.meilisearchService_.addDocuments(this.productIndexName, [
-      product,
-    ])
+    await this.meilisearchService_.addDocuments(
+      this.productIndexName,
+      [product],
+      indexTypes.products
+    )
   }
 }
 
