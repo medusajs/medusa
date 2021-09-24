@@ -1,5 +1,5 @@
 /**
- * @oas [delete] /returnReason/{id}
+ * @oas [delete] /return-reason/{id}
  * operationId: "DeleteReturnReason"
  * summary: "Delete a return reason"
  * description: "Deletes a return reason."
