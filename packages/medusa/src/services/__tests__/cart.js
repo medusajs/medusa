@@ -1083,6 +1083,9 @@ describe("CartService", () => {
           id: "region",
           countries: [{ iso_2: "us" }],
         },
+        shipping_address: {
+          country_code: "us",
+        },
         items: [IdMap.getId("testitem"), null],
         payment_session: null,
         payment_sessions: [],

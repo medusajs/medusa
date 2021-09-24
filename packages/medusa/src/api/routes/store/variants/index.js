@@ -11,3 +11,5 @@ export default app => {
 
   return app
 }
+
+export const defaultRelations = ["prices"]

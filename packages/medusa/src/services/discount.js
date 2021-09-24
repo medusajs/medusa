@@ -2,9 +2,9 @@ import _ from "lodash"
 import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
-import { Brackets } from "typeorm"
 import { MedusaErrorCodes } from "medusa-core-utils/dist/errors"
 import { parse, toSeconds } from "iso8601-duration"
+import { Brackets, ILike } from "typeorm"
 
 /**
  * Provides layer to manipulate discounts.
@@ -153,16 +153,12 @@ class DiscountService extends BaseService {
 
       delete where.code
 
-      query.join = {
-        alias: "discount",
-      }
-
       query.where = qb => {
         qb.where(where)
 
         qb.andWhere(
           new Brackets(qb => {
-            qb.where(`discount.code ILIKE :q`, { q: `%${q}%` })
+            qb.where({ code: ILike(`%${q}%`) })
           })
         )
       }

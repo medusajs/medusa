@@ -223,7 +223,7 @@ export const ProductVariantServiceMock = {
     if (variantId === "4") {
       return Promise.resolve(variant4)
     }
-    if (variantId === IdMap.getId("variantWithPrices")) {
+    if (variantId === "variant_with_prices") {
       return Promise.resolve(variantWithPrices)
     }
     if (variantId === IdMap.getId("validId")) {

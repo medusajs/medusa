@@ -52,6 +52,22 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
+  // Region with multiple countries
+  const regionWithMultipleCoutries = manager.create(Region, {
+    id: "test-region-multiple",
+    name: "Test Region",
+    currency_code: "eur",
+    tax_rate: 0,
+  })
+
+  await manager.save(regionWithMultipleCoutries)
+  await manager.query(
+    `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'no'`
+  )
+  await manager.query(
+    `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'dk'`
+  )
+
   const freeRule = manager.create(DiscountRule, {
     id: "free-shipping-rule",
     description: "Free shipping rule",
@@ -360,6 +376,25 @@ module.exports = async (connection, data = {}) => {
     items: [],
   })
 
+  const swapCart = manager.create(Cart, {
+    id: "swap-cart",
+    type: "swap",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+    metadata: {
+      swap_id: "test-swap",
+    },
+  })
+
   const pay = manager.create(Payment, {
     id: "test-payment",
     amount: 10000,
@@ -374,10 +409,36 @@ module.exports = async (connection, data = {}) => {
   cart2.payment = pay
 
   await manager.save(cart2)
+  const swapPay = manager.create(Payment, {
+    id: "test-swap-payment",
+    amount: 10000,
+    currency_code: "usd",
+    amount_refunded: 0,
+    provider_id: "test-pay",
+    data: {},
+  })
+
+  await manager.save(pay)
+  await manager.save(swapPay)
+
+  cart2.payment = pay
+  swapCart.payment = swapPay
+
+  await manager.save(cart2)
+  await manager.save(swapCart)
 
   await manager.insert(PaymentSession, {
     id: "test-session",
     cart_id: "test-cart-2",
+    provider_id: "test-pay",
+    is_selected: true,
+    data: {},
+    status: "authorized",
+  })
+
+  await manager.insert(PaymentSession, {
+    id: "test-swap-session",
+    cart_id: "swap-cart",
     provider_id: "test-pay",
     is_selected: true,
     data: {},

@@ -49,6 +49,7 @@ Array [
     ],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
+    "status": "draft",
     "subtitle": null,
     "tags": Array [
       Object {
@@ -252,6 +253,7 @@ Array [
     "options": Array [],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
+    "status": "draft",
     "subtitle": null,
     "tags": Array [
       Object {

@@ -1,49 +1,49 @@
-const path = require("path");
+const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server");
-const { useApi } = require("../../../helpers/use-api");
-const { initDb, useDb } = require("../../../helpers/use-db");
+const setupServer = require("../../../helpers/setup-server")
+const { useApi } = require("../../../helpers/use-api")
+const { initDb, useDb } = require("../../../helpers/use-db")
 
-const orderSeeder = require("../../helpers/order-seeder");
-const swapSeeder = require("../../helpers/swap-seeder");
-const adminSeeder = require("../../helpers/admin-seeder");
+const orderSeeder = require("../../helpers/order-seeder")
+const swapSeeder = require("../../helpers/swap-seeder")
+const adminSeeder = require("../../helpers/admin-seeder")
 
-jest.setTimeout(30000);
+jest.setTimeout(30000)
 
 describe("/admin/swaps", () => {
-  let medusaProcess;
-  let dbConnection;
+  let medusaProcess
+  let dbConnection
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."));
-    dbConnection = await initDb({ cwd });
-    medusaProcess = await setupServer({ cwd });
-  });
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
+  })
 
   afterAll(async () => {
-    const db = useDb();
-    await db.shutdown();
-    medusaProcess.kill();
-  });
+    const db = useDb()
+    await db.shutdown()
+    medusaProcess.kill()
+  })
 
   describe("GET /admin/swaps/:id", () => {
     beforeEach(async () => {
       try {
-        await adminSeeder(dbConnection);
-        await orderSeeder(dbConnection);
-        await swapSeeder(dbConnection);
+        await adminSeeder(dbConnection)
+        await orderSeeder(dbConnection)
+        await swapSeeder(dbConnection)
       } catch (err) {
-        throw err;
+        throw err
       }
-    });
+    })
 
     afterEach(async () => {
-      const db = useDb();
-      await db.teardown();
-    });
+      const db = useDb()
+      await db.teardown()
+    })
 
     it("gets a swap with cart and totals", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const response = await api
         .get("/admin/swaps/test-swap", {
@@ -52,46 +52,46 @@ describe("/admin/swaps", () => {
           },
         })
         .catch((err) => {
-          console.log(err);
-        });
-      expect(response.status).toEqual(200);
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
       expect(response.data.swap).toEqual(
         expect.objectContaining({
           id: "test-swap",
         })
-      );
+      )
 
       expect(response.data.swap.cart).toEqual(
         expect.objectContaining({
-          id: "test-cart",
+          id: "test-cart-w-swap",
           shipping_total: 1000,
           subtotal: 1000,
           total: 2000,
         })
-      );
-      expect(response.data.swap.cart).toHaveProperty("discount_total");
-      expect(response.data.swap.cart).toHaveProperty("gift_card_total");
-    });
-  });
+      )
+      expect(response.data.swap.cart).toHaveProperty("discount_total")
+      expect(response.data.swap.cart).toHaveProperty("gift_card_total")
+    })
+  })
 
   describe("GET /admin/swaps/", () => {
     beforeEach(async () => {
       try {
-        await adminSeeder(dbConnection);
-        await orderSeeder(dbConnection);
-        await swapSeeder(dbConnection);
+        await adminSeeder(dbConnection)
+        await orderSeeder(dbConnection)
+        await swapSeeder(dbConnection)
       } catch (err) {
-        throw err;
+        throw err
       }
-    });
+    })
 
     afterEach(async () => {
-      const db = useDb();
-      await db.teardown();
-    });
+      const db = useDb()
+      await db.teardown()
+    })
 
     it("lists all swaps", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const response = await api
         .get("/admin/swaps/", {
@@ -100,18 +100,18 @@ describe("/admin/swaps", () => {
           },
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
 
-      expect(response.status).toEqual(200);
-      expect(response.data).toHaveProperty("count");
-      expect(response.data.offset).toBe(0);
-      expect(response.data.limit).toBe(50);
+      expect(response.status).toEqual(200)
+      expect(response.data).toHaveProperty("count")
+      expect(response.data.offset).toBe(0)
+      expect(response.data.limit).toBe(50)
       expect(response.data.swaps).toContainEqual(
         expect.objectContaining({
           id: "test-swap",
         })
-      );
-    });
-  });
-});
+      )
+    })
+  })
+})

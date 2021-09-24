@@ -328,7 +328,7 @@ class PaymentProviderService extends BaseService {
       payment.canceled_at = now.toISOString()
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
-      return paymentRepo.save(payment)
+      return await paymentRepo.save(payment)
     })
   }
 
