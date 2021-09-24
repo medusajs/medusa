@@ -1,4 +1,5 @@
 import ProductService from "../services/product"
+import { indexTypes } from "medusa-core-utils"
 
 async function loadProductsIntoSearchEngine(container) {
   const searchService = container.resolve("searchService")
@@ -43,9 +44,11 @@ async function loadProductsIntoSearchEngine(container) {
       }
     )
 
-    const transformedBatch = searchService.transformProducts(products)
-
-    await searchService.addDocuments(ProductService.IndexName, transformedBatch)
+    await searchService.addDocuments(
+      ProductService.IndexName,
+      products,
+      indexTypes.products
+    )
 
     iterCount += products.length
     lastSeenId = products[products.length - 1].id
