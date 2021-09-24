@@ -363,8 +363,6 @@ describe("/admin/return-reasons", () => {
 
       expect(nested_response.status).toEqual(200)
 
-      console.log(nested_response.data.return_reasons)
-
       expect(nested_response.data.return_reasons).toEqual([
         expect.objectContaining({
           label: "Wrong size",
