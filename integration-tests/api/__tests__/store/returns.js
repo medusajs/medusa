@@ -242,7 +242,7 @@ describe("/store/carts", () => {
           order_id: "order_test",
           items: [
             {
-              reason_id: rrId,
+              reason_id: "asl;dfkja",
               note: "TOO small",
               item_id: "test-item",
               quantity: 1,
@@ -250,6 +250,7 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
+          console.log(err)
           return err.response;
         });
       expect(response.status).toEqual(200);
