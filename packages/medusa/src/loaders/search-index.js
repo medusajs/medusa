@@ -7,7 +7,7 @@ async function loadProductsIntoSearchEngine(container) {
   const TAKE = 20
   const totalCount = await productService.count()
   let iterCount = 0,
-    lastSeenId = "prod"
+    lastSeenId = ""
 
   while (iterCount < totalCount) {
     const products = await productService.list(
@@ -29,7 +29,15 @@ async function loadProductsIntoSearchEngine(container) {
           "created_at",
           "updated_at",
         ],
-        relations: ["variants", "tags", "type", "collection"],
+        relations: [
+          "variants",
+          "tags",
+          "type",
+          "collection",
+          "variants.prices",
+          "variants.options",
+          "options",
+        ],
         take: TAKE,
         order: { id: "ASC" },
       }
