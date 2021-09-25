@@ -199,10 +199,11 @@ describe("POST /admin/discounts", () => {
     })
   })
 
-  describe("fails when creating a dynamic discount without setting valid duration", () => {
+  describe("succesfully creates a dynamic discount without setting valid duration", () => {
     let subject
 
     beforeAll(async () => {
+      jest.clearAllMocks()
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "TEST",
@@ -213,7 +214,7 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          starts_at: "03/14/2021",
+          starts_at: "03/14/2021 14:30",
         },
         adminSession: {
           jwt: {
@@ -223,15 +224,23 @@ describe("POST /admin/discounts", () => {
       })
     })
 
-    it("returns 400", () => {
-      // console.log(subject)
-      expect(subject.status).toEqual(400)
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
     })
 
     it("returns error", () => {
-      expect(subject.body.message[0].message).toEqual(
-        `"valid_duration" is required`
-      )
+      expect(DiscountServiceMock.create).toHaveBeenCalledWith({
+        code: "TEST",
+          is_dynamic: true,
+          is_disabled: false,
+        rule: {
+          description: "Test",
+          type: "fixed",
+          value: 10,
+          allocation: "total",
+        },
+        starts_at: new Date("03/14/2021 14:30"),
+      })
     })
   })
 })
