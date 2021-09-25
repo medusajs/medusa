@@ -345,7 +345,7 @@ class DiscountService extends BaseService {
         lastValidDate.setSeconds(
           lastValidDate.getSeconds() + toSeconds(parse(discount.valid_duration))
         )
-        toCreate.ends_at = lastValidDate.toUTCString()
+        toCreate.ends_at = lastValidDate
       }
       const created = await discountRepo.create(toCreate)
       const result = await discountRepo.save(created)
