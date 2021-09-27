@@ -1,28 +1,28 @@
 {
   "gift_card": {
-    "id": "gift_01FEWZS57KAP75VP219MR1CYFQ",
-    "code": "61B7-0CJD-55CP-9PUB",
+    "id": "gift_01FGKMYPRWYXVASPS93FRJ81HA",
+    "code": "DJM6-QG28-JY32-7TL1",
     "value": 1000,
     "balance": 1000,
-    "region_id": "reg_01FEWZS55QPW5MQJEQMMX8XQZY",
+    "region_id": "reg_01FGKMYPQ8EHP3EK2QJTAVTZR0",
     "region": {
-      "id": "reg_01FEWZS55QPW5MQJEQMMX8XQZY",
+      "id": "reg_01FGKMYPQ8EHP3EK2QJTAVTZR0",
       "name": "United States",
       "currency_code": "usd",
       "tax_rate": "0",
       "tax_code": null,
       "payment_providers": [],
       "fulfillment_providers": [],
-      "created_at": "2021-09-06T07:22:23.287Z",
-      "updated_at": "2021-09-06T07:22:23.287Z",
+      "created_at": "2021-09-27T12:51:24.520Z",
+      "updated_at": "2021-09-27T12:51:24.520Z",
       "deleted_at": null,
       "metadata": null
     },
     "order": null,
     "is_disabled": false,
     "ends_at": null,
-    "created_at": "2021-09-06T07:22:23.334Z",
-    "updated_at": "2021-09-06T07:22:23.334Z",
+    "created_at": "2021-09-27T12:51:24.557Z",
+    "updated_at": "2021-09-27T12:51:24.557Z",
     "deleted_at": null,
     "metadata": null
   }

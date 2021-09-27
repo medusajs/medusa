@@ -11,15 +11,15 @@
     "react-native/@jest/create-cache-key-function": "^27.0.2"
   },
   "dependencies": {
-    "@medusajs/medusa": "1.1.38-dev-1629880867890",
-    "medusa-interfaces": "1.1.21-dev-1629880867890",
+    "@medusajs/medusa": "1.1.41-dev-1632746515216",
+    "medusa-interfaces": "1.1.23-dev-1632746515216",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "babel-preset-medusa-package": "1.1.13-dev-1629880867890",
+    "babel-preset-medusa-package": "1.1.15-dev-1632746515216",
     "jest": "^27.0.6"
   }
 }

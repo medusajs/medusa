@@ -1,6 +1,6 @@
 {
   "discount": {
-    "id": "disc_01FEWZRYD8RYB7Q7M0AKGA44BD",
+    "id": "disc_01FGKMYGFTHKTW1T1YA35Q8ZPF",
     "code": "ABCD-1234-FIVE-QWER",
     "is_dynamic": false,
     "rule_id": null,
@@ -8,11 +8,11 @@
     "is_disabled": false,
     "parent_discount_id": null,
     "parent_discount": null,
-    "starts_at": "2021-09-06T07:22:16.359Z",
+    "starts_at": "2021-09-27T12:51:18.138Z",
     "ends_at": null,
     "regions": [
       {
-        "id": "reg_01FEWZRYCPT3MZ1FZPBVD7H5ZJ",
+        "id": "reg_01FGKMYGEW2WJMAKTB81FQ296K",
         "name": "Scandinavia",
         "currency_code": "dkk",
         "tax_rate": "0",
@@ -29,16 +29,16 @@
             "is_installed": true
           }
         ],
-        "created_at": "2021-09-06T07:22:16.342Z",
-        "updated_at": "2021-09-06T07:22:16.359Z",
+        "created_at": "2021-09-27T12:51:18.108Z",
+        "updated_at": "2021-09-27T12:51:18.138Z",
         "deleted_at": null,
         "metadata": null
       }
     ],
     "usage_limit": 5,
     "usage_count": 0,
-    "created_at": "2021-09-06T07:22:16.359Z",
-    "updated_at": "2021-09-06T07:22:16.359Z",
+    "created_at": "2021-09-27T12:51:18.138Z",
+    "updated_at": "2021-09-27T12:51:18.138Z",
     "deleted_at": null,
     "metadata": null
   }

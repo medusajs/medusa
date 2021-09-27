@@ -71,6 +71,7 @@ Object {
     ],
     "metadata": null,
     "payment": null,
+    "payment_authorized_at": null,
     "payment_id": null,
     "payment_sessions": Array [],
     "region": Object {

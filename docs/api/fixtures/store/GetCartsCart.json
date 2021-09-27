@@ -1,6 +1,6 @@
 {
   "cart": {
-    "id": "cart_01FEWZSRFWT8QWMHJ7ZCPRP3BZ",
+    "id": "cart_01FGKMZA33ZNQ66KSJMTF48QFS",
     "email": null,
     "billing_address_id": null,
     "billing_address": null,
@@ -8,8 +8,8 @@
     "shipping_address": null,
     "items": [
       {
-        "id": "item_01FEWZSRMBAN85SKPCRMM30N6W",
-        "cart_id": "cart_01FEWZSRFWT8QWMHJ7ZCPRP3BZ",
+        "id": "item_01FGKMZA86PGVMFVX6XGSE02YH",
+        "cart_id": "cart_01FGKMZA33ZNQ66KSJMTF48QFS",
         "order_id": null,
         "swap_id": null,
         "claim_order_id": null,
@@ -21,11 +21,11 @@
         "allow_discounts": true,
         "has_shipping": false,
         "unit_price": 1000,
-        "variant_id": "variant_01FEWZSRDNWABVFZTZ21JWKHRG",
+        "variant_id": "variant_01FGKMZA0VAVW2JVAH158EHJX7",
         "variant": {
-          "id": "variant_01FEWZSRDNWABVFZTZ21JWKHRG",
+          "id": "variant_01FGKMZA0VAVW2JVAH158EHJX7",
           "title": "Small",
-          "product_id": "prod_01FEWZSRDHDDSHQV6ATG6MS2MF",
+          "product_id": "prod_01FGKMZA0P236AKE4F3GDHJZY1",
           "sku": null,
           "barcode": null,
           "ean": null,
@@ -41,8 +41,8 @@
           "length": null,
           "height": null,
           "width": null,
-          "created_at": "2021-09-06T07:22:42.997Z",
-          "updated_at": "2021-09-06T07:22:42.997Z",
+          "created_at": "2021-09-27T12:51:44.283Z",
+          "updated_at": "2021-09-27T12:51:44.283Z",
           "deleted_at": null,
           "metadata": null
         },
@@ -50,14 +50,14 @@
         "fulfilled_quantity": null,
         "returned_quantity": null,
         "shipped_quantity": null,
-        "created_at": "2021-09-06T07:22:43.155Z",
-        "updated_at": "2021-09-06T07:22:43.155Z",
+        "created_at": "2021-09-27T12:51:44.481Z",
+        "updated_at": "2021-09-27T12:51:44.481Z",
         "metadata": {}
       }
     ],
-    "region_id": "reg_01FEWZSRD7HVHBSQRC4KYMG5XM",
+    "region_id": "reg_01FGKMZA0EVYGF76QHY5JBZB8J",
     "region": {
-      "id": "reg_01FEWZSRD7HVHBSQRC4KYMG5XM",
+      "id": "reg_01FGKMZA0EVYGF76QHY5JBZB8J",
       "name": "United States",
       "currency_code": "usd",
       "tax_rate": "0",
@@ -65,8 +65,8 @@
       "countries": [],
       "payment_providers": [],
       "fulfillment_providers": [],
-      "created_at": "2021-09-06T07:22:42.982Z",
-      "updated_at": "2021-09-06T07:22:42.982Z",
+      "created_at": "2021-09-27T12:51:44.269Z",
+      "updated_at": "2021-09-27T12:51:44.269Z",
       "deleted_at": null,
       "metadata": null
     },
@@ -79,8 +79,9 @@
     "shipping_methods": [],
     "type": "default",
     "completed_at": null,
-    "created_at": "2021-09-06T07:22:43.045Z",
-    "updated_at": "2021-09-06T07:22:43.045Z",
+    "payment_authorized_at": null,
+    "created_at": "2021-09-27T12:51:44.336Z",
+    "updated_at": "2021-09-27T12:51:44.336Z",
     "deleted_at": null,
     "metadata": null,
     "idempotency_key": null,

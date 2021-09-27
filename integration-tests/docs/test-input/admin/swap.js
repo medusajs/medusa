@@ -23,7 +23,7 @@ const {
 
 module.exports = {
   operationId: "GetSwapsSwap",
-  buildEndpoint: (id) => `/admin/swaps/${id}`,
+  buildEndpoint: id => `/admin/swaps/${id}`,
   setup: async (manager, api) => {
     const defaultProfile = await manager.findOne(ShippingProfile, {
       type: "default",
@@ -114,7 +114,7 @@ module.exports = {
     await manager.save(shippingOption)
 
     const customer = await manager.create(Customer, {
-      email: "jane@medusa.test",
+      email: "jane@medusa.com",
     })
     await manager.save(customer)
 
@@ -198,7 +198,7 @@ module.exports = {
           },
         }
       )
-      .catch((err) => {
+      .catch(err => {
         console.log(err)
       })
 
