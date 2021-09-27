@@ -10,7 +10,7 @@ const {
 
 module.exports = {
   operationId: "GetCustomersCustomer",
-  buildEndpoint: (id) => `/store/customers/${id}`,
+  buildEndpoint: _ => `/store/customers/me`,
   setup: async (manager, api) => {
     const response = await api.post("/store/customers", {
       first_name: "Ada",
@@ -18,7 +18,6 @@ module.exports = {
       email: "ada@com.com",
       password: "test",
     })
-    await manager.save(customer)
 
     const authResponse = await api.post("/store/auth", {
       email: "ada@com.com",
@@ -28,7 +27,6 @@ module.exports = {
     const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
     return {
-      id: customer.id,
       headers: {
         Cookie: authCookie,
       },

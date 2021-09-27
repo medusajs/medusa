@@ -3,8 +3,9 @@ const { useApi } = require("../../helpers/use-api")
 const { useDb } = require("../../helpers/use-db")
 
 const cartTest = require("../test-input/store/cart")
+const customerTest = require("../test-input/store/customer")
 
-const toTest = [cartTest]
+const toTest = [cartTest, customerTest]
 
 jest.setTimeout(30000)
 
@@ -28,7 +29,7 @@ test.each(toTest)(
       .get(buildEndpoint(config.id), {
         headers: config.headers,
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err)
       })
 
