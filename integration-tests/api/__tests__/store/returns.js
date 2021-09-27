@@ -37,6 +37,7 @@ describe("/store/carts", () => {
 
   describe("POST /store/returns", () => {
     let rrId;
+    let rrResult;
 
     beforeEach(async () => {
       const manager = dbConnection.manager;
@@ -152,6 +153,7 @@ describe("/store/carts", () => {
       });
       const result = await dbConnection.manager.save(created);
 
+      rrResult = result
       rrId = result.id;
     });
 
@@ -179,6 +181,38 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200);
 
       expect(response.data.return.refund_amount).toEqual(8000);
+    });
+
+    it("creates a return with reasons", async () => {
+      const api = useApi();
+      
+      console.log(rrId)
+      console.log(rrResult)
+
+      const response = await api
+        .post("/store/returns", {
+          order_id: "order_test",
+          items: [
+            {
+              reason_id: rrId,
+              note: "TOO small",
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => {
+          console.log(err.response)
+          return err.response;
+        });
+      expect(response.status).toEqual(200);
+
+      expect(response.data.return.items).toEqual([
+        expect.objectContaining({
+          reason_id: rrId,
+          note: "TOO small",
+        }),
+      ]);
     });
 
     it("creates a return with discount and non-discountable item", async () => {
@@ -234,33 +268,5 @@ describe("/store/carts", () => {
       expect(response.data.return.refund_amount).toEqual(7000);
     });
 
-    it("creates a return with reasons", async () => {
-      const api = useApi();
-
-      const response = await api
-        .post("/store/returns", {
-          order_id: "order_test",
-          items: [
-            {
-              reason_id: "asl;dfkja",
-              note: "TOO small",
-              item_id: "test-item",
-              quantity: 1,
-            },
-          ],
-        })
-        .catch((err) => {
-          console.log(err)
-          return err.response;
-        });
-      expect(response.status).toEqual(200);
-
-      expect(response.data.return.items).toEqual([
-        expect.objectContaining({
-          reason_id: rrId,
-          note: "TOO small",
-        }),
-      ]);
-    });
   });
 });
