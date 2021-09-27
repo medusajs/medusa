@@ -73,9 +73,10 @@ class SearchService extends BaseService {
    * Used to search for a document in an index
    * @param indexName {string} - the index name
    * @param query {string} - the search query
-   * @param options {object} - any options passed to the request object other than the query and indexName
-   * e.g. pagination options, filtering options, etc
-   * @return {Promise<{object}>} - returns response from search engine provider
+   * @param options {{ paginationOptions: { limit: number, offset: number }, filter: string, additionalOptions: any}}
+   * - any options passed to the request object other than the query and indexName
+   * - additionalOptions contain any provider specific options
+   * @return {Promise<{ hits: any[]; [k: string]: any; }>} returns response from search engine provider
    */
   search(indexName, query, options) {
     throw Error("search must be overridden by a child class")
