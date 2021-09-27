@@ -374,6 +374,13 @@ class ReturnService extends BaseService {
         refund_amount: Math.floor(toRefund),
       }
 
+
+      // const rReasonService = manager.getCustomRepository(this.returnReasonService_)
+      
+      throw new Error(returnLines[0].reason_id)
+      const return_reasons = await this.returnReasonService_.listReasonsFromIds(returnLines.map(rl => rl.reason_id))
+
+
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map(i =>
         rItemRepo.create({
