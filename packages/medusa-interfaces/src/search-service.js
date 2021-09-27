@@ -73,7 +73,7 @@ class SearchService extends BaseService {
    * Used to search for a document in an index
    * @param indexName {string} - the index name
    * @param query {string} - the search query
-   * @param options {{ paginationOptions: { limit: number, offset: number }, filter: string, additionalOptions: any}}
+   * @param options {{ paginationOptions: { limit: number, offset: number }, filter: any, additionalOptions: any}}
    * - any options passed to the request object other than the query and indexName
    * - additionalOptions contain any provider specific options
    * @return {Promise<{ hits: any[]; [k: string]: any; }>} returns response from search engine provider
