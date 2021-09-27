@@ -8,6 +8,7 @@ const {
   Product,
   ProductVariant,
   ShippingOption,
+  FulfillmentProvider,
   LineItem,
   Discount,
   DiscountRule,
@@ -37,6 +38,7 @@ describe("/store/carts", () => {
 
   describe("POST /store/returns", () => {
     let rrId;
+    let rrId_child;
     let rrResult;
 
     beforeEach(async () => {
@@ -45,13 +47,17 @@ describe("/store/carts", () => {
         `ALTER SEQUENCE order_display_id_seq RESTART WITH 111`
       );
 
+      const defaultProfile = await manager.findOne(ShippingProfile, {
+        type: "default",
+      });
+  
       await manager.insert(Region, {
         id: "region",
         name: "Test Region",
         currency_code: "usd",
         tax_rate: 0,
       });
-
+  
       await manager.insert(Customer, {
         id: "cus_1234",
         email: "test@email.com",
@@ -99,10 +105,6 @@ describe("/store/carts", () => {
 
       await manager.save(ord);
 
-      const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
-      });
-
       await manager.insert(Product, {
         id: "test-product",
         title: "test product",
@@ -148,13 +150,23 @@ describe("/store/carts", () => {
       });
 
       const created = dbConnection.manager.create(ReturnReason, {
-        value: "too_big",
-        label: "Too Big",
+        value: "wrong_size",
+        label: "Wrong Size",
       });
       const result = await dbConnection.manager.save(created);
 
       rrResult = result
       rrId = result.id;
+
+      const created_1 = dbConnection.manager.create(ReturnReason, {
+        value: "too_big",
+        label: "Too Big",
+        parent_return_reason_id: rrId,
+      });
+
+      const result_1 = await dbConnection.manager.save(created_1);
+
+      rrId_child = result_1.id;
     });
 
     afterEach(async () => {
@@ -183,7 +195,7 @@ describe("/store/carts", () => {
       expect(response.data.return.refund_amount).toEqual(8000);
     });
 
-    it("creates a return with reasons", async () => {
+    it("failes to create a return with a reason category", async () => {
       const api = useApi();
       
       console.log(rrId)
@@ -205,11 +217,39 @@ describe("/store/carts", () => {
           console.log(err.response)
           return err.response;
         });
+
+      expect(response.status).toEqual(400);
+      expect(response.data.message).toEqual('Cannot apply return reason category')
+
+    });
+
+    it("creates a return with reasons", async () => {
+      const api = useApi();
+      
+      console.log(rrId)
+      console.log(rrResult)
+
+      const response = await api
+        .post("/store/returns", {
+          order_id: "order_test",
+          items: [
+            {
+              reason_id: rrId_child,
+              note: "TOO small",
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => {
+          console.log(err.response)
+          return err.response;
+        });
       expect(response.status).toEqual(200);
 
       expect(response.data.return.items).toEqual([
         expect.objectContaining({
-          reason_id: rrId,
+          reason_id: rrId_child,
           note: "TOO small",
         }),
       ]);
@@ -261,6 +301,7 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
+          console.log(err.response)
           return err.response;
         });
       expect(response.status).toEqual(200);
