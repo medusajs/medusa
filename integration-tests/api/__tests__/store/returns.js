@@ -198,9 +198,6 @@ describe("/store/carts", () => {
     it("failes to create a return with a reason category", async () => {
       const api = useApi();
       
-      console.log(rrId)
-      console.log(rrResult)
-
       const response = await api
         .post("/store/returns", {
           order_id: "order_test",
@@ -214,7 +211,6 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
-          console.log(err.response)
           return err.response;
         });
 
@@ -226,9 +222,6 @@ describe("/store/carts", () => {
     it("creates a return with reasons", async () => {
       const api = useApi();
       
-      console.log(rrId)
-      console.log(rrResult)
-
       const response = await api
         .post("/store/returns", {
           order_id: "order_test",

@@ -73,8 +73,6 @@ describe("/store/return-reasons", () => {
         console.log(err);
       });
 
-      console.log(response.data.return_reasons)
-
       expect(response.status).toEqual(200);
 
       expect(response.data.return_reasons).toEqual([

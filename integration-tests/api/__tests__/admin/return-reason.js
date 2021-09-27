@@ -1,4 +1,5 @@
 const path = require("path")
+const { RepositoryNotTreeError } = require("typeorm")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -414,6 +415,163 @@ describe("/admin/return-reasons", () => {
           value: "too_big",
         }),
       ])
+    })
+  })
+
+  describe("DELETE /admin/return-reasons", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it('deletes single return reason', async () => {
+      expect.assertions(6)
+
+      const api = useApi()
+
+      const payload = {
+        label: "Too Big",
+        description: "Use this if the size was too big",
+        value: "too_big",
+      }
+
+      const response = await api
+        .post("/admin/return-reasons", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.return_reason).toEqual(
+        expect.objectContaining({
+          label: "Too Big",
+          description: "Use this if the size was too big",
+          value: "too_big",
+        })
+      )
+        
+      const deleteResult = await api.delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(deleteResult.status).toEqual(200)
+
+      expect(deleteResult.data).toEqual({id: response.data.return_reason.id, object: 'return_reason', deleted: true})
+
+      const getResult = await api.get(`/admin/return-reasons/${response.data.return_reason.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      }).catch(err => {
+        expect(err.response.status).toEqual(404)
+        expect(err.response.data.type).toEqual('not_found')
+      })
+
+    })
+
+    it('deletes cascade through nested return reasons', async () => {expect.assertions(10)
+      
+      const api = useApi()
+
+      const payload = {
+        label: "Wrong Size",
+        description: "Use this if the size was wrong",
+        value: "wrong_size",
+      }
+
+      const response = await api
+        .post("/admin/return-reasons", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.return_reason).toEqual(
+        expect.objectContaining({
+          label: "Wrong Size",
+          description: "Use this if the size was wrong",
+          value: "wrong_size",
+        })
+      )
+
+      const payload_child = {
+        label: "Too Big",
+        description: "Use this if the size was too big",
+        value: "too_big",
+        parent_return_reason_id: response.data.return_reason.id
+      }
+
+      const response_child = await api
+        .post("/admin/return-reasons", payload_child, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response_child.status).toEqual(200)
+
+      expect(response_child.data.return_reason).toEqual(
+        expect.objectContaining({
+          label: "Too Big",
+          description: "Use this if the size was too big",
+          value: "too_big",
+        parent_return_reason_id: response.data.return_reason.id
+      })
+      )
+
+      const deleteResult = await api.delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      }).catch(err => {console.log(err.response.data)})
+
+      expect(deleteResult.status).toEqual(200)
+
+      expect(deleteResult.data).toEqual({id: response.data.return_reason.id, object: 'return_reason', deleted: true})
+
+      await api.get(`/admin/return-reasons/${response.data.return_reason.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      }).catch(err => {
+        expect(err.response.status).toEqual(404)
+        expect(err.response.data.type).toEqual('not_found')
+      })
+
+      const r = await api.get(`/admin/return-reasons/${response_child.data.return_reason.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      }).catch(err => {
+        expect(err.response.status).toEqual(404)
+        expect(err.response.data.type).toEqual('not_found')
+      })
+
+      console.log(r)
     })
   })
 })
