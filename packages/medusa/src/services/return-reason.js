@@ -124,6 +124,29 @@ class ReturnReasonService extends BaseService {
       return Promise.resolve()
     })
   }
+
+  /**
+   * Gets the return reasons with id's in 
+   * @param {Array} returnReasonIDs - ids of return reasons to retrieve
+   * @return {Promise} the result of the find operation
+   */
+   async listReasonsFromIds(
+    returnReasonIds,
+    config = {   }
+  ) {
+    const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
+    const query = this.buildQuery_({}, config)
+
+    throw new Error(returnReasonIds)
+
+    const raw = await rrRepo
+      .createQueryBuilder('return-reason')
+      .where("return-reason.id IN (:...ids)", {ids: [...returnReasonIds]}).getMany()
+
+    throw new Error(raw)
+
+    return rrRepo.findWithRelations(query.relations, raw.map(i => i.id))
+  }
 }
 
 export default ReturnReasonService
