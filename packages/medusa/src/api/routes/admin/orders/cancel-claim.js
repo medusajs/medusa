@@ -8,7 +8,7 @@ import { defaultRelations, defaultFields } from "."
  * description: "Cancels a Claim"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
- *   . (path) claim_id=* {string} The id of the Claim.
+ *   - (path) claim_id=* {string} The id of the Claim.
  * tags:
  *   - Claim
  * responses:

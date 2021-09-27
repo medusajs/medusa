@@ -24,8 +24,8 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
- *           return_shipping_option
- *             description: The id of the Shipping Option to create the Shipping Method from.
+ *           return_shipping_option:
+ *             description: "The id of the Shipping Option to create the Shipping Method from."
  *             type: string             
  * tags:
  *   - Return
