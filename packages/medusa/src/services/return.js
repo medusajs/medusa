@@ -376,12 +376,8 @@ class ReturnService extends BaseService {
 
 
       const returnReasons = await this.returnReasonService_.listReasonsFromIds(returnLines.map(rl => rl.reason_id))
-      for(const rr of returnReasons)
-      {
-        if(rr.return_reason_children?.length > 0)
-        {
+      if(returnReasons.some(rr => rr.return_reason_children?.length > 0)){
           throw new MedusaError(MedusaError.Types.INVALID_DATA, "Cannot apply return reason category")
-        }
       }
 
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
