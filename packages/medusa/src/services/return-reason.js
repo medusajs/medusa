@@ -35,10 +35,7 @@ class ReturnReasonService extends BaseService {
       if (data.parent_return_reason_id && data.parent_return_reason_id !== "") {
         const parentReason = await this.retrieve(data.parent_return_reason_id)
 
-        if (
-          parentReason.parent_return_reason_id &&
-          parentReason.parent_return_reason_id !== ""
-        ) {
+        if (parentReason.parent_return_reason_id) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "Doubly nested return reasons is not supported"
@@ -116,7 +113,9 @@ class ReturnReasonService extends BaseService {
   async delete(returnReasonId) {
     return this.atomicPhase_(async manager => {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
-      const reason = await this.retrieve(returnReasonId)
+
+      // We include the relation 'return_reason_children' to enable cascading deletes of return reasons if a parent is removed
+      const reason = await this.retrieve(returnReasonId, {relations: ["return_reason_children"]})
 
       if (!reason) return Promise.resolve()
 

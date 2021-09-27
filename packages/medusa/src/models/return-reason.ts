@@ -32,14 +32,15 @@ export class ReturnReason {
   @Column({ nullable: true })
   parent_return_reason_id: string
 
-  @ManyToOne(() => ReturnReason)
+  @ManyToOne(() => ReturnReason, {cascade: ['soft-remove']}
+  )
   @JoinColumn({ name: "parent_return_reason_id" })
   parent_return_reason: ReturnReason
 
   @OneToMany(
     () => ReturnReason,
     return_reason => return_reason.parent_return_reason,
-    { cascade: ["insert"] }
+    { cascade: ["insert", 'soft-remove'] }
   )
   return_reason_children: ReturnReason[]
 
