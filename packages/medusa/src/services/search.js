@@ -53,7 +53,7 @@ class DefaultSearchService extends SearchService {
     this.logger_.warn(
       "This is an empty method: search must be overridden a the child class"
     )
-    return []
+    return { hits: [] }
   }
 
   updateSettings(indexName, settings) {
