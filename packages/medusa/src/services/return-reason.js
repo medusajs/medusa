@@ -1,5 +1,6 @@
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { In } from "typeorm"
 
 class ReturnReasonService extends BaseService {
   constructor({ manager, returnReasonRepository }) {
@@ -131,21 +132,17 @@ class ReturnReasonService extends BaseService {
    * @return {Promise} the result of the find operation
    */
    async listReasonsFromIds(
-    returnReasonIds,
-    config = {   }
+    returnReasonIds
+    // config = {  }
   ) {
     const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
-    const query = this.buildQuery_({}, config)
-
-    throw new Error(returnReasonIds)
 
     const raw = await rrRepo
       .createQueryBuilder('return-reason')
+      .leftJoinAndSelect("return-reason.return_reason_children", "children")
       .where("return-reason.id IN (:...ids)", {ids: [...returnReasonIds]}).getMany()
 
-    throw new Error(raw)
-
-    return rrRepo.findWithRelations(query.relations, raw.map(i => i.id))
+    return raw
   }
 }
 
