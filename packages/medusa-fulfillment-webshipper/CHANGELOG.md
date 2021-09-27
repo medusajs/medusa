@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.26](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.25...medusa-fulfillment-webshipper@1.1.26) (2021-09-15)
+
+**Note:** Version bump only for package medusa-fulfillment-webshipper
+
+
+
+
+
+## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.24...medusa-fulfillment-webshipper@1.1.25) (2021-09-14)
+
+
+### Features
+
+* update and cancel swaps, claims, and returns ([#310](https://github.com/medusajs/medusa/issues/310)) ([cf66f97](https://github.com/medusajs/medusa/commit/cf66f97758003a41737602d4b1b1051b266d4f81))
+
+
+
+
+
 ## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.1.23...medusa-fulfillment-webshipper@1.1.24) (2021-08-05)
 
 **Note:** Version bump only for package medusa-fulfillment-webshipper

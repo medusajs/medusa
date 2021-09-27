@@ -7,12 +7,10 @@ import {
 } from "../orders"
 
 /**
- * @oas [get] /customers/{id}/orders
+ * @oas [get] /customers/me/orders
  * operationId: GetCustomersCustomerOrders
  * summary: Retrieve Customer Orders
  * description: "Retrieves a list of a Customer's Orders."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
  * tags:
  *   - Customer
  * responses:
@@ -28,7 +26,7 @@ import {
  *                 $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
-  const { id } = req.params
+  const id = req.user.customer_id
   try {
     const orderService = req.scope.resolve("orderService")
 
@@ -42,13 +40,13 @@ export default async (req, res) => {
     let includeFields = []
     if ("fields" in req.query) {
       includeFields = req.query.fields.split(",")
-      includeFields = includeFields.filter(f => allowedFields.includes(f))
+      includeFields = includeFields.filter((f) => allowedFields.includes(f))
     }
 
     let expandFields = []
     if ("expand" in req.query) {
       expandFields = req.query.expand.split(",")
-      expandFields = expandFields.filter(f => allowedRelations.includes(f))
+      expandFields = expandFields.filter((f) => allowedRelations.includes(f))
     }
 
     const listConfig = {

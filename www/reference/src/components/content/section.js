@@ -52,12 +52,6 @@ const Section = ({ data }) => {
   }
 
   useEffect(() => {
-    if (isExpanded) {
-      scrollIntoView()
-    }
-  }, [isExpanded])
-
-  useEffect(() => {
     const shouldOpen = openSections.includes(
       convertToKebabCase(section.section_name)
     )
@@ -149,31 +143,7 @@ const Section = ({ data }) => {
               ) : null}
             </Flex>
           </ResponsiveContainer>
-          {isExpanded ? (
-            <Box mt={4}>
-              {section.paths.map((p, i) => {
-                return (
-                  <Flex
-                    key={i}
-                    sx={{
-                      flexDirection: "column",
-                    }}
-                  >
-                    {p.methods.map((m, i) => {
-                      return (
-                        <Method
-                          key={i}
-                          data={m}
-                          section={convertToKebabCase(section.section_name)}
-                          pathname={p.name}
-                        />
-                      )
-                    })}
-                  </Flex>
-                )
-              })}
-            </Box>
-          ) : (
+          {!isExpanded && (
             <Flex
               sx={{
                 justifyContent: "center",
@@ -196,6 +166,35 @@ const Section = ({ data }) => {
               </Button>
             </Flex>
           )}
+          <Box
+            id="method-container"
+            mt={4}
+            sx={{
+              display: isExpanded ? "block" : "none",
+            }}
+          >
+            {section.paths.map((p, i) => {
+              return (
+                <Flex
+                  key={i}
+                  sx={{
+                    flexDirection: "column",
+                  }}
+                >
+                  {p.methods.map((m, i) => {
+                    return (
+                      <Method
+                        key={i}
+                        data={m}
+                        section={convertToKebabCase(section.section_name)}
+                        pathname={p.name}
+                      />
+                    )
+                  })}
+                </Flex>
+              )
+            })}
+          </Box>
         </Flex>
       </Box>
     </section>

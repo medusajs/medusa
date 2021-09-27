@@ -731,57 +731,13 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomerAddressesAddress
-      summary: Update a Shipping Address
-      description: Updates a Customer's saved Shipping Address.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Customer id.
-          schema:
-            type: string
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to update.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                address:
-                  description: The updated Address.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/customers/{id}':
+  /customers/me:
     get:
       operationId: GetCustomersCustomer
       summary: Retrieves a Customer
       description: >-
         Retrieves a Customer - the Customer must be logged in to retrieve their
         details.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
       tags:
         - Customer
       responses:
@@ -797,13 +753,6 @@ paths:
       operationId: PostCustomersCustomer
       summary: Update Customer details
       description: Updates a Customer's saved details.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -825,6 +774,9 @@ paths:
                 phone:
                   description: The Customer's phone number.
                   type: string
+                email:
+                  description: The email of the customer.
+                  type: string
                 metadata:
                   description: Metadata about the customer.
                   type: object
@@ -839,7 +791,7 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  '/customers/{id}/payment-methods':
+  /customers/me/payment-methods:
     get:
       operationId: GetCustomersCustomerPaymentMethods
       summary: Retrieve saved payment methods
@@ -847,13 +799,6 @@ paths:
         Retrieves a list of a Customer's saved payment methods. Payment methods
         are saved with Payment Providers and it is their responsibility to fetch
         saved methods.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
       tags:
         - Customer
       responses:
@@ -877,18 +822,11 @@ paths:
                           description: >-
                             The data needed for the Payment Provider to use the
                             saved payment method.
-  '/customers/{id}/orders':
+  /customers/me/orders:
     get:
       operationId: GetCustomersCustomerOrders
       summary: Retrieve Customer Orders
       description: Retrieves a list of a Customer's Orders.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
       tags:
         - Customer
       responses:
@@ -902,7 +840,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/order'
-  '/customers/{id}/password-token':
+  /customers/password-token:
     post:
       operationId: PostCustomersCustomerPasswordToken
       summary: Creates a reset password token
@@ -910,32 +848,19 @@ paths:
         Creates a reset password token to be used in a subsequent
         /reset-password request. The password token should be sent out of band
         e.g. via email and will not be returned.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
       tags:
         - Customer
       responses:
         '204':
           description: OK
-  '/customers/{id}/reset-password':
+  /customers/reset-password:
     post:
-      operationId: PostCustomersCustomerResetPassword
+      operationId: PostCustomersResetPassword
       summary: Resets Customer password
       description: >-
         Resets a Customer's password using a password token created by a
         previous /password-token request.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
+      parameters: []
       tags:
         - Customer
       responses:
@@ -966,6 +891,38 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
+  '/customers/me/addresses/{address_id}':
+    post:
+      operationId: PostCustomersCustomerAddressesAddress
+      summary: Update a Shipping Address
+      description: Updates a Customer's saved Shipping Address.
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The updated Address.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   '/gift-cards/{code}':
     get:
       operationId: GetGiftCardsCode
@@ -1077,56 +1034,6 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-  '/products/{id}':
-    get:
-      operationId: GetProductsProduct
-      summary: Retrieves a Product
-      description: Retrieves a Product.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product.
-          schema:
-            type: string
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  product:
-                    $ref: '#/components/schemas/product'
-  /products:
-    get:
-      operationId: GetProducts
-      summary: List Products
-      description: Retrieves a list of Products.
-      tags:
-        - Product
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Products.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of Products to return,'
-                    type: integer
-                  products:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -1177,6 +1084,56 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+  '/products/{id}':
+    get:
+      operationId: GetProductsProduct
+      summary: Retrieves a Product
+      description: Retrieves a Product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieves a list of Products.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Products.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Products to return,'
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
@@ -1326,6 +1283,59 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
+  /swaps:
+    post:
+      operationId: PostSwaps
+      summary: Create a Swap
+      description: >-
+        Creates a Swap on an Order by providing some items to return along with
+        some items to send back
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order_id:
+                  type: string
+                  description: The id of the Order to create the Swap for.
+                return_items:
+                  description: The items to include in the Return.
+                  type: array
+                  items:
+                    properties:
+                      item_id:
+                        description: The id of the Line Item from the Order.
+                        type: string
+                      quantity:
+                        description: The quantity to return.
+                        type: integer
+                return_shipping_option:
+                  type: string
+                  description: >-
+                    The id of the Shipping Option to create the Shipping Method
+                    from.
+                additional_items:
+                  description: The items to exchange the returned items to.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: The id of the Product Variant to send.
+                        type: string
+                      quantity:
+                        description: The quantity to send of the variant.
+                        type: integer
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
   '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
@@ -1653,6 +1663,10 @@ components:
         refund_amount:
           description: The amount that will be refunded in conjunction with the claim
           type: integer
+        canceled_at:
+          description: The date with timezone at which the Swap was canceled.
+          type: string
+          format: date-time
         created_at:
           type: string
           format: date-time
@@ -2307,6 +2321,44 @@ components:
           description: The date with timezone at which the resource was deleted.
           type: string
           format: date-time
+    note:
+      title: Note
+      description: >-
+        Notes are elements which we can use in association with different
+        resources to allow users to describe additional information in relation
+        to these.
+      x-resourceId: note
+      properties:
+        id:
+          description: The id of the Note. This value will be prefixed by `note_`.
+          type: string
+        resource_type:
+          description: The type of resource that the Note refers to.
+          type: string
+        resource_id:
+          description: The id of the resource that the Note refers to.
+          type: string
+        value:
+          description: The contents of the note.
+          type: string
+        author_id:
+          description: The author of the note.
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
     notification_provider:
       title: Notification Provider
       description: >-
@@ -3737,6 +3789,9 @@ components:
         cart_id:
           description: The id of the Cart that the Customer will use to confirm the Swap.
           type: string
+        allow_backorder:
+          description: 'If true, swaps can be completed with items out of stock'
+          type: boolean
         confirmed_at:
           description: >-
             The date with timezone at which the Swap was confirmed by the
@@ -3749,6 +3804,10 @@ components:
           format: date-time
         updated_at:
           description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        canceled_at:
+          description: The date with timezone at which the Swap was canceled.
           type: string
           format: date-time
         no_notification:

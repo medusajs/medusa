@@ -1,0 +1,15 @@
+.button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.buttonActive {
+  color: var(--ifm-color-primary);
+  border-bottom: 3px solid var(--ifm-color-primary) !important;
+  font-weight: 500;
+  transition: ;
+}

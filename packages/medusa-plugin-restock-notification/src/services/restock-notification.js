@@ -34,13 +34,16 @@ class RestockNotificationService extends BaseService {
       return this
     }
 
-    const cloned = new RestockNotificationService({
-      manager: transactionManager,
-      options: this.options_,
-      eventBusService: this.eventBus_,
-      productVariantService: this.productVariantService_,
-      restockNotificationModel: this.restockNotificationModel_,
-    })
+    const cloned = new RestockNotificationService(
+      {
+        manager: transactionManager,
+        options: this.options_,
+        eventBusService: this.eventBus_,
+        productVariantService: this.productVariantService_,
+        restockNotificationModel: this.restockNotificationModel_,
+      },
+      this.options_
+    )
 
     cloned.transactionManager_ = transactionManager
 
@@ -117,7 +120,10 @@ class RestockNotificationService extends BaseService {
       }
 
       const variant = await this.productVariantService_.retrieve(variantId)
-      if (variant.inventory_quantity > 0) {
+
+      if (
+        variant.inventory_quantity > (this.options_?.inventory_required ?? 0)
+      ) {
         await this.eventBus_
           .withTransaction(manager)
           .emit("restock-notification.restocked", {

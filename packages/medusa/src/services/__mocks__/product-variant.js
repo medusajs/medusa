@@ -90,6 +90,35 @@ const invalidVariant = {
   ],
 }
 
+const variantWithPrices = {
+  id: "variant_with_prices",
+  title: "Variant with prices",
+  prices: [
+    {
+      id: "price_1",
+      currency_code: "usd",
+      amount: 100,
+      sale_amount: null,
+      variant_id: "variant_with_prices",
+      region_id: null,
+      created_at: "2021-03-16T21:24:13.657Z",
+      updated_at: "2021-03-16T21:24:13.657Z",
+      deleted_at: null,
+    },
+    {
+      id: "price_2",
+      currency_code: "dk",
+      amount: 100,
+      sale_amount: null,
+      variant_id: "variant_with_prices",
+      region_id: null,
+      created_at: "2021-03-16T21:24:13.657Z",
+      updated_at: "2021-03-16T21:24:13.657Z",
+      deleted_at: null,
+    },
+  ],
+}
+
 const testVariant = {
   id: IdMap.getId("testVariant"),
   title: "test variant",
@@ -161,6 +190,7 @@ export const variants = {
   eur10us12: eur10us12,
   testVariant: testVariant,
   giftCard: giftCardVar,
+  variantWithPrices: variantWithPrices,
 }
 
 export const ProductVariantServiceMock = {
@@ -192,6 +222,9 @@ export const ProductVariantServiceMock = {
     }
     if (variantId === "4") {
       return Promise.resolve(variant4)
+    }
+    if (variantId === "variant_with_prices") {
+      return Promise.resolve(variantWithPrices)
     }
     if (variantId === IdMap.getId("validId")) {
       return Promise.resolve(variant5)

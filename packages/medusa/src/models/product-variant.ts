@@ -36,24 +36,30 @@ export class ProductVariant {
   @JoinColumn({ name: "product_id" })
   product: Product
 
-  @OneToMany(() => MoneyAmount, (ma) => ma.variant, { cascade: true })
+  @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   prices: MoneyAmount[]
 
   @Column({ nullable: true })
-  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   sku: string
 
   @Column({ nullable: true })
-  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   barcode: string
 
   @Column({ nullable: true })
-  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   ean: string
 
   @Column({ nullable: true })
-  @Index({ unique: true, where: "deleted_at IS NOT NULL" })
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   upc: string
+
+  @Column({ nullable: true, default: 0, select: false })
+  variant_rank: number
 
   @Column({ type: "int" })
   inventory_quantity: number

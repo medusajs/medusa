@@ -414,7 +414,8 @@ class BrightpearlService extends BaseService {
         return acc + next.net + next.tax
       }, 0)
 
-      const difference = (fromReturn.refund_amount / 100 - total) * 100
+      const difference =
+        this.bpnum_(fromReturn.refund_amount, fromOrder.currency_code) - total
       if (difference) {
         order.rows.push({
           name: "Difference",
