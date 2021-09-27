@@ -10,7 +10,7 @@ The purpose of this guide is to give an introduction to the structure of a plugi
 
 Plugins offer a way to extend and integrate the core functionality of Medusa.
 
-In most commerce solutions, you can extend the basic features but it often comes with the expense of having to build standalone web applications. Our architecture is built such that plugins run within the same process as the core eliminating the need for extra server capacaity, infrastructure and maintenance. As a result, the plugins can use all other services as dependencies and access the database.
+In most commerce solutions, you can extend the basic features but it often comes with the expense of having to build standalone web applications. Our architecture is built such that plugins run within the same process as the core eliminating the need for extra server capacity, infrastructure and maintenance. As a result, the plugins can use all other services as dependencies and access the database.
 
 > You will notice that plugins vary in naming. The name should signal what functionality they provide.
 
