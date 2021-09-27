@@ -131,6 +131,7 @@ describe("/store/carts", () => {
     })
 
     it("fails on apply discount if limit has been reached", async () => {
+      expect.assertions(2)
       const api = useApi()
 
       try {
@@ -146,6 +147,7 @@ describe("/store/carts", () => {
     })
 
     it("fails to apply expired discount", async () => {
+      expect.assertions(2)
       const api = useApi()
 
       try {
