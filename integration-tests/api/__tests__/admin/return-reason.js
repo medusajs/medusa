@@ -562,7 +562,7 @@ describe("/admin/return-reasons", () => {
         expect(err.response.data.type).toEqual('not_found')
       })
 
-      const r = await api.get(`/admin/return-reasons/${response_child.data.return_reason.id}`, {
+      await api.get(`/admin/return-reasons/${response_child.data.return_reason.id}`, {
         headers: {
           Authorization: "Bearer test_token",
         },
@@ -570,8 +570,6 @@ describe("/admin/return-reasons", () => {
         expect(err.response.status).toEqual(404)
         expect(err.response.data.type).toEqual('not_found')
       })
-
-      console.log(r)
     })
   })
 })
