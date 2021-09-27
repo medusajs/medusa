@@ -39,7 +39,10 @@ class MeiliSearchService extends SearchService {
   }
 
   search(indexName, query, options) {
-    return this.client_.index(indexName).search(query, options)
+    const { paginationOptions, filter, additionalOptions } = options
+    return this.client_
+      .index(indexName)
+      .search(query, { filter, ...paginationOptions, ...additionalOptions })
   }
 
   updateSettings(indexName, settings) {
