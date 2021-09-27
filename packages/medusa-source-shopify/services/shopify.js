@@ -254,10 +254,25 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                                     switch (_context5.prev = _context5.next) {
                                       case 0:
                                         _context5.next = 2;
-                                        return _this3.collectionService_.withTransaction(manager).create(nc);
+                                        return _this3.collectionService_.retrieveByHandle(nc.handle)["catch"](function (_) {
+                                          return undefined;
+                                        });
 
                                       case 2:
                                         collection = _context5.sent;
+
+                                        if (collection) {
+                                          _context5.next = 7;
+                                          break;
+                                        }
+
+                                        _context5.next = 6;
+                                        return _this3.collectionService_.withTransaction(manager).create(nc);
+
+                                      case 6:
+                                        collection = _context5.sent;
+
+                                      case 7:
                                         productIds = collects.reduce(function (productIds, c) {
                                           if (c.collection_id === collection.metadata.sh_id) {
                                             productIds.push(c.product_id);
@@ -297,7 +312,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                                                 switch (_context4.prev = _context4.next) {
                                                   case 0:
                                                     _context4.next = 2;
-                                                    return _this3.createProduct(rp);
+                                                    return _this3.createProduct(rp, collection.id);
 
                                                   case 2:
                                                   case "end":
@@ -312,7 +327,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                                           };
                                         }())));
 
-                                      case 6:
+                                      case 10:
                                       case "end":
                                         return _context5.stop();
                                     }
@@ -355,7 +370,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "createProduct",
     value: function () {
-      var _createProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(productOrId) {
+      var _createProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(productOrId, collectionId) {
         var _this4 = this;
 
         return regeneratorRuntime.wrap(function _callee10$(_context10) {
@@ -369,7 +384,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                       while (1) {
                         switch (_context9.prev = _context9.next) {
                           case 0:
-                            if (!(typeof productOrId === "string")) {
+                            if (!(typeof productOrId === "number")) {
                               _context9.next = 6;
                               break;
                             }
@@ -386,7 +401,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                             product = productOrId;
 
                           case 7:
-                            normalizedProduct = _this4.normalizeProduct(product); // Get default shipping profile
+                            normalizedProduct = _this4.normalizeProduct(product, collectionId); // Get default shipping profile
 
                             if (!normalizedProduct.is_giftcard) {
                               _context9.next = 14;
@@ -494,7 +509,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                     }, _callee9);
                   }));
 
-                  return function (_x10) {
+                  return function (_x11) {
                     return _ref7.apply(this, arguments);
                   };
                 }()));
@@ -507,7 +522,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         }, _callee10, this);
       }));
 
-      function createProduct(_x9) {
+      function createProduct(_x9, _x10) {
         return _createProduct.apply(this, arguments);
       }
 
@@ -557,16 +572,12 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                           case 12:
                             medCustomer = _context11.sent;
                             _context11.next = 15;
-                            return _this5.customerService_.withTransaction(manager).addAddress(medCustomer.id, normalizedShipping)["catch"](function (err) {
-                              console.log("Error on addAddress", normalizedShipping);
-                            });
+                            return _this5.customerService_.withTransaction(manager).addAddress(medCustomer.id, normalizedShipping);
 
                           case 15:
                             _context11.next = 17;
                             return _this5.customerService_.withTransaction(manager).update(medCustomer.id, {
                               billing_address: normalizedBilling
-                            })["catch"](function (err) {
-                              console.log("Error on update billing_address", normalizedBilling);
                             });
 
                           case 17:
@@ -581,7 +592,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                     }, _callee11);
                   }));
 
-                  return function (_x14) {
+                  return function (_x15) {
                     return _ref8.apply(this, arguments);
                   };
                 }()));
@@ -594,7 +605,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         }, _callee12, this);
       }));
 
-      function createCustomer(_x11, _x12, _x13) {
+      function createCustomer(_x12, _x13, _x14) {
         return _createCustomer.apply(this, arguments);
       }
 
@@ -637,7 +648,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                     }, _callee13);
                   }));
 
-                  return function (_x18) {
+                  return function (_x19) {
                     return _ref9.apply(this, arguments);
                   };
                 }()));
@@ -650,7 +661,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         }, _callee14, this);
       }));
 
-      function addShippingMethod(_x15, _x16, _x17) {
+      function addShippingMethod(_x16, _x17, _x18) {
         return _addShippingMethod.apply(this, arguments);
       }
 
@@ -730,7 +741,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                                 }, _callee15);
                               }));
 
-                              return function (_x21) {
+                              return function (_x22) {
                                 return _ref11.apply(this, arguments);
                               };
                             }()));
@@ -751,7 +762,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                     }, _callee16);
                   }));
 
-                  return function (_x20) {
+                  return function (_x21) {
                     return _ref10.apply(this, arguments);
                   };
                 }()));
@@ -764,7 +775,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         }, _callee17, this);
       }));
 
-      function createOrder(_x19) {
+      function createOrder(_x20) {
         return _createOrder.apply(this, arguments);
       }
 
@@ -805,7 +816,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                     }, _callee18);
                   }));
 
-                  return function (_x23) {
+                  return function (_x24) {
                     return _ref12.apply(this, arguments);
                   };
                 }()));
@@ -818,7 +829,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         }, _callee19, this);
       }));
 
-      function createPayment(_x22) {
+      function createPayment(_x23) {
         return _createPayment.apply(this, arguments);
       }
 
@@ -863,106 +874,168 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         }, _callee20, this);
       }));
 
-      function updateProduct(_x24) {
+      function updateProduct(_x25) {
         return _updateProduct.apply(this, arguments);
       }
 
       return updateProduct;
     }()
   }, {
-    key: "normalizeOrder",
+    key: "deleteProduct",
     value: function () {
-      var _normalizeOrder = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee23(shopifyOrder, customerId, regionId, taxRate, shopifyTaxRate) {
+      var _deleteProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22(handle) {
         var _this9 = this;
 
-        return regeneratorRuntime.wrap(function _callee23$(_context23) {
+        return regeneratorRuntime.wrap(function _callee22$(_context22) {
           while (1) {
-            switch (_context23.prev = _context23.next) {
+            switch (_context22.prev = _context22.next) {
               case 0:
-                return _context23.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
-                  var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22(manager) {
-                    return regeneratorRuntime.wrap(function _callee22$(_context22) {
+                return _context22.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(manager) {
+                    var product;
+                    return regeneratorRuntime.wrap(function _callee21$(_context21) {
                       while (1) {
-                        switch (_context22.prev = _context22.next) {
+                        switch (_context21.prev = _context21.next) {
                           case 0:
-                            _context22.t0 = _this9.normalizeOrderStatus();
-                            _context22.t1 = regionId;
-                            _context22.t2 = shopifyOrder.email;
-                            _context22.t3 = customerId;
-                            _context22.t4 = shopifyOrder.currency.toLowerCase();
-                            _context22.t5 = taxRate;
-                            _context22.t6 = (0, _parsePrice.parsePrice)(shopifyOrder.total_tax);
-                            _context22.t7 = shopifyOrder.subtotal_price;
-                            _context22.t8 = _this9.normalizeAddress(shopifyOrder.shipping_address);
-                            _context22.t9 = _this9.normalizeAddress(shopifyOrder.billing_address);
-                            _context22.t10 = shopifyOrder.total_discounts;
-                            _context22.t11 = _this9.normalizeOrderFulfilmentStatus(shopifyOrder.fulfilment_status);
-                            _context22.t12 = _this9.normalizeOrderPaymentStatus(shopifyOrder.financial_status);
-                            _context22.next = 15;
-                            return Promise.all(shopifyOrder.line_items.map( /*#__PURE__*/function () {
-                              var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(i) {
-                                return regeneratorRuntime.wrap(function _callee21$(_context21) {
-                                  while (1) {
-                                    switch (_context21.prev = _context21.next) {
-                                      case 0:
-                                        return _context21.abrupt("return", _this9.normalizeLineItem(i, shopifyTaxRate));
-
-                                      case 1:
-                                      case "end":
-                                        return _context21.stop();
-                                    }
-                                  }
-                                }, _callee21);
-                              }));
-
-                              return function (_x31) {
-                                return _ref14.apply(this, arguments);
-                              };
-                            }()));
-
-                          case 15:
-                            _context22.t13 = _context22.sent;
-                            _context22.t14 = shopifyOrder.id;
-                            return _context22.abrupt("return", {
-                              status: _context22.t0,
-                              region_id: _context22.t1,
-                              email: _context22.t2,
-                              customer_id: _context22.t3,
-                              currency_code: _context22.t4,
-                              tax_rate: _context22.t5,
-                              tax_total: _context22.t6,
-                              subtotal: _context22.t7,
-                              shipping_address: _context22.t8,
-                              billing_address: _context22.t9,
-                              discount_total: _context22.t10,
-                              fulfilment_status: _context22.t11,
-                              payment_status: _context22.t12,
-                              items: _context22.t13,
-                              external_id: _context22.t14
+                            console.log("RECEIVED HANDLE", handle);
+                            _context21.next = 3;
+                            return _this9.productService_.retrieveByHandle(handle)["catch"](function (_) {
+                              return undefined;
                             });
 
-                          case 18:
+                          case 3:
+                            product = _context21.sent;
+                            console.log("PRODUCT RETRIEVED", product);
+
+                            if (!product) {
+                              _context21.next = 8;
+                              break;
+                            }
+
+                            _context21.next = 8;
+                            return _this9.productService_.withTransaction(manager)["delete"](product.id);
+
+                          case 8:
                           case "end":
-                            return _context22.stop();
+                            return _context21.stop();
                         }
                       }
-                    }, _callee22);
+                    }, _callee21);
                   }));
 
-                  return function (_x30) {
+                  return function (_x27) {
                     return _ref13.apply(this, arguments);
                   };
                 }()));
 
               case 1:
               case "end":
-                return _context23.stop();
+                return _context22.stop();
             }
           }
-        }, _callee23, this);
+        }, _callee22, this);
       }));
 
-      function normalizeOrder(_x25, _x26, _x27, _x28, _x29) {
+      function deleteProduct(_x26) {
+        return _deleteProduct.apply(this, arguments);
+      }
+
+      return deleteProduct;
+    }()
+  }, {
+    key: "normalizeOrder",
+    value: function () {
+      var _normalizeOrder = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee25(shopifyOrder, customerId, regionId, taxRate, shopifyTaxRate) {
+        var _this10 = this;
+
+        return regeneratorRuntime.wrap(function _callee25$(_context25) {
+          while (1) {
+            switch (_context25.prev = _context25.next) {
+              case 0:
+                return _context25.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee24(manager) {
+                    return regeneratorRuntime.wrap(function _callee24$(_context24) {
+                      while (1) {
+                        switch (_context24.prev = _context24.next) {
+                          case 0:
+                            _context24.t0 = _this10.normalizeOrderStatus();
+                            _context24.t1 = regionId;
+                            _context24.t2 = shopifyOrder.email;
+                            _context24.t3 = customerId;
+                            _context24.t4 = shopifyOrder.currency.toLowerCase();
+                            _context24.t5 = taxRate;
+                            _context24.t6 = (0, _parsePrice.parsePrice)(shopifyOrder.total_tax);
+                            _context24.t7 = shopifyOrder.subtotal_price;
+                            _context24.t8 = _this10.normalizeAddress(shopifyOrder.shipping_address);
+                            _context24.t9 = _this10.normalizeAddress(shopifyOrder.billing_address);
+                            _context24.t10 = shopifyOrder.total_discounts;
+                            _context24.t11 = _this10.normalizeOrderFulfilmentStatus(shopifyOrder.fulfilment_status);
+                            _context24.t12 = _this10.normalizeOrderPaymentStatus(shopifyOrder.financial_status);
+                            _context24.next = 15;
+                            return Promise.all(shopifyOrder.line_items.map( /*#__PURE__*/function () {
+                              var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee23(i) {
+                                return regeneratorRuntime.wrap(function _callee23$(_context23) {
+                                  while (1) {
+                                    switch (_context23.prev = _context23.next) {
+                                      case 0:
+                                        return _context23.abrupt("return", _this10.normalizeLineItem(i, shopifyTaxRate));
+
+                                      case 1:
+                                      case "end":
+                                        return _context23.stop();
+                                    }
+                                  }
+                                }, _callee23);
+                              }));
+
+                              return function (_x34) {
+                                return _ref15.apply(this, arguments);
+                              };
+                            }()));
+
+                          case 15:
+                            _context24.t13 = _context24.sent;
+                            _context24.t14 = shopifyOrder.id;
+                            return _context24.abrupt("return", {
+                              status: _context24.t0,
+                              region_id: _context24.t1,
+                              email: _context24.t2,
+                              customer_id: _context24.t3,
+                              currency_code: _context24.t4,
+                              tax_rate: _context24.t5,
+                              tax_total: _context24.t6,
+                              subtotal: _context24.t7,
+                              shipping_address: _context24.t8,
+                              billing_address: _context24.t9,
+                              discount_total: _context24.t10,
+                              fulfilment_status: _context24.t11,
+                              payment_status: _context24.t12,
+                              items: _context24.t13,
+                              external_id: _context24.t14
+                            });
+
+                          case 18:
+                          case "end":
+                            return _context24.stop();
+                        }
+                      }
+                    }, _callee24);
+                  }));
+
+                  return function (_x33) {
+                    return _ref14.apply(this, arguments);
+                  };
+                }()));
+
+              case 1:
+              case "end":
+                return _context25.stop();
+            }
+          }
+        }, _callee25, this);
+      }));
+
+      function normalizeOrder(_x28, _x29, _x30, _x31, _x32) {
         return _normalizeOrder.apply(this, arguments);
       }
 
@@ -982,26 +1055,26 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "normalizeLineItem",
     value: function () {
-      var _normalizeLineItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee25(lineItem, taxRate) {
-        var _this10 = this;
+      var _normalizeLineItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27(lineItem, taxRate) {
+        var _this11 = this;
 
-        return regeneratorRuntime.wrap(function _callee25$(_context25) {
+        return regeneratorRuntime.wrap(function _callee27$(_context27) {
           while (1) {
-            switch (_context25.prev = _context25.next) {
+            switch (_context27.prev = _context27.next) {
               case 0:
-                return _context25.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
-                  var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee24(manager) {
+                return _context27.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee26(manager) {
                     var productVariant;
-                    return regeneratorRuntime.wrap(function _callee24$(_context24) {
+                    return regeneratorRuntime.wrap(function _callee26$(_context26) {
                       while (1) {
-                        switch (_context24.prev = _context24.next) {
+                        switch (_context26.prev = _context26.next) {
                           case 0:
-                            _context24.next = 2;
-                            return _this10.productVariantService_.withTransaction(manager).retrieveBySKU(lineItem.sku);
+                            _context26.next = 2;
+                            return _this11.productVariantService_.withTransaction(manager).retrieveBySKU(lineItem.sku);
 
                           case 2:
-                            productVariant = _context24.sent;
-                            return _context24.abrupt("return", {
+                            productVariant = _context26.sent;
+                            return _context26.abrupt("return", {
                               title: lineItem.title,
                               is_giftcard: lineItem.gift_card,
                               unit_price: (0, _parsePrice.parsePrice)(lineItem.price) * (1 - taxRate),
@@ -1012,26 +1085,26 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
 
                           case 4:
                           case "end":
-                            return _context24.stop();
+                            return _context26.stop();
                         }
                       }
-                    }, _callee24);
+                    }, _callee26);
                   }));
 
-                  return function (_x34) {
-                    return _ref15.apply(this, arguments);
+                  return function (_x37) {
+                    return _ref16.apply(this, arguments);
                   };
                 }()));
 
               case 1:
               case "end":
-                return _context25.stop();
+                return _context27.stop();
             }
           }
-        }, _callee25, this);
+        }, _callee27, this);
       }));
 
-      function normalizeLineItem(_x32, _x33) {
+      function normalizeLineItem(_x35, _x36) {
         return _normalizeLineItem.apply(this, arguments);
       }
 
@@ -1078,17 +1151,17 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         case "partially_refunded":
           return "partially_refunded";
 
-        case "paid":
-          return "captured";
-
         case "partially_paid":
+          return "not_paid";
+
+        case "pending":
           return "not_paid";
 
         case "authorized":
           return "awaiting";
 
-        case "pending":
-          return "not_paid";
+        case "paid":
+          return "captured";
 
         default:
           break;
@@ -1162,14 +1235,14 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         allow_backorder: variant.inventory_policy === "continue",
         manage_inventory: variant.inventory_management === "shopify",
         //if customer previously managed inventory through Shopify then true
-        weight: parseInt(variant.weight * 100),
+        weight: variant.grams,
         options: this.normalizeVariantOptions(variant.option1, variant.option2, variant.option3)
       };
     }
   }, {
     key: "normalizeProduct",
     value: function normalizeProduct(product, collectionId) {
-      var _this11 = this,
+      var _this12 = this,
           _product$image;
 
       return {
@@ -1177,13 +1250,13 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         handle: product.handle,
         is_giftcard: product.product_type === "Gift Cards",
         options: product.options.map(function (option) {
-          return _this11.normalizeProductOption(option);
+          return _this12.normalizeProductOption(option);
         }) || [],
         variants: product.variants.map(function (variant) {
-          return _this11.normalizeVariant(variant);
+          return _this12.normalizeVariant(variant);
         }) || [],
         tags: product.tags.split(",").map(function (tag) {
-          return _this11.normalizeTag(tag);
+          return _this12.normalizeTag(tag);
         }) || [],
         images: product.images.map(function (img) {
           return img.src;

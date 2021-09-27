@@ -11,17 +11,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var _default = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var shopifyService, product;
+    var shopifyService, productHandle;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             shopifyService = req.scope.resolve("shopifyService");
-            product = req.body; //TODO: delete product
+            /**
+             * This does not work as product/delete only returns a Product ID.
+             * Possible solution is to add external_id to products in Medusa.
+             */
 
+            productHandle = req.body.handle;
+            _context.next = 4;
+            return shopifyService.withTransaction().deleteProduct(productHandle);
+
+          case 4:
             res.sendStatus(200);
 
-          case 3:
+          case 5:
           case "end":
             return _context.stop();
         }

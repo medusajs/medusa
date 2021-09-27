@@ -19,7 +19,7 @@ var _default = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             shopifyService = req.scope.resolve("shopifyService");
-            productId = "".concat(req.body.id);
+            productId = req.body.id;
             _context.next = 4;
             return shopifyService.withTransaction().createProduct(productId);
 

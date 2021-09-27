@@ -108,9 +108,15 @@ class ShopifyService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       return Promise.all(
         normalizedCollections.map(async (nc) => {
-          const collection = await this.collectionService_
-            .withTransaction(manager)
-            .create(nc)
+          let collection = await this.collectionService_
+            .retrieveByHandle(nc.handle)
+            .catch((_) => undefined)
+
+          if (!collection) {
+            collection = await this.collectionService_
+              .withTransaction(manager)
+              .create(nc)
+          }
 
           const productIds = collects.reduce((productIds, c) => {
             if (c.collection_id === collection.metadata.sh_id) {
@@ -137,7 +143,7 @@ class ShopifyService extends BaseService {
 
           return Promise.all(
             reducedProducts.map(async (rp) => {
-              await this.createProduct(rp)
+              await this.createProduct(rp, collection.id)
             })
           )
         })
@@ -145,18 +151,24 @@ class ShopifyService extends BaseService {
     })
   }
 
-  async createProduct(productOrId) {
+  async createProduct(productOrId, collectionId) {
     return this.atomicPhase_(async (manager) => {
       let product
       let shippingProfile
 
-      if (typeof productOrId === "string") {
+      if (typeof productOrId === "number") {
+        /**
+         * Webhooks related to products does not contain all the fields that we need create a product
+         * such as PresentmentPrices. Therefore, it is nescessary to make a GET request to retrieve the
+         * full Product object from Shopify.
+         *
+         */
         product = await fetchProduct(productOrId, this.options)
       } else {
         product = productOrId
       }
 
-      const normalizedProduct = this.normalizeProduct(product)
+      const normalizedProduct = this.normalizeProduct(product, collectionId)
       // Get default shipping profile
       if (normalizedProduct.is_giftcard) {
         shippingProfile = await this.shippingProfileService_.retrieveGiftCardDefault()
@@ -223,17 +235,11 @@ class ShopifyService extends BaseService {
       await this.customerService_
         .withTransaction(manager)
         .addAddress(medCustomer.id, normalizedShipping)
-        .catch((err) => {
-          console.log("Error on addAddress", normalizedShipping)
-        })
 
       const result = await this.customerService_
         .withTransaction(manager)
         .update(medCustomer.id, {
           billing_address: normalizedBilling,
-        })
-        .catch((err) => {
-          console.log("Error on update billing_address", normalizedBilling)
         })
 
       return result
@@ -348,6 +354,20 @@ class ShopifyService extends BaseService {
     return toUpdate
   }
 
+  async deleteProduct(handle) {
+    return this.atomicPhase_(async (manager) => {
+      console.log("RECEIVED HANDLE", handle)
+      const product = await this.productService_
+        .retrieveByHandle(handle)
+        .catch((_) => undefined)
+
+      console.log("PRODUCT RETRIEVED", product)
+      if (product) {
+        await this.productService_.withTransaction(manager).delete(product.id)
+      }
+    })
+  }
+
   async normalizeOrder(
     shopifyOrder,
     customerId,
@@ -447,14 +467,14 @@ class ShopifyService extends BaseService {
         return "canceled"
       case "partially_refunded":
         return "partially_refunded"
-      case "paid":
-        return "captured"
       case "partially_paid":
+        return "not_paid"
+      case "pending":
         return "not_paid"
       case "authorized":
         return "awaiting"
-      case "pending":
-        return "not_paid"
+      case "paid":
+        return "captured"
       default:
         break
     }
@@ -518,7 +538,7 @@ class ShopifyService extends BaseService {
       variant_rank: variant.position,
       allow_backorder: variant.inventory_policy === "continue",
       manage_inventory: variant.inventory_management === "shopify", //if customer previously managed inventory through Shopify then true
-      weight: parseInt(variant.weight * 100),
+      weight: variant.grams,
       options: this.normalizeVariantOptions(
         variant.option1,
         variant.option2,
