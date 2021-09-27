@@ -20,8 +20,6 @@ export async function fetchShopify(options) {
     collectsQuery,
   } = options
 
-  console.log(password)
-
   const headers = getHeaders(password)
 
   let shopify = {}
@@ -40,6 +38,29 @@ export async function fetchShopify(options) {
   shopify.collects = await fetchCollects(collectsQuery, domain, headers)
 
   return shopify
+}
+
+export async function fetchProduct(id, options) {
+  const { password, domain } = options
+
+  const headers = getHeaders(password)
+
+  return await axios
+    .get(
+      `https://${domain}.myshopify.com/admin/api/2021-07/products/${id}.json`,
+      {
+        headers,
+      }
+    )
+    .then((res) => {
+      return res.data.product
+    })
+    .catch((error) => {
+      console.log(error)
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, {
+        message: `Shopify: ${error.message}`,
+      })
+    })
 }
 
 async function fetchAllProducts(query, domain, headers) {

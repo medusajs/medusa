@@ -261,6 +261,9 @@ export class Order {
   @Column({ nullable: true })
   idempotency_key: string
 
+  @Column({ nullable: true })
+  external_id: string
+
   // Total fields
   shipping_total: number
   discount_total: number

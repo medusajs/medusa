@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.fetchShopify = fetchShopify;
+exports.fetchProduct = fetchProduct;
 
 var _medusaCoreUtils = require("medusa-core-utils");
 
@@ -37,32 +38,31 @@ function _fetchShopify() {
         switch (_context.prev = _context.next) {
           case 0:
             password = options.password, domain = options.domain, productsQuery = options.productsQuery, customCollectionsQuery = options.customCollectionsQuery, smartCollectionsQuery = options.smartCollectionsQuery, collectsQuery = options.collectsQuery;
-            console.log(password);
             headers = getHeaders(password);
             shopify = {};
-            _context.next = 6;
+            _context.next = 5;
             return fetchAllProducts(productsQuery, domain, headers);
 
-          case 6:
+          case 5:
             shopify.products = _context.sent;
-            _context.next = 9;
+            _context.next = 8;
             return fetchCustomCollections(customCollectionsQuery, domain, headers);
 
-          case 9:
+          case 8:
             shopify.customCollections = _context.sent;
-            _context.next = 12;
+            _context.next = 11;
             return fetchSmartCollections(smartCollectionsQuery, domain, headers);
 
-          case 12:
+          case 11:
             shopify.smartCollections = _context.sent;
-            _context.next = 15;
+            _context.next = 14;
             return fetchCollects(collectsQuery, domain, headers);
 
-          case 15:
+          case 14:
             shopify.collects = _context.sent;
             return _context.abrupt("return", shopify);
 
-          case 17:
+          case 16:
           case "end":
             return _context.stop();
         }
@@ -72,23 +72,24 @@ function _fetchShopify() {
   return _fetchShopify.apply(this, arguments);
 }
 
-function fetchAllProducts(_x2, _x3, _x4) {
-  return _fetchAllProducts.apply(this, arguments);
+function fetchProduct(_x2, _x3) {
+  return _fetchProduct.apply(this, arguments);
 }
 
-function _fetchAllProducts() {
-  _fetchAllProducts = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(query, domain, headers) {
-    var path;
+function _fetchProduct() {
+  _fetchProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id, options) {
+    var password, domain, headers;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            path = (0, _buildQuery.buildQuery)(query);
-            _context2.next = 3;
-            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/products.json").concat(path), {
+            password = options.password, domain = options.domain;
+            headers = getHeaders(password);
+            _context2.next = 4;
+            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/products/").concat(id, ".json"), {
               headers: headers
             }).then(function (res) {
-              return res.data.products;
+              return res.data.product;
             })["catch"](function (error) {
               console.log(error);
               throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, {
@@ -96,25 +97,25 @@ function _fetchAllProducts() {
               });
             });
 
-          case 3:
+          case 4:
             return _context2.abrupt("return", _context2.sent);
 
-          case 4:
+          case 5:
           case "end":
             return _context2.stop();
         }
       }
     }, _callee2);
   }));
+  return _fetchProduct.apply(this, arguments);
+}
+
+function fetchAllProducts(_x4, _x5, _x6) {
   return _fetchAllProducts.apply(this, arguments);
 }
 
-function fetchSmartCollections(_x5, _x6, _x7) {
-  return _fetchSmartCollections.apply(this, arguments);
-}
-
-function _fetchSmartCollections() {
-  _fetchSmartCollections = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(query, domain, headers) {
+function _fetchAllProducts() {
+  _fetchAllProducts = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(query, domain, headers) {
     var path;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -122,11 +123,12 @@ function _fetchSmartCollections() {
           case 0:
             path = (0, _buildQuery.buildQuery)(query);
             _context3.next = 3;
-            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/smart_collections.json").concat(path), {
+            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/products.json").concat(path), {
               headers: headers
             }).then(function (res) {
-              return res.data.smart_collections;
+              return res.data.products;
             })["catch"](function (error) {
+              console.log(error);
               throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, {
                 message: "Shopify: ".concat(error.message)
               });
@@ -142,15 +144,15 @@ function _fetchSmartCollections() {
       }
     }, _callee3);
   }));
+  return _fetchAllProducts.apply(this, arguments);
+}
+
+function fetchSmartCollections(_x7, _x8, _x9) {
   return _fetchSmartCollections.apply(this, arguments);
 }
 
-function fetchCustomCollections(_x8, _x9, _x10) {
-  return _fetchCustomCollections.apply(this, arguments);
-}
-
-function _fetchCustomCollections() {
-  _fetchCustomCollections = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(query, domain, headers) {
+function _fetchSmartCollections() {
+  _fetchSmartCollections = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(query, domain, headers) {
     var path;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -158,10 +160,10 @@ function _fetchCustomCollections() {
           case 0:
             path = (0, _buildQuery.buildQuery)(query);
             _context4.next = 3;
-            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/custom_collections.json").concat(path), {
+            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/smart_collections.json").concat(path), {
               headers: headers
-            }).then(function (response) {
-              return response.data.custom_collections;
+            }).then(function (res) {
+              return res.data.smart_collections;
             })["catch"](function (error) {
               throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, {
                 message: "Shopify: ".concat(error.message)
@@ -178,15 +180,15 @@ function _fetchCustomCollections() {
       }
     }, _callee4);
   }));
+  return _fetchSmartCollections.apply(this, arguments);
+}
+
+function fetchCustomCollections(_x10, _x11, _x12) {
   return _fetchCustomCollections.apply(this, arguments);
 }
 
-function fetchCollects(_x11, _x12, _x13) {
-  return _fetchCollects.apply(this, arguments);
-}
-
-function _fetchCollects() {
-  _fetchCollects = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(query, domain, headers) {
+function _fetchCustomCollections() {
+  _fetchCustomCollections = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(query, domain, headers) {
     var path;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
@@ -194,10 +196,10 @@ function _fetchCollects() {
           case 0:
             path = (0, _buildQuery.buildQuery)(query);
             _context5.next = 3;
-            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/collects.json").concat(path), {
+            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/custom_collections.json").concat(path), {
               headers: headers
             }).then(function (response) {
-              return response.data.collects;
+              return response.data.custom_collections;
             })["catch"](function (error) {
               throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, {
                 message: "Shopify: ".concat(error.message)
@@ -213,6 +215,42 @@ function _fetchCollects() {
         }
       }
     }, _callee5);
+  }));
+  return _fetchCustomCollections.apply(this, arguments);
+}
+
+function fetchCollects(_x13, _x14, _x15) {
+  return _fetchCollects.apply(this, arguments);
+}
+
+function _fetchCollects() {
+  _fetchCollects = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(query, domain, headers) {
+    var path;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            path = (0, _buildQuery.buildQuery)(query);
+            _context6.next = 3;
+            return _axios["default"].get("https://".concat(domain, ".myshopify.com/admin/api/2021-07/collects.json").concat(path), {
+              headers: headers
+            }).then(function (response) {
+              return response.data.collects;
+            })["catch"](function (error) {
+              throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, {
+                message: "Shopify: ".concat(error.message)
+              });
+            });
+
+          case 3:
+            return _context6.abrupt("return", _context6.sent);
+
+          case 4:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
   }));
   return _fetchCollects.apply(this, arguments);
 }

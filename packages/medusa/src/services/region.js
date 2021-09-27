@@ -336,6 +336,34 @@ class RegionService extends BaseService {
     return country
   }
 
+  async retrieveByCountryCode(code, config = {}) {
+    const countryRepository = this.manager_.getCustomRepository(
+      this.countryRepository_
+    )
+
+    const country = await countryRepository.findOne({
+      where: {
+        iso_2: code.toLowerCase(),
+      },
+    })
+
+    if (!country) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Country with code ${code} not found`
+      )
+    }
+
+    if (!country.region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Country does not belong to a region`
+      )
+    }
+
+    return await this.retrieve(country.region_id, config)
+  }
+
   /**
    * Retrieves a region by its id.
    * @param {string} regionId - the id of the region to retrieve

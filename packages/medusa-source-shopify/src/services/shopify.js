@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { fetchShopify } from "../utils/fetch-shopify"
+import { fetchProduct, fetchShopify } from "../utils/fetch-shopify"
+import { parsePrice } from "../utils/parse-price"
 import { removeIndex } from "../utils/remove-index"
 
 class ShopifyService extends BaseService {
@@ -14,6 +15,7 @@ class ShopifyService extends BaseService {
       customerService,
       orderService,
       regionService,
+      paymentRepository,
     },
     options
   ) {
@@ -37,205 +39,234 @@ class ShopifyService extends BaseService {
     this.orderService_ = orderService
     /** @private @const {RegionService} */
     this.regionService_ = regionService
+    /** @private @const {PaymentRepository} */
+    this.paymentRepository_ = paymentRepository
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ShopifyService({
+      manager: transactionManager,
+      orderService: this.orderService_,
+      customerService: this.customerService_,
+      productCollectionService: this.collectionService_,
+      shippingProfileService: this.shippingProfileService_,
+      productVariantRepository: this.productVariantRepository_,
+      productService: this.productService_,
+      regionService: this.regionService_,
+      paymentRepository: this.paymentRepository_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   async importShopify() {
-    await this.shippingProfileService_.createDefault()
-    await this.shippingProfileService_.createGiftCardDefault()
+    return this.atomicPhase_(async (manager) => {
+      await this.shippingProfileService_.createDefault()
+      await this.shippingProfileService_.createGiftCardDefault()
 
-    const {
-      products,
-      customCollections,
-      smartCollections,
-      collects,
-    } = await fetchShopify(this.options)
+      const {
+        products,
+        customCollections,
+        smartCollections,
+        collects,
+      } = await fetchShopify(this.options)
 
-    const normalizedCustomCollections = customCollections.map((cc) =>
-      this.normalizeCollection(cc)
-    )
-    const normalizedSmartCollections = smartCollections.map((sc) =>
-      this.normalizeCollection(sc)
-    )
+      const normalizedCustomCollections = customCollections.map((cc) =>
+        this.normalizeCollection(cc)
+      )
+      const normalizedSmartCollections = smartCollections.map((sc) =>
+        this.normalizeCollection(sc)
+      )
 
-    await this.manager_.transaction(async (m) => {
       await this.createCollectionsWithProducts(
         collects,
         normalizedCustomCollections,
-        products,
-        m
+        products
       )
 
       await this.createCollectionsWithProducts(
         collects,
         normalizedSmartCollections,
-        products,
-        m
+        products
       )
 
-      const normalizedProducts = products.map((p) => this.normalizeProduct(p))
-      await Promise.all(
-        normalizedProducts.map(async (p) => await this.createProduct(p, m))
-      )
+      await Promise.all(products.map(async (p) => await this.createProduct(p)))
     })
   }
 
   async createCollectionsWithProducts(
     collects,
     normalizedCollections,
-    products,
-    manager
+    products
   ) {
-    return Promise.all(
-      normalizedCollections.map(async (nc) => {
-        const collection = await this.collectionService_
-          .withTransaction(manager)
-          .create(nc)
+    return this.atomicPhase_(async (manager) => {
+      return Promise.all(
+        normalizedCollections.map(async (nc) => {
+          const collection = await this.collectionService_
+            .withTransaction(manager)
+            .create(nc)
 
-        const productIds = collects.reduce((productIds, c) => {
-          if (c.collection_id === collection.metadata.sh_id) {
-            productIds.push(c.product_id)
-          }
-          return productIds
-        }, [])
+          const productIds = collects.reduce((productIds, c) => {
+            if (c.collection_id === collection.metadata.sh_id) {
+              productIds.push(c.product_id)
+            }
+            return productIds
+          }, [])
 
-        const reducedProducts = products.reduce((reducedProducts, p) => {
-          if (productIds.includes(p.id)) {
-            reducedProducts.push(p)
-            /**
-             * As we only support products belonging to one collection,
-             * we need to remove the product from the list of products
-             * to prevent trying to add a product to several collection.
-             * This is done on a first-come basis, so once a product belongs
-             * to a collection, it is then removed from the list of products
-             * that still needs to be imported.
-             */
-            removeIndex(products, p)
-          }
-          return reducedProducts
-        }, [])
+          const reducedProducts = products.reduce((reducedProducts, p) => {
+            if (productIds.includes(p.id)) {
+              reducedProducts.push(p)
+              /**
+               * As we only support products belonging to one collection,
+               * we need to remove the product from the list of products
+               * to prevent trying to add a product to several collections.
+               * This is done on a first-come basis, so once a product belongs
+               * to a collection, it is then removed from the list of products
+               * that still needs to be imported.
+               */
+              removeIndex(products, p)
+            }
+            return reducedProducts
+          }, [])
 
-        const normalizedProducts = reducedProducts.map((p) =>
-          this.normalizeProduct(p, collection.id)
-        )
-
-        return Promise.all(
-          normalizedProducts.map(async (rp) => {
-            await this.createProduct(rp, manager)
-          })
-        )
-      })
-    )
+          return Promise.all(
+            reducedProducts.map(async (rp) => {
+              await this.createProduct(rp)
+            })
+          )
+        })
+      )
+    })
   }
 
-  async createProduct(product, manager) {
-    let shippingProfile
+  async createProduct(productOrId) {
+    return this.atomicPhase_(async (manager) => {
+      let product
+      let shippingProfile
 
-    // Get default shipping profile
-    if (product.is_giftcard) {
-      shippingProfile = await this.shippingProfileService_.retrieveGiftCardDefault()
-    } else {
-      shippingProfile = await this.shippingProfileService_.retrieveDefault()
-    }
-
-    const variants = product.variants
-    delete product.variants
-
-    product.profile_id = shippingProfile
-
-    const newProd = await this.productService_
-      .withTransaction(manager)
-      .create(product)
-
-    if (variants && variants.length) {
-      const optionIds = product.options.map(
-        (o) => newProd.options.find((newO) => newO.title === o.title).id
-      )
-
-      for (const v of variants) {
-        const variant = {
-          ...v,
-          options: v.options.map((o, index) => ({
-            ...o,
-            option_id: optionIds[index],
-          })),
-        }
-
-        await this.productVariantService_
-          .withTransaction(manager)
-          .create(newProd.id, variant)
+      if (typeof productOrId === "string") {
+        product = await fetchProduct(productOrId, this.options)
+      } else {
+        product = productOrId
       }
-    }
-  }
 
-  async createCustomer(customer, shippingAddress, billingAddress, manager) {
-    const normalizedCustomer = this.normalizeCustomer(
-      customer,
-      shippingAddress,
-      billingAddress
-    )
-    let normalizedBilling = normalizedCustomer.billing_address
-    let normalizedShipping = normalizedCustomer.shipping_address
+      const normalizedProduct = this.normalizeProduct(product)
+      // Get default shipping profile
+      if (normalizedProduct.is_giftcard) {
+        shippingProfile = await this.shippingProfileService_.retrieveGiftCardDefault()
+      } else {
+        shippingProfile = await this.shippingProfileService_.retrieveDefault()
+      }
 
-    const existingCustomer = await this.customerService_
-      .retrieveByEmail(normalizedCustomer.email)
-      .catch((_err) => undefined)
+      const variants = normalizedProduct.variants
+      delete normalizedProduct.variants
 
-    if (existingCustomer) {
-      return existingCustomer
-    }
+      normalizedProduct.profile_id = shippingProfile
 
-    delete normalizedCustomer.billing_address
-    delete normalizedCustomer.shipping_address
+      const newProd = await this.productService_
+        .withTransaction(manager)
+        .create(normalizedProduct)
 
-    const medCustomer = await this.customerService_
-      .withTransaction(manager)
-      .create(normalizedCustomer)
+      if (variants && variants.length) {
+        const optionIds = normalizedProduct.options.map(
+          (o) => newProd.options.find((newO) => newO.title === o.title).id
+        )
 
-    await this.customerService_
-      .withTransaction(manager)
-      .addAddress(medCustomer.id, normalizedShipping)
-      .catch((err) => {
-        console.log("Error on addAddress", normalizedShipping)
-      })
+        for (const v of variants) {
+          const variant = {
+            ...v,
+            options: v.options.map((o, index) => ({
+              ...o,
+              option_id: optionIds[index],
+            })),
+          }
 
-    const result = await this.customerService_
-      .withTransaction(manager)
-      .update(medCustomer.id, {
-        billing_address: normalizedBilling,
-      })
-      .catch((err) => {
-        console.log("Error on update billing_address", normalizedBilling)
-      })
-
-    return result
-  }
-
-  async addShippingMethod(shippingLine, orderId, manager) {
-    const soId = "so_01FG9N9FQTC6F9NN6W1XAJFNHN" //temp
-
-    const order = await this.orderService_
-      .withTransaction(manager)
-      .addShippingMethod(
-        orderId,
-        soId,
-        {},
-        {
-          price: parseInt(Number(shippingLine.price).toFixed(2) * 100),
+          await this.productVariantService_
+            .withTransaction(manager)
+            .create(newProd.id, variant)
         }
-      )
+      }
+    })
+  }
 
-    return order
+  async createCustomer(customer, shippingAddress, billingAddress) {
+    return this.atomicPhase_(async (manager) => {
+      const normalizedCustomer = this.normalizeCustomer(
+        customer,
+        shippingAddress,
+        billingAddress
+      )
+      let normalizedBilling = normalizedCustomer.billing_address
+      let normalizedShipping = normalizedCustomer.shipping_address
+
+      const existingCustomer = await this.customerService_
+        .retrieveByEmail(normalizedCustomer.email)
+        .catch((_err) => undefined)
+
+      if (existingCustomer) {
+        return existingCustomer
+      }
+
+      delete normalizedCustomer.billing_address
+      delete normalizedCustomer.shipping_address
+
+      const medCustomer = await this.customerService_
+        .withTransaction(manager)
+        .create(normalizedCustomer)
+
+      await this.customerService_
+        .withTransaction(manager)
+        .addAddress(medCustomer.id, normalizedShipping)
+        .catch((err) => {
+          console.log("Error on addAddress", normalizedShipping)
+        })
+
+      const result = await this.customerService_
+        .withTransaction(manager)
+        .update(medCustomer.id, {
+          billing_address: normalizedBilling,
+        })
+        .catch((err) => {
+          console.log("Error on update billing_address", normalizedBilling)
+        })
+
+      return result
+    })
+  }
+
+  async addShippingMethod(shippingLine, orderId, taxRate) {
+    const soId = "so_01FGBWR464D68CWN2XZKD6KYF5" //temp
+
+    return this.atomicPhase_(async (manager) => {
+      const order = await this.orderService_
+        .withTransaction(manager)
+        .addShippingMethod(
+          orderId,
+          soId,
+          {},
+          {
+            price: parsePrice(shippingLine.price) * (1 - taxRate),
+          }
+        )
+
+      return order
+    })
   }
 
   async createOrder(order) {
-    return await this.manager_.transaction(async (m) => {
-      const { customer, shipping_address, billing_address } = order
+    return this.atomicPhase_(async (manager) => {
+      const { customer, shipping_address, billing_address, tax_lines } = order
 
       const medCustomer = await this.createCustomer(
         customer,
         shipping_address,
-        billing_address,
-        m
+        billing_address
       )
 
       if (!medCustomer) {
@@ -249,12 +280,14 @@ class ShopifyService extends BaseService {
         shipping_address.country_code.toLowerCase()
       )
 
+      const orderTaxRate = tax_lines[0].rate || 0
+
       const normalizedOrder = await this.normalizeOrder(
         order,
         medCustomer.id,
         region.id,
         region.tax_rate,
-        m
+        orderTaxRate
       )
 
       if (!normalizedOrder) {
@@ -265,71 +298,124 @@ class ShopifyService extends BaseService {
       }
 
       const medOrder = await this.orderService_
-        .withTransaction(m)
+        .withTransaction(manager)
         .create(normalizedOrder)
-        .catch((err) => {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `An error occurred while creating an order: ${err}`
-          )
-        })
 
-      try {
-        await Promise.all(
-          order.shipping_lines.map(async (sl) =>
-            this.addShippingMethod(sl, medOrder.id, m)
-          )
+      await Promise.all(
+        order.shipping_lines.map(async (sl) =>
+          this.addShippingMethod(sl, medOrder.id, orderTaxRate)
         )
-      } catch (err) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `An error occurred while adding shipping methods to an order: ${err}`
-        )
+      )
+
+      await this.createPayment({
+        order_id: medOrder.id,
+        currency_code: medOrder.currency_code,
+        total: this.getOrderTotal(order),
+      })
+    })
+  }
+
+  async createPayment(data) {
+    return this.atomicPhase_(async (manager) => {
+      const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
+
+      const created = paymentRepo.create({
+        provider_id: "shopify",
+        amount: data.total,
+        currency_code: data.currency_code,
+        data: {},
+        order_id: data.order_id,
+      })
+
+      return paymentRepo.save(created)
+    })
+  }
+
+  async updateProduct(product) {
+    console.log("Received =>", product)
+
+    const { handle } = product
+    const toUpdate = await this.productService_
+      .retrieveByHandle(handle)
+      .catch((_) => undefined)
+
+    if (!toUpdate) {
+      console.log("No product found")
+      return {}
+    }
+
+    console.log("Found => ", toUpdate)
+    return toUpdate
+  }
+
+  async normalizeOrder(
+    shopifyOrder,
+    customerId,
+    regionId,
+    taxRate,
+    shopifyTaxRate
+  ) {
+    return this.atomicPhase_(async (manager) => {
+      return {
+        status: this.normalizeOrderStatus(),
+        region_id: regionId,
+        email: shopifyOrder.email,
+        customer_id: customerId,
+        currency_code: shopifyOrder.currency.toLowerCase(),
+        tax_rate: taxRate,
+        tax_total: parsePrice(shopifyOrder.total_tax),
+        subtotal: shopifyOrder.subtotal_price,
+        shipping_address: this.normalizeAddress(shopifyOrder.shipping_address),
+        billing_address: this.normalizeAddress(shopifyOrder.billing_address),
+        discount_total: shopifyOrder.total_discounts,
+        fulfilment_status: this.normalizeOrderFulfilmentStatus(
+          shopifyOrder.fulfilment_status
+        ),
+        payment_status: this.normalizeOrderPaymentStatus(
+          shopifyOrder.financial_status
+        ),
+        items: await Promise.all(
+          shopifyOrder.line_items.map(async (i) => {
+            return this.normalizeLineItem(i, shopifyTaxRate)
+          })
+        ),
+        external_id: shopifyOrder.id,
       }
     })
   }
 
-  async normalizeOrder(shopifyOrder, customerId, regionId, taxRate, manager) {
-    return {
-      status: this.normalizeOrderStatus(),
-      region_id: regionId,
-      tax_rate: taxRate,
-      email: shopifyOrder.email,
-      customer_id: customerId,
-      currency_code: shopifyOrder.currency.toLowerCase(),
-      tax_total: shopifyOrder.tax_total,
-      subtotal: shopifyOrder.subtotal_price,
-      shipping_address: this.normalizeAddress(shopifyOrder.shipping_address),
-      billing_address: this.normalizeAddress(shopifyOrder.billing_address),
-      discount_total: shopifyOrder.total_discounts,
-      fulfilment_status: this.normalizeOrderFulfilmentStatus(
-        shopifyOrder.fulfilment_status
-      ),
-      items: await Promise.all(
-        shopifyOrder.line_items.map(async (i) => {
-          return this.normalizeLineItem(i, manager)
-        })
-      ),
-      external_id: shopifyOrder.id,
-    }
+  getOrderTotal(order) {
+    const shippingTotal = order.shipping_lines.reduce(
+      (total, i) => parsePrice(i.price) + total,
+      0
+    )
+
+    const itemTotal = order.line_items.reduce(
+      (total, i) => parsePrice(i.price) + total,
+      0
+    )
+
+    return shippingTotal + itemTotal
   }
 
-  async normalizeLineItem(lineItem, manager) {
-    const productVariant = await this.productVariantService_
-      .withTransaction(manager)
-      .retrieveBySKU(lineItem.sku)
+  async normalizeLineItem(lineItem, taxRate) {
+    return this.atomicPhase_(async (manager) => {
+      const productVariant = await this.productVariantService_
+        .withTransaction(manager)
+        .retrieveBySKU(lineItem.sku)
 
-    return {
-      title: lineItem.title,
-      is_giftcard: lineItem.gift_card,
-      unit_price: parseInt(parseFloat(lineItem.price).toFixed(2) * 100),
-      quantity: lineItem.quantity,
-      fulfilled_quantity:
-        lineItem.fulfillment_status === "fulfilled"
-          ? lineItem.fulfillable_quantity
-          : 0,
-      variant_id: productVariant.id,
-    }
+      return {
+        title: lineItem.title,
+        is_giftcard: lineItem.gift_card,
+        unit_price: parsePrice(lineItem.price) * (1 - taxRate),
+        quantity: lineItem.quantity,
+        fulfilled_quantity:
+          lineItem.fulfillment_status === "fulfilled"
+            ? lineItem.fulfillable_quantity
+            : 0,
+        variant_id: productVariant.id,
+      }
+    })
   }
 
   normalizeOrderStatus() {
@@ -386,7 +472,7 @@ class ShopifyService extends BaseService {
   normalizePrices(presentmentPrices) {
     return presentmentPrices.map((p) => {
       return {
-        amount: parseInt(parseFloat(p.price.amount).toFixed(2) * 100),
+        amount: parsePrice(p.price.amount),
         currency_code: p.price.currency_code.toLowerCase(),
       }
     })
@@ -432,7 +518,7 @@ class ShopifyService extends BaseService {
       variant_rank: variant.position,
       allow_backorder: variant.inventory_policy === "continue",
       manage_inventory: variant.inventory_management === "shopify", //if customer previously managed inventory through Shopify then true
-      weight: parseInt(variant.weight),
+      weight: parseInt(variant.weight * 100),
       options: this.normalizeVariantOptions(
         variant.option1,
         variant.option2,

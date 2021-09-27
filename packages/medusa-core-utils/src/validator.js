@@ -9,6 +9,7 @@ Joi.address = () => {
     Joi.object().keys({
       first_name: Joi.string().required(),
       last_name: Joi.string().required(),
+      company: Joi.string().optional(),
       address_1: Joi.string().required(),
       address_2: Joi.string()
         .allow(null, "")
