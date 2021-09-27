@@ -333,7 +333,7 @@ class StripeProviderService extends PaymentService {
   async cancelPayment(payment) {
     const { id } = payment.data
     try {
-      return this.stripe_.paymentIntents.cancel(id)
+      return await this.stripe_.paymentIntents.cancel(id)
     } catch (error) {
       if (error.payment_intent.status === "canceled") {
         return error.payment_intent
