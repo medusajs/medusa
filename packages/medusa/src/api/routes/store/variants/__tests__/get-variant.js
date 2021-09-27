@@ -28,10 +28,7 @@ describe("Get variant by id", () => {
   describe("get variant with prices", () => {
     let subject
     beforeAll(async () => {
-      subject = await request(
-        "GET",
-        `/store/variants/${IdMap.getId("variantWithPrices")}`
-      )
+      subject = await request("GET", `/store/variants/variant_with_prices`)
     })
     it("successfully retrieves variants with prices", async () => {
       expect(subject.status).toEqual(200)
