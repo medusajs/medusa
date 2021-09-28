@@ -180,6 +180,14 @@ You can explore your Heroku app build logs using the following command in your p
 heroku logs -n 500000 --remote heroku --tail
 ```
 
+### 8. Create a user (optional)
+
+As an optional extra step, we can create a user for you to use when your admin system is up and running.
+
+```shell=
+heroku run -a medusa-test-app -- medusa user -e "some-user@test.com" -p "SuperSecret1234"
+```
+
 ### What's next?
 
 You now have a production ready application running on Heroku. This can be scaled and configured to fit your business needs.
