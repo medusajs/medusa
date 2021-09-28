@@ -53,3 +53,4 @@ var WEBHOOKS = [{
   type: _shopifyApi.DataType.JSON
 }];
 exports.WEBHOOKS = WEBHOOKS;
+var LAST_SYNC = Date.now();

@@ -19,6 +19,12 @@ var _parsePrice = require("../utils/parse-price");
 
 var _removeIndex = require("../utils/remove-index");
 
+var _lodash = _interopRequireDefault(require("lodash"));
+
+var _getDifference = require("../utils/get-difference");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -838,40 +844,71 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "updateProduct",
     value: function () {
-      var _updateProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(product) {
-        var handle, toUpdate;
-        return regeneratorRuntime.wrap(function _callee20$(_context20) {
+      var _updateProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(productObject) {
+        var _this9 = this;
+
+        return regeneratorRuntime.wrap(function _callee21$(_context21) {
           while (1) {
-            switch (_context20.prev = _context20.next) {
+            switch (_context21.prev = _context21.next) {
               case 0:
-                console.log("Received =>", product);
-                handle = product.handle;
-                _context20.next = 4;
-                return this.productService_.retrieveByHandle(handle)["catch"](function (_) {
-                  return undefined;
-                });
+                return _context21.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(manager) {
+                    var handle, id, toUpdate, product, normalizedUpdate, updatedProduct;
+                    return regeneratorRuntime.wrap(function _callee20$(_context20) {
+                      while (1) {
+                        switch (_context20.prev = _context20.next) {
+                          case 0:
+                            handle = productObject.handle, id = productObject.id;
+                            _context20.next = 3;
+                            return _this9.productService_.retrieveByHandle(handle)["catch"](function (_) {
+                              return undefined;
+                            });
 
-              case 4:
-                toUpdate = _context20.sent;
+                          case 3:
+                            toUpdate = _context20.sent;
 
-                if (toUpdate) {
-                  _context20.next = 8;
-                  break;
-                }
+                            if (toUpdate) {
+                              _context20.next = 7;
+                              break;
+                            }
 
-                console.log("No product found");
-                return _context20.abrupt("return", {});
+                            console.log("No product found");
+                            return _context20.abrupt("return", {});
 
-              case 8:
-                console.log("Found => ", toUpdate);
-                return _context20.abrupt("return", toUpdate);
+                          case 7:
+                            _context20.next = 9;
+                            return (0, _fetchShopify.fetchProduct)(id, _this9.options);
 
-              case 10:
+                          case 9:
+                            product = _context20.sent;
+                            normalizedUpdate = _this9.normalizeProduct(product);
+                            _context20.next = 13;
+                            return _this9.productService_.withTransaction(manager).update(toUpdate.id, normalizedUpdate);
+
+                          case 13:
+                            updatedProduct = _context20.sent;
+                            console.log(updatedProduct);
+                            return _context20.abrupt("return", updatedProduct);
+
+                          case 16:
+                          case "end":
+                            return _context20.stop();
+                        }
+                      }
+                    }, _callee20);
+                  }));
+
+                  return function (_x26) {
+                    return _ref13.apply(this, arguments);
+                  };
+                }()));
+
+              case 1:
               case "end":
-                return _context20.stop();
+                return _context21.stop();
             }
           }
-        }, _callee20, this);
+        }, _callee21, this);
       }));
 
       function updateProduct(_x25) {
@@ -883,60 +920,59 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "deleteProduct",
     value: function () {
-      var _deleteProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22(handle) {
-        var _this9 = this;
+      var _deleteProduct = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee23(handle) {
+        var _this10 = this;
 
-        return regeneratorRuntime.wrap(function _callee22$(_context22) {
+        return regeneratorRuntime.wrap(function _callee23$(_context23) {
           while (1) {
-            switch (_context22.prev = _context22.next) {
+            switch (_context23.prev = _context23.next) {
               case 0:
-                return _context22.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
-                  var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(manager) {
+                return _context23.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22(manager) {
                     var product;
-                    return regeneratorRuntime.wrap(function _callee21$(_context21) {
+                    return regeneratorRuntime.wrap(function _callee22$(_context22) {
                       while (1) {
-                        switch (_context21.prev = _context21.next) {
+                        switch (_context22.prev = _context22.next) {
                           case 0:
-                            console.log("RECEIVED HANDLE", handle);
-                            _context21.next = 3;
-                            return _this9.productService_.retrieveByHandle(handle)["catch"](function (_) {
+                            _context22.next = 2;
+                            return _this10.productService_.retrieveByHandle(handle)["catch"](function (_) {
                               return undefined;
                             });
 
-                          case 3:
-                            product = _context21.sent;
+                          case 2:
+                            product = _context22.sent;
                             console.log("PRODUCT RETRIEVED", product);
 
                             if (!product) {
-                              _context21.next = 8;
+                              _context22.next = 7;
                               break;
                             }
 
-                            _context21.next = 8;
-                            return _this9.productService_.withTransaction(manager)["delete"](product.id);
+                            _context22.next = 7;
+                            return _this10.productService_.withTransaction(manager)["delete"](product.id);
 
-                          case 8:
+                          case 7:
                           case "end":
-                            return _context21.stop();
+                            return _context22.stop();
                         }
                       }
-                    }, _callee21);
+                    }, _callee22);
                   }));
 
-                  return function (_x27) {
-                    return _ref13.apply(this, arguments);
+                  return function (_x28) {
+                    return _ref14.apply(this, arguments);
                   };
                 }()));
 
               case 1:
               case "end":
-                return _context22.stop();
+                return _context23.stop();
             }
           }
-        }, _callee22, this);
+        }, _callee23, this);
       }));
 
-      function deleteProduct(_x26) {
+      function deleteProduct(_x27) {
         return _deleteProduct.apply(this, arguments);
       }
 
@@ -945,97 +981,97 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "normalizeOrder",
     value: function () {
-      var _normalizeOrder = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee25(shopifyOrder, customerId, regionId, taxRate, shopifyTaxRate) {
-        var _this10 = this;
+      var _normalizeOrder = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee26(shopifyOrder, customerId, regionId, taxRate, shopifyTaxRate) {
+        var _this11 = this;
 
-        return regeneratorRuntime.wrap(function _callee25$(_context25) {
+        return regeneratorRuntime.wrap(function _callee26$(_context26) {
           while (1) {
-            switch (_context25.prev = _context25.next) {
+            switch (_context26.prev = _context26.next) {
               case 0:
-                return _context25.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
-                  var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee24(manager) {
-                    return regeneratorRuntime.wrap(function _callee24$(_context24) {
+                return _context26.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee25(manager) {
+                    return regeneratorRuntime.wrap(function _callee25$(_context25) {
                       while (1) {
-                        switch (_context24.prev = _context24.next) {
+                        switch (_context25.prev = _context25.next) {
                           case 0:
-                            _context24.t0 = _this10.normalizeOrderStatus();
-                            _context24.t1 = regionId;
-                            _context24.t2 = shopifyOrder.email;
-                            _context24.t3 = customerId;
-                            _context24.t4 = shopifyOrder.currency.toLowerCase();
-                            _context24.t5 = taxRate;
-                            _context24.t6 = (0, _parsePrice.parsePrice)(shopifyOrder.total_tax);
-                            _context24.t7 = shopifyOrder.subtotal_price;
-                            _context24.t8 = _this10.normalizeAddress(shopifyOrder.shipping_address);
-                            _context24.t9 = _this10.normalizeAddress(shopifyOrder.billing_address);
-                            _context24.t10 = shopifyOrder.total_discounts;
-                            _context24.t11 = _this10.normalizeOrderFulfilmentStatus(shopifyOrder.fulfilment_status);
-                            _context24.t12 = _this10.normalizeOrderPaymentStatus(shopifyOrder.financial_status);
-                            _context24.next = 15;
+                            _context25.t0 = _this11.normalizeOrderStatus();
+                            _context25.t1 = regionId;
+                            _context25.t2 = shopifyOrder.email;
+                            _context25.t3 = customerId;
+                            _context25.t4 = shopifyOrder.currency.toLowerCase();
+                            _context25.t5 = taxRate;
+                            _context25.t6 = (0, _parsePrice.parsePrice)(shopifyOrder.total_tax);
+                            _context25.t7 = shopifyOrder.subtotal_price;
+                            _context25.t8 = _this11.normalizeAddress(shopifyOrder.shipping_address);
+                            _context25.t9 = _this11.normalizeAddress(shopifyOrder.billing_address);
+                            _context25.t10 = shopifyOrder.total_discounts;
+                            _context25.t11 = _this11.normalizeOrderFulfilmentStatus(shopifyOrder.fulfilment_status);
+                            _context25.t12 = _this11.normalizeOrderPaymentStatus(shopifyOrder.financial_status);
+                            _context25.next = 15;
                             return Promise.all(shopifyOrder.line_items.map( /*#__PURE__*/function () {
-                              var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee23(i) {
-                                return regeneratorRuntime.wrap(function _callee23$(_context23) {
+                              var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee24(i) {
+                                return regeneratorRuntime.wrap(function _callee24$(_context24) {
                                   while (1) {
-                                    switch (_context23.prev = _context23.next) {
+                                    switch (_context24.prev = _context24.next) {
                                       case 0:
-                                        return _context23.abrupt("return", _this10.normalizeLineItem(i, shopifyTaxRate));
+                                        return _context24.abrupt("return", _this11.normalizeLineItem(i, shopifyTaxRate));
 
                                       case 1:
                                       case "end":
-                                        return _context23.stop();
+                                        return _context24.stop();
                                     }
                                   }
-                                }, _callee23);
+                                }, _callee24);
                               }));
 
-                              return function (_x34) {
-                                return _ref15.apply(this, arguments);
+                              return function (_x35) {
+                                return _ref16.apply(this, arguments);
                               };
                             }()));
 
                           case 15:
-                            _context24.t13 = _context24.sent;
-                            _context24.t14 = shopifyOrder.id;
-                            return _context24.abrupt("return", {
-                              status: _context24.t0,
-                              region_id: _context24.t1,
-                              email: _context24.t2,
-                              customer_id: _context24.t3,
-                              currency_code: _context24.t4,
-                              tax_rate: _context24.t5,
-                              tax_total: _context24.t6,
-                              subtotal: _context24.t7,
-                              shipping_address: _context24.t8,
-                              billing_address: _context24.t9,
-                              discount_total: _context24.t10,
-                              fulfilment_status: _context24.t11,
-                              payment_status: _context24.t12,
-                              items: _context24.t13,
-                              external_id: _context24.t14
+                            _context25.t13 = _context25.sent;
+                            _context25.t14 = shopifyOrder.id;
+                            return _context25.abrupt("return", {
+                              status: _context25.t0,
+                              region_id: _context25.t1,
+                              email: _context25.t2,
+                              customer_id: _context25.t3,
+                              currency_code: _context25.t4,
+                              tax_rate: _context25.t5,
+                              tax_total: _context25.t6,
+                              subtotal: _context25.t7,
+                              shipping_address: _context25.t8,
+                              billing_address: _context25.t9,
+                              discount_total: _context25.t10,
+                              fulfilment_status: _context25.t11,
+                              payment_status: _context25.t12,
+                              items: _context25.t13,
+                              external_id: _context25.t14
                             });
 
                           case 18:
                           case "end":
-                            return _context24.stop();
+                            return _context25.stop();
                         }
                       }
-                    }, _callee24);
+                    }, _callee25);
                   }));
 
-                  return function (_x33) {
-                    return _ref14.apply(this, arguments);
+                  return function (_x34) {
+                    return _ref15.apply(this, arguments);
                   };
                 }()));
 
               case 1:
               case "end":
-                return _context25.stop();
+                return _context26.stop();
             }
           }
-        }, _callee25, this);
+        }, _callee26, this);
       }));
 
-      function normalizeOrder(_x28, _x29, _x30, _x31, _x32) {
+      function normalizeOrder(_x29, _x30, _x31, _x32, _x33) {
         return _normalizeOrder.apply(this, arguments);
       }
 
@@ -1055,26 +1091,26 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "normalizeLineItem",
     value: function () {
-      var _normalizeLineItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27(lineItem, taxRate) {
-        var _this11 = this;
+      var _normalizeLineItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee28(lineItem, taxRate) {
+        var _this12 = this;
 
-        return regeneratorRuntime.wrap(function _callee27$(_context27) {
+        return regeneratorRuntime.wrap(function _callee28$(_context28) {
           while (1) {
-            switch (_context27.prev = _context27.next) {
+            switch (_context28.prev = _context28.next) {
               case 0:
-                return _context27.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
-                  var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee26(manager) {
+                return _context28.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref17 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27(manager) {
                     var productVariant;
-                    return regeneratorRuntime.wrap(function _callee26$(_context26) {
+                    return regeneratorRuntime.wrap(function _callee27$(_context27) {
                       while (1) {
-                        switch (_context26.prev = _context26.next) {
+                        switch (_context27.prev = _context27.next) {
                           case 0:
-                            _context26.next = 2;
-                            return _this11.productVariantService_.withTransaction(manager).retrieveBySKU(lineItem.sku);
+                            _context27.next = 2;
+                            return _this12.productVariantService_.withTransaction(manager).retrieveBySKU(lineItem.sku);
 
                           case 2:
-                            productVariant = _context26.sent;
-                            return _context26.abrupt("return", {
+                            productVariant = _context27.sent;
+                            return _context27.abrupt("return", {
                               title: lineItem.title,
                               is_giftcard: lineItem.gift_card,
                               unit_price: (0, _parsePrice.parsePrice)(lineItem.price) * (1 - taxRate),
@@ -1085,26 +1121,26 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
 
                           case 4:
                           case "end":
-                            return _context26.stop();
+                            return _context27.stop();
                         }
                       }
-                    }, _callee26);
+                    }, _callee27);
                   }));
 
-                  return function (_x37) {
-                    return _ref16.apply(this, arguments);
+                  return function (_x38) {
+                    return _ref17.apply(this, arguments);
                   };
                 }()));
 
               case 1:
               case "end":
-                return _context27.stop();
+                return _context28.stop();
             }
           }
-        }, _callee27, this);
+        }, _callee28, this);
       }));
 
-      function normalizeLineItem(_x35, _x36) {
+      function normalizeLineItem(_x36, _x37) {
         return _normalizeLineItem.apply(this, arguments);
       }
 
@@ -1242,21 +1278,25 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "normalizeProduct",
     value: function normalizeProduct(product, collectionId) {
-      var _this12 = this,
+      var _this13 = this,
           _product$image;
 
       return {
         title: product.title,
         handle: product.handle,
+        description: product.body_html,
+        product_type: {
+          value: product.product_type
+        },
         is_giftcard: product.product_type === "Gift Cards",
         options: product.options.map(function (option) {
-          return _this12.normalizeProductOption(option);
+          return _this13.normalizeProductOption(option);
         }) || [],
         variants: product.variants.map(function (variant) {
-          return _this12.normalizeVariant(variant);
+          return _this13.normalizeVariant(variant);
         }) || [],
         tags: product.tags.split(",").map(function (tag) {
-          return _this12.normalizeTag(tag);
+          return _this13.normalizeTag(tag);
         }) || [],
         images: product.images.map(function (img) {
           return img.src;

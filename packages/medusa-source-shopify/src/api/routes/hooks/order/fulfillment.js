@@ -3,6 +3,8 @@ export default async (req, res) => {
 
   const order = req.body
 
+  console.log(order)
+
   //TODO: update fulfillment
 
   res.sendStatus(200)

@@ -27,6 +27,7 @@ var _default = function _default(app) {
   route.use("/delete", _express["default"].json(), _middlewares["default"].wrap(require("./delete")["default"]));
   route.use("/payment", _express["default"].json(), _middlewares["default"].wrap(require("./payment")["default"]));
   route.use("/fulfillment", _express["default"].json(), _middlewares["default"].wrap(require("./fulfillment")["default"]));
+  route.use("/update", _express["default"].json(), _middlewares["default"].wrap(require("./update")["default"]));
   return app;
 };
 

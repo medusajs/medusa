@@ -27,6 +27,11 @@ export default (app) => {
     express.json(),
     middlewares.wrap(require("./fulfillment").default)
   )
+  route.use(
+    "/update",
+    express.json(),
+    middlewares.wrap(require("./update").default)
+  )
 
   return app
 }

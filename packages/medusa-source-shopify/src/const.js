@@ -48,3 +48,5 @@ export const WEBHOOKS = [
     type: DataType.JSON,
   },
 ]
+
+let LAST_SYNC = Date.now()

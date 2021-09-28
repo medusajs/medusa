@@ -3,6 +3,8 @@ import { BaseService } from "medusa-interfaces"
 import { fetchProduct, fetchShopify } from "../utils/fetch-shopify"
 import { parsePrice } from "../utils/parse-price"
 import { removeIndex } from "../utils/remove-index"
+import _ from "lodash"
+import { getDifference } from "../utils/get-difference"
 
 class ShopifyService extends BaseService {
   constructor(
@@ -337,26 +339,31 @@ class ShopifyService extends BaseService {
     })
   }
 
-  async updateProduct(product) {
-    console.log("Received =>", product)
+  async updateProduct(productObject) {
+    return this.atomicPhase_(async (manager) => {
+      const { handle, id } = productObject
+      const toUpdate = await this.productService_
+        .retrieveByHandle(handle)
+        .catch((_) => undefined)
 
-    const { handle } = product
-    const toUpdate = await this.productService_
-      .retrieveByHandle(handle)
-      .catch((_) => undefined)
+      if (!toUpdate) {
+        console.log("No product found")
+        return {}
+      }
+      const product = await fetchProduct(id, this.options)
+      const normalizedUpdate = this.normalizeProduct(product)
 
-    if (!toUpdate) {
-      console.log("No product found")
-      return {}
-    }
+      const updatedProduct = await this.productService_
+        .withTransaction(manager)
+        .update(toUpdate.id, normalizedUpdate)
 
-    console.log("Found => ", toUpdate)
-    return toUpdate
+      console.log(updatedProduct)
+      return updatedProduct
+    })
   }
 
   async deleteProduct(handle) {
     return this.atomicPhase_(async (manager) => {
-      console.log("RECEIVED HANDLE", handle)
       const product = await this.productService_
         .retrieveByHandle(handle)
         .catch((_) => undefined)
@@ -551,6 +558,10 @@ class ShopifyService extends BaseService {
     return {
       title: product.title,
       handle: product.handle,
+      description: product.body_html,
+      product_type: {
+        value: product.product_type,
+      },
       is_giftcard: product.product_type === "Gift Cards",
       options:
         product.options.map((option) => this.normalizeProductOption(option)) ||
