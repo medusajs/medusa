@@ -421,7 +421,9 @@ class ShippingOptionService extends BaseService {
    */
   async update(optionId, update) {
     return this.atomicPhase_(async manager => {
-      const option = await this.retrieve(optionId)
+      const option = await this.retrieve(optionId, {
+        relations: ["requirements"],
+      })
 
       if ("metadata" in update) {
         option.metadata = await this.setMetadata_(option, update.metadata)
@@ -469,6 +471,20 @@ class ShippingOptionService extends BaseService {
 
           acc.push(validated)
         }
+
+        const accReqs = acc.map(a => a.id)
+
+        const toRemove = option.requirements.filter(
+          r => !accReqs.includes(r.id)
+        )
+
+        await Promise.all(
+          toRemove.map(async tr => {
+            await this.removeRequirement(optionId, tr.id)
+          })
+        )
+
+        option.requirements = acc
       }
 
       if ("price_type" in update) {
@@ -563,7 +579,7 @@ class ShippingOptionService extends BaseService {
   async removeRequirement(optionId, requirementId) {
     return this.atomicPhase_(async manager => {
       const option = await this.retrieve(optionId, {
-        relations: "requirements",
+        relations: ["requirements"],
       })
       const newReqs = option.requirements.map(r => {
         if (r.id === requirementId) {
@@ -575,8 +591,18 @@ class ShippingOptionService extends BaseService {
 
       option.requirements = newReqs.filter(Boolean)
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const result = await optionRepo.save(option)
+      const reqRepo = manager.getCustomRepository(this.requirementRepository_)
+
+      const requirement = await reqRepo.findOne({
+        where: { id: requirementId },
+      })
+
+      console.log("REQ: ", requirement)
+      const result = await reqRepo.softRemove(requirement)
+      // console.log("OPTION REQUIREMENTS", option.requirements)
+
+      // const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      // const result = await optionRepo.save(option)
       return result
     })
   }
