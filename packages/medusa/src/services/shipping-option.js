@@ -472,17 +472,17 @@ class ShippingOptionService extends BaseService {
           acc.push(validated)
         }
 
-        const accReqs = acc.map(a => a.id)
-
-        const toRemove = option.requirements.filter(
-          r => !accReqs.includes(r.id)
-        )
-
-        await Promise.all(
-          toRemove.map(async tr => {
-            await this.removeRequirement(optionId, tr.id)
-          })
-        )
+        if (option.requirements) {
+          const accReqs = acc.map(a => a.id)
+          const toRemove = option.requirements.filter(
+            r => !accReqs.includes(r.id)
+          )
+          await Promise.all(
+            toRemove.map(async req => {
+              await this.removeRequirement(req.id)
+            })
+          )
+        }
 
         option.requirements = acc
       }
@@ -572,38 +572,24 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Removes a requirement from a shipping option
-   * @param {string} optionId - the shipping option to remove from
    * @param {string} requirementId - the id of the requirement to remove
    * @return {Promise} the result of update
    */
-  async removeRequirement(optionId, requirementId) {
+  async removeRequirement(requirementId) {
     return this.atomicPhase_(async manager => {
-      const option = await this.retrieve(optionId, {
-        relations: ["requirements"],
-      })
-      const newReqs = option.requirements.map(r => {
-        if (r.id === requirementId) {
-          return null
-        } else {
-          return r
-        }
-      })
+      try {
+        const reqRepo = manager.getCustomRepository(this.requirementRepository_)
+        const requirement = await reqRepo.findOne({
+          where: { id: requirementId },
+        })
 
-      option.requirements = newReqs.filter(Boolean)
+        const result = await reqRepo.softRemove(requirement)
 
-      const reqRepo = manager.getCustomRepository(this.requirementRepository_)
-
-      const requirement = await reqRepo.findOne({
-        where: { id: requirementId },
-      })
-
-      console.log("REQ: ", requirement)
-      const result = await reqRepo.softRemove(requirement)
-      // console.log("OPTION REQUIREMENTS", option.requirements)
-
-      // const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      // const result = await optionRepo.save(option)
-      return result
+        return result
+      } catch (error) {
+        // Delete is idempotent, but we return a promise to allow then-chaining
+        return Promise.resolve()
+      }
     })
   }
 
