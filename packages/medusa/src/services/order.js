@@ -287,6 +287,7 @@ class OrderService extends BaseService {
       "refundable_amount",
       "items.refundable",
       "swaps.additional_items.refundable",
+      "claims.additional_items.refundable",
     ]
 
     const totalsToSelect = select.filter(v => totalFields.includes(v))
@@ -1390,6 +1391,22 @@ class OrderService extends BaseService {
     ) {
       for (const s of order.swaps) {
         s.additional_items = s.additional_items.map(i => ({
+          ...i,
+          refundable: this.totalsService_.getLineItemRefund(order, {
+            ...i,
+            quantity: i.quantity - (i.returned_quantity || 0),
+          }),
+        }))
+      }
+    }
+
+    if (
+      totalsFields.includes("claims.additional_items.refundable") &&
+      order.claims &&
+      order.claims.length
+    ) {
+      for (const c of order.claims) {
+        c.additional_items = c.additional_items.map(i => ({
           ...i,
           refundable: this.totalsService_.getLineItemRefund(order, {
             ...i,

@@ -576,8 +576,6 @@ class SwapService extends BaseService {
         },
       })
 
-      console.log(">>", order.items)
-
       for (const item of swap.additional_items) {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           cart_id: cart.id,

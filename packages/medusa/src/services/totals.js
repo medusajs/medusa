@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import carts from "../api/routes/store/carts"
 
 /**
  * A service that calculates total and subtotals for orders, carts etc..
@@ -257,6 +258,12 @@ class TotalsService extends BaseService {
     if (cart.swaps && cart.swaps.length) {
       for (const s of cart.swaps) {
         merged = [...merged, ...s.additional_items]
+      }
+    }
+
+    if (cart.claims && cart.claims.length) {
+      for (const c of cart.claims) {
+        merged = [...merged, ...c.additional_items]
       }
     }
 
