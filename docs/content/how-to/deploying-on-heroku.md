@@ -43,9 +43,7 @@ heroku login
 
 ### 3. Create an app on Heroku
 
-From your Medusa project directory run the following commands to create an app on Heroku and add it as a remote origin.
-
-> All of the following steps requires you to be located in your Medusa project directory in your terminal.
+In your **Medusa project directory** run the following commands to create an app on Heroku and add it as a remote origin.
 
 ```shell=
 heroku create medusa-test-app
