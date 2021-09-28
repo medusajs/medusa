@@ -21,7 +21,7 @@ describe("/admin/shipping-options", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -251,12 +251,40 @@ describe("/admin/shipping-options", () => {
   })
 
   describe("POST /admin/shipping-options", () => {
-    let shippingProfileId = ""
+    let payload
 
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
         await shippingOptionSeeder(dbConnection)
+
+        const api = useApi()
+        await api.post(
+          `/admin/regions/region`,
+          {
+            fulfillment_providers: ["test-ful"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+
+        const manager = dbConnection.manager
+        const defaultProfile = await manager.findOne(ShippingProfile, {
+          type: "default",
+        })
+
+        payload = {
+          name: "Test option",
+          amount: 100,
+          price_type: "flat_rate",
+          region_id: "region",
+          provider_id: "test-ful",
+          data: {},
+          profile_id: defaultProfile.id,
+        }
       } catch (err) {
         console.error(err)
         throw err
@@ -268,36 +296,8 @@ describe("/admin/shipping-options", () => {
       await db.teardown()
     })
 
-    let payload = {
-      name: "Test option",
-      amount: 100,
-      price_type: "flat_rate",
-      region_id: "region",
-      provider_id: "test-ful",
-      data: {},
-    }
-
     it("creates a shipping option with requirements", async () => {
-      const manager = dbConnection.manager
-      const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
-      })
-
       const api = useApi()
-
-      await api.post(
-        `/admin/regions/region`,
-        {
-          fulfillment_providers: ["test-ful"],
-        },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
-
-      payload.profile_id = defaultProfile.id
       payload.requirements = [
         {
           type: "max_subtotal",
@@ -320,26 +320,7 @@ describe("/admin/shipping-options", () => {
     })
 
     it("fails on same requirement types", async () => {
-      const manager = dbConnection.manager
-      const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
-      })
-
       const api = useApi()
-
-      await api.post(
-        `/admin/regions/region`,
-        {
-          fulfillment_providers: ["test-ful"],
-        },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
-
-      payload.profile_id = defaultProfile.id
       payload.requirements = [
         {
           type: "max_subtotal",
@@ -365,26 +346,7 @@ describe("/admin/shipping-options", () => {
     })
 
     it("fails when min_subtotal > max_subtotal", async () => {
-      const manager = dbConnection.manager
-      const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
-      })
-
       const api = useApi()
-
-      await api.post(
-        `/admin/regions/region`,
-        {
-          fulfillment_providers: ["test-ful"],
-        },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
-
-      payload.profile_id = defaultProfile.id
       payload.requirements = [
         {
           type: "max_subtotal",
