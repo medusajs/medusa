@@ -294,7 +294,6 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
-          console.log(err.response)
           return err.response;
         });
       expect(response.status).toEqual(200);

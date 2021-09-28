@@ -374,10 +374,16 @@ class ReturnService extends BaseService {
         refund_amount: Math.floor(toRefund),
       }
 
+      const returnReasons = await this.returnReasonService_.list(
+        { id: [...returnLines.map(rl => rl.reason_id)] },
+        { relations: ["return_reason_children"] }
+      )
 
-      const returnReasons = await this.returnReasonService_.listReasonsFromIds(returnLines.map(rl => rl.reason_id))
-      if(returnReasons.some(rr => rr.return_reason_children?.length > 0)){
-          throw new MedusaError(MedusaError.Types.INVALID_DATA, "Cannot apply return reason category")
+      if (returnReasons.some(rr => rr.return_reason_children?.length > 0)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot apply return reason category"
+        )
       }
 
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)

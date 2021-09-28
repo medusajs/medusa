@@ -115,33 +115,18 @@ class ReturnReasonService extends BaseService {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
 
       // We include the relation 'return_reason_children' to enable cascading deletes of return reasons if a parent is removed
-      const reason = await this.retrieve(returnReasonId, {relations: ["return_reason_children"]})
+      const reason = await this.retrieve(returnReasonId, {
+        relations: ["return_reason_children"],
+      })
 
-      if (!reason) return Promise.resolve()
+      if (!reason) {
+        return Promise.resolve()
+      }
 
       await rrRepo.softRemove(reason)
 
       return Promise.resolve()
     })
-  }
-
-  /**
-   * Gets the return reasons with id's in 
-   * @param {Array} returnReasonIDs - ids of return reasons to retrieve
-   * @return {Promise} the result of the find operation
-   */
-   async listReasonsFromIds(
-    returnReasonIds
-    // config = {  }
-  ) {
-    const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
-
-    const raw = await rrRepo
-      .createQueryBuilder('return-reason')
-      .leftJoinAndSelect("return-reason.return_reason_children", "children")
-      .where("return-reason.id IN (:...ids)", {ids: [...returnReasonIds]}).getMany()
-
-    return raw
   }
 }
 

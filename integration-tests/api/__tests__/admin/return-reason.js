@@ -1,3 +1,4 @@
+const { match } = require("assert")
 const path = require("path")
 const { RepositoryNotTreeError } = require("typeorm")
 
@@ -62,13 +63,16 @@ describe("/admin/return-reasons", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.return_reason).toEqual(
-        expect.objectContaining({
-          label: "Too Big",
-          description: "Use this if the size was too big",
-          value: "too_big",
-        })
-      )
+      expect(response.data.return_reason).toMatchSnapshot({
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        parent_return_reason: null,
+        parent_return_reason_id: null,
+        label: "Too Big",
+        description: "Use this if the size was too big",
+        value: "too_big",
+      })
     })
 
     it("creates a nested return reason", async () => {
@@ -131,7 +135,7 @@ describe("/admin/return-reasons", () => {
     })
 
     it("fails to create a doubly nested return reason", async () => {
-      expect.assertions(7)
+      expect.assertions(5)
 
       const api = useApi()
 
@@ -177,17 +181,6 @@ describe("/admin/return-reasons", () => {
         .catch((err) => {
           console.log(err)
         })
-
-      expect(nested_response.status).toEqual(200)
-
-      expect(nested_response.data.return_reason).toEqual(
-        expect.objectContaining({
-          parent_return_reason_id: response.data.return_reason.id,
-          label: "Too Big",
-          description: "Use this if the size was too big",
-          value: "too_big",
-        })
-      )
 
       const dbl_nested_payload = {
         parent_return_reason_id: nested_response.data.return_reason.id,
@@ -433,7 +426,7 @@ describe("/admin/return-reasons", () => {
       await db.teardown()
     })
 
-    it('deletes single return reason', async () => {
+    it("deletes single return reason", async () => {
       expect.assertions(6)
 
       const api = useApi()
@@ -463,30 +456,39 @@ describe("/admin/return-reasons", () => {
           value: "too_big",
         })
       )
-        
-      const deleteResult = await api.delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+
+      const deleteResult = await api.delete(
+        `/admin/return-reasons/${response.data.return_reason.id}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
 
       expect(deleteResult.status).toEqual(200)
 
-      expect(deleteResult.data).toEqual({id: response.data.return_reason.id, object: 'return_reason', deleted: true})
-
-      const getResult = await api.get(`/admin/return-reasons/${response.data.return_reason.id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      }).catch(err => {
-        expect(err.response.status).toEqual(404)
-        expect(err.response.data.type).toEqual('not_found')
+      expect(deleteResult.data).toEqual({
+        id: response.data.return_reason.id,
+        object: "return_reason",
+        deleted: true,
       })
 
+      const getResult = await api
+        .get(`/admin/return-reasons/${response.data.return_reason.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(404)
+          expect(err.response.data.type).toEqual("not_found")
+        })
     })
 
-    it('deletes cascade through nested return reasons', async () => {expect.assertions(10)
-      
+    it("deletes cascade through nested return reasons", async () => {
+      expect.assertions(10)
+
       const api = useApi()
 
       const payload = {
@@ -519,7 +521,7 @@ describe("/admin/return-reasons", () => {
         label: "Too Big",
         description: "Use this if the size was too big",
         value: "too_big",
-        parent_return_reason_id: response.data.return_reason.id
+        parent_return_reason_id: response.data.return_reason.id,
       }
 
       const response_child = await api
@@ -539,37 +541,49 @@ describe("/admin/return-reasons", () => {
           label: "Too Big",
           description: "Use this if the size was too big",
           value: "too_big",
-        parent_return_reason_id: response.data.return_reason.id
-      })
+          parent_return_reason_id: response.data.return_reason.id,
+        })
       )
 
-      const deleteResult = await api.delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      }).catch(err => {console.log(err.response.data)})
+      const deleteResult = await api
+        .delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err.response.data)
+        })
 
       expect(deleteResult.status).toEqual(200)
 
-      expect(deleteResult.data).toEqual({id: response.data.return_reason.id, object: 'return_reason', deleted: true})
-
-      await api.get(`/admin/return-reasons/${response.data.return_reason.id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      }).catch(err => {
-        expect(err.response.status).toEqual(404)
-        expect(err.response.data.type).toEqual('not_found')
+      expect(deleteResult.data).toEqual({
+        id: response.data.return_reason.id,
+        object: "return_reason",
+        deleted: true,
       })
 
-      await api.get(`/admin/return-reasons/${response_child.data.return_reason.id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      }).catch(err => {
-        expect(err.response.status).toEqual(404)
-        expect(err.response.data.type).toEqual('not_found')
-      })
+      await api
+        .get(`/admin/return-reasons/${response.data.return_reason.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(404)
+          expect(err.response.data.type).toEqual("not_found")
+        })
+
+      await api
+        .get(`/admin/return-reasons/${response_child.data.return_reason.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(404)
+          expect(err.response.data.type).toEqual("not_found")
+        })
     })
   })
 })
