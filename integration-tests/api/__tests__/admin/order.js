@@ -1529,6 +1529,29 @@ describe("/admin/orders", () => {
       expect(swapOnSwap.status).toEqual(200)
     })
 
+    it("receives a swap on swap", async () => {
+      const api = useApi()
+
+      const received = await api.post(
+        `/admin/returns/return-on-swap/receive`,
+        {
+          items: [
+            {
+              item_id: "test-item-swapped",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(received.status).toEqual(200)
+    })
+
     it("creates a return on a swap", async () => {
       const api = useApi()
 
