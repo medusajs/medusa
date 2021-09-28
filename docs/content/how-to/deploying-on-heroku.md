@@ -6,7 +6,7 @@ title: "Deploying on Heroku"
 
 This is a guide for deploying a Medusa project on Heroku. Heroku is at PaaS that allows you to easily deploy your applications in the cloud.
 
-> Note: We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or [Tutorial](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) and get it up and running in 5 minutes.
+> Note: We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a couple of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough. 
 
 ### 1. Install the Heroku CLI
 
@@ -44,6 +44,8 @@ heroku login
 ### 3. Create an app on Heroku
 
 From your Medusa project directory run the following commands to create an app on Heroku and add it as a remote origin.
+
+> All of the following steps requires you to be located in your Medusa project directory in your terminal.
 
 ```shell=
 heroku create medusa-test-app
@@ -153,7 +155,7 @@ Update `scripts` to include the following:
     "serve": "medusa start",
     "start": "medusa develop",
     "heroku-postbuild": "medusa migrations run",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "npm run build",
     "build": "babel src -d dist --extensions \".ts,.js\""
 },
 ...
