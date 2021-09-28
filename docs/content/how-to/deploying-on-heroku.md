@@ -1,6 +1,5 @@
 ---
 title: "Deploying on Heroku"
-disqus: hackmd
 ---
 
 # Deploying on Heroku
@@ -127,12 +126,6 @@ heroku config:set REDIS_URL=redis://:some_password_123@sole.redistogo.com:9660/
 Before jumping into the deployment, we need to configure Medusa.
 
 #### `medusa-config.js`
-
-Update `REDIS_URL` to use `REDISTOGO_URL` as environment variableÆ
-
-```javascript=
-const REDIS_URL = process.env.REDISTOGO_URL || "redis://localhost:6379";
-```
 
 Update `module.exports` to include the following:
 
