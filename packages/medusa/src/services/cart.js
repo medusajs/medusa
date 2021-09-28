@@ -1,6 +1,5 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
-import { parse, toSeconds } from "iso8601-duration"
 import { BaseService } from "medusa-interfaces"
 
 /**
