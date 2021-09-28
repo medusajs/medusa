@@ -1,6 +1,7 @@
 import Scrypt from "scrypt-kdf"
 import { BaseService } from "medusa-interfaces"
-
+import { User } from "../models/user"
+import { Customer } from "../models/customer"
 /**
  * Can authenticate a user based on email password combination
  * @implements BaseService
@@ -76,11 +77,17 @@ class AuthService extends BaseService {
    */
   async authenticate(email, password) {
     try {
-      const user = await this.userService_.retrieveByEmail(email)
+      const user = await this.userService_.retrieveByEmail(email, {
+        select: [...Object.keys(new User())],
+      })
+
       const passwordsMatch = await this.comparePassword_(
         password,
         user.password_hash
       )
+
+      delete user.password_hash
+
       if (passwordsMatch) {
         return {
           success: true,
@@ -113,7 +120,9 @@ class AuthService extends BaseService {
    */
   async authenticateCustomer(email, password) {
     try {
-      const customer = await this.customerService_.retrieveByEmail(email)
+      const customer = await this.customerService_.retrieveByEmail(email, {
+        select: [...Object.keys(new Customer())],
+      })
       if (!customer.password_hash) {
         return {
           success: false,
@@ -125,6 +134,9 @@ class AuthService extends BaseService {
         password,
         customer.password_hash
       )
+
+      delete customer.password_hash
+
       if (passwordsMatch) {
         return {
           success: true,

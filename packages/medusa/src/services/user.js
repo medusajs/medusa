@@ -114,13 +114,11 @@ class UserService extends BaseService {
    * @param {string} email - the email of the user to get.
    * @return {Promise<User>} the user document.
    */
-  async retrieveByEmail(email, relations = []) {
+  async retrieveByEmail(email, config = {}) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
-    const user = await userRepo.findOne({
-      where: { email },
-      relations,
-    })
+    const query = this.buildQuery_({ email: email }, config)
+    const user = await userRepo.findOne(query)
 
     if (!user) {
       throw new MedusaError(
