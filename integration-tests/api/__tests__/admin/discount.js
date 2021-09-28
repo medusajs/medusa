@@ -123,7 +123,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err.response)
+          console.log(err)
         })
 
       expect(response.status).toEqual(200)
@@ -147,7 +147,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err.response.data)
+          console.log(err)
         })
 
       expect(updated.status).toEqual(200)
@@ -516,7 +516,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          console.log(err.response)
+          console.log(err)
         })
 
       expect(response.status).toEqual(200)
