@@ -358,7 +358,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it("creates a claim on claim", async () => {
+    it("creates a claim on a claim", async () => {
       const api = useApi()
 
       const claimOnClaim = await api
