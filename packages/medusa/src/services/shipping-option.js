@@ -98,7 +98,7 @@ class ShippingOptionService extends BaseService {
 
     // If no option id is provided, we are currently in the process of creating
     // a new shipping option. Therefore, simply return the requirement, such
-    // and the cascading will take care of the creation.
+    // that the cascading will take care of the creation of the requirement.
     if (!optionId) {
       return requirement
     }

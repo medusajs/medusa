@@ -21,7 +21,7 @@ describe("/admin/shipping-options", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -317,6 +317,18 @@ describe("/admin/shipping-options", () => {
 
       expect(res.status).toEqual(200)
       expect(res.data.shipping_option.requirements.length).toEqual(2)
+    })
+
+    it("creates a shipping option with no requirements", async () => {
+      const api = useApi()
+      const res = await api.post(`/admin/shipping-options`, payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.shipping_option.requirements.length).toEqual(0)
     })
 
     it("fails on same requirement types", async () => {
