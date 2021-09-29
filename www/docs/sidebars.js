@@ -43,10 +43,10 @@ module.exports = {
           type: "doc",
           id: "tutorial/adding-custom-functionality",
         },
-        {
-          type: "doc",
-          id: "tutorial/linking-your-local-project-with-medusa-cloud",
-        },
+        // {
+        //   type: "doc",
+        //   id: "tutorial/linking-your-local-project-with-medusa-cloud",
+        // },
       ],
     },
     {
@@ -70,6 +70,32 @@ module.exports = {
               id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
             },
           ],
+        },
+        {
+          type: "doc",
+          id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
+        },
+        {
+          type: "doc",
+          id: "how-to/create-medusa-app",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Guides",
+      items: [
+        {
+          type: "doc",
+          id: "guides/fulfillment-api",
+        },
+        {
+          type: "doc",
+          id: "guides/checkouts",
+        },
+        {
+          type: "doc",
+          id: "guides/carts-in-medusa",
         },
       ],
     },

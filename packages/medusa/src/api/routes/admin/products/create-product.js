@@ -193,6 +193,9 @@ export default async (req, res) => {
       .optional(),
     thumbnail: Validator.string().optional(),
     handle: Validator.string().optional(),
+    status: Validator.string()
+      .valid("proposed", "draft", "published", "rejected")
+      .default("draft"),
     type: Validator.object()
       .keys({
         id: Validator.string().optional(),
@@ -328,6 +331,8 @@ export default async (req, res) => {
         .create({ ...value, profile_id: shippingProfile.id })
 
       if (variants) {
+        for (const [i, variant] of variants.entries()) variant.variant_rank = i
+
         const optionIds = value.options.map(
           o => newProduct.options.find(newO => newO.title === o.title).id
         )
@@ -341,6 +346,7 @@ export default async (req, res) => {
                 option_id: optionIds[index],
               })),
             }
+
             await productVariantService
               .withTransaction(manager)
               .create(newProduct.id, variant)

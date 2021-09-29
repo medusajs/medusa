@@ -106,7 +106,20 @@ class ClaimService extends BaseService {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
-      const { claim_items, shipping_methods, metadata, no_notification } = data
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be updated"
+        )
+      }
+
+      const {
+        claim_items,
+        shipping_methods,
+        metadata,
+        fulfillment_status,
+        no_notification,
+      } = data
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, metadata)
@@ -188,6 +201,23 @@ class ClaimService extends BaseService {
         no_notification,
         ...rest
       } = data
+
+      for (const item of claim_items) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order"],
+        })
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a claim on a canceled item.`
+          )
+        }
+      }
 
       let addressId = shipping_address_id || order.shipping_address_id
       if (shipping_address) {
@@ -345,9 +375,19 @@ class ClaimService extends BaseService {
         ],
       })
 
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be fulfilled"
+        )
+      }
+
       const order = claim.order
 
-      if (claim.fulfillment_status !== "not_fulfilled") {
+      if (
+        claim.fulfillment_status !== "not_fulfilled" &&
+        claim.fulfillment_status !== "canceled"
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "The claim has already been fulfilled."
@@ -444,11 +484,41 @@ class ClaimService extends BaseService {
     })
   }
 
+  async cancelFulfillment(fulfillmentId) {
+    return this.atomicPhase_(async manager => {
+      const canceled = await this.fulfillmentService_
+        .withTransaction(manager)
+        .cancelFulfillment(fulfillmentId)
+
+      if (!canceled.claim_order_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Fufillment not related to a claim`
+        )
+      }
+
+      const claim = await this.retrieve(canceled.claim_order_id)
+
+      claim.fulfillment_status = "canceled"
+
+      const claimRepo = manager.getCustomRepository(this.claimRepository_)
+      const updated = await claimRepo.save(claim)
+      return updated
+    })
+  }
+
   async processRefund(id) {
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
         relations: ["order", "order.payments"],
       })
+
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be processed"
+        )
+      }
 
       if (claim.type !== "refund") {
         throw new MedusaError(
@@ -495,6 +565,12 @@ class ClaimService extends BaseService {
         relations: ["additional_items"],
       })
 
+      if (claim.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Canceled claim cannot be fulfilled as shipped"
+        )
+      }
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : claim.no_notification
 
@@ -543,39 +619,35 @@ class ClaimService extends BaseService {
   async cancel(id) {
     return this.atomicPhase_(async manager => {
       const claim = await this.retrieve(id, {
-        relations: ["return_order", "fulfillments"],
+        relations: ["return_order", "fulfillments", "order", "order.refunds"],
       })
-
-      if (
-        claim.fulfillment_status === "shipped" ||
-        claim.fulfillment_status === "partially_shipped"
-      ) {
+      if (claim.refund_amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel a claim that has been shipped.`
+          "Claim with a refund cannot be canceled"
         )
       }
 
-      if (claim?.return_order?.status === "received") {
+      if (claim.fulfillments) {
+        for (const f of claim.fulfillments) {
+          if (!f.canceled_at) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "All fulfillments must be canceled before the claim can be canceled"
+            )
+          }
+        }
+      }
+
+      if (claim.return_order && claim.return_order.status !== "canceled") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel a claim that has a received return.`
+          "Return must be canceled before the claim can be canceled"
         )
       }
-
-      if (claim.return_order) {
-        await this.returnService_
-          .withTransaction(manager)
-          .cancel(claim.return_order.id)
-      }
-
-      await Promise.all(
-        claim.fulfillments.map(f =>
-          this.fulfillmentService_.withTransaction(manager).cancelFulfillment(f)
-        )
-      )
 
       claim.fulfillment_status = "canceled"
+      claim.canceled_at = new Date()
 
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const result = await claimRepo.save(claim)

@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.25...medusa-plugin-wishlist@1.1.25) (2021-09-15)
+
+
+### Features
+
+* update and cancel swaps, claims, and returns ([#310](https://github.com/medusajs/medusa/issues/310)) ([cf66f97](https://github.com/medusajs/medusa/commit/cf66f97758003a41737602d4b1b1051b266d4f81))
+
+
+
+
+
+## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.25...medusa-plugin-wishlist@1.1.24) (2021-09-14)
+
+
+### Features
+
+* update and cancel swaps, claims, and returns ([#310](https://github.com/medusajs/medusa/issues/310)) ([cf66f97](https://github.com/medusajs/medusa/commit/cf66f97758003a41737602d4b1b1051b266d4f81))
+
+
+
+
+
+## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.23...medusa-plugin-wishlist@1.1.25) (2021-09-02)
+
+
+### Bug Fixes
+
+* 404 ([b1132ee](https://github.com/medusajs/medusa/commit/b1132eec23514a6e7a22fe6653f4a4b4fde0e83f))
+
+
+
+
+
 ## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.23...medusa-plugin-wishlist@1.1.24) (2021-08-31)
 
 

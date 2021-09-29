@@ -6,7 +6,7 @@ title: 2. Adding custom functionality
 
 ## Introduction
 
-In the previous part of the tutorial we set up your Medusa project using the `medusa new` and started your Medusa server locally. In this part we will start adding some custom functionality that extends the core. In particular this tutorial will take you through adding custom serverices, custom endpoints and subscribers. The custom functionality that we will be adding will create an endpoint called `/welcome/:cart_id` which customers of your store can use to opt-in to receiving a welcome in their email inbox after completing their order.
+In the previous part of the tutorial we set up your Medusa project using the `medusa new` and started your Medusa server locally. In this part we will start adding some custom functionality that extends the core. In particular this tutorial will take you through adding custom services, custom endpoints and subscribers. The custom functionality that we will be adding will create an endpoint called `/welcome/:cart_id` which customers of your store can use to opt-in to receiving a welcome in their email inbox after completing their order.
 
 The custom functionality will do a number of things:
 
@@ -56,7 +56,7 @@ In the constructor we specify that our `WelcomeService` will depend upon the `ca
 
 ### `registerOptin`
 
-The `registerOption` function will take to arguments: `cartId` and `optin`, where `cartId` holds the id of the cart that we wish to register optin for and `optin` is a boolean to indicate if the customer has accepted or optin or not. We will save the `optin` preferences in the cart's `metadata` field, so that it can be persisted for the future when we need to evaluate if we should send the welcome or not.
+The `registerOption` function will take two arguments: `cartId` and `optin`, where `cartId` holds the id of the cart that we wish to register optin for and `optin` is a boolean to indicate if the customer has accepted or optin or not. We will save the `optin` preferences in the cart's `metadata` field, so that it can be persisted for the future when we need to evaluate if we should send the welcome or not.
 
 ```javascript
 async registerOptin(cartId, optin) {
@@ -111,7 +111,7 @@ In the above implementation we are first retrieving the order that we need to ch
 
 After retrieving the order we list all orders that have the same `customer_id` as the order we just retrieved. We are only interested in the count of these orders so it is sufficient for us to just select the ids of these orders.
 
-We then check if the number of previous orders is 0, indicating that the customer has not previously purchased anything from our store. If the number of previous orders is greater than 0 we can exit our function prematurely as we only send welcomes to new customers.
+We then check if the number of previous orders is greater than 1, indicating that the customer has previously purchased anything from our store. If the number of previous orders is greater than 1 we can exit our function prematurely as we only send welcomes to new customers.
 
 The final part of the implementation checks if the `welcome_optin` metadata has been set to true. If the customer has opted in we use `someEmailService.send` to trigger and email dispatch to the email stored on the order. In this case `someEmailSender` could be any email service for example Sendgrid, SES, Mailgun, etc.
 
@@ -252,4 +252,4 @@ You have now learned how to add custom functionality to your Medusa server, whic
 
 You have now been introduced to many of the key parts of Medusa and with your knowledge of customization you can now begin creating some really powerful commerce experiences. If you have an idea for a cool customization go ahead and make it right now! If you are not completely ready yet you can browse the reference docs further.
 
-In the next part of this tutorial we will look into linking your local project with Medusa Cloud to make develpment smoother while leveraging the powerful management tools that merchants use to manage their Medusa store.
+<!-- In the next part of this tutorial we will look into linking your local project with Medusa Cloud to make develpment smoother while leveraging the powerful management tools that merchants use to manage their Medusa store. -->
