@@ -26,7 +26,6 @@ module.exports = {
         id: expect.any(String),
         created_at: expect.any(String),
         updated_at: expect.any(String),
-        password_hash: expect.any(String),
       },
       resource_id: "order_id",
       resource_type: "order",
