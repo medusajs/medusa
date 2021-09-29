@@ -1,7 +1,7 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
- * @oas [post] /returns/{id}receive
+ * @oas [post] /returns/{id}/receive
  * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
  * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."

@@ -117,6 +117,31 @@ class ReturnService extends BaseService {
   }
 
   /**
+   * Cancels a return if possible. Returns can be canceled if it has not been received.
+   * @param {string} returnId - the id of the return to cancel.
+   * @return {Promise<Return>} the updated Return
+   */
+  async cancel(returnId) {
+    return this.atomicPhase_(async manager => {
+      const ret = await this.retrieve(returnId)
+
+      if (ret.status === "received") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Can't cancel a return which has been returned"
+        )
+      }
+
+      const retRepo = manager.getCustomRepository(this.returnRepository_)
+
+      ret.status = "canceled"
+
+      const result = retRepo.save(ret)
+      return result
+    })
+  }
+
+  /**
    * Checks that an order has the statuses necessary to complete a return.
    * fulfillment_status cannot be not_fulfilled or returned.
    * payment_status must be captured.
@@ -236,6 +261,13 @@ class ReturnService extends BaseService {
     return this.atomicPhase_(async manager => {
       const ret = await this.retrieve(returnId)
 
+      if (ret.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot update a canceled return"
+        )
+      }
+
       const { metadata, ...rest } = update
 
       if ("metadata" in update) {
@@ -270,6 +302,23 @@ class ReturnService extends BaseService {
       let orderId = data.order_id
       if (data.swap_id) {
         delete data.order_id
+      }
+
+      for (const item of data.items) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order"],
+        })
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a return for a canceled item.`
+          )
+        }
       }
 
       const order = await this.orderService_
@@ -325,6 +374,18 @@ class ReturnService extends BaseService {
         refund_amount: Math.floor(toRefund),
       }
 
+      const returnReasons = await this.returnReasonService_.list(
+        { id: [...returnLines.map(rl => rl.reason_id)] },
+        { relations: ["return_reason_children"] }
+      )
+
+      if (returnReasons.some(rr => rr.return_reason_children?.length > 0)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot apply return reason category"
+        )
+      }
+
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map(i =>
         rItemRepo.create({
@@ -369,6 +430,13 @@ class ReturnService extends BaseService {
           "claim_order",
         ],
       })
+
+      if (returnOrder.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot fulfill a canceled return"
+        )
+      }
 
       let returnData = { ...returnOrder }
 
@@ -428,6 +496,13 @@ class ReturnService extends BaseService {
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
       })
+
+      if (returnObj.status === "canceled") {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot receive a canceled return"
+        )
+      }
 
       let orderId = returnObj.order_id
       // check if return is requested on a swap

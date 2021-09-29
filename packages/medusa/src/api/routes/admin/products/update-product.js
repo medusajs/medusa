@@ -193,6 +193,12 @@ export default async (req, res) => {
       .allow(null, ""),
     description: Validator.string().optional(),
     discountable: Validator.boolean().optional(),
+    status: Validator.string().valid(
+      "proposed",
+      "draft",
+      "published",
+      "rejected"
+    ),
     type: Validator.object()
       .keys({
         id: Validator.string().optional(),

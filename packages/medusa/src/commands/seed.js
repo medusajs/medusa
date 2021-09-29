@@ -114,6 +114,9 @@ const t = async function({ directory, migrate, seedFile }) {
       const variants = p.variants
       delete p.variants
 
+      // default to the products being visible
+      p.status = p.status || "published"
+
       p.profile_id = defaultProfile.id
       if (p.is_giftcard) {
         p.profile_id = gcProfile.id
