@@ -1,5 +1,6 @@
 import Scrypt from "scrypt-kdf"
 import { BaseService } from "medusa-interfaces"
+import UserService from "./user"
 /**
  * Can authenticate a user based on email password combination
  * @implements BaseService
@@ -75,29 +76,17 @@ class AuthService extends BaseService {
    */
   async authenticate(email, password) {
     try {
-      const user = await this.userService_.retrieveByEmail(email, {
-        select: [
-          "api_token",
-          "created_at",
-          "deleted_at",
-          "email",
-          "first_name",
-          "id",
-          "last_name",
-          "metadata",
-          "updated_at",
-          "password_hash",
-        ],
+      const userPasswordHash = await this.userService_.retrieveByEmail(email, {
+        select: ["password_hash"],
       })
 
       const passwordsMatch = await this.comparePassword_(
         password,
-        user.password_hash
+        userPasswordHash.password_hash
       )
 
-      delete user.password_hash
-
       if (passwordsMatch) {
+        const user = await this.userService_.retrieveByEmail(email, {})
         return {
           success: true,
           user,
@@ -129,24 +118,13 @@ class AuthService extends BaseService {
    */
   async authenticateCustomer(email, password) {
     try {
-      const customer = await this.customerService_.retrieveByEmail(email, {
-        select: [
-          "billing_address_id",
-          "created_at",
-          "deleted_at",
-          "email",
-          "first_name",
-          "has_account",
-          "id",
-          "last_name",
-          "metadata",
-          "orders",
-          "phone",
-          "updated_at",
-          "password_hash",
-        ],
-      })
-      if (!customer.password_hash) {
+      const customerPasswordHash = await this.customerService_.retrieveByEmail(
+        email,
+        {
+          select: ["password_hash"],
+        }
+      )
+      if (!customerPasswordHash.password_hash) {
         return {
           success: false,
           error: "Invalid email or password",
@@ -155,12 +133,11 @@ class AuthService extends BaseService {
 
       const passwordsMatch = await this.comparePassword_(
         password,
-        customer.password_hash
+        customerPasswordHash.password_hash
       )
 
-      delete customer.password_hash
-
       if (passwordsMatch) {
+        const customer = await this.customerService_.retrieveByEmail(email, {})
         return {
           success: true,
           customer,
