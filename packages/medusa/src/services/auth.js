@@ -86,7 +86,7 @@ class AuthService extends BaseService {
       )
 
       if (passwordsMatch) {
-        const user = await this.userService_.retrieveByEmail(email, {})
+        const user = await this.userService_.retrieveByEmail(email)
         return {
           success: true,
           user,
@@ -137,7 +137,7 @@ class AuthService extends BaseService {
       )
 
       if (passwordsMatch) {
-        const customer = await this.customerService_.retrieveByEmail(email, {})
+        const customer = await this.customerService_.retrieveByEmail(email)
         return {
           success: true,
           customer,

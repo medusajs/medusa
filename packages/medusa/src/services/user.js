@@ -48,7 +48,18 @@ class UserService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    return email
+    const schema = Validator.string()
+      .email()
+      .required()
+    const { value, error } = schema.validate(email)
+    if (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The email is not valid"
+      )
+    }
+
+    return value.toLowerCase()
   }
 
   /**
@@ -117,7 +128,7 @@ class UserService extends BaseService {
   async retrieveByEmail(email, config = {}) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
-    const query = this.buildQuery_({ email: email }, config)
+    const query = this.buildQuery_({ email: email.toLowerCase() }, config)
     const user = await userRepo.findOne(query)
 
     if (!user) {
