@@ -23,10 +23,14 @@ export const defaultFields = [
   "id",
   "value",
   "label",
+  "parent_return_reason_id",
   "description",
   "created_at",
   "updated_at",
   "deleted_at",
 ]
 
-export const defaultRelations = []
+export const defaultRelations = [
+  "parent_return_reason",
+  "return_reason_children",
+]

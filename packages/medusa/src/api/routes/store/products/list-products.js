@@ -1,3 +1,6 @@
+import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultRelations } from "."
+
 /**
  * @oas [get] /products
  * operationId: GetProducts
@@ -39,8 +42,10 @@ export default async (req, res) => {
       selector.is_giftcard = req.query.is_giftcard === "true"
     }
 
+    selector.status = ["published"]
+
     const listConfig = {
-      relations: ["variants", "options", "images"],
+      relations: defaultRelations,
       skip: offset,
       take: limit,
     }

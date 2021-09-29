@@ -48,6 +48,9 @@ import { defaultFields, defaultRelations } from "./"
  *           no_notification:
  *             description: If set to true no notification will be send related to this Swap.
  *             type: boolean
+ *           allow_backorder:
+ *             description: If true, swaps can be completed with items out of stock
+ *             type: boolean
  * tags:
  *   - Order
  * responses:
@@ -83,6 +86,7 @@ export default async (req, res) => {
       quantity: Validator.number().required(),
     }),
     no_notification: Validator.boolean().optional(),
+    allow_backorder: Validator.boolean().default(true),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -141,6 +145,7 @@ export default async (req, res) => {
                   {
                     idempotency_key: idempotencyKey.idempotency_key,
                     no_notification: value.no_notification,
+                    allow_backorder: value.allow_backorder,
                   }
                 )
 

@@ -3,7 +3,7 @@ import Scrypt from "scrypt-kdf"
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
+import { Brackets, ILike } from "typeorm"
 
 /**
  * Provides layer to manipulate customers.
@@ -149,9 +149,9 @@ class CustomerService extends BaseService {
 
         qb.andWhere(
           new Brackets(qb => {
-            qb.where(`email ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`first_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`last_name ILIKE :q`, { q: `%${q}%` })
+            qb.where({ email: ILike(`%${q}%`) })
+              .orWhere({ first_name: ILike(`%${q}%`) })
+              .orWhere({ last_name: ILike(`%${q}%`) })
           })
         )
       }
@@ -183,18 +183,14 @@ class CustomerService extends BaseService {
       delete where.first_name
       delete where.last_name
 
-      query.join = {
-        alias: "customer",
-      }
-
       query.where = qb => {
         qb.where(where)
 
         qb.andWhere(
           new Brackets(qb => {
-            qb.where(`customer.first_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`customer.email ILIKE :q`, { q: `%${q}%` })
+            qb.where({ email: ILike(`%${q}%`) })
+              .orWhere({ first_name: ILike(`%${q}%`) })
+              .orWhere({ last_name: ILike(`%${q}%`) })
           })
         )
       }

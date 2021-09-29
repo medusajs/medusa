@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.18...medusa-plugin-restock-notification@0.0.18) (2021-09-15)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.17](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.18...medusa-plugin-restock-notification@0.0.17) (2021-09-14)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
+## [0.0.18](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.16...medusa-plugin-restock-notification@0.0.18) (2021-09-02)
+
+**Note:** Version bump only for package medusa-plugin-restock-notification
+
+
+
+
+
 ## [0.0.17](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.16...medusa-plugin-restock-notification@0.0.17) (2021-08-31)
 
 **Note:** Version bump only for package medusa-plugin-restock-notification

@@ -174,7 +174,7 @@ class ContentfulService extends BaseService {
           "en-US": variantLinks,
         },
         [this.getCustomField("options", "product")]: {
-          "en-US": p.options,
+          "en-US": this.transformMedusaIds(p.options),
         },
         [this.getCustomField("medusaId", "product")]: {
           "en-US": p.id,
@@ -285,10 +285,10 @@ class ContentfulService extends BaseService {
               "en-US": v.sku,
             },
             [this.getCustomField("prices", "variant")]: {
-              "en-US": v.prices,
+              "en-US": this.transformMedusaIds(v.prices),
             },
             [this.getCustomField("options", "variant")]: {
-              "en-US": v.options,
+              "en-US": this.transformMedusaIds(v.options),
             },
             [this.getCustomField("medusaId", "variant")]: {
               "en-US": v.id,
@@ -476,7 +476,7 @@ class ContentfulService extends BaseService {
           "en-US": p.description,
         },
         [this.getCustomField("options", "product")]: {
-          "en-US": p.options,
+          "en-US": this.transformMedusaIds(p.options),
         },
         [this.getCustomField("variants", "product")]: {
           "en-US": variantLinks,
@@ -538,9 +538,8 @@ class ContentfulService extends BaseService {
           "en-US": p.collection.title,
         }
 
-        productEntryFields[
-          this.getCustomField("collection", "product")
-        ] = collection
+        productEntryFields[this.getCustomField("collection", "product")] =
+          collection
       }
 
       if (p.tags) {
@@ -624,10 +623,10 @@ class ContentfulService extends BaseService {
           "en-US": v.sku,
         },
         [this.getCustomField("options", "variant")]: {
-          "en-US": v.options,
+          "en-US": this.transformMedusaIds(v.options),
         },
         [this.getCustomField("prices", "variant")]: {
-          "en-US": v.prices,
+          "en-US": this.transformMedusaIds(v.prices),
         },
         [this.getCustomField("medusaId", "variant")]: {
           "en-US": v.id,
@@ -732,6 +731,29 @@ class ContentfulService extends BaseService {
     } catch (error) {
       throw error
     }
+  }
+
+  transformMedusaIds(objOrArray) {
+    let input = objOrArray
+    let isArray = true
+    if (!Array.isArray(objOrArray)) {
+      input = [objOrArray]
+      isArray = false
+    }
+
+    let output = []
+    for (const obj of input) {
+      let transformed = Object.assign({}, obj)
+      transformed.medusaId = obj.id
+      output.push(transformed)
+    }
+
+    console.log(output)
+    if (!isArray) {
+      return output[0]
+    }
+
+    return output
   }
 
   async getType(type) {

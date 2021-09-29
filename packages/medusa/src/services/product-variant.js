@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, Raw, IsNull } from "typeorm"
+import { Brackets, Raw, IsNull, ILike } from "typeorm"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 /**
@@ -173,6 +173,10 @@ class ProductVariantService extends BaseService {
           MedusaError.Types.DUPLICATE_ERROR,
           `Variant with title ${variantExists.title} with provided options already exists`
         )
+      }
+
+      if (!rest.variant_rank) {
+        rest.variant_rank = product.variants.length
       }
 
       const toCreate = {
@@ -558,14 +562,11 @@ class ProductVariantService extends BaseService {
       }
 
       query.where = qb => {
-        qb.where(where).andWhere(
-          new Brackets(qb => {
-            qb.where([
-              { sku: Raw(a => `${a} ILIKE :q`, { q: `%${q}%` }) },
-              { title: Raw(a => `${a} ILIKE :q`, { q: `%${q}%` }) },
-            ]).orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-          })
-        )
+        qb.where(where).andWhere([
+          { sku: ILike(`%${q}%`) },
+          { title: ILike(`%${q}%`) },
+          { product: { title: ILike(`%${q}%`) } },
+        ])
       }
     }
 
