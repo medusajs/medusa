@@ -246,7 +246,7 @@ Object {
       "id": Any<String>,
       "last_name": null,
       "metadata": null,
-      "password_hash": Any<String>,
+      "password_hash": "c2NyeXB0AAEAAAABAAAAARDs23sVMbgDXfrBDRFkXI4Xqbb6bqxgedrRVecL5T5iobx1c27JJSfpdLZ3CBnuJSngxIHetnXbPFw7/hV+CIFaRCJ1fvMLEksHDOfEkVp1",
       "updated_at": Any<String>,
     },
     "author_id": "admin_user",
