@@ -15,28 +15,22 @@ export class ProductRepository extends Repository<Product> {
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
+      const tags = idsOrOptionsWithoutRelations.where.tags
+      delete idsOrOptionsWithoutRelations.where.tags
+
       let qb = this.createQueryBuilder("product")
         .select(["product.id"])
-        
-      // entities = await this.find(idsOrOptionsWithoutRelations)
-      // throw new Error(JSON.stringify(idsOrOptionsWithoutRelations))
+        .where(idsOrOptionsWithoutRelations.where)
       
-      
-      // // await productService.list({ tags: ['id1', 'id2'] })
-      
-      // // if idsOr....tags {}
-      // // }
-      if(idsOrOptionsWithoutRelations.where.tags){ 
+      if(tags){ 
         qb = qb
           .leftJoinAndSelect("product.tags", "tags")
-          .where(
-            `tags.id IN (:...ids)`, { ids: idsOrOptionsWithoutRelations.where.tags._value}
+          .andWhere(
+            `tags.id IN (:...ids)`, { ids: tags._value}
           )
-        delete idsOrOptionsWithoutRelations.where.tags
       }
         
       entities = await qb
-        .andWhere(idsOrOptionsWithoutRelations.where)
         .getMany()
     }
     const entitiesIds = entities.map(({ id }) => id)
