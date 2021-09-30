@@ -26,16 +26,35 @@ describe("/store/return-reasons", () => {
 
   describe("GET /store/return-reasons", () => {
     let rrId;
+    let rrId_1;
+    let rrId_2;
 
     beforeEach(async () => {
       try {
         const created = dbConnection.manager.create(ReturnReason, {
-          value: "too_big",
-          label: "Too Big",
+          value: "wrong_size",
+          label: "Wrong size",
         });
 
         const result = await dbConnection.manager.save(created);
         rrId = result.id;
+
+        const created_child = dbConnection.manager.create(ReturnReason, {
+          value: "too_big",
+          label: "Too Big",
+          parent_return_reason_id: rrId
+        });
+
+        const result_child = await dbConnection.manager.save(created_child);
+        rrId_1 = result_child.id;
+
+        const created_2 = dbConnection.manager.create(ReturnReason, {
+          value: "too_big_1",
+          label: "Too Big 1",
+        });
+
+        const result_2 = await dbConnection.manager.save(created_2);
+        rrId_2 = result_2.id;
       } catch (err) {
         console.log(err);
         throw err;
@@ -59,7 +78,15 @@ describe("/store/return-reasons", () => {
       expect(response.data.return_reasons).toEqual([
         expect.objectContaining({
           id: rrId,
-          value: "too_big",
+          value: "wrong_size",
+          return_reason_children:[expect.objectContaining({
+            id: rrId_1,
+            value: "too_big",
+          }),]
+        }),
+        expect.objectContaining({
+          id: rrId_2,
+          value: "too_big_1",
         }),
       ]);
     });
