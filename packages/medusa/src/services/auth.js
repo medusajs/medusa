@@ -1,6 +1,6 @@
 import Scrypt from "scrypt-kdf"
 import { BaseService } from "medusa-interfaces"
-import UserService from "./user"
+
 /**
  * Can authenticate a user based on email password combination
  * @implements BaseService

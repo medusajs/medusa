@@ -9,7 +9,7 @@ const { exportAllDeclaration } = require("@babel/types")
 
 jest.setTimeout(30000)
 
-describe("/admin/discounts", () => {
+describe("/admin/auth", () => {
   let medusaProcess
   let dbConnection
 
