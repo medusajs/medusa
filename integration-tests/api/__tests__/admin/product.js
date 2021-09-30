@@ -109,6 +109,95 @@ describe("/admin/products", () => {
       )
     })
 
+    it("returns a list of products with giftcard in list", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "Test Giftcard",
+        is_giftcard: true,
+        description: "test-giftcard-description",
+        options: [{ title: "Denominations" }],
+        variants: [
+          {
+            title: "Test variant",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "100" }],
+          },
+        ],
+      }
+
+      await api
+        .post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const response = await api
+        .get("/admin/products?is_giftcard=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toMatchSnapshot([
+        {
+          title: "Test Giftcard",
+          id: expect.stringMatching(/^prod_*/),
+          is_giftcard: true,
+          description: "test-giftcard-description",
+          profile_id: expect.stringMatching(/^sp_*/),
+          options: [
+            {
+              title: "Denominations",
+              id: expect.stringMatching(/^opt_*/),
+              product_id: expect.stringMatching(/^prod_*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+
+          variants: [
+            {
+              title: "Test variant",
+              id: expect.stringMatching(/^variant_*/),
+              product_id: expect.stringMatching(/^prod_*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              prices: [
+                {
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 100,
+                  variant_id: expect.stringMatching(/^variant_*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^opt_*/),
+                  option_id: expect.stringMatching(/^opt_*/),
+                  created_at: expect.any(String),
+                  variant_id: expect.stringMatching(/^variant_*/),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+          ],
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+      ])
+    })
+
     it("returns a list of products with child entities", async () => {
       const api = useApi()
 
