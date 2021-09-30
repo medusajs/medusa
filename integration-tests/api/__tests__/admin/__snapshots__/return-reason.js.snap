@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/return-reasons POST /admin/return-reasons creates a return_reason 1`] = `
+Object {
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "description": "Use this if the size was too big",
+  "id": Any<String>,
+  "label": "Too Big",
+  "parent_return_reason": null,
+  "parent_return_reason_id": null,
+  "return_reason_children": Array [],
+  "updated_at": Any<String>,
+  "value": "too_big",
+}
+`;

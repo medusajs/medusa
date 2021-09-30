@@ -1,3 +1,4 @@
+import { optional } from "joi"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
@@ -27,6 +28,9 @@ import { defaultRelations, defaultFields } from "./"
  *           phone:
  *             description: "The Customer's phone number."
  *             type: string
+ *           email:
+ *             description: "The email of the customer."
+ *             type: string
  *           metadata:
  *             description: "Metadata about the customer."
  *             type: object
@@ -51,6 +55,7 @@ export default async (req, res) => {
     last_name: Validator.string().optional(),
     password: Validator.string().optional(),
     phone: Validator.string().optional(),
+    email: Validator.string().optional(),
     metadata: Validator.object().optional(),
   })
 

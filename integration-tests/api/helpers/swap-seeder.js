@@ -14,7 +14,6 @@ const {
   Swap,
   Cart,
   Return,
-  RMAShippingOption,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -56,7 +55,7 @@ module.exports = async (connection, data = {}) => {
   orderWithSwap = await manager.save(orderWithSwap)
 
   const cart = manager.create(Cart, {
-    id: "test-cart",
+    id: "test-cart-w-swap",
     customer_id: "test-customer",
     email: "test-customer@email.com",
     shipping_address_id: "test-shipping-address",
@@ -76,7 +75,7 @@ module.exports = async (connection, data = {}) => {
     order_id: "order-with-swap",
     payment_status: "captured",
     fulfillment_status: "fulfilled",
-    cart_id: "test-cart",
+    cart_id: "test-cart-w-swap",
     payment: {
       id: "test-payment-swap",
       amount: 10000,
@@ -95,12 +94,13 @@ module.exports = async (connection, data = {}) => {
         unit_price: 9000,
         quantity: 1,
         variant_id: "test-variant-2",
-        cart_id: "test-cart",
+        cart_id: "test-cart-w-swap",
       },
     ],
   })
 
   await manager.save(swap)
+<<<<<<< HEAD
 
   const rmaCart = manager.create(Cart, {
     id: "test-cart-rma",
@@ -154,6 +154,8 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(swapWithRMAMethod)
+=======
+>>>>>>> develop
 
   const cartTemplate = async (cartId) => {
     const cart = manager.create(Cart, {
@@ -253,7 +255,10 @@ module.exports = async (connection, data = {}) => {
     order_id: orderWithSwap.id,
     item_id: li.id,
     refund_amount: li.quantity * li.unit_price,
+<<<<<<< HEAD
     // shipping_method_id: ,
+=======
+>>>>>>> develop
   })
 
   await manager.save(swapReturn)
@@ -268,7 +273,7 @@ module.exports = async (connection, data = {}) => {
   await manager.insert(ShippingMethod, {
     id: "another-test-method",
     shipping_option_id: "test-option",
-    cart_id: "test-cart",
+    cart_id: "test-cart-w-swap",
     price: 1000,
     data: {},
   })
