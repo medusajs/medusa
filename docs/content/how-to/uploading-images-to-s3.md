@@ -4,7 +4,7 @@ In order to work with images in Medusa, you need a file service plugin responsib
 
 ### Before you start
 
-We assume, that you are currently running an instance of Medusa. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
+At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
 
 ### Set up up AWS
 
@@ -12,7 +12,7 @@ We assume, that you are currently running an instance of Medusa. If not, we have
 
 In the AWS console navigate to S3 and create a bucket for your images. Make sure to uncheck "Block _all_ public access".
 
-Additionally, we need to add a policy to your bucket, that will allow public access to objects that are uploaded. Navigate to the permissions tab of your bucket and add the following policy:
+Additionally, you need to add a policy to your bucket, that will allow public access to objects that are uploaded. Navigate to the permissions tab of your bucket and add the following policy:
 
 ```shell=
 {
@@ -70,13 +70,13 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
 },
 ```
 
-In the above options, we include the `s3_url`. The url has the following format:
+In the above options, an `s3_url` is included. The url has the following format:
 
 ```shell=
 https://[bucket].s3.[region].amazonaws.com
 ```
 
-The two access keys in the options are the ones we created in the previous section.
+The two access keys in the options are the ones created in the previous section.
 
 > Make sure to use an environment variable for the secret key in a live environment.
 
