@@ -1,7 +1,6 @@
 import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
-import { CartType } from "../../../../models/cart"
 
 /**
  * @oas [post] /carts/{id}/shipping-methods

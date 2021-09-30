@@ -100,7 +100,6 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(swap)
-<<<<<<< HEAD
 
   const rmaCart = manager.create(Cart, {
     id: "test-cart-rma",
@@ -154,8 +153,6 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(swapWithRMAMethod)
-=======
->>>>>>> develop
 
   const cartTemplate = async (cartId) => {
     const cart = manager.create(Cart, {
@@ -255,10 +252,6 @@ module.exports = async (connection, data = {}) => {
     order_id: orderWithSwap.id,
     item_id: li.id,
     refund_amount: li.quantity * li.unit_price,
-<<<<<<< HEAD
-    // shipping_method_id: ,
-=======
->>>>>>> develop
   })
 
   await manager.save(swapReturn)

@@ -51,8 +51,6 @@ module.exports = async (connection, data = {}) => {
     currency_code: "usd",
     tax_rate: 0,
   })
-<<<<<<< HEAD
-=======
 
   // Region with multiple countries
   const regionWithMultipleCoutries = manager.create(Region, {
@@ -69,7 +67,6 @@ module.exports = async (connection, data = {}) => {
   await manager.query(
     `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'dk'`
   )
->>>>>>> develop
 
   const freeRule = manager.create(DiscountRule, {
     id: "free-shipping-rule",
@@ -103,11 +100,8 @@ module.exports = async (connection, data = {}) => {
     code: "10PERCENT",
     is_dynamic: false,
     is_disabled: false,
-<<<<<<< HEAD
-=======
     starts_at: tenDaysAgo,
     ends_at: tenDaysFromToday,
->>>>>>> develop
   })
 
   tenPercent.regions = [r]
@@ -128,13 +122,6 @@ module.exports = async (connection, data = {}) => {
     value: 10000,
     allocation: "total",
   })
-<<<<<<< HEAD
-
-  d.rule = dr
-  d.regions = [r]
-
-  await manager.save(d)
-=======
 
   d.rule = dr
   d.regions = [r]
@@ -226,7 +213,6 @@ module.exports = async (connection, data = {}) => {
   DynamicDiscount.regions = [r]
   DynamicDiscount.rule = DynamicRule
   await manager.save(DynamicDiscount)
->>>>>>> develop
 
   await manager.query(
     `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
@@ -389,8 +375,6 @@ module.exports = async (connection, data = {}) => {
     completed_at: null,
     items: [],
   })
-<<<<<<< HEAD
-=======
 
   const swapCart = manager.create(Cart, {
     id: "swap-cart",
@@ -410,7 +394,6 @@ module.exports = async (connection, data = {}) => {
       swap_id: "test-swap",
     },
   })
->>>>>>> develop
 
   const pay = manager.create(Payment, {
     id: "test-payment",
@@ -420,14 +403,6 @@ module.exports = async (connection, data = {}) => {
     provider_id: "test-pay",
     data: {},
   })
-<<<<<<< HEAD
-
-  await manager.save(pay)
-
-  cart2.payment = pay
-
-  await manager.save(cart2)
-=======
 
   await manager.save(pay)
 
@@ -451,7 +426,6 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(cart2)
   await manager.save(swapCart)
->>>>>>> develop
 
   await manager.insert(PaymentSession, {
     id: "test-session",
@@ -461,8 +435,6 @@ module.exports = async (connection, data = {}) => {
     data: {},
     status: "authorized",
   })
-<<<<<<< HEAD
-=======
 
   await manager.insert(PaymentSession, {
     id: "test-swap-session",
@@ -472,7 +444,6 @@ module.exports = async (connection, data = {}) => {
     data: {},
     status: "authorized",
   })
->>>>>>> develop
 
   await manager.insert(ShippingMethod, {
     id: "test-method",

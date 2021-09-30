@@ -108,7 +108,7 @@ export default async (req, res) => {
         case "started": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async (manager) => {
+            async manager => {
               const order = await orderService
                 .withTransaction(manager)
                 .retrieve(value.order_id, {
@@ -130,6 +130,7 @@ export default async (req, res) => {
                   value.return_items,
                   value.additional_items,
                   returnShipping,
+                  [],
                   {
                     idempotency_key: idempotencyKey.idempotency_key,
                     no_notification: true,
@@ -163,7 +164,7 @@ export default async (req, res) => {
         case "swap_created": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async (manager) => {
+            async manager => {
               const swaps = await swapService.list({
                 idempotency_key: idempotencyKey.idempotency_key,
               })
