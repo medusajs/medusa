@@ -1,10 +1,13 @@
 import express, { Router } from "express"
 import middlewares from "../../../middlewares"
+import fulfillment from "./fulfillment"
 
 const route = Router()
 
 export default (app) => {
   app.use("/order", route)
+
+  fulfillment(route)
 
   route.post(
     "/create",

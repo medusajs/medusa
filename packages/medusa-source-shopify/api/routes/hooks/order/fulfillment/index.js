@@ -9,7 +9,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireWildcard(require("express"));
 
-var _middlewares = _interopRequireDefault(require("../../../middlewares"));
+var _middlewares = _interopRequireDefault(require("../../../../middlewares"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -22,7 +22,7 @@ var route = (0, _express.Router)();
 var _default = function _default(app) {
   app.use("/fulfillment", route);
   route.post("/create", _express["default"].json(), _middlewares["default"].wrap(require("./create")["default"]));
-  route.use("/cancel", _express["default"].json(), _middlewares["default"].wrap(require("./update")["default"]));
+  route.use("/update", _express["default"].json(), _middlewares["default"].wrap(require("./update")["default"]));
   return app;
 };
 

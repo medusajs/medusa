@@ -379,6 +379,23 @@ class ShopifyService extends BaseService {
     })
   }
 
+  async updateOrder(order) {
+    return this.atomicPhase_(async (manager) => {
+      const medusaOrder = await this.orderService_
+        .retrieveByExternalId(order.id)
+        .catch((_) => undefined)
+
+      //if order has not been added to medusa before we create it
+      if (!medusaOrder) {
+        return await this.createOrder(order)
+      }
+
+      if (medusaOrder) {
+        return {}
+      }
+    })
+  }
+
   async updateProduct(product) {
     return this.atomicPhase_(async (manager) => {
       const medusaProduct = await this.productService_
@@ -425,11 +442,9 @@ class ShopifyService extends BaseService {
         })
       )
 
-      await this.productService_
+      return await this.productService_
         .withTransaction(manager)
         .update(medusaProduct.id, updates)
-
-      return Promise.resolve()
     })
   }
 
@@ -453,8 +468,16 @@ class ShopifyService extends BaseService {
     shopifyTaxRate
   ) {
     return this.atomicPhase_(async (manager) => {
+      const paymentStatus = this.normalizeOrderPaymentStatus(
+        shopifyOrder.financial_status
+      )
+      const fulfillmentStatus = this.normalizeOrderFulfilmentStatus(
+        shopifyOrder.fulfillment_status
+      )
+
+      console.log("FS", fulfillmentStatus)
       return {
-        status: this.normalizeOrderStatus(),
+        status: this.normalizeOrderStatus(fulfillmentStatus, paymentStatus),
         region_id: regionId,
         email: shopifyOrder.email,
         customer_id: customerId,
@@ -465,12 +488,8 @@ class ShopifyService extends BaseService {
         shipping_address: this.normalizeAddress(shopifyOrder.shipping_address),
         billing_address: this.normalizeAddress(shopifyOrder.billing_address),
         discount_total: shopifyOrder.total_discounts,
-        fulfilment_status: this.normalizeOrderFulfilmentStatus(
-          shopifyOrder.fulfilment_status
-        ),
-        payment_status: this.normalizeOrderPaymentStatus(
-          shopifyOrder.financial_status
-        ),
+        fulfilment_status: fulfillmentStatus,
+        payment_status: paymentStatus,
         items: await Promise.all(
           shopifyOrder.line_items.map(async (i) => {
             return this.normalizeLineItem(i, shopifyTaxRate)
@@ -515,11 +534,16 @@ class ShopifyService extends BaseService {
     })
   }
 
-  normalizeOrderStatus() {
-    return "completed"
+  normalizeOrderStatus(fulfillmentStatus, paymentStatus) {
+    if (fulfillmentStatus === "fulfilled" && paymentStatus === "captured") {
+      return "completed"
+    } else {
+      return "pending"
+    }
   }
 
   normalizeOrderFulfilmentStatus(fulfilmentStatus) {
+    console.log(fulfilmentStatus)
     switch (fulfilmentStatus) {
       case null:
         return "not_fulfilled"
@@ -532,7 +556,7 @@ class ShopifyService extends BaseService {
       case "pending":
         return "not_fulfilled"
       default:
-        break
+        return "not_fulfilled"
     }
   }
 

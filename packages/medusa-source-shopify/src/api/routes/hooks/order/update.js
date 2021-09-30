@@ -3,7 +3,7 @@ export default async (req, res) => {
 
   //TODO: update payment
 
-  console.log(req.body)
+  // console.log(req.body)
 
   res.sendStatus(200)
 }
