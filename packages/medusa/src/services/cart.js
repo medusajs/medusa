@@ -1327,7 +1327,7 @@ class CartService extends BaseService {
       })
       const { shipping_methods } = cart
 
-      const customPrice = data.price ? { price: data.price } : {}
+      const customPrice = data && data.price ? { price: data.price } : {}
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
         .createShippingMethod(optionId, data, {
