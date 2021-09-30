@@ -887,6 +887,21 @@ class CartService extends BaseService {
         )
     }
 
+    const today = new Date()
+    if (discount.starts_at > today) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is not valid yet"
+      )
+    }
+
+    if (discount.ends_at && discount.ends_at < today) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is expired"
+      )
+    }
+
     let regions = discount.regions
     if (discount.parent_discount_id) {
       const parent = await this.discountService_.retrieve(

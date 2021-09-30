@@ -1471,6 +1471,12 @@ describe("CartService", () => {
   })
 
   describe("applyDiscount", () => {
+    const getOffsetDate = offset => {
+      const date = new Date()
+      date.setDate(date.getDate() + offset)
+      return date
+    }
+
     const cartRepository = MockRepository({
       findOneWithRelations: (rels, q) => {
         if (q.where.id === IdMap.getId("with-d")) {
@@ -1536,6 +1542,69 @@ describe("CartService", () => {
             rule: {
               type: "free_shipping",
             },
+          })
+        }
+        if (code === "EarlyDiscount") {
+          return Promise.resolve({
+            id: IdMap.getId("10off"),
+            code: "10%OFF",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              type: "percentage",
+            },
+            starts_at: getOffsetDate(1),
+            ends_at: getOffsetDate(10),
+          })
+        }
+        if (code === "ExpiredDiscount") {
+          return Promise.resolve({
+            id: IdMap.getId("10off"),
+            code: "10%OFF",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              type: "percentage",
+            },
+            ends_at: getOffsetDate(-1),
+            starts_at: getOffsetDate(-10),
+          })
+        }
+        if (code === "ExpiredDynamicDiscount") {
+          return Promise.resolve({
+            id: IdMap.getId("10off"),
+            code: "10%OFF",
+            is_dynamic: true,
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              type: "percentage",
+            },
+            starts_at: getOffsetDate(-10),
+            ends_at: getOffsetDate(-1),
+          })
+        }
+        if (code === "ExpiredDynamicDiscountEndDate") {
+          return Promise.resolve({
+            id: IdMap.getId("10off"),
+            is_dynamic: true,
+            code: "10%OFF",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              type: "percentage",
+            },
+            starts_at: getOffsetDate(-10),
+            ends_at: getOffsetDate(-3),
+            valid_duration: "P0Y0M1D",
+          })
+        }
+        if (code === "ValidDiscount") {
+          return Promise.resolve({
+            id: IdMap.getId("10off"),
+            code: "10%OFF",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              type: "percentage",
+            },
+            starts_at: getOffsetDate(-10),
+            ends_at: getOffsetDate(10),
           })
         }
         return Promise.resolve({
@@ -1686,6 +1755,76 @@ describe("CartService", () => {
         total: 0,
         region_id: IdMap.getId("good"),
       })
+    })
+
+    it("successfully applies valid discount with expiration date to cart", async () => {
+      await cartService.update(IdMap.getId("fr-cart"), {
+        discounts: [
+          {
+            code: "ValidDiscount",
+          },
+        ],
+      })
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("cart"),
+        region_id: IdMap.getId("good"),
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        discounts: [
+          {
+            id: IdMap.getId("10off"),
+            code: "10%OFF",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              type: "percentage",
+            },
+            starts_at: expect.any(Date),
+            ends_at: expect.any(Date),
+          },
+        ],
+      })
+    })
+
+    it("throws if discount is applied too before it's valid", async () => {
+      await expect(
+        cartService.update(IdMap.getId("cart"), {
+          discounts: [{ code: "EarlyDiscount" }],
+        })
+      ).rejects.toThrow("Discount is not valid yet")
+    })
+
+    it("throws if expired discount is applied", async () => {
+      await expect(
+        cartService.update(IdMap.getId("cart"), {
+          discounts: [{ code: "ExpiredDiscount" }],
+        })
+      ).rejects.toThrow("Discount is expired")
+    })
+
+    it("throws if expired dynamic discount is applied", async () => {
+      await expect(
+        cartService.update(IdMap.getId("cart"), {
+          discounts: [{ code: "ExpiredDynamicDiscount" }],
+        })
+      ).rejects.toThrow("Discount is expired")
+    })
+
+    it("throws if expired dynamic discount is applied after ends_at", async () => {
+      await expect(
+        cartService.update(IdMap.getId("cart"), {
+          discounts: [{ code: "ExpiredDynamicDiscountEndDate" }],
+        })
+      ).rejects.toThrow("Discount is expired")
     })
 
     it("throws if discount limit is reached", async () => {
