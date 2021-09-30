@@ -32,6 +32,7 @@ class CartService extends BaseService {
     paymentSessionRepository,
     inventoryService,
     RMAShippingOptionRepository,
+    swapRepository,
   }) {
     super()
 
@@ -86,6 +87,7 @@ class CartService extends BaseService {
     /** @private @const {InventoryService} */
     this.inventoryService_ = inventoryService
 
+    /** @private @const {RMAShippingOptionRepository} */
     this.rmaShippingOptionRepository_ = RMAShippingOptionRepository
   }
 
