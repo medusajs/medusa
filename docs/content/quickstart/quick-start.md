@@ -32,6 +32,6 @@ We have created two starters for you that can help you lay a foundation for your
 - [Nextjs Starter](https://github.com/medusajs/nextjs-starter-medusa)
 - [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
 
-### Link you local development to Medusa Cloud (Coming soon!)
+<!-- ### Link you local development to Medusa Cloud (Coming soon!)
 
-With your project in local development you can link your Medusa instance to Medusa Cloud - this will allow you to manage your store, view orders and test out the amazing functionalities that you are building. [Get started here](https://docs.medusa-commerce.com/tutorial/linking-your-local-project-with-medusa-cloud).
+With your project in local development you can link your Medusa instance to Medusa Cloud - this will allow you to manage your store, view orders and test out the amazing functionalities that you are building. [Get started here](https://docs.medusa-commerce.com/tutorial/linking-your-local-project-with-medusa-cloud). -->
