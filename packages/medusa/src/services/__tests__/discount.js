@@ -55,6 +55,74 @@ describe("DiscountService", () => {
 
       expect(discountRepository.save).toHaveBeenCalledTimes(1)
     })
+
+    it("successfully creates discount with start and end dates", async () => {
+      await discountService.create({
+        code: "test",
+        rule: {
+          type: "percentage",
+          allocation: "total",
+          value: 20,
+        },
+        starts_at: new Date("03/14/2021"),
+        ends_at: new Date("03/15/2021"),
+        regions: [IdMap.getId("france")],
+      })
+
+      expect(discountRuleRepository.create).toHaveBeenCalledTimes(1)
+      expect(discountRuleRepository.create).toHaveBeenCalledWith({
+        type: "percentage",
+        allocation: "total",
+        value: 20,
+      })
+
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
+
+      expect(discountRepository.create).toHaveBeenCalledTimes(1)
+      expect(discountRepository.create).toHaveBeenCalledWith({
+        code: "TEST",
+        rule: expect.anything(),
+        regions: [{ id: IdMap.getId("france") }],
+        starts_at: new Date("03/14/2021"),
+        ends_at: new Date("03/15/2021"),
+      })
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+    })
+
+    it("successfully creates discount with start date and a valid duration", async () => {
+      await discountService.create({
+        code: "test",
+        rule: {
+          type: "percentage",
+          allocation: "total",
+          value: 20,
+        },
+        starts_at: new Date("03/14/2021"),
+        valid_duration: "P0Y0M1D",
+        regions: [IdMap.getId("france")],
+      })
+
+      expect(discountRuleRepository.create).toHaveBeenCalledTimes(1)
+      expect(discountRuleRepository.create).toHaveBeenCalledWith({
+        type: "percentage",
+        allocation: "total",
+        value: 20,
+      })
+
+      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
+
+      expect(discountRepository.create).toHaveBeenCalledTimes(1)
+      expect(discountRepository.create).toHaveBeenCalledWith({
+        code: "TEST",
+        rule: expect.anything(),
+        regions: [{ id: IdMap.getId("france") }],
+        starts_at: new Date("03/14/2021"),
+        valid_duration: "P0Y0M1D",
+      })
+
+      expect(discountRepository.save).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe("retrieve", () => {
@@ -376,6 +444,7 @@ describe("DiscountService", () => {
           id: "parent",
           is_dynamic: true,
           rule_id: "parent_rule",
+          valid_duration: "P1Y",
         }),
     })
 
@@ -412,6 +481,8 @@ describe("DiscountService", () => {
         rule_id: "parent_rule",
         parent_discount_id: "parent",
         code: "HI",
+        usage_limit: undefined,
+        ends_at: expect.any(Date),
       })
     })
   })
