@@ -12,8 +12,6 @@ module.exports = {
       },
     })
 
-    console.log(response)
-
     return response.data.collection.id
   },
   snapshotMatch: {
