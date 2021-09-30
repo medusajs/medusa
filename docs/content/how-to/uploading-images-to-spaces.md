@@ -2,7 +2,7 @@
 In order to work with images in Medusa, you need a file service plugin responsible for hosting. Following this guide will allow you to upload images to DigitalOcean Spaces.
 
 ### Before you start
-We assume, that you are currently running an instance of Medusa. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
+At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
 
 ### Set up up DigitalOcean
 #### Create a Space
@@ -29,7 +29,7 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
     },
 },
 ```
-In the above options, we include the `spaces_url`, that can be found in your Space overview. The `bucket` should point to the name you gave your Space. The `endpoint` identifies the region in which you created the Space. And finally the two keys are the ones we created in the previous section.
+In the above options, a `spaces_url` is included. This can be found in your Space overview. The `bucket` should point to the name you gave your Space. The `endpoint` identifies the region in which you created the Space. And finally the two keys are the ones created in the previous section.
 > Make sure to use an environment variable for the secret key in a live environment.
 
 ### Try it out!
