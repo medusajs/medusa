@@ -145,6 +145,7 @@ describe("/store/carts", () => {
           discounts: [{ code: "CREATED" }],
         })
       } catch (error) {
+        console.log(error.response)
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual(
           "Discount has been used maximum allowed times"

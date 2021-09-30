@@ -81,12 +81,14 @@ export default async (req, res) => {
           .optional(),
       })
       .optional(),
-    rma_shipping_options: Validator.array().items({
-      option_id: Validator.string().optional(),
-      price: Validator.number()
-        .integer()
-        .optional(),
-    }),
+    rma_shipping_options: Validator.array()
+      .items({
+        option_id: Validator.string().optional(),
+        price: Validator.number()
+          .integer()
+          .optional(),
+      })
+      .default([]),
     additional_items: Validator.array().items({
       variant_id: Validator.string().required(),
       quantity: Validator.number().required(),
