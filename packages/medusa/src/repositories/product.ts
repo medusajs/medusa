@@ -1,5 +1,5 @@
-import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { flatten, groupBy, map, merge, rest } from "lodash"
+import { EntityRepository, FindManyOptions, Repository, SubjectWithoutIdentifierError } from "typeorm"
 import { Product } from "../models/product"
 
 @EntityRepository(Product)
@@ -15,7 +15,29 @@ export class ProductRepository extends Repository<Product> {
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
-      entities = await this.find(idsOrOptionsWithoutRelations)
+      let qb = this.createQueryBuilder("product")
+        .select(["product.id"])
+        
+      // entities = await this.find(idsOrOptionsWithoutRelations)
+      // throw new Error(JSON.stringify(idsOrOptionsWithoutRelations))
+      
+      
+      // // await productService.list({ tags: ['id1', 'id2'] })
+      
+      // // if idsOr....tags {}
+      // // }
+      if(idsOrOptionsWithoutRelations.where.tags){ 
+        qb = qb
+          .leftJoinAndSelect("product.tags", "tags")
+          .where(
+            `tags.id IN (:...ids)`, { ids: idsOrOptionsWithoutRelations.where.tags._value}
+          )
+        delete idsOrOptionsWithoutRelations.where.tags
+      }
+        
+      entities = await qb
+        .andWhere(idsOrOptionsWithoutRelations.where)
+        .getMany()
     }
     const entitiesIds = entities.map(({ id }) => id)
 
