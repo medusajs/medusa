@@ -1,5 +1,3 @@
-import { fetchProduct } from "../../../../utils/fetch-shopify"
-
 export default async (req, res) => {
   const shopifyService = req.scope.resolve("shopifyService")
 

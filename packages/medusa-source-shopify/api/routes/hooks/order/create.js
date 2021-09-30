@@ -18,13 +18,14 @@ var _default = /*#__PURE__*/function () {
           case 0:
             shopifyService = req.scope.resolve("shopifyService");
             order = req.body;
-            _context.next = 4;
+            console.log("REQ BODY", req.body);
+            _context.next = 5;
             return shopifyService.createOrder(order);
 
-          case 4:
+          case 5:
             res.sendStatus(200);
 
-          case 5:
+          case 6:
           case "end":
             return _context.stop();
         }

@@ -1,10 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { fetchProduct, fetchShopify } from "../utils/fetch-shopify"
 import { parsePrice } from "../utils/parse-price"
 import { removeIndex } from "../utils/remove-index"
 import _ from "lodash"
-import { getDifference } from "../utils/get-difference"
+import { createClient } from "../utils/create-client"
+import { pager } from "../utils/pager"
+import { INCLUDE_PRESENTMENT_PRICES } from "../const"
 
 class ShopifyService extends BaseService {
   constructor(
@@ -43,6 +44,8 @@ class ShopifyService extends BaseService {
     this.regionService_ = regionService
     /** @private @const {PaymentRepository} */
     this.paymentRepository_ = paymentRepository
+    /** @private @const {ShopifyRestClient} */
+    this.client_ = createClient(options)
   }
 
   withTransaction(transactionManager) {
@@ -72,12 +75,14 @@ class ShopifyService extends BaseService {
       await this.shippingProfileService_.createDefault()
       await this.shippingProfileService_.createGiftCardDefault()
 
-      const {
-        products,
-        customCollections,
-        smartCollections,
-        collects,
-      } = await fetchShopify(this.options)
+      const products = await pager(
+        this.client_,
+        "products",
+        INCLUDE_PRESENTMENT_PRICES
+      )
+      const customCollections = await pager(this.client_, "custom_collections")
+      const smartCollections = await pager(this.client_, "smart_collections")
+      const collects = await pager(this.client_, "collects")
 
       const normalizedCustomCollections = customCollections.map((cc) =>
         this.normalizeCollection(cc)
@@ -98,7 +103,15 @@ class ShopifyService extends BaseService {
         products
       )
 
-      await Promise.all(products.map(async (p) => await this.createProduct(p)))
+      await Promise.all(
+        products.map(async (p) => {
+          try {
+            await this.createProduct(p)
+          } catch (err) {
+            console.log(`${p.title} already exists`)
+          }
+        })
+      )
     })
   }
 
@@ -145,7 +158,11 @@ class ShopifyService extends BaseService {
 
           return Promise.all(
             reducedProducts.map(async (rp) => {
-              await this.createProduct(rp, collection.id)
+              try {
+                await this.createProduct(rp, collection.id)
+              } catch (err) {
+                console.log(`${rp.title} already exists`)
+              }
             })
           )
         })
@@ -160,12 +177,13 @@ class ShopifyService extends BaseService {
 
       if (typeof productOrId === "number") {
         /**
-         * Webhooks related to products does not contain all the fields that we need create a product
-         * such as PresentmentPrices. Therefore, it is nescessary to make a GET request to retrieve the
-         * full Product object from Shopify.
-         *
+         * Events related to products only contain a ID for the product
+         * related to the event, so we need to fetch the product.
          */
-        product = await fetchProduct(productOrId, this.options)
+        product = await this.client_.get({
+          path: `products/${productOrId}`,
+          extraHeaders: INCLUDE_PRESENTMENT_PRICES,
+        })
       } else {
         product = productOrId
       }
@@ -211,6 +229,14 @@ class ShopifyService extends BaseService {
 
   async createCustomer(customer, shippingAddress, billingAddress) {
     return this.atomicPhase_(async (manager) => {
+      const existingCustomer = await this.customerService_
+        .retrieveByEmail(customer.email)
+        .catch((_err) => undefined)
+
+      if (existingCustomer) {
+        return existingCustomer
+      }
+
       const normalizedCustomer = this.normalizeCustomer(
         customer,
         shippingAddress,
@@ -219,37 +245,43 @@ class ShopifyService extends BaseService {
       let normalizedBilling = normalizedCustomer.billing_address
       let normalizedShipping = normalizedCustomer.shipping_address
 
-      const existingCustomer = await this.customerService_
-        .retrieveByEmail(normalizedCustomer.email)
-        .catch((_err) => undefined)
-
-      if (existingCustomer) {
-        return existingCustomer
-      }
-
       delete normalizedCustomer.billing_address
       delete normalizedCustomer.shipping_address
 
-      const medCustomer = await this.customerService_
+      const medusaCustomer = await this.customerService_
         .withTransaction(manager)
         .create(normalizedCustomer)
 
       await this.customerService_
         .withTransaction(manager)
-        .addAddress(medCustomer.id, normalizedShipping)
+        .addAddress(medusaCustomer.id, normalizedShipping)
+        .catch((e) =>
+          console.log(
+            "Failed on creating shipping address",
+            e,
+            normalizedShipping
+          )
+        )
 
       const result = await this.customerService_
         .withTransaction(manager)
-        .update(medCustomer.id, {
+        .update(medusaCustomer.id, {
           billing_address: normalizedBilling,
         })
+        .catch((e) =>
+          console.log(
+            "Failed on creating billing address",
+            e,
+            normalizedBilling
+          )
+        )
 
       return result
     })
   }
 
   async addShippingMethod(shippingLine, orderId, taxRate) {
-    const soId = "so_01FGBWR464D68CWN2XZKD6KYF5" //temp
+    const soId = "so_01FGVE1EPJM1SFRP29YJCK353K" //temp
 
     return this.atomicPhase_(async (manager) => {
       const order = await this.orderService_
@@ -305,21 +337,29 @@ class ShopifyService extends BaseService {
         )
       }
 
-      const medOrder = await this.orderService_
+      const medusaOrder = await this.orderService_
         .withTransaction(manager)
         .create(normalizedOrder)
 
       await Promise.all(
         order.shipping_lines.map(async (sl) =>
-          this.addShippingMethod(sl, medOrder.id, orderTaxRate)
+          this.addShippingMethod(sl, medusaOrder.id, orderTaxRate)
         )
       )
 
       await this.createPayment({
-        order_id: medOrder.id,
-        currency_code: medOrder.currency_code,
+        order_id: medusaOrder.id,
+        currency_code: medusaOrder.currency_code,
         total: this.getOrderTotal(order),
       })
+    })
+  }
+
+  async cancelOrder(orderId) {
+    return this.atomicPhase_(async (manager) => {
+      const order = this.orderService_.retrieveByExternalId(orderId)
+
+      return await this.orderService_.withTransaction(manager).cancel(order.id)
     })
   }
 
@@ -339,36 +379,66 @@ class ShopifyService extends BaseService {
     })
   }
 
-  async updateProduct(productObject) {
+  async updateProduct(product) {
     return this.atomicPhase_(async (manager) => {
-      const { handle, id } = productObject
-      const toUpdate = await this.productService_
-        .retrieveByHandle(handle)
+      const medusaProduct = await this.productService_
+        .retrieveByHandle(product.handle, {
+          relations: ["variants"],
+        })
         .catch((_) => undefined)
 
-      if (!toUpdate) {
+      if (!medusaProduct) {
         console.log("No product found")
-        return {}
+        return Promise.resolve()
       }
-      const product = await fetchProduct(id, this.options)
+
+      const { variants } = await this.client_
+        .get({
+          path: `products/${product.id}`,
+          extraHeaders: INCLUDE_PRESENTMENT_PRICES,
+        })
+        .then((res) => {
+          return res.body.product
+        })
+
+      product.variants = variants || []
+
       const normalizedUpdate = this.normalizeProduct(product)
+      const updates = _.pickBy(normalizedUpdate, Boolean)
 
-      const updatedProduct = await this.productService_
+      updates.variants = await Promise.all(
+        updates.variants.map(async (v) => {
+          const match = medusaProduct.variants.find((mv) => mv.sku === v.sku)
+
+          if (match) {
+            let variant = await this.productVariantService_
+              .withTransaction(manager)
+              .retrieve(match.id, { relations: ["options"] })
+            let options = variant.options.map((o, i) => {
+              return { ...o, ...v.options[i] }
+            })
+            v.options = options
+            v.id = variant.id
+          }
+          //errors on update with new variant
+          return v
+        })
+      )
+
+      await this.productService_
         .withTransaction(manager)
-        .update(toUpdate.id, normalizedUpdate)
+        .update(medusaProduct.id, updates)
 
-      console.log(updatedProduct)
-      return updatedProduct
+      return Promise.resolve()
     })
   }
 
-  async deleteProduct(handle) {
+  async deleteProduct(id) {
     return this.atomicPhase_(async (manager) => {
       const product = await this.productService_
-        .retrieveByHandle(handle)
+        .retrieveByExternalId(id)
         .catch((_) => undefined)
 
-      console.log("PRODUCT RETRIEVED", product)
       if (product) {
         await this.productService_.withTransaction(manager).delete(product.id)
       }
@@ -572,9 +642,7 @@ class ShopifyService extends BaseService {
       images: product.images.map((img) => img.src) || [],
       thumbnail: product.image?.src || null,
       collection_id: collectionId || null,
-      metadata: {
-        sh_id: product.id,
-      },
+      external_id: product.id,
       status: "proposed", //products from Shopify should always be of status "proposed"
     }
   }
@@ -591,28 +659,18 @@ class ShopifyService extends BaseService {
   }
 
   normalizeAddress(shopifyAddress) {
-    let addr = {}
-    try {
-      addr = {
-        first_name: shopifyAddress.first_name,
-        last_name: shopifyAddress.last_name,
-        phone: shopifyAddress.phone,
-        company: shopifyAddress.company,
-        address_1: shopifyAddress.address1,
-        address_2: shopifyAddress.address2,
-        city: shopifyAddress.city,
-        postal_code: shopifyAddress.zip,
-        country_code: shopifyAddress.country_code.toLowerCase(),
-        province: shopifyAddress.province_code,
-      }
-    } catch (_err) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `An error occured while normalizing an address due to invalid data`
-      )
+    return {
+      first_name: shopifyAddress.first_name,
+      last_name: shopifyAddress.last_name,
+      phone: shopifyAddress.phone,
+      company: shopifyAddress.company,
+      address_1: shopifyAddress.address1,
+      address_2: shopifyAddress.address2,
+      city: shopifyAddress.city,
+      postal_code: shopifyAddress.zip,
+      country_code: shopifyAddress.country_code.toLowerCase(),
+      province: shopifyAddress.province_code,
     }
-
-    return addr
   }
 
   normalizeCustomer(shopifyCustomer, shippingAddress, billingAddress) {

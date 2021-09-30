@@ -49,4 +49,6 @@ export const WEBHOOKS = [
   },
 ]
 
-let LAST_SYNC = Date.now()
+export const INCLUDE_PRESENTMENT_PRICES = {
+  "X-Shopify-Api-Features": "include-presentment-prices",
+}

@@ -11,18 +11,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var _default = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var shopifyService, order;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            shopifyService = req.scope.resolve("shopifyService");
-            order = req.body;
-            console.log(order); //TODO: update fulfillment
-
+            console.log(req.body);
             res.sendStatus(200);
 
-          case 4:
+          case 2:
           case "end":
             return _context.stop();
         }

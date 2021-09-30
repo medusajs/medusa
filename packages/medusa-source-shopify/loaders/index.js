@@ -19,7 +19,7 @@ var _default = /*#__PURE__*/function () {
             _context.prev = 0;
             shopifyService = container.resolve("shopifyService");
             _context.next = 4;
-            return Promise.resolve(shopifyService.importShopify());
+            return shopifyService.importShopify();
 
           case 4:
             _context.next = 9;

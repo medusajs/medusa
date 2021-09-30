@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WEBHOOKS = exports.SHOPIFY_SCOPES = exports.HOST = void 0;
+exports.INCLUDE_PRESENTMENT_PRICES = exports.WEBHOOKS = exports.SHOPIFY_SCOPES = exports.HOST = void 0;
 
 var _shopifyApi = require("@shopify/shopify-api");
 
@@ -53,4 +53,7 @@ var WEBHOOKS = [{
   type: _shopifyApi.DataType.JSON
 }];
 exports.WEBHOOKS = WEBHOOKS;
-var LAST_SYNC = Date.now();
+var INCLUDE_PRESENTMENT_PRICES = {
+  "X-Shopify-Api-Features": "include-presentment-prices"
+};
+exports.INCLUDE_PRESENTMENT_PRICES = INCLUDE_PRESENTMENT_PRICES;

@@ -4,27 +4,12 @@ import middlewares from "../../../middlewares"
 const route = Router()
 
 export default (app) => {
-  app.use("/order", route)
+  app.use("/fulfillment", route)
 
   route.post(
     "/create",
     express.json(),
     middlewares.wrap(require("./create").default)
-  )
-  route.use(
-    "/delete",
-    express.json(),
-    middlewares.wrap(require("./delete").default)
-  )
-  route.use(
-    "/payment",
-    express.json(),
-    middlewares.wrap(require("./payment").default)
-  )
-  route.use(
-    "/update",
-    express.json(),
-    middlewares.wrap(require("./update").default)
   )
   route.use(
     "/cancel",
