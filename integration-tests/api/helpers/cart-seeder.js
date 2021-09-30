@@ -17,6 +17,18 @@ const {
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
+  const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
+    new Date()
+  )
+  const tomorrow = ((today) => new Date(today.setDate(today.getDate() + 1)))(
+    new Date()
+  )
+  const tenDaysAgo = ((today) => new Date(today.setDate(today.getDate() - 10)))(
+    new Date()
+  )
+  const tenDaysFromToday = ((today) =>
+    new Date(today.setDate(today.getDate() + 10)))(new Date())
+
   const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
@@ -39,6 +51,25 @@ module.exports = async (connection, data = {}) => {
     currency_code: "usd",
     tax_rate: 0,
   })
+<<<<<<< HEAD
+=======
+
+  // Region with multiple countries
+  const regionWithMultipleCoutries = manager.create(Region, {
+    id: "test-region-multiple",
+    name: "Test Region",
+    currency_code: "eur",
+    tax_rate: 0,
+  })
+
+  await manager.save(regionWithMultipleCoutries)
+  await manager.query(
+    `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'no'`
+  )
+  await manager.query(
+    `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'dk'`
+  )
+>>>>>>> develop
 
   const freeRule = manager.create(DiscountRule, {
     id: "free-shipping-rule",
@@ -72,6 +103,11 @@ module.exports = async (connection, data = {}) => {
     code: "10PERCENT",
     is_dynamic: false,
     is_disabled: false,
+<<<<<<< HEAD
+=======
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+>>>>>>> develop
   })
 
   tenPercent.regions = [r]
@@ -92,11 +128,105 @@ module.exports = async (connection, data = {}) => {
     value: 10000,
     allocation: "total",
   })
+<<<<<<< HEAD
 
   d.rule = dr
   d.regions = [r]
 
   await manager.save(d)
+=======
+
+  d.rule = dr
+  d.regions = [r]
+
+  await manager.save(d)
+
+  const expiredRule = manager.create(DiscountRule, {
+    id: "expiredRule",
+    description: "expired rule",
+    type: "fixed",
+    value: 100,
+    allocation: "total",
+  })
+
+  const expiredDisc = manager.create(Discount, {
+    id: "expiredDisc",
+    code: "EXP_DISC",
+    is_dynamic: false,
+    is_disabled: false,
+    starts_at: tenDaysAgo,
+    ends_at: yesterday,
+  })
+
+  expiredDisc.regions = [r]
+  expiredDisc.rule = expiredRule
+  await manager.save(expiredDisc)
+
+  const prematureRule = manager.create(DiscountRule, {
+    id: "prematureRule",
+    description: "premature rule",
+    type: "fixed",
+    value: 100,
+    allocation: "total",
+  })
+
+  const prematureDiscount = manager.create(Discount, {
+    id: "prematureDiscount",
+    code: "PREM_DISC",
+    is_dynamic: false,
+    is_disabled: false,
+    starts_at: tomorrow,
+    ends_at: tenDaysFromToday,
+  })
+
+  prematureDiscount.regions = [r]
+  prematureDiscount.rule = prematureRule
+  await manager.save(prematureDiscount)
+
+  const invalidDynamicRule = manager.create(DiscountRule, {
+    id: "invalidDynamicRule",
+    description: "invalidDynamic rule",
+    type: "fixed",
+    value: 100,
+    allocation: "total",
+  })
+
+  const invalidDynamicDiscount = manager.create(Discount, {
+    id: "invalidDynamicDiscount",
+    code: "INV_DYN_DISC",
+    is_dynamic: true,
+    is_disabled: false,
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+    valid_duration: "P1D", // one day
+  })
+
+  invalidDynamicDiscount.regions = [r]
+  invalidDynamicDiscount.rule = invalidDynamicRule
+  await manager.save(invalidDynamicDiscount)
+
+  const DynamicRule = manager.create(DiscountRule, {
+    id: "DynamicRule",
+    description: "Dynamic rule",
+    type: "fixed",
+    value: 10000,
+    allocation: "total",
+  })
+
+  const DynamicDiscount = manager.create(Discount, {
+    id: "DynamicDiscount",
+    code: "DYN_DISC",
+    is_dynamic: true,
+    is_disabled: false,
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+    valid_duration: "P1M", //one month
+  })
+
+  DynamicDiscount.regions = [r]
+  DynamicDiscount.rule = DynamicRule
+  await manager.save(DynamicDiscount)
+>>>>>>> develop
 
   await manager.query(
     `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
@@ -259,6 +389,28 @@ module.exports = async (connection, data = {}) => {
     completed_at: null,
     items: [],
   })
+<<<<<<< HEAD
+=======
+
+  const swapCart = manager.create(Cart, {
+    id: "swap-cart",
+    type: "swap",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+    metadata: {
+      swap_id: "test-swap",
+    },
+  })
+>>>>>>> develop
 
   const pay = manager.create(Payment, {
     id: "test-payment",
@@ -268,12 +420,38 @@ module.exports = async (connection, data = {}) => {
     provider_id: "test-pay",
     data: {},
   })
+<<<<<<< HEAD
 
   await manager.save(pay)
 
   cart2.payment = pay
 
   await manager.save(cart2)
+=======
+
+  await manager.save(pay)
+
+  cart2.payment = pay
+
+  await manager.save(cart2)
+  const swapPay = manager.create(Payment, {
+    id: "test-swap-payment",
+    amount: 10000,
+    currency_code: "usd",
+    amount_refunded: 0,
+    provider_id: "test-pay",
+    data: {},
+  })
+
+  await manager.save(pay)
+  await manager.save(swapPay)
+
+  cart2.payment = pay
+  swapCart.payment = swapPay
+
+  await manager.save(cart2)
+  await manager.save(swapCart)
+>>>>>>> develop
 
   await manager.insert(PaymentSession, {
     id: "test-session",
@@ -283,6 +461,18 @@ module.exports = async (connection, data = {}) => {
     data: {},
     status: "authorized",
   })
+<<<<<<< HEAD
+=======
+
+  await manager.insert(PaymentSession, {
+    id: "test-swap-session",
+    cart_id: "swap-cart",
+    provider_id: "test-pay",
+    is_selected: true,
+    data: {},
+    status: "authorized",
+  })
+>>>>>>> develop
 
   await manager.insert(ShippingMethod, {
     id: "test-method",

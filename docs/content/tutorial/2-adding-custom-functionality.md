@@ -56,7 +56,7 @@ In the constructor we specify that our `WelcomeService` will depend upon the `ca
 
 ### `registerOptin`
 
-The `registerOption` function will take to arguments: `cartId` and `optin`, where `cartId` holds the id of the cart that we wish to register optin for and `optin` is a boolean to indicate if the customer has accepted or optin or not. We will save the `optin` preferences in the cart's `metadata` field, so that it can be persisted for the future when we need to evaluate if we should send the welcome or not.
+The `registerOption` function will take two arguments: `cartId` and `optin`, where `cartId` holds the id of the cart that we wish to register optin for and `optin` is a boolean to indicate if the customer has accepted or optin or not. We will save the `optin` preferences in the cart's `metadata` field, so that it can be persisted for the future when we need to evaluate if we should send the welcome or not.
 
 ```javascript
 async registerOptin(cartId, optin) {
@@ -252,4 +252,4 @@ You have now learned how to add custom functionality to your Medusa server, whic
 
 You have now been introduced to many of the key parts of Medusa and with your knowledge of customization you can now begin creating some really powerful commerce experiences. If you have an idea for a cool customization go ahead and make it right now! If you are not completely ready yet you can browse the reference docs further.
 
-In the next part of this tutorial we will look into linking your local project with Medusa Cloud to make develpment smoother while leveraging the powerful management tools that merchants use to manage their Medusa store.
+<!-- In the next part of this tutorial we will look into linking your local project with Medusa Cloud to make develpment smoother while leveraging the powerful management tools that merchants use to manage their Medusa store. -->
