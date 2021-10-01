@@ -12,6 +12,9 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *     application/json:
  *       schema:
  *         properties:
+ *           email:
+ *             type: string
+ *             description: The Customer's email. Only providable if user not registered.
  *           first_name:
  *             type: string
  *             description:  The Customer's first name.
@@ -37,6 +40,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
+    email: Validator.string().optional(),
     first_name: Validator.string().optional(),
     last_name: Validator.string().optional(),
     password: Validator.string().optional(),
@@ -50,9 +54,19 @@ export default async (req, res) => {
 
   try {
     const customerService = req.scope.resolve("customerService")
+
+    let customer = await customerService.retrieve(id)
+
+    if (value.email && customer.has_account) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Email cannot be changed when the user has registered their account"
+      )
+    }
+
     await customerService.update(id, value)
 
-    const customer = await customerService.retrieve(id, {
+    customer = await customerService.retrieve(id, {
       relations: ["orders"],
     })
     res.status(200).json({ customer })

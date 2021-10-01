@@ -7,7 +7,6 @@ export default (app, container) => {
   const middlewareService = container.resolve("middlewareService")
 
   app.use("/customers", route)
-  route.param("id", middlewares.wrap(require("./authorize-customer").default))
 
   // Inject plugin routes
   const routers = middlewareService.getRouters("store/customers")
@@ -30,28 +29,28 @@ export default (app, container) => {
   // Authenticated endpoints
   route.use(middlewares.authenticate())
 
-  route.get("/:id", middlewares.wrap(require("./get-customer").default))
-  route.post("/:id", middlewares.wrap(require("./update-customer").default))
+  route.get("/me", middlewares.wrap(require("./get-customer").default))
+  route.post("/me", middlewares.wrap(require("./update-customer").default))
 
-  route.get("/:id/orders", middlewares.wrap(require("./list-orders").default))
+  route.get("/me/orders", middlewares.wrap(require("./list-orders").default))
 
   route.post(
-    "/:id/addresses",
+    "/me/addresses",
     middlewares.wrap(require("./create-address").default)
   )
 
   route.post(
-    "/:id/addresses/:address_id",
+    "/me/addresses/:address_id",
     middlewares.wrap(require("./update-address").default)
   )
 
   route.delete(
-    "/:id/addresses/:address_id",
+    "/me/addresses/:address_id",
     middlewares.wrap(require("./delete-address").default)
   )
 
   route.get(
-    "/:id/payment-methods",
+    "/me/payment-methods",
     middlewares.wrap(require("./get-payment-methods").default)
   )
 

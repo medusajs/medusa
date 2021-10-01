@@ -96,6 +96,13 @@ class ShippingOptionService extends BaseService {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "ID does not exist")
     }
 
+    // If no option id is provided, we are currently in the process of creating
+    // a new shipping option. Therefore, simply return the requirement, such
+    // that the cascading will take care of the creation of the requirement.
+    if (!optionId) {
+      return requirement
+    }
+
     let req
     if (existingReq) {
       req = await reqRepo.save({
@@ -359,11 +366,33 @@ class ShippingOptionService extends BaseService {
       }
 
       if ("requirements" in data) {
-        option.requirements = await Promise.all(
-          data.requirements.map(r => {
-            return this.validateRequirement_(r, option.id)
-          })
-        )
+        const acc = []
+        for (const r of data.requirements) {
+          const validated = await this.validateRequirement_(r)
+
+          if (acc.find(raw => raw.type === validated.type)) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Only one requirement of each type is allowed"
+            )
+          }
+
+          if (
+            acc.find(
+              raw =>
+                (raw.type === "max_subtotal" &&
+                  validated.amount > raw.amount) ||
+                (raw.type === "min_subtotal" && validated.amount < raw.amount)
+            )
+          ) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Max. subtotal must be greater than Min. subtotal"
+            )
+          }
+
+          acc.push(validated)
+        }
       }
 
       const result = await optionRepo.save(option)
@@ -421,7 +450,9 @@ class ShippingOptionService extends BaseService {
    */
   async update(optionId, update) {
     return this.atomicPhase_(async manager => {
-      const option = await this.retrieve(optionId)
+      const option = await this.retrieve(optionId, {
+        relations: ["requirements"],
+      })
 
       if ("metadata" in update) {
         option.metadata = await this.setMetadata_(option, update.metadata)
@@ -469,6 +500,20 @@ class ShippingOptionService extends BaseService {
 
           acc.push(validated)
         }
+
+        if (option.requirements) {
+          const accReqs = acc.map(a => a.id)
+          const toRemove = option.requirements.filter(
+            r => !accReqs.includes(r.id)
+          )
+          await Promise.all(
+            toRemove.map(async req => {
+              await this.removeRequirement(req.id)
+            })
+          )
+        }
+
+        option.requirements = acc
       }
 
       if ("price_type" in update) {
@@ -556,28 +601,24 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Removes a requirement from a shipping option
-   * @param {string} optionId - the shipping option to remove from
    * @param {string} requirementId - the id of the requirement to remove
    * @return {Promise} the result of update
    */
-  async removeRequirement(optionId, requirementId) {
+  async removeRequirement(requirementId) {
     return this.atomicPhase_(async manager => {
-      const option = await this.retrieve(optionId, {
-        relations: "requirements",
-      })
-      const newReqs = option.requirements.map(r => {
-        if (r.id === requirementId) {
-          return null
-        } else {
-          return r
-        }
-      })
+      try {
+        const reqRepo = manager.getCustomRepository(this.requirementRepository_)
+        const requirement = await reqRepo.findOne({
+          where: { id: requirementId },
+        })
 
-      option.requirements = newReqs.filter(Boolean)
+        const result = await reqRepo.softRemove(requirement)
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const result = await optionRepo.save(option)
-      return result
+        return result
+      } catch (error) {
+        // Delete is idempotent, but we return a promise to allow then-chaining
+        return Promise.resolve()
+      }
     })
   }
 
