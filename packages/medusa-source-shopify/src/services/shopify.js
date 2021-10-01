@@ -18,6 +18,7 @@ class ShopifyService extends BaseService {
       customerService,
       orderService,
       regionService,
+      fulfillmentService,
       paymentRepository,
     },
     options
@@ -40,6 +41,8 @@ class ShopifyService extends BaseService {
     this.customerService_ = customerService
     /** @private @const {OrderService} */
     this.orderService_ = orderService
+    /** @private @const {FulfillmentService} */
+    this.fulfillmentService_ = fulfillmentService
     /** @private @const {RegionService} */
     this.regionService_ = regionService
     /** @private @const {PaymentRepository} */
@@ -446,8 +449,15 @@ class ShopifyService extends BaseService {
 
   async createFulfillment(data) {
     return this.atomicPhase_(async (manager) => {
-      const { order_id, line_items } = data
-      console.log(order_id)
+      const {
+        id,
+        order_id,
+        line_items,
+        tracking_number,
+        tracking_numbers,
+        tracking_url,
+        tracking_urls,
+      } = data
       let order = await this.orderService_
         .retrieveByExternalId(order_id, {
           relations: ["items"],
@@ -479,16 +489,43 @@ class ShopifyService extends BaseService {
 
       return await this.orderService_
         .withTransaction(manager)
-        .createFulfillment(order.id, itemsToFulfill)
+        .createFulfillment(order.id, itemsToFulfill, {
+          metadata: {
+            sh_id: id,
+            tracking_number,
+            tracking_numbers,
+            tracking_url,
+            tracking_urls,
+          },
+        })
     })
   }
 
   async updateFulfillment(data) {
     return this.atomicPhase_(async (manager) => {
-      const { order_id, line_items } = data
+      const { id, order_id, status } = data
       const order = await this.orderService_.retrieveByExternalId(order_id, {
         relations: ["fulfillments", "items"],
       })
+
+      const searchParam = {
+        sh_id: id,
+      }
+
+      const fulfillment = order.fulfillments.find((f) =>
+        _.isEqual(f.metadata, searchParam)
+      )
+
+      if (status === "canceled") {
+        return await this.orderService_
+          .withTransaction(manager)
+          .cancelFulfillment(fulfillment.id)
+      }
+
+      if (status === "success") {
+        //This can happend if a user adds shipping info such as tracking links after creating the fulfillment
+        return Promise.resolve({})
+      }
     })
   }
 

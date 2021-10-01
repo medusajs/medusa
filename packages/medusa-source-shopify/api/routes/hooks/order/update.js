@@ -17,11 +17,11 @@ var _default = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             shopifyService = req.scope.resolve("shopifyService"); //TODO: update payment
-            // console.log(req.body)
 
+            console.log(req.body);
             res.sendStatus(200);
 
-          case 2:
+          case 3:
           case "end":
             return _context.stop();
         }

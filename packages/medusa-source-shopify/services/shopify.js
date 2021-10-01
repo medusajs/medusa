@@ -79,6 +79,7 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
         customerService = _ref.customerService,
         orderService = _ref.orderService,
         regionService = _ref.regionService,
+        fulfillmentService = _ref.fulfillmentService,
         paymentRepository = _ref.paymentRepository;
 
     _classCallCheck(this, ShopifyService);
@@ -106,6 +107,9 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
     /** @private @const {OrderService} */
 
     _this.orderService_ = orderService;
+    /** @private @const {FulfillmentService} */
+
+    _this.fulfillmentService_ = fulfillmentService;
     /** @private @const {RegionService} */
 
     _this.regionService_ = regionService;
@@ -1136,25 +1140,24 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
               case 0:
                 return _context28.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref17 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27(manager) {
-                    var order_id, line_items, order, shopifyOrder, normalized, itemsToFulfill;
+                    var id, order_id, line_items, tracking_number, tracking_numbers, tracking_url, tracking_urls, order, shopifyOrder, normalized, itemsToFulfill;
                     return regeneratorRuntime.wrap(function _callee27$(_context27) {
                       while (1) {
                         switch (_context27.prev = _context27.next) {
                           case 0:
-                            order_id = data.order_id, line_items = data.line_items;
-                            console.log(order_id);
-                            _context27.next = 4;
+                            id = data.id, order_id = data.order_id, line_items = data.line_items, tracking_number = data.tracking_number, tracking_numbers = data.tracking_numbers, tracking_url = data.tracking_url, tracking_urls = data.tracking_urls;
+                            _context27.next = 3;
                             return _this12.orderService_.retrieveByExternalId(order_id, {
                               relations: ["items"]
                             })["catch"](function (_) {
                               return undefined;
                             });
 
-                          case 4:
+                          case 3:
                             order = _context27.sent;
 
                             if (order) {
-                              _context27.next = 13;
+                              _context27.next = 12;
                               break;
                             }
 
@@ -1162,18 +1165,18 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                               path: "orders/".concat(order_id),
                               extraHeaders: _const.INCLUDE_PRESENTMENT_PRICES
                             });
-                            _context27.next = 9;
+                            _context27.next = 8;
                             return _this12.normalizeOrder(shopifyOrder);
 
-                          case 9:
+                          case 8:
                             normalized = _context27.sent;
-                            _context27.next = 12;
+                            _context27.next = 11;
                             return _this12.createOrder(normalized);
 
-                          case 12:
+                          case 11:
                             order = _context27.sent;
 
-                          case 13:
+                          case 12:
                             itemsToFulfill = line_items.map(function (l) {
                               var match = order.items.find(function (i) {
                                 return i.variant.sku === l.sku;
@@ -1188,13 +1191,21 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
                                 quantity: l.quantity
                               };
                             });
-                            _context27.next = 16;
-                            return _this12.orderService_.withTransaction(manager).createFulfillment(order.id, itemsToFulfill);
+                            _context27.next = 15;
+                            return _this12.orderService_.withTransaction(manager).createFulfillment(order.id, itemsToFulfill, {
+                              metadata: {
+                                sh_id: id,
+                                tracking_number: tracking_number,
+                                tracking_numbers: tracking_numbers,
+                                tracking_url: tracking_url,
+                                tracking_urls: tracking_urls
+                              }
+                            });
 
-                          case 16:
+                          case 15:
                             return _context27.abrupt("return", _context27.sent);
 
-                          case 17:
+                          case 16:
                           case "end":
                             return _context27.stop();
                         }
@@ -1233,12 +1244,12 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
               case 0:
                 return _context30.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref18 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee29(manager) {
-                    var order_id, line_items, order;
+                    var id, order_id, status, order, searchParam, fulfillment;
                     return regeneratorRuntime.wrap(function _callee29$(_context29) {
                       while (1) {
                         switch (_context29.prev = _context29.next) {
                           case 0:
-                            order_id = data.order_id, line_items = data.line_items;
+                            id = data.id, order_id = data.order_id, status = data.status;
                             _context29.next = 3;
                             return _this13.orderService_.retrieveByExternalId(order_id, {
                               relations: ["fulfillments", "items"]
@@ -1246,8 +1257,33 @@ var ShopifyService = /*#__PURE__*/function (_BaseService) {
 
                           case 3:
                             order = _context29.sent;
+                            searchParam = {
+                              sh_id: id
+                            };
+                            fulfillment = order.fulfillments.find(function (f) {
+                              return _lodash["default"].isEqual(f.metadata, searchParam);
+                            });
 
-                          case 4:
+                            if (!(status === "canceled")) {
+                              _context29.next = 10;
+                              break;
+                            }
+
+                            _context29.next = 9;
+                            return _this13.orderService_.withTransaction(manager).cancelFulfillment(fulfillment.id);
+
+                          case 9:
+                            return _context29.abrupt("return", _context29.sent);
+
+                          case 10:
+                            if (!(status === "success")) {
+                              _context29.next = 12;
+                              break;
+                            }
+
+                            return _context29.abrupt("return", Promise.resolve({}));
+
+                          case 12:
                           case "end":
                             return _context29.stop();
                         }
