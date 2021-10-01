@@ -112,13 +112,13 @@ module.exports = async (connection, data = {}) => {
       type: "swap",
       metadata: {},
       ...data,
-    });
+    })
 
-    await manager.save(cart);
-  };
+    await manager.save(cart)
+  }
 
   const swapTemplate = async (cartId) => {
-    await cartTemplate(cartId);
+    await cartTemplate(cartId)
     return {
       order_id: orderWithSwap.id,
       fulfillment_status: "fulfilled",
@@ -132,8 +132,8 @@ module.exports = async (connection, data = {}) => {
         data: {},
       },
       ...data,
-    };
-  };
+    }
+  }
 
   const swapWithFulfillments = manager.create(Swap, {
     id: "swap-w-f",
@@ -150,9 +150,9 @@ module.exports = async (connection, data = {}) => {
       },
     ],
     ...(await swapTemplate("sc-w-f")),
-  });
+  })
 
-  await manager.save(swapWithFulfillments);
+  await manager.save(swapWithFulfillments)
 
   const swapWithReturn = manager.create(Swap, {
     id: "swap-w-r",
@@ -162,9 +162,9 @@ module.exports = async (connection, data = {}) => {
       refund_amount: 0,
     },
     ...(await swapTemplate("sc-w-r")),
-  });
+  })
 
-  await manager.save(swapWithReturn);
+  await manager.save(swapWithReturn)
   const li = manager.create(LineItem, {
     id: "return-item-1",
     fulfilled_quantity: 1,
