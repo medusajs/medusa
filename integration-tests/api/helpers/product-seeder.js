@@ -267,7 +267,7 @@ module.exports = async (connection, data = {}) => {
     type: { id: "test-type", value: "test-type" },
     collection_id: "test-collection1",
     status: "draft",
-    tags: [{ id: "tag4", value: "123" }],
+    tags: [{ id: "tag4", value: "1234" }],
   })
 
   await manager.save(product3)
