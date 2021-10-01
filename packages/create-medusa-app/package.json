@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "0.0.3",
+  "version": "0.0.4-meilis.1209+10c87e8d",
   "main": "dist/index.js",
   "bin": "cli.js",
   "license": "MIT",
@@ -56,5 +56,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+  "gitHead": "10c87e8d5afeb5b1177f5bb18b2f499eee085d71"
 }

@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-ip-lookup",
-  "version": "1.1.15",
+  "version": "1.1.14-meilis.49+10c87e8d",
   "description": "IP lookup middleware for Medusa core",
   "main": "dist/index.js",
   "repository": {
@@ -35,5 +35,5 @@
     "axios": "^0.20.0",
     "mongoose": "^5.8.0"
   },
-  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+  "gitHead": "10c87e8d5afeb5b1177f5bb18b2f499eee085d71"
 }

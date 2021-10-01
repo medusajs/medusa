@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-economic",
-  "version": "1.1.25",
+  "version": "1.1.24-meilis.37+10c87e8d",
   "description": "E-conomic financial reporting",
   "main": "index.js",
   "repository": {
@@ -39,9 +39,9 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.22",
-    "medusa-test-utils": "^1.1.25",
+    "medusa-core-utils": "^1.1.21-meilis.37+10c87e8d",
+    "medusa-test-utils": "^1.1.24-meilis.37+10c87e8d",
     "moment": "^2.27.0"
   },
-  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+  "gitHead": "10c87e8d5afeb5b1177f5bb18b2f499eee085d71"
 }
