@@ -1,5 +1,7 @@
 export default async (req, res) => {
-  console.log(req.body)
+  const shopifyService = req.scope.resolve("shopifyService")
+
+  await shopifyService.createFulfillment(req.body)
 
   res.sendStatus(200)
 }

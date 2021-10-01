@@ -45,7 +45,7 @@ class ShopifyService extends BaseService {
     /** @private @const {PaymentRepository} */
     this.paymentRepository_ = paymentRepository
     /** @private @const {ShopifyRestClient} */
-    this.client_ = createClient(options)
+    this.client_ = createClient(this.options)
   }
 
   withTransaction(transactionManager) {
@@ -55,6 +55,7 @@ class ShopifyService extends BaseService {
 
     const cloned = new ShopifyService({
       manager: transactionManager,
+      options: this.options,
       orderService: this.orderService_,
       customerService: this.customerService_,
       productCollectionService: this.collectionService_,
@@ -107,8 +108,8 @@ class ShopifyService extends BaseService {
         products.map(async (p) => {
           try {
             await this.createProduct(p)
-          } catch (err) {
-            console.log(`${p.title} already exists`)
+          } catch (_err) {
+            console.log(`${p.title} already exists. Skipping`)
           }
         })
       )
@@ -160,8 +161,8 @@ class ShopifyService extends BaseService {
             reducedProducts.map(async (rp) => {
               try {
                 await this.createProduct(rp, collection.id)
-              } catch (err) {
-                console.log(`${rp.title} already exists`)
+              } catch (_err) {
+                console.log(`${rp.title} already exists. Skipping`)
               }
             })
           )
@@ -281,7 +282,7 @@ class ShopifyService extends BaseService {
   }
 
   async addShippingMethod(shippingLine, orderId, taxRate) {
-    const soId = "so_01FGVE1EPJM1SFRP29YJCK353K" //temp
+    const soId = "so_01FGXE885CWREM0RGWNN3A3P2G" //temp
 
     return this.atomicPhase_(async (manager) => {
       const order = await this.orderService_
@@ -379,23 +380,6 @@ class ShopifyService extends BaseService {
     })
   }
 
-  async updateOrder(order) {
-    return this.atomicPhase_(async (manager) => {
-      const medusaOrder = await this.orderService_
-        .retrieveByExternalId(order.id)
-        .catch((_) => undefined)
-
-      //if order has not been added to medusa before we create it
-      if (!medusaOrder) {
-        return await this.createOrder(order)
-      }
-
-      if (medusaOrder) {
-        return {}
-      }
-    })
-  }
-
   async updateProduct(product) {
     return this.atomicPhase_(async (manager) => {
       const medusaProduct = await this.productService_
@@ -406,7 +390,7 @@ class ShopifyService extends BaseService {
 
       if (!medusaProduct) {
         console.log("No product found")
-        return Promise.resolve()
+        return Promise.resolve({})
       }
 
       const { variants } = await this.client_
@@ -460,6 +444,54 @@ class ShopifyService extends BaseService {
     })
   }
 
+  async createFulfillment(data) {
+    return this.atomicPhase_(async (manager) => {
+      const { order_id, line_items } = data
+      console.log(order_id)
+      let order = await this.orderService_
+        .retrieveByExternalId(order_id, {
+          relations: ["items"],
+        })
+        .catch((_) => undefined)
+
+      // if order occured before we began listening for orders to the shop
+      if (!order) {
+        const shopifyOrder = this.client_.get({
+          path: `orders/${order_id}`,
+          extraHeaders: INCLUDE_PRESENTMENT_PRICES,
+        })
+        const normalized = await this.normalizeOrder(shopifyOrder)
+        order = await this.createOrder(normalized)
+      }
+
+      const itemsToFulfill = line_items.map((l) => {
+        const match = order.items.find((i) => i.variant.sku === l.sku)
+
+        if (!match) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Error on line item ${l.id}. Missing SKU. Product variants are required to have a SKU code.`
+          )
+        }
+
+        return { item_id: match.id, quantity: l.quantity }
+      })
+
+      return await this.orderService_
+        .withTransaction(manager)
+        .createFulfillment(order.id, itemsToFulfill)
+    })
+  }
+
+  async updateFulfillment(data) {
+    return this.atomicPhase_(async (manager) => {
+      const { order_id, line_items } = data
+      const order = await this.orderService_.retrieveByExternalId(order_id, {
+        relations: ["fulfillments", "items"],
+      })
+    })
+  }
+
   async normalizeOrder(
     shopifyOrder,
     customerId,
@@ -475,7 +507,6 @@ class ShopifyService extends BaseService {
         shopifyOrder.fulfillment_status
       )
 
-      console.log("FS", fulfillmentStatus)
       return {
         status: this.normalizeOrderStatus(fulfillmentStatus, paymentStatus),
         region_id: regionId,
@@ -525,10 +556,7 @@ class ShopifyService extends BaseService {
         is_giftcard: lineItem.gift_card,
         unit_price: parsePrice(lineItem.price) * (1 - taxRate),
         quantity: lineItem.quantity,
-        fulfilled_quantity:
-          lineItem.fulfillment_status === "fulfilled"
-            ? lineItem.fulfillable_quantity
-            : 0,
+        fulfilled_quantity: lineItem.quantity - lineItem.fulfillable_quantity,
         variant_id: productVariant.id,
       }
     })
