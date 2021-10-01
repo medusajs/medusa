@@ -194,5 +194,5 @@ You now have a production ready application running on Heroku. This can be scale
 
 Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- Deploy Admin on Netlify (Coming soon)
+- [Deploy Admin on Netlify](https://docs.medusa-commerce.com/how-to/deploying-admin-on-netlify)
 - Deploy Admin on Gatsby Cloud (Coming soon)
