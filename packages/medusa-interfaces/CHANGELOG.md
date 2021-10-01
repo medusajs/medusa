@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.24-meilis.0](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.23...medusa-interfaces@1.1.24-meilis.0) (2021-10-01)
+
+
+### Bug Fixes
+
+* filter type in jsdoc ([c3a6045](https://github.com/medusajs/medusa/commit/c3a6045dd889a0d32d9e7f6e806d96d8333ea0a5))
+* use type to choose transformer before adding or replacing documents ([24eecd2](https://github.com/medusajs/medusa/commit/24eecd2922e0c3425f2d43549b3227c756820387))
+
+
+
+
+
 ## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.22...medusa-interfaces@1.1.23) (2021-09-15)
 
 **Note:** Version bump only for package medusa-interfaces

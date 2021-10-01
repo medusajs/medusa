@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.40-meilis.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.41...@medusajs/medusa@1.1.40-meilis.0) (2021-10-01)
+
+
+### Bug Fixes
+
+* Creating shipping options with requirements ([#428](https://github.com/medusajs/medusa/issues/428)) ([ae0ab03](https://github.com/medusajs/medusa/commit/ae0ab03fac2747ec251abbb6161182dd21218ba6))
+* customer endpoints shouldn't use customer id already provided through authentication ([#402](https://github.com/medusajs/medusa/issues/402)) ([bf43896](https://github.com/medusajs/medusa/commit/bf43896d1942d352efcf8b900f4a31fef0fe215d))
+* ILIKE operator not supported in sqlite ([#393](https://github.com/medusajs/medusa/issues/393)) ([49a1329](https://github.com/medusajs/medusa/commit/49a132976ded4d094a5129029743f73a020ecf04))
+* meiliesearch README.md + remove: searchService from silentResolver ([1444353](https://github.com/medusajs/medusa/commit/1444353b0af4e18a23cebbf46b6d1246aa495bb4))
+* update seeder to product published ([#423](https://github.com/medusajs/medusa/issues/423)) ([d8e5318](https://github.com/medusajs/medusa/commit/d8e531890d758e374fdd586f8b718d9b09126320))
+* use type to choose transformer before adding or replacing documents ([24eecd2](https://github.com/medusajs/medusa/commit/24eecd2922e0c3425f2d43549b3227c756820387))
+
+
+### Features
+
+* add product status ([#400](https://github.com/medusajs/medusa/issues/400)) ([a82332d](https://github.com/medusajs/medusa/commit/a82332da3e2c8940da814b27607182c2c888b49f))
+* Allow backorder on swaps ([#404](https://github.com/medusajs/medusa/issues/404)) ([00ab03f](https://github.com/medusajs/medusa/commit/00ab03f3a2b0c59049f5c5a2af2cb5eee9d4c72d))
+* customer-information ([#413](https://github.com/medusajs/medusa/issues/413)) ([a70e3ed](https://github.com/medusajs/medusa/commit/a70e3ed0aee0e9c19f7aaf8bb8d22eb68a9695b7))
+
+
+
+
+
 ## [1.1.41](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.40...@medusajs/medusa@1.1.41) (2021-09-15)
 
 

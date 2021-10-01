@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-paypal",
-  "version": "1.0.25-meilis.37+10c87e8d",
+  "version": "1.0.26-meilis.0",
   "description": "Paypal Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
@@ -27,7 +27,7 @@
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "medusa-interfaces": "^1.1.22-meilis.37+10c87e8d",
-    "medusa-test-utils": "^1.1.24-meilis.37+10c87e8d"
+    "medusa-test-utils": "^1.1.25-meilis.0"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__,**/__mocks__",

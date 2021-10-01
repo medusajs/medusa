@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-brightpearl",
-  "version": "1.1.29-meilis.37+10c87e8d",
+  "version": "1.1.30-meilis.0",
   "description": "Brightpearl plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -28,7 +28,7 @@
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "medusa-interfaces": "^1.1.22-meilis.37+10c87e8d",
-    "medusa-test-utils": "^1.1.24-meilis.37+10c87e8d",
+    "medusa-test-utils": "^1.1.25-meilis.0",
     "prettier": "^2.0.5"
   },
   "scripts": {

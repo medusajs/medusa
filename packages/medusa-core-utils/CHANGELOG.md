@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23-meilis.0](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.22...medusa-core-utils@1.1.23-meilis.0) (2021-10-01)
+
+
+### Bug Fixes
+
+* use type to choose transformer before adding or replacing documents ([24eecd2](https://github.com/medusajs/medusa/commit/24eecd2922e0c3425f2d43549b3227c756820387))
+
+
+
+
+
 ## [1.1.22](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.21...medusa-core-utils@1.1.22) (2021-09-15)
 
 **Note:** Version bump only for package medusa-core-utils

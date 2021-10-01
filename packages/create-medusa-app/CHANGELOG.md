@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5-meilis.0](https://github.com/medusajs/medusa/compare/create-medusa-app@0.0.3...create-medusa-app@0.0.5-meilis.0) (2021-10-01)
+
+**Note:** Version bump only for package create-medusa-app
+
+
+
+
+
 ## [0.0.3](https://github.com/medusajs/medusa/compare/create-medusa-app@0.0.1...create-medusa-app@0.0.3) (2021-09-15)
 
 
