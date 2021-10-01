@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-webshipper",
-  "version": "1.1.26-meilis.0",
+  "version": "1.1.27-meilis.0",
   "description": "Webshipper Fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -39,5 +39,5 @@
     "express": "^4.17.1",
     "medusa-core-utils": "^1.1.21-meilis.37+10c87e8d"
   },
-  "gitHead": "40ece7c0789d88658a720c44b81a5f53840a34e8"
+  "gitHead": "73c38393510a80e306552a93cd5955e41556923d"
 }

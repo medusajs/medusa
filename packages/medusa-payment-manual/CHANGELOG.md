@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5-meilis.0](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.4-meilis.0...medusa-payment-manual@1.0.5-meilis.0) (2021-10-01)
+
+**Note:** Version bump only for package medusa-payment-manual
+
+
+
+
+
 ## [1.0.4-meilis.0](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.4...medusa-payment-manual@1.0.4-meilis.0) (2021-10-01)
 
 **Note:** Version bump only for package medusa-payment-manual

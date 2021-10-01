@@ -1,7 +1,7 @@
 {
   "name": "medusa-dev-cli",
   "description": "CLI helpers for contributors working on Medusa",
-  "version": "0.0.20-meilis.0",
+  "version": "0.0.21-meilis.0",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "bin": {
     "medusa-dev": "./dist/index.js"
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
-    "babel-preset-medusa-package": "^1.1.15-meilis.0",
+    "babel-preset-medusa-package": "^1.1.16-meilis.0",
     "cross-env": "^7.0.3"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
@@ -47,5 +47,5 @@
   "engines": {
     "node": ">=12.13.0"
   },
-  "gitHead": "40ece7c0789d88658a720c44b81a5f53840a34e8"
+  "gitHead": "73c38393510a80e306552a93cd5955e41556923d"
 }

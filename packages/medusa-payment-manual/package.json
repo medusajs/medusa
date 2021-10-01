@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-manual",
-  "version": "1.0.4-meilis.0",
+  "version": "1.0.5-meilis.0",
   "description": "A dummy payment provider to be used for testing or manual payments",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.1.25-meilis.0"
+    "medusa-test-utils": "^1.1.26-meilis.0"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__",
@@ -36,5 +36,5 @@
   "peerDependencies": {
     "medusa-interfaces": "1.x"
   },
-  "gitHead": "40ece7c0789d88658a720c44b81a5f53840a34e8"
+  "gitHead": "73c38393510a80e306552a93cd5955e41556923d"
 }

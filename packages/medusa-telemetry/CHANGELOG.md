@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6-meilis.0](https://github.com/medusajs/medusa/compare/medusa-telemetry@0.0.5-meilis.0...medusa-telemetry@0.0.6-meilis.0) (2021-10-01)
+
+**Note:** Version bump only for package medusa-telemetry
+
+
+
+
+
 ## [0.0.5-meilis.0](https://github.com/medusajs/medusa/compare/medusa-telemetry@0.0.5...medusa-telemetry@0.0.5-meilis.0) (2021-10-01)
 
 **Note:** Version bump only for package medusa-telemetry
