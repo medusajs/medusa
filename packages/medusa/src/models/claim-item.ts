@@ -21,13 +21,7 @@ import { ClaimImage } from "./claim-image"
 import { ClaimTag } from "./claim-tag"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
-
-export enum ClaimReason {
-  MISSING_ITEM = "missing_item",
-  WRONG_ITEM = "wrong_item",
-  PRODUCTION_FAILURE = "production_failure",
-  OTHER = "other",
-}
+import { ClaimReason } from "./claim-reason"
 
 @Entity()
 export class ClaimItem {
@@ -68,7 +62,11 @@ export class ClaimItem {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
-  @DbAwareColumn({ type: "enum", enum: ClaimReason })
+  @Column({ nullable: true })
+  reason_id: string
+
+  @ManyToOne(() => ClaimReason)
+  @JoinColumn({ name: "reason_id" })
   reason: ClaimReason
 
   @Column({ nullable: true })
