@@ -12,7 +12,11 @@ const orderTest = require("../test-input/admin/order")
 const productTest = require("../test-input/admin/product")
 const rrTest = require("../test-input/admin/return-reason")
 const swapTest = require("../test-input/admin/swap")
+<<<<<<< HEAD
 const collectionTest = require("../test-input/admin/collection")
+=======
+const noteTest = require("../test-input/admin/note")
+>>>>>>> 347c8550213978c8c9e02485c2e0e4f66fb6cec0
 
 const toTest = [
   customerTest,
@@ -23,7 +27,11 @@ const toTest = [
   productTest,
   rrTest,
   swapTest,
+<<<<<<< HEAD
   collectionTest,
+=======
+  noteTest,
+>>>>>>> 347c8550213978c8c9e02485c2e0e4f66fb6cec0
 ]
 
 jest.setTimeout(30000)
