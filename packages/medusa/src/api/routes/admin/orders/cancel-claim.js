@@ -8,7 +8,7 @@ import { defaultRelations, defaultFields } from "."
  * description: "Cancels a Claim"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
- *   . (path) claim_id=* {string} The id of the Claim.
+ *   - (path) claim_id=* {string} The id of the Claim.
  * tags:
  *   - Claim
  * responses:
@@ -19,7 +19,7 @@ import { defaultRelations, defaultFields } from "."
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/claim"
+ *               $ref: "#/components/schemas/claim_order"
  */
 export default async (req, res) => {
   const { id, claim_id } = req.params

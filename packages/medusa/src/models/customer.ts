@@ -40,10 +40,7 @@ export class Customer {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
-  @OneToMany(
-    () => Address,
-    address => address.customer
-  )
+  @OneToMany(() => Address, (address) => address.customer)
   shipping_addresses: Address[]
 
   @Column({ nullable: true, select: false })
@@ -55,10 +52,7 @@ export class Customer {
   @Column({ default: false })
   has_account: boolean
 
-  @OneToMany(
-    () => Order,
-    order => order.customer
-  )
+  @OneToMany(() => Order, (order) => order.customer)
   orders: Order[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
@@ -91,22 +85,25 @@ export class Customer {
  *     type: string
  *   email:
  *     type: string
- *   billing_address_id:
- *     type: string
  *   billing_address:
+ *     nullable: true
  *     description: "The Customer's billing address."
  *     anyOf:
  *       - $ref: "#/components/schemas/address"
+ *       - type: string
  *   shipping_addresses:
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/address"
  *   first_name:
  *     type: string
+ *     nullable: true
  *   last_name:
  *     type: string
+ *     nullable: true
  *   phone:
  *     type: string
+ *     nullable: true
  *   has_account:
  *     type: boolean
  *   created_at:
@@ -118,6 +115,7 @@ export class Customer {
  *   deleted_at:
  *     type: string
  *     format: date-time
+ *     nullable: true
  *   metadata:
  *     type: object
  */

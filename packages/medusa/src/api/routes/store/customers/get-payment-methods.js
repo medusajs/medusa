@@ -3,8 +3,6 @@
  * operationId: GetCustomersCustomerPaymentMethods
  * summary: Retrieve saved payment methods
  * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
  * tags:
  *   - Customer
  * responses:

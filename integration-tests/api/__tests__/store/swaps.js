@@ -96,7 +96,7 @@ describe("/store/carts", () => {
             },
           ],
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response.data.message)
         })
 
@@ -113,11 +113,6 @@ describe("/store/carts", () => {
                 id: "test-variant-2",
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
-                product: {
-                  profile_id: expect.stringMatching(/^sp_*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
               },
               quantity: 1,
               variant_id: "test-variant-2",
@@ -181,7 +176,7 @@ describe("/store/carts", () => {
             },
           ],
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response.data.message)
         })
 
@@ -198,11 +193,6 @@ describe("/store/carts", () => {
                 id: "test-variant-2",
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
-                product: {
-                  profile_id: expect.stringMatching(/^sp_*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
               },
               quantity: 1,
               variant_id: "test-variant-2",

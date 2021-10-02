@@ -1,0 +1,18 @@
+{
+  "customer": {
+    "id": "cus_01FGKMYBWGVBWECWS6WMJBQX2X",
+    "email": "test1@email.com",
+    "first_name": null,
+    "last_name": null,
+    "billing_address_id": null,
+    "billing_address": null,
+    "shipping_addresses": [],
+    "phone": null,
+    "has_account": false,
+    "orders": [],
+    "created_at": "2021-09-27T12:51:13.423Z",
+    "updated_at": "2021-09-27T12:51:13.423Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}

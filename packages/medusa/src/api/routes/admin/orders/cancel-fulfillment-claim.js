@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "."
 
 /**
- * @oas [post] orders//{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
  * summary: "Cancels a fulfilmment related to a Claim"
  * description: "Registers a Fulfillment as canceled."

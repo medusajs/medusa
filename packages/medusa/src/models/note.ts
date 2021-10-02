@@ -75,9 +75,9 @@ export class Note {
  *   value:
  *     description: "The contents of the note."
  *     type: string
- *   author:
+ *   author_id:
  *     description: "The author of the note."
- *     type: User
+ *     type: string
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

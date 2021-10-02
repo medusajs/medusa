@@ -11,8 +11,6 @@ import {
  * operationId: GetCustomersCustomerOrders
  * summary: Retrieve Customer Orders
  * description: "Retrieves a list of a Customer's Orders."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
  * tags:
  *   - Customer
  * responses:

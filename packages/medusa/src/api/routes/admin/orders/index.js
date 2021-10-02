@@ -3,7 +3,7 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/orders", route)
 
   /**
@@ -223,6 +223,9 @@ export const defaultRelations = [
   "discounts",
   "shipping_methods",
   "payments",
+  "items",
+  "items.variant",
+  "items.variant.product",
   "fulfillments",
   "fulfillments.tracking_links",
   "fulfillments.items",
@@ -313,6 +316,7 @@ export const allowedFields = [
 export const allowedRelations = [
   "customer",
   "region",
+  "items",
   "billing_address",
   "shipping_address",
   "discounts",

@@ -78,7 +78,6 @@ describe("/store/variants", () => {
               variant_id: "test-variant",
             },
           ],
-          product: expect.any(Object),
         },
       ],
     })
@@ -126,7 +125,6 @@ describe("/store/variants", () => {
             variant_id: "test-variant",
           },
         ],
-        product: expect.any(Object),
       },
     })
   })

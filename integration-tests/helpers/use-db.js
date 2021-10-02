@@ -29,6 +29,7 @@ const DbTestUtil = {
 
   setDb: function (connection) {
     this.db_ = connection
+    this.connection = connection
   },
 
   clear: async function () {
