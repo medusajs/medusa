@@ -25,10 +25,6 @@ Navigate to your environment overview and add the databases required by Medusa.
 - Add Postgres database version 10, 11 or 12
 - Add Redis database version 5 or 6
 
-Afterwards, deploy both databases.
-
-> The Postgres database deployment might fail, but we will restart the database after having deployed our Medusa app. This should resolve the issue.
-
 ### 5. Configure Medusa
 
 Our Medusa project needs a bit of configuration to fit the needs of Qovery.
@@ -104,7 +100,7 @@ git push origin main
 
 ### 6. Deploy Medusa
 
-Finally, your app should be deploying to Qovery. If your Postgres database was previously shut down, make sure to redeploy this.
+Finally, deploy your Redis and Postgres followed by your Medusa application.
 
 ### 6. Try it out!
 
