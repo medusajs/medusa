@@ -26,7 +26,7 @@ export class ProductRepository extends Repository<Product> {
         qb = qb
           .leftJoinAndSelect("product.tags", "tags")
           .andWhere(  
-            `tags.value IN (:...value)`, { value: tags._value}
+            `tags.id IN (:...value)`, { value: tags._value}
           )
       }
         
