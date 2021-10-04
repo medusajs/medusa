@@ -66,9 +66,9 @@ class UserService extends BaseService {
    * @param {Object} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  async list(selector) {
+  async list(selector, config = {}) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
-    return userRepo.find({ where: selector })
+    return userRepo.find(this.buildQuery_(selector, config)) //{ where: selector })
   }
 
   /**
