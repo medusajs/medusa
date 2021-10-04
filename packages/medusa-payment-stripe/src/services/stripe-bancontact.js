@@ -3,7 +3,7 @@ import Stripe from "stripe"
 import { PaymentService } from "medusa-interfaces"
 
 class IdealProviderService extends PaymentService {
-  static identifier = "stripe-banconctact"
+  static identifier = "stripe-bancontact"
 
   constructor(
     { stripeProviderService, customerService, totalsService, regionService },
