@@ -46,7 +46,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products?status%5B%5D=null", {
+        .get("/admin/products?status[]=null", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -89,7 +89,7 @@ describe("/admin/products", () => {
         })
 
       const response = await api
-        .get("/admin/products?status%5B%5D=proposed", {
+        .get("/admin/products?status[]=proposed", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -112,8 +112,13 @@ describe("/admin/products", () => {
     it("returns a list of products where status is proposed or published", async () => {
       const api = useApi()
 
+      const notExpected = [
+        expect.objectContaining({ status: "draft" }),
+        expect.objectContaining({ status: "rejected" }),
+      ]
+
       const response = await api
-        .get("/admin/products?status%5B%5D=published%2Cproposed", {
+        .get("/admin/products?status[]=published,proposed", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -133,13 +138,24 @@ describe("/admin/products", () => {
           status: "published",
         }),
       ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
     })
 
     it("returns a list of products in collection", async () => {
       const api = useApi()
 
+      const notExpected = [
+        expect.objectContaining({ collection_id: "test-collection" }),
+        expect.objectContaining({ collection_id: "test-collection2" }),
+      ]
+
       const response = await api
-        .get("/admin/products?collection_id%5B%5D=test-collection1", {
+        .get("/admin/products?collection_id[]=test-collection1", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -147,8 +163,6 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-
-      // console.log(response.data.products.length)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toEqual([
@@ -161,13 +175,25 @@ describe("/admin/products", () => {
           collection_id: "test-collection1",
         }),
       ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
     })
 
     it("returns a list of products with tags", async () => {
       const api = useApi()
 
+      const notExpected = [
+        expect.objectContaining({ id: "tag1" }),
+        expect.objectContaining({ id: "tag2" }),
+        expect.objectContaining({ id: "tag4" }),
+      ]
+
       const response = await api
-        .get("/admin/products?tags%5B%5D=tag3", {
+        .get("/admin/products?tags[]=tag3", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -187,19 +213,33 @@ describe("/admin/products", () => {
           tags: [expect.objectContaining({ id: "tag3" })],
         }),
       ])
+      for (const product of response.data.products) {
+        for (const notExpect of notExpected) {
+          expect(product.tags).toEqual(expect.not.arrayContaining([notExpect]))
+        }
+      }
     })
 
     it("returns a list of products with tags in a collection", async () => {
       const api = useApi()
+
+      const notExpectedTags = [
+        expect.objectContaining({ id: "tag1" }),
+        expect.objectContaining({ id: "tag2" }),
+        expect.objectContaining({ id: "tag3" }),
+      ]
+
+      const notExpectedCollections = [
+        expect.objectContaining({ collection_id: "test-collection" }),
+        expect.objectContaining({ collection_id: "test-collection2" }),
+      ]
+
       const response = await api
-        .get(
-          "/admin/products?collection_id%5B%5D=test-collection1&tags%5B%5D=tag4",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
+        .get("/admin/products?collection_id[]=test-collection1&tags[]=tag4", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
         .catch((err) => {
           console.log(err)
         })
@@ -212,6 +252,18 @@ describe("/admin/products", () => {
           tags: [expect.objectContaining({ id: "tag4" })],
         }),
       ])
+
+      for (const notExpect of notExpectedCollections) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+
+      for (const product of response.data.products) {
+        for (const notExpect of notExpectedTags) {
+          expect(product.tags).toEqual(expect.not.arrayContaining([notExpect]))
+        }
+      }
     })
 
     it("returns a list of products with giftcard in list", async () => {
@@ -250,6 +302,12 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
+
+      expect(response.data.products).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ is_giftcard: false }),
+        ])
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toMatchSnapshot([
