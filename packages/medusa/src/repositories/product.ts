@@ -1,5 +1,5 @@
-import { flatten, groupBy, map, merge, rest } from "lodash"
-import { EntityRepository, FindManyOptions, Repository, SubjectWithoutIdentifierError } from "typeorm"
+import { flatten, groupBy, map, merge } from "lodash"
+import { EntityRepository, FindManyOptions, Repository } from "typeorm"
 import { Product } from "../models/product"
 
 @EntityRepository(Product)
