@@ -4,6 +4,9 @@ export default async (req, res) => {
   const { user_id } = req.params
   const schema = Validator.object().keys({
     name: Validator.string().optional(),
+    role: Validator.string()
+      .valid("admin", "member")
+      .optional(),
     api_token: Validator.string().optional(),
   })
 

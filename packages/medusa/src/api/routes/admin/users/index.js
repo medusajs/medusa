@@ -19,6 +19,18 @@ export default app => {
     "/reset-password",
     middlewares.wrap(require("./reset-password").default)
   )
+  route.post("/invite", middlewares.wrap(require("./create-invite").default))
+
+  route.post(
+    "/invite/accept",
+    middlewares.wrap(require("./accept-invite").default)
+  )
+
+  route.post(
+    "/invite/:invite_id/resend",
+    middlewares.wrap(require("./resend-invite").default)
+  )
+
   route.post("/:user_id", middlewares.wrap(require("./update-user").default))
 
   route.delete("/:user_id", middlewares.wrap(require("./delete-user").default))
