@@ -11,10 +11,18 @@ import {
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
+export enum UserRoles {
+  ADMIN = "admin",
+  MEMBER = "member",
+}
+
 @Entity()
 export class User {
   @PrimaryColumn()
   id: string
+
+  @Column({type:'enum', enum: UserRoles})
+  role: UserRoles
 
   @Index({ unique: true })
   @Column()
