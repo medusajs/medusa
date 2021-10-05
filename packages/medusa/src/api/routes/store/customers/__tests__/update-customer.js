@@ -11,6 +11,7 @@ describe("POST /store/customers/:id", () => {
         payload: {
           first_name: "LeBron",
           last_name: "James",
+          email: "test@email.com",
         },
         clientSession: {
           jwt: {
@@ -31,6 +32,7 @@ describe("POST /store/customers/:id", () => {
         {
           first_name: "LeBron",
           last_name: "James",
+          email: "test@email.com",
         }
       )
     })

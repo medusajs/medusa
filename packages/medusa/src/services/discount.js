@@ -2,6 +2,8 @@ import _ from "lodash"
 import randomize from "randomatic"
 import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaErrorCodes } from "medusa-core-utils/dist/errors"
+import { parse, toSeconds } from "iso8601-duration"
 import { Brackets, ILike } from "typeorm"
 
 /**
@@ -270,6 +272,15 @@ class DiscountService extends BaseService {
 
       const { rule, metadata, regions, ...rest } = update
 
+      if (rest.ends_at) {
+        if (discount.starts_at >= new Date(update.ends_at)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `"ends_at" must be greater than "starts_at"`
+          )
+        }
+      }
+
       if (regions) {
         discount.regions = await Promise.all(
           regions.map(regionId => this.regionService_.retrieve(regionId))
@@ -329,6 +340,13 @@ class DiscountService extends BaseService {
         usage_limit: discount.usage_limit,
       }
 
+      if (discount.valid_duration) {
+        const lastValidDate = new Date()
+        lastValidDate.setSeconds(
+          lastValidDate.getSeconds() + toSeconds(parse(discount.valid_duration))
+        )
+        toCreate.ends_at = lastValidDate
+      }
       const created = await discountRepo.create(toCreate)
       const result = await discountRepo.save(created)
       return result

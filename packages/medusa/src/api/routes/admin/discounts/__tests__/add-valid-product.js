@@ -46,6 +46,7 @@ describe("POST /admin/discounts/:discount_id/variants/:variant_id", () => {
             "updated_at",
             "deleted_at",
             "metadata",
+            "valid_duration",
           ],
           relations: ["rule", "parent_discount", "regions", "rule.valid_for"],
         }

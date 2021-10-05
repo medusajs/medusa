@@ -272,11 +272,7 @@ describe("ShippingOptionService", () => {
         amount: 10,
       })
 
-      expect(shippingOptionRequirementRepository.create).toBeCalledTimes(1)
-      expect(shippingOptionRequirementRepository.create).toBeCalledWith({
-        type: "max_subtotal",
-        amount: 10,
-      })
+      expect(shippingOptionRequirementRepository.create).toBeCalledTimes(0)
 
       expect(shippingOptionRepository.save).toBeCalledTimes(1)
       expect(shippingOptionRepository.save).toBeCalledWith({
@@ -300,24 +296,19 @@ describe("ShippingOptionService", () => {
   })
 
   describe("removeRequirement", () => {
-    const shippingOptionRepository = MockRepository({
-      findOne: q => {
-        switch (q.where.id) {
-          default:
-            return Promise.resolve({
-              requirements: [
-                {
-                  id: IdMap.getId("requirement_id"),
-                },
-              ],
-            })
-        }
+    const shippingOptionRequirementRepository = MockRepository({
+      softRemove: q => {
+        return Promise.resolve()
       },
+      findOne: i =>
+        i.where.id === IdMap.getId("requirement_id")
+          ? { id: IdMap.getId("requirement_id") }
+          : null,
     })
 
     const optionService = new ShippingOptionService({
       manager: MockManager,
-      shippingOptionRepository,
+      shippingOptionRequirementRepository,
     })
 
     beforeEach(() => {
@@ -325,22 +316,19 @@ describe("ShippingOptionService", () => {
     })
 
     it("remove requirement successfully", async () => {
-      await optionService.removeRequirement(
-        IdMap.getId("validId"),
-        IdMap.getId("requirement_id")
-      )
+      await optionService.removeRequirement(IdMap.getId("requirement_id"))
 
-      expect(shippingOptionRepository.save).toBeCalledTimes(1)
-      expect(shippingOptionRepository.save).toBeCalledWith({ requirements: [] })
+      expect(shippingOptionRequirementRepository.findOne).toBeCalledTimes(1)
+      expect(shippingOptionRequirementRepository.findOne).toBeCalledWith({
+        where: { id: IdMap.getId("requirement_id") },
+      })
+      expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(1)
     })
 
     it("is idempotent", async () => {
       await optionService.removeRequirement(IdMap.getId("validId"), "something")
 
-      expect(shippingOptionRepository.save).toBeCalledTimes(1)
-      expect(shippingOptionRepository.save).toBeCalledWith({
-        requirements: [{ id: IdMap.getId("requirement_id") }],
-      })
+      expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(1)
     })
   })
 

@@ -57,7 +57,7 @@ describe("/admin/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(3)
+      expect(response.data.count).toEqual(4)
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -68,6 +68,9 @@ describe("/admin/customers", () => {
           }),
           expect.objectContaining({
             id: "test-customer-3",
+          }),
+          expect.objectContaining({
+            id: "test-customer-has_account",
           }),
         ])
       )
@@ -126,6 +129,53 @@ describe("/admin/customers", () => {
             ]),
           }),
         ])
+      )
+    })
+  })
+
+  describe("POST /admin/customers/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Correctly updates customer", async () => {
+      const api = useApi()
+      const response = await api
+        .post(
+          "/admin/customers/test-customer-3",
+          {
+            first_name: "newf",
+            last_name: "newl",
+            email: "new@email.com",
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).toEqual(
+        expect.objectContaining({
+          first_name: "newf",
+          last_name: "newl",
+          email: "new@email.com",
+        })
       )
     })
   })

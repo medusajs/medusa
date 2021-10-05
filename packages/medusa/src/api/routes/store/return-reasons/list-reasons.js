@@ -24,7 +24,7 @@ export default async (req, res) => {
   try {
     const returnReasonService = req.scope.resolve("returnReasonService")
 
-    const query = {}
+    const query = { parent_return_reason_id: null}
     const data = await returnReasonService.list(query, {
       select: defaultFields,
       relations: defaultRelations,

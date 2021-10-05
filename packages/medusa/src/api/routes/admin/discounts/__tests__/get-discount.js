@@ -17,6 +17,7 @@ const defaultFields = [
   "updated_at",
   "deleted_at",
   "metadata",
+  "valid_duration",
 ]
 
 const defaultRelations = [
