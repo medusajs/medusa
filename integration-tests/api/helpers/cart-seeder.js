@@ -108,6 +108,28 @@ module.exports = async (connection, data = {}) => {
   tenPercent.rule = tenPercentRule
   await manager.save(tenPercent)
 
+  const exceed = await manager.create(Discount, {
+    id: "test-discount-reached",
+    code: "LIMIT_REACHED",
+    usage_limit: 1,
+    usage_count: 1,
+    is_dynamic: false,
+    is_disabled: false,
+  })
+
+  const drExceed = await manager.create(DiscountRule, {
+    id: "test-discount-rule-reached",
+    description: "Created",
+    type: "fixed",
+    value: 10000,
+    allocation: "total",
+  })
+
+  exceed.rule = drExceed
+  exceed.regions = [r]
+
+  await manager.save(exceed)
+
   const d = await manager.create(Discount, {
     id: "test-discount",
     code: "CREATED",
