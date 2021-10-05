@@ -26,7 +26,7 @@ export class User {
   @Column({ nullable: true })
   last_name: string
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   password_hash: string
 
   @Column({ nullable: true })

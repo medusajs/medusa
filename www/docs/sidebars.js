@@ -43,10 +43,10 @@ module.exports = {
           type: "doc",
           id: "tutorial/adding-custom-functionality",
         },
-        {
-          type: "doc",
-          id: "tutorial/linking-your-local-project-with-medusa-cloud",
-        },
+        // {
+        //   type: "doc",
+        //   id: "tutorial/linking-your-local-project-with-medusa-cloud",
+        // },
       ],
     },
     {
@@ -75,6 +75,18 @@ module.exports = {
           type: "doc",
           id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
         },
+        {
+          type: "doc",
+          id: "how-to/create-medusa-app",
+        },
+        {
+          type: "doc",
+          id: "how-to/uploading-images-to-spaces",
+        },
+        {
+          type: "doc",
+          id: "how-to/uploading-images-to-s3",
+        },
       ],
     },
     {
@@ -84,6 +96,28 @@ module.exports = {
         {
           type: "doc",
           id: "guides/fulfillment-api",
+        },
+        {
+          type: "doc",
+          id: "guides/checkouts",
+        },
+        {
+          type: "doc",
+          id: "guides/carts-in-medusa",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deploy",
+      items: [
+        {
+          type: "doc",
+          id: "how-to/deploying-on-heroku",
+        },
+        {
+          type: "doc",
+          id: "how-to/deploying-admin-on-netlify",
         },
       ],
     },

@@ -891,6 +891,21 @@ class CartService extends BaseService {
         )
     }
 
+    const today = new Date()
+    if (discount.starts_at > today) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is not valid yet"
+      )
+    }
+
+    if (discount.ends_at && discount.ends_at < today) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is expired"
+      )
+    }
+
     let regions = discount.regions
     if (discount.parent_discount_id) {
       const parent = await this.discountService_.retrieve(
@@ -1465,7 +1480,7 @@ class CartService extends BaseService {
         }
       }
 
-      await addrRepo.save(updated)
+      await this.updateShippingAddress_(cart, updated, addrRepo)
     }
 
     // Shipping methods are determined by region so the user needs to find a
