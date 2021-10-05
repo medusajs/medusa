@@ -296,10 +296,10 @@ class DiscountService extends BaseService {
 
       if (rule) {
         discount.rule = this.validateDiscountRule_(rule)
+        if (rule.valid_for) {
+          discount.rule.valid_for = discount.rule.valid_for.map(id => ({ id }))
+        }
       }
-
-      if (discount.rule?.valid_for)
-        discount.rule.valid_for = discount.rule.valid_for.map(id => ({ id }))
 
       for (const [key, value] of Object.entries(rest)) {
         discount[key] = value
