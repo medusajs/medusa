@@ -180,8 +180,9 @@ class DiscountService extends BaseService {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
       const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-      if (discount.rule?.valid_for)
+      if (discount.rule?.valid_for) {
         discount.rule.valid_for = discount.rule.valid_for.map(id => ({ id }))
+      }
 
       const validatedRule = this.validateDiscountRule_(discount.rule)
 
