@@ -6,7 +6,7 @@ title: "Deploying your Gatsby storefront on Netlify"
 
 This is a guide for deploying our [Gatsby storefront starter](https://github.com/medusajs/gatsby-starter-medusa) on Netlify. Netlify is a platform that offers hosting and backend services for applications and static websites. The steps in this guide will work for most Gatsby projects.
 
-> We assume, that you are currently running a local Gatsby storefront project. If not, check out [our starter](https://github.com/medusajs/gatsby-starter-medusa) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
+> At this point, you should have a local Gatsby storefront project running. If not, check out [our starter](https://github.com/medusajs/gatsby-starter-medusa) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
 
 ### 1. Install the Netlify CLI
 
@@ -60,7 +60,7 @@ git commit -m "Deploy Medusa Admin on Netlify"
 git push origin main
 ```
 
-Within a couple of minutes, your Gatsby storefront is and running on Netlify.
+Within a couple of minutes, your Gatsby storefront is up and running on Netlify.
 
 > If you experience CORS issues in your new setup, you might need to add your storefront url as part of the STORE_CORS environment variable in your server setup.
 
