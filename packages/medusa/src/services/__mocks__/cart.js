@@ -342,9 +342,6 @@ export const CartServiceMock = {
   addShippingMethod: jest.fn().mockImplementation(cartId => {
     return Promise.resolve()
   }),
-  addRMAMethod: jest.fn().mockImplementation(cartId => {
-    return Promise.resolve()
-  }),
   retrieveShippingOption: jest.fn().mockImplementation((cartId, optionId) => {
     if (optionId === IdMap.getId("freeShipping")) {
       return {

@@ -31,8 +31,6 @@ class CartService extends BaseService {
     addressRepository,
     paymentSessionRepository,
     inventoryService,
-    RMAShippingOptionRepository,
-    swapRepository,
   }) {
     super()
 
@@ -86,9 +84,6 @@ class CartService extends BaseService {
 
     /** @private @const {InventoryService} */
     this.inventoryService_ = inventoryService
-
-    /** @private @const {RMAShippingOptionRepository} */
-    this.rmaShippingOptionRepository_ = RMAShippingOptionRepository
   }
 
   withTransaction(transactionManager) {
@@ -114,7 +109,6 @@ class CartService extends BaseService {
       addressRepository: this.addressRepository_,
       giftCardService: this.giftCardService_,
       inventoryService: this.inventoryService_,
-      RMAShippingOptionRepository: this.rmaShippingOptionRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -1311,7 +1305,7 @@ class CartService extends BaseService {
    * @param {Object} data - the fulmillment data for the method
    * @return {Promise} the result of the update operation
    */
-  async addShippingMethod(cartId, optionId, data) {
+  async addShippingMethod(cartId, optionIdOrCustomOptionId, data) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
         select: ["subtotal"],
@@ -1323,11 +1317,17 @@ class CartService extends BaseService {
           "items.variant",
           "payment_sessions",
           "items.variant.product",
+          "custom_shipping_options",
         ],
       })
+
+      let { optionId, customPrice } = this.extractShippingOptionIdAndPrice(
+        cart,
+        optionIdOrCustomOptionId
+      )
+
       const { shipping_methods } = cart
 
-      const customPrice = data && data.price ? { price: data.price } : {}
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
         .createShippingMethod(optionId, data, {
@@ -1374,32 +1374,32 @@ class CartService extends BaseService {
   }
 
   /**
-   * Adds the corresponding shipping method either from a normal or rma shipping option to the list of shipping methods associated with
+   * Adds the corresponding shipping method either from a normal or custom option to the list of shipping methods associated with
    * the cart.
-   * @param {string} cartId - the id of the cart to add shipping method to
-   * @param {string} optionIdOrRmaOptionId - id of the normal or rma shipping option to add as valid method
-   * @param {Object} data - the fulmillment data for the method
-   * @return {Promise} the result of the update operation
+   * @param {Object} cart - the cart object
+   * @param {string} optionIdOrCustomOptionId - id of the normal or custom shipping option to add as valid method
+   * @returns {{ optionId: string; customPrice: { price: number; } | {};}}
    */
-  async addRMAMethod(cartId, optionIdOrRmaOptionId, data) {
-    return this.atomicPhase_(async manager => {
-      const rmaShippingOptionRepo = manager.getCustomRepository(
-        this.rmaShippingOptionRepository_
+  extractShippingOptionIdAndPrice(cart, optionIdOrCustomOptionId) {
+    if (
+      cart.custom_shipping_options &&
+      cart.custom_shipping_options.length > 0
+    ) {
+      const customOption = cart.custom_shipping_options.find(
+        cso => cso.id === optionIdOrCustomOptionId
       )
-
-      const rmaOption = await rmaShippingOptionRepo.findOne({
-        where: { id: optionIdOrRmaOptionId },
-      })
-
-      if (rmaOption) {
-        await this.addShippingMethod(cartId, rmaOption.shipping_option_id, {
-          ...data,
-          price: rmaOption.price,
-        })
-      } else {
-        await this.addShippingMethod(cartId, optionIdOrRmaOptionId, data)
+      if (customOption) {
+        return {
+          optionId: customOption.shipping_option_id,
+          customPrice: { price: customOption.price },
+        }
       }
-    })
+    }
+
+    return {
+      optionId: optionIdOrCustomOptionId,
+      customPrice: {},
+    }
   }
 
   /**

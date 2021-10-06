@@ -160,7 +160,7 @@ describe("/store/shipping-options", () => {
       )
     })
 
-    it("given a swap cart, when user retrieves its shipping options, then should return a list of RMA shipping options", async () => {
+    it("given a swap cart, when user retrieves its shipping options, then should return a list of custom shipping options", async () => {
       const api = useApi()
 
       const response = await api

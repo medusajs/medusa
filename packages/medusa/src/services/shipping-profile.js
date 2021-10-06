@@ -14,7 +14,6 @@ class ShippingProfileService extends BaseService {
     productService,
     productRepository,
     shippingOptionService,
-    swapRepository,
   }) {
     super()
 
@@ -32,9 +31,6 @@ class ShippingProfileService extends BaseService {
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {SwapRepository} */
-    this.swapRepository_ = swapRepository
   }
 
   withTransaction(transactionManager) {
@@ -47,7 +43,6 @@ class ShippingProfileService extends BaseService {
       shippingProfileRepository: this.shippingProfileRepository_,
       productService: this.productService_,
       shippingOptionService: this.shippingOptionService_,
-      swapRepository: this.swapRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -418,6 +413,11 @@ class ShippingProfileService extends BaseService {
    * @return {[ShippingOptions]} a list of the available shipping options
    */
   async fetchCartOptions(cart) {
+    const customShippingOptions = cart.custom_shipping_options
+
+    if (customShippingOptions && customShippingOptions.length > 0)
+      return customShippingOptions
+
     const profileIds = this.getProfilesInCart_(cart)
 
     const rawOpts = await this.shippingOptionService_.list(
@@ -440,34 +440,6 @@ class ShippingProfileService extends BaseService {
     }
 
     return options
-  }
-  /**
-   * Finds all the rma shipping options that cover the products in a cart, and
-   * validates all options that are available for the cart.
-   * @param {Cart} cart - the cart object to find rma shipping options for
-   * @return {[RMAShippingOptions | ShippingOptions]} a list of the available rma or normal shipping options
-   */
-  async fetchRMAOptions(cart) {
-    if (cart.type === "default") {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "error")
-    }
-
-    const swapRepo = await this.manager_.getCustomRepository(
-      this.swapRepository_
-    )
-
-    if (cart.type === "swap") {
-      const swap = await swapRepo.findOne({
-        where: { cart_id: cart.id },
-        relations: ["rma_shipping_options"],
-      })
-
-      if (swap.rma_shipping_options.length === 0) {
-        return this.fetchCartOptions(cart)
-      }
-
-      return swap.rma_shipping_options
-    }
   }
 }
 
