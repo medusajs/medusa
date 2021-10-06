@@ -37,15 +37,16 @@ export default async (req, res) => {
 
     const cart = await cartService.retrieve(value.cart_id, {
       select: ["subtotal"],
-      relations: ["region", "items", "items.variant", "items.variant.product"],
+      relations: [
+        "region",
+        "items",
+        "items.variant",
+        "items.variant.product",
+        "custom_shipping_options",
+      ],
     })
 
-    let options
-    if (cart.type === "swap" || cart.type === "claim") {
-      options = await shippingProfileService.fetchRMAOptions(cart)
-    } else {
-      options = await shippingProfileService.fetchCartOptions(cart)
-    }
+    const options = await shippingProfileService.fetchCartOptions(cart)
 
     res.status(200).json({ shipping_options: options })
   } catch (err) {

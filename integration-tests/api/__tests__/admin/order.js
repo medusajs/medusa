@@ -4,7 +4,7 @@ const {
   Order,
   LineItem,
   ProductVariant,
-  RMAShippingOption,
+  CustomShippingOption,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -1277,7 +1277,7 @@ describe("/admin/orders", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("creates a swap with rma shipping options", async () => {
+    it("creates a swap with custom shipping options", async () => {
       const api = useApi()
 
       const response = await api.post(
@@ -1290,7 +1290,7 @@ describe("/admin/orders", () => {
             },
           ],
           additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
-          rma_shipping_options: [{ option_id: "test-option", price: 0 }],
+          custom_shipping_options: [{ option_id: "test-option", price: 0 }],
         },
         {
           headers: {
@@ -1302,17 +1302,19 @@ describe("/admin/orders", () => {
       const swap = response.data.order.swaps[0]
 
       const manager = dbConnection.manager
-      const rma = await manager.findOne(RMAShippingOption, {
+      const customOptions = await manager.find(CustomShippingOption, {
         shipping_option_id: "test-option",
-        swap_id: swap.id,
       })
 
       expect(response.status).toEqual(200)
-      expect(rma).toEqual(
-        expect.objectContaining({
-          shipping_option_id: "test-option",
-          price: 0,
-        })
+      expect(customOptions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_option_id: "test-option",
+            price: 0,
+            cart_id: swap.cart_id,
+          }),
+        ])
       )
     })
 

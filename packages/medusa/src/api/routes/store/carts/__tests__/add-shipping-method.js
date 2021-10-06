@@ -23,9 +23,9 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService addRMAMethod", () => {
-      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledWith(
+    it("calls CartService addShippingMethod", () => {
+      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
         IdMap.getId("freeShipping"),
         {}
@@ -45,7 +45,7 @@ describe("POST /store/carts/:id/shipping-methods", () => {
     })
   })
 
-  describe("successfully adds a RMA shipping method", () => {
+  describe("successfully adds a shipping method", () => {
     let subject
 
     beforeAll(async () => {
@@ -65,9 +65,9 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService addRMAMethod", () => {
-      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledWith(
+    it("calls CartService addShippingMethod", () => {
+      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("swap-cart"),
         IdMap.getId("freeShipping"),
         {}
@@ -112,9 +112,9 @@ describe("POST /store/carts/:id/shipping-methods", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService addRMAMethod", () => {
-      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addRMAMethod).toHaveBeenCalledWith(
+    it("calls CartService addShippingMethod", () => {
+      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
         IdMap.getId("freeShipping"),
         {

@@ -202,7 +202,23 @@ describe("ShippingProfileService", () => {
       jest.clearAllMocks()
     })
 
-    it("fetches correct options", async () => {
+    it("given a swap cart with custom shipping options, should return correct custom shipping options ", async () => {
+      const cart = {
+        id: "swap-cart",
+        type: "swap",
+        custom_shipping_options: [
+          { option_id: "test-option1", id: "cso-option1", price: 10 },
+          { option_id: "test-option2", id: "cso-option2", price: 0 },
+        ],
+      }
+
+      await expect(profileService.fetchCartOptions(cart)).resolves.toEqual([
+        expect.objectContaining({ id: "cso-option1" }),
+        expect.objectContaining({ id: "cso-option2" }),
+      ])
+    })
+
+    it("given correct options when cart has no custom shipping options, should return normal shipping options", async () => {
       const cart = {
         items: [
           {
@@ -238,104 +254,6 @@ describe("ShippingProfileService", () => {
         { id: "ship_2" },
         cart
       )
-    })
-  })
-
-  describe("fetchRMAOptions", () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("given a swap cart with rma shipping options, should return correct rma shipping options ", async () => {
-      const swapRepository = MockRepository({
-        findOne() {
-          return Promise.resolve({
-            id: "swap-cart",
-            type: "swap",
-            rma_shipping_options: [
-              { option_id: "test-option1", id: "rmsao-option1", price: 10 },
-              { option_id: "test-option2", id: "rmsao-option2", price: 0 },
-            ],
-          })
-        },
-      })
-
-      const profileService = new ShippingProfileService({
-        manager: MockManager,
-        swapRepository,
-      })
-
-      const cart = {
-        id: "swap-cart",
-        type: "swap",
-      }
-
-      await expect(profileService.fetchRMAOptions(cart)).resolves.toEqual([
-        expect.objectContaining({ id: "rmsao-option1" }),
-        expect.objectContaining({ id: "rmsao-option2" }),
-      ])
-    })
-
-    it("given a swap cart with no rma shipping options, should call fetchCartOptions and return normal shipping options ", async () => {
-      const swapRepository = MockRepository({
-        findOne() {
-          return Promise.resolve({
-            id: "swap-cart",
-            type: "swap",
-            rma_shipping_options: [],
-          })
-        },
-      })
-
-      const profileService = new ShippingProfileService({
-        manager: MockManager,
-        swapRepository,
-      })
-
-      profileService.fetchCartOptions = jest.fn().mockImplementation(() => {
-        return Promise.resolve([
-          {
-            id: "normal-option1",
-          },
-          {
-            id: "normal-option2",
-          },
-        ])
-      })
-
-      const cart = {
-        id: "swap-cart",
-        type: "swap",
-      }
-
-      await expect(profileService.fetchRMAOptions(cart)).resolves.toEqual([
-        expect.objectContaining({
-          id: "normal-option1",
-        }),
-        expect.objectContaining({ id: "normal-option2" }),
-      ])
-
-      expect(profileService.fetchCartOptions).toHaveBeenCalledTimes(1)
-      expect(profileService.fetchCartOptions).toHaveBeenCalledWith({
-        id: "swap-cart",
-        type: "swap",
-      })
-    })
-
-    it("when cart is default, then should throw", async () => {
-      const profileService = new ShippingProfileService({
-        manager: MockManager,
-      })
-
-      const cart = {
-        id: "normal-cart",
-        type: "default",
-      }
-
-      await expect(profileService.fetchRMAOptions(cart)).rejects.toThrow({
-        type: "invalid_data",
-        message: "error",
-      })
     })
   })
 

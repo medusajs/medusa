@@ -101,7 +101,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(swap)
 
-  const rmaCart = manager.create(Cart, {
+  const cartWithCustomSo = manager.create(Cart, {
     id: "test-cart-rma",
     customer_id: "test-customer",
     email: "test-customer@email.com",
@@ -109,20 +109,26 @@ module.exports = async (connection, data = {}) => {
     billing_address_id: "test-billing-address",
     region_id: "test-region",
     type: "swap",
+    custom_shipping_options: [
+      {
+        shipping_option_id: "test-option",
+        price: 0,
+      },
+    ],
     metadata: {
       swap_id: "test-swap",
       parent_order_id: orderWithSwap.id,
     },
   })
 
-  await manager.save(rmaCart)
+  await manager.save(cartWithCustomSo)
 
   const swapWithRMAMethod = manager.create(Swap, {
     id: "test-swap-rma",
     order_id: "order-with-swap",
     payment_status: "captured",
     fulfillment_status: "fulfilled",
-    cart_id: "test-cart-rma",
+    cart_id: cartWithCustomSo.id,
     payment: {
       id: "test-payment-swap",
       amount: 10000,
@@ -142,12 +148,6 @@ module.exports = async (connection, data = {}) => {
         quantity: 1,
         variant_id: "test-variant-2",
         cart_id: "test-cart",
-      },
-    ],
-    rma_shipping_options: [
-      {
-        shipping_option_id: "test-option",
-        price: 0,
       },
     ],
   })

@@ -3,8 +3,8 @@ const {
   Region,
   LineItem,
   GiftCard,
-  RMAShippingOption,
   Cart,
+  CustomShippingOption,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -145,7 +145,6 @@ describe("/store/carts", () => {
           discounts: [{ code: "CREATED" }],
         })
       } catch (error) {
-        console.log(error.response)
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual(
           "Discount has been used maximum allowed times"
@@ -440,29 +439,41 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts/:id/shipping-methods", () => {
+    let cartWithCustomSo
     beforeEach(async () => {
-      await cartSeeder(dbConnection)
-      const manager = dbConnection.manager
+      try {
+        await cartSeeder(dbConnection)
+        const manager = dbConnection.manager
 
-      await manager.insert(Cart, {
-        id: "test-cart-rma",
-        customer_id: "some-customer",
-        email: "some-customer@email.com",
-        shipping_address: {
-          id: "test-shipping-address",
-          first_name: "lebron",
-          country_code: "us",
-        },
-        region_id: "test-region",
-        currency_code: "usd",
-        type: "swap",
-      })
+        const _cart = await manager.create(Cart, {
+          id: "test-cart-with-cso",
+          customer_id: "some-customer",
+          email: "some-customer@email.com",
+          shipping_address: {
+            id: "test-shipping-address",
+            first_name: "lebron",
+            country_code: "us",
+          },
+          custom_shipping_options: [
+            {
+              shipping_option_id: "test-option",
+              price: 5,
+            },
+          ],
+          region_id: "test-region",
+          currency_code: "usd",
+          type: "swap",
+        })
 
-      await manager.insert(RMAShippingOption, {
-        id: "test-rmaso",
-        shipping_option_id: "test-option",
-        price: 5,
-      })
+        cartWithCustomSo = await manager.save(_cart)
+
+        await manager.insert(CustomShippingOption, {
+          id: "orphan-cso",
+          price: 0,
+        })
+      } catch (err) {
+        console.log(err)
+      }
     })
 
     afterEach(async () => {
@@ -486,25 +497,46 @@ describe("/store/carts", () => {
       expect(cartWithShippingMethod.status).toEqual(200)
     })
 
-    it("adds a rma shipping method to cart", async () => {
+    it("given a cart with custom options and a custom option id already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
+      const customOptionId = cartWithCustomSo.custom_shipping_options[0].id
+
       const api = useApi()
 
-      const cartWithRMAShippingMethod = await api
+      const cartWithCustomShippingMethod = await api
         .post(
-          "/store/carts/test-cart-rma/shipping-methods",
+          "/store/carts/test-cart-with-cso/shipping-methods",
           {
-            option_id: "test-rmaso",
+            option_id: customOptionId,
           },
           { withCredentials: true }
         )
         .catch((err) => err.response)
 
       expect(
-        cartWithRMAShippingMethod.data.cart.shipping_methods
+        cartWithCustomShippingMethod.data.cart.shipping_methods
       ).toContainEqual(
         expect.objectContaining({ shipping_option_id: "test-option", price: 5 })
       )
-      expect(cartWithRMAShippingMethod.status).toEqual(200)
+      expect(cartWithCustomShippingMethod.status).toEqual(200)
+    })
+
+    it("given a cart with custom options and a custom option id not belonging to said cart, then it should throw a shipping option not found error", async () => {
+      const api = useApi()
+
+      try {
+        await api.post(
+          "/store/carts/test-cart-with-cso/shipping-methods",
+          {
+            option_id: "orphan-cso",
+          },
+          { withCredentials: true }
+        )
+      } catch (err) {
+        expect(err.response.status).toEqual(404)
+        expect(err.response.data.message).toEqual(
+          "Shipping Option with orphan-cso was not found"
+        )
+      }
     })
 
     it("adds a giftcard to cart, but ensures discount only applied to discountable items", async () => {

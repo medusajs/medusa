@@ -130,7 +130,6 @@ export default async (req, res) => {
                   value.return_items,
                   value.additional_items,
                   returnShipping,
-                  [],
                   {
                     idempotency_key: idempotencyKey.idempotency_key,
                     no_notification: true,
