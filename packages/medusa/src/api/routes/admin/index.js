@@ -4,7 +4,7 @@ import cors from "cors"
 import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
-import userRoutes from "./users"
+import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -39,6 +39,9 @@ export default (app, container, config) => {
 
   // Unauthenticated routes
   authRoutes(route)
+
+  // accept invite, reset password
+  unauthenticatedUserRoutes(route)
 
   const middlewareService = container.resolve("middlewareService")
   // Calls all middleware that has been registered to run before authentication.

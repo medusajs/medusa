@@ -1,14 +1,10 @@
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
-const route = Router()
-
-export default app => {
+export const unauthenticatedUserRoutes = app => {
+  const route = Router()
   app.use("/users", route)
 
-  route.get("/:user_id", middlewares.wrap(require("./get-user").default))
-
-  route.post("/", middlewares.wrap(require("./create-user").default))
   route.post(
     "/password-token",
     middlewares.wrap(require("./reset-password-token").default)
@@ -18,17 +14,28 @@ export default app => {
     "/reset-password",
     middlewares.wrap(require("./reset-password").default)
   )
-  route.post("/invite", middlewares.wrap(require("./create-invite").default))
 
   route.post(
     "/invite/accept",
     middlewares.wrap(require("./accept-invite").default)
   )
+}
+
+export default app => {
+  const route = Router()
+  app.use("/users", route)
+
+  route.get("/:user_id", middlewares.wrap(require("./get-user").default))
+
+  route.post("/", middlewares.wrap(require("./create-user").default))
+
+  route.post("/invite", middlewares.wrap(require("./create-invite").default))
 
   route.post(
     "/invite/:invite_id/resend",
     middlewares.wrap(require("./resend-invite").default)
   )
+
   route.delete(
     "/invite/:invite_id",
     middlewares.wrap(require("./delete-invite").default)
@@ -37,6 +44,7 @@ export default app => {
   route.post("/:user_id", middlewares.wrap(require("./update-user").default))
 
   route.delete("/:user_id", middlewares.wrap(require("./delete-user").default))
+
   route.get("/", middlewares.wrap(require("./list-users").default))
 
   return app
