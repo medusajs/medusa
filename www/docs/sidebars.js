@@ -117,7 +117,15 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "how-to/deploying-on-qovery",
+        },
+        {
+          type: "doc",
           id: "how-to/deploying-admin-on-netlify",
+        },
+        {
+          type: "doc",
+          id: "how-to/deploying-gatsby-on-netlify",
         },
       ],
     },
