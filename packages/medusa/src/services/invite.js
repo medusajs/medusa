@@ -81,12 +81,12 @@ class InviteService extends BaseService {
    * @param {string} data.role - role to assign to the users
    * @return {Promise} the result of create
    */
-  async create(data) {
-    const { users, inviter, ...inviteData } = data
+  async create(users, role) {
     return await this.atomicPhase_(async manager => {
       const inviteRepository = this.manager_.getCustomRepository(
         this.inviteRepository_
       )
+
       await Promise.any(
         users.map(async user_email => {
           let invite = await inviteRepository.findOne({
@@ -95,15 +95,15 @@ class InviteService extends BaseService {
 
           // if user is trying to send another invite for the same account + email, but with a different role
           // then change the role on the invite as long as the invite has not been accepted yet
-          if (invite && !invite.accepted && invite.role !== inviteData.role) {
-            invite.role = inviteData.role
+          if (invite && !invite.accepted && invite.role !== role) {
+            invite.role = role
 
             invite = await inviteRepository.save(invite)
           }
           // if no invite is found, create a new one
           else if (!invite) {
             const created = await inviteRepository.create({
-              ...inviteData,
+              role,
               user_email,
             })
 
@@ -112,7 +112,7 @@ class InviteService extends BaseService {
 
           const token = this.generateToken({
             invite_id: invite.id,
-            role: data.role,
+            role,
             user_email,
           })
 
@@ -172,11 +172,8 @@ class InviteService extends BaseService {
 
       const invite = await inviteRepo.findOne({ where: { id: invite_id } })
 
-      if (invite.user_email !== user_email || invite.role !== role) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `invalid token either: ${invite.user_email} !== ${user_email} or ${invite.role} !== ${role}`
-        )
+      if (invite.user_email !== user_email) {
+        throw new MedusaError(MedusaError.Types.INVALID_DATA, `invalid token`)
       }
 
       if (invite.accepted) {
@@ -201,7 +198,7 @@ class InviteService extends BaseService {
       const user = await this.userService_.withTransaction(m).create(
         {
           email: user_email,
-          role: role,
+          role: invite.role,
           first_name: user_.firstName,
           last_name: user_.lastName,
         },
@@ -224,7 +221,6 @@ class InviteService extends BaseService {
     const inviteRepo = this.manager_.getCustomRepository(this.inviteRepository_)
 
     const invite = await inviteRepo.findOne({ id })
-    // const account = await this.accountService_.retrieve(invite.account_id)
 
     const token = this.generateToken({
       invite_id: invite.id,
@@ -233,7 +229,7 @@ class InviteService extends BaseService {
     })
 
     await this.eventBus_
-      .withTransaction(manager)
+      .withTransaction(this.manager_)
       .emit(InviteService.Events.CREATED, {
         id: invite.id,
         token,
