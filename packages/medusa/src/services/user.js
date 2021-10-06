@@ -274,10 +274,13 @@ class UserService extends BaseService {
    * @returns {string} the generated JSON web token
    */
   async generateResetPasswordToken(userId) {
-    const user = await this.retrieve(userId)
+    const user = await this.retrieve(userId, {
+      select: ["id", "email", "password_hash"],
+    })
+
     const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-    const payload = { user_id: user.id, exp: expiry }
+    const payload = { user_id: user.id, email: user.email, exp: expiry }
     const token = jwt.sign(payload, secret)
     // Notify subscribers
     this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
