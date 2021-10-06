@@ -111,6 +111,12 @@ class RestockNotificationService extends BaseService {
    * @return {Promise<RestockNotification>} The resulting restock notification
    */
   async triggerRestock(variantId) {
+    if (this.options_?.trigger_delay) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, this.options_.trigger_delay)
+      )
+    }
+
     return this.atomicPhase_(async (manager) => {
       const restockRepo = manager.getRepository(this.restockNotificationModel_)
 
