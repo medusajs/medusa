@@ -17,7 +17,9 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    let user = await userService.retrieveByEmail(value.email)
+    let user = await userService.retrieveByEmail(value.email, {
+      select: ["id", "password_hash"],
+    })
 
     const decodedToken = await jwt.verify(value.token, user.password_hash)
     if (!decodedToken || decodedToken.user_id !== user.id) {
@@ -25,7 +27,7 @@ export default async (req, res) => {
       return
     }
 
-    const data = await userService.setPassword(user.id, value.password)
+    const data = await userService.setPassword_(user.id, value.password)
 
     res.status(200).json({ user: data })
   } catch (error) {
