@@ -2,7 +2,6 @@ import { BaseService } from "medusa-interfaces"
 import jwt from "jsonwebtoken"
 import config from "../config"
 import { MedusaError } from "medusa-core-utils"
-import { Invite } from ".."
 
 class InviteService extends BaseService {
   static Events = {
@@ -44,9 +43,7 @@ class InviteService extends BaseService {
       inviteRepository: this.inviteRepository_,
       userService: this.userService_,
       userRepository: this.userRepo_,
-      // mailerService: this.mailerService_,
       eventBusService: this.eventBus_,
-      // accountService: this.accountService_,
     })
 
     cloned.transactionManager_ = manager

@@ -68,7 +68,7 @@ class UserService extends BaseService {
    */
   async list(selector, config = {}) {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
-    return userRepo.find(this.buildQuery_(selector, config)) //{ where: selector })
+    return userRepo.find(this.buildQuery_(selector, config))
   }
 
   /**
@@ -282,6 +282,7 @@ class UserService extends BaseService {
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
     const payload = { user_id: user.id, email: user.email, exp: expiry }
     const token = jwt.sign(payload, secret)
+
     // Notify subscribers
     this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
       email: user.email,
