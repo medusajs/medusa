@@ -1,5 +1,5 @@
 import { Validator, MedusaError } from "medusa-core-utils"
-import _ from "lodash"
+import _, { result } from "lodash"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -7,6 +7,9 @@ export default async (req, res) => {
       .email()
       .required(),
     name: Validator.string().optional(),
+    role: Validator.string()
+      .valid("member", "admin")
+      .optional(),
     password: Validator.string().required(),
   })
 
@@ -17,9 +20,12 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    const data = _.pick(value, ["email", "name"])
+    const data = _.pick(value, ["email", "name", "role"])
 
-    const user = await userService.create(data, value.password)
+    const { password_hash, ...user } = await userService.create(
+      data,
+      value.password
+    )
 
     res.status(200).json({ user })
   } catch (err) {
