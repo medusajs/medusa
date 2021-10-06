@@ -1,6 +1,6 @@
 # Deploying on Qovery
 
-This is a guide for deploying a Medusa project to Qovery. Qovery is a CaaS, that provides you with the developer experience of Heroku on top of your AWS account.
+This is a guide for deploying a Medusa project to Qovery. Qovery is a Continuous Deployment Platform, that provides you with the developer experience of Heroku on top of your cloud provider (e.g. AWS, DigitalOcean).
 
 > We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
 
