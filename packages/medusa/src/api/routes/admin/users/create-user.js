@@ -6,9 +6,10 @@ export default async (req, res) => {
     email: Validator.string()
       .email()
       .required(),
-    name: Validator.string().optional(),
+    first_name: Validator.string().optional(),
+    last_name: Validator.string().optional(),
     role: Validator.string()
-      .valid("member", "admin")
+      .valid("member", "admin", "developer")
       .optional(),
     password: Validator.string().required(),
   })
