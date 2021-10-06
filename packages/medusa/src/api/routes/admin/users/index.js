@@ -6,7 +6,6 @@ const route = Router()
 export default app => {
   app.use("/users", route)
 
-  route.get("/", middlewares.wrap(require("./list-users").default))
   route.get("/:user_id", middlewares.wrap(require("./get-user").default))
 
   route.post("/", middlewares.wrap(require("./create-user").default))
@@ -30,10 +29,15 @@ export default app => {
     "/invite/:invite_id/resend",
     middlewares.wrap(require("./resend-invite").default)
   )
+  route.delete(
+    "/invite/:invite_id",
+    middlewares.wrap(require("./delete-invite").default)
+  )
 
   route.post("/:user_id", middlewares.wrap(require("./update-user").default))
 
   route.delete("/:user_id", middlewares.wrap(require("./delete-user").default))
+  route.get("/", middlewares.wrap(require("./list-users").default))
 
   return app
 }
