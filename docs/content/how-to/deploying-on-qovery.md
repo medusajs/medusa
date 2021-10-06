@@ -99,7 +99,7 @@ In your environment overview in Qovery, deploy your databases one after the othe
 
 #### Push changes to your repository
 
-To initialise your first build, simply commit and push your changes to your repository connected to Qovery.
+To initialise your first build Qovery, simply commit and push your changes.
 
 ```shell=
 git add .
@@ -117,5 +117,5 @@ You now have an application running on Qovery. This can be scaled and configured
 
 Furthermore, you can deploy Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- Deploy Admin on Netlify (Coming soon)
+- [Deploy Admin on Netlify](https://docs.medusa-commerce.com/how-to/deploying-admin-on-netlify)
 - Deploy Admin on Gatsby Cloud (Coming soon)
