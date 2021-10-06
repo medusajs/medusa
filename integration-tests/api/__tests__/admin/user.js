@@ -536,6 +536,51 @@ describe("/admin/users", () => {
         )
       })
 
+      it("Resets the password given a valid token without including email(unauthorized endpoint)", async () => {
+        const api = useApi()
+
+        const expiry = Math.floor(Date.now() / 1000) + 60 * 15
+        const dbUser = await dbConnection.manager.query(
+          `SELECT * FROM public.user WHERE email = '${user.email}'`
+        )
+
+        const token_payload = {
+          user_id: user.id,
+          email: user.email,
+          exp: expiry,
+        }
+        const token = jwt.sign(token_payload, dbUser[0].password_hash)
+
+        const result = await api
+          .post("/admin/users/reset-password", {
+            token,
+            password: "new password",
+          })
+          .catch((err) => console.log(err))
+
+        const loginResult = await api.post("admin/auth", {
+          email: user.email,
+          password: "new password",
+        })
+
+        expect(result.status).toEqual(200)
+        expect(result.data.user).toEqual(
+          expect.objectContaining({
+            email: user.email,
+            role: user.role,
+          })
+        )
+        expect(result.data.user.password_hash).toEqual(undefined)
+
+        expect(loginResult.status).toEqual(200)
+        expect(loginResult.data.user).toEqual(
+          expect.objectContaining({
+            email: user.email,
+            role: user.role,
+          })
+        )
+      })
+
       it("Fails to Reset the password given an invalid token (unauthorized endpoint)", async () => {
         expect.assertions(2)
         const api = useApi()
