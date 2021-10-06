@@ -105,15 +105,15 @@ export default async (req, res) => {
                 items: value.items,
               }
 
-              if (value.return_shipping) {
-                returnObj.shipping_method = value.return_shipping
+              if (value.return_shipping_option) {
+                returnObj.shipping_method = value.return_shipping_option
               }
 
               const createdReturn = await returnService
                 .withTransaction(manager)
                 .create(returnObj, order)
 
-              if (value.return_shipping) {
+              if (value.return_shipping_option) {
                 await returnService
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)
