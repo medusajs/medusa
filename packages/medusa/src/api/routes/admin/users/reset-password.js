@@ -5,7 +5,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     email: Validator.string()
       .email()
-      .required(),
+      .optional(),
     token: Validator.string().required(),
     password: Validator.string().required(),
   })
@@ -16,8 +16,10 @@ export default async (req, res) => {
   }
 
   try {
+    const decoded = await jwt.decode(value.token)
+
     const userService = req.scope.resolve("userService")
-    let user = await userService.retrieveByEmail(value.email, {
+    let user = await userService.retrieveByEmail(value.email || decoded.email, {
       select: ["id", "password_hash"],
     })
 
@@ -27,10 +29,16 @@ export default async (req, res) => {
       return
     }
 
-    const data = await userService.setPassword_(user.id, value.password)
+    const { password_hash, ...data } = await userService.setPassword_(
+      user.id,
+      value.password
+    )
 
     res.status(200).json({ user: data })
   } catch (error) {
+    if (error.message === "invalid token") {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.message)
+    }
     throw error
   }
 }
