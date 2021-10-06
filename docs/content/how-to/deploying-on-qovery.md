@@ -14,7 +14,7 @@ Create a project and an environment.
 
 ### 3. Add your Medusa app
 
-Add a new app to your Qovery environment and connect the Git repository that holds your Medusa project. The port should be 9000, unless something different is specified in your own setup.
+Add a new app to your Qovery environment and connect the Git repository that holds your Medusa project. In your application settings, set the port to 9000 unless something else is specified in your setup.
 
 > If you used our `npx` starter, your repository will most likely hold all components; storefront, admin and backend. Ensure that **Root application path** in Qovery is pointing to your Medusa project (`/backend`).
 
@@ -90,17 +90,22 @@ Update `scripts` to the following:
   },
 ```
 
+### 6. Deploy Medusa
+
+Finally, deploy your Redis and Postgres followed by your Medusa application.
+
+#### Deploy databases
+In your environment overview in Qovery, deploy your databases one after the other. Only when these are deployed, proceed to next step.
+
 #### Push changes to your repository
+
+To initialise your first build, simply commit and push your changes to your repository connected to Qovery.
 
 ```shell=
 git add .
 git commit -m "chore: Qovery setup"
 git push origin main
 ```
-
-### 6. Deploy Medusa
-
-Finally, deploy your Redis and Postgres followed by your Medusa application.
 
 ### 6. Try it out!
 
