@@ -14,6 +14,7 @@ import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 export enum UserRoles {
   ADMIN = "admin",
   MEMBER = "member",
+  DEVELOPER = "developer",
 }
 
 @Entity()
@@ -21,7 +22,7 @@ export class User {
   @PrimaryColumn()
   id: string
 
-  @Column({type:'enum', enum: UserRoles})
+  @Column({type:'enum', enum: UserRoles, nullable: true, default: UserRoles.MEMBER})
   role: UserRoles
 
   @Index({ unique: true })

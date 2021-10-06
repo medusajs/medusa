@@ -11,6 +11,7 @@ import {
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { UserRoles } from "./user"
 
 @Entity()
 export class Invite {
@@ -20,8 +21,8 @@ export class Invite {
   @Column()
   user_email: string
 
-  @Column()
-  role: string
+  @Column({type:'enum', enum: UserRoles,nullable: true, default: UserRoles.MEMBER})
+  role: UserRoles
 
   @Column({ default: false })
   accepted: boolean;
