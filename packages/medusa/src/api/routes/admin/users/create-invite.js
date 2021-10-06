@@ -2,8 +2,6 @@ import { Validator, MedusaError } from "medusa-core-utils"
 import config from "../../../../config"
 
 export default async (req, res) => {
-  const { id } = req.params
-  const { body } = req
   const schema = Validator.object().keys({
     users: Validator.array()
       .items(
@@ -16,20 +14,14 @@ export default async (req, res) => {
       .trim()
       .required(),
   })
-  const { value, error } = schema.validate(body)
+  const { value, error } = schema.validate(req.body)
 
   if (error) {
-    throw error
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, error)
   }
-
   const inviteService = req.scope.resolve("inviteService")
 
-  const token = await inviteService.create({
-    account_id: id,
-    inviter: req.user,
-    ...value,
-  })
+  await inviteService.create(value.users, value.role)
 
-  res.json({ token })
   res.sendStatus(200)
 }
