@@ -60,7 +60,7 @@ git commit -m "Deploy Medusa Admin on Netlify"
 git push origin main
 ```
 
-Within a couple of minutes, your Gatsby storefront is and running on Netlify.
+Within a couple of minutes, your Gatsby storefront is up and running on Netlify.
 
 > If you experience CORS issues in your new setup, you might need to add your storefront url as part of the STORE_CORS environment variable in your server setup.
 
