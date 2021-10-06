@@ -288,7 +288,6 @@ class SwapService extends BaseService {
    *  the customer.
    * @param {ReturnShipping?} returnShipping - an optional shipping method for
    *  returning the returnItems.
-   * @param {rmaShippingOptions?} rmaShippingOptions - an optional list of rma shipping options for the swap
    * @param {Object} custom - contains relevant custom information. This object may
    *  include no_notification which will disable sending notification when creating
    *  swap. If set, it overrules the attribute inherited from the order.
@@ -299,7 +298,6 @@ class SwapService extends BaseService {
     returnItems,
     additionalItems,
     returnShipping,
-    rmaShippingOptions = [],
     custom = {
       no_notification: undefined,
     }
@@ -343,11 +341,6 @@ class SwapService extends BaseService {
         })
       )
 
-      const rma_shipping_options = rmaShippingOptions.map(so => ({
-        shipping_option_id: so.option_id,
-        price: so.price,
-      }))
-
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
@@ -359,7 +352,6 @@ class SwapService extends BaseService {
         order_id: order.id,
         additional_items: newItems,
         no_notification: evaluatedNoNotification,
-        rma_shipping_options,
       })
 
       const result = await swapRepo.save(created)
@@ -531,7 +523,7 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
    */
-  async createCart(swapId) {
+  async createCart(swapId, customShippingOptions = []) {
     return this.atomicPhase_(async manager => {
       const swap = await this.retrieve(swapId, {
         relations: [
@@ -576,6 +568,10 @@ class SwapService extends BaseService {
         region_id: order.region_id,
         customer_id: order.customer_id,
         type: "swap",
+        custom_shipping_options: customShippingOptions.map(so => ({
+          price: so.price,
+          shipping_option_id: so.option_id,
+        })),
         metadata: {
           swap_id: swap.id,
           parent_order_id: order.id,

@@ -1,4 +1,3 @@
-import { RMAShippingOption } from './rma-shipping-option';
 import {
   Entity,
   Index,
@@ -113,13 +112,6 @@ export class Swap {
     { cascade: ["insert"] }
   )
   shipping_methods: ShippingMethod[]
-
-  @OneToMany(
-    () => RMAShippingOption,
-    method => method.swap,
-    { cascade: ["insert"] }
-  )
-  rma_shipping_options: RMAShippingOption[]
 
   @Column({ nullable: true })
   cart_id: string

@@ -45,7 +45,7 @@ export default async (req, res) => {
     await manager.transaction(async m => {
       const txCartService = cartService.withTransaction(m)
 
-      await txCartService.addRMAMethod(id, value.option_id, value.data)
+      await txCartService.addShippingMethod(id, value.option_id, value.data)
 
       const updated = await txCartService.retrieve(id, {
         relations: ["payment_sessions"],
