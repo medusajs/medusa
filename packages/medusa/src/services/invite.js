@@ -2,15 +2,19 @@ import { BaseService } from "medusa-interfaces"
 import jwt from "jsonwebtoken"
 import config from "../config"
 import { MedusaError } from "medusa-core-utils"
+import { Invite } from ".."
 
 class InviteService extends BaseService {
+  static Events = {
+    CREATED: "invite.created",
+  }
+
   constructor({
     manager,
     userService,
     userRepository,
     inviteRepository,
     eventBusService,
-    // accountService,
   }) {
     super()
 
@@ -28,8 +32,6 @@ class InviteService extends BaseService {
 
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    // this.accountService_ = accountService
   }
 
   withTransaction(manager) {
@@ -59,7 +61,16 @@ class InviteService extends BaseService {
 
     const invites = await inviteRepo.find(query)
 
-    return invites
+    return invites.map(inv => {
+      return {
+        token: this.generateToken({
+          invite_id: inv.id,
+          role: inv.role,
+          user_email: inv.user_email,
+        }),
+        ...inv,
+      }
+    })
   }
 
   /**
@@ -76,38 +87,6 @@ class InviteService extends BaseService {
       const inviteRepository = this.manager_.getCustomRepository(
         this.inviteRepository_
       )
-      if (true) {
-        const user_email = users[0]
-        // await Promise.any(
-        // const tokens = users.map(async user_email => {
-        let invite = await inviteRepository.findOne({
-          where: { user_email },
-        })
-
-        // if user is trying to send another invite for the same account + email, but with a different role
-        // then change the role on the invite as long as the invite has not been accepted yet
-        if (invite && !invite.accepted && invite.role !== inviteData.role) {
-          invite.role = inviteData.role
-
-          invite = await inviteRepository.save(invite)
-        }
-        // if no invite is found, create a new one
-        else if (!invite) {
-          const created = await inviteRepository.create({
-            ...inviteData,
-            user_email,
-          })
-
-          invite = await inviteRepository.save(created)
-        }
-
-        const token = this.generateToken({
-          invite_id: invite.id,
-          role: data.role,
-          user_email,
-        })
-        return token
-      }
       await Promise.any(
         users.map(async user_email => {
           let invite = await inviteRepository.findOne({
@@ -137,14 +116,35 @@ class InviteService extends BaseService {
             user_email,
           })
 
-          // await this.mailerService_.send("invite_link", {
-          //   to: user_email,
-          //   account_name: account.name,
-          //   invite_link: `http://localhost:6002/a/invite?token=${token}`,
-          //   inviter: `${inviter.first_name} ${inviter.last_name}`,
-          // })
+          await this.eventBus_
+            .withTransaction(manager)
+            .emit(InviteService.Events.CREATED, {
+              id: invite.id,
+              token,
+            })
         })
       )
+    })
+  }
+
+  /**
+   * Deletes an invite from a given user id.
+   * @param {string} inviteId - the id of the invite to delete. Must be
+   *   castable as an ObjectId
+   * @return {Promise} the result of the delete operation.
+   */
+  async delete(inviteId) {
+    return this.atomicPhase_(async manager => {
+      const inviteRepo = manager.getCustomRepository(this.inviteRepository_)
+
+      // Should not fail, if invite does not exist, since delete is idempotent
+      const invite = await inviteRepo.findOne({ where: { id: inviteId } })
+
+      if (!invite) return Promise.resolve()
+
+      await inviteRepo.softRemove(invite)
+
+      return Promise.resolve()
     })
   }
 
@@ -163,13 +163,21 @@ class InviteService extends BaseService {
         "Token is not valid"
       )
     }
-    const { invite_id } = decoded
+
+    const { invite_id, user_email, role } = decoded
 
     return this.atomicPhase_(async m => {
       const userRepo = m.getCustomRepository(this.userRepo_)
       const inviteRepo = m.getCustomRepository(this.inviteRepository_)
 
       const invite = await inviteRepo.findOne({ where: { id: invite_id } })
+
+      if (invite.user_email !== user_email || invite.role !== role) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `invalid token either: ${invite.user_email} !== ${user_email} or ${invite.role} !== ${role}`
+        )
+      }
 
       if (invite.accepted) {
         throw new MedusaError(
@@ -179,8 +187,8 @@ class InviteService extends BaseService {
       }
 
       const exists = await userRepo.findOne({
-        where: { user_id: user_.id },
-        select: ["user_id"],
+        where: { email: user_email.toLowerCase() },
+        select: ["id"],
       })
 
       if (exists) {
@@ -190,12 +198,17 @@ class InviteService extends BaseService {
         )
       }
 
-      const user = await this.userService_
-        .withTransaction(m)
-        .create({ role: invite.role, user_id: user_.id })
+      const user = await this.userService_.withTransaction(m).create(
+        {
+          email: user_email,
+          role: role,
+          first_name: user_.firstName,
+          last_name: user_.lastName,
+        },
+        user_.password
+      )
 
       // use the email of the user who actually accepted the invite
-      invite.user_email = user.email
       invite.accepted = true
       await inviteRepo.save(invite)
 
@@ -207,7 +220,7 @@ class InviteService extends BaseService {
     return jwt.verify(token, config.jwtSecret)
   }
 
-  async resend(id, inviter) {
+  async resend(id) {
     const inviteRepo = this.manager_.getCustomRepository(this.inviteRepository_)
 
     const invite = await inviteRepo.findOne({ id })
@@ -219,12 +232,12 @@ class InviteService extends BaseService {
       user_email: invite.user_email,
     })
 
-    // return await this.mailerService_.send("invite_link", {
-    //   to: invite.user_email,
-    //   account_name: account.name,
-    //   invite_link: `http://localhost:6002/invite?token=${token}`,
-    //   inviter: `${inviter.first_name} ${inviter.last_name}`,
-    // })
+    await this.eventBus_
+      .withTransaction(manager)
+      .emit(InviteService.Events.CREATED, {
+        id: invite.id,
+        token,
+      })
   }
 }
 
