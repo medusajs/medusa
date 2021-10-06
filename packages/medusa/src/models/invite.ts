@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class Invite {
@@ -34,7 +35,7 @@ export class Invite {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date
 
-  @Column({ type: "jsonb", nullable: true })
+  @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
 
   @BeforeInsert()
