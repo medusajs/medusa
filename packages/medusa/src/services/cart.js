@@ -1305,7 +1305,7 @@ class CartService extends BaseService {
    * @param {Object} data - the fulmillment data for the method
    * @return {Promise} the result of the update operation
    */
-  async addShippingMethod(cartId, optionIdOrCustomOptionId, data) {
+  async addShippingMethod(cartId, optionId, data) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
         select: ["subtotal"],
@@ -1321,19 +1321,19 @@ class CartService extends BaseService {
         ],
       })
 
-      let { optionId, customPrice } = this.extractShippingOptionIdAndPrice(
-        cart,
-        optionIdOrCustomOptionId
-      )
+      let customShippingOption = this.findCustomShippingOption(cart, optionId)
 
       const { shipping_methods } = cart
 
+      const shippingMethodConfig = customShippingOption
+        ? { cart, price: customShippingOption.price }
+        : {
+            cart,
+          }
+
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
-        .createShippingMethod(optionId, data, {
-          cart,
-          ...customPrice,
-        })
+        .createShippingMethod(optionId, data, shippingMethodConfig)
 
       const methods = [newMethod]
       if (shipping_methods.length) {
@@ -1374,32 +1374,26 @@ class CartService extends BaseService {
   }
 
   /**
-   * Adds the corresponding shipping method either from a normal or custom option to the list of shipping methods associated with
-   * the cart.
+   * Finds the cart's custom shipping option based on the passed option id.
+   * throws if custom options is not empty and no shipping option corresponds to optionId
    * @param {Object} cart - the cart object
-   * @param {string} optionIdOrCustomOptionId - id of the normal or custom shipping option to add as valid method
-   * @returns {{ optionId: string; customPrice: { price: number; } | {};}}
+   * @param {string} option - id of the normal or custom shipping option to add as valid method
+   * @returns {CustomShippingOption | undefined}
    */
-  extractShippingOptionIdAndPrice(cart, optionIdOrCustomOptionId) {
-    if (
-      cart.custom_shipping_options &&
-      cart.custom_shipping_options.length > 0
-    ) {
-      const customOption = cart.custom_shipping_options.find(
-        cso => cso.id === optionIdOrCustomOptionId
+  findCustomShippingOption(cart, optionId) {
+    let customOption = cart.custom_shipping_options?.find(
+      cso => cso.shipping_option_id === optionId
+    )
+    const hasCustomOptions = cart.custom_shipping_options?.length
+
+    if (hasCustomOptions && !customOption) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Wrong shipping option"
       )
-      if (customOption) {
-        return {
-          optionId: customOption.shipping_option_id,
-          customPrice: { price: customOption.price },
-        }
-      }
     }
 
-    return {
-      optionId: optionIdOrCustomOptionId,
-      customPrice: {},
-    }
+    return customOption
   }
 
   /**

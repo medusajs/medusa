@@ -160,7 +160,7 @@ describe("/store/shipping-options", () => {
       )
     })
 
-    it("given a swap cart, when user retrieves its shipping options, then should return a list of custom shipping options", async () => {
+    it("given a cart with custom shipping options, when user retrieves its shipping options, then should return the list of custom shipping options", async () => {
       const api = useApi()
 
       const response = await api
@@ -173,8 +173,9 @@ describe("/store/shipping-options", () => {
       expect(response.data.shipping_options).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            shipping_option_id: "test-option",
-            price: 0,
+            id: "test-option",
+            amount: 0,
+            name: "test-option",
           }),
         ])
       )
