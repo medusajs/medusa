@@ -21,7 +21,7 @@ export default async (req, res) => {
 
   try {
     const userService = req.scope.resolve("userService")
-    const data = _.pick(value, ["email", "name", "role"])
+    const data = _.pick(value, ["email", "first_name", "last_name", "role"])
 
     const { password_hash, ...user } = await userService.create(
       data,

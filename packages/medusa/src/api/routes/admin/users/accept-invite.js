@@ -4,8 +4,8 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     token: Validator.string().required(),
     user: Validator.object({
-      firstName: Validator.string(),
-      lastName: Validator.string(),
+      first_name: Validator.string(),
+      last_name: Validator.string(),
       password: Validator.string(),
     }),
   })
