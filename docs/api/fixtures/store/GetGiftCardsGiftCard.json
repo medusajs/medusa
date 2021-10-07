@@ -1,0 +1,21 @@
+{
+  "gift_card": {
+    "id": "gift_01FHDYYR4HYFFQ06X6KCFWYMZQ",
+    "code": "1J3U-WXO0-SZ0H-O5QU",
+    "value": 1000,
+    "balance": 500,
+    "region": {
+      "id": "reg_01FHDYYR41DAJBEY6AJ6EPEK9D",
+      "name": "United States",
+      "currency_code": "usd",
+      "tax_rate": "0",
+      "tax_code": null,
+      "payment_providers": [],
+      "fulfillment_providers": [],
+      "created_at": "2021-10-07T18:06:26.943Z",
+      "updated_at": "2021-10-07T18:06:26.943Z",
+      "deleted_at": null,
+      "metadata": null
+    }
+  }
+}
