@@ -2,7 +2,7 @@ import _ from "lodash"
 import Stripe from "stripe"
 import { PaymentService } from "medusa-interfaces"
 
-class IdealProviderService extends PaymentService {
+class BancontactProviderService extends PaymentService {
   static identifier = "stripe-bancontact"
 
   constructor(
@@ -238,4 +238,4 @@ class IdealProviderService extends PaymentService {
   }
 }
 
-export default IdealProviderService
+export default BancontactProviderService
