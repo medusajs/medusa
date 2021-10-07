@@ -161,7 +161,7 @@ class InviteService extends BaseService {
       )
     }
 
-    const { invite_id, user_email, role } = decoded
+    const { invite_id, user_email } = decoded
 
     return this.atomicPhase_(async m => {
       const userRepo = m.getCustomRepository(this.userRepo_)
@@ -170,7 +170,10 @@ class InviteService extends BaseService {
       const invite = await inviteRepo.findOne({ where: { id: invite_id } })
 
       if (invite.user_email !== user_email) {
-        throw new MedusaError(MedusaError.Types.INVALID_DATA, `invalid token`)
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `invalid token ${invite.user_email} != ${user_email}`
+        )
       }
 
       if (invite.accepted) {
@@ -196,8 +199,8 @@ class InviteService extends BaseService {
         {
           email: user_email,
           role: invite.role,
-          first_name: user_.firstName,
-          last_name: user_.lastName,
+          first_name: user_.first_name,
+          last_name: user_.last_name,
         },
         user_.password
       )

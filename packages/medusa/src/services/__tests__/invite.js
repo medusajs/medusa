@@ -58,7 +58,13 @@ describe("InviteService", () => {
       findOne: q => {
         if (q.where.id === "accepted") {
           return Promise.resolve({
+            user_email: "accepted@medusa-commerce.com",
             accepted: true,
+          })
+        }
+        if (q.where.id === "existingUser") {
+          return Promise.resolve({
+            user_email: "existing@medusa-commerce.com",
           })
         }
         return Promise.resolve({
@@ -73,6 +79,9 @@ describe("InviteService", () => {
       findOne: q => {
         if (q.where.user_id === "test_user") {
           return Promise.resolve({})
+        }
+        if (q.where.email === "existing@medusa-commerce.com") {
+          return Promise.resolve("usr_test123")
         }
         return Promise.resolve(null)
       },
@@ -98,10 +107,18 @@ describe("InviteService", () => {
       eventBusService: EventBusServiceMock,
     })
 
+    beforeEach(() => jest.clearAllMocks())
+
     it("fails to accept an invite already accepted", async () => {
       expect.assertions(1)
       await inviteService
-        .accept(inviteService.generateToken({ invite_id: "accepted" }), {})
+        .accept(
+          inviteService.generateToken({
+            user_email: "accepted@medusa-commerce.com",
+            invite_id: "accepted",
+          }),
+          {}
+        )
         .catch(err => {
           expect(err).toEqual(
             new MedusaError(
@@ -124,8 +141,11 @@ describe("InviteService", () => {
       expect.assertions(1)
       await inviteService
         .accept(
-          inviteService.generateToken({ invite_id: "not yet accepted" }),
-          { id: "test_user" }
+          inviteService.generateToken({
+            user_email: "existing@medusa-commerce.com",
+            invite_id: "existingUser",
+          }),
+          {}
         )
         .catch(err => {
           expect(err).toEqual(
@@ -138,14 +158,22 @@ describe("InviteService", () => {
     })
     it("accepts an invite", async () => {
       await inviteService.accept(
-        inviteService.generateToken({ invite_id: "not yet accepted" }),
-        { id: "test_id" }
+        inviteService.generateToken({
+          user_email: "test@test.com",
+          invite_id: "not yet accepted",
+        }),
+        { first_name: "John", last_name: "Doe", password: "test stuff" }
       )
       expect(createMock.create).toHaveBeenCalledTimes(1)
-      expect(createMock.create).toHaveBeenCalledWith({
-        role: "admin",
-        user_id: "test_id",
-      })
+      expect(createMock.create).toHaveBeenCalledWith(
+        {
+          email: "test@test.com",
+          role: "admin",
+          first_name: "John",
+          last_name: "Doe",
+        },
+        "test stuff"
+      )
 
       expect(inviteRepo.save).toHaveBeenCalledTimes(1)
       expect(inviteRepo.save).toHaveBeenCalledWith({
