@@ -343,17 +343,16 @@ describe("/admin/users", () => {
         )
 
         const user = {
-          firstName: "test",
-          lastName: "testesen",
+          first_name: "test",
+          last_name: "testesen",
           password: "supersecret",
         }
 
         const payload = { token, user }
 
-        const createResponse = await api.post(
-          "/admin/users/invite/accept",
-          payload
-        )
+        const createResponse = await api
+          .post("/admin/users/invite/accept", payload)
+          .catch((err) => console.log(err))
 
         const userResponse = await api.get("/admin/users?includeInvites=true", {
           headers: { Authorization: "Bearer test_token" },
@@ -388,8 +387,8 @@ describe("/admin/users", () => {
         )
 
         const user = {
-          firstName: "test",
-          lastName: "testesen",
+          first_name: "test",
+          last_name: "testesen",
           password: "supersecret",
         }
 
@@ -441,8 +440,8 @@ describe("/admin/users", () => {
         )
 
         const user = {
-          firstName: "test",
-          lastName: "testesen",
+          first_name: "test",
+          last_name: "testesen",
           password: "supersecret",
         }
 
@@ -455,8 +454,8 @@ describe("/admin/users", () => {
 
         const secondPayload = {
           user: {
-            firstName: "testesens",
-            lastName: "test",
+            first_name: "testesens",
+            last_name: "test",
             password: "testesens",
           },
           token,
@@ -483,7 +482,6 @@ describe("/admin/users", () => {
           })
           .catch((err) => {
             console.log(err)
-            console.log(err.response.data.message)
           })
 
         expect(resp.data).toEqual("")
