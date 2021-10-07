@@ -46,7 +46,7 @@ export class Customer {
   )
   shipping_addresses: Address[]
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   password_hash: string
 
   @Column({ nullable: true })

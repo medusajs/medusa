@@ -10,7 +10,7 @@ Welcome to Medusa - we are so excited to get you on board!
 
 This tutorial will walk you through the steps to take to set up your local development environment. You will familiarize yourself with some of the core parts that make Medusa work and learn how to configure your development environment. Furthermore you will be introduced to how the plugin architecture works and how to customize your commerce functionalities with custom logic and endpoints.
 
-As a final part of the tutorial you will be linking your local project to Medusa Cloud where you can leverage advanced tools that make it easy to develop, test and deploy your Medusa project.
+<!-- As a final part of the tutorial you will be linking your local project to Medusa Cloud where you can leverage advanced tools that make it easy to develop, test and deploy your Medusa project. -->
 
 ## Background Knowledge and Prerequisites
 
@@ -107,11 +107,11 @@ If you don't already have a text editor of choice you should find one you like -
 
 It is not important which editor you use as long as you feel comfortable working with it.
 
-## Medusa Cloud account
+<!-- ## Medusa Cloud account
 
 As the final step in this part of the tutorial you should create a Medusa Cloud account. Medusa Cloud is the platform that works with Medusa; the platform is where you view and manage your store, but is also a key part of the development process as you will be linking your local project to the platform so that you can manage your store while in development.
 
-[Sign up for Medusa Cloud](https://app.medusa-commerce.com)
+[Sign up for Medusa Cloud](https://app.medusa-commerce.com) -->
 
 ## Summary
 

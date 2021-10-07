@@ -71,7 +71,13 @@ export default async (req, res) => {
       .required(),
     is_disabled: Validator.boolean().default(false),
     starts_at: Validator.date().optional(),
-    ends_at: Validator.date().optional(),
+    ends_at: Validator.date()
+      .greater(Validator.ref("starts_at"))
+      .optional(),
+    valid_duration: Validator.string()
+      .isoDuration()
+      .allow(null)
+      .optional(),
     usage_limit: Validator.number()
       .positive()
       .optional(),
