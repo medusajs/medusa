@@ -1,4 +1,4 @@
-# Digital Ocean App Platform
+# Deploying on DigitalOcean App Platform
 This is a guide for deploying a Medusa project on DigitalOcean App Platform. 
 > It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
 
