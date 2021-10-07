@@ -1,9 +1,11 @@
 export default async (req, res) => {
-  const shopifyService = req.scope.resolve("shopifyService")
+  const orderService = req.scope.resolve("shopifyOrderService")
 
   const order = req.body
 
-  await shopifyService.createOrder(order)
+  console.log("ORDER ID => ", order.id)
+
+  await orderService.create(order)
 
   res.sendStatus(200)
 }

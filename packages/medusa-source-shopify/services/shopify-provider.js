@@ -19,8 +19,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
-
 function _classCallCheck(instance, Constructor) { if (!_instanceof(instance, Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -49,29 +47,89 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
   var _super = _createSuper(ShopifyProviderService);
 
   function ShopifyProviderService(_ref) {
-    _objectDestructuringEmpty(_ref);
+    var _this;
+
+    var manager = _ref.manager,
+        paymentRepository = _ref.paymentRepository;
 
     _classCallCheck(this, ShopifyProviderService);
 
-    return _super.call(this);
+    _this = _super.call(this);
+    /** @private @const {EntityManager} */
+
+    _this.manager_ = manager;
+    /** @private @const {PaymentRepository} */
+
+    _this.paymentRepository_ = paymentRepository;
+    return _this;
   }
 
   _createClass(ShopifyProviderService, [{
+    key: "withTransaction",
+    value: function withTransaction(transactionManager) {
+      if (!transactionManager) {
+        return this;
+      }
+
+      var cloned = new ShopifyProviderService({
+        manager: transactionManager,
+        paymentRepository: this.paymentRepository_
+      });
+      cloned.transactionManager_ = transactionManager;
+      return cloned;
+    }
+  }, {
     key: "createPayment",
     value: function () {
-      var _createPayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+      var _createPayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(payment) {
+        var _this2 = this;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                return _context.abrupt("return", {});
+                return _context2.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(manager) {
+                    var paymentRepo, captured_at, created;
+                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                      while (1) {
+                        switch (_context.prev = _context.next) {
+                          case 0:
+                            paymentRepo = manager.getCustomRepository(_this2.paymentRepository_);
+
+                            if (payment.status === "success") {
+                              captured_at = new Date(payment.processed_at).toISOString();
+                            }
+
+                            created = paymentRepo.create({
+                              provider_id: "shopify",
+                              amount: payment.total,
+                              currency_code: payment.currency_code,
+                              data: payment.data,
+                              order_id: payment.order_id,
+                              captured_at: captured_at
+                            });
+                            return _context.abrupt("return", paymentRepo.save(created));
+
+                          case 4:
+                          case "end":
+                            return _context.stop();
+                        }
+                      }
+                    }, _callee);
+                  }));
+
+                  return function (_x2) {
+                    return _ref2.apply(this, arguments);
+                  };
+                }()));
 
               case 1:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee);
+        }, _callee2, this);
       }));
 
       function createPayment(_x) {
@@ -83,36 +141,12 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
   }, {
     key: "getStatus",
     value: function () {
-      var _getStatus = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                return _context2.abrupt("return", "authorized");
-
-              case 1:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function getStatus(_x2) {
-        return _getStatus.apply(this, arguments);
-      }
-
-      return getStatus;
-    }()
-  }, {
-    key: "getPaymentData",
-    value: function () {
-      var _getPaymentData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_) {
+      var _getStatus = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_) {
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                return _context3.abrupt("return", {});
+                return _context3.abrupt("return", "authorized");
 
               case 1:
               case "end":
@@ -122,24 +156,21 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee3);
       }));
 
-      function getPaymentData(_x3) {
-        return _getPaymentData.apply(this, arguments);
+      function getStatus(_x3) {
+        return _getStatus.apply(this, arguments);
       }
 
-      return getPaymentData;
+      return getStatus;
     }()
   }, {
-    key: "authorizePayment",
+    key: "getPaymentData",
     value: function () {
-      var _authorizePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_) {
+      var _getPaymentData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_) {
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                return _context4.abrupt("return", {
-                  data: {},
-                  status: "authorized"
-                });
+                return _context4.abrupt("return", {});
 
               case 1:
               case "end":
@@ -149,21 +180,24 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee4);
       }));
 
-      function authorizePayment(_x4) {
-        return _authorizePayment.apply(this, arguments);
+      function getPaymentData(_x4) {
+        return _getPaymentData.apply(this, arguments);
       }
 
-      return authorizePayment;
+      return getPaymentData;
     }()
   }, {
-    key: "updatePaymentData",
+    key: "authorizePayment",
     value: function () {
-      var _updatePaymentData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_) {
+      var _authorizePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_) {
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                return _context5.abrupt("return", {});
+                return _context5.abrupt("return", {
+                  data: {},
+                  status: "authorized"
+                });
 
               case 1:
               case "end":
@@ -173,16 +207,16 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee5);
       }));
 
-      function updatePaymentData(_x5) {
-        return _updatePaymentData.apply(this, arguments);
+      function authorizePayment(_x5) {
+        return _authorizePayment.apply(this, arguments);
       }
 
-      return updatePaymentData;
+      return authorizePayment;
     }()
   }, {
-    key: "updatePayment",
+    key: "updatePaymentData",
     value: function () {
-      var _updatePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(_) {
+      var _updatePaymentData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(_) {
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
@@ -197,16 +231,16 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee6);
       }));
 
-      function updatePayment(_x6) {
-        return _updatePayment.apply(this, arguments);
+      function updatePaymentData(_x6) {
+        return _updatePaymentData.apply(this, arguments);
       }
 
-      return updatePayment;
+      return updatePaymentData;
     }()
   }, {
-    key: "deletePayment",
+    key: "updatePayment",
     value: function () {
-      var _deletePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(_) {
+      var _updatePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(_) {
         return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
@@ -221,16 +255,16 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee7);
       }));
 
-      function deletePayment(_x7) {
-        return _deletePayment.apply(this, arguments);
+      function updatePayment(_x7) {
+        return _updatePayment.apply(this, arguments);
       }
 
-      return deletePayment;
+      return updatePayment;
     }()
   }, {
-    key: "capturePayment",
+    key: "deletePayment",
     value: function () {
-      var _capturePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(_) {
+      var _deletePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(_) {
         return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
@@ -245,21 +279,21 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee8);
       }));
 
-      function capturePayment(_x8) {
-        return _capturePayment.apply(this, arguments);
+      function deletePayment(_x8) {
+        return _deletePayment.apply(this, arguments);
       }
 
-      return capturePayment;
+      return deletePayment;
     }()
   }, {
-    key: "refundPayment",
+    key: "capturePayment",
     value: function () {
-      var _refundPayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(payment, refundAmount) {
+      var _capturePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(_) {
         return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                return _context9.abrupt("return", payment.data);
+                return _context9.abrupt("return", {});
 
               case 1:
               case "end":
@@ -269,21 +303,21 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee9);
       }));
 
-      function refundPayment(_x9, _x10) {
-        return _refundPayment.apply(this, arguments);
+      function capturePayment(_x9) {
+        return _capturePayment.apply(this, arguments);
       }
 
-      return refundPayment;
+      return capturePayment;
     }()
   }, {
-    key: "cancelPayment",
+    key: "refundPayment",
     value: function () {
-      var _cancelPayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(_) {
+      var _refundPayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(payment, refundAmount) {
         return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
               case 0:
-                return _context10.abrupt("return", {});
+                return _context10.abrupt("return", payment.data);
 
               case 1:
               case "end":
@@ -293,7 +327,31 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee10);
       }));
 
-      function cancelPayment(_x11) {
+      function refundPayment(_x10, _x11) {
+        return _refundPayment.apply(this, arguments);
+      }
+
+      return refundPayment;
+    }()
+  }, {
+    key: "cancelPayment",
+    value: function () {
+      var _cancelPayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(_) {
+        return regeneratorRuntime.wrap(function _callee11$(_context11) {
+          while (1) {
+            switch (_context11.prev = _context11.next) {
+              case 0:
+                return _context11.abrupt("return", {});
+
+              case 1:
+              case "end":
+                return _context11.stop();
+            }
+          }
+        }, _callee11);
+      }));
+
+      function cancelPayment(_x12) {
         return _cancelPayment.apply(this, arguments);
       }
 

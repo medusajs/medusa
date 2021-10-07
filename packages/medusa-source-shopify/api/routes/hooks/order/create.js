@@ -11,20 +11,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var _default = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var shopifyService, order;
+    var orderService, order;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            shopifyService = req.scope.resolve("shopifyService");
+            orderService = req.scope.resolve("shopifyOrderService");
             order = req.body;
-            _context.next = 4;
-            return shopifyService.createOrder(order);
-
-          case 4:
-            res.sendStatus(200);
+            console.log("ORDER ID => ", order.id);
+            _context.next = 5;
+            return orderService.create(order);
 
           case 5:
+            res.sendStatus(200);
+
+          case 6:
           case "end":
             return _context.stop();
         }
