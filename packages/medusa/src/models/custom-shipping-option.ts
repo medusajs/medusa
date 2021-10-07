@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  Unique,
   UpdateDateColumn
 } from "typeorm";
 import { ulid } from "ulid";
@@ -16,6 +17,7 @@ import { ShippingOption } from "./shipping-option";
 
 
 @Entity()
+@Unique(['shipping_option_id', 'cart_id'])
 export class CustomShippingOption {
   @PrimaryColumn()
   id: string

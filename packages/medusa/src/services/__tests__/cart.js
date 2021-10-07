@@ -1308,65 +1308,50 @@ describe("CartService", () => {
     })
   })
 
-  describe("extractShippingOptionIdAndPrice", () => {
+  describe("findCustomShippingOption", () => {
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
     let cartService = new CartService({})
 
-    it("given a cart with custom shipping options and a custom shipping option id, then it should return a normal shipping option id corresponding to the custom shipping option id and a customPrice", async () => {
+    it("given a cart with custom shipping options and a shipping option id corresponding to a custom shipping option, then it should return a custom shipping option", async () => {
       const cart = {
         id: "cart-with-so",
         custom_shipping_options: [
           { id: "cso-test", shipping_option_id: "test-so", price: 20 },
         ],
       }
-      const result = cartService.extractShippingOptionIdAndPrice(
-        cart,
-        "cso-test"
-      )
+      const result = cartService.findCustomShippingOption(cart, "test-so")
 
       expect(result).toEqual({
-        optionId: "test-so",
-        customPrice: { price: 20 },
+        id: "cso-test",
+        shipping_option_id: "test-so",
+        price: 20,
       })
     })
 
-    it("given a cart with custom shipping options and a normal shipping option id, then it should return a normal shipping option id and empty customPrice", async () => {
+    it("given a cart with empty custom shipping options and shipping option id, then it should return undefined", async () => {
       const cart = {
         id: "cart-with-so",
-        custom_shipping_options: [
-          { id: "cso-test", shipping_option_id: "test-so", price: 20 },
-        ],
+        custom_shipping_options: [],
       }
-      const result = cartService.extractShippingOptionIdAndPrice(
-        cart,
-        "test-so"
-      )
+      const result = cartService.findCustomShippingOption(cart, "test-so")
 
-      expect(result).toEqual({
-        optionId: "test-so",
-        customPrice: {},
-      })
+      expect(result).toBeUndefined()
     })
 
-    it("given a cart with custom shipping options and a custom shipping option id that does not belong to the cart, then it should return the custom shipping option id and empty customPrice", async () => {
+    it("given a cart with custom shipping options and a shipping option id that does not belong to the cart, then it should throw an invalid error", async () => {
       const cart = {
         id: "cart-with-so",
         custom_shipping_options: [
-          { id: "cso-test", shipping_option_id: "test-so", price: 20 },
+          { id: "cso-test", shipping_option_id: "test-so", price: 500 },
         ],
       }
-      const result = cartService.extractShippingOptionIdAndPrice(
-        cart,
-        "cso-test-2"
-      )
 
-      expect(result).toEqual({
-        optionId: "cso-test-2",
-        customPrice: {},
-      })
+      expect(() => {
+        cartService.findCustomShippingOption(cart, "some-other-so")
+      }).toThrow(MedusaError)
     })
   })
 
@@ -1545,27 +1530,25 @@ describe("CartService", () => {
       })
     })
 
-    it("adds a shipping method from a custom shipping option and custom price", async () => {
+    it("successfully adds a shipping method from a custom shipping option and custom price", async () => {
       const data = {
         id: "test",
         extra: "yes",
       }
 
-      cartService.extractShippingOptionIdAndPrice = jest
+      cartService.findCustomShippingOption = jest
         .fn()
-        .mockImplementation((cart, optionId) => {
+        .mockImplementation(cart => {
           if (cart.id === IdMap.getId("cart-with-custom-so")) {
             return {
-              optionId: IdMap.getId("test-so"),
-              customPrice: { price: 0 },
+              price: 0,
             }
           }
-          return { optionId, customPrice: {} }
         })
 
       await cartService.addShippingMethod(
         IdMap.getId("cart-with-custom-so"),
-        IdMap.getId("cso-test"),
+        IdMap.getId("test-so"),
         data
       )
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(

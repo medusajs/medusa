@@ -1,10 +1,10 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class addCustomShippingOptions1633522106578 implements MigrationInterface {
-    name = 'addCustomShippingOptions1633522106578'
+export class addCustomShippingOptions1633614437919 implements MigrationInterface {
+    name = 'addCustomShippingOptions1633614437919'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "custom_shipping_option" ("id" character varying NOT NULL, "price" integer NOT NULL, "shipping_option_id" character varying NOT NULL, "cart_id" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_8dfcb5c1172c29eec4a728420cc" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "custom_shipping_option" ("id" character varying NOT NULL, "price" integer NOT NULL, "shipping_option_id" character varying NOT NULL, "cart_id" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "UQ_0f838b122a9a01d921aa1cdb669" UNIQUE ("shipping_option_id", "cart_id"), CONSTRAINT "PK_8dfcb5c1172c29eec4a728420cc" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_44090cb11b06174cbcc667e91c" ON "custom_shipping_option" ("shipping_option_id") `);
         await queryRunner.query(`CREATE INDEX "IDX_93caeb1bb70d37c1d36d6701a7" ON "custom_shipping_option" ("cart_id") `);
         await queryRunner.query(`ALTER TYPE "cart_type_enum" RENAME TO "cart_type_enum_old"`);

@@ -5,6 +5,7 @@ const {
   GiftCard,
   Cart,
   CustomShippingOption,
+  ShippingOption,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -466,11 +467,6 @@ describe("/store/carts", () => {
         })
 
         cartWithCustomSo = await manager.save(_cart)
-
-        await manager.insert(CustomShippingOption, {
-          id: "orphan-cso",
-          price: 0,
-        })
       } catch (err) {
         console.log(err)
       }
@@ -497,8 +493,9 @@ describe("/store/carts", () => {
       expect(cartWithShippingMethod.status).toEqual(200)
     })
 
-    it("given a cart with custom options and a custom option id already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
-      const customOptionId = cartWithCustomSo.custom_shipping_options[0].id
+    it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
+      const shippingOptionId =
+        cartWithCustomSo.custom_shipping_options[0].shipping_option_id
 
       const api = useApi()
 
@@ -506,7 +503,7 @@ describe("/store/carts", () => {
         .post(
           "/store/carts/test-cart-with-cso/shipping-methods",
           {
-            option_id: customOptionId,
+            option_id: shippingOptionId,
           },
           { withCredentials: true }
         )
@@ -515,27 +512,28 @@ describe("/store/carts", () => {
       expect(
         cartWithCustomShippingMethod.data.cart.shipping_methods
       ).toContainEqual(
-        expect.objectContaining({ shipping_option_id: "test-option", price: 5 })
+        expect.objectContaining({
+          shipping_option_id: shippingOptionId,
+          price: 5,
+        })
       )
       expect(cartWithCustomShippingMethod.status).toEqual(200)
     })
 
-    it("given a cart with custom options and a custom option id not belonging to said cart, then it should throw a shipping option not found error", async () => {
+    it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async () => {
       const api = useApi()
 
       try {
         await api.post(
           "/store/carts/test-cart-with-cso/shipping-methods",
           {
-            option_id: "orphan-cso",
+            option_id: "orphan-so",
           },
           { withCredentials: true }
         )
       } catch (err) {
-        expect(err.response.status).toEqual(404)
-        expect(err.response.data.message).toEqual(
-          "Shipping Option with orphan-cso was not found"
-        )
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.message).toEqual("Wrong shipping option")
       }
     })
 
