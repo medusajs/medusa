@@ -111,34 +111,33 @@ class RestockNotificationService extends BaseService {
    * @return {Promise<RestockNotification>} The resulting restock notification
    */
   async triggerRestock(variantId) {
-    if (this.options_?.trigger_delay) {
-      await new Promise((resolve) =>
-        setTimeout(resolve, this.options_.trigger_delay)
-      )
-    }
+    const delay = this.options_?.trigger_delay ?? 0
+    setTimeout(() => {
+      this.atomicPhase_(async (manager) => {
+        const restockRepo = manager.getRepository(
+          this.restockNotificationModel_
+        )
 
-    return this.atomicPhase_(async (manager) => {
-      const restockRepo = manager.getRepository(this.restockNotificationModel_)
+        const existing = await this.retrieve(variantId)
+        if (!existing) {
+          return
+        }
 
-      const existing = await this.retrieve(variantId)
-      if (!existing) {
-        return
-      }
+        const variant = await this.productVariantService_.retrieve(variantId)
 
-      const variant = await this.productVariantService_.retrieve(variantId)
-
-      if (
-        variant.inventory_quantity > (this.options_?.inventory_required ?? 0)
-      ) {
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit("restock-notification.restocked", {
-            variant_id: variantId,
-            emails: existing.emails,
-          })
-        await restockRepo.delete(variantId)
-      }
-    })
+        if (
+          variant.inventory_quantity > (this.options_?.inventory_required ?? 0)
+        ) {
+          await this.eventBus_
+            .withTransaction(manager)
+            .emit("restock-notification.restocked", {
+              variant_id: variantId,
+              emails: existing.emails,
+            })
+          await restockRepo.delete(variantId)
+        }
+      })
+    }, delay)
   }
 }
 
