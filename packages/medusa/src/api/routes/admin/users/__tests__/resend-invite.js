@@ -29,12 +29,7 @@ describe("POST /accounts/:id/users/invite/:invite_id/resend", () => {
 
     it("calls InviteService accept", () => {
       expect(InviteServiceMock.resend).toHaveBeenCalledTimes(1)
-      expect(InviteServiceMock.resend).toHaveBeenCalledWith(
-        "invite_test",
-        expect.objectContaining({
-          id: "test_user",
-        })
-      )
+      expect(InviteServiceMock.resend).toHaveBeenCalledWith("invite_test")
     })
   })
 })

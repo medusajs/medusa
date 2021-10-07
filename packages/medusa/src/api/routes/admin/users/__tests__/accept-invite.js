@@ -7,13 +7,13 @@ describe("POST /accounts/invite/accept", () => {
 
     beforeAll(async () => {
       subject = await request("POST", `/admin/users/invite/accept`, {
-        adminSession: {
-          jwt: {
-            id: "test_user",
-          },
-        },
         payload: {
           token: "jwt_test_invite",
+          user: {
+            first_name: "John",
+            last_name: "Doe",
+            password: "supersecret",
+          },
         },
       })
     })
@@ -28,13 +28,11 @@ describe("POST /accounts/invite/accept", () => {
 
     it("calls InviteService accept", () => {
       expect(InviteServiceMock.accept).toHaveBeenCalledTimes(1)
-      expect(InviteServiceMock.accept).toHaveBeenCalledWith(
-        "jwt_test_invite",
-        expect.objectContaining({
-          id: "test_user",
-          email: "lebron@james.com",
-        })
-      )
+      expect(InviteServiceMock.accept).toHaveBeenCalledWith("jwt_test_invite", {
+        first_name: "John",
+        last_name: "Doe",
+        password: "supersecret",
+      })
     })
   })
 })
