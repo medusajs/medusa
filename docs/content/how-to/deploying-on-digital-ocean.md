@@ -62,16 +62,16 @@ git commit -m "chore: DigitalOcean setup"
 git push origin master
 ```
 
-### 2. Sign in on [DigitalOcean](https://cloud.digitalocean.com/login)
-Login on your DigitalOcean Account or [create a new one](https://cloud.digitalocean.com/registrations/new).
+### 2. [DigitalOcean](https://cloud.digitalocean.com/login)
+[Sign in](https://cloud.digitalocean.com/login) to your DigitalOcean Account or [create a new one](https://cloud.digitalocean.com/registrations/new).
 
-### 2. Create an App
+### 3. Create an App
 Navigate to the top-right dropdown **Create** and select **Apps**.
 
-### 3. Connect you Git repository
+### 4. Connect you Git repository
 Choose **GitHub** or **GitLab** and select the repository that holds your Medusa project. Check **Autodeploy code changes**, if you want DigitalOcean to deploy on every push to your repository.
 
-### 4. Configure environment variables
+### 5. Configure environment variables
 The default settings for your app should be sufficient. We only need to change environment variables to hold the following:
 ```shell=
 DB_USERNAME=${db.USERNAME}
@@ -85,7 +85,7 @@ COOKIE_SECRET=your-cookie-secret
 ```
 > Make sure to use actual secrets in a production environment
 
-### 5. Set up a Database
+### 6. Set up a Database
 
 Click **Add a Database**. If you named your database instance something different than `db`, make sure your environment variable reflect this. See our use of `db` below.
 
@@ -93,16 +93,16 @@ Click **Add a Database**. If you named your database instance something differen
 DB_USERNAME=${db.USERNAME}
 ```
 
-### 6. Give your app a name
+### 7. Give your app a name
 
 Enter a name for your app and select the most suitable region for your setup.
 
-### 7. Finalize the setup
+### 8. Finalize the setup
 Choose a plan for your App. For just getting started, the Basic plan should be sufficient. For a production environment, the **Pro plan** is recommended.
 
 Finally, launch the app.
 
-### 8. Add a Redis Database
+### 9. Add a Redis Database
 The following steps will add a Redis database to your Medusa setup. 
 
 1. Navigate to the top-right dropdown **Create** and select **Databases**
@@ -118,17 +118,17 @@ REDIS_URL=${redis.DATABASE_URL}
 6.  Create the Redis database for your project
 
 
-### 9. Configure Redis for your App
+### 10. Configure Redis for your App
 
 1. In the navbar on the left, click **Apps** and select your Medusa App
 2. Select **Settings** ➜ **Add component** ➜ **Database**
 3. Select **Previously Created DigitalOcean Database**
 4. Select the Redis Cluster created in the previous step
 
-### 10. Deploy Medusa
+### 11. Deploy Medusa
 If you haven't already, make sure to rebuild and deploy your Medusa App.
 
-### 10. Try it out!
+### 12. Try it out!
 In DigitalOcean, navigate to your App overview and access your endpoint to try out your new setup.
 ```
 https://your-endpoint.ondigitalocean.app/health
