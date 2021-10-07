@@ -3,7 +3,7 @@ This is a guide for deploying a Medusa project on DigitalOcean App Platform.
 > It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
 
 ### 1. Configure Medusa
-Before jumping into DigitalOcean, your Medusa applications needs to be configured.
+Before jumping into DigitalOcean, your Medusa application needs to be configured.
 
 #### Update `medusa-config.js`
 
@@ -37,11 +37,13 @@ module.exports = {
 Update `scripts` to have the following:
 
 ```json=
+...
 "scripts": {
     "serve": "medusa start",
     "start": "medusa migrations run && medusa develop",
     "build": "babel src -d dist --extensions \".ts,.js\""
 }
+...
 ```
 Add a newer version of node to `engines`:
 
