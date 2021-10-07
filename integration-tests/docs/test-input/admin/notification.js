@@ -4,24 +4,17 @@ module.exports = {
   operationId: "GetNotification",
   buildEndpoint: (_) => `/admin/notifications`,
   setup: async (manager, api) => {
-    let res
-    try {
-      res = manager.create(Notification, {
-        resource_type: "order",
-        resource_id: "order_01F0BF66ZBXNJ98WDQ9SCWH8Y7",
-        event_name: "order.placed",
-        to: "test@email.com",
-        provider_id: "test-not",
-        data: { test_name: "GetNotification" },
-        resends: [],
-      })
-    } catch (err) {
-      console.log(err)
-    }
+    const notification = manager.create(Notification, {
+      resource_type: "order",
+      resource_id: "order_01F0BF66ZBXNJ98WDQ9SCWH8Y7",
+      event_name: "order.placed",
+      to: "test@email.com",
+      provider_id: "test-not",
+      data: { test_name: "GetNotification" },
+      resends: [],
+    })
 
-    manager.save(res)
-
-    console.log(res)
+    manager.save(notification)
 
     return {}
   },
