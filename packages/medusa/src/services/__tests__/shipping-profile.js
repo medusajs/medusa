@@ -207,14 +207,24 @@ describe("ShippingProfileService", () => {
         id: "swap-cart",
         type: "swap",
         custom_shipping_options: [
-          { option_id: "test-option1", id: "cso-option1", price: 10 },
-          { option_id: "test-option2", id: "cso-option2", price: 0 },
+          {
+            shipping_option_id: "test-option1",
+            id: "cso-option1",
+            shipping_option: { id: "test-option1" },
+            price: 10,
+          },
+          {
+            shipping_option_id: "test-option2",
+            id: "cso-option2",
+            shipping_option: { id: "test-option2" },
+            price: 0,
+          },
         ],
       }
 
       await expect(profileService.fetchCartOptions(cart)).resolves.toEqual([
-        expect.objectContaining({ id: "cso-option1" }),
-        expect.objectContaining({ id: "cso-option2" }),
+        expect.objectContaining({ id: "test-option1", amount: 10 }),
+        expect.objectContaining({ id: "test-option2", amount: 0 }),
       ])
     })
 
