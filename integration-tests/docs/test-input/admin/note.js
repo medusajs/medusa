@@ -1,4 +1,3 @@
-// TODO
 module.exports = {
   operationId: "GetNote",
   buildEndpoint: (id) => `/admin/notes/${id}`,

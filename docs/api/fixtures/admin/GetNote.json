@@ -1,0 +1,25 @@
+{
+  "note": {
+    "id": "note_01FHCZ4EVKC1VNC3XN3ZXHJ4J9",
+    "value": "note value",
+    "resource_type": "order",
+    "resource_id": "order_id",
+    "author_id": "admin_user",
+    "author": {
+      "id": "admin_user",
+      "email": "admin@medusa.js",
+      "first_name": null,
+      "last_name": null,
+      "password_hash": "c2NyeXB0AAEAAAABAAAAAa2AX7rDcXVUNOVsFqUjTWKHiNZd6Re5HeIy5AJS20nygd8z+VPsPsoQPh+sw2uStRoeT468ETrVxm6e2rKuhL2TV1KZnK3qICedNAVh8Wqb",
+      "api_token": "test_token",
+      "created_at": "2021-10-07T08:50:19.600Z",
+      "updated_at": "2021-10-07T08:50:19.600Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "created_at": "2021-10-07T08:50:19.634Z",
+    "updated_at": "2021-10-07T08:50:19.634Z",
+    "deleted_at": null,
+    "metadata": {}
+  }
+}
