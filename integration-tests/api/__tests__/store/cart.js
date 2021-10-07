@@ -136,7 +136,7 @@ describe("/store/carts", () => {
 
       try {
         await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "CREATED" }],
+          discounts: [{ code: "SPENT" }],
         })
       } catch (error) {
         expect(error.response.status).toEqual(400)
