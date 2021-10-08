@@ -582,6 +582,27 @@ Object {
 }
 `;
 
+exports[`GetShippingOptionsShippingOption 1`] = `
+Object {
+  "shipping_option": Object {
+    "admin_only": false,
+    "amount": Any<Number>,
+    "created_at": Any<String>,
+    "data": Object {},
+    "deleted_at": null,
+    "id": StringMatching /\\^so_\\*/,
+    "is_return": false,
+    "metadata": null,
+    "name": Any<String>,
+    "price_type": "flat_rate",
+    "profile_id": StringMatching /\\^sp_\\*/,
+    "provider_id": "test-ful",
+    "region_id": StringMatching /\\^reg_/,
+    "updated_at": Any<String>,
+  },
+}
+`;
+
 exports[`GetSwapsSwap 1`] = `
 Object {
   "swap": Object {
