@@ -1,0 +1,17 @@
+{
+  "notifications": [
+    {
+      "id": "noti_01FHD0Z7XCTJHABGPSFQPJTS4H",
+      "resource_type": "order",
+      "resource_id": "order_01F0BF66ZBXNJ98WDQ9SCWH8Y7",
+      "event_name": "order.placed",
+      "to": "test@email.com",
+      "provider_id": "test-not",
+      "created_at": "2021-10-07T09:22:25.836Z",
+      "updated_at": "2021-10-07T09:22:25.836Z",
+      "resends": []
+    }
+  ],
+  "offset": 0,
+  "limit": 50
+}
