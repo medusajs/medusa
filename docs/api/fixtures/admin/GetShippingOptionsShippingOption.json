@@ -1,0 +1,18 @@
+{
+  "shipping_option": {
+    "id": "so_01FHFPA56YCV7FT324RHM0KS3W",
+    "name": "Standard Shipping",
+    "region_id": "reg_01FHFPA56J9BK91W20F33GCBH6",
+    "profile_id": "sp_01FHFPA557NTT6XFBAG73YSYQB",
+    "provider_id": "test-ful",
+    "price_type": "flat_rate",
+    "amount": 1000,
+    "is_return": false,
+    "admin_only": false,
+    "data": {},
+    "created_at": "2021-10-08T10:13:52.478Z",
+    "updated_at": "2021-10-08T10:13:52.478Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}
