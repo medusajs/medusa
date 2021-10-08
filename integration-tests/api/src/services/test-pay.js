@@ -1,59 +1,59 @@
-import { PaymentService } from "medusa-interfaces";
+import { PaymentService } from "medusa-interfaces"
 
 class TestPayService extends PaymentService {
-  static identifier = "test-pay";
+  static identifier = "test-pay"
 
   constructor() {
-    super();
+    super()
   }
 
   async getStatus(paymentData) {
-    return "authorized";
+    return "authorized"
   }
 
   async retrieveSavedMethods(customer) {
-    return Promise.resolve([]);
+    return Promise.resolve([])
   }
 
   async createPayment() {
-    return {};
+    return {}
   }
 
   async retrievePayment(data) {
-    return {};
+    return {}
   }
 
   async getPaymentData(sessionData) {
-    return {};
+    return {}
   }
 
   async authorizePayment(sessionData, context = {}) {
-    return { data: {}, status: "authorized" };
+    return { data: {}, status: "authorized" }
   }
 
   async updatePaymentData(sessionData, update) {
-    return {};
+    return {}
   }
 
   async updatePayment(sessionData, cart) {
-    return {};
+    return {}
   }
 
   async deletePayment(payment) {
-    return {};
+    return {}
   }
 
   async capturePayment(payment) {
-    return {};
+    return {}
   }
 
   async refundPayment(payment, amountToRefund) {
-    return {};
+    return {}
   }
 
   async cancelPayment(payment) {
-    return {};
+    return {}
   }
 }
 
-export default TestPayService;
+export default TestPayService
