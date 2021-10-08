@@ -125,14 +125,21 @@ class ShopifyOrderService extends BaseService {
         metadata: { ...order.metadata },
       }
 
-      //Need to track refunds so we avoid handling them multiple times, as they are persisted on the order.
+      /**
+       * Every time an item's quantity is adjusted down, it creates a refund object,
+       * this is also the case for monetary changes to the order. To prevent handling
+       * the refunds multiple times we keep track of which has been handled.
+       */
       let sh_refunds =
         order.metadata && order.metadata.sh_refunds
           ? order.metadata.sh_refunds
           : []
 
-      //Even if an item is deleted from an order it is persisted in its line items, therefore we need to keep
-      //track of deleted items, so that they are not re-added.
+      /**
+       * When an item is removed from an order it is still persisted in the line items.
+       * Therefore, we need to keep track of removed items to prevent re-adding a item
+       * on subsequent updates.
+       */
       let sh_deleted_items =
         order.metadata && order.metadata.sh_deleted_items
           ? order.metadata.sh_deleted_items

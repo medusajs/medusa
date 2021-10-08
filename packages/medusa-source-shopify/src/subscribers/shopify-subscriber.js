@@ -8,6 +8,8 @@ class ShopifySubscriber {
       returnService,
       fulfillmentService,
       shopifyFulfillmentService,
+      productService,
+      productVariantService,
       orderService,
       shopifyClientService,
     },
@@ -23,27 +25,35 @@ class ShopifySubscriber {
 
     this.shopifyFulfillmentService_ = shopifyFulfillmentService
 
+    this.productService_ = productService
+
+    this.productVariantService_ = productVariantService
+
     this.orderService_ = orderService
 
     this.client_ = shopifyClientService
 
-    eventBusService.subscribe(
-      "order.items_returned",
-      this.registerShopifyReturn
-    )
+    eventBusService.subscribe("order.items_returned", this.registerReturn)
 
     eventBusService.subscribe(
       "order.fulfillment_created",
-      this.registerShopifyFulfillment
+      this.registerFulfillmentCreate
     )
 
     eventBusService.subscribe(
       "order.fulfillment_canceled",
-      this.registerShopifyFulfillmentCancel
+      this.registerFulfillmentCancel
     )
+
+    eventBusService.subscribe("product.updated", this.registerProductUpdate)
   }
 
-  registerShopifyReturn = async ({ id, return_id }) => {
+  /**
+   * TODO
+   */
+  registerRefund = async ({}) => {}
+
+  registerReturn = async ({ id, return_id }) => {
     const ret = await this.returnService_.retrieve(return_id)
     const order = await this.orderService_.retrieve(id, {
       relations: ["payments"],
@@ -106,7 +116,50 @@ class ShopifySubscriber {
     }
   }
 
-  registerShopifyFulfillment = async ({ id, fulfillment_id }) => {
+  registerShipmentCreate = async ({ fulfillment_id }) => {
+    const fulfillment = await this.fulfillmentService_.retrieve(
+      fulfillment_id,
+      {
+        relations: ["tracking_links"],
+      }
+    )
+
+    const updateTracking = async (trackingObject) => {
+      await axios.post(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/fulfillments/${fulfillment.metadata.sh_id}/update_tracking.json`,
+        trackingObject,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+    }
+
+    for (const link of fulfillment.trackinkg_links) {
+      let trackingObject = {
+        fulfillment: {
+          tracking_info: {
+            number: link.number,
+            url: link.url,
+            company: "Other",
+          },
+        },
+      }
+
+      try {
+        await updateTracking(trackingObject)
+      } catch (err) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to update tracking information for fulfillment: ${err.message}`
+        )
+      }
+    }
+  }
+
+  registerFulfillmentCreate = async ({ id, fulfillment_id }) => {
     const fulfillment = await this.fulfillmentService_.retrieve(fulfillment_id)
     const order = await this.orderService_.retrieve(id, {
       relations: ["items"],
@@ -157,7 +210,7 @@ class ShopifySubscriber {
     await this.shopifyFulfillmentService_.addShopifyId(fulfillment_id, shId)
   }
 
-  registerShopifyFulfillmentCancel = async ({ fulfillment_id }) => {
+  registerFulfillmentCancel = async ({ fulfillment_id }) => {
     const fulfillment = await this.fulfillmentService_.retrieve(fulfillment_id)
 
     await axios
@@ -176,6 +229,71 @@ class ShopifySubscriber {
           `An error occured while attempting to issue a fulfillment cancel to Shopify: ${err.message}`
         )
       })
+  }
+
+  registerProductUpdate = async ({ id, fields }) => {
+    const product = await this.productService_.retrieve(id, {
+      relations: ["tags", "type"],
+    })
+
+    //Event was not emitted by update
+    if (!fields) {
+      return
+    }
+
+    const update = {
+      product: {
+        id: product.external_id,
+      },
+    }
+
+    console.log(fields)
+
+    if (fields.includes("title")) {
+      update.product.title = product.title
+    }
+
+    if (fields.includes("tags")) {
+      const values = product.tags.map((t) => t.value)
+      update.product.tags = values.join(",")
+    }
+
+    if (fields.includes("description")) {
+      update.product.body_html = product.description
+    }
+
+    if (fields.includes("handle")) {
+      update.product.handle = product.handle
+    }
+
+    if (fields.includes("type")) {
+      update.product.type = product.type?.value
+    }
+
+    await axios
+      .put(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/products/${product.external_id}.json`,
+        update,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a product update to Shopify: ${err.message}`
+        )
+      })
+  }
+
+  registerVariantUpdate = async ({ id, fields }) => {
+    const product = await this.productVariantService_.retrieve(id)
+
+    if (fields.includes("weight")) {
+      update.product.grams = product.weight
+    }
   }
 
   getLocationId_(returnItem, fulfillmentOrders = []) {

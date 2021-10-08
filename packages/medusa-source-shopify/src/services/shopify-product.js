@@ -67,42 +67,24 @@ class ShopifyProductService extends BaseService {
         return existingProduct
       }
 
-      let shippingProfile
-
       const normalizedProduct = this.normalizeProduct_(data, collectionId)
-      // Get default shipping profile
-      if (normalizedProduct.is_giftcard) {
-        shippingProfile = await this.shippingProfileService_.retrieveGiftCardDefault()
-      } else {
-        shippingProfile = await this.shippingProfileService_.retrieveDefault()
-      }
+      normalizedProduct.profile_id = await this.getShippingProfile_(
+        normalizedProduct.is_giftcard
+      )
 
-      const variants = normalizedProduct.variants
+      let variants = normalizedProduct.variants
       delete normalizedProduct.variants
-
-      normalizedProduct.profile_id = shippingProfile
 
       const product = await this.productService_
         .withTransaction(manager)
         .create(normalizedProduct)
 
-      if (variants && variants.length) {
-        const optionIds = normalizedProduct.options.map(
-          (option) =>
-            product.options.find(
-              (newOption) => newOption.title === option.title
-            ).id
+      if (variants) {
+        variants = variants.map((v) =>
+          this.addVariantOptions_(v, product.options)
         )
 
-        for (const v of variants) {
-          const variant = {
-            ...v,
-            options: v.options.map((option, index) => ({
-              ...option,
-              option_id: optionIds[index],
-            })),
-          }
-
+        for (const variant of variants) {
           await this.productVariantService_
             .withTransaction(manager)
             .create(product.id, variant)
@@ -113,56 +95,56 @@ class ShopifyProductService extends BaseService {
     })
   }
 
-  /**
-   * Updates a product based on an event in Shopify
-   * @param {object} product
-   * @returns
-   */
-  async update(product) {
+  async update(data) {
     return this.atomicPhase_(async (manager) => {
-      const medusaProduct = await this.productService_.retrieveByHandle(
-        product.handle,
-        {
-          relations: ["variants"],
-        }
-      )
+      let existing = await this.productService_
+        .retrieveByHandle(data.handle, {
+          relations: ["variants", "options"],
+        })
+        .catch((_) => undefined)
 
+      if (!existing) {
+        return await this.create(data)
+      }
+
+      /**
+       * Variants received from webhook do not include
+       * presentment prices. Therefore, we fetch them
+       * separately, and add to the data object.
+       */
       const { variants } = await this.client_
         .get({
-          path: `products/${product.id}`,
+          path: `products/${data.id}`,
           extraHeaders: INCLUDE_PRESENTMENT_PRICES,
         })
         .then((res) => {
           return res.body.product
         })
 
-      product.variants = variants || []
+      data.variants = variants || []
+      const normalized = this.normalizeProduct_(data)
 
-      const normalizedUpdate = this.normalizeProduct_(product)
-      const updates = _.pickBy(normalizedUpdate, Boolean)
+      existing = await this.addProductOptions_(existing, normalized.options)
 
-      updates.variants = await Promise.all(
-        updates.variants.map(async (v) => {
-          const match = medusaProduct.variants.find((mv) => mv.sku === v.sku)
+      await this.updateVariants_(existing, normalized.variants)
+      await this.deleteVariants_(existing, normalized.variants)
+      delete normalized.variants
 
-          if (match) {
-            let variant = await this.productVariantService_
-              .withTransaction(manager)
-              .retrieve(match.id, { relations: ["options"] })
-            let options = variant.options.map((option, i) => {
-              return { ...option, ...v.options[i] }
-            })
-            v.options = options
-            v.id = variant.id
-          }
-          //errors on update with new variant
-          return v
-        })
-      )
+      const update = {}
 
-      return await this.productService_
-        .withTransaction(manager)
-        .update(medusaProduct.id, updates)
+      for (const key of Object.keys(normalized)) {
+        if (normalized[key] !== existing[key]) {
+          update[key] = normalized[key]
+        }
+      }
+
+      if (!_.isEmpty(update)) {
+        return await this.productService_
+          .withTransaction(manager)
+          .update(existing.id, update)
+      }
+
+      return Promise.resolve()
     })
   }
 
@@ -187,6 +169,80 @@ class ShopifyProductService extends BaseService {
         .withTransaction(manager)
         .update(productId, { collection_id: collectionId })
     })
+  }
+
+  async updateVariants_(product, updateVariants) {
+    return this.atomicPhase_(async (manager) => {
+      const { id, variants, options } = product
+      for (let variant of updateVariants) {
+        variant = this.addVariantOptions_(variant, options)
+        let match = variants.find((v) => v.sku === variant.sku)
+        if (match) {
+          await this.productVariantService_
+            .withTransaction(manager)
+            .update(match.id, variant)
+        } else {
+          await this.productVariantService_
+            .withTransaction(manager)
+            .create(id, variant)
+        }
+      }
+    })
+  }
+
+  async deleteVariants_(product, updateVariants) {
+    return this.atomicPhase_(async (manager) => {
+      const { variants } = product
+      for (let variant of variants) {
+        let match = updateVariants.find((v) => v.sku === variant.sku)
+        if (!match) {
+          await this.productVariantService_
+            .withTransaction(manager)
+            .delete(variant.id)
+        }
+      }
+    })
+  }
+
+  addVariantOptions_(variant, productOptions) {
+    const options = productOptions.map((o, i) => ({
+      option_id: o.id,
+      ...variant.options[i],
+    }))
+    variant.options = options
+
+    return variant
+  }
+
+  async addProductOptions_(product, updateOptions) {
+    return this.atomicPhase_(async (manager) => {
+      const { id, options } = product
+
+      for (const option of updateOptions) {
+        const match = options.find((o) => o.title === option.title)
+        if (!match) {
+          await this.productService_
+            .withTransaction(manager)
+            .addOption(id, option.title)
+        }
+      }
+
+      const result = await this.productService_.retrieve(id, {
+        relations: ["variants", "options"],
+      })
+      return result
+    })
+  }
+
+  async getShippingProfile_(isGiftCard) {
+    let shippingProfile
+    if (isGiftCard) {
+      shippingProfile = await this.shippingProfileService_.retrieveGiftCardDefault()
+    } else {
+      shippingProfile = await this.shippingProfileService_.retrieveDefault()
+    }
+
+    return shippingProfile
   }
 
   /**
@@ -255,6 +311,9 @@ class ShopifyProductService extends BaseService {
         variant.option2,
         variant.option3
       ),
+      metadata: {
+        sh_id: variant.id,
+      },
     }
   }
 
