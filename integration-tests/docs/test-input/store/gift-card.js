@@ -41,12 +41,12 @@ module.exports = {
   },
   snapshotMatch: {
     gift_card: {
-      id: expect.stringMatching(/^gift_/),
-      value: expect.any(Number),
-      balance: expect.any(Number),
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
-      is_disabled: expect.any(Boolean),
+      id: expect.stringMatching(/^gift_*/),
+      region: {
+        id: expect.stringMatching(/^reg_*/),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      },
     },
   },
 }
