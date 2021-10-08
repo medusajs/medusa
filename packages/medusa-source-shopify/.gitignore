@@ -7,5 +7,9 @@ node_modules
 !jest.config.js
 
 /dist
+/api
+/services
+/utils
+/subscribers
 
 
