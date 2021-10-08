@@ -1,10 +1,8 @@
 export default async (req, res) => {
-  // const shopifyService = req.scope.resolve("shopifyService")
+  const orderService = req.scope.resolve("shopifyOrderService")
 
   // //TODO: update payment
-  // await shopifyService.updateOrder(req.body)
-
-  console.log(req.body.line_items)
+  await orderService.update(req.body)
 
   res.sendStatus(200)
 }

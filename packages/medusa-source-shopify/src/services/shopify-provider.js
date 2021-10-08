@@ -67,15 +67,15 @@ class ShopifyProviderService extends PaymentService {
     return {}
   }
 
-  async updatePayment(_) {
+  async updatePayment(paymentId, update) {
     return {}
   }
 
-  async deletePayment(_) {
+  async deletePayment(paymentId) {
     return {}
   }
 
-  async capturePayment(_) {
+  async capturePayment(paymentId) {
     return {}
   }
 

@@ -32,27 +32,23 @@ class ShopifyLineItemsService extends BaseService {
     return cloned
   }
 
-  async update(item, orderItems) {
+  async update(update) {
     return this.atomicPhase_(async (manager) => {
-      const id = await this.getId_(item, orderItems)
-
       await this.lineItemService_
         .withTransaction(manager)
-        .update(id, { quantity: item.quantity })
+        .update(update.item_id, { quantity: update.quantity })
     })
   }
 
-  async delete(item, orderItems) {
+  async delete(id) {
     return this.atomicPhase_(async (manager) => {
-      const id = await this.getId_(item, orderItems)
-
       await this.lineItemService_.withTransaction(manager).delete(id)
     })
   }
 
   async create(orderId, item) {
     return this.atomicPhase_(async (manager) => {
-      let normalized = this.normalizeLineItem(item)
+      let normalized = await this.normalizeLineItem(item)
 
       await this.lineItemService_
         .withTransaction(manager)
@@ -81,7 +77,6 @@ class ShopifyLineItemsService extends BaseService {
       variant_id: productVariant.id,
       metadata: {
         sh_id: lineItem.id,
-        sh_origin_location: lineItem.origin_location.id,
       },
     }
   }

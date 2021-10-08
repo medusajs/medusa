@@ -240,7 +240,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
   }, {
     key: "updatePayment",
     value: function () {
-      var _updatePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(_) {
+      var _updatePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(paymentId, update) {
         return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
@@ -255,7 +255,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee7);
       }));
 
-      function updatePayment(_x7) {
+      function updatePayment(_x7, _x8) {
         return _updatePayment.apply(this, arguments);
       }
 
@@ -264,7 +264,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
   }, {
     key: "deletePayment",
     value: function () {
-      var _deletePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(_) {
+      var _deletePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(paymentId) {
         return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
@@ -279,7 +279,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee8);
       }));
 
-      function deletePayment(_x8) {
+      function deletePayment(_x9) {
         return _deletePayment.apply(this, arguments);
       }
 
@@ -288,7 +288,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
   }, {
     key: "capturePayment",
     value: function () {
-      var _capturePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(_) {
+      var _capturePayment = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(paymentId) {
         return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
@@ -303,7 +303,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee9);
       }));
 
-      function capturePayment(_x9) {
+      function capturePayment(_x10) {
         return _capturePayment.apply(this, arguments);
       }
 
@@ -327,7 +327,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee10);
       }));
 
-      function refundPayment(_x10, _x11) {
+      function refundPayment(_x11, _x12) {
         return _refundPayment.apply(this, arguments);
       }
 
@@ -351,7 +351,7 @@ var ShopifyProviderService = /*#__PURE__*/function (_PaymentService) {
         }, _callee11);
       }));
 
-      function cancelPayment(_x12) {
+      function cancelPayment(_x13) {
         return _cancelPayment.apply(this, arguments);
       }
 

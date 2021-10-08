@@ -9,9 +9,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _lodash = _interopRequireDefault(require("lodash"));
+
 var _medusaInterfaces = require("medusa-interfaces");
 
 var _parsePrice = require("../utils/parse-price");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -295,119 +299,97 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
       var _update = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(data) {
         var _this3 = this;
 
-        return regeneratorRuntime.wrap(function _callee4$(_context5) {
+        return regeneratorRuntime.wrap(function _callee4$(_context7) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                return _context5.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                return _context7.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(manager) {
-                    var order, normalized, itemUpdates, orderItems, _iterator3, _step3, _i3, variant, _iterator4, _step4, _loop, orderRepo, _iterator5, _step5, i, _iterator6, _step6, _i, _iterator7, _step7, _i2;
+                    var order, refunds, shipping_address, shippingAddress, update, sh_refunds, sh_deleted_items, _iterator3, _step3, _loop, _iterator4, _step4, _loop2, _iterator5, _step5, refund, _iterator6, _step6, _loop3;
 
-                    return regeneratorRuntime.wrap(function _callee3$(_context4) {
+                    return regeneratorRuntime.wrap(function _callee3$(_context6) {
                       while (1) {
-                        switch (_context4.prev = _context4.next) {
+                        switch (_context6.prev = _context6.next) {
                           case 0:
-                            _context4.next = 2;
+                            _context6.next = 2;
                             return _this3.retrieve(data.id, {
                               relations: ["items", "shipping_address"]
                             });
 
                           case 2:
-                            order = _context4.sent;
-                            _context4.next = 5;
-                            return _this3.normalizeOrder_(data, order.customer_id);
+                            order = _context6.sent;
+                            refunds = data.refunds, shipping_address = data.shipping_address;
+                            shippingAddress = _this3.normalizeBilling_(shipping_address);
+                            update = {
+                              metadata: _objectSpread({}, order.metadata)
+                            }; //Need to track refunds so we avoid handling them multiple times, as they are persisted on the order.
 
-                          case 5:
-                            normalized = _context4.sent;
-                            itemUpdates = {
-                              update: [],
-                              add: []
-                            };
-                            orderItems = [];
+                            //Need to track refunds so we avoid handling them multiple times, as they are persisted on the order.
+                            sh_refunds = order.metadata && order.metadata.sh_refunds ? order.metadata.sh_refunds : []; //Even if an item is deleted from an order it is persisted in its line items, therefore we need to keep
+                            //track of deleted items, so that they are not re-added.
+
+                            //Even if an item is deleted from an order it is persisted in its line items, therefore we need to keep
+                            //track of deleted items, so that they are not re-added.
+                            sh_deleted_items = order.metadata && order.metadata.sh_deleted_items ? order.metadata.sh_deleted_items : [];
+                            _context6.next = 10;
+                            return _this3.orderService_.withTransaction(manager).updateShippingAddress_(order, shippingAddress);
+
+                          case 10:
                             _iterator3 = _createForOfIteratorHelper(order.items);
-                            _context4.prev = 9;
-
-                            _iterator3.s();
-
-                          case 11:
-                            if ((_step3 = _iterator3.n()).done) {
-                              _context4.next = 19;
-                              break;
-                            }
-
-                            _i3 = _step3.value;
-                            _context4.next = 15;
-                            return _this3.productVariantService_.withTransaction(manager).retrieve(_i3.variant_id);
-
-                          case 15:
-                            variant = _context4.sent;
-                            orderItems.push({
-                              sku: variant.sku,
-                              id: _i3.id
-                            });
-
-                          case 17:
-                            _context4.next = 11;
-                            break;
-
-                          case 19:
-                            _context4.next = 24;
-                            break;
-
-                          case 21:
-                            _context4.prev = 21;
-                            _context4.t0 = _context4["catch"](9);
-
-                            _iterator3.e(_context4.t0);
-
-                          case 24:
-                            _context4.prev = 24;
-
-                            _iterator3.f();
-
-                            return _context4.finish(24);
-
-                          case 27:
-                            _iterator4 = _createForOfIteratorHelper(data.line_items);
-                            _context4.prev = 28;
+                            _context6.prev = 11;
                             _loop = /*#__PURE__*/regeneratorRuntime.mark(function _loop() {
-                              var i, match, _normalized, _normalized2;
-
+                              var item, match;
                               return regeneratorRuntime.wrap(function _loop$(_context3) {
                                 while (1) {
                                   switch (_context3.prev = _context3.next) {
                                     case 0:
-                                      i = _step4.value;
-                                      match = orderItems.find(function (oi) {
-                                        return oi.sku === i.sku;
+                                      item = _step3.value;
+                                      match = data.line_items.find(function (i) {
+                                        return i.id === item.metadata.sh_id;
                                       });
 
-                                      if (!match) {
-                                        _context3.next = 10;
+                                      if (!(match.quantity > match.fulfillable_quantity && match.fulfillable_quantity > 0)) {
+                                        _context3.next = 7;
                                         break;
                                       }
 
                                       _context3.next = 5;
-                                      return _this3.normalizeLineItem(i, _this3.getShopifyTaxRate(data.tax_lines));
+                                      return _this3.lineItemService_.withTransaction(manager).update({
+                                        item_id: item.id,
+                                        quantity: match.fulfillable_quantity
+                                      });
 
                                     case 5:
-                                      _normalized = _context3.sent;
-                                      removeIndex(orderItems, match);
-                                      itemUpdates.update.push(_objectSpread({
-                                        id: match.id
-                                      }, _normalized));
-                                      _context3.next = 14;
+                                      _context3.next = 16;
                                       break;
 
+                                    case 7:
+                                      if (!(match.fulfillable_quantity === 0)) {
+                                        _context3.next = 13;
+                                        break;
+                                      }
+
+                                      _context3.next = 10;
+                                      return _this3.lineItemService_.withTransaction(manager)["delete"](item.id);
+
                                     case 10:
-                                      _context3.next = 12;
-                                      return _this3.normalizeLineItem(i, _this3.getShopifyTaxRate(data.tax_lines));
+                                      sh_deleted_items.push(match.id);
+                                      _context3.next = 16;
+                                      break;
 
-                                    case 12:
-                                      _normalized2 = _context3.sent;
-                                      itemUpdates.add.push(_normalized2);
+                                    case 13:
+                                      if (!(match && match.quantity !== item.quantity)) {
+                                        _context3.next = 16;
+                                        break;
+                                      }
 
-                                    case 14:
+                                      _context3.next = 16;
+                                      return _this3.lineItemService_.withTransaction(manager).update({
+                                        item_id: item.id,
+                                        quantity: match.quantity
+                                      });
+
+                                    case 16:
                                     case "end":
                                       return _context3.stop();
                                   }
@@ -415,183 +397,247 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
                               }, _loop);
                             });
 
-                            _iterator4.s();
+                            _iterator3.s();
 
-                          case 31:
-                            if ((_step4 = _iterator4.n()).done) {
-                              _context4.next = 35;
+                          case 14:
+                            if ((_step3 = _iterator3.n()).done) {
+                              _context6.next = 18;
                               break;
                             }
 
-                            return _context4.delegateYield(_loop(), "t1", 33);
+                            return _context6.delegateYield(_loop(), "t0", 16);
 
-                          case 33:
-                            _context4.next = 31;
+                          case 16:
+                            _context6.next = 14;
                             break;
 
-                          case 35:
-                            _context4.next = 40;
+                          case 18:
+                            _context6.next = 23;
                             break;
 
-                          case 37:
-                            _context4.prev = 37;
-                            _context4.t2 = _context4["catch"](28);
+                          case 20:
+                            _context6.prev = 20;
+                            _context6.t1 = _context6["catch"](11);
 
-                            _iterator4.e(_context4.t2);
+                            _iterator3.e(_context6.t1);
 
-                          case 40:
-                            _context4.prev = 40;
+                          case 23:
+                            _context6.prev = 23;
+
+                            _iterator3.f();
+
+                            return _context6.finish(23);
+
+                          case 26:
+                            _iterator4 = _createForOfIteratorHelper(data.line_items);
+                            _context6.prev = 27;
+                            _loop2 = /*#__PURE__*/regeneratorRuntime.mark(function _loop2() {
+                              var item, match;
+                              return regeneratorRuntime.wrap(function _loop2$(_context4) {
+                                while (1) {
+                                  switch (_context4.prev = _context4.next) {
+                                    case 0:
+                                      item = _step4.value;
+                                      match = order.items.find(function (i) {
+                                        return i.metadata.sh_id === item.id;
+                                      });
+
+                                      if (!(!match && !sh_deleted_items.includes(item.id))) {
+                                        _context4.next = 5;
+                                        break;
+                                      }
+
+                                      _context4.next = 5;
+                                      return _this3.lineItemService_.withTransaction(manager).create(order.id, item);
+
+                                    case 5:
+                                    case "end":
+                                      return _context4.stop();
+                                  }
+                                }
+                              }, _loop2);
+                            });
+
+                            _iterator4.s();
+
+                          case 30:
+                            if ((_step4 = _iterator4.n()).done) {
+                              _context6.next = 34;
+                              break;
+                            }
+
+                            return _context6.delegateYield(_loop2(), "t2", 32);
+
+                          case 32:
+                            _context6.next = 30;
+                            break;
+
+                          case 34:
+                            _context6.next = 39;
+                            break;
+
+                          case 36:
+                            _context6.prev = 36;
+                            _context6.t3 = _context6["catch"](27);
+
+                            _iterator4.e(_context6.t3);
+
+                          case 39:
+                            _context6.prev = 39;
 
                             _iterator4.f();
 
-                            return _context4.finish(40);
+                            return _context6.finish(39);
 
-                          case 43:
-                            order.email = data.email;
-                            orderRepo = manager.getCustomRepository(_this3.orderRepository_);
-                            _context4.next = 47;
-                            return orderRepo.save(order);
-
-                          case 47:
-                            if (!itemUpdates.add.length) {
-                              _context4.next = 65;
-                              break;
-                            }
-
-                            _iterator5 = _createForOfIteratorHelper(itemUpdates.add);
-                            _context4.prev = 49;
+                          case 42:
+                            _iterator5 = _createForOfIteratorHelper(refunds);
+                            _context6.prev = 43;
 
                             _iterator5.s();
 
-                          case 51:
+                          case 45:
                             if ((_step5 = _iterator5.n()).done) {
-                              _context4.next = 57;
+                              _context6.next = 67;
                               break;
                             }
 
-                            i = _step5.value;
-                            _context4.next = 55;
-                            return _this3.lineItemService_.withTransaction(manager).create(_objectSpread({
-                              order_id: order.id
-                            }, i));
+                            refund = _step5.value;
 
-                          case 55:
-                            _context4.next = 51;
-                            break;
-
-                          case 57:
-                            _context4.next = 62;
-                            break;
-
-                          case 59:
-                            _context4.prev = 59;
-                            _context4.t3 = _context4["catch"](49);
-
-                            _iterator5.e(_context4.t3);
-
-                          case 62:
-                            _context4.prev = 62;
-
-                            _iterator5.f();
-
-                            return _context4.finish(62);
-
-                          case 65:
-                            if (!itemUpdates.update.length) {
-                              _context4.next = 83;
+                            if (sh_refunds.includes(refund.id)) {
+                              _context6.next = 65;
                               break;
                             }
 
-                            _iterator6 = _createForOfIteratorHelper(itemUpdates.update);
-                            _context4.prev = 67;
+                            _iterator6 = _createForOfIteratorHelper(refund.refund_line_items);
+                            _context6.prev = 49;
+                            _loop3 = /*#__PURE__*/regeneratorRuntime.mark(function _loop3() {
+                              var refundLine, match, newQuantity;
+                              return regeneratorRuntime.wrap(function _loop3$(_context5) {
+                                while (1) {
+                                  switch (_context5.prev = _context5.next) {
+                                    case 0:
+                                      refundLine = _step6.value;
+                                      match = order.items.find(function (i) {
+                                        return i.metadata.sh_id === refundLine.line_item_id;
+                                      });
+                                      newQuantity = match.quantity - refundLine.quantity;
+
+                                      if (!(newQuantity > 0)) {
+                                        _context5.next = 8;
+                                        break;
+                                      }
+
+                                      _context5.next = 6;
+                                      return _this3.lineItemService_.withTransaction(manager).update({
+                                        item_id: match.id,
+                                        quantity: newQuantity
+                                      });
+
+                                    case 6:
+                                      _context5.next = 11;
+                                      break;
+
+                                    case 8:
+                                      _context5.next = 10;
+                                      return _this3.lineItemService_.withTransaction(manager)["delete"](match.id);
+
+                                    case 10:
+                                      sh_deleted_items.push(match.metadata.sh_id);
+
+                                    case 11:
+                                    case "end":
+                                      return _context5.stop();
+                                  }
+                                }
+                              }, _loop3);
+                            });
 
                             _iterator6.s();
 
-                          case 69:
+                          case 52:
                             if ((_step6 = _iterator6.n()).done) {
-                              _context4.next = 75;
+                              _context6.next = 56;
                               break;
                             }
 
-                            _i = _step6.value;
-                            _context4.next = 73;
-                            return _this3.lineItemService_.withTransaction(manager).update(_i.id, {
-                              quantity: _i.quantity
-                            });
+                            return _context6.delegateYield(_loop3(), "t4", 54);
 
-                          case 73:
-                            _context4.next = 69;
+                          case 54:
+                            _context6.next = 52;
                             break;
 
-                          case 75:
-                            _context4.next = 80;
+                          case 56:
+                            _context6.next = 61;
                             break;
 
-                          case 77:
-                            _context4.prev = 77;
-                            _context4.t4 = _context4["catch"](67);
+                          case 58:
+                            _context6.prev = 58;
+                            _context6.t5 = _context6["catch"](49);
 
-                            _iterator6.e(_context4.t4);
+                            _iterator6.e(_context6.t5);
 
-                          case 80:
-                            _context4.prev = 80;
+                          case 61:
+                            _context6.prev = 61;
 
                             _iterator6.f();
 
-                            return _context4.finish(80);
+                            return _context6.finish(61);
 
-                          case 83:
-                            if (!orderItems.length) {
-                              _context4.next = 101;
+                          case 64:
+                            sh_refunds.push(refund.id);
+
+                          case 65:
+                            _context6.next = 45;
+                            break;
+
+                          case 67:
+                            _context6.next = 72;
+                            break;
+
+                          case 69:
+                            _context6.prev = 69;
+                            _context6.t6 = _context6["catch"](43);
+
+                            _iterator5.e(_context6.t6);
+
+                          case 72:
+                            _context6.prev = 72;
+
+                            _iterator5.f();
+
+                            return _context6.finish(72);
+
+                          case 75:
+                            if (data.email !== order.email) {
+                              update.email = data.email;
+                            }
+
+                            if (!_lodash["default"].isEmpty(sh_refunds)) {
+                              update.metadata = _objectSpread(_objectSpread({}, update.metadata), {}, {
+                                sh_refunds: sh_refunds
+                              });
+                            }
+
+                            if (!_lodash["default"].isEmpty(sh_deleted_items)) {
+                              update.metadata = _objectSpread(_objectSpread({}, update.metadata), {}, {
+                                sh_deleted_items: sh_deleted_items
+                              });
+                            }
+
+                            if (_lodash["default"].isEmpty(update)) {
+                              _context6.next = 81;
                               break;
                             }
 
-                            _iterator7 = _createForOfIteratorHelper(orderItems);
-                            _context4.prev = 85;
+                            _context6.next = 81;
+                            return _this3.orderService_.withTransaction(manager).update(order.id, update);
 
-                            _iterator7.s();
-
-                          case 87:
-                            if ((_step7 = _iterator7.n()).done) {
-                              _context4.next = 93;
-                              break;
-                            }
-
-                            _i2 = _step7.value;
-                            _context4.next = 91;
-                            return _this3.lineItemService_.withTransaction(manager)["delete"](_i2.id);
-
-                          case 91:
-                            _context4.next = 87;
-                            break;
-
-                          case 93:
-                            _context4.next = 98;
-                            break;
-
-                          case 95:
-                            _context4.prev = 95;
-                            _context4.t5 = _context4["catch"](85);
-
-                            _iterator7.e(_context4.t5);
-
-                          case 98:
-                            _context4.prev = 98;
-
-                            _iterator7.f();
-
-                            return _context4.finish(98);
-
-                          case 101:
-                            _context4.next = 103;
-                            return _this3.orderService_.withTransaction(manager).updateShippingAddress_(order, normalized.shipping_address);
-
-                          case 103:
+                          case 81:
                           case "end":
-                            return _context4.stop();
+                            return _context6.stop();
                         }
                       }
-                    }, _callee3, null, [[9, 21, 24, 27], [28, 37, 40, 43], [49, 59, 62, 65], [67, 77, 80, 83], [85, 95, 98, 101]]);
+                    }, _callee3, null, [[11, 20, 23, 26], [27, 36, 39, 42], [43, 69, 72, 75], [49, 58, 61, 64]]);
                   }));
 
                   return function (_x4) {
@@ -601,7 +647,7 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
 
               case 1:
               case "end":
-                return _context5.stop();
+                return _context7.stop();
             }
           }
         }, _callee4, this);
@@ -624,28 +670,28 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
       var _delete2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(id) {
         var _this4 = this;
 
-        return regeneratorRuntime.wrap(function _callee6$(_context7) {
+        return regeneratorRuntime.wrap(function _callee6$(_context9) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
-                return _context7.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                return _context9.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(manager) {
                     var order;
-                    return regeneratorRuntime.wrap(function _callee5$(_context6) {
+                    return regeneratorRuntime.wrap(function _callee5$(_context8) {
                       while (1) {
-                        switch (_context6.prev = _context6.next) {
+                        switch (_context8.prev = _context8.next) {
                           case 0:
-                            _context6.next = 2;
+                            _context8.next = 2;
                             return _this4.retrieve(id);
 
                           case 2:
-                            order = _context6.sent;
-                            _context6.next = 5;
+                            order = _context8.sent;
+                            _context8.next = 5;
                             return _this4.orderService_.withTransaction(manager)["delete"](order.id);
 
                           case 5:
                           case "end":
-                            return _context6.stop();
+                            return _context8.stop();
                         }
                       }
                     }, _callee5);
@@ -658,7 +704,7 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
 
               case 1:
               case "end":
-                return _context7.stop();
+                return _context9.stop();
             }
           }
         }, _callee6, this);
@@ -682,31 +728,31 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
       var _archive = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(id) {
         var _this5 = this;
 
-        return regeneratorRuntime.wrap(function _callee8$(_context9) {
+        return regeneratorRuntime.wrap(function _callee8$(_context11) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
-                return _context9.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                return _context11.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(manager) {
                     var order;
-                    return regeneratorRuntime.wrap(function _callee7$(_context8) {
+                    return regeneratorRuntime.wrap(function _callee7$(_context10) {
                       while (1) {
-                        switch (_context8.prev = _context8.next) {
+                        switch (_context10.prev = _context10.next) {
                           case 0:
-                            _context8.next = 2;
+                            _context10.next = 2;
                             return _this5.retrieve(id);
 
                           case 2:
-                            order = _context8.sent;
-                            _context8.next = 5;
+                            order = _context10.sent;
+                            _context10.next = 5;
                             return _this5.orderService_.withTransaction(manager).archive(order.id);
 
                           case 5:
-                            return _context8.abrupt("return", _context8.sent);
+                            return _context10.abrupt("return", _context10.sent);
 
                           case 6:
                           case "end":
-                            return _context8.stop();
+                            return _context10.stop();
                         }
                       }
                     }, _callee7);
@@ -719,7 +765,7 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
 
               case 1:
               case "end":
-                return _context9.stop();
+                return _context11.stop();
             }
           }
         }, _callee8, this);
@@ -741,19 +787,19 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
     key: "refund",
     value: function () {
       var _refund2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(_refund) {
-        return regeneratorRuntime.wrap(function _callee9$(_context10) {
+        return regeneratorRuntime.wrap(function _callee9$(_context12) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
                 if ("refund_line_items" in _refund) {}
 
                 if ("order_adjustments" in _refund) {}
 
-                return _context10.abrupt("return", Promise.resolve());
+                return _context12.abrupt("return", Promise.resolve());
 
               case 3:
               case "end":
-                return _context10.stop();
+                return _context12.stop();
             }
           }
         }, _callee9);
@@ -776,21 +822,21 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
     value: function () {
       var _retrieve = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(shopifyId) {
         var config,
-            _args11 = arguments;
-        return regeneratorRuntime.wrap(function _callee10$(_context11) {
+            _args13 = arguments;
+        return regeneratorRuntime.wrap(function _callee10$(_context13) {
           while (1) {
-            switch (_context11.prev = _context11.next) {
+            switch (_context13.prev = _context13.next) {
               case 0:
-                config = _args11.length > 1 && _args11[1] !== undefined ? _args11[1] : {};
-                _context11.next = 3;
+                config = _args13.length > 1 && _args13[1] !== undefined ? _args13[1] : {};
+                _context13.next = 3;
                 return this.orderService_.retrieveByExternalId(shopifyId, config);
 
               case 3:
-                return _context11.abrupt("return", _context11.sent);
+                return _context13.abrupt("return", _context13.sent);
 
               case 4:
               case "end":
-                return _context11.stop();
+                return _context13.stop();
             }
           }
         }, _callee10, this);
@@ -807,24 +853,24 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
     value: function () {
       var _cancel = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(id) {
         var order;
-        return regeneratorRuntime.wrap(function _callee11$(_context12) {
+        return regeneratorRuntime.wrap(function _callee11$(_context14) {
           while (1) {
-            switch (_context12.prev = _context12.next) {
+            switch (_context14.prev = _context14.next) {
               case 0:
-                _context12.next = 2;
+                _context14.next = 2;
                 return this.retrieve(id);
 
               case 2:
-                order = _context12.sent;
-                _context12.next = 5;
+                order = _context14.sent;
+                _context14.next = 5;
                 return this.orderService_.withTransaction(manager).cancel(order.id);
 
               case 5:
-                return _context12.abrupt("return", _context12.sent);
+                return _context14.abrupt("return", _context14.sent);
 
               case 6:
               case "end":
-                return _context12.stop();
+                return _context14.stop();
             }
           }
         }, _callee11, this);
@@ -843,29 +889,29 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
         var _this6 = this;
 
         var soId;
-        return regeneratorRuntime.wrap(function _callee13$(_context14) {
+        return regeneratorRuntime.wrap(function _callee13$(_context16) {
           while (1) {
-            switch (_context14.prev = _context14.next) {
+            switch (_context16.prev = _context16.next) {
               case 0:
-                soId = "so_01FH83X61R2CYF7WWQACNPDCXF"; //temp
+                soId = "so_01FHDK9JQ1PKBAK16AW01H8JBS"; //temp
 
-                return _context14.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                return _context16.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(manager) {
-                    return regeneratorRuntime.wrap(function _callee12$(_context13) {
+                    return regeneratorRuntime.wrap(function _callee12$(_context15) {
                       while (1) {
-                        switch (_context13.prev = _context13.next) {
+                        switch (_context15.prev = _context15.next) {
                           case 0:
-                            _context13.next = 2;
+                            _context15.next = 2;
                             return _this6.orderService_.withTransaction(manager).addShippingMethod(orderId, soId, {}, {
                               price: (0, _parsePrice.parsePrice)(shippingLine.price)
                             });
 
                           case 2:
-                            return _context13.abrupt("return", Promise.resolve());
+                            return _context15.abrupt("return", Promise.resolve());
 
                           case 3:
                           case "end":
-                            return _context13.stop();
+                            return _context15.stop();
                         }
                       }
                     }, _callee12);
@@ -878,7 +924,7 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
 
               case 2:
               case "end":
-                return _context14.stop();
+                return _context16.stop();
             }
           }
         }, _callee13, this);
@@ -894,25 +940,25 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
     key: "getRegion_",
     value: function () {
       var _getRegion_ = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14(countryCode) {
-        return regeneratorRuntime.wrap(function _callee14$(_context15) {
+        return regeneratorRuntime.wrap(function _callee14$(_context17) {
           while (1) {
-            switch (_context15.prev = _context15.next) {
+            switch (_context17.prev = _context17.next) {
               case 0:
-                _context15.prev = 0;
-                _context15.next = 3;
+                _context17.prev = 0;
+                _context17.next = 3;
                 return this.regionService_.retrieveByCountryCode(countryCode.toLowerCase());
 
               case 3:
-                return _context15.abrupt("return", _context15.sent);
+                return _context17.abrupt("return", _context17.sent);
 
               case 6:
-                _context15.prev = 6;
-                _context15.t0 = _context15["catch"](0);
-                return _context15.abrupt("return", null);
+                _context17.prev = 6;
+                _context17.t0 = _context17["catch"](0);
+                return _context17.abrupt("return", null);
 
               case 9:
               case "end":
-                return _context15.stop();
+                return _context17.stop();
             }
           }
         }, _callee14, this, [[0, 6]]);
@@ -935,68 +981,68 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
       var _normalizeOrder_ = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16(shopifyOrder, customerId) {
         var _this7 = this;
 
-        return regeneratorRuntime.wrap(function _callee16$(_context17) {
+        return regeneratorRuntime.wrap(function _callee16$(_context19) {
           while (1) {
-            switch (_context17.prev = _context17.next) {
+            switch (_context19.prev = _context19.next) {
               case 0:
-                return _context17.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
+                return _context19.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15(manager) {
-                    var paymentStatus, fulfillmentStatus, region, items, _iterator8, _step8, lineItem, normalized;
+                    var paymentStatus, fulfillmentStatus, region, items, _iterator7, _step7, lineItem, normalized;
 
-                    return regeneratorRuntime.wrap(function _callee15$(_context16) {
+                    return regeneratorRuntime.wrap(function _callee15$(_context18) {
                       while (1) {
-                        switch (_context16.prev = _context16.next) {
+                        switch (_context18.prev = _context18.next) {
                           case 0:
                             paymentStatus = _this7.normalizeOrderPaymentStatus_(shopifyOrder.financial_status);
                             fulfillmentStatus = _this7.normalizeOrderFulfilmentStatus_(shopifyOrder.fulfillment_status);
-                            _context16.next = 4;
+                            _context18.next = 4;
                             return _this7.getRegion_(shopifyOrder.shipping_address.country_code);
 
                           case 4:
-                            region = _context16.sent;
+                            region = _context18.sent;
                             items = [];
-                            _iterator8 = _createForOfIteratorHelper(shopifyOrder.line_items);
-                            _context16.prev = 7;
+                            _iterator7 = _createForOfIteratorHelper(shopifyOrder.line_items);
+                            _context18.prev = 7;
 
-                            _iterator8.s();
+                            _iterator7.s();
 
                           case 9:
-                            if ((_step8 = _iterator8.n()).done) {
-                              _context16.next = 17;
+                            if ((_step7 = _iterator7.n()).done) {
+                              _context18.next = 17;
                               break;
                             }
 
-                            lineItem = _step8.value;
-                            _context16.next = 13;
+                            lineItem = _step7.value;
+                            _context18.next = 13;
                             return _this7.lineItemService_.withTransaction(manager).normalizeLineItem(lineItem);
 
                           case 13:
-                            normalized = _context16.sent;
+                            normalized = _context18.sent;
                             items.push(normalized);
 
                           case 15:
-                            _context16.next = 9;
+                            _context18.next = 9;
                             break;
 
                           case 17:
-                            _context16.next = 22;
+                            _context18.next = 22;
                             break;
 
                           case 19:
-                            _context16.prev = 19;
-                            _context16.t0 = _context16["catch"](7);
+                            _context18.prev = 19;
+                            _context18.t0 = _context18["catch"](7);
 
-                            _iterator8.e(_context16.t0);
+                            _iterator7.e(_context18.t0);
 
                           case 22:
-                            _context16.prev = 22;
+                            _context18.prev = 22;
 
-                            _iterator8.f();
+                            _iterator7.f();
 
-                            return _context16.finish(22);
+                            return _context18.finish(22);
 
                           case 25:
-                            return _context16.abrupt("return", {
+                            return _context18.abrupt("return", {
                               status: _this7.normalizeOrderStatus_(fulfillmentStatus, paymentStatus),
                               region_id: region.id,
                               email: shopifyOrder.email,
@@ -1016,7 +1062,7 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
 
                           case 26:
                           case "end":
-                            return _context16.stop();
+                            return _context18.stop();
                         }
                       }
                     }, _callee15, null, [[7, 19, 22, 25]]);
@@ -1029,7 +1075,7 @@ var ShopifyOrderService = /*#__PURE__*/function (_BaseService) {
 
               case 1:
               case "end":
-                return _context17.stop();
+                return _context19.stop();
             }
           }
         }, _callee16, this);

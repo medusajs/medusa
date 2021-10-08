@@ -90,7 +90,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "update",
     value: function () {
-      var _update = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(item, orderItems) {
+      var _update2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_update) {
         var _this2 = this;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -99,22 +99,16 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
               case 0:
                 return _context2.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(manager) {
-                    var id;
                     return regeneratorRuntime.wrap(function _callee$(_context) {
                       while (1) {
                         switch (_context.prev = _context.next) {
                           case 0:
                             _context.next = 2;
-                            return _this2.getId_(item, orderItems);
-
-                          case 2:
-                            id = _context.sent;
-                            _context.next = 5;
-                            return _this2.lineItemService_.withTransaction(manager).update(id, {
-                              quantity: item.quantity
+                            return _this2.lineItemService_.withTransaction(manager).update(_update.item_id, {
+                              quantity: _update.quantity
                             });
 
-                          case 5:
+                          case 2:
                           case "end":
                             return _context.stop();
                         }
@@ -122,7 +116,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
                     }, _callee);
                   }));
 
-                  return function (_x3) {
+                  return function (_x2) {
                     return _ref2.apply(this, arguments);
                   };
                 }()));
@@ -135,8 +129,8 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
         }, _callee2, this);
       }));
 
-      function update(_x, _x2) {
-        return _update.apply(this, arguments);
+      function update(_x) {
+        return _update2.apply(this, arguments);
       }
 
       return update;
@@ -144,7 +138,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
   }, {
     key: "delete",
     value: function () {
-      var _delete2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(item, orderItems) {
+      var _delete2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(id) {
         var _this3 = this;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
@@ -153,20 +147,14 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
               case 0:
                 return _context4.abrupt("return", this.atomicPhase_( /*#__PURE__*/function () {
                   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(manager) {
-                    var id;
                     return regeneratorRuntime.wrap(function _callee3$(_context3) {
                       while (1) {
                         switch (_context3.prev = _context3.next) {
                           case 0:
                             _context3.next = 2;
-                            return _this3.getId_(item, orderItems);
-
-                          case 2:
-                            id = _context3.sent;
-                            _context3.next = 5;
                             return _this3.lineItemService_.withTransaction(manager)["delete"](id);
 
-                          case 5:
+                          case 2:
                           case "end":
                             return _context3.stop();
                         }
@@ -174,7 +162,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
                     }, _callee3);
                   }));
 
-                  return function (_x6) {
+                  return function (_x4) {
                     return _ref3.apply(this, arguments);
                   };
                 }()));
@@ -187,7 +175,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
         }, _callee4, this);
       }));
 
-      function _delete(_x4, _x5) {
+      function _delete(_x3) {
         return _delete2.apply(this, arguments);
       }
 
@@ -210,13 +198,17 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
                       while (1) {
                         switch (_context5.prev = _context5.next) {
                           case 0:
-                            normalized = _this4.normalizeLineItem(item);
-                            _context5.next = 3;
+                            _context5.next = 2;
+                            return _this4.normalizeLineItem(item);
+
+                          case 2:
+                            normalized = _context5.sent;
+                            _context5.next = 5;
                             return _this4.lineItemService_.withTransaction(manager).create(_objectSpread({
                               order_id: orderId
                             }, normalized));
 
-                          case 3:
+                          case 5:
                           case "end":
                             return _context5.stop();
                         }
@@ -224,7 +216,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
                     }, _callee5);
                   }));
 
-                  return function (_x9) {
+                  return function (_x7) {
                     return _ref4.apply(this, arguments);
                   };
                 }()));
@@ -237,7 +229,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
         }, _callee6, this);
       }));
 
-      function create(_x7, _x8) {
+      function create(_x5, _x6) {
         return _create.apply(this, arguments);
       }
 
@@ -272,7 +264,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
         }, _callee7, this);
       }));
 
-      function getId_(_x10, _x11) {
+      function getId_(_x8, _x9) {
         return _getId_.apply(this, arguments);
       }
 
@@ -300,8 +292,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
                   fulfilled_quantity: lineItem.quantity - lineItem.fulfillable_quantity,
                   variant_id: productVariant.id,
                   metadata: {
-                    sh_id: lineItem.id,
-                    sh_origin_location: lineItem.origin_location.id
+                    sh_id: lineItem.id
                   }
                 });
 
@@ -313,7 +304,7 @@ var ShopifyLineItemsService = /*#__PURE__*/function (_BaseService) {
         }, _callee8, this);
       }));
 
-      function normalizeLineItem(_x12) {
+      function normalizeLineItem(_x10) {
         return _normalizeLineItem.apply(this, arguments);
       }
 

@@ -1,3 +1,4 @@
+import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { parsePrice } from "../utils/parse-price"
 
@@ -117,65 +118,99 @@ class ShopifyOrderService extends BaseService {
         relations: ["items", "shipping_address"],
       })
 
-      const normalized = await this.normalizeOrder_(data, order.customer_id)
+      const { refunds, shipping_address } = data
+      const shippingAddress = this.normalizeBilling_(shipping_address)
 
-      let itemUpdates = {
-        update: [],
-        add: [],
-      }
-
-      let orderItems = []
-      for (const i of order.items) {
-        let variant = await this.productVariantService_
-          .withTransaction(manager)
-          .retrieve(i.variant_id)
-        orderItems.push({ sku: variant.sku, id: i.id })
-      }
-      for (const i of data.line_items) {
-        let match = orderItems.find((oi) => oi.sku === i.sku)
-        if (match) {
-          let normalized = await this.normalizeLineItem(
-            i,
-            this.getShopifyTaxRate(data.tax_lines)
-          )
-          removeIndex(orderItems, match)
-          itemUpdates.update.push({ id: match.id, ...normalized })
-        } else {
-          let normalized = await this.normalizeLineItem(
-            i,
-            this.getShopifyTaxRate(data.tax_lines)
-          )
-          itemUpdates.add.push(normalized)
-        }
+      let update = {
+        metadata: { ...order.metadata },
       }
 
-      order.email = data.email
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      //Need to track refunds so we avoid handling them multiple times, as they are persisted on the order.
+      let sh_refunds =
+        order.metadata && order.metadata.sh_refunds
+          ? order.metadata.sh_refunds
+          : []
 
-      await orderRepo.save(order)
+      //Even if an item is deleted from an order it is persisted in its line items, therefore we need to keep
+      //track of deleted items, so that they are not re-added.
+      let sh_deleted_items =
+        order.metadata && order.metadata.sh_deleted_items
+          ? order.metadata.sh_deleted_items
+          : []
 
-      if (itemUpdates.add.length) {
-        for (const i of itemUpdates.add) {
-          await this.lineItemService_
-            .withTransaction(manager)
-            .create({ order_id: order.id, ...i })
-        }
-      }
-      if (itemUpdates.update.length) {
-        for (const i of itemUpdates.update) {
-          await this.lineItemService_
-            .withTransaction(manager)
-            .update(i.id, { quantity: i.quantity })
-        }
-      }
-      if (orderItems.length) {
-        for (const i of orderItems) {
-          await this.lineItemService_.withTransaction(manager).delete(i.id)
-        }
-      }
       await this.orderService_
         .withTransaction(manager)
-        .updateShippingAddress_(order, normalized.shipping_address)
+        .updateShippingAddress_(order, shippingAddress)
+
+      for (const item of order.items) {
+        const match = data.line_items.find((i) => i.id === item.metadata.sh_id)
+        if (
+          match.quantity > match.fulfillable_quantity &&
+          match.fulfillable_quantity > 0
+        ) {
+          await this.lineItemService_
+            .withTransaction(manager)
+            .update({ item_id: item.id, quantity: match.fulfillable_quantity })
+        } else if (match.fulfillable_quantity === 0) {
+          await this.lineItemService_.withTransaction(manager).delete(item.id)
+          sh_deleted_items.push(match.id)
+        } else if (match && match.quantity !== item.quantity) {
+          await this.lineItemService_
+            .withTransaction(manager)
+            .update({ item_id: item.id, quantity: match.quantity })
+        }
+      }
+
+      for (const item of data.line_items) {
+        const match = order.items.find((i) => i.metadata.sh_id === item.id)
+        if (!match && !sh_deleted_items.includes(item.id)) {
+          await this.lineItemService_
+            .withTransaction(manager)
+            .create(order.id, item)
+        }
+      }
+
+      for (const refund of refunds) {
+        if (!sh_refunds.includes(refund.id)) {
+          for (const refundLine of refund.refund_line_items) {
+            const match = order.items.find(
+              (i) => i.metadata.sh_id === refundLine.line_item_id
+            )
+
+            const newQuantity = match.quantity - refundLine.quantity
+            if (newQuantity > 0) {
+              await this.lineItemService_
+                .withTransaction(manager)
+                .update({ item_id: match.id, quantity: newQuantity })
+            } else {
+              await this.lineItemService_
+                .withTransaction(manager)
+                .delete(match.id)
+
+              sh_deleted_items.push(match.metadata.sh_id)
+            }
+          }
+          sh_refunds.push(refund.id)
+        }
+      }
+
+      if (data.email !== order.email) {
+        update.email = data.email
+      }
+
+      if (!_.isEmpty(sh_refunds)) {
+        update.metadata = { ...update.metadata, sh_refunds }
+      }
+
+      if (!_.isEmpty(sh_deleted_items)) {
+        update.metadata = { ...update.metadata, sh_deleted_items }
+      }
+
+      if (!_.isEmpty(update)) {
+        await this.orderService_
+          .withTransaction(manager)
+          .update(order.id, update)
+      }
     })
   }
 
@@ -232,7 +267,7 @@ class ShopifyOrderService extends BaseService {
   }
 
   async addShippingMethod_(shippingLine, orderId) {
-    const soId = "so_01FH83X61R2CYF7WWQACNPDCXF" //temp
+    const soId = "so_01FHDK9JQ1PKBAK16AW01H8JBS" //temp
 
     return this.atomicPhase_(async (manager) => {
       await this.orderService_.withTransaction(manager).addShippingMethod(
