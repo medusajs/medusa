@@ -20,10 +20,11 @@ export class ProductRepository extends Repository<Product> {
       // the query exists
       const tags = idsOrOptionsWithoutRelations.where.tags
       delete idsOrOptionsWithoutRelations.where.tags
-
       let qb = this.createQueryBuilder("product")
         .select(["product.id"])
         .where(idsOrOptionsWithoutRelations.where)
+        .skip(idsOrOptionsWithoutRelations.skip)
+        .take(idsOrOptionsWithoutRelations.take)
       
       if(tags){ 
         qb = qb
