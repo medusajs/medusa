@@ -169,7 +169,7 @@ class ShopifySubscriber {
         await updateTracking(trackingObject)
         await this.redis_.addIgnore(
           fulfillment.metadata.sh_id,
-          "order-fulfillment.update"
+          "order.fulfillment_updated"
         )
       } catch (err) {
         throw new MedusaError(
@@ -228,7 +228,7 @@ class ShopifySubscriber {
         )
       })
 
-    await this.redis_.addIgnore(shId, "order-fufillment.create")
+    await this.redis_.addIgnore(shId, "order.fulfillment_created")
     await this.shopifyFulfillmentService_.addShopifyId(fulfillment_id, shId)
   }
 
@@ -252,7 +252,7 @@ class ShopifySubscriber {
         )
       })
 
-    await this.redis_.addIgnore(id, "order-fulfillment.update")
+    await this.redis_.addIgnore(id, "order.fulfillment_cancelled")
   }
 
   registerProductUpdate = async ({ id, fields }) => {
@@ -309,7 +309,7 @@ class ShopifySubscriber {
         )
       })
 
-    await this.redis_.addIgnore(product.external_id, "product.update")
+    await this.redis_.addIgnore(product.external_id, "product.updated")
   }
 
   registerVariantUpdate = async ({ id, fields }) => {

@@ -73,7 +73,10 @@ class ShopifyFulfillmentService extends BaseService {
         tracking_urls,
       } = data
 
-      const ignore = await this.redis_.shouldIgnore(id, "fulfillment_create")
+      const ignore = await this.redis_.shouldIgnore(
+        id,
+        "order.fulfillment_created"
+      )
       if (ignore) {
         return
       }
@@ -148,7 +151,10 @@ class ShopifyFulfillmentService extends BaseService {
         tracking_urls,
       } = data
 
-      const ignore = await this.redis_.shouldIgnore(id, "fulfillment_update")
+      const ignore = await this.redis_.shouldIgnore(
+        id,
+        "order.fulfillment_updated"
+      )
       if (ignore) {
         return
       }
@@ -179,8 +185,12 @@ class ShopifyFulfillmentService extends BaseService {
       }
 
       if (status === "cancelled") {
-        if (fulfillment.cancelled_at) {
-          return Promise.resolve()
+        const ignore = await this.redis_.shouldIgnore(
+          id,
+          "order.fulfillment_cancelled"
+        )
+        if (ignore) {
+          return
         }
 
         return await this.cancel_(fulfillment.id)

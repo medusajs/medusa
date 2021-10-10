@@ -108,7 +108,7 @@ class ShopifyProductService extends BaseService {
 
   async update(data) {
     return this.atomicPhase_(async (manager) => {
-      const ignore = await this.redis_.shouldIgnore(data.id, "product_update")
+      const ignore = await this.redis_.shouldIgnore(data.id, "product.updated")
       if (ignore) {
         return
       }
@@ -160,8 +160,6 @@ class ShopifyProductService extends BaseService {
           .update(existing.id, update)
       }
 
-      await this.redis_.addIgnore(data.id, "product.updated")
-
       return Promise.resolve()
     })
   }
@@ -193,10 +191,15 @@ class ShopifyProductService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const { id, variants, options } = product
       for (let variant of updateVariants) {
-        const ignore = await this.redis_.shouldIgnore(
-          variant.metadata.sh_id,
-          "product-variant.updated"
-        )
+        const ignore =
+          (await this.redis_.shouldIgnore(
+            variant.metadata.sh_id,
+            "product-variant.updated"
+          )) ||
+          (await this.redis_.shouldIgnore(
+            variant.metadata.sh_id,
+            "product-variant.created"
+          ))
         if (ignore) {
           continue
         }
@@ -207,18 +210,10 @@ class ShopifyProductService extends BaseService {
           await this.productVariantService_
             .withTransaction(manager)
             .update(match.id, variant)
-          await this.redis_.addIgnore(
-            variant.metadata.sh_id,
-            "product-variant.updated"
-          )
         } else {
           await this.productVariantService_
             .withTransaction(manager)
             .create(id, variant)
-          await this.redis_.addIgnore(
-            variant.metadata.sh_id,
-            "product-variant.created"
-          )
         }
       }
     })
@@ -241,10 +236,6 @@ class ShopifyProductService extends BaseService {
           await this.productVariantService_
             .withTransaction(manager)
             .delete(variant.id)
-          await this.redis_.addIgnore(
-            variant.metadata.sh_id,
-            "product-variant.deleted"
-          )
         }
       }
     })
