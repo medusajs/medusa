@@ -248,6 +248,26 @@ Object {
 }
 `;
 
+exports[`GetNotification 1`] = `
+Object {
+  "limit": 50,
+  "notifications": Array [
+    Object {
+      "created_at": Any<String>,
+      "event_name": "order.placed",
+      "id": StringMatching /\\^noti_\\*/,
+      "provider_id": "test-not",
+      "resends": Array [],
+      "resource_id": "order_01F0BF66ZBXNJ98WDQ9SCWH8Y7",
+      "resource_type": "order",
+      "to": "test@email.com",
+      "updated_at": Any<String>,
+    },
+  ],
+  "offset": 0,
+}
+`;
+
 exports[`GetOrdersOrder 1`] = `
 Object {
   "order": Object {
@@ -578,6 +598,27 @@ Object {
     "label": "Too Big",
     "updated_at": Any<String>,
     "value": "too_big",
+  },
+}
+`;
+
+exports[`GetShippingOptionsShippingOption 1`] = `
+Object {
+  "shipping_option": Object {
+    "admin_only": false,
+    "amount": Any<Number>,
+    "created_at": Any<String>,
+    "data": Object {},
+    "deleted_at": null,
+    "id": StringMatching /\\^so_\\*/,
+    "is_return": false,
+    "metadata": null,
+    "name": Any<String>,
+    "price_type": "flat_rate",
+    "profile_id": StringMatching /\\^sp_\\*/,
+    "provider_id": "test-ful",
+    "region_id": StringMatching /\\^reg_/,
+    "updated_at": Any<String>,
   },
 }
 `;

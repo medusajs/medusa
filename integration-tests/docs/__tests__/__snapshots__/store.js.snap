@@ -215,6 +215,26 @@ Object {
     ],
     "weight": null,
     "width": null,
+exports[`GetGiftCardsGiftCard 1`] = `
+Object {
+  "gift_card": Object {
+    "balance": 500,
+    "code": "1J3U-WXO0-SZ0H-O5QU",
+    "id": StringMatching /\\^gift_\\*/,
+    "region": Object {
+      "created_at": Any<String>,
+      "currency_code": "usd",
+      "deleted_at": null,
+      "fulfillment_providers": Array [],
+      "id": StringMatching /\\^reg_\\*/,
+      "metadata": null,
+      "name": "United States",
+      "payment_providers": Array [],
+      "tax_code": null,
+      "tax_rate": "0",
+      "updated_at": Any<String>,
+    },
+    "value": 1000,
   },
 }
 `;
