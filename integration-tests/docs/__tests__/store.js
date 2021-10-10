@@ -4,8 +4,9 @@ const { useDb } = require("../../helpers/use-db")
 
 const cartTest = require("../test-input/store/cart")
 const customerTest = require("../test-input/store/customer")
+const productTest = require("../test-input/store/product")
 
-const toTest = [cartTest, customerTest]
+const toTest = [cartTest, customerTest, productTest]
 
 jest.setTimeout(30000)
 
@@ -29,7 +30,7 @@ test.each(toTest)(
       .get(buildEndpoint(config.id), {
         headers: config.headers,
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
       })
 
