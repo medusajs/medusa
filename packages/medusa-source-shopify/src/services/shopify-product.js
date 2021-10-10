@@ -11,6 +11,7 @@ class ShopifyProductService extends BaseService {
       productVariantService,
       shippingProfileService,
       shopifyClientService,
+      shopifyRedisService,
     },
     options
   ) {
@@ -28,6 +29,8 @@ class ShopifyProductService extends BaseService {
     this.shippingProfileService_ = shippingProfileService
     /** @private @const {ShopifyRestClient} */
     this.client_ = shopifyClientService
+
+    this.redis_ = shopifyRedisService
   }
 
   withTransaction(transactionManager) {
@@ -42,6 +45,7 @@ class ShopifyProductService extends BaseService {
       productVariantService: this.productVariantService_,
       productService: this.productService_,
       shopifyClientService: this.shopifyClientService,
+      shopifyRedisService: this.redis_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -58,6 +62,11 @@ class ShopifyProductService extends BaseService {
    */
   async create(data, collectionId) {
     return this.atomicPhase_(async (manager) => {
+      const ignore = await this.redis_.shouldIgnore(data.id, "product.created")
+      if (ignore) {
+        return
+      }
+
       let existingProduct = await this.productService_
         .withTransaction(manager)
         .retrieveByExternalId(data.id)
@@ -91,14 +100,21 @@ class ShopifyProductService extends BaseService {
         }
       }
 
+      await this.redis_.addIgnore(data.id, "product.created")
+
       return product
     })
   }
 
   async update(data) {
     return this.atomicPhase_(async (manager) => {
+      const ignore = await this.redis_.shouldIgnore(data.id, "product_update")
+      if (ignore) {
+        return
+      }
+
       let existing = await this.productService_
-        .retrieveByHandle(data.handle, {
+        .retrieveByExternalId(data.id, {
           relations: ["variants", "options"],
         })
         .catch((_) => undefined)
@@ -144,6 +160,8 @@ class ShopifyProductService extends BaseService {
           .update(existing.id, update)
       }
 
+      await this.redis_.addIgnore(data.id, "product.updated")
+
       return Promise.resolve()
     })
   }
@@ -175,16 +193,32 @@ class ShopifyProductService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const { id, variants, options } = product
       for (let variant of updateVariants) {
+        const ignore = await this.redis_.shouldIgnore(
+          variant.metadata.sh_id,
+          "product-variant.updated"
+        )
+        if (ignore) {
+          continue
+        }
+
         variant = this.addVariantOptions_(variant, options)
         let match = variants.find((v) => v.sku === variant.sku)
         if (match) {
           await this.productVariantService_
             .withTransaction(manager)
             .update(match.id, variant)
+          await this.redis_.addIgnore(
+            variant.metadata.sh_id,
+            "product-variant.updated"
+          )
         } else {
           await this.productVariantService_
             .withTransaction(manager)
             .create(id, variant)
+          await this.redis_.addIgnore(
+            variant.metadata.sh_id,
+            "product-variant.created"
+          )
         }
       }
     })
@@ -194,11 +228,23 @@ class ShopifyProductService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const { variants } = product
       for (let variant of variants) {
+        const ignore = await this.redis_.shouldIgnore(
+          variant.metadata.sh_id,
+          "product-variant.deleted"
+        )
+        if (ignore) {
+          continue
+        }
+
         let match = updateVariants.find((v) => v.sku === variant.sku)
         if (!match) {
           await this.productVariantService_
             .withTransaction(manager)
             .delete(variant.id)
+          await this.redis_.addIgnore(
+            variant.metadata.sh_id,
+            "product-variant.deleted"
+          )
         }
       }
     })

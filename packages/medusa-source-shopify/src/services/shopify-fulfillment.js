@@ -1,7 +1,6 @@
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
-import { MedusaErrorTypes } from "medusa-core-utils/dist/errors"
 
 class ShopifyFulfillmentService extends BaseService {
   constructor(
@@ -12,6 +11,7 @@ class ShopifyFulfillmentService extends BaseService {
       shopifyClientService,
       fulfillmentRepository,
       fulfillmentService,
+      shopifyRedisService,
     },
     options
   ) {
@@ -31,6 +31,8 @@ class ShopifyFulfillmentService extends BaseService {
     this.orderService_ = orderService
     /** @private @const {ShopifyRestClient} */
     this.client_ = shopifyClientService
+
+    this.redis_ = shopifyRedisService
   }
 
   withTransaction(transactionManager) {
@@ -46,6 +48,7 @@ class ShopifyFulfillmentService extends BaseService {
       shopifyOrderService: this.shopifyOrderService_,
       fulfillmentRepository: this.fulfillmentRepository_,
       fulfillmentService: this.fulfillmentService_,
+      shopifyRedisService: this.redis_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -69,6 +72,12 @@ class ShopifyFulfillmentService extends BaseService {
         tracking_url,
         tracking_urls,
       } = data
+
+      const ignore = await this.redis_.shouldIgnore(id, "fulfillment_create")
+      if (ignore) {
+        return
+      }
+
       let order = await this.shopifyOrderService_
         .retrieve(order_id, {
           relations: ["items", "fulfillments"],
@@ -138,6 +147,11 @@ class ShopifyFulfillmentService extends BaseService {
         tracking_url,
         tracking_urls,
       } = data
+
+      const ignore = await this.redis_.shouldIgnore(id, "fulfillment_update")
+      if (ignore) {
+        return
+      }
 
       let order = await this.shopifyOrderService_
         .retrieve(order_id, {

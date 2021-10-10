@@ -12,6 +12,7 @@ class ShopifyOrderService extends BaseService {
       regionService,
       shopifyCustomerService,
       shopifyLineItemService,
+      shopifyRedisService,
       shopifyClientService,
     },
     options
@@ -34,6 +35,8 @@ class ShopifyOrderService extends BaseService {
     this.orderService_ = orderService
     /** @private @const {OrderRepository} */
     this.orderRepository_ = orderRepository
+    /** @private @const {ShopifyClientService} */
+    this.redis_ = shopifyRedisService
     /** @private @const {ShopifyClientService} */
     this.client_ = shopifyClientService
   }
@@ -218,6 +221,8 @@ class ShopifyOrderService extends BaseService {
           .withTransaction(manager)
           .update(order.id, update)
       }
+
+      await this.redis_.addIgnore(data.id, "shopify")
     })
   }
 
@@ -239,6 +244,8 @@ class ShopifyOrderService extends BaseService {
    */
   async archive(id) {
     return this.atomicPhase_(async (manager) => {
+      const ignore = await this.redis_.shouldIgnore(id, "archive")
+
       const order = await this.retrieve(id)
       return await this.orderService_.withTransaction(manager).archive(order.id)
     })
@@ -274,12 +281,10 @@ class ShopifyOrderService extends BaseService {
   }
 
   async addShippingMethod_(shippingLine, orderId) {
-    const soId = "so_01FHDK9JQ1PKBAK16AW01H8JBS" //temp
-
     return this.atomicPhase_(async (manager) => {
       await this.orderService_.withTransaction(manager).addShippingMethod(
         orderId,
-        soId,
+        "shopify",
         {},
         {
           price: parsePrice(shippingLine.price),

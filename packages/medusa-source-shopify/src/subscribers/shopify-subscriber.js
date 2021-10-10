@@ -12,6 +12,7 @@ class ShopifySubscriber {
       productVariantService,
       orderService,
       shopifyClientService,
+      shopifyRedisService,
     },
     options
   ) {
@@ -31,6 +32,8 @@ class ShopifySubscriber {
 
     this.orderService_ = orderService
 
+    this.redis_ = shopifyRedisService
+
     this.client_ = shopifyClientService
 
     eventBusService.subscribe("order.items_returned", this.registerReturn)
@@ -45,7 +48,22 @@ class ShopifySubscriber {
       this.registerFulfillmentCancel
     )
 
+    eventBusService.subscribe(
+      "order.shipment_created",
+      this.registerShipmentCreate
+    )
+
     eventBusService.subscribe("product.updated", this.registerProductUpdate)
+
+    eventBusService.subscribe(
+      "product-variant.updated",
+      this.registerVariantUpdate
+    )
+
+    eventBusService.subscribe(
+      "product-variant.deleted",
+      this.registerVariantDelete
+    )
   }
 
   /**
@@ -96,7 +114,6 @@ class ShopifySubscriber {
       },
     }
 
-    //ShopifyRestClient can't handle this post for some unknown reason.. So we use axios
     try {
       await axios.post(
         `https://${this.options.domain}.myshopify.com/admin/api/2021-10/orders/${order.external_id}/refunds.json`,
@@ -150,6 +167,10 @@ class ShopifySubscriber {
 
       try {
         await updateTracking(trackingObject)
+        await this.redis_.addIgnore(
+          fulfillment.metadata.sh_id,
+          "order-fulfillment.update"
+        )
       } catch (err) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -207,6 +228,7 @@ class ShopifySubscriber {
         )
       })
 
+    await this.redis_.addIgnore(shId, "order-fufillment.create")
     await this.shopifyFulfillmentService_.addShopifyId(fulfillment_id, shId)
   }
 
@@ -229,6 +251,8 @@ class ShopifySubscriber {
           `An error occured while attempting to issue a fulfillment cancel to Shopify: ${err.message}`
         )
       })
+
+    await this.redis_.addIgnore(id, "order-fulfillment.update")
   }
 
   registerProductUpdate = async ({ id, fields }) => {
@@ -246,8 +270,6 @@ class ShopifySubscriber {
         id: product.external_id,
       },
     }
-
-    console.log(fields)
 
     if (fields.includes("title")) {
       update.product.title = product.title
@@ -286,14 +308,87 @@ class ShopifySubscriber {
           `An error occured while attempting to issue a product update to Shopify: ${err.message}`
         )
       })
+
+    await this.redis_.addIgnore(product.external_id, "product.update")
   }
 
   registerVariantUpdate = async ({ id, fields }) => {
-    const product = await this.productVariantService_.retrieve(id)
+    const variant = await this.productVariantService_.retrieve(id, {
+      relations: ["prices", "product"],
+    })
+
+    //Event was not emitted by update
+    if (!fields) {
+      return
+    }
+
+    const update = {
+      variant: {
+        id: variant.metadata.sh_id,
+      },
+    }
+
+    if (fields.includes("title")) {
+      update.variant.title = variant.title
+    }
+
+    if (fields.includes("allow_backorder")) {
+      update.variant.inventory_police = variant.allow_backorder
+        ? "continue"
+        : "deny"
+    }
+
+    if (fields.includes("prices")) {
+      update.variant.price = variant.prices[0].amount / 100
+    }
 
     if (fields.includes("weight")) {
-      update.product.grams = product.weight
+      update.variant.grams = variant.weight
     }
+
+    await axios
+      .put(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/variants/${variant.metadata.sh_id}.json`,
+        update,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a product update to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(
+      variant.metadata.sh_id,
+      "product-variant.updated"
+    )
+  }
+
+  registerVariantDelete = async ({ product_id, metadata }) => {
+    const product = await this.productService_.retrieve(product_id)
+
+    await axios
+      .delete(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/products/${product.external_id}/variants/${metadata.sh_id}.json`,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a product variant delete to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(metadata.sh_id, "product-variant.deleted")
   }
 
   getLocationId_(returnItem, fulfillmentOrders = []) {

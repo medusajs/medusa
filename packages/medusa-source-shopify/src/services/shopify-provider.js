@@ -72,7 +72,15 @@ class ShopifyProviderService extends PaymentService {
   }
 
   async deletePayment(paymentId) {
-    return {}
+    return this.atomicPhase_(async (manager) => {
+      const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
+
+      try {
+        return await paymentRepo.softRemove(paymentId)
+      } catch (_err) {
+        return Promise.resolve()
+      }
+    })
   }
 
   async capturePayment(paymentId) {
