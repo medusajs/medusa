@@ -591,7 +591,7 @@ class ProductVariantService extends BaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductVariantService.Events.CREATED, {
+        .emit(ProductVariantService.Events.DELETED, {
           id: variantId,
           product_id: variant.product_id,
           metadata: variant.metadata,
