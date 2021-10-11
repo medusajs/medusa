@@ -21,7 +21,7 @@ export class Invite {
   @Column()
   user_email: string
 
-  @Column({type:'enum', enum: UserRoles,nullable: true, default: UserRoles.MEMBER})
+  @Column({type:'enum', enum: UserRoles, nullable: true, default: UserRoles.MEMBER})
   role: UserRoles
 
   @Column({ default: false })
