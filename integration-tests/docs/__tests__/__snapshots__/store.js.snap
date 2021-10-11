@@ -145,3 +145,26 @@ Object {
   },
 }
 `;
+
+exports[`GetSwapsSwap 1`] = `
+Object {
+  "swap": Object {
+    "allow_backorder": false,
+    "canceled_at": null,
+    "cart_id": StringMatching /\\^cart_\\*/,
+    "confirmed_at": null,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "difference_due": null,
+    "fulfillment_status": "not_fulfilled",
+    "id": StringMatching /\\^swap_\\*/,
+    "idempotency_key": Any<String>,
+    "metadata": null,
+    "no_notification": true,
+    "order_id": StringMatching /\\^order_\\*/,
+    "payment_status": "not_paid",
+    "shipping_address_id": null,
+    "updated_at": Any<String>,
+  },
+}
+`;

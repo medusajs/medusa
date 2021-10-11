@@ -5,8 +5,9 @@ const { useDb } = require("../../helpers/use-db")
 const cartTest = require("../test-input/store/cart")
 const customerTest = require("../test-input/store/customer")
 const giftCardTest = require("../test-input/store/gift-card")
+const swapTest = require("../test-input/store/swap")
 
-const toTest = [cartTest, customerTest, giftCardTest]
+const toTest = [cartTest, customerTest, giftCardTest, swapTest]
 
 jest.setTimeout(30000)
 
