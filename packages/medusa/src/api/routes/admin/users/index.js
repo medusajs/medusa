@@ -23,6 +23,7 @@ export const unauthenticatedUserRoutes = app => {
 
 export default app => {
   app.use("/users", route)
+  route.get("/invites", middlewares.wrap(require("./list-invites").default))
 
   route.get("/:user_id", middlewares.wrap(require("./get-user").default))
 
