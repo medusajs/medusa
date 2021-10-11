@@ -99,11 +99,9 @@ Joi.orderFilter = () => {
 Joi.productFilter = () => {
   return Joi.object().keys({
     id: Joi.string(),
-    q: Joi.string(),
+    q: Joi.string().allow(null, ""),
     status: Joi.array()
-      .items(
-        Joi.string().valid("proposed", "draft", "published", "rejected", "null")
-      )
+      .items(Joi.string().valid("proposed", "draft", "published", "rejected"))
       .single(),
     collection_id: Joi.array()
       .items(Joi.string())
@@ -120,6 +118,7 @@ Joi.productFilter = () => {
     limit: Joi.string(),
     expand: Joi.string(),
     fields: Joi.string(),
+    order: Joi.string().optional(),
     created_at: Joi.dateFilter(),
     updated_at: Joi.dateFilter(),
     deleted_at: Joi.dateFilter(),
