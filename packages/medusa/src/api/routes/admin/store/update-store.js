@@ -37,6 +37,7 @@ export default async (req, res) => {
     swap_link_template: Validator.string(),
     payment_link_template: Validator.string(),
     default_currency_code: Validator.string(),
+    invite_link_template: Validator.string(),
     currencies: Validator.array().items(Validator.string()),
   })
 

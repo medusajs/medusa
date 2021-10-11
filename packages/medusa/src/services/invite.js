@@ -152,9 +152,10 @@ class InviteService extends BaseService {
   }
 
   async accept(token, user_) {
-    const decoded = this.verifyToken(token)
-
-    if (!decoded) {
+    let decoded
+    try {
+      decoded = this.verifyToken(token)
+    } catch (err) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Token is not valid"
