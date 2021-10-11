@@ -26,7 +26,7 @@ export class ProductRepository extends Repository<Product> {
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
       
-      if(tags){ 
+      if (tags) { 
         qb = qb
           .leftJoinAndSelect("product.tags", "tags")
           .andWhere(  
