@@ -18,9 +18,6 @@ export default async (req, res) => {
 
     // Should call a email service provider that sends the token to the user
     await userService.generateResetPasswordToken(user.id)
-
-    res.sendStatus(204)
-  } catch (error) {
-    throw error
-  }
+  } catch (error) {}
+  res.sendStatus(204)
 }

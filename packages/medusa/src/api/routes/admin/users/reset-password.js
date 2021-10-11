@@ -16,12 +16,18 @@ export default async (req, res) => {
   }
 
   try {
+    const userService = req.scope.resolve("userService")
+
     const decoded = await jwt.decode(value.token)
 
-    const userService = req.scope.resolve("userService")
-    let user = await userService.retrieveByEmail(value.email || decoded.email, {
-      select: ["id", "password_hash"],
-    })
+    let user
+    try {
+      user = await userService.retrieveByEmail(value.email || decoded.email, {
+        select: ["id", "password_hash"],
+      })
+    } catch (err) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "invalid token")
+    }
 
     const verifiedToken = await jwt.verify(value.token, user.password_hash)
     if (!verifiedToken || verifiedToken.user_id !== user.id) {
