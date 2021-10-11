@@ -22,7 +22,7 @@ export class User {
   @PrimaryColumn()
   id: string
 
-  @Column({type:'enum', enum: UserRoles, nullable: true, default: UserRoles.MEMBER})
+  @DbAwareColumn({type:'enum', enum: UserRoles, nullable: true, default: UserRoles.MEMBER})
   role: UserRoles
 
   @Index({ unique: true })
