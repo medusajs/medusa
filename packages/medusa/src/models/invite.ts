@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 import { UserRoles } from "./user"
 
 @Entity()
@@ -21,19 +21,24 @@ export class Invite {
   @Column()
   user_email: string
 
-  @DbAwareColumn({type:'enum', enum: UserRoles, nullable: true, default: UserRoles.MEMBER})
+  @DbAwareColumn({
+    type: "enum",
+    enum: UserRoles,
+    nullable: true,
+    default: UserRoles.MEMBER,
+  })
   role: UserRoles
 
   @Column({ default: false })
-  accepted: boolean;
+  accepted: boolean
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
