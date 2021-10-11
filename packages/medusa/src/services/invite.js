@@ -38,7 +38,7 @@ class InviteService extends BaseService {
       return this
     }
 
-    const cloned = new inviteService({
+    const cloned = new InviteService({
       manager,
       inviteRepository: this.inviteRepository_,
       userService: this.userService_,
