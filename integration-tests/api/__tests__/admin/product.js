@@ -46,7 +46,35 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products?status[]=null", {
+        .get("/admin/products", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "draft",
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+            status: "draft",
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of all products when no query is provided", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/products?q=", {
           headers: {
             Authorization: "Bearer test_token",
           },
