@@ -1,7 +1,5 @@
-const Scrypt = require("scrypt-kdf")
 const jwt = require("jsonwebtoken")
 const path = require("path")
-const { User } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -9,7 +7,6 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const userSeeder = require("../../helpers/user-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
-const { ESRCH } = require("constants")
 
 jest.setTimeout(30000)
 
@@ -62,11 +59,11 @@ describe("/admin/users", () => {
       })
     })
 
-    it("lists users and invites which are not yet accepted", async () => {
+    it("lists invites", async () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/users?includeInvites=true", {
+        .get("/admin/users/invites", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -77,30 +74,12 @@ describe("/admin/users", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.users).toMatchSnapshot([
-        {
-          id: "admin_user",
-          email: "admin@medusa.js",
-          api_token: "test_token",
-          role: "admin",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
-        {
-          id: "member-user",
-          role: "member",
-          email: "member@test.com",
-          first_name: "member",
-          last_name: "user",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
+      expect(response.data.invites).toMatchSnapshot([
         {
           id: "memberInvite",
           user_email: "invite-member@test.com",
           role: "member",
           accepted: false,
-          isInvite: true,
           token: expect.any(String),
           created_at: expect.any(String),
           updated_at: expect.any(String),
@@ -109,7 +88,6 @@ describe("/admin/users", () => {
           id: "adminInvite",
           user_email: "invite-admin@test.com",
           role: "admin",
-          isInvite: true,
           accepted: false,
           token: expect.any(String),
           created_at: expect.any(String),
@@ -118,7 +96,7 @@ describe("/admin/users", () => {
       ])
     })
 
-    it("lists users without invites", async () => {
+    it("lists users", async () => {
       const api = useApi()
 
       const response = await api
@@ -254,7 +232,7 @@ describe("/admin/users", () => {
           .catch((err) => console.log(err))
 
         const response = await api
-          .get("/admin/users?includeInvites=true", {
+          .get("/admin/users/invites", {
             headers: {
               Authorization: "Bearer test_token",
             },
@@ -265,10 +243,10 @@ describe("/admin/users", () => {
 
         expect(createReponse.status).toEqual(200)
 
-        expect(response.data.users).toEqual(
+        expect(response.data.invites).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ email: payload.users[0] }),
-            expect.objectContaining({ email: payload.users[1] }),
+            expect.objectContaining({ user_email: payload.users[0] }),
+            expect.objectContaining({ user_email: payload.users[1] }),
           ])
         )
 
@@ -290,7 +268,7 @@ describe("/admin/users", () => {
           .catch((err) => console.log(err))
 
         const response = await api
-          .get("/admin/users?includeInvites=true", {
+          .get("/admin/users/invites", {
             headers: {
               Authorization: "Bearer test_token",
             },
@@ -301,9 +279,12 @@ describe("/admin/users", () => {
 
         expect(createReponse.status).toEqual(200)
 
-        expect(response.data.users).toEqual(
+        expect(response.data.invites).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ email: payload.users[0], role: "admin" }),
+            expect.objectContaining({
+              user_email: payload.users[0],
+              role: "admin",
+            }),
           ])
         )
 
@@ -331,16 +312,11 @@ describe("/admin/users", () => {
       it("creates a user successfully when accepting an invite (unauthorized endpoint)", async () => {
         const api = useApi()
 
-        const inviteResponse = await api.get(
-          "/admin/users?includeInvites=true",
-          {
-            headers: { Authorization: "Bearer test_token" },
-          }
-        )
+        const inviteResponse = await api.get("/admin/users/invites", {
+          headers: { Authorization: "Bearer test_token" },
+        })
 
-        const { token, ...rest } = inviteResponse.data.users.find(
-          (usr) => usr.isInvite
-        )
+        const { token, ...rest } = inviteResponse.data.invites[0]
 
         const user = {
           first_name: "test",
@@ -354,20 +330,14 @@ describe("/admin/users", () => {
           .post("/admin/users/invite/accept", payload)
           .catch((err) => console.log(err))
 
-        const userResponse = await api.get("/admin/users?includeInvites=true", {
+        const userResponse = await api.get("/admin/users", {
           headers: { Authorization: "Bearer test_token" },
         })
 
         const newUser = userResponse.data.users.find(
-          (usr) => !usr.isInvite && usr.email == rest.user_email
+          (usr) => usr.email == rest.user_email
         )
 
-        const oldInvite = userResponse.data.users.find(
-          (usr) =>
-            usr.isInvite && usr.accepted && usr.user_email == rest.user_email
-        )
-
-        expect(oldInvite).toEqual(undefined)
         expect(newUser).toEqual(expect.objectContaining({ role: rest.role }))
         expect(createResponse.status).toEqual(200)
       })
@@ -375,15 +345,12 @@ describe("/admin/users", () => {
       it("creates a user successfully with new role after updating invite (unauthorized endpoint)", async () => {
         const api = useApi()
 
-        const inviteResponse = await api.get(
-          "/admin/users?includeInvites=true",
-          {
-            headers: { Authorization: "Bearer test_token" },
-          }
-        )
+        const inviteResponse = await api.get("/admin/users/invites", {
+          headers: { Authorization: "Bearer test_token" },
+        })
 
-        const { token, ...rest } = inviteResponse.data.users.find(
-          (usr) => usr.isInvite && usr.role === "member"
+        const { token, ...rest } = inviteResponse.data.invites.find(
+          (inv) => inv.role === "member"
         )
 
         const user = {
@@ -410,17 +377,39 @@ describe("/admin/users", () => {
           payload
         )
 
-        const userResponse = await api.get("/admin/users?includeInvites=true", {
+        const userResponse = await api.get("/admin/users", {
           headers: { Authorization: "Bearer test_token" },
         })
 
         const newUser = userResponse.data.users.find(
-          (usr) => !usr.isInvite && usr.email == rest.user_email
+          (usr) => usr.email == rest.user_email
         )
 
         expect(newUser).toEqual(expect.objectContaining({ role: "admin" }))
         expect(updateResponse.status).toEqual(200)
         expect(createResponse.status).toEqual(200)
+      })
+      it("Fails to accept an invite given an invalid token (unauthorized endpoint)", async () => {
+        expect.assertions(2)
+        const api = useApi()
+
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnZpdGVfaWQiOiJpbnZpdGVfMDFGSFFWNlpBOERRRlgySjM3UVo5SjZTOTAiLCJyb2xlIjoiYWRtaW4iLCJ1c2VyX2VtYWlsIjoic2ZAc2RmLmNvbSIsImlhdCI6MTYzMzk2NDAyMCwiZXhwIjoxNjM0NTY4ODIwfQ.ZsmDvunBxhRW1iRqvfEfWixJLZ1zZVzaEYST38Vbl00"
+
+        const result = await api
+          .post("/admin/users/invite/accept", {
+            token,
+            user: {
+              first_name: "test",
+              last_name: "testesen",
+              password: "supersecret",
+            },
+          })
+          .catch((err) => {
+            console.log(err.response.data.message)
+            expect(err.response.status).toEqual(400)
+            expect(err.response.data.message).toEqual("Token is not valid")
+          })
       })
 
       it("fails to accept an already accepted invite (unauthorized endpoint)", async () => {
@@ -428,16 +417,11 @@ describe("/admin/users", () => {
 
         const api = useApi()
 
-        const inviteResponse = await api.get(
-          "/admin/users?includeInvites=true",
-          {
-            headers: { Authorization: "Bearer test_token" },
-          }
-        )
+        const inviteResponse = await api.get("/admin/users/invites", {
+          headers: { Authorization: "Bearer test_token" },
+        })
 
-        const { token, ...rest } = inviteResponse.data.users.find(
-          (usr) => usr.isInvite
-        )
+        const { token, ...rest } = inviteResponse.data.invites[0]
 
         const user = {
           first_name: "test",
@@ -664,7 +648,7 @@ describe("/admin/users", () => {
       const inviteId = "memberInvite"
 
       const UsersAndInvitesBeforeDelete = await api.get(
-        "/admin/users?includeInvites=true",
+        "/admin/users/invites",
         {
           headers: {
             Authorization: "Bearer test_token",
@@ -672,7 +656,7 @@ describe("/admin/users", () => {
         }
       )
 
-      const usersBeforeDelete = UsersAndInvitesBeforeDelete.data.users
+      const usersBeforeDelete = UsersAndInvitesBeforeDelete.data.invites
 
       const response = await api
         .delete(`/admin/users/invite/${inviteId}`, {
@@ -680,14 +664,11 @@ describe("/admin/users", () => {
         })
         .catch((err) => console.log(err))
 
-      const UsersAndInvitesAfterDelete = await api.get(
-        "/admin/users?includeInvites=true",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
+      const UsersAndInvitesAfterDelete = await api.get("/admin/users/invites", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
 
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
@@ -696,7 +677,7 @@ describe("/admin/users", () => {
         deleted: true,
       })
 
-      const usersAfterDelete = UsersAndInvitesAfterDelete.data.users
+      const usersAfterDelete = UsersAndInvitesAfterDelete.data.invites
 
       expect(usersAfterDelete.length).toEqual(usersBeforeDelete.length - 1)
       expect(usersBeforeDelete).toEqual(
