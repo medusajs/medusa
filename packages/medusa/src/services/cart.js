@@ -166,6 +166,8 @@ class CartService extends BaseService {
       relationSet.add("items")
       relationSet.add("gift_cards")
       relationSet.add("discounts")
+      relationSet.add("discounts.rule")
+      relationSet.add("discounts.rule.valid_for")
       //relationSet.add("discounts.parent_discount")
       //relationSet.add("discounts.parent_discount.rule")
       //relationSet.add("discounts.parent_discount.regions")
@@ -600,12 +602,13 @@ class CartService extends BaseService {
           "shipping_address",
           "billing_address",
           "gift_cards",
-          "discounts",
           "customer",
           "region",
           "payment_sessions",
           "region.countries",
+          "discounts",
           "discounts.rule",
+          "discounts.rule.valid_for",
           "discounts.regions",
         ],
       })
@@ -871,6 +874,7 @@ class CartService extends BaseService {
   async applyDiscount(cart, discountCode) {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
       "rule",
+      "rule.valid_for",
       "regions",
     ])
 
@@ -968,7 +972,13 @@ class CartService extends BaseService {
   async removeDiscount(cartId, discountCode) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
-        relations: ["discounts", "payment_sessions", "shipping_methods"],
+        relations: [
+          "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
+          "payment_sessions",
+          "shipping_methods",
+        ],
       })
 
       if (cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
@@ -1165,6 +1175,8 @@ class CartService extends BaseService {
         relations: [
           "items",
           "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
           "gift_cards",
           "billing_address",
           "shipping_address",
@@ -1317,6 +1329,8 @@ class CartService extends BaseService {
         relations: [
           "shipping_methods",
           "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
           "shipping_methods.shipping_option",
           "items",
           "items.variant",
@@ -1353,7 +1367,12 @@ class CartService extends BaseService {
       }
 
       const result = await this.retrieve(cartId, {
-        relations: ["discounts", "shipping_methods"],
+        relations: [
+          "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
+          "shipping_methods",
+        ],
       })
 
       // if cart has freeshipping, adjust price
@@ -1507,7 +1526,13 @@ class CartService extends BaseService {
   async delete(cartId) {
     return this.atomicPhase_(async manager => {
       const cart = await this.retrieve(cartId, {
-        relations: ["items", "discounts", "payment_sessions"],
+        relations: [
+          "items",
+          "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
+          "payment_sessions",
+        ],
       })
 
       if (cart.completed_at) {
