@@ -20,11 +20,6 @@ export default (app) => {
     middlewares.wrap(require("./delete").default)
   )
   route.use(
-    "/payment",
-    express.json(),
-    middlewares.wrap(require("./payment").default)
-  )
-  route.use(
     "/update",
     express.json(),
     middlewares.wrap(require("./update").default)

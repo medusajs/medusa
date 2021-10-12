@@ -118,7 +118,7 @@ class ShopifyOrderService extends BaseService {
   async update(data) {
     return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(data.id, {
-        relations: ["items", "shipping_address"],
+        relations: ["items", "shipping_address", "payments"],
       }).catch((_) => undefined)
 
       if (!order) {
@@ -202,36 +202,12 @@ class ShopifyOrderService extends BaseService {
         }
       }
 
-      for (const refund of refunds) {
-        if (!sh_refunds.includes(refund.id)) {
-          for (const refundLine of refund.refund_line_items) {
-            const match = order.items.find(
-              (i) => i.metadata.sh_id === refundLine.line_item_id
-            )
+      const unhandledRefunds = refunds.filter((r) => !sh_refunds.includes(r.id))
 
-            const newQuantity = match.quantity - refundLine.quantity
-            if (newQuantity > 0) {
-              try {
-                await this.lineItemService_
-                  .withTransaction(manager)
-                  .update({ item_id: match.id, quantity: newQuantity })
-              } catch (err) {
-                console.log(err.message)
-              }
-            } else {
-              try {
-                await this.lineItemService_
-                  .withTransaction(manager)
-                  .delete(match.id)
-
-                sh_deleted_items.push(match.metadata.sh_id)
-              } catch (err) {
-                console.log(err.message)
-              }
-            }
-          }
-          sh_refunds.push(refund.id)
-        }
+      for (const refund of unhandledRefunds) {
+        const { refundId, itemIds } = await this.refund(order, refund)
+        sh_refunds.push(refundId)
+        sh_deleted_items = [...sh_deleted_items, ...itemIds]
       }
 
       if (data.email !== order.email) {
@@ -253,6 +229,57 @@ class ShopifyOrderService extends BaseService {
       }
 
       await this.redis_.addIgnore(data.id, "shopify")
+    })
+  }
+
+  async refund(order, refund) {
+    return this.atomicPhase_(async (manager) => {
+      let itemIds = []
+
+      if ("refund_line_items" in refund) {
+        for (const refundLine of refund.refund_line_items) {
+          const match = order.items.find(
+            (i) => i.metadata.sh_id === refundLine.line_item_id
+          )
+
+          const newQuantity = match.quantity - refundLine.quantity
+          if (newQuantity > 0) {
+            try {
+              await this.lineItemService_
+                .withTransaction(manager)
+                .update({ item_id: match.id, quantity: newQuantity })
+            } catch (err) {
+              console.log("updating refund line", err.message)
+            }
+          } else {
+            try {
+              await this.lineItemService_
+                .withTransaction(manager)
+                .delete(match.id)
+              itemIds.push(refundLine.line_item_id)
+            } catch (err) {
+              console.log("deleting refund line", err.message)
+            }
+          }
+        }
+      }
+
+      if ("transactions" in refund) {
+        let amount = 0
+        for (const transaction of refund.transactions) {
+          amount += parsePrice(transaction.amount)
+        }
+
+        if (amount > 0) {
+          await this.orderService_
+            .withTransaction(manager)
+            .createRefund(order.id, amount, "other", refund.note)
+
+          await this.redis_.addIgnore(order.id, "order.refund_created")
+        }
+      }
+
+      return { refundId: refund.id, itemIds }
     })
   }
 

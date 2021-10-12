@@ -10,6 +10,7 @@ class ShopifySubscriber {
       shopifyProviderService,
       orderService,
       returnService,
+      shopifyRedisService,
     },
     options
   ) {
@@ -20,6 +21,7 @@ class ShopifySubscriber {
     this.provider_ = shopifyProviderService
     this.orderService_ = orderService
     this.returnService_ = returnService
+    this.redis_ = shopifyRedisService
 
     eventBusService.subscribe("order.items_returned", this.registerReturn)
 
@@ -54,6 +56,11 @@ class ShopifySubscriber {
   }
 
   registerRefund = async ({ id, refund_id }) => {
+    const ignore = await this.redis_.shouldIgnore(id, "order.refund_created")
+    if (ignore) {
+      return
+    }
+
     const order = await this.orderService_.retrieve(id, {
       relations: ["refunds", "payments"],
     })
