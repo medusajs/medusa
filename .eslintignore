@@ -1,3 +1,5 @@
+# FILES TODO
+
 /packages/medusa/src/services/cart.js
 /packages/medusa/src/services/claim-item.js
 /packages/medusa/src/services/claim.js
@@ -49,6 +51,8 @@
 /packages/medusa/src/loaders/repositories.js
 /packages/medusa/src/loaders/services.js
 /packages/medusa/src/loaders/subscribers.js
+
+# END OF FILES TODO
 
 /packages/medusa/src/api
 /packages/medusa/src/models
