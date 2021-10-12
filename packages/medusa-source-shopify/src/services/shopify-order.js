@@ -119,7 +119,12 @@ class ShopifyOrderService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(data.id, {
         relations: ["items", "shipping_address"],
-      })
+      }).catch((_) => undefined)
+
+      if (!order) {
+        //Update was issued before create from Shopify
+        return
+      }
 
       const { refunds, shipping_address } = data
       const shippingAddress = this.normalizeBilling_(shipping_address)
@@ -158,25 +163,42 @@ class ShopifyOrderService extends BaseService {
           match.quantity > match.fulfillable_quantity &&
           match.fulfillable_quantity > 0
         ) {
-          await this.lineItemService_
-            .withTransaction(manager)
-            .update({ item_id: item.id, quantity: match.fulfillable_quantity })
+          try {
+            await this.lineItemService_.withTransaction(manager).update({
+              item_id: item.id,
+              quantity: match.fulfillable_quantity,
+            })
+          } catch (err) {
+            console.log("tried updating:", err.message)
+          }
         } else if (match.fulfillable_quantity === 0) {
-          await this.lineItemService_.withTransaction(manager).delete(item.id)
-          sh_deleted_items.push(match.id)
+          try {
+            await this.lineItemService_.withTransaction(manager).delete(item.id)
+            sh_deleted_items.push(match.id)
+          } catch (err) {
+            console.log("tried deleting", err.message)
+          }
         } else if (match && match.quantity !== item.quantity) {
-          await this.lineItemService_
-            .withTransaction(manager)
-            .update({ item_id: item.id, quantity: match.quantity })
+          try {
+            await this.lineItemService_
+              .withTransaction(manager)
+              .update({ item_id: item.id, quantity: match.quantity })
+          } catch (err) {
+            console.log("tried updating", err.message)
+          }
         }
       }
 
       for (const item of data.line_items) {
         const match = order.items.find((i) => i.metadata.sh_id === item.id)
         if (!match && !sh_deleted_items.includes(item.id)) {
-          await this.lineItemService_
-            .withTransaction(manager)
-            .create(order.id, item)
+          try {
+            await this.lineItemService_
+              .withTransaction(manager)
+              .create(order.id, item)
+          } catch (err) {
+            console.log(err.message)
+          }
         }
       }
 
@@ -189,15 +211,23 @@ class ShopifyOrderService extends BaseService {
 
             const newQuantity = match.quantity - refundLine.quantity
             if (newQuantity > 0) {
-              await this.lineItemService_
-                .withTransaction(manager)
-                .update({ item_id: match.id, quantity: newQuantity })
+              try {
+                await this.lineItemService_
+                  .withTransaction(manager)
+                  .update({ item_id: match.id, quantity: newQuantity })
+              } catch (err) {
+                console.log(err.message)
+              }
             } else {
-              await this.lineItemService_
-                .withTransaction(manager)
-                .delete(match.id)
+              try {
+                await this.lineItemService_
+                  .withTransaction(manager)
+                  .delete(match.id)
 
-              sh_deleted_items.push(match.metadata.sh_id)
+                sh_deleted_items.push(match.metadata.sh_id)
+              } catch (err) {
+                console.log(err.message)
+              }
             }
           }
           sh_refunds.push(refund.id)
@@ -245,25 +275,13 @@ class ShopifyOrderService extends BaseService {
   async archive(id) {
     return this.atomicPhase_(async (manager) => {
       const ignore = await this.redis_.shouldIgnore(id, "archive")
+      if (ignore) {
+        return
+      }
 
       const order = await this.retrieve(id)
       return await this.orderService_.withTransaction(manager).archive(order.id)
     })
-  }
-
-  /**
-   * Handles a refund issued through Shopify. Refunds cover both
-   * actual refunds and line item removals or quantity adjustments.
-   * @param {object} refund
-   */
-  async refund(refund) {
-    if ("refund_line_items" in refund) {
-    }
-
-    if ("order_adjustments" in refund) {
-    }
-
-    return Promise.resolve()
   }
 
   /**

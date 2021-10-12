@@ -1,9 +1,6 @@
 export default async (req, res) => {
-  const shopifyService = req.scope.resolve("shopifyService")
-
-  const order = req.body
-
-  //TODO: cancel order
+  const orderService = req.scope.resolve("shopifyOrderService")
+  await orderService.cancel(req.body.id)
 
   res.sendStatus(200)
 }
