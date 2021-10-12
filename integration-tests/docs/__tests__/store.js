@@ -18,7 +18,6 @@ test.each(toTest)(
     
     const manager = db.connection.manager
     const idOrConfig = await setup(manager, api)
-    console.log(idOrConfig)
     let config = idOrConfig
     if (typeof idOrConfig === "string") {
       config = {
