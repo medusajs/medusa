@@ -71,6 +71,8 @@ Navigate to the top-right dropdown **Create** and select **Apps**.
 ### 4. Connect you Git repository
 Choose **GitHub** or **GitLab** and select the repository that holds your Medusa project. Check **Autodeploy code changes**, if you want DigitalOcean to deploy on every push to your repository.
 
+> It's important, that DigitalOcean is pointing to the directory holding the Medusa store engine as it is only this which that will be deployed (If you followed the quickstart guide this will simply be the created project, and if you used the npx command this will be the backend folder inside of the newly created project).
+
 ### 5. Configure environment variables
 The default settings for your app should be sufficient. We only need to change environment variables to hold the following:
 ```shell=
