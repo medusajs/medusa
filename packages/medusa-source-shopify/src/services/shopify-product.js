@@ -2,6 +2,7 @@ import { BaseService } from "medusa-interfaces"
 import _ from "lodash"
 import { parsePrice } from "../utils/parse-price"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
+import axios from "axios"
 
 class ShopifyProductService extends BaseService {
   constructor(
@@ -177,6 +178,142 @@ class ShopifyProductService extends BaseService {
         .withTransaction(manager)
         .delete(product.id)
     })
+  }
+
+  async shopifyProductUpdate(id, fields) {
+    const product = await this.productService_.retrieve(id, {
+      relations: ["tags", "type"],
+    })
+
+    //Event was not emitted by update
+    if (!fields) {
+      return
+    }
+
+    const update = {
+      product: {
+        id: product.external_id,
+      },
+    }
+
+    if (fields.includes("title")) {
+      update.product.title = product.title
+    }
+
+    if (fields.includes("tags")) {
+      const values = product.tags.map((t) => t.value)
+      update.product.tags = values.join(",")
+    }
+
+    if (fields.includes("description")) {
+      update.product.body_html = product.description
+    }
+
+    if (fields.includes("handle")) {
+      update.product.handle = product.handle
+    }
+
+    if (fields.includes("type")) {
+      update.product.type = product.type?.value
+    }
+
+    await axios
+      .put(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/products/${product.external_id}.json`,
+        update,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a product update to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(product.external_id, "product.updated")
+  }
+
+  async shopifyVariantUpdate(id, fields) {
+    const variant = await this.productVariantService_.retrieve(id, {
+      relations: ["prices", "product"],
+    })
+
+    //Event was not emitted by update
+    if (!fields) {
+      return
+    }
+
+    const update = {
+      variant: {
+        id: variant.metadata.sh_id,
+      },
+    }
+
+    if (fields.includes("title")) {
+      update.variant.title = variant.title
+    }
+
+    if (fields.includes("allow_backorder")) {
+      update.variant.inventory_police = variant.allow_backorder
+        ? "continue"
+        : "deny"
+    }
+
+    if (fields.includes("prices")) {
+      update.variant.price = variant.prices[0].amount / 100
+    }
+
+    if (fields.includes("weight")) {
+      update.variant.grams = variant.weight
+    }
+
+    await axios
+      .put(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/variants/${variant.metadata.sh_id}.json`,
+        update,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a product update to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(
+      variant.metadata.sh_id,
+      "product-variant.updated"
+    )
+  }
+
+  async shopifyVariantDelete(productId, metadata) {
+    const product = await this.productService_.retrieve(productId)
+
+    await axios
+      .delete(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/products/${product.external_id}/variants/${metadata.sh_id}.json`,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a product variant delete to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(metadata.sh_id, "product-variant.deleted")
   }
 
   async updateCollectionId(productId, collectionId) {

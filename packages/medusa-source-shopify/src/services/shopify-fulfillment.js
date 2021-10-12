@@ -1,6 +1,7 @@
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
+import axios from "axios"
 
 class ShopifyFulfillmentService extends BaseService {
   constructor(
@@ -212,6 +213,129 @@ class ShopifyFulfillmentService extends BaseService {
       const result = await fulfillmentRepository.save(fulfillment)
       return result
     })
+  }
+
+  async shopifyFulfillmentCreate(orderId, fulfillmentId) {
+    const fulfillment = await this.fulfillmentService_.retrieve(fulfillmentId)
+    const order = await this.orderService_.retrieve(orderId, {
+      relations: ["items"],
+    })
+
+    const fulfillmentOrders = await this.client_
+      .get({
+        path: `orders/${order.external_id}/fulfillment_orders`,
+      })
+      .then((res) => {
+        return res.body.fulfillment_orders
+      })
+
+    const items = fulfillment.items.map((i) => {
+      const shopifyId = order.items.find((li) => li.id === i.item_id).metadata
+        .sh_id
+      return { id: shopifyId, quantity: i.quantity }
+    })
+
+    const fulfillmentObject = {
+      fulfillment: {
+        location_id: fulfillmentOrders[0].assigned_location_id,
+        line_items: items,
+      },
+    }
+
+    const shId = await axios
+      .post(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/orders/${order.external_id}/fulfillments.json`,
+        fulfillmentObject,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        return res.data.fulfillment.id
+      })
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a fulfillment create to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(shId, "order.fulfillment_created")
+    await this.addShopifyId(fulfillmentId, shId)
+  }
+
+  async shopifyFulfillmentCancel(id) {
+    const fulfillment = await this.fulfillmentService_.retrieve(id)
+
+    await axios
+      .post(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/fulfillments/${fulfillment.metadata.sh_id}/cancel.json`,
+        {},
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+          },
+        }
+      )
+      .catch((err) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to issue a fulfillment cancel to Shopify: ${err.message}`
+        )
+      })
+
+    await this.redis_.addIgnore(
+      fulfillment.metadata.sh_id,
+      "order.fulfillment_cancelled"
+    )
+  }
+
+  async shopifyShipmentCreate(id) {
+    const fulfillment = await this.fulfillmentService_.retrieve(id, {
+      relations: ["tracking_links"],
+    })
+
+    const updateTracking = async (trackingObject) => {
+      await axios.post(
+        `https://${this.options.domain}.myshopify.com/admin/api/2021-10/fulfillments/${fulfillment.metadata.sh_id}/update_tracking.json`,
+        trackingObject,
+        {
+          headers: {
+            "X-Shopify-Access-Token": this.options.password,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+    }
+
+    for (const link of fulfillment.trackinkg_links) {
+      let trackingObject = {
+        fulfillment: {
+          tracking_info: {
+            number: link.number,
+            url: link.url,
+            company: "Other",
+          },
+        },
+      }
+
+      try {
+        await updateTracking(trackingObject)
+      } catch (err) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occured while attempting to update tracking information for fulfillment: ${err.message}`
+        )
+      }
+
+      await this.redis_.addIgnore(
+        fulfillment.metadata.sh_id,
+        "order.fulfillment_updated"
+      )
+    }
   }
 
   /**

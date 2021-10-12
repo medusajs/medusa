@@ -4,11 +4,29 @@ import { PaymentService } from "medusa-interfaces"
 class ShopifyProviderService extends PaymentService {
   static identifier = "shopify"
 
-  constructor({ manager, paymentRepository }) {
+  constructor(
+    {
+      manager,
+      shopifyClientService,
+      orderService,
+      returnService,
+      paymentRepository,
+    },
+    options
+  ) {
     super()
 
     /** @private @const {EntityManager} */
     this.manager_ = manager
+
+    this.options_ = options
+
+    this.shopify_ = shopifyClientService
+
+    this.orderService_ = orderService
+
+    this.returnService_ = returnService
+
     /** @private @const {PaymentRepository} */
     this.paymentRepository_ = paymentRepository
   }
@@ -18,10 +36,16 @@ class ShopifyProviderService extends PaymentService {
       return this
     }
 
-    const cloned = new ShopifyProviderService({
-      manager: transactionManager,
-      paymentRepository: this.paymentRepository_,
-    })
+    const cloned = new ShopifyProviderService(
+      {
+        manager: transactionManager,
+        shopifyClientService: this.shopify_,
+        orderService: this.orderService_,
+        returnService: this.returnService_,
+        paymentRepository: this.paymentRepository_,
+      },
+      this.options_
+    )
 
     cloned.transactionManager_ = transactionManager
 
@@ -87,6 +111,10 @@ class ShopifyProviderService extends PaymentService {
     return {}
   }
 
+  /**
+   * Dummy method refund to Shopify is handled
+   * in subscriber based on order.items_returned
+   */
   async refundPayment(payment, refundAmount) {
     return payment.data
   }
