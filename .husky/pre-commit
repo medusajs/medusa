@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-lint-staged || node scripts/on-lint-error.js
+node_modules/.bin/lint-staged || node scripts/on-lint-error.js
