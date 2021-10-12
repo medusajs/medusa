@@ -303,18 +303,18 @@ describe("ReturnService", () => {
       )
     })
 
-    it("updates inventory properly, when write_off_inventory is added for LineItem", async () => {
+    it("doesn't update inventory, when write_off_quantity is added for LineItem", async () => {
       await returnService.receive(
         IdMap.getId("test-return"),
-        [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
+        [
+          {
+            item_id: IdMap.getId("test-line"),
+            quantity: 10,
+            write_off_quantity: 5,
+          },
+        ],
         {
           refund_amount: 1000,
-          write_off_inventory: [
-            {
-              item_id: IdMap.getId("test-line"),
-              quantity: 5,
-            },
-          ],
         }
       )
 
@@ -335,19 +335,19 @@ describe("ReturnService", () => {
       )
     })
 
-    it("fails to write_off_inventory when trying to write off more than available", async () => {
+    it("fails to write_off_quantity when trying to write off more than available", async () => {
       await expect(
         returnService.receive(
           IdMap.getId("test-return"),
-          [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
+          [
+            {
+              item_id: IdMap.getId("test-line"),
+              quantity: 10,
+              write_off_quantity: 12,
+            },
+          ],
           {
             refund_amount: 1000,
-            write_off_inventory: [
-              {
-                item_id: IdMap.getId("test-line"),
-                quantity: 12,
-              },
-            ],
           }
         )
       ).rejects.toThrow("You cannot write off more than returned")

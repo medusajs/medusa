@@ -23,20 +23,12 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *                 quantity:
  *                   description: The quantity of the Line Item.
  *                   type: integer
+ *                 write_off_quantity:
+ *                   description: An optional ability to write off inventory
+ *                   type: integer
  *           refund:
  *             description: The amount to refund.
  *             type: integer
- *           write_off_inventory:
- *             description: A set of return items to write off inventory
- *             type: array
- *             items:
- *               properties:
- *                 item_id:
- *                   description: The id of the Line Item to write off.
- *                   type: string
- *                 quantity:
- *                   description: The quantity to write off.
- *                   type: integer
  * tags:
  *   - Return
  * responses:
@@ -57,16 +49,11 @@ export default async (req, res) => {
       .items({
         item_id: Validator.string().required(),
         quantity: Validator.number().required(),
+        write_off_quantity: Validator.number().optional(),
       })
       .required(),
     refund: Validator.number()
       .integer()
-      .optional(),
-    write_off_inventory: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
       .optional(),
   })
 
@@ -95,7 +82,6 @@ export default async (req, res) => {
         .receive(id, value.items, {
           refund_amount,
           allow_mismatch: true,
-          write_off_inventory: value.write_off_inventory,
         })
 
       if (receivedReturn.order_id) {

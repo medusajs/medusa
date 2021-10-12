@@ -6,13 +6,13 @@ export class addWriteOffInventoryToReturnItem1632335164102
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "return_item" ADD "write_off_inventory" integer`
+      `ALTER TABLE "return_item" ADD "write_off_quantity" integer`
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "return_item" DROP COLUMN "write_off_inventory"`
+      `ALTER TABLE "return_item" DROP COLUMN "write_off_quantity"`
     )
   }
 }

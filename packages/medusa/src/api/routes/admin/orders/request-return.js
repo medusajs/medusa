@@ -30,6 +30,9 @@ import { defaultRelations, defaultFields } from "./"
  *                 quantity:
  *                   description: The quantity of the Line Item.
  *                   type: integer
+ *                 write_off_quantity:
+ *                   description: A set of return items to write off inventory, only used if receive_now is set.
+ *                   type: integer
  *           return_shipping:
  *             description: The Shipping Method to be used to handle the return shipment.
  *             type: object
@@ -43,17 +46,6 @@ import { defaultRelations, defaultFields } from "./"
  *           receive_now:
  *             description: A flag to indicate if the Return should be registerd as received immediately.
  *             type: boolean
- *           write_off_inventory:
- *             description: A set of return items to write off inventory
- *             type: array
- *             items:
- *               properties:
- *                 item_id:
- *                   description: The id of the Line Item to write off.
- *                   type: string
- *                 quantity:
- *                   description: The quantity to write off.
- *                   type: integer
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the requested Return.
  *             type: boolean
@@ -82,6 +74,7 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
         reason_id: Validator.string().optional(),
         note: Validator.string().optional(),
+        write_off_quantity: Validator.number().optional(),
       })
       .required(),
     return_shipping: Validator.object()
@@ -93,12 +86,6 @@ export default async (req, res) => {
       })
       .optional(),
     receive_now: Validator.boolean().default(false),
-    write_off_inventory: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .optional(),
     no_notification: Validator.boolean().optional(),
     refund: Validator.number()
       .integer()
@@ -235,7 +222,6 @@ export default async (req, res) => {
                   .withTransaction(manager)
                   .receive(ret.id, value.items, {
                     refund_amount: value.refund,
-                    write_off_inventory: value.write_off_inventory,
                   })
               }
 

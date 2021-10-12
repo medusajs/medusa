@@ -473,8 +473,7 @@ class ReturnService extends BaseService {
    * mismatches.
    * @param {string} orderId - the order to return.
    * @param {string[]} lineItems - the line items to return
-   * @param {object} config - can contain refund_amount, allow_mismatch, and
-   * write_off_inventory.
+   * @param {object} config - can contain refund_amount, allow_mismatch.
    * @return {Promise} the result of the update operation
    */
   async receive(
@@ -483,7 +482,6 @@ class ReturnService extends BaseService {
     config = {
       refund_amount: undefined,
       allow_mismatch: false,
-      write_off_inventory: undefined,
     }
   ) {
     return this.atomicPhase_(async manager => {
@@ -491,7 +489,7 @@ class ReturnService extends BaseService {
         this.returnRepository_
       )
 
-      const { refund_amount, allow_mismatch, write_off_inventory } = config
+      const { refund_amount, allow_mismatch } = config
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -582,17 +580,17 @@ class ReturnService extends BaseService {
 
       const result = await returnRepository.save(updateObj)
 
-      const findWriteOff = id =>
-        write_off_inventory?.find(item => item.item_id === id)
+      const findWriteOffQuantity = id =>
+        receivedItems?.find(item => item.item_id === id)?.write_off_quantity
 
       for (const i of returnObj.items) {
         const lineItem = await this.lineItemService_
           .withTransaction(manager)
           .retrieve(i.item_id)
         const returnedQuantity = (lineItem.returned_quantity || 0) + i.quantity
-        const writeOff = findWriteOff(i.item_id)
+        const writeOffQuantity = findWriteOffQuantity(i.item_id)
 
-        if (writeOff?.quantity > returnedQuantity) {
+        if (writeOffQuantity > returnedQuantity) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "You cannot write off more than returned"
@@ -601,7 +599,7 @@ class ReturnService extends BaseService {
 
         const toUpdate = {
           returned_quantity: returnedQuantity,
-          write_off_inventory: writeOff?.quantity,
+          write_off_quantity: writeOffQuantity,
         }
 
         await this.lineItemService_
@@ -613,10 +611,10 @@ class ReturnService extends BaseService {
         const orderItem = order.items.find(i => i.id === line.item_id)
 
         if (orderItem) {
-          const writeOff = findWriteOff(line.item_id)
+          const writeOffQuantity = findWriteOffQuantity(line.item_id)
 
-          const quantity = writeOff
-            ? line.received_quantity - writeOff.quantity
+          const quantity = writeOffQuantity
+            ? line.received_quantity - writeOffQuantity
             : line.received_quantity
 
           await this.inventoryService_

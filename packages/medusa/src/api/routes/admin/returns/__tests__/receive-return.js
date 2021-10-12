@@ -17,12 +17,7 @@ describe("POST /admin/returns/:id/receive", () => {
               {
                 item_id: IdMap.getId("test"),
                 quantity: 2,
-              },
-            ],
-            write_off_inventory: [
-              {
-                item_id: IdMap.getId("test"),
-                quantity: 1,
+                write_off_quantity: 1,
               },
             ],
           },
@@ -43,16 +38,10 @@ describe("POST /admin/returns/:id/receive", () => {
       expect(ReturnService.receive).toHaveBeenCalledTimes(1)
       expect(ReturnService.receive).toHaveBeenCalledWith(
         IdMap.getId("test-return"),
-        [{ item_id: IdMap.getId("test"), quantity: 2 }],
+        [{ item_id: IdMap.getId("test"), quantity: 2, write_off_quantity: 1 }],
         {
           allow_mismatch: true,
           refund_amount: undefined,
-          write_off_inventory: [
-            {
-              item_id: IdMap.getId("test"),
-              quantity: 1,
-            },
-          ],
         }
       )
     })

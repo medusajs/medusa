@@ -31,7 +31,7 @@ describe("/admin/orders", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -909,15 +909,10 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
+              write_off_quantity: 1,
             },
           ],
           receive_now: true,
-          write_off_inventory: [
-            {
-              item_id: "test-item",
-              quantity: 1,
-            },
-          ],
         },
         {
           headers: {

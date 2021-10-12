@@ -53,7 +53,7 @@ export class ReturnItem {
   reason_id: string
 
   @Column({ type: "int", nullable: true })
-  write_off_inventory: number
+  write_off_quantity: number
 
   @ManyToOne(() => ReturnReason)
   @JoinColumn({ name: "reason_id" })
