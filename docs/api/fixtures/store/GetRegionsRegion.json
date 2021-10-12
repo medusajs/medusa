@@ -1,0 +1,26 @@
+{
+  "region": {
+    "id": "reg_01FHT8Y6RX3BJE6NZDC5MJXHD2",
+    "name": "Scandinavia",
+    "currency_code": "dkk",
+    "tax_rate": "0",
+    "tax_code": null,
+    "countries": [],
+    "payment_providers": [
+      {
+        "id": "test-pay",
+        "is_installed": true
+      }
+    ],
+    "fulfillment_providers": [
+      {
+        "id": "test-ful",
+        "is_installed": true
+      }
+    ],
+    "created_at": "2021-10-12T12:51:48.125Z",
+    "updated_at": "2021-10-12T12:51:48.125Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}
