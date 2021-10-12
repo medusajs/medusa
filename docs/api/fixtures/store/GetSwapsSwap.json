@@ -1,20 +1,20 @@
 {
   "swap": {
-    "id": "swap_01FHPGX5MR8NV13S3JWT2P0AXK",
+    "id": "swap_01FHT06V5RZNDB1C614P4T9ZYT",
     "fulfillment_status": "not_fulfilled",
     "payment_status": "not_paid",
-    "order_id": "order_01FHPGX5D402JYG5VSRJ7HYZT7",
+    "order_id": "order_01FHT06TKXNEAPH7NBSHDVH60D",
     "difference_due": null,
     "shipping_address_id": null,
-    "cart_id": "cart_01FHPGX5S6H873TSRAPARW1YPH",
+    "cart_id": "cart_01FHT06VAF50AE1V31F74QST8E",
     "confirmed_at": null,
-    "created_at": "2021-10-11T01:54:04.963Z",
-    "updated_at": "2021-10-11T01:54:04.963Z",
+    "created_at": "2021-10-12T10:19:13.837Z",
+    "updated_at": "2021-10-12T10:19:13.837Z",
     "deleted_at": null,
     "canceled_at": null,
     "no_notification": true,
     "allow_backorder": false,
     "metadata": null,
-    "idempotency_key": "39aa4d07-c56d-44c9-80b7-7494bd530f52"
+    "idempotency_key": "ea907069-92b0-42c1-961c-d4edbccae458"
   }
 }
