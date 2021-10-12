@@ -299,7 +299,6 @@ describe("/admin/invites", () => {
             },
           })
           .catch((err) => {
-            console.log(err.response.data.message)
             expect(err.response.status).toEqual(400)
             expect(err.response.data.message).toEqual("Token is not valid")
           })
