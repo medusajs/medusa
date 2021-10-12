@@ -31,7 +31,7 @@ describe("/admin/orders", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -899,7 +899,35 @@ describe("/admin/orders", () => {
       ])
     })
 
-    it("increases inventory_quantity when return is received and write off is added", async () => {
+    it("increases inventory_quantity when return is received", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/orders/test-order/return",
+        {
+          items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          receive_now: true,
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+
+      //Find variant that should have its inventory_quantity updated
+      const toTest = response.data.order.items.find((i) => i.id === "test-item")
+      expect(toTest.variant.inventory_quantity).toEqual(2)
+    })
+
+    it("does not increase inventory_quantity when return is received and write off is added", async () => {
       const api = useApi()
 
       const response = await api.post(
@@ -921,12 +949,44 @@ describe("/admin/orders", () => {
         }
       )
 
+      expect(response.status).toEqual(200)
+
       //Find variant that should have its inventory_quantity updated
       const toTest = response.data.order.items.find((i) => i.id === "test-item")
-
-      expect(response.status).toEqual(200)
       expect(toTest.variant.inventory_quantity).toEqual(1)
-      expect(response.data.order.returns[0].returned_quantity).toEqual(1)
+    })
+
+    it("fails to write off quantity when more than than returned quantity", async () => {
+      const api = useApi()
+
+      let response
+      try {
+        response = await api.post(
+          "/admin/orders/test-order/return",
+          {
+            items: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+                write_off_quantity: 10,
+              },
+            ],
+            receive_now: true,
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (e) {
+        response = e.response
+      }
+
+      expect(response.status).toEqual(400)
+      expect(response.data.message).toEqual(
+        "You cannot write off more than returned"
+      )
     })
 
     it("does not increases inventory_quantity when return is received when inventory is not managed", async () => {
