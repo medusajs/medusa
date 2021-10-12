@@ -590,24 +590,19 @@ class ReturnService extends BaseService {
           .withTransaction(manager)
           .retrieve(i.item_id)
         const returnedQuantity = (lineItem.returned_quantity || 0) + i.quantity
-
         const writeOff = findWriteOff(i.item_id)
-        const quantity = writeOff
-          ? returnedQuantity - writeOff.quantity
-          : returnedQuantity
 
-        if (quantity < 0) {
+        if (writeOff?.quantity > returnedQuantity) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            "You cannot write off more than available"
+            "You cannot write off more than returned"
           )
         }
 
         const toUpdate = {
-          returned_quantity: quantity,
+          returned_quantity: returnedQuantity,
+          write_off_inventory: writeOff?.quantity,
         }
-
-        if (writeOff) toUpdate.write_off_inventory = writeOff.quantity
 
         await this.lineItemService_
           .withTransaction(manager)

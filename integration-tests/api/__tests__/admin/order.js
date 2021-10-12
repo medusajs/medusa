@@ -902,7 +902,7 @@ describe("/admin/orders", () => {
     it("increases inventory_quantity when return is received and write off is added", async () => {
       const api = useApi()
 
-      const returned = await api.post(
+      const response = await api.post(
         "/admin/orders/test-order/return",
         {
           items: [
@@ -927,10 +927,11 @@ describe("/admin/orders", () => {
       )
 
       //Find variant that should have its inventory_quantity updated
-      const toTest = returned.data.order.items.find((i) => i.id === "test-item")
+      const toTest = response.data.order.items.find((i) => i.id === "test-item")
 
-      expect(returned.status).toEqual(200)
+      expect(response.status).toEqual(200)
       expect(toTest.variant.inventory_quantity).toEqual(1)
+      expect(response.data.order.returns[0].returned_quantity).toEqual(1)
     })
 
     it("does not increases inventory_quantity when return is received when inventory is not managed", async () => {

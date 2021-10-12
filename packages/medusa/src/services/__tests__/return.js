@@ -350,7 +350,7 @@ describe("ReturnService", () => {
             ],
           }
         )
-      ).rejects.toThrow("You cannot write off more than available")
+      ).rejects.toThrow("You cannot write off more than returned")
     })
 
     it("successfully receives a return with requires_action status", async () => {
