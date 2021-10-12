@@ -34,10 +34,10 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const schema = Validator.object().keys({
     name: Validator.string(),
-    swap_link_template: Validator.string(),
-    payment_link_template: Validator.string(),
+    swap_link_template: Validator.string().optional(),
+    payment_link_template: Validator.string().optional(),
     default_currency_code: Validator.string(),
-    invite_link_template: Validator.string(),
+    invite_link_template: Validator.string().optional(),
     currencies: Validator.array().items(Validator.string()),
   })
 
