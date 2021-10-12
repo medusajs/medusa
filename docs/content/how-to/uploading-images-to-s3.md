@@ -45,7 +45,7 @@ Navigate to the IAM section of your AWS console and perform the following steps:
 - Add the existing **AmazonS3FullAccess** policy to the user
 - Submit the details
 
-Upon successfull creation of the user, you are presented with an **Access key ID** and a **Secret access key**. Note both of them down for later use.
+Upon successful creation of the user, you are presented with an **Access key ID** and a **Secret access key**. Note both of them down for later use.
 
 ### Installation
 
