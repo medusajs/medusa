@@ -7,8 +7,8 @@ const customerTest = require("../test-input/store/customer")
 const giftCardTest = require("../test-input/store/gift-card")
 const productTest = require("../test-input/store/product")
 const swapTest = require("../test-input/store/swap")
-
-const toTest = [cartTest, customerTest, giftCardTest, productTest, swapTest]
+const regionTest= require("../test-input/store/region")
+const toTest = [cartTest, customerTest, giftCardTest, productTest, swapTest, regionTest]
 
 jest.setTimeout(30000)
 
@@ -17,10 +17,10 @@ test.each(toTest)(
   async ({ setup, buildEndpoint, snapshotMatch, operationId }) => {
     const api = useApi()
     const db = useDb()
-
+    
     const manager = db.connection.manager
     const idOrConfig = await setup(manager, api)
-
+    console.log(idOrConfig)
     let config = idOrConfig
     if (typeof idOrConfig === "string") {
       config = {
