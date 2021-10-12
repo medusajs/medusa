@@ -122,6 +122,30 @@ Object {
 }
 `;
 
+exports[`GetGiftCardsGiftCard 1`] = `
+Object {
+  "gift_card": Object {
+    "balance": 500,
+    "code": "1J3U-WXO0-SZ0H-O5QU",
+    "id": StringMatching /\\^gift_\\*/,
+    "region": Object {
+      "created_at": Any<String>,
+      "currency_code": "usd",
+      "deleted_at": null,
+      "fulfillment_providers": Array [],
+      "id": StringMatching /\\^reg_\\*/,
+      "metadata": null,
+      "name": "United States",
+      "payment_providers": Array [],
+      "tax_code": null,
+      "tax_rate": "0",
+      "updated_at": Any<String>,
+    },
+    "value": 1000,
+  },
+}
+`;
+
 exports[`GetProductsProduct 1`] = `
 Object {
   "product": Object {
@@ -215,26 +239,29 @@ Object {
     ],
     "weight": null,
     "width": null,
-exports[`GetGiftCardsGiftCard 1`] = `
+  },
+}
+`;
+
+exports[`GetSwapsSwap 1`] = `
 Object {
-  "gift_card": Object {
-    "balance": 500,
-    "code": "1J3U-WXO0-SZ0H-O5QU",
-    "id": StringMatching /\\^gift_\\*/,
-    "region": Object {
-      "created_at": Any<String>,
-      "currency_code": "usd",
-      "deleted_at": null,
-      "fulfillment_providers": Array [],
-      "id": StringMatching /\\^reg_\\*/,
-      "metadata": null,
-      "name": "United States",
-      "payment_providers": Array [],
-      "tax_code": null,
-      "tax_rate": "0",
-      "updated_at": Any<String>,
-    },
-    "value": 1000,
+  "swap": Object {
+    "allow_backorder": false,
+    "canceled_at": null,
+    "cart_id": StringMatching /\\^cart_\\*/,
+    "confirmed_at": null,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "difference_due": null,
+    "fulfillment_status": "not_fulfilled",
+    "id": StringMatching /\\^swap_\\*/,
+    "idempotency_key": Any<String>,
+    "metadata": null,
+    "no_notification": true,
+    "order_id": StringMatching /\\^order_\\*/,
+    "payment_status": "not_paid",
+    "shipping_address_id": null,
+    "updated_at": Any<String>,
   },
 }
 `;
