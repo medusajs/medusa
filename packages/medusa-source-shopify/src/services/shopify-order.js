@@ -287,7 +287,9 @@ class ShopifyOrderService extends BaseService {
         "shopify",
         {},
         {
-          price: parsePrice(shippingLine.price),
+          price: parsePrice(
+            shippingLine.price / (1 + shippingLine.tax_lines[0].rate)
+          ),
         }
       )
 

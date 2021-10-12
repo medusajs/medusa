@@ -68,10 +68,12 @@ class ShopifyLineItemsService extends BaseService {
       lineItem.sku
     )
 
+    const taxRate = 1 + lineItem.tax_lines[0].rate
+
     return {
       title: lineItem.title,
       is_giftcard: lineItem.gift_card,
-      unit_price: parsePrice(lineItem.price),
+      unit_price: parsePrice(lineItem.price) / taxRate,
       quantity: lineItem.quantity,
       fulfilled_quantity: lineItem.quantity - lineItem.fulfillable_quantity,
       variant_id: productVariant.id,
