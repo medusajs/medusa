@@ -6,17 +6,13 @@ describe("POST /accounts/:id/users/invite/:invite_id/resend", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/admin/users/invite/invite_test/resend`,
-        {
-          adminSession: {
-            jwt: {
-              id: "test_user",
-            },
+      subject = await request("POST", `/admin/invites/invite_test/resend`, {
+        adminSession: {
+          jwt: {
+            id: "test_user",
           },
-        }
-      )
+        },
+      })
     })
 
     afterAll(() => {

@@ -6,7 +6,7 @@ describe("POST /accounts/invite/accept", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", `/admin/users/invite/accept`, {
+      subject = await request("POST", `/admin/invites/accept`, {
         payload: {
           token: "jwt_test_invite",
           user: {

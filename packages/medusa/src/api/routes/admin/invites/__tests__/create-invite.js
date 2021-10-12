@@ -6,7 +6,7 @@ describe("POST /accounts/:id/users/invite", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", `/admin/users/invite`, {
+      subject = await request("POST", `/admin/invites`, {
         payload: {
           role: "",
         },
@@ -31,7 +31,7 @@ describe("POST /accounts/:id/users/invite", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", `/admin/users/invite`, {
+      subject = await request("POST", `/admin/invites`, {
         payload: {
           users: [],
           role: "developer",
