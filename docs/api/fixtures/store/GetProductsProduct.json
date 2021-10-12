@@ -1,0 +1,94 @@
+{
+  "product": {
+    "id": "prod_01FHN666P4STBPSKCFX7ATVA2J",
+    "title": "Basic Tee",
+    "subtitle": null,
+    "description": null,
+    "handle": "basic-tee",
+    "is_giftcard": false,
+    "status": "draft",
+    "images": [],
+    "thumbnail": null,
+    "options": [
+      {
+        "id": "opt_01FHN666PQEE2WSNQ8Y9WSMA8Z",
+        "title": "Size",
+        "values": [
+          {
+            "id": "optval_01FHN666Q499J1G2K4JYVZDXH7",
+            "value": "Size",
+            "option_id": "opt_01FHN666PQEE2WSNQ8Y9WSMA8Z",
+            "variant_id": "variant_01FHN666Q4Y678TBAD3BFTDAP8",
+            "created_at": "2021-10-10T13:27:32.323Z",
+            "updated_at": "2021-10-10T13:27:32.323Z",
+            "deleted_at": null,
+            "metadata": null
+          }
+        ],
+        "product_id": "prod_01FHN666P4STBPSKCFX7ATVA2J",
+        "created_at": "2021-10-10T13:27:32.310Z",
+        "updated_at": "2021-10-10T13:27:32.310Z",
+        "deleted_at": null,
+        "metadata": null
+      }
+    ],
+    "variants": [
+      {
+        "id": "variant_01FHN666Q4Y678TBAD3BFTDAP8",
+        "title": "One Size",
+        "product_id": "prod_01FHN666P4STBPSKCFX7ATVA2J",
+        "prices": [
+          {
+            "id": "ma_01FHN666QN7HKEQH3XSFJ8EHWG",
+            "currency_code": "usd",
+            "amount": 8000,
+            "sale_amount": null,
+            "variant_id": "variant_01FHN666Q4Y678TBAD3BFTDAP8",
+            "region_id": null,
+            "created_at": "2021-10-10T13:27:32.341Z",
+            "updated_at": "2021-10-10T13:27:32.341Z",
+            "deleted_at": null
+          }
+        ],
+        "sku": null,
+        "barcode": null,
+        "ean": null,
+        "upc": null,
+        "inventory_quantity": 1,
+        "allow_backorder": false,
+        "manage_inventory": true,
+        "hs_code": null,
+        "origin_country": null,
+        "mid_code": null,
+        "material": null,
+        "weight": null,
+        "length": null,
+        "height": null,
+        "width": null,
+        "created_at": "2021-10-10T13:27:32.323Z",
+        "updated_at": "2021-10-10T13:27:32.323Z",
+        "deleted_at": null,
+        "metadata": null
+      }
+    ],
+    "profile_id": "sp_01FHN666MF0T8816EGM3FS94E8",
+    "weight": null,
+    "length": null,
+    "height": null,
+    "width": null,
+    "hs_code": null,
+    "origin_country": null,
+    "mid_code": null,
+    "material": null,
+    "collection_id": null,
+    "collection": null,
+    "type_id": null,
+    "type": null,
+    "tags": [],
+    "discountable": true,
+    "created_at": "2021-10-10T13:27:32.291Z",
+    "updated_at": "2021-10-10T13:27:32.291Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}
