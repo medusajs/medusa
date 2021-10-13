@@ -1,7 +1,8 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-import { Brackets, ILike } from "typeorm"
+import { Brackets } from "typeorm"
+import { ILikeOperator } from "../utils/db-aware-column"
 
 /**
  * Handles draft orders
@@ -164,6 +165,7 @@ class DraftOrderService extends BaseService {
     const draftOrderRepository = this.manager_.getCustomRepository(
       this.draftOrderRepository_
     )
+    const ilike = ILikeOperator()
 
     let q
     if ("q" in selector) {
@@ -190,9 +192,9 @@ class DraftOrderService extends BaseService {
 
         qb.andWhere(
           new Brackets(qb => {
-            qb.where(`cart.email ILIKE :q`, {
+            qb.where(`cart.email ${ilike} :q`, {
               q: `%${q}%`,
-            }).orWhere(`draft_order.display_id::varchar(255) ILIKE :dId`, {
+            }).orWhere(`draft_order.display_id::varchar(255) ${ilike} :dId`, {
               dId: `${q}`,
             })
           })

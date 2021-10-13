@@ -1,6 +1,7 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
+import { ILikeOperator } from "../utils/db-aware-column"
 
 class OrderService extends BaseService {
   static Events = {
@@ -209,6 +210,7 @@ class OrderService extends BaseService {
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const ilike = ILikeOperator()
 
     let q
     if ("q" in selector) {
@@ -236,11 +238,11 @@ class OrderService extends BaseService {
 
         qb.andWhere(
           new Brackets(qb => {
-            qb.where(`shipping_address.first_name ILIKE :qfn`, {
+            qb.where(`shipping_address.first_name ${ilike} :qfn`, {
               qfn: `%${q}%`,
             })
-              .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+              .orWhere(`order.email ${ilike} :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ${ilike} :dId`, { dId: `${q}` })
           })
         )
       }

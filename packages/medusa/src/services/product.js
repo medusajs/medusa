@@ -2,6 +2,7 @@ import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
+import { ILikeOperator } from "../utils/db-aware-column"
 
 /**
  * Provides layer to manipulate products.
@@ -115,6 +116,8 @@ class ProductService extends BaseService {
       delete where.description
       delete where.title
 
+      const ilike = ILikeOperator()
+      
       const raw = await productRepo
         .createQueryBuilder("product")
         .leftJoinAndSelect("product.variants", "variant")
@@ -123,11 +126,11 @@ class ProductService extends BaseService {
         .where(where)
         .andWhere(
           new Brackets(qb => {
-            qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
+            qb.where(`product.description ${ilike} :q`, { q: `%${q}%` })
+              .orWhere(`product.title ${ilike} :q`, { q: `%${q}%` })
+              .orWhere(`variant.title ${ilike} :q`, { q: `%${q}%` })
+              .orWhere(`variant.sku ${ilike} :q`, { q: `%${q}%` })
+              .orWhere(`collection.title ${ilike} :q`, { q: `%${q}%` })
           })
         )
         .getMany()

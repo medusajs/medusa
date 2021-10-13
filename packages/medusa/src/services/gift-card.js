@@ -2,6 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import randomize from "randomatic"
 import { Brackets } from "typeorm"
+import { ILikeOperator } from "../utils/db-aware-column"
 
 /**
  * Provides layer to manipulate gift cards.
@@ -79,6 +80,7 @@ class GiftCardService extends BaseService {
     const giftCardRepo = this.manager_.getCustomRepository(
       this.giftCardRepository_
     )
+    const ilike = ILikeOperator()
 
     let q
     if ("q" in selector) {
@@ -103,8 +105,8 @@ class GiftCardService extends BaseService {
         .andWhere(
           new Brackets(qb => {
             return qb
-              .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+              .where(`gift_card.code ${ilike} :q`, { q: `%${q}%` })
+              .orWhere(`display_id::varchar(255) ${ilike} :dId`, { dId: `${q}` })
           })
         )
         .getMany()

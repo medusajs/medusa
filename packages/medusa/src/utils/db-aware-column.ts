@@ -16,7 +16,8 @@ const pgSqliteGenerationMapping: {
 }
 
 let dbType: string
-export function resolveDbType(pgSqlType: ColumnType): ColumnType {
+
+function getDbType() {
   if (!dbType) {
     try {
       const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
@@ -26,6 +27,10 @@ export function resolveDbType(pgSqlType: ColumnType): ColumnType {
       dbType = "postgres"
     }
   }
+}
+
+export function resolveDbType(pgSqlType: ColumnType): ColumnType {
+  getDbType()
 
   if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {
     return pgSqliteTypeMapping[pgSqlType.toString()]
@@ -36,15 +41,7 @@ export function resolveDbType(pgSqlType: ColumnType): ColumnType {
 export function resolveDbGenerationStrategy(
   pgSqlType: "increment" | "uuid" | "rowid"
 ): "increment" | "uuid" | "rowid" {
-  if (!dbType) {
-    try {
-      const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
-      dbType = configModule.projectConfig.database_type
-    } catch (error) {
-      // Default to Postgres to allow for e.g. migrations to run
-      dbType = "postgres"
-    }
-  }
+  getDbType()
 
   if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {
     return pgSqliteGenerationMapping[pgSqlType]
@@ -65,4 +62,10 @@ export function DbAwareColumn(columnOptions: ColumnOptions) {
   }
 
   return Column(columnOptions)
+}
+
+export function ILikeOperator(): string {
+  getDbType()
+
+  return dbType == "sqlite" ? "LIKE" : "ILIKE"
 }
