@@ -5,7 +5,7 @@ import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate gift cards.
- * @extends BaseService
+ * @implements BaseService
  */
 class GiftCardService extends BaseService {
   static Events = {
@@ -101,7 +101,7 @@ class GiftCardService extends BaseService {
         .select(["gift_card.id"])
         .where(where)
         .andWhere(
-          new Brackets((qb) => {
+          new Brackets(qb => {
             return qb
               .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
@@ -111,14 +111,14 @@ class GiftCardService extends BaseService {
 
       return giftCardRepo.findWithRelations(
         rels,
-        raw.map((i) => i.id)
+        raw.map(i => i.id)
       )
     }
     return giftCardRepo.findWithRelations(rels, query)
   }
 
   async createTransaction(data) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
       const created = gctRepo.create(data)
       const saved = await gctRepo.save(created)
@@ -132,7 +132,7 @@ class GiftCardService extends BaseService {
    * @return {Promise<GiftCard>} the result of the create operation
    */
   async create(giftCard) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
       if (!giftCard.region_id) {
@@ -169,7 +169,6 @@ class GiftCardService extends BaseService {
   /**
    * Gets a gift card by id.
    * @param {string} giftCardId - id of gift card to retrieve
-   * @param {object} config - optional values to include with gift card query
    * @return {Promise<GiftCard>} the gift card
    */
   async retrieve(giftCardId, config = {}) {
@@ -245,7 +244,7 @@ class GiftCardService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async update(giftCardId, update) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
       const giftCard = await this.retrieve(giftCardId)
@@ -286,14 +285,12 @@ class GiftCardService extends BaseService {
    * @return {Promise} the result of the delete operation
    */
   async delete(giftCardId) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
       const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 
-      if (!giftCard) {
-        return Promise.resolve()
-      }
+      if (!giftCard) return Promise.resolve()
 
       await giftCardRepo.softRemove(giftCard)
 
