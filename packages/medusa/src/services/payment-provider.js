@@ -60,7 +60,7 @@ class PaymentProviderService extends BaseService {
     }
 
     if (relations.length) {
-      query.relations = options.relations
+      query.relations = relations
     }
 
     const payment = await paymentRepo.findOne(query)
@@ -95,7 +95,7 @@ class PaymentProviderService extends BaseService {
     }
 
     if (relations.length) {
-      query.relations = options.relations
+      query.relations = relations
     }
 
     const session = await sessionRepo.findOne(query)
@@ -142,7 +142,8 @@ class PaymentProviderService extends BaseService {
   /**
    * Refreshes a payment session with the given provider.
    * This means, that we delete the current one and create a new.
-   * @param {string} providerId - the id of the provider to refresh payment for
+   * @param {PaymentSession} paymentSession - the payment session object to
+   *    update
    * @param {Cart} cart - a cart object used to calculate the amount, etc. from
    * @return {Promise} the payment session
    */
@@ -220,7 +221,7 @@ class PaymentProviderService extends BaseService {
   /**
    * Finds a provider given an id
    * @param {string} providerId - the id of the provider to get
-   * @returns {PaymentService} the payment provider
+   * @return {PaymentService} the payment provider
    */
   retrieveProvider(providerId) {
     try {
