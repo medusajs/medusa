@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/discounts creates admin session correctly 1`] = `
+exports[`/admin/auth creates admin session correctly 1`] = `
 Object {
   "api_token": "test_token",
   "created_at": Any<String>,
@@ -13,4 +13,3 @@ Object {
   "updated_at": Any<String>,
 }
 `;
-
