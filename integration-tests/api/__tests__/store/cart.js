@@ -152,16 +152,16 @@ describe("/store/carts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "CREATED" }],
+      let response = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code: "SPENT" }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual(
-          "Discount has been used maximum allowed times"
-        )
-      }
+        .catch((error) => {
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Discount has been used maximum allowed times"
+          )
+        })
     })
 
     it("fails to apply expired discount", async () => {
