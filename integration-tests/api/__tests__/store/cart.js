@@ -30,7 +30,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -467,6 +467,13 @@ describe("/store/carts", () => {
         })
 
         cartWithCustomSo = await manager.save(_cart)
+
+        await manager.insert(CustomShippingOption, {
+          id: "another-cso-test",
+          cart_id: "test-cart-with-cso",
+          shipping_option_id: "test-option",
+          price: 5,
+        })
       } catch (err) {
         console.log(err)
       }
@@ -494,8 +501,7 @@ describe("/store/carts", () => {
     })
 
     it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
-      const shippingOptionId =
-        cartWithCustomSo.custom_shipping_options[0].shipping_option_id
+      const shippingOptionId = "test-option"
 
       const api = useApi()
 
