@@ -100,7 +100,7 @@ class UserService extends BaseService {
    * Gets a user by api token.
    * Throws in case of DB Error and if user was not found.
    * @param {string} apiToken - the token of the user to get.
-   * @param {array} relations - ?
+   * @param {string[]} relations - relations to include with the user
    * @return {Promise<User>} the user document.
    */
   async retrieveByApiToken(apiToken, relations = []) {
@@ -277,7 +277,7 @@ class UserService extends BaseService {
    * The token will be signed with the users current password hash as a secret
    * a long side a payload with userId and the expiry time for the token, which
    * is always 15 minutes.
-   * @param {User} userId - the if of the user to reset password for
+   * @param {string} userId - the id of the user to reset password for
    * @return {string} the generated JSON web token
    */
   async generateResetPasswordToken(userId) {
