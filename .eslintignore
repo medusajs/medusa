@@ -33,7 +33,6 @@
 /packages/medusa/src/services/system-payment-provider.js
 /packages/medusa/src/services/totals.js
 /packages/medusa/src/services/transaction.js
-/packages/medusa/src/services/user.js
 
 /packages/medusa/src/subscribers/notification.js
 /packages/medusa/src/subscribers/order.js
