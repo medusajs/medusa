@@ -243,6 +243,35 @@ Object {
 }
 `;
 
+exports[`GetRegionsRegion 1`] = `
+Object {
+  "region": Object {
+    "countries": Array [],
+    "created_at": Any<String>,
+    "currency_code": "dkk",
+    "deleted_at": null,
+    "fulfillment_providers": Array [
+      Object {
+        "id": "test-ful",
+        "is_installed": true,
+      },
+    ],
+    "id": StringMatching /\\^reg_\\*/,
+    "metadata": null,
+    "name": Any<String>,
+    "payment_providers": Array [
+      Object {
+        "id": "test-pay",
+        "is_installed": true,
+      },
+    ],
+    "tax_code": null,
+    "tax_rate": "0",
+    "updated_at": Any<String>,
+  },
+}
+`;
+
 exports[`GetSwapsSwap 1`] = `
 Object {
   "swap": Object {
