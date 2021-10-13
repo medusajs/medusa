@@ -27,7 +27,7 @@
 /packages/medusa/src/services/return.js
 /packages/medusa/src/services/shipping-option.js
 /packages/medusa/src/services/shipping-profile.js
-/packages/medusa/src/services/store.js
+
 
 /packages/medusa/src/services/system-payment-provider.js
 /packages/medusa/src/services/totals.js

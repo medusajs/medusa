@@ -1,10 +1,11 @@
-import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+// Assigned but never used
+// import _ from "lodash"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 import { currencies } from "../utils/currencies"
 
-/**
+/*
  * Provides layer to manipulate store settings.
  * @implements BaseService
  */
@@ -66,7 +67,7 @@ class StoreService extends BaseService {
     })
   }
 
-  /**
+  /*
    * Retrieve the store settings. There is always a maximum of one store.
    * @return {Promise<Store>} the store
    */
@@ -89,7 +90,7 @@ class StoreService extends BaseService {
     }
   }
 
-  /**
+  /*
    * Updates a customer. Metadata updates and address updates should
    * use dedicated methods, e.g. `setMetadata`, etc. The function
    * will throw errors if metadata updates and address updates are attempted.
@@ -109,7 +110,8 @@ class StoreService extends BaseService {
 
       const {
         metadata,
-        default_currency,
+        // Assigned but never used
+        // default_currency,
         default_currency_code,
         currencies: storeCurrencies,
         ...rest
