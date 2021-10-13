@@ -87,7 +87,9 @@ heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
+
 > Make sure to use actual secrets in a production environment.
+
 Additionally, we need to set the buildpack to Node.js
 
 ```shell=
@@ -137,7 +139,7 @@ module.exports = {
     database_type: "postgres",
     store_cors: STORE_CORS,
     admin_cors: ADMIN_CORS,
-    database_extra: 
+    database_extra:
       process.env.NODE_ENV !== "development"
         ? { ssl: { rejectUnauthorized: false } }
         : {},
