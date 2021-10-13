@@ -678,7 +678,7 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingOption} option - the shipping option to retrieve the price
    *   for.
    * @param {ShippingData} data - the shipping data to retrieve the price.
-   * @param {Cart\Order} cart - the context in which the price should be
+   * @param {Cart | Order} cart - the context in which the price should be
    *   retrieved.
    * @return {Promise<Number>} the price of the shipping option.
    */
