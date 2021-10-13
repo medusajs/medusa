@@ -8,6 +8,7 @@ import {
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
+  Index,
 } from "typeorm"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
@@ -18,6 +19,7 @@ export class Invite {
   @PrimaryColumn()
   id: string
 
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   user_email: string
 

@@ -9,9 +9,11 @@ export class extendedUserApi1633512755401 implements MigrationInterface {
         await queryRunner.query(`CREATE TYPE "user_role_enum" AS ENUM('admin', 'member', 'developer')`);
         await queryRunner.query(`ALTER TABLE "user" ADD "role" "user_role_enum" DEFAULT 'member'`);
         await queryRunner.query(`ALTER TABLE "store" ADD "invite_link_template" character varying`);
+        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_6b0ce4b4bcfd24491510bf19d1" ON "invite" ("user_email") WHERE deleted_at IS NULL`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`DROP INDEX "IDX_6b0ce4b4bcfd24491510bf19d1"`);
         await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "role"`);
         await queryRunner.query(`DROP TYPE "user_role_enum"`);
         await queryRunner.query(`DROP TABLE "invite"`);
