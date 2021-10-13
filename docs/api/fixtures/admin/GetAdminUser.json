@@ -1,0 +1,14 @@
+{
+  "user": {
+    "id": "usr_01FHX9KQSQA9SD8487RPEKJT0P",
+    "email": "testAdmin@mail.com",
+    "first_name": null,
+    "last_name": null,
+    "password_hash": null,
+    "api_token": "test_token",
+    "created_at": "2021-10-13T17:01:16.982Z",
+    "updated_at": "2021-10-13T17:01:16.982Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}
