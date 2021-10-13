@@ -1,5 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`GetAdminUser 1`] = `
+Object {
+  "user": Object {
+    "api_token": "test_token",
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "email": "testAdmin@mail.com",
+    "first_name": null,
+    "id": Any<String>,
+    "last_name": null,
+    "metadata": null,
+    "password_hash": null,
+    "updated_at": Any<String>,
+  },
+}
+`;
+
 exports[`GetCollection 1`] = `
 Object {
   "collection": Object {
