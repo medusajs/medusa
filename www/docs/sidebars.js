@@ -121,6 +121,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "how-to/deploying-on-digital-ocean",
+        },
+        {
+          type: "doc",
           id: "how-to/deploying-admin-on-netlify",
         },
       ],
