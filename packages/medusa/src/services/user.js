@@ -48,9 +48,7 @@ class UserService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email)
     if (error) {
       throw new MedusaError(
@@ -162,7 +160,7 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   async create(user, password) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
 
       const validatedEmail = this.validateEmail_(user.email)
@@ -186,7 +184,7 @@ class UserService extends BaseService {
    * @return {Promise} the result of create
    */
   async update(userId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
       const validatedId = this.validateId_(userId)
 
@@ -227,7 +225,7 @@ class UserService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(userId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
@@ -252,7 +250,7 @@ class UserService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async setPassword_(userId, password) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
 
       const user = await this.retrieve(userId)
