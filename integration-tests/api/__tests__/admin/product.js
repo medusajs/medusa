@@ -46,7 +46,35 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products?status%5B%5D=null", {
+        .get("/admin/products", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "draft",
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+            status: "draft",
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of all products when no query is provided", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/products?q=", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -89,7 +117,7 @@ describe("/admin/products", () => {
         })
 
       const response = await api
-        .get("/admin/products?status%5B%5D=proposed", {
+        .get("/admin/products?status[]=proposed", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -107,6 +135,258 @@ describe("/admin/products", () => {
           }),
         ])
       )
+    })
+
+    it("returns a list of products where status is proposed or published", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ status: "draft" }),
+        expect.objectContaining({ status: "rejected" }),
+      ]
+
+      const response = await api
+        .get("/admin/products?status[]=published,proposed", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          status: "proposed",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          status: "published",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
+    it("returns a list of products in collection", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ collection_id: "test-collection" }),
+        expect.objectContaining({ collection_id: "test-collection2" }),
+      ]
+
+      const response = await api
+        .get("/admin/products?collection_id[]=test-collection1", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_3",
+          collection_id: "test-collection1",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
+    it("returns a list of products with tags", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ id: "tag1" }),
+        expect.objectContaining({ id: "tag2" }),
+        expect.objectContaining({ id: "tag4" }),
+      ]
+
+      const response = await api
+        .get("/admin/products?tags[]=tag3", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          tags: [expect.objectContaining({ id: "tag3" })],
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          tags: [expect.objectContaining({ id: "tag3" })],
+        }),
+      ])
+      for (const product of response.data.products) {
+        for (const notExpect of notExpected) {
+          expect(product.tags).toEqual(expect.not.arrayContaining([notExpect]))
+        }
+      }
+    })
+
+    it("returns a list of products with tags in a collection", async () => {
+      const api = useApi()
+
+      const notExpectedTags = [
+        expect.objectContaining({ id: "tag1" }),
+        expect.objectContaining({ id: "tag2" }),
+        expect.objectContaining({ id: "tag3" }),
+      ]
+
+      const notExpectedCollections = [
+        expect.objectContaining({ collection_id: "test-collection" }),
+        expect.objectContaining({ collection_id: "test-collection2" }),
+      ]
+
+      const response = await api
+        .get("/admin/products?collection_id[]=test-collection1&tags[]=tag4", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_3",
+          collection_id: "test-collection1",
+          tags: [expect.objectContaining({ id: "tag4" })],
+        }),
+      ])
+
+      for (const notExpect of notExpectedCollections) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+
+      for (const product of response.data.products) {
+        for (const notExpect of notExpectedTags) {
+          expect(product.tags).toEqual(expect.not.arrayContaining([notExpect]))
+        }
+      }
+    })
+
+    it("returns a list of products with giftcard in list", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "Test Giftcard",
+        is_giftcard: true,
+        description: "test-giftcard-description",
+        options: [{ title: "Denominations" }],
+        variants: [
+          {
+            title: "Test variant",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "100" }],
+          },
+        ],
+      }
+
+      await api
+        .post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const response = await api
+        .get("/admin/products?is_giftcard=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.products).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ is_giftcard: false }),
+        ])
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toMatchSnapshot([
+        {
+          title: "Test Giftcard",
+          id: expect.stringMatching(/^prod_*/),
+          is_giftcard: true,
+          description: "test-giftcard-description",
+          profile_id: expect.stringMatching(/^sp_*/),
+          options: [
+            {
+              title: "Denominations",
+              id: expect.stringMatching(/^opt_*/),
+              product_id: expect.stringMatching(/^prod_*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+
+          variants: [
+            {
+              title: "Test variant",
+              id: expect.stringMatching(/^variant_*/),
+              product_id: expect.stringMatching(/^prod_*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              prices: [
+                {
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 100,
+                  variant_id: expect.stringMatching(/^variant_*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^opt_*/),
+                  option_id: expect.stringMatching(/^opt_*/),
+                  created_at: expect.any(String),
+                  variant_id: expect.stringMatching(/^variant_*/),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+          ],
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+      ])
     })
 
     it("returns a list of products with child entities", async () => {
@@ -303,6 +583,42 @@ describe("/admin/products", () => {
             updated_at: expect.any(String),
           },
           profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        {
+          id: expect.stringMatching(/^test-*/),
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          type: expect.any(Object),
+          collection: expect.any(Object),
+          options: expect.any(Array),
+          tags: expect.any(Array),
+          variants: expect.any(Array),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        {
+          id: expect.stringMatching(/^test-*/),
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          type: expect.any(Object),
+          collection: expect.any(Object),
+          options: expect.any(Array),
+          tags: expect.any(Array),
+          variants: expect.any(Array),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        {
+          id: expect.stringMatching(/^test-*/),
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          type: expect.any(Object),
+          collection: expect.any(Object),
+          options: expect.any(Array),
+          tags: expect.any(Array),
+          variants: expect.any(Array),
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
