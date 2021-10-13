@@ -135,6 +135,57 @@ describe("RestockNotificationService", () => {
   })
 
   describe("triggerRestock", () => {
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    it("trigger delay default to 0", async () => {
+      const restockNotiService = new RestockNotificationService({
+        manager: MockManager,
+        productVariantService: ProductVariantService,
+        restockNotificationModel: RestockNotificationModel,
+        eventBusService: EventBusService,
+      })
+
+      restockNotiService.restockExecute_ = jest.fn()
+
+      jest.clearAllMocks()
+      jest.useFakeTimers()
+
+      restockNotiService.triggerRestock("variant_test")
+
+      jest.runAllTimers()
+
+      expect(setTimeout).toHaveBeenCalledTimes(1)
+      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 0)
+    })
+
+    it("trigger delay 10", async () => {
+      const restockNotiService = new RestockNotificationService(
+        {
+          manager: MockManager,
+          productVariantService: ProductVariantService,
+          restockNotificationModel: RestockNotificationModel,
+          eventBusService: EventBusService,
+        },
+        { trigger_delay: 10 }
+      )
+
+      restockNotiService.restockExecute_ = jest.fn()
+
+      jest.clearAllMocks()
+      jest.useFakeTimers()
+
+      restockNotiService.triggerRestock("variant_test")
+
+      jest.runAllTimers()
+
+      expect(setTimeout).toHaveBeenCalledTimes(1)
+      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 10)
+    })
+  })
+
+  describe("restockExecute_", () => {
     const restockNotiService = new RestockNotificationService({
       manager: MockManager,
       productVariantService: ProductVariantService,
@@ -145,20 +196,20 @@ describe("RestockNotificationService", () => {
     it("non-existing noti does nothing", async () => {
       jest.clearAllMocks()
 
-      await expect(restockNotiService.triggerRestock("variant_test")).resolves
+      await expect(restockNotiService.restockExecute_("variant_test")).resolves
     })
 
     it("existing noti but out of stock does nothing", async () => {
       jest.clearAllMocks()
 
-      await expect(restockNotiService.triggerRestock("variant_outofstock"))
+      await expect(restockNotiService.restockExecute_("variant_outofstock"))
         .resolves
     })
 
     it("existing noti emits and deletes", async () => {
       jest.clearAllMocks()
 
-      await restockNotiService.triggerRestock("variant_1234")
+      await restockNotiService.restockExecute_("variant_1234")
 
       expect(EventBusService.emit).toHaveBeenCalledTimes(1)
       expect(EventBusService.emit).toHaveBeenCalledWith(
@@ -187,7 +238,7 @@ describe("RestockNotificationService", () => {
         { inventory_required: 5 }
       )
 
-      await service.triggerRestock("variant_1234")
+      await service.restockExecute_("variant_1234")
 
       expect(EventBusService.emit).toHaveBeenCalledTimes(1)
       expect(EventBusService.emit).toHaveBeenCalledWith(
@@ -214,7 +265,7 @@ describe("RestockNotificationService", () => {
         { inventory_required: 5 }
       )
 
-      await service.triggerRestock("variant_low_inventory")
+      await service.restockExecute_("variant_low_inventory")
 
       expect(EventBusService.emit).toHaveBeenCalledTimes(0)
       expect(RestockNotificationModel.delete).toHaveBeenCalledTimes(0)
