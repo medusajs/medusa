@@ -1,7 +1,7 @@
 import { request } from "../../../../../helpers/test-request"
 import { InviteServiceMock } from "../../../../../services/__mocks__/invite"
 
-describe("POST /accounts/:id/users/invite/:invite_id/resend", () => {
+describe("POST /invites/:invite_id/resend", () => {
   describe("successfully resends an invite", () => {
     let subject
 

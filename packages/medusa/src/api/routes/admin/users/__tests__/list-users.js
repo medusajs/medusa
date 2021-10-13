@@ -22,7 +22,7 @@ describe("GET /admin/users", () => {
 
     it("calls service retrieve", () => {
       expect(UserServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(UserServiceMock.list).toHaveBeenCalledWith({})
+      expect(UserServiceMock.list).toHaveBeenCalledWith()
     })
   })
 })

@@ -1,7 +1,7 @@
 import { request } from "../../../../../helpers/test-request"
 import { InviteServiceMock } from "../../../../../services/__mocks__/invite"
 
-describe("POST /accounts/invite/accept", () => {
+describe("POST /invites/accept", () => {
   describe("successfully accepts an invite", () => {
     let subject
 
