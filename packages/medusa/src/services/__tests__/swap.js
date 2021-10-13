@@ -170,6 +170,14 @@ describe("SwapService", () => {
         findOneWithRelations: () => Promise.resolve(existing),
       })
 
+      const customShippingOptionService = {
+        create: jest.fn().mockReturnValue(Promise.resolve({ id: "cso-test" })),
+        update: jest.fn().mockReturnValue(Promise.resolve()),
+        withTransaction: function() {
+          return this
+        },
+      }
+
       const lineItemService = {
         create: jest.fn().mockImplementation(d => Promise.resolve(d)),
         update: jest.fn().mockImplementation(d => Promise.resolve(d)),
@@ -185,6 +193,7 @@ describe("SwapService", () => {
         swapRepository: swapRepo,
         cartService,
         lineItemService,
+        customShippingOptionService,
       })
 
       it("finds swap and calls return create cart", async () => {
@@ -216,9 +225,6 @@ describe("SwapService", () => {
           discounts: testOrder.discounts,
           region_id: testOrder.region_id,
           customer_id: testOrder.customer_id,
-          custom_shipping_options: [
-            { shipping_option_id: "test-option", price: 10 },
-          ],
           type: "swap",
           metadata: {
             swap_id: IdMap.getId("test-swap"),

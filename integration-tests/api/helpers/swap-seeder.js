@@ -15,6 +15,9 @@ const {
   Cart,
   Return,
 } = require("@medusajs/medusa")
+const {
+  CustomShippingOption,
+} = require("@medusajs/medusa/dist/models/custom-shipping-option")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -109,12 +112,6 @@ module.exports = async (connection, data = {}) => {
     billing_address_id: "test-billing-address",
     region_id: "test-region",
     type: "swap",
-    custom_shipping_options: [
-      {
-        shipping_option_id: "test-option",
-        price: 0,
-      },
-    ],
     metadata: {
       swap_id: "test-swap",
       parent_order_id: orderWithSwap.id,
@@ -122,6 +119,13 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(cartWithCustomSo)
+
+  manager.insert(CustomShippingOption, {
+    id: "cso-test",
+    cart_id: cartWithCustomSo.id,
+    price: 0,
+    shipping_option_id: "test-option",
+  })
 
   const swapWithRMAMethod = manager.create(Swap, {
     id: "test-swap-rma",

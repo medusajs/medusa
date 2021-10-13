@@ -1316,13 +1316,10 @@ describe("CartService", () => {
     let cartService = new CartService({})
 
     it("given a cart with custom shipping options and a shipping option id corresponding to a custom shipping option, then it should return a custom shipping option", async () => {
-      const cart = {
-        id: "cart-with-so",
-        custom_shipping_options: [
-          { id: "cso-test", shipping_option_id: "test-so", price: 20 },
-        ],
-      }
-      const result = cartService.findCustomShippingOption(cart, "test-so")
+      const cartCSO = [
+        { id: "cso-test", shipping_option_id: "test-so", price: 20 },
+      ]
+      const result = cartService.findCustomShippingOption(cartCSO, "test-so")
 
       expect(result).toEqual({
         id: "cso-test",
@@ -1332,25 +1329,20 @@ describe("CartService", () => {
     })
 
     it("given a cart with empty custom shipping options and shipping option id, then it should return undefined", async () => {
-      const cart = {
-        id: "cart-with-so",
-        custom_shipping_options: [],
-      }
-      const result = cartService.findCustomShippingOption(cart, "test-so")
+      const cartCSO = []
+
+      const result = cartService.findCustomShippingOption(cartCSO, "test-so")
 
       expect(result).toBeUndefined()
     })
 
     it("given a cart with custom shipping options and a shipping option id that does not belong to the cart, then it should throw an invalid error", async () => {
-      const cart = {
-        id: "cart-with-so",
-        custom_shipping_options: [
-          { id: "cso-test", shipping_option_id: "test-so", price: 500 },
-        ],
-      }
+      const cartCSO = [
+        { id: "cso-test", shipping_option_id: "test-so", price: 500 },
+      ]
 
       expect(() => {
-        cartService.findCustomShippingOption(cart, "some-other-so")
+        cartService.findCustomShippingOption(cartCSO, "some-other-so")
       }).toThrow(MedusaError)
     })
   })
@@ -1373,13 +1365,6 @@ describe("CartService", () => {
             profile_id: IdMap.getId(m.profile),
           },
         })),
-        custom_shipping_options: (config.custom_shipping_options || []).map(
-          cso => ({
-            ...cso,
-            id: IdMap.getId(cso.id),
-            shipping_option_id: IdMap.getId(cso.shipping_option_id),
-          })
-        ),
         discounts: [],
       }
     }
@@ -1391,11 +1376,7 @@ describe("CartService", () => {
     const cart3 = buildCart("lines", {
       items: [{ id: "line", profile: "profile1" }],
     })
-    const cartWithCustomSO = buildCart("cart-with-custom-so", {
-      custom_shipping_options: [
-        { id: "cso-test", shipping_option_id: "test-so" },
-      ],
-    })
+    const cartWithCustomSO = buildCart("cart-with-custom-so")
 
     const cartRepository = MockRepository({
       findOneWithRelations: (rels, q) => {
@@ -1432,6 +1413,20 @@ describe("CartService", () => {
       },
     }
 
+    const customShippingOptionService = {
+      list: jest.fn().mockImplementation(({ cart_id }) => {
+        if (cart_id === IdMap.getId("cart-with-custom-so")) {
+          return [
+            {
+              id: "cso-test",
+              shipping_profile_id: "test-so",
+              cart_id: IdMap.getId("cart-with-custom-so"),
+            },
+          ]
+        }
+      }),
+    }
+
     const cartService = new CartService({
       manager: MockManager,
       totalsService,
@@ -1439,6 +1434,7 @@ describe("CartService", () => {
       shippingOptionService,
       lineItemService,
       eventBusService,
+      customShippingOptionService,
     })
 
     beforeEach(() => {
@@ -1538,11 +1534,9 @@ describe("CartService", () => {
 
       cartService.findCustomShippingOption = jest
         .fn()
-        .mockImplementation(cart => {
-          if (cart.id === IdMap.getId("cart-with-custom-so")) {
-            return {
-              price: 0,
-            }
+        .mockImplementation(cartCustomShippingOptions => {
+          return {
+            price: 0,
           }
         })
 

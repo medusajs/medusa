@@ -29,7 +29,7 @@ export class CustomShippingOption {
   @Column()
   shipping_option_id: string;
   
-  @ManyToOne(() => ShippingOption, { eager: true })
+  @ManyToOne(() => ShippingOption)
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption
 
