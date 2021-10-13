@@ -592,6 +592,28 @@ describe("/admin/products", () => {
       )
     })
 
+    it("updates product (removes images when empty array included)", async () => {
+      const api = useApi()
+
+      const payload = {
+        images: [],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.product.images.length).toEqual(0)
+    })
+
     it("fails to update product with invalid status", async () => {
       const api = useApi()
 
@@ -696,6 +718,7 @@ describe("/admin/products", () => {
       )
     })
   })
+
   describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
     beforeEach(async () => {
       try {
