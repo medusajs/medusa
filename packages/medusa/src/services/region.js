@@ -384,7 +384,7 @@ class RegionService extends BaseService {
       const region = await regionRepo.findOne({ where: { id: regionId } })
 
       if (!region) {
-	return Promise.resolve()
+        return Promise.resolve()
       }
 
       await regionRepo.softRemove(region)
