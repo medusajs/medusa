@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { defaultFields, defaultRelations, filterableFields } from "./"
 
 /**
  * @oas [get] /products
@@ -31,6 +31,17 @@ import { defaultFields, defaultRelations } from "./"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
+  const schema = Validator.productFilter()
+
+  const { value, error } = schema.validate(req.query)
+
+  if (error) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      JSON.stringify(error.details)
+    )
+  }
+
   try {
     const productService = req.scope.resolve("productService")
 
@@ -53,21 +64,16 @@ export default async (req, res) => {
       expandFields = req.query.expand.split(",")
     }
 
-    if ("is_giftcard" in req.query) {
-      selector.is_giftcard = req.query.is_giftcard === "true"
+    for (const k of filterableFields) {
+      if (k in value) {
+        selector[k] = value[k]
+      }
     }
 
-    if ("status" in req.query) {
-      const schema = Validator.array()
-        .items(
-          Validator.string().valid("proposed", "draft", "published", "rejected")
-        )
-        .single()
-
-      const { value, error } = schema.validate(req.query.status)
-
-      if (value && !error) {
-        selector.status = value
+    if (selector.status?.indexOf("null") > -1) {
+      selector.status.splice(selector.status.indexOf("null"), 1)
+      if (selector.status.length === 0) {
+        delete selector.status
       }
     }
 

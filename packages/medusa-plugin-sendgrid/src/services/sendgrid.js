@@ -320,6 +320,8 @@ class SendGridService extends NotificationService {
         "billing_address",
         "shipping_address",
         "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
         "shipping_methods",
         "shipping_methods.shipping_option",
         "payments",
@@ -363,6 +365,8 @@ class SendGridService extends NotificationService {
         "billing_address",
         "shipping_address",
         "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
         "shipping_methods",
         "shipping_methods.shipping_option",
         "payments",
@@ -496,6 +500,8 @@ class SendGridService extends NotificationService {
       relations: [
         "items",
         "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
         "shipping_address",
         "returns",
         "swaps",
@@ -601,6 +607,8 @@ class SendGridService extends NotificationService {
       relations: [
         "items",
         "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
         "shipping_address",
         "swaps",
         "swaps.additional_items",
@@ -686,7 +694,14 @@ class SendGridService extends NotificationService {
     })
 
     const order = await this.orderService_.retrieve(swap.order_id, {
-      relations: ["items", "discounts", "swaps", "swaps.additional_items"],
+      relations: [
+        "items",
+        "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
+        "swaps",
+        "swaps.additional_items",
+      ],
     })
 
     let merged = [...order.items]
