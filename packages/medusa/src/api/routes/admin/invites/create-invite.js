@@ -2,13 +2,9 @@ import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    users: Validator.array()
-      .items(
-        Validator.string()
-          .email()
-          .trim()
-      )
-      .min(1),
+    user: Validator.string()
+      .email()
+      .trim(),
     role: Validator.string()
       .trim()
       .required(),
@@ -20,7 +16,7 @@ export default async (req, res) => {
   }
   const inviteService = req.scope.resolve("inviteService")
 
-  await inviteService.create(value.users, value.role)
+  await inviteService.create(value.user, value.role)
 
   res.sendStatus(200)
 }

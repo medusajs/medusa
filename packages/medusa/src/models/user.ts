@@ -30,7 +30,7 @@ export class User {
   })
   role: UserRoles
 
-  @Index({ unique: true })
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   email: string
 

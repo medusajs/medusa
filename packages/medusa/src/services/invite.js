@@ -72,55 +72,60 @@ class InviteService extends BaseService {
 
   /**
    * Updates an account_user.
-   * @param {string} data.inviter - user who creates the invites
-   * @param {string} data.account_id - id of the account
-   * @param {Array<string>} data.users - user emails
-   * @param {string} data.role - role to assign to the users
+   * @param {string} data.users - user emails
+   * @param {string} data.role - role to assign to the user
    * @return {Promise} the result of create
    */
-  async create(users, role) {
+  async create(user, role) {
     return await this.atomicPhase_(async manager => {
       const inviteRepository = this.manager_.getCustomRepository(
         this.inviteRepository_
       )
+      const userRepo = this.manager_.getCustomRepository(this.userRepo_)
 
-      await Promise.any(
-        users.map(async user_email => {
-          let invite = await inviteRepository.findOne({
-            where: { user_email },
-          })
+      let userEntity = await userRepo.findOne({
+        where: { email: user },
+      })
 
-          // if user is trying to send another invite for the same account + email, but with a different role
-          // then change the role on the invite as long as the invite has not been accepted yet
-          if (invite && !invite.accepted && invite.role !== role) {
-            invite.role = role
+      if (userEntity) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Can't invite a user with an existing account"
+        )
+      }
 
-            invite = await inviteRepository.save(invite)
-          }
-          // if no invite is found, create a new one
-          else if (!invite) {
-            const created = await inviteRepository.create({
-              role,
-              user_email,
-            })
+      let invite = await inviteRepository.findOne({
+        where: { user_email: user },
+      })
+      // if user is trying to send another invite for the same account + email, but with a different role
+      // then change the role on the invite as long as the invite has not been accepted yet
+      if (invite && !invite.accepted && invite.role !== role) {
+        invite.role = role
 
-            invite = await inviteRepository.save(created)
-          }
-
-          const token = this.generateToken({
-            invite_id: invite.id,
-            role,
-            user_email,
-          })
-
-          await this.eventBus_
-            .withTransaction(manager)
-            .emit(InviteService.Events.CREATED, {
-              id: invite.id,
-              token,
-            })
+        invite = await inviteRepository.save(invite)
+      }
+      // if no invite is found, create a new one
+      else if (!invite) {
+        const created = await inviteRepository.create({
+          role,
+          user_email: user,
         })
-      )
+
+        invite = await inviteRepository.save(created)
+      }
+
+      const token = this.generateToken({
+        invite_id: invite.id,
+        role,
+        user_email: user,
+      })
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(InviteService.Events.CREATED, {
+          id: invite.id,
+          token,
+        })
     })
   }
 
@@ -139,7 +144,7 @@ class InviteService extends BaseService {
 
       if (!invite) return Promise.resolve()
 
-      await inviteRepo.softRemove(invite)
+      await inviteRepo.delete({ id: invite.id })
 
       return Promise.resolve()
     })
@@ -170,18 +175,8 @@ class InviteService extends BaseService {
 
       const invite = await inviteRepo.findOne({ where: { id: invite_id } })
 
-      if (invite.user_email !== user_email) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `invalid token ${invite.user_email} != ${user_email}`
-        )
-      }
-
-      if (invite.accepted) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Invite already accepted"
-        )
+      if (invite?.user_email !== user_email) {
+        throw new MedusaError(MedusaError.Types.INVALID_DATA, `Invalid invite`)
       }
 
       const exists = await userRepo.findOne({
@@ -207,8 +202,7 @@ class InviteService extends BaseService {
       )
 
       // use the email of the user who actually accepted the invite
-      invite.accepted = true
-      await inviteRepo.save(invite)
+      await inviteRepo.delete({ id: invite.id })
 
       return user
     }, "SERIALIZABLE")

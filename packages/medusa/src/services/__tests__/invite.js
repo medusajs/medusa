@@ -57,10 +57,7 @@ describe("InviteService", () => {
     const inviteRepo = MockRepository({
       findOne: q => {
         if (q.where.id === "accepted") {
-          return Promise.resolve({
-            user_email: "accepted@medusa-commerce.com",
-            accepted: true,
-          })
+          return Promise.resolve(null)
         }
         if (q.where.id === "existingUser") {
           return Promise.resolve({
@@ -121,10 +118,7 @@ describe("InviteService", () => {
         )
         .catch(err => {
           expect(err).toEqual(
-            new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              "Invite already accepted"
-            )
+            new MedusaError(MedusaError.Types.INVALID_DATA, "Invalid invite")
           )
         })
     })
@@ -175,12 +169,9 @@ describe("InviteService", () => {
         "test stuff"
       )
 
-      expect(inviteRepo.save).toHaveBeenCalledTimes(1)
-      expect(inviteRepo.save).toHaveBeenCalledWith({
+      expect(inviteRepo.delete).toHaveBeenCalledTimes(1)
+      expect(inviteRepo.delete).toHaveBeenCalledWith({
         id: "not yet accepted",
-        role: "admin",
-        user_email: "test@test.com",
-        accepted: true,
       })
     })
   })
