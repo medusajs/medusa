@@ -44,8 +44,6 @@
  *       $ref: "#/components/schemas/payment_session"
  *   payment:
  *     $ref: "#/components/schemas/payment"
- *   custom_shipping_options: 
- *     $ref: "#/components/schemas/custom_shipping_option"
  *   shipping_methods:
  *     type: array
  *     items:
@@ -220,13 +218,6 @@ export class Cart {
   @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
   payment: Payment
-
-  @OneToMany(
-    () => CustomShippingOption,
-    method => method.cart,
-    { cascade: ["insert"] }
-  )
-  custom_shipping_options: CustomShippingOption[]
 
   @OneToMany(
     () => ShippingMethod,

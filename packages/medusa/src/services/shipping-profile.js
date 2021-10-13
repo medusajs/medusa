@@ -14,6 +14,7 @@ class ShippingProfileService extends BaseService {
     productService,
     productRepository,
     shippingOptionService,
+    customShippingOptionService,
   }) {
     super()
 
@@ -31,6 +32,9 @@ class ShippingProfileService extends BaseService {
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @const {CustomShippingOptionService} */
+    this.customShippingOptionService_ = customShippingOptionService
   }
 
   withTransaction(transactionManager) {
@@ -43,6 +47,7 @@ class ShippingProfileService extends BaseService {
       shippingProfileRepository: this.shippingProfileRepository_,
       productService: this.productService_,
       shippingOptionService: this.shippingOptionService_,
+      customShippingOptionService: this.customShippingOptionService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -413,8 +418,15 @@ class ShippingProfileService extends BaseService {
    * @return {[ShippingOption]} a list of the available shipping options
    */
   async fetchCartOptions(cart) {
-    if (cart.custom_shipping_options?.length) {
-      return cart.custom_shipping_options.map(cso => ({
+    const customShippingOptions = await this.customShippingOptionService_.list(
+      {
+        cart_id: cart.id,
+      },
+      { relations: ["shipping_option"] }
+    )
+
+    if (customShippingOptions?.length) {
+      return customShippingOptions.map(cso => ({
         ...cso.shipping_option,
         amount: cso.price,
       }))
