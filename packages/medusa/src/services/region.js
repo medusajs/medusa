@@ -1,11 +1,10 @@
-import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { countries } from "../utils/countries"
 
 /**
  * Provides layer to manipulate regions.
- * @implements BaseService
+ * @extends BaseService
  */
 class RegionService extends BaseService {
   static Events = {
@@ -83,7 +82,7 @@ class RegionService extends BaseService {
 
   /**
    * Creates a region.
-   * @param {Region} rawRegion - the unvalidated region
+   * @param {Region} regionObject - the unvalidated region
    * @return {Region} the newly created region
    */
   async create(regionObject) {
@@ -118,7 +117,7 @@ class RegionService extends BaseService {
       }
 
       if (metadata) {
-        regionObject.metadata = this.setMetadata_(region, metadata)
+        regionObject.metadata = this.setMetadata_(regionObject, metadata)
       }
 
       for (const [key, value] of Object.entries(validated)) {
@@ -339,6 +338,7 @@ class RegionService extends BaseService {
   /**
    * Retrieves a region by its id.
    * @param {string} regionId - the id of the region to retrieve
+   * @param {object} config - configuration settings
    * @return {Region} the region
    */
   async retrieve(regionId, config = {}) {
@@ -361,7 +361,8 @@ class RegionService extends BaseService {
 
   /**
    * Lists all regions based on a query
-   * @param {object} listOptions - query object for find
+   * @param {object} selector - query object for find
+   * @param {object} config - configuration settings
    * @return {Promise} result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
@@ -382,7 +383,9 @@ class RegionService extends BaseService {
 
       const region = await regionRepo.findOne({ where: { id: regionId } })
 
-      if (!region) return Promise.resolve()
+      if (!region) {
+        return Promise.resolve()
+      }
 
       await regionRepo.softRemove(region)
 
