@@ -113,11 +113,11 @@ describe("/admin/invites", () => {
     })
 
     describe("Invitations", () => {
-      it("creates multiple invites with the specified emails and role", async () => {
+      it("create an invite with the specified emails and role", async () => {
         const api = useApi()
 
         const payload = {
-          users: ["test@medusa-commerce.com", "testing@medusa-commerce.com"],
+          user: "test@medusa-commerce.com",
           role: "admin",
         }
 
@@ -141,8 +141,7 @@ describe("/admin/invites", () => {
 
         expect(response.data.invites).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ user_email: payload.users[0] }),
-            expect.objectContaining({ user_email: payload.users[1] }),
+            expect.objectContaining({ user_email: payload.user }),
           ])
         )
 
@@ -153,7 +152,7 @@ describe("/admin/invites", () => {
         const api = useApi()
 
         const payload = {
-          users: ["invite-member@test.com"],
+          user: "invite-member@test.com",
           role: "admin",
         }
 
@@ -178,7 +177,7 @@ describe("/admin/invites", () => {
         expect(response.data.invites).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              user_email: payload.users[0],
+              user_email: payload.user,
               role: "admin",
             }),
           ])
@@ -256,7 +255,7 @@ describe("/admin/invites", () => {
         }
 
         const updatePayload = {
-          users: [rest.user_email],
+          user: rest.user_email,
           role: "admin",
         }
 
@@ -337,8 +336,9 @@ describe("/admin/invites", () => {
         const secondAcceptResponse = await api
           .post("/admin/invites/accept", secondPayload)
           .catch((err) => {
+            console.log(err)
             expect(err.response.status).toEqual(400)
-            expect(err.response.data.message).toEqual("Invite already accepted")
+            expect(err.response.data.message).toEqual("Invalid invite")
             expect(err.response.data.type).toEqual("invalid_data")
           })
         expect(createResponse.status).toEqual(200)
