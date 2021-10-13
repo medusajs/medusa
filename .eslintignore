@@ -9,7 +9,6 @@
 /packages/medusa/src/services/event-bus.js
 /packages/medusa/src/services/fulfillment-provider.js
 /packages/medusa/src/services/fulfillment.js
-/packages/medusa/src/services/gift-card.js
 /packages/medusa/src/services/idempotency-key.js
 /packages/medusa/src/services/inventory.js
 /packages/medusa/src/services/line-item.js
