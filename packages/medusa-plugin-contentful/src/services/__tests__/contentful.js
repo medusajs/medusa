@@ -51,7 +51,7 @@ describe("ContentfulService", () => {
       {
         space_id: "test_id",
         environment: "master",
-        access_token: "TzJuwAX0JdmiFY1Ft4cqDrMxtlZfl4Aq-NEBFJOdK0M",
+        access_token: "test_token",
       }
     )
 
