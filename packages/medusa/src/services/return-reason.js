@@ -28,7 +28,7 @@ class ReturnReasonService extends BaseService {
   }
 
   create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
 
       if (data.parent_return_reason_id && data.parent_return_reason_id !== "") {
@@ -50,7 +50,7 @@ class ReturnReasonService extends BaseService {
   }
 
   update(id, data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
       const reason = await this.retrieve(id)
 
@@ -112,7 +112,7 @@ class ReturnReasonService extends BaseService {
   }
 
   async delete(returnReasonId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
 
       // We include the relation 'return_reason_children' to enable cascading deletes of return reasons if a parent is removed
