@@ -647,7 +647,7 @@ class ContentfulService extends BaseService {
   }
 
   async archiveProductVariantInContentful(variant) {
-    let v
+    let variantEntity
     try {
       const ignore = await this.shouldIgnore_(variant.id, "contentful")
       if (ignore) {
@@ -655,10 +655,10 @@ class ContentfulService extends BaseService {
       }
 
       try {
-        v = await this.productVariantService_.retrieve(variant.id)
+        variantEntity = await this.productVariantService_.retrieve(variant.id)
       } catch (err) {}
 
-      if (v) {
+      if (variantEntity) {
         return Promise.resolve()
       }
 
@@ -669,7 +669,7 @@ class ContentfulService extends BaseService {
   }
 
   async archiveProductInContentful(product) {
-    let v
+    let productEntity
     try {
       const ignore = await this.shouldIgnore_(product.id, "contentful")
       if (ignore) {
@@ -677,10 +677,10 @@ class ContentfulService extends BaseService {
       }
 
       try {
-        v = await this.productService_.retrieve(product.id)
+        productEntity = await this.productService_.retrieve(product.id)
       } catch (err) {}
 
-      if (v) {
+      if (productEntity) {
         return Promise.resolve()
       }
 
@@ -691,7 +691,7 @@ class ContentfulService extends BaseService {
   }
 
   async archiveRegionInContentful(region) {
-    let v
+    let regionEntity
     try {
       const ignore = await this.shouldIgnore_(region.id, "contentful")
       if (ignore) {
@@ -699,10 +699,10 @@ class ContentfulService extends BaseService {
       }
 
       try {
-        v = await this.regionService_.retrieve(region.id)
+        regionEntity = await this.regionService_.retrieve(region.id)
       } catch (err) {}
 
-      if (v) {
+      if (regionEntity) {
         return Promise.resolve()
       }
 
@@ -715,15 +715,15 @@ class ContentfulService extends BaseService {
   async archiveEntryWidthId(id) {
     const environment = await this.getContentfulEnvironment_()
     // check if product exists
-    let productEntry = undefined
+    let entry = undefined
     try {
-      productEntry = await environment.getEntry(id)
+      entry = await environment.getEntry(id)
     } catch (error) {
       return Promise.resolve()
     }
 
-    const unpublishEntry = await productEntry.unpublish()
-    const archivedEntry = await productEntry.archive()
+    const unpublishEntry = await entry.unpublish()
+    const archivedEntry = await entry.archive()
 
     await this.addIgnore_(id, "medusa")
 
