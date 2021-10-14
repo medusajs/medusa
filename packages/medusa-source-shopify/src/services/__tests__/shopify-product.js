@@ -106,8 +106,6 @@ describe("ShopifyProductService", () => {
       const data = { ...shopifyProducts.ipod, id: "shopify_deleted" }
       data.variants = data.variants.slice(1, -1)
 
-      console.log(data.id)
-
       await shopifyProductService.update(data)
 
       expect(ProductVariantServiceMock.delete).toHaveBeenCalledTimes(2)
