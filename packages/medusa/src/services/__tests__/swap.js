@@ -5,7 +5,7 @@ import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -161,7 +161,7 @@ describe("SwapService", () => {
       const cartService = {
         create: jest.fn().mockReturnValue(Promise.resolve({ id: "cart" })),
         update: jest.fn().mockReturnValue(Promise.resolve()),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -171,10 +171,10 @@ describe("SwapService", () => {
       })
 
       const lineItemService = {
-        create: jest.fn().mockImplementation(d => Promise.resolve(d)),
-        update: jest.fn().mockImplementation(d => Promise.resolve(d)),
+        create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
+        update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         retrieve: () => Promise.resolve({}),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -199,6 +199,8 @@ describe("SwapService", () => {
             "order.swaps.additional_items",
             "order.discounts",
             "order.discounts.rule",
+            "order.claims",
+            "order.claims.additional_items",
             "additional_items",
             "return_order",
             "return_order.items",
@@ -304,7 +306,7 @@ describe("SwapService", () => {
       const swapRepo = MockRepository()
       const returnService = {
         create: jest.fn().mockReturnValue(Promise.resolve({ id: "ret" })),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -401,7 +403,7 @@ describe("SwapService", () => {
         receiveReturn: jest
           .fn()
           .mockReturnValue(Promise.resolve({ test: "received" })),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -447,7 +449,7 @@ describe("SwapService", () => {
         receiveReturn: jest
           .fn()
           .mockReturnValue(Promise.resolve({ status: "requires_action" })),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -525,7 +527,7 @@ describe("SwapService", () => {
               { items: [{ item_id: "1234", quantity: 2 }], data: "new" },
             ])
           ),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -546,7 +548,7 @@ describe("SwapService", () => {
       const lineItemService = {
         update: jest.fn(),
         retrieve: () => Promise.resolve({}),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -621,11 +623,11 @@ describe("SwapService", () => {
   describe("cancelFulfillment", () => {
     const swapRepo = MockRepository({
       findOneWithRelations: () => Promise.resolve({}),
-      save: f => Promise.resolve(f),
+      save: (f) => Promise.resolve(f),
     })
 
     const fulfillmentService = {
-      cancelFulfillment: jest.fn().mockImplementation(f => {
+      cancelFulfillment: jest.fn().mockImplementation((f) => {
         switch (f) {
           case IdMap.getId("no-swap"):
             return Promise.resolve({})
@@ -635,7 +637,7 @@ describe("SwapService", () => {
             })
         }
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -689,14 +691,14 @@ describe("SwapService", () => {
             data: "new",
           })
         }),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
 
       const eventBusService = {
         emit: jest.fn().mockReturnValue(Promise.resolve()),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -737,14 +739,14 @@ describe("SwapService", () => {
       const lineItemService = {
         update: jest.fn(),
         retrieve: () => Promise.resolve({}),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
 
       const cartService = {
         update: jest.fn(),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -820,7 +822,7 @@ describe("SwapService", () => {
 
     const eventBusService = {
       emit: jest.fn().mockReturnValue(Promise.resolve()),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -835,7 +837,7 @@ describe("SwapService", () => {
       updateShippingMethod: () => {
         return Promise.resolve()
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -844,7 +846,7 @@ describe("SwapService", () => {
       update: () => {
         return Promise.resolve()
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -859,14 +861,14 @@ describe("SwapService", () => {
       cancelPayment: jest.fn(() => {
         return Promise.resolve()
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const inventoryService = {
       ...InventoryServiceMock,
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -987,19 +989,19 @@ describe("SwapService", () => {
     describe("success", () => {
       const eventBusService = {
         emit: jest.fn().mockReturnValue(Promise.resolve()),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
 
       const paymentProviderService = {
-        capturePayment: jest.fn(g =>
+        capturePayment: jest.fn((g) =>
           g.id === "good" ? Promise.resolve() : Promise.reject()
         ),
-        refundPayment: jest.fn(g =>
+        refundPayment: jest.fn((g) =>
           g[0].id === "good" ? Promise.resolve() : Promise.reject()
         ),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -1127,7 +1129,7 @@ describe("SwapService", () => {
 
       const eventBusService = {
         emit: jest.fn().mockReturnValue(Promise.resolve()),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -1190,7 +1192,7 @@ describe("SwapService", () => {
 
     const paymentProviderService = {
       cancelPayment: jest.fn(() => Promise.resolve({})),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -1222,7 +1224,7 @@ describe("SwapService", () => {
             return Promise.resolve(swap)
         }
       },
-      save: f => f,
+      save: (f) => f,
     })
 
     const swapService = new SwapService({
@@ -1271,7 +1273,7 @@ describe("SwapService", () => {
 
     it.each([["fail-refund-1"], ["fail-refund-2"], ["fail-refund-3"]])(
       "fails to cancel swap when contains refund",
-      async input => {
+      async (input) => {
         await expect(swapService.cancel(IdMap.getId(input))).rejects.toThrow(
           "Swap with a refund cannot be canceled"
         )
