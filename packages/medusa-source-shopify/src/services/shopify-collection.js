@@ -37,9 +37,9 @@ class ShopifyCollectionService extends BaseService {
 
   /**
    *
-   * @param {object[]} collects
-   * @param {object[]} collections
-   * @param {object[]} products
+   * @param {Object[]} collects
+   * @param {Object[]} collections
+   * @param {Object[]} products
    * @return {Promise}
    */
   async createWithProducts(collects, collections, products) {
