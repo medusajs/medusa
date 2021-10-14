@@ -16,7 +16,6 @@
 /packages/medusa/src/services/product-variant.js
 /packages/medusa/src/services/product.js
 /packages/medusa/src/services/query-builder.js
-/packages/medusa/src/services/return-reason.js
 /packages/medusa/src/services/return.js
 /packages/medusa/src/services/shipping-profile.js
 /packages/medusa/src/services/store.js
