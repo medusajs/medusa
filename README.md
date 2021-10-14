@@ -41,26 +41,26 @@ Medusa is an open-source headless commerce engine that enables developers to cre
 ## 🚀 Quickstart
 
 1. **Install Medusa CLI**
-    ```bash
-    npm install -g @medusajs/medusa-cli
-    ```
+   ```bash
+   npm install -g @medusajs/medusa-cli
+   ```
 2. **Create a new Medusa project**
-    ```
-    medusa new my-medusa-store --seed
-    ```
+   ```
+   medusa new my-medusa-store --seed
+   ```
 3. **Start your Medusa engine**
-    ```bash
-    medusa develop
-    ```
-    
+   ```bash
+   medusa develop
+   ```
 4. **Use the API**
-    ```bash
-    curl localhost:9000/store/products | python -m json.tool
-    ```
+   ```bash
+   curl localhost:9000/store/products | python -m json.tool
+   ```
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
 ## 🛒 Setting up a storefront for your Medusa project
+
 Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.
 
 To provide a quick way to get you started with a storefront install one of our traditional e-commerce starters:
@@ -78,7 +78,9 @@ To provide a quick way to get you started with a storefront install one of our t
 With your starter and your Medusa store running you can open http://localhost:8000 (for Gatsby) or http://localhost:3000 (for Nextjs) in your browser and view the products in your store, build a cart, add shipping details and pay and complete an order.
 
 ## ⭐️ Features
+
 Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
+
 - **Headless**: Medusa is a highly customizable commerce API which means that you may use any presentation layer such as a website, app, chatbots, etc.
 - **Regions** allow you to specify currencies, payment providers, shipping providers, tax rates and more for one or more countries for truly international sales.
 - **Orders** come with all the functionality necessary to perform powerful customer service operations with ease.
@@ -89,13 +91,14 @@ Medusa comes with a set of building blocks that allow you to create amazing digi
 - **Returns** allow customers to send back products and can be configured to function in a 100% automated flow through accounting and payment plugins.
 - **Fulfillment API** makes it easy to integrate with any fulfillment provider by creating fulfillment plugins, check the `/packages` directory for a full list of plugins.
 - **Payments API** makes it easy to integrate with any payment provider by creating payment plugins, we already support Stripe, Paypal and Klarna.
-- **Notification API** allow integrations with email providers, chatbots, Slack channels, etc. 
-- **Customer Login** to give customers a way of managing their data, viewing their orders and saving payment details. 
+- **Notification API** allow integrations with email providers, chatbots, Slack channels, etc.
+- **Customer Login** to give customers a way of managing their data, viewing their orders and saving payment details.
 - **Shipping Options & Profiles** enable powerful rules for free shipping limits, multiple fulfillment methods and more.
 - **Medusa's Plugin Architecture** makes it intuitive and easy to manage your integrations, switch providers and grow with ease.
 - **Customization** is supported for those special use cases that all the other e-commerce platforms can't accommodate.
 
 ## Database support
+
 In production Medusa requires Postgres and Redis, but SQLite is supported for development and testing purposes. If you plan on using Medusa for a project it is recommended that you install Postgres and Redis on your dev machine.
 
 - [Install PostgreSQL](https://www.postgresql.org/download/)
