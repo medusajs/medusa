@@ -91,7 +91,7 @@ class ContentfulService extends BaseService {
   async createImageAssets(product) {
     const environment = await this.getContentfulEnvironment_()
 
-    let assets = []
+    const assets = []
     await Promise.all(
       product.images
         .filter((image) => image.url !== product.thumbnail)
@@ -646,6 +646,92 @@ class ContentfulService extends BaseService {
     }
   }
 
+  async archiveProductVariantInContentful(variant) {
+    let variantEntity
+    try {
+      const ignore = await this.shouldIgnore_(variant.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        variantEntity = await this.productVariantService_.retrieve(variant.id)
+      } catch (err) {
+        // ignore
+      }
+
+      if (variantEntity) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(variant.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async archiveProductInContentful(product) {
+    let productEntity
+    try {
+      const ignore = await this.shouldIgnore_(product.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        productEntity = await this.productService_.retrieve(product.id)
+      } catch (err) {}
+
+      if (productEntity) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(product.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async archiveRegionInContentful(region) {
+    let regionEntity
+    try {
+      const ignore = await this.shouldIgnore_(region.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        regionEntity = await this.regionService_.retrieve(region.id)
+      } catch (err) {}
+
+      if (regionEntity) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(region.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async archiveEntryWidthId(id) {
+    const environment = await this.getContentfulEnvironment_()
+    // check if product exists
+    let entry = undefined
+    try {
+      entry = await environment.getEntry(id)
+    } catch (error) {
+      return Promise.resolve()
+    }
+
+    const unpublishEntry = await entry.unpublish()
+    const archivedEntry = await entry.archive()
+
+    await this.addIgnore_(id, "medusa")
+
+    return archivedEntry
+  }
+
   async sendContentfulProductToAdmin(productId) {
     const ignore = await this.shouldIgnore_(productId, "medusa")
     if (ignore) {
@@ -658,7 +744,7 @@ class ContentfulService extends BaseService {
 
       const product = await this.productService_.retrieve(productId)
 
-      let update = {}
+      const update = {}
 
       const title =
         productEntry.fields[this.getCustomField("title", "product")]["en-US"]
@@ -741,9 +827,9 @@ class ContentfulService extends BaseService {
       isArray = false
     }
 
-    let output = []
+    const output = []
     for (const obj of input) {
-      let transformed = Object.assign({}, obj)
+      const transformed = Object.assign({}, obj)
       transformed.medusaId = obj.id
       output.push(transformed)
     }
