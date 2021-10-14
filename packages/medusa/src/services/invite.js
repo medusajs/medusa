@@ -58,7 +58,7 @@ class InviteService extends BaseService {
 
     const invites = await inviteRepo.find(query)
 
-    return invites.map(inv => {
+    return invites.map((inv) => {
       return {
         token: this.generateToken({
           invite_id: inv.id,
@@ -72,18 +72,18 @@ class InviteService extends BaseService {
 
   /**
    * Updates an account_user.
-   * @param {string} data.users - user emails
-   * @param {string} data.role - role to assign to the user
+   * @param {string} user - user emails
+   * @param {string} role - role to assign to the user
    * @return {Promise} the result of create
    */
   async create(user, role) {
-    return await this.atomicPhase_(async manager => {
+    return await this.atomicPhase_(async (manager) => {
       const inviteRepository = this.manager_.getCustomRepository(
         this.inviteRepository_
       )
       const userRepo = this.manager_.getCustomRepository(this.userRepo_)
 
-      let userEntity = await userRepo.findOne({
+      const userEntity = await userRepo.findOne({
         where: { email: user },
       })
 
@@ -103,9 +103,8 @@ class InviteService extends BaseService {
         invite.role = role
 
         invite = await inviteRepository.save(invite)
-      }
-      // if no invite is found, create a new one
-      else if (!invite) {
+      } else if (!invite) {
+        // if no invite is found, create a new one
         const created = await inviteRepository.create({
           role,
           user_email: user,
@@ -136,13 +135,15 @@ class InviteService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(inviteId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const inviteRepo = manager.getCustomRepository(this.inviteRepository_)
 
       // Should not fail, if invite does not exist, since delete is idempotent
       const invite = await inviteRepo.findOne({ where: { id: inviteId } })
 
-      if (!invite) return Promise.resolve()
+      if (!invite) {
+        return Promise.resolve()
+      }
 
       await inviteRepo.delete({ id: invite.id })
 
@@ -169,7 +170,7 @@ class InviteService extends BaseService {
 
     const { invite_id, user_email } = decoded
 
-    return this.atomicPhase_(async m => {
+    return this.atomicPhase_(async (m) => {
       const userRepo = m.getCustomRepository(this.userRepo_)
       const inviteRepo = m.getCustomRepository(this.inviteRepository_)
 
