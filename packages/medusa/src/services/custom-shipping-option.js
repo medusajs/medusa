@@ -9,7 +9,7 @@ class CustomShippingOptionService extends BaseService {
     /** @private @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {customShippingOptionRepository} */
+    /** @private @const {CustomShippingOptionRepository} */
     this.customShippingOptionRepository_ = customShippingOptionRepository
   }
 
