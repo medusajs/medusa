@@ -12,7 +12,6 @@
 /packages/medusa/src/services/gift-card.js
 /packages/medusa/src/services/idempotency-key.js
 /packages/medusa/src/services/inventory.js
-/packages/medusa/src/services/line-item.js
 /packages/medusa/src/services/middleware.js
 /packages/medusa/src/services/note.js
 /packages/medusa/src/services/notification.js

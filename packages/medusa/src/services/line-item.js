@@ -1,10 +1,9 @@
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import _ from "lodash"
 
 /**
  * Provides layer to manipulate line items.
- * @implements BaseService
+ * @extends BaseService
  */
 class LineItemService extends BaseService {
   constructor({
@@ -67,6 +66,7 @@ class LineItemService extends BaseService {
   /**
    * Retrieves a line item by its id.
    * @param {string} id - the id of the line item to retrieve
+   * @param {object} config - the config to be used at query building
    * @return {LineItem} the line item
    */
   async retrieve(id, config = {}) {
@@ -195,7 +195,7 @@ class LineItemService extends BaseService {
 
       const lineItem = await lineItemRepository.findOne({ where: { id } })
 
-      if (!lineItem) return Promise.resolve()
+      if (!lineItem) { return Promise.resolve() }
 
       await lineItemRepository.remove(lineItem)
 
