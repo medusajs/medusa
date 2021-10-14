@@ -1295,7 +1295,7 @@ class OrderService extends BaseService {
   /**
    * Refunds a given amount back to the customer.
    * @param {string} orderId - id of the order to refund.
-   * @param {Double} refundAmount - the amount to refund.
+   * @param {float} refundAmount - the amount to refund.
    * @param {string} reason - the reason to refund.
    * @param {string} note - note for refund.
    * @param {Object} config - the config for refund.
