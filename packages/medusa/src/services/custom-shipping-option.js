@@ -35,7 +35,7 @@ class CustomShippingOptionService extends BaseService {
    * Retrieves a specific shipping option.
    * @param {string} id - the id of the custom shipping option to retrieve.
    * @param {*} config - any options needed to query for the result.
-   * @return {Promise} which resolves to the requested custom shipping option.
+   * @return {Promise<CustomShippingOption>} which resolves to the requested custom shipping option.
    */
   async retrieve(id, config = {}) {
     const customShippingOptionRepo = this.manager_.getCustomRepository(
@@ -83,7 +83,7 @@ class CustomShippingOptionService extends BaseService {
    * Creates a custom shipping option associated with a given author
    * @param {object} data - the custom shipping option to create
    * @param {*} config - any configurations if needed, including meta data
-   * @return {Promise} resolves to the creation result
+   * @return {Promise<CustomShippingOption>} resolves to the creation result
    */
   async create(data, config = { metadata: {} }) {
     const { metadata } = config
