@@ -150,6 +150,17 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(d)
 
+  const usedDiscount = manager.create(Discount, {
+    id: "used-discount",
+    code: "USED",
+    is_dynamic: false,
+    is_disabled: false,
+    usage_limit: 1,
+    usage_count: 1,
+  })
+
+  await manager.save(usedDiscount)
+
   const expiredRule = manager.create(DiscountRule, {
     id: "expiredRule",
     description: "expired rule",
