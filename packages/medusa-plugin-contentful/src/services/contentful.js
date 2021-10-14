@@ -646,6 +646,90 @@ class ContentfulService extends BaseService {
     }
   }
 
+  async archiveProductVariantInContentful(variant) {
+    let v
+    try {
+      const ignore = await this.shouldIgnore_(variant.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        v = await this.productVariantService_.retrieve(variant.id)
+      } catch (err) {}
+
+      if (v) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(variant.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async archiveProductInContentful(product) {
+    let v
+    try {
+      const ignore = await this.shouldIgnore_(product.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        v = await this.productService_.retrieve(product.id)
+      } catch (err) {}
+
+      if (v) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(product.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async archiveRegionInContentful(region) {
+    let v
+    try {
+      const ignore = await this.shouldIgnore_(region.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        v = await this.regionService_.retrieve(region.id)
+      } catch (err) {}
+
+      if (v) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(region.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async archiveEntryWidthId(id) {
+    const environment = await this.getContentfulEnvironment_()
+    // check if product exists
+    let productEntry = undefined
+    try {
+      productEntry = await environment.getEntry(id)
+    } catch (error) {
+      return Promise.resolve()
+    }
+
+    const unpublishEntry = await productEntry.unpublish()
+    const archivedEntry = await productEntry.archive()
+
+    await this.addIgnore_(id, "medusa")
+
+    return archivedEntry
+  }
+
   async sendContentfulProductToAdmin(productId) {
     const ignore = await this.shouldIgnore_(productId, "medusa")
     if (ignore) {
