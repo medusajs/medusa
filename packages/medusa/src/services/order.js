@@ -295,6 +295,8 @@ class OrderService extends BaseService {
       relationSet.add("items")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
+      relationSet.add("claims")
+      relationSet.add("claims.additional_items")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
       relationSet.add("discounts.rule.valid_for")
