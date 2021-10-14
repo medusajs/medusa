@@ -458,7 +458,6 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts/:id/shipping-methods", () => {
-    let cartWithCustomSo
     beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
@@ -473,18 +472,12 @@ describe("/store/carts", () => {
             first_name: "lebron",
             country_code: "us",
           },
-          custom_shipping_options: [
-            {
-              shipping_option_id: "test-option",
-              price: 5,
-            },
-          ],
           region_id: "test-region",
           currency_code: "usd",
           type: "swap",
         })
 
-        cartWithCustomSo = await manager.save(_cart)
+        let cartWithCustomSo = await manager.save(_cart)
 
         await manager.insert(CustomShippingOption, {
           id: "another-cso-test",
