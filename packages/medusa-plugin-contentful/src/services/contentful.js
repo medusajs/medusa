@@ -678,7 +678,9 @@ class ContentfulService extends BaseService {
 
       try {
         productEntity = await this.productService_.retrieve(product.id)
-      } catch (err) {}
+      } catch (err) {
+        // ignore
+      }
 
       if (productEntity) {
         return Promise.resolve()
