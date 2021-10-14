@@ -250,10 +250,10 @@ class DraftOrderService extends BaseService {
       }
 
       const {
-        items,
         shipping_methods,
         discounts,
         no_notification_order,
+        items,
         ...rest
       } = data
 

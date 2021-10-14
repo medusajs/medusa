@@ -70,6 +70,24 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
+    it("fails to create a cart when no region exist", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE "country" SET region_id=null WHERE iso_2 = 'us'`
+      )
+      await dbConnection.manager.query(`DELETE from region`)
+
+      try {
+        await api.post("/store/carts")
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "A region is required to create a cart"
+        )
+      }
+    })
+
     it("creates a cart with country", async () => {
       const api = useApi()
 
@@ -141,16 +159,16 @@ describe("/store/carts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "CREATED" }],
+      let response = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code: "SPENT" }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual(
-          "Discount has been used maximum allowed times"
-        )
-      }
+        .catch((error) => {
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Discount has been used maximum allowed times"
+          )
+        })
     })
 
     it("fails to apply expired discount", async () => {
