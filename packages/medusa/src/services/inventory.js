@@ -29,19 +29,19 @@ class InventoryService extends BaseService {
 
   /**
    * Updates the inventory of a variant based on a given adjustment.
-   * @params {string} variantId - the id of the variant to update
-   * @params {number} adjustment - the number to adjust the inventory quantity by
+   * @param {string} variantId - the id of the variant to update
+   * @param {number} adjustment - the number to adjust the inventory quantity by
    * @return {Promise} resolves to the update result.
    */
   async adjustInventory(variantId, adjustment) {
-    //if variantId is undefined – ergo. a custom item – then do nothing
+    // if variantId is undefined – ergo. a custom item – then do nothing
     if (typeof variantId === "undefined" || variantId === null) {
       return
     }
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_.retrieve(variantId)
-      //if inventory is managed then update
+      // if inventory is managed then update
       if (variant.manage_inventory) {
         return await this.productVariantService_
           .withTransaction(manager)
@@ -55,13 +55,13 @@ class InventoryService extends BaseService {
    * Checks if the inventory of a variant can cover a given quantity. Will
    * return true if the variant doesn't have managed inventory or if the variant
    * allows backorders or if the inventory quantity is greater than `quantity`.
-   * @params {string} variantId - the id of the variant to check
-   * @params {number} quantity - the number of units to check availability for
+   * @param {string} variantId - the id of the variant to check
+   * @param {number} quantity - the number of units to check availability for
    * @return {boolean} true if the inventory covers the quantity
    */
   async confirmInventory(variantId, quantity) {
-    //if variantId is undefined then confirm inventory as it
-    //is a custom item that is not managed
+    // if variantId is undefined then confirm inventory as it
+    // is a custom item that is not managed
     if (typeof variantId === "undefined" || variantId === null) {
       return true
     }
