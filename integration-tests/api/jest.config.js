@@ -13,4 +13,4 @@ module.exports = {
   ],
   transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
   setupFilesAfterEnv: ["../setup.js"],
-};
+}
