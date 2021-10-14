@@ -311,31 +311,35 @@ class ShopifyFulfillmentService extends BaseService {
       )
     }
 
-    for (const link of fulfillment.trackinkg_links) {
-      let trackingObject = {
-        fulfillment: {
-          tracking_info: {
-            number: link.number,
-            url: link.url,
-            company: "Other",
+    if ("tracking_links" in fulfillment) {
+      for (const link of fulfillment.tracking_links) {
+        let trackingObject = {
+          fulfillment: {
+            tracking_info: {
+              number: link.number,
+              url: link.url,
+              company: "Other",
+            },
           },
-        },
-      }
+        }
 
-      try {
-        await updateTracking(trackingObject)
-      } catch (err) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `An error occured while attempting to update tracking information for fulfillment: ${err.message}`
+        try {
+          await updateTracking(trackingObject)
+        } catch (err) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `An error occured while attempting to update tracking information for fulfillment: ${err.message}`
+          )
+        }
+
+        await this.redis_.addIgnore(
+          fulfillment.metadata.sh_id,
+          "order.fulfillment_updated"
         )
       }
-
-      await this.redis_.addIgnore(
-        fulfillment.metadata.sh_id,
-        "order.fulfillment_updated"
-      )
     }
+
+    return Promise.resolve()
   }
 
   /**

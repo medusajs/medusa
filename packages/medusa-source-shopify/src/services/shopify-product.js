@@ -29,7 +29,7 @@ class ShopifyProductService extends BaseService {
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
     /** @private @const {ShopifyRestClient} */
-    this.client_ = shopifyClientService
+    this.shopify_ = shopifyClientService
 
     this.redis_ = shopifyRedisService
   }
@@ -45,7 +45,7 @@ class ShopifyProductService extends BaseService {
       shippingProfileService: this.shippingProfileService_,
       productVariantService: this.productVariantService_,
       productService: this.productService_,
-      shopifyClientService: this.shopifyClientService,
+      shopifyClientService: this.shopify_,
       shopifyRedisService: this.redis_,
     })
 
@@ -74,7 +74,7 @@ class ShopifyProductService extends BaseService {
         .catch((_) => undefined)
 
       if (existingProduct) {
-        return existingProduct
+        return await this.update(data)
       }
 
       const normalizedProduct = this.normalizeProduct_(data, collectionId)
@@ -129,7 +129,7 @@ class ShopifyProductService extends BaseService {
        * presentment prices. Therefore, we fetch them
        * separately, and add to the data object.
        */
-      const { variants } = await this.client_
+      const { variants } = await this.shopify_
         .get({
           path: `products/${data.id}`,
           extraHeaders: INCLUDE_PRESENTMENT_PRICES,
@@ -156,6 +156,7 @@ class ShopifyProductService extends BaseService {
       }
 
       if (!_.isEmpty(update)) {
+        await this.redis_.addIgnore(data.id, "product.updated")
         return await this.productService_
           .withTransaction(manager)
           .update(existing.id, update)

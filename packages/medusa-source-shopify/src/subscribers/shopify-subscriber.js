@@ -11,6 +11,7 @@ class ShopifySubscriber {
       orderService,
       returnService,
       shopifyRedisService,
+      shopifyClientService,
     },
     options
   ) {
@@ -22,6 +23,7 @@ class ShopifySubscriber {
     this.orderService_ = orderService
     this.returnService_ = returnService
     this.redis_ = shopifyRedisService
+    this.shopify_ = shopifyClientService
 
     eventBusService.subscribe("order.items_returned", this.registerReturn)
 
@@ -156,6 +158,17 @@ class ShopifySubscriber {
         MedusaError.Types.INVALID_ARGUMENT,
         `An error occurend while issuing a refund to Shopify: ${err.message}`
       )
+    }
+  }
+
+  getLocationId_(returnItem, fulfillmentOrders = []) {
+    for (const f of fulfillmentOrders) {
+      const check = f.line_items.find(
+        (i) => i.line_item_id === returnItem.metadata.sh_id
+      )
+      if (check) {
+        return f.assigned_location_id
+      }
     }
   }
 
