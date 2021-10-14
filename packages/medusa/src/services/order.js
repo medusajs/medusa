@@ -1,7 +1,7 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
-import { ILikeOperator } from "../utils/db-aware-column"
+import { ILikeOperator } from "../utils/db-aware"
 
 class OrderService extends BaseService {
   static Events = {

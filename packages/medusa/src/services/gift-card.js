@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import randomize from "randomatic"
 import { Brackets } from "typeorm"
-import { ILikeOperator } from "../utils/db-aware-column"
+import { ILikeOperator } from "../utils/db-aware"
 
 /**
  * Provides layer to manipulate gift cards.

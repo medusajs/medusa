@@ -2,7 +2,7 @@ import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 import { Brackets } from "typeorm"
-import { ILikeOperator } from "../utils/db-aware-column"
+import { ILikeOperator } from "../utils/db-aware"
 
 /**
  * Handles draft orders
