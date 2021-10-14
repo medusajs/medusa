@@ -6,6 +6,17 @@
 <h1 align="center">
   Medusa
 </h1>
+
+<h4 align="center">
+  <a href="https://www.medusa-commerce.com">Website</a> |
+  <a href="https://roadmap.medusa-commerce.com">Roadmap</a> |
+  <a href="https://www.medusa-commerce.com/blog">Blog</a> |
+  <a href="https://www.linkedin.com/company/medusa-commerce">LinkedIn</a> |
+  <a href="https://twitter.com/medusajs">Twitter</a> |
+  <a href="https://docs.medusa-commerce.com">Documentation</a> |
+  <a href="https://medusajs.notion.site/medusajs/Medusa-Home-3485f8605d834a07949b17d1a9f7eafd">Notion</a>
+</h4>
+
 <p align="center">
 Medusa is an open-source headless commerce engine that enables developers to create amazing digital commerce experiences.
 </p>
@@ -105,21 +116,3 @@ The Medusa repository is a mono-repository managed using Lerna. Lerna allows us 
 Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/master/LICENSE)
 
 ## Thank you!
-
-<p>
-  <a href="https://www.medusa-commerce.com">
-    Website
-  </a> 
-  |
-  <a href="https://medusajs.notion.site/medusajs/Medusa-Home-3485f8605d834a07949b17d1a9f7eafd">
-    Notion Home
-  </a>
-  |
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    Twitter
-  </a>
-  |
-  <a href="https://docs.medusa-commerce.com">
-    Docs
-  </a>
-</p>
