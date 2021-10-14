@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 import axios from "axios"
 import { MedusaError } from "medusa-core-utils"
 

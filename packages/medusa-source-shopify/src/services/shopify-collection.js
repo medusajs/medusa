@@ -40,15 +40,15 @@ class ShopifyCollectionService extends BaseService {
    * @param {object[]} collects
    * @param {object[]} collections
    * @param {object[]} products
-   * @returns {Promise}
+   * @return {Promise}
    */
   async createWithProducts(collects, collections, products) {
     return this.atomicPhase_(async (manager) => {
-      let normalizedCollections = collections.map((c) =>
+      const normalizedCollections = collections.map((c) =>
         this.normalizeCollection_(c)
       )
 
-      let result = []
+      const result = []
 
       for (const nc of normalizedCollections) {
         let collection = await this.collectionService_

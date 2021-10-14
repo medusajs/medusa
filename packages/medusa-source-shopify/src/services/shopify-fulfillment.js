@@ -59,8 +59,8 @@ class ShopifyFulfillmentService extends BaseService {
 
   /**
    * Creates a fulfillment based on an event from Shopify.
-   * @param {object} data
-   * @returns {Fulfillment}
+   * @param {Object} data
+   * @return {Fulfillment}
    */
   async create(data) {
     return this.atomicPhase_(async (manager) => {
@@ -104,8 +104,8 @@ class ShopifyFulfillmentService extends BaseService {
       )
 
       if (fulfillmentExists) {
-        //if this is the case then the fulfillment was created in Medusa
-        //and we simply skip it.
+        // if this is the case then the fulfillment was created in Medusa
+        // and we simply skip it.
         return Promise.resolve()
       }
 
@@ -138,7 +138,8 @@ class ShopifyFulfillmentService extends BaseService {
 
   /**
    * Updates a fulfillment based on an event from Shopify
-   * @returns {Fulfillment}
+   * @param {Object} data
+   * @return {Fulfillment}
    */
   async update(data) {
     return this.atomicPhase_(async (manager) => {
@@ -313,7 +314,7 @@ class ShopifyFulfillmentService extends BaseService {
 
     if ("tracking_links" in fulfillment) {
       for (const link of fulfillment.tracking_links) {
-        let trackingObject = {
+        const trackingObject = {
           fulfillment: {
             tracking_info: {
               number: link.number,
@@ -345,7 +346,7 @@ class ShopifyFulfillmentService extends BaseService {
   /**
    * Cancels a fulfillment
    * @param {string} fulfillmentId
-   * @returns {Promise}
+   * @return {Promise}
    */
   async cancel_(fulfillmentId) {
     return this.atomicPhase_(async (manager) => {

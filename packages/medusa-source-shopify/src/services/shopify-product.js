@@ -1,4 +1,5 @@
 import { BaseService } from "medusa-interfaces"
+import { MedusaError } from "medusa-core-utils"
 import _ from "lodash"
 import { parsePrice } from "../utils/parse-price"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
@@ -59,7 +60,7 @@ class ShopifyProductService extends BaseService {
    * Also adds the product to a collection if a collection id is provided
    * @param {object} data
    * @param {string} collectionId optional
-   * @returns the created product
+   * @return {Product} the created product
    */
   async create(data, collectionId) {
     return this.atomicPhase_(async (manager) => {
@@ -68,7 +69,7 @@ class ShopifyProductService extends BaseService {
         return
       }
 
-      let existingProduct = await this.productService_
+      const existingProduct = await this.productService_
         .withTransaction(manager)
         .retrieveByExternalId(data.id)
         .catch((_) => undefined)
@@ -169,7 +170,7 @@ class ShopifyProductService extends BaseService {
   /**
    * Deletes a product based on an event in Shopify
    * @param {string} id
-   * @returns
+   * @return {Promise}
    */
   async delete(id) {
     return this.atomicPhase_(async (manager) => {
@@ -186,7 +187,7 @@ class ShopifyProductService extends BaseService {
       relations: ["tags", "type"],
     })
 
-    //Event was not emitted by update
+    // Event was not emitted by update
     if (!fields) {
       return
     }
@@ -243,7 +244,7 @@ class ShopifyProductService extends BaseService {
       relations: ["prices", "product"],
     })
 
-    //Event was not emitted by update
+    // Event was not emitted by update
     if (!fields) {
       return
     }
@@ -343,7 +344,7 @@ class ShopifyProductService extends BaseService {
         }
 
         variant = this.addVariantOptions_(variant, options)
-        let match = variants.find((v) => v.sku === variant.sku)
+        const match = variants.find((v) => v.sku === variant.sku)
         if (match) {
           await this.productVariantService_
             .withTransaction(manager)
@@ -360,7 +361,7 @@ class ShopifyProductService extends BaseService {
   async deleteVariants_(product, updateVariants) {
     return this.atomicPhase_(async (manager) => {
       const { variants } = product
-      for (let variant of variants) {
+      for (const variant of variants) {
         const ignore = await this.redis_.shouldIgnore(
           variant.metadata.sh_id,
           "product-variant.deleted"
@@ -369,7 +370,7 @@ class ShopifyProductService extends BaseService {
           continue
         }
 
-        let match = updateVariants.find((v) => v.sku === variant.sku)
+        const match = updateVariants.find((v) => v.sku === variant.sku)
         if (!match) {
           await this.productVariantService_
             .withTransaction(manager)
@@ -412,7 +413,8 @@ class ShopifyProductService extends BaseService {
   async getShippingProfile_(isGiftCard) {
     let shippingProfile
     if (isGiftCard) {
-      shippingProfile = await this.shippingProfileService_.retrieveGiftCardDefault()
+      shippingProfile =
+        await this.shippingProfileService_.retrieveGiftCardDefault()
     } else {
       shippingProfile = await this.shippingProfileService_.retrieveDefault()
     }
@@ -424,7 +426,7 @@ class ShopifyProductService extends BaseService {
    * Normalizes a product, with a possible optional collection id
    * @param {object} product
    * @param {string} collectionId optional
-   * @returns
+   * @return {object} normalized object
    */
   normalizeProduct_(product, collectionId) {
     return {
@@ -453,7 +455,7 @@ class ShopifyProductService extends BaseService {
   /**
    * Normalizes a product option
    * @param {object} option
-   * @returns
+   * @return {object} normalized ProductOption
    */
   normalizeProductOption_(option) {
     return {
@@ -467,7 +469,7 @@ class ShopifyProductService extends BaseService {
   /**
    * Normalizes a product variant
    * @param {object} variant
-   * @returns
+   * @return {object} normalized variant
    */
   normalizeVariant_(variant) {
     return {
@@ -495,7 +497,7 @@ class ShopifyProductService extends BaseService {
   /**
    * Normalizes an array of presentment prices
    * @param {array} presentmentPrices
-   * @returns
+   * @return {Object[]} array of normalized prices
    */
   normalizePrices_(presentmentPrices) {
     return presentmentPrices.map((p) => {
@@ -511,10 +513,10 @@ class ShopifyProductService extends BaseService {
    * @param {string} option1
    * @param {string} option2
    * @param {string} option3
-   * @returns
+   * @return {Object[]} normalized variant options
    */
   normalizeVariantOptions_(option1, option2, option3) {
-    let opts = []
+    const opts = []
     if (option1) {
       opts.push({
         value: option1,
@@ -539,7 +541,7 @@ class ShopifyProductService extends BaseService {
   /**
    * Normalizes a tag
    * @param {string} tag
-   * @returns
+   * @return {Object} normalized Tag
    */
   normalizeTag_(tag) {
     return {

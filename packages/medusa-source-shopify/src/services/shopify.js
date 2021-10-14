@@ -1,5 +1,4 @@
 import { BaseService } from "medusa-interfaces"
-import _ from "lodash"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
 
 class ShopifyService extends BaseService {
@@ -53,7 +52,7 @@ class ShopifyService extends BaseService {
       await this.shippingProfileService_.createDefault()
       await this.shippingProfileService_.createGiftCardDefault()
 
-      let products = await this.client_.list(
+      const products = await this.client_.list(
         "products",
         INCLUDE_PRESENTMENT_PRICES
       )

@@ -4,6 +4,7 @@ import { createClient } from "../utils/create-client"
 import { DataType } from "@shopify/shopify-api"
 
 class ShopifyClientService extends BaseService {
+  // eslint-disable-next-line no-empty-pattern
   constructor({}, options) {
     super()
 

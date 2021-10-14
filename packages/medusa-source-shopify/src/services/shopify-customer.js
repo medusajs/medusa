@@ -30,10 +30,8 @@ class ShopifyCustomerService extends BaseService {
 
   /**
    * Creates a new customer
-   * @param {object} customer
-   * @param {object} shippingAddress
-   * @param {object} billingAddress
-   * @returns
+   * @param {Object} data
+   * @return {Customer}
    */
   async create(data) {
     return this.atomicPhase_(async (manager) => {
@@ -52,8 +50,8 @@ class ShopifyCustomerService extends BaseService {
         shipping_address,
         billing_address
       )
-      let normalizedBilling = normalizedCustomer.billing_address
-      let normalizedShipping = normalizedCustomer.shipping_address
+      const normalizedBilling = normalizedCustomer.billing_address
+      const normalizedShipping = normalizedCustomer.shipping_address
 
       delete normalizedCustomer.billing_address
       delete normalizedCustomer.shipping_address

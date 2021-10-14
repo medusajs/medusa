@@ -48,7 +48,7 @@ class ShopifyLineItemsService extends BaseService {
 
   async create(orderId, item) {
     return this.atomicPhase_(async (manager) => {
-      let normalized = await this.normalizeLineItem(item)
+      const normalized = await this.normalizeLineItem(item)
 
       await this.lineItemService_
         .withTransaction(manager)

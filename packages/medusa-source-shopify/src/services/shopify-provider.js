@@ -1,4 +1,3 @@
-import axios from "axios"
 import { PaymentService } from "medusa-interfaces"
 
 class ShopifyProviderService extends PaymentService {
@@ -111,10 +110,7 @@ class ShopifyProviderService extends PaymentService {
     return {}
   }
 
-  /**
-   * Dummy method refund to Shopify is handled
-   * in subscriber based on order.items_returned
-   */
+  // Dummy method refund to Shopify is handled in subscriber based on order.items_returned
   async refundPayment(payment, refundAmount) {
     return payment.data
   }

@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { parsePrice } from "../utils/parse-price"
+import { MedusaError } from "medusa-core-utils"
 
 class ShopifyOrderService extends BaseService {
   constructor(
@@ -62,7 +63,7 @@ class ShopifyOrderService extends BaseService {
 
   /**
    * Creates an order based on an event from Shopify.
-   * @param {object} order
+   * @param {Object} data
    */
   async create(data) {
     return this.atomicPhase_(async (manager) => {
@@ -113,7 +114,7 @@ class ShopifyOrderService extends BaseService {
 
   /**
    * Updates an order based on an event from Shopify
-   * @param {object} order
+   * @param {Object} data
    */
   async update(data) {
     return this.atomicPhase_(async (manager) => {
@@ -122,14 +123,14 @@ class ShopifyOrderService extends BaseService {
       }).catch((_) => undefined)
 
       if (!order) {
-        //Update was issued before create from Shopify
+        // Update was issued before create from Shopify
         return
       }
 
       const { refunds, shipping_address } = data
       const shippingAddress = this.normalizeBilling_(shipping_address)
 
-      let update = {
+      const update = {
         metadata: { ...order.metadata },
       }
 
@@ -138,7 +139,7 @@ class ShopifyOrderService extends BaseService {
        * this is also the case for monetary changes to the order. To prevent handling
        * the refunds multiple times we keep track of which has been handled.
        */
-      let sh_refunds =
+      const sh_refunds =
         order.metadata && order.metadata.sh_refunds
           ? order.metadata.sh_refunds
           : []
@@ -234,7 +235,7 @@ class ShopifyOrderService extends BaseService {
 
   async refund(order, refund) {
     return this.atomicPhase_(async (manager) => {
-      let itemIds = []
+      const itemIds = []
 
       if ("refund_line_items" in refund) {
         for (const refundLine of refund.refund_line_items) {
@@ -285,7 +286,7 @@ class ShopifyOrderService extends BaseService {
 
   /**
    * Deletes an order based on an event from Shopify.
-   * @param {object} order
+   * @param {string} id
    */
   async delete(id) {
     return this.atomicPhase_(async (manager) => {
@@ -297,7 +298,7 @@ class ShopifyOrderService extends BaseService {
   /**
    * Archives an order based on an event from Shopify
    * @param {string} id
-   * @returns
+   * @return {Promise}
    */
   async archive(id) {
     return this.atomicPhase_(async (manager) => {
@@ -321,8 +322,10 @@ class ShopifyOrderService extends BaseService {
   }
 
   async cancel(id) {
-    const order = await this.retrieve(id)
-    return await this.orderService_.withTransaction(manager).cancel(order.id)
+    return this.atomicPhase_(async (manager) => {
+      const order = await this.retrieve(id)
+      return await this.orderService_.withTransaction(manager).cancel(order.id)
+    })
   }
 
   async addShippingMethod_(shippingLine, orderId) {
@@ -369,7 +372,7 @@ class ShopifyOrderService extends BaseService {
         shopifyOrder.shipping_address.country_code
       )
 
-      let items = []
+      const items = []
 
       for (const lineItem of shopifyOrder.line_items) {
         const normalized = await this.lineItemService_
