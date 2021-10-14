@@ -700,7 +700,9 @@ class ContentfulService extends BaseService {
 
       try {
         regionEntity = await this.regionService_.retrieve(region.id)
-      } catch (err) {}
+      } catch (err) {
+        // ignore
+      }
 
       if (regionEntity) {
         return Promise.resolve()
