@@ -178,6 +178,7 @@ class OrderService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
    * @return {Promise} the result of the find operation
    */
   async list(
@@ -187,9 +188,8 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = this.buildQuery_(selector, config)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     if (select && select.length) {
       query.select = select
@@ -201,7 +201,7 @@ class OrderService extends BaseService {
 
     const raw = await orderRepo.find(query)
 
-    return raw.map(r => this.decorateTotals_(r, totalsToSelect))
+    return raw.map((r) => this.decorateTotals_(r, totalsToSelect))
   }
 
   async listAndCount(
@@ -231,11 +231,11 @@ class OrderService extends BaseService {
         },
       }
 
-      query.where = qb => {
+      query.where = (qb) => {
         qb.where(where)
 
         qb.andWhere(
-          new Brackets(qb => {
+          new Brackets((qb) => {
             qb.where(`shipping_address.first_name ILIKE :qfn`, {
               qfn: `%${q}%`,
             })
@@ -246,20 +246,19 @@ class OrderService extends BaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     if (select && select.length) {
       query.select = select
     }
 
-    let rels = relations
+    const rels = relations
     delete query.relations
 
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
-    const orders = raw.map(r => this.decorateTotals_(r, totalsToSelect))
+    const orders = raw.map((r) => this.decorateTotals_(r, totalsToSelect))
 
     return [orders, count]
   }
@@ -289,7 +288,7 @@ class OrderService extends BaseService {
       "swaps.additional_items.refundable",
     ]
 
-    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
@@ -305,7 +304,7 @@ class OrderService extends BaseService {
       relationSet.add("region")
       relations = [...relationSet]
 
-      select = select.filter(v => !totalFields.includes(v))
+      select = select.filter((v) => !totalFields.includes(v))
     }
 
     return {
@@ -318,15 +317,15 @@ class OrderService extends BaseService {
   /**
    * Gets an order by id.
    * @param {string} orderId - id of order to retrieve
+   * @param {Object} config - config of order to retrieve
    * @return {Promise<Order>} the order document
    */
   async retrieve(orderId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     const query = {
       where: { id: validatedId },
@@ -357,14 +356,14 @@ class OrderService extends BaseService {
   /**
    * Gets an order by cart id.
    * @param {string} cartId - cart id to find order
+   * @param {Object} config - the config to be used to find order
    * @return {Promise<Order>} the order document
    */
   async retrieveByCartId(cartId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     const query = {
       where: { cart_id: cartId },
@@ -397,7 +396,7 @@ class OrderService extends BaseService {
    * @return {Promise<Order>} the order document
    */
   async existsByCartId(cartId) {
-    const order = await this.retrieveByCartId(cartId).catch(_ => undefined)
+    const order = await this.retrieveByCartId(cartId).catch((_) => undefined)
     if (!order) {
       return false
     }
@@ -409,7 +408,7 @@ class OrderService extends BaseService {
    * @return {Promise} the result of the find operation
    */
   async completeOrder(orderId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId)
 
       if (order.status === "canceled") {
@@ -428,7 +427,7 @@ class OrderService extends BaseService {
         }
       )
 
-      await completeOrderJob.finished().catch(error => {
+      await completeOrderJob.finished().catch((error) => {
         throw error
       })
 
@@ -445,7 +444,7 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   async createFromCart(cartId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.cartService_
         .withTransaction(manager)
         .retrieve(cartId, {
@@ -619,6 +618,7 @@ class OrderService extends BaseService {
    * @param {string} fulfillmentId - the fulfillment that has now been shipped
    * @param {TrackingLink[]} trackingLinks - array of tracking numebers
    *   associated with the shipment
+   * @param {Object} config - the config of the order that has been shipped
    * @param {Dictionary<String, String>} metadata - optional metadata to add to
    *   the fulfillment
    * @return {order} the resulting order following the update.
@@ -634,7 +634,7 @@ class OrderService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, { relations: ["items"] })
       const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
 
@@ -666,7 +666,7 @@ class OrderService extends BaseService {
 
       order.fulfillment_status = "shipped"
       for (const item of order.items) {
-        const shipped = shipmentRes.items.find(si => si.item_id === item.id)
+        const shipped = shipmentRes.items.find((si) => si.item_id === item.id)
         if (shipped) {
           const shippedQty = (item.shipped_quantity || 0) + shipped.quantity
           if (shippedQty !== item.quantity) {
@@ -700,11 +700,11 @@ class OrderService extends BaseService {
 
   /**
    * Creates an order
-   * @param {object} order - the order to create
+   * @param {object} data - the data to create an order
    * @return {Promise} resolves to the creation result.
    */
   async create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const order = orderRepo.create(data)
       const result = await orderRepo.save(order)
@@ -720,7 +720,7 @@ class OrderService extends BaseService {
 
   /**
    * Updates the order's billing address.
-   * @param {string} orderId - the id of the order to update
+   * @param {object} order - the order to update
    * @param {object} address - the value to set the billing address to
    * @return {Promise} the result of the update operation
    */
@@ -755,7 +755,7 @@ class OrderService extends BaseService {
 
   /**
    * Updates the order's shipping address.
-   * @param {string} orderId - the id of the order to update
+   * @param {object} order - the order to update
    * @param {object} address - the value to set the shipping address to
    * @return {Promise} the result of the update operation
    */
@@ -787,7 +787,7 @@ class OrderService extends BaseService {
   }
 
   async addShippingMethod(orderId, optionId, data, config = {}) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         select: ["subtotal"],
         relations: [
@@ -845,7 +845,7 @@ class OrderService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(orderId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId)
 
       if (order.status === "canceled") {
@@ -874,13 +874,7 @@ class OrderService extends BaseService {
         )
       }
 
-      const {
-        metadata,
-        items,
-        billing_address,
-        shipping_address,
-        ...rest
-      } = update
+      const { ...rest } = update
 
       if ("metadata" in update) {
         order.metadata = this.setMetadata_(order, update.metadata)
@@ -932,7 +926,7 @@ class OrderService extends BaseService {
    * @return {Promise} result of the update operation.
    */
   async cancel(orderId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
           "fulfillments",
@@ -952,16 +946,16 @@ class OrderService extends BaseService {
       }
 
       const throwErrorIf = (arr, pred, type) =>
-        arr?.filter(pred).find(_ => {
+        arr?.filter(pred).find((_) => {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             `All ${type} must be canceled before canceling an order`
           )
         })
-      const notCanceled = o => !o.canceled_at
+      const notCanceled = (o) => !o.canceled_at
 
       throwErrorIf(order.fulfillments, notCanceled, "fulfillments")
-      throwErrorIf(order.returns, r => r.status !== "canceled", "returns")
+      throwErrorIf(order.returns, (r) => r.status !== "canceled", "returns")
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
@@ -1000,7 +994,7 @@ class OrderService extends BaseService {
    * @return {Promise} result of the update operation.
    */
   async capturePayment(orderId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
 
@@ -1017,7 +1011,7 @@ class OrderService extends BaseService {
           const result = await this.paymentProviderService_
             .withTransaction(manager)
             .capturePayment(p)
-            .catch(err => {
+            .catch((err) => {
               this.eventBus_
                 .withTransaction(manager)
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
@@ -1039,7 +1033,7 @@ class OrderService extends BaseService {
       }
 
       order.payments = payments
-      order.payment_status = payments.every(p => p.captured_at !== null)
+      order.payment_status = payments.every((p) => p.captured_at !== null)
         ? "captured"
         : "requires_action"
 
@@ -1095,6 +1089,8 @@ class OrderService extends BaseService {
    * we need to partition the order items, such that they can be sent
    * to their respective fulfillment provider.
    * @param {string} orderId - id of order to cancel.
+   * @param {Object} itemsToFulfill - items to fulfil.
+   * @param {Object} config - the config to cancel.
    * @return {Promise} result of the update operation.
    */
   async createFulfillment(
@@ -1107,7 +1103,7 @@ class OrderService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
       // will add to what is fetched from the database. We want this to happen
       // so that we get all order details. These will thereafter be forwarded
@@ -1169,7 +1165,7 @@ class OrderService extends BaseService {
       // Update all line items to reflect fulfillment
       for (const item of order.items) {
         const fulfillmentItem = successfullyFulfilled.find(
-          f => item.id === f.item_id
+          (f) => item.id === f.item_id
         )
 
         if (fulfillmentItem) {
@@ -1217,10 +1213,10 @@ class OrderService extends BaseService {
   /**
    * Cancels a fulfillment (if related to an order)
    * @param {string} fulfillmentId - the ID of the fulfillment to cancel
-   * @returns updated order
+   * @return {Promise} updated order
    */
   async cancelFulfillment(fulfillmentId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const canceled = await this.fulfillmentService_
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
@@ -1264,12 +1260,12 @@ class OrderService extends BaseService {
   async getFulfillmentItems_(order, items, transformer) {
     const toReturn = await Promise.all(
       items.map(async ({ item_id, quantity }) => {
-        const item = order.items.find(i => i.id.equals(item_id))
+        const item = order.items.find((i) => i.id.equals(item_id))
         return transformer(item, quantity)
       })
     )
 
-    return toReturn.filter(i => !!i)
+    return toReturn.filter((i) => !!i)
   }
 
   /**
@@ -1279,7 +1275,7 @@ class OrderService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async archive(orderId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId)
 
       if (order.status !== ("completed" || "refunded")) {
@@ -1298,6 +1294,12 @@ class OrderService extends BaseService {
 
   /**
    * Refunds a given amount back to the customer.
+   * @param {string} orderId - id of the order to refund.
+   * @param {float} refundAmount - the amount to refund.
+   * @param {string} reason - the reason to refund.
+   * @param {string} note - note for refund.
+   * @param {Object} config - the config for refund.
+   * @return {Promise} the result of the refund operation.
    */
   async createRefund(
     orderId,
@@ -1310,7 +1312,7 @@ class OrderService extends BaseService {
   ) {
     const { no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],
         relations: ["payments"],
@@ -1380,7 +1382,7 @@ class OrderService extends BaseService {
     }
 
     if (totalsFields.includes("items.refundable")) {
-      order.items = order.items.map(i => ({
+      order.items = order.items.map((i) => ({
         ...i,
         refundable: this.totalsService_.getLineItemRefund(order, {
           ...i,
@@ -1395,7 +1397,7 @@ class OrderService extends BaseService {
       order.swaps.length
     ) {
       for (const s of order.swaps) {
-        s.additional_items = s.additional_items.map(i => ({
+        s.additional_items = s.additional_items.map((i) => ({
           ...i,
           refundable: this.totalsService_.getLineItemRefund(order, {
             ...i,
@@ -1418,10 +1420,11 @@ class OrderService extends BaseService {
    * mismatches.
    * @param {string} orderId - the order to return.
    * @param {object} receivedReturn - the received return
+   * @param {float} customRefundAmount - the custom refund amount return
    * @return {Promise} the result of the update operation
    */
   async registerReturnReceived(orderId, receivedReturn, customRefundAmount) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         select: ["total", "refunded_total", "refundable_amount"],
         relations: ["items", "returns", "payments"],
@@ -1441,7 +1444,7 @@ class OrderService extends BaseService {
         )
       }
 
-      let refundAmount = customRefundAmount || receivedReturn.refund_amount
+      const refundAmount = customRefundAmount || receivedReturn.refund_amount
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
@@ -1510,7 +1513,7 @@ class OrderService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.orderModel_
       .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
+      .catch((err) => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
