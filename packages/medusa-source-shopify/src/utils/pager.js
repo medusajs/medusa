@@ -9,7 +9,7 @@ export async function pager(
   let hasNext = true
 
   while (hasNext) {
-    let params = {
+    const params = {
       path,
       query: { page_info: nextPage },
     }
@@ -31,9 +31,8 @@ export async function pager(
     objects = [...objects, ...response.body[path]]
 
     const link = response.headers.get("link")
-    const match = /(?:page_info=)(?<page_info>[a-zA-Z0-9]+)(?:>; rel="next")/.exec(
-      link
-    )
+    const match =
+      /(?:page_info=)(?<page_info>[a-zA-Z0-9]+)(?:>; rel="next")/.exec(link)
 
     if (match?.groups) {
       nextPage = match.groups["page_info"]
