@@ -7,6 +7,8 @@ const defaultRelations = [
   "billing_address",
   "shipping_address",
   "discounts",
+  "discounts.rule",
+  "discounts.rule.valid_for",
   "shipping_methods",
   "payments",
   "fulfillments",

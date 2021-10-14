@@ -1,6 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import _ from "lodash"
 
 class CustomShippingOptionService extends BaseService {
   constructor({ manager, customShippingOptionRepository }) {
@@ -36,7 +35,7 @@ class CustomShippingOptionService extends BaseService {
    * Retrieves a specific shipping option.
    * @param {string} id - the id of the custom shipping option to retrieve.
    * @param {*} config - any options needed to query for the result.
-   * @returns {Promise} which resolves to the requested custom shipping option.
+   * @return {Promise} which resolves to the requested custom shipping option.
    */
   async retrieve(id, config = {}) {
     const customShippingOptionRepo = this.manager_.getCustomRepository(
@@ -84,14 +83,14 @@ class CustomShippingOptionService extends BaseService {
    * Creates a custom shipping option associated with a given author
    * @param {object} data - the custom shipping option to create
    * @param {*} config - any configurations if needed, including meta data
-   * @returns {Promise} resolves to the creation result
+   * @return {Promise} resolves to the creation result
    */
   async create(data, config = { metadata: {} }) {
     const { metadata } = config
 
     const { cart_id, shipping_option_id, price } = data
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const customShippingOptionRepo = manager.getCustomRepository(
         this.customShippingOptionRepository_
       )
