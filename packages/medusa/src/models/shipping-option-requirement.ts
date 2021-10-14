@@ -16,7 +16,7 @@ import {
   JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
 
@@ -43,6 +43,9 @@ export class ShippingOptionRequirement {
 
   @Column({ type: "int" })
   amount: number
+
+  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
+  deleted_at: Date
 
   @BeforeInsert()
   private beforeInsert() {

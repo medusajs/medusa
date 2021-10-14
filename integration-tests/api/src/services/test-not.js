@@ -1,19 +1,19 @@
-import { NotificationService } from "medusa-interfaces";
+import { NotificationService } from "medusa-interfaces"
 
 class TestNotiService extends NotificationService {
-  static identifier = "test-not";
+  static identifier = "test-not"
 
   constructor() {
-    super();
+    super()
   }
 
   async sendNotification() {
-    return Promise.resolve();
+    return Promise.resolve()
   }
 
   async resendNotification() {
-    return Promise.resolve();
+    return Promise.resolve()
   }
 }
 
-export default TestNotiService;
+export default TestNotiService
