@@ -69,10 +69,6 @@ module.exports = {
               type: "doc",
               id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
             },
-            {
-              type: "doc",
-              id: "how-to/making-your-store-more-powerful-with-contentful",
-            },
           ],
         },
         {

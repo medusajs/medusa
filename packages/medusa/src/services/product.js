@@ -295,7 +295,7 @@ class ProductService extends BaseService {
 
       let product = productRepo.create(rest)
 
-      if (images) {
+      if (images && images.length) {
         product.images = await this.upsertImages_(images)
       }
 
@@ -380,11 +380,11 @@ class ProductService extends BaseService {
         ...rest
       } = update
 
-      if (!product.thumbnail && !update.thumbnail && images?.length) {
+      if (!product.thumbnail && !update.thumbnail && images && images.length) {
         product.thumbnail = images[0]
       }
 
-      if (images) {
+      if (images && images.length) {
         product.images = await this.upsertImages_(images)
       }
 

@@ -614,9 +614,7 @@ class CartService extends BaseService {
       })
 
       if ("region_id" in update) {
-        const countryCode =
-          update.country_code || update.shipping_address?.country_code
-        await this.setRegion_(cart, update.region_id, countryCode)
+        await this.setRegion_(cart, update.region_id, update.country_code)
       }
 
       if ("customer_id" in update) {

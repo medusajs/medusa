@@ -46,11 +46,7 @@ export default app => {
   )
 
   route.get("/:id", middlewares.wrap(require("./get-product").default))
-  route.get(
-    "/",
-    middlewares.normalizeQuery(),
-    middlewares.wrap(require("./list-products").default)
-  )
+  route.get("/", middlewares.wrap(require("./list-products").default))
 
   return app
 }
@@ -124,19 +120,4 @@ export const allowedRelations = [
   "tags",
   "type",
   "collection",
-]
-
-export const filterableFields = [
-  "id",
-  "status",
-  "collection_id",
-  "tags",
-  "title",
-  "description",
-  "handle",
-  "is_giftcard",
-  "type",
-  "created_at",
-  "updated_at",
-  "deleted_at",
 ]

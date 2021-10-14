@@ -13,11 +13,5 @@ export default app => {
   )
   route.post("/", middlewares.wrap(require("./create-session").default))
 
-  route.delete(
-    "/",
-    middlewares.authenticate(),
-    middlewares.wrap(require("./delete-session").default)
-  )
-
   return app
 }

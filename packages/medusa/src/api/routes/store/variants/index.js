@@ -12,4 +12,4 @@ export default app => {
   return app
 }
 
-export const defaultRelations = ["prices", "options"]
+export const defaultRelations = ["prices"]
