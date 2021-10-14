@@ -336,8 +336,7 @@ describe("SwapService", () => {
           {
             id: IdMap.getId("return-shipping"),
             price: 20,
-          },
-          [{ option_id: IdMap.getId("rmaso-option1"), price: 0 }]
+          }
         )
 
         expect(lineItemService.generate).toHaveBeenCalledTimes(1)
