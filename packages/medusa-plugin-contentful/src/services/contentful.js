@@ -91,7 +91,7 @@ class ContentfulService extends BaseService {
   async createImageAssets(product) {
     const environment = await this.getContentfulEnvironment_()
 
-    let assets = []
+    const assets = []
     await Promise.all(
       product.images
         .filter((image) => image.url !== product.thumbnail)
@@ -678,9 +678,7 @@ class ContentfulService extends BaseService {
 
       try {
         productEntity = await this.productService_.retrieve(product.id)
-      } catch (err) {
-        // ignore
-      }
+      } catch (err) {}
 
       if (productEntity) {
         return Promise.resolve()
@@ -702,9 +700,7 @@ class ContentfulService extends BaseService {
 
       try {
         regionEntity = await this.regionService_.retrieve(region.id)
-      } catch (err) {
-        // ignore
-      }
+      } catch (err) {}
 
       if (regionEntity) {
         return Promise.resolve()
@@ -746,7 +742,7 @@ class ContentfulService extends BaseService {
 
       const product = await this.productService_.retrieve(productId)
 
-      let update = {}
+      const update = {}
 
       const title =
         productEntry.fields[this.getCustomField("title", "product")]["en-US"]
@@ -829,9 +825,9 @@ class ContentfulService extends BaseService {
       isArray = false
     }
 
-    let output = []
+    const output = []
     for (const obj of input) {
-      let transformed = Object.assign({}, obj)
+      const transformed = Object.assign({}, obj)
       transformed.medusaId = obj.id
       output.push(transformed)
     }
