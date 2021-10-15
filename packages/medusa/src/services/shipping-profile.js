@@ -418,29 +418,43 @@ class ShippingProfileService extends BaseService {
    * @return {[ShippingOption]} a list of the available shipping options
    */
   async fetchCartOptions(cart) {
+    const profileIds = this.getProfilesInCart_(cart)
+
+    const selector = {
+      profile_id: profileIds,
+      admin_only: false,
+    }
+
     const customShippingOptions = await this.customShippingOptionService_.list(
       {
         cart_id: cart.id,
       },
-      { relations: ["shipping_option"] }
+      { select: ["id", "shipping_option_id", "price"] }
     )
 
-    if (customShippingOptions?.length) {
-      return customShippingOptions.map(cso => ({
-        ...cso.shipping_option,
-        amount: cso.price,
-      }))
+    const hasCustomShippingOptions = customShippingOptions?.length
+    // if there are custom shipping options associated with the cart, use those
+    if (hasCustomShippingOptions) {
+      selector.id = customShippingOptions.map(cso => cso.shipping_option_id)
     }
 
-    const profileIds = this.getProfilesInCart_(cart)
+    const rawOpts = await this.shippingOptionService_.list(selector, {
+      relations: ["requirements", "profile"],
+    })
 
-    const rawOpts = await this.shippingOptionService_.list(
-      {
-        profile_id: profileIds,
-        admin_only: false,
-      },
-      { relations: ["requirements", "profile"] }
-    )
+    // if there are custom shipping options associated with the cart, return cart shipping options with custom price
+    if (hasCustomShippingOptions) {
+      return rawOpts.map(so => {
+        const customOption = customShippingOptions.find(
+          cso => cso.shipping_option_id === so.id
+        )
+
+        return {
+          ...so,
+          amount: customOption?.price,
+        }
+      })
+    }
 
     const options = []
 
