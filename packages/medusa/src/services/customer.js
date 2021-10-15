@@ -387,8 +387,8 @@ class CustomerService extends BaseService {
         customer.email = this.validateEmail_(email)
       }
 
-      if (billing_address_id || billing_address) {
-        const address = update.billing_address_id || update.billing_address
+      if ("billing_address_id" in update || "billing_address" in update) {
+        const address = billing_address_id || billing_address
         await this.updateBillingAddress_(customer, address, addrRepo)
       }
 
@@ -417,6 +417,11 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateBillingAddress_(customer, addressOrId, addrRepo) {
+    if (addressOrId === null) {
+      customer.billing_address_id = null
+      return
+    }
+
     if (typeof addressOrId === `string`) {
       addressOrId = await addrRepo.findOne({
         where: { id: addressOrId },
