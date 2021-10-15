@@ -7,9 +7,15 @@ executors:
     parameters:
       image:
         type: string
-        default: "14.18"
+        default: "12.13"
     docker:
       - image: circleci/node:<< parameters.image >>
+        environment:
+          DB_PASSWORD: integration-tests
+      - image: circleci/postgres:11.13-bullseye-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: integration-tests
 
 aliases:
   install_node_modules: &install_node_modules
@@ -43,10 +49,77 @@ jobs:
       - run:
           command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
 
+  integration_testing:
+    executor: node
+    steps:
+      - checkout
+      - run: ls
+      - run: sudo npm i -g medusa-dev-cli
+      - run: ls integration-tests/api
+      - run:
+          name: Set path to medusa repo
+          command: medusa-dev --set-path-to-repo `pwd`
+      - run: cat ~/.config/configstore/medusa-dev-cli.json
+      - run:
+          name: install base
+          command: yarn install
+      - run:
+          name: install medusa
+          command: npm install
+          working_directory: packages/medusa
+      - run:
+          name: install medusa-interfaces
+          command: npm install
+          working_directory: packages/medusa-interfaces
+      - run:
+          name: install medusa-babel
+          command: npm install
+          working_directory: packages/babel-preset-medusa-package
+      - run:
+          name: install medusa-cli
+          command: npm install
+          working_directory: packages/medusa-cli
+      - run:
+          name: install medusa-core-utils
+          command: npm install
+          working_directory: packages/medusa-core-utils
+      - run:
+          name: install medusa-test-utils
+          command: npm install
+          working_directory: packages/medusa-test-utils
+      - run:
+          name: install medusa-telemetry
+          command: npm install
+          working_directory: packages/medusa-telemetry
+      - run:
+          name: force install
+          command: medusa-dev --force-install
+          working_directory: integration-tests/api
+      - run:
+          name: install tests
+          command: yarn install
+          working_directory: integration-tests/api
+      - run:
+          name: build tests
+          command: yarn build
+          working_directory: integration-tests/api
+      - run:
+          name: ls node modules
+          command: ls
+          working_directory: integration-tests/api/node_modules
+
+      - run:
+          name: integration tests
+          command: yarn test
+          working_directory: integration-tests/api
+
 workflows:
   test_all:
     jobs:
       - bootstrap
       - unit_test:
+          requires:
+            - bootstrap
+      - integration_testing:
           requires:
             - bootstrap
