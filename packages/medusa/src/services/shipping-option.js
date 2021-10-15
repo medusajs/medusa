@@ -175,7 +175,7 @@ class ShippingOptionService extends BaseService {
    * @return {Promise<ShippingMethod>} the resulting shipping method
    */
   async updateShippingMethod(id, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
       const method = await methodRepo.findOne({ where: { id } })
 
@@ -204,7 +204,7 @@ class ShippingOptionService extends BaseService {
    * @param {string} sm - the shipping method to remove
    */
   async deleteShippingMethod(sm) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
       return methodRepo.remove(sm)
     })
@@ -218,7 +218,7 @@ class ShippingOptionService extends BaseService {
    * @return {ShippingMethod} the resulting shipping method.
    */
   async createShippingMethod(optionId, data, config) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
@@ -304,7 +304,7 @@ class ShippingOptionService extends BaseService {
     }
 
     const subtotal = cart.subtotal
-    const requirementResults = option.requirements.map(requirement => {
+    const requirementResults = option.requirements.map((requirement) => {
       switch (requirement.type) {
         case "max_subtotal":
           return requirement.amount > subtotal
@@ -333,7 +333,7 @@ class ShippingOptionService extends BaseService {
    * @return {Promise<ShippingOption>} the result of the create operation
    */
   async create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = await optionRepo.create(data)
 
@@ -371,7 +371,7 @@ class ShippingOptionService extends BaseService {
         for (const r of data.requirements) {
           const validated = await this.validateRequirement_(r)
 
-          if (acc.find(raw => raw.type === validated.type)) {
+          if (acc.find((raw) => raw.type === validated.type)) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
               "Only one requirement of each type is allowed"
@@ -380,7 +380,7 @@ class ShippingOptionService extends BaseService {
 
           if (
             acc.find(
-              raw =>
+              (raw) =>
                 (raw.type === "max_subtotal" &&
                   validated.amount > raw.amount) ||
                 (raw.type === "min_subtotal" && validated.amount < raw.amount)
@@ -450,7 +450,7 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(optionId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
@@ -478,7 +478,7 @@ class ShippingOptionService extends BaseService {
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
 
-          if (acc.find(raw => raw.type === validated.type)) {
+          if (acc.find((raw) => raw.type === validated.type)) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
               "Only one requirement of each type is allowed"
@@ -487,7 +487,7 @@ class ShippingOptionService extends BaseService {
 
           if (
             acc.find(
-              raw =>
+              (raw) =>
                 (raw.type === "max_subtotal" &&
                   validated.amount > raw.amount) ||
                 (raw.type === "min_subtotal" && validated.amount < raw.amount)
@@ -503,12 +503,12 @@ class ShippingOptionService extends BaseService {
         }
 
         if (option.requirements) {
-          const accReqs = acc.map(a => a.id)
+          const accReqs = acc.map((a) => a.id)
           const toRemove = option.requirements.filter(
-            r => !accReqs.includes(r.id)
+            (r) => !accReqs.includes(r.id)
           )
           await Promise.all(
-            toRemove.map(async req => {
+            toRemove.map(async (req) => {
               await this.removeRequirement(req.id)
             })
           )
@@ -580,13 +580,13 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of update
    */
   async addRequirement(optionId, requirement) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
       const validatedReq = await this.validateRequirement_(requirement)
 
-      if (option.requirements.find(r => r.type === validatedReq.type)) {
+      if (option.requirements.find((r) => r.type === validatedReq.type)) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
           `A requirement with type: ${validatedReq.type} already exists`
@@ -606,7 +606,7 @@ class ShippingOptionService extends BaseService {
    * @return {Promise} the result of update
    */
   async removeRequirement(requirementId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       try {
         const reqRepo = manager.getCustomRepository(this.requirementRepository_)
         const requirement = await reqRepo.findOne({
