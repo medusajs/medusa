@@ -68,7 +68,16 @@ export default async (req, res) => {
       .optional(),
     is_disabled: Validator.boolean().optional(),
     starts_at: Validator.date().optional(),
-    ends_at: Validator.date().optional(),
+    ends_at: Validator.when("starts_at", {
+      not: undefined,
+      then: Validator.date()
+        .greater(Validator.ref("starts_at"))
+        .optional(),
+      otherwise: Validator.date().optional(),
+    }),
+    valid_duration: Validator.string()
+      .isoDuration().allow(null)
+      .optional(),
     usage_limit: Validator.number()
       .positive()
       .optional(),
@@ -78,6 +87,7 @@ export default async (req, res) => {
   })
 
   const { value, error } = schema.validate(req.body)
+
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }

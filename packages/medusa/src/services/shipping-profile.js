@@ -14,6 +14,7 @@ class ShippingProfileService extends BaseService {
     productService,
     productRepository,
     shippingOptionService,
+    customShippingOptionService,
   }) {
     super()
 
@@ -31,6 +32,9 @@ class ShippingProfileService extends BaseService {
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
+
+    /** @private @const {CustomShippingOptionService} */
+    this.customShippingOptionService_ = customShippingOptionService
   }
 
   withTransaction(transactionManager) {
@@ -43,6 +47,7 @@ class ShippingProfileService extends BaseService {
       shippingProfileRepository: this.shippingProfileRepository_,
       productService: this.productService_,
       shippingOptionService: this.shippingOptionService_,
+      customShippingOptionService: this.customShippingOptionService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -410,18 +415,46 @@ class ShippingProfileService extends BaseService {
    * Finds all the shipping profiles that cover the products in a cart, and
    * validates all options that are available for the cart.
    * @param {Cart} cart - the cart object to find shipping options for
-   * @return {[ShippingOptions]} a list of the available shipping options
+   * @return {[ShippingOption]} a list of the available shipping options
    */
   async fetchCartOptions(cart) {
     const profileIds = this.getProfilesInCart_(cart)
 
-    const rawOpts = await this.shippingOptionService_.list(
+    const selector = {
+      profile_id: profileIds,
+      admin_only: false,
+    }
+
+    const customShippingOptions = await this.customShippingOptionService_.list(
       {
-        profile_id: profileIds,
-        admin_only: false,
+        cart_id: cart.id,
       },
-      { relations: ["requirements", "profile"] }
+      { select: ["id", "shipping_option_id", "price"] }
     )
+
+    const hasCustomShippingOptions = customShippingOptions?.length
+    // if there are custom shipping options associated with the cart, use those
+    if (hasCustomShippingOptions) {
+      selector.id = customShippingOptions.map(cso => cso.shipping_option_id)
+    }
+
+    const rawOpts = await this.shippingOptionService_.list(selector, {
+      relations: ["requirements", "profile"],
+    })
+
+    // if there are custom shipping options associated with the cart, return cart shipping options with custom price
+    if (hasCustomShippingOptions) {
+      return rawOpts.map(so => {
+        const customOption = customShippingOptions.find(
+          cso => cso.shipping_option_id === so.id
+        )
+
+        return {
+          ...so,
+          amount: customOption?.price,
+        }
+      })
+    }
 
     const options = []
 

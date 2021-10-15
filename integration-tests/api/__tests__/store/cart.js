@@ -1,5 +1,12 @@
 const path = require("path")
-const { Region, LineItem, GiftCard } = require("@medusajs/medusa")
+const {
+  Region,
+  LineItem,
+  GiftCard,
+  Cart,
+  CustomShippingOption,
+  ShippingOption,
+} = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -61,6 +68,24 @@ describe("/store/carts", () => {
 
       const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
+    })
+
+    it("fails to create a cart when no region exist", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE "country" SET region_id=null WHERE iso_2 = 'us'`
+      )
+      await dbConnection.manager.query(`DELETE from region`)
+
+      try {
+        await api.post("/store/carts")
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "A region is required to create a cart"
+        )
+      }
     })
 
     it("creates a cart with country", async () => {
@@ -131,18 +156,75 @@ describe("/store/carts", () => {
     })
 
     it("fails on apply discount if limit has been reached", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code: "SPENT" }],
+        })
+        .catch((error) => {
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Discount has been used maximum allowed times"
+          )
+        })
+    })
+
+    it("fails to apply expired discount", async () => {
+      expect.assertions(2)
       const api = useApi()
 
       try {
         await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "CREATED" }],
+          discounts: [{ code: "EXP_DISC" }],
         })
       } catch (error) {
         expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual(
-          "Discount has been used maximum allowed times"
-        )
+        expect(error.response.data.message).toEqual("Discount is expired")
       }
+    })
+
+    it("fails on discount before start day", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      try {
+        await api.post("/store/carts/test-cart", {
+          discounts: [{ code: "PREM_DISC" }],
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual("Discount is not valid yet")
+      }
+    })
+
+    it("fails on apply invalid dynamic discount", async () => {
+      const api = useApi()
+
+      try {
+        await api.post("/store/carts/test-cart", {
+          discounts: [{ code: "INV_DYN_DISC" }],
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual("Discount is expired")
+      }
+    })
+
+    it("Applies dynamic discount to cart correctly", async () => {
+      const api = useApi()
+
+      const cart = await api.post(
+        "/store/carts/test-cart",
+        {
+          discounts: [{ code: "DYN_DISC" }],
+        },
+        { withCredentials: true }
+      )
+
+      expect(cart.data.cart.shipping_total).toBe(1000)
+      expect(cart.status).toEqual(200)
     })
 
     it("updates cart customer id", async () => {
@@ -377,14 +459,42 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id/shipping-methods", () => {
     beforeEach(async () => {
-      await cartSeeder(dbConnection)
+      try {
+        await cartSeeder(dbConnection)
+        const manager = dbConnection.manager
+
+        const _cart = await manager.create(Cart, {
+          id: "test-cart-with-cso",
+          customer_id: "some-customer",
+          email: "some-customer@email.com",
+          shipping_address: {
+            id: "test-shipping-address",
+            first_name: "lebron",
+            country_code: "us",
+          },
+          region_id: "test-region",
+          currency_code: "usd",
+          type: "swap",
+        })
+
+        let cartWithCustomSo = await manager.save(_cart)
+
+        await manager.insert(CustomShippingOption, {
+          id: "another-cso-test",
+          cart_id: "test-cart-with-cso",
+          shipping_option_id: "test-option",
+          price: 5,
+        })
+      } catch (err) {
+        console.log(err)
+      }
     })
 
     afterEach(async () => {
       await doAfterEach()
     })
 
-    it("adds a shipping method to cart", async () => {
+    it("adds a normal shipping method to cart", async () => {
       const api = useApi()
 
       const cartWithShippingMethod = await api.post(
@@ -399,6 +509,49 @@ describe("/store/carts", () => {
         expect.objectContaining({ shipping_option_id: "test-option" })
       )
       expect(cartWithShippingMethod.status).toEqual(200)
+    })
+
+    it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
+      const shippingOptionId = "test-option"
+
+      const api = useApi()
+
+      const cartWithCustomShippingMethod = await api
+        .post(
+          "/store/carts/test-cart-with-cso/shipping-methods",
+          {
+            option_id: shippingOptionId,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => err.response)
+
+      expect(
+        cartWithCustomShippingMethod.data.cart.shipping_methods
+      ).toContainEqual(
+        expect.objectContaining({
+          shipping_option_id: shippingOptionId,
+          price: 5,
+        })
+      )
+      expect(cartWithCustomShippingMethod.status).toEqual(200)
+    })
+
+    it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async () => {
+      const api = useApi()
+
+      try {
+        await api.post(
+          "/store/carts/test-cart-with-cso/shipping-methods",
+          {
+            option_id: "orphan-so",
+          },
+          { withCredentials: true }
+        )
+      } catch (err) {
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.message).toEqual("Wrong shipping option")
+      }
     })
 
     it("adds a giftcard to cart, but ensures discount only applied to discountable items", async () => {
@@ -425,13 +578,15 @@ describe("/store/carts", () => {
       )
 
       // Add a 10% discount to the cart
-      const cartWithGiftcard = await api.post(
-        "/store/carts/test-cart",
-        {
-          discounts: [{ code: "10PERCENT" }],
-        },
-        { withCredentials: true }
-      )
+      const cartWithGiftcard = await api
+        .post(
+          "/store/carts/test-cart",
+          {
+            discounts: [{ code: "10PERCENT" }],
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
 
       // Ensure that the discount is only applied to the standard item
       expect(cartWithGiftcard.data.cart.total).toBe(1900) // 1000 (giftcard) + 900 (standard item with 10% discount)

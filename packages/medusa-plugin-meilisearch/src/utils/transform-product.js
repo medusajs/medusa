@@ -20,9 +20,8 @@ export const transformProduct = (product) => {
     variantKeys.forEach((k) => {
       if (k === "options" && variant[k]) {
         const values = variant[k].map((option) => option.value)
-        obj[`${prefix}_options_value`] = obj[`${prefix}_options_value`].concat(
-          values
-        )
+        obj[`${prefix}_options_value`] =
+          obj[`${prefix}_options_value`].concat(values)
         return
       }
       return variant[k] && obj[`${prefix}_${k}`].push(variant[k])

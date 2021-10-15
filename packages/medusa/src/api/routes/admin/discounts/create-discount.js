@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultRelations } from "."
 
 /**
  * @oas [post] /discounts
@@ -71,7 +72,13 @@ export default async (req, res) => {
       .required(),
     is_disabled: Validator.boolean().default(false),
     starts_at: Validator.date().optional(),
-    ends_at: Validator.date().optional(),
+    ends_at: Validator.date()
+      .greater(Validator.ref("starts_at"))
+      .optional(),
+    valid_duration: Validator.string()
+      .isoDuration()
+      .allow(null)
+      .optional(),
     usage_limit: Validator.number()
       .positive()
       .optional(),
@@ -90,11 +97,10 @@ export default async (req, res) => {
     const discountService = req.scope.resolve("discountService")
 
     const created = await discountService.create(value)
-    const discount = await discountService.retrieve(created.id, [
-      "rule",
-      "rule.valid_for",
-      "regions",
-    ])
+    const discount = await discountService.retrieve(
+      created.id,
+      defaultRelations
+    )
 
     res.status(200).json({ discount })
   } catch (err) {

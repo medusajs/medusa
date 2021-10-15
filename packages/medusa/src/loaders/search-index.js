@@ -7,8 +7,8 @@ async function loadProductsIntoSearchEngine(container) {
 
   const TAKE = 20
   const totalCount = await productService.count()
-  let iterCount = 0,
-    lastSeenId = ""
+  let iterCount = 0
+  let lastSeenId = ""
 
   while (iterCount < totalCount) {
     const products = await productService.list(
