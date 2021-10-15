@@ -300,6 +300,8 @@ class DiscountService extends BaseService {
         discount[key] = value
       }
 
+      discount.code = discount.code.toUpperCase()
+
       const updated = await discountRepo.save(discount)
       return updated
     })
