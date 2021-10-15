@@ -6,20 +6,22 @@ title: Making your store more powerful with Contentful
 
 In [part 1](https://docs.medusa-commerce.com/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa/) of this series you have set up [Medusa](https://medusa-commerce.com) with Contentful as your CMS system and added a Gatsby storefront. In this part you will get a further introduction to Contentful and learn how [`medusa-plugin-contentful`](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-contentful) can be leveraged to make your store more powerful. Apart from a front page, product pages and a checkout flow, most ecommerce stores also need miscalleneous pages like About and Contact pages. In this guide you will add a Rich Text content module to your Contentful space so that you can make this pages cool. You will also see how the content modules can be used to give your product pages more life.
 
-
 What you will do in this guide:
+
 - Add a rich text content module
 - Add rich text to your `/about` page
 - Add a "Related Products" section to your product page
 
 Topics covered:
+
 - Contentful Migrations
 - Product enrichment
 
 ## Creating a rich text content module
+
 In this guide you will make use of [Contentful Migrations](https://github.com/contentful/contentful-migration) to keep a versioned controlled record of how your Content evolves over time. The Contentful app allows you to create content models straight from their dashboard, however, when using the migrations tool you will be able to 1) quickly replicate your Contentful space and 2) incorporate migrations as part of a CI/CD pipeline. [You can read more about how to use CMS as Code here](https://www.contentful.com/help/cms-as-code/).
 
-To prepare your migration create a new file at `contentful-migrations/rich-text.js` and add the following code: 
+To prepare your migration create a new file at `contentful-migrations/rich-text.js` and add the following code:
 
 ```javascript
 // contentful-migrations/rich-text.js
@@ -28,11 +30,11 @@ module.exports = function (migration, context) {
   const richText = migration
     .createContentType("richText")
     .name("Rich Text")
-    .displayField("title");
+    .displayField("title")
 
-  richText.createField("title").name("Title (Internal)").type("Symbol");
-  richText.createField("body").name("Body").type("RichText");
-};
+  richText.createField("title").name("Title (Internal)").type("Symbol")
+  richText.createField("body").name("Body").type("RichText")
+}
 ```
 
 This small snippet will create a content model in your Contentful space with two fields: a title which will be used to name entries in a meaningful manner (i.e. it won't be displayed to customers) and a body which contains the rich text to display. To apply your migration run:
@@ -41,7 +43,7 @@ This small snippet will create a content model in your Contentful space with two
 yarn migrate:contentful --file contentful-migrations/rich-text.js
 ```
 
-If you go to your Contentful space and click Content Model you will see that the Rich Text model has been added to your space: 
+If you go to your Contentful space and click Content Model you will see that the Rich Text model has been added to your space:
 ![](https://i.imgur.com/sCMjr4B.png)
 
 The validation rules in the Page model only allow Hero and Tile Sections to be added to the Content Modules fields so you will need another migration to make it possible for pages to make use of the new Rich Text modules. Create a new migration at `contentful-migrations/update-page-module-validation.js` and add the following:
@@ -50,7 +52,7 @@ The validation rules in the Page model only allow Hero and Tile Sections to be a
 // contentful-migrations/update-page-module-validation.js
 
 module.exports = function (migration, context) {
-  const page = migration.editContentType("page");
+  const page = migration.editContentType("page")
 
   page.editField("contentModules").items({
     type: "Link",
@@ -60,24 +62,24 @@ module.exports = function (migration, context) {
         linkContentType: ["hero", "tileSection", "richText"],
       },
     ],
-  });
-};
+  })
+}
 ```
 
 After migrating your space you are ready create your new contact page:
 
 ```shell
 yarn migrate:contentful --file contentful-migrations/update-page-module-validation.js
-``` 
+```
 
 ## Adding Rich Text to About
 
 To use your new Rich Text module **Content > Page > About**, and click **Add Content > Page**. You will now make use of the new Rich Text module to add some more details about your store. You can write your own text or use the text provided below if you just want to copy/paste.
 
 > ### About Medusa
-> 
+>
 > Medusa is an open-source headless commerce engine for fast-growing businesses. Getting started with Medusa is very easy and you will be able to start selling online with a basic setup in no time, however, the real power of Medusa starts showing up when you add custom functionality and extend your core to fit your needs.
-> 
+>
 > The core Medusa package and all the official Medusa plugins ship as individual NPM packages that you install into a Node project. You store and plugins are configured in your medusa-config.js file making it very easy to manage your store as your business grows. Custom functionality doesn't have to come from plugins, you can also add project-level functionality by simply adding files in your `src/` folder. Medusa will automatically register your custom functionalities in the bootstrap phase.
 
 ![](https://i.imgur.com/hqiaoFq.png)
@@ -164,16 +166,18 @@ Restart your local Gatsby server and visit `http://localhost:8000/about`, you wi
 ![](https://i.imgur.com/8Teuxin.png)
 
 ## Enriching your Product pages
+
 You have now seen how the Page model in Contentful can be extended to include a new content module in a reusable and modular manner. The same idea can be extended to your Product pages allowing you to create completely bespoke universes around your products. You will use the same techniques as above to create a Related Products section below the "Medusa Shirt" product.
 
 ### Migrating Products
+
 First, add a new field to the Product content model. Using migrations you can create a file `contentful-migrations/product-add-modules.js`:
 
 ```javascript
 // contentful-migrations/product-add-modules.js
 
 module.exports = function (migration, context) {
-  const product = migration.editContentType("product");
+  const product = migration.editContentType("product")
 
   product
     .createField("contentModules")
@@ -187,19 +191,21 @@ module.exports = function (migration, context) {
           linkContentType: ["hero", "tileSection", "richText"],
         },
       ],
-    });
-};
+    })
+}
 ```
 
 Run the migration:
+
 ```
 yarn migrate:contentful --file contentful-migrations/product-add-modules.js
 ```
 
 ### Adding "Related Products" Tile Section
+
 After the migration you can now add Content Modules to Products, to enrich the Product pages with relevant content. In this guide you will add a Tile Section that holds "Related Products", but the functionality could be further extended to showcase look book images, inspirational content or more detailed product descriptions.
 
-In Contentful go to **Content > Product > Medusa Shirt** scroll all the way to the bottom, where you should be able to find the new *Content Modules* field:
+In Contentful go to **Content > Product > Medusa Shirt** scroll all the way to the bottom, where you should be able to find the new _Content Modules_ field:
 
 ![](https://i.imgur.com/jUUpW9I.png)
 
@@ -207,19 +213,19 @@ Click **Add content > Tile Section** which will open a new Tile Section. For the
 
 ![](https://i.imgur.com/N7alMGz.png)
 
-
 Click **Publish** and make sure that the Medusa Shirt product is published too.
 
 Your data is now ready to be used in the storefront, but you still need to make a couple of changes to the storefront code to be able to view the new content.
 
 ## Adding Content Modules to Product pages
-Just like you did for the Page component, you will have to fetch the Content Modules from Gatsby's GraphQL data layer. 
+
+Just like you did for the Page component, you will have to fetch the Content Modules from Gatsby's GraphQL data layer.
 
 In the file `src/pages/products/{ContentfulProduct.handle}.js` add the following in the GraphQL query at the bottom of the file (e.g. after the variants query):
 
 ```graphql
   # src/pages/products/{ContentfulProduct.handle}.js
-  
+
   contentModules {
     ... on ContentfulTileSection {
       id
@@ -261,43 +267,43 @@ In the file `src/pages/products/{ContentfulProduct.handle}.js` add the following
   }
 ```
 
-This snippet will query the Content Modules defined for the product and will allow you to use the data in your components. 
+This snippet will query the Content Modules defined for the product and will allow you to use the data in your components.
 
-
-Next open up the `src/views/products.jsx` file and add the following snippets. 
+Next open up the `src/views/products.jsx` file and add the following snippets.
 
 Import the `TileSection` component:
+
 ```javascript
 import TileSection from "../components/tile-section/tile-section"
 ```
 
-
-Add the Content Modules in the JSX just before the final closing `div`: 
+Add the Content Modules in the JSX just before the final closing `div`:
 
 ```jsx
-  // src/views/products.jsx
-  
-  <div className={styles.contentModules}>
-    {product.contentModules?.map((cm) => {
-      switch (cm.internal.type) {
-        case "ContentfulTileSection":
-          return <TileSection key={cm.id} data={cm} />
-        default:
-          return null
-      }
-    })}
-  </div>
+// src/views/products.jsx
+
+<div className={styles.contentModules}>
+  {product.contentModules?.map((cm) => {
+    switch (cm.internal.type) {
+      case "ContentfulTileSection":
+        return <TileSection key={cm.id} data={cm} />
+      default:
+        return null
+    }
+  })}
+</div>
 ```
 
 Restart the Gatsby server and visit http://localhost:8000/product/medusa-shirt you should now see the new "Related Products" Tile Section below the Product page controls.
 
 ![](https://i.imgur.com/AQHKA6j.png)
 
-
 ## Summary
+
 In this guide you created a new content model for Rich Text input in Contentful using [contentful-migration](https://github.com/contentful/contentful-migration). You further extended the storefront to render the new Rich Text plugin. The concepts in this guide are meant to demonstrate how Contentful can be used to make your store more powerful in a modular and scalable way. The content modules covered in this guide could be further extended to add other custom modules, for example, you could add a Newsletter Signup, module that when encountered in the code renders a newsletter form.
 
 ## What's next
+
 In the next part of this guide you will learn how to implement further commerce functionalities to your site such as adding support for discount codes, region based shopping and more. (Coming soon)
 
 - [Deploying Medusa on Heroku](https://docs.medusa-commerce.com/how-to/deploying-on-heroku)

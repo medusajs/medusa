@@ -152,7 +152,7 @@ describe("/store/carts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      let response = await api
+      await api
         .post("/store/carts/test-cart", {
           discounts: [{ code: "SPENT" }],
         })
