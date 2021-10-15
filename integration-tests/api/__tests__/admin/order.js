@@ -80,7 +80,6 @@ describe("/admin/orders", () => {
         await adminSeeder(dbConnection)
         await orderSeeder(dbConnection)
         await swapSeeder(dbConnection)
-        await claimSeeder(dbConnection)
       } catch (err) {
         console.log(err)
         throw err
@@ -223,6 +222,48 @@ describe("/admin/orders", () => {
     })
   })
 
+  describe("POST /admin/orders/:id/swaps", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await orderSeeder(dbConnection)
+        await claimSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("creates a swap on a claim", async () => {
+      const api = useApi()
+
+      const swapOnSwap = await api.post(
+        "/admin/orders/order-with-claim/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item-co-2",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(swapOnSwap.status).toEqual(200)
+    })
+  })
+
   describe("POST /admin/orders/:id/claims", () => {
     beforeEach(async () => {
       try {
@@ -316,6 +357,43 @@ describe("/admin/orders", () => {
           }),
         ])
       )
+    })
+
+    it("creates a claim on a claim", async () => {
+      const api = useApi()
+
+      const claimOnClaim = await api
+        .post(
+          "/admin/orders/order-with-claim/claims",
+          {
+            type: "replace",
+            claim_items: [
+              {
+                item_id: "test-item-co-2",
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant",
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(claimOnClaim.status).toEqual(200)
     })
 
     it("creates a claim with a shipping address", async () => {
@@ -838,6 +916,61 @@ describe("/admin/orders", () => {
           "Variant with id: test-variant does not have the required inventory"
         )
       }
+    })
+  })
+
+  describe("POST /admin/orders/:id/claims", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await orderSeeder(dbConnection)
+        await swapSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("creates a claim on a swap", async () => {
+      const api = useApi()
+
+      const claimOnClaim = await api
+        .post(
+          "/admin/orders/order-with-swap/claims",
+          {
+            type: "replace",
+            claim_items: [
+              {
+                item_id: "return-item-1",
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant",
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(claimOnClaim.status).toEqual(200)
     })
   })
 
