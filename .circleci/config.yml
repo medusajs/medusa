@@ -53,9 +53,7 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: ls
       - run: sudo npm i -g medusa-dev-cli
-      - run: ls integration-tests/api
       - run:
           name: Set path to medusa repo
           command: medusa-dev --set-path-to-repo `pwd`
@@ -103,11 +101,6 @@ jobs:
           name: build tests
           command: yarn build
           working_directory: integration-tests/api
-      - run:
-          name: ls node modules
-          command: ls
-          working_directory: integration-tests/api/node_modules
-
       - run:
           name: integration tests
           command: yarn test
