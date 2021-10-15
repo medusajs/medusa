@@ -65,6 +65,12 @@ describe("/store/variants", () => {
           updated_at: expect.any(String),
           weight: null,
           width: null,
+          options: [
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
           prices: [
             {
               created_at: expect.any(String),
@@ -113,6 +119,12 @@ describe("/store/variants", () => {
         updated_at: expect.any(String),
         weight: null,
         width: null,
+        options: [
+          {
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
         prices: [
           {
             created_at: expect.any(String),
