@@ -13,17 +13,3 @@ Object {
   "updated_at": Any<String>,
 }
 `;
-
-exports[`/admin/discounts creates admin session correctly 1`] = `
-Object {
-  "api_token": "test_token",
-  "created_at": Any<String>,
-  "deleted_at": null,
-  "email": "admin@medusa.js",
-  "first_name": null,
-  "id": "admin_user",
-  "last_name": null,
-  "metadata": null,
-  "updated_at": Any<String>,
-}
-`;
