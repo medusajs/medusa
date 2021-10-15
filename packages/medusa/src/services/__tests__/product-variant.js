@@ -4,7 +4,7 @@ import ProductVariantService from "../product-variant"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -12,7 +12,7 @@ const eventBusService = {
 describe("ProductVariantService", () => {
   describe("retrieve", () => {
     const productVariantRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("batman")) {
           return Promise.resolve(undefined)
         }
@@ -54,13 +54,13 @@ describe("ProductVariantService", () => {
 
   describe("create", () => {
     const productVariantRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve()
       },
     })
 
     const productRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("ironmans")) {
           return Promise.resolve({
             id: IdMap.getId("ironman"),
@@ -229,7 +229,7 @@ describe("ProductVariantService", () => {
 
   describe("publishVariant", () => {
     const productVariantRepository = MockRepository({
-      findOne: query => Promise.resolve({ id: IdMap.getId("ironman") }),
+      findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
     const productVariantService = new ProductVariantService({
@@ -268,7 +268,7 @@ describe("ProductVariantService", () => {
 
   describe("update", () => {
     const productVariantRepository = MockRepository({
-      findOne: query => Promise.resolve({ id: IdMap.getId("ironman") }),
+      findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
     const moneyAmountRepository = MockRepository({
@@ -457,11 +457,11 @@ describe("ProductVariantService", () => {
 
   describe("setCurrencyPrice", () => {
     const productVariantRepository = MockRepository({
-      findOne: query => Promise.resolve({ id: IdMap.getId("ironman") }),
+      findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
     const moneyAmountRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.currency_code === "usd") {
           return Promise.resolve(undefined)
         }
@@ -521,18 +521,18 @@ describe("ProductVariantService", () => {
 
   describe("getRegionPrice", () => {
     const regionService = {
-      retrieve: function() {
+      retrieve: function () {
         return Promise.resolve({
           id: IdMap.getId("california"),
           name: "California",
         })
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
     const moneyAmountRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.variant_id === IdMap.getId("ironmanv2")) {
           return Promise.resolve(undefined)
         }
@@ -601,7 +601,7 @@ describe("ProductVariantService", () => {
 
   describe("setRegionPrice", () => {
     const moneyAmountRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.region_id === IdMap.getId("cali")) {
           return Promise.resolve(undefined)
         }
@@ -665,7 +665,7 @@ describe("ProductVariantService", () => {
 
   describe("updateOptionValue", () => {
     const productOptionValueRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.variant_id === IdMap.getId("jibberish")) {
           return Promise.resolve(undefined)
         }
@@ -748,7 +748,7 @@ describe("ProductVariantService", () => {
 
   describe("deleteOptionValue", () => {
     const productOptionValueRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.option_id === IdMap.getId("size")) {
           return Promise.resolve(undefined)
         }
@@ -796,7 +796,7 @@ describe("ProductVariantService", () => {
 
   describe("delete", () => {
     const productVariantRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("ironmanv2")) {
           return Promise.resolve(undefined)
         }
