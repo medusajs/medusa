@@ -66,9 +66,9 @@ export default async (req, res) => {
 
   try {
     const customerService = req.scope.resolve("customerService")
-    let customer = await customerService.update(id, value)
+    await customerService.update(id, value)
 
-    customer = await customerService.retrieve(customer.id, {
+    const customer = await customerService.retrieve(id, {
       relations: defaultRelations,
       select: defaultFields,
     })
