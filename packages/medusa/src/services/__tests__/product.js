@@ -415,6 +415,7 @@ describe("ProductService", () => {
 
     const productService = new ProductService({
       manager: MockManager,
+      eventBusService,
       productRepository,
       eventBusService,
     })
