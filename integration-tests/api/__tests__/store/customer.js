@@ -221,5 +221,47 @@ describe("/store/customers", () => {
         })
       )
     })
+
+    it("unsets customer billing address", async () => {
+      const api = useApi()
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@deere.com",
+        password: "test",
+      })
+
+      const customerId = authResponse.data.customer.id
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+      const check = await api.post(
+        `/store/customers/me`,
+        {
+          billing_address: "addr_test",
+        },
+        {
+          headers: {
+            Cookie: authCookie,
+          },
+        }
+      )
+
+      expect(check.status).toEqual(200)
+      expect(check.data.customer.billing_address_id).toEqual("addr_test")
+
+      const response = await api.post(
+        `/store/customers/me`,
+        {
+          billing_address: null,
+        },
+        {
+          headers: {
+            Cookie: authCookie,
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.billing_address_id).toEqual(null)
+    })
   })
 })
