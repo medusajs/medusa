@@ -284,7 +284,7 @@ describe("/admin/discounts", () => {
       )
     })
 
-    it("fails to create a fixed discount with multipe regions", async () => {
+    it("fails to create a fixed discount with multiple regions", async () => {
       expect.assertions(2)
       const api = useApi()
 
@@ -317,7 +317,7 @@ describe("/admin/discounts", () => {
         })
     })
 
-    it("fails to update a fixed discount with multipe regions", async () => {
+    it("fails to update a fixed discount with multiple regions", async () => {
       expect.assertions(2)
       const api = useApi()
 
