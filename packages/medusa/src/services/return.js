@@ -495,14 +495,14 @@ class ReturnService extends BaseService {
    * retuned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
-   * @param {string} returnId - the orderId to return to
-   * @param {string[]} receivedItems - the items received after return.
-   * @param {number} refundAmount - the amount to return
-   * @param{bool} allowMismatch - whether to ignore return/received
+   * @param {string} return_id - the orderId to return to
+   * @param {string[]} received_items - the items received after return.
+   * @param {number} refund_amount - the amount to return
+   * @param{bool} allow_mismatch - whether to ignore return/received
    * product mismatch
    * @return {Promise} the result of the update operation
    */
-  async receive(returnId, receivedItems, refundAmount, allowMismatch = false) {
+  async receive(return_id, received_items, refund_amount, allow_mismatch = false) {
     return this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
