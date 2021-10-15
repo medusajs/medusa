@@ -57,7 +57,6 @@ jobs:
       - run:
           name: Set path to medusa repo
           command: medusa-dev --set-path-to-repo `pwd`
-      - run: cat ~/.config/configstore/medusa-dev-cli.json
       - run:
           name: install base
           command: yarn install
