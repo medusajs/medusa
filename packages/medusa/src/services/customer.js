@@ -371,7 +371,14 @@ class CustomerService extends BaseService {
 
       const customer = await this.retrieve(customerId)
 
-      const { email, password, metadata, ...rest } = update
+      const {
+        email,
+        password,
+        metadata,
+        billing_address_id,
+        billing_address,
+        ...rest
+      } = update
 
       if (metadata) {
         customer.metadata = this.setMetadata_(customer, metadata)
@@ -381,13 +388,13 @@ class CustomerService extends BaseService {
         customer.email = this.validateEmail_(email)
       }
 
-      if ("billing_address_id" in update || "billing_address" in update) {
-        const address = update.billing_address_id || update.billing_address
-        await this.updateBillingAddress_(customer, address, addrRepo)
-      }
-
       for (const [key, value] of Object.entries(rest)) {
         customer[key] = value
+      }
+
+      if (billing_address_id || billing_address) {
+        const address = billing_address_id || billing_address
+        await this.updateBillingAddress_(customer, address, addrRepo)
       }
 
       if (password) {
@@ -399,6 +406,7 @@ class CustomerService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(CustomerService.Events.UPDATED, updated)
+
       return updated
     })
   }
