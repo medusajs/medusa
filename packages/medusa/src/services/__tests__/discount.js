@@ -256,7 +256,7 @@ describe("DiscountService", () => {
     })
 
     it("fails to update a fixed discount with multiple regions", async () => {
-      // expect.assertions(3)
+      expect.assertions(3)
       try {
         await discountService.update(IdMap.getId("total10"), {
           code: "test",
