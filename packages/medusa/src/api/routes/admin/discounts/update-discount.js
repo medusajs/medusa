@@ -84,18 +84,14 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const discountService = req.scope.resolve("discountService")
+  const discountService = req.scope.resolve("discountService")
 
-    await discountService.update(discount_id, value)
+  await discountService.update(discount_id, value)
 
-    const discount = await discountService.retrieve(discount_id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const discount = await discountService.retrieve(discount_id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ discount })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ discount })
 }
