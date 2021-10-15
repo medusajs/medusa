@@ -1,10 +1,9 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Handles Fulfillments
- * @implements BaseService
+ * @extends BaseService
  */
 class FulfillmentService extends BaseService {
   constructor({
@@ -61,7 +60,7 @@ class FulfillmentService extends BaseService {
   }
 
   partitionItems_(shippingMethods, items) {
-    let partitioned = []
+    const partitioned = []
     // partition order items to their dedicated shipping method
     for (const method of shippingMethods) {
       const temp = { shipping_method: method }
@@ -95,12 +94,12 @@ class FulfillmentService extends BaseService {
   async getFulfillmentItems_(order, items, transformer) {
     const toReturn = await Promise.all(
       items.map(async ({ item_id, quantity }) => {
-        const item = order.items.find(i => i.id === item_id)
+        const item = order.items.find((i) => i.id === item_id)
         return transformer(item, quantity)
       })
     )
 
-    return toReturn.filter(i => !!i)
+    return toReturn.filter((i) => !!i)
   }
 
   /**
@@ -137,6 +136,7 @@ class FulfillmentService extends BaseService {
   /**
    * Retrieves a fulfillment by its id.
    * @param {string} id - the id of the fulfillment to retrieve
+   * @param {object} config - optional values to include with fulfillmentRepository query
    * @return {Fulfillment} the fulfillment
    */
   async retrieve(id, config = {}) {
@@ -165,11 +165,11 @@ class FulfillmentService extends BaseService {
    * those partitions.
    * @param {Order} order - order to create fulfillment for
    * @param {{ item_id: string, quantity: number}[]} itemsToFulfill - the items in the order to fulfill
-   * @param {object} metadata - potential metadata to add
+   * @param {object} custom - potential custom values to add
    * @return {Fulfillment[]} the created fulfillments
    */
   async createFulfillment(order, itemsToFulfill, custom = {}) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
       )
@@ -190,18 +190,19 @@ class FulfillmentService extends BaseService {
           const ful = fulfillmentRepository.create({
             ...custom,
             provider_id: shipping_method.shipping_option.provider_id,
-            items: items.map(i => ({ item_id: i.id, quantity: i.quantity })),
+            items: items.map((i) => ({ item_id: i.id, quantity: i.quantity })),
             data: {},
           })
 
-          let result = await fulfillmentRepository.save(ful)
+          const result = await fulfillmentRepository.save(ful)
 
-          result.data = await this.fulfillmentProviderService_.createFulfillment(
-            shipping_method,
-            items,
-            { ...order },
-            { ...result }
-          )
+          result.data =
+            await this.fulfillmentProviderService_.createFulfillment(
+              shipping_method,
+              items,
+              { ...order },
+              { ...result }
+            )
 
           return fulfillmentRepository.save(result)
         })
@@ -220,7 +221,7 @@ class FulfillmentService extends BaseService {
    *
    */
   cancelFulfillment(fulfillmentOrId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       let id = fulfillmentOrId
       if (typeof fulfillmentOrId === "object") {
         id = fulfillmentOrId.id
@@ -260,9 +261,9 @@ class FulfillmentService extends BaseService {
 
   /**
    * Creates a shipment by marking a fulfillment as shipped. Adds
-   * tracking numbers and potentially more metadata.
+   * tracking links and potentially more metadata.
    * @param {Order} fulfillmentId - the fulfillment to ship
-   * @param {TrackingLink[]} trackingNumbers - tracking numbers for the shipment
+   * @param {TrackingLink[]} trackingLinks - tracking links for the shipment
    * @param {object} config - potential configuration settings, such as no_notification and metadata
    * @return {Fulfillment} the shipped fulfillment
    */
@@ -276,7 +277,7 @@ class FulfillmentService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
       )
@@ -298,7 +299,7 @@ class FulfillmentService extends BaseService {
       const now = new Date()
       fulfillment.shipped_at = now
 
-      fulfillment.tracking_links = trackingLinks.map(tl =>
+      fulfillment.tracking_links = trackingLinks.map((tl) =>
         trackingLinkRepo.create(tl)
       )
 
