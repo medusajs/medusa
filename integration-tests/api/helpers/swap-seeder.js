@@ -120,6 +120,18 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(cartWithCustomSo)
 
+  const liRma = manager.create(LineItem, {
+    id: "test-item-rma",
+    title: "Line Item RMA",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    cart_id: "test-cart-rma",
+  })
+  await manager.save(liRma)
+
   manager.insert(CustomShippingOption, {
     id: "cso-test",
     cart_id: cartWithCustomSo.id,
