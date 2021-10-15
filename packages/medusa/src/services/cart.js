@@ -160,7 +160,7 @@ class CartService extends BaseService {
       "total",
     ]
 
-    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
@@ -168,14 +168,14 @@ class CartService extends BaseService {
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
       relationSet.add("discounts.rule.valid_for")
-      //relationSet.add("discounts.parent_discount")
-      //relationSet.add("discounts.parent_discount.rule")
-      //relationSet.add("discounts.parent_discount.regions")
+      // relationSet.add("discounts.parent_discount")
+      // relationSet.add("discounts.parent_discount.rule")
+      // relationSet.add("discounts.parent_discount.regions")
       relationSet.add("shipping_methods")
       relationSet.add("region")
       relations = [...relationSet]
 
-      select = select.filter(v => !totalFields.includes(v))
+      select = select.filter((v) => !totalFields.includes(v))
     }
 
     return {
@@ -238,9 +238,8 @@ class CartService extends BaseService {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
     const validatedId = this.validateId_(cartId)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      options
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(options)
 
     const query = {
       where: { id: validatedId },
@@ -275,7 +274,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
       const { region_id } = data
@@ -344,7 +343,7 @@ class CartService extends BaseService {
    * @retur {Promise} the result of the update operation
    */
   async removeLineItem(cartId, lineItemId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: [
           "items",
@@ -354,7 +353,7 @@ class CartService extends BaseService {
         ],
       })
 
-      const lineItem = cart.items.find(li => li.id === lineItemId)
+      const lineItem = cart.items.find((li) => li.id === lineItemId)
       if (!lineItem) {
         return cart
       }
@@ -423,7 +422,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addLineItem(cartId, lineItem) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: [
           "shipping_methods",
@@ -436,7 +435,7 @@ class CartService extends BaseService {
 
       let currentItem
       if (lineItem.should_merge) {
-        currentItem = cart.items.find(line => {
+        currentItem = cart.items.find((line) => {
           if (line.should_merge && line.variant_id === lineItem.variant_id) {
             return _.isEqual(line.metadata, lineItem.metadata)
           }
@@ -502,13 +501,13 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateLineItem(cartId, lineItemId, lineItemUpdate) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: ["items", "payment_sessions"],
       })
 
       // Ensure that the line item exists in the cart
-      const lineItemExists = cart.items.find(i => i.id === lineItemId)
+      const lineItemExists = cart.items.find((i) => i.id === lineItemId)
       if (!lineItemExists) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -555,7 +554,7 @@ class CartService extends BaseService {
       // if any free shipping discounts, we ensure to update shipping method amount
       if (shouldAdd) {
         await Promise.all(
-          cart.shipping_methods.map(async sm => {
+          cart.shipping_methods.map(async (sm) => {
             const smRepo = this.manager_.getCustomRepository(
               this.shippingMethodRepository_
             )
@@ -570,7 +569,7 @@ class CartService extends BaseService {
         )
       } else {
         await Promise.all(
-          cart.shipping_methods.map(async sm => {
+          cart.shipping_methods.map(async (sm) => {
             const smRepo = this.manager_.getCustomRepository(
               this.shippingMethodRepository_
             )
@@ -586,7 +585,7 @@ class CartService extends BaseService {
   }
 
   async update(cartId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const cart = await this.retrieve(cartId, {
         select: [
@@ -733,9 +732,7 @@ class CartService extends BaseService {
    * @return {Promise} the resultign customer object
    */
   async createOrFetchUserFromEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email.toLowerCase())
     if (error) {
       throw new MedusaError(
@@ -886,11 +883,12 @@ class CartService extends BaseService {
     if (discount.usage_limit) {
       discount.usage_count = discount.usage_count || 0
 
-      if (discount.usage_limit === discount.usage_count)
+      if (discount.usage_limit === discount.usage_count) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Discount has been used maximum allowed times"
         )
+      }
     }
 
     const today = new Date()
@@ -942,7 +940,7 @@ class CartService extends BaseService {
     const toParse = [...cart.discounts, discount]
 
     let sawNotShipping = false
-    const newDiscounts = toParse.map(d => {
+    const newDiscounts = toParse.map((d) => {
       const drule = d.rule
       switch (drule.type) {
         case "free_shipping":
@@ -972,7 +970,7 @@ class CartService extends BaseService {
    * @return {Promise<Cart>} the resulting cart
    */
   async removeDiscount(cartId, discountCode) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: [
           "discounts",
@@ -987,7 +985,7 @@ class CartService extends BaseService {
         await this.adjustFreeShipping_(cart, false)
       }
 
-      cart.discounts = cart.discounts.filter(d => d.code !== discountCode)
+      cart.discounts = cart.discounts.filter((d) => d.code !== discountCode)
 
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
 
@@ -1018,7 +1016,7 @@ class CartService extends BaseService {
    * Updates the currently selected payment session.
    */
   async updatePaymentSession(cartId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: ["payment_sessions"],
       })
@@ -1052,7 +1050,7 @@ class CartService extends BaseService {
    * @return {Promise<Cart>} the resulting cart
    */
   async authorizePayment(cartId, context = {}) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
       const cart = await this.retrieve(cartId, {
@@ -1096,10 +1094,10 @@ class CartService extends BaseService {
    * Sets a payment method for a cart.
    * @param {string} cartId - the id of the cart to add payment method to
    * @param {PaymentMethod} paymentMethod - the method to be set to the cart
-   * @returns {Promise} result of update operation
+   * @return {Promise} result of update operation
    */
   async setPaymentSession(cartId, providerId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
       const cart = await this.retrieve(cartId, {
@@ -1128,13 +1126,13 @@ class CartService extends BaseService {
       }
 
       await Promise.all(
-        cart.payment_sessions.map(ps => {
+        cart.payment_sessions.map((ps) => {
           return psRepo.save({ ...ps, is_selected: null })
         })
       )
 
       const sess = cart.payment_sessions.find(
-        ps => ps.provider_id === providerId
+        (ps) => ps.provider_id === providerId
       )
 
       sess.is_selected = true
@@ -1157,13 +1155,13 @@ class CartService extends BaseService {
    * amounts, currencies, etc. as well as make sure to filter payment sessions
    * that are not available for the cart's region.
    * @param {string} cartId - the id of the cart to set payment session for
-   * @returns {Promise} the result of the update operation.
+   * @return {Promise} the result of the update operation.
    */
   async setPaymentSessions(cartOrCartId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const psRepo = manager.getCustomRepository(this.paymentSessionRepository_)
 
-      let cartId =
+      const cartId =
         typeof cartOrCartId === `string` ? cartOrCartId : cartOrCartId.id
       const cart = await this.retrieve(cartId, {
         select: [
@@ -1192,7 +1190,7 @@ class CartService extends BaseService {
       const region = cart.region
 
       // If there are existing payment sessions ensure that these are up to date
-      let seen = []
+      const seen = []
       if (cart.payment_sessions && cart.payment_sessions.length) {
         for (const session of cart.payment_sessions) {
           if (
@@ -1242,10 +1240,10 @@ class CartService extends BaseService {
    * @param {string} cartId - the id of the cart to remove from
    * @param {string} providerId - the id of the provider whoose payment session
    *    should be removed.
-   * @returns {Promise<Cart>} the resulting cart.
+   * @return {Promise<Cart>} the resulting cart.
    */
   async deletePaymentSession(cartId, providerId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: ["payment_sessions"],
       })
@@ -1283,10 +1281,10 @@ class CartService extends BaseService {
    * @param {string} cartId - the id of the cart to remove from
    * @param {string} providerId - the id of the provider whoose payment session
    *    should be removed.
-   * @returns {Promise<Cart>} the resulting cart.
+   * @return {Promise<Cart>} the resulting cart.
    */
   async refreshPaymentSession(cartId, providerId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: ["payment_sessions"],
       })
@@ -1325,7 +1323,7 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async addShippingMethod(cartId, optionId, data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         select: ["subtotal"],
         relations: [
@@ -1341,19 +1339,24 @@ class CartService extends BaseService {
         ],
       })
 
-      let cartCustomShippingOptions = await this.customShippingOptionService_.list(
-        { cart_id: cart.id }
-      )
+      const cartCustomShippingOptions =
+        await this.customShippingOptionService_.list({ cart_id: cart.id })
 
-      let customShippingOption = this.findCustomShippingOption(
+      const customShippingOption = this.findCustomShippingOption(
         cartCustomShippingOptions,
         optionId
       )
 
       const { shipping_methods } = cart
 
+      /**
+       * If we have a custom shipping option configured we want the price
+       * override to take effect and do not want `validateCartOption` to check
+       * if requirements are met, hence we are not passing the entire cart, but
+       * just the id.
+       */
       const shippingMethodConfig = customShippingOption
-        ? { cart, price: customShippingOption.price }
+        ? { cart_id: cart.id, price: customShippingOption.price }
         : {
             cart,
           }
@@ -1410,11 +1413,11 @@ class CartService extends BaseService {
    * throws if custom options is not empty and no shipping option corresponds to optionId
    * @param {Object} cartCustomShippingOptions - the cart's custom shipping options
    * @param {string} option - id of the normal or custom shipping option to find in the cartCustomShippingOptions
-   * @returns {CustomShippingOption | undefined}
+   * @return {CustomShippingOption | undefined}
    */
   findCustomShippingOption(cartCustomShippingOptions, optionId) {
-    let customOption = cartCustomShippingOptions?.find(
-      cso => cso.shipping_option_id === optionId
+    const customOption = cartCustomShippingOptions?.find(
+      (cso) => cso.shipping_option_id === optionId
     )
     const hasCustomOptions = cartCustomShippingOptions?.length
 
@@ -1455,7 +1458,7 @@ class CartService extends BaseService {
     if (cart.items.length) {
       cart.items = await Promise.all(
         cart.items
-          .map(async item => {
+          .map(async (item) => {
             const availablePrice = await this.productVariantService_
               .getRegionPrice(item.variant_id, regionId)
               .catch(() => undefined)
@@ -1534,20 +1537,20 @@ class CartService extends BaseService {
     }
 
     if (cart.discounts && cart.discounts.length) {
-      const newDiscounts = cart.discounts.map(d => {
+      const newDiscounts = cart.discounts.map((d) => {
         if (d.regions.find(({ id }) => id === regionId)) {
           return d
         }
       })
 
-      cart.discounts = newDiscounts.filter(d => !!d)
+      cart.discounts = newDiscounts.filter((d) => !!d)
     }
 
     cart.gift_cards = []
 
     if (cart.payment_sessions && cart.payment_sessions.length) {
       await Promise.all(
-        cart.payment_sessions.map(ps =>
+        cart.payment_sessions.map((ps) =>
           this.paymentProviderService_
             .withTransaction(this.manager_)
             .deleteSession(ps)
@@ -1561,11 +1564,11 @@ class CartService extends BaseService {
   /**
    * Deletes a cart from the database. Completed carts cannot be deleted.
    * @param {string} cartId - the id of the cart to delete
-   * @returns {Promise<Cart?>} the deleted cart or undefined if the cart was
+   * @return {Promise<Cart?>} the deleted cart or undefined if the cart was
    *    not found.
    */
   async delete(cartId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cart = await this.retrieve(cartId, {
         relations: [
           "items",
@@ -1605,7 +1608,7 @@ class CartService extends BaseService {
    * @return {Promise} resolves to the updated result.
    */
   async setMetadata(cartId, key, value) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
 
       const validatedId = this.validateId_(cartId)
@@ -1639,7 +1642,7 @@ class CartService extends BaseService {
    * @return {Promise} resolves to the updated result.
    */
   async deleteMetadata(cartId, key) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const validatedId = this.validateId_(cartId)
 
