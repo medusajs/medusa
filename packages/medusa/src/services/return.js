@@ -92,6 +92,12 @@ class ReturnService extends BaseService {
       }
     }
 
+    if (order.claims && order.claims.length) {
+      for (const c of order.claims) {
+        merged = [...merged, ...c.additional_items]
+      }
+    }
+
     const toReturn = await Promise.all(
       items.map(async (data) => {
         const item = merged.find((i) => i.id === data.item_id)
@@ -326,7 +332,13 @@ class ReturnService extends BaseService {
         .withTransaction(manager)
         .retrieve(orderId, {
           select: ["refunded_total", "total", "refundable_amount"],
-          relations: ["swaps", "swaps.additional_items", "items"],
+          relations: [
+            "swaps",
+            "swaps.additional_items",
+            "claims",
+            "claims.additional_items",
+            "items",
+          ],
         })
 
       const returnLines = await this.getFulfillmentItems_(
@@ -496,7 +508,7 @@ class ReturnService extends BaseService {
         this.returnRepository_
       )
 
-      const returnObj = await this.retrieve(returnId, {
+      const returnObj = await this.retrieve(return_id, {
         relations: ["items", "swap", "swap.additional_items"],
       })
 
@@ -540,7 +552,7 @@ class ReturnService extends BaseService {
 
       const returnLines = await this.getFulfillmentItems_(
         order,
-        receivedItems,
+        received_items,
         this.validateReturnLineItem_
       )
 
@@ -574,7 +586,7 @@ class ReturnService extends BaseService {
         returnStatus = "requires_action"
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount = refund_amount || returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
