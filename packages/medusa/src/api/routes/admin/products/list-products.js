@@ -78,6 +78,17 @@ export default async (req, res) => {
       take: limit,
     }
 
+    if (req.query.order) {
+      const orderRegex = /(-?)([a-z_]+)/
+      const [, negativeOrder, orderField] = orderRegex.exec(req.query.order)
+
+      // NOTE: We are only allowing to sort products by these fields
+      const validOrderFields = ["title", "created_at", "updated_at"]
+      if (validOrderFields.includes(orderField)) {
+        listConfig.order = { [orderField]: negativeOrder == "-" ? "DESC" : "ASC" }
+      }
+    }
+
     let products = await productService.list(selector, listConfig)
 
     res.json({ products, count: products.length, offset, limit })
