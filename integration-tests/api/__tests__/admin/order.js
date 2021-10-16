@@ -250,7 +250,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "production_failure",
+              reason: "any_custom_claim_reason_string",
               tags: ["fluff"],
               images: ["https://test.image.com"],
             },
@@ -297,7 +297,7 @@ describe("/admin/orders", () => {
           expect.objectContaining({
             item_id: "test-item",
             quantity: 1,
-            reason: "production_failure",
+            reason: "any_custom_claim_reason_string",
             images: expect.arrayContaining([
               expect.objectContaining({
                 url: "https://test.image.com",
@@ -336,7 +336,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "production_failure",
+              reason: "any_custom_claim_reason_string",
               tags: ["fluff"],
               images: ["https://test.image.com"],
             },
@@ -372,7 +372,7 @@ describe("/admin/orders", () => {
           expect.objectContaining({
             item_id: "test-item",
             quantity: 1,
-            reason: "production_failure",
+            reason: "any_custom_claim_reason_string",
             images: expect.arrayContaining([
               expect.objectContaining({
                 url: "https://test.image.com",
@@ -403,7 +403,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "production_failure",
+              reason: "any_custom_claim_reason_string",
               tags: ["fluff"],
               images: ["https://test.image.com"],
             },
@@ -430,7 +430,7 @@ describe("/admin/orders", () => {
           expect.objectContaining({
             item_id: "test-item",
             quantity: 1,
-            reason: "production_failure",
+            reason: "any_custom_claim_reason_string",
             images: expect.arrayContaining([
               expect.objectContaining({
                 url: "https://test.image.com",
@@ -470,7 +470,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "production_failure",
+              reason: "any_custom_claim_reason_string",
               tags: ["fluff"],
               images: ["https://test.image.com"],
             },
@@ -526,7 +526,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "production_failure",
+              reason: "any_custom_claim_reason_string",
               tags: ["fluff"],
               images: ["https://test.image.com"],
             },
@@ -582,7 +582,7 @@ describe("/admin/orders", () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: claim.claim_items[0].id,
-            reason: "production_failure",
+            reason: "any_custom_claim_reason_string",
             note: "Something new",
             images: expect.arrayContaining([
               expect.objectContaining({
@@ -613,7 +613,7 @@ describe("/admin/orders", () => {
             {
               item_id: "test-item",
               quantity: 1,
-              reason: "production_failure",
+              reason: "any_custom_claim_reason_string",
               tags: ["fluff"],
               images: ["https://test.image.com"],
             },
@@ -665,7 +665,7 @@ describe("/admin/orders", () => {
       expect(claim.claim_items).toEqual([
         expect.objectContaining({
           id: claim.claim_items[0].id,
-          reason: "production_failure",
+          reason: "any_custom_claim_reason_string",
           note: "Something new",
           images: [],
           // tags: expect.arrayContaining([
@@ -694,7 +694,7 @@ describe("/admin/orders", () => {
               {
                 item_id: "test-item",
                 quantity: 1,
-                reason: "production_failure",
+                reason: "any_custom_claim_reason_string",
                 tags: ["fluff"],
                 images: ["https://test.image.com"],
               },
@@ -813,7 +813,7 @@ describe("/admin/orders", () => {
               {
                 item_id: "test-item",
                 quantity: 1,
-                reason: "production_failure",
+                reason: "any_custom_claim_reason_string",
                 tags: ["fluff"],
                 images: ["https://test.image.com"],
               },

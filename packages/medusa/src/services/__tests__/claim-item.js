@@ -17,7 +17,7 @@ describe("ClaimItemService", () => {
       claim_order_id: "claim_13",
       item_id: "itm_1",
       tags: ["fluff"],
-      reason: "production_failure",
+      reason: "any_custom_claim_reason_string",
       note: "Details",
       quantity: 1,
       images: ["url.com/1234"],
@@ -80,7 +80,7 @@ describe("ClaimItemService", () => {
       expect(claimItemRepo.create).toHaveBeenCalledWith({
         claim_order_id: "claim_13",
         item_id: "itm_1",
-        reason: "production_failure",
+        reason: "any_custom_claim_reason_string",
         note: "Details",
         quantity: 1,
         tags: [{ value: "fluff" }],
@@ -108,20 +108,6 @@ describe("ClaimItemService", () => {
       )
       await expect(claimItemService.create(testItem)).rejects.toThrow(
         "Cannot claim more of an item than has been fulfilled"
-      )
-    })
-
-    it("fails if reason is unknown", async () => {
-      lineItemService.retrieve = jest.fn(() =>
-        Promise.resolve({ fulfilled_quantity: 1 })
-      )
-      await expect(
-        claimItemService.create({
-          ...testItem,
-          reason: "unknown",
-        })
-      ).rejects.toThrow(
-        `Claim Item reason must be one of "missing_item", "wrong_item", "production_failure" or "other".`
       )
     })
   })

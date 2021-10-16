@@ -34,7 +34,7 @@ describe("ClaimService", () => {
         {
           item_id: "itm_1",
           tags: ["fluff"],
-          reason: "production_failure",
+          reason: "any_custom_claim_reason_string",
           note: "Details",
           quantity: 1,
           images: ["url.com/1234"],
@@ -153,7 +153,7 @@ describe("ClaimService", () => {
         claim_order_id: "claim_134",
         item_id: "itm_1",
         tags: ["fluff"],
-        reason: "production_failure",
+        reason: "any_custom_claim_reason_string",
         note: "Details",
         quantity: 1,
         images: ["url.com/1234"],
