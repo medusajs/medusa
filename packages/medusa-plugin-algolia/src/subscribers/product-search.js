@@ -38,7 +38,7 @@ class ProductSearchSubscriber {
 
   handleProductCreation = async (data) => {
     const product = await this.retrieveProduct_(data.id)
-    await this.meilisearchService_.addDocuments(
+    await this.algoliaService_.addDocuments(
       this.productIndexName,
       [product],
       indexTypes.products
