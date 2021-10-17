@@ -4,6 +4,7 @@ const {
   Order,
   LineItem,
   ProductVariant,
+  CustomShippingOption,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -1407,6 +1408,47 @@ describe("/admin/orders", () => {
         }
       )
       expect(response.status).toEqual(200)
+    })
+
+    it("creates a swap with custom shipping options", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/orders/test-order/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+          custom_shipping_options: [{ option_id: "test-option", price: 0 }],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      const swap = response.data.order.swaps[0]
+
+      const manager = dbConnection.manager
+      const customOptions = await manager.find(CustomShippingOption, {
+        shipping_option_id: "test-option",
+      })
+
+      expect(response.status).toEqual(200)
+      expect(customOptions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_option_id: "test-option",
+            price: 0,
+            cart_id: swap.cart_id,
+          }),
+        ])
+      )
     })
 
     it("creates a swap and a return", async () => {

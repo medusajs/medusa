@@ -32,6 +32,7 @@ class SwapService extends BaseService {
     fulfillmentService,
     orderService,
     inventoryService,
+    customShippingOptionService,
   }) {
     super()
 
@@ -70,6 +71,9 @@ class SwapService extends BaseService {
 
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {CustomShippingOptionService} */
+    this.customShippingOptionService_ = customShippingOptionService
   }
 
   withTransaction(transactionManager) {
@@ -90,6 +94,7 @@ class SwapService extends BaseService {
       orderService: this.orderService_,
       inventoryService: this.inventoryService_,
       fulfillmentService: this.fulfillmentService_,
+      customShippingOptionService: this.customShippingOptionService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -522,7 +527,7 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
    */
-  async createCart(swapId) {
+  async createCart(swapId, customShippingOptions = []) {
     return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
@@ -575,6 +580,16 @@ class SwapService extends BaseService {
           parent_order_id: order.id,
         },
       })
+
+      for (const customShippingOption of customShippingOptions) {
+        await this.customShippingOptionService_
+          .withTransaction(manager)
+          .create({
+            cart_id: cart.id,
+            shipping_option_id: customShippingOption.option_id,
+            price: customShippingOption.price,
+          })
+      }
 
       for (const item of swap.additional_items) {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
