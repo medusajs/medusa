@@ -7,7 +7,6 @@
 /packages/medusa/src/services/idempotency-key.js
 /packages/medusa/src/services/inventory.js
 /packages/medusa/src/services/middleware.js
-/packages/medusa/src/services/note.js
 /packages/medusa/src/services/oauth.js
 /packages/medusa/src/services/payment-provider.js
 /packages/medusa/src/services/product-collection.js
