@@ -58,6 +58,7 @@
     "global": "^4.4.0",
     "import-from": "^3.0.0",
     "oas-normalize": "^2.3.1",
-    "swagger-inline": "^3.2.2"
+    "swagger-inline": "^3.2.2",
+    "yarn": "^1.22.17"
   }
 }

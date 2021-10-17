@@ -1,7 +1,9 @@
+
 module.exports = {
+  "root":true,
   parser: `@babel/eslint-parser`,
   parserOptions: {
-    requireConfigFile: false,
+    requireConfigFile: true,
     ecmaFeatures: {
       experimentalDecorators: true,
     },
@@ -21,6 +23,7 @@ module.exports = {
     es6: true,
     node: true,
     jest: true,
+
   },
   overrides: [
     {
