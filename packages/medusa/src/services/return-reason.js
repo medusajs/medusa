@@ -1,6 +1,6 @@
-import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { In } from "typeorm"
 
 class ReturnReasonService extends BaseService {
   constructor({ manager, returnReasonRepository }) {
@@ -32,6 +32,17 @@ class ReturnReasonService extends BaseService {
     return this.atomicPhase_(async manager => {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
 
+      if (data.parent_return_reason_id && data.parent_return_reason_id !== "") {
+        const parentReason = await this.retrieve(data.parent_return_reason_id)
+
+        if (parentReason.parent_return_reason_id) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Doubly nested return reasons is not supported"
+          )
+        }
+      }
+
       const created = rrRepo.create(data)
 
       const result = await rrRepo.save(created)
@@ -44,12 +55,18 @@ class ReturnReasonService extends BaseService {
       const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
       const reason = await this.retrieve(id)
 
-      if ("description" in data) {
+      const { description, label, parent_return_reason_id } = data
+
+      if (description) {
         reason.description = data.description
       }
 
-      if ("label" in data) {
+      if (label) {
         reason.label = data.label
+      }
+
+      if (parent_return_reason_id) {
+        reason.parent_return_reason_id = parent_return_reason_id
       }
 
       await rrRepo.save(reason)
@@ -91,6 +108,25 @@ class ReturnReasonService extends BaseService {
     }
 
     return item
+  }
+
+  async delete(returnReasonId) {
+    return this.atomicPhase_(async manager => {
+      const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
+
+      // We include the relation 'return_reason_children' to enable cascading deletes of return reasons if a parent is removed
+      const reason = await this.retrieve(returnReasonId, {
+        relations: ["return_reason_children"],
+      })
+
+      if (!reason) {
+        return Promise.resolve()
+      }
+
+      await rrRepo.softRemove(reason)
+
+      return Promise.resolve()
+    })
   }
 }
 

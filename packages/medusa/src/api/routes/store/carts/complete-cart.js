@@ -138,18 +138,36 @@ export default async (req, res) => {
               // If cart is part of swap, we register swap as complete
               switch (cart.type) {
                 case "swap": {
-                  const swapId = cart.metadata?.swap_id
-                  let swap = await swapService
-                    .withTransaction(manager)
-                    .registerCartCompletion(swapId)
+                  try {
+                    const swapId = cart.metadata?.swap_id
+                    let swap = await swapService
+                      .withTransaction(manager)
+                      .registerCartCompletion(swapId)
 
-                  swap = await swapService
-                    .withTransaction(manager)
-                    .retrieve(swap.id, { relations: ["shipping_address"] })
+                    swap = await swapService
+                      .withTransaction(manager)
+                      .retrieve(swap.id, { relations: ["shipping_address"] })
 
-                  return {
-                    response_code: 200,
-                    response_body: { data: swap, type: "swap" },
+                    return {
+                      response_code: 200,
+                      response_body: { data: swap, type: "swap" },
+                    }
+                  } catch (error) {
+                    if (
+                      error &&
+                      error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
+                    ) {
+                      return {
+                        response_code: 409,
+                        response_body: {
+                          message: error.message,
+                          type: error.type,
+                          code: error.code,
+                        },
+                      }
+                    } else {
+                      throw error
+                    }
                   }
                 }
                 // case "payment_link":
