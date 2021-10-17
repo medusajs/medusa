@@ -1,6 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import _ from "lodash"
 import { TransactionManager } from "typeorm"
 
 class NoteService extends BaseService {
@@ -47,7 +46,7 @@ class NoteService extends BaseService {
    * Retrieves a specific note.
    * @param {*} id - the id of the note to retrieve.
    * @param {*} config - any options needed to query for the result.
-   * @returns {Promise} which resolves to the requested note.
+   * @return {Promise} which resolves to the requested note.
    */
   async retrieve(id, config = {}) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
@@ -91,14 +90,14 @@ class NoteService extends BaseService {
    * Creates a note associated with a given author
    * @param {object} data - the note to create
    * @param {*} config - any configurations if needed, including meta data
-   * @returns {Promise} resolves to the creation result
+   * @return {Promise} resolves to the creation result
    */
   async create(data, config = { metadata: {} }) {
     const { metadata } = config
 
     const { resource_id, resource_type, value, author_id } = data
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const toCreate = {
@@ -124,10 +123,10 @@ class NoteService extends BaseService {
    * Updates a given note with a new value
    * @param {*} noteId - the id of the note to update
    * @param {*} value - the new value
-   * @returns {Promise} resolves to the updated element
+   * @return {Promise} resolves to the updated element
    */
   async update(noteId, value) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId, { relations: ["author"] })
@@ -147,10 +146,10 @@ class NoteService extends BaseService {
   /**
    * Deletes a given note
    * @param {*} noteId - id of the note to delete
-   * @returns {Promise}
+   * @return {Promise}
    */
   async delete(noteId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId)

@@ -93,6 +93,12 @@ class ReturnService extends BaseService {
       }
     }
 
+    if (order.claims && order.claims.length) {
+      for (const c of order.claims) {
+        merged = [...merged, ...c.additional_items]
+      }
+    }
+
     const toReturn = await Promise.all(
       items.map(async data => {
         const item = merged.find(i => i.id === data.item_id)
@@ -325,7 +331,13 @@ class ReturnService extends BaseService {
         .withTransaction(manager)
         .retrieve(orderId, {
           select: ["refunded_total", "total", "refundable_amount"],
-          relations: ["swaps", "swaps.additional_items", "items"],
+          relations: [
+            "swaps",
+            "swaps.additional_items",
+            "claims",
+            "claims.additional_items",
+            "items",
+          ],
         })
 
       const returnLines = await this.getFulfillmentItems_(
@@ -487,13 +499,18 @@ class ReturnService extends BaseService {
    * @param {string[]} lineItems - the line items to return
    * @return {Promise} the result of the update operation
    */
-  async receive(returnId, receivedItems, refundAmount, allowMismatch = false) {
+  async receive(
+    return_id,
+    received_items,
+    refund_amount,
+    allow_mismatch = false
+  ) {
     return this.atomicPhase_(async manager => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
       )
 
-      const returnObj = await this.retrieve(returnId, {
+      const returnObj = await this.retrieve(return_id, {
         relations: ["items", "swap", "swap.additional_items"],
       })
 
@@ -537,7 +554,7 @@ class ReturnService extends BaseService {
 
       const returnLines = await this.getFulfillmentItems_(
         order,
-        receivedItems,
+        received_items,
         this.validateReturnLineItem_
       )
 
@@ -566,12 +583,12 @@ class ReturnService extends BaseService {
       let returnStatus = "received"
 
       const isMatching = newLines.every(l => l.is_requested)
-      if (!isMatching && !allowMismatch) {
+      if (!isMatching && !allow_mismatch) {
         // Should update status
         returnStatus = "requires_action"
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount = refund_amount || returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {

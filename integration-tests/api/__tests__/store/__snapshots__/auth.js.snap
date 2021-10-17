@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/discounts creates store session correctly 1`] = `
+exports[`/admin/auth creates store session correctly 1`] = `
 Object {
   "billing_address_id": null,
   "created_at": Any<String>,
