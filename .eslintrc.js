@@ -9,6 +9,7 @@ module.exports = {
   plugins: [`eslint-plugin-prettier`],
   extends: [`eslint:recommended`, `google`, `eslint-config-prettier`],
   rules: {
+    "prettier/prettier": `error`,
     curly: [2, `all`],
     "new-cap": `off`,
     "require-jsdoc": `off`,
