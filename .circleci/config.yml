@@ -4,7 +4,7 @@ orbs:
 
 commands: 
   cache-install: 
-    description: << parameters.path >>
+    description: install << parameters.path >>
     parameters: 
       path: 
         type: string
