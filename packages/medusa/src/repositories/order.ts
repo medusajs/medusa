@@ -34,7 +34,7 @@ export class OrderRepository extends Repository<Order> {
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
-    return map(entities, e => merge({}, ...entitiesAndRelationsById[e.id]))
+    return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
   }
 
   public async findOneWithRelations(
