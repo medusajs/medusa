@@ -105,7 +105,7 @@ jobs:
           name: restore cache medusa-dev
           keys: 
             - npm-cache-medusa-dev
-            - npm-cache-medusa-dev-
+            - npm-cache-medusa-dev
       - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
       - save_cache: 
           name: save cache medusa-dev
