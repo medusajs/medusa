@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.22...medusa-core-utils@1.1.24) (2021-10-18)
+
+### Bug Fixes
+
+- use type to choose transformer before adding or replacing documents ([24eecd2](https://github.com/medusajs/medusa/commit/24eecd2922e0c3425f2d43549b3227c756820387))
+
+### Features
+
+- Product filtering ([#439](https://github.com/medusajs/medusa/issues/439)) ([5ef2a3f](https://github.com/medusajs/medusa/commit/5ef2a3fbcb108c8d49b7754ea14ac890af643950))
+
 ## [1.1.23](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.22...medusa-core-utils@1.1.23) (2021-10-18)
 
 ### Bug Fixes

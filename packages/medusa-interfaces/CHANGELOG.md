@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.23...medusa-interfaces@1.1.25) (2021-10-18)
+
+### Bug Fixes
+
+- filter type in jsdoc ([c3a6045](https://github.com/medusajs/medusa/commit/c3a6045dd889a0d32d9e7f6e806d96d8333ea0a5))
+- product ordering ([57a6612](https://github.com/medusajs/medusa/commit/57a6612e845c078aec023d0cc49d6bfc175a1b37))
+- use type to choose transformer before adding or replacing documents ([24eecd2](https://github.com/medusajs/medusa/commit/24eecd2922e0c3425f2d43549b3227c756820387))
+
 ## [1.1.24](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.23...medusa-interfaces@1.1.24) (2021-10-18)
 
 ### Bug Fixes
