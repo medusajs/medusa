@@ -77,6 +77,10 @@ jobs:
           path: packages/medusa-test-utils
       - cache-install:
           path: packages/medusa-telemetry
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - "*"
 
   bootstrap:
     executor: node
@@ -136,7 +140,6 @@ jobs:
       # - cache-install:
       #     path: packages/medusa-telemetry
 
-
       - run:
           name: force install
           command: medusa-dev --force-install
@@ -183,10 +186,6 @@ jobs:
       #     command: yarn install
       #     working_directory: integration-tests/api
 
-        
-
-
-
 workflows:
   test_all:
     jobs:
@@ -198,3 +197,4 @@ workflows:
       - integration_testing:
           requires:
             - install_integration_tests
+            # - bootstrap
