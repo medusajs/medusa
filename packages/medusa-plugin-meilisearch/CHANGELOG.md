@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/medusajs/medusa/compare/medusa-plugin-meilisearch@0.0.4...medusa-plugin-meilisearch@0.0.5) (2021-10-18)
+
+**Note:** Version bump only for package medusa-plugin-meilisearch
+
 ## [0.0.4](https://github.com/medusajs/medusa/compare/medusa-plugin-meilisearch@0.0.3...medusa-plugin-meilisearch@0.0.4) (2021-10-18)
 
 **Note:** Version bump only for package medusa-plugin-meilisearch

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.26](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.25...medusa-core-utils@1.1.26) (2021-10-18)
+
+**Note:** Version bump only for package medusa-core-utils
+
 ## [1.1.25](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.24...medusa-core-utils@1.1.25) (2021-10-18)
 
 **Note:** Version bump only for package medusa-core-utils
