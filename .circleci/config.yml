@@ -2,6 +2,24 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 
+commands: 
+  cache-install: 
+    parameters: 
+      path: 
+        type: string
+    steps: 
+      - restore_cache: 
+          keys: 
+            - npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
+            - npm-cache-<< parameters.path >>-
+      - run: 
+          command: npm install
+          working_directory: <<parameters.path>>
+      - save_cache: 
+          paths: 
+            - <<parameters.path>>
+          key: npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
+
 executors:
   node:
     parameters:
@@ -64,10 +82,12 @@ jobs:
           name: install medusa
           command: npm install
           working_directory: packages/medusa
-      - run:
-          name: install medusa-interfaces
-          command: npm install
-          working_directory: packages/medusa-interfaces
+      # - run:
+          # name: install medusa-interfaces
+      - cache-install:
+        - path: packages/medusa-interfaces
+          # command: npm install
+          # working_directory: packages/medusa-interfaces
       - run:
           name: install medusa-babel
           command: npm install
