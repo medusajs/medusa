@@ -13,7 +13,9 @@ commands:
       # - run:
       #     name: install << parameters.path >>
       #     steps:
-
+      - run:
+          name: install << parameters.path >>
+          command: echo ""
       - restore_cache: 
           keys: 
             - npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
@@ -51,6 +53,31 @@ aliases:
       at: ./
 
 jobs:
+  install_integration_tests:
+    executor: node 
+    steps: 
+      - checkout
+      - run: sudo npm i -g medusa-dev-cli
+      - run:
+          name: Set path to medusa repo
+          command: medusa-dev --set-path-to-repo `pwd`
+      - cache-install:
+          path: .
+      - cache-install:
+          path: packages/medusa
+      - cache-install:
+          path: packages/medusa-interfaces
+      - cache-install:
+          path: packages/babel-preset-medusa-package
+      - cache-install:
+          path: packages/medusa-cli
+      - cache-install:
+          path: packages/medusa-core-utils
+      - cache-install:
+          path: packages/medusa-test-utils
+      - cache-install:
+          path: packages/medusa-telemetry
+
   bootstrap:
     executor: node
     steps:
@@ -77,37 +104,37 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: sudo npm i -g medusa-dev-cli
-      - run:
-          name: Set path to medusa repo
-          command: medusa-dev --set-path-to-repo `pwd`
+      # - run: sudo npm i -g medusa-dev-cli
       # - run:
-      #     name: install base
-      #     command: yarn install
-      # - run:
-      #     name: install medusa
-      #     command: npm install
-      #     working_directory: packages/medusa
-      # - run:
-          # name: install medusa-interfaces
-          # command: npm install
-          # working_directory: packages/medusa-interfaces
-      - cache-install:
-          path: .
-      - cache-install:
-          path: packages/medusa
-      - cache-install:
-          path: packages/medusa-interfaces
-      - cache-install:
-          path: packages/babel-preset-medusa-package
-      - cache-install:
-          path: packages/medusa-cli
-      - cache-install:
-          path: packages/medusa-core-utils
-      - cache-install:
-          path: packages/medusa-test-utils
-      - cache-install:
-          path: packages/medusa-telemetry
+      #     name: Set path to medusa repo
+      #     command: medusa-dev --set-path-to-repo `pwd`
+      # # - run:
+      # #     name: install base
+      # #     command: yarn install
+      # # - run:
+      # #     name: install medusa
+      # #     command: npm install
+      # #     working_directory: packages/medusa
+      # # - run:
+      #     # name: install medusa-interfaces
+      #     # command: npm install
+      #     # working_directory: packages/medusa-interfaces
+      # - cache-install:
+      #     path: .
+      # - cache-install:
+      #     path: packages/medusa
+      # - cache-install:
+      #     path: packages/medusa-interfaces
+      # - cache-install:
+      #     path: packages/babel-preset-medusa-package
+      # - cache-install:
+      #     path: packages/medusa-cli
+      # - cache-install:
+      #     path: packages/medusa-core-utils
+      # - cache-install:
+      #     path: packages/medusa-test-utils
+      # - cache-install:
+      #     path: packages/medusa-telemetry
 
 
       - run:
@@ -163,10 +190,11 @@ jobs:
 workflows:
   test_all:
     jobs:
+      - install_integration_tests
       - bootstrap
       - unit_test:
           requires:
             - bootstrap
       - integration_testing:
           requires:
-            - bootstrap
+            - install_integration_tests
