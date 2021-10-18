@@ -3,6 +3,68 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.43](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.41...@medusajs/medusa@1.1.43) (2021-10-18)
+
+### Bug Fixes
+
+- add possiblity to unset billing address ([dc7ecc9](https://github.com/medusajs/medusa/commit/dc7ecc959ae6792351a733fa9f24c95bb6e9e893))
+- adjustments based on feedback ([52be911](https://github.com/medusajs/medusa/commit/52be911e506dfb80c2f39aac31d33a8805e4b6d2))
+- adjustments based on seb's feedback ([dba1d5b](https://github.com/medusajs/medusa/commit/dba1d5bb69f02e822f883cc3081fc3c2e4e26dff))
+- allow custom shipping options to bypass option requirements ([75e59ec](https://github.com/medusajs/medusa/commit/75e59ec6d540e19708929e8a76e97fdb1feef813))
+- autofix ([d9608e1](https://github.com/medusajs/medusa/commit/d9608e15e815898aa58cdf253fd46c3834ce3bda))
+- Creating shipping options with requirements ([#428](https://github.com/medusajs/medusa/issues/428)) ([ae0ab03](https://github.com/medusajs/medusa/commit/ae0ab03fac2747ec251abbb6161182dd21218ba6))
+- customer endpoints shouldn't use customer id already provided through authentication ([#402](https://github.com/medusajs/medusa/issues/402)) ([bf43896](https://github.com/medusajs/medusa/commit/bf43896d1942d352efcf8b900f4a31fef0fe215d))
+- example ([43a2b07](https://github.com/medusajs/medusa/commit/43a2b07866aab722ddb8dc24fe33d4afb7df1d1c))
+- failing integration tests ([9c72acd](https://github.com/medusajs/medusa/commit/9c72acda408fea994da3828163f9e6d436846721))
+- ILIKE operator not supported in sqlite ([#393](https://github.com/medusajs/medusa/issues/393)) ([49a1329](https://github.com/medusajs/medusa/commit/49a132976ded4d094a5129029743f73a020ecf04))
+- include shipping profile and requirement relations when fetching custom shipping options ([569595d](https://github.com/medusajs/medusa/commit/569595d0bbe9cd19fcd94c0229dce3244c685b1e))
+- jsdoc ([02ce006](https://github.com/medusajs/medusa/commit/02ce006440e3f366bedcb4e4cc7a195dc5a0fccc))
+- jsdoc custom shipping option service ([f7c7659](https://github.com/medusajs/medusa/commit/f7c765945b65c55489be0372533fc556869b0d58))
+- make /packages/medusa/src/services/gift-card.js pass eslint ([#533](https://github.com/medusajs/medusa/issues/533)) ([06ee5df](https://github.com/medusajs/medusa/commit/06ee5df9a0d56d52ca89611905c202281e26dc73))
+- make /packages/medusa/src/services/line-item.js pass eslint ([#555](https://github.com/medusajs/medusa/issues/555)) ([f2d97df](https://github.com/medusajs/medusa/commit/f2d97dfb862ade395291e27c87f438758655ee0b))
+- make medusa/src/services/fulfillment.js pass eslint ([#557](https://github.com/medusajs/medusa/issues/557)) ([fe599c7](https://github.com/medusajs/medusa/commit/fe599c709e1f7e0109ae69bd1d0efb396f959e6a))
+- make packages/medusa/src/services/claim.js pass eslint ([#551](https://github.com/medusajs/medusa/issues/551)) ([ddeaf57](https://github.com/medusajs/medusa/commit/ddeaf57f598b5bde8d048fdf63199ba8789348e0))
+- make packages/medusa/src/services/discount.js pass eslint ([#553](https://github.com/medusajs/medusa/issues/553)) ([1e13c83](https://github.com/medusajs/medusa/commit/1e13c831ab955d4221a887e921ee9d38b0b27225))
+- make packages/medusa/src/services/draft-order.js pass eslint ([#554](https://github.com/medusajs/medusa/issues/554)) ([1791acb](https://github.com/medusajs/medusa/commit/1791acb0447d3e200d4ec3465e4d633ab4497c35))
+- make packages/medusa/src/services/idempotency-key.js pass linting ([#568](https://github.com/medusajs/medusa/issues/568)) ([5b3c0c4](https://github.com/medusajs/medusa/commit/5b3c0c4471002064c3432d7d96c74b3b202ae5ad))
+- make packages/medusa/src/services/note.js pass eslint ([#565](https://github.com/medusajs/medusa/issues/565)) ([275a0f1](https://github.com/medusajs/medusa/commit/275a0f1d573fd43cc419233b82bd9b7e697851f5))
+- make packages/medusa/src/services/notification.js pass eslint ([#566](https://github.com/medusajs/medusa/issues/566)) ([38559b5](https://github.com/medusajs/medusa/commit/38559b5454935b404aad68f90d225df4bfb6ef33))
+- make packages/medusa/src/services/region.js pass eslint ([#542](https://github.com/medusajs/medusa/issues/542)) ([f926e02](https://github.com/medusajs/medusa/commit/f926e0245c8372b050c5b48a90ef1671ee9525f5))
+- Make packages/medusa/src/services/transaction.js pass linting ([#534](https://github.com/medusajs/medusa/issues/534)) ([10f1d9d](https://github.com/medusajs/medusa/commit/10f1d9df5c184ff723c71dbc618bc574e94228d9))
+- make return-reason.js pass eslint ([#539](https://github.com/medusajs/medusa/issues/539)) ([b6efa6f](https://github.com/medusajs/medusa/commit/b6efa6f4712cce08a650244cb0b15afac0e2cbc0))
+- make system-payment-provider.js pass eslint ([#574](https://github.com/medusajs/medusa/issues/574)) ([8e59ec8](https://github.com/medusajs/medusa/commit/8e59ec81e4280db432ea0290b0b92f098789e5ef))
+- **medusa:** hide password hash ([#429](https://github.com/medusajs/medusa/issues/429)) ([cd4afd1](https://github.com/medusajs/medusa/commit/cd4afd15768627b3bf7579e7e4c67ed0698ea681))
+- meiliesearch README.md + remove: searchService from silentResolver ([1444353](https://github.com/medusajs/medusa/commit/1444353b0af4e18a23cebbf46b6d1246aa495bb4))
+- merge conflicts ([153366c](https://github.com/medusajs/medusa/commit/153366cbd30feac3dd99a2d718b2e5b0b1b19dcc))
+- merge conflicts ([632ad17](https://github.com/medusajs/medusa/commit/632ad17e3fdf6fe1f0f336da134acee9668688e5))
+- merge develop ([2297a84](https://github.com/medusajs/medusa/commit/2297a84cb90d960e4f8d1210f3b419e16bb15438))
+- more adjustments ([3d088c3](https://github.com/medusajs/medusa/commit/3d088c351b4c430832dc22750c01220310577279))
+- move subscriber to core ([700f8c3](https://github.com/medusajs/medusa/commit/700f8c39190469337c74d9bf3f046f293024e521))
+- options relations on GET variant ([#532](https://github.com/medusajs/medusa/issues/532)) ([fc50aac](https://github.com/medusajs/medusa/commit/fc50aacde2e59fd3cc939dcdaa2630d788b4eca2))
+- product ordering ([57a6612](https://github.com/medusajs/medusa/commit/57a6612e845c078aec023d0cc49d6bfc175a1b37))
+- remove custom shipping options from swapService create method call ([71d433c](https://github.com/medusajs/medusa/commit/71d433c33583830fb7a3724154aa9918592888bd))
+- remove verbose mode in integration test + fix jsdoc ([36aeb4f](https://github.com/medusajs/medusa/commit/36aeb4fffa662930db0172a8397ff3b928b0d5ec))
+- shipping option updates ([#426](https://github.com/medusajs/medusa/issues/426)) ([22f3f2a](https://github.com/medusajs/medusa/commit/22f3f2af93fcebef5ebf89ce66cd926393ae5d25))
+- tests ([db83448](https://github.com/medusajs/medusa/commit/db83448d188b092745c3df6f38e87d89836942cc))
+- Throw on cart creation when no region exist ([#455](https://github.com/medusajs/medusa/issues/455)) ([17b192f](https://github.com/medusajs/medusa/commit/17b192fe37c14d978ae78a9537f552cf055bf5e2))
+- update event ([6d21d0d](https://github.com/medusajs/medusa/commit/6d21d0d39835b15ac132c14b742ec21ffca307d0))
+- update product images ([#494](https://github.com/medusajs/medusa/issues/494)) ([c0e947f](https://github.com/medusajs/medusa/commit/c0e947f47a009dcdf189bd4564485385b3019045))
+- update seeder to product published ([#423](https://github.com/medusajs/medusa/issues/423)) ([d8e5318](https://github.com/medusajs/medusa/commit/d8e531890d758e374fdd586f8b718d9b09126320))
+- use type to choose transformer before adding or replacing documents ([24eecd2](https://github.com/medusajs/medusa/commit/24eecd2922e0c3425f2d43549b3227c756820387))
+
+### Features
+
+- add product status ([#400](https://github.com/medusajs/medusa/issues/400)) ([a82332d](https://github.com/medusajs/medusa/commit/a82332da3e2c8940da814b27607182c2c888b49f))
+- Allow backorder on swaps ([#404](https://github.com/medusajs/medusa/issues/404)) ([00ab03f](https://github.com/medusajs/medusa/commit/00ab03f3a2b0c59049f5c5a2af2cb5eee9d4c72d))
+- allow product selection on discounts allocated to a specific item ([#395](https://github.com/medusajs/medusa/issues/395)) ([84d4d79](https://github.com/medusajs/medusa/commit/84d4d791eaf9508367a20d9f930ca959a7b707dd))
+- customer-information ([#413](https://github.com/medusajs/medusa/issues/413)) ([a70e3ed](https://github.com/medusajs/medusa/commit/a70e3ed0aee0e9c19f7aaf8bb8d22eb68a9695b7))
+- Product filtering ([#439](https://github.com/medusajs/medusa/issues/439)) ([5ef2a3f](https://github.com/medusajs/medusa/commit/5ef2a3fbcb108c8d49b7754ea14ac890af643950))
+- rma shipping option + unit tests ([77ee0bf](https://github.com/medusajs/medusa/commit/77ee0bf1860c9ba3336c6f870d248d887d2f5fb3))
+
+### Reverts
+
+- Revert "fixed linting errors on packages/medusa/src/services/user.js #531 (#543)" (#547) ([ba2d923](https://github.com/medusajs/medusa/commit/ba2d92341d7fa5cdd334fd9161f86da0c986b524)), closes [#531](https://github.com/medusajs/medusa/issues/531) [#543](https://github.com/medusajs/medusa/issues/543) [#547](https://github.com/medusajs/medusa/issues/547)
+
 ## [1.1.42](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.41...@medusajs/medusa@1.1.42) (2021-10-18)
 
 ### Bug Fixes

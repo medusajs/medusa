@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.27](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.25...medusa-plugin-slack-notification@1.1.27) (2021-10-18)
+
+### Features
+
+- allow product selection on discounts allocated to a specific item ([#395](https://github.com/medusajs/medusa/issues/395)) ([84d4d79](https://github.com/medusajs/medusa/commit/84d4d791eaf9508367a20d9f930ca959a7b707dd))
+
 ## [1.1.26](https://github.com/medusajs/medusa/compare/medusa-plugin-slack-notification@1.1.25...medusa-plugin-slack-notification@1.1.26) (2021-10-18)
 
 ### Features
