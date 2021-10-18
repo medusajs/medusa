@@ -85,7 +85,7 @@ jobs:
       # - run:
           # name: install medusa-interfaces
       - cache-install:
-        - path: packages/medusa-interfaces
+          path: packages/medusa-interfaces
           # command: npm install
           # working_directory: packages/medusa-interfaces
       - run:
