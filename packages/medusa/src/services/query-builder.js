@@ -23,11 +23,13 @@ class QueryBuilderService extends BaseService {
   }
 
   buildFilterQuery(filters) {
-    if (_.isEmpty(filters)) return
+    if (_.isEmpty(filters)) {
+      return
+    }
 
     const filterQuery = {}
 
-    Object.keys(filters).map(filter => {
+    Object.keys(filters).map((filter) => {
       filterQuery[filter] = filters[filter]
     })
 
@@ -35,9 +37,11 @@ class QueryBuilderService extends BaseService {
   }
 
   buildTextSearchQuery(search, searchProperties) {
-    if (_.isEmpty(search)) return
+    if (_.isEmpty(search)) {
+      return
+    }
 
-    const searchQuery = searchProperties.map(s => ({
+    const searchQuery = searchProperties.map((s) => ({
       [s]: new RegExp(search.q, "i"),
     }))
 
