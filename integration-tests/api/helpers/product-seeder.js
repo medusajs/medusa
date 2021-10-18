@@ -25,12 +25,42 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(coll)
 
+  const coll1 = manager.create(ProductCollection, {
+    id: "test-collection1",
+    handle: "test-collection1",
+    title: "Test collection 1",
+  })
+
+  await manager.save(coll1)
+
+  const coll2 = manager.create(ProductCollection, {
+    id: "test-collection2",
+    handle: "test-collection2",
+    title: "Test collection 2",
+  })
+
+  await manager.save(coll2)
+
   const tag = manager.create(ProductTag, {
     id: "tag1",
     value: "123",
   })
 
   await manager.save(tag)
+
+  const tag3 = manager.create(ProductTag, {
+    id: "tag3",
+    value: "123",
+  })
+
+  await manager.save(tag3)
+
+  const tag4 = manager.create(ProductTag, {
+    id: "tag4",
+    value: "123",
+  })
+
+  await manager.save(tag4)
 
   const type = manager.create(ProductType, {
     id: "test-type",
@@ -199,4 +229,46 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(variant5)
+
+  const product1 = manager.create(Product, {
+    id: "test-product_filtering_1",
+    handle: "test-product_filtering_1",
+    title: "Test product filtering 1",
+    profile_id: defaultProfile.id,
+    description: "test-product-description",
+    type: { id: "test-type", value: "test-type" },
+    collection_id: "test-collection1",
+    status: "proposed",
+    tags: [{ id: "tag3", value: "123" }],
+  })
+
+  await manager.save(product1)
+
+  const product2 = manager.create(Product, {
+    id: "test-product_filtering_2",
+    handle: "test-product_filtering_2",
+    title: "Test product filtering 2",
+    profile_id: defaultProfile.id,
+    description: "test-product-description",
+    type: { id: "test-type", value: "test-type" },
+    collection_id: "test-collection2",
+    status: "published",
+    tags: [{ id: "tag3", value: "123" }],
+  })
+
+  await manager.save(product2)
+
+  const product3 = manager.create(Product, {
+    id: "test-product_filtering_3",
+    handle: "test-product_filtering_3",
+    title: "Test product filtering 3",
+    profile_id: defaultProfile.id,
+    description: "test-product-description",
+    type: { id: "test-type", value: "test-type" },
+    collection_id: "test-collection1",
+    status: "draft",
+    tags: [{ id: "tag4", value: "1234" }],
+  })
+
+  await manager.save(product3)
 }

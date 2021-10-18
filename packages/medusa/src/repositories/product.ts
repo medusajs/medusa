@@ -15,7 +15,27 @@ export class ProductRepository extends Repository<Product> {
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
-      entities = await this.find(idsOrOptionsWithoutRelations)
+      // Since tags are in a one-to-many realtion they cant be included in a 
+      // regular query, to solve this add the join on tags seperately if 
+      // the query exists
+      const tags = idsOrOptionsWithoutRelations.where.tags
+      delete idsOrOptionsWithoutRelations.where.tags
+      let qb = this.createQueryBuilder("product")
+        .select(["product.id"])
+        .where(idsOrOptionsWithoutRelations.where)
+        .skip(idsOrOptionsWithoutRelations.skip)
+        .take(idsOrOptionsWithoutRelations.take)
+      
+      if (tags) { 
+        qb = qb
+          .leftJoinAndSelect("product.tags", "tags")
+          .andWhere(  
+            `tags.id IN (:...ids)`, { ids: tags._value}
+          )
+      }
+        
+      entities = await qb
+        .getMany()
     }
     const entitiesIds = entities.map(({ id }) => id)
 

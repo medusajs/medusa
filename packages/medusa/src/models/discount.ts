@@ -35,7 +35,7 @@ export class Discount {
   @Column({ nullable: true })
   rule_id: string
 
-  @ManyToOne(() => DiscountRule, { cascade: true, eager: true })
+  @ManyToOne(() => DiscountRule, { cascade: true })
   @JoinColumn({ name: "rule_id" })
   rule: DiscountRule
 
@@ -44,7 +44,7 @@ export class Discount {
 
   @Column({ nullable: true })
   parent_discount_id: string
-
+  
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "parent_discount_id" })
   parent_discount: Discount
@@ -57,6 +57,9 @@ export class Discount {
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   ends_at: Date
+
+  @Column({ nullable: true })
+  valid_duration: string
 
   @ManyToMany(() => Region, { cascade: true })
   @JoinTable({

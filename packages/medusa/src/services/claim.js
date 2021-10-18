@@ -1,7 +1,5 @@
-import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
 
 class ClaimService extends BaseService {
   static Events = {
@@ -102,7 +100,7 @@ class ClaimService extends BaseService {
   }
 
   update(id, data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
@@ -113,13 +111,7 @@ class ClaimService extends BaseService {
         )
       }
 
-      const {
-        claim_items,
-        shipping_methods,
-        metadata,
-        fulfillment_status,
-        no_notification,
-      } = data
+      const { claim_items, shipping_methods, metadata, no_notification } = data
 
       if (metadata) {
         claim.metadata = this.setMetadata_(claim, metadata)
@@ -183,9 +175,11 @@ class ClaimService extends BaseService {
    * Creates a Claim on an Order. Claims consists of items that are claimed and
    * optionally items to be sent as replacement for the claimed items. The
    * shipping address that the new items will be shipped to
+   * @param {Object} data - the object containing all data required to create a claim
+   * @return {Object} created claim
    */
   create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const claimRepo = manager.getCustomRepository(this.claimRepository_)
 
       const {
@@ -257,8 +251,8 @@ class ClaimService extends BaseService {
 
       let toRefund = refund_amount
       if (type === "refund" && typeof refund_amount === "undefined") {
-        const lines = claim_items.map(ci => {
-          const orderItem = order.items.find(oi => oi.id === ci.item_id)
+        const lines = claim_items.map((ci) => {
+          const orderItem = order.items.find((oi) => oi.id === ci.item_id)
           return {
             ...orderItem,
             quantity: ci.quantity,
@@ -274,7 +268,7 @@ class ClaimService extends BaseService {
       }
 
       const newItems = await Promise.all(
-        additional_items.map(i =>
+        additional_items.map((i) =>
           this.lineItemService_
             .withTransaction(manager)
             .generate(i.variant_id, order.region_id, i.quantity)
@@ -332,7 +326,7 @@ class ClaimService extends BaseService {
         await this.returnService_.withTransaction(manager).create({
           order_id: order.id,
           claim_order_id: result.id,
-          items: claim_items.map(ci => ({
+          items: claim_items.map((ci) => ({
             item_id: ci.item_id,
             quantity: ci.quantity,
             metadata: ci.metadata,
@@ -362,7 +356,7 @@ class ClaimService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const claim = await this.retrieve(id, {
         relations: [
           "additional_items",
@@ -429,7 +423,7 @@ class ClaimService extends BaseService {
             is_claim: true,
             no_notification: evaluatedNoNotification,
           },
-          claim.additional_items.map(i => ({
+          claim.additional_items.map((i) => ({
             item_id: i.id,
             quantity: i.quantity,
           })),
@@ -445,7 +439,7 @@ class ClaimService extends BaseService {
 
       for (const item of claim.additional_items) {
         const fulfillmentItem = successfullyFulfilled.find(
-          f => item.id === f.item_id
+          (f) => item.id === f.item_id
         )
 
         if (fulfillmentItem) {
@@ -485,7 +479,7 @@ class ClaimService extends BaseService {
   }
 
   async cancelFulfillment(fulfillmentId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const canceled = await this.fulfillmentService_
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
@@ -508,7 +502,7 @@ class ClaimService extends BaseService {
   }
 
   async processRefund(id) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const claim = await this.retrieve(id, {
         relations: ["order", "order.payments"],
       })
@@ -560,7 +554,7 @@ class ClaimService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const claim = await this.retrieve(id, {
         relations: ["additional_items"],
       })
@@ -584,7 +578,7 @@ class ClaimService extends BaseService {
       claim.fulfillment_status = "shipped"
 
       for (const i of claim.additional_items) {
-        const shipped = shipment.items.find(si => si.item_id === i.id)
+        const shipped = shipment.items.find((si) => si.item_id === i.id)
         if (shipped) {
           const shippedQty = (i.shipped_quantity || 0) + shipped.quantity
           await this.lineItemService_.withTransaction(manager).update(i.id, {
@@ -617,7 +611,7 @@ class ClaimService extends BaseService {
   }
 
   async cancel(id) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const claim = await this.retrieve(id, {
         relations: ["return_order", "fulfillments", "order", "order.refunds"],
       })
@@ -665,6 +659,7 @@ class ClaimService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the config object containing query settings
    * @return {Promise} the result of the find operation
    */
   async list(
@@ -678,7 +673,8 @@ class ClaimService extends BaseService {
 
   /**
    * Gets an order by id.
-   * @param {string} orderId - id of order to retrieve
+   * @param {string} claimId - id of order to retrieve
+   * @param {Object} config - the config object containing query settings
    * @return {Promise<Order>} the order document
    */
   async retrieve(claimId, config = {}) {
@@ -717,7 +713,7 @@ class ClaimService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.orderModel_
       .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
+      .catch((err) => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
