@@ -19,12 +19,12 @@ Object {
     "mid_code": null,
     "options": Array [
       Object {
-        "created_at": "2021-10-13T08:02:41.668Z",
+        "created_at": Any<String>,
         "deleted_at": null,
         "id": "test-variant-option",
         "metadata": null,
         "option_id": "test-option",
-        "updated_at": "2021-10-13T08:02:41.668Z",
+        "updated_at": Any<String>,
         "value": "Default variant",
         "variant_id": "test-variant",
       },
@@ -75,12 +75,12 @@ Object {
       "mid_code": null,
       "options": Array [
         Object {
-          "created_at": "2021-10-13T08:02:41.493Z",
+          "created_at": Any<String>,
           "deleted_at": null,
           "id": "test-variant-option",
           "metadata": null,
           "option_id": "test-option",
-          "updated_at": "2021-10-13T08:02:41.493Z",
+          "updated_at": Any<String>,
           "value": "Default variant",
           "variant_id": "test-variant",
         },
