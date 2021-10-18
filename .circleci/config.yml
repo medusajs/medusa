@@ -119,16 +119,22 @@ jobs:
           name: install packages/medusa-telemetry
           background: true
           command: cache-install packages/medusa-telemetry
-      - run: 
-          name: install integration-tests/api
-          background: true
-          command: cache-install integration-tests/api
-      - run: 
-          name: install integration-tests/api
-          background: true
-          command: cache-install integration-tests/api
-
-
+      - run:
+          name: force install
+          command: medusa-dev --force-install
+          working_directory: integration-tests/api
+      - run:
+          name: install tests
+          command: yarn install
+          working_directory: integration-tests/api
+      - run:
+          name: build tests
+          command: yarn build
+          working_directory: integration-tests/api
+      - run:
+          name: integration tests
+          command: yarn test
+          working_directory: integration-tests/api
 
       # - run:
       #     name: install medusa-babel
@@ -158,14 +164,6 @@ jobs:
       #     name: install tests
       #     command: yarn install
       #     working_directory: integration-tests/api
-      - run:
-          name: build tests
-          command: yarn build
-          working_directory: integration-tests/api
-      - run:
-          name: integration tests
-          command: yarn test
-          working_directory: integration-tests/api
 
         
 
