@@ -90,7 +90,8 @@ heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
 
 > Make sure to use actual secrets in a production environment.
-> Additionally, we need to set the buildpack to Node.js
+
+Additionally, we need to set the buildpack to Node.js
 
 ```shell=
 heroku buildpacks:set heroku/nodejs
