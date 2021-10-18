@@ -23,6 +23,7 @@
 
 /packages/medusa/src/subscribers/notification.js
 /packages/medusa/src/subscribers/order.js
+/packages/medusa/src/subscribers/product.js
 
 /packages/medusa/src/loaders/api.js
 /packages/medusa/src/loaders/database.js
@@ -75,7 +76,6 @@
 /packages/medusa-plugin-economic
 /packages/medusa-plugin-ip-lookup
 /packages/medusa-plugin-mailchimp
-/packages/medusa-plugin-meilisearch
 /packages/medusa-plugin-permissions
 /packages/medusa-plugin-restock-notification
 /packages/medusa-plugin-segment
