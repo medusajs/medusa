@@ -22,7 +22,7 @@ commands:
           command: npm install
           working_directory: <<parameters.path>>
       - save_cache: 
-          paths: 
+          paths:  
             - <<parameters.path>>
           key: npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
 
