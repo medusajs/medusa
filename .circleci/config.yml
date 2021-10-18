@@ -80,6 +80,7 @@ jobs:
     executor: node
     parallelism: 4
     steps: 
+      - checkout
       - cache-install:
           path: .
       - cache-install:
