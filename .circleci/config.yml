@@ -80,8 +80,8 @@ jobs:
     executor: node
     parallelism: 4
     steps: 
-      # - cache-install:
-      #     path: .
+      - cache-install:
+          path: .
       - cache-install:
           path: packages/medusa
       - cache-install:
