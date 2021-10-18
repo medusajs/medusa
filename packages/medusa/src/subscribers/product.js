@@ -70,7 +70,7 @@ class ProductSearchSubscriber {
 
   handleProductCreation = async (data) => {
     const product = await this.retrieveProduct_(data.id)
-    await this.searchService.addDocuments(
+    await this.searchService_.addDocuments(
       ProductService.IndexName,
       [product],
       indexTypes.products
@@ -86,7 +86,7 @@ class ProductSearchSubscriber {
 
   handleProductUpdate = async (data) => {
     const product = await this.retrieveProduct_(data.id)
-    await this.meilisearchService_.addDocuments(
+    await this.searchService_.addDocuments(
       ProductService.IndexName,
       [product],
       indexTypes.products
@@ -94,15 +94,12 @@ class ProductSearchSubscriber {
   }
 
   handleProductDeletion = async (data) => {
-    await this.meilisearchService_.deleteDocument(
-      ProductService.IndexName,
-      data.id
-    )
+    await this.searchService_.deleteDocument(ProductService.IndexName, data.id)
   }
 
   handleProductVariantChange = async (data) => {
     const product = await this.retrieveProduct_(data.product_id)
-    await this.meilisearchService_.addDocuments(
+    await this.searchService_.addDocuments(
       ProductService.IndexName,
       [product],
       indexTypes.products
