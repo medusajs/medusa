@@ -464,6 +464,8 @@ class OrderService extends BaseService {
           ],
         })
 
+      console.log("testing")
+
       if (cart.items.length === 0) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
