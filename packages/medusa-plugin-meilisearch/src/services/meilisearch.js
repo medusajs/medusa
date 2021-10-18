@@ -59,7 +59,9 @@ class MeiliSearchService extends SearchService {
   }
 
   transformProducts(products) {
-    if (!products) return []
+    if (!products) {
+      return []
+    }
     return products.map(transformProduct)
   }
 }
