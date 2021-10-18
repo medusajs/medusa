@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
       - <<: *install_node_modules
-      - run: yarn bootstrap --concurrency=2
+      - run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
         # Persist the workspace again with all packages already built
       - persist_to_workspace:
           root: ./
@@ -47,7 +47,7 @@ jobs:
       - run: ./scripts/assert-changed-files.sh "packages"
       - <<: *attach_to_bootstrap
       - run:
-          command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
+          command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1 --changedSince=origin/develop
 
   integration_testing:
     executor: node
