@@ -76,9 +76,10 @@ jobs:
       - run:
           command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1 --changedSince=origin/develop
 
-  install_integration_testing: 
+ 
+  integration_testing:
     executor: node
-    steps: 
+    steps:
       - checkout
       - cache-install:
           path: .
@@ -96,15 +97,7 @@ jobs:
           path: packages/medusa-test-utils
       - cache-install:
           path: packages/medusa-telemetry
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - "*"
-  
-  integration_testing:
-    executor: node
-    steps:
-      - checkout
+
       - run: sudo npm i -g medusa-dev-cli
       - run:
           name: Set path to medusa repo
@@ -170,11 +163,8 @@ jobs:
 workflows:
   test_all:
     jobs:
-      - install_integration_testing
+      - integration_testing
       - bootstrap
       - unit_test:
           requires:
             - bootstrap
-      - integration_testing:
-          requires: 
-            - install_integration_testing
