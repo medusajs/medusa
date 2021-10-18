@@ -116,6 +116,10 @@ export class Order {
   @Column({ nullable: true })
   billing_address_id: string
 
+  @Index()
+  @Column({ nullable: true })
+  billing_address_id_2: string
+
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
