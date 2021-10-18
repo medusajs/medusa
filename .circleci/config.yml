@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
       - <<: *install_node_modules
-      - run: yarn bootstrap --concurrency=2
+      - run: yarn bootstrap --since develop...HEAD --concurrency=2
         # Persist the workspace again with all packages already built
       - persist_to_workspace:
           root: ./
