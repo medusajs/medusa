@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.45](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.44...@medusajs/medusa@1.1.45) (2021-10-18)
+
+**Note:** Version bump only for package @medusajs/medusa
+
 ## [1.1.44](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.43...@medusajs/medusa@1.1.44) (2021-10-18)
 
 ### Bug Fixes
