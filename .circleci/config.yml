@@ -32,7 +32,6 @@ jobs:
     steps:
       - checkout
       - run: git fetch
-      - run: git pull
       - run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
       - <<: *install_node_modules
       - run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
