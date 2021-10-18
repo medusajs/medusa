@@ -47,7 +47,7 @@ jobs:
       - run: ./scripts/assert-changed-files.sh "packages"
       - <<: *attach_to_bootstrap
       - run:
-          command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
+          command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1 --changedSince=origin/develop
 
   integration_testing:
     executor: node
