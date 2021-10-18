@@ -108,7 +108,7 @@ jobs:
       
       - run:  
           name: force install
-          command: medusa-dev --scan-once #--force-install
+          command: medusa-dev --force-install
           working_directory: integration-tests/api
       - run:
           name: install tests
