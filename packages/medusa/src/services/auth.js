@@ -3,7 +3,7 @@ import { BaseService } from "medusa-interfaces"
 
 /**
  * Can authenticate a user based on email password combination
- * @implements BaseService
+ * @extends BaseService
  */
 class AuthService extends BaseService {
   constructor({ userService, customerService }) {
@@ -47,7 +47,9 @@ class AuthService extends BaseService {
           success: true,
           user,
         }
-      } catch (error) {}
+      } catch (error) {
+        // ignore
+      }
     }
 
     try {
@@ -76,12 +78,17 @@ class AuthService extends BaseService {
    */
   async authenticate(email, password) {
     try {
-      const user = await this.userService_.retrieveByEmail(email)
+      const userPasswordHash = await this.userService_.retrieveByEmail(email, {
+        select: ["password_hash"],
+      })
+
       const passwordsMatch = await this.comparePassword_(
         password,
-        user.password_hash
+        userPasswordHash.password_hash
       )
+
       if (passwordsMatch) {
+        const user = await this.userService_.retrieveByEmail(email)
         return {
           success: true,
           user,
@@ -113,8 +120,13 @@ class AuthService extends BaseService {
    */
   async authenticateCustomer(email, password) {
     try {
-      const customer = await this.customerService_.retrieveByEmail(email)
-      if (!customer.password_hash) {
+      const customerPasswordHash = await this.customerService_.retrieveByEmail(
+        email,
+        {
+          select: ["password_hash"],
+        }
+      )
+      if (!customerPasswordHash.password_hash) {
         return {
           success: false,
           error: "Invalid email or password",
@@ -123,9 +135,11 @@ class AuthService extends BaseService {
 
       const passwordsMatch = await this.comparePassword_(
         password,
-        customer.password_hash
+        customerPasswordHash.password_hash
       )
+
       if (passwordsMatch) {
+        const customer = await this.customerService_.retrieveByEmail(email)
         return {
           success: true,
           customer,

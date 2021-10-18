@@ -7,7 +7,7 @@ import { Brackets, ILike } from "typeorm"
 
 /**
  * Provides layer to manipulate customers.
- * @implements BaseService
+ * @implements {BaseService}
  */
 class CustomerService extends BaseService {
   static Events = {
@@ -60,9 +60,7 @@ class CustomerService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email)
     if (error) {
       throw new MedusaError(
@@ -93,7 +91,7 @@ class CustomerService extends BaseService {
    * secret a long side a payload with userId and the expiry time for the token,
    * which is always 15 minutes.
    * @param {string} customerId - the customer to reset the password for
-   * @returns {string} the generated JSON web token
+   * @return {string} the generated JSON web token
    */
   async generateResetPasswordToken(customerId) {
     const customer = await this.retrieve(customerId)
@@ -122,6 +120,7 @@ class CustomerService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the config object containing query settings
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 50 }) {
@@ -144,11 +143,11 @@ class CustomerService extends BaseService {
       delete where.first_name
       delete where.last_name
 
-      query.where = qb => {
+      query.where = (qb) => {
         qb.where(where)
 
         qb.andWhere(
-          new Brackets(qb => {
+          new Brackets((qb) => {
             qb.where({ email: ILike(`%${q}%`) })
               .orWhere({ first_name: ILike(`%${q}%`) })
               .orWhere({ last_name: ILike(`%${q}%`) })
@@ -183,11 +182,11 @@ class CustomerService extends BaseService {
       delete where.first_name
       delete where.last_name
 
-      query.where = qb => {
+      query.where = (qb) => {
         qb.where(where)
 
         qb.andWhere(
-          new Brackets(qb => {
+          new Brackets((qb) => {
             qb.where({ email: ILike(`%${q}%`) })
               .orWhere({ first_name: ILike(`%${q}%`) })
               .orWhere({ last_name: ILike(`%${q}%`) })
@@ -214,6 +213,7 @@ class CustomerService extends BaseService {
   /**
    * Gets a customer by id.
    * @param {string} customerId - the id of the customer to get.
+   * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
    */
   async retrieve(customerId, config = {}) {
@@ -224,7 +224,6 @@ class CustomerService extends BaseService {
     const query = this.buildQuery_({ id: validatedId }, config)
 
     const customer = await customerRepo.findOne(query)
-
     if (!customer) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -238,6 +237,7 @@ class CustomerService extends BaseService {
   /**
    * Gets a customer by email.
    * @param {string} email - the email of the customer to get.
+   * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByEmail(email, config = {}) {
@@ -261,6 +261,7 @@ class CustomerService extends BaseService {
   /**
    * Gets a customer by phone.
    * @param {string} phone - the phone of the customer to get.
+   * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByPhone(phone, config = {}) {
@@ -284,7 +285,7 @@ class CustomerService extends BaseService {
   /**
    * Hashes a password
    * @param {string} password - the value to hash
-   * @return hashed password
+   * @return {Promise<string>} hashed password
    */
   async hashPassword_(password) {
     const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
@@ -300,7 +301,7 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of create
    */
   async create(customer) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const customerRepository = manager.getCustomRepository(
         this.customerRepository_
       )
@@ -312,7 +313,9 @@ class CustomerService extends BaseService {
         customer.billing_address = this.validateBillingAddress_(billing_address)
       }
 
-      const existing = await this.retrieveByEmail(email).catch(err => undefined)
+      const existing = await this.retrieveByEmail(email).catch(
+        (err) => undefined
+      )
 
       if (existing && existing.has_account) {
         throw new MedusaError(
@@ -353,13 +356,13 @@ class CustomerService extends BaseService {
 
   /**
    * Updates a customer.
-   * @param {string} variantId - the id of the variant. Must be a string that
+   * @param {string} customerId - the id of the variant. Must be a string that
    *   can be casted to an ObjectId
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
   async update(customerId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const customerRepository = manager.getCustomRepository(
         this.customerRepository_
       )
@@ -370,10 +373,9 @@ class CustomerService extends BaseService {
       const {
         email,
         password,
-        password_hash,
+        metadata,
         billing_address,
         billing_address_id,
-        metadata,
         ...rest
       } = update
 
@@ -386,7 +388,7 @@ class CustomerService extends BaseService {
       }
 
       if ("billing_address_id" in update || "billing_address" in update) {
-        const address = update.billing_address_id || update.billing_address
+        const address = billing_address_id || billing_address
         await this.updateBillingAddress_(customer, address, addrRepo)
       }
 
@@ -408,12 +410,18 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * Updates the customers's billing address.
+   * Updates the customers' billing address.
    * @param {Customer} customer - the Customer to update
-   * @param {object} address - the value to set the billing address to
+   * @param {Object|string} addressOrId - the value to set the billing address to
+   * @param {Object} addrRepo - address repository
    * @return {Promise} the result of the update operation
    */
   async updateBillingAddress_(customer, addressOrId, addrRepo) {
+    if (addressOrId === null) {
+      customer.billing_address_id = null
+      return
+    }
+
     if (typeof addressOrId === `string`) {
       addressOrId = await addrRepo.findOne({
         where: { id: addressOrId },
@@ -424,7 +432,6 @@ class CustomerService extends BaseService {
 
     if (addressOrId.id) {
       customer.billing_address_id = addressOrId.id
-      customer.billing_address = addressOrId
     } else {
       if (customer.billing_address_id) {
         const addr = await addrRepo.findOne({
@@ -443,7 +450,7 @@ class CustomerService extends BaseService {
   }
 
   async updateAddress(customerId, addressId, address) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
       address.country_code = address.country_code.toLowerCase()
@@ -464,7 +471,7 @@ class CustomerService extends BaseService {
   }
 
   async removeAddress(customerId, addressId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
@@ -472,7 +479,9 @@ class CustomerService extends BaseService {
         where: { id: addressId, customer_id: customerId },
       })
 
-      if (!address) return Promise.resolve()
+      if (!address) {
+        return Promise.resolve()
+      }
 
       await addressRepo.softRemove(address)
 
@@ -481,7 +490,7 @@ class CustomerService extends BaseService {
   }
 
   async addAddress(customerId, address) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const addressRepository = manager.getCustomRepository(
         this.addressRepository_
       )
@@ -493,8 +502,8 @@ class CustomerService extends BaseService {
       })
       this.validateBillingAddress_(address)
 
-      let shouldAdd = !customer.shipping_addresses.find(
-        a =>
+      const shouldAdd = !customer.shipping_addresses.find(
+        (a) =>
           a.country_code.toLowerCase() === address.country_code.toLowerCase() &&
           a.address_1 === address.address_1 &&
           a.address_2 === address.address_2 &&
@@ -526,13 +535,15 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(customerId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
       const customer = await customerRepo.findOne({ where: { id: customerId } })
 
-      if (!customer) return Promise.resolve()
+      if (!customer) {
+        return Promise.resolve()
+      }
 
       await customerRepo.softRemove(customer)
 

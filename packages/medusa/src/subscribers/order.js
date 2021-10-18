@@ -32,7 +32,13 @@ class OrderSubscriber {
   handleOrderPlaced = async data => {
     const order = await this.orderService_.retrieve(data.id, {
       select: ["subtotal"],
-      relations: ["discounts", "items", "gift_cards"],
+      relations: [
+        "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
+        "items",
+        "gift_cards",
+      ],
     })
 
     await Promise.all(
