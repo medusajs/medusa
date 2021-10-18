@@ -166,8 +166,11 @@ jobs:
 workflows:
   test_all:
     jobs:
+      - install_integration_testing
       - bootstrap
       - unit_test:
           requires:
             - bootstrap
-      - integration_testing
+      - integration_testing:
+          requires: 
+            - install_integration_testing
