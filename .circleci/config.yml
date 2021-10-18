@@ -4,7 +4,8 @@ orbs:
 
 commands: 
   cache-install: 
-    # description: install << parameters.path >>
+    # name: install << parameters.path >>
+    description: installs << parameters.path >>
     parameters: 
       path: 
         type: string
@@ -12,6 +13,7 @@ commands:
       # - run:
       #     name: install << parameters.path >>
       #     steps:
+
       - restore_cache: 
           keys: 
             - npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
