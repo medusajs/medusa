@@ -1,3 +1,4 @@
+import ProductVariantService from "../services/product-variant"
 import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
 
@@ -52,17 +53,17 @@ class ProductSearchSubscriber {
     )
 
     this.eventBus_.subscribe(
-      "product-variant.created",
+      ProductVariantService.Events.CREATED,
       this.handleProductVariantChange
     )
 
     this.eventBus_.subscribe(
-      "product-variant.updated",
+      ProductVariantService.Events.UPDATED,
       this.handleProductVariantChange
     )
 
     this.eventBus_.subscribe(
-      "product-variant.deleted",
+      ProductVariantService.Events.DELETED,
       this.handleProductVariantChange
     )
   }
