@@ -4,11 +4,14 @@ orbs:
 
 commands: 
   cache-install: 
-    description: install << parameters.path >>
+    # description: install << parameters.path >>
     parameters: 
       path: 
         type: string
     steps: 
+      # - run:
+      #     name: install << parameters.path >>
+      #     steps:
       - restore_cache: 
           keys: 
             - npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
@@ -79,46 +82,32 @@ jobs:
       # - run:
       #     name: install base
       #     command: yarn install
-      - run:
-          name: install base
-          background: true
-          command: cache-install .
       # - run:
       #     name: install medusa
       #     command: npm install
       #     working_directory: packages/medusa
-      - run:
-          name: install packages/medusa
-          background: true
-          command: cache-install packages/medusa
       # - run:
           # name: install medusa-interfaces
           # command: npm install
           # working_directory: packages/medusa-interfaces
-      - run: 
-          name: install packages/medusa-interfaces
-          background: true
-          command: cache-install packages/medusa-interfaces
-      - run: 
-          name: install packages/babel-preset-medusa-package
-          background: true
-          command: cache-install packages/babel-preset-medusa-package
-      - run: 
-          name: install packages/medusa-cli
-          background: true
-          command: cache-install packages/medusa-cli
-      - run: 
-          name: install packages/medusa-core-utils
-          background: true
-          command: cache-install packages/medusa-core-utils
-      - run: 
-          name: install packages/medusa-test-utils
-          background: true
-          command: cache-install packages/medusa-test-utils
-      - run: 
-          name: install packages/medusa-telemetry
-          background: true
-          command: cache-install packages/medusa-telemetry
+      - cache-install:
+          path: .
+      - cache-install:
+          path: packages/medusa
+      - cache-install:
+          path: packages/medusa-interfaces
+      - cache-install:
+          path: packages/babel-preset-medusa-package
+      - cache-install:
+          path: packages/medusa-cli
+      - cache-install:
+          path: packages/medusa-core-utils
+      - cache-install:
+          path: packages/medusa-test-utils
+      - cache-install:
+          path: packages/medusa-telemetry
+
+
       - run:
           name: force install
           command: medusa-dev --force-install
