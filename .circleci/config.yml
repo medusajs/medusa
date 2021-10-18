@@ -55,12 +55,23 @@ aliases:
 
 jobs:
   bootstrap:
+    parameters:
+       run_full: 
+         type: boolean
+         default: false
     executor: node
     steps:
       - checkout
       - run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
       - <<: *install_node_modules
-      - run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
+      - when: 
+          condition: <<parameters.run_full>>
+          steps: 
+            - run: yarn bootstrap --concurrency=2
+      - unless: 
+          condition: <<parameters.run_full>>
+          steps: 
+            - run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
         # Persist the workspace again with all packages already built
       - persist_to_workspace:
           root: ./
