@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.18...medusa-plugin-restock-notification@0.0.20) (2021-10-18)
+
+### Bug Fixes
+
+- add delay before triggering email ([#458](https://github.com/medusajs/medusa/issues/458)) ([ee2f7c6](https://github.com/medusajs/medusa/commit/ee2f7c6333a0e8a4fa1454c514662bb83ce16346))
+
 ## [0.0.19](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.18...medusa-plugin-restock-notification@0.0.19) (2021-10-18)
 
 ### Bug Fixes
