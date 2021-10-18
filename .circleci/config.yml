@@ -43,6 +43,11 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: integration-tests
 
+dependencies: 
+  cache_directories: 
+    - /home/circleci/.local/bin
+    - /home/circleci/.local/lib/node_modules
+
 aliases:
   install_node_modules: &install_node_modules
     run:
@@ -79,7 +84,7 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
+      # - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
       - run:
           name: Set path to medusa repo
           command: medusa-dev --set-path-to-repo `pwd`
