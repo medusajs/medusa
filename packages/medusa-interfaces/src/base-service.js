@@ -19,7 +19,7 @@ class BaseService {
    * Used to build TypeORM queries.
    */
   buildQuery_(selector, config = {}) {
-    const build = obj => {
+    const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
         switch (true) {
           case value instanceof FindOperator:
@@ -49,11 +49,11 @@ class BaseService {
             })
 
             acc[key] = Raw(
-              a =>
+              (a) =>
                 subquery
                   .map((s, index) => `${a} ${s.operator} :${index}`)
                   .join(" AND "),
-              subquery.map(s => s.value)
+              subquery.map((s) => s.value)
             )
             break
           default:
@@ -149,7 +149,7 @@ class BaseService {
       return work(this.transactionManager_)
     } else {
       const temp = this.manager_
-      const doWork = async m => {
+      const doWork = async (m) => {
         this.manager_ = m
         this.transactionManager_ = m
         try {
@@ -167,17 +167,17 @@ class BaseService {
       if (isolation) {
         let result
         try {
-          result = await this.manager_.transaction(isolation, m => doWork(m))
+          result = await this.manager_.transaction(isolation, (m) => doWork(m))
           return result
         } catch (error) {
           if (this.shouldRetryTransaction(error)) {
-            return this.manager_.transaction(isolation, m => doWork(m))
+            return this.manager_.transaction(isolation, (m) => doWork(m))
           } else {
             throw error
           }
         }
       }
-      return this.manager_.transaction(m => doWork(m))
+      return this.manager_.transaction((m) => doWork(m))
     }
   }
 
@@ -230,7 +230,7 @@ class BaseService {
    */
   runDecorators_(obj, fields = [], expandFields = []) {
     return this.decorators_.reduce(async (acc, next) => {
-      return acc.then(res => next(res, fields, expandFields)).catch(() => acc)
+      return acc.then((res) => next(res, fields, expandFields)).catch(() => acc)
     }, Promise.resolve(obj))
   }
 }
