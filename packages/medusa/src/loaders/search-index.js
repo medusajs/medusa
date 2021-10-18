@@ -6,12 +6,13 @@ async function loadProductsIntoSearchEngine(container) {
   const productService = container.resolve("productService")
 
   const TAKE = 20
-  let skip = 0
   let hasMore = true
+
+  let lastSeenId = ""
 
   while (hasMore) {
     const products = await productService.list(
-      {},
+      { id: { gt: lastSeenId } },
       {
         select: [
           "id",
@@ -39,8 +40,7 @@ async function loadProductsIntoSearchEngine(container) {
           "options",
         ],
         take: TAKE,
-        skip,
-        order: { created_at: "ASC" },
+        order: { id: "ASC" },
       }
     )
 
@@ -50,7 +50,7 @@ async function loadProductsIntoSearchEngine(container) {
         products,
         indexTypes.products
       )
-      skip += products.length
+      lastSeenId = products[products.length - 1].id
     } else {
       hasMore = false
     }
