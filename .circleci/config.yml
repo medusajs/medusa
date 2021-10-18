@@ -15,7 +15,7 @@ commands:
             - npm-cache-<< parameters.path >>-{{checksum "<<parameters.path>>/package.json"}}
             - npm-cache-<< parameters.path >>-
       - run: 
-          command: npm install
+          command: npm ci
           name: install << parameters.path >>
           working_directory: <<parameters.path>>
       - save_cache: 
