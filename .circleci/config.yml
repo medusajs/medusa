@@ -104,7 +104,7 @@ jobs:
       - restore_cache: 
           name: restore cache medusa-dev
           keys: 
-            - npm-cache-medusa-dev-{{medusa-dev --version}}
+            - npm-cache-medusa-dev
             - npm-cache-medusa-dev-
       - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
       - save_cache: 
@@ -112,7 +112,7 @@ jobs:
           paths:  
             - /home/circleci/.local/bin
             - /home/circleci/.local/lib/node_modules
-          key: npm-cache-medusa-dev-{{medusa-dev --version}}
+          key: npm-cache-medusa-dev
 
       - run:
           name: Set path to medusa repo
