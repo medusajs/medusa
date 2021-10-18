@@ -53,34 +53,6 @@ aliases:
       at: ./
 
 jobs:
-  install_integration_tests:
-    executor: node 
-    steps: 
-      - checkout
-      - run:
-          name: Set path to medusa repo
-          command: medusa-dev --set-path-to-repo `pwd`
-      - cache-install:
-          path: .
-      - cache-install:
-          path: packages/medusa
-      - cache-install:
-          path: packages/medusa-interfaces
-      - cache-install:
-          path: packages/babel-preset-medusa-package
-      - cache-install:
-          path: packages/medusa-cli
-      - cache-install:
-          path: packages/medusa-core-utils
-      - cache-install:
-          path: packages/medusa-test-utils
-      - cache-install:
-          path: packages/medusa-telemetry
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - "*"
-
   bootstrap:
     executor: node
     steps:
@@ -107,7 +79,7 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: sudo npm i -g medusa-dev-cli
+      - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
       - run:
           name: Set path to medusa repo
           command: medusa-dev --set-path-to-repo `pwd`
