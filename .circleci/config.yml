@@ -78,7 +78,6 @@ jobs:
 
   install_integration_testing: 
     executor: node
-    parallelism: 4
     steps: 
       - checkout
       - cache-install:
