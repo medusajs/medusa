@@ -4,10 +4,10 @@ const {
   LineItem,
   Fulfillment,
   Return,
-} = require("@medusajs/medusa");
+} = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
-  const manager = connection.manager;
+  const manager = connection.manager
 
   let orderWithClaim = manager.create(Order, {
     id: "order-with-claim",
@@ -40,9 +40,9 @@ module.exports = async (connection, data = {}) => {
     ],
     items: [],
     ...data,
-  });
+  })
 
-  await manager.save(orderWithClaim);
+  await manager.save(orderWithClaim)
 
   const li = manager.create(LineItem, {
     id: "test-item-co-2",
@@ -54,9 +54,9 @@ module.exports = async (connection, data = {}) => {
     quantity: 1,
     variant_id: "test-variant",
     order_id: orderWithClaim.id,
-  });
+  })
 
-  await manager.save(li);
+  await manager.save(li)
 
   const li2 = manager.create(LineItem, {
     id: "test-item-co-3",
@@ -68,9 +68,9 @@ module.exports = async (connection, data = {}) => {
     quantity: 4,
     variant_id: "test-variant",
     order_id: orderWithClaim.id,
-  });
+  })
 
-  await manager.save(li2);
+  await manager.save(li2)
 
   const claimWithFulfillment = manager.create(ClaimOrder, {
     id: "claim-w-f",
@@ -79,23 +79,23 @@ module.exports = async (connection, data = {}) => {
     fulfillment_status: "not_fulfilled",
     order_id: "order-with-claim",
     ...data,
-  });
+  })
 
   const ful1 = manager.create(Fulfillment, {
     id: "fulfillment-co-1",
     data: {},
     provider_id: "test-ful",
-  });
+  })
 
   const ful2 = manager.create(Fulfillment, {
     id: "fulfillment-co-2",
     data: {},
     provider_id: "test-ful",
-  });
+  })
 
-  claimWithFulfillment.fulfillments = [ful1, ful2];
+  claimWithFulfillment.fulfillments = [ful1, ful2]
 
-  await manager.save(claimWithFulfillment);
+  await manager.save(claimWithFulfillment)
 
   const claimWithReturn = manager.create(ClaimOrder, {
     id: "claim-w-r",
@@ -104,9 +104,9 @@ module.exports = async (connection, data = {}) => {
     fulfillment_status: "not_fulfilled",
     order_id: "order-with-claim",
     ...data,
-  });
+  })
 
-  await manager.save(claimWithReturn);
+  await manager.save(claimWithReturn)
 
   await manager.insert(Return, {
     id: "return-id-2",
@@ -114,5 +114,5 @@ module.exports = async (connection, data = {}) => {
     status: "requested",
     refund_amount: 0,
     data: {},
-  });
-};
+  })
+}
