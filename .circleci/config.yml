@@ -107,39 +107,37 @@ jobs:
     executor: node
     steps:
       - checkout
-      # - run: sudo npm i -g medusa-dev-cli
-      # - run:
-      #     name: Set path to medusa repo
-      #     command: medusa-dev --set-path-to-repo `pwd`
-      # # - run:
-      # #     name: install base
-      # #     command: yarn install
-      # # - run:
-      # #     name: install medusa
-      # #     command: npm install
-      # #     working_directory: packages/medusa
-      # # - run:
-      #     # name: install medusa-interfaces
-      #     # command: npm install
-      #     # working_directory: packages/medusa-interfaces
-      # - cache-install:
-      #     path: .
-      # - cache-install:
-      #     path: packages/medusa
-      # - cache-install:
-      #     path: packages/medusa-interfaces
-      # - cache-install:
-      #     path: packages/babel-preset-medusa-package
-      # - cache-install:
-      #     path: packages/medusa-cli
-      # - cache-install:
-      #     path: packages/medusa-core-utils
-      # - cache-install:
-      #     path: packages/medusa-test-utils
-      # - cache-install:
-      #     path: packages/medusa-telemetry
-      
       - run: sudo npm i -g medusa-dev-cli
+      - run:
+          name: Set path to medusa repo
+          command: medusa-dev --set-path-to-repo `pwd`
+      # - run:
+      #     name: install base
+      #     command: yarn install
+      # - run:
+      #     name: install medusa
+      #     command: npm install
+      #     working_directory: packages/medusa
+      # - run:
+          # name: install medusa-interfaces
+          # command: npm install
+          # working_directory: packages/medusa-interfaces
+      - cache-install:
+          path: .
+      - cache-install:
+          path: packages/medusa
+      - cache-install:
+          path: packages/medusa-interfaces
+      - cache-install:
+          path: packages/babel-preset-medusa-package
+      - cache-install:
+          path: packages/medusa-cli
+      - cache-install:
+          path: packages/medusa-core-utils
+      - cache-install:
+          path: packages/medusa-test-utils
+      - cache-install:
+          path: packages/medusa-telemetry
       - run:  
           name: force install
           command: medusa-dev --force-install
@@ -189,12 +187,12 @@ jobs:
 workflows:
   test_all:
     jobs:
-      - install_integration_tests
+      # - install_integration_tests
       - bootstrap
       - unit_test:
           requires:
             - bootstrap
-      - integration_testing:
-          requires:
-            - install_integration_tests
+      - integration_testing
+          # requires:
+          #   - install_integration_tests
             # - bootstrap
