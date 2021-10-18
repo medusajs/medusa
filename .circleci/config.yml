@@ -9,8 +9,6 @@ commands:
       path: 
         type: string
     steps: 
-      - run:
-          command: echo ""
       - restore_cache: 
           name: restore cache << parameters.path >>
           keys: 
@@ -78,16 +76,12 @@ jobs:
       - run:
           command: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1 --changedSince=origin/develop
 
-  integration_testing:
+  install_integration_testing: 
     executor: node
-    steps:
-      - checkout
-      - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
-      - run:
-          name: Set path to medusa repo
-          command: medusa-dev --set-path-to-repo `pwd`
-      - cache-install:
-          path: .
+    parallelism: 4
+    steps: 
+      # - cache-install:
+      #     path: .
       - cache-install:
           path: packages/medusa
       - cache-install:
@@ -102,6 +96,16 @@ jobs:
           path: packages/medusa-test-utils
       - cache-install:
           path: packages/medusa-telemetry
+
+  integration_testing:
+    executor: node
+    steps:
+      - checkout
+      - run: sudo npm --prefix=$HOME/.local i -g medusa-dev-cli
+      - run:
+          name: Set path to medusa repo
+          command: medusa-dev --set-path-to-repo `pwd`
+      
       - run:  
           name: force install
           command: medusa-dev --force-install
