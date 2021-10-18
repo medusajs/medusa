@@ -8,6 +8,7 @@ export default async (container, options) => {
       )
     )
   } catch (err) {
+    // ignore
     console.log(err)
   }
 }
