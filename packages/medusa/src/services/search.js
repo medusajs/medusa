@@ -2,7 +2,7 @@ import { SearchService } from "medusa-interfaces"
 
 /**
  * Default class that implements SearchService but provides stuv implementation for all methods
- * @implements SearchService
+ * @extends SearchService
  */
 class DefaultSearchService extends SearchService {
   constructor(container) {
