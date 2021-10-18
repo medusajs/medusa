@@ -57,7 +57,6 @@ jobs:
     executor: node 
     steps: 
       - checkout
-      - run: sudo npm i -g medusa-dev-cli
       - run:
           name: Set path to medusa repo
           command: medusa-dev --set-path-to-repo `pwd`
@@ -139,8 +138,9 @@ jobs:
       #     path: packages/medusa-test-utils
       # - cache-install:
       #     path: packages/medusa-telemetry
-
-      - run:
+      
+      - run: sudo npm i -g medusa-dev-cli
+      - run:  
           name: force install
           command: medusa-dev --force-install
           working_directory: integration-tests/api
