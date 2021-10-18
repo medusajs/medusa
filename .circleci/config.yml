@@ -96,7 +96,11 @@ jobs:
           path: packages/medusa-test-utils
       - cache-install:
           path: packages/medusa-telemetry
-
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - "*"
+  
   integration_testing:
     executor: node
     steps:
