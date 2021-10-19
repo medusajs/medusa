@@ -17,9 +17,9 @@ runs:
           */*/node_modules
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v1-${{ hashFiles('**/yarn.lock') }}
     - run: |
-        if echo ${{ steps.cache.outputs.cache-hit}} | grep -c "true"
+        if ${{ steps.cache.outputs.cache-hit}} 
         then
-          if echo $${{inputs.partial}} | grep -c "true"
+          if ${{inputs.partial}} 
           then
             yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
           fi
