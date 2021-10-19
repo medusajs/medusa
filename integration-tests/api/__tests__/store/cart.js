@@ -30,7 +30,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: true })
+      medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
     }
@@ -745,7 +745,7 @@ describe("/store/carts", () => {
     })
   })
 
-  describe.only("shipping address + region updates", () => {
+  describe("shipping address + region updates", () => {
     beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
