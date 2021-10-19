@@ -27,6 +27,7 @@ runs:
           if echo $${{inputs.partial}} | grep -c "true"
           then
           yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
+          fi
         else
           yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
