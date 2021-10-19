@@ -6,8 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env: 
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: integration-tests
+      DB_PASSWORD: integration-tests
       
     services:
       postgres:
@@ -29,6 +28,7 @@ jobs:
  
       - name: Cache node modules
         uses: actions/cache@v2
+        id: cache
         with:
           path: |
             **/node_modules
@@ -40,7 +40,12 @@ jobs:
         run: yarn install
         
       - name: bootstrap
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn bootstrap --concurrency=2
+        
+      - name: partial bootstrap
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
         
       - name: install dev cli
         run: sudo npm i -g medusa-dev-cli
