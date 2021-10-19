@@ -771,8 +771,8 @@ class CartService extends BaseService {
     addressOrId.country_code = addressOrId.country_code.toLowerCase()
 
     if (addressOrId.id) {
-      cart.billing_address_id = addressOrId.id
-      cart.billing_address = addressOrId
+      const updated = await addrRepo.save(addressOrId)
+      cart.billing_address = updated
     } else {
       if (cart.billing_address_id) {
         const addr = await addrRepo.findOne({
@@ -823,8 +823,8 @@ class CartService extends BaseService {
     }
 
     if (addressOrId.id) {
-      await addrRepo.save(addressOrId)
-      cart.shipping_address_id = addressOrId.id
+      const updated = await addrRepo.save(addressOrId)
+      cart.shipping_address = updated
     } else {
       if (cart.shipping_address_id) {
         const addr = await addrRepo.findOne({

@@ -151,9 +151,11 @@ export class Cart {
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
-  @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
-    cascade: ["insert", "remove"],
-  })
+  @OneToMany(
+    () => LineItem,
+    lineItem => lineItem.cart,
+    { cascade: ["insert", "remove"] }
+  )
   items: LineItem[]
 
   @Index()
@@ -202,9 +204,11 @@ export class Cart {
 
   payment_session: PaymentSession
 
-  @OneToMany(() => PaymentSession, (paymentSession) => paymentSession.cart, {
-    cascade: true,
-  })
+  @OneToMany(
+    () => PaymentSession,
+    paymentSession => paymentSession.cart,
+    { cascade: true }
+  )
   payment_sessions: PaymentSession[]
 
   @Index()
@@ -215,9 +219,11 @@ export class Cart {
   @JoinColumn({ name: "payment_id" })
   payment: Payment
 
-  @OneToMany(() => ShippingMethod, (method) => method.cart, {
-    cascade: ["soft-remove", "remove"],
-  })
+  @OneToMany(
+    () => ShippingMethod,
+    method => method.cart,
+    { cascade: ["soft-remove", "remove"] }
+  )
   shipping_methods: ShippingMethod[]
 
   @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
@@ -267,7 +273,7 @@ export class Cart {
   @AfterLoad()
   private afterLoad() {
     if (this.payment_sessions) {
-      this.payment_session = this.payment_sessions.find((p) => p.is_selected)
+      this.payment_session = this.payment_sessions.find(p => p.is_selected)
     }
   }
 }
