@@ -19,9 +19,8 @@ jobs:
       - name: Assert changed
         run: ./scripts/assert-changed-files.sh "packages"
         
-      - uses: actions/checkout@v2
       - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap@${GITHUB_REF#refs/heads/}
+        uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
           partial: true
@@ -58,8 +57,6 @@ jobs:
           node-version: '14'
           cache: 'yarn'
 
-    
-      - uses: actions/checkout@v2
       - name: Bootstrap packages
         uses: ./.github/actions/cache-bootstrap
         with:
