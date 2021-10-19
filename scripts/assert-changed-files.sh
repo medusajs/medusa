@@ -28,7 +28,7 @@ fi
 [ HAS_BASE = true ] && BRANCH="${GITHUB_PUSH_REF#refs/heads/}" || BRANCH="${GITHUB_REF#refs/heads/}"
 echo $BRANCH
 echo $COMPARE
-FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r "$BRANCH" origin/"$COMPARE" | grep -E "$GREP_PATTERN" -c)"
+FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r origin/"$COMPARE" | grep -E "$GREP_PATTERN" -c)"
 
 if [ "$IS_CI" = true ]; then
   # reset to previous state
