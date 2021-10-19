@@ -5,8 +5,7 @@ jobs:
   integration-tests: 
     runs-on: ubuntu-latest
     
-    env: 
-      DB_PASSWORD: integration-tests
+   
       
     services:
       postgres:
@@ -64,6 +63,8 @@ jobs:
       - name: integration tests
         run: yarn test
         working-directory: integration-tests/api
+        env: 
+          DB_PASSWORD: integration-tests
           
   unit-tests:
     runs-on: ubuntu-latest
