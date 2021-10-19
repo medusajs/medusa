@@ -32,7 +32,7 @@ jobs:
           cache: 'yarn'
  
       - name: Cache node modules
-        uses: actions/always-upload-cache
+        uses: pat-s/always-upload-cache@v2.1.5
         id: cache
         with:
           path: |
