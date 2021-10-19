@@ -25,9 +25,6 @@ fi
 # depending on whether or not we are creating a pull request or not.
 [ ! -z ${GITHUB_BASE_REF} ] && HAS_BASE=true || HAS_BASE=false
 [ HAS_BASE = true ] && COMPARE="${GITHUB_BASE_REF#refs/heads/}" || COMPARE="develop"
-[ HAS_BASE = true ] && BRANCH="${GITHUB_PUSH_REF#refs/heads/}" || BRANCH="${GITHUB_REF#refs/heads/}"
-echo $BRANCH
-echo $COMPARE
 FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r origin/"$COMPARE" | grep -E "$GREP_PATTERN" -c)"
 
 if [ "$IS_CI" = true ]; then
