@@ -17,8 +17,17 @@ jobs:
           node-version: '14'
           cache: 'yarn'
  
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+            
       - name: bootstrap
-        run: yarn bootstrap --npm-client=npm --concurrency=2 --hoist
+        run: yarn bootstrap --concurrency=2
         
       - name: install dev cli
         run: sudo npm i -g medusa-dev-cli
