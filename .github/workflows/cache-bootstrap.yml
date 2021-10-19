@@ -1,7 +1,7 @@
 name: cache-bootstrap
 description: Creates a cache with the given extension for lerna packages
 inputs:
-  ext:
+  extension:
     description: Extension for cache name
   partial:
     description: Boolean flag to describe whether or not to run a partial bootstrap when finding cache
