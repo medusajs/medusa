@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/medusajs/medusa/compare/medusa-plugin-meilisearch@0.0.5...medusa-plugin-meilisearch@0.0.6) (2021-10-19)
+
+### Bug Fixes
+
+- allow changing regions safely ([06f5fe2](https://github.com/medusajs/medusa/commit/06f5fe267013d95231d96318fe8a055ad8040174))
+- cleanup ([5441d47](https://github.com/medusajs/medusa/commit/5441d47f88d759742e3d3d29b29bc38feceac583))
+
 ## [0.0.5](https://github.com/medusajs/medusa/compare/medusa-plugin-meilisearch@0.0.4...medusa-plugin-meilisearch@0.0.5) (2021-10-18)
 
 **Note:** Version bump only for package medusa-plugin-meilisearch
