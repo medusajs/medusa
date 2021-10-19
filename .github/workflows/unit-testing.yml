@@ -19,26 +19,11 @@ jobs:
       - name: Assert changed
         run: ./scripts/assert-changed-files.sh "packages"
         
-      - name: Read cached node modules
-        uses: pat-s/always-upload-cache@v2.1.5
-        id: cache
+      - name: Bootstrap packages
+        uses: ./cache-bootstrap
         with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-yarn-unit-tests-v1-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn install
-        run: yarn install --frozen-lockfile
-
-      - name: Run bootstrap if no cache found
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn bootstrap --concurrency=2
-        
-      - name: Run partial bootstrap if cache is found
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: yarn bootstrap  --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
-
+          extension: unit-tests
+          partial: true
 
       - name: Run unit tests
         run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
@@ -72,24 +57,10 @@ jobs:
           node-version: '14'
           cache: 'yarn'
 
-      - name: Assert changed
-        run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
- 
-      - name: Read cached node modules
-        uses: pat-s/always-upload-cache@v2.1.5
-        id: cache
+      - name: Bootstrap packages
+        uses: ./cache-bootstrap
         with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-yarn-v3-${{ hashFiles('**/yarn.lock') }}
-          
-      - name: Yarn install
-        run: yarn install --frozen-lockfile
-        
-      - name: Run bootstrap if no cache found
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn bootstrap --concurrency=2
+          extension: unit-tests
      
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
