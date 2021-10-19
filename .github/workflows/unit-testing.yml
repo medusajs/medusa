@@ -60,7 +60,7 @@ jobs:
       - name: Bootstrap packages
         uses: ./.github/actions/cache-bootstrap
         with:
-          extension: unit-tests
+          extension: integration-tests
      
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
