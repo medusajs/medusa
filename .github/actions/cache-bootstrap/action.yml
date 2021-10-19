@@ -19,7 +19,7 @@ runs:
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v5-${{ hashFiles('**/yarn.lock') }}  
       # We want to only bootstrap and install if no cache is found. 
       # Futhermore, we might want to do a partial, hoisted, bootstrap towards
-      # the base branch if it exists, otherwise develop we choose develop for this.
+      # the base branch if it exists, otherwise we choose develop for this.
     - run: |
         if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]]; then
           yarn install --frozen-lockfile
