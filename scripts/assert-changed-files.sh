@@ -20,9 +20,12 @@ if [ "$IS_CI" = true ]; then
   git config --local --unset user.email
   git config --local --unset url."https://github.com/".insteadOf
 fi
-BRANCH=${GITHUB_REF#refs/heads/}
+
+HAS_BASE=${! -v GITHUB_BASE}
+COMPARE=[[HAS_BASE]] && "${GITHUB_BASE_REF#refs/heads/}" || "develop"
+BRANCH=[[HAS_BASE]] && "${GITHUB_HEAD_REF#refs/heads/}" || "${GITHUB_REF#refs/heads/}"
 echo $BRANCH
-FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r "$BRANCH" origin/master | grep -E "$GREP_PATTERN" -c)"
+FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r "$BRANCH" origin/"$COMPARE" | grep -E "$GREP_PATTERN" -c)"
 
 if [ "$IS_CI" = true ]; then
   # reset to previous state
