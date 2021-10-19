@@ -16,6 +16,7 @@ import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import defaultsLoader from "./defaults"
 import Logger from "./logger"
+import searchIndexLoader from "./search-index"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
@@ -101,12 +102,6 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
-  const subActivity = Logger.activity("Initializing subscribers")
-  track("SUBSCRIBERS_INIT_STARTED")
-  subscribersLoader({ container, activityId: subActivity })
-  const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
-  track("SUBSCRIBERS_INIT_COMPLETED", { duration: subAct.duration })
-
   const expActivity = Logger.activity("Initializing express")
   track("EXPRESS_INIT_STARTED")
   await expressLoader({
@@ -138,6 +133,12 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
+  const subActivity = Logger.activity("Initializing subscribers")
+  track("SUBSCRIBERS_INIT_STARTED")
+  subscribersLoader({ container, activityId: subActivity })
+  const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
+  track("SUBSCRIBERS_INIT_COMPLETED", { duration: subAct.duration })
+
   const apiActivity = Logger.activity("Initializing API")
   track("API_INIT_STARTED")
   await apiLoader({
@@ -154,6 +155,12 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await defaultsLoader({ container, activityId: defaultsActivity })
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
   track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
+
+  const searchActivity = Logger.activity("Initializing search engine indexing")
+  track("SEARCH_ENGINE_INDEXING_STARTED")
+  searchIndexLoader({ container, activityId: searchActivity })
+  const searchAct = Logger.success(searchActivity, "Indexing completed") || {}
+  track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }
 }

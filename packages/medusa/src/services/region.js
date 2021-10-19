@@ -10,6 +10,7 @@ class RegionService extends BaseService {
   static Events = {
     UPDATED: "region.updated",
     CREATED: "region.created",
+    DELETED: "region.deleted",
   }
 
   constructor({
@@ -388,6 +389,12 @@ class RegionService extends BaseService {
       }
 
       await regionRepo.softRemove(region)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(RegionService.Events.DELETED, {
+          id: regionId,
+        })
 
       return Promise.resolve()
     })
