@@ -2,24 +2,9 @@ name: GitHub Actions Demo
 on: [push]
 
 jobs:
-  integration-tests: 
-    runs-on: ubuntu-latest
-    
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-    
-    steps:
+  bootstrap:
+   runs-on: ubuntu-latest
+   steps:
       - name: Checkout
         uses: actions/checkout@v2.3.5
         with:
@@ -30,6 +15,9 @@ jobs:
         with:
           node-version: '14'
           cache: 'yarn'
+ 
+      - name: assert changed
+        run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
  
       - name: Cache node modules
         uses: pat-s/always-upload-cache@v2.1.5
@@ -50,12 +38,32 @@ jobs:
       - name: partial bootstrap
         if: steps.cache.outputs.cache-hit == 'true'
         run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
-        
+     
+     
+
+  integration-tests: 
+    needs: bootstrap
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
       - name: install dev cli
         run: sudo npm i -g medusa-dev-cli
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
-          
       - name: force install
         run: medusa-dev --force-install
         working-directory: integration-tests/api
@@ -73,31 +81,13 @@ jobs:
           DB_PASSWORD: postgres
           
   unit-tests:
+    needs: bootstrap
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.5
-        with:
-          fetch-depth: 0
-          
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: '14'
-          cache: 'yarn'
-          
-      - name: assert changed
-        run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
-
       - name: install node modules
         run: yarn install --frozen-lockfile
-        
-      - name: bootstrap
-        run: yarn bootstrap --npm-client=npm --since origin/develop...HEAD --concurrency=2 --hoist
-        
-      - run: ./scripts/assert-changed-files.sh "packages"
       
       - name: test
-        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1 --changedSince=origin/develop
+        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
       
