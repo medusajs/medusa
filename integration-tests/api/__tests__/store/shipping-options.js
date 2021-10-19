@@ -4,6 +4,8 @@ const { Region, ShippingProfile, ShippingOption } = require("@medusajs/medusa")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
+const cartSeeder = require("../../helpers/cart-seeder")
+const swapSeeder = require("../../helpers/swap-seeder")
 
 jest.setTimeout(30000)
 
@@ -126,6 +128,57 @@ describe("/store/shipping-options", () => {
       expect(response.status).toEqual(200)
       expect(response.data.shipping_options.length).toEqual(1)
       expect(response.data.shipping_options[0].id).toEqual("test-region2")
+    })
+  })
+
+  describe("GET /store/shipping-options/:cart_id", () => {
+    beforeEach(async () => {
+      await cartSeeder(dbConnection)
+      await swapSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("given a default cart, when user retrieves its shipping options, then should return a list of shipping options", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/shipping-options/test-cart-2")
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-option", amount: 1000 }),
+          expect.objectContaining({ id: "test-option-2", amount: 500 }),
+        ])
+      )
+    })
+
+    it("given a cart with custom shipping options, when user retrieves its shipping options, then should return the list of custom shipping options", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/shipping-options/test-cart-rma")
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-option",
+            amount: 0,
+            name: "test-option",
+          }),
+        ])
+      )
     })
   })
 })
