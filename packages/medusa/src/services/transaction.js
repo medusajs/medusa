@@ -1,9 +1,8 @@
 import { BaseService } from "medusa-interfaces"
 import mongoose from "mongoose"
-import _ from "lodash"
 
 class TransactionService extends BaseService {
-  constructor({}) {
+  constructor() {
     super()
   }
 

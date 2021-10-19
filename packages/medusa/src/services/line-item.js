@@ -1,10 +1,9 @@
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import _ from "lodash"
 
 /**
  * Provides layer to manipulate line items.
- * @implements BaseService
+ * @extends BaseService
  */
 class LineItemService extends BaseService {
   constructor({
@@ -67,6 +66,7 @@ class LineItemService extends BaseService {
   /**
    * Retrieves a line item by its id.
    * @param {string} id - the id of the line item to retrieve
+   * @param {object} config - the config to be used at query building
    * @return {LineItem} the line item
    */
   async retrieve(id, config = {}) {
@@ -90,7 +90,7 @@ class LineItemService extends BaseService {
   }
 
   async generate(variantId, regionId, quantity, config = {}) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
         .retrieve(variantId, {
@@ -142,7 +142,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the created line item
    */
   async create(lineItem) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -160,7 +160,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the update line item
    */
   async update(id, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -188,14 +188,16 @@ class LineItemService extends BaseService {
    * @return {Promise} the result of the delete operation
    */
   async delete(id) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
 
       const lineItem = await lineItemRepository.findOne({ where: { id } })
 
-      if (!lineItem) return Promise.resolve()
+      if (!lineItem) {
+        return Promise.resolve()
+      }
 
       await lineItemRepository.remove(lineItem)
 
