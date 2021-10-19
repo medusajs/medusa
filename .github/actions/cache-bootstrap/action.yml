@@ -17,11 +17,11 @@ runs:
           */*/node_modules
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v2-${{ hashFiles('**/yarn.lock') }}
     - run: |
-        if [["${{steps.cache.outputs.cache-hit}}"!="true"]]
+        if (("${{steps.cache.outputs.cache-hit}}"!="true"))
         then
           yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
-        elif [["${{inputs.partial}}"="true"]] 
+        elif (("${{inputs.partial}}"="true"))
         then
           yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
         fi
