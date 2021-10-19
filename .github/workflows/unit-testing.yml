@@ -32,11 +32,12 @@ jobs:
           cache: 'yarn'
  
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/always-upload-cache@v2
         id: cache
         with:
           path: |
-            **/node_modules
+            node_modules
+            */*/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           
       - name: installation
