@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.46](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.45...@medusajs/medusa@1.1.46) (2021-10-19)
+
+### Bug Fixes
+
+- add integration test ([38813ec](https://github.com/medusajs/medusa/commit/38813ec66f23526054f7e35adf4157ce98703167))
+- allow changing regions safely ([06f5fe2](https://github.com/medusajs/medusa/commit/06f5fe267013d95231d96318fe8a055ad8040174))
+- cleanup ([5441d47](https://github.com/medusajs/medusa/commit/5441d47f88d759742e3d3d29b29bc38feceac583))
+- prettier ([5a67d1e](https://github.com/medusajs/medusa/commit/5a67d1e7fd3d9da9dca0781d0feab60db1f1099a))
+
 ## [1.1.45](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.44...@medusajs/medusa@1.1.45) (2021-10-18)
 
 **Note:** Version bump only for package @medusajs/medusa
