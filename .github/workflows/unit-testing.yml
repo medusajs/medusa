@@ -18,6 +18,23 @@ jobs:
 
       - name: Assert changed
         run: ./scripts/assert-changed-files.sh "packages"
+        
+      - name: Read cached node modules
+        uses: pat-s/always-upload-cache@v2.1.5
+        id: cache
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-yarn-unit-tests-v1-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Run bootstrap if no cache found
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn bootstrap --concurrency=2
+        
+      - name: Run partial bootstrap if cache is found
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: yarn bootstrap  --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
 
       - name: Yarn install
         run: yarn install --frozen-lockfile
