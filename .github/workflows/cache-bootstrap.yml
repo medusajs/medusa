@@ -1,0 +1,34 @@
+name: cache-bootstrap
+description: Creates a cache with the given extension for lerna packages
+inputs:
+  ext:
+    description: Extension for cache name
+  partial:
+    description: Boolean flag to describe whether or not to run a partial bootstrap when finding cache
+    default: false
+output:
+  cache-hit:
+    description: A boolean expression of whether or not a match was found
+    value: ${{ steps.cache.output.cache-hit }}
+runs:
+  using: composite
+  steps:
+    - name: Fetch node modules
+      uses: pat-s/always-upload-cache@v2.1.5
+      id: cache
+      with:
+        path: |
+          node_modules
+          */*/node_modules
+        key: ${{ runner.os }}-yarn-unit-tests-v1-${{ hashFiles('**/yarn.lock') }}
+    - name: Yarn install
+      run: yarn install --frozen-lockfile
+
+    - name: Run bootstrap if no cache found
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn bootstrap --concurrency=2
+      
+    - name: Run partial hoisted bootstrap
+      if: inputs.partial && steps.cache.outputs.cache-hit == 'true'
+      run: yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
+    
