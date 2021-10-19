@@ -24,7 +24,7 @@ jobs:
         run: yarn install --frozen-lockfile
         
       - name: bootstrap
-        run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
+        run: yarn bootstrap --since origin/develop...HEAD --concurrency=2 --hoist
         
       - run: ./scripts/assert-changed-files.sh "packages"
       
