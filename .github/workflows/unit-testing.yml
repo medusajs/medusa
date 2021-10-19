@@ -20,7 +20,7 @@ jobs:
         run: ./scripts/assert-changed-files.sh "packages"
         
       - name: Bootstrap packages
-        uses: ./cache-bootstrap
+        uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
           partial: true
@@ -58,7 +58,7 @@ jobs:
           cache: 'yarn'
 
       - name: Bootstrap packages
-        uses: ./cache-bootstrap
+        uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
      
