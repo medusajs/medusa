@@ -108,6 +108,28 @@ module.exports = async (connection, data = {}) => {
   tenPercent.rule = tenPercentRule
   await manager.save(tenPercent)
 
+  const dUsageLimit = await manager.create(Discount, {
+    id: "test-discount-usage-limit",
+    code: "SPENT",
+    is_dynamic: false,
+    is_disabled: false,
+    usage_limit: 10,
+    usage_count: 10,
+  })
+
+  const drUsage = await manager.create(DiscountRule, {
+    id: "test-discount-rule-usage-limit",
+    description: "Created",
+    type: "fixed",
+    value: 10000,
+    allocation: "total",
+  })
+
+  dUsageLimit.rule = drUsage
+  dUsageLimit.regions = [r]
+
+  await manager.save(dUsageLimit)
+
   const d = await manager.create(Discount, {
     id: "test-discount",
     code: "CREATED",
@@ -127,6 +149,17 @@ module.exports = async (connection, data = {}) => {
   d.regions = [r]
 
   await manager.save(d)
+
+  const usedDiscount = manager.create(Discount, {
+    id: "used-discount",
+    code: "USED",
+    is_dynamic: false,
+    is_disabled: false,
+    usage_limit: 1,
+    usage_count: 1,
+  })
+
+  await manager.save(usedDiscount)
 
   const expiredRule = manager.create(DiscountRule, {
     id: "expiredRule",
