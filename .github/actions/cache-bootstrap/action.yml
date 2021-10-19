@@ -6,10 +6,6 @@ inputs:
   partial:
     description: Boolean flag to describe whether or not to run a partial bootstrap when finding cache
     default: false
-output:
-  cache-hit:
-    description: A boolean expression of whether or not a match was found
-    value: ${{ steps.cache.output.cache-hit }}
 runs:
   using: composite
   steps:
@@ -20,7 +16,6 @@ runs:
           node_modules
           */*/node_modules
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v1-${{ hashFiles('**/yarn.lock') }}
-    if: steps.cache.outputs.cache-hit != 'true'
     - run: |
         if echo ${{ steps.cache.outputs.cache-hit}} | grep -c "true"
         then
