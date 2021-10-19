@@ -744,4 +744,59 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
   })
+
+  describe("shipping address + region updates", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("updates region only - single to multipe countries", async () => {
+      const api = useApi()
+
+      const { data, status } = await api
+        .post(`/store/carts/test-cart`, {
+          region_id: `test-region-multiple`,
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.cart.region_id).toEqual("test-region-multiple")
+      expect(data.cart.shipping_address).toMatchSnapshot({
+        id: expect.any(String),
+        country_code: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+
+    it("updates region only - single to multipe countries", async () => {
+      const api = useApi()
+
+      const { data, status } = await api
+        .post(`/store/carts/test-cart`, {
+          shipping_address: null,
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.cart.shipping_address).toEqual(null)
+    })
+
+    // it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {})
+  })
 })
