@@ -18,7 +18,7 @@ jobs:
           cache: 'yarn'
  
       - name: bootstrap
-        run: yarn bootstrap --npm-client=npm --since origin/develop...HEAD --concurrency=2 --hoist
+        run: yarn bootstrap --npm-client=npm --concurrency=2 --hoist
         
       - name: install dev cli
         run: sudo npm i -g medusa-dev-cli
