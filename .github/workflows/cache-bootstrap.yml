@@ -22,6 +22,7 @@ runs:
           */*/node_modules
         key: ${{ runner.os }}-yarn-unit-tests-v1-${{ hashFiles('**/yarn.lock') }}
     - name: Yarn install
+      if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile
 
     - name: Run bootstrap if no cache found
