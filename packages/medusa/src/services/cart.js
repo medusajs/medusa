@@ -771,8 +771,8 @@ class CartService extends BaseService {
     addressOrId.country_code = addressOrId.country_code.toLowerCase()
 
     if (addressOrId.id) {
-      cart.billing_address_id = addressOrId.id
-      cart.billing_address = addressOrId
+      const updated = await addrRepo.save(addressOrId)
+      cart.billing_address = updated
     } else {
       if (cart.billing_address_id) {
         const addr = await addrRepo.findOne({
@@ -797,15 +797,21 @@ class CartService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateShippingAddress_(cart, addressOrId, addrRepo) {
+    if (addressOrId === null) {
+      cart.shipping_address = null
+      return
+    }
+
     if (typeof addressOrId === `string`) {
       addressOrId = await addrRepo.findOne({
         where: { id: addressOrId },
       })
     }
 
-    addressOrId.country_code = addressOrId.country_code.toLowerCase()
+    addressOrId.country_code = addressOrId.country_code?.toLowerCase() ?? null
 
     if (
+      addressOrId.country_code &&
       !cart.region.countries.find(
         ({ iso_2 }) => addressOrId.country_code === iso_2
       )
@@ -817,8 +823,8 @@ class CartService extends BaseService {
     }
 
     if (addressOrId.id) {
-      cart.shipping_address = addressOrId
-      cart.shipping_address_id = addressOrId.id
+      const updated = await addrRepo.save(addressOrId)
+      cart.shipping_address = updated
     } else {
       if (cart.shipping_address_id) {
         const addr = await addrRepo.findOne({
@@ -1481,6 +1487,14 @@ class CartService extends BaseService {
       )
     }
 
+    /*
+     * When changing the region you are changing the set of countries that your
+     * cart can be shipped to so we need to make sure that the current shipping
+     * address adheres to the new country set.
+     *
+     * First check if there is an existing shipping address on the cart if so
+     * fetch the entire thing so we can modify the shipping country
+     */
     let shippingAddress = {}
     if (cart.shipping_address_id) {
       shippingAddress = await addrRepo.findOne({
@@ -1488,6 +1502,10 @@ class CartService extends BaseService {
       })
     }
 
+    /*
+     * If the client has specified which country code we are updating to check
+     * that that country is in fact in the country and perform the update.
+     */
     if (countryCode !== undefined) {
       if (
         !region.countries.find(
@@ -1507,7 +1525,17 @@ class CartService extends BaseService {
 
       await addrRepo.save(updated)
     } else {
+      /*
+       * In the case where the country code is not specified we need to check
+       *
+       *   1. if the region we are switching to has only one country preselect
+       *      that
+       *   2. if the region has multiple countries we need to unset the country
+       *      and wait for client to decide which country to use
+       */
+
       let updated = { ...shippingAddress }
+
       // If the country code of a shipping address is set we need to clear it
       if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
         updated = {
