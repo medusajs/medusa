@@ -1,8 +1,34 @@
-name: Medusa Continous Integration Pipeline
+name: Medusa Pipeline
 on: [push]
 
 jobs:
-  run-tests:
+  unit-tests:
+   runs-on: ubuntu-latest
+   steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '14'
+          cache: 'yarn'    
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files.sh "packages"
+
+      - name: Yarn install
+        run: yarn install --frozen-lockfile
+
+      - name: Run bootstrap
+        run: yarn bootstrap --concurrency=2
+
+      - name: Run unit tests
+        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
+    
+  integration-tests:
    runs-on: ubuntu-latest
    
    services:
@@ -30,7 +56,7 @@ jobs:
         with:
           node-version: '14'
           cache: 'yarn'
- 
+
       - name: Assert changed
         run: ./scripts/assert-changed-files.sh "packages/*|(e2e|integration)-tests/*|.circleci/*|yarn.lock"
  
@@ -44,15 +70,11 @@ jobs:
           key: ${{ runner.os }}-yarn-v3-${{ hashFiles('**/yarn.lock') }}
           
       - name: Yarn install
-        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
         
-      - name: Complete bootstrap
+      - name: Run bootstrap if no cache found
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn bootstrap --concurrency=2
-        
-      - name: Run unit tests
-        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
      
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
