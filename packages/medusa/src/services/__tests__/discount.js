@@ -13,6 +13,9 @@ describe("DiscountService", () => {
           id: IdMap.getId("france"),
         }
       },
+      withTransaction: function() {
+        return this
+      },
     }
 
     const discountService = new DiscountService({

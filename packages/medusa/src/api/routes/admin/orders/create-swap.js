@@ -45,6 +45,17 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity of the Product Variant to ship.
  *                   type: integer
+ *          custom_shipping_options:
+ *             description: The custom shipping options to potentially create a Shipping Method from.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 option_id:
+ *                   description: The id of the Shipping Option to override with a custom price.
+ *                   type: string
+ *                 price:
+ *                   description: The custom price of the Shipping Option.
+ *                   type: integer
  *           no_notification:
  *             description: If set to true no notification will be send related to this Swap.
  *             type: boolean
@@ -85,6 +96,12 @@ export default async (req, res) => {
       variant_id: Validator.string().required(),
       quantity: Validator.number().required(),
     }),
+    custom_shipping_options: Validator.array()
+      .items({
+        option_id: Validator.string().required(),
+        price: Validator.number().required(),
+      })
+      .default([]),
     no_notification: Validator.boolean().optional(),
     allow_backorder: Validator.boolean().default(true),
   })
@@ -149,7 +166,9 @@ export default async (req, res) => {
                   }
                 )
 
-              await swapService.withTransaction(manager).createCart(swap.id)
+              await swapService
+                .withTransaction(manager)
+                .createCart(swap.id, value.custom_shipping_options)
               const returnOrder = await returnService
                 .withTransaction(manager)
                 .retrieveBySwap(swap.id)

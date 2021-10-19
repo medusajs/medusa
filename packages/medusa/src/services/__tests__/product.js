@@ -415,7 +415,9 @@ describe("ProductService", () => {
 
     const productService = new ProductService({
       manager: MockManager,
+      eventBusService,
       productRepository,
+      eventBusService,
     })
 
     beforeEach(() => {
@@ -426,6 +428,11 @@ describe("ProductService", () => {
 
       expect(productRepository.softRemove).toBeCalledTimes(1)
       expect(productRepository.softRemove).toBeCalledWith({
+        id: IdMap.getId("ironman"),
+      })
+
+      expect(eventBusService.emit).toBeCalledTimes(1)
+      expect(eventBusService.emit).toBeCalledWith("product.deleted", {
         id: IdMap.getId("ironman"),
       })
     })
