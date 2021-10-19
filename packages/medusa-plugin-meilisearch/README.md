@@ -3,6 +3,7 @@
 Meilisearch Plugin for Medusa to search for products.
 
 ## Plugin Options
+
 ```
 {
   config: {
