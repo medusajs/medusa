@@ -9,7 +9,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: pat-s/always-upload-cache@v2.1.5
+    - uses: actions/cache@v2
       id: cache
       with:
         path: |
@@ -19,7 +19,7 @@ runs:
     - run: |
         if ["${{steps.cache.outputs.cache-hit}}" = "true" ]
         then
-          if ${{inputs.partial}} 
+          if ["${{inputs.partial}}" = "true"] 
           then
             yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
           fi
