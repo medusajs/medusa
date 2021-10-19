@@ -50,10 +50,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn bootstrap --concurrency=2
         
-      - name: Partial bootstrap
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
-        
       - name: Run unit tests
         run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
      
