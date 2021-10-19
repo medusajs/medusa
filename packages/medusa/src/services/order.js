@@ -325,6 +325,8 @@ class OrderService extends BaseService {
     const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
       config
     )
+    
+    console.log('test')
 
     const query = {
       where: { id: validatedId },
