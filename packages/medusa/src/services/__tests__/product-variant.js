@@ -802,6 +802,7 @@ describe("ProductVariantService", () => {
         }
         return Promise.resolve({
           id: IdMap.getId("ironman"),
+          product_id: IdMap.getId("product-test"),
         })
       },
     })
@@ -820,9 +821,20 @@ describe("ProductVariantService", () => {
       await productVariantService.delete(IdMap.getId("ironman"))
 
       expect(productVariantRepository.softRemove).toBeCalledTimes(1)
-      expect(productVariantRepository.softRemove).toBeCalledWith({
-        id: IdMap.getId("ironman"),
-      })
+      expect(productVariantRepository.softRemove).toBeCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId("ironman"),
+        })
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-variant.deleted",
+        {
+          id: IdMap.getId("ironman"),
+          product_id: IdMap.getId("product-test"),
+        }
+      )
     })
 
     it("successfully resolves if variant does not exist", async () => {

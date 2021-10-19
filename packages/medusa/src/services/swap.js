@@ -32,6 +32,7 @@ class SwapService extends BaseService {
     fulfillmentService,
     orderService,
     inventoryService,
+    customShippingOptionService,
   }) {
     super()
 
@@ -70,6 +71,9 @@ class SwapService extends BaseService {
 
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {CustomShippingOptionService} */
+    this.customShippingOptionService_ = customShippingOptionService
   }
 
   withTransaction(transactionManager) {
@@ -90,6 +94,7 @@ class SwapService extends BaseService {
       orderService: this.orderService_,
       inventoryService: this.inventoryService_,
       fulfillmentService: this.fulfillmentService_,
+      customShippingOptionService: this.customShippingOptionService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -116,7 +121,7 @@ class SwapService extends BaseService {
       "cart.total",
     ]
 
-    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("cart")
@@ -127,7 +132,7 @@ class SwapService extends BaseService {
       relationSet.add("cart.region")
       relations = [...relationSet]
 
-      select = select.filter(v => !totalFields.includes(v))
+      select = select.filter((v) => !totalFields.includes(v))
     }
 
     return {
@@ -170,9 +175,8 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const { totalsToSelect, ...newConfig } = this.transformQueryForTotals_(
-      config
-    )
+    const { totalsToSelect, ...newConfig } =
+      this.transformQueryForTotals_(config)
 
     const query = this.buildQuery_({ id: validatedId }, newConfig)
 
@@ -251,7 +255,7 @@ class SwapService extends BaseService {
    */
   validateReturnItems_(order, returnItems) {
     return returnItems.map(({ item_id, quantity }) => {
-      const item = order.items.find(i => i.id === item_id)
+      const item = order.items.find((i) => i.id === item_id)
 
       // The item must exist in the order
       if (!item) {
@@ -303,7 +307,7 @@ class SwapService extends BaseService {
     }
   ) {
     const { no_notification, ...rest } = custom
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       if (
         order.fulfillment_status === "not_fulfilled" ||
         order.payment_status !== "captured"
@@ -318,7 +322,6 @@ class SwapService extends BaseService {
         const line = await this.lineItemService_.retrieve(item.item_id, {
           relations: ["order", "swap", "claim_order"],
         })
-        console.log(line)
 
         if (
           line.order?.canceled_at ||
@@ -377,7 +380,7 @@ class SwapService extends BaseService {
   }
 
   async processDifference(swapId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: ["payment", "order", "order.payments"],
       })
@@ -493,7 +496,7 @@ class SwapService extends BaseService {
   }
 
   async update(swapId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId)
 
       if ("metadata" in update) {
@@ -524,8 +527,8 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
    */
-  async createCart(swapId) {
-    return this.atomicPhase_(async manager => {
+  async createCart(swapId, customShippingOptions = []) {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
           "order",
@@ -534,6 +537,8 @@ class SwapService extends BaseService {
           "order.swaps.additional_items",
           "order.discounts",
           "order.discounts.rule",
+          "order.claims",
+          "order.claims.additional_items",
           "additional_items",
           "return_order",
           "return_order.items",
@@ -576,6 +581,16 @@ class SwapService extends BaseService {
         },
       })
 
+      for (const customShippingOption of customShippingOptions) {
+        await this.customShippingOptionService_
+          .withTransaction(manager)
+          .create({
+            cart_id: cart.id,
+            shipping_option_id: customShippingOption.option_id,
+            price: customShippingOption.price,
+          })
+      }
+
       for (const item of swap.additional_items) {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           cart_id: cart.id,
@@ -607,7 +622,13 @@ class SwapService extends BaseService {
           }
         }
 
-        const lineItem = allItems.find(i => i.id === r.item_id)
+        if (order.claims && order.claims.length) {
+          for (const c of order.claims) {
+            allItems = [...allItems, ...c.additional_items]
+          }
+        }
+
+        const lineItem = allItems.find((i) => i.id === r.item_id)
 
         const toCreate = {
           cart_id: cart.id,
@@ -638,7 +659,7 @@ class SwapService extends BaseService {
    *
    */
   async registerCartCompletion(swapId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
           "cart",
@@ -770,7 +791,7 @@ class SwapService extends BaseService {
    *   status.
    */
   async receiveReturn(swapId, returnItems) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, { relations: ["return_order"] })
 
       if (swap.canceled_at) {
@@ -811,7 +832,7 @@ class SwapService extends BaseService {
    * @returns {Promise<Swap>} the canceled swap.
    */
   async cancel(swapId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: ["payment", "fulfillments", "return_order"],
       })
@@ -877,7 +898,7 @@ class SwapService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
           "payment",
@@ -937,7 +958,7 @@ class SwapService extends BaseService {
             is_swap: true,
             no_notification: evaluatedNoNotification,
           },
-          swap.additional_items.map(i => ({
+          swap.additional_items.map((i) => ({
             item_id: i.id,
             quantity: i.quantity,
           })),
@@ -954,7 +975,7 @@ class SwapService extends BaseService {
       // Update all line items to reflect fulfillment
       for (const item of swap.additional_items) {
         const fulfillmentItem = successfullyFulfilled.find(
-          f => item.id === f.item_id
+          (f) => item.id === f.item_id
         )
 
         if (fulfillmentItem) {
@@ -999,7 +1020,7 @@ class SwapService extends BaseService {
    * @returns updated swap
    */
   async cancelFulfillment(fulfillmentId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const canceled = await this.fulfillmentService_
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
@@ -1042,7 +1063,7 @@ class SwapService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: ["additional_items"],
       })
@@ -1068,7 +1089,7 @@ class SwapService extends BaseService {
 
       // Go through all the additional items in the swap
       for (const i of swap.additional_items) {
-        const shipped = shipment.items.find(si => si.item_id === i.id)
+        const shipped = shipment.items.find((si) => si.item_id === i.id)
         if (shipped) {
           const shippedQty = (i.shipped_quantity || 0) + shipped.quantity
           await this.lineItemService_.withTransaction(manager).update(i.id, {
@@ -1117,7 +1138,7 @@ class SwapService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.swapModel_
       .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
+      .catch((err) => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
@@ -1130,7 +1151,7 @@ class SwapService extends BaseService {
    * @returns {Promise<Order>} the resulting order
    */
   async registerReceived(id) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(id, {
         relations: ["return_order", "return_order.items"],
       })
