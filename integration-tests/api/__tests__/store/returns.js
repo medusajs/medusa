@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 const {
   Region,
   ReturnReason,
@@ -12,56 +12,56 @@ const {
   LineItem,
   Discount,
   DiscountRule,
-} = require("@medusajs/medusa");
+} = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server");
-const { useApi } = require("../../../helpers/use-api");
-const { initDb, useDb } = require("../../../helpers/use-db");
+const setupServer = require("../../../helpers/setup-server")
+const { useApi } = require("../../../helpers/use-api")
+const { initDb, useDb } = require("../../../helpers/use-db")
 
-jest.setTimeout(30000);
+jest.setTimeout(30000)
 
 describe("/store/carts", () => {
-  let medusaProcess;
-  let dbConnection;
+  let medusaProcess
+  let dbConnection
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."));
-    dbConnection = await initDb({ cwd });
-    medusaProcess = await setupServer({ cwd });
-  });
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
+  })
 
   afterAll(async () => {
-    const db = useDb();
-    await db.shutdown();
-    medusaProcess.kill();
-  });
+    const db = useDb()
+    await db.shutdown()
+    medusaProcess.kill()
+  })
 
   describe("POST /store/returns", () => {
-    let rrId;
-    let rrId_child;
-    let rrResult;
+    let rrId
+    let rrId_child
+    let rrResult
 
     beforeEach(async () => {
-      const manager = dbConnection.manager;
+      const manager = dbConnection.manager
       await manager.query(
         `ALTER SEQUENCE order_display_id_seq RESTART WITH 111`
-      );
+      )
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
         type: "default",
-      });
-  
+      })
+
       await manager.insert(Region, {
         id: "region",
         name: "Test Region",
         currency_code: "usd",
         tax_rate: 0,
-      });
-  
+      })
+
       await manager.insert(Customer, {
         id: "cus_1234",
         email: "test@email.com",
-      });
+      })
 
       await manager.insert(Order, {
         id: "order_test",
@@ -71,7 +71,7 @@ describe("/store/carts", () => {
         region_id: "region",
         tax_rate: 0,
         currency_code: "usd",
-      });
+      })
 
       await manager.insert(DiscountRule, {
         id: "discount_rule_id",
@@ -79,7 +79,7 @@ describe("/store/carts", () => {
         value: 10,
         allocation: "total",
         type: "percentage",
-      });
+      })
 
       const d = manager.create(Discount, {
         id: "test-discount",
@@ -87,9 +87,9 @@ describe("/store/carts", () => {
         is_dynamic: false,
         is_disabled: false,
         rule_id: "discount_rule_id",
-      });
+      })
 
-      await manager.save(d);
+      await manager.save(d)
 
       const ord = manager.create(Order, {
         id: "order_with_discount",
@@ -99,18 +99,18 @@ describe("/store/carts", () => {
         region_id: "region",
         tax_rate: 0,
         currency_code: "usd",
-      });
+      })
 
-      ord.discounts = [d];
+      ord.discounts = [d]
 
-      await manager.save(ord);
+      await manager.save(ord)
 
       await manager.insert(Product, {
         id: "test-product",
         title: "test product",
         profile_id: defaultProfile.id,
         options: [{ id: "test-option", title: "Size" }],
-      });
+      })
 
       await manager.insert(ProductVariant, {
         id: "test-variant",
@@ -123,7 +123,7 @@ describe("/store/carts", () => {
             value: "Size",
           },
         ],
-      });
+      })
 
       await manager.insert(LineItem, {
         id: "test-item",
@@ -135,7 +135,7 @@ describe("/store/carts", () => {
         unit_price: 8000,
         quantity: 1,
         variant_id: "test-variant",
-      });
+      })
 
       await manager.insert(ShippingOption, {
         id: "test-option",
@@ -147,35 +147,35 @@ describe("/store/carts", () => {
         price_type: "flat_rate",
         amount: 1000,
         is_return: true,
-      });
+      })
 
       const created = dbConnection.manager.create(ReturnReason, {
         value: "wrong_size",
         label: "Wrong Size",
-      });
-      const result = await dbConnection.manager.save(created);
+      })
+      const result = await dbConnection.manager.save(created)
 
       rrResult = result
-      rrId = result.id;
+      rrId = result.id
 
       const created_1 = dbConnection.manager.create(ReturnReason, {
         value: "too_big",
         label: "Too Big",
         parent_return_reason_id: rrId,
-      });
+      })
 
-      const result_1 = await dbConnection.manager.save(created_1);
+      const result_1 = await dbConnection.manager.save(created_1)
 
-      rrId_child = result_1.id;
-    });
+      rrId_child = result_1.id
+    })
 
     afterEach(async () => {
-      const db = useDb();
-      await db.teardown();
-    });
+      const db = useDb()
+      await db.teardown()
+    })
 
     it("creates a return", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const response = await api
         .post("/store/returns", {
@@ -188,16 +188,16 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
-          return err.response;
-        });
-      expect(response.status).toEqual(200);
+          return err.response
+        })
+      expect(response.status).toEqual(200)
 
-      expect(response.data.return.refund_amount).toEqual(8000);
-    });
+      expect(response.data.return.refund_amount).toEqual(8000)
+    })
 
     it("failes to create a return with a reason category", async () => {
-      const api = useApi();
-      
+      const api = useApi()
+
       const response = await api
         .post("/store/returns", {
           order_id: "order_test",
@@ -211,17 +211,18 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
-          return err.response;
-        });
+          return err.response
+        })
 
-      expect(response.status).toEqual(400);
-      expect(response.data.message).toEqual('Cannot apply return reason category')
-
-    });
+      expect(response.status).toEqual(400)
+      expect(response.data.message).toEqual(
+        "Cannot apply return reason category"
+      )
+    })
 
     it("creates a return with reasons", async () => {
-      const api = useApi();
-      
+      const api = useApi()
+
       const response = await api
         .post("/store/returns", {
           order_id: "order_test",
@@ -236,28 +237,28 @@ describe("/store/carts", () => {
         })
         .catch((err) => {
           console.log(err.response)
-          return err.response;
-        });
-      expect(response.status).toEqual(200);
+          return err.response
+        })
+      expect(response.status).toEqual(200)
 
       expect(response.data.return.items).toEqual([
         expect.objectContaining({
           reason_id: rrId_child,
           note: "TOO small",
         }),
-      ]);
-    });
+      ])
+    })
 
     it("creates a return with discount and non-discountable item", async () => {
-      const api = useApi();
+      const api = useApi()
 
       await dbConnection.manager.query(
         `UPDATE line_item set allow_discounts=false where id='test-item'`
-      );
+      )
 
       await dbConnection.manager.query(
         `UPDATE line_item set order_id='order_with_discount' where id='test-item'`
-      );
+      )
 
       const response = await api
         .post("/store/returns", {
@@ -270,15 +271,15 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
-          return err.response;
-        });
+          return err.response
+        })
 
-      expect(response.status).toEqual(200);
-      expect(response.data.return.refund_amount).toEqual(8000);
-    });
+      expect(response.status).toEqual(200)
+      expect(response.data.return.refund_amount).toEqual(8000)
+    })
 
     it("creates a return with shipping method", async () => {
-      const api = useApi();
+      const api = useApi()
 
       const response = await api
         .post("/store/returns", {
@@ -294,12 +295,11 @@ describe("/store/carts", () => {
           ],
         })
         .catch((err) => {
-          return err.response;
-        });
-      expect(response.status).toEqual(200);
+          return err.response
+        })
+      expect(response.status).toEqual(200)
 
-      expect(response.data.return.refund_amount).toEqual(7000);
-    });
-
-  });
-});
+      expect(response.data.return.refund_amount).toEqual(7000)
+    })
+  })
+})
