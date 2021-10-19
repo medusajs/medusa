@@ -24,8 +24,8 @@ runs:
           yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
-          [ -z "${GITHUB_BASE}" ] && ref="${GITHUB_BASE#refs/heads/}" || ref="develop"
-          echo ref
+          [[ -z "${GITHUB_BASE}" ]] && ref="${GITHUB_BASE#refs/heads/}" || ref="develop"
+          echo $ref
           yarn bootstrap --npm-client=npm --hoist --since "origin/${ref}...HEAD" --concurrency=2 
         fi
       shell: bash
