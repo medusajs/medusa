@@ -28,6 +28,9 @@ jobs:
             */*/node_modules
           key: ${{ runner.os }}-yarn-unit-tests-v1-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Yarn install
+        run: yarn install --frozen-lockfile
+
       - name: Run bootstrap if no cache found
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn bootstrap --concurrency=2
@@ -36,11 +39,6 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: yarn bootstrap  --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
 
-      - name: Yarn install
-        run: yarn install --frozen-lockfile
-
-      - name: Run bootstrap
-        run: yarn bootstrap --concurrency=2
 
       - name: Run unit tests
         run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
