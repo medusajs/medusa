@@ -15,6 +15,9 @@ const {
   Cart,
   Return,
 } = require("@medusajs/medusa")
+const {
+  CustomShippingOption,
+} = require("@medusajs/medusa/dist/models/custom-shipping-option")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -100,6 +103,72 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(swap)
+
+  const cartWithCustomSo = manager.create(Cart, {
+    id: "test-cart-rma",
+    customer_id: "test-customer",
+    email: "test-customer@email.com",
+    shipping_address_id: "test-shipping-address",
+    billing_address_id: "test-billing-address",
+    region_id: "test-region",
+    type: "swap",
+    metadata: {
+      swap_id: "test-swap",
+      parent_order_id: orderWithSwap.id,
+    },
+  })
+
+  await manager.save(cartWithCustomSo)
+
+  const liRma = manager.create(LineItem, {
+    id: "test-item-rma",
+    title: "Line Item RMA",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    cart_id: "test-cart-rma",
+  })
+  await manager.save(liRma)
+
+  manager.insert(CustomShippingOption, {
+    id: "cso-test",
+    cart_id: cartWithCustomSo.id,
+    price: 0,
+    shipping_option_id: "test-option",
+  })
+
+  const swapWithRMAMethod = manager.create(Swap, {
+    id: "test-swap-rma",
+    order_id: "order-with-swap",
+    payment_status: "captured",
+    fulfillment_status: "fulfilled",
+    cart_id: cartWithCustomSo.id,
+    payment: {
+      id: "test-payment-swap",
+      amount: 10000,
+      currency_code: "usd",
+      amount_refunded: 0,
+      provider_id: "test-pay",
+      data: {},
+    },
+    additional_items: [
+      {
+        id: "test-item-swapped",
+        fulfilled_quantity: 1,
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 9000,
+        quantity: 1,
+        variant_id: "test-variant-2",
+        cart_id: "test-cart",
+      },
+    ],
+  })
+
+  await manager.save(swapWithRMAMethod)
 
   const cartTemplate = async (cartId) => {
     const cart = manager.create(Cart, {

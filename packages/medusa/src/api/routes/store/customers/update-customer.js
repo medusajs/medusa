@@ -50,7 +50,7 @@ export default async (req, res) => {
   const id = req.user.customer_id
 
   const schema = Validator.object().keys({
-    billing_address: Validator.address().optional(),
+    billing_address: Validator.address().optional().allow(null),
     first_name: Validator.string().optional(),
     last_name: Validator.string().optional(),
     password: Validator.string().optional(),
@@ -66,9 +66,9 @@ export default async (req, res) => {
 
   try {
     const customerService = req.scope.resolve("customerService")
-    let customer = await customerService.update(id, value)
+    await customerService.update(id, value)
 
-    customer = await customerService.retrieve(customer.id, {
+    const customer = await customerService.retrieve(id, {
       relations: defaultRelations,
       select: defaultFields,
     })
