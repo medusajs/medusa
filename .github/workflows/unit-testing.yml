@@ -39,6 +39,10 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: yarn bootstrap --since origin/develop...HEAD --concurrency=2
      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: project
+          path: /
      
 
   integration-tests: 
@@ -60,6 +64,9 @@ jobs:
           - 5432:5432
     
     steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: project
       - name: install dev cli
         run: sudo npm i -g medusa-dev-cli
       - name: Set path to medusa repo
@@ -85,6 +92,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: project
       - name: install node modules
         run: yarn install --frozen-lockfile
       
