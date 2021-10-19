@@ -44,6 +44,7 @@ jobs:
           key: ${{ runner.os }}-yarn-v3-${{ hashFiles('**/yarn.lock') }}
           
       - name: Yarn install
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
         
       - name: Complete bootstrap
