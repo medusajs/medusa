@@ -5,6 +5,8 @@ jobs:
   integration-tests: 
     runs-on: ubuntu-latest
     
+    container: node:14.18-bullseye
+    
     services:
       postgres:
         image: postgres
