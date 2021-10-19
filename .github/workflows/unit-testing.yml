@@ -5,13 +5,12 @@ jobs:
   integration-tests: 
     runs-on: ubuntu-latest
     
-   
-      
     services:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: integration-tests
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
     
     steps:
       - name: Checkout
@@ -64,7 +63,8 @@ jobs:
         run: yarn test
         working-directory: integration-tests/api
         env: 
-          DB_PASSWORD: integration-tests
+          DB_USER: postgres
+          DB_PASSWORD: postgres
           
   unit-tests:
     runs-on: ubuntu-latest
