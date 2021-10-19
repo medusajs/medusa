@@ -13,23 +13,24 @@ output:
 runs:
   using: composite
   steps:
-    - name: Fetch node modules
-      uses: pat-s/always-upload-cache@v2.1.5
+    - uses: pat-s/always-upload-cache@v2.1.5
       id: cache
       with:
         path: |
           node_modules
           */*/node_modules
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v1-${{ hashFiles('**/yarn.lock') }}
-    - name: Yarn install
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: yarn install --frozen-lockfile
+    if: steps.cache.outputs.cache-hit != 'true'
+    - run: |
+        if echo ${{ steps.cache.outputs.cache-hit}} | grep -c "true"
+        then
+          if echo $${{inputs.partial}} | grep -c "true"
+          then
+          yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
+        else
+          yarn install --frozen-lockfile
+          yarn bootstrap --concurrency=2
+        fi
+      shell: bash
 
-    - name: Run bootstrap if no cache found
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: yarn bootstrap --concurrency=2
-      
-    - name: Run partial hoisted bootstrap
-      if: inputs.partial && steps.cache.outputs.cache-hit == 'true'
-      run: yarn bootstrap --npm-client=npm --hoist --since origin/develop...HEAD --concurrency=2 
     
