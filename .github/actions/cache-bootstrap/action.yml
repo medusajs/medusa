@@ -15,15 +15,18 @@ runs:
         path: |
           node_modules
           */*/node_modules
-        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v5-${{ hashFiles('**/yarn.lock') }}
-    # We want to only bootstrap and install if no cache is found, and if running partial 
+        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v5-${{ hashFiles('**/yarn.lock') }}  
+      # We want to only bootstrap and install if no cache is found. 
+      # Futhermore, in case of running unit tests we want to do a hoisted bootstrap towards
+      # the base branch iff. it exists, otherwise develop.
     - run: |
         if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]]; then
           yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
           [ -z "${GITHUB_BASE}" ] && ref="${GITHUB_BASE#refs/heads/}" || ref="develop"
-          yarn bootstrap --npm-client=npm --hoist --since "origin/$ref...HEAD" --concurrency=2 
+          echo ref
+          yarn bootstrap --npm-client=npm --hoist --since "origin/${ref}...HEAD" --concurrency=2 
         fi
       shell: bash
 
