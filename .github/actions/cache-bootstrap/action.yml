@@ -17,7 +17,7 @@ runs:
           */*/node_modules
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v2-${{ hashFiles('**/yarn.lock') }}
     - run: |
-        if ${{ steps.cache.outputs.cache-hit}} 
+        if ["${{steps.cache.outputs.cache-hit}}" = "true" ]
         then
           if ${{inputs.partial}} 
           then
