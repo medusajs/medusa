@@ -21,7 +21,7 @@ if [ "$IS_CI" = true ]; then
   git config --local --unset url."https://github.com/".insteadOf
 fi
 
-HAS_BASE=${! -v GITHUB_BASE}
+HAS_BASE=[[! -v GITHUB_BASE]]
 COMPARE=[[HAS_BASE]] && "${GITHUB_BASE_REF#refs/heads/}" || "develop"
 BRANCH=[[HAS_BASE]] && "${GITHUB_HEAD_REF#refs/heads/}" || "${GITHUB_REF#refs/heads/}"
 echo $BRANCH
