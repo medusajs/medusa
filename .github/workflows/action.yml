@@ -1,0 +1,83 @@
+name: Medusa Pipeline
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files.sh "packages"
+
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: unit-tests
+          partial: true
+
+      - name: Run unit tests
+        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: integration-tests
+
+      - name: Install dev cli
+        run: sudo npm i -g medusa-dev-cli
+
+      - name: Set path to medusa repo
+        run: medusa-dev --set-path-to-repo `pwd`
+
+      - name: Force install
+        run: medusa-dev --force-install
+        working-directory: integration-tests/api
+
+      - name: Build integration tests
+        run: yarn build
+        working-directory: integration-tests/api
+
+      - name: Run integration tests
+        run: yarn test
+        working-directory: integration-tests/api
+        env:
+          DB_PASSWORD: postgres
