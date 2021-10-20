@@ -15,8 +15,6 @@
 /packages/medusa/src/services/shipping-profile.js
 /packages/medusa/src/services/store.js
 /packages/medusa/src/services/swap.js
-/packages/medusa/src/services/totals.js
-
 /packages/medusa/src/subscribers/notification.js
 /packages/medusa/src/subscribers/order.js
 /packages/medusa/src/subscribers/product.js
