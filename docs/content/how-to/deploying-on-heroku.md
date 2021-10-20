@@ -6,7 +6,7 @@ title: "Deploying on Heroku"
 
 This is a guide for deploying a Medusa project on Heroku. Heroku is at PaaS that allows you to easily deploy your applications in the cloud.
 
-> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough. 
+> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
 
 ### 1. Install the Heroku CLI
 
@@ -81,13 +81,16 @@ You can find more informations, plans and pricing about Redis To Go [here](https
 ### 5. Configure environment variables on Heroku
 
 Medusa requires a set of environment variables. From you project repository run the following commands:.
+
 ```shell=
 heroku config:set NODE_ENV=production
 heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
+
 > Make sure to use actual secrets in a production environment.
+
 Additionally, we need to set the buildpack to Node.js
 
 ```shell=
@@ -137,7 +140,7 @@ module.exports = {
     database_type: "postgres",
     store_cors: STORE_CORS,
     admin_cors: ADMIN_CORS,
-    database_extra: 
+    database_extra:
       process.env.NODE_ENV !== "development"
         ? { ssl: { rejectUnauthorized: false } }
         : {},
