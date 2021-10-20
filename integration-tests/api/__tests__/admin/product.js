@@ -8,6 +8,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+const { ProductVariant } = require("@medusajs/medusa")
 
 jest.setTimeout(50000)
 
@@ -1077,8 +1078,13 @@ describe("/admin/products", () => {
     })
 
     it("successfully deletes a product and variants", async () => {
-      expect.assertions(4)
       const api = useApi()
+
+      const variantPre = await dbConnection.manager.findOne(ProductVariant, {
+        id: "test-variant",
+      })
+
+      expect(variantPre).not.toEqual(undefined)
 
       const response = await api
         .delete("/admin/products/test-product", {
@@ -1099,18 +1105,11 @@ describe("/admin/products", () => {
         })
       )
 
-      const variantResult = await api
-        .post(
-          "/admin/products/test-product/variants/test-variant",
-          { inventory_quantity: 2 },
-          { headers: { Authorization: "Bearer test_token" } }
-        )
-        .catch((error) => {
-          expect(error.response.status).toEqual(404)
-          expect(error.response.data.message).toEqual(
-            "Variant with id: test-variant was not found"
-          )
-        })
+      const variant = await dbConnection.manager.findOne(ProductVariant, {
+        id: "test-variant",
+      })
+
+      expect(variant).toEqual(undefined)
     })
 
     it("successfully creates product with soft-deleted product handle and deletes it again", async () => {
