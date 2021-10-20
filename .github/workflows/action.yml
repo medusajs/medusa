@@ -80,7 +80,6 @@ jobs:
         run: yarn test
         working-directory: integration-tests/api
         env: 
-          DB_USER: postgres
           DB_PASSWORD: postgres
       
       
