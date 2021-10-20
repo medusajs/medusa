@@ -21,11 +21,15 @@ if [ "$IS_CI" = true ]; then
   git config --local --unset url."https://github.com/".insteadOf
 fi
 
-FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r "$CIRCLE_BRANCH" origin/master | grep -E "$GREP_PATTERN" -c)"
+# Make sure that we are diffing towards the right branch, in github actions this is different
+# depending on whether or not we are creating a pull request or not.
+[ ! -z ${GITHUB_BASE_REF} ] && HAS_BASE=true || HAS_BASE=false
+[ HAS_BASE = true ] && COMPARE="${GITHUB_BASE_REF#refs/heads/}" || COMPARE="develop"
+FILES_COUNT="$(git diff-tree --no-commit-id --name-only -r origin/"$COMPARE" | grep -E "$GREP_PATTERN" -c)"
 
 if [ "$IS_CI" = true ]; then
   # reset to previous state
-  git reset --hard $CIRCLE_SHA1
+  git reset --hard $GITHUB_SHA
 fi
 
 if [ "$FILES_COUNT" -eq 0 ]; then
