@@ -298,7 +298,7 @@ class ReturnService extends BaseService {
    * @param {object} data - data to use for the return e.g. shipping_method,
    *    items or refund_amount
    * @param {object} orderLike - order object
-   * @return {Promise<Return>} the resulting order.
+   * @return {Promise<Return>} the created return
    */
   async create(data) {
     return this.atomicPhase_(async (manager) => {
@@ -498,11 +498,16 @@ class ReturnService extends BaseService {
    * @param {string} return_id - the orderId to return to
    * @param {string[]} received_items - the items received after return.
    * @param {number} refund_amount - the amount to return
-   * @param{bool} allow_mismatch - whether to ignore return/received
+   * @param {bool} allow_mismatch - whether to ignore return/received
    * product mismatch
    * @return {Promise} the result of the update operation
    */
-  async receive(return_id, received_items, refund_amount, allow_mismatch = false) {
+  async receive(
+    return_id,
+    received_items,
+    refund_amount,
+    allow_mismatch = false
+  ) {
     return this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
@@ -546,7 +551,7 @@ class ReturnService extends BaseService {
       if (returnObj.status === "received") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Return with id ${returnId} has already been received`
+          `Return with id ${return_id} has already been received`
         )
       }
 
@@ -581,7 +586,7 @@ class ReturnService extends BaseService {
       let returnStatus = "received"
 
       const isMatching = newLines.every((l) => l.is_requested)
-      if (!isMatching && !allowMismatch) {
+      if (!isMatching && !allow_mismatch) {
         // Should update status
         returnStatus = "requires_action"
       }
