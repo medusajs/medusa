@@ -1,10 +1,9 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Handles Returns
- * @implements BaseService
+ * @extends BaseService
  */
 class ReturnService extends BaseService {
   constructor({
@@ -100,17 +99,18 @@ class ReturnService extends BaseService {
     }
 
     const toReturn = await Promise.all(
-      items.map(async data => {
-        const item = merged.find(i => i.id === data.item_id)
+      items.map(async (data) => {
+        const item = merged.find((i) => i.id === data.item_id)
         return transformer(item, data.quantity, data)
       })
     )
 
-    return toReturn.filter(i => !!i)
+    return toReturn.filter((i) => !!i)
   }
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {object} config - the config object for find
    * @return {Promise} the result of the find operation
    */
   list(
@@ -128,7 +128,7 @@ class ReturnService extends BaseService {
    * @return {Promise<Return>} the updated Return
    */
   async cancel(returnId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const ret = await this.retrieve(returnId)
 
       if (ret.status === "received") {
@@ -219,6 +219,7 @@ class ReturnService extends BaseService {
   /**
    * Retrieves a return by its id.
    * @param {string} id - the id of the return to retrieve
+   * @param {object} config - the config object
    * @return {Return} the return
    */
   async retrieve(id, config = {}) {
@@ -264,7 +265,7 @@ class ReturnService extends BaseService {
   }
 
   async update(returnId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const ret = await this.retrieve(returnId)
 
       if (ret.status === "canceled") {
@@ -276,8 +277,8 @@ class ReturnService extends BaseService {
 
       const { metadata, ...rest } = update
 
-      if ("metadata" in update) {
-        ret.metadata = this.setMetadata_(ret, update.metadata)
+      if (metadata) {
+        ret.metadata = this.setMetadata_(ret, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -297,15 +298,15 @@ class ReturnService extends BaseService {
    * @param {object} data - data to use for the return e.g. shipping_method,
    *    items or refund_amount
    * @param {object} orderLike - order object
-   * @returns {Promise<Return>} the resulting order.
+   * @return {Promise<Return>} the created return
    */
   async create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
       )
 
-      let orderId = data.order_id
+      const orderId = data.order_id
       if (data.swap_id) {
         delete data.order_id
       }
@@ -358,7 +359,7 @@ class ReturnService extends BaseService {
       let toRefund = data.refund_amount
       if (typeof toRefund !== "undefined") {
         // refundable from order
-        let refundable = order.refundable_amount
+        const refundable = order.refundable_amount
 
         if (toRefund > refundable) {
           throw new MedusaError(
@@ -387,11 +388,11 @@ class ReturnService extends BaseService {
       }
 
       const returnReasons = await this.returnReasonService_.list(
-        { id: [...returnLines.map(rl => rl.reason_id)] },
+        { id: [...returnLines.map((rl) => rl.reason_id)] },
         { relations: ["return_reason_children"] }
       )
 
-      if (returnReasons.some(rr => rr.return_reason_children?.length > 0)) {
+      if (returnReasons.some((rr) => rr.return_reason_children?.length > 0)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Cannot apply return reason category"
@@ -399,7 +400,7 @@ class ReturnService extends BaseService {
       }
 
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
-      returnObject.items = returnLines.map(i =>
+      returnObject.items = returnLines.map((i) =>
         rItemRepo.create({
           item_id: i.id,
           quantity: i.quantity,
@@ -432,7 +433,7 @@ class ReturnService extends BaseService {
   }
 
   fulfill(returnId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const returnOrder = await this.retrieve(returnId, {
         relations: [
           "items",
@@ -450,14 +451,14 @@ class ReturnService extends BaseService {
         )
       }
 
-      let returnData = { ...returnOrder }
+      const returnData = { ...returnOrder }
 
       const items = await this.lineItemService_.list({
         id: returnOrder.items.map(({ item_id }) => item_id),
       })
 
-      returnData.items = returnOrder.items.map(item => {
-        const found = items.find(i => i.id === item.item_id)
+      returnData.items = returnOrder.items.map((item) => {
+        const found = items.find((i) => i.id === item.item_id)
         return {
           ...item,
           item: found,
@@ -475,9 +476,8 @@ class ReturnService extends BaseService {
         return returnOrder
       }
 
-      const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
-        returnData
-      )
+      const fulfillmentData =
+        await this.fulfillmentProviderService_.createReturn(returnData)
 
       returnOrder.shipping_data = fulfillmentData
 
@@ -495,8 +495,11 @@ class ReturnService extends BaseService {
    * retuned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
-   * @param {string} orderId - the order to return.
-   * @param {string[]} lineItems - the line items to return
+   * @param {string} return_id - the orderId to return to
+   * @param {string[]} received_items - the items received after return.
+   * @param {number} refund_amount - the amount to return
+   * @param {bool} allow_mismatch - whether to ignore return/received
+   * product mismatch
    * @return {Promise} the result of the update operation
    */
   async receive(
@@ -505,7 +508,7 @@ class ReturnService extends BaseService {
     refund_amount,
     allow_mismatch = false
   ) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
       )
@@ -548,7 +551,7 @@ class ReturnService extends BaseService {
       if (returnObj.status === "received") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Return with id ${returnId} has already been received`
+          `Return with id ${return_id} has already been received`
         )
       }
 
@@ -558,8 +561,8 @@ class ReturnService extends BaseService {
         this.validateReturnLineItem_
       )
 
-      const newLines = returnLines.map(l => {
-        const existing = returnObj.items.find(i => l.id === i.item_id)
+      const newLines = returnLines.map((l) => {
+        const existing = returnObj.items.find((i) => l.id === i.item_id)
         if (existing) {
           return {
             ...existing,
@@ -582,7 +585,7 @@ class ReturnService extends BaseService {
 
       let returnStatus = "received"
 
-      const isMatching = newLines.every(l => l.is_requested)
+      const isMatching = newLines.every((l) => l.is_requested)
       if (!isMatching && !allow_mismatch) {
         // Should update status
         returnStatus = "requires_action"
@@ -612,7 +615,7 @@ class ReturnService extends BaseService {
       }
 
       for (const line of newLines) {
-        const orderItem = order.items.find(i => i.id === line.item_id)
+        const orderItem = order.items.find((i) => i.id === line.item_id)
         if (orderItem) {
           await this.inventoryService_
             .withTransaction(manager)
