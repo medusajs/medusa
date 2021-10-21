@@ -37,3 +37,4 @@ if [ "$FILES_COUNT" -eq 0 ]; then
   exit 0
 else
   echo "$FILES_COUNT file(s) matching '$GREP_PATTERN'; continuing."
+fi
