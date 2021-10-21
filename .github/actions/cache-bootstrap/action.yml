@@ -20,9 +20,11 @@ runs:
       # We want to only bootstrap and install if no cache is found. 
       # Futhermore, we might want to do a partial, hoisted, bootstrap towards
       # the base branch if it exists, otherwise we choose develop for this.
+      
+      # yarn install --frozen-lockfile
     - run: |
+        yarn install --frozen-lockfile
         if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]] || [[ "${{inputs.partial}}" != "true" ]]; then
-          yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
           [[ ! -z "${GITHUB_BASE_REF}" ]] && ref="${GITHUB_BASE_REF#refs/heads/}" || ref="develop"
