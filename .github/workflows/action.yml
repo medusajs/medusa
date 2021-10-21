@@ -2,38 +2,33 @@ name: Medusa Pipeline
 on: [push, pull_request]
 
 jobs:
-  setup: 
-   runs-on: ubuntu-latest
-   steps:
-    - name: Checkout
-      uses: actions/checkout@v2.3.5
-      with:
-        fetch-depth: 0
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.4.1
-      with:
-        node-version: '14'
-        cache: 'yarn'
-        
-    - name: Assert changed
-      run: ./scripts/assert-changed-files-actions.sh "packages"
-        
-    - name: Bootstrap packages
-      uses: ./.github/actions/cache-bootstrap
-      with:
-        extension: unit-tests
-  
   unit-tests:
    runs-on: ubuntu-latest
-   needs: setup
    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '14'
+          cache: 'yarn'    
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files-actions.sh "packages"
+        
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: unit-tests
+
       - name: Run unit tests
         run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
     
   integration-tests:
    runs-on: ubuntu-latest
-   needs: setup
    
    services:
       postgres:
@@ -50,6 +45,22 @@ jobs:
           - 5432:5432
           
    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '14'
+          cache: 'yarn'
+
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: integration-tests
+     
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
         
@@ -69,5 +80,3 @@ jobs:
         working-directory: integration-tests/api
         env: 
           DB_PASSWORD: postgres
-      
-      
