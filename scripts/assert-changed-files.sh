@@ -30,7 +30,7 @@ fi
 
 if [ "$FILES_COUNT" -eq 0 ]; then
   echo "0 files matching '$GREP_PATTERN'; exiting and marking successful."
-  exit 1
+  circleci step halt || exit 1
 else
   echo "$FILES_COUNT file(s) matching '$GREP_PATTERN'; continuing."
 fi
