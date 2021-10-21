@@ -108,8 +108,6 @@ describe("ClaimService", () => {
     it("successfully creates a claim", async () => {
       await claimService.create(testClaim)
 
-      expect(true).toEqual(false)
-      
       expect(withTransactionMock).toHaveBeenCalledWith("return")
 
       expect(returnService.create).toHaveBeenCalledTimes(1)
