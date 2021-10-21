@@ -6,29 +6,29 @@ import { MedusaError } from "medusa-core-utils"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
 
 describe("CartService", () => {
   const totalsService = {
-    getTotal: o => {
+    getTotal: (o) => {
       return o.total || 0
     },
-    getSubtotal: o => {
+    getSubtotal: (o) => {
       return o.subtotal || 0
     },
-    getTaxTotal: o => {
+    getTaxTotal: (o) => {
       return o.tax_total || 0
     },
-    getDiscountTotal: o => {
+    getDiscountTotal: (o) => {
       return o.discount_total || 0
     },
-    getShippingTotal: o => {
+    getShippingTotal: (o) => {
       return o.shipping_total || 0
     },
-    getGiftCardTotal: o => {
+    getGiftCardTotal: (o) => {
       return o.gift_card_total || 0
     },
   }
@@ -117,7 +117,7 @@ describe("CartService", () => {
 
   describe("deleteMetadata", () => {
     const cartRepository = MockRepository({
-      findOne: id => {
+      findOne: (id) => {
         if (id === "empty") {
           return Promise.resolve({
             metadata: {},
@@ -200,7 +200,7 @@ describe("CartService", () => {
       },
     }
 
-    const addressRepository = MockRepository({ create: c => c })
+    const addressRepository = MockRepository({ create: (c) => c })
     const cartRepository = MockRepository()
     const customerService = {
       retrieveByEmail: jest.fn().mockReturnValue(
@@ -209,7 +209,7 @@ describe("CartService", () => {
           email: "email@test.com",
         })
       ),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -317,14 +317,14 @@ describe("CartService", () => {
     const lineItemService = {
       update: jest.fn(),
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const shippingOptionService = {
       deleteShippingMethod: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -505,7 +505,7 @@ describe("CartService", () => {
     const lineItemService = {
       delete: jest.fn(),
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -547,7 +547,7 @@ describe("CartService", () => {
 
     const shippingOptionService = {
       deleteShippingMethod: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -647,12 +647,13 @@ describe("CartService", () => {
           "shipping_address",
           "billing_address",
           "gift_cards",
-          "discounts",
           "customer",
           "region",
           "payment_sessions",
           "region.countries",
+          "discounts",
           "discounts.rule",
+          "discounts.rule.valid_for",
           "discounts.regions",
         ],
         {
@@ -665,7 +666,7 @@ describe("CartService", () => {
   describe("updateLineItem", () => {
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -673,7 +674,7 @@ describe("CartService", () => {
       ...InventoryServiceMock,
       confirmInventory: jest
         .fn()
-        .mockImplementation(id => id !== IdMap.getId("cannot-cover")),
+        .mockImplementation((id) => id !== IdMap.getId("cannot-cover")),
     }
 
     const cartRepository = MockRepository({
@@ -746,7 +747,7 @@ describe("CartService", () => {
 
   describe("updateEmail", () => {
     const customerService = {
-      retrieveByEmail: jest.fn().mockImplementation(email => {
+      retrieveByEmail: jest.fn().mockImplementation((email) => {
         if (email === "no@mail.com") {
           return Promise.reject()
         }
@@ -755,13 +756,13 @@ describe("CartService", () => {
           email,
         })
       }),
-      create: jest.fn().mockImplementation(data =>
+      create: jest.fn().mockImplementation((data) =>
         Promise.resolve({
           id: IdMap.getId("newCus"),
           email: data.email,
         })
       ),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -846,7 +847,7 @@ describe("CartService", () => {
         }),
     })
 
-    const addressRepository = MockRepository({ create: c => c })
+    const addressRepository = MockRepository({ create: (c) => c })
 
     const cartService = new CartService({
       manager: MockManager,
@@ -907,7 +908,7 @@ describe("CartService", () => {
           region: { countries: [{ iso_2: "us" }] },
         }),
     })
-    const addressRepository = MockRepository({ create: c => c })
+    const addressRepository = MockRepository({ create: (c) => c })
 
     const cartService = new CartService({
       manager: MockManager,
@@ -981,15 +982,15 @@ describe("CartService", () => {
 
   describe("setRegion", () => {
     const lineItemService = {
-      update: jest.fn(r => r),
+      update: jest.fn((r) => r),
       delete: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
-    const addressRepository = MockRepository({ create: c => c })
+    const addressRepository = MockRepository({ create: (c) => c })
     const productVariantService = {
-      getRegionPrice: jest.fn().mockImplementation(id => {
+      getRegionPrice: jest.fn().mockImplementation((id) => {
         if (id === IdMap.getId("fail")) {
           return Promise.reject()
         }
@@ -1033,7 +1034,7 @@ describe("CartService", () => {
       deleteSession: jest.fn(),
       updateSession: jest.fn(),
       createSession: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -1237,7 +1238,7 @@ describe("CartService", () => {
       deleteSession: jest.fn(),
       updateSession: jest.fn(),
       createSession: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -1308,11 +1309,50 @@ describe("CartService", () => {
     })
   })
 
+  describe("findCustomShippingOption", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    let cartService = new CartService({})
+
+    it("given a cart with custom shipping options and a shipping option id corresponding to a custom shipping option, then it should return a custom shipping option", async () => {
+      const cartCSO = [
+        { id: "cso-test", shipping_option_id: "test-so", price: 20 },
+      ]
+      const result = cartService.findCustomShippingOption(cartCSO, "test-so")
+
+      expect(result).toEqual({
+        id: "cso-test",
+        shipping_option_id: "test-so",
+        price: 20,
+      })
+    })
+
+    it("given a cart with empty custom shipping options and shipping option id, then it should return undefined", async () => {
+      const cartCSO = []
+
+      const result = cartService.findCustomShippingOption(cartCSO, "test-so")
+
+      expect(result).toBeUndefined()
+    })
+
+    it("given a cart with custom shipping options and a shipping option id that does not belong to the cart, then it should throw an invalid error", async () => {
+      const cartCSO = [
+        { id: "cso-test", shipping_option_id: "test-so", price: 500 },
+      ]
+
+      expect(() => {
+        cartService.findCustomShippingOption(cartCSO, "some-other-so")
+      }).toThrow(MedusaError)
+    })
+  })
+
   describe("addShippingMethod", () => {
     const buildCart = (id, config = {}) => {
       return {
         id: IdMap.getId(id),
-        items: (config.items || []).map(i => ({
+        items: (config.items || []).map((i) => ({
           id: IdMap.getId(i.id),
           variant: {
             product: {
@@ -1320,7 +1360,7 @@ describe("CartService", () => {
             },
           },
         })),
-        shipping_methods: (config.shipping_methods || []).map(m => ({
+        shipping_methods: (config.shipping_methods || []).map((m) => ({
           id: IdMap.getId(m.id),
           shipping_option: {
             profile_id: IdMap.getId(m.profile),
@@ -1337,6 +1377,7 @@ describe("CartService", () => {
     const cart3 = buildCart("lines", {
       items: [{ id: "line", profile: "profile1" }],
     })
+    const cartWithCustomSO = buildCart("cart-with-custom-so")
 
     const cartRepository = MockRepository({
       findOneWithRelations: (rels, q) => {
@@ -1345,6 +1386,8 @@ describe("CartService", () => {
             return Promise.resolve(cart3)
           case IdMap.getId("existing"):
             return Promise.resolve(cart2)
+          case IdMap.getId("cart-with-custom-so"):
+            return Promise.resolve(cartWithCustomSO)
           default:
             return Promise.resolve(cart1)
         }
@@ -1353,12 +1396,12 @@ describe("CartService", () => {
 
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
     const shippingOptionService = {
-      createShippingMethod: jest.fn().mockImplementation(id => {
+      createShippingMethod: jest.fn().mockImplementation((id) => {
         return Promise.resolve({
           shipping_option: {
             profile_id: id,
@@ -1366,9 +1409,23 @@ describe("CartService", () => {
         })
       }),
       deleteShippingMethod: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
+    }
+
+    const customShippingOptionService = {
+      list: jest.fn().mockImplementation(({ cart_id }) => {
+        if (cart_id === IdMap.getId("cart-with-custom-so")) {
+          return [
+            {
+              id: "cso-test",
+              shipping_profile_id: "test-so",
+              cart_id: IdMap.getId("cart-with-custom-so"),
+            },
+          ]
+        }
+      }),
     }
 
     const cartService = new CartService({
@@ -1378,6 +1435,7 @@ describe("CartService", () => {
       shippingOptionService,
       lineItemService,
       eventBusService,
+      customShippingOptionService,
     })
 
     beforeEach(() => {
@@ -1395,9 +1453,11 @@ describe("CartService", () => {
         IdMap.getId("option"),
         data
       )
-      expect(
-        shippingOptionService.createShippingMethod
-      ).toHaveBeenCalledWith(IdMap.getId("option"), data, { cart: cart1 })
+      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("option"),
+        data,
+        { cart: cart1 }
+      )
     })
 
     it("successfully overrides existing profile shipping method", async () => {
@@ -1409,9 +1469,11 @@ describe("CartService", () => {
         IdMap.getId("profile1"),
         data
       )
-      expect(
-        shippingOptionService.createShippingMethod
-      ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart2 })
+      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("profile1"),
+        data,
+        { cart: cart2 }
+      )
       expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
         id: IdMap.getId("ship1"),
         shipping_option: {
@@ -1437,9 +1499,11 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(
-        shippingOptionService.createShippingMethod
-      ).toHaveBeenCalledWith(IdMap.getId("additional"), data, { cart: cart2 })
+      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("additional"),
+        data,
+        { cart: cart2 }
+      )
     })
 
     it("updates item shipping", async () => {
@@ -1459,19 +1523,50 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(
-        shippingOptionService.createShippingMethod
-      ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart3 })
+      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("profile1"),
+        data,
+        { cart: cart3 }
+      )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
       expect(lineItemService.update).toHaveBeenCalledWith(IdMap.getId("line"), {
         has_shipping: true,
       })
     })
+
+    it("successfully adds a shipping method from a custom shipping option and custom price", async () => {
+      const data = {
+        id: "test",
+        extra: "yes",
+      }
+
+      cartService.findCustomShippingOption = jest
+        .fn()
+        .mockImplementation((cartCustomShippingOptions) => {
+          return {
+            price: 0,
+          }
+        })
+
+      await cartService.addShippingMethod(
+        IdMap.getId("cart-with-custom-so"),
+        IdMap.getId("test-so"),
+        data
+      )
+      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
+        IdMap.getId("test-so"),
+        data,
+        {
+          cart_id: IdMap.getId("cart-with-custom-so"),
+          price: 0,
+        }
+      )
+    })
   })
 
   describe("applyDiscount", () => {
-    const getOffsetDate = offset => {
+    const getOffsetDate = (offset) => {
       const date = new Date()
       date.setDate(date.getDate() + offset)
       return date
@@ -1508,7 +1603,7 @@ describe("CartService", () => {
     })
 
     const discountService = {
-      retrieveByCode: jest.fn().mockImplementation(code => {
+      retrieveByCode: jest.fn().mockImplementation((code) => {
         if (code === "US10") {
           return Promise.resolve({
             regions: [{ id: IdMap.getId("bad") }],
