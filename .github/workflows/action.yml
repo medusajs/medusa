@@ -23,7 +23,6 @@ jobs:
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
-          partial: true
 
       - name: Run unit tests
         run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
