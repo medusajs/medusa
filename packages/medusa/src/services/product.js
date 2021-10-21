@@ -463,26 +463,26 @@ class ProductService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} empty promise
    */
-//   async delete(productId) {
-//     return this.atomicPhase_(async (manager) => {
-//       const productRepo = manager.getCustomRepository(this.productRepository_)
+  async delete(productId) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-//       // Should not fail, if product does not exist, since delete is idempotent
-//       const product = await productRepo.findOne({ where: { id: productId } })
+      // Should not fail, if product does not exist, since delete is idempotent
+      const product = await productRepo.findOne({ where: { id: productId } })
 
-//       if (!product) return Promise.resolve()
+      if (!product) return Promise.resolve()
 
-//       await productRepo.softRemove(product)
+      await productRepo.softRemove(product)
 
-//       await this.eventBus_
-//         .withTransaction(manager)
-//         .emit(ProductService.Events.DELETED, {
-//           id: productId,
-//         })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.DELETED, {
+          id: productId,
+        })
 
-//       return Promise.resolve()
-//     })
-//   }
+      return Promise.resolve()
+    })
+  }
 
   /**
    * Adds an option to a product. Options can, for example, be "Size", "Color",
