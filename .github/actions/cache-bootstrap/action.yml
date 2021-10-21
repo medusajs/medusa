@@ -28,7 +28,7 @@ runs:
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
           [[ ! -z "${GITHUB_BASE_REF}" ]] && ref="${GITHUB_BASE_REF#refs/heads/}" || ref="develop"
-          yarn bootstrap --npm-client=npm --hoist --since "origin/${ref}...HEAD" --concurrency=2 
+          yarn bootstrap --npm-client=npm --hoist --since "origin/${ref}" --concurrency=2 
         fi
       shell: bash
 
