@@ -21,7 +21,7 @@ runs:
       # Futhermore, we might want to do a partial, hoisted, bootstrap towards
       # the base branch if it exists, otherwise we choose develop for this.
     - run: |
-        if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]]; then
+        if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]] || [[ "${{inputs.partial}}" != "true" ]]; then
           yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
