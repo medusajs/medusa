@@ -128,8 +128,6 @@ class ProductVariantService extends BaseService {
       const { prices, ...rest } = variant
 
       let product = productOrProductId
-      
-      console.log('test')
 
       if (typeof product === `string`) {
         product = await productRepo.findOne({

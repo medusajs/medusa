@@ -50,7 +50,6 @@ export default async (req, res) => {
     req.session.jwt = jwt.sign({ customer_id: customer.id }, config.jwtSecret, {
       expiresIn: "30d",
     })
-    console.log("test")
 
     customer = await customerService.retrieve(customer.id, {
       relations: defaultRelations,
