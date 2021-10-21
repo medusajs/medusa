@@ -9,27 +9,25 @@ inputs:
 runs:
   using: composite
   steps:
-      # for always overriding cache, use: pat-s/always-upload-cache@v2.1.5 
+    # for always overriding cache, use: pat-s/always-upload-cache@v2.1.5
     - uses: actions/cache@v2
       id: cache
       with:
         path: |
           node_modules
           */*/node_modules
-        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v6-${{ hashFiles('**/yarn.lock') }}  
-      # We want to only bootstrap and install if no cache is found. 
+        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v6-${{ hashFiles('**/yarn.lock') }}
+      # We want to only bootstrap and install if no cache is found.
       # Futhermore, we might want to do a partial, hoisted, bootstrap towards
       # the base branch if it exists, otherwise we choose develop for this.
-      
+
       # yarn install --frozen-lockfile
     - run: |
-        yarn install --frozen-lockfile
         if [[ "${{steps.cache.outputs.cache-hit}}" != "true" || "${{inputs.partial}}" != "true" ]]; then
+          yarn install --frozen-lockfile
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
           [[ ! -z "${GITHUB_BASE_REF}" ]] && ref="${GITHUB_BASE_REF#refs/heads/}" || ref="develop"
-          yarn bootstrap --npm-client=npm --hoist --since "origin/${ref}" --concurrency=2 
+          yarn bootstrap --npm-client=npm --hoist --since "origin/${ref}...HEAD" --concurrency=2 
         fi
       shell: bash
-
-    
