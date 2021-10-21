@@ -16,7 +16,7 @@ runs:
         path: |
           node_modules
           */*/node_modules
-        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v5-${{ hashFiles('**/yarn.lock') }}  
+        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v6-${{ hashFiles('**/yarn.lock') }}  
       # We want to only bootstrap and install if no cache is found. 
       # Futhermore, we might want to do a partial, hoisted, bootstrap towards
       # the base branch if it exists, otherwise we choose develop for this.
