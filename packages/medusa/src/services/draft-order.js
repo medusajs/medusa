@@ -1,11 +1,10 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-import { Brackets, ILike } from "typeorm"
+import { Brackets } from "typeorm"
 
 /**
  * Handles draft orders
- * @implements BaseService
+ * @implements {BaseService}
  */
 class DraftOrderService extends BaseService {
   static Events = {
@@ -106,7 +105,7 @@ class DraftOrderService extends BaseService {
   /**
    * Retrieves a draft order based on its associated cart id
    * @param {string} cartId - cart id that the draft orders's cart has
-   * * @param {object} config - query object for findOne
+   * @param {object} config - query object for findOne
    * @return {Promise<DraftOrder>} the draft order
    */
   async retrieveByCartId(cartId, config = {}) {
@@ -134,7 +133,7 @@ class DraftOrderService extends BaseService {
    * @return {Promise} empty promise
    */
   async delete(draftOrderId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const draftOrderRepo = manager.getCustomRepository(
         this.draftOrderRepository_
       )
@@ -143,7 +142,9 @@ class DraftOrderService extends BaseService {
         where: { id: draftOrderId },
       })
 
-      if (!draftOrder) return Promise.resolve()
+      if (!draftOrder) {
+        return Promise.resolve()
+      }
 
       await draftOrderRepo.remove(draftOrder)
 
@@ -185,11 +186,11 @@ class DraftOrderService extends BaseService {
         },
       }
 
-      query.where = qb => {
+      query.where = (qb) => {
         qb.where(where)
 
         qb.andWhere(
-          new Brackets(qb => {
+          new Brackets((qb) => {
             qb.where(`cart.email ILIKE :q`, {
               q: `%${q}%`,
             }).orWhere(`draft_order.display_id::varchar(255) ILIKE :dId`, {
@@ -230,7 +231,7 @@ class DraftOrderService extends BaseService {
    * @return {Promise<DraftOrder>} the created draft order
    */
   async create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const draftOrderRepo = manager.getCustomRepository(
         this.draftOrderRepository_
       )
@@ -250,10 +251,10 @@ class DraftOrderService extends BaseService {
       }
 
       const {
-        items,
         shipping_methods,
         discounts,
         no_notification_order,
+        items,
         ...rest
       } = data
 
@@ -332,7 +333,7 @@ class DraftOrderService extends BaseService {
    * @return {Promise} the created order
    */
   async registerCartCompletion(doId, orderId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const draftOrderRepo = manager.getCustomRepository(
         this.draftOrderRepository_
       )
@@ -350,10 +351,10 @@ class DraftOrderService extends BaseService {
    * Updates a draft order with the given data
    * @param {String} doId - id of the draft order
    * @param {DraftOrder} data - values to update the order with
-   * @returns {Promise<DraftOrder>} the updated draft order
+   * @return {Promise<DraftOrder>} the updated draft order
    */
   async update(doId, data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const doRepo = manager.getCustomRepository(this.draftOrderRepository_)
       const draftOrder = await this.retrieve(doId)
       let touched = false

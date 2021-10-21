@@ -3,13 +3,13 @@ orbs:
   node: circleci/node@3.0.0
 
 executors:
-    node:
-      parameters:
-        image:
-          type: string
-          default: "12.13"
-      docker:
-        - image: circleci/node:<< parameters.image >>
+  node:
+    parameters:
+      image:
+        type: string
+        default: "14.18"
+    docker:
+      - image: circleci/node:<< parameters.image >>
 
 aliases:
   install_node_modules: &install_node_modules
@@ -18,7 +18,7 @@ aliases:
       command: yarn --frozen-lockfile
   attach_to_bootstrap: &attach_to_bootstrap
     attach_workspace:
-        at: ./
+      at: ./
 
 jobs:
   bootstrap:
