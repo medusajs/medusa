@@ -17,7 +17,7 @@ jobs:
           cache: 'yarn'    
 
       - name: Assert changed
-        run: ./scripts/assert-changed-files.sh "packages"
+        run: ./scripts/assert-changed-files-actions.sh "packages"
         
       - name: Bootstrap packages
         uses: ./.github/actions/cache-bootstrap
