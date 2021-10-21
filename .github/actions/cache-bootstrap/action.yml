@@ -24,7 +24,7 @@ runs:
       # yarn install --frozen-lockfile
     - run: |
         yarn install --frozen-lockfile
-        if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]] || [[ "${{inputs.partial}}" != "true" ]]; then
+        if [[ "${{steps.cache.outputs.cache-hit}}" != "true" || "${{inputs.partial}}" != "true" ]]; then
           yarn bootstrap --concurrency=2
         elif [[ "${{inputs.partial}}" = "true" ]]; then
           [[ ! -z "${GITHUB_BASE_REF}" ]] && ref="${GITHUB_BASE_REF#refs/heads/}" || ref="develop"
