@@ -108,10 +108,15 @@ class RestockNotificationService extends BaseService {
    * and emits a restocked event to the event bus. After successful emission the
    * restock notification is deleted.
    * @param {string} variantId - the variant id to trigger restock for
-   * @return {Promise<RestockNotification>} The resulting restock notification
+   * @return The resulting restock notification
    */
-  async triggerRestock(variantId) {
-    return this.atomicPhase_(async (manager) => {
+  triggerRestock(variantId) {
+    const delay = this.options_?.trigger_delay ?? 0
+    setTimeout(() => this.restockExecute_(variantId), delay)
+  }
+
+  async restockExecute_(variantId) {
+    return await this.atomicPhase_(async (manager) => {
       const restockRepo = manager.getRepository(this.restockNotificationModel_)
 
       const existing = await this.retrieve(variantId)

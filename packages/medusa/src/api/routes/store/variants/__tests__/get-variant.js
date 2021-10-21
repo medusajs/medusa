@@ -1,4 +1,3 @@
-import { IdMap } from "../../../../../../../medusa-test-utils/dist"
 import { request } from "../../../../../helpers/test-request"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
@@ -16,7 +15,7 @@ describe("Get variant by id", () => {
     it("calls get variant from variantSerice", () => {
       expect(ProductVariantServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.retrieve).toHaveBeenCalledWith("1", {
-        relations: ["prices"],
+        relations: ["prices", "options"],
       })
     })
 

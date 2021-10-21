@@ -1,10 +1,9 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import _ from "lodash"
 
 /**
  * Provides layer to manipulate orchestrate notifications.
- * @implements BaseService
+ * @extends BaseService
  */
 class NotificationService extends BaseService {
   constructor(container) {
@@ -34,6 +33,7 @@ class NotificationService extends BaseService {
   /**
    * Registers an attachment generator to the service. The generator can be
    * used to generate on demand invoices or other documents.
+   * @param {object} service
    */
   registerAttachmentGenerator(service) {
     this.attachmentGenerator_ = service
@@ -42,16 +42,18 @@ class NotificationService extends BaseService {
   /**
    * Sets the service's manager to a given transaction manager.
    * @param {EntityManager} transactionManager - the manager to use
-   * return {NotificationService} a cloned notification service
+   * @return {NotificationService} a cloned notification service
    */
   withTransaction(transactionManager) {
     if (!transactionManager) {
       return this
     }
 
-    const cloned = new LineItemService({
+    const cloned = new NotificationService({
       manager: transactionManager,
+      notificationProviderRepository: this.notificationProviderRepository_,
       notificationRepository: this.notificationRepository_,
+      logger: this.logger_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -93,6 +95,7 @@ class NotificationService extends BaseService {
   /**
    * Retrieves a notification with a given id
    * @param {string} id - the id of the notification
+   * @param {object} config - the configuration to apply to the query
    * @return {Notification} the notification
    */
   async retrieve(id, config = {}) {
@@ -158,6 +161,7 @@ class NotificationService extends BaseService {
    * order to allow for resends. Will log any errors that are encountered.
    * @param {string} eventName - the event to handle
    * @param {object} data - the data the event was sent with
+   * @return {Promise} - the result of notification subscribed
    */
   handleEvent(eventName, data) {
     const subs = this.subscribers_[eventName]
@@ -169,8 +173,8 @@ class NotificationService extends BaseService {
     }
 
     return Promise.all(
-      subs.map(async providerId => {
-        return this.send(eventName, data, providerId).catch(err => {
+      subs.map(async (providerId) => {
+        return this.send(eventName, data, providerId).catch((err) => {
           console.log(err)
           this.logger_.warn(
             `An error occured while ${providerId} was processing a notification for ${eventName}: ${err.message}`
