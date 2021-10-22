@@ -36,7 +36,8 @@
     "prettier": "^2.1.1",
     "resolve-cwd": "^3.0.0",
     "rimraf": "^3.0.2",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.31",
+    "yarn-or-npm": "^3.0.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx --fix",
@@ -47,7 +48,7 @@
     "hooks:install": "husky install",
     "hooks:uninstall": "husky uninstall",
     "publish:next": "lerna publish --canary --preid next --dist-tag next",
-    "prebootstrap": "yarn clean",
+    "prebootstrap": "yarn-or-npm run clean",
     "bootstrap": "lerna bootstrap",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "jest": "jest",

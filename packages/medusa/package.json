@@ -29,15 +29,16 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "sqlite3": "^5.0.2",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "yarn-or-npm": "^3.0.1"
   },
   "scripts": {
     "clean": "rimraf dist/",
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-    "prewatch": "yarn clean",
+    "prewatch": "yarn-or-npm run clean",
     "watch": "babel -w src --out-dir dist/ --ignore **/__tests__ --extensions \".ts,.js\"",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "prebuild": "yarn clean",
+    "prebuild": "yarn-or-npm run clean",
     "build": "babel src -d dist --ignore **/__tests__ --extensions \".ts,.js\"",
     "serve": "node dist/app.js",
     "test": "jest",
