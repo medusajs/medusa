@@ -468,7 +468,10 @@ class ProductService extends BaseService {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       // Should not fail, if product does not exist, since delete is idempotent
-      const product = await productRepo.findOne({ where: { id: productId } })
+      const product = await productRepo.findOne(
+        { id: productId },
+        { relations: ["variants"] }
+      )
 
       if (!product) return Promise.resolve()
 
