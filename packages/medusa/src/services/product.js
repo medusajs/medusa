@@ -573,7 +573,7 @@ class ProductService extends BaseService {
    * optionOrder and the length of the product's options are different. Will
    * throw optionOrder contains an id not associated with the product.
    * @param {string} productId - the product whose options we are reordering
-   * @param {[ObjectId]} optionOrder - the ids of the product's options in the
+   * @param {string[]} optionOrder - the ids of the product's options in the
    *    new order
    * @return {Promise} the result of the update operation
    */
@@ -726,7 +726,7 @@ class ProductService extends BaseService {
 
   /**
    * Decorates a product with product variants.
-   * @param {Product} productId - the productId to decorate.
+   * @param {string} productId - the productId to decorate.
    * @param {string[]} fields - the fields to include.
    * @param {string[]} expandFields - fields to expand.
    * @return {Product} return the decorated product.
