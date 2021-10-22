@@ -53,6 +53,7 @@
 /packages/medusa-file-spaces
 /packages/medusa-fulfillment-manual
 /packages/medusa-fulfillment-webshipper
+/packages/medusa-fulfillment-shipbob
 /packages/medusa-interfaces
 /packages/medusa-payment-adyen
 /packages/medusa-payment-klarna
