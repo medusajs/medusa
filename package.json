@@ -47,6 +47,7 @@
     "hooks:install": "husky install",
     "hooks:uninstall": "husky uninstall",
     "publish:next": "lerna publish --canary --preid next --dist-tag next",
+    "prebootstrap": "yarn clean",
     "bootstrap": "lerna bootstrap",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "jest": "jest",
