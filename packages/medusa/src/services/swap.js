@@ -199,7 +199,7 @@ class SwapService extends BaseService {
   /**
    * Retrieves a swap based on its associated cart id
    * @param {string} cartId - the cart id that the swap's cart has
-   * @param {any[]} relations - the relations to retrieve swap
+   * @param {string[]} relations - the relations to retrieve swap
    * @return {Promise<Swap>} the swap
    */
   async retrieveByCartId(cartId, relations = []) {
@@ -525,7 +525,7 @@ class SwapService extends BaseService {
    * swapId must belong to the order. Fails if there is already a cart on the
    * swap.
    * @param {string} swapId - the id of the swap to create the cart from
-   * @param {any[]} customShippingOptions - the shipping options
+   * @param {object[]} customShippingOptions - the shipping options
    * @param {Order} order - the order to create the cart from
    * @return {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
@@ -659,7 +659,7 @@ class SwapService extends BaseService {
   }
 
   /**
-   *@param {any} swapId - The id of the swap
+   *@param {string} swapId - The id of the swap
    */
   async registerCartCompletion(swapId) {
     return this.atomicPhase_(async (manager) => {
@@ -789,7 +789,6 @@ class SwapService extends BaseService {
    * to requires_action.
    * @param {string} swapId - the id of the swap to receive.
    * @param {Array<ReturnItem>} returnItems - the return items that have been returned
-   * @param {Order} order - the order to receive the return based off
    * @return {Promise<Swap>} the resulting swap, with an updated return and
    *   status.
    */
@@ -1020,7 +1019,7 @@ class SwapService extends BaseService {
   /**
    * Cancels a fulfillment (if related to a swap)
    * @param {string} fulfillmentId - the ID of the fulfillment to cancel
-   * @return {any} updated swap
+   * @return {Swap} updated swap
    */
   async cancelFulfillment(fulfillmentId) {
     return this.atomicPhase_(async (manager) => {
