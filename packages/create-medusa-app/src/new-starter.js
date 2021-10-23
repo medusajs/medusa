@@ -33,7 +33,7 @@ export const getPackageManager = (npmConfigUserAgent) => {
 const removeUndefined = (obj) => {
   return Object.fromEntries(
     Object.entries(obj)
-      .filter(([_, v]) => v != null)
+      .filter(([_, v]) => v !== null)
       .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
   )
 }
