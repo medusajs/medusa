@@ -24,9 +24,7 @@ import jwt from "jsonwebtoken"
  */
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    email: Validator.string()
-      .email()
-      .required(),
+    email: Validator.string().email().required(),
     token: Validator.string().required(),
     password: Validator.string().required(),
   })

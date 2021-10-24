@@ -43,7 +43,7 @@ export default async (req, res) => {
     const lineItemService = req.scope.resolve("lineItemService")
     const cartService = req.scope.resolve("cartService")
 
-    await manager.transaction(async m => {
+    await manager.transaction(async (m) => {
       const txCartService = cartService.withTransaction(m)
       const cart = await txCartService.retrieve(id)
 

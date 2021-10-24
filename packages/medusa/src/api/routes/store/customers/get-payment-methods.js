@@ -32,7 +32,7 @@ export default async (req, res) => {
     const paymentProviderService = req.scope.resolve("paymentProviderService")
     const customerService = req.scope.resolve("customerService")
 
-    let customer = await customerService.retrieve(id)
+    const customer = await customerService.retrieve(id)
 
     const store = await storeService.retrieve(["payment_providers"])
 
