@@ -76,7 +76,7 @@ export default async (req, res) => {
 
     const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
+    await entityManager.transaction(async (manager) => {
       // Add a default region if no region has been specified
       let regionId = value.region_id
       if (!value.region_id) {
@@ -119,7 +119,7 @@ export default async (req, res) => {
       let cart = await cartService.withTransaction(manager).create(toCreate)
       if (value.items) {
         await Promise.all(
-          value.items.map(async i => {
+          value.items.map(async (i) => {
             await lineItemService.withTransaction(manager).create({
               cart_id: cart.id,
               variant_id: i.variant_id,
