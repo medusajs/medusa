@@ -56,7 +56,7 @@
 /packages/medusa/src/api/routes/store/regions
 /packages/medusa/src/api/routes/store/return-reasons
 /packages/medusa/src/api/routes/store/returns
-/packages/medusa/src/api/routes/store/shipping-options
+
 /packages/medusa/src/api/routes/store/swaps
 /packages/medusa/src/api/routes/store/variants
 
