@@ -67,7 +67,7 @@ class StoreService extends BaseService {
 
   /**
    * Retrieve the store settings. There is always a maximum of one store.
-   * @param {object} relations the relation object
+   * @param {string[]} relations - relations to fetch with store
    * @return {Promise<Store>} the store
    */
   async retrieve(relations = []) {
