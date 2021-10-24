@@ -221,7 +221,7 @@ class EventBusService {
    *
    * @return {Promise} resolves to the results of the subscriber calls.
    */
-  worker_(job) {
+  worker_ = (job) => {
     const { eventName, data } = job.data
     const eventObservers = this.observers_[eventName] || []
     const wildcardObservers = this.observers_["*"] || []
@@ -245,7 +245,7 @@ class EventBusService {
     )
   }
 
-  cronWorker_(job) {
+  cronWorker_ = (job) => {
     const { eventName, data } = job.data
     const observers = this.cronHandlers_[eventName] || []
     this.logger_.info(`Processing cron job: ${eventName}`)
