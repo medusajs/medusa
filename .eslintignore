@@ -45,9 +45,8 @@
 /packages/medusa/src/api/routes/admin/shipping-profiles
 /packages/medusa/src/api/routes/admin/store
 /packages/medusa/src/api/routes/admin/swaps
-/packages/medusa/src/api/routes/admin/uploads
 /packages/medusa/src/api/routes/admin/users
-/packages/medusa/src/api/routes/admin/variants
+
 
 /packages/medusa/src/api/routes/store/auth
 /packages/medusa/src/api/routes/store/carts
