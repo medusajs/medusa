@@ -1,4 +1,4 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   try {
@@ -7,6 +7,6 @@ export default async (req, res) => {
 
     res.status(200).json({ apps: data })
   } catch (err) {
-    throw err
+    throw new MedusaError(MedusaError.Types.NOT_AUTHORIZED, err)
   }
 }

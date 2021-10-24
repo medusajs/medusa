@@ -20,6 +20,6 @@ export default async (req, res) => {
     )
     res.status(200).json({ apps: data })
   } catch (err) {
-    throw err
+    throw new MedusaError(MedusaError.Types.NOT_AUTHORIZED, err)
   }
 }

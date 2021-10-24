@@ -10,6 +10,8 @@ export const MedusaErrorTypes = {
   INVALID_DATA: "invalid_data",
   NOT_FOUND: "not_found",
   NOT_ALLOWED: "not_allowed",
+  NOT_AUTHORIZED: "not_authorized",
+  SERVICE_ERROR: "service_error"
 }
 
 export const MedusaErrorCodes = {
