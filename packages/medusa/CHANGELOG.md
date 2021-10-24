@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.47](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.46...@medusajs/medusa@1.1.47) (2021-10-23)
+
+### Bug Fixes
+
+- pull missing fields ([b82b43b](https://github.com/medusajs/medusa/commit/b82b43b4c64dc5bc705a439a214f9d1dc9976e21))
+
 ## [1.1.46](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.45...@medusajs/medusa@1.1.46) (2021-10-19)
 
 ### Bug Fixes
