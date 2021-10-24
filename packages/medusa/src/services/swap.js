@@ -1,10 +1,9 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Handles swaps
- * @implements BaseService
+ * @extends BaseService
  */
 class SwapService extends BaseService {
   static Events = {
@@ -168,6 +167,7 @@ class SwapService extends BaseService {
   /**
    * Retrieves a swap with the given id.
    * @param {string} id - the id of the swap to retrieve
+   * @param {Object} config - the configuration to retrieve the swap
    * @return {Promise<Swap>} the swap
    */
   async retrieve(id, config = {}) {
@@ -199,6 +199,7 @@ class SwapService extends BaseService {
   /**
    * Retrieves a swap based on its associated cart id
    * @param {string} cartId - the cart id that the swap's cart has
+   * @param {string[]} relations - the relations to retrieve swap
    * @return {Promise<Swap>} the swap
    */
   async retrieveByCartId(cartId, relations = []) {
@@ -220,6 +221,7 @@ class SwapService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
    * @return {Promise} the result of the find operation
    */
   list(
@@ -229,7 +231,7 @@ class SwapService extends BaseService {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
     const query = this.buildQuery_(selector, config)
 
-    let rels = query.relations
+    const rels = query.relations
     delete query.relations
     return swapRepo.findWithRelations(rels, query)
   }
@@ -295,7 +297,7 @@ class SwapService extends BaseService {
    * @param {Object} custom - contains relevant custom information. This object may
    *  include no_notification which will disable sending notification when creating
    *  swap. If set, it overrules the attribute inherited from the order.
-   * @returns {Promise<Swap>} the newly created swap.
+   * @return {Promise<Swap>} the newly created swap.
    */
   async create(
     order,
@@ -522,9 +524,10 @@ class SwapService extends BaseService {
    * for differences associated with the swap. The swap represented by the
    * swapId must belong to the order. Fails if there is already a cart on the
    * swap.
-   * @param {Order} order - the order to create the cart from
    * @param {string} swapId - the id of the swap to create the cart from
-   * @returns {Promise<Swap>} the swap with its cart_id prop set to the id of
+   * @param {object[]} customShippingOptions - the shipping options
+   * @param {Order} order - the order to create the cart from
+   * @return {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
    */
   async createCart(swapId, customShippingOptions = []) {
@@ -656,7 +659,7 @@ class SwapService extends BaseService {
   }
 
   /**
-   *
+   *@param {string} swapId - The id of the swap
    */
   async registerCartCompletion(swapId) {
     return this.atomicPhase_(async (manager) => {
@@ -784,10 +787,9 @@ class SwapService extends BaseService {
    * Registers the return associated with a swap as received. If the return
    * is received with mismatching return items the swap's status will be updated
    * to requires_action.
-   * @param {Order} order - the order to receive the return based off
    * @param {string} swapId - the id of the swap to receive.
-   * @param {Array<ReturnItem>} - the items that have been returned
-   * @returns {Promise<Swap>} the resulting swap, with an updated return and
+   * @param {Array<ReturnItem>} returnItems - the return items that have been returned
+   * @return {Promise<Swap>} the resulting swap, with an updated return and
    *   status.
    */
   async receiveReturn(swapId, returnItems) {
@@ -829,7 +831,7 @@ class SwapService extends BaseService {
    * related returns, fulfillments, and payments have been canceled. If a swap
    * is associated with a refund, it cannot be canceled.
    * @param {string} swapId - the id of the swap to cancel.
-   * @returns {Promise<Swap>} the canceled swap.
+   * @return {Promise<Swap>} the canceled swap.
    */
   async cancel(swapId) {
     return this.atomicPhase_(async (manager) => {
@@ -887,7 +889,7 @@ class SwapService extends BaseService {
    * fulfillment providers associated with the shipping methods.
    * @param {string} swapId - the id of the swap to fulfill,
    * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag.
-   * @returns {Promise<Swap>} the updated swap with new status and fulfillments.
+   * @return {Promise<Swap>} the updated swap with new status and fulfillments.
    */
   async createFulfillment(
     swapId,
@@ -1017,7 +1019,7 @@ class SwapService extends BaseService {
   /**
    * Cancels a fulfillment (if related to a swap)
    * @param {string} fulfillmentId - the ID of the fulfillment to cancel
-   * @returns updated swap
+   * @return {Swap} updated swap
    */
   async cancelFulfillment(fulfillmentId) {
     return this.atomicPhase_(async (manager) => {
@@ -1050,7 +1052,7 @@ class SwapService extends BaseService {
    * @param {TrackingLink[]} trackingLinks - the tracking numbers associated
    *   with the shipment
    * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag.
-   * @returns {Promise<Swap>} the updated swap with new fulfillments and status.
+   * @return {Promise<Swap>} the updated swap with new fulfillments and status.
    */
   async createShipment(
     swapId,
@@ -1148,7 +1150,7 @@ class SwapService extends BaseService {
    * as a part of other swaps/returns.
    * @param {string} id - the id of the order with the swap.
    * @param {string} swapId - the id of the swap that has been received.
-   * @returns {Promise<Order>} the resulting order
+   * @return {Promise<Order>} the resulting order
    */
   async registerReceived(id) {
     return this.atomicPhase_(async (manager) => {
