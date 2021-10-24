@@ -41,6 +41,6 @@ export default async (req, res) => {
 
     res.status(200).json({ shipping_profile: data })
   } catch (err) {
-    throw err
+    return { error: err }
   }
 }
