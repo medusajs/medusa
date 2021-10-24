@@ -226,10 +226,10 @@ class ClaimItemService extends BaseService {
   }
 
   /**
-   * Gets an order by id.
-   * @param {string} id - id of order to retrieve
-   * @param {Object} config - configuration config
-   * @return {Promise<Order>} the order document
+   * Gets a claim item by id.
+   * @param {string} id - id of ClaimItem to retrieve
+   * @param {Object} config - configuration for the find operation
+   * @return {Promise<Order>} the ClaimItem
    */
   async retrieve(id, config = {}) {
     const claimItemRepo = this.manager_.getCustomRepository(
