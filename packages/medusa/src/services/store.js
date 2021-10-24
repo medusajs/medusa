@@ -90,9 +90,7 @@ class StoreService extends BaseService {
   }
 
   /**
-   * Updates a customer. Metadata updates and address updates should
-   * use dedicated methods, e.g. `setMetadata`, etc. The function
-   * will throw errors if metadata updates and address updates are attempted.
+   * Updates a store
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
