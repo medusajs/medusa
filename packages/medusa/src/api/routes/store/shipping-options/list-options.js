@@ -44,7 +44,7 @@ export default async (req, res) => {
 
     if (productIds.length) {
       const prods = await productService.list({ id: productIds })
-      query.profile_id = prods.map(p => p.profile_id)
+      query.profile_id = prods.map((p) => p.profile_id)
     }
 
     const options = await shippingOptionService.list(query, {

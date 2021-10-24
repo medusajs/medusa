@@ -1,22 +1,35 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import {
+  OrderByCondition,
+  EntityRepository,
+  FindManyOptions,
+  Repository,
+} from "typeorm"
 import { Product } from "../models/product"
+
+type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
+
+type CustomOptions = {
+  where?: DefaultWithoutRelations["where"] & { tags?: string[] }
+  order?: OrderByCondition
+  skip?: number
+  take?: number
+}
+
+type FindWithRelationsOptions = CustomOptions
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
   public async findWithRelations(
     relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: Omit<
-      FindManyOptions<Product>,
-      "relations"
-    > = {}
+    idsOrOptionsWithoutRelations: FindWithRelationsOptions = {}
   ): Promise<Product[]> {
-    let entities
+    let entities: Product[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
-      // Since tags are in a one-to-many realtion they cant be included in a 
-      // regular query, to solve this add the join on tags seperately if 
+      // Since tags are in a one-to-many realtion they cant be included in a
+      // regular query, to solve this add the join on tags seperately if
       // the query exists
       const tags = idsOrOptionsWithoutRelations.where.tags
       delete idsOrOptionsWithoutRelations.where.tags
@@ -25,17 +38,15 @@ export class ProductRepository extends Repository<Product> {
         .where(idsOrOptionsWithoutRelations.where)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-      
-      if (tags) { 
+        .orderBy(idsOrOptionsWithoutRelations.order)
+
+      if (tags) {
         qb = qb
           .leftJoinAndSelect("product.tags", "tags")
-          .andWhere(  
-            `tags.id IN (:...ids)`, { ids: tags._value}
-          )
+          .andWhere(`tags.id IN (:...ids)`, { ids: tags._value })
       }
-        
-      entities = await qb
-        .getMany()
+
+      entities = await qb.getMany()
     }
     const entitiesIds = entities.map(({ id }) => id)
 

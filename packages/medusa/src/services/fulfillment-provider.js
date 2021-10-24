@@ -28,7 +28,7 @@ class FulfillmentProviderService {
 
   async listFulfillmentOptions(providers) {
     const result = await Promise.all(
-      providers.map(async p => {
+      providers.map(async (p) => {
         const provider = await this.retrieveProvider(p)
         return {
           provider_id: p,
@@ -41,7 +41,8 @@ class FulfillmentProviderService {
   }
 
   /**
-   * @returns {FulfillmentService} the payment fulfillment provider
+   * @param {string} provider_id - the provider id
+   * @return {FulfillmentService} the payment fulfillment provider
    */
   retrieveProvider(provider_id) {
     try {

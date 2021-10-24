@@ -1,7 +1,6 @@
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 import { v4 } from "uuid"
-import IdempotencyKeyModel from "../models/idempotency-key"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
@@ -28,7 +27,7 @@ class IdempotencyKeyService extends BaseService {
    * @return {Promise<IdempotencyKeyModel>} the existing or created idempotency key
    */
   async initializeRequest(headerKey, reqMethod, reqParams, reqPath) {
-    return this.atomicPhase_(async _ => {
+    return this.atomicPhase_(async (_) => {
       // If idempotency key exists, return it
       let key = await this.retrieve(headerKey)
 
@@ -54,7 +53,7 @@ class IdempotencyKeyService extends BaseService {
    * @return {Promise<IdempotencyKeyModel>} the created idempotency key
    */
   async create(payload) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const idempotencyKeyRepo = manager.getCustomRepository(
         this.idempotencyKeyRepository_
       )
@@ -93,7 +92,7 @@ class IdempotencyKeyService extends BaseService {
    * @return {Promise} result of the update operation
    */
   async lock(idempotencyKey) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const idempotencyKeyRepo = manager.getCustomRepository(
         this.idempotencyKeyRepository_
       )
@@ -120,7 +119,7 @@ class IdempotencyKeyService extends BaseService {
    * @return {Promise} result of the update operation
    */
   async update(idempotencyKey, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const idempotencyKeyRepo = manager.getCustomRepository(
         this.idempotencyKeyRepository_
       )
@@ -148,7 +147,7 @@ class IdempotencyKeyService extends BaseService {
    */
   async workStage(idempotencyKey, func) {
     try {
-      return await this.atomicPhase_(async manager => {
+      return await this.atomicPhase_(async (manager) => {
         let key
 
         const { recovery_point, response_code, response_body } = await func(
