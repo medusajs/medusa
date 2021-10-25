@@ -98,23 +98,15 @@ import { defaultFields, defaultRelations } from "."
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    status: Validator.string()
-      .valid("open", "completed")
-      .optional(),
-    email: Validator.string()
-      .email()
-      .required(),
+    status: Validator.string().valid("open", "completed").optional(),
+    email: Validator.string().email().required(),
     billing_address: Validator.address().optional(),
     shipping_address: Validator.address().optional(),
     items: Validator.array()
       .items({
-        variant_id: Validator.string()
-          .optional()
-          .allow(""),
+        variant_id: Validator.string().optional().allow(""),
         unit_price: Validator.number().optional(),
-        title: Validator.string()
-          .optional()
-          .allow(""),
+        title: Validator.string().optional().allow(""),
         quantity: Validator.number().required(),
         metadata: Validator.object().default({}),
       })
@@ -131,11 +123,7 @@ export default async (req, res) => {
       .items({
         option_id: Validator.string().required(),
         data: Validator.object().optional(),
-        price: Validator.number()
-          .integer()
-          .integer()
-          .allow(0)
-          .optional(),
+        price: Validator.number().integer().integer().allow(0).optional(),
       })
       .required(),
     metadata: Validator.object().optional(),

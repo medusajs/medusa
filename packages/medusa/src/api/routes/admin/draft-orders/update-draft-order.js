@@ -60,9 +60,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     region_id: Validator.string().optional(),
     country_code: Validator.string().optional(),
-    email: Validator.string()
-      .email()
-      .optional(),
+    email: Validator.string().email().optional(),
     billing_address: Validator.object().optional(),
     shipping_address: Validator.object().optional(),
     discounts: Validator.array()
