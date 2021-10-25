@@ -36,6 +36,6 @@ export default async (req, res) => {
       deleted: true,
     })
   } catch (err) {
-    throw err
+    // ignore
   }
 }

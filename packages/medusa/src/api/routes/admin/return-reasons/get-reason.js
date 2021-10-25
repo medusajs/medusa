@@ -1,4 +1,3 @@
-import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
 /**
@@ -32,6 +31,6 @@ export default async (req, res) => {
 
     res.status(200).json({ return_reason: data })
   } catch (err) {
-    throw err
+    // ignore
   }
 }

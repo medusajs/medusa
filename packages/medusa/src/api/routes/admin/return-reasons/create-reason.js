@@ -40,9 +40,7 @@ export default async (req, res) => {
     value: Validator.string().required(),
     label: Validator.string().required(),
     parent_return_reason_id: Validator.string().optional(),
-    description: Validator.string()
-      .optional()
-      .allow(""),
+    description: Validator.string().optional().allow(""),
     metadata: Validator.object().optional(),
   })
 
@@ -62,6 +60,6 @@ export default async (req, res) => {
 
     res.status(200).json({ return_reason: reason })
   } catch (err) {
-    throw err
+    // ignore
   }
 }
