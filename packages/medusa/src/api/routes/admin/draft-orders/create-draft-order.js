@@ -136,17 +136,13 @@ export default async (req, res) => {
 
   value = transformIdableFields(value, ["shipping_address", "billing_address"])
 
-  try {
-    const draftOrderService = req.scope.resolve("draftOrderService")
-    let draftOrder = await draftOrderService.create(value)
+  const draftOrderService = req.scope.resolve("draftOrderService")
+  let draftOrder = await draftOrderService.create(value)
 
-    draftOrder = await draftOrderService.retrieve(draftOrder.id, {
-      relations: defaultRelations,
-      select: defaultFields,
-    })
+  draftOrder = await draftOrderService.retrieve(draftOrder.id, {
+    relations: defaultRelations,
+    select: defaultFields,
+  })
 
-    res.status(200).json({ draft_order: draftOrder })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ draft_order: draftOrder })
 }
