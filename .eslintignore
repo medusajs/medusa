@@ -49,7 +49,6 @@
 
 /packages/medusa/src/api/routes/store/auth
 /packages/medusa/src/api/routes/store/carts
-/packages/medusa/src/api/routes/store/customers
 
 /packages/medusa/src/api/routes/store/regions
 /packages/medusa/src/api/routes/store/return-reasons

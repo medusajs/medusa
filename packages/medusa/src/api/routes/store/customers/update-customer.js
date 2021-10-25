@@ -1,4 +1,3 @@
-import { optional } from "joi"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
@@ -64,17 +63,13 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const customerService = req.scope.resolve("customerService")
-    await customerService.update(id, value)
+  const customerService = req.scope.resolve("customerService")
+  await customerService.update(id, value)
 
-    const customer = await customerService.retrieve(id, {
-      relations: defaultRelations,
-      select: defaultFields,
-    })
+  const customer = await customerService.retrieve(id, {
+    relations: defaultRelations,
+    select: defaultFields,
+  })
 
-    res.status(200).json({ customer })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ customer })
 }
