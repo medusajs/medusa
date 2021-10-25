@@ -1,4 +1,3 @@
-import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
@@ -21,28 +20,24 @@ import { defaultFields, defaultRelations } from "./"
  *                 $ref: "#/components/schemas/gift_card"
  */
 export default async (req, res) => {
-  try {
-    const limit = parseInt(req.query.limit) || 50
-    const offset = parseInt(req.query.offset) || 0
+  const limit = parseInt(req.query.limit) || 50
+  const offset = parseInt(req.query.offset) || 0
 
-    const selector = {}
+  const selector = {}
 
-    if ("q" in req.query) {
-      selector.q = req.query.q
-    }
-
-    const giftCardService = req.scope.resolve("giftCardService")
-
-    const giftCards = await giftCardService.list(selector, {
-      select: defaultFields,
-      relations: defaultRelations,
-      order: { created_at: "DESC" },
-      limit: limit,
-      skip: offset,
-    })
-
-    res.status(200).json({ gift_cards: giftCards })
-  } catch (err) {
-    throw err
+  if ("q" in req.query) {
+    selector.q = req.query.q
   }
+
+  const giftCardService = req.scope.resolve("giftCardService")
+
+  const giftCards = await giftCardService.list(selector, {
+    select: defaultFields,
+    relations: defaultRelations,
+    order: { created_at: "DESC" },
+    limit: limit,
+    skip: offset,
+  })
+
+  res.status(200).json({ gift_cards: giftCards })
 }
