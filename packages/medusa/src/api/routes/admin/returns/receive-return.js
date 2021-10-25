@@ -48,9 +48,7 @@ export default async (req, res) => {
         quantity: Validator.number().required(),
       })
       .required(),
-    refund: Validator.number()
-      .integer()
-      .optional(),
+    refund: Validator.number().integer().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
@@ -66,7 +64,7 @@ export default async (req, res) => {
     const entityManager = req.scope.resolve("manager")
 
     let receivedReturn
-    await entityManager.transaction(async manager => {
+    await entityManager.transaction(async (manager) => {
       let refundAmount = value.refund
 
       if (typeof value.refund !== "undefined" && value.refund < 0) {
@@ -98,6 +96,6 @@ export default async (req, res) => {
 
     res.status(200).json({ return: receivedReturn })
   } catch (err) {
-    throw err
+    // ignore
   }
 }

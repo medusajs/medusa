@@ -1,5 +1,3 @@
-import { result } from "lodash"
-import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "../orders"
 
 /**
@@ -45,6 +43,6 @@ export default async (req, res) => {
 
     res.status(200).json({ order })
   } catch (err) {
-    throw err
+    // ignore
   }
 }

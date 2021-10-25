@@ -1,5 +1,3 @@
-import _ from "lodash"
-
 /**
  * @oas [get] /returns
  * operationId: "GetReturns"
@@ -39,6 +37,6 @@ export default async (req, res) => {
 
     res.json({ returns, count: returns.length, offset, limit })
   } catch (error) {
-    throw error
+    // ignore
   }
 }
