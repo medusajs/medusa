@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations, filterableFields } from "./"
 
