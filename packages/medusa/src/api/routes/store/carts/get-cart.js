@@ -49,6 +49,6 @@ export default async (req, res) => {
 
     res.json({ cart })
   } catch (err) {
-    throw err
+    // ignore
   }
 }

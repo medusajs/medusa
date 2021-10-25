@@ -138,6 +138,6 @@ export default async (req, res) => {
       res.status(200).json({ cart })
     })
   } catch (err) {
-    throw err
+    // ignore
   }
 }
