@@ -118,9 +118,7 @@ export default async (req, res) => {
         .keys({
           region_id: Validator.string().empty(null),
           currency_code: Validator.string(),
-          amount: Validator.number()
-            .integer()
-            .required(),
+          amount: Validator.number().integer().required(),
           sale_amount: Validator.number().optional(),
         })
         .xor("region_id", "currency_code")
@@ -135,30 +133,14 @@ export default async (req, res) => {
     inventory_quantity: Validator.number().optional(),
     allow_backorder: Validator.boolean().optional(),
     manage_inventory: Validator.boolean().optional(),
-    weight: Validator.number()
-      .allow(null)
-      .optional(),
-    length: Validator.number()
-      .allow(null)
-      .optional(),
-    height: Validator.number()
-      .allow(null)
-      .optional(),
-    width: Validator.number()
-      .allow(null)
-      .optional(),
-    hs_code: Validator.string()
-      .optional()
-      .allow(null, ""),
-    origin_country: Validator.string()
-      .optional()
-      .allow(null, ""),
-    mid_code: Validator.string()
-      .optional()
-      .allow(null, ""),
-    material: Validator.string()
-      .optional()
-      .allow(null, ""),
+    weight: Validator.number().allow(null).optional(),
+    length: Validator.number().allow(null).optional(),
+    height: Validator.number().allow(null).optional(),
+    width: Validator.number().allow(null).optional(),
+    hs_code: Validator.string().optional().allow(null, ""),
+    origin_country: Validator.string().optional().allow(null, ""),
+    mid_code: Validator.string().optional().allow(null, ""),
+    material: Validator.string().optional().allow(null, ""),
     metadata: Validator.object().optional(),
   })
 
@@ -176,5 +158,6 @@ export default async (req, res) => {
     select: defaultFields,
     relations: defaultRelations,
   })
+
   res.json({ product })
 }
