@@ -61,7 +61,7 @@ export default async (req, res) => {
     const lineItemService = req.scope.resolve("lineItemService")
     const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
+    await entityManager.transaction(async (manager) => {
       const draftOrder = await draftOrderService
         .withTransaction(manager)
         .retrieve(id, { select: defaultFields, relations: ["cart"] })

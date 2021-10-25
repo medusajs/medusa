@@ -56,7 +56,7 @@ export default async (req, res) => {
     const cartService = req.scope.resolve("cartService")
     const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
+    await entityManager.transaction(async (manager) => {
       const draftOrder = await draftOrderService
         .withTransaction(manager)
         .retrieve(id, {
@@ -76,7 +76,7 @@ export default async (req, res) => {
           .withTransaction(manager)
           .removeLineItem(draftOrder.cart.id, line_id)
       } else {
-        const existing = draftOrder.cart.items.find(i => i.id === line_id)
+        const existing = draftOrder.cart.items.find((i) => i.id === line_id)
 
         if (!existing) {
           throw new MedusaError(
