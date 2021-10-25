@@ -7,6 +7,12 @@ import { MedusaError } from "medusa-core-utils"
  * @implements BaseService
  */
 class ProductCollectionService extends BaseService {
+   static Events = {
+    CREATED: "product-collection.created",
+    UPDATED: "product-collection.updated",
+    DELETED: "product-collection.deleted",
+  }
+
   constructor({
     manager,
     productCollectionRepository,
@@ -82,7 +88,15 @@ class ProductCollectionService extends BaseService {
       )
 
       const productCollection = collectionRepo.create(collection)
-      return collectionRepo.save(productCollection)
+      const result = await collectionRepo.save(productCollection)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.CREATED, {
+          id: result.id,
+        })
+
+      return result
     })
   }
 
@@ -110,7 +124,16 @@ class ProductCollectionService extends BaseService {
         collection[key] = value
       }
 
-      return collectionRepo.save(collection)
+      const result =  collectionRepo.save(collection)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.UPDATED, {
+          id: collectionId,
+          fields: Object.keys(update),
+        })
+
+      return result
     })
   }
 
@@ -130,6 +153,12 @@ class ProductCollectionService extends BaseService {
       if (!collection) return Promise.resolve()
 
       await productCollectionRepo.softRemove(collection)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.DELETED, {
+          id: collectionId,
+        })
 
       return Promise.resolve()
     })
