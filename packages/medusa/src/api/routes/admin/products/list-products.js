@@ -83,7 +83,7 @@ export default async (req, res) => {
     take: limit,
   }
 
-  let products = await productService.list(selector, listConfig)
+  const products = await productService.list(selector, listConfig)
 
   res.json({ products, count: products.length, offset, limit })
 }
