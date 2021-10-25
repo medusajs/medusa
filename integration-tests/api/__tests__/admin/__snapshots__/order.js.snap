@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/orders POST /admin/orders/:id updates a shipping adress 1`] = `
+Object {
+  "address_1": "Some Street",
+  "address_2": "",
+  "city": "losangeles",
+  "company": null,
+  "country_code": "us",
+  "created_at": Any<String>,
+  "customer_id": null,
+  "deleted_at": null,
+  "first_name": "lebron",
+  "id": Any<String>,
+  "last_name": null,
+  "metadata": null,
+  "phone": null,
+  "postal_code": "1235",
+  "province": "",
+  "updated_at": Any<String>,
+}
+`;
