@@ -32,6 +32,7 @@ import { defaultFields, defaultRelations, filterableFields } from "./"
  */
 export default async (req, res) => {
   const schema = Validator.productFilter()
+  const filteringSchema = Validator.productFilteringFields()
 
   const { value, error } = schema.validate(req.query)
 
@@ -54,6 +55,8 @@ export default async (req, res) => {
       selector.q = req.query.q
     }
 
+    // throw new Error(JSON.stringify(filteringSchema.$_terms.keys.map(k => k.key)))
+
     let includeFields = []
     if ("fields" in req.query) {
       includeFields = req.query.fields.split(",")
@@ -64,7 +67,7 @@ export default async (req, res) => {
       expandFields = req.query.expand.split(",")
     }
 
-    for (const k of filterableFields) {
+    for (const k of [...filteringSchema.$_terms.keys.map(k => k.key)]) {
       if (k in value) {
         selector[k] = value[k]
       }

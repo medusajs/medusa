@@ -96,7 +96,7 @@ Joi.orderFilter = () => {
   })
 }
 
-Joi.productFilter = () => {
+Joi.productFilteringFields = () => {
   return Joi.object().keys({
     id: Joi.string(),
     q: Joi.string().allow(null, ""),
@@ -114,15 +114,21 @@ Joi.productFilter = () => {
     handle: Joi.string(),
     is_giftcard: Joi.string(),
     type: Joi.string(),
+    created_at: Joi.dateFilter(),
+    updated_at: Joi.dateFilter(),
+    deleted_at: Joi.dateFilter(),
+  })
+}
+
+Joi.productFilter = () => {
+  return Joi.productFilteringFields().keys({
     offset: Joi.string(),
     limit: Joi.string(),
     expand: Joi.string(),
     fields: Joi.string(),
     order: Joi.string().optional(),
-    created_at: Joi.dateFilter(),
-    updated_at: Joi.dateFilter(),
-    deleted_at: Joi.dateFilter(),
   })
+}
 }
 
 export default Joi
