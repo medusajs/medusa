@@ -12,21 +12,16 @@ export default async (req, res) => {
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
+  const userService = req.scope.resolve("userService")
+  const user = await userService.retrieveByEmail(value.email)
 
-  try {
-    const userService = req.scope.resolve("userService")
-    const user = await userService.retrieveByEmail(value.email)
-
-    const decodedToken = await jwt.verify(value.token, user.password_hash)
-    if (!decodedToken || decodedToken.user_id !== user.id) {
-      res.status(401).send("Invalid or expired password reset token")
-      return
-    }
-
-    const data = await userService.setPassword(user.id, value.password)
-
-    res.status(200).json({ user: data })
-  } catch (error) {
-    throw error
+  const decodedToken = await jwt.verify(value.token, user.password_hash)
+  if (!decodedToken || decodedToken.user_id !== user.id) {
+    res.status(401).send("Invalid or expired password reset token")
+    return
   }
+
+  const data = await userService.setPassword(user.id, value.password)
+
+  res.status(200).json({ user: data })
 }
