@@ -188,9 +188,7 @@ export default async (req, res) => {
 
   const schema = Validator.object().keys({
     title: Validator.string().optional(),
-    subtitle: Validator.string()
-      .optional()
-      .allow(null, ""),
+    subtitle: Validator.string().optional().allow(null, ""),
     description: Validator.string().optional(),
     discountable: Validator.boolean().optional(),
     status: Validator.string().valid(
@@ -206,9 +204,7 @@ export default async (req, res) => {
       })
       .allow(null)
       .optional(),
-    collection_id: Validator.string()
-      .allow(null)
-      .optional(),
+    collection_id: Validator.string().allow(null).optional(),
     tags: Validator.array()
       .items({
         id: Validator.string().optional(),
@@ -216,26 +212,15 @@ export default async (req, res) => {
       })
       .optional(),
     handle: Validator.string().optional(),
-    weight: Validator.number()
-      .allow(null)
-      .optional(),
-    length: Validator.number()
-      .allow(null)
-      .optional(),
-    height: Validator.number()
-      .allow(null)
-      .optional(),
-    width: Validator.number()
-      .allow(null)
-      .optional(),
+    weight: Validator.number().allow(null).optional(),
+    length: Validator.number().allow(null).optional(),
+    height: Validator.number().allow(null).optional(),
+    width: Validator.number().allow(null).optional(),
     origin_country: Validator.string().allow(null, ""),
     hs_code: Validator.string().allow(null, ""),
     mid_code: Validator.string().allow(null, ""),
     material: Validator.string().allow(null, ""),
-    images: Validator.array()
-      .items(Validator.string())
-      .optional()
-      .optional(),
+    images: Validator.array().items(Validator.string()).optional().optional(),
     thumbnail: Validator.string().optional(),
     variants: Validator.array()
       .items({
@@ -249,9 +234,7 @@ export default async (req, res) => {
             .keys({
               region_id: Validator.string(),
               currency_code: Validator.string(),
-              amount: Validator.number()
-                .integer()
-                .required(),
+              amount: Validator.number().integer().required(),
               sale_amount: Validator.number().optional(),
             })
             .xor("region_id", "currency_code")
@@ -266,21 +249,11 @@ export default async (req, res) => {
         inventory_quantity: Validator.number().allow(null),
         allow_backorder: Validator.boolean().allow(null),
         manage_inventory: Validator.boolean().allow(null),
-        weight: Validator.number()
-          .allow(null)
-          .optional(),
-        length: Validator.number()
-          .allow(null)
-          .optional(),
-        height: Validator.number()
-          .allow(null)
-          .optional(),
-        width: Validator.number()
-          .allow(null)
-          .optional(),
-        hs_code: Validator.string()
-          .optional()
-          .allow(null, ""),
+        weight: Validator.number().allow(null).optional(),
+        length: Validator.number().allow(null).optional(),
+        height: Validator.number().allow(null).optional(),
+        width: Validator.number().allow(null).optional(),
+        hs_code: Validator.string().optional().allow(null, ""),
         origin_country: Validator.string().allow(null, ""),
         mid_code: Validator.string().allow(null, ""),
         material: Validator.string().allow(null, ""),
@@ -295,21 +268,17 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const productService = req.scope.resolve("productService")
-    const entityManager = req.scope.resolve("manager")
+  const productService = req.scope.resolve("productService")
+  const entityManager = req.scope.resolve("manager")
 
-    await entityManager.transaction(async manager => {
-      await productService.withTransaction(manager).update(id, value)
-    })
+  await entityManager.transaction(async (manager) => {
+    await productService.withTransaction(manager).update(id, value)
+  })
 
-    const product = await productService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const product = await productService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.json({ product })
-  } catch (err) {
-    throw err
-  }
+  res.json({ product })
 }
