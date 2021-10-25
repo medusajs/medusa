@@ -35,7 +35,6 @@
 /packages/medusa/src/api/routes/admin/returns
 /packages/medusa/src/api/routes/admin/shipping-profiles
 /packages/medusa/src/api/routes/admin/store
-/packages/medusa/src/api/routes/admin/users
 /packages/medusa/src/api/routes/store/carts
 /packages/medusa/src/api/routes/store/return-reasons
 /packages/medusa/src/api/routes/store/returns
