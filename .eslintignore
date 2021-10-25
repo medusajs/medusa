@@ -10,7 +10,6 @@
 /packages/medusa/src/subscribers/notification.js
 /packages/medusa/src/subscribers/order.js
 /packages/medusa/src/subscribers/product.js
-
 /packages/medusa/src/loaders/api.js
 /packages/medusa/src/loaders/database.js
 /packages/medusa/src/loaders/defaults.js
@@ -34,7 +33,6 @@
 /packages/medusa/src/api/routes/admin/notifications
 /packages/medusa/src/api/routes/admin/orders
 /packages/medusa/src/api/routes/admin/products
-/packages/medusa/src/api/routes/admin/regions
 /packages/medusa/src/api/routes/admin/return-reasons
 /packages/medusa/src/api/routes/admin/returns
 /packages/medusa/src/api/routes/admin/shipping-options
@@ -43,7 +41,6 @@
 /packages/medusa/src/api/routes/admin/swaps
 /packages/medusa/src/api/routes/admin/users
 /packages/medusa/src/api/routes/store/carts
-/packages/medusa/src/api/routes/store/regions
 /packages/medusa/src/api/routes/store/return-reasons
 /packages/medusa/src/api/routes/store/returns
 /packages/medusa/src/api/routes/store/swaps
@@ -56,7 +53,6 @@
 /packages/medusa/src/helpers
 /packages/medusa/src/migrations
 /packages/medusa/src/utils
-
 /integration-tests
 /docs
 /docs-util
