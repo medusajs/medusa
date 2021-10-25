@@ -1,4 +1,6 @@
 /**
+ * @param {object} req Request see parameters below
+ * @param {object} res Response see referenced object #/components/schemas/product_type
  * @oas [get] /products/types
  * operationId: "GetProductsTypes"
  * summary: "List Product Types"

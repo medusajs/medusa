@@ -3,6 +3,8 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations, filterableFields } from "./"
 
 /**
+ * @param {object} req Request see parameters below
+ * @param {object} res Response see referenced object #/components/schemas/product
  * @oas [get] /products
  * operationId: "GetProducts"
  * summary: "List Product"

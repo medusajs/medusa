@@ -1,4 +1,6 @@
 /**
+ * @param {object} req Request see parameters below
+ * @param {object} res Response see referenced object below
  * @oas [delete] /products/{id}
  * operationId: "DeleteProductsProduct"
  * summary: "Delete a Product"
