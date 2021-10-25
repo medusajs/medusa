@@ -16,20 +16,16 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const { q, offset, limit, filter, ...options } = value
-    const paginationOptions = { offset, limit }
+  const { q, offset, limit, filter, ...options } = value
+  const paginationOptions = { offset, limit }
 
-    const searchService = req.scope.resolve("searchService")
+  const searchService = req.scope.resolve("searchService")
 
-    const results = await searchService.search(ProductService.IndexName, q, {
-      paginationOptions,
-      filter,
-      additionalOptions: options,
-    })
+  const results = await searchService.search(ProductService.IndexName, q, {
+    paginationOptions,
+    filter,
+    additionalOptions: options,
+  })
 
-    res.status(200).send(results)
-  } catch (error) {
-    throw error
-  }
+  res.status(200).send(results)
 }
