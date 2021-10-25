@@ -1,6 +1,8 @@
 import { defaultRelations, defaultFields } from "."
 
 /**
+ * @param {object} req Request see parameters below
+ * @param {object} res Response see referenced object #/components/schemas/product
  * @oas [delete] /products/{id}/options/{option_id}
  * operationId: "DeleteProductsProductOptionsOption"
  * summary: "Delete a Product Option"

@@ -3,6 +3,8 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
+ * @param {object} req Request see parameters below
+ * @param {object} res Response see referenced object #/components/schemas/product
  * @oas [post] /products/{id}/variants/{variant_id}
  * operationId: "PostProductsProductVariantsVariant"
  * summary: "Update a Product Variant"

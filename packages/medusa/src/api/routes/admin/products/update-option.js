@@ -2,6 +2,8 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
 /**
+ * @param {object} req Request see parameters below
+ * @param {object} res Response see referenced object #/components/schemas/product
  * @oas [post] /products/{id}/options/{option_id}
  * operationId: "PostProductsProductOptionsOption"
  * summary: "Update a Product Option."
