@@ -55,6 +55,10 @@ export class ProductRepository extends Repository<Product> {
       return []
     }
 
+    if (relations.length === 0) {
+      return this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
+    }
+
     const groupedRelations: { [toplevel: string]: string[] } = {}
     for (const rel of relations) {
       const [topLevel] = rel.split(".")
