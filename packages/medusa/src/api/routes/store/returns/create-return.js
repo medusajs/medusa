@@ -1,6 +1,8 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
+ * @param {object} req requestBody see details below
+ * @param {object} res response see details in reference #/components/schemas/return
  * @oas [post] /returns
  * operationId: "PostReturns"
  * summary: "Create Return"
@@ -99,7 +101,7 @@ export default async (req, res) => {
         case "started": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               const order = await orderService
                 .withTransaction(manager)
                 .retrieve(value.order_id, {
@@ -152,7 +154,7 @@ export default async (req, res) => {
         case "return_requested": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               let ret = await returnService.withTransaction(manager).list(
                 {
                   idempotency_key: idempotencyKey.idempotency_key,
