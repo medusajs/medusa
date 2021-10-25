@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.48](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.47...@medusajs/medusa@1.1.48) (2021-10-25)
+
+### Bug Fixes
+
+- make contentful data sync ([548f6c7](https://github.com/medusajs/medusa/commit/548f6c7138d9a08b6c2113ebdda27f13dee848ac))
+
 ## [1.1.47](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.46...@medusajs/medusa@1.1.47) (2021-10-23)
 
 ### Bug Fixes
