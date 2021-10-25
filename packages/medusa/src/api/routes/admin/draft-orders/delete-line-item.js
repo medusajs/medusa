@@ -1,4 +1,4 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { defaultCartFields, defaultCartRelations, defaultFields } from "."
 
 /**

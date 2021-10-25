@@ -1,5 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultCartFields, defaultCartRelations, defaultFields } from "."
+import { defaultCartFields, defaultCartRelations } from "."
 
 /**
  * @oas [post] /admin/draft-orders/{id}

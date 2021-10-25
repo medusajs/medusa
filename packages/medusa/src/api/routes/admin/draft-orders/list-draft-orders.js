@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { defaultFields, defaultRelations } from "./"
 
 /**
