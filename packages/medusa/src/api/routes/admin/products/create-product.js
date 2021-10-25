@@ -304,66 +304,62 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const productService = req.scope.resolve("productService")
-    const productVariantService = req.scope.resolve("productVariantService")
-    const shippingProfileService = req.scope.resolve("shippingProfileService")
+  const productService = req.scope.resolve("productService")
+  const productVariantService = req.scope.resolve("productVariantService")
+  const shippingProfileService = req.scope.resolve("shippingProfileService")
 
-    const entityManager = req.scope.resolve("manager")
+  const entityManager = req.scope.resolve("manager")
 
-    let newProduct
-    await entityManager.transaction(async manager => {
-      const { variants } = value
-      delete value.variants
+  let newProduct
+  await entityManager.transaction(async manager => {
+    const { variants } = value
+    delete value.variants
 
-      if (!value.thumbnail && value.images && value.images.length) {
-        value.thumbnail = value.images[0]
-      }
+    if (!value.thumbnail && value.images && value.images.length) {
+      value.thumbnail = value.images[0]
+    }
 
-      let shippingProfile
-      // Get default shipping profile
-      if (value.is_giftcard) {
-        shippingProfile = await shippingProfileService.retrieveGiftCardDefault()
-      } else {
-        shippingProfile = await shippingProfileService.retrieveDefault()
-      }
+    let shippingProfile
+    // Get default shipping profile
+    if (value.is_giftcard) {
+      shippingProfile = await shippingProfileService.retrieveGiftCardDefault()
+    } else {
+      shippingProfile = await shippingProfileService.retrieveDefault()
+    }
 
-      newProduct = await productService
-        .withTransaction(manager)
-        .create({ ...value, profile_id: shippingProfile.id })
+    newProduct = await productService
+      .withTransaction(manager)
+      .create({ ...value, profile_id: shippingProfile.id })
 
-      if (variants) {
-        for (const [i, variant] of variants.entries()) variant.variant_rank = i
+    if (variants) {
+      for (const [i, variant] of variants.entries()) variant.variant_rank = i
 
-        const optionIds = value.options.map(
-          o => newProduct.options.find(newO => newO.title === o.title).id
-        )
+      const optionIds = value.options.map(
+        o => newProduct.options.find(newO => newO.title === o.title).id
+      )
 
-        await Promise.all(
-          variants.map(async v => {
-            const variant = {
-              ...v,
-              options: v.options.map((o, index) => ({
-                ...o,
-                option_id: optionIds[index],
-              })),
-            }
+      await Promise.all(
+        variants.map(async v => {
+          const variant = {
+            ...v,
+            options: v.options.map((o, index) => ({
+              ...o,
+              option_id: optionIds[index],
+            })),
+          }
 
-            await productVariantService
-              .withTransaction(manager)
-              .create(newProduct.id, variant)
-          })
-        )
-      }
-    })
+          await productVariantService
+            .withTransaction(manager)
+            .create(newProduct.id, variant)
+        })
+      )
+    }
+  })
 
-    const product = await productService.retrieve(newProduct.id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const product = await productService.retrieve(newProduct.id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.json({ product })
-  } catch (err) {
-    throw err
-  }
+  res.json({ product })
 }
