@@ -1,7 +1,6 @@
 import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-import carts from "../api/routes/store/carts"
 
 /**
  * A service that calculates total and subtotals for orders, carts etc..
@@ -162,12 +161,12 @@ class TotalsService extends BaseService {
 
     if (order.claims && order.claims.length) {
       for (const c of order.claims) {
-        const claimItemIds = c.additional_items.map(el => el.id)
+        const claimItemIds = c.additional_items.map((el) => el.id)
         itemIds = [...itemIds, ...claimItemIds]
       }
     }
 
-    const refunds = lineItems.map(i => {
+    const refunds = lineItems.map((i) => {
       if (!itemIds.includes(i.id)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,

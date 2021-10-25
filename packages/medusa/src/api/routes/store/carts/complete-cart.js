@@ -70,7 +70,7 @@ export default async (req, res) => {
         case "started": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               let cart = await cartService.withTransaction(manager).retrieve(id)
 
               if (cart.completed_at) {
@@ -125,7 +125,7 @@ export default async (req, res) => {
         case "payment_authorized": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               const cart = await cartService
                 .withTransaction(manager)
                 .retrieve(id, {
