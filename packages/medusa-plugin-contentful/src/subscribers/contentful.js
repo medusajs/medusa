@@ -41,6 +41,18 @@ class ContentfulSubscriber {
     this.eventBus_.subscribe("product.deleted", async (data) => {
       await this.contentfulService_.archiveProductInContentful(data)
     })
+
+    this.eventBus_.subscribe("product-collection.updated", async (data) => {
+      await this.contentfulService_.updateProductCollectionInContentful(data)
+    })
+
+    this.eventBus_.subscribe("product-collection.created", async (data) => {
+      await this.contentfulService_.createProductCollectionInContentful(data)
+    })
+
+    this.eventBus_.subscribe("product-collection.deleted", async (data) => {
+      await this.contentfulService_.archiveProductCollectionInContentful(data)
+    })
   }
 }
 

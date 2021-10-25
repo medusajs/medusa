@@ -1,3 +1,4 @@
+import { indexTypes } from "../../../../medusa-interfaces/node_modules/medusa-core-utils/dist"
 import ContentfulService from "../contentful"
 
 describe("ContentfulService", () => {
@@ -39,6 +40,7 @@ describe("ContentfulService", () => {
       }),
     }
     const eventBusService = {}
+    const productCollectionService = {}
 
     const service = new ContentfulService(
       {
@@ -46,6 +48,7 @@ describe("ContentfulService", () => {
         productService,
         redisClient,
         productVariantService,
+        productCollectionService,
         eventBusService,
       },
       {
@@ -176,4 +179,110 @@ describe("ContentfulService", () => {
       })
     })
   })
+
+  // described("Collections", () => {
+  //   const regionService = {
+  //     retrieve: jest.fn((id) => {
+  //       if (id === "exists") {
+  //         return Promise.resolve({ id: "exists" })
+  //       }
+  //       return Promise.resolve(undefined)
+  //     }),
+  //   }
+  //   const productService = {
+  //     retrieve: jest.fn((id) => {
+  //       if (id === "exists") {
+  //         return Promise.resolve({ id: "exists" })
+  //       }
+  //       return Promise.resolve(undefined)
+  //     }),
+  //   }
+  //   const redisClient = {
+  //     get: async (id) => {
+  //       if (id === `ignored_ignore_contentful`) {
+  //         return { id }
+  //       }
+  //       return undefined
+  //     },
+  //     set: async (id) => {
+  //       return undefined
+  //     },
+  //   }
+
+  //   const productVariantService = {}
+
+  //   const productCollectionService = {
+  //     retrieve: jest.fn((id) => {
+  //       if (id === "exists") {
+  //         return Promise.resolve({ id: "exists" })
+  //       }
+  //       return Promise.resolve(undefined)
+  //     }),
+  //   }
+  //   const eventBusService = {}
+
+  //   const service = new ContentfulService(
+  //     {
+  //       regionService,
+  //       productService,
+  //       redisClient,
+  //       productVariantService,
+  //       productCollectionService,
+  //       eventBusService,
+  //     },
+  //     {
+  //       space_id: "test_id",
+  //       environment: "master",
+  //       access_token: "test_token",
+  //     }
+  //   )
+
+  //   const entry = {
+  //     unpublish: jest.fn(async () => {
+  //       return {
+  //         id: "id",
+  //       }
+  //     }),
+  //     archive: jest.fn(async () => {
+  //       return {
+  //         id: "id",
+  //       }
+  //     }),
+  //   }
+
+  //   const environment = {
+  //     createEntryWithId: jest.fn(async (type, id, fields) => {
+  //       if (id === "onlyMedusa") {
+  //         throw new Error("doesn't exist")
+  //       }
+  //       return entry
+  //     } ),
+  //   }
+
+  //   service.contentful_ = {
+  //     getSpace: async (space_id) => {
+  //       return {
+  //         getEnvironment: async (env) => {
+  //           return environment
+  //         },
+  //       }
+  //     },
+  //   }
+
+  //   describe('create collection in contentful', () => {
+  //     it('calls createEntryWithId on contentful environment', async () => {
+  //       const collection = {id: 'test', title: 'title', handle: 'handle'}
+  //       const result = await service.createProductCollectionInContentful({id: 'test', title: 'title', handle: 'handle'})
+
+
+  //       expect(environment.createEntryWithId).toHaveBeenCalledTimes(1)
+  //       expect(environment.createEntryWithId).toHaveBeenCalledWidth('collection', 'test', {
+  //         medusaId: {"en-US": 'test'},
+  //         title: {"en-US": 'title'},
+  //         handle: {"en-US": 'handle'}
+  //       })
+  //     })
+  //   })
+
+  // })
 })

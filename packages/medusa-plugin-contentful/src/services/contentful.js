@@ -11,6 +11,7 @@ class ContentfulService extends BaseService {
       productService,
       redisClient,
       productVariantService,
+      productCollectionService,
       eventBusService,
     },
     options
@@ -22,6 +23,8 @@ class ContentfulService extends BaseService {
     this.productVariantService_ = productVariantService
 
     this.regionService_ = regionService
+
+    this.productCollectionService_ = productCollectionService
 
     this.eventBus_ = eventBusService
 
@@ -232,12 +235,22 @@ class ContentfulService extends BaseService {
         fields[this.getCustomField("type", "product")] = type
       }
 
+      throw new Error(JSON.stringify(this.getCustomField("collection_id", "product")))
+
       if (p.collection) {
-        const collection = {
-          "en-US": p.collection.title,
+        const collection = await environment.getEntry(p.collection_id)
+
+        const contentfulEntity =  {
+            sys: {
+              type: "Link",
+              linkType: "Entry",
+              id: collection.sys.id,
+            }
         }
 
-        fields[this.getCustomField("collection", "product")] = collection
+        fields.collection_id = {
+              "en-US": contentfulEntity,
+            }
       }
 
       if (p.tags) {
@@ -534,13 +547,29 @@ class ContentfulService extends BaseService {
       }
 
       if (p.collection) {
-        const collection = {
-          "en-US": p.collection.title,
+        const collection = await environment.getEntry(p.collection_id)
+
+        const contentfulEntity =  {
+            sys: {
+              type: "Link",
+              linkType: "Entry",
+              id: collection.sys.id,
+            }
         }
 
-        productEntryFields[this.getCustomField("collection", "product")] =
-          collection
+        productEntryFields[this.getCustomField("collection_id", "product")] = {
+          "en-US": contentfulEntity,
+        }
       }
+
+      // if (p.collection) {
+      //   const collection = {
+      //     "en-US": p.collection.title,
+      //   }
+
+      //   productEntryFields[this.getCustomField("collection", "product")] =
+      //     collection
+      // }
 
       if (p.tags) {
         const tags = {
@@ -641,6 +670,123 @@ class ContentfulService extends BaseService {
       await this.addIgnore_(variant.id, "medusa")
 
       return publishedEntry
+    } catch (error) {
+      throw error
+    }
+  }
+
+   async createProductCollectionInContentful(data) {
+    const hasType = await this.getType("collection")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      console.log("couldn't find collection")
+      return Promise.resolve()
+    }
+    try {
+      const collection = await this.productCollectionService_.retrieve(data.id)
+
+      const environment = await this.getContentfulEnvironment_()
+
+      const fields = {
+        [this.getCustomField("medusaId", "collection")]: {
+          "en-US": collection.id,
+        },
+        [this.getCustomField("title", "collection")]: {
+          "en-US": collection.title,
+        },
+        [this.getCustomField("handle", "collection")]: {
+          "en-US": collection.handle,
+        },
+      }
+
+      const result = await environment.createEntryWithId("collection", collection.id, {
+        fields,
+      })
+
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateProductCollectionInContentful(data) {
+    const hasType = await this.getType("collection")
+      .then(() => true)
+      .catch(() => false)
+    if (!hasType) {
+      console.log("couldn't find collection")
+      return Promise.resolve()
+    }
+
+    const updateFields = [
+      "name",
+      "handle",
+    ]
+
+    const found = data.fields.find((f) => updateFields.includes(f))
+    if (!found) {
+      return
+    }
+
+    try {
+      const ignore = await this.shouldIgnore_(data.id, "contentful")
+      if (ignore) {
+        return
+      }
+
+      const collection = await this.productCollectionService_.retrieve(data.id)
+
+      const environment = await this.getContentfulEnvironment_()
+
+      // check if region exists
+      let collectionEntry = undefined
+      try {
+        collectionEntry = await environment.getEntry(data.id)
+      } catch (error) {
+        return this.createProductCollectionInContentful(collection)
+      }
+
+      const collectionEntryFields = {
+        ...collectionEntry.fields,
+        [this.getCustomField("title", "collection")]: {
+          "en-US": collection.name,
+        },
+        [this.getCustomField("handle", "collection")]: {
+          "en-US": collection.countries,
+        },
+      }
+
+      collectionEntry.fields = collectionEntryFields
+
+      const updatedEntry = await collectionEntry.update()
+      const publishedEntry = await updatedEntry.publish()
+
+      await this.addIgnore_(data.id, "medusa")
+
+      return publishedEntry
+    } catch (error) {
+      throw error
+    }
+  }
+
+   async archiveProductCollectionInContentful(collection) {
+    let productCollectionEntity
+    try {
+      const ignore = await this.shouldIgnore_(collection.id, "contentful")
+      if (ignore) {
+        return Promise.resolve()
+      }
+
+      try {
+        productCollectionEntity = await this.productCollectionService_.retrieve(collection.id)
+      } catch (err) {}
+
+      if (productCollectionEntity) {
+        return Promise.resolve()
+      }
+
+      return await this.archiveEntryWidthId(collection.id)
     } catch (error) {
       throw error
     }
