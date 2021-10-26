@@ -37,7 +37,23 @@
 
 # END OF FILES TODO
 
-/packages/medusa/src/api
+#/packages/medusa/src/api
+
+packages/medusa/src/api/middlewares
+packages/medusa/src/api/routes/admin
+packages/medusa/src/api/routes/store/auth
+packages/medusa/src/api/routes/store/carts
+packages/medusa/src/api/routes/store/customers
+packages/medusa/src/api/routes/store/orders
+packages/medusa/src/api/routes/store/gift-cards
+packages/medusa/src/api/routes/store/products
+packages/medusa/src/api/routes/store/regions
+packages/medusa/src/api/routes/store/return-reasons
+packages/medusa/src/api/routes/store/shipping-options
+packages/medusa/src/api/routes/store/swaps
+packages/medusa/src/api/routes/store/variants
+
+
 /packages/medusa/src/models
 /packages/medusa/src/repositories
 /packages/medusa/src/commands
