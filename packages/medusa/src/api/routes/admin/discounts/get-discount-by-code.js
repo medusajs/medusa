@@ -1,4 +1,4 @@
-import { defaultFields, defaultRelations } from "./"
+import { defaultRelations } from "./"
 
 /**
  * @oas [get] /discounts/code/{code}
@@ -21,15 +21,8 @@ import { defaultFields, defaultRelations } from "./"
  */
 export default async (req, res) => {
   const { code } = req.params
-  try {
-    const discountService = req.scope.resolve("discountService")
-    const discount = await discountService.retrieveByCode(
-      code,
-      defaultRelations
-    )
+  const discountService = req.scope.resolve("discountService")
+  const discount = await discountService.retrieveByCode(code, defaultRelations)
 
-    res.status(200).json({ discount })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ discount })
 }

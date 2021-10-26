@@ -1,10 +1,9 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Handles swaps
- * @implements BaseService
+ * @extends BaseService
  */
 class SwapService extends BaseService {
   static Events = {
@@ -32,6 +31,7 @@ class SwapService extends BaseService {
     fulfillmentService,
     orderService,
     inventoryService,
+    customShippingOptionService,
   }) {
     super()
 
@@ -70,6 +70,9 @@ class SwapService extends BaseService {
 
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
+
+    /** @private @const {CustomShippingOptionService} */
+    this.customShippingOptionService_ = customShippingOptionService
   }
 
   withTransaction(transactionManager) {
@@ -90,6 +93,7 @@ class SwapService extends BaseService {
       orderService: this.orderService_,
       inventoryService: this.inventoryService_,
       fulfillmentService: this.fulfillmentService_,
+      customShippingOptionService: this.customShippingOptionService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -116,7 +120,7 @@ class SwapService extends BaseService {
       "cart.total",
     ]
 
-    const totalsToSelect = select.filter(v => totalFields.includes(v))
+    const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("cart")
@@ -127,7 +131,7 @@ class SwapService extends BaseService {
       relationSet.add("cart.region")
       relations = [...relationSet]
 
-      select = select.filter(v => !totalFields.includes(v))
+      select = select.filter((v) => !totalFields.includes(v))
     }
 
     return {
@@ -163,6 +167,7 @@ class SwapService extends BaseService {
   /**
    * Retrieves a swap with the given id.
    * @param {string} id - the id of the swap to retrieve
+   * @param {Object} config - the configuration to retrieve the swap
    * @return {Promise<Swap>} the swap
    */
   async retrieve(id, config = {}) {
@@ -170,9 +175,8 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const { totalsToSelect, ...newConfig } = this.transformQueryForTotals_(
-      config
-    )
+    const { totalsToSelect, ...newConfig } =
+      this.transformQueryForTotals_(config)
 
     const query = this.buildQuery_({ id: validatedId }, newConfig)
 
@@ -195,6 +199,7 @@ class SwapService extends BaseService {
   /**
    * Retrieves a swap based on its associated cart id
    * @param {string} cartId - the cart id that the swap's cart has
+   * @param {string[]} relations - the relations to retrieve swap
    * @return {Promise<Swap>} the swap
    */
   async retrieveByCartId(cartId, relations = []) {
@@ -216,6 +221,7 @@ class SwapService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
    * @return {Promise} the result of the find operation
    */
   list(
@@ -225,7 +231,7 @@ class SwapService extends BaseService {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
     const query = this.buildQuery_(selector, config)
 
-    let rels = query.relations
+    const rels = query.relations
     delete query.relations
     return swapRepo.findWithRelations(rels, query)
   }
@@ -251,7 +257,7 @@ class SwapService extends BaseService {
    */
   validateReturnItems_(order, returnItems) {
     return returnItems.map(({ item_id, quantity }) => {
-      const item = order.items.find(i => i.id === item_id)
+      const item = order.items.find((i) => i.id === item_id)
 
       // The item must exist in the order
       if (!item) {
@@ -291,7 +297,7 @@ class SwapService extends BaseService {
    * @param {Object} custom - contains relevant custom information. This object may
    *  include no_notification which will disable sending notification when creating
    *  swap. If set, it overrules the attribute inherited from the order.
-   * @returns {Promise<Swap>} the newly created swap.
+   * @return {Promise<Swap>} the newly created swap.
    */
   async create(
     order,
@@ -303,7 +309,7 @@ class SwapService extends BaseService {
     }
   ) {
     const { no_notification, ...rest } = custom
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       if (
         order.fulfillment_status === "not_fulfilled" ||
         order.payment_status !== "captured"
@@ -318,7 +324,6 @@ class SwapService extends BaseService {
         const line = await this.lineItemService_.retrieve(item.item_id, {
           relations: ["order", "swap", "claim_order"],
         })
-        console.log(line)
 
         if (
           line.order?.canceled_at ||
@@ -377,7 +382,7 @@ class SwapService extends BaseService {
   }
 
   async processDifference(swapId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: ["payment", "order", "order.payments"],
       })
@@ -493,7 +498,7 @@ class SwapService extends BaseService {
   }
 
   async update(swapId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId)
 
       if ("metadata" in update) {
@@ -519,13 +524,14 @@ class SwapService extends BaseService {
    * for differences associated with the swap. The swap represented by the
    * swapId must belong to the order. Fails if there is already a cart on the
    * swap.
-   * @param {Order} order - the order to create the cart from
    * @param {string} swapId - the id of the swap to create the cart from
-   * @returns {Promise<Swap>} the swap with its cart_id prop set to the id of
+   * @param {object[]} customShippingOptions - the shipping options
+   * @param {Order} order - the order to create the cart from
+   * @return {Promise<Swap>} the swap with its cart_id prop set to the id of
    *   the new cart.
    */
-  async createCart(swapId) {
-    return this.atomicPhase_(async manager => {
+  async createCart(swapId, customShippingOptions = []) {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
           "order",
@@ -534,6 +540,8 @@ class SwapService extends BaseService {
           "order.swaps.additional_items",
           "order.discounts",
           "order.discounts.rule",
+          "order.claims",
+          "order.claims.additional_items",
           "additional_items",
           "return_order",
           "return_order.items",
@@ -576,6 +584,16 @@ class SwapService extends BaseService {
         },
       })
 
+      for (const customShippingOption of customShippingOptions) {
+        await this.customShippingOptionService_
+          .withTransaction(manager)
+          .create({
+            cart_id: cart.id,
+            shipping_option_id: customShippingOption.option_id,
+            price: customShippingOption.price,
+          })
+      }
+
       for (const item of swap.additional_items) {
         await this.lineItemService_.withTransaction(manager).update(item.id, {
           cart_id: cart.id,
@@ -607,7 +625,13 @@ class SwapService extends BaseService {
           }
         }
 
-        const lineItem = allItems.find(i => i.id === r.item_id)
+        if (order.claims && order.claims.length) {
+          for (const c of order.claims) {
+            allItems = [...allItems, ...c.additional_items]
+          }
+        }
+
+        const lineItem = allItems.find((i) => i.id === r.item_id)
 
         const toCreate = {
           cart_id: cart.id,
@@ -635,10 +659,10 @@ class SwapService extends BaseService {
   }
 
   /**
-   *
+   *@param {string} swapId - The id of the swap
    */
   async registerCartCompletion(swapId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
           "cart",
@@ -763,14 +787,13 @@ class SwapService extends BaseService {
    * Registers the return associated with a swap as received. If the return
    * is received with mismatching return items the swap's status will be updated
    * to requires_action.
-   * @param {Order} order - the order to receive the return based off
    * @param {string} swapId - the id of the swap to receive.
-   * @param {Array<ReturnItem>} - the items that have been returned
-   * @returns {Promise<Swap>} the resulting swap, with an updated return and
+   * @param {Array<ReturnItem>} returnItems - the return items that have been returned
+   * @return {Promise<Swap>} the resulting swap, with an updated return and
    *   status.
    */
   async receiveReturn(swapId, returnItems) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, { relations: ["return_order"] })
 
       if (swap.canceled_at) {
@@ -808,10 +831,10 @@ class SwapService extends BaseService {
    * related returns, fulfillments, and payments have been canceled. If a swap
    * is associated with a refund, it cannot be canceled.
    * @param {string} swapId - the id of the swap to cancel.
-   * @returns {Promise<Swap>} the canceled swap.
+   * @return {Promise<Swap>} the canceled swap.
    */
   async cancel(swapId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: ["payment", "fulfillments", "return_order"],
       })
@@ -866,7 +889,7 @@ class SwapService extends BaseService {
    * fulfillment providers associated with the shipping methods.
    * @param {string} swapId - the id of the swap to fulfill,
    * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag.
-   * @returns {Promise<Swap>} the updated swap with new status and fulfillments.
+   * @return {Promise<Swap>} the updated swap with new status and fulfillments.
    */
   async createFulfillment(
     swapId,
@@ -877,7 +900,7 @@ class SwapService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: [
           "payment",
@@ -937,7 +960,7 @@ class SwapService extends BaseService {
             is_swap: true,
             no_notification: evaluatedNoNotification,
           },
-          swap.additional_items.map(i => ({
+          swap.additional_items.map((i) => ({
             item_id: i.id,
             quantity: i.quantity,
           })),
@@ -954,7 +977,7 @@ class SwapService extends BaseService {
       // Update all line items to reflect fulfillment
       for (const item of swap.additional_items) {
         const fulfillmentItem = successfullyFulfilled.find(
-          f => item.id === f.item_id
+          (f) => item.id === f.item_id
         )
 
         if (fulfillmentItem) {
@@ -996,10 +1019,10 @@ class SwapService extends BaseService {
   /**
    * Cancels a fulfillment (if related to a swap)
    * @param {string} fulfillmentId - the ID of the fulfillment to cancel
-   * @returns updated swap
+   * @return {Swap} updated swap
    */
   async cancelFulfillment(fulfillmentId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const canceled = await this.fulfillmentService_
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
@@ -1029,7 +1052,7 @@ class SwapService extends BaseService {
    * @param {TrackingLink[]} trackingLinks - the tracking numbers associated
    *   with the shipment
    * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag.
-   * @returns {Promise<Swap>} the updated swap with new fulfillments and status.
+   * @return {Promise<Swap>} the updated swap with new fulfillments and status.
    */
   async createShipment(
     swapId,
@@ -1042,7 +1065,7 @@ class SwapService extends BaseService {
   ) {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         relations: ["additional_items"],
       })
@@ -1068,7 +1091,7 @@ class SwapService extends BaseService {
 
       // Go through all the additional items in the swap
       for (const i of swap.additional_items) {
-        const shipped = shipment.items.find(si => si.item_id === i.id)
+        const shipped = shipment.items.find((si) => si.item_id === i.id)
         if (shipped) {
           const shippedQty = (i.shipped_quantity || 0) + shipped.quantity
           await this.lineItemService_.withTransaction(manager).update(i.id, {
@@ -1117,7 +1140,7 @@ class SwapService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.swapModel_
       .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
+      .catch((err) => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }
@@ -1127,10 +1150,10 @@ class SwapService extends BaseService {
    * as a part of other swaps/returns.
    * @param {string} id - the id of the order with the swap.
    * @param {string} swapId - the id of the swap that has been received.
-   * @returns {Promise<Order>} the resulting order
+   * @return {Promise<Order>} the resulting order
    */
   async registerReceived(id) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(id, {
         relations: ["return_order", "return_order.items"],
       })

@@ -78,12 +78,12 @@ export default async (req, res) => {
   })
 
   const { value, error } = schema.validate(req.body)
+
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
   const discountService = req.scope.resolve("discountService")
-
   const created = await discountService.create(value)
   const discount = await discountService.retrieve(created.id, defaultRelations)
 

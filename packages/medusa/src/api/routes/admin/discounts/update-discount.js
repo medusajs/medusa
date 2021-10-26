@@ -85,9 +85,7 @@ export default async (req, res) => {
   }
 
   const discountService = req.scope.resolve("discountService")
-
   await discountService.update(discount_id, value)
-
   const discount = await discountService.retrieve(discount_id, {
     select: defaultFields,
     relations: defaultRelations,

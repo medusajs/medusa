@@ -27,7 +27,7 @@ export default async (req, res) => {
     const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
 
-    await manager.transaction(async m => {
+    await manager.transaction(async (m) => {
       // Remove the discount
       await cartService.withTransaction(m).removeDiscount(id, code)
 
