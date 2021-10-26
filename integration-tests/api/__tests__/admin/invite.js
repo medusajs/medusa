@@ -99,7 +99,7 @@ describe("/admin/invites", () => {
               headers: { Authorization: "Bearer test_token" },
             }
           )
-          .catch((err) => console.log(err))
+          .catch((err) => console.log(JSON.stringify(err)))
 
         user = response.data.user
       } catch (err) {
@@ -336,7 +336,6 @@ describe("/admin/invites", () => {
         const secondAcceptResponse = await api
           .post("/admin/invites/accept", secondPayload)
           .catch((err) => {
-            console.log(err)
             expect(err.response.status).toEqual(400)
             expect(err.response.data.message).toEqual("Invalid invite")
             expect(err.response.data.type).toEqual("invalid_data")

@@ -261,7 +261,7 @@ describe("/admin/users", () => {
             token,
             password: "new password",
           })
-          .catch((err) => console.log(err))
+          .catch((err) => console.log(err.response.data.message))
 
         const loginResult = await api.post("admin/auth", {
           email: user.email,

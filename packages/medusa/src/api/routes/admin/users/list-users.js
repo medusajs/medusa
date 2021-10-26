@@ -1,5 +1,3 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-
 export default async (req, res) => {
   const userService = req.scope.resolve("userService")
   const users = await userService.list({})
