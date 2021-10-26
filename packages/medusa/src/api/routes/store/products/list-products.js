@@ -1,4 +1,5 @@
 import { defaultRelations } from "."
+import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
  * @oas [get] /products
@@ -29,6 +30,15 @@ import { defaultRelations } from "."
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
+  const schema = Validator.storeProductFilter()
+  const filteringSchema = Validator.storeProductFilteringFields()
+
+  const { value, error } = schema.validate(req.query)
+
+  if (error) {
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  }
+
   const productService = req.scope.resolve("productService")
 
   const limit = parseInt(req.query.limit) || 100
@@ -36,8 +46,18 @@ export default async (req, res) => {
 
   const selector = {}
 
-  if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
-    selector.is_giftcard = req.query.is_giftcard === "true"
+  if ("q" in req.query) {
+    selector.q = req.query.q
+  }
+
+  // if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
+  //   selector.is_giftcard = req.query.is_giftcard === "true"
+  // }
+
+  for (const k of [...filteringSchema.$_terms.keys.map((k) => k.key)]) {
+    if (k in value) {
+      selector[k] = value[k]
+    }
   }
 
   selector.status = ["published"]
