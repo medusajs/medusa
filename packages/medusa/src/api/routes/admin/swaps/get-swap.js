@@ -22,16 +22,12 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  try {
-    const swapService = req.scope.resolve("swapService")
+  const swapService = req.scope.resolve("swapService")
 
-    const swap = await swapService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const swap = await swapService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.json({ swap })
-  } catch (error) {
-    throw error
-  }
+  res.json({ swap })
 }

@@ -38,14 +38,14 @@ export default async (req, res) => {
     const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
 
-    await manager.transaction(async m => {
+    await manager.transaction(async (m) => {
       // If the quantity is 0 that is effectively deletion
       if (value.quantity === 0) {
         await cartService.withTransaction(m).removeLineItem(id, line_id)
       } else {
         const cart = await cartService.retrieve(id, { relations: ["items"] })
 
-        const existing = cart.items.find(i => i.id === line_id)
+        const existing = cart.items.find((i) => i.id === line_id)
         if (!existing) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
