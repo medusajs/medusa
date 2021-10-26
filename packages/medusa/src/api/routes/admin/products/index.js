@@ -3,7 +3,7 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/products", route)
 
   route.post("/", middlewares.wrap(require("./create-product").default))

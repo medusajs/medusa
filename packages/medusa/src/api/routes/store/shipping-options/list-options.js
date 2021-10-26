@@ -25,34 +25,29 @@ export default async (req, res) => {
   const productIds =
     (req.query.product_ids && req.query.product_ids.split(",")) || []
   const regionId = req.query.region_id
+  const productService = req.scope.resolve("productService")
+  const shippingOptionService = req.scope.resolve("shippingOptionService")
 
-  try {
-    const productService = req.scope.resolve("productService")
-    const shippingOptionService = req.scope.resolve("shippingOptionService")
+  const query = {}
 
-    const query = {}
-
-    if ("is_return" in req.query) {
-      query.is_return = req.query.is_return === "true"
-    }
-
-    if (regionId) {
-      query.region_id = regionId
-    }
-
-    query.admin_only = false
-
-    if (productIds.length) {
-      const prods = await productService.list({ id: productIds })
-      query.profile_id = prods.map((p) => p.profile_id)
-    }
-
-    const options = await shippingOptionService.list(query, {
-      relations: ["requirements"],
-    })
-
-    res.status(200).json({ shipping_options: options })
-  } catch (err) {
-    throw err
+  if ("is_return" in req.query) {
+    query.is_return = req.query.is_return === "true"
   }
+
+  if (regionId) {
+    query.region_id = regionId
+  }
+
+  query.admin_only = false
+
+  if (productIds.length) {
+    const prods = await productService.list({ id: productIds })
+    query.profile_id = prods.map((p) => p.profile_id)
+  }
+
+  const options = await shippingOptionService.list(query, {
+    relations: ["requirements"],
+  })
+
+  res.status(200).json({ shipping_options: options })
 }

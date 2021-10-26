@@ -32,24 +32,20 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const notificationService = req.scope.resolve("notificationService")
+  const notificationService = req.scope.resolve("notificationService")
 
-    const config = {}
+  const config = {}
 
-    if (value.to) {
-      config.to = value.to
-    }
-
-    await notificationService.resend(id, config)
-
-    const notification = await notificationService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
-
-    res.json({ notification })
-  } catch (error) {
-    throw error
+  if (value.to) {
+    config.to = value.to
   }
+
+  await notificationService.resend(id, config)
+
+  const notification = await notificationService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
+
+  res.json({ notification })
 }
