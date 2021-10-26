@@ -5,9 +5,6 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-const customerSeeder = require("../../helpers/customer-seeder")
-const { hasUncaughtExceptionCaptureCallback } = require("process")
-
 jest.setTimeout(30000)
 
 describe("/store/customers", () => {
