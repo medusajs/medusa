@@ -4,6 +4,7 @@ import {
   allowedFields,
   allowedRelations,
 } from "../orders"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
  * @oas [get] /customers/me/orders
@@ -27,13 +28,28 @@ import {
  *                 $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
+  const schema = Validator.orderFilter()
+  const filteringSchema = Validator.orderFilteringFields()
+
+  const { value, error } = schema.validate(req.query)
+
+  if (error) {
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  }
+
   const id = req.user.customer_id
 
   const orderService = req.scope.resolve("orderService")
 
-  const selector = {
-    customer_id: id,
+  const selector = {}
+
+  for (const k of [...filteringSchema.$_terms.keys.map((k) => k.key)]) {
+    if (k in value) {
+      selector[k] = value[k]
+    }
   }
+
+  selector.customer_id = id
 
   const limit = parseInt(req.query.limit) || 10
   const offset = parseInt(req.query.offset) || 0

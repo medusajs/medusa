@@ -50,10 +50,6 @@ export default async (req, res) => {
     selector.q = req.query.q
   }
 
-  // if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
-  //   selector.is_giftcard = req.query.is_giftcard === "true"
-  // }
-
   for (const k of [...filteringSchema.$_terms.keys.map((k) => k.key)]) {
     if (k in value) {
       selector[k] = value[k]
