@@ -63,47 +63,29 @@ export default async (req, res) => {
       .keys({
         description: Validator.string().optional(),
         type: Validator.string().required(),
-        value: Validator.number()
-          .positive()
-          .required(),
+        value: Validator.number().positive().required(),
         allocation: Validator.string().required(),
         valid_for: Validator.array().items(Validator.string()),
       })
       .required(),
     is_disabled: Validator.boolean().default(false),
     starts_at: Validator.date().optional(),
-    ends_at: Validator.date()
-      .greater(Validator.ref("starts_at"))
-      .optional(),
-    valid_duration: Validator.string()
-      .isoDuration()
-      .allow(null)
-      .optional(),
-    usage_limit: Validator.number()
-      .positive()
-      .optional(),
-    regions: Validator.array()
-      .items(Validator.string())
-      .optional(),
+    ends_at: Validator.date().greater(Validator.ref("starts_at")).optional(),
+    valid_duration: Validator.string().isoDuration().allow(null).optional(),
+    usage_limit: Validator.number().positive().optional(),
+    regions: Validator.array().items(Validator.string()).optional(),
     metadata: Validator.object().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
+
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const discountService = req.scope.resolve("discountService")
+  const discountService = req.scope.resolve("discountService")
+  const created = await discountService.create(value)
+  const discount = await discountService.retrieve(created.id, defaultRelations)
 
-    const created = await discountService.create(value)
-    const discount = await discountService.retrieve(
-      created.id,
-      defaultRelations
-    )
-
-    res.status(200).json({ discount })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ discount })
 }
