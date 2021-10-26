@@ -30,9 +30,8 @@ Joi.dateFilter = () => {
   })
 }
 
-Joi.orderFilter = () => {
+Joi.orderFilteringFields = () => {
   return Joi.object().keys({
-    id: Joi.string(),
     q: Joi.string(),
     status: Joi.array()
       .items(
@@ -73,6 +72,15 @@ Joi.orderFilter = () => {
         )
       )
       .single(),
+    canceled_at: Joi.dateFilter(),
+    created_at: Joi.dateFilter(),
+    updated_at: Joi.dateFilter(),
+  })
+}
+
+Joi.orderFilter = () => {
+  return Joi.orderFilteringFields().keys({
+    id: Joi.string(),
     display_id: Joi.string(),
     cart_id: Joi.string(),
     offset: Joi.string(),
@@ -84,9 +92,6 @@ Joi.orderFilter = () => {
     region_id: Joi.string(),
     currency_code: Joi.string(),
     tax_rate: Joi.string(),
-    canceled_at: Joi.dateFilter(),
-    created_at: Joi.dateFilter(),
-    updated_at: Joi.dateFilter(),
   })
 }
 
