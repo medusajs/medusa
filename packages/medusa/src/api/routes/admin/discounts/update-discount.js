@@ -55,7 +55,7 @@ export default async (req, res) => {
   const { discount_id } = req.params
   const schema = Validator.object().keys({
     code: Validator.string().optional(),
-    is_dynamic: Validator.boolean().default(false),
+    is_dynamic: Validator.boolean().optional(),
     rule: Validator.object()
       .keys({
         id: Validator.string().required(),
@@ -86,7 +86,6 @@ export default async (req, res) => {
 
   const discountService = req.scope.resolve("discountService")
   await discountService.update(discount_id, value)
-
   const discount = await discountService.retrieve(discount_id, {
     select: defaultFields,
     relations: defaultRelations,
