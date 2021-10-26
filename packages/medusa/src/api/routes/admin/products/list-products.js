@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
@@ -37,10 +36,7 @@ export default async (req, res) => {
   const { value, error } = schema.validate(req.query)
 
   if (error) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      error.details
-    )
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
   const productService = req.scope.resolve("productService")
