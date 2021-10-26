@@ -37,8 +37,6 @@
 
 # END OF FILES TODO
 
-#/packages/medusa/src/api
-
 packages/medusa/src/api/middlewares
 packages/medusa/src/api/routes/admin
 packages/medusa/src/api/routes/store/auth
