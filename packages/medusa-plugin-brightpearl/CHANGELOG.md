@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.34...medusa-plugin-brightpearl@1.1.35) (2021-10-26)
+
+### Bug Fixes
+
+- add missing discount rule to bp orders ([#680](https://github.com/medusajs/medusa/issues/680)) ([d8422fc](https://github.com/medusajs/medusa/commit/d8422fc759f8a55e6290d4f54f3ea38df3118c8b))
+
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.33...medusa-plugin-brightpearl@1.1.34) (2021-10-18)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl
