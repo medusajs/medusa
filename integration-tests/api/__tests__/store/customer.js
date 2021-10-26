@@ -1,11 +1,12 @@
 const path = require("path")
-const { Address, Customer } = require("@medusajs/medusa")
+const { Address, Customer, Order, Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const customerSeeder = require("../../helpers/customer-seeder")
+const { hasUncaughtExceptionCaptureCallback } = require("process")
 
 jest.setTimeout(30000)
 
@@ -76,6 +77,156 @@ describe("/store/customers", () => {
     })
   })
 
+  describe('GET /store/customers/me/orders', () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await manager.query(
+        `ALTER SEQUENCE order_display_id_seq RESTART WITH 1`
+      )
+
+      await manager.insert(Address, {
+        id: "addr_test",
+        first_name: "String",
+        last_name: "Stringson",
+        address_1: "String st",
+        city: "Stringville",
+        postal_code: "1236",
+        province: "ca",
+        country_code: "us",
+      })
+
+      await manager.insert(Region, {
+        id: "region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
+
+      await manager.insert(Customer, {
+        id: "test_customer",
+        first_name: "John",
+        last_name: "Deere",
+        email: "john@deere.com",
+        password_hash:
+          "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+        has_account: true,
+      })
+
+      await manager.insert(Customer, {
+        id: "test_customer1",
+        first_name: "John",
+        last_name: "Deere",
+        email: "joh1n@deere.com",
+        password_hash:
+          "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+        has_account: true,
+      })
+
+      await manager.insert(Order, {
+        id: "order_test_completed",
+        email: "test1@email.com",
+        display_id: 1,
+        customer_id: 'test_customer',
+        region_id: "region",
+        status: 'completed',
+        tax_rate: 0,
+        currency_code: "usd",
+      })
+
+      await manager.insert(Order, {
+        id: "order_test_completed1",
+        email: "test1@email.com",
+        display_id: 2,
+        customer_id: 'test_customer1',
+        region_id: "region",
+        status: 'completed',
+        tax_rate: 0,
+        currency_code: "usd",
+      })
+
+      await manager.insert(Order, {
+        id: "order_test_canceled",
+        email: "test1@email.com",
+        display_id: 3,
+        customer_id: 'test_customer',
+        region_id: "region",
+        status: 'canceled',
+        tax_rate: 0,
+        currency_code: "usd",
+      })
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("looks up completed orders", async () => {
+      const api = useApi()
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@deere.com",
+        password: "test",
+      })
+
+      const customerId = authResponse.data.customer.id
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+
+      const response = await api
+        .get("/store/customers/me/orders?status[]=completed",
+          { headers: 
+            {
+              Cookie: authCookie,
+            }
+          },)
+        .catch((err) => {
+          return err.response
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.orders[0].display_id).toEqual(1)
+      expect(response.data.orders[0].email).toEqual("test1@email.com")
+      expect(response.data.orders.length).toEqual(1)
+    })
+
+    it("looks up cancelled and completed orders", async () => {
+      const api = useApi()
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@deere.com",
+        password: "test",
+      })
+
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+      const response = await api
+        .get("/store/customers/me/orders?status[]=completed,canceled",
+          { headers: 
+            {
+              Cookie: authCookie,
+            }
+          },)
+        .catch((err) => {
+          return console.log(err.response.data.message)
+        })
+
+      console.log(response)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toEqual([
+        expect.objectContaining({
+          display_id: 3,
+          status: 'canceled',
+        }),
+        expect.objectContaining({
+          display_id: 1,
+          status: 'completed',
+        }),
+      ])
+      expect(response.data.orders.length).toEqual(2)
+    })
+
+  })
+
   describe("POST /store/customers/me", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
@@ -113,7 +264,6 @@ describe("/store/customers", () => {
         password: "test",
       })
 
-      const customerId = authResponse.data.customer.id
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api.post(
