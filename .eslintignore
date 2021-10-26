@@ -26,7 +26,6 @@
 /packages/medusa/src/api/routes/admin/apps
 /packages/medusa/src/api/routes/admin/auth
 /packages/medusa/src/api/routes/admin/collections
-/packages/medusa/src/api/routes/admin/customers
 /packages/medusa/src/api/routes/admin/draft-orders
 /packages/medusa/src/api/routes/admin/notes
 /packages/medusa/src/api/routes/admin/orders
