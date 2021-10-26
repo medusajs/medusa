@@ -43,9 +43,7 @@ export default async (req, res) => {
   const schema = Validator.object().keys({
     label: Validator.string().optional(),
     parent_return_reason_id: Validator.string().optional(),
-    description: Validator.string()
-      .optional()
-      .allow(""),
+    description: Validator.string().optional().allow(""),
     metadata: Validator.object().optional(),
   })
 
@@ -54,18 +52,14 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const returnReasonService = req.scope.resolve("returnReasonService")
+  const returnReasonService = req.scope.resolve("returnReasonService")
 
-    await returnReasonService.update(id, value)
+  await returnReasonService.update(id, value)
 
-    const reason = await returnReasonService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const reason = await returnReasonService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ return_reason: reason })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ return_reason: reason })
 }
