@@ -97,6 +97,34 @@ describe("/store/products", () => {
       }
     })
 
+    it("returns gift card product", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ id: "tag4" }),
+      ]
+
+      const response = await api
+        .get("/store/products?tags[]=tag3")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        })
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
     it("returns a list of products in with a given handle", async () => {
       const api = useApi()
 
@@ -142,6 +170,9 @@ describe("/store/products", () => {
 
     expect(response.status).toEqual(200)
     expect(response.data.products).toEqual([
+      expect.objectContaining({
+        id: "giftcard",
+      }),
       expect.objectContaining({
         id: "test-product_filtering_1",
         collection_id: "test-collection1",
