@@ -258,6 +258,7 @@ export default async (req, res) => {
         mid_code: Validator.string().allow(null, ""),
         material: Validator.string().allow(null, ""),
         metadata: Validator.object().optional(),
+        upc: Validator.string().allow(null),
       })
       .optional(),
     metadata: Validator.object().optional(),
