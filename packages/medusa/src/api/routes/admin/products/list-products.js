@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations, filterableFields } from "./"
+import { defaultFields, defaultRelations } from "./"
 
 /**
  * @oas [get] /products
@@ -39,7 +39,7 @@ export default async (req, res) => {
   if (error) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      JSON.stringify(error.details)
+      error.details
     )
   }
 
