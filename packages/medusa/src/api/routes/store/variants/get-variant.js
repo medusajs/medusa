@@ -22,14 +22,10 @@ import { defaultRelations } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  try {
-    const variantService = req.scope.resolve("productVariantService")
-    const variant = await variantService.retrieve(id, {
-      relations: defaultRelations,
-    })
+  const variantService = req.scope.resolve("productVariantService")
+  const variant = await variantService.retrieve(id, {
+    relations: defaultRelations,
+  })
 
-    res.json({ variant })
-  } catch (error) {
-    throw error
-  }
+  res.json({ variant })
 }

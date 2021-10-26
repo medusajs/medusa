@@ -31,20 +31,17 @@ export default async (req, res) => {
   })
 
   const { value, error } = schema.validate(req.body)
+
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const discountService = req.scope.resolve("discountService")
-    const created = await discountService.createDynamicCode(discount_id, value)
+  const discountService = req.scope.resolve("discountService")
+  const created = await discountService.createDynamicCode(discount_id, value)
 
-    const discount = await discountService.retrieve(created.id, {
-      relations: ["rule", "rule.valid_for", "regions"],
-    })
+  const discount = await discountService.retrieve(created.id, {
+    relations: ["rule", "rule.valid_for", "regions"],
+  })
 
-    res.status(200).json({ discount })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ discount })
 }
