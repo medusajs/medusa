@@ -21,15 +21,11 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const customerService = req.scope.resolve("customerService")
-    const customer = await customerService.retrieveByEmail(value.email)
+  const customerService = req.scope.resolve("customerService")
+  const customer = await customerService.retrieveByEmail(value.email)
 
-    // Will generate a token and send it to the customer via an email privder
-    await customerService.generateResetPasswordToken(customer.id)
+  // Will generate a token and send it to the customer via an email privder
+  await customerService.generateResetPasswordToken(customer.id)
 
-    res.sendStatus(204)
-  } catch (error) {
-    throw error
-  }
+  res.sendStatus(204)
 }
