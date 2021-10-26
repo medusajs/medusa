@@ -1,10 +1,9 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Provides layer to manipulate product collections.
- * @implements BaseService
+ * @extends BaseService
  */
 class ProductCollectionService extends BaseService {
   constructor({
@@ -48,6 +47,7 @@ class ProductCollectionService extends BaseService {
   /**
    * Retrieves a product collection by id.
    * @param {string} collectionId - the id of the collection to retrieve.
+   * @param {Object} config - the config of the collection to retrieve.
    * @return {Promise<ProductCollection>} the collection.
    */
   async retrieve(collectionId, config = {}) {
@@ -76,7 +76,7 @@ class ProductCollectionService extends BaseService {
    * @return {Promise<ProductCollection>} created collection
    */
   async create(collection) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
@@ -93,7 +93,7 @@ class ProductCollectionService extends BaseService {
    * @return {Promise<ProductCollection>} update collection
    */
   async update(collectionId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
@@ -120,14 +120,16 @@ class ProductCollectionService extends BaseService {
    * @return {Promise} empty promise
    */
   async delete(collectionId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const productCollectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
 
       const collection = await this.retrieve(collectionId)
 
-      if (!collection) return Promise.resolve()
+      if (!collection) {
+        return Promise.resolve()
+      }
 
       await productCollectionRepo.softRemove(collection)
 
@@ -138,6 +140,7 @@ class ProductCollectionService extends BaseService {
   /**
    * Lists product collections
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { skip: 0, take: 20 }) {
