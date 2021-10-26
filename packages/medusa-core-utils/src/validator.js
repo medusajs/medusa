@@ -10,19 +10,13 @@ Joi.address = () => {
       first_name: Joi.string().required(),
       last_name: Joi.string().required(),
       address_1: Joi.string().required(),
-      address_2: Joi.string()
-        .allow(null, "")
-        .optional(),
+      address_2: Joi.string().allow(null, "").optional(),
       city: Joi.string().required(),
       country_code: Joi.string().required(),
-      province: Joi.string()
-        .allow(null, "")
-        .optional(),
+      province: Joi.string().allow(null, "").optional(),
       postal_code: Joi.string().required(),
       phone: Joi.string().optional(),
-      metadata: Joi.object()
-        .allow(null, {})
-        .optional(),
+      metadata: Joi.object().allow(null, {}).optional(),
     })
   )
 }
@@ -103,12 +97,8 @@ Joi.productFilteringFields = () => {
     status: Joi.array()
       .items(Joi.string().valid("proposed", "draft", "published", "rejected"))
       .single(),
-    collection_id: Joi.array()
-      .items(Joi.string())
-      .single(),
-    tags: Joi.array()
-      .items(Joi.string())
-      .single(),
+    collection_id: Joi.array().items(Joi.string()).single(),
+    tags: Joi.array().items(Joi.string()).single(),
     title: Joi.string(),
     description: Joi.string(),
     handle: Joi.string(),
@@ -129,6 +119,29 @@ Joi.productFilter = () => {
     order: Joi.string().optional(),
   })
 }
+
+Joi.storeProductFilteringFields = () => {
+  return Joi.object().keys({
+    id: Joi.string(),
+    q: Joi.string().allow(null, ""),
+    collection_id: Joi.array().items(Joi.string()).single(),
+    tags: Joi.array().items(Joi.string()).single(),
+    title: Joi.string(),
+    description: Joi.string(),
+    handle: Joi.string(),
+    is_giftcard: Joi.string(),
+    type: Joi.string(),
+    created_at: Joi.dateFilter(),
+    updated_at: Joi.dateFilter(),
+    deleted_at: Joi.dateFilter(),
+  })
+}
+
+Joi.storeProductFilter = () => {
+  return Joi.productFilteringFields().keys({
+    offset: Joi.string(),
+    limit: Joi.string(),
+  })
 }
 
 export default Joi
