@@ -95,6 +95,7 @@ Update `scripts` to the following:
 Finally, deploy your Redis and Postgres followed by your Medusa application.
 
 #### Deploy databases
+
 In your environment overview in Qovery, deploy your databases one after the other. Only when these are deployed, proceed to next step.
 
 #### Push changes to your repository

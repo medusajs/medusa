@@ -176,8 +176,17 @@ describe("ShippingProfileService", () => {
     })
 
     const shippingOptionService = {
-      list: jest.fn().mockImplementation(() =>
-        Promise.resolve([
+      list: jest.fn().mockImplementation(({ id }) => {
+        if (id && id.includes("test-option")) {
+          return Promise.resolve([
+            {
+              id: "test-option",
+              amount: 1000,
+              name: "Test option",
+            },
+          ])
+        }
+        return Promise.resolve([
           {
             id: "ship_1",
           },
@@ -185,24 +194,74 @@ describe("ShippingProfileService", () => {
             id: "ship_2",
           },
         ])
-      ),
+      }),
       validateCartOption: jest.fn().mockImplementation(s => s),
       withTransaction: function() {
         return this
       },
     }
 
+    const customShippingOptionService = {
+      list: jest.fn().mockImplementation(({ cart_id }, config) => {
+        if (cart_id === "cso-cart") {
+          return Promise.resolve([
+            {
+              id: "cso_1",
+              cart_id: "cso-cart",
+              shipping_option_id: "test-option",
+              price: 0,
+            },
+          ])
+        }
+        return Promise.resolve([])
+      }),
+    }
+
     const profileService = new ShippingProfileService({
       manager: MockManager,
       shippingProfileRepository: profRepo,
       shippingOptionService,
+      customShippingOptionService,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("fetches correct options", async () => {
+    it("given a cart with custom shipping options, should return correct custom shipping options ", async () => {
+      const cart = {
+        id: "cso-cart",
+        items: [
+          {
+            variant: {
+              product: {
+                _id: IdMap.getId("product_1"),
+                profile_id: IdMap.getId("profile"),
+              },
+            },
+          },
+          {
+            variant: {
+              product: {
+                _id: IdMap.getId("product_2"),
+                profile_id: IdMap.getId("profile"),
+              },
+            },
+          },
+        ],
+        type: "swap",
+      }
+
+      await expect(profileService.fetchCartOptions(cart)).resolves.toEqual([
+        expect.objectContaining({
+          id: "test-option",
+          amount: 0,
+          name: "Test option",
+        }),
+      ])
+    })
+
+    it("given a cart with no custom shipping options, should return normal shipping options", async () => {
       const cart = {
         items: [
           {

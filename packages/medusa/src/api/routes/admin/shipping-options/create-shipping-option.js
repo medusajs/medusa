@@ -72,16 +72,12 @@ export default async (req, res) => {
     profile_id: Validator.string(),
     data: Validator.object().required(),
     price_type: Validator.string().required(),
-    amount: Validator.number()
-      .integer()
-      .optional(),
+    amount: Validator.number().integer().optional(),
     requirements: Validator.array()
       .items(
         Validator.object({
           type: Validator.string().required(),
-          amount: Validator.number()
-            .integer()
-            .required(),
+          amount: Validator.number().integer().required(),
         })
       )
       .optional(),
@@ -94,24 +90,20 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const optionService = req.scope.resolve("shippingOptionService")
-    const shippingProfileService = req.scope.resolve("shippingProfileService")
+  const optionService = req.scope.resolve("shippingOptionService")
+  const shippingProfileService = req.scope.resolve("shippingProfileService")
 
-    // Add to default shipping profile
-    if (!value.profile_id) {
-      const { id } = await shippingProfileService.retrieveDefault()
-      value.profile_id = id
-    }
-
-    const result = await optionService.create(value)
-    const data = await optionService.retrieve(result.id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
-
-    res.status(200).json({ shipping_option: data })
-  } catch (err) {
-    throw err
+  // Add to default shipping profile
+  if (!value.profile_id) {
+    const { id } = await shippingProfileService.retrieveDefault()
+    value.profile_id = id
   }
+
+  const result = await optionService.create(value)
+  const data = await optionService.retrieve(result.id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
+
+  res.status(200).json({ shipping_option: data })
 }

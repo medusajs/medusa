@@ -6,7 +6,7 @@ import middlewares from "../../../middlewares"
 const route = Router()
 const upload = multer({ dest: "uploads/" })
 
-export default app => {
+export default (app) => {
   app.use("/uploads", route)
 
   route.post(
