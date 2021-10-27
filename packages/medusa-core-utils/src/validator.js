@@ -32,6 +32,7 @@ Joi.dateFilter = () => {
 
 Joi.orderFilteringFields = () => {
   return Joi.object().keys({
+    id: Joi.string(),
     q: Joi.string(),
     status: Joi.array()
       .items(
@@ -72,6 +73,13 @@ Joi.orderFilteringFields = () => {
         )
       )
       .single(),
+    display_id: Joi.string(),
+    cart_id: Joi.string(),
+    customer_id: Joi.string(),
+    email: Joi.string(),
+    region_id: Joi.string(),
+    currency_code: Joi.string(),
+    tax_rate: Joi.string(),
     canceled_at: Joi.dateFilter(),
     created_at: Joi.dateFilter(),
     updated_at: Joi.dateFilter(),
@@ -80,18 +88,10 @@ Joi.orderFilteringFields = () => {
 
 Joi.orderFilter = () => {
   return Joi.orderFilteringFields().keys({
-    id: Joi.string(),
-    display_id: Joi.string(),
-    cart_id: Joi.string(),
     offset: Joi.string(),
     limit: Joi.string(),
     expand: Joi.string(),
     fields: Joi.string(),
-    customer_id: Joi.string(),
-    email: Joi.string(),
-    region_id: Joi.string(),
-    currency_code: Joi.string(),
-    tax_rate: Joi.string(),
   })
 }
 
@@ -109,6 +109,7 @@ Joi.productFilteringFields = () => {
     handle: Joi.string(),
     is_giftcard: Joi.boolean(),
     type: Joi.string(),
+    order: Joi.string().optional(),
     created_at: Joi.dateFilter(),
     updated_at: Joi.dateFilter(),
     deleted_at: Joi.dateFilter(),
@@ -121,7 +122,6 @@ Joi.productFilter = () => {
     limit: Joi.string(),
     expand: Joi.string(),
     fields: Joi.string(),
-    order: Joi.string().optional(),
   })
 }
 
