@@ -1,4 +1,3 @@
-import { indexTypes } from "../../../../medusa-interfaces/node_modules/medusa-core-utils/dist"
 import ContentfulService from "../contentful"
 
 describe("ContentfulService", () => {
@@ -273,7 +272,6 @@ describe("ContentfulService", () => {
   //     it('calls createEntryWithId on contentful environment', async () => {
   //       const collection = {id: 'test', title: 'title', handle: 'handle'}
   //       const result = await service.createProductCollectionInContentful({id: 'test', title: 'title', handle: 'handle'})
-
 
   //       expect(environment.createEntryWithId).toHaveBeenCalledTimes(1)
   //       expect(environment.createEntryWithId).toHaveBeenCalledWidth('collection', 'test', {
