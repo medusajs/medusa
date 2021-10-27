@@ -1,22 +1,21 @@
+import _ from "lodash"
 import {
-  Entity,
-  Index,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  DeleteDateColumn,
+  Entity,
+  Index,
   JoinColumn,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Image } from "./image"
 import { ProductCollection } from "./product-collection"
 import { ProductOption } from "./product-option"
@@ -24,7 +23,6 @@ import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
-import _ from "lodash"
 
 export enum Status {
   DRAFT = "draft",
@@ -74,17 +72,12 @@ export class Product {
   @Column({ nullable: true })
   thumbnail: string
 
-  @OneToMany(
-    () => ProductOption,
-    productOption => productOption.product
-  )
+  @OneToMany(() => ProductOption, (productOption) => productOption.product)
   options: ProductOption[]
 
-  @OneToMany(
-    () => ProductVariant,
-    variant => variant.product,
-    { cascade: true }
-  )
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    cascade: true,
+  })
   variants: ProductVariant[]
 
   @Index()
@@ -164,7 +157,9 @@ export class Product {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `prod_${id}`
 

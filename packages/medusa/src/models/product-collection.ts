@@ -1,19 +1,17 @@
+import _ from "lodash"
 import {
-  Entity,
   BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  PrimaryColumn,
-  ManyToMany,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
   Index,
   OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-import _ from "lodash"
-
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Product } from "./product"
 
 @Entity()
@@ -28,10 +26,7 @@ export class ProductCollection {
   @Column({ nullable: true })
   handle: string
 
-  @OneToMany(
-    () => Product,
-    product => product.collection
-  )
+  @OneToMany(() => Product, (product) => product.collection)
   products: Product[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
@@ -48,7 +43,9 @@ export class ProductCollection {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `pcol_${id}`
 

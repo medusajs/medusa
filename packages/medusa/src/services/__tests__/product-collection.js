@@ -1,10 +1,10 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ProductCollectionService from "../product-collection"
 
 describe("ProductCollectionService", () => {
   describe("retrieve", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "non-existing") {
           return Promise.resolve(undefined)
         }
@@ -47,7 +47,7 @@ describe("ProductCollectionService", () => {
 
   describe("create", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => Promise.resolve({ id: IdMap.getId("bathrobe") }),
+      findOne: (query) => Promise.resolve({ id: IdMap.getId("bathrobe") }),
     })
 
     const productCollectionService = new ProductCollectionService({
@@ -71,7 +71,7 @@ describe("ProductCollectionService", () => {
 
   describe("update", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "non-existing") {
           return Promise.resolve(undefined)
         }
@@ -115,7 +115,7 @@ describe("ProductCollectionService", () => {
 
   describe("delete", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "non-existing") {
           return Promise.resolve(undefined)
         }

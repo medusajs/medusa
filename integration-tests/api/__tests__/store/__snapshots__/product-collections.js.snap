@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/store/collections /store/collections/:id includes default relations 1`] = `
+Object {
+  "collection": Object {
+    "created_at": "2021-10-27T14:04:33.300Z",
+    "deleted_at": null,
+    "handle": "test-collection",
+    "id": "test-collection",
+    "metadata": null,
+    "title": "Test collection",
+    "updated_at": "2021-10-27T14:04:33.300Z",
+  },
+}
+`;

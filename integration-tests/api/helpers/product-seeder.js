@@ -87,6 +87,7 @@ module.exports = async (connection, data = {}) => {
     id: "test-product",
     handle: "test-product",
     title: "Test product",
+    status: "published",
     profile_id: defaultProfile.id,
     description: "test-product-description",
     collection_id: "test-collection",
@@ -171,6 +172,19 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(variant3)
+
+  const pcopy = manager.create(Product, {
+    id: "test-product-copy",
+    handle: "test-product-copy",
+    title: "Test product-copy",
+    status: "published",
+    profile_id: defaultProfile.id,
+    description: "specific-desc",
+    collection_id: "test-collection",
+    type: { id: "test-type", value: "test-type" },
+  })
+
+  await manager.save(pcopy)
 
   const p1 = manager.create(Product, {
     id: "test-product1",

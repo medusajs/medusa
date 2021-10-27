@@ -1,5 +1,6 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import { Brackets } from "typeorm"
 
 /**
  * Provides layer to manipulate product collections.
@@ -148,8 +149,44 @@ class ProductCollectionService extends BaseService {
       this.productCollectionRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
-    return productCollectionRepo.find(query)
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+    const rels = query.relations
+    delete query.relations
+
+    if (q) {
+      const where = query.where
+      delete where.title
+      delete where.handle
+      const raw = await productCollectionRepo
+        .createQueryBuilder("product_collection")
+        .select(["product_collection.id"])
+        .where(where)
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where(`product_collection.title ILIKE :q`, {
+              q: `%${q}%`,
+            }).orWhere(`product_collection.handle ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+        .getMany()
+
+      return productCollectionRepo.findWithRelations(
+        rels,
+        raw.map((i) => i.id)
+      )
+    }
+
+    return productCollectionRepo.findWithRelations(query, rels)
   }
 }
 

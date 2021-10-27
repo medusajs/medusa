@@ -131,6 +131,8 @@ class ProductService extends BaseService {
           new Brackets((qb) => {
             qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
               .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`product.subtitle ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`product.handle ILIKE :q`, { q: `%${q}%` })
               .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
               .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
               .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
