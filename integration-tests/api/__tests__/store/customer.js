@@ -206,8 +206,6 @@ describe("/store/customers", () => {
           return console.log(err.response.data.message)
         })
 
-      console.log(response)
-
       expect(response.status).toEqual(200)
       expect(response.data.orders).toEqual([
         expect.objectContaining({

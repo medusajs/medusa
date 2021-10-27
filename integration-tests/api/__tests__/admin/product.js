@@ -7,6 +7,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const { ProductVariant } = require("@medusajs/medusa")
+const { hasUncaughtExceptionCaptureCallback } = require("process")
 
 jest.setTimeout(50000)
 
@@ -174,6 +175,43 @@ describe("/admin/products", () => {
         )
       }
     })
+
+    it("doesn't expand collection and types", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ collection: expect.any(Object), type: expect.any(Object) }),
+      ]
+
+      const response = await api
+        .get("/admin/products?status[]=published,proposed&expand=tags", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          status: "proposed",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          status: "published",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
 
     it("returns a list of products in collection", async () => {
       const api = useApi()

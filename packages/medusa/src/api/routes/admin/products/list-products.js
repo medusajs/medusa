@@ -30,8 +30,8 @@ import { defaultFields, defaultRelations } from "./"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const schema = Validator.productFilter()
   const filteringSchema = Validator.productFilteringFields()
+  const schema = Validator.productFilter()
 
   const { value, error } = schema.validate(req.query)
 
@@ -44,26 +44,22 @@ export default async (req, res) => {
   const limit = parseInt(req.query.limit) || 50
   const offset = parseInt(req.query.offset) || 0
 
-  const selector = {}
+  const { value: selector } = filteringSchema.validate(value, {
+    stripUnknown: true,
+  })
 
-  if ("q" in req.query) {
-    selector.q = req.query.q
+  if ("q" in value) {
+    selector.q = value.q
   }
 
   let includeFields = []
-  if ("fields" in req.query) {
-    includeFields = req.query.fields.split(",")
+  if ("fields" in value) {
+    includeFields = value.fields.split(",")
   }
 
   let expandFields = []
-  if ("expand" in req.query) {
-    expandFields = req.query.expand.split(",")
-  }
-
-  for (const k of [...filteringSchema.$_terms.keys.map((k) => k.key)]) {
-    if (k in value) {
-      selector[k] = value[k]
-    }
+  if ("expand" in value) {
+    expandFields = value.expand.split(",")
   }
 
   if (selector.status?.indexOf("null") > -1) {

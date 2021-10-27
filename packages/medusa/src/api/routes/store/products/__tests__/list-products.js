@@ -43,7 +43,10 @@ describe("GET /store/products", () => {
     it("calls list from productSerice", () => {
       expect(ProductServiceMock.list).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.list).toHaveBeenCalledWith(
-        { is_giftcard: true, status: ["published"] },
+        { 
+          is_giftcard: true, 
+          status: ["published"] 
+        },
         { relations: defaultRelations, skip: 0, take: 100 }
       )
     })

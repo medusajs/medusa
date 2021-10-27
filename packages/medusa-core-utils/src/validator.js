@@ -107,7 +107,7 @@ Joi.productFilteringFields = () => {
     title: Joi.string(),
     description: Joi.string(),
     handle: Joi.string(),
-    is_giftcard: Joi.string(),
+    is_giftcard: Joi.boolean(),
     type: Joi.string(),
     created_at: Joi.dateFilter(),
     updated_at: Joi.dateFilter(),
@@ -134,7 +134,7 @@ Joi.storeProductFilteringFields = () => {
     title: Joi.string(),
     description: Joi.string(),
     handle: Joi.string(),
-    is_giftcard: Joi.string(),
+    is_giftcard: Joi.boolean(),
     type: Joi.string(),
     created_at: Joi.dateFilter(),
     updated_at: Joi.dateFilter(),
@@ -143,7 +143,7 @@ Joi.storeProductFilteringFields = () => {
 }
 
 Joi.storeProductFilter = () => {
-  return Joi.productFilteringFields().keys({
+  return Joi.storeProductFilteringFields().keys({
     offset: Joi.string(),
     limit: Joi.string(),
   })
