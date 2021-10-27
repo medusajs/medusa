@@ -72,6 +72,36 @@ describe("/admin/swaps", () => {
       expect(response.data.swap.cart).toHaveProperty("discount_total")
       expect(response.data.swap.cart).toHaveProperty("gift_card_total")
     })
+
+    it("gets a swap with a discount", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/swaps/disc-swap", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.swap).toEqual(
+        expect.objectContaining({
+          id: "disc-swap",
+        })
+      )
+
+      expect(response.data.swap.cart).toEqual(
+        expect.objectContaining({
+          id: "disc-swap-cart",
+          discount_total: -800,
+          shipping_total: 1000,
+          subtotal: -8000,
+          total: -6200,
+        })
+      )
+    })
   })
 
   describe("GET /admin/swaps/", () => {
