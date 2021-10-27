@@ -28,8 +28,66 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *                 $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
-  const schema = Validator.orderFilter()
-  const filteringSchema = Validator.orderFilteringFields()
+  const filteringSchema = Validator.object().keys({
+    id: Validator.string(),
+    q: Validator.string(),
+    status: Validator.array()
+      .items(
+        Validator.string().valid(
+          "pending",
+          "completed",
+          "archived",
+          "canceled",
+          "requires_action"
+        )
+      )
+      .single(),
+    fulfillment_status: Validator.array()
+      .items(
+        Validator.string().valid(
+          "not_fulfilled",
+          "fulfilled",
+          "partially_fulfilled",
+          "shipped",
+          "partially_shipped",
+          "canceled",
+          "returned",
+          "partially_returned",
+          "requires_action"
+        )
+      )
+      .single(),
+    payment_status: Validator.array()
+      .items(
+        Validator.string().valid(
+          "captured",
+          "awaiting",
+          "not_paid",
+          "refunded",
+          "partially_refunded",
+          "canceled",
+          "requires_action"
+        )
+      )
+      .single(),
+    display_id: Validator.string(),
+    cart_id: Validator.string(),
+    customer_id: Validator.string(),
+    email: Validator.string(),
+    region_id: Validator.string(),
+    currency_code: Validator.string(),
+    tax_rate: Validator.string(),
+    canceled_at: Validator.dateFilter(),
+    created_at: Validator.dateFilter(),
+    updated_at: Validator.dateFilter(),
+  })
+
+  const schema = filteringSchema.keys({
+    offset: Validator.string(),
+    limit: Validator.string(),
+    expand: Validator.string(),
+    fields: Validator.string(),
+  })
 
   const { value, error } = schema.validate(req.query)
 

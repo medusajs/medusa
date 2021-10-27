@@ -30,8 +30,32 @@ import { defaultFields, defaultRelations } from "./"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const filteringSchema = Validator.productFilteringFields()
-  const schema = Validator.productFilter()
+  const filteringSchema = Validator.object().keys({
+    id: Validator.string(),
+    q: Validator.string().allow(null, ""),
+    status: Validator.array()
+      .items(
+        Validator.string().valid("proposed", "draft", "published", "rejected")
+      )
+      .single(),
+    collection_id: Validator.array().items(Validator.string()).single(),
+    tags: Validator.array().items(Validator.string()).single(),
+    title: Validator.string(),
+    description: Validator.string(),
+    handle: Validator.string(),
+    is_giftcard: Validator.boolean(),
+    type: Validator.string(),
+    order: Validator.string().optional(),
+    created_at: Validator.dateFilter(),
+    updated_at: Validator.dateFilter(),
+    deleted_at: Validator.dateFilter(),
+  })
+  const schema = filteringSchema.keys({
+    offset: Validator.string(),
+    limit: Validator.string(),
+    expand: Validator.string(),
+    fields: Validator.string(),
+  })
 
   const { value, error } = schema.validate(req.query)
 

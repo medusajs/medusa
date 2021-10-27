@@ -30,8 +30,24 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const schema = Validator.storeProductFilter()
-  const filteringSchema = Validator.storeProductFilteringFields()
+  const filteringSchema = Validator.object().keys({
+    id: Validator.string(),
+    q: Validator.string().allow(null, ""),
+    collection_id: Validator.array().items(Validator.string()).single(),
+    tags: Validator.array().items(Validator.string()).single(),
+    title: Validator.string(),
+    description: Validator.string(),
+    handle: Validator.string(),
+    is_giftcard: Validator.boolean(),
+    type: Validator.string(),
+    created_at: Validator.dateFilter(),
+    updated_at: Validator.dateFilter(),
+    deleted_at: Validator.dateFilter(),
+  })
+  const schema = filteringSchema.keys({
+    offset: Validator.string(),
+    limit: Validator.string(),
+  })
 
   const { value, error } = schema.validate(req.query)
 

@@ -104,9 +104,7 @@ export default async (req, res) => {
       .items({
         id: Validator.string().optional(),
         option_id: Validator.string().optional(),
-        price: Validator.number()
-          .integer()
-          .optional(),
+        price: Validator.number().integer().optional(),
       })
       .optional(),
     no_notification: Validator.boolean().optional(),
