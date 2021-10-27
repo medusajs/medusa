@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultFields, defaultRelations } from "."
 
 export default async (req, res) => {
   const { id } = req.params
@@ -13,17 +14,13 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const regionService = req.scope.resolve("regionService")
-    await regionService.setMetadata(id, value.key, value.value)
+  const regionService = req.scope.resolve("regionService")
+  await regionService.setMetadata(id, value.key, value.value)
 
-    const region = await regionService.retrieve(region_id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const region = await regionService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ region })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ region })
 }

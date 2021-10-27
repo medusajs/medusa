@@ -39,17 +39,13 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const regionService = req.scope.resolve("regionService")
-    await regionService.addCountry(region_id, value.country_code)
+  const regionService = req.scope.resolve("regionService")
+  await regionService.addCountry(region_id, value.country_code)
 
-    const region = await regionService.retrieve(region_id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const region = await regionService.retrieve(region_id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ region })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ region })
 }
