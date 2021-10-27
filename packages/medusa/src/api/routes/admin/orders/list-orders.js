@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { defaultRelations, defaultFields, filterableFields } from "./"
+import { defaultRelations, defaultFields } from "./"
 import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
@@ -23,6 +23,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
  */
 export default async (req, res) => {
   const schema = Validator.orderFilter()
+  const filteringSchema = Validator.orderFilteringFields()
 
   const { value, error } = schema.validate(req.query)
 
@@ -36,7 +37,9 @@ export default async (req, res) => {
     const limit = parseInt(req.query.limit) || 50
     const offset = parseInt(req.query.offset) || 0
 
-    let selector = {}
+    const { value: selector } = filteringSchema.validate(value, {
+      stripUnknown: true,
+    })
 
     if ("q" in req.query) {
       selector.q = req.query.q
@@ -52,12 +55,6 @@ export default async (req, res) => {
     let expandFields = []
     if ("expand" in req.query) {
       expandFields = req.query.expand.split(",")
-    }
-
-    for (const k of filterableFields) {
-      if (k in value) {
-        selector[k] = value[k]
-      }
     }
 
     const listConfig = {

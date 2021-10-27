@@ -41,13 +41,9 @@ export default async (req, res) => {
 
   const orderService = req.scope.resolve("orderService")
 
-  const selector = {}
-
-  for (const k of [...filteringSchema.$_terms.keys.map((k) => k.key)]) {
-    if (k in value) {
-      selector[k] = value[k]
-    }
-  }
+  const { value: selector } = filteringSchema.validate(value, {
+    stripUnknown: true,
+  })
 
   selector.customer_id = id
 

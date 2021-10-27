@@ -125,18 +125,3 @@ export const allowedRelations = [
   "type",
   "collection",
 ]
-
-export const filterableFields = [
-  "id",
-  "status",
-  "collection_id",
-  "tags",
-  "title",
-  "description",
-  "handle",
-  "is_giftcard",
-  "type",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-]

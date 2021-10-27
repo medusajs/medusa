@@ -10,17 +10,13 @@ describe("GET /admin/products", () => {
     let subject
 
     beforeAll(async () => {
-      try{
-
-        subject = await request("GET", `/admin/products`, {
-          adminSession: {
-            jwt: {
-              userId: IdMap.getId("admin_user"),
-            },
+      subject = await request("GET", `/admin/products`, {
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
           },
-        })
-      }
-      catch(err) { console.log(err)}
+        },
+      })
     })
 
     it("returns 200 and decorated products", () => {

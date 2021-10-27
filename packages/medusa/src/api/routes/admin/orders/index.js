@@ -332,20 +332,3 @@ export const allowedRelations = [
   "swaps.return_order",
   "swaps.additional_items",
 ]
-
-export const filterableFields = [
-  "id",
-  "status",
-  "fulfillment_status",
-  "payment_status",
-  "display_id",
-  "cart_id",
-  "customer_id",
-  "email",
-  "region_id",
-  "currency_code",
-  "tax_rate",
-  "canceled_at",
-  "created_at",
-  "updated_at",
-]

@@ -44,16 +44,12 @@ export default async (req, res) => {
   const limit = parseInt(req.query.limit) || 100
   const offset = parseInt(req.query.offset) || 0
 
-  const selector = {}
+  const { value: selector } = filteringSchema.validate(value, {
+    stripUnknown: true,
+  })
 
   if ("q" in req.query) {
     selector.q = req.query.q
-  }
-
-  for (const k of [...filteringSchema.$_terms.keys.map((k) => k.key)]) {
-    if (k in value) {
-      selector[k] = value[k]
-    }
   }
 
   selector.status = ["published"]

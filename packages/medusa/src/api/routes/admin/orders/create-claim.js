@@ -112,9 +112,7 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
   const schema = Validator.object().keys({
-    type: Validator.string()
-      .valid("replace", "refund")
-      .required(),
+    type: Validator.string().valid("replace", "refund").required(),
     claim_items: Validator.array()
       .items({
         item_id: Validator.string().required(),
@@ -133,9 +131,7 @@ export default async (req, res) => {
     return_shipping: Validator.object()
       .keys({
         option_id: Validator.string().optional(),
-        price: Validator.number()
-          .integer()
-          .optional(),
+        price: Validator.number().integer().optional(),
       })
       .optional(),
     additional_items: Validator.array()
@@ -148,14 +144,10 @@ export default async (req, res) => {
       .items({
         id: Validator.string().optional(),
         option_id: Validator.string().optional(),
-        price: Validator.number()
-          .integer()
-          .optional(),
+        price: Validator.number().integer().optional(),
       })
       .optional(),
-    refund_amount: Validator.number()
-      .integer()
-      .optional(),
+    refund_amount: Validator.number().integer().optional(),
     shipping_address: Validator.object().optional(),
     no_notification: Validator.boolean().optional(),
     metadata: Validator.object().optional(),
@@ -198,7 +190,7 @@ export default async (req, res) => {
         case "started": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               const order = await orderService
                 .withTransaction(manager)
                 .retrieve(id, {
@@ -241,7 +233,7 @@ export default async (req, res) => {
         case "claim_created": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               let claim = await claimService.withTransaction(manager).list({
                 idempotency_key: idempotencyKey.idempotency_key,
               })
@@ -279,7 +271,7 @@ export default async (req, res) => {
         case "refund_handled": {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
-            async manager => {
+            async (manager) => {
               let order = await orderService
                 .withTransaction(manager)
                 .retrieve(id, {
