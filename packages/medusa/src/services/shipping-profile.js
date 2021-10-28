@@ -470,7 +470,7 @@ class ShippingProfileService extends BaseService {
           options.push(option)
         }
       } catch (ex) {
-        // return ex
+        // catch the error, but intentionally do not break the iterations
       }
     }
 
