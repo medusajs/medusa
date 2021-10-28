@@ -23,12 +23,16 @@ module.exports = {
     node: true,
     jest: true,
   },
+  ignorePatterns: [`**/models`],
   overrides: [
     {
       files: [`*.ts`],
       parser: `@typescript-eslint/parser`,
       plugins: [`@typescript-eslint/eslint-plugin`],
       extends: [`plugin:@typescript-eslint/recommended`],
+      rules: {
+        "@typescript-eslint/explicit-function-return-type": ["error"],
+      },
     },
     {
       files: ["**/api/**/*.js"],
