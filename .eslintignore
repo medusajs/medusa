@@ -5,7 +5,6 @@
 /packages/medusa/src/services/middleware.js
 /packages/medusa/src/services/payment-provider.js
 /packages/medusa/src/services/product-variant.js
-/packages/medusa/src/services/shipping-profile.js
 /packages/medusa/src/subscribers/notification.js
 /packages/medusa/src/subscribers/order.js
 /packages/medusa/src/subscribers/product.js
