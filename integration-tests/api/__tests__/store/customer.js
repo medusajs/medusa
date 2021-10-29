@@ -264,4 +264,33 @@ describe("/store/customers", () => {
       expect(response.data.customer.billing_address_id).toEqual(null)
     })
   })
+
+  describe("POST /store/customers/password-token", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await manager.insert(Customer, {
+        id: "test_customer",
+        first_name: "John",
+        last_name: "Deere",
+        email: "john@deere.com",
+        password_hash:
+          "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+        has_account: true,
+      })
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("creates token", async () => {
+      const api = useApi()
+
+      const response = await api.post(`/store/customers/password-token`, {
+        email: "john@deere.com",
+      })
+
+      expect(response.status).toEqual(204)
+    })
+  })
 })
