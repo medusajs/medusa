@@ -102,7 +102,17 @@ class ProductService extends BaseService {
       delete selector.q
     }
 
+    let tags
+    if ("tags" in selector) {
+      tags = selector.tags
+      delete selector.tags
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (tags && tags.length > 0) {
+      query.where.tags = tags
+    }
 
     if (config.relations && config.relations.length > 0) {
       query.relations = config.relations
@@ -117,11 +127,15 @@ class ProductService extends BaseService {
 
     if (q) {
       const where = query.where
-
+      const order = query.order
       delete where.description
       delete where.title
 
-      const raw = await productRepo
+      if (tags) {
+        delete where.tags
+      }
+
+      let qb = productRepo
         .createQueryBuilder("product")
         .leftJoinAndSelect("product.variants", "variant")
         .leftJoinAndSelect("product.collection", "collection")
@@ -138,7 +152,14 @@ class ProductService extends BaseService {
               .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
           })
         )
-        .getMany()
+
+      if (tags) {
+        qb = qb
+          .leftJoinAndSelect("product.tags", "tags")
+          .andWhere(`tags.id IN (:...ids)`, { ids: tags })
+      }
+
+      const raw = await qb.getMany()
 
       return productRepo.findWithRelations(
         rels,

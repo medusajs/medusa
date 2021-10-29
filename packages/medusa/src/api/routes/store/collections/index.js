@@ -27,3 +27,28 @@ export const productRelations = [
   "collection",
   "type",
 ]
+
+export const productFields = [
+  "id",
+  "title",
+  "subtitle",
+  "description",
+  "handle",
+  "is_giftcard",
+  "discountable",
+  "thumbnail",
+  "profile_id",
+  "collection_id",
+  "type_id",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "created_at",
+  "updated_at",
+  "metadata",
+]

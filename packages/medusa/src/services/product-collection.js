@@ -165,6 +165,7 @@ class ProductCollectionService extends BaseService {
 
     if (q) {
       const where = query.where
+      const order = query.order
       delete where.title
       delete where.handle
       const raw = await productCollectionRepo

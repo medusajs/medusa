@@ -23,7 +23,7 @@ describe("/store/collections", () => {
     medusaProcess.kill()
   })
 
-  describe("/store/ceollections", () => {
+  describe("GET /store/collections", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -48,7 +48,7 @@ describe("/store/collections", () => {
     })
   })
 
-  describe("/store/collections/:id", () => {
+  describe("GET /store/collections/:id", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -69,17 +69,17 @@ describe("/store/collections", () => {
 
       const response = await api.get("/store/collections/test-collection")
 
-      expect(response.data).toMatchSnapshot({
-        collection: {
+      expect(response.data.collection).toEqual(
+        expect.objectContaining({
           id: "test-collection",
           handle: "test-collection",
           title: "Test collection",
-        },
-      })
+        })
+      )
     })
   })
 
-  describe("/store/collections/:id/products", () => {
+  describe("GET /store/collections/:id/products", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -133,11 +133,11 @@ describe("/store/collections", () => {
       const api = useApi()
 
       const response = await api.get(
-        "/store/collections/test-collection/products?q=copy"
+        "/store/collections/test-collection/products?q=other"
       )
 
       expect(response.data.products.length).toEqual(1)
-      expect(response.data.products[0].id).toEqual("test-product-copy")
+      expect(response.data.products[0].id).toEqual("other-product")
     })
 
     it("respects search on tag id", async () => {
@@ -148,7 +148,7 @@ describe("/store/collections", () => {
       )
 
       expect(response.data.products.length).toEqual(1)
-      expect(response.data.products[0].id).toEqual("test-product")
+      expect(response.data.products[0].id).toEqual("other-product")
     })
 
     it("respects search on tag id and title", async () => {

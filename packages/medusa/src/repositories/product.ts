@@ -1,8 +1,8 @@
 import { flatten, groupBy, map, merge } from "lodash"
 import {
-  OrderByCondition,
   EntityRepository,
   FindManyOptions,
+  OrderByCondition,
   Repository,
 } from "typeorm"
 import { Product } from "../models/product"
@@ -33,17 +33,17 @@ export class ProductRepository extends Repository<Product> {
       // the query exists
       const tags = idsOrOptionsWithoutRelations.where.tags
       delete idsOrOptionsWithoutRelations.where.tags
+
       let qb = this.createQueryBuilder("product")
-        .select(["product.id"])
+        .select(["product.id", "product.title"])
         .where(idsOrOptionsWithoutRelations.where)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-        .orderBy(idsOrOptionsWithoutRelations.order)
 
       if (tags) {
         qb = qb
           .leftJoinAndSelect("product.tags", "tags")
-          .andWhere(`tags.id IN (:...ids)`, { ids: tags._value })
+          .andWhere(`tags.id IN (:...ids)`, { ids: tags })
       }
 
       entities = await qb.getMany()
@@ -102,12 +102,22 @@ export class ProductRepository extends Repository<Product> {
           )
         }
 
-        return querybuilder
-          .where(
-            "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
-            { entitiesIds }
-          )
-          .getMany()
+        querybuilder = querybuilder.where(
+          "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
+          { entitiesIds }
+        )
+
+        if (idsOrOptionsWithoutRelations.order) {
+          // we must modify the order to avoid ambiguity of title:
+          const [key, value] = Object.entries(
+            idsOrOptionsWithoutRelations.order
+          )[0]
+          const order = { [`products.${key}`]: value }
+
+          querybuilder = querybuilder.orderBy(order)
+        }
+
+        return querybuilder.getMany()
       })
     ).then(flatten)
 

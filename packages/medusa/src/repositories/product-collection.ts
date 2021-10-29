@@ -1,18 +1,54 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import {
+  EntityRepository,
+  FindManyOptions,
+  OrderByCondition,
+  Repository,
+} from "typeorm"
 import { ProductCollection } from "../models/product-collection"
+
+type DefaultWithoutRelations = Omit<
+  FindManyOptions<ProductCollection>,
+  "relations"
+>
+
+type CustomOptions = {
+  where?: DefaultWithoutRelations["where"]
+  order?: OrderByCondition
+  skip?: number
+  take?: number
+}
 
 @EntityRepository(ProductCollection)
 export class ProductCollectionRepository extends Repository<ProductCollection> {
   public async findWithRelations(
     relations: Array<keyof ProductCollection> = [],
-    optionsWithoutRelations: Omit<
-      FindManyOptions<ProductCollection>,
-      "relations"
-    > = {}
+    idsOrOptionsWithoutRelations: CustomOptions = {}
   ): Promise<ProductCollection[]> {
-    const entities = await this.find(optionsWithoutRelations)
+    let entities: ProductCollection[]
+    if (Array.isArray(idsOrOptionsWithoutRelations)) {
+      entities = await this.findByIds(idsOrOptionsWithoutRelations)
+    } else {
+      const qb = this.createQueryBuilder("product_collection")
+        .select(["product_collection.id"])
+        .where(idsOrOptionsWithoutRelations.where)
+        .skip(idsOrOptionsWithoutRelations.skip)
+        .take(idsOrOptionsWithoutRelations.take)
+        .orderBy(idsOrOptionsWithoutRelations.order)
+
+      entities = await qb.getMany()
+    }
+
     const entitiesIds = entities.map(({ id }) => id)
+
+    if (entitiesIds.length === 0) {
+      // no need to continue
+      return []
+    }
+
+    if (relations.length === 0) {
+      return this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
+    }
 
     const groupedRelations = {}
     for (const rel of relations) {
@@ -26,10 +62,24 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(([_, rels]) => {
-        return this.findByIds(entitiesIds, {
-          select: ["id"],
-          relations: rels as string[],
-        })
+        let querybuilder = this.createQueryBuilder("product-collections")
+
+        querybuilder = querybuilder.where(
+          "product_collection.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
+          { entitiesIds }
+        )
+
+        if (idsOrOptionsWithoutRelations.order) {
+          // we must modify the order to avoid ambiguity of title:
+          const [key, value] = Object.entries(
+            idsOrOptionsWithoutRelations.order
+          )[0]
+          const order = { [`products.${key}`]: value }
+
+          querybuilder = querybuilder.orderBy(order)
+        }
+
+        return querybuilder.getMany()
       })
     ).then(flatten)
 
@@ -42,10 +92,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
 
   public async findOneWithRelations(
     relations: Array<keyof ProductCollection> = [],
-    optionsWithoutRelations: Omit<
-      FindManyOptions<ProductCollection>,
-      "relations"
-    > = {}
+    optionsWithoutRelations: DefaultWithoutRelations = {}
   ): Promise<ProductCollection> {
     // Limit 1
     optionsWithoutRelations.take = 1

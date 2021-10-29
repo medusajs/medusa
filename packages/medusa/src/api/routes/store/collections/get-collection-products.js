@@ -1,5 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { productRelations } from "."
+import { productFields, productRelations } from "."
 
 /**
  * @oas [get] /collections/{id}/products
@@ -104,6 +104,7 @@ export default async (req, res) => {
 
   const listConfig = {
     relations: productRelations,
+    fields: productFields,
     skip: value.offset,
     take: value.limit,
   }
