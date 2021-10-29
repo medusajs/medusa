@@ -5,7 +5,11 @@ import { BaseService } from "medusa-interfaces"
 import { UserRepository } from "../repositories/user"
 import { EntityManager } from "typeorm"
 import { User } from "../models/user"
-import { CreateUserInput, UpdateUserInput } from "../types/user"
+import {
+  CreateUserInput,
+  FilterableUserProps,
+  UpdateUserInput,
+} from "../types/user"
 import EventBusService from "./event-bus"
 
 type UserServiceProps = {
@@ -76,11 +80,10 @@ class UserService extends BaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
+   * @param {FilterableUserProps} selector - the query object for find
    * @return {Promise} the result of the find operation
    */
-  async list(selector: { [key in keyof User]: unknown }): Promise<User[]> {
-    selector.id = "test"
+  async list(selector: FilterableUserProps): Promise<User[]> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
     return userRepo.find({ where: selector })
   }
