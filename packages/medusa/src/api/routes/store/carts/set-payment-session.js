@@ -33,17 +33,13 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const cartService = req.scope.resolve("cartService")
+  const cartService = req.scope.resolve("cartService")
 
-    let cart = await cartService.setPaymentSession(id, value.provider_id)
-    cart = await cartService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  let cart = await cartService.setPaymentSession(id, value.provider_id)
+  cart = await cartService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ cart })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ cart })
 }
