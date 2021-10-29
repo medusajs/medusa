@@ -1,11 +1,12 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Any, In } from "typeorm"
+import { Any } from "typeorm"
 
 /**
  * Provides layer to manipulate profiles.
- * @implements BaseService
+ * @class
+ * @implements {BaseService}
  */
 class ShippingProfileService extends BaseService {
   constructor({
@@ -57,6 +58,7 @@ class ShippingProfileService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the config object for find
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
@@ -82,7 +84,7 @@ class ShippingProfileService extends BaseService {
       }
     )
 
-    const profiles = products.map(p => p.profile)
+    const profiles = products.map((p) => p.profile)
 
     const optionIds = profiles.reduce(
       (acc, next) => acc.concat(next.shipping_options),
@@ -90,7 +92,7 @@ class ShippingProfileService extends BaseService {
     )
 
     const options = await Promise.all(
-      optionIds.map(async option => {
+      optionIds.map(async (option) => {
         let canSend = true
         if (filter.region_id) {
           if (filter.region_id !== option.region_id) {
@@ -106,13 +108,14 @@ class ShippingProfileService extends BaseService {
       })
     )
 
-    return options.filter(o => !!o)
+    return options.filter((o) => !!o)
   }
 
   /**
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} profileId - the id of the profile to get.
+   * @param {Object} options - options opf the query.
    * @return {Promise<Product>} the profile document.
    */
   async retrieve(profileId, options = {}) {
@@ -162,7 +165,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createDefault() {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       let profile = await this.retrieveDefault()
 
       if (!profile) {
@@ -184,7 +187,7 @@ class ShippingProfileService extends BaseService {
 
   /**
    * Retrieves the default gift card profile
-   * @return the shipping profile for gift cards
+   * @return {Object} the shipping profile for gift cards
    */
   async retrieveGiftCardDefault() {
     const profileRepository = this.manager_.getCustomRepository(
@@ -204,7 +207,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createGiftCardDefault() {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       let profile = await this.retrieveGiftCardDefault()
 
       if (!profile) {
@@ -230,7 +233,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(profile) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
@@ -258,7 +261,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(profileId, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
@@ -312,7 +315,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(profileId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const profileRepo = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
@@ -320,7 +323,9 @@ class ShippingProfileService extends BaseService {
       // Should not fail, if profile does not exist, since delete is idempotent
       const profile = await profileRepo.findOne({ where: { id: profileId } })
 
-      if (!profile) return Promise.resolve()
+      if (!profile) {
+        return Promise.resolve()
+      }
 
       await profileRepo.softRemove(profile)
 
@@ -336,7 +341,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of update
    */
   async addProduct(profileId, productId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       await this.productService_
         .withTransaction(manager)
         .update(productId, { profile_id: profileId })
@@ -354,7 +359,7 @@ class ShippingProfileService extends BaseService {
    * @return {Promise} the result of the model update operation
    */
   async addShippingOption(profileId, optionId) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       await this.shippingOptionService_
         .withTransaction(manager)
         .update(optionId, { profile_id: profileId })
@@ -373,17 +378,17 @@ class ShippingProfileService extends BaseService {
    */
   async decorate(profile, fields, expandFields = []) {
     const requiredFields = ["_id", "metadata"]
-    let decorated = _.pick(profile, fields.concat(requiredFields))
+    const decorated = _.pick(profile, fields.concat(requiredFields))
 
     if (expandFields.includes("products") && profile.products) {
       decorated.products = await Promise.all(
-        profile.products.map(pId => this.productService_.retrieve(pId))
+        profile.products.map((pId) => this.productService_.retrieve(pId))
       )
     }
 
     if (expandFields.includes("shipping_options") && profile.shipping_options) {
       decorated.shipping_options = await Promise.all(
-        profile.shipping_options.map(oId =>
+        profile.shipping_options.map((oId) =>
           this.shippingOptionService_.retrieve(oId)
         )
       )
@@ -435,7 +440,7 @@ class ShippingProfileService extends BaseService {
     const hasCustomShippingOptions = customShippingOptions?.length
     // if there are custom shipping options associated with the cart, use those
     if (hasCustomShippingOptions) {
-      selector.id = customShippingOptions.map(cso => cso.shipping_option_id)
+      selector.id = customShippingOptions.map((cso) => cso.shipping_option_id)
     }
 
     const rawOpts = await this.shippingOptionService_.list(selector, {
@@ -444,9 +449,9 @@ class ShippingProfileService extends BaseService {
 
     // if there are custom shipping options associated with the cart, return cart shipping options with custom price
     if (hasCustomShippingOptions) {
-      return rawOpts.map(so => {
+      return rawOpts.map((so) => {
         const customOption = customShippingOptions.find(
-          cso => cso.shipping_option_id === so.id
+          (cso) => cso.shipping_option_id === so.id
         )
 
         return {
@@ -464,7 +469,9 @@ class ShippingProfileService extends BaseService {
         if (option) {
           options.push(option)
         }
-      } catch (error) {}
+      } catch (ex) {
+        // catch the error, but intentionally do not break the iterations
+      }
     }
 
     return options
