@@ -1,7 +1,5 @@
-import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
 
 class ClaimItemService extends BaseService {
   static Events = {
@@ -55,7 +53,7 @@ class ClaimItemService extends BaseService {
   }
 
   create(data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
 
       const { item_id, reason, quantity, tags, images, ...rest } = data
@@ -89,7 +87,7 @@ class ClaimItemService extends BaseService {
           this.claimTagRepository_
         )
         tagsToAdd = await Promise.all(
-          tags.map(async t => {
+          tags.map(async (t) => {
             const normalized = t.trim().toLowerCase()
             const existing = await claimTagRepo.findOne({
               where: { value: normalized },
@@ -107,7 +105,7 @@ class ClaimItemService extends BaseService {
         const claimImgRepo = manager.getCustomRepository(
           this.claimImageRepository_
         )
-        imagesToAdd = images.map(url => {
+        imagesToAdd = images.map((url) => {
           return claimImgRepo.create({ url })
         })
       }
@@ -135,7 +133,7 @@ class ClaimItemService extends BaseService {
   }
 
   update(id, data) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
       const item = await this.retrieve(id, { relations: ["images", "tags"] })
 
@@ -150,7 +148,7 @@ class ClaimItemService extends BaseService {
       }
 
       if (metadata) {
-        item.metadata = this.setMetadata_(item, update.metadata)
+        item.metadata = this.setMetadata_(item, metadata)
       }
 
       if (tags) {
@@ -181,7 +179,7 @@ class ClaimItemService extends BaseService {
         const claimImgRepo = manager.getCustomRepository(
           this.claimImageRepository_
         )
-        const ids = images.map(i => i.id)
+        const ids = images.map((i) => i.id)
         for (const i of item.images) {
           if (!ids.includes(i.id)) {
             await claimImgRepo.remove(i)
@@ -215,6 +213,7 @@ class ClaimItemService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - the config object for find
    * @return {Promise} the result of the find operation
    */
   async list(
@@ -227,9 +226,10 @@ class ClaimItemService extends BaseService {
   }
 
   /**
-   * Gets an order by id.
-   * @param {string} orderId - id of order to retrieve
-   * @return {Promise<Order>} the order document
+   * Gets a claim item by id.
+   * @param {string} id - id of ClaimItem to retrieve
+   * @param {Object} config - configuration for the find operation
+   * @return {Promise<Order>} the ClaimItem
    */
   async retrieve(id, config = {}) {
     const claimItemRepo = this.manager_.getCustomRepository(
@@ -269,7 +269,7 @@ class ClaimItemService extends BaseService {
     const keyPath = `metadata.${key}`
     return this.orderModel_
       .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch(err => {
+      .catch((err) => {
         throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
       })
   }

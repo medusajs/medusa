@@ -1,4 +1,3 @@
-import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultRelations, defaultFields } from "./"
 
 /**
@@ -22,16 +21,12 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { id } = req.params
-  try {
-    const returnReasonService = req.scope.resolve("returnReasonService")
+  const returnReasonService = req.scope.resolve("returnReasonService")
 
-    const data = await returnReasonService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const data = await returnReasonService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ return_reason: data })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ return_reason: data })
 }

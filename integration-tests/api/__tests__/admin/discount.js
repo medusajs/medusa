@@ -5,6 +5,8 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
+const discountSeeder = require("../../helpers/discount-seeder")
+const { exportAllDeclaration } = require("@babel/types")
 
 jest.setTimeout(30000)
 
@@ -89,6 +91,7 @@ describe("/admin/discounts", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
+        await discountSeeder(dbConnection)
       } catch (err) {
         console.log(err)
         throw err
@@ -157,6 +160,256 @@ describe("/admin/discounts", () => {
           usage_limit: 20,
         })
       )
+    })
+
+    it("automatically sets the code to an uppercase string on update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOworld",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+        })
+      )
+
+      const updated = await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            code: "HELLOWORLD_test",
+            usage_limit: 20,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD_TEST",
+          usage_limit: 20,
+        })
+      )
+    })
+
+    it("creates a dynamic discount and updates it", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD_DYNAMIC",
+            is_dynamic: true,
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD_DYNAMIC",
+          usage_limit: 10,
+          is_dynamic: true,
+        })
+      )
+
+      const updated = await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD_DYNAMIC",
+          usage_limit: 20,
+          is_dynamic: true,
+        })
+      )
+    })
+
+    it("fails to create a fixed discount with multiple regions", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            is_dynamic: true,
+            rule: {
+              description: "test",
+              type: "fixed",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+            regions: ["test-region", "test-region-2"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            `Fixed discounts can have one region`
+          )
+        })
+    })
+
+    it("fails to update a fixed discount with multiple regions", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "fixed",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            regions: ["test-region", "test-region-2"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            `Fixed discounts can have one region`
+          )
+        })
+    })
+
+    it("fails to add a region to a fixed discount with an existing region", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "fixed",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+            regions: ["test-region"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}/regions/test-region-2`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            `Fixed discounts can have one region`
+          )
+        })
     })
 
     it("creates a discount with start and end dates", async () => {
