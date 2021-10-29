@@ -37,7 +37,6 @@ export default async (req, res) => {
     skip: offset,
     take: limit,
   }
-
   const variants = await variantService.list(selector, listConfig)
 
   res.json({ variants, count: variants.length, offset, limit })

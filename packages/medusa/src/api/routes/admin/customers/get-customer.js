@@ -1,5 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
-
 /**
  * @oas [get] /customers/{id}
  * operationId: "GetCustomersCustomer"
