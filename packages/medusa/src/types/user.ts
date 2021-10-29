@@ -1,3 +1,5 @@
+import { User } from "../models/user"
+
 export interface CreateUserInput {
   id?: string
   email: string
@@ -16,3 +18,8 @@ export interface UpdateUserInput {
   api_token?: string
   metadata?: JSON
 }
+
+export type FilterableUserProps = Omit<
+  User,
+  "password_hash" | "id" | "api_token" | "metadata"
+>
