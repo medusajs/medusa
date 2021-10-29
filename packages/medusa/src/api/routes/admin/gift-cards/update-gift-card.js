@@ -47,9 +47,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const schema = Validator.object().keys({
-    balance: Validator.number()
-      .precision(0)
-      .optional(),
+    balance: Validator.number().precision(0).optional(),
     ends_at: Validator.date().optional(),
     is_disabled: Validator.boolean().optional(),
     region_id: Validator.string().optional(),
@@ -61,18 +59,14 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const giftCardService = req.scope.resolve("giftCardService")
+  const giftCardService = req.scope.resolve("giftCardService")
 
-    await giftCardService.update(id, value)
+  await giftCardService.update(id, value)
 
-    const giftCard = await giftCardService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const giftCard = await giftCardService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.status(200).json({ gift_card: giftCard })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ gift_card: giftCard })
 }
