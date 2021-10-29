@@ -1,3 +1,4 @@
+import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
 
@@ -35,27 +36,31 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const manager = req.scope.resolve("manager")
-  const cartService = req.scope.resolve("cartService")
+  try {
+    const manager = req.scope.resolve("manager")
+    const cartService = req.scope.resolve("cartService")
 
-  await manager.transaction(async (m) => {
-    const txCartService = cartService.withTransaction(m)
+    await manager.transaction(async (m) => {
+      const txCartService = cartService.withTransaction(m)
 
-    await txCartService.addShippingMethod(id, value.option_id, value.data)
+      await txCartService.addShippingMethod(id, value.option_id, value.data)
 
-    const updated = await txCartService.retrieve(id, {
-      relations: ["payment_sessions"],
+      const updated = await txCartService.retrieve(id, {
+        relations: ["payment_sessions"],
+      })
+
+      if (updated.payment_sessions?.length) {
+        await txCartService.setPaymentSessions(id)
+      }
     })
 
-    if (updated.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
-    }
-  })
+    const updatedCart = await cartService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
-  const updatedCart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
-  })
-
-  res.status(200).json({ cart: updatedCart })
+    res.status(200).json({ cart: updatedCart })
+  } catch (err) {
+    throw err
+  }
 }
