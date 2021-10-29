@@ -16,6 +16,7 @@ module.exports = {
     semi: `off`,
     "no-unused-expressions": `off`,
     camelcase: `off`,
+    "no-invalid-this": `off`,
   },
   env: {
     es6: true,
