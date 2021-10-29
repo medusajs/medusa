@@ -18,13 +18,9 @@
  *                 $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {
-  try {
-    const profileService = req.scope.resolve("shippingProfileService")
+  const profileService = req.scope.resolve("shippingProfileService")
 
-    const data = await profileService.list()
+  const data = await profileService.list()
 
-    res.status(200).json({ shipping_profiles: data })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ shipping_profiles: data })
 }

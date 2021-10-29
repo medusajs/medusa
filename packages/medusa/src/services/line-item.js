@@ -90,7 +90,7 @@ class LineItemService extends BaseService {
   }
 
   async generate(variantId, regionId, quantity, config = {}) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
         .retrieve(variantId, {
@@ -142,7 +142,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the created line item
    */
   async create(lineItem) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -160,7 +160,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the update line item
    */
   async update(id, update) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -188,14 +188,16 @@ class LineItemService extends BaseService {
    * @return {Promise} the result of the delete operation
    */
   async delete(id) {
-    return this.atomicPhase_(async manager => {
+    return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
 
       const lineItem = await lineItemRepository.findOne({ where: { id } })
 
-      if (!lineItem) { return Promise.resolve() }
+      if (!lineItem) {
+        return Promise.resolve()
+      }
 
       await lineItemRepository.remove(lineItem)
 

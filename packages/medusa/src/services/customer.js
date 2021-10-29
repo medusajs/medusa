@@ -94,7 +94,16 @@ class CustomerService extends BaseService {
    * @return {string} the generated JSON web token
    */
   async generateResetPasswordToken(customerId) {
-    const customer = await this.retrieve(customerId)
+    const customer = await this.retrieve(customerId, {
+      select: [
+        "id",
+        "has_account",
+        "password_hash",
+        "email",
+        "first_name",
+        "last_name",
+      ],
+    })
 
     if (!customer.has_account) {
       throw new MedusaError(
@@ -224,7 +233,6 @@ class CustomerService extends BaseService {
     const query = this.buildQuery_({ id: validatedId }, config)
 
     const customer = await customerRepo.findOne(query)
-
     if (!customer) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -286,7 +294,7 @@ class CustomerService extends BaseService {
   /**
    * Hashes a password
    * @param {string} password - the value to hash
-   * @return {string} hashed password
+   * @return {Promise<string>} hashed password
    */
   async hashPassword_(password) {
     const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
@@ -371,7 +379,14 @@ class CustomerService extends BaseService {
 
       const customer = await this.retrieve(customerId)
 
-      const { email, password, metadata, ...rest } = update
+      const {
+        email,
+        password,
+        metadata,
+        billing_address,
+        billing_address_id,
+        ...rest
+      } = update
 
       if (metadata) {
         customer.metadata = this.setMetadata_(customer, metadata)
@@ -382,7 +397,7 @@ class CustomerService extends BaseService {
       }
 
       if ("billing_address_id" in update || "billing_address" in update) {
-        const address = update.billing_address_id || update.billing_address
+        const address = billing_address_id || billing_address
         await this.updateBillingAddress_(customer, address, addrRepo)
       }
 
@@ -411,6 +426,11 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async updateBillingAddress_(customer, addressOrId, addrRepo) {
+    if (addressOrId === null) {
+      customer.billing_address_id = null
+      return
+    }
+
     if (typeof addressOrId === `string`) {
       addressOrId = await addrRepo.findOne({
         where: { id: addressOrId },
@@ -421,7 +441,6 @@ class CustomerService extends BaseService {
 
     if (addressOrId.id) {
       customer.billing_address_id = addressOrId.id
-      customer.billing_address = addressOrId
     } else {
       if (customer.billing_address_id) {
         const addr = await addrRepo.findOne({
