@@ -38,34 +38,38 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const manager = req.scope.resolve("manager")
-  const lineItemService = req.scope.resolve("lineItemService")
-  const cartService = req.scope.resolve("cartService")
+  try {
+    const manager = req.scope.resolve("manager")
+    const lineItemService = req.scope.resolve("lineItemService")
+    const cartService = req.scope.resolve("cartService")
 
-  await manager.transaction(async (m) => {
-    const txCartService = cartService.withTransaction(m)
-    const cart = await txCartService.retrieve(id)
+    await manager.transaction(async (m) => {
+      const txCartService = cartService.withTransaction(m)
+      const cart = await txCartService.retrieve(id)
 
-    const line = await lineItemService
-      .withTransaction(m)
-      .generate(value.variant_id, cart.region_id, value.quantity, {
-        metadata: value.metadata,
+      const line = await lineItemService
+        .withTransaction(m)
+        .generate(value.variant_id, cart.region_id, value.quantity, {
+          metadata: value.metadata,
+        })
+      await txCartService.addLineItem(id, line)
+
+      const updated = await txCartService.retrieve(id, {
+        relations: ["payment_sessions"],
       })
-    await txCartService.addLineItem(id, line)
 
-    const updated = await txCartService.retrieve(id, {
-      relations: ["payment_sessions"],
+      if (updated.payment_sessions?.length) {
+        await txCartService.setPaymentSessions(id)
+      }
     })
 
-    if (updated.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
-    }
-  })
+    const cart = await cartService.retrieve(id, {
+      select: defaultFields,
+      relations: defaultRelations,
+    })
 
-  const cart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
-  })
-
-  res.status(200).json({ cart })
+    res.status(200).json({ cart })
+  } catch (err) {
+    throw err
+  }
 }

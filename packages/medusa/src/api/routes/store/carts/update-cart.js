@@ -1,3 +1,4 @@
+import _ from "lodash"
 import { Validator, MedusaError } from "medusa-core-utils"
 
 import { defaultFields, defaultRelations } from "./"
