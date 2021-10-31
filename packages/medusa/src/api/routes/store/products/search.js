@@ -4,9 +4,7 @@ import ProductService from "../../../../services/product"
 export default async (req, res) => {
   const schema = Validator.object()
     .keys({
-      q: Validator.string()
-        .required()
-        .allow(""),
+      q: Validator.string().required().allow(""),
       offset: Validator.number().optional(),
       limit: Validator.number().optional(),
       filter: Validator.any(),
