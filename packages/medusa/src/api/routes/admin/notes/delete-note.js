@@ -24,12 +24,8 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  try {
-    const noteService = req.scope.resolve("noteService")
-    await noteService.delete(id)
+  const noteService = req.scope.resolve("noteService")
+  await noteService.delete(id)
 
-    res.status(200).json({ id, deleted: true })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ id, deleted: true })
 }
