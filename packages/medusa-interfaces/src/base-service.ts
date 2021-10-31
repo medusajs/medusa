@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { In, FindOperator, Raw } from "typeorm"
+import { In, FindOperator, Raw, FindOneOptions, FindManyOptions } from "typeorm"
 
 /**
  * Common functionality for Services
@@ -18,7 +18,7 @@ class BaseService {
   /**
    * Used to build TypeORM queries.
    */
-  buildQuery_(selector, config = {}) {
+  buildQuery_(selector: , config: FindManyOptions<any> = {}): FindManyOptions<any> {
     const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
         switch (true) {
@@ -67,7 +67,7 @@ class BaseService {
       return where
     }
 
-    const query = {
+    const query: FindManyOptions = {
       where: build(selector),
     }
 

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { UserRepository } from "../repositories/user"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOneOptions } from "typeorm"
 import { User } from "../models/user"
 import {
   CreateUserInput,
@@ -95,9 +95,11 @@ class UserService extends BaseService {
    * @param {Object} config - query configs
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId: string, config: object = {}): Promise<User> {
+  async retrieve(
+    userId: string,
+    config: FindOneOptions<User> = {}
+  ): Promise<User> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
-
     const validatedId = this.validateId_(userId)
     const query = this.buildQuery_({ id: validatedId }, config)
 
@@ -148,7 +150,10 @@ class UserService extends BaseService {
    * @param {Object} config - query config
    * @return {Promise<User>} the user document.
    */
-  async retrieveByEmail(email: string, config: object = {}): Promise<User> {
+  async retrieveByEmail(
+    email: string,
+    config: FindOneOptions<User> = {}
+  ): Promise<User> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
     const query = this.buildQuery_({ email: email.toLowerCase() }, config)
