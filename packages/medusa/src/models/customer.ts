@@ -36,7 +36,7 @@ export class Customer {
   @Column({ nullable: true })
   billing_address_id: string
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 

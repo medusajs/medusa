@@ -60,6 +60,39 @@ describe("/store/customers", () => {
       expect(response.data.customer).not.toHaveProperty("password_hash")
     })
 
+    it("creates a customer with a billing address", async () => {
+      const api = useApi()
+
+      const response = await api.post("/store/customers", {
+        first_name: "James",
+        last_name: "Bond",
+        email: "james2@bond.com",
+        password: "test",
+        billing_address: {
+          first_name: "String",
+          last_name: "Stringson",
+          address_1: "String st",
+          city: "Stringville",
+          postal_code: "1236",
+          province: "ca",
+          country_code: "us",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.billing_address).toEqual(
+        expect.objectContaining({
+          first_name: "String",
+          last_name: "Stringson",
+          address_1: "String st",
+          city: "Stringville",
+          postal_code: "1236",
+          province: "ca",
+          country_code: "us",
+        })
+      )
+    })
+
     it("responds 409 on duplicate", async () => {
       const api = useApi()
 

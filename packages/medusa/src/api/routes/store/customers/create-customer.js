@@ -33,6 +33,7 @@ export default async (req, res) => {
     last_name: Validator.string().required(),
     password: Validator.string().required(),
     phone: Validator.string().optional(),
+    billing_address: Validator.address().optional(),
   })
 
   const { value, error } = schema.validate(req.body)
