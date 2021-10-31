@@ -1,0 +1,13 @@
+{
+  "shipping_profile": {
+    "id": "sp_01FKB6ZBT621BQM4584SWFENQX",
+    "name": "shipping_profile_name",
+    "type": "default",
+    "products": [],
+    "shipping_options": [],
+    "created_at": "2021-10-31T13:00:16.069Z",
+    "updated_at": "2021-10-31T13:00:16.069Z",
+    "deleted_at": null,
+    "metadata": null
+  }
+}
