@@ -21,7 +21,6 @@
 /packages/medusa/src/loaders/repositories.js
 /packages/medusa/src/loaders/services.js
 /packages/medusa/src/loaders/subscribers.js
-/packages/medusa/src/api/routes/admin/apps
 /packages/medusa/src/api/routes/admin/auth
 /packages/medusa/src/api/routes/admin/collections
 /packages/medusa/src/api/routes/admin/notes

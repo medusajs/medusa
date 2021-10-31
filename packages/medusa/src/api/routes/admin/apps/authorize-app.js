@@ -11,15 +11,11 @@ export default async (req, res) => {
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
-  try {
-    const oauthService = req.scope.resolve("oauthService")
-    const data = await oauthService.generateToken(
-      value.application_name,
-      value.code,
-      value.state
-    )
-    res.status(200).json({ apps: data })
-  } catch (err) {
-    throw err
-  }
+  const oauthService = req.scope.resolve("oauthService")
+  const data = await oauthService.generateToken(
+    value.application_name,
+    value.code,
+    value.state
+  )
+  res.status(200).json({ apps: data })
 }
