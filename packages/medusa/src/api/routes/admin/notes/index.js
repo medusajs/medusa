@@ -3,7 +3,7 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/notes", route)
 
   route.get("/:id", middlewares.wrap(require("./get-note").default))
