@@ -67,7 +67,7 @@ class ProductVariantService extends BaseService {
   /**
    * Gets a product variant by id.
    * @param {string} variantId - the id of the product to get.
-   * @param {Object} config - the config of the product to retrieve.
+   * @param {Object} config - query config object for variant retrieval.
    * @return {Promise<Product>} the product document.
    */
   async retrieve(variantId, config = {}) {
@@ -91,7 +91,7 @@ class ProductVariantService extends BaseService {
   /**
    * Gets a product variant by id.
    * @param {string} sku - The unique stock keeping unit used to identify the product variant.
-   * @param {Object} config the config of the product to retrieve.
+   * @param {Object} config - query config object for variant retrieval.
    * @return {Promise<Product>} the product document.
    */
   async retrieveBySKU(sku, config = {}) {
@@ -246,8 +246,7 @@ class ProductVariantService extends BaseService {
    * Updates a variant.
    * Price updates should use dedicated methods.
    * The function will throw, if price updates are attempted.
-   * @param {string | ProductVariant} variantOrVariantId - the id of the variant. Must be a
-   *   string that can be casted to an ObjectId
+   * @param {string | ProductVariant} variantOrVariantId - variant or id of a variant.
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
@@ -531,7 +530,7 @@ class ProductVariantService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
-   * @param {Object} config the config object for find
+   * @param {Object} config - query config object for variant retrieval
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
