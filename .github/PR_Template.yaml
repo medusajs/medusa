@@ -1,0 +1,41 @@
+name: "🎉 Pull Request"
+description: "Submit a Pull Request to the repository."
+title: "🎉 PR: "
+labels: [PR]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to submit a PR to our repository 🙏
+  - type: textarea
+    id: pr-description
+    validations:
+      required: true
+    attributes:
+      label: "💭 Description"
+      description: "A clear and concise description of what the PR does."
+      placeholder: "The PR makes ..."
+  - type: textarea
+    id: pr-issue-link
+    validations:
+      required: true
+    attributes:
+      label: "✅ Issue Link"
+      description: "Link the issue that your PR tries to resolve. Please create an issue before raising a PR if it doesn't exist."
+      placeholder: "The PR fixes/resolves ..."
+  - type: textarea
+    id: additional-details
+    validations:
+      required: false
+    attributes:
+      label: "➕ Additional Details"
+      description: "Describe anything specific you want to disclose about your PR"
+      placeholder: "Put Screenshots or Tests or Environment Config Details ..."
+  - type: checkboxes
+    id: contributing-guidelines
+    attributes:
+      label: "👀 Have you made sure that the PR follows all the [Contributing Guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) ?"
+      description: "Make sure the PR follows the contribution standards and branching conventions."
+      options:
+        - label: "I have checked and my PR follows all the contribution guidelines."
+          required: true
