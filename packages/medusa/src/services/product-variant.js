@@ -1,11 +1,10 @@
-import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, Raw, IsNull, ILike } from "typeorm"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { IsNull, ILike } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * Provides layer to manipulate product variants.
- * @implements BaseService
+ * @extends BaseService
  */
 class ProductVariantService extends BaseService {
   static Events = {
@@ -14,7 +13,6 @@ class ProductVariantService extends BaseService {
     DELETED: "product-variant.deleted",
   }
 
-  /** @param { productVariantModel: (ProductVariantModel) } */
   constructor({
     manager,
     productVariantRepository,
@@ -69,6 +67,7 @@ class ProductVariantService extends BaseService {
   /**
    * Gets a product variant by id.
    * @param {string} variantId - the id of the product to get.
+   * @param {Object} config - query config object for variant retrieval.
    * @return {Promise<Product>} the product document.
    */
   async retrieve(variantId, config = {}) {
@@ -91,7 +90,8 @@ class ProductVariantService extends BaseService {
 
   /**
    * Gets a product variant by id.
-   * @param {string} variantId - the id of the product to get.
+   * @param {string} sku - The unique stock keeping unit used to identify the product variant.
+   * @param {Object} config - query config object for variant retrieval.
    * @return {Promise<Product>} the product document.
    */
   async retrieveBySKU(sku, config = {}) {
@@ -246,8 +246,7 @@ class ProductVariantService extends BaseService {
    * Updates a variant.
    * Price updates should use dedicated methods.
    * The function will throw, if price updates are attempted.
-   * @param {string | ProductVariant} variant - the id of the variant. Must be a
-   *   string that can be casted to an ObjectId
+   * @param {string | ProductVariant} variantOrVariantId - variant or id of a variant.
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
@@ -322,9 +321,7 @@ class ProductVariantService extends BaseService {
   /**
    * Sets the default price for the given currency.
    * @param {string} variantId - the id of the variant to set prices for
-   * @param {string} currencyCode - the currency to set prices for
-   * @param {number} amount - the amount to set the price to
-   * @param {number} saleAmount - the sale amount to set the price to
+   * @param {string} price - the price for the variant
    * @return {Promise} the result of the update operation
    */
   async setCurrencyPrice(variantId, price) {
@@ -409,9 +406,7 @@ class ProductVariantService extends BaseService {
   /**
    * Sets the price of a specific region
    * @param {string} variantId - the id of the variant to update
-   * @param {string} regionId - the id of the region to set price for
-   * @param {number} amount - the amount to set the price to
-   * @param {number} saleAmount - the sale amount to set the price to
+   * @param {string} price - the price for the variant.
    * @return {Promise} the result of the update operation
    */
   async setRegionPrice(variantId, price) {
@@ -523,7 +518,9 @@ class ProductVariantService extends BaseService {
         },
       })
 
-      if (!productOptionValue) return Promise.resolve()
+      if (!productOptionValue) {
+        return Promise.resolve()
+      }
 
       await productOptionValueRepo.softRemove(productOptionValue)
 
@@ -533,6 +530,7 @@ class ProductVariantService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
+   * @param {Object} config - query config object for variant retrieval
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
@@ -588,7 +586,9 @@ class ProductVariantService extends BaseService {
 
       const variant = await variantRepo.findOne({ where: { id: variantId } })
 
-      if (!variant) return Promise.resolve()
+      if (!variant) {
+        return Promise.resolve()
+      }
 
       await variantRepo.softRemove(variant)
 

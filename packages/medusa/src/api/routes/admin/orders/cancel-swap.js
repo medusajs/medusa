@@ -24,28 +24,24 @@ import { defaultRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  try {
-    const swapService = req.scope.resolve("swapService")
-    const orderService = req.scope.resolve("orderService")
+  const swapService = req.scope.resolve("swapService")
+  const orderService = req.scope.resolve("orderService")
 
-    const swap = await swapService.retrieve(swap_id)
+  const swap = await swapService.retrieve(swap_id)
 
-    if (swap.order_id !== id) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `no swap was found with the id: ${swap_id} related to order: ${id}`
-      )
-    }
-
-    await swapService.cancel(swap_id)
-
-    const order = await orderService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
-
-    res.json({ order })
-  } catch (error) {
-    throw error
+  if (swap.order_id !== id) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `no swap was found with the id: ${swap_id} related to order: ${id}`
+    )
   }
+
+  await swapService.cancel(swap_id)
+
+  const order = await orderService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
+
+  res.json({ order })
 }

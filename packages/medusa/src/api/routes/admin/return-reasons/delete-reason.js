@@ -26,16 +26,12 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  try {
-    const returnReasonService = req.scope.resolve("returnReasonService")
-    await returnReasonService.delete(id)
+  const returnReasonService = req.scope.resolve("returnReasonService")
+  await returnReasonService.delete(id)
 
-    res.json({
-      id: id,
-      object: "return_reason",
-      deleted: true,
-    })
-  } catch (err) {
-    throw err
-  }
+  res.json({
+    id: id,
+    object: "return_reason",
+    deleted: true,
+  })
 }

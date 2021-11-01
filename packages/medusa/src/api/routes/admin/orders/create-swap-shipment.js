@@ -42,9 +42,7 @@ export default async (req, res) => {
 
   const schema = Validator.object().keys({
     fulfillment_id: Validator.string().required(),
-    tracking_numbers: Validator.array()
-      .items(Validator.string())
-      .optional(),
+    tracking_numbers: Validator.array().items(Validator.string()).optional(),
     no_notification: Validator.boolean().optional(),
   })
 
@@ -53,24 +51,20 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const orderService = req.scope.resolve("orderService")
-    const swapService = req.scope.resolve("swapService")
+  const orderService = req.scope.resolve("orderService")
+  const swapService = req.scope.resolve("swapService")
 
-    await swapService.createShipment(
-      swap_id,
-      value.fulfillment_id,
-      value.tracking_numbers.map(n => ({ tracking_number: n })),
-      { no_notification: value.no_notification }
-    )
+  await swapService.createShipment(
+    swap_id,
+    value.fulfillment_id,
+    value.tracking_numbers.map((n) => ({ tracking_number: n })),
+    { no_notification: value.no_notification }
+  )
 
-    const order = await orderService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const order = await orderService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    res.json({ order })
-  } catch (error) {
-    throw error
-  }
+  res.json({ order })
 }

@@ -3,7 +3,7 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/gift-cards", route)
 
   route.get("/", middlewares.wrap(require("./list-gift-cards").default))
@@ -33,10 +33,7 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = [
-  "region", 
-  "order",
-]
+export const defaultRelations = ["region", "order"]
 
 export const allowedFields = [
   "id",
