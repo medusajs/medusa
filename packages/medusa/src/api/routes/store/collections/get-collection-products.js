@@ -73,6 +73,8 @@ export default async (req, res) => {
       .valid(
         "title",
         "-title",
+        "handle",
+        "-handle",
         "created_at",
         "-created_at",
         "updated_at",

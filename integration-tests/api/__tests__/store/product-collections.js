@@ -46,6 +46,47 @@ describe("/store/collections", () => {
 
       expect(response.data.collections.length).toEqual(4)
     })
+
+    it("respects search on title", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/collections?q=1")
+
+      expect(response.data.collections.length).toEqual(1)
+      expect(response.data.collections[0].id).toEqual("test-collection1")
+    })
+
+    it("respects search on handle", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/collections?q=two")
+
+      expect(response.data.collections.length).toEqual(1)
+      expect(response.data.collections[0].id).toEqual("test-collection2")
+    })
+
+    describe.each([["title"], ["handle"]])(
+      "Test order functionality",
+      (order) => {
+        it(`orders ASC for ${order}`, async () => {
+          const api = useApi()
+
+          const response = await api.get(`/store/collections?order=${order}`)
+
+          expect(response.data.products[0].id).toEqual("test-product-copy")
+          expect(response.data.products[1].id).toEqual("other-product")
+        })
+
+        it(`orders DESC for ${order}`, async () => {
+          const api = useApi()
+
+          const response = await api.get(`/store/collections?order=-${order}`)
+
+          expect(response.data.products[0].id).toEqual("other-product")
+          expect(response.data.products[1].id).toEqual("test-product-copy")
+        })
+      }
+    )
   })
 
   describe("GET /store/collections/:id", () => {
@@ -160,5 +201,32 @@ describe("/store/collections", () => {
 
       expect(response.data.products.length).toEqual(0)
     })
+
+    describe.each([["title"], ["handle"]])(
+      "Test order functionality",
+      (order) => {
+        it(`orders ASC for ${order}`, async () => {
+          const api = useApi()
+
+          const response = await api.get(
+            `/store/collections/test-collection/products?order=${order}`
+          )
+
+          expect(response.data.products[0].id).toEqual("test-product-copy")
+          expect(response.data.products[1].id).toEqual("other-product")
+        })
+
+        it(`orders DESC for ${order}`, async () => {
+          const api = useApi()
+
+          const response = await api.get(
+            `/store/collections/test-collection/products?order=-${order}`
+          )
+
+          expect(response.data.products[0].id).toEqual("other-product")
+          expect(response.data.products[1].id).toEqual("test-product-copy")
+        })
+      }
+    )
   })
 })

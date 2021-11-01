@@ -142,6 +142,8 @@ describe("GET /store/collections/:id/products", () => {
   describe.each([
     ["title", "title", "ASC"],
     ["-title", "title", "DESC"],
+    ["handle", "handle", "ASC"],
+    ["-handle", "handle", "DESC"],
     ["created_at", "created_at", "ASC"],
     ["-created_at", "created_at", "DESC"],
     ["updated_at", "updated_at", "ASC"],
@@ -182,7 +184,7 @@ describe("GET /store/collections/:id/products", () => {
       )
     })
 
-    it("call results in error", () => {
+    it("request results in error", () => {
       expect(subject.status).toEqual(400)
     })
   })

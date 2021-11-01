@@ -35,7 +35,7 @@ module.exports = async (connection, data = {}) => {
 
   const coll2 = manager.create(ProductCollection, {
     id: "test-collection2",
-    handle: "test-collection2",
+    handle: "test-collection two",
     title: "Test collection 2",
   })
 
@@ -174,8 +174,8 @@ module.exports = async (connection, data = {}) => {
 
   const pcopy1 = manager.create(Product, {
     id: "test-product-copy",
-    handle: "test-product-copy",
-    title: "Test product-copy",
+    title: "Collection Product 1",
+    handle: "Collection Handle 1",
     status: "published",
     profile_id: defaultProfile.id,
     description: "specific-desc",
@@ -188,8 +188,8 @@ module.exports = async (connection, data = {}) => {
 
   const pcopy2 = manager.create(Product, {
     id: "other-product",
-    handle: "other product",
-    title: "other product",
+    title: "Collection Product 2",
+    handle: "Collection Handle 2",
     status: "published",
     profile_id: defaultProfile.id,
     description: "test-product-description",

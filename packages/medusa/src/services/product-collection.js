@@ -144,7 +144,7 @@ class ProductCollectionService extends BaseService {
    * @param {Object} config - the config to be used for find
    * @return {Promise} the result of the find operation
    */
-  async list(selector = {}, config = { skip: 0, take: 20 }) {
+  async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
     const productCollectionRepo = this.manager_.getCustomRepository(
       this.productCollectionRepository_
     )

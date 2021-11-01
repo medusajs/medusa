@@ -50,7 +50,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
       return this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
     }
 
-    const groupedRelations = {}
+    const groupedRelations: { [toplevel: string]: string[] } = {}
     for (const rel of relations) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
@@ -62,10 +62,22 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(([_, rels]) => {
-        let querybuilder = this.createQueryBuilder("product-collections")
+        let querybuilder = this.createQueryBuilder("product_collections")
+
+        for (const rel of rels) {
+          const [_, rest] = rel.split(".")
+          if (!rest) {
+            continue
+          }
+          // Regex matches all '.' except the rightmost
+          querybuilder = querybuilder.leftJoinAndSelect(
+            rel.replace(/\.(?=[^.]*\.)/g, "__"),
+            rel.replace(".", "__")
+          )
+        }
 
         querybuilder = querybuilder.where(
-          "product_collection.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
+          "product_collections.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
           { entitiesIds }
         )
 
@@ -74,7 +86,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
           const [key, value] = Object.entries(
             idsOrOptionsWithoutRelations.order
           )[0]
-          const order = { [`products.${key}`]: value }
+          const order = { [`product_collections.${key}`]: value }
 
           querybuilder = querybuilder.orderBy(order)
         }
