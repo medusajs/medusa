@@ -179,6 +179,7 @@ class ProductCollectionService extends BaseService {
             }).orWhere(`product_collection.handle ILIKE :q`, { q: `%${q}%` })
           })
         )
+        .orderBy(order)
         .getMany()
 
       return productCollectionRepo.findWithRelations(
@@ -187,7 +188,7 @@ class ProductCollectionService extends BaseService {
       )
     }
 
-    return productCollectionRepo.findWithRelations(query, rels)
+    return productCollectionRepo.findWithRelations(rels, query)
   }
 }
 

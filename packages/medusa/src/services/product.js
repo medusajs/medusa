@@ -152,6 +152,7 @@ class ProductService extends BaseService {
               .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
           })
         )
+        .orderBy(order)
 
       if (tags) {
         qb = qb

@@ -6,6 +6,7 @@ import {
   Repository,
 } from "typeorm"
 import { ProductCollection } from "../models/product-collection"
+import prefix from "../utils/prefix-object-key"
 
 type DefaultWithoutRelations = Omit<
   FindManyOptions<ProductCollection>,
@@ -29,12 +30,21 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
+      // add the column used for ordering, if we are ordering
+      const fields = ["product_collection.id"]
+      let { order } = idsOrOptionsWithoutRelations
+      if (order) {
+        // we must modify the order to avoid ambiguity of title:
+        order = prefix(order, "product_collection")
+        fields.push(Object.keys(order)[0])
+      }
+
       const qb = this.createQueryBuilder("product_collection")
-        .select(["product_collection.id"])
+        .select(fields)
         .where(idsOrOptionsWithoutRelations.where)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-        .orderBy(idsOrOptionsWithoutRelations.order)
+        .orderBy(order)
 
       entities = await qb.getMany()
     }
@@ -76,22 +86,15 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
           )
         }
 
-        querybuilder = querybuilder.where(
-          "product_collections.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
-          { entitiesIds }
-        )
-
-        if (idsOrOptionsWithoutRelations.order) {
-          // we must modify the order to avoid ambiguity of title:
-          const [key, value] = Object.entries(
-            idsOrOptionsWithoutRelations.order
-          )[0]
-          const order = { [`product_collections.${key}`]: value }
-
-          querybuilder = querybuilder.orderBy(order)
-        }
-
-        return querybuilder.getMany()
+        return querybuilder
+          .where(
+            "product_collections.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
+            { entitiesIds }
+          )
+          .orderBy(
+            prefix(idsOrOptionsWithoutRelations.order, "product_collections")
+          )
+          .getMany()
       })
     ).then(flatten)
 

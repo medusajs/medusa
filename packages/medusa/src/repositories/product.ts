@@ -6,7 +6,7 @@ import {
   Repository,
 } from "typeorm"
 import { Product } from "../models/product"
-
+import prefix from "../utils/prefix-object-key"
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
@@ -25,6 +25,7 @@ export class ProductRepository extends Repository<Product> {
     idsOrOptionsWithoutRelations: FindWithRelationsOptions = {}
   ): Promise<Product[]> {
     let entities: Product[]
+
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
@@ -34,11 +35,21 @@ export class ProductRepository extends Repository<Product> {
       const tags = idsOrOptionsWithoutRelations.where.tags
       delete idsOrOptionsWithoutRelations.where.tags
 
+      let { order } = idsOrOptionsWithoutRelations
+      // add the column used for ordering, if we are ordering
+      const fields = ["product.id"]
+      if (order) {
+        // we must modify the order to avoid ambiguity of title:
+        order = prefix(order, "product")
+        fields.push(Object.keys(order)[0])
+      }
+
       let qb = this.createQueryBuilder("product")
-        .select(["product.id", "product.title"])
+        .select(fields)
         .where(idsOrOptionsWithoutRelations.where)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
+        .orderBy(order)
 
       if (tags) {
         qb = qb
@@ -102,22 +113,13 @@ export class ProductRepository extends Repository<Product> {
           )
         }
 
-        querybuilder = querybuilder.where(
-          "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
-          { entitiesIds }
-        )
-
-        if (idsOrOptionsWithoutRelations.order) {
-          // we must modify the order to avoid ambiguity of title:
-          const [key, value] = Object.entries(
-            idsOrOptionsWithoutRelations.order
-          )[0]
-          const order = { [`products.${key}`]: value }
-
-          querybuilder = querybuilder.orderBy(order)
-        }
-
-        return querybuilder.getMany()
+        return querybuilder
+          .where(
+            "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
+            { entitiesIds }
+          )
+          .orderBy(prefix(idsOrOptionsWithoutRelations.order, "products"))
+          .getMany()
       })
     ).then(flatten)
 

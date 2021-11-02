@@ -44,7 +44,7 @@ describe("/store/collections", () => {
 
       const response = await api.get("/store/collections")
 
-      expect(response.data.collections.length).toEqual(4)
+      expect(response.data.collections.length).toEqual(3)
     })
 
     it("respects search on title", async () => {
