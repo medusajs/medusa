@@ -531,15 +531,6 @@ class ContentfulService extends BaseService {
       }
     }
 
-    // if (p.collection) {
-    //   const collection = {
-    //     "en-US": p.collection.title,
-    //   }
-
-    //   productEntryFields[this.getCustomField("collection", "product")] =
-    //     collection
-    // }
-
     if (p.tags) {
       const tags = {
         "en-US": p.tags,
@@ -698,7 +689,7 @@ class ContentfulService extends BaseService {
 
     const environment = await this.getContentfulEnvironment_()
 
-    // check if region exists
+    // check if collection exists
     let collectionEntry = undefined
     try {
       collectionEntry = await environment.getEntry(data.id)
@@ -712,7 +703,7 @@ class ContentfulService extends BaseService {
         "en-US": collection.name,
       },
       [this.getCustomField("handle", "collection")]: {
-        "en-US": collection.countries,
+        "en-US": collection.handle,
       },
     }
 
