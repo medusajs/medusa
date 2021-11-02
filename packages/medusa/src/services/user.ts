@@ -1,10 +1,11 @@
-import Scrypt from "scrypt-kdf"
 import jwt from "jsonwebtoken"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { UserRepository } from "../repositories/user"
-import { EntityManager, FindOneOptions } from "typeorm"
+import Scrypt from "scrypt-kdf"
+import { EntityManager } from "typeorm"
 import { User } from "../models/user"
+import { UserRepository } from "../repositories/user"
+import { FindConfig } from "../types/common"
 import {
   CreateUserInput,
   FilterableUserProps,
@@ -92,13 +93,10 @@ class UserService extends BaseService {
    * Gets a user by id.
    * Throws in case of DB Error and if user was not found.
    * @param {string} userId - the id of the user to get.
-   * @param {Object} config - query configs
+   * @param {FindConfig} config - query configs
    * @return {Promise<User>} the user document.
    */
-  async retrieve(
-    userId: string,
-    config: FindOneOptions<User> = {}
-  ): Promise<User> {
+  async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
     const validatedId = this.validateId_(userId)
     const query = this.buildQuery_({ id: validatedId }, config)
@@ -147,12 +145,12 @@ class UserService extends BaseService {
    * Gets a user by email.
    * Throws in case of DB Error and if user was not found.
    * @param {string} email - the email of the user to get.
-   * @param {Object} config - query config
+   * @param {FindConfig} config - query config
    * @return {Promise<User>} the user document.
    */
   async retrieveByEmail(
     email: string,
-    config: FindOneOptions<User> = {}
+    config: FindConfig<User> = {}
   ): Promise<User> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
@@ -198,7 +196,7 @@ class UserService extends BaseService {
 
       user.email = validatedEmail
 
-      const created = await userRepo.create(user)
+      const created = userRepo.create(user)
 
       return userRepo.save(created)
     })
