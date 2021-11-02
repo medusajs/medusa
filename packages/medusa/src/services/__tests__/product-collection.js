@@ -1,10 +1,17 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductCollectionService from "../product-collection"
 
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function () {
+    return this
+  },
+}
+
 describe("ProductCollectionService", () => {
   describe("retrieve", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "non-existing") {
           return Promise.resolve(undefined)
         }
@@ -47,12 +54,13 @@ describe("ProductCollectionService", () => {
 
   describe("create", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => Promise.resolve({ id: IdMap.getId("bathrobe") }),
+      findOne: (query) => Promise.resolve({ id: IdMap.getId("bathrobe") }),
     })
 
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -67,11 +75,21 @@ describe("ProductCollectionService", () => {
         title: "bathrobe",
       })
     })
+
+    it("emits event when creating a product collection", async () => {
+      await productCollectionService.create({ title: "bathrobe" })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-collection.created",
+        expect.any(Object)
+      )
+    })
   })
 
   describe("update", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "non-existing") {
           return Promise.resolve(undefined)
         }
@@ -82,6 +100,7 @@ describe("ProductCollectionService", () => {
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -100,6 +119,18 @@ describe("ProductCollectionService", () => {
       })
     })
 
+    it("emits event on update", async () => {
+      await productCollectionService.update(IdMap.getId("bathrobe"), {
+        title: "bathrobes",
+      })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-collection.updated",
+        expect.any(Object)
+      )
+    })
+
     it("fails on non-existing product collection", async () => {
       try {
         await productCollectionService.update(IdMap.getId("test"), {
@@ -115,7 +146,7 @@ describe("ProductCollectionService", () => {
 
   describe("delete", () => {
     const productCollectionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "non-existing") {
           return Promise.resolve(undefined)
         }
@@ -126,6 +157,7 @@ describe("ProductCollectionService", () => {
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -144,6 +176,15 @@ describe("ProductCollectionService", () => {
     it("succeeds idempotently", async () => {
       const result = await productCollectionService.delete(IdMap.getId("test"))
       expect(result).toBe(undefined)
+    })
+
+    it("emits delete event correctly", async () => {
+      await productCollectionService.delete(IdMap.getId("test"))
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-collection.deleted",
+        expect.any(Object)
+      )
     })
   })
 })
