@@ -150,6 +150,7 @@ class ProductService extends BaseService {
 
   /**
    * Return the total number of documents in database
+   * @param {object} selector - the selector to choose products by
    * @return {Promise} the result of the count operation
    */
   count(selector = {}) {
@@ -775,7 +776,7 @@ class ProductService extends BaseService {
       query.select = config.select
     }
 
-    let rels = query.relations
+    const rels = query.relations
     delete query.relations
 
     return {
