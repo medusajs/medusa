@@ -179,108 +179,118 @@ describe("ContentfulService", () => {
     })
   })
 
-  // described("Collections", () => {
-  //   const regionService = {
-  //     retrieve: jest.fn((id) => {
-  //       if (id === "exists") {
-  //         return Promise.resolve({ id: "exists" })
-  //       }
-  //       return Promise.resolve(undefined)
-  //     }),
-  //   }
-  //   const productService = {
-  //     retrieve: jest.fn((id) => {
-  //       if (id === "exists") {
-  //         return Promise.resolve({ id: "exists" })
-  //       }
-  //       return Promise.resolve(undefined)
-  //     }),
-  //   }
-  //   const redisClient = {
-  //     get: async (id) => {
-  //       if (id === `ignored_ignore_contentful`) {
-  //         return { id }
-  //       }
-  //       return undefined
-  //     },
-  //     set: async (id) => {
-  //       return undefined
-  //     },
-  //   }
+  describe("Collections", () => {
+    const regionService = {
+      retrieve: jest.fn((id) => {
+        if (id === "exists") {
+          return Promise.resolve({ id: "exists" })
+        }
+        return Promise.resolve(undefined)
+      }),
+    }
+    const productService = {
+      retrieve: jest.fn((id) => {
+        if (id === "exists") {
+          return Promise.resolve({ id: "exists" })
+        }
+        return Promise.resolve(undefined)
+      }),
+    }
+    const redisClient = {
+      get: async (id) => {
+        if (id === `ignored_ignore_contentful`) {
+          return { id }
+        }
+        return undefined
+      },
+      set: async (id) => {
+        return undefined
+      },
+    }
 
-  //   const productVariantService = {}
+    const productVariantService = {}
 
-  //   const productCollectionService = {
-  //     retrieve: jest.fn((id) => {
-  //       if (id === "exists") {
-  //         return Promise.resolve({ id: "exists" })
-  //       }
-  //       return Promise.resolve(undefined)
-  //     }),
-  //   }
-  //   const eventBusService = {}
+    const productCollectionService = {
+      retrieve: jest.fn((id) => {
+        if (id === "test") {
+          return Promise.resolve({
+            id: "test",
+            title: "title",
+            handle: "handle",
+          })
+        }
+        return Promise.resolve(undefined)
+      }),
+    }
+    const eventBusService = {}
 
-  //   const service = new ContentfulService(
-  //     {
-  //       regionService,
-  //       productService,
-  //       redisClient,
-  //       productVariantService,
-  //       productCollectionService,
-  //       eventBusService,
-  //     },
-  //     {
-  //       space_id: "test_id",
-  //       environment: "master",
-  //       access_token: "test_token",
-  //     }
-  //   )
+    const service = new ContentfulService(
+      {
+        regionService,
+        productService,
+        redisClient,
+        productVariantService,
+        productCollectionService,
+        eventBusService,
+      },
+      {
+        space_id: "test_id",
+        environment: "master",
+        access_token: "test_token",
+      }
+    )
 
-  //   const entry = {
-  //     unpublish: jest.fn(async () => {
-  //       return {
-  //         id: "id",
-  //       }
-  //     }),
-  //     archive: jest.fn(async () => {
-  //       return {
-  //         id: "id",
-  //       }
-  //     }),
-  //   }
+    const entry = {
+      unpublish: jest.fn(async () => {
+        return {
+          id: "id",
+        }
+      }),
+      archive: jest.fn(async () => {
+        return {
+          id: "id",
+        }
+      }),
+    }
 
-  //   const environment = {
-  //     createEntryWithId: jest.fn(async (type, id, fields) => {
-  //       if (id === "onlyMedusa") {
-  //         throw new Error("doesn't exist")
-  //       }
-  //       return entry
-  //     } ),
-  //   }
+    const environment = {
+      getContentType: jest.fn((type) => type),
+      createEntryWithId: jest.fn(async (type, id, fields) => {
+        if (id === "onlyMedusa") {
+          throw new Error("doesn't exist")
+        }
+        return entry
+      }),
+    }
 
-  //   service.contentful_ = {
-  //     getSpace: async (space_id) => {
-  //       return {
-  //         getEnvironment: async (env) => {
-  //           return environment
-  //         },
-  //       }
-  //     },
-  //   }
+    service.contentful_ = {
+      getSpace: async (space_id) => {
+        return {
+          getEnvironment: async (env) => {
+            return environment
+          },
+        }
+      },
+    }
 
-  //   describe('create collection in contentful', () => {
-  //     it('calls createEntryWithId on contentful environment', async () => {
-  //       const collection = {id: 'test', title: 'title', handle: 'handle'}
-  //       const result = await service.createProductCollectionInContentful({id: 'test', title: 'title', handle: 'handle'})
+    describe("create collection in contentful", () => {
+      it("calls createEntryWithId on contentful environment", async () => {
+        const collection = { id: "test", title: "title", handle: "handle" }
+        await service.createProductCollectionInContentful(collection)
 
-  //       expect(environment.createEntryWithId).toHaveBeenCalledTimes(1)
-  //       expect(environment.createEntryWithId).toHaveBeenCalledWidth('collection', 'test', {
-  //         medusaId: {"en-US": 'test'},
-  //         title: {"en-US": 'title'},
-  //         handle: {"en-US": 'handle'}
-  //       })
-  //     })
-  //   })
-
-  // })
+        expect(environment.createEntryWithId).toHaveBeenCalledTimes(1)
+        expect(environment.createEntryWithId).toHaveBeenCalledWith(
+          "collection",
+          "test",
+          {
+            fields: {
+              medusaId: { "en-US": "test" },
+              title: { "en-US": "title" },
+              handle: { "en-US": "handle" },
+            },
+          }
+        )
+      })
+    })
+  })
 })
