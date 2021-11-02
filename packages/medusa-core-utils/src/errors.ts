@@ -22,12 +22,21 @@ export const MedusaErrorCodes = {
  * @extends Error
  */
 class MedusaError extends Error {
+  public type: string
+  public message: string
+  public code?: string
+  public date: Date
+  public static Types = MedusaErrorTypes
+  public static Codes = MedusaErrorCodes
+
   /**
    * Creates a standardized error to be used across Medusa project.
-   * @param type {MedusaErrorType} - the type of error.
-   * @param params {Array} - Error params.
+   * @param {string} type - type of error
+   * @param {string} message - message to go along with error
+   * @param {string} code - code of error
+   * @param {Array} params - params
    */
-  constructor(type, message, code, ...params) {
+  constructor(type: string, message: string, code?: string, ...params: any) {
     super(...params)
 
     if (Error.captureStackTrace) {
@@ -35,14 +44,10 @@ class MedusaError extends Error {
     }
 
     this.type = type
-    this.name = type
     this.code = code
     this.message = message
     this.date = new Date()
   }
 }
-
-MedusaError.Types = MedusaErrorTypes
-MedusaError.Codes = MedusaErrorCodes
 
 export default MedusaError
