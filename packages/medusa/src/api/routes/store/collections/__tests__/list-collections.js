@@ -15,7 +15,7 @@ describe("GET /store/collections", () => {
     })
 
     it("calls product collection service list", () => {
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
     })
   })
 })
