@@ -1,11 +1,11 @@
 import { User } from "../models/user"
+import { PartialPick } from "./common"
 
 export interface CreateUserInput {
   id?: string
   email: string
   first_name?: string
   last_name?: string
-  password_hash: string
   api_token?: string
   metadata?: JSON
 }
@@ -19,7 +19,12 @@ export interface UpdateUserInput {
   metadata?: JSON
 }
 
-export type FilterableUserProps = Omit<
+export type FilterableUserProps = PartialPick<
   User,
-  "password_hash" | "id" | "api_token" | "metadata"
+  | "email"
+  | "first_name"
+  | "last_name"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
 >

@@ -188,15 +188,19 @@ class UserService extends BaseService {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
 
+      const createData = { ...user } as CreateUserInput & {
+        password_hash: string
+      }
+
       const validatedEmail = this.validateEmail_(user.email)
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
-        user.password_hash = hashedPassword
+        createData.password_hash = hashedPassword
       }
 
-      user.email = validatedEmail
+      createData.email = validatedEmail
 
-      const created = userRepo.create(user)
+      const created = userRepo.create(createData)
 
       return userRepo.save(created)
     })
