@@ -1,6 +1,6 @@
+import { getConfigFile } from "medusa-core-utils"
 import path from "path"
 import { getConnection } from "typeorm"
-import { getConfigFile } from "medusa-core-utils"
 
 export async function manualAutoIncrement(
   tableName: string

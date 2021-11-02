@@ -1,5 +1,5 @@
-import { MedusaError, Validator } from "medusa-core-utils"
 import jwt from "jsonwebtoken"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -15,7 +15,10 @@ export default async (req, res) => {
   const userService = req.scope.resolve("userService")
   const user = await userService.retrieveByEmail(value.email)
 
-  const decodedToken = await jwt.verify(value.token, user.password_hash)
+  const decodedToken = jwt.verify(value.token, user.password_hash) as {
+    user_id: string
+  }
+
   if (!decodedToken || decodedToken.user_id !== user.id) {
     res.status(401).send("Invalid or expired password reset token")
     return

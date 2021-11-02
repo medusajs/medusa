@@ -1,6 +1,6 @@
+import { getConfigFile } from "medusa-core-utils"
 import path from "path"
 import { Column, ColumnOptions, ColumnType } from "typeorm"
-import { getConfigFile } from "medusa-core-utils"
 
 const pgSqliteTypeMapping: { [key: string]: ColumnType } = {
   increment: "rowid",
@@ -27,7 +27,7 @@ export function resolveDbType(pgSqlType: ColumnType): ColumnType {
     }
   }
 
-  if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {
+  if (dbType === "sqlite" && (pgSqlType as string) in pgSqliteTypeMapping) {
     return pgSqliteTypeMapping[pgSqlType.toString()]
   }
   return pgSqlType
@@ -52,7 +52,7 @@ export function resolveDbGenerationStrategy(
   return pgSqlType
 }
 
-export function DbAwareColumn(columnOptions: ColumnOptions) {
+export function DbAwareColumn(columnOptions: ColumnOptions): PropertyDecorator {
   const pre = columnOptions.type
   if (columnOptions.type) {
     columnOptions.type = resolveDbType(columnOptions.type)

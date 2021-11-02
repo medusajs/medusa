@@ -1,23 +1,22 @@
 import {
-  Entity,
-  Generated,
   BeforeInsert,
-  Index,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
+  Entity,
+  Generated,
+  Index,
   JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import {
-  resolveDbType,
-  resolveDbGenerationStrategy,
   DbAwareColumn,
+  resolveDbGenerationStrategy,
+  resolveDbType,
 } from "../utils/db-aware-column"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
-
 import { Cart } from "./cart"
 import { Order } from "./order"
 
@@ -77,14 +76,18 @@ export class DraftOrder {
   idempotency_key: string
 
   @BeforeInsert()
-  private async beforeInsert() {
+  private async beforeInsert(): Promise<void> {
     if (!this.id) {
       const id = ulid()
       this.id = `dorder_${id}`
     }
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
-      this.display_id = await manualAutoIncrement("draft_order")
+      const disId = await manualAutoIncrement("draft_order")
+
+      if (disId) {
+        this.display_id = disId
+      }
     }
   }
 }

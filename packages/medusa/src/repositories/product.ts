@@ -1,16 +1,20 @@
 import { flatten, groupBy, map, merge } from "lodash"
 import {
-  OrderByCondition,
   EntityRepository,
   FindManyOptions,
+  FindOperator,
+  OrderByCondition,
   Repository,
 } from "typeorm"
+import { ProductTag } from ".."
 import { Product } from "../models/product"
 
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
-  where?: DefaultWithoutRelations["where"] & { tags?: string[] }
+  where?: DefaultWithoutRelations["where"] & {
+    tags?: FindOperator<ProductTag>
+  }
   order?: OrderByCondition
   skip?: number
   take?: number
@@ -31,19 +35,22 @@ export class ProductRepository extends Repository<Product> {
       // Since tags are in a one-to-many realtion they cant be included in a
       // regular query, to solve this add the join on tags seperately if
       // the query exists
-      const tags = idsOrOptionsWithoutRelations.where.tags
-      delete idsOrOptionsWithoutRelations.where.tags
+      const tags = idsOrOptionsWithoutRelations!.where!.tags
+      delete idsOrOptionsWithoutRelations!.where!.tags
       let qb = this.createQueryBuilder("product")
         .select(["product.id"])
-        .where(idsOrOptionsWithoutRelations.where)
+        .where(idsOrOptionsWithoutRelations.where || {})
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-        .orderBy(idsOrOptionsWithoutRelations.order)
+
+      if (idsOrOptionsWithoutRelations.order) {
+        qb.orderBy(idsOrOptionsWithoutRelations.order)
+      }
 
       if (tags) {
         qb = qb
           .leftJoinAndSelect("product.tags", "tags")
-          .andWhere(`tags.id IN (:...ids)`, { ids: tags._value })
+          .andWhere(`tags.id IN (:...ids)`, { ids: tags.value })
       }
 
       entities = await qb.getMany()
@@ -121,7 +128,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findOneWithRelations(
     relations: Array<keyof Product> = [],
-    optionsWithoutRelations: Omit<FindManyOptions<Product>, "relations"> = {}
+    optionsWithoutRelations: FindWithRelationsOptions = {}
   ): Promise<Product> {
     // Limit 1
     optionsWithoutRelations.take = 1

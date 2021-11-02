@@ -23,7 +23,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [`**/models`],
+  ignorePatterns: [`**/models`, `**/repositories`],
   overrides: [
     {
       files: [`*.ts`],
@@ -32,6 +32,7 @@ module.exports = {
       extends: [`plugin:@typescript-eslint/recommended`],
       rules: {
         "@typescript-eslint/explicit-function-return-type": ["error"],
+        "@typescript-eslint/no-non-null-assertion": ["off"],
       },
     },
     {
