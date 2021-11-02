@@ -334,7 +334,7 @@ describe("ContentfulService", () => {
           {
             fields: expect.objectContaining({
               medusaId: { "en-US": "collectionTesting" },
-              collection_id: {
+              collection_entry: {
                 "en-US": {
                   sys: {
                     type: "Link",
@@ -360,7 +360,7 @@ describe("ContentfulService", () => {
         expect(entry.publish).toHaveBeenCalledTimes(1)
         expect(entry.fields).toEqual(
           expect.objectContaining({
-            collection_id: {
+            collection_entry: {
               "en-US": {
                 sys: {
                   type: "Link",

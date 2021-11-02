@@ -237,7 +237,7 @@ class ContentfulService extends BaseService {
         },
       }
 
-      fields.collection_id = {
+      fields.collection_entry = {
         "en-US": contentfulEntity,
       }
     }
@@ -526,7 +526,7 @@ class ContentfulService extends BaseService {
         },
       }
 
-      productEntryFields[this.getCustomField("collection_id", "product")] = {
+      productEntryFields[this.getCustomField("collection_entry", "product")] = {
         "en-US": contentfulEntity,
       }
     }
