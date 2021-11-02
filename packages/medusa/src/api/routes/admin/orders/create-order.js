@@ -3,9 +3,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const schema = Validator.object().keys({
     status: Validator.string().optional(),
-    email: Validator.string()
-      .email()
-      .required(),
+    email: Validator.string().email().required(),
     billing_address: Validator.address().required(),
     shipping_address: Validator.address().required(),
     items: Validator.array().required(),
@@ -36,13 +34,9 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  try {
-    const orderService = req.scope.resolve("orderService")
-    let order = await orderService.create(value)
-    order = await orderService.decorate(order, [], ["region"])
+  const orderService = req.scope.resolve("orderService")
+  let order = await orderService.create(value)
+  order = await orderService.decorate(order, [], ["region"])
 
-    res.status(200).json({ order })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ order })
 }
