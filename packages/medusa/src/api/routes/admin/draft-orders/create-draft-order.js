@@ -1,7 +1,7 @@
 import {
   MedusaError,
-  Validator,
   transformIdableFields,
+  Validator,
 } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "."
 

@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+import UserService from "../../../../services/user"
 
 export default async (req, res) => {
   const { user_id } = req.params
@@ -12,7 +13,7 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const userService = req.scope.resolve("userService")
+  const userService = req.scope.resolve("userService") as UserService
   const data = await userService.update(user_id, value)
   res.status(200).json({ user: data })
 }

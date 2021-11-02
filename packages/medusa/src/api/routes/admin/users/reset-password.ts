@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
 import { MedusaError, Validator } from "medusa-core-utils"
+import UserService from "../../../../services/user"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
@@ -12,7 +13,7 @@ export default async (req, res) => {
   if (error) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
-  const userService = req.scope.resolve("userService")
+  const userService = req.scope.resolve("userService") as UserService
   const user = await userService.retrieveByEmail(value.email)
 
   const decodedToken = jwt.verify(value.token, user.password_hash) as {
