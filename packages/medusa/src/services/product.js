@@ -87,9 +87,12 @@ class ProductService extends BaseService {
   }
 
   /**
-   * @param {object} selector - selector for query
-   * @param {Object} config - config for query object for find
-   * @return {Promise} the result of the find operation
+   * Lists products based on the provided parameters.
+   * @param {object} selector - an object that defines rules to filter products
+   *   by
+   * @param {object} config - object that defines the scope for what should be
+   *   returned
+   * @return {Promise<Product[]>} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
     const productRepo = this.manager_.getCustomRepository(
@@ -110,6 +113,17 @@ class ProductService extends BaseService {
     return productRepo.findWithRelations(relations, query)
   }
 
+  /**
+   * Lists products based on the provided parameters and includes the count of
+   * products that match the query.
+   * @param {object} selector - an object that defines rules to filter products
+   *   by
+   * @param {object} config - object that defines the scope for what should be
+   *   returned
+   * @return {[Promise<Product[]>, number]} an array containing the products as
+   *   the first element and the total count of products that matches the query
+   *   as the second element.
+   */
   async listAndCount(
     selector = {},
     config = { relations: [], skip: 0, take: 20 }
@@ -150,7 +164,8 @@ class ProductService extends BaseService {
    * Gets a product by id.
    * Throws in case of DB Error and if product was not found.
    * @param {string} productId - id of the product to get.
-   * @param {object} config - config of the product to get.
+   * @param {object} config - object that defines what should be included in the
+   *   query response
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieve(productId, config = {}) {
@@ -736,6 +751,13 @@ class ProductService extends BaseService {
     return product
   }
 
+  /**
+   * Creates a query object to be used for list queries.
+   * @param {object} selector - the selector to create the query from
+   * @param {object} config - the config to use for the query
+   * @return {object} an object containing the query, relations and free-text
+   *   search param.
+   */
   prepareListQuery_(selector, config) {
     let q
     if ("q" in selector) {
@@ -763,6 +785,13 @@ class ProductService extends BaseService {
     }
   }
 
+  /**
+   * Creates a QueryBuilder that can fetch products based on free text.
+   * @param {ProductRepository} productRepo - an instance of a ProductRepositry
+   * @param {FindOptions<Product>} query - the query to get products by
+   * @param {string} q - the text to perform free text search from
+   * @return {QueryBuilder<Product>} a query builder that can fetch products
+   */
   getFreeTextQueryBuilder_(productRepo, query, q) {
     const where = query.where
 
