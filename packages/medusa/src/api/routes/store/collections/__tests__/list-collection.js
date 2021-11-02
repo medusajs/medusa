@@ -18,7 +18,7 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
       expect(ProductCollectionServiceMock.list).toHaveBeenCalledWith(
         {},
-        { skip: 0, take: 20, order: { title: "ASC" } }
+        { skip: 0, take: 20, order: { title: "ASC" }, relations: [] }
       )
     })
 
@@ -40,7 +40,7 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
       expect(ProductCollectionServiceMock.list).toHaveBeenCalledWith(
         { q: "suits" },
-        { skip: 0, take: 20, order: { title: "ASC" } }
+        { skip: 0, take: 20, order: { title: "ASC" }, relations: [] }
       )
     })
   })
@@ -62,6 +62,7 @@ describe("GET /store/collections", () => {
           skip: 10,
           take: 10,
           order: { title: "ASC" },
+          relations: [],
         }
       )
     })
@@ -91,6 +92,7 @@ describe("GET /store/collections", () => {
           skip: 0,
           take: 20,
           order: { [column]: order },
+          relations: [],
         }
       )
     })

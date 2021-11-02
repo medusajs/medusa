@@ -1,4 +1,3 @@
-const { Product } = require("@medusajs/medusa")
 const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -14,7 +13,7 @@ describe("/store/collections", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -65,6 +64,14 @@ describe("/store/collections", () => {
       expect(response.data.collections[0].id).toEqual("test-collection2")
     })
 
+    it(`orders and uses q parameter`, async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/collections?order=title&q=1`)
+
+      expect(response.data.collections[0].id).toEqual("test-collection1")
+    })
+
     describe.each([["title"], ["handle"]])(
       "Test order functionality",
       (order) => {
@@ -73,8 +80,8 @@ describe("/store/collections", () => {
 
           const response = await api.get(`/store/collections?order=${order}`)
 
-          expect(response.data.products[0].id).toEqual("test-product-copy")
-          expect(response.data.products[1].id).toEqual("other-product")
+          expect(response.data.collections[0].id).toEqual("test-collection")
+          expect(response.data.collections[1].id).toEqual("test-collection1")
         })
 
         it(`orders DESC for ${order}`, async () => {
@@ -82,8 +89,8 @@ describe("/store/collections", () => {
 
           const response = await api.get(`/store/collections?order=-${order}`)
 
-          expect(response.data.products[0].id).toEqual("other-product")
-          expect(response.data.products[1].id).toEqual("test-product-copy")
+          expect(response.data.collections[0].id).toEqual("test-collection2")
+          expect(response.data.collections[1].id).toEqual("test-collection1")
         })
       }
     )
@@ -146,23 +153,21 @@ describe("/store/collections", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product",
-            tags: expect.arrayContaining([
-              expect.objectContaining({
-                id: "tag1",
-              }),
-            ]),
+            id: "test-product-copy",
+            tags: [],
             type: expect.objectContaining({ id: "test-type" }),
             options: expect.arrayContaining([
               expect.objectContaining({
-                id: "test-option",
+                id: "test-option-copy",
                 values: expect.anything(),
               }),
             ]),
             variants: expect.arrayContaining([
               expect.objectContaining({
-                id: "test-variant",
-                prices: expect.anything(),
+                id: "test-variant-copy",
+                prices: expect.arrayContaining([
+                  expect.objectContaining({ id: "test-price" }),
+                ]),
               }),
             ]),
           }),
@@ -174,7 +179,7 @@ describe("/store/collections", () => {
       const api = useApi()
 
       const response = await api.get(
-        "/store/collections/test-collection/products?q=other"
+        "/store/collections/test-collection/products?q=Product%202"
       )
 
       expect(response.data.products.length).toEqual(1)
@@ -200,6 +205,16 @@ describe("/store/collections", () => {
       )
 
       expect(response.data.products.length).toEqual(0)
+    })
+
+    it(`orders and uses q parameter`, async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/collections/test-collection/products?order=title&q=1`
+      )
+
+      expect(response.data.products[0].id).toEqual("test-product-copy")
     })
 
     describe.each([["title"], ["handle"]])(

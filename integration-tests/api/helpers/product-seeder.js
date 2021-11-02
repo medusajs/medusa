@@ -35,7 +35,7 @@ module.exports = async (connection, data = {}) => {
 
   const coll2 = manager.create(ProductCollection, {
     id: "test-collection2",
-    handle: "test-collection two",
+    handle: "test-collection2 two",
     title: "Test collection 2",
   })
 
@@ -185,6 +185,32 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(pcopy1)
+
+  await manager.save(ProductOption, {
+    id: "test-option-copy",
+    title: "test-option copy",
+    product_id: "test-product-copy",
+  })
+
+  await manager.save(ProductVariant, {
+    id: "test-variant-copy",
+    inventory_quantity: 10,
+    title: "Test variant copy",
+    variant_rank: 0,
+    sku: "test-sku-copy",
+    ean: "test-ean-copy",
+    upc: "test-upc-copy",
+    barcode: "test-barcode-copy",
+    product_id: "test-product-copy",
+    prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
+    options: [
+      {
+        id: "test-variant-option-copy",
+        value: "Default variant",
+        option_id: "test-option-copy",
+      },
+    ],
+  })
 
   const pcopy2 = manager.create(Product, {
     id: "other-product",

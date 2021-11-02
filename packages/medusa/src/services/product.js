@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
+import prefix from "../utils/prefix-object-key"
 
 /**
  * Provides layer to manipulate products.
@@ -127,12 +128,17 @@ class ProductService extends BaseService {
 
     if (q) {
       const where = query.where
-      const order = query.order
+      const order = prefix(query.order, "product")
       delete where.description
       delete where.title
 
       if (tags) {
         delete where.tags
+      }
+
+      const fields = ["product.id"]
+      if (order) {
+        fields.push(`product.${Object.keys(order)[0]}`)
       }
 
       let qb = productRepo
