@@ -202,7 +202,7 @@ describe("ContentfulService", () => {
             id: "collectionTesting",
             title: "title",
             handle: "handle",
-            collection: { id: "test_id" },
+            collection: { id: "test_id", title: "test title" },
             collection_id: "test_id",
             images: [],
           })
