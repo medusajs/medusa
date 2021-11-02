@@ -96,66 +96,54 @@ class ProductService extends BaseService {
       this.productRepository_
     )
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = this.buildQuery_(selector, config)
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
-    }
-
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
-
-    const rels = query.relations
-    delete query.relations
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
-      const where = query.where
-
-      delete where.description
-      delete where.title
-
-      const raw = await productRepo
-        .createQueryBuilder("product")
-        .leftJoinAndSelect("product.variants", "variant")
-        .leftJoinAndSelect("product.collection", "collection")
-        .select(["product.id"])
-        .where(where)
-        .andWhere(
-          new Brackets((qb) => {
-            qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
-          })
-        )
-        .getMany()
-
+      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
+      const raw = await qb.getMany()
       return productRepo.findWithRelations(
-        rels,
+        relations,
         raw.map((i) => i.id)
       )
     }
 
-    return productRepo.findWithRelations(rels, query)
+    return productRepo.findWithRelations(relations, query)
+  }
+
+  async listAndCount(
+    selector = {},
+    config = { relations: [], skip: 0, take: 20 }
+  ) {
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
+
+    if (q) {
+      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
+      const [raw, count] = await qb.getManyAndCount()
+
+      const products = await productRepo.findWithRelations(
+        relations,
+        raw.map((i) => i.id)
+      )
+      return [products, count]
+    }
+
+    return await productRepo.findWithRelationsAndCount(relations, query)
   }
 
   /**
    * Return the total number of documents in database
    * @return {Promise} the result of the count operation
    */
-  count() {
+  count(selector = {}) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
-    return productRepo.count()
+    const query = this.buildQuery_(selector)
+    return productRepo.count(query)
   }
 
   /**
@@ -746,6 +734,56 @@ class ProductService extends BaseService {
 
     // const final = await this.runDecorators_(decorated)
     return product
+  }
+
+  prepareListQuery_(selector, config) {
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    let rels = query.relations
+    delete query.relations
+
+    return {
+      query,
+      relations: rels,
+      q,
+    }
+  }
+
+  getFreeTextQueryBuilder_(productRepo, query, q) {
+    const where = query.where
+
+    delete where.description
+    delete where.title
+
+    return productRepo
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.variants", "variant")
+      .leftJoinAndSelect("product.collection", "collection")
+      .select(["product.id"])
+      .where(where)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
+        })
+      )
   }
 }
 
