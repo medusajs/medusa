@@ -1,5 +1,3 @@
-import { defaultFields, defaultRelations } from "."
-
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
