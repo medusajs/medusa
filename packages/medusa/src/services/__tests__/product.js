@@ -3,7 +3,7 @@ import ProductService from "../product"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -54,7 +54,7 @@ describe("ProductService", () => {
 
   describe("create", () => {
     const productRepository = MockRepository({
-      create: product => ({
+      create: (product) => ({
         id: IdMap.getId("ironman"),
         title: "Suit",
         options: [],
@@ -71,7 +71,7 @@ describe("ProductService", () => {
 
     const productTagRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         if (data.value === "title") {
           return { id: "tag-1", value: "title" }
         }
@@ -83,16 +83,16 @@ describe("ProductService", () => {
     })
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
 
     const productCollectionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
-      retrieve: id =>
+      retrieve: (id) =>
         Promise.resolve({ id: IdMap.getId("cat"), title: "Suits" }),
     }
 
@@ -223,7 +223,7 @@ describe("ProductService", () => {
 
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
@@ -231,7 +231,7 @@ describe("ProductService", () => {
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       update: (variant, update) => {
@@ -243,7 +243,7 @@ describe("ProductService", () => {
     }
 
     const productTagRepository = MockRepository({
-      findOne: data => {
+      findOne: (data) => {
         if (data.where.value === "test") {
           return Promise.resolve({ id: IdMap.getId("test"), value: "test" })
         }
@@ -417,7 +417,6 @@ describe("ProductService", () => {
       manager: MockManager,
       eventBusService,
       productRepository,
-      eventBusService,
     })
 
     beforeEach(() => {
@@ -440,7 +439,7 @@ describe("ProductService", () => {
 
   describe("addOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [{ title: "Color" }],
@@ -449,7 +448,7 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       addOptionValue: jest.fn(),
@@ -513,7 +512,7 @@ describe("ProductService", () => {
 
   describe("reorderVariants", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [{ id: IdMap.getId("green") }, { id: IdMap.getId("blue") }],
@@ -571,7 +570,7 @@ describe("ProductService", () => {
 
   describe("reorderOptions", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [
@@ -637,7 +636,7 @@ describe("ProductService", () => {
 
   describe("updateOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [
@@ -712,7 +711,7 @@ describe("ProductService", () => {
 
   describe("deleteOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [
@@ -751,7 +750,7 @@ describe("ProductService", () => {
     })
 
     const productOptionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("material")) {
           return undefined
         }
