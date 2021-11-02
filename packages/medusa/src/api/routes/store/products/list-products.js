@@ -42,7 +42,6 @@ export default async (req, res) => {
     type: Validator.string(),
     created_at: Validator.dateFilter(),
     updated_at: Validator.dateFilter(),
-    deleted_at: Validator.dateFilter(),
   })
   const schema = filteringSchema.keys({
     offset: Validator.string(),

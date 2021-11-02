@@ -48,7 +48,6 @@ export default async (req, res) => {
     order: Validator.string().optional(),
     created_at: Validator.dateFilter(),
     updated_at: Validator.dateFilter(),
-    deleted_at: Validator.dateFilter(),
   })
   const schema = filteringSchema.keys({
     offset: Validator.string(),
