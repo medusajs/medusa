@@ -5,8 +5,10 @@ import Prism from "prismjs"
 import "prismjs/components/prism-json"
 import CodeBox from "./code-box"
 
-const JsonContainer = ({ json, header }) => {
+const JsonContainer = ({ json, header, language }) => {
   const jsonRef = useRef()
+
+  const codeClass = language ? language === 'shell' ? 'language-shell' : 'language-json' : 'language-json'
 
   //INVESTIGATE: @theme-ui/prism might be a better solution
   useEffect(() => {
@@ -19,9 +21,9 @@ const JsonContainer = ({ json, header }) => {
 
   return (
     <Box ref={jsonRef} sx={{ position: "sticky", top: "20px" }}>
-      <CodeBox header={header}>
+      <CodeBox shell={language === 'shell'} header={header}>
         <pre>
-          <code className={"language-json"}>{json}</code>
+          <code className={codeClass}>{json}</code>
         </pre>
       </CodeBox>
     </Box>

@@ -1,7 +1,9 @@
 import React from "react"
-import { Flex, Box, Text } from "theme-ui"
+import { Flex, Box, Text, IconButton } from "theme-ui"
+import { Image } from "@theme-ui/components"
+import Clipboard from '../icons/clipboard'
 
-const CodeBox = ({ header, children }) => {
+const CodeBox = ({ header, children, shell }) => {
   return (
     <Box
       sx={{
@@ -23,9 +25,13 @@ const CodeBox = ({ header, children }) => {
           borderRadius: "8px 8px 0 0",
         }}
       >
+        <Flex sx={{ height: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
+
         <Text variant="small" sx={{ fontWeight: "400" }}>
-          {header}
+          {header.toUpperCase()}
         </Text>
+        {shell ? <Clipboard/> : <></>}
+        </Flex>
       </Box>
       <Box
         sx={{
