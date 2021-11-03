@@ -128,6 +128,8 @@ class SwapService extends BaseService {
       relationSet.add("cart.items")
       relationSet.add("cart.gift_cards")
       relationSet.add("cart.discounts")
+      relationSet.add("cart.discounts.rule")
+      relationSet.add("cart.discounts.rule.valid_for")
       relationSet.add("cart.shipping_methods")
       relationSet.add("cart.region")
       relations = [...relationSet]
