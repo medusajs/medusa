@@ -13,7 +13,7 @@ algolia Plugin for Medusa to search for products.
     // example
     products: {
       searchableAttributes: ["title", "description", "variant_sku", "type_value"],
-      displayedAttributes: ["title", "description", "variant_sku", "type_value"],
+      attributesToRetrieve: ["title", "description", "variant_sku", "type_value"],
     }
   }
 }
