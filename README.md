@@ -8,6 +8,7 @@
 </h1>
 
 <h4 align="center">
+  <a href="https://github.com/medusajs/admin">Medusa Admin</a> |
   <a href="https://www.medusa-commerce.com">Website</a> |
   <a href="https://roadmap.medusa-commerce.com">Roadmap</a> |
   <a href="https://www.medusa-commerce.com/blog">Blog</a> |
@@ -56,6 +57,8 @@ Medusa is an open-source headless commerce engine that enables developers to cre
    ```bash
    curl localhost:9000/store/products | python -m json.tool
    ```
+
+We have a prebuilt admin dashboard that you can use to configure and manage your store find it here: [Medusa Admin](https://github.com/medusajs/admin)
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
