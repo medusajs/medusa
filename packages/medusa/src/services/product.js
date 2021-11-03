@@ -87,82 +87,86 @@ class ProductService extends BaseService {
   }
 
   /**
-   * @param {object} selector - selector for query
-   * @param {Object} config - config for query object for find
-   * @return {Promise} the result of the find operation
+   * Lists products based on the provided parameters.
+   * @param {object} selector - an object that defines rules to filter products
+   *   by
+   * @param {object} config - object that defines the scope for what should be
+   *   returned
+   * @return {Promise<Product[]>} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = this.buildQuery_(selector, config)
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
-    }
-
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
-
-    const rels = query.relations
-    delete query.relations
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
-      const where = query.where
-
-      delete where.description
-      delete where.title
-
-      const raw = await productRepo
-        .createQueryBuilder("product")
-        .leftJoinAndSelect("product.variants", "variant")
-        .leftJoinAndSelect("product.collection", "collection")
-        .select(["product.id"])
-        .where(where)
-        .andWhere(
-          new Brackets((qb) => {
-            qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
-          })
-        )
-        .getMany()
-
+      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
+      const raw = await qb.getMany()
       return productRepo.findWithRelations(
-        rels,
+        relations,
         raw.map((i) => i.id)
       )
     }
 
-    return productRepo.findWithRelations(rels, query)
+    return productRepo.findWithRelations(relations, query)
+  }
+
+  /**
+   * Lists products based on the provided parameters and includes the count of
+   * products that match the query.
+   * @param {object} selector - an object that defines rules to filter products
+   *   by
+   * @param {object} config - object that defines the scope for what should be
+   *   returned
+   * @return {[Promise<Product[]>, number]} an array containing the products as
+   *   the first element and the total count of products that matches the query
+   *   as the second element.
+   */
+  async listAndCount(
+    selector = {},
+    config = { relations: [], skip: 0, take: 20 }
+  ) {
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
+
+    if (q) {
+      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
+      const [raw, count] = await qb.getManyAndCount()
+
+      const products = await productRepo.findWithRelations(
+        relations,
+        raw.map((i) => i.id)
+      )
+      return [products, count]
+    }
+
+    return await productRepo.findWithRelationsAndCount(relations, query)
   }
 
   /**
    * Return the total number of documents in database
+   * @param {object} selector - the selector to choose products by
    * @return {Promise} the result of the count operation
    */
-  count() {
+  count(selector = {}) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
-    return productRepo.count()
+    const query = this.buildQuery_(selector)
+    return productRepo.count(query)
   }
 
   /**
    * Gets a product by id.
    * Throws in case of DB Error and if product was not found.
    * @param {string} productId - id of the product to get.
-   * @param {object} config - config of the product to get.
+   * @param {object} config - object that defines what should be included in the
+   *   query response
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieve(productId, config = {}) {
@@ -746,6 +750,70 @@ class ProductService extends BaseService {
 
     // const final = await this.runDecorators_(decorated)
     return product
+  }
+
+  /**
+   * Creates a query object to be used for list queries.
+   * @param {object} selector - the selector to create the query from
+   * @param {object} config - the config to use for the query
+   * @return {object} an object containing the query, relations and free-text
+   *   search param.
+   */
+  prepareListQuery_(selector, config) {
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+
+    return {
+      query,
+      relations: rels,
+      q,
+    }
+  }
+
+  /**
+   * Creates a QueryBuilder that can fetch products based on free text.
+   * @param {ProductRepository} productRepo - an instance of a ProductRepositry
+   * @param {FindOptions<Product>} query - the query to get products by
+   * @param {string} q - the text to perform free text search from
+   * @return {QueryBuilder<Product>} a query builder that can fetch products
+   */
+  getFreeTextQueryBuilder_(productRepo, query, q) {
+    const where = query.where
+
+    delete where.description
+    delete where.title
+
+    return productRepo
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.variants", "variant")
+      .leftJoinAndSelect("product.collection", "collection")
+      .select(["product.id"])
+      .where(where)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
+        })
+      )
   }
 }
 
