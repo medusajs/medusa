@@ -742,20 +742,34 @@ class ContentfulService extends BaseService {
       const environment = await this.getContentfulEnvironment_()
       const productEntry = await environment.getEntry(productId)
 
-      const product = await this.productService_.retrieve(productId)
+      const product = await this.productService_.retrieve(productId, {
+        select: [
+          "id",
+          "handle",
+          "title",
+          "subtitle",
+          "description",
+          "thumbnail",
+        ],
+      })
 
       const update = {}
 
       const title =
-        productEntry.fields[this.getCustomField("title", "product")]["en-US"]
+        productEntry.fields[this.getCustomField("title", "product")]?.["en-US"]
 
       const subtitle =
-        productEntry.fields[this.getCustomField("subtitle", "product")]["en-US"]
-
-      const description =
-        productEntry.fields[this.getCustomField("description", "product")][
+        productEntry.fields[this.getCustomField("subtitle", "product")]?.[
           "en-US"
         ]
+
+      const description =
+        productEntry.fields[this.getCustomField("description", "product")]?.[
+          "en-US"
+        ]
+
+      const handle =
+        productEntry.fields[this.getCustomField("handle", "product")]?.["en-US"]
 
       if (product.title !== title) {
         update.title = title
@@ -769,6 +783,10 @@ class ContentfulService extends BaseService {
         update.description = description
       }
 
+      if (product.handle !== handle) {
+        update.handle = handle
+      }
+
       // Get the thumbnail, if present
       if (productEntry.fields.thumbnail) {
         const thumb = await environment.getAsset(
@@ -776,7 +794,7 @@ class ContentfulService extends BaseService {
         )
 
         if (thumb.fields.file["en-US"].url) {
-          if (!product.thumbnail.includes(thumb.fields.file["en-US"].url)) {
+          if (!product.thumbnail?.includes(thumb.fields.file["en-US"].url)) {
             update.thumbnail = thumb.fields.file["en-US"].url
           }
         }
@@ -834,7 +852,6 @@ class ContentfulService extends BaseService {
       output.push(transformed)
     }
 
-    console.log(output)
     if (!isArray) {
       return output[0]
     }
