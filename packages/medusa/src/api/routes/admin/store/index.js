@@ -3,7 +3,7 @@ import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/store", route)
 
   route.get("/", middlewares.wrap(require("./get-store").default))

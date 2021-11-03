@@ -149,7 +149,22 @@ class ProductCollectionService extends BaseService {
     )
 
     const query = this.buildQuery_(selector, config)
-    return productCollectionRepo.find(query)
+    return await productCollectionRepo.find(query)
+  }
+
+  /**
+   * Lists product collections and add count.
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(selector = {}, config = { skip: 0, take: 20 }) {
+    const productCollectionRepo = this.manager_.getCustomRepository(
+      this.productCollectionRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return await productCollectionRepo.findAndCount(query)
   }
 }
 
