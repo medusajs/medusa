@@ -1,20 +1,13 @@
-import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductCollectionServiceMock } from "../../../../../services/__mocks__/product-collection"
 
-describe("GET /admin/collections", () => {
+describe("GET /store/collections", () => {
   describe("successful retrieval", () => {
     let subject
 
     beforeAll(async () => {
       jest.clearAllMocks()
-      subject = await request("GET", `/admin/collections`, {
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
-      })
+      subject = await request("GET", `/store/collections`)
     })
 
     it("returns 200", () => {
