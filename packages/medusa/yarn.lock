@@ -1584,6 +1584,11 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
 
+"@types/validator@^13.1.3":
+  version "13.6.6"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.6.6.tgz#6e6e2d086148db5ae14851614971b715670cbd52"
+  integrity sha512-+qogUELb4gMhrMjSh/seKmGVvN+uQLfyqJAqYRWqVHsvBsUO2xDBCL8CJ/ZSukbd8vXaoYbpIssAmfLEzzBHEw==
+
 "@types/yargs-parser@*":
   version "20.2.1"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-20.2.1.tgz#3b9ce2489919d9e4fea439b76916abc34b2df129"
@@ -2333,6 +2338,11 @@ ci-info@^3.2.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.2.0.tgz#2876cb948a498797b5236f0095bc057d0dca38b6"
   integrity sha512-dVqRX7fLUm8J6FgHJ418XuIgDLZDkYcDFTeL6TA2gt5WlIZUQrrH6EZrNClwT/H0FateUsZkGIOPRrLbP+PR9A==
 
+class-transformer@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.4.0.tgz#b52144117b423c516afb44cc1c76dbad31c2165b"
+  integrity sha512-ETWD/H2TbWbKEi7m9N4Km5+cw1hNcqJSxlSYhsLsNjQzWWiZIYA1zafxpK9PwVfaZ6AqR5rrjPVUBGESm5tQUA==
+
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"
@@ -2342,6 +2352,15 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+class-validator@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/class-validator/-/class-validator-0.13.1.tgz#381b2001ee6b9e05afd133671fbdf760da7dec67"
+  integrity sha512-zWIeYFhUitvAHBwNhDdCRK09hWx+P0HUwFE8US8/CxFpMVzkUK8RJl7yOIE+BVu2lxyPNgeOaFv78tLE47jBIg==
+  dependencies:
+    "@types/validator" "^13.1.3"
+    libphonenumber-js "^1.9.7"
+    validator "^13.5.2"
 
 clean-stack@^3.0.0:
   version "3.0.1"
@@ -5174,6 +5193,11 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+libphonenumber-js@^1.9.7:
+  version "1.9.41"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.41.tgz#9bd7b7c7bf0246fa9a02f89de5654fdf61926190"
+  integrity sha512-AE4NLPwITwzra8mOJPtSbbjMO17Nv+6/tzUKa4AN6LY2Un97HfGOT8MATXmnNZsj5dkd/iOfN3MJA/6OKpJV0g==
+
 lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
@@ -7919,6 +7943,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@^13.5.2:
+  version "13.7.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.7.0.tgz#4f9658ba13ba8f3d82ee881d3516489ea85c0857"
+  integrity sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"

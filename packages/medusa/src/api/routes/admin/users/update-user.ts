@@ -1,19 +1,16 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {
   const { user_id } = req.params
-  const schema = Validator.object().keys({
-    name: Validator.string().optional(),
-    api_token: Validator.string().optional(),
-  })
+  const validated = await validator(AdminUpdateUserRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const userService = req.scope.resolve("userService") as UserService
-  const data = await userService.update(user_id, value)
+  const userService: UserService = req.scope.resolve("userService")
+  const data = await userService.update(user_id, validated)
   res.status(200).json({ user: data })
+}
+
+export class AdminUpdateUserRequest {
+  name?: string
+  api_token?: string
 }

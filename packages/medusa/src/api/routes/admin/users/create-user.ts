@@ -1,23 +1,22 @@
+import { IsEmail } from "class-validator"
 import _ from "lodash"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    email: Validator.string().email().required(),
-    name: Validator.string().optional(),
-    password: Validator.string().required(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(AdminCreateUserRequest, req.body)
 
   const userService = req.scope.resolve("userService") as UserService
-  const data = _.pick(value, ["email", "name"])
+  const data = _.pick(validated, ["email", "name"])
 
-  const user = await userService.create(data, value.password)
+  const user = await userService.create(data, validated.password)
 
   res.status(200).json({ user })
+}
+
+export class AdminCreateUserRequest {
+  @IsEmail()
+  email: string
+  name?: string
+  password: string
 }

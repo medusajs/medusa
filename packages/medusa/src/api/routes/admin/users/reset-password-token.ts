@@ -1,20 +1,18 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    email: Validator.string().email().required(),
-  })
+  const validated = await validator(AdminResetPasswordTokenRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
   const userService = req.scope.resolve("userService") as UserService
-  const user = await userService.retrieveByEmail(value.email)
+  const user = await userService.retrieveByEmail(validated.email)
 
   // Should call a email service provider that sends the token to the user
   await userService.generateResetPasswordToken(user.id)
 
   res.sendStatus(204)
+}
+
+export class AdminResetPasswordTokenRequest {
+  email: string
 }

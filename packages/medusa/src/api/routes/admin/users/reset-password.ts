@@ -1,22 +1,14 @@
 import jwt from "jsonwebtoken"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    email: Validator.string().email().required(),
-    token: Validator.string().required(),
-    password: Validator.string().required(),
-  })
+  const validated = await validator(AdminResetPasswordRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
   const userService = req.scope.resolve("userService") as UserService
-  const user = await userService.retrieveByEmail(value.email)
+  const user = await userService.retrieveByEmail(validated.email)
 
-  const decodedToken = jwt.verify(value.token, user.password_hash) as {
+  const decodedToken = jwt.verify(validated.token, user.password_hash) as {
     user_id: string
   }
 
@@ -25,7 +17,13 @@ export default async (req, res) => {
     return
   }
 
-  const data = await userService.setPassword(user.id, value.password)
+  const data = await userService.setPassword(user.id, validated.password)
 
   res.status(200).json({ user: data })
+}
+
+export class AdminResetPasswordRequest {
+  email: string
+  token: string
+  password: string
 }

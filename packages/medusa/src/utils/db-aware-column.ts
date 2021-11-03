@@ -19,7 +19,10 @@ let dbType: string
 export function resolveDbType(pgSqlType: ColumnType): ColumnType {
   if (!dbType) {
     try {
-      const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
+      const { configModule } = getConfigFile(
+        path.resolve("."),
+        `medusa-config`
+      ) as any
       dbType = configModule.projectConfig.database_type
     } catch (error) {
       // Default to Postgres to allow for e.g. migrations to run
@@ -38,7 +41,10 @@ export function resolveDbGenerationStrategy(
 ): "increment" | "uuid" | "rowid" {
   if (!dbType) {
     try {
-      const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
+      const { configModule } = getConfigFile(
+        path.resolve("."),
+        `medusa-config`
+      ) as any
       dbType = configModule.projectConfig.database_type
     } catch (error) {
       // Default to Postgres to allow for e.g. migrations to run

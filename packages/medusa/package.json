@@ -54,6 +54,8 @@
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "chokidar": "^3.4.2",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.6.5",

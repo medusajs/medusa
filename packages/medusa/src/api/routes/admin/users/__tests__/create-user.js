@@ -65,6 +65,7 @@ describe("POST /admin/users", () => {
     })
 
     it("returns 400 on invalid email", () => {
+      console.log(subject)
       expect(subject.status).toEqual(400)
     })
   })
