@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/medusajs/medusa/compare/medusa-plugin-meilisearch@0.0.6...medusa-plugin-meilisearch@0.0.7) (2021-11-03)
+
+### Bug Fixes
+
+- include discount rule in swap retrieval ([#682](https://github.com/medusajs/medusa/issues/682)) ([a5fe1c2](https://github.com/medusajs/medusa/commit/a5fe1c2e284ff5cb757b792c1a3c8414c211e4e8))
+
 ## [0.0.6](https://github.com/medusajs/medusa/compare/medusa-plugin-meilisearch@0.0.5...medusa-plugin-meilisearch@0.0.6) (2021-10-19)
 
 ### Bug Fixes
