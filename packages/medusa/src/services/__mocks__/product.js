@@ -183,51 +183,6 @@ export const ProductServiceMock = {
       { ...products.product2, decorated: true },
     ])
   }),
-  list: jest.fn().mockImplementation((data) => {
-    // Used to retrieve a product based on a variant id see
-    // ProductVariantService.addOptionValue
-    if (data.variants === IdMap.getId("giftCardVar")) {
-      return Promise.resolve([
-        {
-          id: IdMap.getId("giftCardProd"),
-          title: "Gift Card",
-          is_giftcard: true,
-          thumbnail: "1234",
-        },
-      ])
-    }
-    if (data.variants === IdMap.getId("testVariant")) {
-      return Promise.resolve([
-        {
-          id: "1234",
-          title: "test",
-          options: [
-            {
-              id: IdMap.getId("testOptionId"),
-              title: "testOption",
-            },
-          ],
-        },
-      ])
-    }
-    if (data.variants === IdMap.getId("eur-10-us-12")) {
-      return Promise.resolve([
-        {
-          id: "1234",
-          title: "test",
-          thumbnail: "test.1234",
-        },
-      ])
-    }
-    if (data.variants === IdMap.getId("failId")) {
-      return Promise.resolve([])
-    }
-
-    return Promise.resolve([
-      { ...products.product1, decorated: true },
-      { ...products.product2, decorated: true },
-    ])
-  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
