@@ -14,7 +14,7 @@ module.exports = {
       type: "default"
     })
     await manager.save(newProfile)
-    console.log(newProfile)
+
     return newProfile.id
   },
   snapshotMatch: {
