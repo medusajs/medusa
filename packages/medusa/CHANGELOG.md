@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.51](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.50...@medusajs/medusa@1.1.51) (2021-11-03)
+
+### Bug Fixes
+
+- include discount rule in swap retrieval ([#682](https://github.com/medusajs/medusa/issues/682)) ([a5fe1c2](https://github.com/medusajs/medusa/commit/a5fe1c2e284ff5cb757b792c1a3c8414c211e4e8))
+
+## [1.1.50](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.49...@medusajs/medusa@1.1.50) (2021-11-02)
+
+**Note:** Version bump only for package @medusajs/medusa
+
 ## [1.1.49](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.48...@medusajs/medusa@1.1.49) (2021-10-26)
 
 ### Bug Fixes
