@@ -1,9 +1,44 @@
-import React from "react"
-import { Flex, Box, Text, IconButton } from "theme-ui"
-import { Image } from "@theme-ui/components"
+import React, { useState } from "react"
+import { Flex, Box, Text } from "theme-ui"
 import Clipboard from '../icons/clipboard'
+import ReactTooltip from "react-tooltip"
+import styled from "@emotion/styled"
 
-const CodeBox = ({ header, children, shell }) => {
+const ToolTip = ({id, text}) => {
+  const StyledTooltip = styled(ReactTooltip)`
+      box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.08),
+        0px 0px 0px 1px rgba(136, 152, 170, 0.1),
+        0px 4px 4px 0px rgba(136, 152, 170, 0.1) !important;
+      padding: 8px 12px;
+      &:after {
+        margin-right: 4px;
+      }
+      &.show {
+        opacity: 1;
+      }
+    `
+  return(
+    <StyledTooltip
+      place="top"
+      backgroundColor='#FFF'
+      textColor='black'
+      effect="solid"
+      id={id}
+      sx={{ boxShadow: `0px 5px 15px 0px rgba(0, 0, 0, 0.08),
+      0px 0px 0px 1px rgba(136, 152, 170, 0.1),
+      0px 4px 4px 0px rgba(136, 152, 170, 0.1) !important`,
+      padding: `8px 12px`
+    }}
+    >
+        <Text>{text}</Text>
+    </StyledTooltip>
+  )
+}
+
+const CodeBox = ({ header, children, shell, copyClicked }) => {
+  const [copied, setCopied] = useState(false)
+  const id = (Math.random()*1000000).toString()
+  const forceTooltipRemount = copied ? "content-1" : "content-2"
   return (
     <Box
       sx={{
@@ -30,8 +65,27 @@ const CodeBox = ({ header, children, shell }) => {
         <Text variant="small" sx={{ fontWeight: "400" }}>
           {header.toUpperCase()}
         </Text>
-        {shell ? <Clipboard/> : <></>}
+        {shell ? 
+          <Box
+            onMouseLeave={() => {setCopied(false)}}
+            onClick={() => {
+              setCopied(true)
+              copyClicked()
+            }} 
+            data-for={id}
+            data-tip={forceTooltipRemount}
+            key={forceTooltipRemount}
+            >
+              <Clipboard/> 
+              {copied ? 
+                <ToolTip id={id} text={"Copied!"} />
+                : 
+                <ToolTip id={id} text={"Copy to clipboard!"} />
+                }
+            </Box> : 
+          <></>}
         </Flex>
+        
       </Box>
       <Box
         sx={{
@@ -53,6 +107,7 @@ const CodeBox = ({ header, children, shell }) => {
           {children}
         </Flex>
       </Box>
+      
     </Box>
   )
 }

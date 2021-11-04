@@ -11,7 +11,7 @@ import { formatMethodParams } from "../../utils/format-parameters"
 import useInView from "../../hooks/use-in-view"
 import NavigationContext from "../../context/navigation-context"
 import { formatRoute } from "../../utils/format-route"
-
+import copy from 'copy-to-clipboard'
 
 const Method = ({ data, section, pathname, api }) => {
   const { parameters, requestBody, description, method, summary } = data
@@ -93,6 +93,11 @@ const Method = ({ data, section, pathname, api }) => {
   --data '${body}'` : ""}`
       )
     }
+
+  const onCopyClicked = () => {
+    copy(getCurlCommand(requestBody), {format: 'text/plain'})
+  }
+
   return (
     <Flex
       py={"5vw"}
@@ -154,6 +159,7 @@ const Method = ({ data, section, pathname, api }) => {
             header={"cURL Example"}
             language={'shell'}
             method={convertToKebabCase(summary)}
+            onCopyClicked={() => onCopyClicked()}
             />
             </Box>
           <Box>
