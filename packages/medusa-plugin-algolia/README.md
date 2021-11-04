@@ -5,9 +5,6 @@ algolia Plugin for Medusa to search for products.
 ## Plugin Options
 ```
 {
-  config: {
-    host: [your algolia host],
-  },
   settings: {
     [indexName]: [algolia settings passed to algolia's `updateSettings()` method]
     // example
