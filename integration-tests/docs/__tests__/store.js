@@ -8,7 +8,8 @@ const giftCardTest = require("../test-input/store/gift-card")
 const productTest = require("../test-input/store/product")
 const swapTest = require("../test-input/store/swap")
 const regionTest= require("../test-input/store/region")
-const toTest = [cartTest, customerTest, giftCardTest, productTest, swapTest, regionTest]
+const orderTest = require('../test-input/store/order')
+const toTest = [cartTest, customerTest, giftCardTest, productTest, swapTest, regionTest, orderTest]
 
 jest.setTimeout(30000)
 
