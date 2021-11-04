@@ -22,6 +22,7 @@ const Method = ({ data, section, pathname, api }) => {
     rootMargin: "0px 0px -80% 0px",
     threshold: 0,
   })
+  const formattedParameters = formatMethodParams({ parameters, requestBody })
 
   useEffect(() => {
     if (isInView) {
@@ -42,42 +43,82 @@ const Method = ({ data, section, pathname, api }) => {
     }
   }
 
+  const getPropertiesFromObject = (
+    requiredProperties,
+    properties,
+    obj,
+    res,
+    getPropertyFromObject
+  ) => {
+    for (const element of requiredProperties) {
+      try {
+        res[element.property] = getPropertyFromObject(obj, element.property)
+      } catch (err) {}
+    }
+
+    if (Object.keys(res) === requiredProperties.map((p) => p.property)) {
+      return res
+    }
+
+    for (const element of properties) {
+      try {
+        res[element.property] = getPropertyFromObject(obj, element.property)
+        break
+      } catch (err) {}
+    }
+
+    return res
+  }
+
   const getCurlJson = (properties, prefix) => {
     if (!properties[0]) {
       return
     }
-    const res = {}
     const jsonObject = JSON.parse(jsonResponse)
     const pathParts = pathname.split("/")
+    const requiredProperties = formattedParameters.body.filter(
+      (p) => p.required
+    )
+    let res = requiredProperties.reduce((prev, curr) => {
+      prev[curr.property] = `${prefix}_${curr.property}`
+      return prev
+    }, {})
 
     // if the endpoint is for a relation i.e. /orders/:id/shipment drill down into the properties of the json object
     if (pathParts.length > 3) {
       const propertyIndex = pathParts[2].match(/{[A-Za-z_]+}/) ? 3 : 2
-      for (const element of properties) {
-        try {
-          const obj =
-            jsonObject[pathParts[propertyIndex].replace("-", "_")] ||
-            jsonObject[Object.keys(jsonObject)[0]][
-              pathParts[propertyIndex].replace("-", "_")
-            ]
-          res[element.property] = Array.isArray(obj)
-            ? obj.find((o) => o[element.property])[element.property]
-            : obj[element.property]
-          break
-        } catch (err) {}
-      }
+
+      try {
+        const obj =
+          jsonObject[pathParts[propertyIndex].replace("-", "_")] ||
+          jsonObject[Object.keys(jsonObject)[0]][
+            pathParts[propertyIndex].replace("-", "_")
+          ]
+
+        res = getPropertiesFromObject(
+          requiredProperties,
+          properties,
+          obj,
+          res,
+          (obj, property) =>
+            Array.isArray(obj)
+              ? obj.find((o) => o[property])[property]
+              : obj[property]
+        )
+      } catch (err) {}
     }
 
     // if nothing was found drilling down look at the top level properties
     if (JSON.stringify(res) === "{}") {
-      for (const element of properties) {
-        try {
-          res[element.property] =
-            jsonObject[element.property] ||
-            jsonObject[Object.keys(jsonObject)[0]][element.property]
-          break
-        } catch (err) {}
-      }
+      res = getPropertiesFromObject(
+        requiredProperties,
+        properties,
+        jsonObject,
+        res,
+        (jsonObject, property) =>
+          jsonObject[property] ||
+          jsonObject[Object.keys(jsonObject)[0]][property]
+      )
     }
 
     // Last resort, set the first property to an example
@@ -90,7 +131,7 @@ const Method = ({ data, section, pathname, api }) => {
 
   const getCurlCommand = (requestBody) => {
     const body = JSON.stringify(
-      getCurlJson(requestBody?.properties, `example_${section}`)
+      getCurlJson(requestBody.properties, `example_${section}`)
     )
     return `curl -X ${data.method.toUpperCase()} https://medusa-url.com/${api}${formatRoute(
       pathname
@@ -152,10 +193,7 @@ const Method = ({ data, section, pathname, api }) => {
             </Text>
           </Description>
           <Box mt={2}>
-            <Parameters
-              params={formatMethodParams({ parameters, requestBody })}
-              type={"Parameters"}
-            />
+            <Parameters params={formattedParameters} type={"Parameters"} />
           </Box>
         </Flex>
         <Box className="code">
