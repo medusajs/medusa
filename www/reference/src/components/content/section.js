@@ -20,11 +20,11 @@ const Section = ({ data, api }) => {
   )
 
   const endpoints = section.paths
-    .map(p => {
+    .map((p) => {
       let path = p.name
       let ep = []
 
-      p.methods.forEach(m => {
+      p.methods.forEach((m) => {
         ep.push({ method: m.method, endpoint: path })
       })
 

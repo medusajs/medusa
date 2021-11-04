@@ -43,55 +43,66 @@ const Method = ({ data, section, pathname, api }) => {
   }
 
   const getCurlJson = (properties, prefix) => {
-    if(!properties[0])
-    {
+    if (!properties[0]) {
       return
     }
     const res = {}
     const jsonObject = JSON.parse(jsonResponse)
-    const pathParts = pathname.split('/')
-    
+    const pathParts = pathname.split("/")
+
     // if the endpoint is for a relation i.e. /orders/:id/shipment drill down into the properties of the json object
-    if(pathParts.length > 3)
-    {
+    if (pathParts.length > 3) {
       const propertyIndex = pathParts[2].match(/{[A-Za-z_]+}/) ? 3 : 2
-      for(const element of properties) {
-        try{
-            const obj = jsonObject[pathParts[propertyIndex].replace('-', '_')] || jsonObject[Object.keys(jsonObject)[0]][pathParts[propertyIndex].replace('-', '_')]
-            res[element.property] = Array.isArray(obj) ? obj.find(o => o[element.property])[element.property] : obj[element.property]
-            break;
-        } catch(err) {}
+      for (const element of properties) {
+        try {
+          const obj =
+            jsonObject[pathParts[propertyIndex].replace("-", "_")] ||
+            jsonObject[Object.keys(jsonObject)[0]][
+              pathParts[propertyIndex].replace("-", "_")
+            ]
+          res[element.property] = Array.isArray(obj)
+            ? obj.find((o) => o[element.property])[element.property]
+            : obj[element.property]
+          break
+        } catch (err) {}
       }
     }
 
     // if nothing was found drilling down look at the top level properties
-    if(JSON.stringify(res) === '{}')
-    {
-      for(const element of properties) {
-        try{
-            res[element.property] = jsonObject[element.property] || jsonObject[Object.keys(jsonObject)[0]][element.property]
-            break;
-        } catch(err) {}
+    if (JSON.stringify(res) === "{}") {
+      for (const element of properties) {
+        try {
+          res[element.property] =
+            jsonObject[element.property] ||
+            jsonObject[Object.keys(jsonObject)[0]][element.property]
+          break
+        } catch (err) {}
       }
     }
 
     // Last resort, set the first property to an example
-    if(JSON.stringify(res) === '{}'){
+    if (JSON.stringify(res) === "{}") {
       res[properties[0].property] = `${prefix}_${properties[0].property}`
     }
-    
+
     return res
   }
 
   const getCurlCommand = (requestBody) => {
-    const body = JSON.stringify(getCurlJson(requestBody?.properties, `example_${section}`))
-    return (
-`curl -X ${data.method.toUpperCase()} https://medusa-url.com/${api}${formatRoute(pathname)} \\
-  --header "Authorization: Bearer <ACCESS TOKEN>" ${data.method.toUpperCase() === 'POST' && requestBody.properties?.length > 0 ? `\\
+    const body = JSON.stringify(
+      getCurlJson(requestBody?.properties, `example_${section}`)
+    )
+    return `curl -X ${data.method.toUpperCase()} https://medusa-url.com/${api}${formatRoute(
+      pathname
+    )} \\
+  --header "Authorization: Bearer <ACCESS TOKEN>" ${
+    data.method.toUpperCase() === "POST" && requestBody.properties?.length > 0
+      ? `\\
   --header "content-type: application/json" \\
-  --data '${body}'` : ""}`
-      )
-    }
+  --data '${body}'`
+      : ""
+  }`
+  }
 
   return (
     <Flex
@@ -149,21 +160,21 @@ const Method = ({ data, section, pathname, api }) => {
         </Flex>
         <Box className="code">
           <Box>
-          <JsonContainer
-            json={getCurlCommand(requestBody)}
-            header={"cURL Example"}
-            language={'shell'}
-            allowCopy={true}
-            method={convertToKebabCase(summary)}
+            <JsonContainer
+              json={getCurlCommand(requestBody)}
+              header={"cURL Example"}
+              language={"shell"}
+              allowCopy={true}
+              method={convertToKebabCase(summary)}
             />
-            </Box>
+          </Box>
           <Box>
-          <JsonContainer
-            json={jsonResponse}
-            header={"RESPONSE"}
-            method={convertToKebabCase(summary)}
+            <JsonContainer
+              json={jsonResponse}
+              header={"RESPONSE"}
+              method={convertToKebabCase(summary)}
             />
-            </Box>
+          </Box>
         </Box>
       </ResponsiveContainer>
     </Flex>

@@ -8,7 +8,11 @@ import CodeBox from "./code-box"
 const JsonContainer = ({ json, header, language, allowCopy }) => {
   const jsonRef = useRef()
 
-  const codeClass = language ? language === 'shell' ? 'language-shell' : 'language-json' : 'language-json'
+  const codeClass = language
+    ? language === "shell"
+      ? "language-shell"
+      : "language-json"
+    : "language-json"
 
   //INVESTIGATE: @theme-ui/prism might be a better solution
   useEffect(() => {
@@ -21,7 +25,12 @@ const JsonContainer = ({ json, header, language, allowCopy }) => {
 
   return (
     <Box ref={jsonRef} sx={{ position: "sticky", top: "20px" }}>
-      <CodeBox allowCopy={allowCopy} content={json} shell={language === 'shell'} header={header}>
+      <CodeBox
+        allowCopy={allowCopy}
+        content={json}
+        shell={language === "shell"}
+        header={header}
+      >
         <pre>
           <code className={codeClass}>{json}</code>
         </pre>

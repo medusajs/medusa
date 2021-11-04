@@ -2,7 +2,6 @@ import React from "react"
 import { Flex, Box, Text } from "theme-ui"
 import CopyToClipboard from "../CopyToClipboard"
 
-
 const CodeBox = ({ header, children, shell, content, allowCopy }) => {
   return (
     <Box
@@ -25,17 +24,25 @@ const CodeBox = ({ header, children, shell, content, allowCopy }) => {
           borderRadius: "8px 8px 0 0",
         }}
       >
-        <Flex sx={{ height: '100%', justifyContent: 'space-between', alignItems: 'baseline'}}>
-
-        <Text variant="small" sx={{ fontWeight: "400" }}>
-          {header.toUpperCase()}
-        </Text>
-        {allowCopy ? 
-          <CopyToClipboard copyText={content} tooltipText={'Copy to clipboard'} />
-            : 
-          <></>}
+        <Flex
+          sx={{
+            height: "100%",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+          }}
+        >
+          <Text variant="small" sx={{ fontWeight: "400" }}>
+            {header.toUpperCase()}
+          </Text>
+          {allowCopy ? (
+            <CopyToClipboard
+              copyText={content}
+              tooltipText={"Copy to clipboard"}
+            />
+          ) : (
+            <></>
+          )}
         </Flex>
-        
       </Box>
       <Box
         sx={{
@@ -57,7 +64,6 @@ const CodeBox = ({ header, children, shell, content, allowCopy }) => {
           {children}
         </Flex>
       </Box>
-      
     </Box>
   )
 }
