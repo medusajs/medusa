@@ -43,6 +43,21 @@ const Method = ({ data, section, pathname, api }) => {
     }
   }
 
+  const getExampleValues = (type, defaultExample) => {
+    switch (type) {
+      case "integer":
+        return 1000
+      case "boolean":
+        return false
+      case "object":
+        return {}
+      default:
+        return defaultExample
+    }
+  }
+
+  // extract required properties or a non-required property from a json object
+  // based on the extraction method "getPropertyFromObject"
   const getPropertiesFromObject = (
     requiredProperties,
     properties,
@@ -70,17 +85,17 @@ const Method = ({ data, section, pathname, api }) => {
     return res
   }
 
-  const getCurlJson = (properties, prefix) => {
+  const getCurlJson = (properties, prefix, bodyParameters) => {
     if (!properties[0]) {
       return
     }
     const jsonObject = JSON.parse(jsonResponse)
     const pathParts = pathname.split("/")
-    const requiredProperties = formattedParameters.body.filter(
-      (p) => p.required
-    )
+    const requiredProperties = bodyParameters.filter((p) => p.required)
+
+    //populate the result with all required properties
     let res = requiredProperties.reduce((prev, curr) => {
-      prev[curr.property] = `${prefix}_${curr.property}`
+      prev[curr.property] = getExampleValues(curr.type, `${prefix}_${curr.property}`)
       return prev
     }, {})
 
@@ -131,7 +146,11 @@ const Method = ({ data, section, pathname, api }) => {
 
   const getCurlCommand = (requestBody) => {
     const body = JSON.stringify(
-      getCurlJson(requestBody.properties, `example_${section}`)
+      getCurlJson(
+        requestBody.properties,
+        `example_${section}`,
+        formattedParameters.body
+      )
     )
     return `curl -X ${data.method.toUpperCase()} https://medusa-url.com/${api}${formatRoute(
       pathname
