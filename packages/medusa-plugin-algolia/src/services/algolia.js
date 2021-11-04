@@ -1,38 +1,43 @@
-import { SearchService } from "medusa-interfaces";
-import algoliasearch from "algoliasearch";
-import { indexTypes } from "medusa-core-utils";
-import { transformProduct } from "../utils/transform-product";
+import { SearchService } from "medusa-interfaces"
+import algoliasearch from "algoliasearch"
+import { indexTypes } from "medusa-core-utils"
+import { transformProduct } from "../utils/transform-product"
 
 class AlgoliaService extends SearchService {
   constructor(container, options) {
-    super();
+    super()
 
-    this.options_ = options;
-    const { application_id, admin_api_key } = this.options_;
+    this.options_ = options
+    const { application_id, admin_api_key } = this.options_
 
-    if (!application_id) throw new Error("Please provide a valid applicationId")
+    if (!application_id) {
+      throw new Error("Please provide a valid applicationId")
+    }
 
-    if (!admin_api_key) throw new Error("Please provide a valid adminApiKey")
+    if (!admin_api_key) {
+      throw new Error("Please provide a valid adminApiKey")
+    }
 
     this.client_ = algoliasearch(application_id, admin_api_key)
   }
 
   /**
-   *
+   * Add two numbers.
    * @param {string} indexName - The name of the index
    * @param {*} options - not required just to match the schema we are used it
-   * @returns
+   * @return {*}
    */
   createIndex(indexName, options = {}) {
-    return this.client_.initIndex(indexName);
+    return this.client_.initIndex(indexName)
   }
 
   /**
    * Used to get an index
-   * @param indexName {string} - the index name.
+   * @param {string} indexName  - the index name.
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   getIndex(indexName) {
+    let hits = []
     return this.client_
       .initIndex(indexName)
       .browseObjects({
@@ -49,82 +54,84 @@ class AlgoliaService extends SearchService {
    * @param {string} indexName
    * @param {Array} documents - products list array
    * @param {*} type
-   * @returns
+   * @return {*}
    */
   addDocuments(indexName, documents, type) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents);
-    return this.client_.initIndex(indexName).saveObjects(transformedDocuments);
+    const transformedDocuments = this.getTransformedDocuments(type, documents)
+    return this.client_.initIndex(indexName).saveObjects(transformedDocuments)
   }
 
   /**
    * Used to replace documents
-   * @param indexName {string} - the index name.
-   * @param documents {Object} - array of document objects that will replace existing documents
-   * @param type {Array.<Object>} - type of documents to be replaced (e.g: products, regions, orders, etc)
+   * @param {string} indexName  - the index name.
+   * @param {Object} documents  - array of document objects that will replace existing documents
+   * @param {Array.<Object>} type  - type of documents to be replaced (e.g: products, regions, orders, etc)
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   replaceDocuments(indexName, documents, type) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents);
+    const transformedDocuments = this.getTransformedDocuments(type, documents)
     return this.client_
       .initIndex(indexName)
-      .replaceAllObjects(transformedDocuments);
+      .replaceAllObjects(transformedDocuments)
   }
 
   /**
    * Used to delete document
-   * @param indexName {string} - the index name
-   * @param document_id {string} - the id of the document
+   * @param {string} indexName  - the index name
+   * @param {string} document_id  - the id of the document
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   deleteDocument(indexName, document_id) {
-    return this.client_.initIndex(indexName).deleteObject(document_id);
+    return this.client_.initIndex(indexName).deleteObject(document_id)
   }
 
   /**
    * Used to delete all documents
-   * @param indexName {string} - the index name
+   * @param {string} indexName  - the index name
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   deleteAllDocuments(indexName) {
-    return this.client_.initIndex(indexName).delete();
+    return this.client_.initIndex(indexName).delete()
   }
 
   /**
    * Used to search for a document in an index
-   * @param indexName {string} - the index name
-   * @param query {string} - the search query
-   * @param options
+   * @param {string} indexName - the index name
+   * @param {string} query  - the search query
+   * @param {*} options
    * - any options passed to the request object other than the query and indexName
    * - additionalOptions contain any provider specific options
-   * @return {Promise<{ hits: any[]; [k: string]: any; }>} returns response from search engine provider
+   * @return {*} - returns response from search engine provider
    */
   search(indexName, query, options) {
-    return this.client_.initIndex(indexName).search(query, options);
+    return this.client_.initIndex(indexName).search(query, options)
   }
 
   /**
    * Used to update the settings of an index
-   * @param indexName {string} - the index name
-   * @param settings {object} - settings object
+   * @param  {string} indexName - the index name
+   * @param {object} settings  - settings object
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   updateSettings(indexName, settings) {
-    return this.client_.initIndex(indexName).setSettings(settings);
+    return this.client_.initIndex(indexName).setSettings(settings)
   }
 
   getTransformedDocuments(type, documents) {
     switch (type) {
       case indexTypes.products:
-        return this.transformProducts(documents);
+        return this.transformProducts(documents)
       default:
-        return documents;
+        return documents
     }
   }
 
   transformProducts(products) {
-    if (!products) return [];
-    return products.map(transformProduct);
+    if (!products) {
+      return []
+    }
+    return products.map(transformProduct)
   }
 }
 
-export default AlgoliaService;
+export default AlgoliaService
