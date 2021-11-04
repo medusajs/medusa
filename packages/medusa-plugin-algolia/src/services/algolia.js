@@ -104,6 +104,10 @@ class AlgoliaService extends SearchService {
    * @return {*} - returns response from search engine provider
    */
   search(indexName, query, options) {
+    if (options.additionalOptions) {
+      options = { ...options, ...options.additionalOptions }
+      delete options.additionalOptions
+    }
     return this.client_.initIndex(indexName).search(query, options)
   }
 
