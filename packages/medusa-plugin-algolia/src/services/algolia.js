@@ -8,25 +8,22 @@ class AlgoliaService extends SearchService {
     super()
 
     this.options_ = options
-    const { applicationId, adminApiKey }= this.options_
+    const { applicationId, adminApiKey } = this.options_
 
-    if(!applicationId)
-      throw new Error("Please provide a valid applicationId");
+    if (!applicationId) throw new Error("Please provide a valid applicationId");
 
-    if(!adminApiKey)
-      throw new Error("Please provide a valid adminApiKey");
-
+    if (!adminApiKey) throw new Error("Please provide a valid adminApiKey");
 
     this.client_ = algoliasearch(applicationId, adminApiKey);
   }
-  
+
   /**
-   * 
+   *
    * @param {string} indexName - The name of the index
-   * @param {*} options - not required just to match the schema we are used it 
-   * @returns 
+   * @param {*} options - not required just to match the schema we are used it
+   * @returns
    */
-  createIndex(indexName, options={}) {
+  createIndex(indexName, options = {}) {
     return this.client_.initIndex(indexName)
   }
 
@@ -36,21 +33,23 @@ class AlgoliaService extends SearchService {
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   getIndex(indexName) {
-    return this.client_.initIndex(indexName).browseObjects({
-      query: indexName,
-      batch: batch => {
-        hits = hits.concat(batch);
-      }
-    }).then(() => hits);
+    return this.client_
+      .initIndex(indexName)
+      .browseObjects({
+        query: indexName,
+        batch: (batch) => {
+          hits = hits.concat(batch);
+        },
+      })
+      .then(() => hits);
   }
 
-
   /**
-   * 
-   * @param {string} indexName 
+   *
+   * @param {string} indexName
    * @param {Array} documents - products list array
-   * @param {*} type 
-   * @returns 
+   * @param {*} type
+   * @returns
    */
   addDocuments(indexName, documents, type) {
     const transformedDocuments = this.getTransformedDocuments(type, documents)
@@ -64,12 +63,14 @@ class AlgoliaService extends SearchService {
    * @param type {Array.<Object>} - type of documents to be replaced (e.g: products, regions, orders, etc)
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-   replaceDocuments(indexName, documents, type) {
+  replaceDocuments(indexName, documents, type) {
     const transformedDocuments = this.getTransformedDocuments(type, documents)
-    return this.client_.initIndex(indexName).replaceAllObjects(transformedDocuments)
-   }
+    return this.client_
+      .initIndex(indexName)
+      .replaceAllObjects(transformedDocuments)
+  }
 
-   /**
+  /**
    * Used to delete document
    * @param indexName {string} - the index name
    * @param document_id {string} - the id of the document
@@ -84,11 +85,11 @@ class AlgoliaService extends SearchService {
    * @param indexName {string} - the index name
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-   deleteAllDocuments(indexName) {
-     return this.client_.initIndex(indexName).delete()
-   }
+  deleteAllDocuments(indexName) {
+    return this.client_.initIndex(indexName).delete()
+  }
 
-   /**
+  /**
    * Used to search for a document in an index
    * @param indexName {string} - the index name
    * @param query {string} - the search query
@@ -107,9 +108,9 @@ class AlgoliaService extends SearchService {
    * @param settings {object} - settings object
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-   updateSettings(indexName, settings) {
+  updateSettings(indexName, settings) {
     return this.client_.initIndex(indexName).setSettings(settings)
-   }
+  }
 
   getTransformedDocuments(type, documents) {
     switch (type) {
