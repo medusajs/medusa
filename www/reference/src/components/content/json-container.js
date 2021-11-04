@@ -5,7 +5,7 @@ import Prism from "prismjs"
 import "prismjs/components/prism-json"
 import CodeBox from "./code-box"
 
-const JsonContainer = ({ json, header, language, onCopyClicked }) => {
+const JsonContainer = ({ json, header, language, allowCopy }) => {
   const jsonRef = useRef()
 
   const codeClass = language ? language === 'shell' ? 'language-shell' : 'language-json' : 'language-json'
@@ -21,7 +21,7 @@ const JsonContainer = ({ json, header, language, onCopyClicked }) => {
 
   return (
     <Box ref={jsonRef} sx={{ position: "sticky", top: "20px" }}>
-      <CodeBox copyClicked={onCopyClicked} shell={language === 'shell'} header={header}>
+      <CodeBox allowCopy={allowCopy} content={json} shell={language === 'shell'} header={header}>
         <pre>
           <code className={codeClass}>{json}</code>
         </pre>

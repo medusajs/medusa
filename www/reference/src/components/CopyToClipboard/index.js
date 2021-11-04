@@ -3,6 +3,7 @@ import { Flex, Box, Text } from "theme-ui"
 import Clipboard from '../icons/clipboard'
 import ReactTooltip from "react-tooltip"
 import styled from "@emotion/styled"
+import copy from 'copy-to-clipboard'
 
 const StyledTooltip = ({id, text}) => {
   const StyledTooltip = styled(ReactTooltip)`
@@ -35,10 +36,14 @@ const StyledTooltip = ({id, text}) => {
   )
 }
 
-const CopyToClipboard = ({text, onClick, tooltipText}) => {
+const CopyToClipboard = ({text, copyText, tooltipText}) => {
   const [copied, setCopied] = useState(false)
   const id = (Math.random()*1000000).toString()
   const forceTooltipRemount = copied ? "content-1" : "content-2"
+
+  const onCopyClicked = () => {
+    copy(copyText || tooltipText, {format: 'text/plain'})
+  }
 
   return (
     <Box
@@ -46,7 +51,7 @@ const CopyToClipboard = ({text, onClick, tooltipText}) => {
       onMouseLeave={() => {setCopied(false)}}
       onClick={() => {
         setCopied(true)
-        onClick()
+        onCopyClicked()
       }} 
       data-for={id}
       data-tip={forceTooltipRemount}

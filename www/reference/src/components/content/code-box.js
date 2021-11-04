@@ -3,7 +3,7 @@ import { Flex, Box, Text } from "theme-ui"
 import CopyToClipboard from "../CopyToClipboard"
 
 
-const CodeBox = ({ header, children, shell, copyClicked }) => {
+const CodeBox = ({ header, children, shell, content, allowCopy }) => {
   return (
     <Box
       sx={{
@@ -30,8 +30,8 @@ const CodeBox = ({ header, children, shell, copyClicked }) => {
         <Text variant="small" sx={{ fontWeight: "400" }}>
           {header.toUpperCase()}
         </Text>
-        {shell ? 
-          <CopyToClipboard onClick={copyClicked} tooltipText={'Copy to clipboard'} />
+        {allowCopy ? 
+          <CopyToClipboard copyText={content} tooltipText={'Copy to clipboard'} />
             : 
           <></>}
         </Flex>
