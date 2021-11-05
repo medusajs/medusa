@@ -1,0 +1,70 @@
+{
+  "order": {
+    "id": "order_01FKQQNCN28FK3XSDSZTBKNQHV",
+    "status": "pending",
+    "fulfillment_status": "not_fulfilled",
+    "payment_status": "not_paid",
+    "display_id": 1,
+    "cart_id": null,
+    "customer_id": "cus_01FKQQNCMNXBWJBT1Q7CY38W3C",
+    "customer": {
+      "id": "cus_01FKQQNCMNXBWJBT1Q7CY38W3C",
+      "email": "ada@com.com",
+      "first_name": "Ada",
+      "last_name": "Lovelace",
+      "billing_address_id": null,
+      "password_hash": "c2NyeXB0AAEAAAABAAAAAYSFGUgtjp/jqNR4zdFUBG7wMCvhzUud+TLHnA/EzpmuBy0qmmezX0EONSDyW2BMOf0dN+VXmfU9+7GJBHYmtoe4kLHcAsEpQ86X2KwGZ26D",
+      "phone": null,
+      "has_account": true,
+      "created_at": "2021-11-05T09:42:48.208Z",
+      "updated_at": "2021-11-05T09:42:48.208Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "email": "ada@com.com",
+    "shipping_address": null,
+    "region_id": "reg_01FKQQNCKMX20GXJXCQXSPQWGX",
+    "region": {
+      "id": "reg_01FKQQNCKMX20GXJXCQXSPQWGX",
+      "name": "Scandinavia",
+      "currency_code": "dkk",
+      "tax_rate": "0",
+      "tax_code": null,
+      "payment_providers": [
+        {
+          "id": "test-pay",
+          "is_installed": true
+        }
+      ],
+      "fulfillment_providers": [
+        {
+          "id": "test-ful",
+          "is_installed": true
+        }
+      ],
+      "created_at": "2021-11-05T09:42:48.179Z",
+      "updated_at": "2021-11-05T09:42:48.179Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "currency_code": "dkk",
+    "tax_rate": 0,
+    "discounts": [],
+    "gift_cards": [],
+    "shipping_methods": [],
+    "payments": [],
+    "fulfillments": [],
+    "refunds": [],
+    "swaps": [],
+    "items": [],
+    "gift_card_transactions": [],
+    "created_at": "2021-11-05T09:42:48.226Z",
+    "shipping_total": 0,
+    "gift_card_total": 0,
+    "discount_total": 0,
+    "tax_total": 0,
+    "subtotal": 0,
+    "total": 0,
+    "refunded_total": 0
+  }
+}

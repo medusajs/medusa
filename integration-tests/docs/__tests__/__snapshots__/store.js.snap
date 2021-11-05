@@ -146,6 +146,52 @@ Object {
 }
 `;
 
+exports[`GetOrdersOrder 1`] = `
+Object {
+  "order": Object {
+    "cart_id": null,
+    "created_at": Any<String>,
+    "currency_code": "dkk",
+    "customer": ObjectContaining {
+      "created_at": Any<String>,
+      "id": StringMatching /\\^cus_\\*/,
+      "updated_at": Any<String>,
+    },
+    "customer_id": StringMatching /\\^cus_\\*/,
+    "discount_total": 0,
+    "discounts": Array [],
+    "display_id": 1,
+    "email": "ada@com.com",
+    "fulfillment_status": "not_fulfilled",
+    "fulfillments": Array [],
+    "gift_card_total": 0,
+    "gift_card_transactions": Array [],
+    "gift_cards": Array [],
+    "id": StringMatching /\\^order_\\*/,
+    "items": Array [],
+    "payment_status": "not_paid",
+    "payments": Array [],
+    "refunded_total": 0,
+    "refunds": Array [],
+    "region": ObjectContaining {
+      "created_at": Any<String>,
+      "id": StringMatching /\\^reg_\\*/,
+      "updated_at": Any<String>,
+    },
+    "region_id": StringMatching /\\^reg_\\*/,
+    "shipping_address": null,
+    "shipping_methods": Array [],
+    "shipping_total": 0,
+    "status": "pending",
+    "subtotal": 0,
+    "swaps": Array [],
+    "tax_rate": 0,
+    "tax_total": 0,
+    "total": 0,
+  },
+}
+`;
+
 exports[`GetProductsProduct 1`] = `
 Object {
   "product": Object {
