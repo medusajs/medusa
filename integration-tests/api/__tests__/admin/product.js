@@ -157,16 +157,18 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          status: "proposed",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          status: "published",
-        }),
-      ])
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            status: "proposed",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            status: "published",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -406,6 +408,28 @@ describe("/admin/products", () => {
       expect(response.data.products).toMatchSnapshot([
         {
           id: expect.stringMatching(/^test-*/),
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          type: expect.any(Object),
+          collection: expect.any(Object),
+          options: expect.any(Array),
+          tags: [],
+          variants: expect.any(Array),
+          updated_at: expect.any(String),
+        },
+        {
+          id: expect.stringMatching(/^test-*/),
+          profile_id: expect.stringMatching(/^sp_*/),
+          created_at: expect.any(String),
+          type: expect.any(Object),
+          collection: expect.any(Object),
+          options: expect.any(Array),
+          tags: expect.any(Array),
+          variants: [],
+          updated_at: expect.any(String),
+        },
+        {
+          id: expect.stringMatching(/^test-*/),
           created_at: expect.any(String),
           options: [
             {
@@ -447,7 +471,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant_2", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_1", // expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -470,7 +494,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant_1", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_2", // expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -520,7 +544,7 @@ describe("/admin/products", () => {
           options: [],
           variants: [
             {
-              id: "test-variant_4", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_3", // expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -543,7 +567,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant_3", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_4", // expect.stringMatching(/^test-variant*/),
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),

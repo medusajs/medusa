@@ -166,7 +166,7 @@ describe("/store/collections", () => {
               expect.objectContaining({
                 id: "test-variant-copy",
                 prices: expect.arrayContaining([
-                  expect.objectContaining({ id: "test-price" }),
+                  expect.objectContaining({ id: "test-price-copy" }),
                 ]),
               }),
             ]),
@@ -183,7 +183,7 @@ describe("/store/collections", () => {
       )
 
       expect(response.data.products.length).toEqual(1)
-      expect(response.data.products[0].id).toEqual("other-product")
+      expect(response.data.products[0].id).toEqual("test-other-product")
     })
 
     it("respects search on tag id", async () => {
@@ -194,7 +194,7 @@ describe("/store/collections", () => {
       )
 
       expect(response.data.products.length).toEqual(1)
-      expect(response.data.products[0].id).toEqual("other-product")
+      expect(response.data.products[0].id).toEqual("test-other-product")
     })
 
     it("respects search on tag id and title", async () => {
@@ -228,7 +228,7 @@ describe("/store/collections", () => {
           )
 
           expect(response.data.products[0].id).toEqual("test-product-copy")
-          expect(response.data.products[1].id).toEqual("other-product")
+          expect(response.data.products[1].id).toEqual("test-other-product")
         })
 
         it(`orders DESC for ${order}`, async () => {
@@ -238,7 +238,7 @@ describe("/store/collections", () => {
             `/store/collections/test-collection/products?order=-${order}`
           )
 
-          expect(response.data.products[0].id).toEqual("other-product")
+          expect(response.data.products[0].id).toEqual("test-other-product")
           expect(response.data.products[1].id).toEqual("test-product-copy")
         })
       }

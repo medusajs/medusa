@@ -202,7 +202,7 @@ module.exports = async (connection, data = {}) => {
     upc: "test-upc-copy",
     barcode: "test-barcode-copy",
     product_id: "test-product-copy",
-    prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
+    prices: [{ id: "test-price-copy", currency_code: "usd", amount: 100 }],
     options: [
       {
         id: "test-variant-option-copy",
@@ -213,7 +213,7 @@ module.exports = async (connection, data = {}) => {
   })
 
   const pcopy2 = manager.create(Product, {
-    id: "other-product",
+    id: "test-other-product",
     title: "Collection Product 2",
     handle: "Collection Handle 2",
     status: "published",
