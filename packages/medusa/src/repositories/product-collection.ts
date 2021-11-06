@@ -6,7 +6,6 @@ import {
   Repository,
 } from "typeorm"
 import { ProductCollection } from "../models/product-collection"
-import prefix from "../utils/prefix-object-key"
 
 type DefaultWithoutRelations = Omit<
   FindManyOptions<ProductCollection>,
@@ -30,21 +29,12 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
     } else {
-      // add the column used for ordering, if we are ordering
-      const fields = ["product_collection.id"]
-      let { order } = idsOrOptionsWithoutRelations
-      if (order) {
-        // we must modify the order to avoid ambiguity of title:
-        order = prefix(order, "product_collection")
-        fields.push(Object.keys(order)[0])
-      }
-
       const qb = this.createQueryBuilder("product_collection")
-        .select(fields)
+        .select(["product_collection.id"])
         .where(idsOrOptionsWithoutRelations.where)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-        .orderBy(order)
+        .orderBy(idsOrOptionsWithoutRelations.order)
 
       entities = await qb.getMany()
     }
@@ -91,9 +81,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
             "product_collections.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
             { entitiesIds }
           )
-          .orderBy(
-            prefix(idsOrOptionsWithoutRelations.order, "product_collections")
-          )
+          .orderBy(idsOrOptionsWithoutRelations.order)
           .getMany()
       })
     ).then(flatten)
