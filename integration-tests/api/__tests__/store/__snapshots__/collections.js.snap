@@ -32,7 +32,11 @@ Object {
     },
   ],
   "count": 3,
+<<<<<<< HEAD
   "limit": 10,
+=======
+  "limit": 20,
+>>>>>>> imported brackets
   "offset": 0,
 }
 `;

@@ -79,6 +79,6 @@ export class StoreGetCollectionsParams {
   tags?: string[]
 
   @IsEnum(OrderingEnum)
-  @IsOptional
+  @IsOptional()
   order: OrderingEnum = OrderingEnum.asc_title
 }
