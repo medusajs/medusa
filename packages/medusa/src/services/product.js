@@ -106,7 +106,8 @@ class ProductService extends BaseService {
       const raw = await qb.getMany()
       return productRepo.findWithRelations(
         relations,
-        raw.map((i) => i.id)
+        raw.map((i) => i.id),
+        query.withDeleted ?? false
       )
     }
 
@@ -140,7 +141,8 @@ class ProductService extends BaseService {
 
       const products = await productRepo.findWithRelations(
         relations,
-        raw.map((i) => i.id)
+        raw.map((i) => i.id),
+        query.withDeleted ?? false
       )
       return [products, count]
     }
@@ -799,7 +801,7 @@ class ProductService extends BaseService {
     delete where.description
     delete where.title
 
-    return productRepo
+    let qb = productRepo
       .createQueryBuilder("product")
       .leftJoinAndSelect("product.variants", "variant")
       .leftJoinAndSelect("product.collection", "collection")
@@ -814,6 +816,12 @@ class ProductService extends BaseService {
             .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
         })
       )
+
+    if (query.withDeleted) {
+      qb = qb.withDeleted()
+    }
+
+    return qb
   }
 }
 
