@@ -16,6 +16,7 @@ const notificationTest = require("../test-input/admin/notification")
 const collectionTest = require("../test-input/admin/collection")
 const shippingOptionTest = require("../test-input/admin/shipping-option")
 const adminUserTest = require("../test-input/admin/user")
+const shippingProfileTest = require("../test-input/admin/shipping-profile")
 
 const toTest = [
   customerTest,
@@ -30,6 +31,7 @@ const toTest = [
   notificationTest,
   shippingOptionTest,
   adminUserTest,
+  shippingProfileTest,
 ]
 
 jest.setTimeout(30000)
