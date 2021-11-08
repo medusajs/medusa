@@ -31,9 +31,7 @@ import { Region } from "../../../.."
 export default async (req, res) => {
   const validated = await validator(AdminDeleteRegionRequest, req.params)
 
-  const regionService: Region = req.scope.resolve(
-    "regionService"
-  ) as RegionService
+  const regionService = req.scope.resolve("regionService") as RegionService
 
   await regionService.delete(validated.region_id)
 

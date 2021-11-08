@@ -24,7 +24,7 @@ import RegionService from "../../../../services/region"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionRequest, req.query)
+  const validated = await validator(AdminGetRegionRequest, req.params)
 
   const { region_id } = validated
   const regionService = req.scope.resolve("regionService") as RegionService

@@ -27,7 +27,7 @@ import RegionService from "../../../../services/region"
 export default async (req, res) => {
   const validated = await validator(
     AdminRemovePaymentProviderFromRegionRequest,
-    req.query
+    req.params
   )
 
   const { region_id, provider_id } = validated

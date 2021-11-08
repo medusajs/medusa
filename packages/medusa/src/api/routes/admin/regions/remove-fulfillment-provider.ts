@@ -26,7 +26,7 @@ import RegionService from "../../../../services/region"
 export default async (req, res) => {
   const validated = await validator(
     AdminRemoveFulfillmentProviderFromRegionRequest,
-    req.query
+    req.params
   )
   const { region_id, provider_id } = validated
   const regionService = req.scope.resolve("regionService") as RegionService

@@ -57,7 +57,7 @@ import RegionService from "../../../../services/region"
  */
 export default async (req, res) => {
   const { region_id } = req.params
-  const validated = await validator(AdminUpdateRegionRequest, req.query)
+  const validated = await validator(AdminUpdateRegionRequest, req.body)
 
   const regionService = req.scope.resolve("regionService") as RegionService
   await regionService.update(region_id, validated)
