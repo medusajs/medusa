@@ -14,6 +14,7 @@ import returnRoutes from "./returns"
 import returnReasonRoutes from "./return-reasons"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
+import collectionRoutes from "./collections"
 import giftCardRoutes from "./gift-cards"
 
 const route = Router()
@@ -32,6 +33,7 @@ export default (app, container, config) => {
   route.use(middlewares.authenticateCustomer())
 
   authRoutes(route)
+  collectionRoutes(route)
   customerRoutes(route, container)
   productRoutes(route)
   orderRoutes(route)

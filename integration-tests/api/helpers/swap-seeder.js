@@ -1,15 +1,8 @@
 const {
-  ShippingProfile,
-  Customer,
-  MoneyAmount,
+  Discount,
+  DiscountRule,
   LineItem,
-  Country,
-  ShippingOption,
   ShippingMethod,
-  Product,
-  ProductVariant,
-  Region,
-  Payment,
   Order,
   Swap,
   Cart,
@@ -331,6 +324,110 @@ module.exports = async (connection, data = {}) => {
     id: "test-method-swap-order",
     shipping_option_id: "test-option",
     order_id: "order-with-swap",
+    price: 1000,
+    data: {},
+  })
+
+  await createSwap({ id: "disc-swap" }, manager)
+}
+
+const createSwap = async (options, manager) => {
+  const swapId = options.id
+
+  const dRule = manager.create(DiscountRule, {
+    id: `${swapId}-cart-discount-rule`,
+    description: "Ten percent rule",
+    type: "percentage",
+    value: 10,
+    allocation: "total",
+  })
+  await manager.save(dRule)
+
+  const discount = manager.create(Discount, {
+    code: `${swapId}`,
+    is_dynamic: false,
+    is_disabled: false,
+    rule: dRule,
+  })
+  await manager.save(discount)
+
+  const cart = manager.create(Cart, {
+    id: `${swapId}-cart`,
+    customer_id: "test-customer",
+    email: "test-customer@email.com",
+    shipping_address_id: "test-shipping-address",
+    billing_address_id: "test-billing-address",
+    region_id: "test-region",
+    type: "swap",
+    discounts: [discount],
+    metadata: {
+      swap_id: swapId,
+      parent_order_id: "order-with-swap",
+    },
+  })
+
+  await manager.save(cart)
+
+  const swapTemplate = async () => {
+    return {
+      order_id: `order-with-swap`,
+      fulfillment_status: "fulfilled",
+      payment_status: "not_paid",
+      cart_id: cart.id,
+    }
+  }
+
+  const swapWithReturn = manager.create(Swap, {
+    id: swapId,
+    return_order: {
+      id: `${swapId}-return-id`,
+      status: "requested",
+      refund_amount: 0,
+    },
+    ...(await swapTemplate(swapId)),
+  })
+
+  await manager.save(swapWithReturn)
+  const li = manager.create(LineItem, {
+    id: `${swapId}-return-item-1`,
+    fulfilled_quantity: 1,
+    title: "Return Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    order_id: "order-with-swap",
+    cart_id: cart.id,
+  })
+
+  await manager.save(li)
+
+  const li2 = manager.create(LineItem, {
+    id: `${swapId}-test-item-many`,
+    fulfilled_quantity: 4,
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 4,
+    variant_id: "test-variant",
+    order_id: "order-with-swap",
+  })
+
+  await manager.save(li2)
+
+  const return_item1 = manager.create(LineItem, {
+    ...li,
+    unit_price: -1 * li.unit_price,
+  })
+
+  await manager.save(return_item1)
+
+  await manager.insert(ShippingMethod, {
+    id: `${swapId}-test-method`,
+    shipping_option_id: "test-option",
+    cart_id: cart.id,
     price: 1000,
     data: {},
   })

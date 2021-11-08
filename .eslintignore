@@ -1,6 +1,5 @@
 # FILES TODO
 
-/packages/medusa/src/services/cart.js
 /packages/medusa/src/services/fulfillment-provider.js
 /packages/medusa/src/services/middleware.js
 /packages/medusa/src/services/payment-provider.js

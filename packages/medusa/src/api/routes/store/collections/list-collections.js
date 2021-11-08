@@ -1,5 +1,3 @@
-import { defaultFields, defaultRelations } from "."
-
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
@@ -26,8 +24,6 @@ export default async (req, res) => {
   const productCollectionService = req.scope.resolve("productCollectionService")
 
   const listConfig = {
-    select: defaultFields,
-    relations: defaultRelations,
     skip: offset,
     take: limit,
   }
