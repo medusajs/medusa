@@ -1,5 +1,8 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { defaultRelations, defaultFields } from "."
+import { validator } from "medusa-core-utils"
+import Region from "../../../.."
+import RegionService from "../../../../services/region"
 
 /**
  * @oas [post] /regions/{id}/payment-providers
@@ -31,21 +34,25 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { region_id } = req.params
-  const schema = Validator.object().keys({
-    provider_id: Validator.string().required(),
-  })
+  const validated = await validator(
+    AdminRegionAddPaymentProviderRequest,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const regionService = req.scope.resolve("regionService") as RegionService
+  await regionService.addPaymentProvider(region_id, validated.provider_id)
 
-  const regionService = req.scope.resolve("regionService")
-  await regionService.addPaymentProvider(region_id, value.provider_id)
-
-  const data = await regionService.retrieve(region_id, {
+  const region: Region = await regionService.retrieve(region_id, {
     select: defaultFields,
     relations: defaultRelations,
   })
-  res.status(200).json({ region: data })
+  res.status(200).json({ region })
+}
+
+export class AdminRegionAddPaymentProviderRequest {
+  provider_id: string
+}
+
+export class AdminRegionAddPaymentProviderResponse {
+  region: Region
 }

@@ -26,7 +26,8 @@ import FulfillmentProviderService from "../../../../services/fulfillment-provide
  *                 type: object
  */
 export default async (req, res) => {
-  const { region_id } = req.params
+  const validated = await validator(AdminGetFulfillmentOptions, req.query)
+  const { region_id } = validated
 
   const fulfillmentProviderService = req.scope.resolve(
     "fulfillmentProviderService"
@@ -44,6 +45,10 @@ export default async (req, res) => {
   res.status(200).json({
     fulfillment_options: options,
   })
+}
+
+export class AdminGetFulfillmentOptions {
+  region_id
 }
 
 export class FulfillmentOption {

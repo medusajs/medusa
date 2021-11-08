@@ -1,3 +1,4 @@
+import { validator } from "medusa-core-utils"
 import RegionService from "../../../../services/region"
 import Region from "../../../.."
 
@@ -28,20 +29,24 @@ import Region from "../../../.."
  *               type: boolean
  */
 export default async (req, res) => {
-  const { region_id } = req.params
+  const validated = await validator(AdminDeleteRegionRequest, req.params)
+
   const regionService: Region = req.scope.resolve(
     "regionService"
   ) as RegionService
 
-  await regionService.delete(region_id)
+  await regionService.delete(validated.region_id)
 
   res.status(200).json({
-    id: region_id,
+    id: validated.region_id,
     object: "region",
     deleted: true,
   })
 }
 
+export class AdminDeleteRegionRequest {
+  region_id: string
+}
 export class DeleteResponse {
   id: string
   object: string
