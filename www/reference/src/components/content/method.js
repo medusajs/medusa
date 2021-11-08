@@ -134,9 +134,10 @@ const Method = ({ data, section, pathname, api }) => {
 
     // Last resort, set the first property to an example
     if (JSON.stringify(res) === "{}") {
-      res[properties[0].property] = `${prefix}_${properties[0].property}`
+      res[properties[0].property] = getExampleValues(properties[0].type, `${prefix}_${properties[0].property}`)
     }
 
+    // Add values to 'undefined' properties before returning due to JSON.stringify removing 'undefined' but not 'null'
     return requiredProperties.reduce((prev, curr) => {
         if(prev[curr.property] === undefined){
           prev[curr.property] = getExampleValues(curr.type, `${prefix}_${curr.property}`)
