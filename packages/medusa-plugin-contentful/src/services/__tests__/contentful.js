@@ -1,6 +1,6 @@
-import ContentfulService from "../contentful"
 
 describe("ContentfulService", () => {
+  const ContentfulService = require("../contentful");
   describe("delete in medusa", () => {
     const regionService = {
       retrieve: jest.fn((id) => {
@@ -39,7 +39,6 @@ describe("ContentfulService", () => {
       }),
     }
     const eventBusService = {}
-
     const service = new ContentfulService(
       {
         regionService,
@@ -54,7 +53,6 @@ describe("ContentfulService", () => {
         access_token: "test_token",
       }
     )
-
     const entry = {
       unpublish: jest.fn(async () => {
         return {
@@ -67,7 +65,6 @@ describe("ContentfulService", () => {
         }
       }),
     }
-
     service.contentful_ = {
       getSpace: async (space_id) => {
         return {
