@@ -22,8 +22,6 @@ export class AdminCreateUserRequest {
   password: string
 }
 
-type PaginatedResponse = { limit: number; offset: number; count: number }
-
-export type AdminCreateUserResponse = PaginatedResponse & {
+export type AdminCreateUserResponse = {
   user: Omit<User, "password_hash">
 }

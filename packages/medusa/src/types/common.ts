@@ -9,3 +9,5 @@ export interface FindConfig<Entity> {
   relations?: string[]
   order?: "ASC" | "DESC"
 }
+
+export type PaginatedResponse = { limit: number; offset: number; count: number }
