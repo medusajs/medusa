@@ -32,7 +32,7 @@ export class MoneyAmount {
   amount: number
 
   @Column({ type: "int", nullable: true, default: null })
-  sale_amount: number
+  sale_amount?: number
 
   @Index()
   @Column({ nullable: true })

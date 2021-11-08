@@ -60,3 +60,5 @@ export const allowedFields = [
 ]
 
 export const allowedRelations = ["product", "prices", "options"]
+
+export { AdminListVariantsResponse } from "./list-variants"
