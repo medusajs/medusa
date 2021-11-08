@@ -11,18 +11,10 @@ import RegionService from "../../../../services/region"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
+ *   - (body) key=* {string} Key for the metadata value.
+ *   - (body) value=* {string} The value that the key relates to.
  * tags:
  *   - Region
- * requestBody:
- *    application/json:
- *      schema:
- *        properties:
- *          key:
- *            type: string
- *            description: Key for the metadata value
- *          value:
- *            type: string
- *            description: The value that the key relates to.
  * responses:
  *   200:
  *     description: OK
