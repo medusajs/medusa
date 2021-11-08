@@ -1,6 +1,6 @@
 import { validator } from "medusa-core-utils"
 import RegionService from "../../../../services/region"
-import Region from "../../../.."
+import { Region } from "../../../.."
 
 /**
  * @oas [delete] /regions/{id}
