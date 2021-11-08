@@ -1,8 +1,10 @@
+import { IsOptional, IsString } from "class-validator"
 import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {
   const { user_id } = req.params
+  console.log(req.body)
   const validated = await validator(AdminUpdateUserRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")
@@ -11,6 +13,10 @@ export default async (req, res) => {
 }
 
 export class AdminUpdateUserRequest {
-  name?: string
-  api_token?: string
+  @IsString()
+  @IsOptional()
+  name: string
+  @IsString()
+  @IsOptional()
+  api_token: string
 }

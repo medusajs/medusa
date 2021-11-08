@@ -36,7 +36,7 @@ module.exports = {
       },
     },
     {
-      files: ["**/api/**/*.js"],
+      files: ["**/api/**/*.js", "**/api/**/*.ts"],
       rules: {
         "valid-jsdoc": ["off"],
       },

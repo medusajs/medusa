@@ -12,7 +12,7 @@ import { Product } from "../models/product"
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
-  where?: DefaultWithoutRelations["where"] & {
+  where: DefaultWithoutRelations["where"] & {
     tags?: FindOperator<ProductTag>
   }
   order?: OrderByCondition
@@ -44,16 +44,19 @@ export class ProductRepository extends Repository<Product> {
       .where(optionsWithoutRelations.where)
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
-      .orderBy(optionsWithoutRelations.order)
+
+    if (optionsWithoutRelations?.order) {
+      qb = qb.orderBy(optionsWithoutRelations.order)
+    }
 
     if (tags) {
       qb = qb
         .leftJoinAndSelect("product.tags", "tags")
-        .andWhere(`tags.id IN (:...ids)`, { ids: tags._value })
+        .andWhere(`tags.id IN (:...ids)`, { ids: tags.value })
     }
 
     let entities: Product[]
-    let count = null
+    let count = 0
     if (shouldCount) {
       const result = await qb.getManyAndCount()
       entities = result[0]
@@ -132,7 +135,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelationsAndCount(
     relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = {}
+    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
@@ -176,7 +179,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelations(
     relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = {}
+    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
   ): Promise<Product[]> {
     let entities: Product[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
@@ -213,7 +216,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findOneWithRelations(
     relations: Array<keyof Product> = [],
-    optionsWithoutRelations: FindWithRelationsOptions = {}
+    optionsWithoutRelations: FindWithRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1
     optionsWithoutRelations.take = 1

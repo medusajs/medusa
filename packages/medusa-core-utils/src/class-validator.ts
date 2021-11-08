@@ -7,19 +7,19 @@ async function validator<T extends object, V>(
   plain: V
 ): Promise<T> {
   const toValidate = plainToClass(typedClass, plain)
-
-  const errors = await validate(toValidate)
+  const errors = await validate(toValidate, { forbidUnknownValues: true })
 
   const errorMessages = errors.reduce((acc: string[], next) => {
     if (next.constraints) {
-        for (const [_, msg] of Object.entries(next.constraints)) {
-          acc.push(msg)
-        }
+      for (const [_, msg] of Object.entries(next.constraints)) {
+        acc.push(msg)
+      }
     }
     return acc
   }, [])
 
   if (errors?.length) {
+    console.log(errorMessages.join(","))
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       errorMessages.join(",")
