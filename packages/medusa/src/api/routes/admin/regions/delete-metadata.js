@@ -5,6 +5,7 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "DeleteRegionsRegionMetadataKey"
  * summary: "Delete Metadata"
  * description: "Deletes a metadata key."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  *   - (path) key=* {string} The metadata key.

@@ -6,6 +6,7 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "PostRegionsRegionPaymentProviders"
  * summary: "Add Payment Provider"
  * description: "Adds a Payment Provider to a Region"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * requestBody:

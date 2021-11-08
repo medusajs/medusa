@@ -6,6 +6,7 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "PostRegionsRegionCountries"
  * summary: "Add Country"
  * description: "Adds a Country to the list of Countries in a Region"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * requestBody:

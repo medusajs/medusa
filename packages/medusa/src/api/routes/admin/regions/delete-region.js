@@ -3,6 +3,7 @@
  * operationId: "DeleteRegionsRegion"
  * summary: "Delete a Region"
  * description: "Deletes a Region."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:

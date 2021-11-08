@@ -6,6 +6,7 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "PostRegions"
  * summary: "Create a Region"
  * description: "Creates a Region"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:

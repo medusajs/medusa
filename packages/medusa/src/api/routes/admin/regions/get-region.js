@@ -5,6 +5,7 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "GetRegionsRegion"
  * summary: "Retrieve a Region"
  * description: "Retrieves a Region."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:

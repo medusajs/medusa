@@ -6,6 +6,7 @@ import { defaultRelations, defaultFields } from "./"
  * operationId: "PostRegionsRegionFulfillmentProviders"
  * summary: "Add Fulfillment Provider"
  * description: "Adds a Fulfillment Provider to a Region"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * requestBody:

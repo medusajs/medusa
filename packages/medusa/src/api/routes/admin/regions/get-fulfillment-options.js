@@ -3,6 +3,7 @@
  * operationId: "GetRegionsRegionFulfillmentOptions"
  * summary: "List Fulfillment Options available in the Region"
  * description: "Gathers all the fulfillment options available to in the Region."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:
