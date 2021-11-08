@@ -1,6 +1,7 @@
 import { IsEmail } from "class-validator"
 import _ from "lodash"
 import { validator } from "medusa-core-utils"
+import { User } from "../../../.."
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {
@@ -19,4 +20,10 @@ export class AdminCreateUserRequest {
   email: string
   name?: string
   password: string
+}
+
+type PaginatedResponse = { limit: number; offset: number; count: number }
+
+export type AdminCreateUserResponse = PaginatedResponse & {
+  user: Omit<User, "password_hash">
 }
