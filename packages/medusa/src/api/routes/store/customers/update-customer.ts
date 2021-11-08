@@ -1,11 +1,14 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { IsEmail } from "class-validator"
+import { validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields, CustomerResponse } from "."
+import { Address } from "../../../.."
 
 /**
  * @oas [post] /customers/me
  * operationId: PostCustomersCustomer
  * summary: Update Customer details
  * description: "Updates a Customer's saved details."
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -48,28 +51,38 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const id = req.user.customer_id
 
-  const schema = Validator.object().keys({
-    billing_address: Validator.address().optional().allow(null),
-    first_name: Validator.string().optional(),
-    last_name: Validator.string().optional(),
-    password: Validator.string().optional(),
-    phone: Validator.string().optional(),
-    email: Validator.string().optional(),
-    metadata: Validator.object().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(StoreUpdateCustomerRequest, req.body)
 
   const customerService = req.scope.resolve("customerService")
-  await customerService.update(id, value)
+  await customerService.update(id, validated)
 
-  const customer = await customerService.retrieve(id, {
+  const customer: CustomerResponse = await customerService.retrieve(id, {
     relations: defaultRelations,
     select: defaultFields,
   })
 
   res.status(200).json({ customer })
+}
+
+export class StoreUpdateCustomerRequest {
+  @IsEmail()
+  email?: string
+  billing_address?: Omit<
+    Address,
+    | "id"
+    | "customer_id"
+    | "customer"
+    | "updated_at"
+    | "created_at"
+    | "deleted_at"
+  >
+  first_name?: string
+  last_name?: string
+  password?: string
+  phone?: string
+  metadata?: object
+}
+
+export class StoreUpdateCustomerResponse {
+  customer: CustomerResponse
 }

@@ -1,11 +1,14 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields, CustomerResponse } from "."
+import { Address } from "../../../.."
+import CustomerService from "../../../../services/customer"
 
 /**
  * @oas [post] /customers/me/addresses/{address_id}
  * operationId: PostCustomersCustomerAddressesAddress
  * summary: "Update a Shipping Address"
  * description: "Updates a Customer's saved Shipping Address."
+ * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {String} The id of the Address to update.
  * requestBody:
@@ -33,22 +36,13 @@ export default async (req, res) => {
   const id = req.user.customer_id
   const { address_id } = req.params
 
-  const schema = Validator.object().keys({
-    address: Validator.address().required(),
-  })
+  const validated = await validator(StoreUpdateAddressRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const customerService = req.scope.resolve(
+    "customerService"
+  ) as CustomerService
 
-  const customerService = req.scope.resolve("customerService")
-
-  let customer = await customerService.updateAddress(
-    id,
-    address_id,
-    value.address
-  )
+  let customer = await customerService.updateAddress(id, address_id, validated)
 
   customer = await customerService.retrieve(id, {
     relations: defaultRelations,
@@ -56,4 +50,22 @@ export default async (req, res) => {
   })
 
   res.json({ customer })
+}
+
+export class StoreUpdateAddressRequest {
+  company?: string
+  first_name?: string
+  last_name?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: number
+  phone?: string
+  metadata?: JSON
+}
+
+export class StoreUpdateAddressResponse {
+  customer: CustomerResponse
 }

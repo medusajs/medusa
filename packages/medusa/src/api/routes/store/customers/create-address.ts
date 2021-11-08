@@ -1,13 +1,14 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { Validator, MedusaError, validator } from "medusa-core-utils"
+import { defaultRelations, defaultFields, CustomerResponse } from "."
+import { Customer } from "../../../.."
+import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [post] /customers/{id}/addresses
+ * @oas [post] /customers/me/addresses
  * operationId: PostCustomersCustomerAddresses
  * summary: "Add a Shipping Address"
  * description: "Adds a Shipping Address to a Customer's saved addresses."
- * parameters:
- *   - (path) id=* {String} The Customer id.
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -32,22 +33,34 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const id = req.user.customer_id
 
-  const schema = Validator.object().keys({
-    address: Validator.address().required(),
-  })
+  const validated = await validator(StoreCreateCustomerAddressRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const customerService = req.scope.resolve(
+    "customerService"
+  ) as CustomerService
 
-  const customerService = req.scope.resolve("customerService")
-
-  let customer = await customerService.addAddress(id, value.address)
+  let customer = await customerService.addAddress(id, validated)
   customer = await customerService.retrieve(id, {
     relations: defaultRelations,
     select: defaultFields,
   })
 
   res.status(200).json({ customer })
+}
+
+export class StoreCreateCustomerAddressRequest {
+  company?: string
+  first_name: string
+  last_name: string
+  address_1: string
+  address_2?: string
+  city: string
+  country_code: string
+  country: string
+  province?: string
+  phone?: string
+}
+
+export type StoreCreateCustomerAddressResponse = {
+  customer: CustomerResponse
 }

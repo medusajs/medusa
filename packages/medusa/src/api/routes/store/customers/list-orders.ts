@@ -1,17 +1,19 @@
+import OrderService from "../../../../services/order"
 import {
   defaultRelations,
   defaultFields,
   allowedFields,
   allowedRelations,
 } from "../orders"
+import { PaginatedResponse } from "../../../../types/common"
+import { Order } from "../../../.."
 
 /**
  * @oas [get] /customers/me/orders
  * operationId: GetCustomersCustomerOrders
  * summary: Retrieve Customer Orders
  * description: "Retrieves a list of a Customer's Orders."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
+ * x-authenticated: true
  * tags:
  *   - Customer
  * responses:
@@ -21,15 +23,24 @@ import {
  *       application/json:
  *         schema:
  *           properties:
- *             payment_methods:
+ *             count:
+ *               description: The total number of Orders.
+ *               type: integer
+ *             offset:
+ *               description: The offset for pagination.
+ *               type: integer
+ *             limit:
+ *               description: The maxmimum number of Orders to return,
+ *               type: integer
+ *             orders:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/order"
+ *                 $ref: "#/components/schemas/orders"
  */
 export default async (req, res) => {
-  const id = req.user.customer_id
+  const id: string = req.user.customer_id
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService = req.scope.resolve("orderService") as OrderService
 
   const selector = {
     customer_id: id,
@@ -41,13 +52,13 @@ export default async (req, res) => {
   let includeFields = []
   if ("fields" in req.query) {
     includeFields = req.query.fields.split(",")
-    includeFields = includeFields.filter((f) => allowedFields.includes(f))
+    includeFields = includeFields.filter(f => allowedFields.includes(f))
   }
 
   let expandFields = []
   if ("expand" in req.query) {
     expandFields = req.query.expand.split(",")
-    expandFields = expandFields.filter((f) => allowedRelations.includes(f))
+    expandFields = expandFields.filter(f => allowedRelations.includes(f))
   }
 
   const listConfig = {
@@ -61,4 +72,8 @@ export default async (req, res) => {
   const [orders, count] = await orderService.listAndCount(selector, listConfig)
 
   res.json({ orders, count, offset, limit })
+}
+
+export type ListCustomerOrdersReponse = PaginatedResponse & {
+  orders: Order[]
 }

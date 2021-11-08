@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Customer } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -92,3 +93,5 @@ export const allowedFields = [
   "deleted_at",
   "metadata",
 ]
+
+export type CustomerResponse = Omit<Customer, "password_hash">

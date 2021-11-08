@@ -1,13 +1,17 @@
-import jwt from "jsonwebtoken"
-import { Validator, MedusaError } from "medusa-core-utils"
+import jwt, { Secret } from "jsonwebtoken"
+import { Validator, MedusaError, validator } from "medusa-core-utils"
 import config from "../../../../config"
-import { defaultRelations, defaultFields } from "./"
+import { defaultRelations, defaultFields, CustomerResponse } from "."
+import { IsEmail } from "class-validator"
+import CustomerService from "../../../../services/customer"
+import { Customer } from "../../../.."
 
 /**
  * @oas [post] /customers
  * operationId: PostCustomers
  * summary: Create a Customer
  * description: "Creates a Customer account."
+ * x-authenticated: true
  * parameters:
  *   - (body) email=* {string} The Customer's email address.
  *   - (body) first_name=* {string} The Customer's first name.
@@ -27,26 +31,21 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    email: Validator.string().email().required(),
-    first_name: Validator.string().required(),
-    last_name: Validator.string().required(),
-    password: Validator.string().required(),
-    phone: Validator.string().optional(),
-  })
+  const validated = await validator(StoreCreateCustomerRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const customerService = req.scope.resolve("customerService")
-  let customer = await customerService.create(value)
+  const customerService = req.scope.resolve(
+    "customerService"
+  ) as CustomerService
+  let customer = await customerService.create(validated)
 
   // Add JWT to cookie
-  req.session.jwt = jwt.sign({ customer_id: customer.id }, config.jwtSecret, {
-    expiresIn: "30d",
-  })
+  req.session.jwt = jwt.sign(
+    { customer_id: customer.id },
+    config.jwtSecret as Secret,
+    {
+      expiresIn: "30d",
+    }
+  )
 
   customer = await customerService.retrieve(customer.id, {
     relations: defaultRelations,
@@ -54,4 +53,16 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ customer })
+}
+
+export class StoreCreateCustomerRequest {
+  @IsEmail()
+  email: string
+  first_name: string
+  last_name: string
+  password: string
+}
+
+export type StoreCreateCustomerResponse = {
+  customer: CustomerResponse
 }
