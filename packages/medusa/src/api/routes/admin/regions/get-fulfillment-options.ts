@@ -1,3 +1,8 @@
+import { validator } from "medusa-core-utils"
+import Region from "../../../.."
+import RegionService from "../../../../services/region"
+import FulfillmentProviderService from "../../../../services/fulfillment-provider"
+
 /**
  * @oas [get] /regions/{id}/fulfillment-options
  * operationId: "GetRegionsRegionFulfillmentOptions"
@@ -7,7 +12,7 @@
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:
- *   - Product
+ *   - Region
  * responses:
  *   200:
  *     description: OK
@@ -25,19 +30,27 @@ export default async (req, res) => {
 
   const fulfillmentProviderService = req.scope.resolve(
     "fulfillmentProviderService"
-  )
-  const regionService = req.scope.resolve("regionService")
-  const region = await regionService.retrieve(region_id, {
+  ) as FulfillmentProviderService
+  const regionService = req.scope.resolve("regionService") as RegionService
+  const region: Region = await regionService.retrieve(region_id, {
     relations: ["fulfillment_providers"],
   })
 
   const fpsIds = region.fulfillment_providers.map((fp) => fp.id) || []
 
-  const options = await fulfillmentProviderService.listFulfillmentOptions(
-    fpsIds
-  )
+  const options: FulfillmentOption[] =
+    await fulfillmentProviderService.listFulfillmentOptions(fpsIds)
 
   res.status(200).json({
     fulfillment_options: options,
   })
+}
+
+export class FulfillmentOption {
+  provider_id: string
+  options: any[]
+}
+
+export class AdminRegionFulfillmentOptionsResponse {
+  fulfillment_options: FulfillmentOption[]
 }
