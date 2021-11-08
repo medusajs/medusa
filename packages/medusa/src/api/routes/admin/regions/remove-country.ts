@@ -1,4 +1,7 @@
-import { defaultRelations, defaultFields } from "./"
+import { defaultRelations, defaultFields } from "."
+import { validator } from "medusa-core-utils"
+import Region from "../../../.."
+import RegionService from "../../../../services/region"
 
 /**
  * @oas [delete] /regions/{id}/countries/{country_code}
@@ -21,14 +24,28 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const { region_id, country_code } = req.params
-  const regionService = req.scope.resolve("regionService")
+  const validated = await validator(
+    AdminRemoveCountryFromRegionRequest,
+    req.query
+  )
+  const { region_id, country_code } = validated
+
+  const regionService = req.scope.resolve("regionService") as RegionService
   await regionService.removeCountry(region_id, country_code)
 
-  const region = await regionService.retrieve(region_id, {
+  const region: Region = await regionService.retrieve(region_id, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
   res.json({ region })
+}
+
+export class AdminRemoveCountryFromRegionRequest {
+  region_id: string
+  country_code: string
+}
+
+export class AdminRemoveCountryFromRegionResponse {
+  region: Region
 }

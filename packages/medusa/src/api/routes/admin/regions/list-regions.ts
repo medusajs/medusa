@@ -1,6 +1,6 @@
 import { defaultFields, defaultRelations } from "."
 import { validator } from "medusa-core-utils"
-import Region from "../../../../models/region"
+import Region from "../../../.."
 import RegionService from "../../../../services/region"
 
 /**
