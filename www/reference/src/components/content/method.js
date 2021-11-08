@@ -71,9 +71,9 @@ const Method = ({ data, section, pathname, api }) => {
       } catch (err) {}
     }
 
-    if (Object.keys(res) === requiredProperties.map((p) => p.property)) {
-      return res
-    }
+    // if (Object.keys(res) === requiredProperties.map((p) => p.property)) {
+    //   return res
+    // }
 
     for (const element of properties) {
       try {
@@ -93,11 +93,7 @@ const Method = ({ data, section, pathname, api }) => {
     const pathParts = pathname.split("/")
     const requiredProperties = bodyParameters.filter((p) => p.required)
 
-    //populate the result with all required properties
-    let res = requiredProperties.reduce((prev, curr) => {
-      prev[curr.property] = getExampleValues(curr.type, `${prefix}_${curr.property}`)
-      return prev
-    }, {})
+    let res = {}
 
     // if the endpoint is for a relation i.e. /orders/:id/shipment drill down into the properties of the json object
     if (pathParts.length > 3) {
@@ -141,7 +137,12 @@ const Method = ({ data, section, pathname, api }) => {
       res[properties[0].property] = `${prefix}_${properties[0].property}`
     }
 
-    return res
+    return requiredProperties.reduce((prev, curr) => {
+        if(prev[curr.property] === undefined){
+          prev[curr.property] = getExampleValues(curr.type, `${prefix}_${curr.property}`)
+        }
+        return prev
+      }, res)
   }
 
   const getCurlCommand = (requestBody) => {
