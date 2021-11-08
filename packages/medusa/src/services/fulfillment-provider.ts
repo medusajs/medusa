@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-
+import { FulfillmentOption } from "../api/routes/admin/regions/get-fulfillment-options"
 /**
  * Helps retrive fulfillment providers
  */
@@ -26,7 +26,7 @@ class FulfillmentProviderService {
     return fpRepo.find({})
   }
 
-  async listFulfillmentOptions(providers) {
+  async listFulfillmentOptions(providers): Promise<FulfillmentOption[]> {
     const result = await Promise.all(
       providers.map(async (p) => {
         const provider = await this.retrieveProvider(p)
