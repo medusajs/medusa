@@ -1,8 +1,8 @@
-import { validator } from "medusa-core-utils"
-import jwt, { JwtPayload } from "jsonwebtoken"
 import { IsEmail } from "class-validator"
-import CustomerService from "../../../../services/customer"
+import jwt, { JwtPayload } from "jsonwebtoken"
+import { validator } from "medusa-core-utils"
 import { CustomerResponse } from "."
+import CustomerService from "../../../../services/customer"
 
 /**
  * @oas [post] /customers/reset-password

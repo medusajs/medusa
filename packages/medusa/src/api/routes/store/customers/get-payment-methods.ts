@@ -1,5 +1,3 @@
-import { CustomerResponse } from "."
-import { Store } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
 import StoreService from "../../../../services/store"
@@ -49,7 +47,7 @@ export default async (req, res) => {
       const provider = paymentProviderService.retrieveProvider(next)
 
       const pMethods = await provider.retrieveSavedMethods(customer)
-      return pMethods.map(m => ({
+      return pMethods.map((m) => ({
         provider_id: next,
         data: m,
       }))

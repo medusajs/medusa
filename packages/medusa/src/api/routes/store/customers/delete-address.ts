@@ -1,5 +1,4 @@
 import { defaultRelations, defaultFields, CustomerResponse } from "."
-import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 
 /**

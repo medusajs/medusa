@@ -1,12 +1,12 @@
+import { Order } from "../../../.."
 import OrderService from "../../../../services/order"
+import { PaginatedResponse } from "../../../../types/common"
 import {
-  defaultRelations,
-  defaultFields,
   allowedFields,
   allowedRelations,
+  defaultFields,
+  defaultRelations,
 } from "../orders"
-import { PaginatedResponse } from "../../../../types/common"
-import { Order } from "../../../.."
 
 /**
  * @oas [get] /customers/me/orders
@@ -52,13 +52,13 @@ export default async (req, res) => {
   let includeFields = []
   if ("fields" in req.query) {
     includeFields = req.query.fields.split(",")
-    includeFields = includeFields.filter(f => allowedFields.includes(f))
+    includeFields = includeFields.filter((f) => allowedFields.includes(f))
   }
 
   let expandFields = []
   if ("expand" in req.query) {
     expandFields = req.query.expand.split(",")
-    expandFields = expandFields.filter(f => allowedRelations.includes(f))
+    expandFields = expandFields.filter((f) => allowedRelations.includes(f))
   }
 
   const listConfig = {

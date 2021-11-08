@@ -1,10 +1,9 @@
 import jwt, { Secret } from "jsonwebtoken"
-import { Validator, MedusaError, validator } from "medusa-core-utils"
+import { validator } from "medusa-core-utils"
 import config from "../../../../config"
 import { defaultRelations, defaultFields, CustomerResponse } from "."
 import { IsEmail } from "class-validator"
 import CustomerService from "../../../../services/customer"
-import { Customer } from "../../../.."
 
 /**
  * @oas [post] /customers

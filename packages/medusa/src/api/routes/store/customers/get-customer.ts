@@ -1,4 +1,4 @@
-import { defaultRelations, defaultFields, CustomerResponse } from "."
+import { CustomerResponse, defaultFields, defaultRelations } from "."
 import CustomerService from "../../../../services/customer"
 
 /**
@@ -24,7 +24,7 @@ export default async (req, res) => {
   const customerService = req.scope.resolve(
     "customerService"
   ) as CustomerService
-  const customer: CustomerResponse = await customerService.retrieve(id, {
+  const customer = await customerService.retrieve(id, {
     relations: defaultRelations,
     select: defaultFields,
   })
