@@ -1,4 +1,6 @@
-import { defaultRelations, defaultFields } from "./"
+import { defaultRelations, defaultFields } from "."
+import Region from "../../../.."
+import RegionService from "../../../../services/region"
 
 /**
  * @oas [get] /regions/{id}
@@ -22,11 +24,15 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { region_id } = req.params
-  const regionService = req.scope.resolve("regionService")
-  const data = await regionService.retrieve(region_id, {
+  const regionService = req.scope.resolve("regionService") as RegionService
+  const region: Region = await regionService.retrieve(region_id, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
-  res.status(200).json({ region: data })
+  res.status(200).json({ region })
+}
+
+export class AdminGetRegionResponse {
+  region: Region
 }
