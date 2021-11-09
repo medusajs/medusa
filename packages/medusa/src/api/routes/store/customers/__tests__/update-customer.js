@@ -54,7 +54,7 @@ describe("POST /store/customers/:id", () => {
     })
   })
 
-  describe("fails update a customer with a non existing billing address id", () => {
+  describe("fails update a customer with a billing address with an invalid type", () => {
     let subject
     beforeAll(async () => {
       subject = await request("POST", `/store/customers/me`, {
@@ -67,13 +67,14 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
+      console.log(subject.body)
     })
 
     afterAll(() => {
       jest.clearAllMocks()
     })
 
-    it("calls CustomerService update", () => {
+    it("calls CustomerService update 0 times", () => {
       expect(CustomerServiceMock.update).toHaveBeenCalledTimes(0)
     })
 
@@ -137,7 +138,6 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
-      console.warn("subject: ", subject)
     })
 
     afterAll(() => {

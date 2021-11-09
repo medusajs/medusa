@@ -35,8 +35,10 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
           return results.some(Boolean)
         },
         defaultMessage(validationArguments?: ValidationArguments) {
-          const names = types.map((v) => v.name).join(", ")
-          return `Type must be one of ${names}`
+          const names = types.map((t) => t.name)
+          return `${propertyName} must be one of ${names
+            .join(", ")
+            .replace(/, ([^,]*)$/, " or $1")}`
         },
       },
     })
