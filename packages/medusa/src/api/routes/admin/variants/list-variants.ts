@@ -1,6 +1,4 @@
 import { defaultFields, defaultRelations } from "./"
-import { PaginatedResponse } from "../../../../types/common"
-import { ProductVariant } from "../../../../models/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
 
 /**
@@ -46,8 +44,4 @@ export default async (req, res) => {
   const variants = await variantService.list(selector, listConfig)
 
   res.json({ variants, count: variants.length, offset, limit })
-}
-
-export type AdminListVariantsResponse = PaginatedResponse & {
-  variants: Array<ProductVariant>
 }

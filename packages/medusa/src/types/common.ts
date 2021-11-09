@@ -1,4 +1,4 @@
-import { IsDate } from "class-validator"
+import { IsString, IsNumber, IsDate } from "class-validator"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
@@ -14,7 +14,7 @@ export interface FindConfig<Entity> {
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }
 
-export class DateFilter {
+export class DateComparisonOperator {
   @IsDate()
   lt?: Date | string
 
@@ -26,4 +26,32 @@ export class DateFilter {
 
   @IsDate()
   lte?: Date | string
+}
+
+export class StringComparisonOperator {
+  @IsString()
+  lt?: string
+
+  @IsString()
+  gt?: string
+
+  @IsString()
+  gte?: string
+
+  @IsString()
+  lte?: string
+}
+
+export class NumericalComparisonOperator {
+  @IsNumber()
+  lt?: number
+
+  @IsNumber()
+  gt?: number
+
+  @IsNumber()
+  gte?: number
+
+  @IsNumber()
+  lte?: number
 }

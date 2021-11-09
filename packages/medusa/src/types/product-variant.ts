@@ -1,5 +1,10 @@
-import { ProductVariant } from "../models/product-variant"
-import { PartialPick, DateFilter } from "./common"
+import { ValidateNested, IsString, IsNumber, IsBoolean } from "class-validator"
+import {
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  DateComparisonOperator,
+} from "./common"
+import { IsType } from "./validators"
 
 export interface IProductVariantPrice {
   currency_code?: string
@@ -60,27 +65,68 @@ export interface UpdateProductVariantInput {
   metadata?: JSON
 }
 
-export type FilterableProductVariantProps = PartialPick<
-  ProductVariant,
-  | "title"
-  | "product_id"
-  | "sku"
-  | "barcode"
-  | "ean"
-  | "upc"
-  | "inventory_quantity"
-  | "allow_backorder"
-  | "manage_inventory"
-  | "hs_code"
-  | "origin_country"
-  | "mid_code"
-  | "material"
-  | "weight"
-  | "length"
-  | "height"
-  | "width"
-> & {
+export class FilterableProductVariantProps {
+  @ValidateNested()
+  @IsType(["string", "int"], { each: true })
+  id?: string | Array<string> | StringComparisonOperator
+
+  @IsString()
+  title?: string
+
+  @IsType(["string"], { each: true })
+  product_id?: string | Array<string>
+
+  @IsType(["string"], { each: true })
+  sku?: string | Array<string>
+
+  @IsType(["string"], { each: true })
+  barcode?: string | Array<string>
+
+  @IsType(["string"], { each: true })
+  ean?: string
+
+  @IsType(["string"], { each: true })
+  upc?: string
+
+  @IsNumber()
+  inventory_quantity?: number
+
+  @IsBoolean()
+  allow_backorder?: boolean
+
+  @IsBoolean()
+  manage_inventory?: boolean
+
+  @IsType(["string"], { each: true })
+  hs_code?: string | Array<string>
+
+  @IsType(["string"], { each: true })
+  origin_country?: string | Array<string>
+
+  @IsType(["string"], { each: true })
+  mid_code?: string | Array<string>
+
+  @IsString()
+  material?: string
+
+  @IsNumber()
+  weight?: number | NumericalComparisonOperator
+
+  @IsNumber()
+  length?: number
+
+  @IsNumber()
+  height?: number
+
+  @IsNumber()
+  width?: number
+
+  @IsString()
   q?: string
-  created_at?: DateFilter
-  updated_at?: DateFilter
+
+  @ValidateNested()
+  created_at?: DateComparisonOperator
+
+  @ValidateNested()
+  updated_at?: DateComparisonOperator
 }

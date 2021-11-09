@@ -1,4 +1,7 @@
 import { Router } from "express"
+
+import { PaginatedResponse } from "../../../../types/common"
+import { ProductVariant } from "../../../../models/product-variant"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -61,4 +64,6 @@ export const allowedFields = [
 
 export const allowedRelations = ["product", "prices", "options"]
 
-export { AdminListVariantsResponse } from "./list-variants"
+export type AdminListVariantsResponse = PaginatedResponse & {
+  variants: Array<ProductVariant>
+}

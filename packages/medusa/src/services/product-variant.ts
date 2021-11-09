@@ -1,5 +1,5 @@
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, IsNull, ILike } from "typeorm"
+import { SelectQueryBuilder, EntityManager, IsNull, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { ProductOptionValue } from "../models/product-option-value"
@@ -70,7 +70,7 @@ class ProductVariantService extends BaseService {
     this.productOptionValueRepository_ = productOptionValueRepository
   }
 
-  withTransaction(transactionManager: EntityManager) {
+  withTransaction(transactionManager: EntityManager): ProductVariantService {
     if (!transactionManager) {
       return this
     }
@@ -333,10 +333,7 @@ class ProductVariantService extends BaseService {
    */
   async setCurrencyPrice(
     variantId: string,
-    price: Pick<
-      Required<IProductVariantPrice>,
-      "currency_code" | "amount" | "sale_amount"
-    >
+    price: IProductVariantPrice
   ): Promise<MoneyAmount> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
@@ -345,7 +342,7 @@ class ProductVariantService extends BaseService {
 
       let moneyAmount = await moneyAmountRepo.findOne({
         where: {
-          currency_code: price.currency_code.toLowerCase(),
+          currency_code: price.currency_code?.toLowerCase(),
           variant_id: variantId,
           region_id: IsNull(),
         },
@@ -354,7 +351,7 @@ class ProductVariantService extends BaseService {
       if (!moneyAmount) {
         moneyAmount = moneyAmountRepo.create({
           ...price,
-          currency_code: price.currency_code.toLowerCase(),
+          currency_code: price.currency_code?.toLowerCase(),
           variant_id: variantId,
         })
       } else {
@@ -581,7 +578,7 @@ class ProductVariantService extends BaseService {
         },
       }
 
-      query.where = (qb) => {
+      query.where = (qb: SelectQueryBuilder<ProductVariant>): void => {
         qb.where(where).andWhere([
           { sku: ILike(`%${q}%`) },
           { title: ILike(`%${q}%`) },
