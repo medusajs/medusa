@@ -2,6 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { defaultFields, defaultRelations } from "../"
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
+import { validator } from "../../../../../utils/validator"
 
 describe("POST /store/customers/:id", () => {
   describe("successfully updates a customer", () => {
@@ -59,7 +60,7 @@ describe("POST /store/customers/:id", () => {
     beforeAll(async () => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
-          billing_address: "test",
+          billing_address: "123",
         },
         clientSession: {
           jwt: {
@@ -128,7 +129,7 @@ describe("POST /store/customers/:id", () => {
           billing_address: {
             first_name: "Olli",
             last_name: "Juhl",
-            address_1: "Laksegade",
+            address_1: 42,
             city: "Copenhagen",
             country_code: "dk",
             postal_code: "2100",

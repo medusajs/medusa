@@ -1,8 +1,7 @@
-import { IsEmail, IsOptional, IsString } from "class-validator"
+import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { CustomerResponse, defaultFields, defaultRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { IsType } from "../../../../utils/is-type"
-// import { validator } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -54,6 +53,7 @@ export default async (req, res) => {
   const id = req.user.customer_id
 
   const validated = await validator(StoreUpdateCustomerRequest, req.body)
+  console.log(validated)
 
   const customerService = req.scope.resolve(
     "customerService"
