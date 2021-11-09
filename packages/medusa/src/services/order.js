@@ -784,7 +784,7 @@ class OrderService extends BaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = await addrRepo.create({ ...address })
+      const created = addrRepo.create({ ...address })
       await addrRepo.save(created)
     }
   }
@@ -877,26 +877,33 @@ class OrderService extends BaseService {
         )
       }
 
-      const { ...rest } = update
+      const {
+        metadata,
+        shipping_address,
+        billing_address,
+        no_notification,
+        items,
+        ...rest
+      } = update
 
       if ("metadata" in update) {
-        order.metadata = this.setMetadata_(order, update.metadata)
+        order.metadata = this.setMetadata_(order, metadata)
       }
 
       if ("shipping_address" in update) {
-        await this.updateShippingAddress_(order, update.shipping_address)
+        await this.updateShippingAddress_(order, shipping_address)
       }
 
       if ("billing_address" in update) {
-        await this.updateBillingAddress_(order, update.billing_address)
+        await this.updateBillingAddress_(order, billing_address)
       }
 
       if ("no_notification" in update) {
-        order.no_notification = update.no_notification
+        order.no_notification = no_notification
       }
 
       if ("items" in update) {
-        for (const item of update.items) {
+        for (const item of items) {
           await this.lineItemService_.withTransaction(manager).create({
             ...item,
             order_id: orderId,
