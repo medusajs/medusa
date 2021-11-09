@@ -1,8 +1,8 @@
-import { IsEmail } from "class-validator"
+import { IsEmail, IsString } from "class-validator"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import { validator } from "medusa-core-utils"
 import { CustomerResponse } from "."
 import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/reset-password
@@ -55,7 +55,9 @@ export default async (req, res) => {
 export class StoreResetPasswordRequest {
   @IsEmail()
   email: string
+  @IsString()
   token: string
+  @IsString()
   password: string
 }
 

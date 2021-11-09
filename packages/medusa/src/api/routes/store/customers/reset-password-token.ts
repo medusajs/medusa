@@ -1,7 +1,7 @@
 import { IsEmail } from "class-validator"
-import { validator } from "medusa-core-utils"
 import { CustomerResponse } from "."
 import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/password-token

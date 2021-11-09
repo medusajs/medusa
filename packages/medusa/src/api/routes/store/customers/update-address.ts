@@ -1,6 +1,6 @@
-import { validator } from "medusa-core-utils"
 import { CustomerResponse, defaultFields, defaultRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me/addresses/{address_id}

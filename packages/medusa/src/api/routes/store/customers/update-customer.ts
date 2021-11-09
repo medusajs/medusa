@@ -1,7 +1,9 @@
-import { IsEmail } from "class-validator"
-import { validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields, CustomerResponse } from "."
-import { Address } from "../../../.."
+import { IsEmail, IsOptional, IsString } from "class-validator"
+import { CustomerResponse, defaultFields, defaultRelations } from "."
+import CustomerService from "../../../../services/customer"
+import { IsType } from "../../../../utils/is-type"
+// import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me
@@ -53,7 +55,9 @@ export default async (req, res) => {
 
   const validated = await validator(StoreUpdateCustomerRequest, req.body)
 
-  const customerService = req.scope.resolve("customerService")
+  const customerService = req.scope.resolve(
+    "customerService"
+  ) as CustomerService
   await customerService.update(id, validated)
 
   const customer: CustomerResponse = await customerService.retrieve(id, {
@@ -64,22 +68,61 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+export class AddressPayload {
+  @IsOptional()
+  @IsString()
+  first_name: string
+  @IsOptional()
+  @IsString()
+  last_name: string
+  @IsOptional()
+  @IsString()
+  phone: string
+  @IsOptional()
+  metadata: object
+  @IsOptional()
+  @IsString()
+  company: string
+  @IsOptional()
+  @IsString()
+  address_1: string
+  @IsOptional()
+  @IsString()
+  address_2: string
+  @IsOptional()
+  @IsString()
+  city: string
+  @IsOptional()
+  @IsString()
+  country_code: string
+  @IsOptional()
+  @IsString()
+  province: string
+  @IsOptional()
+  @IsString()
+  postal_code: string
+}
+
 export class StoreUpdateCustomerRequest {
+  @IsOptional()
   @IsEmail()
   email?: string
-  billing_address?: Omit<
-    Address,
-    | "id"
-    | "customer_id"
-    | "customer"
-    | "updated_at"
-    | "created_at"
-    | "deleted_at"
-  >
+  @IsOptional()
+  @IsType(["address", "string"])
+  billing_address?: AddressPayload | string
+  @IsOptional()
+  @IsString()
   first_name?: string
+  @IsOptional()
+  @IsString()
   last_name?: string
+  @IsOptional()
+  @IsString()
   password?: string
+  @IsOptional()
+  @IsString()
   phone?: string
+  @IsOptional()
   metadata?: object
 }
 

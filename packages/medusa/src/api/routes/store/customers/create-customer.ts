@@ -1,9 +1,9 @@
+import { IsEmail, IsString } from "class-validator"
 import jwt, { Secret } from "jsonwebtoken"
-import { validator } from "medusa-core-utils"
+import { CustomerResponse, defaultFields, defaultRelations } from "."
 import config from "../../../../config"
-import { defaultRelations, defaultFields, CustomerResponse } from "."
-import { IsEmail } from "class-validator"
 import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers
@@ -57,8 +57,11 @@ export default async (req, res) => {
 export class StoreCreateCustomerRequest {
   @IsEmail()
   email: string
+  @IsString()
   first_name: string
+  @IsString()
   last_name: string
+  @IsString()
   password: string
 }
 

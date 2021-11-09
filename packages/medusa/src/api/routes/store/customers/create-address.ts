@@ -1,6 +1,7 @@
-import { validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields, CustomerResponse } from "."
+import { IsOptional, IsString } from "class-validator"
+import { CustomerResponse, defaultFields, defaultRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me/addresses
@@ -48,15 +49,27 @@ export default async (req, res) => {
 }
 
 export class StoreCreateCustomerAddressRequest {
+  @IsOptional()
+  @IsString()
   company?: string
+  @IsString()
   first_name: string
+  @IsString()
   last_name: string
+  @IsString()
   address_1: string
+  @IsOptional()
+  @IsString()
   address_2?: string
+  @IsString()
   city: string
+  @IsString()
   country_code: string
-  country: string
+  @IsOptional()
+  @IsString()
   province?: string
+  @IsOptional()
+  @IsString()
   phone?: string
 }
 

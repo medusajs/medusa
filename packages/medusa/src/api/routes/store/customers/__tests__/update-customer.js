@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { defaultFields, defaultRelations } from "../"
+import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
 describe("POST /store/customers/:id", () => {
@@ -54,6 +54,34 @@ describe("POST /store/customers/:id", () => {
     })
   })
 
+  describe("fails update a customer with a non existing billing address id", () => {
+    let subject
+    beforeAll(async () => {
+      subject = await request("POST", `/store/customers/me`, {
+        payload: {
+          billing_address: "test",
+        },
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
+          },
+        },
+      })
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CustomerService update", () => {
+      expect(CustomerServiceMock.update).toHaveBeenCalledTimes(0)
+    })
+
+    it("status code 400", () => {
+      expect(subject.status).toEqual(400)
+    })
+  })
+
   describe("successfully updates a customer with billing address id", () => {
     let subject
     beforeAll(async () => {
@@ -67,6 +95,10 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
     })
 
     afterAll(() => {

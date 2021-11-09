@@ -90,12 +90,12 @@ export default async (req, res) => {
       const customer = await customerService
         .withTransaction(manager)
         .retrieve(req.user.customer_id)
-      toCreate.customer_id = customer.id
-      toCreate.email = customer.email
+      toCreate["customer_id"] = customer.id
+      toCreate["email"] = customer.email
     }
 
     if (validated.country_code) {
-      toCreate.shipping_address = {
+      toCreate["shipping_address"] = {
         country_code: validated.country_code.toLowerCase(),
       }
     }
