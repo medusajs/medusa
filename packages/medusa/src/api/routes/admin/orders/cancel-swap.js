@@ -8,7 +8,7 @@ import { defaultRelations, defaultFields } from "."
  * description: "Cancels a Swap"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
- *   . (path) swap_id=* {string} The id of the Swap.
+ *   - (path) swap_id=* {string} The id of the Swap.
  * tags:
  *   - Swap
  * responses:
