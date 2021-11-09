@@ -2,7 +2,7 @@ import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsArray, IsNumber, IsString } from "class-validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 
 /**
  * @oas [post] /regions/{id}
@@ -76,6 +76,7 @@ export class AdminUpdateRegionRequest {
   @IsString()
   currency_code: string
   @IsString()
+  @IsOptional()
   tax_code: string
   @IsNumber()
   tax_rate: number

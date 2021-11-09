@@ -2,7 +2,7 @@ import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsArray, IsNumber, IsString } from "class-validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 /**
  * @oas [post] /regions
  * operationId: "PostRegions"
@@ -59,8 +59,6 @@ export default async (req, res) => {
     req.body
   )
 
-  console.log(validated)
-
   const regionService = req.scope.resolve("regionService") as RegionService
   const result: Region = await regionService.create(validated)
 
@@ -78,6 +76,7 @@ export class AdminCreateRegionRequest {
   @IsString()
   currency_code: string
   @IsString()
+  @IsOptional()
   tax_code: string
   @IsNumber()
   tax_rate: number

@@ -11,7 +11,6 @@ describe("POST /admin/regions/:region_id/countries", () => {
       subject = await request("POST", `/admin/regions/${id}/countries`, {
         payload: {
           country_code: "se",
-          test: { title: "test", page: "test" },
         },
         adminSession: {
           jwt: {
