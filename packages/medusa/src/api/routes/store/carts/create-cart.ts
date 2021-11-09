@@ -83,6 +83,9 @@ export default async (req, res) => {
         ...reqContext,
         ...validated.context,
       },
+      customer_id: "",
+      email: "",
+      shipping_address: {},
     }
 
     if (req.user && req.user.customer_id) {
