@@ -7,6 +7,10 @@ import { validator } from "../../../../utils/validator"
  * operationId: "GetNotes"
  * summary: "List Notes"
  * description: "Retrieves a list of notes"
+ *  * parameters:
+ *   - (path) limit= {number} The number of notes to get
+ *   - (path) offset= {number} The offset at which to get notes
+ *   - (path) resource_id= {string} The id which the notes belongs to
  * tags:
  *   - Note
  * responses:
