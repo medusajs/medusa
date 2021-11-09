@@ -1,7 +1,14 @@
-import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
-
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsEmail,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { defaultFields, defaultRelations } from "."
+import { CartService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -69,54 +76,67 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    region_id: Validator.string().optional(),
-    country_code: Validator.string().optional(),
-    email: Validator.string().email().optional(),
-    billing_address: Validator.address().optional().allow(null),
-    shipping_address: Validator.address().optional().allow(null),
-    gift_cards: Validator.array()
-      .items({
-        code: Validator.string(),
-      })
-      .optional(),
-    discounts: Validator.array()
-      .items({
-        code: Validator.string(),
-      })
-      .optional(),
-    customer_id: Validator.string().optional(),
-    context: Validator.object().optional(),
+  const validated = await validator(StoreUpdateCartRequest, req.body)
+
+  const cartService: CartService = req.scope.resolve("cartService")
+
+  // Update the cart
+  await cartService.update(id, validated)
+
+  // If the cart has payment sessions update these
+  const updated = await cartService.retrieve(id, {
+    relations: ["payment_sessions", "shipping_methods"],
   })
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
+  if (updated.payment_sessions?.length && !validated.region_id) {
+    await cartService.setPaymentSessions(id)
   }
 
-  try {
-    const cartService = req.scope.resolve("cartService")
+  const cart = await cartService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
-    // Update the cart
-    await cartService.update(id, value)
+  res.json({ cart })
+}
 
-    // If the cart has payment sessions update these
-    const updated = await cartService.retrieve(id, {
-      relations: ["payment_sessions", "shipping_methods"],
-    })
+class GiftCard {
+  @IsString()
+  code: string
+}
 
-    if (updated.payment_sessions?.length && !value.region_id) {
-      await cartService.setPaymentSessions(id)
-    }
+class Discount {
+  @IsString()
+  code: string
+}
 
-    const cart = await cartService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
-
-    res.json({ cart })
-  } catch (err) {
-    console.log(err)
-    throw err
-  }
+export class StoreUpdateCartRequest {
+  @IsOptional()
+  @IsString()
+  region_id: string
+  @IsOptional()
+  @IsString()
+  country_code: string
+  @IsEmail()
+  @IsOptional()
+  email: string
+  @IsOptional()
+  billing_address: object
+  @IsOptional()
+  shipping_address: object
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => GiftCard)
+  gift_cards: GiftCard[]
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Discount)
+  discounts: Discount[]
+  @IsString()
+  @IsOptional()
+  customer_id: string
+  @IsOptional()
+  context: object
 }

@@ -7,10 +7,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
 import { defaultFields, defaultRelations } from "."
-import CartService from "../../../../services/cart"
+import { CartService, LineItemService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts
@@ -65,10 +67,10 @@ export default async (req, res) => {
     user_agent: req.get("user-agent"),
   }
 
-  const lineItemService = req.scope.resolve("lineItemService")
-  const cartService = req.scope.resolve("cartService") as CartService
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const cartService: CartService = req.scope.resolve("cartService")
 
-  const entityManager = req.scope.resolve("manager")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
     // Add a default region if no region has been specified
@@ -139,15 +141,14 @@ export default async (req, res) => {
   })
 }
 
-class Item {
+export class Item {
   @IsNotEmpty()
   @IsString()
   variant_id: string
-  @Type(() => Number)
+  @IsNotEmpty()
   @IsInt()
   quantity: number
 }
-
 export class StoreCreateCartRequest {
   @IsOptional()
   @IsString()
@@ -155,9 +156,9 @@ export class StoreCreateCartRequest {
   @IsOptional()
   @IsString()
   country_code: string
-  @ValidateNested({ each: true })
+  @IsOptional()
   @IsArray()
-  @IsNotEmpty()
+  @ValidateNested({ each: true })
   @Type(() => Item)
   items: Item[]
   @IsOptional()

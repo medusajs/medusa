@@ -1,6 +1,8 @@
-import { validator } from "medusa-core-utils"
+import { IsInt, IsOptional, IsString } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultFields, defaultRelations } from "."
-import CartService from "../../../../services/cart"
+import { CartService, LineItemService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -30,9 +32,9 @@ export default async (req, res) => {
 
   const validated = await validator(StoreCreateLineItem, req.body)
 
-  const manager = req.scope.resolve("manager")
-  const lineItemService = req.scope.resolve("lineItemService")
-  const cartService = req.scope.resolve("cartService") as CartService
+  const manager: EntityManager = req.scope.resolve("manager")
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const cartService: CartService = req.scope.resolve("cartService")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -63,7 +65,10 @@ export default async (req, res) => {
 }
 
 export class StoreCreateLineItem {
+  @IsString()
   variant_id: string
+  @IsInt()
   quantity: number
-  metadata?: object
+  @IsOptional()
+  metadata: object
 }

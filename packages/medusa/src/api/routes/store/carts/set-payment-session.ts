@@ -1,5 +1,7 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { IsString } from "class-validator"
+import { defaultFields, defaultRelations } from "."
+import { CartService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/payment-session
@@ -24,26 +26,20 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    provider_id: Validator.string().required(),
+  const validated = await validator(StoreSetCartPaymentSession, req.body)
+
+  const cartService: CartService = req.scope.resolve("cartService")
+
+  let cart = await cartService.setPaymentSession(id, validated.provider_id)
+  cart = await cartService.retrieve(id, {
+    select: defaultFields,
+    relations: defaultRelations,
   })
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  res.status(200).json({ cart })
+}
 
-  try {
-    const cartService = req.scope.resolve("cartService")
-
-    let cart = await cartService.setPaymentSession(id, value.provider_id)
-    cart = await cartService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
-
-    res.status(200).json({ cart })
-  } catch (err) {
-    throw err
-  }
+export class StoreSetCartPaymentSession {
+  @IsString()
+  provider_id: string
 }
