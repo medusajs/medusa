@@ -1,7 +1,14 @@
 import _ from "lodash"
-import { humanizeAmount } from "medusa-core-utils"
+import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import PayPal from "@paypal/checkout-server-sdk"
 import { PaymentService } from "medusa-interfaces"
+
+function roundToTwo(num, currency) {
+  if (zeroDecimalCurrencies.includes(currency.toLowerCase())) {
+    return `${num}`
+  }
+  return num.toFixed(2)
+}
 
 class PayPalProviderService extends PaymentService {
   static identifier = "paypal"
@@ -102,7 +109,10 @@ class PayPalProviderService extends PaymentService {
           custom_id: cart.id,
           amount: {
             currency_code: currency_code.toUpperCase(),
-            value: humanizeAmount(amount),
+            value: roundToTwo(
+              humanizeAmount(amount, currency_code),
+              currency_code
+            ),
           },
         },
       ],
@@ -194,7 +204,10 @@ class PayPalProviderService extends PaymentService {
           value: {
             amount: {
               currency_code: currency_code.toUpperCase(),
-              value: humanizeAmount(cart.total),
+              value: roundToTwo(
+                humanizeAmount(cart.total, currency_code),
+                currency_code
+              ),
             },
           },
         },
@@ -255,7 +268,10 @@ class PayPalProviderService extends PaymentService {
       request.requestBody({
         amount: {
           currency_code: payment.currency_code.toUpperCase(),
-          value: humanizeAmount(amountToRefund),
+          value: roundToTwo(
+            humanizeAmount(amountToRefund, payment.currency_code),
+            payment.currency_code
+          ),
         },
       })
 
