@@ -67,6 +67,11 @@ describe("/admin/discounts", () => {
           console.log(err)
         })
 
+      expect(response.data).toEqual({
+        id: "test-region",
+        object: "region",
+        deleted: true,
+      })
       expect(response.status).toEqual(200)
     })
   })
