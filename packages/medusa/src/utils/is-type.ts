@@ -6,7 +6,10 @@ import {
 } from "class-validator"
 import { validator } from "./validator"
 
-async function typeValidator(typedClass: any, plain: any): Promise<boolean> {
+async function typeValidator(
+  typedClass: any,
+  plain: unknown
+): Promise<boolean> {
   switch (typedClass) {
     case String:
       return Promise.resolve(isString(plain))
@@ -19,6 +22,7 @@ async function typeValidator(typedClass: any, plain: any): Promise<boolean> {
 }
 
 export function IsType(types: any[], validationOptions?: ValidationOptions) {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   return function (object: Object, propertyName: string): void {
     registerDecorator({
       name: "IsType",
@@ -36,7 +40,7 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
         },
         defaultMessage(validationArguments?: ValidationArguments) {
           const names = types.map((t) => t.name)
-          return `${propertyName} must be one of ${names
+          return `${validationArguments?.property} must be one of ${names
             .join(", ")
             .replace(/, ([^,]*)$/, " or $1")}`
         },

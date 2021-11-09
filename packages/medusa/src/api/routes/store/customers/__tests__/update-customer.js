@@ -67,7 +67,6 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
-      console.log(subject.body)
     })
 
     afterAll(() => {
