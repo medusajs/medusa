@@ -359,6 +359,38 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("creates a claim on order with discount", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/orders/discount-order/claims",
+        {
+          type: "refund",
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason: "production_failure",
+              tags: ["fluff"],
+              images: ["https://test.image.com"],
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: "test-variant",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+      expect(response.status).toEqual(200)
+    })
+
     it("creates a claim on a claim", async () => {
       const api = useApi()
 
