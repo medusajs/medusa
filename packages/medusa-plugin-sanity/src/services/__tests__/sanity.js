@@ -1,4 +1,4 @@
-const SanityService = require("../sanity")
+import SanityService from "../sanity"
 
 describe(" SanityService", () => {
   describe("delete in medusa", () => {
