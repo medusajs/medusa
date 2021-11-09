@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultFields, defaultRelations } from "."
@@ -59,6 +60,8 @@ export default async (req, res) => {
 }
 
 export class StoreAddShippingMethodRequest {
+  @IsString()
   option_id: string
-  data?: object
+  @IsOptional()
+  data: object
 }

@@ -1,3 +1,4 @@
+import { IsEmail, IsString } from "class-validator"
 import jwt from "jsonwebtoken"
 import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
@@ -23,7 +24,10 @@ export default async (req, res) => {
 }
 
 export class AdminResetPasswordRequest {
+  @IsEmail()
   email: string
+  @IsString()
   token: string
+  @IsString()
   password: string
 }

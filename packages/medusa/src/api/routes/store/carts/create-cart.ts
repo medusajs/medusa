@@ -1,7 +1,17 @@
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { MedusaError, validator } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { defaultFields, defaultRelations } from "."
 import CartService from "../../../../services/cart"
+
 /**
  * @oas [post] /carts
  * summary: "Create a Cart"
@@ -77,7 +87,13 @@ export default async (req, res) => {
       regionId = regions[0].id
     }
 
-    const toCreate = {
+    const toCreate: {
+      region_id: string | undefined
+      context: object
+      customer_id?: string
+      email?: string
+      shipping_address?: object
+    } = {
       region_id: regionId,
       context: {
         ...reqContext,
@@ -127,13 +143,26 @@ export default async (req, res) => {
 }
 
 class Item {
+  @IsNotEmpty()
+  @IsString()
   variant_id: string
+  @Type(() => Number)
+  @IsInt()
   quantity: number
 }
 
 export class StoreCreateCartRequest {
-  region_id?: string
-  country_code?: string
+  @IsOptional()
+  @IsString()
+  region_id: string
+  @IsOptional()
+  @IsString()
+  country_code: string
+  @ValidateNested({ each: true })
+  @IsArray()
+  @IsNotEmpty()
+  @Type(() => Item)
   items: Item[]
-  context?: object
+  @IsOptional()
+  context: object
 }
