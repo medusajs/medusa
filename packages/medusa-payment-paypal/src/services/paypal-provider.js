@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { humanizeAmount } from "medusa-core-utils"
 import PayPal from "@paypal/checkout-server-sdk"
 import { PaymentService } from "medusa-interfaces"
 
@@ -101,7 +102,7 @@ class PayPalProviderService extends PaymentService {
           custom_id: cart.id,
           amount: {
             currency_code: currency_code.toUpperCase(),
-            value: (amount / 100).toFixed(2),
+            value: humanizeAmount(amount),
           },
         },
       ],
@@ -193,7 +194,7 @@ class PayPalProviderService extends PaymentService {
           value: {
             amount: {
               currency_code: currency_code.toUpperCase(),
-              value: (cart.total / 100).toFixed(2),
+              value: humanizeAmount(cart.total),
             },
           },
         },
@@ -254,7 +255,7 @@ class PayPalProviderService extends PaymentService {
       request.requestBody({
         amount: {
           currency_code: payment.currency_code.toUpperCase(),
-          value: (amountToRefund / 100).toFixed(2),
+          value: humanizeAmount(amountToRefund),
         },
       })
 
