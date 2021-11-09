@@ -1,6 +1,9 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { NoteRepository } from "../repositories/note"
 import { TransactionManager } from "typeorm"
+import { Note } from ".."
+import { CreateNoteInput } from "../types/note"
 
 class NoteService extends BaseService {
   static Events = {
@@ -9,7 +12,7 @@ class NoteService extends BaseService {
     DELETED: "note.deleted",
   }
 
-  constructor({ manager, noteRepository, eventBusService, userService }) {
+  constructor({ manager, noteRepository, eventBusService }) {
     super()
 
     /** @private @const {EntityManager} */
@@ -27,7 +30,7 @@ class NoteService extends BaseService {
    * @param {EntityManager} transactionManager - the manager to use
    * @return {NoteService} a cloned note service
    */
-  withTransaction(transactionManager) {
+  withTransaction(transactionManager): NoteService {
     if (!TransactionManager) {
       return this
     }
@@ -35,7 +38,7 @@ class NoteService extends BaseService {
     const cloned = new NoteService({
       manager: transactionManager,
       noteRepository: this.noteRepository_,
-      eventBus: this.eventBus_,
+      eventBusService: this.eventBus_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -44,11 +47,11 @@ class NoteService extends BaseService {
 
   /**
    * Retrieves a specific note.
-   * @param {*} id - the id of the note to retrieve.
-   * @param {*} config - any options needed to query for the result.
-   * @return {Promise} which resolves to the requested note.
+   * @param {string} id - the id of the note to retrieve.
+   * @param {object} config - any options needed to query for the result.
+   * @return {Promise<Note>} which resolves to the requested note.
    */
-  async retrieve(id, config = {}) {
+  async retrieve(id: string, config = {}): Promise<Note> {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
     const validatedId = this.validateId_(id)
@@ -78,8 +81,10 @@ class NoteService extends BaseService {
       take: 50,
       relations: [],
     }
-  ) {
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+  ): Promise<Note[]> {
+    const noteRepo = this.manager_.getCustomRepository(
+      this.noteRepository_
+    ) as NoteRepository
 
     const query = this.buildQuery_(selector, config)
 
@@ -88,17 +93,22 @@ class NoteService extends BaseService {
 
   /**
    * Creates a note associated with a given author
-   * @param {object} data - the note to create
+   * @param {CreateNoteInput} data - the note to create
    * @param {*} config - any configurations if needed, including meta data
    * @return {Promise} resolves to the creation result
    */
-  async create(data, config = { metadata: {} }) {
+  async create(
+    data: CreateNoteInput,
+    config = { metadata: {} }
+  ): Promise<Note> {
     const { metadata } = config
 
     const { resource_id, resource_type, value, author_id } = data
 
     return this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.getCustomRepository(
+        this.noteRepository_
+      ) as NoteRepository
 
       const toCreate = {
         resource_id,
@@ -125,9 +135,11 @@ class NoteService extends BaseService {
    * @param {*} value - the new value
    * @return {Promise} resolves to the updated element
    */
-  async update(noteId, value) {
+  async update(noteId: string, value: string): Promise<Note> {
     return this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.getCustomRepository(
+        this.noteRepository_
+      ) as NoteRepository
 
       const note = await this.retrieve(noteId, { relations: ["author"] })
 
@@ -148,9 +160,11 @@ class NoteService extends BaseService {
    * @param {*} noteId - id of the note to delete
    * @return {Promise}
    */
-  async delete(noteId) {
+  async delete(noteId: string): Promise<any> {
     return this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.getCustomRepository(
+        this.noteRepository_
+      ) as NoteRepository
 
       const note = await this.retrieve(noteId)
 
