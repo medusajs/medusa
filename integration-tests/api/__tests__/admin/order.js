@@ -32,7 +32,7 @@ describe("/admin/orders", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -359,7 +359,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it.only("creates a claim on order with discount", async () => {
+    it("creates a claim on order with discount", async () => {
       const api = useApi()
 
       const response = await api.post(
