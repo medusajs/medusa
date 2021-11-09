@@ -59,7 +59,7 @@ describe("POST /store/customers/:id", () => {
     beforeAll(async () => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
-          billing_address: "test",
+          billing_address: 42,
         },
         clientSession: {
           jwt: {
@@ -95,10 +95,6 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
     })
 
     afterAll(() => {
@@ -141,6 +137,7 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
+      console.warn("subject: ", subject)
     })
 
     afterAll(() => {

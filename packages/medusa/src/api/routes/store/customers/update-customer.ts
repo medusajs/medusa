@@ -108,7 +108,7 @@ export class StoreUpdateCustomerRequest {
   @IsEmail()
   email?: string
   @IsOptional()
-  @IsType(["address", "string"])
+  @IsType([AddressPayload, String])
   billing_address?: AddressPayload | string
   @IsOptional()
   @IsString()

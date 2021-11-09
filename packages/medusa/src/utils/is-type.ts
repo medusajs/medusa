@@ -1,46 +1,42 @@
 import {
-  isInt,
   isString,
   registerDecorator,
-  validate,
   ValidationArguments,
   ValidationOptions,
 } from "class-validator"
-import { AddressPayload } from "../api/routes/store/customers/update-customer"
+import { validator } from "./validator"
 
-const typeValidator = {
-  string: function (value: unknown, args: ValidationArguments) {
-    return isString(value)
-  },
-  int: function (value: unknown, args: ValidationArguments) {
-    return isInt(value)
-  },
-  address: async function (value: any, args: ValidationArguments) {
-    return validate(AddressPayload, value)
-  },
-  // Add more here
+async function typeValidator(typedClass: any, plain: any): Promise<boolean> {
+  switch (typedClass) {
+    case String:
+      return Promise.resolve(isString(plain))
+    default:
+      return (
+        (await validator(typedClass, plain).then(() => true)) &&
+        typeof plain === "object"
+      )
+  }
 }
 
-export function IsType(
-  types: (keyof typeof typeValidator)[],
-  validationOptions?: ValidationOptions
-) {
-  return function (object: Object, propertyName: string) {
+export function IsType(types: any[], validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string): void {
     registerDecorator({
       name: "IsType",
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       validator: {
-        validate(value: unknown, args: ValidationArguments) {
-          return types.some((v) => typeValidator[v](value, args))
+        async validate(value: unknown, args: ValidationArguments) {
+          const results = await Promise.all(
+            types.map(
+              async (v) => await typeValidator(v, value).catch(() => false)
+            )
+          )
+          return results.some(Boolean)
         },
         defaultMessage(validationArguments?: ValidationArguments) {
-          const lastType = types.pop()
-          if (types.length == 0) {
-            return `Has to be ${lastType}`
-          }
-          return `Can only be ${types.join(", ")} or ${lastType}.`
+          const names = types.map((v) => v.name).join(", ")
+          return `Type must be one of ${names}`
         },
       },
     })

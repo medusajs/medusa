@@ -22,7 +22,6 @@ export async function validator<T, V>(
   plain: V
 ): Promise<T> {
   const toValidate = plainToClass(typedClass, plain)
-  console.warn("to be valdated", toValidate)
   // @ts-ignore
   const errors = await validate(toValidate, {
     whitelist: true,
@@ -30,7 +29,6 @@ export async function validator<T, V>(
   })
 
   const errorMessages = reduceErrorMessages(errors)
-  console.warn("errors", errorMessages)
 
   if (errors?.length) {
     throw new MedusaError(
