@@ -2,6 +2,7 @@ import { defaultFields, defaultRelations } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { IsNumber } from "class-validator"
 
 /**
  * @oas [get] /regions
@@ -59,7 +60,9 @@ export default async (req, res) => {
 }
 
 export class AdminListRegionsRequest {
+  @IsNumber()
   limit?: number
+  @IsNumber()
   offset?: number
 }
 

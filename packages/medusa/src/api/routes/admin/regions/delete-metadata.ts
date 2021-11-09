@@ -2,6 +2,7 @@ import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}/metadata/{key}
@@ -44,7 +45,9 @@ export default async (req, res) => {
 }
 
 export class AdminRegionDeleteMetadataRequest {
+  @IsString()
   id: string
+  @IsString()
   key: string
 }
 

@@ -2,6 +2,7 @@ import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { IsString } from "class-validator"
 
 /**
  * @oas [post] /regions/{id}/payment-providers
@@ -49,6 +50,7 @@ export default async (req, res) => {
 }
 
 export class AdminRegionAddPaymentProviderRequest {
+  @IsString()
   provider_id: string
 }
 

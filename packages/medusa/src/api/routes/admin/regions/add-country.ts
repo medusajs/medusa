@@ -1,7 +1,9 @@
 import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
+
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { IsString } from "class-validator"
 /**
  * @oas [post] /regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
@@ -46,6 +48,7 @@ export default async (req, res) => {
 }
 
 export class AdminRegionAddCountryRequest {
+  @IsString()
   country_code: string
 }
 

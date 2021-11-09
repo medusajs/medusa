@@ -1,6 +1,7 @@
 import { validator } from "medusa-core-utils"
 import RegionService from "../../../../services/region"
 import { Region } from "../../../.."
+import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}
@@ -43,6 +44,7 @@ export default async (req, res) => {
 }
 
 export class AdminDeleteRegionRequest {
+  @IsString()
   region_id: string
 }
 export class DeleteResponse {

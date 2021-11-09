@@ -2,6 +2,7 @@ import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { IsArray, IsNumber, IsString } from "class-validator"
 /**
  * @oas [post] /regions
  * operationId: "PostRegions"
@@ -72,12 +73,22 @@ export default async (req, res) => {
 }
 
 export class AdminCreateRegionRequest {
+  @IsString()
   name: string
+  @IsString()
   currency_code: string
+  @IsString()
   tax_code: string
+  @IsNumber()
   tax_rate: number
+  @IsArray()
+  @IsString({ each: true })
   payment_providers: string[]
+  @IsArray()
+  @IsString({ each: true })
   fulfillment_providers: string[]
+  @IsArray()
+  @IsString({ each: true })
   countries: string[]
 }
 

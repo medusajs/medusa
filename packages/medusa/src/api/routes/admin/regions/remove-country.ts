@@ -2,6 +2,7 @@ import { defaultRelations, defaultFields } from "."
 import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}/countries/{country_code}
@@ -42,7 +43,9 @@ export default async (req, res) => {
 }
 
 export class AdminRemoveCountryFromRegionRequest {
+  @IsString()
   region_id: string
+  @IsString()
   country_code: string
 }
 

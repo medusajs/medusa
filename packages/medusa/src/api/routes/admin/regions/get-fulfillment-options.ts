@@ -2,6 +2,7 @@ import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"
+import { IsString } from "class-validator"
 
 /**
  * @oas [get] /regions/{id}/fulfillment-options
@@ -48,6 +49,7 @@ export default async (req, res) => {
 }
 
 export class AdminGetFulfillmentOptions {
+  @IsString()
   region_id
 }
 
