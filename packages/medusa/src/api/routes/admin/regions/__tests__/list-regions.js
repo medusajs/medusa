@@ -1,5 +1,4 @@
 import { IdMap } from "medusa-test-utils"
-import { JsxEmit } from "typescript"
 import { request } from "../../../../../helpers/test-request"
 import { RegionServiceMock } from "../../../../../services/__mocks__/region"
 

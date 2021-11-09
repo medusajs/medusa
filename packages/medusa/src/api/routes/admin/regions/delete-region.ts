@@ -1,6 +1,5 @@
-import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
-import { Region } from "../../../.."
 import { IsString } from "class-validator"
 
 /**

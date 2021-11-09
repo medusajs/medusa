@@ -1,4 +1,4 @@
-import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"

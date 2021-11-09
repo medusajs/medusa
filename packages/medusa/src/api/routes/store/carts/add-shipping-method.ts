@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
-import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 import { defaultFields, defaultRelations } from "."
 import CartService from "../../../../services/cart"

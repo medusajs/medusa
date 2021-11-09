@@ -1,6 +1,5 @@
 import { defaultRelations, defaultFields } from "."
-import { validator } from "medusa-core-utils"
-
+import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import { IsString } from "class-validator"

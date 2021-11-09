@@ -1,4 +1,4 @@
-import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import { defaultFields, defaultRelations } from "."
 import CartService from "../../../../services/cart"
 
