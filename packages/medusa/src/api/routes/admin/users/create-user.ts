@@ -1,4 +1,4 @@
-import { IsEmail } from "class-validator"
+import { IsEmail, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
 import { validator } from "medusa-core-utils"
 import { User } from "../../../.."
@@ -18,7 +18,10 @@ export default async (req, res) => {
 export class AdminCreateUserRequest {
   @IsEmail()
   email: string
-  name?: string
+  @IsOptional()
+  @IsString()
+  name: string
+  @IsString()
   password: string
 }
 

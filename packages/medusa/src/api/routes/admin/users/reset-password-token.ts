@@ -1,3 +1,4 @@
+import { IsEmail } from "class-validator"
 import { validator } from "medusa-core-utils"
 import UserService from "../../../../services/user"
 
@@ -14,5 +15,6 @@ export default async (req, res) => {
 }
 
 export class AdminResetPasswordTokenRequest {
+  @IsEmail()
   email: string
 }
