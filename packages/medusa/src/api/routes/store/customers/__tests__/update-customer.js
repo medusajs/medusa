@@ -55,12 +55,12 @@ describe("POST /store/customers/:id", () => {
     })
   })
 
-  describe("fails update a customer with a non existing billing address id", () => {
+  describe("fails update a customer with a billing address with an invalid type", () => {
     let subject
     beforeAll(async () => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
-          billing_address: "123",
+          billing_address: 42,
         },
         clientSession: {
           jwt: {
@@ -74,7 +74,7 @@ describe("POST /store/customers/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CustomerService update", () => {
+    it("calls CustomerService update 0 times", () => {
       expect(CustomerServiceMock.update).toHaveBeenCalledTimes(0)
     })
 
@@ -96,10 +96,6 @@ describe("POST /store/customers/:id", () => {
           },
         },
       })
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
     })
 
     afterAll(() => {
