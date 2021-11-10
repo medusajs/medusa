@@ -26,7 +26,10 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreSetCartPaymentSession, req.body)
+  const validated = await validator(
+    StorePostCartsCartPaymentSessionReq,
+    req.body
+  )
 
   const cartService: CartService = req.scope.resolve("cartService")
 
@@ -39,7 +42,7 @@ export default async (req, res) => {
   res.status(200).json({ cart })
 }
 
-export class StoreSetCartPaymentSession {
+export class StorePostCartsCartPaymentSessionReq {
   @IsString()
   provider_id: string
 }

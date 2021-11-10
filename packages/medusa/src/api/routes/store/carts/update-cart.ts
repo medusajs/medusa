@@ -76,7 +76,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreUpdateCartRequest, req.body)
+  const validated = await validator(StorePostCartsCartReq, req.body)
 
   const cartService: CartService = req.scope.resolve("cartService")
 
@@ -110,7 +110,7 @@ class Discount {
   code: string
 }
 
-export class StoreUpdateCartRequest {
+export class StorePostCartsCartReq {
   @IsOptional()
   @IsString()
   region_id: string

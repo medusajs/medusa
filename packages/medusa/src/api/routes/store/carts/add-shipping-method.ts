@@ -28,7 +28,10 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreAddCartShippingMethodRequest, req.body)
+  const validated = await validator(
+    StorePostCartsCartShippingMethodReq,
+    req.body
+  )
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -59,7 +62,7 @@ export default async (req, res) => {
   res.status(200).json({ cart: updatedCart })
 }
 
-export class StoreAddCartShippingMethodRequest {
+export class StorePostCartsCartShippingMethodReq {
   @IsString()
   option_id: string
   @IsOptional()

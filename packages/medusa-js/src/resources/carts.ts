@@ -1,10 +1,10 @@
 import {
-  StoreAddCartShippingMethodRequest,
   StoreCartResponse,
-  StoreCreateCartRequest,
-  StoreSetCartPaymentSession,
-  StoreUpdateCartPaymentSessionRequest,
-  StoreUpdateCartRequest,
+  StorePostCartReq,
+  StorePostCartsCartPaymentSessionReq,
+  StorePostCartsCartPaymentSessionUpdateReq,
+  StorePostCartsCartReq,
+  StorePostCartsCartShippingMethodReq,
 } from '@medusajs/medusa';
 import { AxiosPromise } from 'axios';
 import BaseResource from './base';
@@ -16,10 +16,10 @@ class CartsResource extends BaseResource {
   /**
    * Adds a shipping method to cart
    * @param {string} cart_id Id of cart
-   * @param {StoreAddCartShippingMethodRequest} payload Containg id of shipping option and optional data
+   * @param {StorePostCartsCartShippingMethodReq} payload Containg id of shipping option and optional data
    * @return {AxiosPromise<StoreCartResponse>}
    */
-  addShippingMethod(cart_id: string, payload: StoreAddCartShippingMethodRequest): AxiosPromise<StoreCartResponse> {
+  addShippingMethod(cart_id: string, payload: StorePostCartsCartShippingMethodReq): AxiosPromise<StoreCartResponse> {
     const path = `/store/carts/${cart_id}/shipping-methods`;
     return this.client.request('POST', path, payload);
   }
@@ -29,7 +29,7 @@ class CartsResource extends BaseResource {
    * Payment authorization is attempted and if more work is required, we simply return the cart for further updates.
    * If payment is authorized and order is not yet created, we make sure to do so.
    * The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
-   * If not provided, we will generate one for the request.
+   * If not provuided, we will generate one for the request.
    * @param {string} cart_id is required
    * @return {AxiosPromise<StoreCartResponse>}
    */
@@ -40,11 +40,11 @@ class CartsResource extends BaseResource {
 
   /**
    * Creates a cart
-   * @param {StoreCreateCartRequest} payload is optional and can contain a region_id and items.
+   * @param {StorePostCartReq} payload is optional and can contain a region_id and items.
    * The cart will contain the payload, if provided. Otherwise it will be empty
    * @return {AxiosPromise<StoreCartResponse>}
    */
-  create(payload?: StoreCreateCartRequest): AxiosPromise<StoreCartResponse> {
+  create(payload?: StorePostCartReq): AxiosPromise<StoreCartResponse> {
     const path = `/store/carts`;
     return this.client.request('POST', path, payload);
   }
@@ -108,10 +108,10 @@ class CartsResource extends BaseResource {
   /**
    * Refreshes a payment session.
    * @param {string} cart_id is required
-   * @param {StoreSetCartPaymentSession} payload the provider id of the session e.g. "stripe"
+   * @param {StorePostCartsCartPaymentSessionReq} payload the provider id of the session e.g. "stripe"
    * @return {AxiosPromise<StoreCartResponse>}
    */
-  setPaymentSession(cart_id: string, payload: StoreSetCartPaymentSession): AxiosPromise<StoreCartResponse> {
+  setPaymentSession(cart_id: string, payload: StorePostCartsCartPaymentSessionReq): AxiosPromise<StoreCartResponse> {
     const path = `/store/carts/${cart_id}/payment-session`;
     return this.client.request('POST', path, payload);
   }
@@ -119,10 +119,10 @@ class CartsResource extends BaseResource {
   /**
    * Updates a cart
    * @param {string} cart_id is required
-   * @param {StoreUpdateCartRequest} payload is required and can contain region_id, email, billing and shipping address
+   * @param {StorePostCartsCartReq} payload is required and can contain region_id, email, billing and shipping address
    * @return {AxiosPromise<StoreCartResponse>}
    */
-  update(cart_id: string, payload: StoreUpdateCartRequest): AxiosPromise<StoreCartResponse> {
+  update(cart_id: string, payload: StorePostCartsCartReq): AxiosPromise<StoreCartResponse> {
     const path = `/store/carts/${cart_id}`;
     return this.client.request('POST', path, payload);
   }
@@ -130,12 +130,12 @@ class CartsResource extends BaseResource {
   /**
    * Updates the payment method
    * @param {string} cart_id is required
-   * @param {StoreUpdateCartPaymentSessionRequest} payload is required
+   * @param {StorePostCartsCartPaymentSessionUpdateReq} payload is required
    * @return {AxiosPromise<StoreCartResponse>}
    */
   updatePaymentSession(
     cart_id: string,
-    payload: StoreUpdateCartPaymentSessionRequest,
+    payload: StorePostCartsCartPaymentSessionUpdateReq,
   ): AxiosPromise<StoreCartResponse> {
     const path = `/store/carts/${cart_id}/payment-session/update`;
     return this.client.request('POST', path, payload);

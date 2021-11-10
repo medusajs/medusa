@@ -60,7 +60,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/cart"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreCreateCartRequest, req.body)
+  const validated = await validator(StorePostCartReq, req.body)
 
   const reqContext = {
     ip: reqIp.getClientIp(req),
@@ -149,7 +149,7 @@ export class Item {
   @IsInt()
   quantity: number
 }
-export class StoreCreateCartRequest {
+export class StorePostCartReq {
   @IsOptional()
   @IsString()
   region_id: string

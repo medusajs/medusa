@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreCreateLineItem, req.body)
+  const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
   const manager: EntityManager = req.scope.resolve("manager")
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
@@ -64,7 +64,7 @@ export default async (req, res) => {
   res.status(200).json({ cart })
 }
 
-export class StoreCreateLineItem {
+export class StorePostCartsCartLineItemsReq {
   @IsString()
   variant_id: string
   @IsInt()

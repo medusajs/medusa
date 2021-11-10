@@ -29,7 +29,7 @@ export default async (req, res) => {
   const { id, provider_id } = req.params
 
   const validated = await validator(
-    StoreUpdateCartPaymentSessionRequest,
+    StorePostCartsCartPaymentSessionUpdateReq,
     req.body
   )
 
@@ -46,7 +46,7 @@ export default async (req, res) => {
   res.status(200).json({ cart })
 }
 
-export class StoreUpdateCartPaymentSessionRequest {
+export class StorePostCartsCartPaymentSessionUpdateReq {
   @Allow()
   data: object
 }
