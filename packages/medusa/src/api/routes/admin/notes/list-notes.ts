@@ -6,6 +6,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /notes
  * operationId: "GetNotes"
  * summary: "List Notes"
+ * x-authenticated: true
  * description: "Retrieves a list of notes"
  *  * parameters:
  *   - (path) limit= {number} The number of notes to get

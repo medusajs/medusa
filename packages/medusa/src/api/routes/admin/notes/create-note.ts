@@ -1,10 +1,14 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+// import { MedusaError, Validator } from "medusa-core-utils"
+import { IsOptional, IsString } from "class-validator"
+import NoteService from "../../../../services/note"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /notes
  * operationId: "PostNotes"
  * summary: "Creates a Note"
  * description: "Creates a Note which can be associated with any resource as required."
+ * x-authenticated: true
  * requestBody:
  *  content:
  *    application/json:
@@ -33,27 +37,32 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    resource_id: Validator.string(),
-    resource_type: Validator.string(),
-    value: Validator.string(),
-  })
+  const validated = await validator(AdminCreateNoteRequest, req.body)
 
-  const userId = req.user.id || req.user.userId
+  const userId: string = req.user.id || req.user.userId
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const noteService = req.scope.resolve("noteService")
+  const noteService: NoteService = req.scope.resolve("noteService")
 
   const result = await noteService.create({
-    resource_id: value.resource_id,
-    resource_type: value.resource_type,
-    value: value.value,
+    resource_id: validated.resource_id,
+    resource_type: validated.resource_type,
+    value: validated.value,
     author_id: userId,
   })
 
   res.status(200).json({ note: result })
+}
+
+export class AdminCreateNoteRequest {
+  @IsString()
+  @IsOptional()
+  resource_id: string
+
+  @IsString()
+  @IsOptional()
+  resource_type?: string
+
+  @IsString()
+  @IsOptional()
+  value?: string
 }

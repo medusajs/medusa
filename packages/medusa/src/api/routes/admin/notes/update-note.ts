@@ -1,9 +1,13 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { IsString } from "class-validator"
+import { Note } from "../../../../models/note"
+import NoteService from "../../../../services/note"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /notes/{id}
  * operationId: "PostNotesNote"
  * summary: "Updates a Note"
+ * x-authenticated: true
  * description: "Updates a Note associated with some resource"
  * parameters:
  *   - (path) id=* {string} The id of the Note to update
@@ -31,17 +35,19 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    value: Validator.string(),
-  })
+  const validated = await validator(AdminUpdateNoteRequest, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const noteService = req.scope.resolve("noteService") as NoteService
+  const note = await noteService.update(id, validated.value)
 
-  const noteService = req.scope.resolve("noteService")
-  const result = await noteService.update(id, value.value)
+  res.status(200).json({ note })
+}
 
-  res.status(200).json({ note: result })
+export class AdminUpdateNoteRequest {
+  @IsString()
+  value: string
+}
+
+export class AdminUpdateNoteResponse {
+  note: Note
 }
