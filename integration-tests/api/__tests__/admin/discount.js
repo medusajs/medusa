@@ -29,32 +29,42 @@ describe("/admin/discounts", () => {
   describe("GET /admin/discounts", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule",
-          description: "Test discount rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount",
-          code: "TESTING",
-          rule_id: "test-discount-rule",
-          is_dynamic: false,
-          is_disabled: false,
-        })
-        await manager.insert(Discount, {
-          id: "messi-discount",
-          code: "BARCA100",
-          rule_id: "test-discount-rule",
-          is_dynamic: false,
-          is_disabled: false,
-        })
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Test discount rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount",
+        code: "TESTING",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+      })
+      await manager.insert(Discount, {
+        id: "messi-discount",
+        code: "BARCA100",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+      })
+      await manager.insert(Discount, {
+        id: "dynamic-discount",
+        code: "Dyn100",
+        rule_id: "test-discount-rule",
+        is_dynamic: true,
+        is_disabled: false,
+      })
+      await manager.insert(Discount, {
+        id: "disabled-discount",
+        code: "Dis100",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: true,
+      })
     })
 
     afterEach(async () => {
@@ -84,6 +94,50 @@ describe("/admin/discounts", () => {
           }),
         ])
       )
+    })
+
+    it("lists dynamic discounts ", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts?is_dynamic=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.discounts).toEqual([
+        expect.objectContaining({
+          id: "dynamic-discount",
+          code: "Dyn100",
+        }),
+      ])
+    })
+
+    it("lists disabled discounts ", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts?is_disabled=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.discounts).toEqual([
+        expect.objectContaining({
+          id: "disabled-discount",
+          code: "Dis100",
+        }),
+      ])
     })
   })
 
