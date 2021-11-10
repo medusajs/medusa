@@ -6,6 +6,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
 import { validator } from "./validator"
 
 async function typeValidator(
@@ -14,19 +15,49 @@ async function typeValidator(
 ): Promise<boolean> {
   switch (typedClass) {
     case String:
-      return isString(plain)
+      if (!isString(plain)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${plain} is not a string`
+        )
+      }
+      return true
     case Number:
-      return isNumber(Number(plain))
+      if (!isNumber(Number(plain))) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${plain} is not a number`
+        )
+      }
+      return true
     default:
       if (isArray(typedClass) && isArray(plain)) {
-        return (
+        const errors: Map<any, string> = new Map()
+        const result = (
           await Promise.all(
             (plain as any[]).map(
               async (p) =>
-                await typeValidator(typedClass[0], p).catch(() => false)
+                await typeValidator(typedClass[0], p).catch((e) => {
+                  errors.set(typedClass, e.message)
+                  return false
+                })
             )
           )
         ).some(Boolean)
+
+        if (result) {
+          return true
+        }
+
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${Array.from(errors.entries()).map(
+            (v) =>
+              `${
+                v[0].name || (isArray(v[0]) ? `${v[0][0].name}[]` : "undefined")
+              }:[${v[1]}]`
+          )}`
+        )
       }
       return (
         (await validator(typedClass, plain).then(() => true)) &&
@@ -45,12 +76,31 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         async validate(value: unknown, args: ValidationArguments) {
+          const errors: Map<any, string> = new Map()
           const results = await Promise.all(
             types.map(
-              async (v) => await typeValidator(v, value).catch(() => false)
+              async (v) =>
+                await typeValidator(v, value).catch((e) => {
+                  errors.set(v, e.message)
+                  return false
+                })
             )
           )
-          return results.some(Boolean)
+
+          if (results.some(Boolean)) {
+            return true
+          }
+
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `${Array.from(errors.entries()).map(
+              (v) =>
+                `${
+                  v[0].name ||
+                  (isArray(v[0]) ? `${v[0][0].name}[]` : "undefined")
+                }:[${v[1]}]`
+            )}`
+          )
         },
         defaultMessage(validationArguments?: ValidationArguments) {
           const names = types.map(
