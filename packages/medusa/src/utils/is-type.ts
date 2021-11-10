@@ -64,14 +64,3 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
     })
   }
 }
-
-class MyArray<T> extends Array<T> {
-  private constructor(items: Array<T>) {
-    super(...items)
-  }
-
-  static test<T>(): MyArray<T> {
-    MyArray.name
-    return Object.create(MyArray.prototype)
-  }
-}
