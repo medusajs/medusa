@@ -2,6 +2,7 @@ import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { FindConfig } from "../../../../types/common"
+import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /customers
@@ -35,13 +36,13 @@ export default async (req, res) => {
     selector.q = validated.q
   }
 
-  // let expandFields = []
-  // if (validated.expand) {
-  //   expandFields = req.query.expand.split(",")
-  // }
+  let expandFields: string[] = []
+  if (validated.expand) {
+    expandFields = validated.expand.split(",")
+  }
 
   const listConfig: FindConfig<Customer> = {
-    relations: validated.expand || [],
+    relations: expandFields,
     skip: offset,
     take: limit,
   }
@@ -71,8 +72,7 @@ export class AdminListCustomersRequest {
   @IsOptional()
   offset?: number
 
-  @IsArray({})
-  @IsString({ each: true })
+  @IsString()
   @IsOptional()
-  expand?: string[]
+  expand?: string
 }
