@@ -95,7 +95,7 @@ export default (app, container) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultStoreCartFields = [
   "subtotal",
   "tax_total",
   "shipping_total",
@@ -104,7 +104,7 @@ export const defaultFields = [
   "total",
 ]
 
-export const defaultRelations = [
+export const defaultStoreCartRelations = [
   "gift_cards",
   "region",
   "items",

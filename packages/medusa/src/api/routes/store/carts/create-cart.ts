@@ -10,7 +10,7 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
-import { defaultFields, defaultRelations } from "."
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -133,8 +133,8 @@ export default async (req, res) => {
     }
 
     cart = await cartService.withTransaction(manager).retrieve(cart.id, {
-      select: defaultFields,
-      relations: defaultRelations,
+      select: defaultStoreCartFields,
+      relations: defaultStoreCartRelations,
     })
 
     res.status(200).json({ cart })

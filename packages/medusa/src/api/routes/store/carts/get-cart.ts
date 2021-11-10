@@ -1,4 +1,4 @@
-import { defaultFields, defaultRelations } from "."
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 
 /**
@@ -43,8 +43,8 @@ export default async (req, res) => {
   }
 
   cart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
   })
 
   res.json({ cart })

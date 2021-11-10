@@ -1,6 +1,6 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { defaultFields, defaultRelations } from "."
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -57,8 +57,8 @@ export default async (req, res) => {
   })
 
   const cart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
   })
 
   res.status(200).json({ cart })

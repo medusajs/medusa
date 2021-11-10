@@ -1,5 +1,5 @@
 import { Allow } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -39,8 +39,8 @@ export default async (req, res) => {
   await cartService.updatePaymentSession(id, validated.data)
 
   const cart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
   })
 
   res.status(200).json({ cart })
