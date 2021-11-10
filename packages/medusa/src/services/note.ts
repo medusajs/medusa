@@ -79,7 +79,7 @@ class NoteService extends BaseService {
     config = {
       skip: 0,
       take: 50,
-      relations: [],
+      relations: [] as string[],
     }
   ): Promise<Note[]> {
     const noteRepo = this.manager_.getCustomRepository(
