@@ -1,9 +1,10 @@
 import { Router } from "express"
+import { ProductCollection } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/collections", route)
 
   route.post("/", middlewares.wrap(require("./create-collection").default))
@@ -19,3 +20,18 @@ export default app => {
 
 export const defaultFields = ["id", "title", "handle"]
 export const defaultRelations = ["products"]
+export type AdminListCollectionsResponse = {
+  collections: ProductCollection[]
+  count: number
+  offset: number
+  limit: number
+}
+export type AdminCollectionResponse = {
+  collection: ProductCollection
+}
+
+export * from "./create-collection"
+export * from "./delete-collection"
+export * from "./get-collection"
+export * from "./list-collections"
+export * from "./update-collection"
