@@ -271,4 +271,16 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(product3)
+
+  const product4 = manager.create(Product, {
+    id: "test-product_filtering_4",
+    handle: "test-product_filtering_4",
+    title: "Test product filtering 4",
+    profile_id: defaultProfile.id,
+    description: "test-product-description",
+    status: "proposed",
+    deleted_at: new Date().toISOString(),
+  })
+
+  await manager.save(product4)
 }
