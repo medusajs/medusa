@@ -1,10 +1,11 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /customers
  * operationId: "PostCustomers"
  * summary: "Create a Customer"
  * description: "Creates a Customer."
+ * x-authenticated: true
  * parameters:
  *   - (body) email=* {string} The Customer's email address.
  *   - (body) first_name=* {string} The Customer's first name.
@@ -23,20 +24,31 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *               $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    email: Validator.string().email().required(),
-    first_name: Validator.string().required(),
-    last_name: Validator.string().required(),
-    password: Validator.string().required(),
-    phone: Validator.string().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(AdminCreateCustomerRequest, req.bodyn)
 
   const customerService = req.scope.resolve("customerService")
-  const customer = await customerService.create(value)
+  const customer = await customerService.create(validated)
   res.status(201).json({ customer })
+}
+
+export class AdminCreateCustomerRequest {
+  @IsEmail()
+  @IsNotEmpty()
+  email?: string
+
+  @IsString()
+  @IsNotEmpty()
+  first_name?: string
+
+  @IsString()
+  @IsNotEmpty()
+  last_name?: string
+
+  @IsString()
+  @IsNotEmpty()
+  password?: string
+
+  @IsString()
+  @IsOptional()
+  phone?: string
 }
