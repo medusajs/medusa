@@ -38,7 +38,7 @@ async function typeValidator(
             (plain as any[]).map(
               async (p) =>
                 await typeValidator(typedClass[0], p).catch((e) => {
-                  errors.set(typedClass, e.message)
+                  errors.set(typedClass[0].name, e.message)
                   return false
                 })
             )
@@ -51,12 +51,7 @@ async function typeValidator(
 
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `${Array.from(errors.entries()).map(
-            (v) =>
-              `${
-                v[0].name || (isArray(v[0]) ? `${v[0][0].name}[]` : "undefined")
-              }:[${v[1]}]`
-          )}`
+          Object.fromEntries(errors.entries())
         )
       }
       return (
@@ -81,7 +76,7 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
             types.map(
               async (v) =>
                 await typeValidator(v, value).catch((e) => {
-                  errors.set(v, e.message)
+                  errors.set(v.name, e.message)
                   return false
                 })
             )
@@ -93,13 +88,7 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
 
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `${Array.from(errors.entries()).map(
-              (v) =>
-                `${
-                  v[0].name ||
-                  (isArray(v[0]) ? `${v[0][0].name}[]` : "undefined")
-                }:[${v[1]}]`
-            )}`
+            Object.fromEntries(errors.entries())
           )
         },
         defaultMessage(validationArguments?: ValidationArguments) {
