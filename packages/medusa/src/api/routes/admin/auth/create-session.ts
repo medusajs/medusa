@@ -5,6 +5,7 @@ import { User } from "../../../.."
 import { validator } from "../../../../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 import AuthService from "../../../../services/auth"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /auth
@@ -28,6 +29,12 @@ import AuthService from "../../../../services/auth"
  *              $ref: "#/components/schemas/user"
  */
 export default async (req, res) => {
+  if (!config.jwtSecret) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      "Please configure jwtSecret in your environment"
+    )
+  }
   const validated = await validator(AdminCreateSessionRequest, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
