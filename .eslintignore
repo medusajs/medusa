@@ -41,6 +41,7 @@
 /packages/medusa-js/src/resources/returns.ts
 /packages/medusa-js/src/resources/shipping-options.ts
 /packages/medusa-js/src/resources/swaps.ts
+/packages/medusa-js/src/resources/base.ts
 /packages/medusa-js/src/types/
 /packages/medusa-js/src/index.ts
 /packages/medusa-js/src/request.ts
