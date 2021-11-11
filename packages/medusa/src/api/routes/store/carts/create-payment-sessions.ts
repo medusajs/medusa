@@ -1,4 +1,5 @@
-import { defaultFields, defaultRelations } from "./"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import { CartService } from "../../../../services"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions
@@ -22,18 +23,14 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  try {
-    const cartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve("cartService")
 
-    await cartService.setPaymentSessions(id)
+  await cartService.setPaymentSessions(id)
 
-    const cart = await cartService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const cart = await cartService.retrieve(id, {
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
+  })
 
-    res.status(200).json({ cart })
-  } catch (err) {
-    throw err
-  }
+  res.status(200).json({ cart })
 }

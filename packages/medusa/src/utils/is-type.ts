@@ -86,12 +86,15 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
             return true
           }
 
-          throw new MedusaError(MedusaError.Types.INVALID_DATA, {
-            message: `${args.property} must be one of: ${types.map(
-              (t) => `${t.name || (Array.isArray(t) ? t[0]?.name : "")}`
-            )}`,
-            details: Object.fromEntries(errors.entries()),
-          })
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            JSON.stringify({
+              message: `${args.property} must be one of: ${types.map(
+                (t) => `${t.name || (Array.isArray(t) ? t[0]?.name : "")}`
+              )}`,
+              details: Object.fromEntries(errors.entries()),
+            })
+          )
         },
 
         defaultMessage(validationArguments?: ValidationArguments) {

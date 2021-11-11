@@ -1,6 +1,5 @@
 import bodyParser from "body-parser"
 import { getConfigFile } from "medusa-core-utils"
-
 import routes from "../api"
 
 export default async ({ app, rootDirectory, container }) => {

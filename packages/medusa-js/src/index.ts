@@ -1,16 +1,15 @@
-import Client from './request';
-import { Config } from './request';
+import MedusaError from './error';
+import Client, { Config } from './request';
+import AuthResource from './resources/auth';
 import CartsResource from './resources/carts';
 import CustomersResource from './resources/customers';
 import OrdersResource from './resources/orders';
 import ProductsResource from './resources/products';
 import RegionsResource from './resources/regions';
-import ShippingOptionsResource from './resources/shipping-options';
-import SwapsResource from './resources/swaps';
-import MedusaError from './error';
-import AuthResource from './resources/auth';
 import ReturnReasonsResource from './resources/return-reasons';
 import ReturnsResource from './resources/returns';
+import ShippingOptionsResource from './resources/shipping-options';
+import SwapsResource from './resources/swaps';
 
 class Medusa {
   private client: Client;
