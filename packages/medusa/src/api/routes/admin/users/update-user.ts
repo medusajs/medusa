@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
-import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import UserService from "../../../../services/user"
 
 export default async (req, res) => {

@@ -7,7 +7,8 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import reqIp from "request-ip"
 import { defaultFields, defaultRelations } from "."
 import CartService from "../../../../services/cart"

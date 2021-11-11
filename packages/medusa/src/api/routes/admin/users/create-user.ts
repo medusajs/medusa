@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
-import { validator } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 import { User } from "../../../.."
 import UserService from "../../../../services/user"
 
