@@ -1,4 +1,4 @@
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
 
 /**
  * @oas [get] /gift-cards/{id}
@@ -24,8 +24,8 @@ export default async (req, res) => {
 
   const giftCardService = req.scope.resolve("giftCardService")
   const giftCard = await giftCardService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminGiftCardFields,
+    relations: defaultAdminGiftCardRelations,
   })
 
   res.status(200).json({ gift_card: giftCard })
