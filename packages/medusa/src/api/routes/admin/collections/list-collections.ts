@@ -1,5 +1,8 @@
 import { IsNumber, IsOptional } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import {
+  defaultAdminCollectionsFields,
+  defaultAdminCollectionsRelations,
+} from "."
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
 /**
@@ -34,8 +37,8 @@ export default async (req, res) => {
   )
 
   const listConfig = {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminCollectionsFields,
+    relations: defaultAdminCollectionsRelations,
     skip: offset,
     take: limit,
   }

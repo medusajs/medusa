@@ -18,8 +18,8 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = ["id", "title", "handle"]
-export const defaultRelations = ["products"]
+export const defaultAdminCollectionsFields = ["id", "title", "handle"]
+export const defaultAdminCollectionsRelations = ["products"]
 export type AdminListCollectionsResponse = {
   collections: ProductCollection[]
   count: number
