@@ -51,6 +51,8 @@ For customizations that are more particular to your project you can extend your 
 
 ## Starting your Medusa server
 
+> Note: For your server to run correctly you should configure your `COOKIE_SECRET` and `JWT_SECRET` environment variables by adding a `.env` file to the root of your Medusa project.
+
 After your project has been set up with `medusa new`, you can run the following commands to start your server:
 
 ```shell
