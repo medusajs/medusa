@@ -17,7 +17,7 @@ class CustomerResource extends BaseResource {
 
   /**
    * Creates a customer
-   * @param {Object} payload information of customer
+   * @param {StorePostCustomersReq} payload information of customer
    * @return { AxiosPromise<StoreCustomerResponse>}
    */
   create(payload: StorePostCustomersReq): AxiosPromise<StoreCustomerResponse> {
