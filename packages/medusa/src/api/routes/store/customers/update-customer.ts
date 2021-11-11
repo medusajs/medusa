@@ -3,7 +3,7 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
-import { AddressUpdatePayload } from "./update-address"
+import { StorePostCustomersCustomerAddressesAddressReq } from "./update-address"
 
 /**
  * @oas [post] /customers/me
@@ -68,8 +68,8 @@ export default async (req, res) => {
 
 export class StorePostCustomersCustomerReq {
   @IsOptional()
-  @IsType([AddressUpdatePayload, String])
-  billing_address: AddressUpdatePayload | string
+  @IsType([StorePostCustomersCustomerAddressesAddressReq, String])
+  billing_address: StorePostCustomersCustomerAddressesAddressReq | string
   @IsOptional()
   @IsString()
   first_name: string

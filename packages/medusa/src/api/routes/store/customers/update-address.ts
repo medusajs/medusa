@@ -36,7 +36,10 @@ export default async (req, res) => {
   const id = req.user.customer_id
   const { address_id } = req.params
 
-  const validated = await validator(AddressUpdatePayload, req.body)
+  const validated = await validator(
+    StorePostCustomersCustomerAddressesAddressReq,
+    req.body
+  )
 
   const customerService = req.scope.resolve(
     "customerService"
@@ -52,7 +55,7 @@ export default async (req, res) => {
   res.json({ customer })
 }
 
-export class AddressUpdatePayload {
+export class StorePostCustomersCustomerAddressesAddressReq {
   @IsOptional()
   @IsString()
   company?: string

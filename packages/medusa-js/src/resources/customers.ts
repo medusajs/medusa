@@ -1,7 +1,7 @@
 import {
   StoreCustomerResponse,
   StoreGetCustomersCustomerOrdersResponse,
-  StorePostCustomersCustomerAddressesAddressReq,
+  StorePostCustomersCustomerReq,
   StorePostCustomersReq,
   StorePostCustomersResetPasswordReq,
 } from '@medusajs/medusa';
@@ -36,10 +36,10 @@ class CustomerResource extends BaseResource {
 
   /**
    * Updates a customer
-   * @param {StorePostCustomersCustomerAddressesAddressReq} payload information to update customer with
+   * @param {StorePostCustomersCustomerReq} payload information to update customer with
    * @return {AxiosPromise<StoreCustomerResponse>}
    */
-  update(payload: StorePostCustomersCustomerAddressesAddressReq): AxiosPromise<StoreCustomerResponse> {
+  update(payload: StorePostCustomersCustomerReq): AxiosPromise<StoreCustomerResponse> {
     const path = `/store/customers/me`;
     return this.client.request('POST', path, payload);
   }
