@@ -1,12 +1,7 @@
 import { IsEmail, IsString } from "class-validator"
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/create-customer.ts
 import jwt from "jsonwebtoken"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import { Customer } from "../../../.."
-=======
-import jwt, { Secret } from "jsonwebtoken"
-import { CustomerResponse, defaultFields, defaultRelations } from "."
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/create-customer.js
 import config from "../../../../config"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
@@ -36,7 +31,6 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/create-customer.ts
   const validated = await validator(StorePostCustomersReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
@@ -46,23 +40,6 @@ export default async (req, res) => {
   req.session.jwt = jwt.sign({ customer_id: customer.id }, config.jwtSecret!, {
     expiresIn: "30d",
   })
-=======
-  const validated = await validator(StoreCreateCustomerRequest, req.body)
-
-  const customerService = req.scope.resolve(
-    "customerService"
-  ) as CustomerService
-  let customer = await customerService.create(validated)
-
-  // Add JWT to cookie
-  req.session.jwt = jwt.sign(
-    { customer_id: customer.id },
-    config.jwtSecret as Secret,
-    {
-      expiresIn: "30d",
-    }
-  )
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/create-customer.js
 
   customer = await customerService.retrieve(customer.id, {
     relations: defaultStoreCustomersRelations,
@@ -72,29 +49,13 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/create-customer.ts
 export class StorePostCustomersReq {
-=======
-export class StoreCreateCustomerRequest {
-  @IsEmail()
-  email: string
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/create-customer.js
   @IsString()
   first_name: string
   @IsString()
   last_name: string
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/create-customer.ts
   @IsEmail()
   email: string
   @IsString()
   password: string
 }
-=======
-  @IsString()
-  password: string
-}
-
-export type StoreCreateCustomerResponse = {
-  customer: CustomerResponse
-}
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/create-customer.js

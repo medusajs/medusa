@@ -1,4 +1,5 @@
-import { CustomerResponse, defaultFields, defaultRelations } from "."
+import { IsOptional, IsString } from "class-validator"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
@@ -35,7 +36,7 @@ export default async (req, res) => {
   const id = req.user.customer_id
   const { address_id } = req.params
 
-  const validated = await validator(StoreUpdateAddressRequest, req.body)
+  const validated = await validator(AddressUpdatePayload, req.body)
 
   const customerService = req.scope.resolve(
     "customerService"
@@ -44,27 +45,44 @@ export default async (req, res) => {
   let customer = await customerService.updateAddress(id, address_id, validated)
 
   customer = await customerService.retrieve(id, {
-    relations: defaultRelations,
-    select: defaultFields,
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
   })
 
   res.json({ customer })
 }
 
-export class StoreUpdateAddressRequest {
+export class AddressUpdatePayload {
+  @IsOptional()
+  @IsString()
   company?: string
+  @IsOptional()
+  @IsString()
   first_name?: string
+  @IsOptional()
+  @IsString()
   last_name?: string
+  @IsOptional()
+  @IsString()
   address_1?: string
+  @IsOptional()
+  @IsString()
   address_2?: string
+  @IsOptional()
+  @IsString()
   city?: string
+  @IsOptional()
+  @IsString()
   country_code?: string
+  @IsOptional()
+  @IsString()
   province?: string
+  @IsOptional()
+  @IsString()
   postal_code?: number
+  @IsOptional()
+  @IsString()
   phone?: string
-  metadata?: JSON
-}
-
-export class StoreUpdateAddressResponse {
-  customer: CustomerResponse
+  @IsOptional()
+  metadata?: object
 }

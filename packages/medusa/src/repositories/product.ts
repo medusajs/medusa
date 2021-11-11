@@ -44,11 +44,6 @@ export class ProductRepository extends Repository<Product> {
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
 
-<<<<<<< HEAD
-    if (optionsWithoutRelations?.order) {
-      qb = qb.orderBy(optionsWithoutRelations.order)
-    }
-=======
     qb = optionsWithoutRelations.where
       ? qb.where(optionsWithoutRelations.where)
       : qb
@@ -56,7 +51,6 @@ export class ProductRepository extends Repository<Product> {
     qb = optionsWithoutRelations.order
       ? qb.orderBy(optionsWithoutRelations.order)
       : qb
->>>>>>> 7053485425693d82237149186811e37953055bff
 
     if (tags) {
       qb = qb

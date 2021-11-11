@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { IsOptional, IsString, ValidateNested } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-=======
-import { IsOptional, IsString } from "class-validator"
-import { CustomerResponse, defaultFields, defaultRelations } from "."
->>>>>>> 7053485425693d82237149186811e37953055bff
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
@@ -38,7 +33,6 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const id = req.user.customer_id
 
-<<<<<<< HEAD
   const validated = await validator(
     StorePostCustomersCustomerAddressesReq,
     req.body
@@ -50,36 +44,16 @@ export default async (req, res) => {
   customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,
     select: defaultStoreCustomersFields,
-=======
-  const validated = await validator(StoreCreateCustomerAddressRequest, req.body)
-
-  const customerService = req.scope.resolve(
-    "customerService"
-  ) as CustomerService
-
-  let customer = await customerService.addAddress(id, validated)
-  customer = await customerService.retrieve(id, {
-    relations: defaultRelations,
-    select: defaultFields,
->>>>>>> 7053485425693d82237149186811e37953055bff
   })
 
   res.status(200).json({ customer })
 }
 
-<<<<<<< HEAD
 export class AddressCreatePayload {
-=======
-export class StoreCreateCustomerAddressRequest {
-  @IsOptional()
-  @IsString()
-  company?: string
->>>>>>> 7053485425693d82237149186811e37953055bff
   @IsString()
   first_name: string
   @IsString()
   last_name: string
-<<<<<<< HEAD
   @IsOptional()
   @IsString()
   phone: string
@@ -88,24 +62,17 @@ export class StoreCreateCustomerAddressRequest {
   @IsOptional()
   @IsString()
   company: string
-=======
->>>>>>> 7053485425693d82237149186811e37953055bff
   @IsString()
   address_1: string
   @IsOptional()
   @IsString()
-<<<<<<< HEAD
   address_2: string
-=======
-  address_2?: string
->>>>>>> 7053485425693d82237149186811e37953055bff
   @IsString()
   city: string
   @IsString()
   country_code: string
   @IsOptional()
   @IsString()
-<<<<<<< HEAD
   province: string
   @IsString()
   postal_code: string
@@ -114,14 +81,4 @@ export class StoreCreateCustomerAddressRequest {
 export class StorePostCustomersCustomerAddressesReq {
   @ValidateNested()
   address: AddressCreatePayload
-=======
-  province?: string
-  @IsOptional()
-  @IsString()
-  phone?: string
-}
-
-export type StoreCreateCustomerAddressResponse = {
-  customer: CustomerResponse
->>>>>>> 7053485425693d82237149186811e37953055bff
 }

@@ -1,15 +1,10 @@
 import { IdMap } from "medusa-test-utils"
-<<<<<<< HEAD
 import {
   defaultStoreCustomersFields,
   defaultStoreCustomersRelations,
 } from "../"
-=======
-import { defaultFields, defaultRelations } from "../"
->>>>>>> 7053485425693d82237149186811e37953055bff
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
-import { validator } from "../../../../../utils/validator"
 
 describe("POST /store/customers/me", () => {
   describe("successfully updates a customer", () => {
@@ -135,7 +130,7 @@ describe("POST /store/customers/me", () => {
           billing_address: {
             first_name: "Olli",
             last_name: "Juhl",
-            address_1: 42,
+            address_1: "Laksegade",
             city: "Copenhagen",
             country_code: "dk",
             postal_code: "2100",

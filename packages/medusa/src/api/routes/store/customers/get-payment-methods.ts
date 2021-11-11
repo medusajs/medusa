@@ -1,7 +1,4 @@
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/get-payment-methods.ts
 import { Customer } from "../../../.."
-=======
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/get-payment-methods.js
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
 import StoreService from "../../../../services/store"
@@ -34,21 +31,11 @@ import StoreService from "../../../../services/store"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/get-payment-methods.ts
   const storeService: StoreService = req.scope.resolve("storeService")
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )
   const customerService: CustomerService = req.scope.resolve("customerService")
-=======
-  const storeService = req.scope.resolve("storeService") as StoreService
-  const paymentProviderService = req.scope.resolve(
-    "paymentProviderService"
-  ) as PaymentProviderService
-  const customerService = req.scope.resolve(
-    "customerService"
-  ) as CustomerService
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/get-payment-methods.js
 
   const customer: Customer = await customerService.retrieve(id)
 
@@ -68,14 +55,7 @@ export default async (req, res) => {
 
   res.json({
     payment_methods: methods.flat(),
-  } as GetCustomerPaymentMethodsResponse)
-}
-
-export class GetCustomerPaymentMethodsResponse {
-  payment_methods: {
-    provider_id: string
-    data: object
-  }[]
+  })
 }
 
 export class StoreGetCustomersCustomerPaymentMethodsResponse {

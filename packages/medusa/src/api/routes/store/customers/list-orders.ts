@@ -1,15 +1,9 @@
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/list-orders.ts
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Order } from "../../../.."
 import OrderService from "../../../../services/order"
 import { PaginatedResponse } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
-=======
-import { Order } from "../../../.."
-import OrderService from "../../../../services/order"
-import { PaginatedResponse } from "../../../../types/common"
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/list-orders.js
 import {
   allowedFields,
   allowedRelations,
@@ -49,11 +43,7 @@ import {
 export default async (req, res) => {
   const id: string = req.user.customer_id
 
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/list-orders.ts
   const orderService: OrderService = req.scope.resolve("orderService")
-=======
-  const orderService = req.scope.resolve("orderService") as OrderService
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/list-orders.js
 
   const selector = {
     customer_id: id,
@@ -92,7 +82,6 @@ export default async (req, res) => {
   res.json({ orders, count, offset, limit })
 }
 
-<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/list-orders.ts
 export type StoreGetCustomersCustomerOrdersResponse = PaginatedResponse & {
   orders: Order[]
 }
@@ -113,8 +102,3 @@ export class StoreGetCustomersCustomerOrdersQuery {
   @IsString()
   expand?: string
 }
-=======
-export type ListCustomerOrdersReponse = PaginatedResponse & {
-  orders: Order[]
-}
->>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/list-orders.js

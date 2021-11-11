@@ -6,10 +6,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from "class-validator"
-<<<<<<< HEAD
 import { MedusaError } from "medusa-core-utils"
-=======
->>>>>>> 7053485425693d82237149186811e37953055bff
 import { validator } from "./validator"
 
 async function typeValidator(
@@ -18,7 +15,6 @@ async function typeValidator(
 ): Promise<boolean> {
   switch (typedClass) {
     case String:
-<<<<<<< HEAD
       if (!isString(plain)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -57,21 +53,6 @@ async function typeValidator(
           MedusaError.Types.INVALID_DATA,
           Object.fromEntries(errors.entries())
         )
-=======
-      return isString(plain)
-    case Number:
-      return isNumber(Number(plain))
-    default:
-      if (isArray(typedClass) && isArray(plain)) {
-        return (
-          await Promise.all(
-            (plain as any[]).map(
-              async (p) =>
-                await typeValidator(typedClass[0], p).catch(() => false)
-            )
-          )
-        ).some(Boolean)
->>>>>>> 7053485425693d82237149186811e37953055bff
       }
       return (
         (await validator(typedClass, plain).then(() => true)) &&
@@ -90,7 +71,6 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         async validate(value: unknown, args: ValidationArguments) {
-<<<<<<< HEAD
           const errors: Map<any, string> = new Map()
           const results = await Promise.all(
             types.map(
@@ -117,15 +97,6 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
           )
         },
 
-=======
-          const results = await Promise.all(
-            types.map(
-              async (v) => await typeValidator(v, value).catch(() => false)
-            )
-          )
-          return results.some(Boolean)
-        },
->>>>>>> 7053485425693d82237149186811e37953055bff
         defaultMessage(validationArguments?: ValidationArguments) {
           const names = types.map(
             (t) => t.name || (isArray(t) ? `${t[0].name}[]` : "")
