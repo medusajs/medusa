@@ -1,4 +1,11 @@
-import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { Return } from "../../../.."
 import { OrderService, ReturnService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -93,7 +100,9 @@ export class Item {
 }
 
 export class AdminPostReturnsReturnReceiveReq {
-  @ValidateNested()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
   items: Item[]
   @IsOptional()
   @IsNumber()
