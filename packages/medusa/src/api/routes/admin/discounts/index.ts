@@ -88,3 +88,23 @@ export const defaultRelations = [
 export class AdminDiscountResponse {
   discount: Discount
 }
+
+export * from "./add-region"
+export * from "./add-valid-product"
+export * from "./create-discount"
+export * from "./create-dynamic-code"
+export * from "./delete-discount"
+export * from "./delete-dynamic-code"
+export * from "./get-discount"
+export * from "./get-discount-by-code"
+export * from "./list-discounts"
+export * from "./remove-region"
+export * from "./remove-valid-product"
+export * from "./update-discount"
+
+export class AdminGetDiscountsRes {
+  discounts: Discount[]
+  count: number
+  offset: number
+  limit: number
+}

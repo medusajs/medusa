@@ -93,10 +93,3 @@ export class AdminGetDiscountsReq {
   @IsOptional()
   expand?: string
 }
-
-export class AdminGetDiscountsRes {
-  discounts: Discount[]
-  count: number
-  offset: number
-  limit: number
-}
