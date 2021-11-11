@@ -3,16 +3,16 @@
 exports[`/admin/auth creates store session correctly 1`] = `
 Object {
   "billing_address_id": null,
-  "created_at": "2021-11-11T16:29:59.993Z",
+  "created_at": Any<String>,
   "deleted_at": null,
   "email": "test@testesen.dk",
   "first_name": "test",
   "has_account": true,
-  "id": "cus_01FM7XB9T23P1TS0CM1AFAXY21",
+  "id": Any<String>,
   "last_name": "testesen",
   "metadata": null,
   "orders": Array [],
   "phone": null,
-  "updated_at": "2021-11-11T16:29:59.993Z",
+  "updated_at": Any<String>,
 }
 `;
