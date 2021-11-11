@@ -596,7 +596,6 @@ describe("/admin/products", () => {
           options: expect.any(Array),
           tags: expect.any(Array),
           variants: expect.any(Array),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
         {
@@ -608,7 +607,6 @@ describe("/admin/products", () => {
           options: expect.any(Array),
           tags: expect.any(Array),
           variants: expect.any(Array),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
         {
@@ -620,7 +618,6 @@ describe("/admin/products", () => {
           options: expect.any(Array),
           tags: expect.any(Array),
           variants: expect.any(Array),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
       ])
@@ -845,7 +842,6 @@ describe("/admin/products", () => {
 
       const payload = {
         collection_id: null,
-        type: null,
         variants: [
           {
             id: "test-variant",
@@ -899,7 +895,6 @@ describe("/admin/products", () => {
               ],
             }),
           ],
-          type: null,
           status: "published",
           collection: null,
           type: expect.objectContaining({

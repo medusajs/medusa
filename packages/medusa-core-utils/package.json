@@ -35,8 +35,7 @@
   },
   "dependencies": {
     "joi": "^17.3.0",
-    "joi-objectid": "^3.0.1",
-    "reflect-metadata": "^0.1.13"
+    "joi-objectid": "^3.0.1"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }
