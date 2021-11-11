@@ -1,4 +1,4 @@
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
@@ -48,8 +48,8 @@ export default async (req, res) => {
   const selector = {}
 
   const listConfig = {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
     skip: offset,
     take: limit,
   }

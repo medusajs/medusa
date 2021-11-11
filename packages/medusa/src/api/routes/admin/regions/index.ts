@@ -72,7 +72,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultAdminRegionFields = [
   "id",
   "name",
   "currency_code",
@@ -84,7 +84,7 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = [
+export const defaultAdminRegionRelations = [
   "countries",
   "payment_providers",
   "fulfillment_providers",

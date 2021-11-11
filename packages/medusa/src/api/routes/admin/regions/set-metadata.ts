@@ -1,4 +1,4 @@
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
@@ -38,8 +38,8 @@ export default async (req, res) => {
   await regionService.setMetadata(id, validated.key, validated.value)
 
   const region: Region = await regionService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
 
   res.status(200).json({ region })
