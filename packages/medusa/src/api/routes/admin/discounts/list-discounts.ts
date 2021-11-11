@@ -1,5 +1,6 @@
-import { Type } from "class-transformer"
+import { Type, Transform } from "class-transformer"
 import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
@@ -72,20 +73,26 @@ export class AdminGetDiscountsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Type(() => Boolean)
-  is_dynamic?: boolean = false
+  @Transform(({ value }) =>
+    typeof JSON.parse(value) === "boolean" ? JSON.parse(value) : false
+  )
+  is_dynamic?: boolean
 
   @IsBoolean()
   @IsOptional()
-  @Type(() => Boolean)
-  is_disabled?: boolean = false
+  @Transform(({ value }) =>
+    typeof JSON.parse(value) === "boolean" ? JSON.parse(value) : false
+  )
+  is_disabled?: boolean
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   limit?: number
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   offset?: number
 
   @IsString()
