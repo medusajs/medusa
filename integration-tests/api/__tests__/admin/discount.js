@@ -645,11 +645,11 @@ describe("/admin/discounts", () => {
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual([
+          expect(err.response.data).toEqual(
             expect.objectContaining({
-              message: `"ends_at" must be greater than "ref:starts_at"`,
-            }),
-          ])
+              message: `"ends_at" must be greater than "starts_at"`,
+            })
+          )
         })
     })
   })
@@ -658,25 +658,21 @@ describe("/admin/discounts", () => {
     let manager
     beforeEach(async () => {
       manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule",
-          description: "Test discount rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount",
-          code: "TESTING",
-          rule_id: "test-discount-rule",
-          is_dynamic: false,
-          is_disabled: false,
-        })
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Test discount rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount",
+        code: "TESTING",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+      })
     })
 
     afterEach(async () => {

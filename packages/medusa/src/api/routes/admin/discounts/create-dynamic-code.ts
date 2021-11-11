@@ -1,5 +1,12 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import DiscountService from "../../../../services/discount"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{id}/dynamic-codes
  * operationId: "PostDiscountsDiscountDynamicCodes"
@@ -24,24 +31,33 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const { discount_id } = req.params
 
-  const schema = Validator.object().keys({
-    code: Validator.string().required(),
-    usage_limit: Validator.number().default(1),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(
+    AdminPostDiscountsDiscountDynamicCodesReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const discountService = req.scope.resolve("discountService")
-  const created = await discountService.createDynamicCode(discount_id, value)
+  const discountService: DiscountService = req.scope.resolve("discountService")
+  const created = await discountService.createDynamicCode(
+    discount_id,
+    validated
+  )
 
   const discount = await discountService.retrieve(created.id, {
     relations: ["rule", "rule.valid_for", "regions"],
   })
 
   res.status(200).json({ discount })
+}
+
+export class AdminPostDiscountsDiscountDynamicCodesReq {
+  @IsString()
+  @IsNotEmpty()
+  code: string
+
+  @IsNumber()
+  usage_limit = 1
+
+  @IsObject()
+  @IsOptional()
+  metadata: object
 }

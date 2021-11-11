@@ -1,5 +1,8 @@
-import { defaultFields, defaultRelations } from "./"
-
+import { IsNotEmpty, IsString } from "class-validator"
+import { defaultFields, defaultRelations } from "."
+import { Discount } from "../../../.."
+import DiscountService from "../../../../services/discount"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{id}/products/{product_id}
  * operationId: "PostDiscountsDiscountProductsProduct"
@@ -21,14 +24,27 @@ import { defaultFields, defaultRelations } from "./"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id, variant_id } = req.params
-  const discountService = req.scope.resolve("discountService")
+  const { discount_id, variant_id } = await validator(
+    AdminPostDiscountsDiscountProductsProductReq,
+    req.params
+  )
+  const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.addValidProduct(discount_id, variant_id)
 
-  const discount = await discountService.retrieve(discount_id, {
+  const discount: Discount = await discountService.retrieve(discount_id, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
   res.status(200).json({ discount })
+}
+
+export class AdminPostDiscountsDiscountProductsProductReq {
+  @IsString()
+  @IsNotEmpty()
+  discount_id: string
+
+  @IsString()
+  @IsNotEmpty()
+  variant_id: string
 }

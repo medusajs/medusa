@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Discount } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -83,3 +84,7 @@ export const defaultRelations = [
   "regions",
   "rule.valid_for",
 ]
+
+export class AdminDiscountResponse {
+  discount: Discount
+}
