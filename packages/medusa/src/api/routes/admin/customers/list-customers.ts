@@ -1,8 +1,7 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { FindConfig } from "../../../../types/common"
-import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /customers
