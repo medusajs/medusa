@@ -85,7 +85,7 @@ export const defaultRelations = [
   "rule.valid_for",
 ]
 
-export class AdminDiscountResponse {
+export type AdminDiscountResponse = {
   discount: Discount
 }
 
