@@ -1,5 +1,4 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
 /**
@@ -39,7 +38,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminUpdateCollectionRequest, req.body)
+  const validated = await validator(AdminPostCollectionsCollectionReq, req.body)
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
@@ -50,7 +49,7 @@ export default async (req, res) => {
   res.status(200).json({ collection })
 }
 
-export class AdminUpdateCollectionRequest {
+export class AdminPostCollectionsCollectionReq {
   @IsString()
   @IsOptional()
   title?: string

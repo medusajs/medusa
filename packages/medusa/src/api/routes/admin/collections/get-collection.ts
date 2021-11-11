@@ -1,4 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
 import ProductCollectionService from "../../../../services/product-collection"
 /**
  * @oas [get] /collections/{id}
