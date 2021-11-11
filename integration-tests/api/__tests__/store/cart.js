@@ -378,7 +378,7 @@ describe("/store/carts", () => {
         expect(e.response.status).toBe(409)
       }
 
-      //check to see if payment has been cancelled and cart is not completed
+      // check to see if payment has been cancelled and cart is not completed
       const res = await api.get(`/store/carts/test-cart-2`)
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
       expect(res.data.cart.completed_at).toBe(null)
@@ -414,7 +414,7 @@ describe("/store/carts", () => {
         expect(e.response.status).toBe(409)
       }
 
-      //check to see if payment has been cancelled and cart is not completed
+      // check to see if payment has been cancelled and cart is not completed
       const res = await api.get(`/store/carts/swap-cart`)
       expect(res.data.cart.payment_authorized_at).toBe(null)
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
@@ -450,7 +450,7 @@ describe("/store/carts", () => {
         console.log(error)
       }
 
-      //check to see if payment is authorized and cart is completed
+      // check to see if payment is authorized and cart is completed
       const res = await api.get(`/store/carts/swap-cart`)
       expect(res.data.cart.payment_authorized_at).not.toBe(null)
       expect(res.data.cart.completed_at).not.toBe(null)
@@ -477,7 +477,7 @@ describe("/store/carts", () => {
           type: "swap",
         })
 
-        let cartWithCustomSo = await manager.save(_cart)
+        const cartWithCustomSo = await manager.save(_cart)
 
         await manager.insert(CustomShippingOption, {
           id: "another-cso-test",
@@ -683,7 +683,7 @@ describe("/store/carts", () => {
     it("updates empty cart.customer_id on cart retrieval", async () => {
       const api = useApi()
 
-      let customer = await api.post(
+      const customer = await api.post(
         "/store/customers",
         {
           email: "oli@test.dk",
@@ -712,7 +712,7 @@ describe("/store/carts", () => {
     it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {
       const api = useApi()
 
-      let customer = await api.post(
+      const customer = await api.post(
         "/store/customers",
         {
           email: "oli@test.dk",
