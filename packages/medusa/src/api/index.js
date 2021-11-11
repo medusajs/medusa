@@ -1,7 +1,7 @@
 import { Router } from "express"
+import errorHandler from "./middlewares/error-handler"
 import admin from "./routes/admin"
 import store from "./routes/store"
-import errorHandler from "./middlewares/error-handler"
 
 // guaranteed to get dependencies
 export default (container, config) => {
@@ -14,3 +14,5 @@ export default (container, config) => {
 
   return app
 }
+
+export * from "./routes/store/carts"
