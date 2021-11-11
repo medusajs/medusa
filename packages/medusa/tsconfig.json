@@ -15,7 +15,8 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true // to use ES5 specific tooling
   },
   "include": ["./src/**/*", "index.d.ts"],
   "exclude": [
