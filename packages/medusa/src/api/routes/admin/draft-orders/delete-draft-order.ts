@@ -1,8 +1,10 @@
+import { DraftOrderService } from "../../../../services"
 /**
  * @oas [delete] /draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
  * summary: Delete a Draft Order
  * description: "Deletes a Draft Order"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Draft Order.
  * tags:
@@ -23,11 +25,11 @@
  *             deleted:
  *               type: boolean
  */
-
 export default async (req, res) => {
   const { id } = req.params
 
-  const draftOrderService = req.scope.resolve("draftOrderService")
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
   await draftOrderService.delete(id)
 
   res.json({

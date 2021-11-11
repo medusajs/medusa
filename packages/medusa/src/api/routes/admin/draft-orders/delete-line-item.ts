@@ -1,11 +1,20 @@
+import { IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { defaultCartFields, defaultCartRelations, defaultFields } from "."
-
+import { EntityManager } from "typeorm"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+  defaultAdminDraftOrdersFields,
+} from "."
+import { DraftOrder } from "../../../.."
+import { CartService, DraftOrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Draft Order."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Draft Order.
  *   - (path) line_id=* {string} The id of the Draft Order.
@@ -23,16 +32,20 @@ import { defaultCartFields, defaultCartRelations, defaultFields } from "."
  */
 
 export default async (req, res) => {
-  const { id, line_id } = req.params
+  const { id, line_id } = await validator(
+    AdminDeleteDraftOrdersDraftOrderLineItemsItemReq,
+    req.params
+  )
 
-  const draftOrderService = req.scope.resolve("draftOrderService")
-  const cartService = req.scope.resolve("cartService")
-  const entityManager = req.scope.resolve("manager")
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
+  const cartService: CartService = req.scope.resolve("cartService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
-    const draftOrder = await draftOrderService
+    const draftOrder: DraftOrder = await draftOrderService
       .withTransaction(manager)
-      .retrieve(id, { select: defaultFields })
+      .retrieve(id, { select: defaultAdminDraftOrdersFields })
 
     if (draftOrder.status === "completed") {
       throw new MedusaError(
@@ -48,10 +61,18 @@ export default async (req, res) => {
     draftOrder.cart = await cartService
       .withTransaction(manager)
       .retrieve(draftOrder.cart_id, {
-        relations: defaultCartRelations,
-        select: defaultCartFields,
+        relations: defaultAdminDraftOrdersCartRelations,
+        select: defaultAdminDraftOrdersCartFields,
       })
 
     res.status(200).json({ draft_order: draftOrder })
   })
+}
+
+export class AdminDeleteDraftOrdersDraftOrderLineItemsItemReq {
+  @IsString()
+  id: string
+
+  @IsString()
+  line_id: string
 }
