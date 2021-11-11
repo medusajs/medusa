@@ -33,19 +33,15 @@ export default async (req, res) => {
 
 export class AdminCreateCustomerRequest {
   @IsEmail()
-  @IsNotEmpty()
   email?: string
 
   @IsString()
-  @IsNotEmpty()
   first_name?: string
 
   @IsString()
-  @IsNotEmpty()
   last_name?: string
 
   @IsString()
-  @IsNotEmpty()
   password?: string
 
   @IsString()
