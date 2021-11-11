@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
 import * as Types from './types';
 
 export interface Config {
@@ -14,13 +14,12 @@ class Client {
     });
   }
 
-  request(method: Types.RequestMethod, path: string, payload: object) {
-    const options = {
+  request(method: Types.RequestMethod, path: string, payload: any = {}): AxiosPromise<any> {
+    const options: AxiosRequestConfig = {
       method,
       withCredentials: true,
       url: path,
       data: payload,
-      json: true,
     };
 
     return this.axiosClient(options);
