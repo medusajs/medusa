@@ -14,9 +14,9 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = ["product", "prices", "options"]
+export const defaultAdminVariantRelations = ["product", "prices", "options"]
 
-export const defaultFields = [
+export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
   "id",
   "title",
   "product_id",
@@ -39,7 +39,7 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const allowedFields = [
+export const allowedAdminVariantFields = [
   "id",
   "title",
   "product_id",
@@ -62,7 +62,11 @@ export const allowedFields = [
   "metadata",
 ]
 
-export const allowedRelations = ["product", "prices", "options"]
+export const allowedAdminVariantRelations: (keyof ProductVariant)[] = [
+  "product",
+  "prices",
+  "options",
+]
 
 export type AdminListVariantsResponse = PaginatedResponse & {
   variants: Array<ProductVariant>

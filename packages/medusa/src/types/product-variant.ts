@@ -4,7 +4,7 @@ import {
   StringComparisonOperator,
   DateComparisonOperator,
 } from "./common"
-import { IsType } from "./validators"
+import { IsType } from "../utils/is-type"
 
 export interface IProductVariantPrice {
   currency_code?: string
@@ -18,7 +18,7 @@ export interface IProductVariantOption {
   value: string
 }
 
-export interface CreateProductVariantInput {
+export interface ICreateProductVariantInput {
   title?: string
   product_id: string
   sku?: string
@@ -42,7 +42,7 @@ export interface CreateProductVariantInput {
   metadata?: JSON
 }
 
-export interface UpdateProductVariantInput {
+export interface IUpdateProductVariantInput {
   title?: string
   product_id: string
   sku?: string
@@ -67,25 +67,25 @@ export interface UpdateProductVariantInput {
 
 export class FilterableProductVariantProps {
   @ValidateNested()
-  @IsType(["string", "int"], { each: true })
-  id?: string | Array<string> | StringComparisonOperator
+  @IsType([String, [String], StringComparisonOperator])
+  id?: string | string[] | StringComparisonOperator
 
   @IsString()
   title?: string
 
-  @IsType(["string"], { each: true })
-  product_id?: string | Array<string>
+  @IsType([String, [String]])
+  product_id?: string | string[]
 
-  @IsType(["string"], { each: true })
-  sku?: string | Array<string>
+  @IsType([String, [String]])
+  sku?: string | string[]
 
-  @IsType(["string"], { each: true })
-  barcode?: string | Array<string>
+  @IsType([String, [String]])
+  barcode?: string | string[]
 
-  @IsType(["string"], { each: true })
-  ean?: string
+  @IsType([String, [String]])
+  ean?: string | string[]
 
-  @IsType(["string"], { each: true })
+  @IsType([String])
   upc?: string
 
   @IsNumber()
@@ -97,36 +97,36 @@ export class FilterableProductVariantProps {
   @IsBoolean()
   manage_inventory?: boolean
 
-  @IsType(["string"], { each: true })
-  hs_code?: string | Array<string>
+  @IsType([String, [String]])
+  hs_code?: string | string[]
 
-  @IsType(["string"], { each: true })
-  origin_country?: string | Array<string>
+  @IsType([String, [String]])
+  origin_country?: string | string[]
 
-  @IsType(["string"], { each: true })
-  mid_code?: string | Array<string>
+  @IsType([String, [String]])
+  mid_code?: string | string[]
 
   @IsString()
   material?: string
 
-  @IsNumber()
+  @IsType([Number, NumericalComparisonOperator])
   weight?: number | NumericalComparisonOperator
 
-  @IsNumber()
-  length?: number
+  @IsType([Number, NumericalComparisonOperator])
+  length?: number | NumericalComparisonOperator
 
-  @IsNumber()
-  height?: number
+  @IsType([Number, NumericalComparisonOperator])
+  height?: number | NumericalComparisonOperator
 
-  @IsNumber()
-  width?: number
+  @IsType([Number, NumericalComparisonOperator])
+  width?: number | NumericalComparisonOperator
 
   @IsString()
   q?: string
 
-  @ValidateNested()
+  @IsType([DateComparisonOperator])
   created_at?: DateComparisonOperator
 
-  @ValidateNested()
+  @IsType([DateComparisonOperator])
   updated_at?: DateComparisonOperator
 }
