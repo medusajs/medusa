@@ -6,19 +6,19 @@ import {
 } from "./common"
 import { IsType } from "../utils/is-type"
 
-export interface IProductVariantPrice {
+export type ProductVariantPrice = {
   currency_code?: string
   region_id?: string
   amount: number
   sale_amount?: number | undefined
 }
 
-export interface IProductVariantOption {
+export type ProductVariantOption = {
   option_id: string
   value: string
 }
 
-export interface ICreateProductVariantInput {
+export type CreateProductVariantInput = {
   title?: string
   product_id: string
   sku?: string
@@ -37,12 +37,12 @@ export interface ICreateProductVariantInput {
   length?: number
   height?: number
   width?: number
-  options: IProductVariantOption[]
-  prices: IProductVariantPrice[]
+  options: ProductVariantOption[]
+  prices: ProductVariantPrice[]
   metadata?: JSON
 }
 
-export interface IUpdateProductVariantInput {
+export type IUpdateProductVariantInput = {
   title?: string
   product_id: string
   sku?: string
@@ -60,8 +60,8 @@ export interface IUpdateProductVariantInput {
   length?: number
   height?: number
   width?: number
-  options: IProductVariantOption[]
-  prices: IProductVariantPrice[]
+  options: ProductVariantOption[]
+  prices: ProductVariantPrice[]
   metadata?: JSON
 }
 

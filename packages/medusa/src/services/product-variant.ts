@@ -14,8 +14,8 @@ import EventBusService from "../services/event-bus"
 import RegionService from "../services/region"
 import { FindConfig } from "../types/common"
 import {
-  CreateProductVariantInput,
   FilterableProductVariantProps,
+  CreateProductVariantInput,
   UpdateProductVariantInput,
   IProductVariantPrice,
 } from "../types/product-variant"
