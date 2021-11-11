@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { Discount } from "../../../.."
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 

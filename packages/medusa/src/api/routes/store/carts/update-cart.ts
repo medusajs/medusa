@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+\import { Type } from "class-transformer"
 import {
   IsArray,
   IsEmail,
@@ -9,7 +9,7 @@ import {
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
-import { IsType } from "../../../../utils/is-type"
+import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
 
 /**
