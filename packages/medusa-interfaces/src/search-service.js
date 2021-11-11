@@ -1,4 +1,4 @@
-import { BaseService } from "medusa-interfaces"
+import BaseService from "./base-service"
 
 /**
  * The interface that all search services must implement.

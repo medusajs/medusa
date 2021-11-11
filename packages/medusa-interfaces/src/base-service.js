@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { In, FindOperator, Raw } from "typeorm"
+import { FindOperator, In, Raw } from "typeorm"
 
 /**
  * Common functionality for Services
@@ -63,12 +63,16 @@ class BaseService {
 
         return acc
       }, {})
-
+      
       return where
     }
 
     const query = {
       where: build(selector),
+    }
+    
+    if ("deleted_at" in selector) {
+      query.withDeleted = true
     }
 
     if ("skip" in config) {
