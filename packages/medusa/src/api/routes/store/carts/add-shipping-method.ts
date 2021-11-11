@@ -1,8 +1,8 @@
 import { IsOptional, IsString } from "class-validator"
-import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { defaultFields, defaultRelations } from "."
-import CartService from "../../../../services/cart"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import { CartService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/shipping-methods
@@ -28,10 +28,13 @@ import CartService from "../../../../services/cart"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreAddShippingMethodRequest, req.body)
+  const validated = await validator(
+    StorePostCartsCartShippingMethodReq,
+    req.body
+  )
 
-  const manager = req.scope.resolve("manager") as EntityManager
-  const cartService = req.scope.resolve("cartService") as CartService
+  const manager: EntityManager = req.scope.resolve("manager")
+  const cartService: CartService = req.scope.resolve("cartService")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -52,16 +55,16 @@ export default async (req, res) => {
   })
 
   const updatedCart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
   })
 
   res.status(200).json({ cart: updatedCart })
 }
 
-export class StoreAddShippingMethodRequest {
+export class StorePostCartsCartShippingMethodReq {
   @IsString()
   option_id: string
   @IsOptional()
-  data: object
+  data: object = {}
 }
