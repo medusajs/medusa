@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { DraftOrder } from "../../../.."
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
