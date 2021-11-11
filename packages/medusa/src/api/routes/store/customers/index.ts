@@ -1,4 +1,6 @@
 import { Router } from "express"
+import "reflect-metadata"
+import { Customer } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -57,9 +59,12 @@ export default (app, container) => {
   return app
 }
 
-export const defaultRelations = ["shipping_addresses", "billing_address"]
+export const defaultStoreCustomersRelations = [
+  "shipping_addresses",
+  "billing_address",
+]
 
-export const defaultFields = [
+export const defaultStoreCustomersFields = [
   "id",
   "email",
   "first_name",
@@ -73,13 +78,13 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const allowedRelations = [
+export const allowedStoreCustomersRelations = [
   "shipping_addresses",
   "billing_address",
   "orders",
 ]
 
-export const allowedFields = [
+export const allowedStoreCustomersFields = [
   "id",
   "email",
   "first_name",
@@ -92,3 +97,16 @@ export const allowedFields = [
   "deleted_at",
   "metadata",
 ]
+
+export type StoreCustomerResponse = {
+  customer: Omit<Customer, "password_hash">
+}
+
+export * from "./create-address"
+export * from "./create-customer"
+export * from "./get-payment-methods"
+export * from "./list-orders"
+export * from "./reset-password"
+export * from "./reset-password-token"
+export * from "./update-address"
+export * from "./update-customer"

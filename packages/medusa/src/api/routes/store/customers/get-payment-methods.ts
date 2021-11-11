@@ -1,10 +1,14 @@
+import { Customer } from "../../../.."
+import CustomerService from "../../../../services/customer"
+import PaymentProviderService from "../../../../services/payment-provider"
+import StoreService from "../../../../services/store"
+
 /**
  * @oas [get] /customers/me/payment-methods
  * operationId: GetCustomersCustomerPaymentMethods
  * summary: Retrieve saved payment methods
  * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
- * parameters:
- *   - (path) id=* {string} The id of the Customer.
+ * x-authenticated: true
  * tags:
  *   - Customer
  * responses:
@@ -27,11 +31,13 @@
  */
 export default async (req, res) => {
   const id = req.user.customer_id
-  const storeService = req.scope.resolve("storeService")
-  const paymentProviderService = req.scope.resolve("paymentProviderService")
-  const customerService = req.scope.resolve("customerService")
+  const storeService: StoreService = req.scope.resolve("storeService")
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    "paymentProviderService"
+  )
+  const customerService: CustomerService = req.scope.resolve("customerService")
 
-  const customer = await customerService.retrieve(id)
+  const customer: Customer = await customerService.retrieve(id)
 
   const store = await storeService.retrieve(["payment_providers"])
 
@@ -48,4 +54,11 @@ export default async (req, res) => {
   )
 
   res.json({ payment_methods: methods.flat() })
+}
+
+export class StoreGetCustomersCustomerPaymentMethodsResponse {
+  payment_methods: {
+    provider_id: string
+    data: object
+  }[]
 }

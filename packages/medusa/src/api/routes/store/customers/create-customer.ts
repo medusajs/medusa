@@ -1,7 +1,10 @@
+import { IsEmail, IsString } from "class-validator"
 import jwt from "jsonwebtoken"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
+import { Customer } from "../../../.."
 import config from "../../../../config"
-import { defaultRelations, defaultFields } from "./"
+import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers
@@ -27,31 +30,31 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    email: Validator.string().email().required(),
-    first_name: Validator.string().required(),
-    last_name: Validator.string().required(),
-    password: Validator.string().required(),
-    phone: Validator.string().optional(),
-  })
+  const validated = await validator(StorePostCustomersReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const customerService = req.scope.resolve("customerService")
-  let customer = await customerService.create(value)
+  const customerService: CustomerService = req.scope.resolve("customerService")
+  let customer: Customer = await customerService.create(validated)
 
   // Add JWT to cookie
-  req.session.jwt = jwt.sign({ customer_id: customer.id }, config.jwtSecret, {
+  req.session.jwt = jwt.sign({ customer_id: customer.id }, config.jwtSecret!, {
     expiresIn: "30d",
   })
 
   customer = await customerService.retrieve(customer.id, {
-    relations: defaultRelations,
-    select: defaultFields,
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
   })
 
   res.status(200).json({ customer })
+}
+
+export class StorePostCustomersReq {
+  @IsString()
+  first_name: string
+  @IsString()
+  last_name: string
+  @IsEmail()
+  email: string
+  @IsString()
+  password: string
 }

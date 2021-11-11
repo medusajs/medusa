@@ -1,7 +1,8 @@
+import { AxiosPromise } from 'axios';
+import * as Types from '../types';
 import AddressesResource from './addresses';
 import BaseResource from './base';
 import PaymentMethodsResource from './payment-methods';
-import * as Types from '../types';
 
 class CustomerResource extends BaseResource {
   public paymentMethods = new PaymentMethodsResource(this.client);
@@ -10,9 +11,9 @@ class CustomerResource extends BaseResource {
   /**
    * Creates a customer
    * @param payload information of customer
-   * @returns AsyncResult<{ customer: Customer }>
+   * @returns { AxiosPromise<>}
    */
-  create(payload: Types.CustomerCreateResource): Types.AsyncResult<{ customer: Types.Customer }> {
+  create(payload: Types.CustomerCreateResource): AxiosPromise<> {
     const path = `/store/customers`;
     return this.client.request('POST', path, payload);
   }
@@ -20,7 +21,7 @@ class CustomerResource extends BaseResource {
   /**
    * Retrieves a customer
    * @param id id of customer
-   * @returns AsyncResult<{ customer: Customer }>
+   * @return AsyncResult<{ customer: Customer }>
    */
   retrieve(id: string): Types.AsyncResult<{ customer: Types.Customer }> {
     const path = `/store/customers/${id}`;
@@ -31,7 +32,7 @@ class CustomerResource extends BaseResource {
    * Updates a customer
    * @param id id of customer
    * @param payload information to update customer with
-   * @returns AsyncResult<{ customer: Customer }>
+   * @return AsyncResult<{ customer: Customer }>
    */
   update(id: string, payload: Types.CustomerUpdateResource): Types.AsyncResult<{ customer: Types.Customer }> {
     const path = `/store/customers/${id}`;
@@ -41,7 +42,7 @@ class CustomerResource extends BaseResource {
   /**
    * Retrieve customer orders
    * @param id id of customer
-   * @returns AsyncResult<object[]>
+   * @return AsyncResult<object[]>
    */
   listOrders(id: string): Types.AsyncResult<object> {
     const path = `/store/customers/${id}/orders`;
@@ -51,7 +52,7 @@ class CustomerResource extends BaseResource {
   /**
    * Resets customer password
    * @param payload info used to reset customer password
-   * @returns AsyncResult<{ customer: Customer }>
+   * @return AsyncResult<{ customer: Customer }>
    */
   resetPassword(payload: Types.CustomerResetPasswordResource): Types.AsyncResult<{ customer: Types.Customer }> {
     const path = `/store/customers/password-reset`;
@@ -61,7 +62,7 @@ class CustomerResource extends BaseResource {
   /**
    * Generates a reset password token
    * @param payload info used to generate token
-   * @returns AsyncResult<{ customer: Customer }>
+   * @return AsyncResult<{ customer: Customer }>
    */
   generatePasswordToken(
     payload: Types.CustomerGeneratePasswordTokenResource,
