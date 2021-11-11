@@ -1,13 +1,12 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
-import { validator } from "../../../../utils/validator"
-import { User } from "../../../.."
 import UserService from "../../../../services/user"
+import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
   const validated = await validator(AdminCreateUserRequest, req.body)
 
-  const userService = req.scope.resolve("userService") as UserService
+  const userService: UserService = req.scope.resolve("userService")
   const data = _.pick(validated, ["email", "name"])
 
   const user = await userService.create(data, validated.password)
@@ -23,8 +22,4 @@ export class AdminCreateUserRequest {
   name: string
   @IsString()
   password: string
-}
-
-export type AdminCreateUserResponse = {
-  user: Omit<User, "password_hash">
 }

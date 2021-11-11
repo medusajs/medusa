@@ -1,6 +1,8 @@
+import { IsInt, IsOptional, IsString } from "class-validator"
+import { EntityManager } from "typeorm"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { defaultFields, defaultRelations } from "."
-import CartService from "../../../../services/cart"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -28,11 +30,11 @@ import CartService from "../../../../services/cart"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreCreateLineItem, req.body)
+  const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
-  const manager = req.scope.resolve("manager")
-  const lineItemService = req.scope.resolve("lineItemService")
-  const cartService = req.scope.resolve("cartService") as CartService
+  const manager: EntityManager = req.scope.resolve("manager")
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const cartService: CartService = req.scope.resolve("cartService")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -55,15 +57,18 @@ export default async (req, res) => {
   })
 
   const cart = await cartService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
   })
 
   res.status(200).json({ cart })
 }
 
-export class StoreCreateLineItem {
+export class StorePostCartsCartLineItemsReq {
+  @IsString()
   variant_id: string
+  @IsInt()
   quantity: number
-  metadata?: object
+  @IsOptional()
+  metadata: object
 }

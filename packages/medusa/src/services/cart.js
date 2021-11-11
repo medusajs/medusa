@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 /* Provides layer to manipulate carts.
@@ -172,7 +172,7 @@ class CartService extends BaseService {
       // relationSet.add("discounts.parent_discount.regions")
       relationSet.add("shipping_methods")
       relationSet.add("region")
-      relations = [...relationSet]
+      relations = Array.from(relationSet.values())
 
       select = select.filter((v) => !totalFields.includes(v))
     }

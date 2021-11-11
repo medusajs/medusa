@@ -8,10 +8,11 @@ import {
   ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { validator } from "../../../../utils/validator"
 import reqIp from "request-ip"
-import { defaultFields, defaultRelations } from "."
-import CartService from "../../../../services/cart"
+import { EntityManager } from "typeorm"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import { CartService, LineItemService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts
@@ -59,17 +60,17 @@ import CartService from "../../../../services/cart"
  *               $ref: "#/components/schemas/cart"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreCreateCartRequest, req.body)
+  const validated = await validator(StorePostCartReq, req.body)
 
   const reqContext = {
     ip: reqIp.getClientIp(req),
     user_agent: req.get("user-agent"),
   }
 
-  const lineItemService = req.scope.resolve("lineItemService")
-  const cartService = req.scope.resolve("cartService") as CartService
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const cartService: CartService = req.scope.resolve("cartService")
 
-  const entityManager = req.scope.resolve("manager")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
     // Add a default region if no region has been specified
@@ -132,33 +133,32 @@ export default async (req, res) => {
     }
 
     cart = await cartService.withTransaction(manager).retrieve(cart.id, {
-      select: defaultFields,
-      relations: defaultRelations,
+      select: defaultStoreCartFields,
+      relations: defaultStoreCartRelations,
     })
 
     res.status(200).json({ cart })
   })
 }
 
-class Item {
+export class Item {
   @IsNotEmpty()
   @IsString()
   variant_id: string
-  @Type(() => Number)
+  @IsNotEmpty()
   @IsInt()
   quantity: number
 }
-
-export class StoreCreateCartRequest {
+export class StorePostCartReq {
   @IsOptional()
   @IsString()
   region_id: string
   @IsOptional()
   @IsString()
   country_code: string
-  @ValidateNested({ each: true })
+  @IsOptional()
   @IsArray()
-  @IsNotEmpty()
+  @ValidateNested({ each: true })
   @Type(() => Item)
   items: Item[]
   @IsOptional()
