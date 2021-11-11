@@ -1,8 +1,8 @@
-const r = require(`./resolver`);
+const r = require(`./resolver`)
 
 function preset(context, options = {}) {
-  const { debug = false, nodeVersion = `10.14.0` } = options;
-  const { NODE_ENV, BABEL_ENV } = process.env;
+  const { debug = false, nodeVersion = `10.14.0` } = options
+  const { NODE_ENV, BABEL_ENV } = process.env
 
   const nodeConfig = {
     corejs: 3,
@@ -10,10 +10,10 @@ function preset(context, options = {}) {
     targets: {
       node: nodeVersion,
     },
-  };
+  }
 
   return {
-    presets: [r(`@babel/preset-env`)],
+    presets: [r(`@babel/preset-env`), r(`@babel/preset-typescript`)],
     plugins: [
       r(`babel-plugin-transform-typescript-metadata`),
       r(`@babel/plugin-proposal-optional-chaining`),
@@ -23,7 +23,7 @@ function preset(context, options = {}) {
       r(`@babel/plugin-transform-instanceof`),
       r(`@babel/plugin-transform-runtime`),
     ].filter(Boolean),
-  };
+  }
 }
 
-module.exports = preset;
+module.exports = preset
