@@ -36,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminCreateCollectionRequest, req.body)
+  const validated = await validator(AdminPostCollectionsReq, req.body)
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
@@ -48,7 +48,7 @@ export default async (req, res) => {
   res.status(200).json({ collection })
 }
 
-export class AdminCreateCollectionRequest {
+export class AdminPostCollectionsReq {
   @IsString()
   @IsNotEmpty()
   title: string

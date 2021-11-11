@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetCollectionsRequest, req.query)
+  const validated = await validator(AdminGetCollectionsReq, req.query)
 
   const limit = validated.limit || 10
   const offset = validated.offset || 0
@@ -48,7 +48,7 @@ export default async (req, res) => {
   res.status(200).json({ collections, count, offset, limit })
 }
 
-export class AdminGetCollectionsRequest {
+export class AdminGetCollectionsReq {
   @IsNumber()
   @IsOptional()
   limit?: number
