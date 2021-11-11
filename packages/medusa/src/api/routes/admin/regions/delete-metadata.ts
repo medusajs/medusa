@@ -27,13 +27,13 @@ import { IsString } from "class-validator"
  */
 export default async (req, res) => {
   const validated = await validator(
-    AdminRegionDeleteMetadataRequest,
+    AdminDeleteRegionsRegionMetadataKeyReq,
     req.params
   )
 
   const { id, key } = validated
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.deleteMetadata(id, key)
 
   const region: Region = await regionService.retrieve(id, {
@@ -44,13 +44,9 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
-export class AdminRegionDeleteMetadataRequest {
+export class AdminDeleteRegionsRegionMetadataKeyReq {
   @IsString()
   id: string
   @IsString()
   key: string
-}
-
-export class AdminRegionDeleteMetadataResponse {
-  region: Region
 }

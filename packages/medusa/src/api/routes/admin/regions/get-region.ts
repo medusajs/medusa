@@ -25,10 +25,10 @@ import { IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionRequest, req.params)
+  const validated = await validator(AdminGetRegionsRegionReq, req.params)
 
   const { region_id } = validated
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   const region: Region = await regionService.retrieve(region_id, {
     select: defaultFields,
     relations: defaultRelations,
@@ -37,10 +37,7 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
-export class AdminGetRegionRequest {
+export class AdminGetRegionsRegionReq {
   @IsString()
   region_id: string
-}
-export class AdminGetRegionResponse {
-  region: Region
 }

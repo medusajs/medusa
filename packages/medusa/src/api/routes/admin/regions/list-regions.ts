@@ -38,9 +38,9 @@ import { IsNumber, IsOptional } from "class-validator"
  *                 $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminListRegionsRequest, req.query)
+  const validated = await validator(AdminGetRegionsReq, req.query)
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
 
   const limit: number = validated.limit || 50
   const offset: number = validated.offset || 0
@@ -59,7 +59,7 @@ export default async (req, res) => {
   res.json({ regions, count: regions.length, offset, limit })
 }
 
-export class AdminListRegionsRequest {
+export class AdminGetRegionsReq {
   @IsNumber()
   @IsOptional()
   limit?: number
@@ -69,7 +69,7 @@ export class AdminListRegionsRequest {
   offset?: number
 }
 
-export class AdminListRegionsResponse {
+export class AdminGetRegionsRes {
   regions: Region[]
   count: number
   offset: number

@@ -29,9 +29,12 @@ import { IsString } from "class-validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminRegionSetMetadataRequest, req.body)
+  const validated = await validator(
+    AdminPostRegionsRegionPaymentProvidersProviderReq,
+    req.body
+  )
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.setMetadata(id, validated.key, validated.value)
 
   const region: Region = await regionService.retrieve(id, {
@@ -42,13 +45,9 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
-export class AdminRegionSetMetadataRequest {
+export class AdminPostRegionsRegionPaymentProvidersProviderReq {
   @IsString()
   key: string
   @IsString()
   value: string
-}
-
-export class AdminRegionSetMetadataResponse {
-  region: Region
 }

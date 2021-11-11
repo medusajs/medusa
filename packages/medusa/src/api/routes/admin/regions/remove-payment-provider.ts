@@ -26,13 +26,12 @@ import { IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(
-    AdminRemovePaymentProviderFromRegionRequest,
+  const { region_id, provider_id } = await validator(
+    AdminPostRegionsRegionPaymentProvidersProviderReq,
     req.params
   )
 
-  const { region_id, provider_id } = validated
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.removePaymentProvider(region_id, provider_id)
 
   const region: Region = await regionService.retrieve(region_id, {
@@ -43,13 +42,9 @@ export default async (req, res) => {
   res.json({ region })
 }
 
-export class AdminRemovePaymentProviderFromRegionRequest {
+export class AdminPostRegionsRegionPaymentProvidersProviderReq {
   @IsString()
   region_id: string
   @IsString()
   provider_id: string
-}
-
-export class AdminRemovePaymentProviderFromRegionResponse {
-  region: Region
 }
