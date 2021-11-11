@@ -85,8 +85,15 @@ export const defaultRelations = [
   "rule.valid_for",
 ]
 
-export type AdminDiscountResponse = {
+export class AdminDiscountResponse {
   discount: Discount
+}
+
+export class AdminGetDiscountsRes {
+  discounts: Discount[]
+  count: number
+  offset: number
+  limit: number
 }
 
 export * from "./add-region"
@@ -101,10 +108,3 @@ export * from "./list-discounts"
 export * from "./remove-region"
 export * from "./remove-valid-product"
 export * from "./update-discount"
-
-export class AdminGetDiscountsRes {
-  discounts: Discount[]
-  count: number
-  offset: number
-  limit: number
-}

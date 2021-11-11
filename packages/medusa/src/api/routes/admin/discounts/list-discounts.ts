@@ -1,7 +1,6 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
 import { defaultFields, defaultRelations } from "."
-import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -60,7 +59,7 @@ export default async (req, res) => {
   res.status(200).json({ discounts, count, offset, limit })
 }
 
-export type GetDiscountsConfig = {
+export class GetDiscountsConfig {
   q?: string
   is_dynamic?: boolean
   is_disabled?: boolean

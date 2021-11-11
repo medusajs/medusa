@@ -16,6 +16,7 @@ import { defaultFields, defaultRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { validator } from "../../../../utils/validator"
+import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 
 /**
  * @oas [post] /discounts/{id}
@@ -114,7 +115,7 @@ export class AdminPostDiscountsDiscountReq {
   @Type(() => Date)
   ends_at: Date
 
-  @IsISO8601()
+  @IsISO8601Duration()
   @IsOptional()
   valid_duration: string
 
@@ -155,6 +156,7 @@ export class AdminUpdateDiscountRule {
   allocation: string
 
   @IsArray()
+  @IsOptional()
   @IsString({ each: true })
   valid_for: string
 }

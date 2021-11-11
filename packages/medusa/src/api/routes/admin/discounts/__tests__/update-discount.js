@@ -181,7 +181,7 @@ describe("POST /admin/discounts", () => {
 
     it("returns error", () => {
       expect(subject.body.message).toEqual(
-        `"ends_at" must be greater than "ref:starts_at"`
+        `"ends_at" must be greater than "starts_at"`
       )
     })
   })
