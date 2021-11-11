@@ -8,6 +8,8 @@ import {
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { AddressPayload } from "../../../../types/common"
+import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -121,9 +123,11 @@ export class StorePostCartsCartReq {
   @IsOptional()
   email: string
   @IsOptional()
-  billing_address: object
+  @IsType([AddressPayload, String])
+  billing_address: AddressPayload | string
   @IsOptional()
-  shipping_address: object
+  @IsType([AddressPayload, String])
+  shipping_address: AddressPayload | string
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })

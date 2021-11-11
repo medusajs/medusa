@@ -1,4 +1,3 @@
-import "reflect-metadata"
 // API payloads
 export * from "./api"
 // Models

@@ -1,4 +1,5 @@
 import { Router } from "express"
+import "reflect-metadata"
 import { Cart } from "../../../../models/cart"
 import middlewares from "../../../middlewares"
 
