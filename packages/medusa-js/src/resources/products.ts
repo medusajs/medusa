@@ -1,27 +1,42 @@
+import {
+  StoreGetProductsReq,
+  StoreGetProductsResponse,
+  StorePostSearchResponse,
+  StoreProductsResponse,
+} from '@medusajs/medusa';
+import { AxiosPromise } from 'axios';
 import BaseResource from './base';
 import ProductVariantsResource from './product-variants';
-import * as Types from '../types';
-import { ProductListPayload } from '../types';
 
 class ProductsResource extends BaseResource {
   public variants = new ProductVariantsResource(this.client);
 
   /**
    * @description Retrieves a single Product
-   * @param id is required
-   * @returns AsyncResult<{ product: Product }>
+   * @param {string} id is required
+   * @return {AxiosPromise<StoreProductsResponse>}
    */
-  retrieve(id: string): Types.AsyncResult<{ product: Types.Product }> {
+  retrieve(id: string): AxiosPromise<StoreProductsResponse> {
+    const path = `/store/products/${id}`;
+    return this.client.request('GET', path);
+  }
+
+  /**
+   * @description Retrieves a single Product
+   * @param {string} id is required
+   * @return {AxiosPromise<StorePostSearchResponse>}
+   */
+  search(id: string): AxiosPromise<StorePostSearchResponse> {
     const path = `/store/products/${id}`;
     return this.client.request('GET', path);
   }
 
   /**
    * @description Retrieves a list of products
-   * @param query is optional. Can contain a limit and offset for the returned list
-   * @returns AsyncResult<{ products: Product[] }>
+   * @param {StoreGetProductsReq} query is optional. Can contain a limit and offset for the returned list
+   * @return {AxiosPromise<StoreGetProductsResponse>}
    */
-  list(query?: ProductListPayload): Types.AsyncResult<{ products: Types.Product[] }> {
+  list(query?: StoreGetProductsReq): AxiosPromise<StoreGetProductsResponse> {
     let path = `/store/products`;
 
     if (query) {

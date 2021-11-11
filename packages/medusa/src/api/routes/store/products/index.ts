@@ -1,4 +1,5 @@
 import { Router } from "express"
+import "reflect-metadata"
 import { Product } from "../../../.."
 import middlewares from "../../../middlewares"
 
@@ -27,6 +28,7 @@ export const defaultStoreProductsRelations = [
 ]
 
 export * from "./list-products"
+export * from "./search"
 
 export type StoreProductsResponse = {
   product: Product

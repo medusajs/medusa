@@ -38,3 +38,8 @@ export class StorePostSearchReq {
   @IsOptional()
   filter: any
 }
+
+export class StorePostSearchResponse {
+  hits: any[];
+  [k: string]: any
+}
