@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/note"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminListNotesRequest, req.query)
+  const validated = await validator(AdminGetNotesReq, req.query)
 
   const limit = validated.limit || 50
   const offset = validated.offset || 0
@@ -47,12 +47,11 @@ export default async (req, res) => {
 
   res.status(200).json({ notes, count: notes.length, offset, limit })
 }
-
-export class selector {
+type selector = {
   resource_id?: string
 }
 
-export class AdminListNotesRequest {
+export class AdminGetNotesReq {
   @IsString()
   @IsOptional()
   resource_id: string

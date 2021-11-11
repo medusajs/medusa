@@ -1,5 +1,4 @@
 import { IsString } from "class-validator"
-import { Note } from "../../../../models/note"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
 
@@ -35,7 +34,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminUpdateNoteRequest, req.body)
+  const validated = await validator(AdminPostNotesNoteReq, req.body)
 
   const noteService = req.scope.resolve("noteService") as NoteService
   const note = await noteService.update(id, validated.value)
@@ -43,11 +42,7 @@ export default async (req, res) => {
   res.status(200).json({ note })
 }
 
-export class AdminUpdateNoteRequest {
+export class AdminPostNotesNoteReq {
   @IsString()
   value: string
-}
-
-export class AdminUpdateNoteResponse {
-  note: Note
 }

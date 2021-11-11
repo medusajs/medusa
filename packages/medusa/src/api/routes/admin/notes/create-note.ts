@@ -37,7 +37,7 @@ import { validator } from "../../../../utils/validator"
  *
  */
 export default async (req, res) => {
-  const validated = await validator(AdminCreateNoteRequest, req.body)
+  const validated = await validator(AdminPostNotesReq, req.body)
 
   const userId: string = req.user.id || req.user.userId
 
@@ -53,7 +53,7 @@ export default async (req, res) => {
   res.status(200).json({ note: result })
 }
 
-export class AdminCreateNoteRequest {
+export class AdminPostNotesReq {
   @IsString()
   @IsOptional()
   resource_id: string

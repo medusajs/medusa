@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Note } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -18,3 +19,13 @@ export default (app) => {
 
   return app
 }
+
+export class AdminNoteRes {
+  note: Note
+}
+
+export * from "./create-note"
+export * from "./delete-note"
+export * from "./get-note"
+export * from "./list-notes"
+export * from "./update-note"
