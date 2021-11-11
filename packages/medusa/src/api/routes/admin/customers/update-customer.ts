@@ -45,7 +45,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminUpdateCustomerRequest, req.body)
+  const validated = await validator(AdminPostCustomersCustomerReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
@@ -66,7 +66,7 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
-export class AdminUpdateCustomerRequest {
+export class AdminPostCustomersCustomerReq {
   @IsEmail()
   @IsOptional()
   email?: string

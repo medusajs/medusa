@@ -15,7 +15,7 @@ export default (app) => {
   return app
 }
 
-export type AdminCustomerResponse = {
+export type AdminCustomerRes = {
   customer: Customer
 }
 
