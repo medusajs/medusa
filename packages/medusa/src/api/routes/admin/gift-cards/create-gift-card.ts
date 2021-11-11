@@ -1,5 +1,13 @@
+import { Type } from "class-transformer"
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { defaultFields, defaultRelations } from "."
 
 /**
  * @oas [post] /gift-cards
@@ -68,4 +76,23 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ gift_card: giftCard })
+}
+
+export class AdminPostGiftCardsReq {
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  value?: number
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  ends_at?: Date
+  @IsOptional()
+  @IsBoolean()
+  is_disabled?: boolean
+  @IsOptional()
+  @IsString()
+  region_id?: string
+  @IsOptional()
+  metadata?: object
 }
