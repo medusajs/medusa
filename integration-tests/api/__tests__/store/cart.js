@@ -64,10 +64,8 @@ describe("/store/carts", () => {
       const api = useApi()
 
       const response = await api.post("/store/carts")
-      expect(response.status).toEqual(200)
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
-      expect(getRes.status).toEqual(200)
+      expect(response.status).toEqual(200)
     })
 
     it("fails to create a cart when no region exist", async () => {
@@ -96,9 +94,6 @@ describe("/store/carts", () => {
       })
       expect(response.status).toEqual(200)
       expect(response.data.cart.shipping_address.country_code).toEqual("us")
-
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
-      expect(getRes.status).toEqual(200)
     })
 
     it("creates a cart with context", async () => {
@@ -110,10 +105,7 @@ describe("/store/carts", () => {
       })
       expect(response.status).toEqual(200)
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
-      expect(getRes.status).toEqual(200)
-
-      const cart = getRes.data.cart
+      const cart = response.data.cart
       expect(cart.context).toEqual({
         ip: "::ffff:127.0.0.1",
         user_agent: "axios/0.21.1",
@@ -148,9 +140,11 @@ describe("/store/carts", () => {
         region_id: "test-region-multiple",
       })
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`, {
-        region_id: "test-region",
-      })
+      const getRes = await api
+        .post(`/store/carts/${response.data.cart.id}`, {
+          region_id: "test-region",
+        })
+        .catch((e) => console.log(e))
 
       expect(getRes.status).toEqual(200)
     })

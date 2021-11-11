@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import {
   IsEmail,
   IsNumber,
@@ -63,6 +64,7 @@ export class ShippingAddressPayload {
 
 export class StoreGetOrdersReq {
   @IsNumber()
+  @Type(() => Number)
   display_id: number
   @IsEmail()
   email: string

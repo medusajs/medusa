@@ -1,6 +1,5 @@
 import { StoreGetOrdersReq, StoreOrderResponse } from '@medusajs/medusa';
 import { AxiosPromise } from 'axios';
-import * as Types from '../types';
 import BaseResource from './base';
 
 class OrdersResource extends BaseResource {
@@ -9,7 +8,7 @@ class OrdersResource extends BaseResource {
    * @param {string} id is required
    * @return {AxiosPromise<StoreOrderResponse>}
    */
-  retrieve(id: string): Types.AsyncResult<{ order: Types.Order }> {
+  retrieve(id: string): AxiosPromise<StoreOrderResponse> {
     const path = `/store/orders/${id}`;
     return this.client.request('GET', path);
   }
@@ -17,9 +16,9 @@ class OrdersResource extends BaseResource {
   /**
    * @description Retrieves an order by cart id
    * @param {string} cart_id is required
-   * @return {AsyncResultOrder}
+   * @return {AxiosPromise<StoreOrderResponse>}
    */
-  retrieveByCartId(cart_id: string): Types.AsyncResult<{ order: Types.Order }> {
+  retrieveByCartId(cart_id: string): AxiosPromise<StoreOrderResponse> {
     const path = `/store/orders/cart/${cart_id}`;
     return this.client.request('GET', path);
   }
@@ -29,7 +28,7 @@ class OrdersResource extends BaseResource {
    * @param {StoreGetOrdersReq} payload used to look up the order
    * @return {AxiosPromise<StoreOrderResponse>}
    */
-  lookupOrder(payload: StoreGetOrdersReq): Types.AsyncResult<{ order: Types.Order }> {
+  lookupOrder(payload: StoreGetOrdersReq): AxiosPromise<StoreOrderResponse> {
     let path = `/store/orders?`;
 
     const queryString = Object.entries(payload).map(([key, value]) => {

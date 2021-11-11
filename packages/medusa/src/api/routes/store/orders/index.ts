@@ -1,4 +1,6 @@
 import { Router } from "express"
+import "reflect-metadata"
+import { Order } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -105,3 +107,9 @@ export const allowedStoreOrdersFields = [
   "subtotal",
   "total",
 ]
+
+export type StoreOrderResponse = {
+  order: Order
+}
+
+export * from "./lookup-order"
