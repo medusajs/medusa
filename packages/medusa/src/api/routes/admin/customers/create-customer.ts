@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsEmail, IsOptional, IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /customers
