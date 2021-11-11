@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Product } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -13,7 +14,7 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export const defaultStoreProductsRelations = [
   "variants",
   "variants.prices",
   "variants.options",
@@ -24,3 +25,9 @@ export const defaultRelations = [
   "collection",
   "type",
 ]
+
+export * from "./list-products"
+
+export type StoreProductsResponse = {
+  product: Product
+}

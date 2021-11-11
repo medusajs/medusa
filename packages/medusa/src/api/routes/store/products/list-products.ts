@@ -1,4 +1,7 @@
-import { defaultRelations } from "."
+import { defaultStoreProductsRelations } from "."
+import { Product } from "../../../.."
+import { ProductService } from "../../../../services"
+import { PaginatedResponse } from "../../../../types/common"
 
 /**
  * @oas [get] /products
@@ -29,7 +32,7 @@ import { defaultRelations } from "."
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
 
   const limit = parseInt(req.query.limit) || 100
   const offset = parseInt(req.query.offset) || 0
@@ -37,13 +40,13 @@ export default async (req, res) => {
   const selector = {}
 
   if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
-    selector.is_giftcard = req.query.is_giftcard === "true"
+    selector["is_giftcard"] = req.query.is_giftcard === "true"
   }
 
-  selector.status = ["published"]
+  selector["status"] = ["published"]
 
   const listConfig = {
-    relations: defaultRelations,
+    relations: defaultStoreProductsRelations,
     skip: offset,
     take: limit,
   }
@@ -54,4 +57,8 @@ export default async (req, res) => {
   )
 
   res.json({ products, count, offset, limit })
+}
+
+export type StoreGetProductsResponse = PaginatedResponse & {
+  products: Product[]
 }

@@ -1,4 +1,5 @@
-import { defaultRelations } from "."
+import { defaultStoreProductsRelations } from "."
+import { ProductService } from "../../../../services"
 
 /**
  * @oas [get] /products/{id}
@@ -22,9 +23,9 @@ import { defaultRelations } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
   const product = await productService.retrieve(id, {
-    relations: defaultRelations,
+    relations: defaultStoreProductsRelations,
   })
 
   res.json({ product })
