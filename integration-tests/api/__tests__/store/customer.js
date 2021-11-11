@@ -111,8 +111,6 @@ describe("/store/customers", () => {
         password: "test",
       })
 
-      console.log(authResponse.data)
-
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api
