@@ -35,7 +35,7 @@ export default async (req, res) => {
       "Please configure jwtSecret in your environment"
     )
   }
-  const validated = await validator(AdminCreateSessionRequest, req.body)
+  const validated = await validator(AdminPostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
   const result = await authService.authenticate(
@@ -57,7 +57,7 @@ export default async (req, res) => {
   }
 }
 
-export class AdminCreateSessionRequest {
+export class AdminPostAuthReq {
   @IsEmail()
   @IsNotEmpty()
   email: string
@@ -67,4 +67,4 @@ export class AdminCreateSessionRequest {
   password: string
 }
 
-export type AdminCreateSessionResponse = Omit<User, "password_hash">
+export type AdminPostAuthRes = Omit<User, "password_hash">

@@ -32,4 +32,4 @@ export default async (req, res) => {
   }
 }
 
-export type AdminCreateSessionResponse = Omit<User, "password_hash">
+export type AdminGetAuthRes = Omit<User, "password_hash">
