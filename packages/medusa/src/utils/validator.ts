@@ -11,7 +11,7 @@ const reduceErrorMessages = (errs: ValidationError[]): string[] => {
     }
 
     if (next.children) {
-      acc.push(reduceErrorMessages(next.children).join(","))
+      acc.push(reduceErrorMessages(next.children).filter(Boolean).join(","))
     }
     return acc
   }, [])
@@ -33,7 +33,7 @@ export async function validator<T, V>(
   if (errors?.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      errorMessages.join(",")
+      errorMessages.filter(Boolean).join(",")
     )
   }
 
