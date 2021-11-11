@@ -1,5 +1,5 @@
 import { ClassConstructor, plainToClass } from "class-transformer"
-import { validate, ValidationError } from "class-validator"
+import { validate, ValidationError, ValidatorOptions } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 
 const reduceErrorMessages = (errs: ValidationError[]): string[] => {
@@ -19,13 +19,15 @@ const reduceErrorMessages = (errs: ValidationError[]): string[] => {
 
 export async function validator<T, V>(
   typedClass: ClassConstructor<T>,
-  plain: V
+  plain: V,
+  config: ValidatorOptions = {}
 ): Promise<T> {
   const toValidate = plainToClass(typedClass, plain)
   // @ts-ignore
   const errors = await validate(toValidate, {
     whitelist: true,
     forbidNonWhitelisted: true,
+    ...config,
   })
 
   const errorMessages = reduceErrorMessages(errors)
