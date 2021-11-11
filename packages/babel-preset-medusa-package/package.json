@@ -15,6 +15,7 @@
     "@babel/plugin-transform-instanceof": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.16.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.1",
     "core-js": "^3.7.0"
   },
