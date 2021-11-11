@@ -4,7 +4,7 @@ ElasticSearch Plugin for Medusa to search for products.
 
 ## Plugin Options
 
-```json
+```javascript
 {
   config: {
     node: [your elasticsearch host],

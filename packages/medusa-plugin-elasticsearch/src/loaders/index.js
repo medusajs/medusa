@@ -1,6 +1,6 @@
 export default async(container, options) => {
     try {
-        const elasticsearchService = container.resolve("meilisearchService")
+        const elasticsearchService = container.resolve("elasticsearchService")
 
         await Promise.all(
             Object.entries(options.settings).map(([key, value]) =>
