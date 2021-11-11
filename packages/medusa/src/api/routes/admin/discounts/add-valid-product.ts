@@ -8,6 +8,7 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostDiscountsDiscountProductsProduct"
  * summary: "Adds Product availability"
  * description: "Adds a Product to the list of Products that a Discount can be used for."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount.
  *   - (path) product_id=* {string} The id of the Product.

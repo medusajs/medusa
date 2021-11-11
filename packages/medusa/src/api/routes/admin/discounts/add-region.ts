@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Adds Region availability"
  * description: "Adds a Region to the list of Regions that a Discount can be used in."
  * x-authenticated: true
- *  parameters:
+ * parameters:
  *   - (path) id=* {string} The id of the Discount.
  *   - (path) region_id=* {string} The id of the Region.
  * tags:
