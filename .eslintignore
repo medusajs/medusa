@@ -32,7 +32,6 @@
 /packages/medusa-js/src/resources/customers.ts
 /packages/medusa-js/src/resources/gift-cards.ts
 /packages/medusa-js/src/resources/line-items.ts
-/packages/medusa-js/src/resources/orders.ts
 /packages/medusa-js/src/resources/payment-methods.ts
 /packages/medusa-js/src/resources/product-variants.ts
 /packages/medusa-js/src/resources/products.ts

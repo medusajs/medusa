@@ -27,7 +27,7 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export const defaultStoreOrdersRelations = [
   "shipping_address",
   "fulfillments",
   "fulfillments.tracking_links",
@@ -43,7 +43,7 @@ export const defaultRelations = [
   "region",
 ]
 
-export const defaultFields = [
+export const defaultStoreOrdersFields = [
   "id",
   "status",
   "fulfillment_status",
@@ -66,7 +66,7 @@ export const defaultFields = [
   "total",
 ]
 
-export const allowedRelations = [
+export const allowedStoreOrdersRelations = [
   "shipping_address",
   "fulfillments",
   "fulfillments.tracking_links",
@@ -83,7 +83,7 @@ export const allowedRelations = [
   "region",
 ]
 
-export const allowedFields = [
+export const allowedStoreOrdersFields = [
   "id",
   "status",
   "fulfillment_status",

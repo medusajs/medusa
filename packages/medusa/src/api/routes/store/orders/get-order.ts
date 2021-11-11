@@ -1,4 +1,5 @@
-import { defaultRelations, defaultFields } from "./index"
+import OrderService from "../../../../services/order"
+import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
 
 /**
  * @oas [get] /orders/{id}
@@ -22,16 +23,11 @@ import { defaultRelations, defaultFields } from "./index"
 export default async (req, res) => {
   const { id } = req.params
 
-  try {
-    const orderService = req.scope.resolve("orderService")
-    const order = await orderService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
-    })
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const order = await orderService.retrieve(id, {
+    select: defaultStoreOrdersFields,
+    relations: defaultStoreOrdersRelations,
+  })
 
-    res.json({ order })
-  } catch (error) {
-    console.log(error)
-    throw error
-  }
+  res.json({ order })
 }
