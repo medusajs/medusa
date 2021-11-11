@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import { IdMap } from "medusa-test-utils"
 import PermissionService from "../permission"
 import { permissions, RoleModelMock } from "../../models/__mocks__/role"
@@ -6,7 +5,7 @@ import { permissions, RoleModelMock } from "../../models/__mocks__/role"
 describe("PermissionService", () => {
   describe("hasPermission", () => {
     let result
-    let user = {
+    const user = {
       _id: IdMap.getId("test-user"),
       email: "oliver@medusa.test",
       passwordHash: "123456789",
@@ -73,87 +72,87 @@ describe("PermissionService", () => {
     })
   })
 
-  describe("createRole", () => {
-    const permissionService = new PermissionService({
-      roleModel: RoleModelMock,
-    })
+  // describe("createRole", () => {
+  //   const permissionService = new PermissionService({
+  //     roleModel: RoleModelMock,
+  //   })
 
-    beforeAll(async () => {
-      jest.clearAllMocks()
+  //   beforeAll(async () => {
+  //     jest.clearAllMocks()
 
-      const contentEditorPermissions = [
-        {
-          method: "POST",
-          endpoint: "/contents",
-        },
-        {
-          method: "GET",
-          endpoint: "/contents",
-        },
-        {
-          method: "PUT",
-          endpoint: "/contents",
-        },
-      ]
+  //     const contentEditorPermissions = [
+  //       {
+  //         method: "POST",
+  //         endpoint: "/contents",
+  //       },
+  //       {
+  //         method: "GET",
+  //         endpoint: "/contents",
+  //       },
+  //       {
+  //         method: "PUT",
+  //         endpoint: "/contents",
+  //       },
+  //     ]
 
-      await permissionService.createRole(
-        "content_editor",
-        contentEditorPermissions
-      )
-    })
+  //     await permissionService.createRole(
+  //       "content_editor",
+  //       contentEditorPermissions
+  //     )
+  //   })
 
-    it("calls permission model functions", () => {
-      expect(RoleModelMock.create).toHaveBeenCalledTimes(1)
-      expect(RoleModelMock.create).toHaveBeenCalledWith({
-        name: "content_editor",
-        permissions: [
-          {
-            method: "POST",
-            endpoint: "/contents",
-          },
-          {
-            method: "GET",
-            endpoint: "/contents",
-          },
-          {
-            method: "PUT",
-            endpoint: "/contents",
-          },
-        ],
-      })
-    })
+  //   // it("calls permission model functions", () => {
+  //   //   expect(RoleModelMock.create).toHaveBeenCalledTimes(1)
+  //   //   expect(RoleModelMock.create).toHaveBeenCalledWith({
+  //   //     name: "content_editor",
+  //   //     permissions: [
+  //   //       {
+  //   //         method: "POST",
+  //   //         endpoint: "/contents",
+  //   //       },
+  //   //       {
+  //   //         method: "GET",
+  //   //         endpoint: "/contents",
+  //   //       },
+  //   //       {
+  //   //         method: "PUT",
+  //   //         endpoint: "/contents",
+  //   //       },
+  //   //     ],
+  //   //   })
+  //   // })
 
-    it("throws if any permission is invalid", async () => {
-      try {
-        await permissionService.createRole("content_editor", [
-          {
-            method: "POST",
-            endpoint: "/products",
-          },
-          {
-            // Should fail since this is not a valid http request
-            method: "FETCH",
-            endpoint: "/products",
-          },
-        ])
-      } catch (err) {
-        expect(err.message).toEqual("Permission is not valid")
-      }
-    })
+  //   it("throws if any permission is invalid", async () => {
+  //     try {
+  //       await permissionService.createRole("content_editor", [
+  //         {
+  //           method: "POST",
+  //           endpoint: "/products",
+  //         },
+  //         {
+  //           // Should fail since this is not a valid http request
+  //           method: "FETCH",
+  //           endpoint: "/products",
+  //         },
+  //       ])
+  //     } catch (err) {
+  //       expect(err.message).toEqual("Permission is not valid")
+  //     }
+  //   })
 
-    it("throws if role with name already exists", async () => {
-      try {
-        await permissionService.createRole("product_editor", [
-          {
-            method: "POST",
-            endpoint: "/order",
-          },
-        ])
-      } catch (err) {
-        expect(err.message).toEqual("product_editor already exists")
-      }
-    })
-  })
+  //   it("throws if role with name already exists", async () => {
+  //     try {
+  //       await permissionService.createRole("product_editor", [
+  //         {
+  //           method: "POST",
+  //           endpoint: "/order",
+  //         },
+  //       ])
+  //     } catch (err) {
+  //       expect(err.message).toEqual("product_editor already exists")
+  //     }
+  //   })
+  // })
 
   describe("grantRole", () => {
     const setMetadataMock = jest.fn().mockReturnValue(Promise.resolve())

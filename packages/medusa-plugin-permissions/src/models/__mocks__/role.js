@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 import { IdMap } from "medusa-test-utils"
 
 export const permissions = {
@@ -24,7 +25,7 @@ export const permissions = {
 export const RoleModelMock = {
   create: jest.fn().mockReturnValue(Promise.resolve()),
   deleteOne: jest.fn().mockReturnValue(Promise.resolve()),
-  findOne: jest.fn().mockImplementation(query => {
+  findOne: jest.fn().mockImplementation((query) => {
     if (query.name === "product_editor") {
       return Promise.resolve(permissions.productEditorPermission)
     }
