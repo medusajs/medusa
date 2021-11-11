@@ -3,7 +3,6 @@ import {
   IsArray,
   IsBoolean,
   IsDate,
-  IsISO8601,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -12,7 +11,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { validator } from "../../../../utils/validator"
@@ -79,8 +78,8 @@ export default async (req, res) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.update(discount_id, validated)
   const discount = await discountService.retrieve(discount_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })

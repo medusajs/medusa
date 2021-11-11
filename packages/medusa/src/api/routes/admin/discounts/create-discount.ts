@@ -11,7 +11,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultRelations } from "."
+import { defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
@@ -73,40 +73,13 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  // const schema = Validator.object().keys({
-  //   code: Validator.string().required(),
-  //   is_dynamic: Validator.boolean().default(false),
-  //   rule: Validator.object()
-  //     .keys({
-  //       description: Validator.string().optional(),
-  //       type: Validator.string().required(),
-  //       value: Validator.number().positive().required(),
-  //       allocation: Validator.string().required(),
-  //       valid_for: Validator.array().items(Validator.string()),
-  //     })
-  //     .required(),
-  //   is_disabled: Validator.boolean().default(false),
-  //   starts_at: Validator.date().optional(),
-  //   ends_at: Validator.date().greater(Validator.ref("starts_at")).optional(),
-  //   valid_duration: Validator.string().isoDuration().allow(null).optional(),
-  //   usage_limit: Validator.number().positive().optional(),
-  //   regions: Validator.array().items(Validator.string()).optional(),
-  //   metadata: Validator.object().optional(),
-  // })
-
-  // const { value, error } = schema.validate(req.body)
-
-  // if (error) {
-  //   throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  // }
-
   const validated = await validator(AdminPostDiscountsReq, req.body)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
   const created = await discountService.create(validated)
   const discount: Discount = await discountService.retrieve(
     created.id,
-    defaultRelations
+    defaultAdminDiscountsRelations
   )
 
   res.status(200).json({ discount })

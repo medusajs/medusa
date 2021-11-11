@@ -60,7 +60,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultAdminDiscountsFields = [
   "id",
   "code",
   "is_dynamic",
@@ -78,7 +78,7 @@ export const defaultFields = [
   "valid_duration",
 ]
 
-export const defaultRelations = [
+export const defaultAdminDiscountsRelations = [
   "rule",
   "parent_discount",
   "regions",

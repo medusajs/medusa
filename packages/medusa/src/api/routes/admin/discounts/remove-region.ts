@@ -1,5 +1,5 @@
 import DiscountService from "../../../../services/discount"
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { IsNotEmpty, IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 /**
@@ -32,8 +32,8 @@ export default async (req, res) => {
   await discountService.removeRegion(discount_id, region_id)
 
   const discount = await discountService.retrieve(discount_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })

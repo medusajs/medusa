@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -29,8 +29,8 @@ export default async (req, res) => {
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
   const data = await discountService.retrieve(discount_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount: data })

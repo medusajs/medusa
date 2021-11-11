@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -44,8 +44,8 @@ export default async (req, res) => {
   selector.is_disabled = validated.is_disabled
 
   const listConfig = {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
     skip: offset,
     take: limit,
     order: { created_at: "DESC" },
