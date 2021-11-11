@@ -17,7 +17,7 @@ import {
   FilterableProductVariantProps,
   CreateProductVariantInput,
   UpdateProductVariantInput,
-  IProductVariantPrice,
+  ProductVariantPrice,
 } from "../types/product-variant"
 
 /**
@@ -328,12 +328,12 @@ class ProductVariantService extends BaseService {
   /**
    * Sets the default price for the given currency.
    * @param {string} variantId - the id of the variant to set prices for
-   * @param {IProductVariantPrice} price - the price for the variant
+   * @param {ProductVariantPrice} price - the price for the variant
    * @return {Promise} the result of the update operation
    */
   async setCurrencyPrice(
     variantId: string,
-    price: IProductVariantPrice
+    price: ProductVariantPrice
   ): Promise<MoneyAmount> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
@@ -419,7 +419,7 @@ class ProductVariantService extends BaseService {
    */
   async setRegionPrice(
     variantId: string,
-    price: IProductVariantPrice
+    price: ProductVariantPrice
   ): Promise<MoneyAmount> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(

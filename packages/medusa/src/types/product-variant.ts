@@ -42,7 +42,7 @@ export type CreateProductVariantInput = {
   metadata?: JSON
 }
 
-export type IUpdateProductVariantInput = {
+export type UpdateProductVariantInput = {
   title?: string
   product_id: string
   sku?: string
