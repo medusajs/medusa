@@ -1,7 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
-import { LineItemServiceMock } from "../../../../../services/__mocks__/line-item"
 
 describe("POST /store/carts/:id/payment-method", () => {
   describe("successfully sets the payment method", () => {
