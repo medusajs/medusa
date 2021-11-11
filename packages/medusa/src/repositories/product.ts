@@ -37,17 +37,26 @@ export class ProductRepository extends Repository<Product> {
     optionsWithoutRelations: FindWithRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
-    const tags = optionsWithoutRelations.where.tags
-    delete optionsWithoutRelations.where.tags
+    const tags = optionsWithoutRelations?.where?.tags
+    delete optionsWithoutRelations?.where?.tags
     let qb = this.createQueryBuilder("product")
       .select(["product.id"])
-      .where(optionsWithoutRelations.where)
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
 
+<<<<<<< HEAD
     if (optionsWithoutRelations?.order) {
       qb = qb.orderBy(optionsWithoutRelations.order)
     }
+=======
+    qb = optionsWithoutRelations.where
+      ? qb.where(optionsWithoutRelations.where)
+      : qb
+
+    qb = optionsWithoutRelations.order
+      ? qb.orderBy(optionsWithoutRelations.order)
+      : qb
+>>>>>>> 7053485425693d82237149186811e37953055bff
 
     if (tags) {
       qb = qb

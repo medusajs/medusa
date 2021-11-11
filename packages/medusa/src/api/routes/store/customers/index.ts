@@ -1,5 +1,8 @@
 import { Router } from "express"
+<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/index.ts
 import "reflect-metadata"
+=======
+>>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/index.js
 import { Customer } from "../../../.."
 import middlewares from "../../../middlewares"
 
@@ -98,6 +101,7 @@ export const allowedStoreCustomersFields = [
   "metadata",
 ]
 
+<<<<<<< HEAD:packages/medusa/src/api/routes/store/customers/index.ts
 export type StoreCustomerResponse = {
   customer: Omit<Customer, "password_hash">
 }
@@ -110,3 +114,6 @@ export * from "./reset-password"
 export * from "./reset-password-token"
 export * from "./update-address"
 export * from "./update-customer"
+=======
+export type CustomerResponse = Omit<Customer, "password_hash">
+>>>>>>> 7053485425693d82237149186811e37953055bff:packages/medusa/src/api/routes/store/customers/index.js

@@ -1,5 +1,4 @@
-import { IsOptional, IsString, ValidateNested } from "class-validator"
-import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
+import { CustomerResponse, defaultFields, defaultRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
@@ -36,64 +35,36 @@ export default async (req, res) => {
   const id = req.user.customer_id
   const { address_id } = req.params
 
-  const validated = await validator(
-    StorePostCustomersCustomerAddressesAddressReq,
-    req.body
-  )
+  const validated = await validator(StoreUpdateAddressRequest, req.body)
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
+  const customerService = req.scope.resolve(
+    "customerService"
+  ) as CustomerService
 
-  let customer = await customerService.updateAddress(
-    id,
-    address_id,
-    validated.address
-  )
+  let customer = await customerService.updateAddress(id, address_id, validated)
 
   customer = await customerService.retrieve(id, {
-    relations: defaultStoreCustomersRelations,
-    select: defaultStoreCustomersFields,
+    relations: defaultRelations,
+    select: defaultFields,
   })
 
   res.json({ customer })
 }
 
-export class AddressUpdatePayload {
-  @IsOptional()
-  @IsString()
-  first_name: string
-  @IsOptional()
-  @IsString()
-  last_name: string
-  @IsOptional()
-  @IsString()
-  phone: string
-  @IsOptional()
-  metadata: object
-  @IsOptional()
-  @IsString()
-  company: string
-  @IsOptional()
-  @IsString()
-  address_1: string
-  @IsOptional()
-  @IsString()
-  address_2: string
-  @IsOptional()
-  @IsString()
-  city: string
-  @IsOptional()
-  @IsString()
-  country_code: string
-  @IsOptional()
-  @IsString()
-  province: string
-  @IsOptional()
-  @IsString()
-  postal_code: string
+export class StoreUpdateAddressRequest {
+  company?: string
+  first_name?: string
+  last_name?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: number
+  phone?: string
+  metadata?: JSON
 }
 
-export class StorePostCustomersCustomerAddressesAddressReq {
-  @IsOptional()
-  @ValidateNested()
-  address: AddressUpdatePayload
+export class StoreUpdateAddressResponse {
+  customer: CustomerResponse
 }

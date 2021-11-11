@@ -1,10 +1,15 @@
 import { IdMap } from "medusa-test-utils"
+<<<<<<< HEAD
 import {
   defaultStoreCustomersFields,
   defaultStoreCustomersRelations,
 } from "../"
+=======
+import { defaultFields, defaultRelations } from "../"
+>>>>>>> 7053485425693d82237149186811e37953055bff
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
+import { validator } from "../../../../../utils/validator"
 
 describe("POST /store/customers/me", () => {
   describe("successfully updates a customer", () => {
@@ -60,6 +65,34 @@ describe("POST /store/customers/me", () => {
     })
   })
 
+  describe("fails update a customer with a billing address with an invalid type", () => {
+    let subject
+    beforeAll(async () => {
+      subject = await request("POST", `/store/customers/me`, {
+        payload: {
+          billing_address: 42,
+        },
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
+          },
+        },
+      })
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CustomerService update 0 times", () => {
+      expect(CustomerServiceMock.update).toHaveBeenCalledTimes(0)
+    })
+
+    it("status code 400", () => {
+      expect(subject.status).toEqual(400)
+    })
+  })
+
   describe("successfully updates a customer with billing address id", () => {
     let subject
     beforeAll(async () => {
@@ -102,7 +135,7 @@ describe("POST /store/customers/me", () => {
           billing_address: {
             first_name: "Olli",
             last_name: "Juhl",
-            address_1: "Laksegade",
+            address_1: 42,
             city: "Copenhagen",
             country_code: "dk",
             postal_code: "2100",
