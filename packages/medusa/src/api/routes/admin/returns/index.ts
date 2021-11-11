@@ -1,4 +1,5 @@
 import { Router } from "express"
+import "reflect-metadata"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -23,3 +24,7 @@ export default (app) => {
 
   return app
 }
+
+export * from "./cancel-return"
+export * from "./list-returns"
+export * from "./receive-return"

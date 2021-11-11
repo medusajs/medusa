@@ -1,3 +1,5 @@
+import { Order } from "../../../.."
+import { OrderService, ReturnService } from "../../../../services"
 import { defaultFields, defaultRelations } from "../orders"
 
 /**
@@ -22,8 +24,8 @@ import { defaultFields, defaultRelations } from "../orders"
 export default async (req, res) => {
   const { id } = req.params
 
-  const returnService = req.scope.resolve("returnService")
-  const orderService = req.scope.resolve("orderService")
+  const returnService: ReturnService = req.scope.resolve("returnService")
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   let result = await returnService.cancel(id)
 
@@ -41,4 +43,8 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ order })
+}
+
+export type AdminPostReturnsReturnCancel = {
+  order: Order
 }
