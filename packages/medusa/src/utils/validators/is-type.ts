@@ -7,7 +7,7 @@ import {
   ValidationOptions,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { validator } from "./validator"
+import { validator } from "../validator"
 
 async function typeValidator(
   typedClass: any,
