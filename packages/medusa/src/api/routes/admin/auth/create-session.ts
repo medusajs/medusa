@@ -66,5 +66,3 @@ export class AdminPostAuthReq {
   @IsNotEmpty()
   password: string
 }
-
-export type AdminPostAuthRes = Omit<User, "password_hash">

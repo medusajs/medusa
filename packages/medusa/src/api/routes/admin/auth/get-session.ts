@@ -32,4 +32,3 @@ export default async (req, res) => {
   }
 }
 
-export type AdminGetAuthRes = Omit<User, "password_hash">
