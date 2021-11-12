@@ -26,7 +26,7 @@ export type AdminCollectionsListRes = {
   offset: number
   limit: number
 }
-export type AdminCollectionResponse = {
+export type AdminCollectionsRes = {
   collection: ProductCollection
 }
 

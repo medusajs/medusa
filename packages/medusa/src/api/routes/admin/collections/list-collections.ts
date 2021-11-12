@@ -51,7 +51,7 @@ export default async (req, res) => {
   res.status(200).json({ collections, count, offset, limit })
 }
 
-export class AdminGetCollectionsReq {
+export class AdminGetCollectionsParams {
   @IsNumber()
   @IsOptional()
   limit?: number
