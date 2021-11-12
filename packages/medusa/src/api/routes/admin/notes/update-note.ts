@@ -36,7 +36,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostNotesNoteReq, req.body)
 
-  const noteService = req.scope.resolve("noteService") as NoteService
+  const noteService: NoteService = req.scope.resolve("noteService")
   const note = await noteService.update(id, validated.value)
 
   res.status(200).json({ note })

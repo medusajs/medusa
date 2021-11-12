@@ -24,7 +24,7 @@ import NoteService from "../../../../services/note"
 export default async (req, res) => {
   const { id } = req.params
 
-  const noteService = req.scope.resolve("noteService") as NoteService
+  const noteService: NoteService = req.scope.resolve("noteService")
   const note = await noteService.retrieve(id, { relations: ["author"] })
 
   res.status(200).json({ note })
