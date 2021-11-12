@@ -231,8 +231,8 @@ describe("POST /admin/discounts", () => {
     it("returns error", () => {
       expect(DiscountServiceMock.create).toHaveBeenCalledWith({
         code: "TEST",
-          is_dynamic: true,
-          is_disabled: false,
+        is_dynamic: true,
+        is_disabled: false,
         rule: {
           description: "Test",
           type: "fixed",
