@@ -1,4 +1,4 @@
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
@@ -12,6 +12,10 @@ import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
  * requestBody:
  *   content:
  *     application/json:
+ *       required:
+ *         - name
+ *         - currency_code
+ *         - tax_rate
  *       schema:
  *         properties:
  *           name:
@@ -54,23 +58,20 @@ import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated: AdminCreateRegionRequest = await validator(
-    AdminCreateRegionRequest,
-    req.body
-  )
+  const validated = await validator(AdminPostRegionsReq, req.body)
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   const result: Region = await regionService.create(validated)
 
   const region: Region = await regionService.retrieve(result.id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
 
   res.status(200).json({ region })
 }
 
-export class AdminCreateRegionRequest {
+export class AdminPostRegionsReq {
   @IsString()
   name: string
   @IsString()
@@ -89,8 +90,4 @@ export class AdminCreateRegionRequest {
   @IsArray()
   @IsString({ each: true })
   countries: string[]
-}
-
-export class AdminCreateRegionResponse {
-  region: Region
 }

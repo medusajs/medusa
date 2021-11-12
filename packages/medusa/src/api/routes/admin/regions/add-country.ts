@@ -1,6 +1,5 @@
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
-
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import { IsString } from "class-validator"
@@ -16,6 +15,8 @@ import { IsString } from "class-validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - country_code
  *         properties:
  *           country_code:
  *             description: "The 2 character ISO code for the Country."
@@ -34,24 +35,23 @@ import { IsString } from "class-validator"
  */
 export default async (req, res) => {
   const { region_id } = req.params
-  const validated = await validator(AdminRegionAddCountryRequest, req.body)
+  const validated = await validator(
+    AdminPostRegionsRegionCountriesReq,
+    req.body
+  )
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.addCountry(region_id, validated.country_code)
 
   const region: Region = await regionService.retrieve(region_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
 
   res.status(200).json({ region })
 }
 
-export class AdminRegionAddCountryRequest {
+export class AdminPostRegionsRegionCountriesReq {
   @IsString()
   country_code: string
-}
-
-export class AdminRegionAddCountryResponse {
-  region: Region
 }

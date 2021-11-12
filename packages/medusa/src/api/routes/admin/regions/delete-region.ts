@@ -1,6 +1,5 @@
 import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
-import { Region } from "../../../.."
 import { IsString } from "class-validator"
 
 /**
@@ -32,7 +31,7 @@ import { IsString } from "class-validator"
 export default async (req, res) => {
   const validated = await validator(AdminDeleteRegionRequest, req.params)
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
 
   await regionService.delete(validated.region_id)
 
@@ -46,9 +45,4 @@ export default async (req, res) => {
 export class AdminDeleteRegionRequest {
   @IsString()
   region_id: string
-}
-export class DeleteResponse {
-  id: string
-  object: string
-  deleted: boolean
 }

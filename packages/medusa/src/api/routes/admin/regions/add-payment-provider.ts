@@ -1,4 +1,4 @@
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
@@ -15,6 +15,8 @@ import { IsString } from "class-validator"
  * requestBody:
  *   content:
  *     application/json:
+ *       required:
+ *         - provider_id
  *       schema:
  *         properties:
  *           provider_id:
@@ -35,25 +37,21 @@ import { IsString } from "class-validator"
 export default async (req, res) => {
   const { region_id } = req.params
   const validated = await validator(
-    AdminRegionAddPaymentProviderRequest,
+    AdminPostRegionsRegionPaymentProvidersReq,
     req.body
   )
 
-  const regionService = req.scope.resolve("regionService") as RegionService
+  const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.addPaymentProvider(region_id, validated.provider_id)
 
   const region: Region = await regionService.retrieve(region_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
   res.status(200).json({ region })
 }
 
-export class AdminRegionAddPaymentProviderRequest {
+export class AdminPostRegionsRegionPaymentProvidersReq {
   @IsString()
   provider_id: string
-}
-
-export class AdminRegionAddPaymentProviderResponse {
-  region: Region
 }

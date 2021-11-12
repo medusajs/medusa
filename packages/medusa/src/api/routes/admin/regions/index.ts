@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Region } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -71,7 +72,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultAdminRegionFields = [
   "id",
   "name",
   "currency_code",
@@ -83,8 +84,18 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = [
+export const defaultAdminRegionRelations = [
   "countries",
   "payment_providers",
   "fulfillment_providers",
 ]
+
+export class AdminRegionRes {
+  region: Region
+}
+
+export class DeleteResponse {
+  id: string
+  object: string
+  deleted: boolean
+}
