@@ -10,6 +10,7 @@ import ProductVariantService from "../../../../services/product-variant"
  * operationId: "GetVariants"
  * summary: "List Product Variants."
  * description: "Retrieves a list of Product Variants"
+ * x-authenticated: true
  * tags:
  *   - Product Variant
  * responses:
