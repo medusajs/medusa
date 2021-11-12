@@ -364,7 +364,7 @@ class RegionService extends BaseService {
    * Lists all regions based on a query
    * @param {object} selector - query object for find
    * @param {object} config - configuration settings
-   * @return {Promise<Region[]>} result of the find operation
+   * @return {Promise} result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
     const regionRepo = this.manager_.getCustomRepository(this.regionRepository_)
@@ -404,7 +404,7 @@ class RegionService extends BaseService {
    * Adds a country to the region.
    * @param {string} regionId - the region to add a country to
    * @param {string} code - a 2 digit alphanumeric ISO country code.
-   * @return {Promise<Region>} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async addCountry(regionId, code) {
     return this.atomicPhase_(async (manager) => {
@@ -441,7 +441,7 @@ class RegionService extends BaseService {
    * Removes a country from a Region
    * @param {string} regionId - the region to remove from
    * @param {string} code - a 2 digit alphanumeric ISO country code to remove
-   * @return {Promise<Region>} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async removeCountry(regionId, code) {
     return this.atomicPhase_(async (manager) => {
@@ -477,7 +477,7 @@ class RegionService extends BaseService {
    * provider doesn't exist.
    * @param {string} regionId - the region to add the provider to
    * @param {string} providerId - the provider to add to the region
-   * @return {Promise<Region>} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async addPaymentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
@@ -524,7 +524,7 @@ class RegionService extends BaseService {
    * provider doesn't exist.
    * @param {string} regionId - the region to add the provider to
    * @param {string} providerId - the provider to add to the region
-   * @return {Promise<Region>} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async addFulfillmentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
@@ -568,7 +568,7 @@ class RegionService extends BaseService {
    * Removes a payment provider from a region. Is idempotent.
    * @param {string} regionId - the region to remove the provider from
    * @param {string} providerId - the provider to remove from the region
-   * @return {Promise<Region>} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async removePaymentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
@@ -602,7 +602,7 @@ class RegionService extends BaseService {
    * Removes a fulfillment provider from a region. Is idempotent.
    * @param {string} regionId - the region to remove the provider from
    * @param {string} providerId - the provider to remove from the region
-   * @return {Promise<Region>} the result of the update operation
+   * @return {Promise} the result of the update operation
    */
   async removeFulfillmentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
