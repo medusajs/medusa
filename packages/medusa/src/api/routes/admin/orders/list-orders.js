@@ -1,5 +1,9 @@
 import _ from "lodash"
-import { defaultRelations, defaultFields, filterableFields } from "./"
+import {
+  defaultAdminOrdersRelations,
+  defaultAdminOrdersFields,
+  filterableAdminOrdersFields,
+} from "./"
 import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
@@ -7,6 +11,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
  * operationId: "GetOrders"
  * summary: "List Orders"
  * description: "Retrieves a list of Orders"
+ * x-authenticated: true
  * tags:
  *   - Order
  * responses:
@@ -53,15 +58,15 @@ export default async (req, res) => {
     expandFields = req.query.expand.split(",")
   }
 
-  for (const k of filterableFields) {
+  for (const k of filterableAdminOrdersFields) {
     if (k in value) {
       selector[k] = value[k]
     }
   }
 
   const listConfig = {
-    select: includeFields.length ? includeFields : defaultFields,
-    relations: expandFields.length ? expandFields : defaultRelations,
+    select: includeFields.length ? includeFields : defaultAdminOrdersFields,
+    relations: expandFields.length ? expandFields : defaultAdminOrdersRelations,
     skip: offset,
     take: limit,
     order: { created_at: "DESC" },

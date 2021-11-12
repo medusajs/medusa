@@ -1,10 +1,10 @@
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
+import { OrderService } from "../../../../services"
 
 /**
- * @oas [get] /orders/{id}
- * operationId: "GetOrdersOrder"
- * summary: "Retrieve an Order"
- * description: "Retrieves an Order"
+ * @oas [post] /orders/{id}/archive
+ * operationId: "PostOrdersOrderArchive"
+ * summary: "Archive order"
+ * description: "Archives the order with the given id."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
@@ -23,11 +23,12 @@ import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+
+  await orderService.archive(id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+    relations: ["region", "customer", "swaps"],
   })
 
   res.json({ order })

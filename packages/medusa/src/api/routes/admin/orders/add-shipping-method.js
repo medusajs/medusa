@@ -1,11 +1,12 @@
 import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 
 /**
  * @oas [post] /orders/{id}/shipping-methods
  * operationId: "PostOrdersOrderShippingMethods"
  * summary: "Add a Shipping Method"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (body) price=* {integer} The price (excluding VAT) that should be charged for the Shipping Method
@@ -44,8 +45,8 @@ export default async (req, res) => {
   })
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })

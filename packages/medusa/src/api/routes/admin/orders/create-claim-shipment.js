@@ -1,11 +1,12 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
  * summary: "Create Claim Shipment"
  * description: "Registers a Claim Fulfillment as shipped."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) claim_id=* {string} The id of the Claim.
@@ -57,8 +58,8 @@ export default async (req, res) => {
   )
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

@@ -1,10 +1,11 @@
-import { defaultRelations, defaultFields } from "./"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
 
 /**
  * @oas [post] /orders/{id}/capture
  * operationId: "PostOrdersOrderCapture"
  * summary: "Capture an Order"
  * description: "Captures all the Payments associated with an Order."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * tags:
@@ -27,8 +28,8 @@ export default async (req, res) => {
   await orderService.capturePayment(id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

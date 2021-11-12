@@ -3,6 +3,7 @@
  * operationId: "DeleteOrdersOrderMetadataKey"
  * summary: "Delete Metadata"
  * description: "Deletes a metadata key."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) key=* {string} The metadata key.

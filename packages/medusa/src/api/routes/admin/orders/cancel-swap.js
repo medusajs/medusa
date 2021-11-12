@@ -1,11 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
  * operationId: "PostOrdersSwapCancel"
  * summary: "Cancels a Swap"
  * description: "Cancels a Swap"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   . (path) swap_id=* {string} The id of the Swap.
@@ -39,8 +40,8 @@ export default async (req, res) => {
   await swapService.cancel(swap_id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

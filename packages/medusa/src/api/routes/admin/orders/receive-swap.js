@@ -1,11 +1,12 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/receive
  * operationId: "PostOrdersOrderSwapsSwapReceive"
  * summary: "Receive a Swap"
  * description: "Registers a Swap as received."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) swap_id=* {string} The id of the Swap.
@@ -69,8 +70,8 @@ export default async (req, res) => {
   })
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })

@@ -1,11 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancels a fulfilmment related to a Swap"
  * description: "Registers a Fulfillment as canceled."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order which the Swap relates to.
  *   - (path) swap_id=* {string} The id of the Swap which the Fulfillment relates to.
@@ -50,8 +51,8 @@ export default async (req, res) => {
   await swapService.cancelFulfillment(fulfillment_id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

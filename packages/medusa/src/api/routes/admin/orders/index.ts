@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Order } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -216,7 +217,11 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export type AdminOrdersRes = {
+  order: Order
+}
+
+export const defaultAdminOrdersRelations = [
   "customer",
   "billing_address",
   "shipping_address",
@@ -253,7 +258,7 @@ export const defaultRelations = [
   "swaps.fulfillments",
 ]
 
-export const defaultFields = [
+export const defaultAdminOrdersFields = [
   "id",
   "status",
   "fulfillment_status",
@@ -285,7 +290,7 @@ export const defaultFields = [
   "no_notification",
 ]
 
-export const allowedFields = [
+export const allowedAdminOrdersFields = [
   "id",
   "status",
   "fulfillment_status",
@@ -314,7 +319,7 @@ export const allowedFields = [
   "no_notification",
 ]
 
-export const allowedRelations = [
+export const allowedAdminOrdersRelations = [
   "customer",
   "region",
   "billing_address",
@@ -333,7 +338,7 @@ export const allowedRelations = [
   "swaps.additional_items",
 ]
 
-export const filterableFields = [
+export const filterableAdminOrdersFields = [
   "id",
   "status",
   "fulfillment_status",

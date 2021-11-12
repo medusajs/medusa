@@ -1,5 +1,6 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+// * x-authenticated: true
 
 export default async (req, res) => {
   const { id } = req.params
@@ -36,8 +37,8 @@ export default async (req, res) => {
   await orderService.update(id, value)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })

@@ -1,4 +1,5 @@
 import { MedusaError, Validator } from "medusa-core-utils"
+// * x-authenticated: true
 
 export default async (req, res) => {
   const schema = Validator.object().keys({

@@ -1,11 +1,12 @@
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 
 /**
  * @oas [post] /order/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * requestBody:
@@ -203,8 +204,8 @@ export default async (req, res) => {
             }
 
             const order = await orderService.retrieve(id, {
-              select: defaultFields,
-              relations: defaultRelations,
+              select: defaultAdminOrdersFields,
+              relations: defaultAdminOrdersRelations,
             })
 
             return {

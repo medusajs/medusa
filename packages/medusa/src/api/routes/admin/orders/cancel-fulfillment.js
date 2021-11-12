@@ -1,11 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 
 /**
  * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersOrderFulfillmentsCancel"
  * summary: "Cancels a fulfilmment"
  * description: "Registers a Fulfillment as canceled."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The id of the Fulfillment
@@ -39,8 +40,8 @@ export default async (req, res) => {
   await orderService.cancelFulfillment(fulfillment_id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

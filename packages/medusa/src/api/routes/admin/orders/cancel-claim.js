@@ -1,11 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/cancel
  * operationId: "PostOrdersClaimCancel"
  * summary: "Cancels a Claim"
  * description: "Cancels a Claim"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   . (path) claim_id=* {string} The id of the Claim.
@@ -39,8 +40,8 @@ export default async (req, res) => {
   await claimService.cancel(claim_id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })
