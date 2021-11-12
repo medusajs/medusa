@@ -2,7 +2,9 @@ import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsNumber, IsOptional } from "class-validator"
+import { IsInt, IsOptional } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /regions
@@ -60,12 +62,14 @@ export default async (req, res) => {
 }
 
 export class AdminGetRegionsReq {
-  @IsNumber()
+  @IsInt()
   @IsOptional()
+  @Type(() => Number)
   limit?: number
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
+  @Type(() => Number)
   offset?: number
 }
 
