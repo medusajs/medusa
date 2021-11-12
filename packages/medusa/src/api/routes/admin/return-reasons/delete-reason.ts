@@ -1,8 +1,11 @@
+import { ReturnReasonService } from "../../../../services"
+
 /**
  * @oas [delete] /return-reason/{id}
  * operationId: "DeleteReturnReason"
  * summary: "Delete a return reason"
  * description: "Deletes a return reason."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the return reason
  * tags:
@@ -26,7 +29,9 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  const returnReasonService = req.scope.resolve("returnReasonService")
+  const returnReasonService: ReturnReasonService = req.scope.resolve(
+    "returnReasonService"
+  )
   await returnReasonService.delete(id)
 
   res.json({

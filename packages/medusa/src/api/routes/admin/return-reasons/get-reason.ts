@@ -1,10 +1,15 @@
-import { defaultRelations, defaultFields } from "./"
+import {
+  defaultAdminReturnReasonsFields,
+  defaultAdminReturnReasonsRelations,
+} from "."
+import { ReturnReasonService } from "../../../../services"
 
 /**
  * @oas [get] /return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Retrieve a Return Reason"
  * description: "Retrieves a Return Reason."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Return Reason.
  * tags:
@@ -21,11 +26,13 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const returnReasonService = req.scope.resolve("returnReasonService")
+  const returnReasonService: ReturnReasonService = req.scope.resolve(
+    "returnReasonService"
+  )
 
   const data = await returnReasonService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminReturnReasonsFields,
+    relations: defaultAdminReturnReasonsRelations,
   })
 
   res.status(200).json({ return_reason: data })
