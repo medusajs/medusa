@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetDiscountsReq, req.query)
+  const validated = await validator(AdminGetDiscountsParams, req.query)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
   const limit = validated.limit || 20
@@ -65,7 +65,7 @@ export class GetDiscountsConfig {
   is_disabled?: boolean
 }
 
-export class AdminGetDiscountsReq {
+export class AdminGetDiscountsParams {
   @IsString()
   @IsOptional()
   q?: string

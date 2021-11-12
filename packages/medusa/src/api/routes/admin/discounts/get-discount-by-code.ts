@@ -23,7 +23,10 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { code } = await validator(AdminGetDiscountsDiscountCodeReq, req.params)
+  const { code } = await validator(
+    AdminGetDiscountsDiscountCodeParams,
+    req.params
+  )
   const discountService: DiscountService = req.scope.resolve("discountService")
   const discount = await discountService.retrieveByCode(
     code,
@@ -33,7 +36,7 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
-export class AdminGetDiscountsDiscountCodeReq {
+export class AdminGetDiscountsDiscountCodeParams {
   @IsString()
   @IsNotEmpty()
   code: string

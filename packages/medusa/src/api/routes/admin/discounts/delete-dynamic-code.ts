@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const { discount_id, code } = await validator(
-    AdminDeleteDiscountsDiscountDynamicCodesCodeReq,
+    AdminDeleteDiscountsDiscountDynamicCodesCodeParams,
     req.params
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
@@ -38,7 +38,7 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
-export class AdminDeleteDiscountsDiscountDynamicCodesCodeReq {
+export class AdminDeleteDiscountsDiscountDynamicCodesCodeParams {
   @IsString()
   @IsNotEmpty()
   discount_id: string

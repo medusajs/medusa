@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const { discount_id } = await validator(
-    AdminDeleteDiscountsDiscountReq,
+    AdminDeleteDiscountsDiscountParams,
     req.params
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
@@ -43,7 +43,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminDeleteDiscountsDiscountReq {
+export class AdminDeleteDiscountsDiscountParams {
   @IsString()
   @IsNotEmpty()
   discount_id: string
