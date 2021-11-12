@@ -12,7 +12,7 @@
     "test": "jest --config jestconfig.json"
   },
   "author": "Oliver Juhl",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.21.0",
     "retry-axios": "^2.6.0"
