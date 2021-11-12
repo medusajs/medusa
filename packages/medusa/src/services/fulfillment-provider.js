@@ -1,20 +1,15 @@
 import { MedusaError } from "medusa-core-utils"
-import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
-import { FulfillmentOption } from "../api/routes/admin/regions/get-fulfillment-options"
-import { FulfillmentProvider } from "../models/fulfillment-provider"
-import { FulfillmentService } from "medusa-interfaces"
-import { Fulfillment } from "../models/fulfillment"
+
 /**
  * Helps retrive fulfillment providers
  */
 class FulfillmentProviderService {
-  private container_: any
-
   constructor(container) {
+    /** @private {logger} */
     this.container_ = container
   }
 
-  async registerInstalledProviders(providers): Promise<void> {
+  async registerInstalledProviders(providers) {
     const { manager, fulfillmentProviderRepository } = this.container_
     const model = manager.getCustomRepository(fulfillmentProviderRepository)
     model.update({}, { is_installed: false })
@@ -24,17 +19,15 @@ class FulfillmentProviderService {
     }
   }
 
-  async list(): Promise<FulfillmentProvider[]> {
+  async list() {
     const { manager, fulfillmentProviderRepository } = this.container_
-    const fpRepo = manager.getCustomRepository(
-      fulfillmentProviderRepository
-    ) as FulfillmentProviderRepository
+    const fpRepo = manager.getCustomRepository(fulfillmentProviderRepository)
 
-    return await fpRepo.find({})
+    return fpRepo.find({})
   }
 
-  async listFulfillmentOptions(providers): Promise<FulfillmentOption[]> {
-    const result: FulfillmentOption[] = await Promise.all(
+  async listFulfillmentOptions(providers) {
+    const result = await Promise.all(
       providers.map(async (p) => {
         const provider = await this.retrieveProvider(p)
         return {
@@ -43,6 +36,7 @@ class FulfillmentProviderService {
         }
       })
     )
+
     return result
   }
 
@@ -50,7 +44,7 @@ class FulfillmentProviderService {
    * @param {string} provider_id - the provider id
    * @return {FulfillmentService} the payment fulfillment provider
    */
-  retrieveProvider(provider_id): typeof FulfillmentService {
+  retrieveProvider(provider_id) {
     try {
       return this.container_[`fp_${provider_id}`]
     } catch (err) {
@@ -61,42 +55,37 @@ class FulfillmentProviderService {
     }
   }
 
-  async createFulfillment(
-    method,
-    items,
-    order,
-    fulfillment
-  ): Promise<Fulfillment> {
+  async createFulfillment(method, items, order, fulfillment) {
     const provider = this.retrieveProvider(method.shipping_option.provider_id)
     return provider.createFulfillment(method.data, items, order, fulfillment)
   }
 
-  async canCalculate(option): Promise<any> {
+  async canCalculate(option) {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.canCalculate(option.data)
   }
 
-  async validateFulfillmentData(option, data, cart): Promise<any> {
+  async validateFulfillmentData(option, data, cart) {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.validateFulfillmentData(option.data, data, cart)
   }
 
-  async cancelFulfillment(fulfillment): Promise<any> {
+  async cancelFulfillment(fulfillment) {
     const provider = this.retrieveProvider(fulfillment.provider_id)
     return provider.cancelFulfillment(fulfillment.data)
   }
 
-  async calculatePrice(option, data, cart): Promise<any> {
+  async calculatePrice(option, data, cart) {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.calculatePrice(option.data, data, cart)
   }
 
-  async validateOption(option): Promise<any> {
+  async validateOption(option) {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.validateOption(option.data)
   }
 
-  async createReturn(returnOrder): Promise<any> {
+  async createReturn(returnOrder) {
     const option = returnOrder.shipping_method.shipping_option
     const provider = this.retrieveProvider(option.provider_id)
     return provider.createReturn(returnOrder)
@@ -109,11 +98,7 @@ class FulfillmentProviderService {
    * @param {"invoice" | "label"} documentType - the typ of
    *  document to fetch
    */
-  async retrieveDocuments(
-    providerId,
-    fulfillmentData,
-    documentType
-  ): Promise<any> {
+  async retrieveDocuments(providerId, fulfillmentData, documentType) {
     const provider = this.retrieveProvider(providerId)
     return provider.retrieveDocuments(fulfillmentData, documentType)
   }
