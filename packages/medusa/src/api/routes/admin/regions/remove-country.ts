@@ -1,8 +1,6 @@
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}/countries/{country_code}
@@ -25,10 +23,7 @@ import { IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const { region_id, country_code } = await validator(
-    AdminPostRegionsRegionCountriesCountryReq,
-    req.params
-  )
+  const { region_id, country_code } = req.params
 
   const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.removeCountry(region_id, country_code)
@@ -39,11 +34,4 @@ export default async (req, res) => {
   })
 
   res.json({ region })
-}
-
-export class AdminPostRegionsRegionCountriesCountryReq {
-  @IsString()
-  region_id: string
-  @IsString()
-  country_code: string
 }

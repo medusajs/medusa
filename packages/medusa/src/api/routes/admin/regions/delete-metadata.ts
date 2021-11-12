@@ -27,7 +27,7 @@ import { IsString } from "class-validator"
  */
 export default async (req, res) => {
   const validated = await validator(
-    AdminDeleteRegionsRegionMetadataKeyReq,
+    AdminDeleteRegionsRegionMetadataKeyParams,
     req.params
   )
 
@@ -44,7 +44,7 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
-export class AdminDeleteRegionsRegionMetadataKeyReq {
+export class AdminDeleteRegionsRegionMetadataKeyParams {
   @IsString()
   id: string
   @IsString()

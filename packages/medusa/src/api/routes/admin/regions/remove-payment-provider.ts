@@ -11,7 +11,7 @@ import { IsString } from "class-validator"
  * description: "Removes a Payment Provider."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) region_id=* {string} The id of the Region.
  *   - (path) provider_id=* {string} The id of the Payment Provider.
  * tags:
  *   - Region
@@ -26,10 +26,7 @@ import { IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const { region_id, provider_id } = await validator(
-    AdminPostRegionsRegionPaymentProvidersProviderReq,
-    req.params
-  )
+  const { region_id, provider_id } = req.params
 
   const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.removePaymentProvider(region_id, provider_id)
@@ -40,11 +37,4 @@ export default async (req, res) => {
   })
 
   res.json({ region })
-}
-
-export class AdminPostRegionsRegionPaymentProvidersProviderReq {
-  @IsString()
-  region_id: string
-  @IsString()
-  provider_id: string
 }

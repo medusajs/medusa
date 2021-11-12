@@ -40,7 +40,7 @@ import { Type } from "class-transformer"
  *                 $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionsReq, req.query)
+  const validated = await validator(AdminGetRegionsParams, req.query)
 
   const regionService: RegionService = req.scope.resolve("regionService")
 
@@ -61,7 +61,7 @@ export default async (req, res) => {
   res.json({ regions, count: regions.length, offset, limit })
 }
 
-export class AdminGetRegionsReq {
+export class AdminGetRegionsParams {
   @IsInt()
   @IsOptional()
   @Type(() => Number)

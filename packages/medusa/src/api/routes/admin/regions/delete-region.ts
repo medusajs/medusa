@@ -29,7 +29,7 @@ import { IsString } from "class-validator"
  *               type: boolean
  */
 export default async (req, res) => {
-  const validated = await validator(AdminDeleteRegionRequest, req.params)
+  const validated = await validator(AdminDeleteRegionParams, req.params)
 
   const regionService: RegionService = req.scope.resolve("regionService")
 
@@ -42,7 +42,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminDeleteRegionRequest {
+export class AdminDeleteRegionParams {
   @IsString()
   region_id: string
 }

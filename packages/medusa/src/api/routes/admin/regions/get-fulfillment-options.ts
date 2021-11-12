@@ -28,14 +28,13 @@ import { IsString } from "class-validator"
  */
 export default async (req, res) => {
   const validated = await validator(
-    AdminGetRegionsRegionFulfillmentOptionsReq,
+    AdminGetRegionsRegionFulfillmentOptionsParams,
     req.query
   )
   const { region_id } = validated
 
-  const fulfillmentProviderService = req.scope.resolve(
-    "fulfillmentProviderService"
-  ) as FulfillmentProviderService
+  const fulfillmentProviderService: FulfillmentProviderService =
+    req.scope.resolve("fulfillmentProviderService")
   const regionService: RegionService = req.scope.resolve("regionService")
   const region: Region = await regionService.retrieve(region_id, {
     relations: ["fulfillment_providers"],
@@ -51,7 +50,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetRegionsRegionFulfillmentOptionsReq {
+export class AdminGetRegionsRegionFulfillmentOptionsParams {
   @IsString()
   region_id
 }

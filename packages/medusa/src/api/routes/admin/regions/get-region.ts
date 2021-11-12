@@ -1,8 +1,6 @@
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsString } from "class-validator"
 
 /**
  * @oas [get] /regions/{id}
@@ -25,9 +23,7 @@ import { IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionsRegionReq, req.params)
-
-  const { region_id } = validated
+  const { region_id } = req.params
   const regionService: RegionService = req.scope.resolve("regionService")
   const region: Region = await regionService.retrieve(region_id, {
     select: defaultAdminRegionFields,
@@ -35,9 +31,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ region })
-}
-
-export class AdminGetRegionsRegionReq {
-  @IsString()
-  region_id: string
 }
