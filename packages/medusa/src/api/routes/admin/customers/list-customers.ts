@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetCustomersReq, req.query)
+  const validated = await validator(AdminGetCustomersParams, req.query)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
@@ -58,7 +58,7 @@ type QuerySelector = {
   q?: string
 }
 
-export class AdminGetCustomersReq {
+export class AdminGetCustomersParams {
   @IsString()
   @IsOptional()
   q?: string

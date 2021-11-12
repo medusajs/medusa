@@ -1,4 +1,5 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
+import { CustomerService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /customers
@@ -26,7 +27,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostCustomersReq, req.bodyn)
 
-  const customerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.create(validated)
   res.status(201).json({ customer })
 }
