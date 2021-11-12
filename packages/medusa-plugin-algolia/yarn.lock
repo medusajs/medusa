@@ -1065,18 +1065,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@hapi/hoek@^9.0.0":
-  version "9.2.1"
-  resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.2.1.tgz#9551142a1980503752536b5050fd99f4a7f13b17"
-  integrity sha512-gfta+H8aziZsm8pZa0vj04KO6biEiisppNgA1kbJvFrrWu9Vm7eaUEy76DIxsuTaWvti5fkJVhllWc6ZTE+Mdw==
-
-"@hapi/topo@^5.0.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-5.1.0.tgz#dc448e332c6c6e37a4dc02fd84ba8d44b9afb012"
-  integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
-  dependencies:
-    "@hapi/hoek" "^9.0.0"
-
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -1265,23 +1253,6 @@
   version "2.1.8-no-fsevents.3"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/chokidar-2/-/chokidar-2-2.1.8-no-fsevents.3.tgz#323d72dd25103d0c4fbdce89dadf574a787b1f9b"
   integrity sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==
-
-"@sideway/address@^4.1.0":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.2.tgz#811b84333a335739d3969cfc434736268170cad1"
-  integrity sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==
-  dependencies:
-    "@hapi/hoek" "^9.0.0"
-
-"@sideway/formula@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.0.tgz#fe158aee32e6bd5de85044be615bc08478a0a13c"
-  integrity sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==
-
-"@sideway/pinpoint@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
-  integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -3651,22 +3622,6 @@ jest@^25.5.2:
     import-local "^3.0.2"
     jest-cli "^25.5.4"
 
-joi-objectid@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/joi-objectid/-/joi-objectid-3.0.1.tgz#63ace7860f8e1a993a28d40c40ffd8eff01a3668"
-  integrity sha512-V/3hbTlGpvJ03Me6DJbdBI08hBTasFOmipsauOsxOSnsF1blxV537WTl1zPwbfcKle4AK0Ma4OPnzMH4LlvTpQ==
-
-joi@^17.3.0:
-  version "17.4.2"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.2.tgz#02f4eb5cf88e515e614830239379dcbbe28ce7f7"
-  integrity sha512-Lm56PP+n0+Z2A2rfRvsfWVDXGEWjXxatPopkQ8qQ5mxCEhwHG+Ettgg5o98FFaxilOxozoa14cFhrE/hOzh/Nw==
-  dependencies:
-    "@hapi/hoek" "^9.0.0"
-    "@hapi/topo" "^5.0.0"
-    "@sideway/address" "^4.1.0"
-    "@sideway/formula" "^3.0.0"
-    "@sideway/pinpoint" "^2.0.0"
-
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -3896,21 +3851,6 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
-
-medusa-core-utils@^1.1.20, medusa-core-utils@^1.1.26:
-  version "1.1.26"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.26.tgz#fa1f54402c76e6a3991b9d22ae1e9d7609c86e8f"
-  integrity sha512-9bwy5aIdKPNxzlJAGrUEt7I1ExQjFS7zcWEDg3D5xjUzcpvP0OeVvV3joP9gUNHFjfEp983jzsmVlt1/bz31UA==
-  dependencies:
-    joi "^17.3.0"
-    joi-objectid "^3.0.1"
-
-medusa-interfaces@1.x:
-  version "1.1.27"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.27.tgz#fd5f5220dd752bcfd174e6eb5d072d731bd80966"
-  integrity sha512-dsQnsCdP2TQITOrHIZzyYyf4Lu3rW3AgeOzl6NmRWjf5A1KKP5cJcyIg4Te9xOtLUKeP70BvF+fAk7LechtE+Q==
-  dependencies:
-    medusa-core-utils "^1.1.26"
 
 merge-stream@^2.0.0:
   version "2.0.0"
