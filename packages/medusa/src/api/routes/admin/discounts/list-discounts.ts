@@ -41,8 +41,8 @@ export default async (req, res) => {
     selector.q = validated.q
   }
 
-  selector.is_dynamic = validated.is_dynamic
   selector.is_disabled = validated.is_disabled
+  selector.is_dynamic = validated.is_dynamic
 
   const listConfig = {
     select: defaultAdminDiscountsFields,
@@ -51,7 +51,6 @@ export default async (req, res) => {
     take: limit,
     order: { created_at: "DESC" },
   }
-
   const [discounts, count] = await discountService.listAndCount(
     selector,
     listConfig
@@ -73,16 +72,12 @@ export class AdminGetDiscountsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) =>
-    typeof JSON.parse(value) === "boolean" ? JSON.parse(value) : false
-  )
+  @Transform(({ value }) => value === "true")
   is_dynamic?: boolean
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) =>
-    typeof JSON.parse(value) === "boolean" ? JSON.parse(value) : false
-  )
+  @Transform(({ value }) => value === "true")
   is_disabled?: boolean
 
   @IsNumber()
