@@ -1,6 +1,6 @@
-import { SearchService } from "medusa-interfaces"
 import algoliasearch from "algoliasearch"
 import { indexTypes } from "medusa-core-utils"
+import { SearchService } from "medusa-interfaces"
 import { transformProduct } from "../utils/transform-product"
 
 class AlgoliaService extends SearchService {
@@ -11,11 +11,11 @@ class AlgoliaService extends SearchService {
     const { application_id, admin_api_key } = this.options_
 
     if (!application_id) {
-      throw new Error("Please provide a valid applicationId")
+      throw new Error("Please provide a valid Application ID")
     }
 
     if (!admin_api_key) {
-      throw new Error("Please provide a valid adminApiKey")
+      throw new Error("Please provide a valid Admin Api Key")
     }
 
     this.client_ = algoliasearch(application_id, admin_api_key)
@@ -104,11 +104,17 @@ class AlgoliaService extends SearchService {
    * @return {*} - returns response from search engine provider
    */
   search(indexName, query, options) {
-    if (options.additionalOptions) {
-      options = { ...options, ...options.additionalOptions }
-      delete options.additionalOptions
+    const { paginationOptions, filter, additionalOptions } = options
+    if ("limit" in paginationOptions) {
+      paginationOptions["length"] = paginationOptions.limit
+      delete paginationOptions.limit 
     }
-    return this.client_.initIndex(indexName).search(query, options)
+    
+    return this.client_.initIndex(indexName).search(query, {
+      filters: filter,
+      ...paginationOptions,
+      ...additionalOptions
+    })
   }
 
   /**
