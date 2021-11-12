@@ -20,12 +20,14 @@ export default (app) => {
 
 export const defaultAdminCollectionsFields = ["id", "title", "handle"]
 export const defaultAdminCollectionsRelations = ["products"]
+
 export type AdminCollectionsListRes = {
   collections: ProductCollection[]
   count: number
   offset: number
   limit: number
 }
+
 export type AdminCollectionsRes = {
   collection: ProductCollection
 }

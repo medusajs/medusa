@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetCollectionsReq, req.query)
+  const validated = await validator(AdminGetCollectionsParams, req.query)
 
   const limit = validated.limit || 10
   const offset = validated.offset || 0
