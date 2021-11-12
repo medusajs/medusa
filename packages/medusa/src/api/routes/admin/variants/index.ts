@@ -68,6 +68,6 @@ export const allowedAdminVariantRelations: (keyof ProductVariant)[] = [
   "options",
 ]
 
-export type AdminListVariantsResponse = PaginatedResponse & {
+export type AdminVariantsListRes = PaginatedResponse & {
   variants: Array<ProductVariant>
 }
