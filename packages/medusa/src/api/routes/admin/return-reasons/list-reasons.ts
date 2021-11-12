@@ -2,7 +2,6 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
-import { ReturnReason } from "../../../.."
 import { ReturnReasonService } from "../../../../services"
 
 /**
@@ -37,8 +36,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ return_reasons: data })
-}
-
-export type AdminGetReturnReasonsResponse = {
-  return_reasons: ReturnReason[]
 }
