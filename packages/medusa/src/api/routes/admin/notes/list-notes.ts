@@ -1,7 +1,7 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
-
+import { selector } from "../../../../types/note"
 /**
  * @oas [get] /notes
  * operationId: "GetNotes"
@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/note"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetNotesReq, req.query)
+  const validated = await validator(AdminGetNotesParams, req.query)
 
   const limit = validated.limit || 50
   const offset = validated.offset || 0
@@ -38,7 +38,7 @@ export default async (req, res) => {
     selector.resource_id = validated.resource_id
   }
 
-  const noteService = req.scope.resolve("noteService") as NoteService
+  const noteService: NoteService = req.scope.resolve("noteService")
   const notes = await noteService.list(selector, {
     take: limit,
     skip: offset,
@@ -47,11 +47,8 @@ export default async (req, res) => {
 
   res.status(200).json({ notes, count: notes.length, offset, limit })
 }
-type selector = {
-  resource_id?: string
-}
 
-export class AdminGetNotesReq {
+export class AdminGetNotesParams {
   @IsString()
   @IsOptional()
   resource_id: string

@@ -11,6 +11,10 @@ export interface CreateNoteInput {
   metadata?: JSON
 }
 
+export type selector = {
+  resource_id?: string
+}
+
 export type FilterableUserProps = PartialPick<
   Note,
   | "value"
