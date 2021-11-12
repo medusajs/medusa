@@ -1,4 +1,4 @@
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError, Validator } from "medusa-core-utils"
 import ProductService from "../../../../services/product"
 
 export default async (req, res) => {
