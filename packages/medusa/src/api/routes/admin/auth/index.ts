@@ -23,7 +23,9 @@ export default (app) => {
   return app
 }
 
-export type AdminAuthRes = Omit<User, "password_hash">
+export type AdminAuthRes = {
+  user: Omit<User, "password_hash">
+}
 
 export * from "./create-session"
 export * from "./delete-session"
