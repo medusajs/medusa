@@ -1,3 +1,4 @@
+import { ReturnReason } from './../../../../';
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
@@ -19,7 +20,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultStoreReturnReasonFields = [
   "id",
   "value",
   "label",
@@ -30,7 +31,18 @@ export const defaultFields = [
   "deleted_at",
 ]
 
-export const defaultRelations = [
+export const defaultStoreReturnReasonRelations = [
   "parent_return_reason",
   "return_reason_children",
 ]
+
+export class StoreReturnReasonsListRes {
+  return_reasons: ReturnReason[]
+}
+
+export class StoreReturnReasonsRes {
+  return_reasons: ReturnReason
+}
+
+export * from './get-reason'
+export * from './list-reasons'
