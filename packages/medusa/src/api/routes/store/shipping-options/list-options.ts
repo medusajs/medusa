@@ -1,3 +1,8 @@
+import { IsBooleanString, IsOptional, IsString } from "class-validator"
+import ProductService from "../../../../services/product"
+import ShippingOptionService from "../../../../services/shipping-option"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /shipping-options
  * operationId: GetShippingOptions
@@ -22,16 +27,21 @@
  *                 $ref: "#/components/schemas/shipping_option"
  */
 export default async (req, res) => {
-  const productIds =
-    (req.query.product_ids && req.query.product_ids.split(",")) || []
-  const regionId = req.query.region_id
-  const productService = req.scope.resolve("productService")
-  const shippingOptionService = req.scope.resolve("shippingOptionService")
+  const validated = await validator(StoreGetShippingOptionsParams, req.query)
 
-  const query = {}
+  const productIds =
+    (validated.product_ids && validated.product_ids.split(",")) || []
+  const regionId = validated.region_id
+  const productService: ProductService = req.scope.resolve("productService")
+  const shippingOptionService: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
+
+  // should be selector
+  const query: any = {}
 
   if ("is_return" in req.query) {
-    query.is_return = req.query.is_return === "true"
+    query.is_return = validated.is_return === "true"
   }
 
   if (regionId) {
@@ -50,4 +60,18 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ shipping_options: options })
+}
+
+export class StoreGetShippingOptionsParams {
+  @IsOptional()
+  @IsString()
+  product_ids?: string
+
+  @IsOptional()
+  @IsString()
+  region_id?: string
+
+  @IsOptional()
+  @IsBooleanString()
+  is_return?: string
 }
