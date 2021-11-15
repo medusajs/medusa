@@ -421,8 +421,9 @@ export class AdminPostProductsReq {
   @IsOptional()
   handle?: string
 
+  @IsOptional()
   @IsEnum(ProductStatus)
-  status: ProductStatus = ProductStatus.DRAFT
+  status?: ProductStatus = ProductStatus.DRAFT
 
   @IsOptional()
   @Type(() => ProductTypeReq)

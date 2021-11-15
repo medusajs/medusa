@@ -1,11 +1,14 @@
 import { Type } from "class-transformer"
 import {
+  IsArray,
   IsBoolean,
   IsEnum,
   IsNumber,
   IsOptional,
   IsString,
 } from "class-validator"
+import * as _ from "lodash"
+import { identity } from "lodash"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { validator } from "../../../../utils/validator"
 
@@ -43,8 +46,8 @@ export default async (req, res) => {
 
   const productService = req.scope.resolve("productService")
 
-  const limit = parseInt(req.query.limit) || 50
-  const offset = parseInt(req.query.offset) || 0
+  const limit = validatedParams?.limit || 50
+  const offset = validatedParams?.offset || 0
 
   let includeFields: string[] = []
   if (validatedParams.fields) {
@@ -65,8 +68,16 @@ export default async (req, res) => {
     take: limit,
   }
 
+  const filterableFields = _.omit(validatedParams, [
+    "limit",
+    "offset",
+    "expand",
+    "fields",
+    "order",
+  ])
+
   const [products, count] = await productService.listAndCount(
-    validatedParams,
+    _.pickBy(filterableFields, identity),
     listConfig
   )
 
@@ -80,56 +91,7 @@ export enum ProductStatus {
   REJECTED = "rejected",
 }
 
-export class AdminGetProductsParams {
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  q?: string
-
-  @IsNumber()
-  @IsOptional()
-  @IsEnum(ProductStatus)
-  status?: ProductStatus
-
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  collection?: string[]
-
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  tags?: string[]
-
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  title?: string
-
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  @IsNumber()
-  @IsString()
-  @IsOptional()
-  handle?: string
-
-  @IsBoolean()
-  @IsString()
-  @IsOptional()
-  is_giftcard?: boolean
-
-  @IsString()
-  @IsOptional()
-  type?: string
-
+export class AdminGetProductsPaginationParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
@@ -147,23 +109,62 @@ export class AdminGetProductsParams {
   @IsString()
   @IsOptional()
   fields?: string
+}
 
-  @IsNumber()
+export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  @IsOptional()
+  @IsEnum(ProductStatus, { each: true })
+  status?: ProductStatus[]
+
+  @IsArray()
+  @IsOptional()
+  collection_id?: string[]
+
+  @IsArray()
+  @IsOptional()
+  tags?: string[]
+
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsString()
+  @IsOptional()
+  handle?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Type(() => Boolean)
+  is_giftcard?: string
+
+  @IsString()
+  @IsOptional()
+  type?: string
+
   @IsString()
   @IsOptional()
   order?: string
 
-  @IsNumber()
   @IsString()
   @IsOptional()
   created_at?: string
 
-  @IsNumber()
   @IsString()
   @IsOptional()
   updated_at?: string
 
-  @IsNumber()
   @IsString()
   @IsOptional()
   deleted_at?: string

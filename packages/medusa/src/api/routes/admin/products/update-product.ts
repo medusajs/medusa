@@ -7,7 +7,9 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  NotEquals,
   Validate,
+  ValidateIf,
   ValidateNested,
 } from "class-validator"
 import {
@@ -266,6 +268,10 @@ class ProductVariantPricesReq {
 class ProductVariantReq {
   @IsString()
   @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
   title?: string
 
   @IsString()
@@ -338,6 +344,7 @@ class ProductVariantReq {
   metadata?: object
 
   @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)
   prices: ProductVariantPricesReq
@@ -379,8 +386,9 @@ export class AdminPostProductsProductReq {
   handle?: string
 
   @IsEnum(ProductStatus)
-  @IsOptional()
-  status?: ProductStatus = ProductStatus.DRAFT
+  @NotEquals(null)
+  @ValidateIf((object, value) => value !== undefined)
+  status?: ProductStatus
 
   @IsOptional()
   @Type(() => ProductTypeReq)
