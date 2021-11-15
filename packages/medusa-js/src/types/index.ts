@@ -14,5 +14,5 @@ export * from './return';
 export * from './return-reason';
 export * from './shipping-method';
 export * from './swap';
-
+export * from './shipping-option'
 export * from './request';
