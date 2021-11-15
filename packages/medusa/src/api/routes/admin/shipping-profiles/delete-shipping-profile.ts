@@ -1,8 +1,11 @@
+import { ShippingProfileService } from "../../../../services"
+
 /**
  * @oas [delete] /shipping-profiles/{id}
  * operationId: "DeleteShippingProfilesProfile"
  * summary: "Delete a Shipping Profile"
  * description: "Deletes a Shipping Profile."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Shipping Profile.
  * tags:
@@ -25,7 +28,9 @@
  */
 export default async (req, res) => {
   const { profile_id } = req.params
-  const profileService = req.scope.resolve("shippingProfileService")
+  const profileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
 
   await profileService.delete(profile_id)
 
@@ -34,4 +39,10 @@ export default async (req, res) => {
     object: "shipping_profile",
     deleted: true,
   })
+}
+
+export type AdminDeleteShippingProfilesProfileRes = {
+  id: string
+  object: string
+  deleted: boolean
 }

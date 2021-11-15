@@ -1,4 +1,11 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
+import { MedusaError } from "medusa-core-utils";
+import EventBusService from '../../../../services/event-bus';
+import IdempotencyKeyService from '../../../../services/idempotency-key';
+import OrderService from '../../../../services/order';
+import ReturnService from '../../../../services/return';
+import { validator } from "../../../../utils/validator";
 
 /**
  * @oas [post] /returns
@@ -24,6 +31,9 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *           return_shipping:
  *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
  *             type: object
@@ -31,6 +41,11 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *               option_id:
  *                 type: string
  *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *             required:
+ *               - option_id
+ *         required:
+ *           - order_id
+ *           - items
  * tags:
  *   - Return
  * responses:
@@ -44,29 +59,9 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *               $ref: "#/components/schemas/return"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    order_id: Validator.string().required(),
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-        reason_id: Validator.string().optional(),
-        note: Validator.string().optional(),
-      })
-      .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-      })
-      .optional(),
-  })
+  const returnDto = await validator(StorePostReturnsReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -87,9 +82,9 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService = req.scope.resolve("orderService")
-    const returnService = req.scope.resolve("returnService")
-    const eventBus = req.scope.resolve("eventBusService")
+    const orderService: OrderService = req.scope.resolve("orderService")
+    const returnService: ReturnService = req.scope.resolve("returnService")
+    const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
     let err = false
@@ -102,26 +97,26 @@ export default async (req, res) => {
             async (manager) => {
               const order = await orderService
                 .withTransaction(manager)
-                .retrieve(value.order_id, {
+                .retrieve(returnDto.order_id, {
                   select: ["refunded_total", "total"],
                   relations: ["items"],
                 })
 
-              const returnObj = {
-                order_id: value.order_id,
+              const returnObj: any = {
+                order_id: returnDto.order_id,
                 idempotency_key: idempotencyKey.idempotency_key,
-                items: value.items,
+                items: returnDto.items,
               }
 
-              if (value.return_shipping) {
-                returnObj.shipping_method = value.return_shipping
+              if (returnDto.return_shipping) {
+                returnObj.shipping_method = returnDto.return_shipping
               }
 
               const createdReturn = await returnService
                 .withTransaction(manager)
-                .create(returnObj, order)
+                .create(returnObj)
 
-              if (value.return_shipping) {
+              if (returnDto.return_shipping) {
                 await returnService
                   .withTransaction(manager)
                   .fulfill(createdReturn.id)
@@ -130,7 +125,7 @@ export default async (req, res) => {
               await eventBus
                 .withTransaction(manager)
                 .emit("order.return_requested", {
-                  id: value.order_id,
+                  id: returnDto.order_id,
                   return_id: createdReturn.id,
                 })
 
@@ -212,4 +207,44 @@ export default async (req, res) => {
     console.log(err)
     throw err
   }
+}
+
+class ReturnShipping {
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsNumber()
+  @Min(1)
+  quantity: number
+
+  @IsOptional()
+  @IsString()
+  reason_id?: string
+
+  @IsOptional()
+  @IsString()
+  note?: string
+}
+
+export class StorePostReturnsReq {
+  @IsString()
+  @IsNotEmpty()
+  order_id: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[];
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ReturnShipping)
+  return_shipping?: ReturnShipping;
 }

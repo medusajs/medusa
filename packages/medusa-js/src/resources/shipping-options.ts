@@ -1,39 +1,38 @@
+import { StoreShippingOptionsListRes } from '@medusajs/medusa';
+import { AxiosPromise } from 'axios';
+import { StoreGetShippingOptionsParamsObject } from '../types';
 import BaseResource from './base';
-import * as Types from '../types';
 
 class ShippingOptionsResource extends BaseResource {
   /**
    * @description Lists shiping options available for a cart
-   * @param query should contain cart id
-   * @returns AsyncResult<{ shipping_options: ShippingOptions[] }>
+   * @param cart_id
+   * @returns AxiosPromise<StoreShippingOptionsListRes>
    */
-  listCartOptions(cart_id: string): Types.AsyncResult<{ shipping_options: Types.ShippingOption[] }> {
+  listCartOptions(cart_id: string): AxiosPromise<StoreShippingOptionsListRes> {
     let path = `/store/shipping-options/${cart_id}`;
     return this.client.request('GET', path);
   }
 
   /**
-   * @description Lists shiping options available for a cart
-   * @param query should contain cart id
-   * @returns AsyncResult<{ shipping_options: ShippingOptions[] }>
+   * @description Lists shiping options available
+   * @param query 
+   * @returns AxiosPromise<StoreShippingOptionsListRes>
    */
-  list(query: string | object): Types.AsyncResult<{ shipping_options: Types.ShippingOption[] }> {
+  list(query?: StoreGetShippingOptionsParamsObject): AxiosPromise<StoreShippingOptionsListRes> {
     let path = `/store/shipping-options`;
-    if (typeof query === 'string') {
-      path = `/store/shipping-options/${query}`;
-    } else {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        let val = value;
-        if (Array.isArray(value)) {
-          val = value.join(',');
-        }
 
-        return `${key}=${val}`;
-      });
+    const queryString = Object.entries(query || {}).map(([key, value]) => {
+      let val = value;
+      if (Array.isArray(value)) {
+        val = value.join(',');
+      }
 
-      path = `/store/shipping-options?${queryString.join('&')}`;
-    }
+      return `${key}=${val}`;
+    });
 
+    path = `/store/shipping-options?${queryString.join('&')}`;
+    
     return this.client.request('GET', path);
   }
 }
