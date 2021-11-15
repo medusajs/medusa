@@ -1,5 +1,18 @@
+import { Transform, Type } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { Return } from "../../../.."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/returns
@@ -65,30 +78,7 @@ import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-        reason_id: Validator.string().optional(),
-        note: Validator.string().optional(),
-      })
-      .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    receive_now: Validator.boolean().default(false),
-    no_notification: Validator.boolean().optional(),
-    refund: Validator.number().integer().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const value = await validator(AdminPostOrdersOrderReturnsReq, req.body)
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
@@ -124,7 +114,7 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async (manager) => {
-              const returnObj = {
+              const returnObj: ReturnObj = {
                 order_id: id,
                 idempotency_key: idempotencyKey.idempotency_key,
                 items: value.items,
@@ -137,7 +127,7 @@ export default async (req, res) => {
               if (typeof value.refund !== "undefined" && value.refund < 0) {
                 returnObj.refund_amount = 0
               } else {
-                if (value.refund >= 0) {
+                if (value.refund && value.refund >= 0) {
                   returnObj.refund_amount = value.refund
                 }
               }
@@ -264,4 +254,76 @@ export default async (req, res) => {
     console.log(err)
     throw err
   }
+}
+
+type ReturnObj = {
+  order_id?: string
+  idempotency_key?: string
+  items?: Item[]
+  shipping_method?: ReturnShipping
+  refund_amount?: number
+  no_notification?: boolean
+}
+
+export class AdminPostOrdersOrderReturnsReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[]
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ReturnShipping)
+  return_shipping: ReturnShipping
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Type(() => Boolean)
+  @Transform(({ value }) => value && value.toString() === "true")
+  receive_now?: boolean = false
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  @Type(() => Boolean)
+  no_notification?: boolean
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  refund?: number
+}
+
+class ReturnShipping {
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
+
+  @IsString()
+  @IsOptional()
+  reason_id?: string
+
+  @IsString()
+  @IsOptional()
+  note?: string
 }

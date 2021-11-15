@@ -1,5 +1,12 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
+import {
+  IsInt,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/shipping-methods
@@ -27,22 +34,21 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    price: Validator.number().integer().integer().allow(0).required(),
-    option_id: Validator.string().required(),
-    data: Validator.object().optional().default({}),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(
+    AdminPostOrdersOrderShippingMethodsReq,
+    req.body
+  )
 
   const orderService = req.scope.resolve("orderService")
 
-  await orderService.addShippingMethod(id, value.option_id, value.data, {
-    price: value.price,
-  })
+  await orderService.addShippingMethod(
+    id,
+    validated.option_id,
+    validated.data,
+    {
+      price: validated.price,
+    }
+  )
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,
@@ -50,4 +56,18 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ order })
+}
+
+export class AdminPostOrdersOrderShippingMethodsReq {
+  @IsInt()
+  @IsNotEmpty()
+  price: number
+
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+
+  @IsObject()
+  @IsOptional()
+  data?: object = {}
 }

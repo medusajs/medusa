@@ -1,5 +1,18 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
+import { Transform, Type } from "class-transformer"
+import {
+  IsOptional,
+  IsArray,
+  IsString,
+  IsBoolean,
+  IsObject,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  ValidateNested,
+} from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/swaps
@@ -13,11 +26,16 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - return_items
  *         properties:
  *           return_items:
  *             description: The Line Items to return as part of the Swap.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
  *                   description: The id of the Line Item that will be claimed.
@@ -39,6 +57,9 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
  *             description: The new items to send to the Customer.
  *             type: array
  *             items:
+ *               required:
+ *                 - variant_id
+ *                 - quantity
  *               properties:
  *                 variant_id:
  *                   description: The id of the Product Variant to ship.
@@ -50,9 +71,12 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
  *             description: The custom shipping options to potentially create a Shipping Method from.
  *             type: array
  *             items:
+ *               required:
+ *                 - optionr_id
+ *                 - price
  *               properties:
- *                 option_id:
- *                   description: The id of the Shipping Option to override with a custom price.
+ *                 optionr_id:
+ *                   desciption: The id of the Shipping Option to override with a custom price.
  *                   type: string
  *                 price:
  *                   description: The custom price of the Shipping Option.
@@ -78,37 +102,7 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    return_items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    additional_items: Validator.array().items({
-      variant_id: Validator.string().required(),
-      quantity: Validator.number().required(),
-    }),
-    custom_shipping_options: Validator.array()
-      .items({
-        option_id: Validator.string().required(),
-        price: Validator.number().required(),
-      })
-      .default([]),
-    no_notification: Validator.boolean().optional(),
-    allow_backorder: Validator.boolean().default(true),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(AdminPostOrdersOrderSwapsReq, req.body)
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
@@ -154,19 +148,19 @@ export default async (req, res) => {
               .withTransaction(manager)
               .create(
                 order,
-                value.return_items,
-                value.additional_items,
-                value.return_shipping,
+                validated.return_items,
+                validated.additional_items,
+                validated.return_shipping,
                 {
                   idempotency_key: idempotencyKey.idempotency_key,
-                  no_notification: value.no_notification,
-                  allow_backorder: value.allow_backorder,
+                  no_notification: validated.no_notification,
+                  allow_backorder: validated.allow_backorder,
                 }
               )
 
             await swapService
               .withTransaction(manager)
-              .createCart(swap.id, value.custom_shipping_options)
+              .createCart(swap.id, validated.custom_shipping_options)
             const returnOrder = await returnService
               .withTransaction(manager)
               .retrieveBySwap(swap.id)
@@ -247,4 +241,84 @@ export default async (req, res) => {
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
+}
+
+export class AdminPostOrdersOrderSwapsReq {
+  @IsArray()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => ReturnItem)
+  return_items?: ReturnItem[]
+
+  @IsObject()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ReturnShipping)
+  return_shipping?: ReturnShipping
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => AdditionalItem)
+  additional_items?: AdditionalItem[]
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CustomShippingOption)
+  custom_shipping_options?: CustomShippingOption[] = []
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  no_notification?: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  allow_backorder?: boolean = true
+}
+
+class ReturnItem {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
+}
+
+class ReturnShipping {
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price: number
+}
+
+class CustomShippingOption {
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  price: number
+}
+
+class AdditionalItem {
+  @IsString()
+  @IsNotEmpty()
+  variant_id: string
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
 }

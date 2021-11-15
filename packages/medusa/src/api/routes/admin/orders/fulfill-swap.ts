@@ -1,6 +1,10 @@
+import { Transform } from "class-transformer"
+import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
-
+import { EntityManager } from "typeorm"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { OrderService, SwapService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
  * operationId: "PostOrdersOrderSwapsSwapFulfillments"
@@ -36,24 +40,19 @@ import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  const schema = Validator.object().keys({
-    metadata: Validator.object().optional(),
-    no_notification: Validator.boolean().optional,
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const orderService = req.scope.resolve("orderService")
-  const swapService = req.scope.resolve("swapService")
-  const entityManager = req.scope.resolve("manager")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
     await swapService.withTransaction(manager).createFulfillment(swap_id, {
-      metadata: value.metadata,
-      no_notification: value.no_notification,
+      metadata: validated.metadata,
+      no_notification: validated.no_notification,
     })
 
     const order = await orderService.withTransaction(manager).retrieve(id, {
@@ -63,4 +62,15 @@ export default async (req, res) => {
 
     res.status(200).json({ order })
   })
+}
+
+export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification?: boolean
 }

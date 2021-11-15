@@ -3,7 +3,6 @@ const {
   ReturnReason,
   Order,
   LineItem,
-  ProductVariant,
   CustomShippingOption,
 } = require("@medusajs/medusa")
 
@@ -76,12 +75,8 @@ describe("/admin/orders", () => {
 
   describe("POST /admin/orders/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -220,7 +215,6 @@ describe("/admin/orders", () => {
 
     it("cancels an order and increments inventory_quantity", async () => {
       const api = useApi()
-      const manager = dbConnection.manager
 
       const initialInventoryRes = await api.get("/store/variants/test-variant")
 
@@ -1111,7 +1105,7 @@ describe("/admin/orders", () => {
         }
       )
 
-      //Find variant that should have its inventory_quantity updated
+      // Find variant that should have its inventory_quantity updated
       const toTest = returned.data.order.items.find((i) => i.id === "test-item")
 
       expect(returned.status).toEqual(200)
@@ -1144,7 +1138,7 @@ describe("/admin/orders", () => {
         }
       )
 
-      //Find variant that should have its inventory_quantity updated
+      // Find variant that should have its inventory_quantity updated
       const toTest = returned.data.order.items.find((i) => i.id === "test-item")
 
       expect(returned.status).toEqual(200)
@@ -1345,15 +1339,18 @@ describe("/admin/orders", () => {
     it("successfully lists orders using unix (greater than)", async () => {
       const api = useApi()
 
-      const response = await api.get(
-        "/admin/orders?fields=id&created_at[gt]=633351600",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
-      )
-
+      try {
+        const response = await api.get(
+          "/admin/orders?fields=id&created_at[gt]=633351600",
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (err) {
+        console.log(err)
+      }
       expect(response.status).toEqual(200)
       expect(response.data.orders).toEqual([
         expect.objectContaining({
@@ -1696,7 +1693,7 @@ describe("/admin/orders", () => {
 
       expect(returnOnOrder.status).toEqual(200)
 
-      const captured = await api.post(
+      await api.post(
         "/admin/orders/test-order/capture",
         {},
         {

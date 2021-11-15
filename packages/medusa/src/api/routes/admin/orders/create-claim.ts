@@ -1,5 +1,20 @@
+import { Type, Transform } from "class-transformer"
+import {
+  IsArray,
+  IsOptional,
+  ValidateNested,
+  IsBoolean,
+  IsObject,
+  IsString,
+  IsInt,
+  IsNotEmpty,
+  IsEnum,
+  IsIn,
+} from "class-validator"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -112,52 +127,9 @@ import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "./"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const schema = Validator.object().keys({
-    type: Validator.string().valid("replace", "refund").required(),
-    claim_items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-        note: Validator.string().optional(),
-        reason: Validator.string().valid(
-          "missing_item",
-          "wrong_item",
-          "production_failure",
-          "other"
-        ),
-        tags: Validator.array().items(Validator.string()),
-        images: Validator.array().items(Validator.string()),
-      })
-      .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    additional_items: Validator.array()
-      .items({
-        variant_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .optional(),
-    shipping_methods: Validator.array()
-      .items({
-        id: Validator.string().optional(),
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    refund_amount: Validator.number().integer().optional(),
-    shipping_address: Validator.object().optional(),
-    no_notification: Validator.boolean().optional(),
-    metadata: Validator.object().optional(),
-  })
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)
+
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -346,4 +318,131 @@ export default async (req, res) => {
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
+}
+
+enum ClaimTypes {
+  replace = "replace",
+  refund = "refund",
+}
+
+enum ClaimItemReason {
+  missing_item = "missing_item",
+  wrong_item = "wrong_item",
+  production_failure = "production_failure",
+  other = "other",
+}
+
+export class AdminPostOrdersOrderClaimsReq {
+  @IsEnum(ClaimTypes)
+  @IsNotEmpty()
+  type: ClaimTypes
+
+  @IsArray()
+  @IsNotEmpty()
+  @Type(() => Item)
+  @ValidateNested({ each: true })
+  claim_items: Item[]
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ReturnShipping)
+  return_shipping: ReturnShipping
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => AdditionalItem)
+  additional_items: AdditionalItem[]
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ShippingMethod)
+  shipping_methods: ShippingMethod[]
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  refund_amount?: number
+
+  @IsObject()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AddressPayload)
+  shipping_address: AddressPayload
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  @Type(() => Boolean)
+  no_notification?: boolean
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+}
+
+class ReturnShipping {
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
+}
+
+class ShippingMethod {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsEnum(ClaimItemReason)
+  @IsOptional()
+  reason?: ClaimItemReason
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tags: string[]
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  images: string[]
+}
+
+class AdditionalItem {
+  @IsString()
+  @IsNotEmpty()
+  variant_id?: string
+
+  @IsInt()
+  @IsNotEmpty()
+  quantity?: number
 }

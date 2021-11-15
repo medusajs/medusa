@@ -1,6 +1,13 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
-
+import { Transform } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
@@ -41,25 +48,19 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "./"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  const schema = Validator.object().keys({
-    fulfillment_id: Validator.string().required(),
-    tracking_numbers: Validator.array().items(Validator.string()).optional(),
-    no_notification: Validator.boolean().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(
+    AdminPostOrdersOrderSwapsSwapShipmentsReq,
+    req.body
+  )
 
   const orderService = req.scope.resolve("orderService")
   const swapService = req.scope.resolve("swapService")
 
   await swapService.createShipment(
     swap_id,
-    value.fulfillment_id,
-    value.tracking_numbers.map((n) => ({ tracking_number: n })),
-    { no_notification: value.no_notification }
+    validated.fulfillment_id,
+    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
+    { no_notification: validated.no_notification }
   )
 
   const order = await orderService.retrieve(id, {
@@ -68,4 +69,20 @@ export default async (req, res) => {
   })
 
   res.json({ order })
+}
+
+export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
+  @IsString()
+  @IsNotEmpty()
+  fulfillment_id: string
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tracking_numbers?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification: boolean
 }

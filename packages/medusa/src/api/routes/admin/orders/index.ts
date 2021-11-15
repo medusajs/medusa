@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { Order } from "../../../.."
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
@@ -354,3 +355,32 @@ export const filterableAdminOrdersFields = [
   "created_at",
   "updated_at",
 ]
+
+export * from "./add-shipping-method"
+export * from "./archive-order"
+export * from "./cancel-claim"
+export * from "./cancel-fulfillment"
+export * from "./cancel-fulfillment-claim"
+export * from "./cancel-fulfillment-swap"
+export * from "./cancel-order"
+export * from "./cancel-swap"
+export * from "./capture-payment"
+export * from "./complete-order"
+export * from "./create-claim"
+export * from "./create-claim-shipment"
+export * from "./create-fulfillment"
+export * from "./create-order"
+export * from "./create-shipment"
+export * from "./create-swap"
+export * from "./create-swap-shipment"
+export * from "./delete-metadata"
+export * from "./fulfill-claim"
+export * from "./fulfill-swap"
+export * from "./get-order"
+export * from "./list-orders"
+export * from "./process-swap-payment"
+export * from "./receive-swap"
+export * from "./refund-payment"
+export * from "./request-return"
+export * from "./update-claim"
+export * from "./update-order"
