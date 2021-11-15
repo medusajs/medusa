@@ -37,16 +37,13 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const limit = parseInt(req.query.limit) || 50
-  const offset = parseInt(req.query.offset) || 0
+  const limit = parseInt(value.limit) || 50
+  const offset = parseInt(value.offset) || 0
 
-  const selector: Selector = _.pick(
-    value,
-    Object.getOwnPropertyNames(new Selector())
-  )
+  const selector: Selector = _.pick(value, Object.keys(new Selector()))
 
-  if ("q" in req.query) {
-    selector.q = req.query.q
+  if (value.q) {
+    selector.q = value.q
   }
 
   let includeFields: string[] = []
@@ -111,7 +108,11 @@ enum PaymentStatus {
   requires_action = "requires_action",
 }
 
-export class FilterableAdminOrdersFields {
+export class Selector {
+  @IsString()
+  @IsOptional()
+  q?: string
+
   @IsString()
   @IsOptional()
   id?: string
@@ -175,11 +176,7 @@ export class FilterableAdminOrdersFields {
   updated_at?: DateComparisonOperator
 }
 
-export class AdminGetOrdersReq extends FilterableAdminOrdersFields {
-  @IsString()
-  @IsOptional()
-  q: string
-
+export class AdminGetOrdersReq extends Selector {
   @IsString()
   @IsOptional()
   offset: string
@@ -195,8 +192,4 @@ export class AdminGetOrdersReq extends FilterableAdminOrdersFields {
   @IsString()
   @IsOptional()
   fields: string
-}
-
-export class Selector extends FilterableAdminOrdersFields {
-  q?: string
 }

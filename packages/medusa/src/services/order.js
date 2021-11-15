@@ -211,7 +211,7 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     let q
-    if ("q" in selector) {
+    if (selector.q) {
       q = selector.q
       delete selector.q
     }
