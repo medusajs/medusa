@@ -1,8 +1,11 @@
+import { ShippingProfileService } from "../../../../services"
+
 /**
  * @oas [get] /shipping-profiles
  * operationId: "GetShippingProfiles"
  * summary: "List Shipping Profiles"
  * description: "Retrieves a list of Shipping Profile."
+ * x-authenticated: true
  * tags:
  *   - Shipping Profile
  * responses:
@@ -18,7 +21,9 @@
  *                 $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {
-  const profileService = req.scope.resolve("shippingProfileService")
+  const profileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
 
   const data = await profileService.list()
 
