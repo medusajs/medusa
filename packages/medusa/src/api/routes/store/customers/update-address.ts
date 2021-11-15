@@ -41,7 +41,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const customerService = req.scope.resolve(
+  const customerService: CustomerService = req.scope.resolve(
     "customerService"
   ) as CustomerService
 
