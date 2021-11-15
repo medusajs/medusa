@@ -1,9 +1,7 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsNumber, IsOptional } from "class-validator"
 import { defaultStoreProductsRelations } from "."
-import { Product } from "../../../.."
 import { ProductService } from "../../../../services"
-import { PaginatedResponse } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -37,7 +35,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
 
-  const validated = await validator(StoreGetProductsReq, req.query)
+  const validated = await validator(StoreGetProductsParams, req.query)
 
   const limit = validated.limit || 100
   const offset = validated.offset || 0
@@ -64,11 +62,7 @@ export default async (req, res) => {
   res.json({ products, count, offset, limit })
 }
 
-export type StoreGetProductsResponse = PaginatedResponse & {
-  products: Product[]
-}
-
-export class StoreGetProductsReq {
+export class StoreGetProductsParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)

@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Product } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -30,6 +31,15 @@ export const defaultStoreProductsRelations = [
 export * from "./list-products"
 export * from "./search"
 
-export type StoreProductsResponse = {
+export type StoreProductsRes = {
   product: Product
+}
+
+export class StorePostSearchRes {
+  hits: any[];
+  [k: string]: any
+}
+
+export type StoreGetProductsResponse = PaginatedResponse & {
+  products: Product[]
 }
