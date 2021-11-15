@@ -41,10 +41,9 @@ export default async (req, res) => {
   const limit = parseInt(value.limit) || 50
   const offset = parseInt(value.offset) || 0
 
-  const selector: Selector = _.pick(
-    value,
-    Object.getOwnPropertyNames(new Selector())
-  )
+  const selector: Selector = _.pick(value, [
+    ...Object.getOwnPropertyNames(new Selector()),
+  ])
 
   if (value.q) {
     selector.q = value.q
