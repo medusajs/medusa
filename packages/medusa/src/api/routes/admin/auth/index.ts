@@ -1,9 +1,10 @@
 import { Router } from "express"
+import { User } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
 
-export default app => {
+export default (app) => {
   app.use("/auth", route)
 
   route.get(
@@ -21,3 +22,11 @@ export default app => {
 
   return app
 }
+
+export type AdminAuthRes = {
+  user: Omit<User, "password_hash">
+}
+
+export * from "./create-session"
+export * from "./delete-session"
+export * from "./get-session"
