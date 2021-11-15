@@ -55,7 +55,7 @@ export type AdminReturnReasonRes = {
   return_reasons: ReturnReason
 }
 
-export type AdminReturnReasonsRes = {
+export type AdminReturnReasonsListRes = {
   return_reasons: ReturnReason[]
 }
 
