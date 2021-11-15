@@ -19,7 +19,6 @@ import {
 } from "."
 import { ProductService } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
-import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -241,8 +240,8 @@ class ProductTagReq {
 }
 
 class ProductVariantOptionReq {
-  @IsType([String, Number])
-  value: string | number
+  @IsString()
+  value: string
 
   @IsString()
   option_id: string

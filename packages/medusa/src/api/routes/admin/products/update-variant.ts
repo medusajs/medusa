@@ -12,7 +12,6 @@ import {
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
-import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -131,7 +130,10 @@ export default async (req, res) => {
     "productVariantService"
   )
 
-  await productVariantService.update(variant_id, validated)
+  await productVariantService.update(variant_id, {
+    product_id: id,
+    ...validated,
+  })
 
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
@@ -142,8 +144,8 @@ export default async (req, res) => {
 }
 
 class ProductVariantOptionReq {
-  @IsType([String, Number])
-  value: string | number
+  @IsString()
+  value: string
 
   @IsString()
   option_id: string
@@ -243,11 +245,10 @@ class AdminPostProductsProductVariantsVariantReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq
+  prices: ProductVariantPricesReq[]
 
-  @IsOptional()
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })
   @IsArray()
-  options?: ProductVariantOptionReq[] = []
+  options: ProductVariantOptionReq[] = []
 }

@@ -6,11 +6,12 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  ValidateIf,
+  Validate,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
+import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -147,20 +148,20 @@ class ProductVariantOptionReq {
 }
 
 class ProductVariantPricesReq {
-  @IsString()
-  @ValidateIf((o) => o.currency_code == undefined || o.region_id)
-  region_id: string
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
 
-  @IsString()
-  @ValidateIf((o) => o.region_id == undefined || o.currency_code)
-  currency_code: string
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
 
   @IsNumber()
-  amount: string
+  @Type(() => Number)
+  amount: number
 
   @IsOptional()
   @IsNumber()
-  sale_amount: string
+  @Type(() => Number)
+  sale_amount: number
 }
 
 export class AdminPostProductsProductVariantsReq {
@@ -233,11 +234,11 @@ export class AdminPostProductsProductVariantsReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq
+  prices: ProductVariantPricesReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })
   @IsArray()
-  options?: ProductVariantOptionReq[] = []
+  options: ProductVariantOptionReq[] = []
 }
