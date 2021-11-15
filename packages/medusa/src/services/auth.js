@@ -113,7 +113,7 @@ class AuthService extends BaseService {
    * scrypt to match password with hashed value.
    * @param {string} email - the email of the user
    * @param {string} password - the password of the user
-   * @return {{ success: (bool), user: (object | undefined) }}
+   * @return {{ success: (bool), customer: (object | undefined) }}
    *    success: whether authentication succeeded
    *    user: the user document if authentication succeded
    *    error: a string with the error message

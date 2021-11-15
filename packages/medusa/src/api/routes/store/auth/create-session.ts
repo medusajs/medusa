@@ -1,6 +1,9 @@
+import { IsEmail, IsNotEmpty } from "class-validator"
 import jwt from "jsonwebtoken"
-import { Validator } from "medusa-core-utils"
 import config from "../../../../config"
+import AuthService from "../../../../services/auth"
+import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /auth
@@ -23,23 +26,14 @@ import config from "../../../../config"
  *              $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const { body } = req
-  const schema = Validator.object().keys({
-    email: Validator.string().required(),
-    password: Validator.string().required(),
-  })
-  const { value, error } = schema.validate(body)
+  const validated = await validator(StorePostAuthReq, req.body)
 
-  if (error) {
-    throw error
-  }
-
-  const authService = req.scope.resolve("authService")
-  const customerService = req.scope.resolve("customerService")
+  const authService: AuthService = req.scope.resolve("authService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
 
   const result = await authService.authenticateCustomer(
-    value.email,
-    value.password
+    validated.email,
+    validated.password
   )
   if (!result.success) {
     res.sendStatus(401)
@@ -49,7 +43,7 @@ export default async (req, res) => {
   // Add JWT to cookie
   req.session.jwt = jwt.sign(
     { customer_id: result.customer.id },
-    config.jwtSecret,
+    (config as any).jwtSecret,
     {
       expiresIn: "30d",
     }
@@ -60,4 +54,12 @@ export default async (req, res) => {
   })
 
   res.json({ customer })
+}
+
+export class StorePostAuthReq {
+  @IsEmail()
+  email: string
+
+  @IsNotEmpty()
+  password: string
 }

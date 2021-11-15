@@ -17,3 +17,12 @@ export default (app) => {
 
   return app
 }
+
+export class StoreGetAuthEmailRes {
+  exists: boolean
+}
+
+export * from "./create-session"
+export * from "./delete-session"
+export * from "./exists"
+export * from "./get-session"

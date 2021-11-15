@@ -1,3 +1,5 @@
+import { AxiosPromise } from 'axios';
+import { StoreGetAuthEmailRes, StorePostAuthReq } from '@medusajs/medusa';
 import BaseResource from './base';
 import * as Types from '../types';
 
@@ -6,7 +8,7 @@ class AuthResource extends BaseResource {
    * @description Authenticates a customer using email and password combination
    * @returns AsyncResult<{ customer: Customer }>
    */
-  authenticate(payload: Types.AuthCreateSessionResource): Types.AsyncResult<{ customer: Types.Customer }> {
+  authenticate(payload: StorePostAuthReq): Types.AsyncResult<{ customer: Types.Customer }> {
     const path = `/store/auth`;
     return this.client.request('POST', path, payload);
   }
@@ -24,9 +26,9 @@ class AuthResource extends BaseResource {
   /**
    * @description Check if email exists
    * @param email is required
-   * @returns AsyncResult<{ exists: boolean }>
+   * @returns AxiosPromise<StoreGetAuthEmailRes>
    */
-  exists(email: string): Types.AsyncResult<{ exists: boolean }> {
+  exists(email: string): AxiosPromise<StoreGetAuthEmailRes> {
     const path = `/store/auth/${email}`;
     return this.client.request('GET', path);
   }
