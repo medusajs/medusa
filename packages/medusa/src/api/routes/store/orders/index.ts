@@ -108,7 +108,7 @@ export const allowedStoreOrdersFields = [
   "total",
 ]
 
-export type StoreOrderResponse = {
+export type StoreOrderRes = {
   order: Order
 }
 

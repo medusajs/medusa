@@ -62,7 +62,7 @@ export class ShippingAddressPayload {
   postal_code: string
 }
 
-export class StoreGetOrdersReq {
+export class StoreGetOrdersParams {
   @IsNumber()
   @Type(() => Number)
   display_id: number
