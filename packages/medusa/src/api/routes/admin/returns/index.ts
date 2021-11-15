@@ -1,5 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
+import { Order, Return } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -25,6 +27,17 @@ export default (app) => {
   return app
 }
 
-export * from "./cancel-return"
+export type AdminReturnsCancelRes = {
+  order: Order
+}
+
+export type AdminReturnsListRes = PaginatedResponse & {
+  returns: Return[]
+}
+
+export type AdminReturnsRes = {
+  return: Return
+}
+
 export * from "./list-returns"
 export * from "./receive-return"

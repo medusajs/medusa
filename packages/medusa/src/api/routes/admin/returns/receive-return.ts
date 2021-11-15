@@ -6,7 +6,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Return } from "../../../.."
 import { OrderService, ReturnService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -21,6 +20,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - items
  *         properties:
  *           items:
  *             description: The Line Items that have been received.
@@ -107,8 +108,4 @@ export class AdminPostReturnsReturnReceiveReq {
   @IsOptional()
   @IsNumber()
   refund: number
-}
-
-export type AdminPostReturnsReturnReceiveResponse = {
-  return: Return
 }

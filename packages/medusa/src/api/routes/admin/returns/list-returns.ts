@@ -1,7 +1,5 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional } from "class-validator"
-import { Return } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -26,7 +24,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const returnService = req.scope.resolve("returnService")
 
-  const validated = await validator(AdminGetReturnsReq, req.query)
+  const validated = await validator(AdminGetReturnsParams, req.query)
 
   const limit = validated.limit || 50
   const offset = validated.offset || 0
@@ -45,11 +43,7 @@ export default async (req, res) => {
   res.json({ returns, count: returns.length, offset, limit })
 }
 
-export type AdminGetReturnsResponse = PaginatedResponse & {
-  returns: Return[]
-}
-
-export class AdminGetReturnsReq {
+export class AdminGetReturnsParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)

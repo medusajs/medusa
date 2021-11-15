@@ -1,4 +1,3 @@
-import { Order } from "../../../.."
 import { OrderService, ReturnService } from "../../../../services"
 import { defaultFields, defaultRelations } from "../orders"
 
@@ -43,8 +42,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ order })
-}
-
-export type AdminPostReturnsReturnCancel = {
-  order: Order
 }
