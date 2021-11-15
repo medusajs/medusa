@@ -1,4 +1,6 @@
-import { IsOptional, IsString } from "class-validator"
+import { Transform } from "class-transformer"
+import { IsDate, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsType } from "../utils/is-type"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
@@ -13,6 +15,52 @@ export interface FindConfig<Entity> {
 }
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }
+
+export class DateComparisonOperator {
+  @IsOptional()
+  @IsType([Date, String])
+  lt?: Date | string
+
+  @IsOptional()
+  @IsType([Date, String])
+  gt?: Date | string
+
+  @IsOptional()
+  @IsType([Date, String])
+  gte?: Date | string
+
+  @IsOptional()
+  @IsType([Date, String])
+  lte?: Date | string
+}
+
+export class StringComparisonOperator {
+  @IsString()
+  lt?: string
+
+  @IsString()
+  gt?: string
+
+  @IsString()
+  gte?: string
+
+  @IsString()
+  lte?: string
+}
+
+export class NumericalComparisonOperator {
+  @IsNumber()
+  lt?: number
+
+  @IsNumber()
+  gt?: number
+
+  @IsNumber()
+  gte?: number
+
+  @IsNumber()
+  lte?: number
+}
 
 export class AddressPayload {
   @IsOptional()
