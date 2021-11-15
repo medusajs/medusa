@@ -30,8 +30,6 @@ export async function validator<T, V>(
 
   const errorMessages = reduceErrorMessages(errors)
 
-  console.log(errorMessages)
-
   if (errors?.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,

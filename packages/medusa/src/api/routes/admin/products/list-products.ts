@@ -6,10 +6,12 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from "class-validator"
 import * as _ from "lodash"
 import { identity } from "lodash"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -157,15 +159,18 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   @IsOptional()
   order?: string
 
-  @IsString()
   @IsOptional()
-  created_at?: string
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 
   @IsString()
   @IsOptional()
-  updated_at?: string
-
-  @IsString()
-  @IsOptional()
-  deleted_at?: string
+  @Type(() => DateComparisonOperator)
+  deleted_at?: DateComparisonOperator
 }
