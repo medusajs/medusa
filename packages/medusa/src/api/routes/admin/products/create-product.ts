@@ -401,7 +401,8 @@ export class AdminPostProductsReq {
   subtitle?: string
 
   @IsString()
-  description: string
+  @IsOptional()
+  description?: string
 
   @IsBoolean()
   is_giftcard = false
@@ -421,8 +422,9 @@ export class AdminPostProductsReq {
   @IsOptional()
   handle?: string
 
+  @IsOptional()
   @IsEnum(ProductStatus)
-  status: ProductStatus = ProductStatus.DRAFT
+  status?: ProductStatus = ProductStatus.DRAFT
 
   @IsOptional()
   @Type(() => ProductTypeReq)

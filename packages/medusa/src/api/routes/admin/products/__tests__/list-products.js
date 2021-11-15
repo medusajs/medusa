@@ -20,7 +20,6 @@ describe("GET /admin/products", () => {
     })
 
     it("returns 200 and decorated products", () => {
-      console.log(subject)
       expect(subject.status).toEqual(200)
       expect(subject.body.products[0].id).toEqual(products.product1.id)
       expect(subject.body.products[1].id).toEqual(products.product2.id)
