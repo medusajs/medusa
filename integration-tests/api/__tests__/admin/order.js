@@ -1338,19 +1338,15 @@ describe("/admin/orders", () => {
 
     it("successfully lists orders using unix (greater than)", async () => {
       const api = useApi()
+      const response = await api.get(
+        "/admin/orders?fields=id&created_at[gt]=633351600",
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
 
-      try {
-        const response = await api.get(
-          "/admin/orders?fields=id&created_at[gt]=633351600",
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
-        )
-      } catch (err) {
-        console.log(err)
-      }
       expect(response.status).toEqual(200)
       expect(response.data.orders).toEqual([
         expect.objectContaining({
