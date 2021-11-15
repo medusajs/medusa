@@ -523,9 +523,8 @@ class ProductVariantService extends BaseService {
    */
   async deleteOptionValue(variantId: string, optionId: string): Promise<void> {
     return this.atomicPhase_(async (manager: EntityManager) => {
-      const productOptionValueRepo = manager.getCustomRepository(
-        this.productOptionValueRepository_
-      ) as ProductOptionValueRepository
+      const productOptionValueRepo: ProductOptionValueRepository =
+        manager.getCustomRepository(this.productOptionValueRepository_)
 
       const productOptionValue = await productOptionValueRepo.findOne({
         where: {
