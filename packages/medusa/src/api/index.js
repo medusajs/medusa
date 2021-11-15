@@ -15,6 +15,7 @@ export default (container, config) => {
   return app
 }
 
+export * from "./routes/admin/variants"
 export * from "./routes/store/carts"
 export * from "./routes/store/gift-cards"
 export * from "./routes/store/return-reasons"
