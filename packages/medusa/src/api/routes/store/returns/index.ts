@@ -1,3 +1,4 @@
+import { Return } from './../../../../models/return';
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
@@ -10,3 +11,9 @@ export default (app) => {
 
   return app
 }
+
+export class StoreReturnsRes {
+  return: Return;
+}
+
+export * from "./create-return"

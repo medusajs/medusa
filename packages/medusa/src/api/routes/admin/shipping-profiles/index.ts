@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { ShippingProfile } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -28,7 +29,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultAdminShippingProfilesFields = [
   "id",
   "name",
   "type",
@@ -38,4 +39,19 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = ["products", "shipping_options"]
+export const defaultAdminShippingProfilesRelations = [
+  "products",
+  "shipping_options",
+]
+
+export type AdminShippingProfilesRes = {
+  shipping_profile: ShippingProfile
+}
+
+export type AdminShippingProfilesListRes = {
+  shipping_profiles: ShippingProfile[]
+}
+
+export * from "./create-shipping-profile"
+export * from "./delete-shipping-profile"
+export * from "./update-shipping-profile"
