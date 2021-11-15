@@ -11,6 +11,7 @@ import { DateComparisonOperator } from "../../../../types/common"
 import { Type } from "class-transformer"
 import _ from "lodash"
 import { OrderService } from "../../../../services"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [get] /orders
@@ -40,7 +41,10 @@ export default async (req, res) => {
   const limit = parseInt(value.limit) || 50
   const offset = parseInt(value.offset) || 0
 
-  const selector: Selector = _.pick(value, Object.keys(new Selector()))
+  const selector: Selector = _.pick(
+    value,
+    Object.getOwnPropertyNames(new Selector())
+  )
 
   if (value.q) {
     selector.q = value.q
