@@ -9,7 +9,7 @@ import {
 } from "class-validator"
 import { DateComparisonOperator } from "../../../../types/common"
 import { Type } from "class-transformer"
-import _ from "lodash"
+import _, { identity } from "lodash"
 import { OrderService } from "../../../../services"
 import { MedusaError } from "medusa-core-utils"
 
@@ -41,17 +41,17 @@ export default async (req, res) => {
   const limit = parseInt(value.limit) || 50
   const offset = parseInt(value.offset) || 0
 
-  const selector: Selector = {}
+  // const selector: Selector = {}
 
-  for (const [key, val] of Object.entries(value)) {
-    if (val && Object.keys(new Selector()).indexOf(key) !== -1) {
-      selector[key] = val
-    }
-  }
+  // for (const [key, val] of Object.entries(value)) {
+  //   if (val && Object.keys(new Selector()).indexOf(key) !== -1) {
+  //     selector[key] = val
+  //   }
+  // }
 
-  if (value.q) {
-    selector.q = value.q
-  }
+  // if (value.q) {
+  //   selector.q = value.q
+  // }
 
   let includeFields: string[] = []
   if (value.fields) {
@@ -73,7 +73,18 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const [orders, count] = await orderService.listAndCount(selector, listConfig)
+  const filterableFields = _.omit(value, [
+    "limit",
+    "offset",
+    "expand",
+    "fields",
+    "order",
+  ])
+
+  const [orders, count] = await orderService.listAndCount(
+    _.pickBy(filterableFields, identity),
+    listConfig
+  )
 
   let data = orders
 
