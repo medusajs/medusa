@@ -1,4 +1,6 @@
 import { Router } from "express"
+import { Notification } from "./../../../../"
+import { PaginatedResponse } from "./../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -22,10 +24,10 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = ["resends"]
-export const allowedRelations = ["resends"]
+export const defaultAdminNotificationsRelations = ["resends"]
+export const allowedAdminNotificationsRelations = ["resends"]
 
-export const defaultFields = [
+export const defaultAdminNotificationsFields = [
   "id",
   "resource_type",
   "resource_id",
@@ -36,7 +38,7 @@ export const defaultFields = [
   "updated_at",
 ]
 
-export const allowedFields = [
+export const allowedAdminNotificationsFields = [
   "id",
   "resource_type",
   "resource_id",
@@ -46,3 +48,11 @@ export const allowedFields = [
   "created_at",
   "updated_at",
 ]
+
+export type AdminNotificationsListRes = PaginatedResponse & {
+  notifications: Notification[]
+}
+
+export type AdminNotificationsRes = PaginatedResponse & {
+  notification: Notification
+}
