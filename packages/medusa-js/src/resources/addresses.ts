@@ -1,5 +1,5 @@
 import {
-  StoreCustomerResponse,
+  StoreCustomerRes,
   StorePostCustomersCustomerAddressesAddressReq,
   StorePostCustomersCustomerAddressesReq,
 } from '@medusajs/medusa';
@@ -12,7 +12,7 @@ class AddressesResource extends BaseResource {
    * @param {StorePostCustomersCustomerAddressesReq} payload contains information to create an address
    * @return {AxiosPromise<StoreCustomerResponse>}
    */
-  addAddress(payload: StorePostCustomersCustomerAddressesReq): AxiosPromise<StoreCustomerResponse> {
+  addAddress(payload: StorePostCustomersCustomerAddressesReq): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers/me/addresses`;
     return this.client.request('POST', path, payload);
   }
@@ -22,7 +22,7 @@ class AddressesResource extends BaseResource {
    * @param {string} address_id id of the address to delete
    * @return {AxiosPromise<StoreCustomerResponse>}
    */
-  deleteAddress(address_id: string): AxiosPromise<StoreCustomerResponse> {
+  deleteAddress(address_id: string): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers/me/addresses/${address_id}`;
     return this.client.request('DELETE', path);
   }
@@ -36,7 +36,7 @@ class AddressesResource extends BaseResource {
   updateAddress(
     address_id: string,
     payload: StorePostCustomersCustomerAddressesAddressReq,
-  ): AxiosPromise<StoreCustomerResponse> {
+  ): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers/me/addresses/${address_id}`;
     return this.client.request('POST', path, payload);
   }

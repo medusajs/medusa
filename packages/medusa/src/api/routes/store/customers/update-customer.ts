@@ -1,9 +1,9 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { AddressPayload } from "../../../../types/common"
 import { IsType } from "../../../../utils/is-type"
 import { validator } from "../../../../utils/validator"
-import { StorePostCustomersCustomerAddressesAddressReq } from "./update-address"
 
 /**
  * @oas [post] /customers/me
@@ -68,8 +68,8 @@ export default async (req, res) => {
 
 export class StorePostCustomersCustomerReq {
   @IsOptional()
-  @IsType([StorePostCustomersCustomerAddressesAddressReq, String])
-  billing_address: StorePostCustomersCustomerAddressesAddressReq | string
+  @IsType([AddressPayload, String])
+  billing_address: AddressPayload | string
   @IsOptional()
   @IsString()
   first_name: string

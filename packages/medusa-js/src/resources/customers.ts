@@ -1,12 +1,12 @@
 import {
-  StoreCustomerResponse,
-  StoreGetCustomersCustomerOrdersResponse,
+  StoreCustomerRes,
+  StoreCustomersListOrdersRes,
+  StoreGetCustomersCustomerOrdersParams,
+  StorePostCustomersCustomerPasswordTokenReq,
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
-  StorePostCustomersResetPasswordReq,
 } from '@medusajs/medusa';
 import { AxiosPromise } from 'axios';
-import * as Types from '../types';
 import AddressesResource from './addresses';
 import BaseResource from './base';
 import PaymentMethodsResource from './payment-methods';
@@ -18,18 +18,18 @@ class CustomerResource extends BaseResource {
   /**
    * Creates a customer
    * @param {StorePostCustomersReq} payload information of customer
-   * @return { AxiosPromise<StoreCustomerResponse>}
+   * @return { AxiosPromise<StoreCustomerRes>}
    */
-  create(payload: StorePostCustomersReq): AxiosPromise<StoreCustomerResponse> {
+  create(payload: StorePostCustomersReq): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers`;
     return this.client.request('POST', path, payload);
   }
 
   /**
    * Retrieves the customer that is currently logged
-   * @return {AxiosPromise<StoreCustomerResponse>}
+   * @return {AxiosPromise<StoreCustomerRes>}
    */
-  retrieve(): AxiosPromise<StoreCustomerResponse> {
+  retrieve(): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers/me`;
     return this.client.request('GET', path);
   }
@@ -37,28 +37,44 @@ class CustomerResource extends BaseResource {
   /**
    * Updates a customer
    * @param {StorePostCustomersCustomerReq} payload information to update customer with
-   * @return {AxiosPromise<StoreCustomerResponse>}
+   * @return {AxiosPromise<StoreCustomerRes>}
    */
-  update(payload: StorePostCustomersCustomerReq): AxiosPromise<StoreCustomerResponse> {
+  update(payload: StorePostCustomersCustomerReq): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers/me`;
     return this.client.request('POST', path, payload);
   }
 
   /**
    * Retrieve customer orders
-   * @return {AxiosPromise<StoreGetCustomersCustomerOrdersResponse>}
+   * @param {StoreGetCustomersCustomerOrdersParams} params optional params to retrieve orders
+   * @return {AxiosPromise<StoreCustomersListOrdersRes>}
    */
-  listOrders(): AxiosPromise<StoreGetCustomersCustomerOrdersResponse> {
-    const path = `/store/customers/me/orders`;
+  listOrders(params?: StoreGetCustomersCustomerOrdersParams): AxiosPromise<StoreCustomersListOrdersRes> {
+    let path = `/store/customers/me/orders`;
+    if (params) {
+      let query: string | undefined;
+
+      for (const key of Object.keys(params)) {
+        if (query) {
+          query += `&${key}=${params[key]}`;
+        } else {
+          query = `?${key}=${params[key]}`;
+        }
+      }
+
+      if (query) {
+        path += query;
+      }
+    }
     return this.client.request('GET', path);
   }
 
   /**
    * Resets customer password
-   * @param {StorePostCustomersResetPasswordReq} payload info used to reset customer password
-   * @return {AxiosPromise<StoreCustomerResponse>}
+   * @param {StorePostCustomersCustomerPasswordTokenReq} payload info used to reset customer password
+   * @return {AxiosPromise<StoreCustomerRes>}
    */
-  resetPassword(payload: StorePostCustomersResetPasswordReq): AxiosPromise<StoreCustomerResponse> {
+  resetPassword(payload: StorePostCustomersCustomerPasswordTokenReq): AxiosPromise<StoreCustomerRes> {
     const path = `/store/customers/password-reset`;
     return this.client.request('POST', path, payload);
   }
@@ -69,7 +85,7 @@ class CustomerResource extends BaseResource {
    * @param {StorePostCustomersCustomerPasswordTokenReq} payload info used to generate token
    * @return {AxiosPromise}
    */
-  generatePasswordToken(payload: Types.CustomerGeneratePasswordTokenResource): AxiosPromise {
+  generatePasswordToken(payload: StorePostCustomersCustomerPasswordTokenReq): AxiosPromise {
     const path = `/store/customers/password-token`;
     return this.client.request('POST', path, payload);
   }

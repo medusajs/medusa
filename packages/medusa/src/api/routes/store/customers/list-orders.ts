@@ -1,8 +1,6 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { Order } from "../../../.."
 import OrderService from "../../../../services/order"
-import { PaginatedResponse } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import {
   allowedFields,
@@ -50,7 +48,7 @@ export default async (req, res) => {
   }
 
   const validated = await validator(
-    StoreGetCustomersCustomerOrdersQuery,
+    StoreGetCustomersCustomerOrdersParams,
     req.query
   )
 
@@ -82,11 +80,7 @@ export default async (req, res) => {
   res.json({ orders, count, offset, limit })
 }
 
-export type StoreGetCustomersCustomerOrdersResponse = PaginatedResponse & {
-  orders: Order[]
-}
-
-export class StoreGetCustomersCustomerOrdersQuery {
+export class StoreGetCustomersCustomerOrdersParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)

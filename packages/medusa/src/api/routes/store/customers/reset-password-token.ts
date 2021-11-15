@@ -14,7 +14,10 @@ import { validator } from "../../../../utils/validator"
  *     description: OK
  */
 export default async (req, res) => {
-  const validated = await validator(StoreResetPasswordTokenRequest, req.body)
+  const validated = await validator(
+    StorePostCustomersCustomerPasswordTokenReq,
+    req.body
+  )
 
   const customerService: CustomerService = req.scope.resolve(
     "customerService"
@@ -27,7 +30,7 @@ export default async (req, res) => {
   res.sendStatus(204)
 }
 
-export class StoreResetPasswordTokenRequest {
+export class StorePostCustomersCustomerPasswordTokenReq {
   @IsEmail()
   email: string
 }

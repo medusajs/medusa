@@ -57,10 +57,3 @@ export default async (req, res) => {
     payment_methods: methods.flat(),
   })
 }
-
-export class StoreGetCustomersCustomerPaymentMethodsResponse {
-  payment_methods: {
-    provider_id: string
-    data: object
-  }[]
-}

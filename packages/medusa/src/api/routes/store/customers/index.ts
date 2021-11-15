@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Customer } from "../../../.."
+import { Customer, Order } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -98,13 +99,23 @@ export const allowedStoreCustomersFields = [
   "metadata",
 ]
 
-export type StoreCustomerResponse = {
+export type StoreCustomerRes = {
   customer: Omit<Customer, "password_hash">
+}
+
+export type StoreCustomersListOrdersRes = PaginatedResponse & {
+  orders: Order[]
+}
+
+export class StoreCustomersListPaymentMethodsRes {
+  payment_methods: {
+    provider_id: string
+    data: object
+  }[]
 }
 
 export * from "./create-address"
 export * from "./create-customer"
-export * from "./get-payment-methods"
 export * from "./list-orders"
 export * from "./reset-password"
 export * from "./reset-password-token"

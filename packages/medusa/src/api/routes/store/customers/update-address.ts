@@ -1,6 +1,6 @@
-import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -55,37 +55,4 @@ export default async (req, res) => {
   res.json({ customer })
 }
 
-export class StorePostCustomersCustomerAddressesAddressReq {
-  @IsOptional()
-  @IsString()
-  company?: string
-  @IsOptional()
-  @IsString()
-  first_name?: string
-  @IsOptional()
-  @IsString()
-  last_name?: string
-  @IsOptional()
-  @IsString()
-  address_1?: string
-  @IsOptional()
-  @IsString()
-  address_2?: string
-  @IsOptional()
-  @IsString()
-  city?: string
-  @IsOptional()
-  @IsString()
-  country_code?: string
-  @IsOptional()
-  @IsString()
-  province?: string
-  @IsOptional()
-  @IsString()
-  postal_code?: number
-  @IsOptional()
-  @IsString()
-  phone?: string
-  @IsOptional()
-  metadata?: object
-}
+export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}

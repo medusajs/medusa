@@ -1,6 +1,7 @@
-import { IsOptional, IsString, ValidateNested } from "class-validator"
+import { ValidateNested } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { AddressCreatePayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -47,35 +48,6 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ customer })
-}
-
-export class AddressCreatePayload {
-  @IsString()
-  first_name: string
-  @IsString()
-  last_name: string
-  @IsOptional()
-  @IsString()
-  phone: string
-  @IsOptional()
-  metadata: object
-  @IsOptional()
-  @IsString()
-  company: string
-  @IsString()
-  address_1: string
-  @IsOptional()
-  @IsString()
-  address_2: string
-  @IsString()
-  city: string
-  @IsString()
-  country_code: string
-  @IsOptional()
-  @IsString()
-  province: string
-  @IsString()
-  postal_code: string
 }
 
 export class StorePostCustomersCustomerAddressesReq {
