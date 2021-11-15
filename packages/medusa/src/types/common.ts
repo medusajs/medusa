@@ -18,20 +18,32 @@ export type PaginatedResponse = { limit: number; offset: number; count: number }
 
 export class DateComparisonOperator {
   @IsOptional()
-  @IsType([Date, String])
-  lt?: Date | string
+  @IsDate()
+  @Transform(({ value }) =>
+    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
+  )
+  lt?: Date
 
   @IsOptional()
-  @IsType([Date, String])
-  gt?: Date | string
+  @IsDate()
+  @Transform(({ value }) =>
+    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
+  )
+  gt?: Date
 
   @IsOptional()
-  @IsType([Date, String])
-  gte?: Date | string
+  @IsDate()
+  @Transform(({ value }) =>
+    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
+  )
+  gte?: Date
 
   @IsOptional()
-  @IsType([Date, String])
-  lte?: Date | string
+  @IsDate()
+  @Transform(({ value }) =>
+    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
+  )
+  lte?: Date
 }
 
 export class StringComparisonOperator {
