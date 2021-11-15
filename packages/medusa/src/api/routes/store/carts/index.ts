@@ -122,7 +122,7 @@ export const defaultStoreCartRelations = [
   "discounts.rule.valid_for",
 ]
 
-export type StoreCartResponse = {
+export type StoreCartsCartRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
 

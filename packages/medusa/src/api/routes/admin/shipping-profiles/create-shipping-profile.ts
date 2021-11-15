@@ -1,10 +1,13 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { IsString } from "class-validator"
+import { ShippingProfileService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /shipping-profiles
  * operationId: "PostShippingProfiles"
  * summary: "Create a Shipping Profile"
  * description: "Creates a Shipping Profile"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -26,17 +29,17 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *               $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    name: Validator.string().required(),
-  })
+  const validated = await validator(AdminPostShippingProfilesReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const profileService = req.scope.resolve("shippingProfileService")
-  const data = await profileService.create(value)
+  const profileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
+  const data = await profileService.create(validated)
 
   res.status(200).json({ shipping_profile: data })
+}
+
+export class AdminPostShippingProfilesReq {
+  @IsString()
+  name: string
 }

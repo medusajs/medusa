@@ -1,3 +1,4 @@
+import { ShippingOption } from "./../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
@@ -14,3 +15,10 @@ export default (app) => {
 
   return app
 }
+
+export class StoreShippingOptionsListRes {
+  shipping_options: ShippingOption[]
+}
+
+export * from "./list-options"
+export * from "./list-shipping-options"
