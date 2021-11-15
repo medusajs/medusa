@@ -48,15 +48,23 @@ export class StringComparisonOperator {
 
 export class NumericalComparisonOperator {
   @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
   lt?: number
 
   @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
   gt?: number
 
   @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
   gte?: number
 
   @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
   lte?: number
 }
 
