@@ -41,10 +41,13 @@ export default async (req, res) => {
   const limit = parseInt(value.limit) || 50
   const offset = parseInt(value.offset) || 0
 
-  const selector: Selector = _.pickBy(
-    value,
-    (val, key) => val && Object.keys(new Selector()).indexOf(key) !== -1
-  )
+  const selector: Selector = {}
+
+  for (const [key, val] of Object.entries(value)) {
+    if (val && Object.keys(new Selector()).indexOf(key) !== -1) {
+      selector[key] = val
+    }
+  }
 
   if (value.q) {
     selector.q = value.q
