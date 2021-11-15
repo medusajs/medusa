@@ -1,6 +1,6 @@
-import BaseResource from './base';
 import { AxiosPromise } from 'axios';
 import { StoreGiftCardsRes } from '@medusajs/medusa'
+import BaseResource from './base';
 
 class GiftCardsResource extends BaseResource {
   /**
