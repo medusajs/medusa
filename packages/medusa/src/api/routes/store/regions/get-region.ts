@@ -28,7 +28,3 @@ export default async (req, res) => {
 
   res.json({ region })
 }
-
-export class StoreGetRegionsRegionRes {
-  region: Region
-}
