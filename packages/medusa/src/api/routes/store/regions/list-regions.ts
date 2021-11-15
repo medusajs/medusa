@@ -1,3 +1,6 @@
+import { IsNumberString, IsOptional } from "class-validator"
+import RegionService from "../../../../services/region"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /regions
  * operationId: GetRegions
@@ -27,10 +30,11 @@
  *                 $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const regionService = req.scope.resolve("regionService")
+  const validated = await validator(StoreGetRegionsParams, req.query)
+  const regionService: RegionService = req.scope.resolve("regionService")
 
-  const limit = parseInt(req.query.limit) || 100
-  const offset = parseInt(req.query.offset) || 0
+  const limit = validated.limit ? parseInt(validated.limit) : 100
+  const offset = validated.offset ? parseInt(req.query.offset) : 0
 
   const selector = {}
 
@@ -43,4 +47,14 @@ export default async (req, res) => {
   const regions = await regionService.list(selector, listConfig)
 
   res.json({ regions })
+}
+
+export class StoreGetRegionsParams {
+  @IsOptional()
+  @IsNumberString()
+  limit?: string
+
+  @IsOptional()
+  @IsNumberString()
+  offset?: string
 }
