@@ -249,6 +249,29 @@ describe("/store/carts", () => {
       ])
     })
 
+    it("failes to create a return with an invalid quantity (less than 1)", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post("/store/returns", {
+          order_id: "order_test",
+          items: [
+            {
+              reason_id: rrId,
+              note: "TOO small",
+              item_id: "test-item",
+              quantity: 0,
+            },
+          ],
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(400)
+      expect(response.data.type).toEqual("invalid_data")
+    })
+
     it("creates a return with discount and non-discountable item", async () => {
       const api = useApi()
 

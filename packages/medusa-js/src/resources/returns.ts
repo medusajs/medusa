@@ -1,15 +1,16 @@
 import BaseResource from './base';
-import * as Types from '../types';
+import { AxiosPromise } from 'axios'
+import { StoreReturnsRes, StorePostReturnsReq } from '@medusajs/medusa'
 
 class ReturnsResource extends BaseResource {
   /**
    * Creates a return request
    * @param payload details needed to create a return
-   * @returns AsyncResult<{ return: Return }>
+   * @returns AxiosPromise<StoreReturnsRes>
    */
-  create(payload: Types.ReturnCreateResource): Types.AsyncResult<{ return: Types.Return }> {
+  create(payload: StorePostReturnsReq): AxiosPromise<StoreReturnsRes> {
     const path = `/store/returns`;
-    return this.client.request('GET', path);
+    return this.client.request('POST', path, payload);
   }
 }
 

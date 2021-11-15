@@ -1,4 +1,5 @@
-import { Validator, MedusaError } from "medusa-core-utils"
+import CartService from "../../../../services/cart"
+import ShippingProfileService from "../../../../services/shipping-profile"
 
 /**
  * @oas [get] /shipping-options/{cart_id}
@@ -22,19 +23,14 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *                 $ref: "#/components/schemas/shipping_option"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    cart_id: Validator.string().required(),
-  })
+  const { cart_id } = req.params
 
-  const { value, error } = schema.validate(req.params)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const cartService: CartService = req.scope.resolve("cartService")
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
 
-  const cartService = req.scope.resolve("cartService")
-  const shippingProfileService = req.scope.resolve("shippingProfileService")
-
-  const cart = await cartService.retrieve(value.cart_id, {
+  const cart = await cartService.retrieve(cart_id, {
     select: ["subtotal"],
     relations: ["region", "items", "items.variant", "items.variant.product"],
   })

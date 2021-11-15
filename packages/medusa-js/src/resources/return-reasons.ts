@@ -1,22 +1,23 @@
 import BaseResource from './base';
-import * as Types from '../types';
+import { StoreReturnReasonsListRes, StoreReturnReasonsRes } from '@medusajs/medusa';
+import { AxiosPromise } from 'axios';
 
 class ReturnReasonsResource extends BaseResource {
   /**
    * @description Retrieves a single Return Reason
    * @param id is required
-   * @returns AsyncResult<{ return_reason: ReturnReason }>
+   * @returns AxiosPromise<StoreReturnReasonsRes>
    */
-  retrieve(id: string): Types.AsyncResult<{ return_reason: Types.ReturnReason }> {
+  retrieve(id: string): AxiosPromise<StoreReturnReasonsRes> {
     const path = `/store/return-reasons/${id}`;
     return this.client.request('GET', path);
   }
 
   /**
    * Lists return reasons defined in Medusa Admin
-   * @returns AsyncResult<{ return_reasons: ReturnReason[] }>
+   * @returns AxiosPromise<StoreReturnReasonsListRes>
    */
-  list(): Types.AsyncResult<{ return_reasons: Types.ReturnReason[] }> {
+  list(): AxiosPromise<StoreReturnReasonsListRes> {
     const path = `/store/return-reasons`;
     return this.client.request('GET', path);
   }
