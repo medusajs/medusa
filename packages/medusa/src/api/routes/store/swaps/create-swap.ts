@@ -1,6 +1,20 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  ValidateNested,
+} from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { defaultStoreSwapFields, defaultStoreSwapRelations } from "."
+import IdempotencyKeyService from "../../../../services/idempotency-key"
+import OrderService from "../../../../services/order"
+import ReturnService from "../../../../services/return"
+import SwapService from "../../../../services/swap"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /swaps
@@ -26,6 +40,15 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
+ *                 reason_id:
+ *                   description: The id of the reason of this return
+ *                   type: string
+ *                 note_id:
+ *                   description: The id of the note
+ *                   type: string
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *           return_shipping_option:
  *             type: string
  *             description: The id of the Shipping Option to create the Shipping Method from.
@@ -40,6 +63,9 @@ import { defaultFields, defaultRelations } from "./"
  *                 quantity:
  *                   description: The quantity to send of the variant.
  *                   type: integer
+ *         required:
+ *          - order_id
+ *          - return_items
  * tags:
  *   - Swap
  * responses:
@@ -53,29 +79,11 @@ import { defaultFields, defaultRelations } from "./"
  *               $ref: "#/components/schemas/swap"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    order_id: Validator.string().required(),
-    return_items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-        reason_id: Validator.string().optional(),
-        note: Validator.string().optional(),
-      })
-      .required(),
-    return_shipping_option: Validator.string().optional(),
-    additional_items: Validator.array().items({
-      variant_id: Validator.string().required(),
-      quantity: Validator.number().required(),
-    }),
-  })
+  const swapDto = await validator(StorePostSwapsReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    "idempotencyKeyService"
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -95,9 +103,9 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const orderService = req.scope.resolve("orderService")
-  const swapService = req.scope.resolve("swapService")
-  const returnService = req.scope.resolve("returnService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
+  const returnService: ReturnService = req.scope.resolve("returnService")
 
   let inProgress = true
   let err = false
@@ -110,15 +118,15 @@ export default async (req, res) => {
           async (manager) => {
             const order = await orderService
               .withTransaction(manager)
-              .retrieve(value.order_id, {
+              .retrieve(swapDto.order_id, {
                 select: ["refunded_total", "total"],
                 relations: ["items", "swaps", "swaps.additional_items"],
               })
 
             let returnShipping
-            if (value.return_shipping_option) {
+            if (swapDto.return_shipping_option) {
               returnShipping = {
-                option_id: value.return_shipping_option,
+                option_id: swapDto.return_shipping_option,
               }
             }
 
@@ -126,8 +134,8 @@ export default async (req, res) => {
               .withTransaction(manager)
               .create(
                 order,
-                value.return_items,
-                value.additional_items,
+                swapDto.return_items,
+                swapDto.additional_items,
                 returnShipping,
                 {
                   idempotency_key: idempotencyKey.idempotency_key,
@@ -173,8 +181,8 @@ export default async (req, res) => {
             }
 
             const swap = await swapService.retrieve(swaps[0].id, {
-              select: defaultFields,
-              relations: defaultRelations,
+              select: defaultStoreSwapFields,
+              relations: defaultStoreSwapRelations,
             })
 
             return {
@@ -216,4 +224,52 @@ export default async (req, res) => {
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsNumber()
+  @Min(1)
+  quantity: number
+
+  @IsOptional()
+  @IsString()
+  reason_id?: string
+
+  @IsOptional()
+  @IsString()
+  note?: string
+}
+
+class AdditionalItem {
+  @IsString()
+  @IsNotEmpty()
+  variant_id: string
+
+  @IsNumber()
+  @Min(1)
+  quantity: number
+}
+
+export class StorePostSwapsReq {
+  @IsString()
+  @IsNotEmpty()
+  order_id: string
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  return_items: Item[]
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdditionalItem)
+  additional_items: AdditionalItem[]
+
+  @IsOptional()
+  @IsString()
+  return_shipping_option?: string
 }

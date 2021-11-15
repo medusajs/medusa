@@ -1,3 +1,4 @@
+import { Swap } from "./../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
@@ -15,7 +16,7 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export const defaultStoreSwapRelations = [
   "order",
   "additional_items",
   "return_order",
@@ -26,7 +27,7 @@ export const defaultRelations = [
   "shipping_methods",
   "cart",
 ]
-export const defaultFields = [
+export const defaultStoreSwapFields = [
   "id",
   "fulfillment_status",
   "payment_status",
@@ -41,3 +42,10 @@ export const defaultFields = [
   "metadata",
   "idempotency_key",
 ]
+
+export class StoreSwapsRes {
+  swap: Swap
+}
+
+export * from "./create-swap"
+export * from "./get-swap-by-cart"
