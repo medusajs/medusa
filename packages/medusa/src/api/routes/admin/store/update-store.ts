@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from "class-validator"
+import { IsString, IsOptional } from "class-validator"
 import { Response } from "express"
 import { AdminStoresRes } from "."
 import { StoreService } from "../../../../services"
@@ -44,23 +44,23 @@ export default async (req, res: Response<AdminStoresRes>) => {
 }
 
 export class AdminPostStoreReq {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   name: string
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   swap_link_template: string
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   payment_link_template: string
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   default_currency_code: string
 
   @IsString({ each: true })
-  @IsNotEmpty()
+  @IsOptional()
   currencies: string[]
 }
