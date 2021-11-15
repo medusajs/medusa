@@ -1,4 +1,8 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { IsString, IsNotEmpty } from "class-validator"
+import { Response } from "express"
+import { AdminStoresRes } from "."
+import { StoreService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store
@@ -31,21 +35,32 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res) => {
-  const schema = Validator.object().keys({
-    name: Validator.string(),
-    swap_link_template: Validator.string(),
-    payment_link_template: Validator.string(),
-    default_currency_code: Validator.string(),
-    currencies: Validator.array().items(Validator.string()),
-  })
+export default async (req, res: Response<AdminStoresRes>) => {
+  const validatedBody = await validator(AdminPostStoreReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const storeService = req.scope.resolve("storeService")
-  const store = await storeService.update(value)
+  const storeService: StoreService = req.scope.resolve("storeService")
+  const store = await storeService.update(validatedBody)
   res.status(200).json({ store })
+}
+
+export class AdminPostStoreReq {
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
+  @IsString()
+  @IsNotEmpty()
+  swap_link_template: string
+
+  @IsString()
+  @IsNotEmpty()
+  payment_link_template: string
+
+  @IsString()
+  @IsNotEmpty()
+  default_currency_code: string
+
+  @IsString({ each: true })
+  @IsNotEmpty()
+  currencies: string[]
 }

@@ -1,3 +1,7 @@
+import { Response } from "express"
+import { AdminStoresRes } from "./index"
+import { StoreService } from "../../../../services"
+
 /**
  * @oas [delete] /store/currencies/{code}
  * operationId: "DeleteStoreCurrenciesCode"
@@ -17,10 +21,10 @@
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res) => {
+export default async (req, res: Response<AdminStoresRes>) => {
   const { currency_code } = req.params
 
-  const storeService = req.scope.resolve("storeService")
+  const storeService: StoreService = req.scope.resolve("storeService")
   const data = await storeService.removeCurrency(currency_code)
   res.status(200).json({ store: data })
 }
