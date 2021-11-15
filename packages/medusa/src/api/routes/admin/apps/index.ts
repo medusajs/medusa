@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Oauth } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -13,4 +14,12 @@ export default (app) => {
   )
 
   return app
+}
+
+export type AdminAppsRes = {
+  apps: Oauth
+}
+
+export type AdminGetAppsRes = {
+  apps: Oauth[]
 }
