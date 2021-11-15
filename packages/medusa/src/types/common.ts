@@ -30,15 +30,19 @@ export class DateComparisonOperator {
 
 export class StringComparisonOperator {
   @IsString()
+  @IsOptional()
   lt?: string
 
   @IsString()
+  @IsOptional()
   gt?: string
 
   @IsString()
+  @IsOptional()
   gte?: string
 
   @IsString()
+  @IsOptional()
   lte?: string
 }
 
