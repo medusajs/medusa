@@ -1,10 +1,12 @@
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService, ProductVariantService } from "../../../../services"
 
 /**
  * @oas [delete] /products/{id}/variants/{variant_id}
  * operationId: "DeleteProductsProductVariantsVariant"
  * summary: "Delete a Product Variant"
  * description: "Deletes a Product Variant."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  *   - (path) variant_id=* {string} The id of the Product Variant.
@@ -29,14 +31,16 @@ import { defaultRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id, variant_id } = req.params
 
-  const productVariantService = req.scope.resolve("productVariantService")
-  const productService = req.scope.resolve("productService")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+  const productService: ProductService = req.scope.resolve("productService")
 
   await productVariantService.delete(variant_id)
 
   const data = await productService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
   })
 
   res.json({

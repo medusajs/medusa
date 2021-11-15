@@ -3,6 +3,7 @@
  * operationId: "DeleteProductsProduct"
  * summary: "Delete a Product"
  * description: "Deletes a Product and it's associated Product Variants."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  * tags:

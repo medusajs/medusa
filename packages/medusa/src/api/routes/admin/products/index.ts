@@ -1,4 +1,6 @@
 import { Router } from "express"
+import { Product } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -55,7 +57,7 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export const defaultAdminProductRelations = [
   "variants",
   "variants.prices",
   "variants.options",
@@ -66,7 +68,7 @@ export const defaultRelations = [
   "collection",
 ]
 
-export const defaultFields = [
+export const defaultAdminProductFields = [
   "id",
   "title",
   "subtitle",
@@ -91,7 +93,7 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const allowedFields = [
+export const allowedAdminProductFields = [
   "id",
   "title",
   "subtitle",
@@ -116,7 +118,7 @@ export const allowedFields = [
   "metadata",
 ]
 
-export const allowedRelations = [
+export const allowedAdminProductRelations = [
   "variants",
   "variants.prices",
   "images",
@@ -140,3 +142,38 @@ export const filterableFields = [
   "updated_at",
   "deleted_at",
 ]
+
+export enum ProductStatus {
+  DRAFT = "draft",
+  PROPOSED = "proposed",
+  PUBLISHED = "published",
+  REJECTED = "rejected",
+}
+
+export type AdminProductsDeleteOptionRes = {
+  option_id: string
+  object: "option"
+  deleted: boolean
+  product: Product
+}
+
+export type AdminProductsDeleteVariantRes = {
+  variant_id: string
+  object: "product-variant"
+  deleted: boolean
+  product: Product
+}
+
+export type AdminProductsDeleteRes = {
+  id: string
+  object: "product"
+  deleted: boolean
+}
+
+export type AdminProductsListRes = PaginatedResponse & {
+  products: Product[]
+}
+
+export type AdminProductsRes = {
+  product: Product
+}

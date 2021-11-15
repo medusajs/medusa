@@ -1,11 +1,14 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { IsString } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}/options/{option_id}
  * operationId: "PostProductsProductOptionsOption"
  * summary: "Update a Product Option."
  * description: "Updates a Product Option"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  *   - (path) option_id=* {string} The id of the Product Option.
@@ -32,23 +35,24 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id, option_id } = req.params
 
-  const schema = Validator.object().keys({
-    title: Validator.string().required(),
-  })
+  const validated = await validator(
+    AdminPostProductsProductOptionsOption,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const productService: ProductService = req.scope.resolve("productService")
 
-  const productService = req.scope.resolve("productService")
-
-  await productService.updateOption(id, option_id, value)
+  await productService.updateOption(id, option_id, validated)
 
   const product = await productService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
   })
 
   res.json({ product })
+}
+
+export class AdminPostProductsProductOptionsOption {
+  @IsString()
+  title: string
 }

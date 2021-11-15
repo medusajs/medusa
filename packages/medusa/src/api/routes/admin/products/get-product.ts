@@ -1,10 +1,11 @@
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 /**
  * @oas [get] /products/{id}
  * operationId: "GetProductsProduct"
  * summary: "Retrieve a Product"
  * description: "Retrieves a Product."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  * tags:
@@ -25,8 +26,8 @@ export default async (req, res) => {
   const productService = req.scope.resolve("productService")
 
   const product = await productService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
   })
 
   res.json({ product })

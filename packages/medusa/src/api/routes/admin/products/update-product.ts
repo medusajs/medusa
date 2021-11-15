@@ -1,11 +1,31 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Validate,
+  ValidateNested,
+} from "class-validator"
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  ProductStatus,
+} from "."
+import { ProductService } from "../../../../services"
+import { XorConstraint } from "../../../../types/validators/xor"
+import { IsType } from "../../../../utils/is-type"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}
  * operationId: "PostProductsProduct"
  * summary: "Update a Product"
  * description: "Updates a Product"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  * requestBody:
@@ -186,100 +206,240 @@ import { defaultRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    title: Validator.string().optional(),
-    subtitle: Validator.string().optional().allow(null, ""),
-    description: Validator.string().optional(),
-    discountable: Validator.boolean().optional(),
-    status: Validator.string().valid(
-      "proposed",
-      "draft",
-      "published",
-      "rejected"
-    ),
-    type: Validator.object()
-      .keys({
-        id: Validator.string().optional(),
-        value: Validator.string().required(),
-      })
-      .allow(null)
-      .optional(),
-    collection_id: Validator.string().allow(null).optional(),
-    tags: Validator.array()
-      .items({
-        id: Validator.string().optional(),
-        value: Validator.string().required(),
-      })
-      .optional(),
-    handle: Validator.string().optional(),
-    weight: Validator.number().allow(null).optional(),
-    length: Validator.number().allow(null).optional(),
-    height: Validator.number().allow(null).optional(),
-    width: Validator.number().allow(null).optional(),
-    origin_country: Validator.string().allow(null, ""),
-    hs_code: Validator.string().allow(null, ""),
-    mid_code: Validator.string().allow(null, ""),
-    material: Validator.string().allow(null, ""),
-    images: Validator.array().items(Validator.string()).optional().optional(),
-    thumbnail: Validator.string().optional(),
-    variants: Validator.array()
-      .items({
-        id: Validator.string().optional(),
-        title: Validator.string().allow(null),
-        sku: Validator.string().allow(null),
-        ean: Validator.string().allow(null),
-        barcode: Validator.string().allow(null),
-        prices: Validator.array().items(
-          Validator.object()
-            .keys({
-              region_id: Validator.string(),
-              currency_code: Validator.string(),
-              amount: Validator.number().integer().required(),
-              sale_amount: Validator.number().optional(),
-            })
-            .xor("region_id", "currency_code")
-        ),
-        options: Validator.array().items({
-          option_id: Validator.string().required(),
-          value: Validator.alternatives(
-            Validator.string(),
-            Validator.number()
-          ).required(),
-        }),
-        inventory_quantity: Validator.number().allow(null),
-        allow_backorder: Validator.boolean().allow(null),
-        manage_inventory: Validator.boolean().allow(null),
-        weight: Validator.number().allow(null).optional(),
-        length: Validator.number().allow(null).optional(),
-        height: Validator.number().allow(null).optional(),
-        width: Validator.number().allow(null).optional(),
-        hs_code: Validator.string().optional().allow(null, ""),
-        origin_country: Validator.string().allow(null, ""),
-        mid_code: Validator.string().allow(null, ""),
-        material: Validator.string().allow(null, ""),
-        metadata: Validator.object().optional(),
-        upc: Validator.string().allow(null),
-      })
-      .optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(AdminPostProductsProductReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const productService: ProductService = req.scope.resolve("productService")
 
-  const productService = req.scope.resolve("productService")
-  const entityManager = req.scope.resolve("manager")
-
-  await entityManager.transaction(async (manager) => {
-    await productService.withTransaction(manager).update(id, value)
-  })
+  await productService.update(id, validated)
 
   const product = await productService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
   })
 
   res.json({ product })
+}
+
+class ProductTypeReq {
+  @IsString()
+  @IsOptional()
+  id: string
+
+  @IsString()
+  value: string
+}
+
+class ProductTagReq {
+  @IsString()
+  @IsOptional()
+  id: string
+
+  @IsString()
+  value: string
+}
+
+class ProductVariantOptionReq {
+  @IsType([String, Number])
+  value: string | number
+
+  @IsString()
+  option_id: string
+}
+
+class ProductVariantPricesReq {
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
+
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
+
+  @IsNumber()
+  @Type(() => Number)
+  amount: number
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  sale_amount: number
+}
+
+class ProductVariantReq {
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  sku?: string
+
+  @IsString()
+  @IsOptional()
+  ean?: string
+
+  @IsString()
+  @IsOptional()
+  upc?: string
+
+  @IsString()
+  @IsOptional()
+  barcode?: string
+
+  @IsString()
+  @IsOptional()
+  hs_code?: string
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  inventory_quantity: number
+
+  @IsBoolean()
+  @IsOptional()
+  allow_backorder?: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  manage_inventory?: boolean
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  weight?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  length?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  height?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  width?: number
+
+  @IsString()
+  @IsOptional()
+  origin_country?: string
+
+  @IsString()
+  @IsOptional()
+  mid_code?: string
+
+  @IsString()
+  @IsOptional()
+  material?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductVariantPricesReq)
+  prices: ProductVariantPricesReq
+
+  @IsOptional()
+  @Type(() => ProductVariantOptionReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  options?: ProductVariantOptionReq[] = []
+}
+
+export class AdminPostProductsProductReq {
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  subtitle?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsBoolean()
+  @IsOptional()
+  discountable?: boolean
+
+  @IsArray()
+  @IsOptional()
+  images: string[]
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
+
+  @IsString()
+  @IsOptional()
+  handle?: string
+
+  @IsEnum(ProductStatus)
+  @IsOptional()
+  status?: ProductStatus = ProductStatus.DRAFT
+
+  @IsOptional()
+  @Type(() => ProductTypeReq)
+  @ValidateNested()
+  type?: ProductTypeReq
+
+  @IsOptional()
+  @IsString()
+  collection_id?: string
+
+  @IsOptional()
+  @Type(() => ProductTagReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  tags?: ProductTagReq
+
+  @IsOptional()
+  @Type(() => ProductVariantReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  variants?: ProductVariantReq[]
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  weight?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  length?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  height?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  width?: number
+
+  @IsString()
+  @IsOptional()
+  hs_code?: string
+
+  @IsString()
+  @IsOptional()
+  origin_country?: string
+
+  @IsString()
+  @IsOptional()
+  mid_code?: string
+
+  @IsString()
+  @IsOptional()
+  material?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
 }

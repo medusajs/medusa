@@ -1,8 +1,11 @@
+import { ProductService } from "../../../../services"
+
 /**
  * @oas [get] /products/{id}/variants
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Product Variants"
  * description: "Retrieves a list of the Product Variants associated with a Product."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  * tags:
@@ -22,7 +25,7 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
   const variants = await productService.retrieveVariants(id)
 
   res.json({ variants })

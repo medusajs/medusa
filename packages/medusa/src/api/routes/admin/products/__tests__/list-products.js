@@ -1,8 +1,8 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import {
-  ProductServiceMock,
   products,
+  ProductServiceMock,
 } from "../../../../../services/__mocks__/product"
 
 describe("GET /admin/products", () => {
@@ -20,6 +20,7 @@ describe("GET /admin/products", () => {
     })
 
     it("returns 200 and decorated products", () => {
+      console.log(subject)
       expect(subject.status).toEqual(200)
       expect(subject.body.products[0].id).toEqual(products.product1.id)
       expect(subject.body.products[1].id).toEqual(products.product2.id)
