@@ -1,14 +1,8 @@
-import {
-  defaultAdminOrdersRelations,
-  defaultAdminOrdersFields,
-  filterableAdminOrdersFields,
-} from "."
-import { MedusaError, Validator } from "medusa-core-utils"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { validator } from "../../../../utils/validator"
 import {
   IsArray,
   IsEnum,
-  IsObject,
   IsOptional,
   IsString,
   ValidateNested,
@@ -16,7 +10,7 @@ import {
 import { DateComparisonOperator } from "../../../../types/common"
 import { Type } from "class-transformer"
 import _ from "lodash"
-import { IsType } from "../../../../utils/is-type"
+import { OrderService } from "../../../../services"
 
 /**
  * @oas [get] /orders
@@ -40,15 +34,8 @@ import { IsType } from "../../../../utils/is-type"
  */
 export default async (req, res) => {
   const value = await validator(AdminGetOrdersReq, req.query)
-  // const schema = Validator.orderFilter()
 
-  // const { value, error } = schema.validate(req.query)
-
-  // if (error) {
-  //   throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  // }
-
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   const limit = parseInt(req.query.limit) || 50
   const offset = parseInt(req.query.offset) || 0
@@ -73,12 +60,6 @@ export default async (req, res) => {
   if (value.expand) {
     expandFields = value.expand.split(",")
   }
-
-  // for (const k of filterableAdminOrdersFields) {
-  //   if (k in value) {
-  //     selector[k] = value[k]
-  //   }
-  // }
 
   const listConfig = {
     select: includeFields.length ? includeFields : defaultAdminOrdersFields,
