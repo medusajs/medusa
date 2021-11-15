@@ -1,5 +1,6 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { defaultStoreReturnReasonRelations, defaultStoreReturnReasonFields } from "."
+import { ReturnReason } from "../../../../"
+import ReturnReasonService from "../../../../services/return-reason"
 
 /**
  * @oas [get] /return-reasons/{id}
@@ -23,11 +24,11 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
   try {
-    const returnReasonService = req.scope.resolve("returnReasonService")
+    const returnReasonService: ReturnReasonService = req.scope.resolve("returnReasonService")
 
     const data = await returnReasonService.retrieve(id, {
-      select: defaultFields,
-      relations: defaultRelations,
+      select: defaultStoreReturnReasonFields,
+      relations: defaultStoreReturnReasonRelations,
     })
 
     res.status(200).json({ return_reason: data })

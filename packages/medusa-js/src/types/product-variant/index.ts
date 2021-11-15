@@ -1,5 +1,6 @@
 import { Product } from '../product';
 import { Region } from '../region';
+import { StoreGetVariantsParams } from '@medusajs/medusa';
 
 export interface ProductVariant {
   id: string;
@@ -48,4 +49,13 @@ export interface Currency {
   symbol: string;
   symbol_native: string;
   name: string;
+}
+
+/**
+ * StoreGetVariantParams takes "ids" and "expand" fields as strings
+ * However, the best experience would be to allow users of the client to pass them as arrays of strings 
+ */
+export type StoreVariantsListParamsObject = Omit<StoreGetVariantsParams, "ids" | "expand"> & {
+  ids?: string[]
+  expand?: string[]
 }
