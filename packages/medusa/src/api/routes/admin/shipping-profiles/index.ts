@@ -48,7 +48,7 @@ export type AdminShippingProfileRes = {
   shipping_profile: ShippingProfile
 }
 
-export type AdminShippingProfilesRes = {
+export type AdminShippingProfilesListRes = {
   shipping_profiles: ShippingProfile[]
 }
 
