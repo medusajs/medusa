@@ -21,6 +21,9 @@ class BaseService {
   buildQuery_(selector, config = {}) {
     const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
+        if (typeof value === "undefined") {
+          return acc
+        }
         switch (true) {
           case value instanceof FindOperator:
             acc[key] = value
@@ -69,6 +72,10 @@ class BaseService {
 
     const query = {
       where: build(selector),
+    }
+
+    if ("deleted_at" in selector) {
+      query.withDeleted = true
     }
 
     if ("skip" in config) {
