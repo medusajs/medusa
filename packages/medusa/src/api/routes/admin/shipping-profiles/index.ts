@@ -44,7 +44,7 @@ export const defaultAdminShippingProfilesRelations = [
   "shipping_options",
 ]
 
-export type AdminShippingProfileRes = {
+export type AdminShippingProfilesRes = {
   shipping_profile: ShippingProfile
 }
 
