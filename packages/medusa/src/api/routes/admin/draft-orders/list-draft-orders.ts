@@ -58,7 +58,7 @@ export default async (req, res) => {
 
 type DraftOrderSelector = { q?: string }
 
-export class AdminGetDraftOrdersReq {
+export class AdminGetDraftOrdersParams {
   @IsString()
   @IsOptional()
   q?: string
