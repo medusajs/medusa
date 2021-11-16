@@ -2,6 +2,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { FindConfig } from "../../../../types/common"
+import { Selector } from "../../../../types/customers"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /customers
@@ -29,7 +30,7 @@ export default async (req, res) => {
   const limit = validated.limit || 50
   const offset = validated.offset || 0
 
-  const selector: QuerySelector = {}
+  const selector: Selector = {}
 
   if (validated.q) {
     selector.q = validated.q
@@ -54,15 +55,7 @@ export default async (req, res) => {
   res.json({ customers, count, offset, limit })
 }
 
-type QuerySelector = {
-  q?: string
-}
-
-export class AdminGetCustomersParams {
-  @IsString()
-  @IsOptional()
-  q?: string
-
+export type AdminGetCustomersParams = Selector & {
   @IsNumber()
   @IsOptional()
   limit?: number
