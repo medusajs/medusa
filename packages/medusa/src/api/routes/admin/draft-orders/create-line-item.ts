@@ -1,14 +1,28 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultCartFields, defaultCartRelations, defaultFields } from "."
-
+import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+  defaultAdminDraftOrdersFields,
+} from "."
+import {
+  CartService,
+  DraftOrderService,
+  LineItemService,
+} from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
  * summary: "Create a Line Item for Draft Order"
  * description: "Creates a Line Item for the Draft Order"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
+ *       required:
+ *         - quantity
  *       schema:
  *         properties:
  *           variant_id:
@@ -42,28 +56,24 @@ import { defaultCartFields, defaultCartRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    title: Validator.string().optional(),
-    unit_price: Validator.number().optional(),
-    variant_id: Validator.string().optional(),
-    quantity: Validator.number().required(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(
+    AdminPostDraftOrdersDraftOrderLineItemsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const draftOrderService = req.scope.resolve("draftOrderService")
-  const cartService = req.scope.resolve("cartService")
-  const lineItemService = req.scope.resolve("lineItemService")
-  const entityManager = req.scope.resolve("manager")
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
+  const cartService: CartService = req.scope.resolve("cartService")
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
     const draftOrder = await draftOrderService
       .withTransaction(manager)
-      .retrieve(id, { select: defaultFields, relations: ["cart"] })
+      .retrieve(id, {
+        select: defaultAdminDraftOrdersFields,
+        relations: ["cart"],
+      })
 
     if (draftOrder.status === "completed") {
       throw new MedusaError(
@@ -72,12 +82,12 @@ export default async (req, res) => {
       )
     }
 
-    if (value.variant_id) {
+    if (validated.variant_id) {
       const line = await lineItemService.generate(
-        value.variant_id,
+        validated.variant_id,
         draftOrder.cart.region_id,
-        value.quantity,
-        { metadata: value.metadata, unit_price: value.unit_price }
+        validated.quantity,
+        { metadata: validated.metadata, unit_price: validated.unit_price }
       )
 
       await cartService
@@ -88,20 +98,41 @@ export default async (req, res) => {
       await lineItemService.withTransaction(manager).create({
         cart_id: draftOrder.cart_id,
         has_shipping: true,
-        title: value.title || "Custom item",
+        title: validated.title || "Custom item",
         allow_discounts: false,
-        unit_price: value.unit_price || 0,
-        quantity: value.quantity,
+        unit_price: validated.unit_price || 0,
+        quantity: validated.quantity,
       })
     }
 
     draftOrder.cart = await cartService
       .withTransaction(manager)
       .retrieve(draftOrder.cart_id, {
-        relations: defaultCartRelations,
-        select: defaultCartFields,
+        relations: defaultAdminDraftOrdersCartRelations,
+        select: defaultAdminDraftOrdersCartFields,
       })
 
     res.status(200).json({ draft_order: draftOrder })
   })
+}
+
+export class AdminPostDraftOrdersDraftOrderLineItemsReq {
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsNumber()
+  @IsOptional()
+  unit_price?: number
+
+  @IsString()
+  @IsOptional()
+  variant_id?: string
+
+  @IsNumber()
+  quantity: number
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object = {}
 }

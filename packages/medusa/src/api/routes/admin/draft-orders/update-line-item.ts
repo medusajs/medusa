@@ -1,11 +1,21 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultCartFields, defaultCartRelations, defaultFields } from "."
-
+import { Type } from "class-transformer"
+import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+  defaultAdminDraftOrdersFields,
+} from "."
+import { DraftOrder } from "../../../.."
+import { CartService, DraftOrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
  * summary: "Update a Line Item for a Draft Order"
  * description: "Updates a Line Item for a Draft Order"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -39,27 +49,21 @@ import { defaultCartFields, defaultCartRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id, line_id } = req.params
 
-  const schema = Validator.object().keys({
-    title: Validator.string().optional(),
-    unit_price: Validator.number().optional(),
-    quantity: Validator.number().optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(
+    AdminPostDraftOrdersDraftOrderLineItemsItemReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const draftOrderService = req.scope.resolve("draftOrderService")
-  const cartService = req.scope.resolve("cartService")
-  const entityManager = req.scope.resolve("manager")
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
+  const cartService: CartService = req.scope.resolve("cartService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
-    const draftOrder = await draftOrderService
+    const draftOrder: DraftOrder = await draftOrderService
       .withTransaction(manager)
       .retrieve(id, {
-        select: defaultFields,
+        select: defaultAdminDraftOrdersFields,
         relations: ["cart", "cart.items"],
       })
 
@@ -70,7 +74,7 @@ export default async (req, res) => {
       )
     }
 
-    if (value.quantity === 0) {
+    if (validated.quantity === 0) {
       await cartService
         .withTransaction(manager)
         .removeLineItem(draftOrder.cart.id, line_id)
@@ -84,8 +88,8 @@ export default async (req, res) => {
         )
       }
 
-      const lineItemUpdate = {
-        ...value,
+      const lineItemUpdate: LineItemUpdate = {
+        ...validated,
         region_id: draftOrder.cart.region_id,
       }
 
@@ -101,10 +105,39 @@ export default async (req, res) => {
     draftOrder.cart = await cartService
       .withTransaction(manager)
       .retrieve(draftOrder.cart_id, {
-        relations: defaultCartRelations,
-        select: defaultCartFields,
+        relations: defaultAdminDraftOrdersCartRelations,
+        select: defaultAdminDraftOrdersCartFields,
       })
 
     res.status(200).json({ draft_order: draftOrder })
   })
+}
+
+class LineItemUpdate {
+  title?: string
+  unit_price?: number
+  quantity?: number
+  metadata?: object = {}
+  region_id?: string
+  variant_id?: string
+}
+
+export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  unit_price?: number
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  quantity?: number
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object = {}
 }

@@ -1,15 +1,31 @@
+import { Type } from "class-transformer"
 import {
-  MedusaError,
-  transformIdableFields,
-  Validator,
-} from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "."
-
+  IsArray,
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { transformIdableFields } from "medusa-core-utils"
+import {
+  defaultAdminDraftOrdersFields,
+  defaultAdminDraftOrdersRelations,
+} from "."
+import { DraftOrder } from "../../../.."
+import { DraftOrderService } from "../../../../services"
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /draft-orders
  * operationId: "PostDraftOrders"
  * summary: "Create a Draft Order"
  * description: "Creates a Draft Order"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -97,52 +113,115 @@ import { defaultFields, defaultRelations } from "."
  */
 
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    status: Validator.string().valid("open", "completed").optional(),
-    email: Validator.string().email().required(),
-    billing_address: Validator.address().optional(),
-    shipping_address: Validator.address().optional(),
-    items: Validator.array()
-      .items({
-        variant_id: Validator.string().optional().allow(""),
-        unit_price: Validator.number().optional(),
-        title: Validator.string().optional().allow(""),
-        quantity: Validator.number().required(),
-        metadata: Validator.object().default({}),
-      })
-      .required(),
-    region_id: Validator.string().required(),
-    discounts: Validator.array()
-      .items({
-        code: Validator.string().required(),
-      })
-      .optional(),
-    customer_id: Validator.string().optional(),
-    no_notification_order: Validator.boolean().optional(),
-    shipping_methods: Validator.array()
-      .items({
-        option_id: Validator.string().required(),
-        data: Validator.object().optional(),
-        price: Validator.number().integer().integer().allow(0).optional(),
-      })
-      .required(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(AdminPostDraftOrdersReq, req.body)
 
-  let { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const value = transformIdableFields(validated, [
+    "shipping_address",
+    "billing_address",
+  ])
 
-  value = transformIdableFields(value, ["shipping_address", "billing_address"])
-
-  const draftOrderService = req.scope.resolve("draftOrderService")
-  let draftOrder = await draftOrderService.create(value)
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
+  let draftOrder: DraftOrder = await draftOrderService.create(value)
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {
-    relations: defaultRelations,
-    select: defaultFields,
+    relations: defaultAdminDraftOrdersRelations,
+    select: defaultAdminDraftOrdersFields,
   })
 
   res.status(200).json({ draft_order: draftOrder })
+}
+
+enum Status {
+  open = "open",
+  completed = "completed",
+}
+
+export class AdminPostDraftOrdersReq {
+  @IsEnum(Status)
+  @IsOptional()
+  status?: string
+
+  @IsEmail()
+  email: string
+
+  @IsOptional()
+  @Type(() => AddressPayload)
+  billing_address?: AddressPayload
+
+  @IsOptional()
+  @Type(() => AddressPayload)
+  shipping_address?: AddressPayload
+
+  @IsArray()
+  @Type(() => Item)
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  items: Item[]
+
+  @IsString()
+  region_id: string
+
+  @IsArray()
+  @IsOptional()
+  @Type(() => Discount)
+  @ValidateNested({ each: true })
+  discounts?: Discount[]
+
+  @IsString()
+  @IsOptional()
+  customer_id?: string
+
+  @IsBoolean()
+  @IsOptional()
+  no_notification_order?: boolean
+
+  @IsArray()
+  @Type(() => ShippingMethod)
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  shipping_methods: ShippingMethod[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object = {}
+}
+
+class ShippingMethod {
+  @IsString()
+  option_id: string
+
+  @IsObject()
+  @IsOptional()
+  data?: object = {}
+
+  @IsNumber()
+  @IsOptional()
+  price?: number
+}
+
+class Discount {
+  @IsString()
+  code: string
+}
+
+class Item {
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsNumber()
+  @IsOptional()
+  unit_price?: number
+
+  @IsString()
+  @IsOptional()
+  variant_id?: string
+
+  @IsNumber()
+  quantity: number
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object = {}
 }

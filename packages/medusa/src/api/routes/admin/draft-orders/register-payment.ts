@@ -1,3 +1,11 @@
+import { EntityManager } from "typeorm"
+import { Order } from "../../../.."
+import {
+  CartService,
+  DraftOrderService,
+  OrderService,
+  PaymentProviderService,
+} from "../../../../services"
 import {
   defaultFields as defaultOrderFields,
   defaultRelations as defaultOrderRelations,
@@ -8,6 +16,7 @@ import {
  * summary: "Registers a payment for a Draft Order"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
  * description: "Registers a payment for a Draft Order."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {String} The Draft Order id.
  * tags:
@@ -26,11 +35,14 @@ import {
 export default async (req, res) => {
   const { id } = req.params
 
-  const draftOrderService = req.scope.resolve("draftOrderService")
-  const paymentProviderService = req.scope.resolve("paymentProviderService")
-  const orderService = req.scope.resolve("orderService")
-  const cartService = req.scope.resolve("cartService")
-  const entityManager = req.scope.resolve("manager")
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    "paymentProviderService"
+  )
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const cartService: CartService = req.scope.resolve("cartService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   let result
   await entityManager.transaction(async (manager) => {

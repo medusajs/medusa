@@ -1,5 +1,8 @@
 import { Router } from "express"
+import { DraftOrder, Order } from "../../../.."
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
+import { PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -44,9 +47,9 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = ["order", "cart"]
+export const defaultAdminDraftOrdersRelations = ["order", "cart"]
 
-export const defaultCartRelations = [
+export const defaultAdminDraftOrdersCartRelations = [
   "region",
   "items",
   "payment",
@@ -60,7 +63,7 @@ export const defaultCartRelations = [
   "discounts.rule",
 ]
 
-export const defaultCartFields = [
+export const defaultAdminDraftOrdersCartFields = [
   "subtotal",
   "tax_total",
   "shipping_total",
@@ -69,7 +72,7 @@ export const defaultCartFields = [
   "total",
 ]
 
-export const defaultFields = [
+export const defaultAdminDraftOrdersFields = [
   "id",
   "status",
   "display_id",
@@ -82,7 +85,7 @@ export const defaultFields = [
   "no_notification_order",
 ]
 
-export const allowedFields = [
+export const allowedAdminDraftOrdersFields = [
   "id",
   "status",
   "display_id",
@@ -94,4 +97,22 @@ export const allowedFields = [
   "no_notification_order",
 ]
 
-export const allowedRelations = ["cart"]
+export const allowedAdminDraftOrdersRelations = ["cart"]
+
+export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
+  order: Order
+}
+
+export type AdminDraftOrdersListRes = PaginatedResponse & {
+  draft_orders: DraftOrder[]
+}
+
+export * from "./create-draft-order"
+export * from "./create-line-item"
+export * from "./delete-draft-order"
+export * from "./delete-line-item"
+export * from "./get-draft-order"
+export * from "./list-draft-orders"
+export * from "./register-payment"
+export * from "./update-draft-order"
+export * from "./update-line-item"

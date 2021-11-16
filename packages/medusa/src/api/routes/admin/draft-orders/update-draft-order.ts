@@ -1,11 +1,26 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultCartFields, defaultCartRelations } from "."
-
+import { MedusaError } from "medusa-core-utils"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+} from "."
+import {
+  IsArray,
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { CartService, DraftOrderService } from "../../../../services"
+import { Type } from "class-transformer"
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
  * summary: Update a Draft Order"
  * description: "Updates a Draft Order."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Draft Order.
  * requestBody:
@@ -57,28 +72,11 @@ import { defaultCartFields, defaultCartRelations } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    region_id: Validator.string().optional(),
-    country_code: Validator.string().optional(),
-    email: Validator.string().email().optional(),
-    billing_address: Validator.object().optional(),
-    shipping_address: Validator.object().optional(),
-    discounts: Validator.array()
-      .items({
-        code: Validator.string(),
-      })
-      .optional(),
-    customer_id: Validator.string().optional(),
-    no_notification_order: Validator.boolean().optional(),
-  })
+  const validated = await validator(AdminPostDraftOrdersDraftOrderReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const draftOrderService = req.scope.resolve("draftOrderService")
-  const cartService = req.scope.resolve("cartService")
+  const draftOrderService: DraftOrderService =
+    req.scope.resolve("draftOrderService")
+  const cartService: CartService = req.scope.resolve("cartService")
 
   const draftOrder = await draftOrderService.retrieve(id)
 
@@ -89,19 +87,60 @@ export default async (req, res) => {
     )
   }
 
-  if ("no_notification_order" in value) {
+  if (validated.no_notification_order !== undefined) {
     await draftOrderService.update(draftOrder.id, {
-      no_notification_order: value.no_notification_order,
+      no_notification_order: validated.no_notification_order,
     })
-    delete value.no_notification_order
+    delete validated.no_notification_order
   }
 
-  await cartService.update(draftOrder.cart_id, value)
+  await cartService.update(draftOrder.cart_id, validated)
 
   draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
-    relations: defaultCartRelations,
-    select: defaultCartFields,
+    relations: defaultAdminDraftOrdersCartRelations,
+    select: defaultAdminDraftOrdersCartFields,
   })
 
   res.status(200).json({ draft_order: draftOrder })
+}
+
+export class AdminPostDraftOrdersDraftOrderReq {
+  @IsString()
+  @IsOptional()
+  region_id?: string
+
+  @IsString()
+  @IsOptional()
+  country_code?: string
+
+  @IsEmail()
+  @IsOptional()
+  email?: string
+
+  @IsOptional()
+  @Type(() => AddressPayload)
+  billing_address?: AddressPayload
+
+  @IsOptional()
+  @Type(() => AddressPayload)
+  shipping_address?: AddressPayload
+
+  @IsArray()
+  @IsOptional()
+  @Type(() => Discount)
+  @ValidateNested({ each: true })
+  discounts?: Discount[]
+
+  @IsString()
+  @IsOptional()
+  customer_id?: string
+
+  @IsBoolean()
+  @IsOptional()
+  no_notification_order?: boolean
+}
+
+class Discount {
+  @IsString()
+  code: string
 }
