@@ -1,8 +1,8 @@
+import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}/payment-providers/{provider_id}

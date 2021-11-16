@@ -1,8 +1,8 @@
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 
 /**
  * @oas [post] /regions/{id}
