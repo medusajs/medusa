@@ -21,7 +21,7 @@ export default (app) => {
   return app
 }
 
-export type AdminNoteRes = {
+export type AdminNotesRes = {
   note: Note
 }
 
