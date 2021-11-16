@@ -79,7 +79,7 @@ export default async (req, res) => {
   const notificationService: NotificationService = req.scope.resolve(
     "notificationService"
   )
-  const validatedQuery = await validator(AdminGetNotificationsQuery, req.query)
+  const validatedQuery = await validator(AdminGetNotificationsParams, req.query)
 
   const limit = validatedQuery.limit ? parseInt(validatedQuery.limit) : 50
   const offset = validatedQuery.offset ? parseInt(validatedQuery.offset) : 0
@@ -143,7 +143,7 @@ export default async (req, res) => {
   res.json({ notifications: data, offset, limit })
 }
 
-export class AdminGetNotificationsQuery {
+export class AdminGetNotificationsParams {
   @IsOptional()
   @IsNumberString()
   limit?: string
