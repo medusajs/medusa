@@ -1,74 +1,102 @@
-import AddressesResource from './addresses';
-import BaseResource from './base';
-import PaymentMethodsResource from './payment-methods';
-import * as Types from '../types';
+import {
+  StoreCustomerRes,
+  StoreCustomersListOrdersRes,
+  StoreGetCustomersCustomerOrdersParams,
+  StorePostCustomersCustomerPasswordTokenReq,
+  StorePostCustomersCustomerReq,
+  StorePostCustomersReq,
+} from "@medusajs/medusa"
+import { AxiosPromise } from "axios"
+import AddressesResource from "./addresses"
+import BaseResource from "./base"
+import PaymentMethodsResource from "./payment-methods"
 
 class CustomerResource extends BaseResource {
-  public paymentMethods = new PaymentMethodsResource(this.client);
-  public addresses = new AddressesResource(this.client);
+  public paymentMethods = new PaymentMethodsResource(this.client)
+  public addresses = new AddressesResource(this.client)
 
   /**
    * Creates a customer
-   * @param payload information of customer
-   * @returns AsyncResult<{ customer: Customer }>
+   * @param {StorePostCustomersReq} payload information of customer
+   * @return { AxiosPromise<StoreCustomerRes>}
    */
-  create(payload: Types.CustomerCreateResource): Types.AsyncResult<{ customer: Types.Customer }> {
-    const path = `/store/customers`;
-    return this.client.request('POST', path, payload);
+  create(payload: StorePostCustomersReq): AxiosPromise<StoreCustomerRes> {
+    const path = `/store/customers`
+    return this.client.request("POST", path, payload)
   }
 
   /**
-   * Retrieves a customer
-   * @param id id of customer
-   * @returns AsyncResult<{ customer: Customer }>
+   * Retrieves the customer that is currently logged
+   * @return {AxiosPromise<StoreCustomerRes>}
    */
-  retrieve(id: string): Types.AsyncResult<{ customer: Types.Customer }> {
-    const path = `/store/customers/${id}`;
-    return this.client.request('GET', path);
+  retrieve(): AxiosPromise<StoreCustomerRes> {
+    const path = `/store/customers/me`
+    return this.client.request("GET", path)
   }
 
   /**
    * Updates a customer
-   * @param id id of customer
-   * @param payload information to update customer with
-   * @returns AsyncResult<{ customer: Customer }>
+   * @param {StorePostCustomersCustomerReq} payload information to update customer with
+   * @return {AxiosPromise<StoreCustomerRes>}
    */
-  update(id: string, payload: Types.CustomerUpdateResource): Types.AsyncResult<{ customer: Types.Customer }> {
-    const path = `/store/customers/${id}`;
-    return this.client.request('POST', path, payload);
+  update(
+    payload: StorePostCustomersCustomerReq
+  ): AxiosPromise<StoreCustomerRes> {
+    const path = `/store/customers/me`
+    return this.client.request("POST", path, payload)
   }
 
   /**
    * Retrieve customer orders
-   * @param id id of customer
-   * @returns AsyncResult<object[]>
+   * @param {StoreGetCustomersCustomerOrdersParams} params optional params to retrieve orders
+   * @return {AxiosPromise<StoreCustomersListOrdersRes>}
    */
-  listOrders(id: string): Types.AsyncResult<object> {
-    const path = `/store/customers/${id}/orders`;
-    return this.client.request('GET', path);
+  listOrders(
+    params?: StoreGetCustomersCustomerOrdersParams
+  ): AxiosPromise<StoreCustomersListOrdersRes> {
+    let path = `/store/customers/me/orders`
+    if (params) {
+      let query: string | undefined
+
+      for (const key of Object.keys(params)) {
+        if (query) {
+          query += `&${key}=${params[key]}`
+        } else {
+          query = `?${key}=${params[key]}`
+        }
+      }
+
+      if (query) {
+        path += query
+      }
+    }
+    return this.client.request("GET", path)
   }
 
   /**
    * Resets customer password
-   * @param payload info used to reset customer password
-   * @returns AsyncResult<{ customer: Customer }>
+   * @param {StorePostCustomersCustomerPasswordTokenReq} payload info used to reset customer password
+   * @return {AxiosPromise<StoreCustomerRes>}
    */
-  resetPassword(payload: Types.CustomerResetPasswordResource): Types.AsyncResult<{ customer: Types.Customer }> {
-    const path = `/store/customers/password-reset`;
-    return this.client.request('POST', path, payload);
+  resetPassword(
+    payload: StorePostCustomersCustomerPasswordTokenReq
+  ): AxiosPromise<StoreCustomerRes> {
+    const path = `/store/customers/password-reset`
+    return this.client.request("POST", path, payload)
   }
 
   /**
-   * Generates a reset password token
-   * @param payload info used to generate token
-   * @returns AsyncResult<{ customer: Customer }>
+   * Generates a reset password token, which can be used to reset the password.
+   * The token is not returned but should be sent out to the customer in an email.
+   * @param {StorePostCustomersCustomerPasswordTokenReq} payload info used to generate token
+   * @return {AxiosPromise}
    */
   generatePasswordToken(
-    payload: Types.CustomerGeneratePasswordTokenResource,
-  ): Types.AsyncResult<{ customer: Types.Customer }> {
-    const path = `/store/customers/password-token`;
-    return this.client.request('POST', path, payload);
+    payload: StorePostCustomersCustomerPasswordTokenReq
+  ): AxiosPromise {
+    const path = `/store/customers/password-token`
+    return this.client.request("POST", path, payload)
   }
 }
 
-export default CustomerResource;
+export default CustomerResource
