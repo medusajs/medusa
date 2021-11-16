@@ -6,6 +6,9 @@ import { validator } from "../../../../utils/validator"
  * operationId: "GetCollections"
  * summary: "List Product Collections"
  * description: "Retrieve a list of Product Collection."
+ * parameters:
+ *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
+ *   - (query) limit=10 {integer} The number of collections to return
  * tags:
  *   - Collection
  * responses:
