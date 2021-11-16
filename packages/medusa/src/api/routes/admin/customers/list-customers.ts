@@ -55,7 +55,7 @@ export default async (req, res) => {
   res.json({ customers, count, offset, limit })
 }
 
-export type AdminGetCustomersParams = Selector & {
+export class AdminGetCustomersParams extends Selector {
   @IsNumber()
   @IsOptional()
   limit?: number
