@@ -1,10 +1,12 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-
+import { IsObject, IsOptional, IsString } from "class-validator"
+import ProductCollectionService from "../../../../services/product-collection"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /collections/{id}
  * operationId: "PostCollectionsCollection"
  * summary: "Update a Product Collection"
  * description: "Updates a Product Collection."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Collection.
  * requestBody:
@@ -36,27 +38,27 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    title: Validator.string().optional(),
-    handle: Validator.string().optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(AdminPostCollectionsCollectionReq, req.body)
+  const productCollectionService: ProductCollectionService = req.scope.resolve(
+    "productCollectionService"
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const updated = await productCollectionService.update(id, validated)
+  const collection = await productCollectionService.retrieve(updated.id)
 
-  try {
-    const productCollectionService = req.scope.resolve(
-      "productCollectionService"
-    )
+  res.status(200).json({ collection })
+}
 
-    const updated = await productCollectionService.update(id, value)
-    const collection = await productCollectionService.retrieve(updated.id)
+export class AdminPostCollectionsCollectionReq {
+  @IsString()
+  @IsOptional()
+  title?: string
 
-    res.status(200).json({ collection })
-  } catch (err) {
-    throw err
-  }
+  @IsString()
+  @IsOptional()
+  handle?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
 }
