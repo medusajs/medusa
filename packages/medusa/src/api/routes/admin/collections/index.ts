@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { ProductCollection } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -21,11 +22,8 @@ export default (app) => {
 export const defaultAdminCollectionsFields = ["id", "title", "handle"]
 export const defaultAdminCollectionsRelations = ["products"]
 
-export type AdminCollectionsListRes = {
+export type AdminCollectionsListRes = PaginatedResponse & {
   collections: ProductCollection[]
-  count: number
-  offset: number
-  limit: number
 }
 
 export type AdminCollectionsRes = {

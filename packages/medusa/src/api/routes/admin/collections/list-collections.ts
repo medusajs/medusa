@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import { IsNumber, IsOptional } from "class-validator"
 import {
   defaultAdminCollectionsFields,
@@ -54,9 +55,11 @@ export default async (req, res) => {
 export class AdminGetCollectionsParams {
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   limit?: number
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   offset?: number
 }
