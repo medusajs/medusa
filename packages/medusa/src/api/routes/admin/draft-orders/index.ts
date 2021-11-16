@@ -106,7 +106,7 @@ export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
   order: Order
 }
 
-export type AdminGetDraftOrdersRes = PaginatedResponse & {
+export type AdminDraftOrdersListRes = PaginatedResponse & {
   draft_orders: DraftOrder[]
 }
 
