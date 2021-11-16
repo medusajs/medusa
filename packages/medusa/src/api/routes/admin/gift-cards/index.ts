@@ -1,4 +1,6 @@
 import { Router } from "express"
+import "reflect-metadata"
+import { GiftCard } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -19,7 +21,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultAdminGiftCardFields = [
   "id",
   "code",
   "value",
@@ -33,9 +35,9 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = ["region", "order"]
+export const defaultAdminGiftCardRelations = ["region", "order"]
 
-export const allowedFields = [
+export const allowedAdminGiftCardFields = [
   "id",
   "code",
   "value",
@@ -49,4 +51,22 @@ export const allowedFields = [
   "metadata",
 ]
 
-export const allowedRelations = ["region"]
+export const allowedAdminGiftCardRelations = ["region"]
+
+export type AdminGiftCardsRes = {
+  gift_card: GiftCard
+}
+
+export type AdminGiftCardsListRes = {
+  gift_cards: GiftCard[]
+}
+
+export type AdminGiftCardsDeleteRes = {
+  id: string
+  object: string
+  deleted: boolean
+}
+
+export * from "./create-gift-card"
+export * from "./list-gift-cards"
+export * from "./update-gift-card"

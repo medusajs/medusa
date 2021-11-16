@@ -1,11 +1,15 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
+import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
+import { GiftCardService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /gift-cards/{id}
  * operationId: "PostGiftCardsGiftCard"
  * summary: "Create a Gift Card"
  * description: "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Gift Card.
  * requestBody:
@@ -46,27 +50,38 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    balance: Validator.number().precision(0).optional(),
-    ends_at: Validator.date().optional(),
-    is_disabled: Validator.boolean().optional(),
-    region_id: Validator.string().optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(AdminPostGiftCardsGiftCardReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  const giftCardService = req.scope.resolve("giftCardService")
-
-  await giftCardService.update(id, value)
+  await giftCardService.update(id, validated)
 
   const giftCard = await giftCardService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminGiftCardFields,
+    relations: defaultAdminGiftCardRelations,
   })
 
   res.status(200).json({ gift_card: giftCard })
+}
+
+export class AdminPostGiftCardsGiftCardReq {
+  @IsOptional()
+  @IsInt()
+  balance?: number
+
+  @IsOptional()
+  @IsBoolean()
+  is_disabled?: boolean
+
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  ends_at?: Date
+
+  @IsOptional()
+  @IsString()
+  region_id?: string
+
+  @IsOptional()
+  metadata?: object
 }
