@@ -1,4 +1,5 @@
 import { Router } from "express"
+import "reflect-metadata"
 import { GiftCard } from "../../../.."
 import middlewares from "../../../middlewares"
 
