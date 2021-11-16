@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from "class-validator"
+import { IsEmail, IsOptional, IsString } from "class-validator"
 import jwt from "jsonwebtoken"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import { Customer } from "../../../.."
@@ -60,4 +60,8 @@ export class StorePostCustomersReq {
 
   @IsString()
   password: string
+
+  @IsOptional()
+  @IsString()
+  phone?: string
 }
