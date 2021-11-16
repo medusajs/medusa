@@ -100,6 +100,7 @@ export type AdminGetRegionsRes = PaginatedResponse & {
 }
 
 export type AdminDeleteRegionRes = DeleteRes
+
 export class FulfillmentOption {
   provider_id: string
   options: any[]
