@@ -1,5 +1,4 @@
 import { Router } from "express"
-import "reflect-metadata"
 import errorHandler from "./middlewares/error-handler"
 import admin from "./routes/admin"
 import store from "./routes/store"
