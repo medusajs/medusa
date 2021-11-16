@@ -2,11 +2,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { FindConfig } from "../../../../types/common"
-<<<<<<< HEAD
-import { QuerySelector } from "../../../../types/discount"
-=======
 import { Selector } from "../../../../types/customers"
->>>>>>> 9f9c0bd38d956ae0d4b281d840e6ec7472d45f2a
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /customers
