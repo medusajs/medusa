@@ -1,0 +1,3 @@
+type QuerySelector = {
+  q?: string
+}

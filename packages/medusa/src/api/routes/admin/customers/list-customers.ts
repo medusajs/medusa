@@ -54,10 +54,6 @@ export default async (req, res) => {
   res.json({ customers, count, offset, limit })
 }
 
-type QuerySelector = {
-  q?: string
-}
-
 export class AdminGetCustomersParams {
   @IsString()
   @IsOptional()
