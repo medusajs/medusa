@@ -1,5 +1,6 @@
-import { IsOptional, IsString, IsNumber, IsDate } from "class-validator"
 import { Type } from "class-transformer"
+import { IsDate, IsNumber, IsOptional, IsString } from "class-validator"
+import "reflect-metadata"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]

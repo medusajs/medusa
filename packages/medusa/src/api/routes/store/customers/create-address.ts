@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
@@ -54,5 +55,6 @@ export default async (req, res) => {
 
 export class StorePostCustomersCustomerAddressesReq {
   @ValidateNested()
+  @Type(() => AddressCreatePayload)
   address: AddressCreatePayload
 }

@@ -1,5 +1,4 @@
 import { Router } from "express"
-import "reflect-metadata"
 import { Customer, Order } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
