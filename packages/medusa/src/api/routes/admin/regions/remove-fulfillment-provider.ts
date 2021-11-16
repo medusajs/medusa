@@ -1,6 +1,6 @@
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
  * @oas [delete] /regions/{id}/fulfillment-providers/{provider_id}

@@ -1,8 +1,8 @@
+import { IsString } from "class-validator"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsString } from "class-validator"
 /**
  * @oas [post] /regions/{id}/fulfillment-providers
  * operationId: "PostRegionsRegionFulfillmentProviders"

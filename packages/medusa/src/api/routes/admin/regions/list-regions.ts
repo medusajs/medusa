@@ -1,9 +1,8 @@
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { IsInt, IsOptional } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
 
 /**
