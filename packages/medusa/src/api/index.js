@@ -17,10 +17,11 @@ export default (container, config) => {
 
 export * from "./routes/admin/variants"
 export * from "./routes/store/carts"
-export * from "./routes/store/collections"
+export * from "./routes/store/auth"
 export * from "./routes/store/products"
 export * from "./routes/store/gift-cards"
 export * from "./routes/store/return-reasons"
 export * from "./routes/store/returns"
 export * from "./routes/store/shipping-options"
 export * from "./routes/store/variants"
+export * from "./routes/store/collections"
