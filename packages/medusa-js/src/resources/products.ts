@@ -24,12 +24,12 @@ class ProductsResource extends BaseResource {
 
   /**
    * @description Searches for products
-   * @param {string} search is required
+   * @param {StorePostSearchReq} searchOptions is required
    * @return {AxiosPromise<StorePostSearchRes>}
    */
-  search(search: StorePostSearchReq): AxiosPromise<StorePostSearchRes> {
+  search(searchOptions: StorePostSearchReq): AxiosPromise<StorePostSearchRes> {
     const path = `/store/products/search`;
-    return this.client.request('POST', path, search);
+    return this.client.request('POST', path, searchOptions);
   }
 
   /**

@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { SearchService } from "../../../../services"
 import ProductService from "../../../../services/product"
@@ -31,9 +32,11 @@ export class StorePostSearchReq {
   q: string
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   offset: number
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   limit: number
   @IsOptional()
   filter: any
