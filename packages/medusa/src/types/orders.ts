@@ -5,6 +5,8 @@ import {
   IsArray,
   IsEnum,
   ValidateNested,
+  IsNotEmpty,
+  IsInt,
 } from "class-validator"
 import { DateComparisonOperator } from "./common"
 
@@ -104,4 +106,23 @@ export class Selector {
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
+}
+
+export class OrdersReturnItem {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
+
+  @IsString()
+  @IsOptional()
+  reason_id?: string
+
+  @IsString()
+  @IsOptional()
+  note?: string
 }

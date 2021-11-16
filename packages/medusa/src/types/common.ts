@@ -1,6 +1,7 @@
 import { Transform } from "class-transformer"
 import { IsOptional, IsString, IsNumber, IsDate } from "class-validator"
 import { Type } from "class-transformer"
+import { IsType } from "../utils/is-type"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
