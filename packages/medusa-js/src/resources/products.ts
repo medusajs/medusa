@@ -4,13 +4,13 @@ import {
   StorePostSearchReq,
   StorePostSearchRes,
   StoreProductsListRes,
-} from '@medusajs/medusa';
-import { AxiosPromise } from 'axios';
-import BaseResource from './base';
-import ProductVariantsResource from './product-variants';
+} from "@medusajs/medusa"
+import { AxiosPromise } from "axios"
+import BaseResource from "./base"
+import ProductVariantsResource from "./product-variants"
 
 class ProductsResource extends BaseResource {
-  public variants = new ProductVariantsResource(this.client);
+  public variants = new ProductVariantsResource(this.client)
 
   /**
    * @description Retrieves a single Product
@@ -18,8 +18,8 @@ class ProductsResource extends BaseResource {
    * @return {AxiosPromise<StoreGetProductsRes>}
    */
   retrieve(id: string): AxiosPromise<StoreGetProductsRes> {
-    const path = `/store/products/${id}`;
-    return this.client.request('GET', path);
+    const path = `/store/products/${id}`
+    return this.client.request("GET", path)
   }
 
   /**
@@ -28,8 +28,8 @@ class ProductsResource extends BaseResource {
    * @return {AxiosPromise<StorePostSearchRes>}
    */
   search(searchOptions: StorePostSearchReq): AxiosPromise<StorePostSearchRes> {
-    const path = `/store/products/search`;
-    return this.client.request('POST', path, searchOptions);
+    const path = `/store/products/search`
+    return this.client.request("POST", path, searchOptions)
   }
 
   /**
@@ -38,18 +38,18 @@ class ProductsResource extends BaseResource {
    * @return {AxiosPromise<StoreProductsListRes>}
    */
   list(query?: StoreGetProductsReq): AxiosPromise<StoreProductsListRes> {
-    let path = `/store/products`;
+    let path = `/store/products`
 
     if (query) {
       const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`;
-      });
+        return `${key}=${value}`
+      })
 
-      path = `/store/products?${queryString.join('&')}`;
+      path = `/store/products?${queryString.join("&")}`
     }
 
-    return this.client.request('GET', path);
+    return this.client.request("GET", path)
   }
 }
 
-export default ProductsResource;
+export default ProductsResource
