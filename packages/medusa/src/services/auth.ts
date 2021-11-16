@@ -1,5 +1,8 @@
 import Scrypt from "scrypt-kdf"
 import { BaseService } from "medusa-interfaces"
+import { AuthenticateResult } from "../types/auth"
+import { User } from "../models/user"
+import { Customer } from "../models/customer"
 
 /**
  * Can authenticate a user based on email password combination
@@ -22,7 +25,7 @@ class AuthService extends BaseService {
    * @param {string} hash - the hash to compare against
    * @return {bool} the result of the comparison
    */
-  async comparePassword_(password, hash) {
+  async comparePassword_(password: string, hash: string): Promise<boolean> {
     const buf = Buffer.from(hash, "base64")
     return Scrypt.verify(buf, password)
   }
@@ -30,19 +33,15 @@ class AuthService extends BaseService {
   /**
    * Authenticates a given user with an API token
    * @param {string} token - the api_token of the user to authenticate
-   * @return {{
-   *    success: (bool),
-   *    user: (object | undefined),
-   *    error: (string | undefined)
-   * }}
+   * @return {AuthenticateResult}
    *    success: whether authentication succeeded
    *    user: the user document if authentication succeded
    *    error: a string with the error message
    */
-  async authenticateAPIToken(token) {
+  async authenticateAPIToken(token: string): Promise<AuthenticateResult> {
     if (process.env.NODE_ENV === "development") {
       try {
-        const user = await this.userService_.retrieve(token)
+        const user: User = await this.userService_.retrieve(token)
         return {
           success: true,
           user,
@@ -53,7 +52,7 @@ class AuthService extends BaseService {
     }
 
     try {
-      const user = await this.userService_.retrieveByApiToken(token)
+      const user: User = await this.userService_.retrieveByApiToken(token)
       return {
         success: true,
         user,
@@ -71,16 +70,22 @@ class AuthService extends BaseService {
    * scrypt to match password with hashed value.
    * @param {string} email - the email of the user
    * @param {string} password - the password of the user
-   * @return {{ success: (bool), user: (object | undefined) }}
+   * @return {AuthenticateResult}
    *    success: whether authentication succeeded
    *    user: the user document if authentication succeded
    *    error: a string with the error message
    */
-  async authenticate(email, password) {
+  async authenticate(
+    email: string,
+    password: string
+  ): Promise<AuthenticateResult> {
     try {
-      const userPasswordHash = await this.userService_.retrieveByEmail(email, {
-        select: ["password_hash"],
-      })
+      const userPasswordHash: User = await this.userService_.retrieveByEmail(
+        email,
+        {
+          select: ["password_hash"],
+        }
+      )
 
       const passwordsMatch = await this.comparePassword_(
         password,
@@ -89,22 +94,19 @@ class AuthService extends BaseService {
 
       if (passwordsMatch) {
         const user = await this.userService_.retrieveByEmail(email)
+
         return {
           success: true,
-          user,
-        }
-      } else {
-        return {
-          success: false,
-          error: "Invalid email or password",
+          user: user,
         }
       }
     } catch (error) {
-      console.log(error)
-      return {
-        success: false,
-        error: "Invalid email or password",
-      }
+      // ignore
+    }
+
+    return {
+      success: false,
+      error: "Invalid email or password",
     }
   }
 
@@ -118,43 +120,35 @@ class AuthService extends BaseService {
    *    user: the user document if authentication succeded
    *    error: a string with the error message
    */
-  async authenticateCustomer(email, password) {
+  async authenticateCustomer(
+    email: string,
+    password: string
+  ): Promise<AuthenticateResult> {
     try {
-      const customerPasswordHash = await this.customerService_.retrieveByEmail(
-        email,
-        {
+      const customerPasswordHash: Customer =
+        await this.customerService_.retrieveByEmail(email, {
           select: ["password_hash"],
-        }
-      )
-      if (!customerPasswordHash.password_hash) {
-        return {
-          success: false,
-          error: "Invalid email or password",
-        }
-      }
+        })
+      if (customerPasswordHash.password_hash) {
+        const passwordsMatch = await this.comparePassword_(
+          password,
+          customerPasswordHash.password_hash
+        )
 
-      const passwordsMatch = await this.comparePassword_(
-        password,
-        customerPasswordHash.password_hash
-      )
-
-      if (passwordsMatch) {
-        const customer = await this.customerService_.retrieveByEmail(email)
-        return {
-          success: true,
-          customer,
-        }
-      } else {
-        return {
-          success: false,
-          error: "Invalid email or password",
+        if (passwordsMatch) {
+          const customer = await this.customerService_.retrieveByEmail(email)
+          return {
+            success: true,
+            customer,
+          }
         }
       }
     } catch (error) {
-      return {
-        success: false,
-        error: "Invalid email or password",
-      }
+      // ignore
+    }
+    return {
+      success: false,
+      error: "Invalid email or password",
     }
   }
 }
