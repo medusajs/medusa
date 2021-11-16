@@ -1,6 +1,4 @@
-import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
-import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}
@@ -29,20 +27,15 @@ import { IsString } from "class-validator"
  *               type: boolean
  */
 export default async (req, res) => {
-  const validated = await validator(AdminDeleteRegionParams, req.params)
+  const { region_id } = req.params
 
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  await regionService.delete(validated.region_id)
+  await regionService.delete(region_id)
 
   res.status(200).json({
-    id: validated.region_id,
+    id: region_id,
     object: "region",
     deleted: true,
   })
-}
-
-export class AdminDeleteRegionParams {
-  @IsString()
-  region_id: string
 }

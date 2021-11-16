@@ -74,23 +74,29 @@ export class AdminPostRegionsRegionReq {
   @IsString()
   @IsOptional()
   name: string
+
   @IsString()
   @IsOptional()
   currency_code: string
+
   @IsString()
   @IsOptional()
   tax_code: string
+
   @IsNumber()
   @IsOptional()
   tax_rate: number
+
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   payment_providers: string[]
+
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   fulfillment_providers: string[]
+
   // iso_2 country codes
   @IsArray()
   @IsString({ each: true })

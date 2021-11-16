@@ -1,8 +1,6 @@
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /regions/{id}/metadata/{key}
@@ -26,12 +24,7 @@ import { IsString } from "class-validator"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(
-    AdminDeleteRegionsRegionMetadataKeyParams,
-    req.params
-  )
-
-  const { id, key } = validated
+  const { id, key } = req.params
 
   const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.deleteMetadata(id, key)
@@ -42,11 +35,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ region })
-}
-
-export class AdminDeleteRegionsRegionMetadataKeyParams {
-  @IsString()
-  id: string
-  @IsString()
-  key: string
 }

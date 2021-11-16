@@ -1,8 +1,7 @@
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"
-import { IsString } from "class-validator"
+import { FulfillmentOption } from "."
 
 /**
  * @oas [get] /regions/{id}/fulfillment-options
@@ -27,11 +26,7 @@ import { IsString } from "class-validator"
  *                 type: object
  */
 export default async (req, res) => {
-  const validated = await validator(
-    AdminGetRegionsRegionFulfillmentOptionsParams,
-    req.query
-  )
-  const { region_id } = validated
+  const { region_id } = req.query
 
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
@@ -48,18 +43,4 @@ export default async (req, res) => {
   res.status(200).json({
     fulfillment_options: options,
   })
-}
-
-export class AdminGetRegionsRegionFulfillmentOptionsParams {
-  @IsString()
-  region_id
-}
-
-export class FulfillmentOption {
-  provider_id: string
-  options: any[]
-}
-
-export class AdminGetRegionsRegionFulfillmentOptionsRes {
-  fulfillment_options: FulfillmentOption[]
 }

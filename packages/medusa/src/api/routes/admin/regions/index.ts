@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { Region } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -94,8 +95,21 @@ export class AdminRegionRes {
   region: Region
 }
 
+export type AdminGetRegionsRes = PaginatedResponse & {
+  regions: Region[]
+}
+
 export class DeleteResponse {
   id: string
   object: string
   deleted: boolean
+}
+
+export class FulfillmentOption {
+  provider_id: string
+  options: any[]
+}
+
+export class AdminGetRegionsRegionFulfillmentOptionsRes {
+  fulfillment_options: FulfillmentOption[]
 }

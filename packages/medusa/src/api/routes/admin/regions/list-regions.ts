@@ -72,10 +72,3 @@ export class AdminGetRegionsParams {
   @Type(() => Number)
   offset?: number
 }
-
-export class AdminGetRegionsRes {
-  regions: Region[]
-  count: number
-  offset: number
-  limit: number
-}

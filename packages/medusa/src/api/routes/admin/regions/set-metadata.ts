@@ -48,6 +48,7 @@ export default async (req, res) => {
 export class AdminPostRegionsRegionPaymentProvidersProviderReq {
   @IsString()
   key: string
+
   @IsString()
   value: string
 }

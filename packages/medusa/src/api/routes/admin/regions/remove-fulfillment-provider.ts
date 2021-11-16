@@ -7,6 +7,7 @@ import RegionService from "../../../../services/region"
  * operationId: "PostRegionsRegionFulfillmentProvidersProvider"
  * summary: "Remove Fulfillment Provider"
  * description: "Removes a Fulfillment Provider."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  *   - (path) provider_id=* {string} The id of the Fulfillment Provider.
