@@ -40,6 +40,6 @@ export class StorePostSearchRes {
   [k: string]: any
 }
 
-export type StoreGetProductsResponse = PaginatedResponse & {
+export type StoreProductsListRes = PaginatedResponse & {
   products: Product[]
 }
