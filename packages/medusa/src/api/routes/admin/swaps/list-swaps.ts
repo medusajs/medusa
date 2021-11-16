@@ -1,8 +1,11 @@
+import { SwapService } from "../../../../services"
+
 /**
  * @oas [get] /swaps
  * operationId: "GetSwaps"
  * summary: "List Swaps"
  * description: "Retrieves a list of Swaps."
+ * x-authenticated: true
  * tags:
  *   - Swap
  * responses:
@@ -18,7 +21,7 @@
  *                 $ref: "#/components/schemas/swap"
  */
 export default async (req, res) => {
-  const swapService = req.scope.resolve("swapService")
+  const swapService: SwapService = req.scope.resolve("swapService")
 
   const limit = parseInt(req.query.limit) || 50
   const offset = parseInt(req.query.offset) || 0
