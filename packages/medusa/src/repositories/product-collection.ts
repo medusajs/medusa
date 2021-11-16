@@ -4,6 +4,7 @@ import {
   FindManyOptions,
   OrderByCondition,
   Repository,
+  SelectQueryBuilder,
 } from "typeorm"
 import { ProductCollection } from "../models/product-collection"
 
@@ -21,13 +22,22 @@ type CustomOptions = {
 
 @EntityRepository(ProductCollection)
 export class ProductCollectionRepository extends Repository<ProductCollection> {
-  public async findWithRelations(
+  public async queryCollections(
     relations: Array<keyof ProductCollection> = [],
-    idsOrOptionsWithoutRelations: CustomOptions = {}
-  ): Promise<ProductCollection[]> {
+    idsOrOptionsWithoutRelations: CustomOptions = {},
+    shouldCount = false
+  ): Promise<[ProductCollection[], number]> {
     let entities: ProductCollection[]
+    let count = 0
+
+    const getResults = async (
+      qb: SelectQueryBuilder<ProductCollection>
+    ): Promise<[ProductCollection[], number]> =>
+      shouldCount ? [await qb.getMany(), 0] : await qb.getManyAndCount()
+
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
+      count = entities.length
     } else {
       const qb = this.createQueryBuilder("product_collection")
         .select(["product_collection.id"])
@@ -36,18 +46,24 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
         .take(idsOrOptionsWithoutRelations.take)
         .orderBy(idsOrOptionsWithoutRelations.order)
 
-      entities = await qb.getMany()
+      const result = await getResults(qb)
+      entities = result[0]
+      count = result[1]
     }
 
     const entitiesIds = entities.map(({ id }) => id)
 
     if (entitiesIds.length === 0) {
       // no need to continue
-      return []
+      return [[], 0]
     }
 
     if (relations.length === 0) {
-      return this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
+      const result = await this.findByIds(
+        entitiesIds,
+        idsOrOptionsWithoutRelations
+      )
+      return [result, result.length]
     }
 
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -90,7 +106,29 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
-    return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
+    return [
+      map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id])),
+      count,
+    ]
+  }
+
+  public async findWithRelations(
+    relations: Array<keyof ProductCollection> = [],
+    idsOrOptionsWithoutRelations: CustomOptions = {}
+  ): Promise<ProductCollection[]> {
+    const result = await this.queryCollections(
+      relations,
+      idsOrOptionsWithoutRelations
+    )
+
+    return result[0]
+  }
+
+  public async findWithRelationsAndCount(
+    relations: Array<keyof ProductCollection> = [],
+    idsOrOptionsWithoutRelations: CustomOptions = {}
+  ): Promise<[ProductCollection[], number]> {
+    return this.queryCollections(relations, idsOrOptionsWithoutRelations, true)
   }
 
   public async findOneWithRelations(

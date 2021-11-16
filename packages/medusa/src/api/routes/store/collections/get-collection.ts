@@ -21,9 +21,13 @@ import ProductCollectionService from "../../../../services/product-collection"
 
 export default async (req, res) => {
   const { id } = req.params
+<<<<<<< HEAD:packages/medusa/src/api/routes/store/collections/get-collection.ts
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
+=======
+  const productCollectionService = req.scope.resolve("productCollectionService")
+>>>>>>> added ListAndCount:packages/medusa/src/api/routes/store/collections/get-collection.js
 
   const collection = await productCollectionService.retrieve(id)
   res.status(200).json({ collection })

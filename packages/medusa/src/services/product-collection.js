@@ -190,6 +190,65 @@ class ProductCollectionService extends BaseService {
 
     return productCollectionRepo.findWithRelations(rels, query)
   }
+
+  /**
+   * Lists product collections
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(
+    selector = {},
+    config = { relations: [], skip: 0, take: 20 }
+  ) {
+    const productCollectionRepo = this.manager_.getCustomRepository(
+      this.productCollectionRepository_
+    )
+
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+    const rels = query.relations
+    delete query.relations
+
+    if (q) {
+      const where = query.where
+      const order = query.order
+      delete where.title
+      delete where.handle
+      const raw = await productCollectionRepo
+        .createQueryBuilder("product_collection")
+        .select(["product_collection.id"])
+        .where(where)
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where(`product_collection.title ILIKE :q`, {
+              q: `%${q}%`,
+            }).orWhere(`product_collection.handle ILIKE :q`, { q: `%${q}%` })
+          })
+        )
+        .orderBy(order)
+        .getManyAndCount()
+
+      return [
+        productCollectionRepo.findWithRelations(
+          rels,
+          raw[0].map((i) => i.id)
+        ),
+        raw[1],
+      ]
+    }
+
+    return productCollectionRepo.findWithRelationsAndCount(rels, query)
+  }
 }
 
 export default ProductCollectionService
