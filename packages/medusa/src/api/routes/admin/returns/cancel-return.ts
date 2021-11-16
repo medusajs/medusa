@@ -1,5 +1,8 @@
 import { OrderService, ReturnService } from "../../../../services"
-import { defaultFields, defaultRelations } from "../orders"
+import {
+  defaultAdminOrdersFields,
+  defaultAdminOrdersRelations,
+} from "../orders"
 
 /**
  * @oas [post] /returns/{id}/cancel
@@ -37,8 +40,8 @@ export default async (req, res) => {
   }
 
   const order = await orderService.retrieve(result.order_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })
