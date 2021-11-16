@@ -50,8 +50,8 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const limit = parseInt(value.limit) || 50
-  const offset = parseInt(value.offset) || 0
+  const limit = parseInt(value.limit || "") || 50
+  const offset = parseInt(value.offset || "") || 0
 
   let includeFields: string[] = []
   if (value.fields) {
