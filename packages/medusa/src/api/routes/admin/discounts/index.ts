@@ -91,7 +91,7 @@ export type AdminDiscountsRes = {
   discount: Discount
 }
 
-export type AdminGetDiscountsRes = PaginatedResponse & {
+export type AdminDiscountsListRes = PaginatedResponse & {
   discounts: Discount[]
 }
 
