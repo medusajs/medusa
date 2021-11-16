@@ -216,9 +216,6 @@ class EventBusService {
   /**
    * Handles incoming jobs.
    * @param {Object} job The job object
-   * @param {string} job.eventName The name of the event to process
-   * @param {any} job.data Data to send to the subscriber
-   *
    * @return {Promise} resolves to the results of the subscriber calls.
    */
   worker_ = (job) => {
@@ -245,6 +242,11 @@ class EventBusService {
     )
   }
 
+  /**
+   * Handles incoming jobs.
+   * @param {Object} job The job object
+   * @return {Promise} resolves to the results of the subscriber calls.
+   */
   cronWorker_ = (job) => {
     const { eventName, data } = job.data
     const observers = this.cronHandlers_[eventName] || []

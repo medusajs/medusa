@@ -1,10 +1,12 @@
-import { defaultFields, defaultRelations } from "./"
+import { defaultAdminSwapFields, defaultAdminSwapRelations } from "."
+import { SwapService } from "../../../../services"
 
 /**
  * @oas [get] /swaps/{id}
  * operationId: "GetSwapsSwap"
  * summary: "Retrieve a Swap"
  * description: "Retrieves a Swap."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Swap.
  * tags:
@@ -22,11 +24,11 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const swapService = req.scope.resolve("swapService")
+  const swapService: SwapService = req.scope.resolve("swapService")
 
   const swap = await swapService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminSwapFields,
+    relations: defaultAdminSwapRelations,
   })
 
   res.json({ swap })
