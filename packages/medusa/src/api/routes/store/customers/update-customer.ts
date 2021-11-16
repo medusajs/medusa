@@ -1,11 +1,16 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
+import CustomerService from "../../../../services/customer"
+import { AddressPayload } from "../../../../types/common"
+import { IsType } from "../../../../utils/is-type"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me
  * operationId: PostCustomersCustomer
  * summary: Update Customer details
  * description: "Updates a Customer's saved details."
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -48,28 +53,45 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const id = req.user.customer_id
 
-  const schema = Validator.object().keys({
-    billing_address: Validator.address().optional().allow(null),
-    first_name: Validator.string().optional(),
-    last_name: Validator.string().optional(),
-    password: Validator.string().optional(),
-    phone: Validator.string().optional(),
-    email: Validator.string().optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(StorePostCustomersCustomerReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const customerService = req.scope.resolve("customerService")
-  await customerService.update(id, value)
+  const customerService: CustomerService = req.scope.resolve("customerService")
+  await customerService.update(id, validated)
 
   const customer = await customerService.retrieve(id, {
-    relations: defaultRelations,
-    select: defaultFields,
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
   })
 
   res.status(200).json({ customer })
+}
+
+export class StorePostCustomersCustomerReq {
+  @IsOptional()
+  @IsType([AddressPayload, String])
+  billing_address: AddressPayload | string
+
+  @IsOptional()
+  @IsString()
+  first_name: string
+
+  @IsOptional()
+  @IsString()
+  last_name: string
+
+  @IsOptional()
+  @IsString()
+  password: string
+
+  @IsOptional()
+  @IsString()
+  phone: string
+
+  @IsOptional()
+  @IsEmail()
+  email: string
+
+  @IsOptional()
+  @IsObject()
+  metadata: object
 }

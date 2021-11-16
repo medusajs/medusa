@@ -1,12 +1,13 @@
-import { defaultRelations, defaultFields } from "./"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
+import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [delete] /customers/{id}/addresses/{address_id}
+ * @oas [delete] /customers/me/addresses/{address_id}
  * operationId: DeleteCustomersCustomerAddressesAddress
  * summary: Delete an Address
  * description: "Removes an Address from the Customer's saved addresse."
+ * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer.
  *   - (path) address_id=* {string} The id of the Address to remove.
  * tags:
  *   - Customer
@@ -24,11 +25,11 @@ export default async (req, res) => {
   const id = req.user.customer_id
   const { address_id } = req.params
 
-  const customerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
   await customerService.removeAddress(id, address_id)
   const customer = await customerService.retrieve(id, {
-    relations: defaultRelations,
-    select: defaultFields,
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
   })
 
   res.json({ customer })
