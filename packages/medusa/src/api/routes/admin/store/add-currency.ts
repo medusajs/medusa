@@ -1,8 +1,10 @@
+import { StoreService } from "../../../../services"
 /**
- * @oas [delete] /store/currencies/{code}
- * operationId: "DeleteStoreCurrenciesCode"
- * summary: "Remvoe a Currency Code"
- * description: "Removes a Currency Code from the available currencies."
+ * @oas [post] /store/currencies/{code}
+ * operationId: "PostStoreCurrenciesCode"
+ * summary: "Add a Currency Code"
+ * description: "Adds a Currency Code to the available currencies."
+ * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The 3 character ISO currency code.
  * tags:
@@ -20,7 +22,7 @@
 export default async (req, res) => {
   const { currency_code } = req.params
 
-  const storeService = req.scope.resolve("storeService")
-  const data = await storeService.removeCurrency(currency_code)
+  const storeService: StoreService = req.scope.resolve("storeService")
+  const data = await storeService.addCurrency(currency_code)
   res.status(200).json({ store: data })
 }

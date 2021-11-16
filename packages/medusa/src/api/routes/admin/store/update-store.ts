@@ -1,10 +1,13 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { IsArray, IsOptional, IsString } from "class-validator"
+import { StoreService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store
  * operationId: "PostStore"
  * summary: "Update Store details."
  * description: "Updates the Store details"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -32,20 +35,31 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *               $ref: "#/components/schemas/store"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    name: Validator.string(),
-    swap_link_template: Validator.string(),
-    payment_link_template: Validator.string(),
-    default_currency_code: Validator.string(),
-    currencies: Validator.array().items(Validator.string()),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const storeService = req.scope.resolve("storeService")
-  const store = await storeService.update(value)
+  const validatedBody = await validator(AdminPostStoreReq, req.body)
+  const storeService: StoreService = req.scope.resolve("storeService")
+  const store = await storeService.update(validatedBody)
   res.status(200).json({ store })
+}
+
+export class AdminPostStoreReq {
+  @IsOptional()
+  @IsString()
+  name?: string
+
+  @IsString()
+  @IsOptional()
+  swap_link_template?: string
+
+  @IsString()
+  @IsOptional()
+  payment_link_template?: string
+
+  @IsString()
+  @IsOptional()
+  default_currency_code?: string
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  currencies?: string[]
 }

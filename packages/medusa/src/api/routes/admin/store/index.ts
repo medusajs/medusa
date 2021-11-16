@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Store, PaymentProvider } from "./../../../../"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -22,4 +23,12 @@ export default (app) => {
   )
 
   return app
+}
+
+export class AdminStoresRes {
+  store: Store
+}
+
+export type AdminPaymentProvidersList = {
+  payment_providers: PaymentProvider[]
 }
