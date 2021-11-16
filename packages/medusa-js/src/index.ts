@@ -4,6 +4,7 @@ import AuthResource from "./resources/auth"
 import CartsResource from "./resources/carts"
 import CollectionsResource from "./resources/collections"
 import CustomersResource from "./resources/customers"
+import GiftCardsResource from "./resources/gift-cards"
 import OrdersResource from "./resources/orders"
 import ProductsResource from "./resources/products"
 import RegionsResource from "./resources/regions"
@@ -26,6 +27,7 @@ class Medusa {
   public shippingOptions: ShippingOptionsResource
   public swaps: SwapsResource
   public collections: CollectionsResource
+  public giftCards: GiftCardsResource
 
   constructor(config: Config) {
     this.client = new Client(config)
@@ -42,6 +44,7 @@ class Medusa {
     this.shippingOptions = new ShippingOptionsResource(this.client)
     this.swaps = new SwapsResource(this.client)
     this.collections = new CollectionsResource(this.client)
+    this.giftCards = new GiftCardsResource(this.client)
   }
 }
 

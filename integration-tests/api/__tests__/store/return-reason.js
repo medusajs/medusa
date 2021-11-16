@@ -24,6 +24,49 @@ describe("/store/return-reasons", () => {
     medusaProcess.kill()
   })
 
+  describe("GET /store/return-reasons/:id", () => {
+    let rrId
+
+    beforeEach(async () => {
+      try {
+        const created = dbConnection.manager.create(ReturnReason, {
+          value: "wrong_size",
+          label: "Wrong size",
+        })
+
+        const result = await dbConnection.manager.save(created)
+        rrId = result.id
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("get a return reason", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/store/return-reasons/${rrId}`)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.return_reason).toEqual(
+        expect.objectContaining({
+          id: rrId,
+          value: "wrong_size",
+        })
+      )
+    })
+  })
+
   describe("GET /store/return-reasons", () => {
     let rrId
     let rrId_1
