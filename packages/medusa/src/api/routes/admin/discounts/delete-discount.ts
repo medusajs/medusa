@@ -1,8 +1,11 @@
+import DiscountService from "../../../../services/discount"
+
 /**
  * @oas [delete] /discounts/{id}
  * operationId: "DeleteDiscountsDiscount"
  * summary: "Delete a Discount"
  * description: "Deletes a Discount."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount
  * tags:
@@ -25,7 +28,8 @@
  */
 export default async (req, res) => {
   const { discount_id } = req.params
-  const discountService = req.scope.resolve("discountService")
+
+  const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.delete(discount_id)
 
   res.json({

@@ -4,7 +4,7 @@ import {
   StringComparisonOperator,
   DateComparisonOperator,
 } from "./common"
-import { IsType } from "../utils/is-type"
+import { IsType } from "../utils/validators/is-type"
 
 export type ProductVariantPrice = {
   currency_code?: string

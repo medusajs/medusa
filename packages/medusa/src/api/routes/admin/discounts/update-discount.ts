@@ -1,11 +1,28 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsPositive,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import DiscountService from "../../../../services/discount"
+import { IsGreaterThan } from "../../../../utils/validators/greater-than"
+import { validator } from "../../../../utils/validator"
+import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 
 /**
  * @oas [post] /discounts/{id}
  * operationId: "PostDiscountsDiscount"
  * summary: "Update a Discount"
  * description: "Updates a Discount with a given set of rules that define how the Discount behaves."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount.
  * requestBody:
@@ -39,6 +56,9 @@ import { defaultFields, defaultRelations } from "./"
  *             type: array
  *             items:
  *               type: string
+ *            metadata:
+ *              description: An object containing metadata of the discount
+ *              type: object
  * tags:
  *   - Discount
  * responses:
@@ -53,43 +73,89 @@ import { defaultFields, defaultRelations } from "./"
  */
 export default async (req, res) => {
   const { discount_id } = req.params
-  const schema = Validator.object().keys({
-    code: Validator.string().optional(),
-    is_dynamic: Validator.boolean().optional(),
-    rule: Validator.object()
-      .keys({
-        id: Validator.string().required(),
-        description: Validator.string().optional(),
-        type: Validator.string().required(),
-        value: Validator.number().required(),
-        allocation: Validator.string().required(),
-        valid_for: Validator.array().items(Validator.string()),
-      })
-      .optional(),
-    is_disabled: Validator.boolean().optional(),
-    starts_at: Validator.date().optional(),
-    ends_at: Validator.when("starts_at", {
-      not: undefined,
-      then: Validator.date().greater(Validator.ref("starts_at")).optional(),
-      otherwise: Validator.date().optional(),
-    }),
-    valid_duration: Validator.string().isoDuration().allow(null).optional(),
-    usage_limit: Validator.number().positive().optional(),
-    regions: Validator.array().items(Validator.string()).optional(),
-  })
 
-  const { value, error } = schema.validate(req.body)
-
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const discountService = req.scope.resolve("discountService")
-  await discountService.update(discount_id, value)
+  const validated = await validator(AdminPostDiscountsDiscountReq, req.body)
+  const discountService: DiscountService = req.scope.resolve("discountService")
+  await discountService.update(discount_id, validated)
   const discount = await discountService.retrieve(discount_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })
+}
+
+export class AdminPostDiscountsDiscountReq {
+  @IsString()
+  @IsOptional()
+  code: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AdminUpdateDiscountRule)
+  rule: AdminUpdateDiscountRule
+
+  @IsBoolean()
+  @IsOptional()
+  is_dynamic: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  is_disabled: boolean
+
+  @IsDate()
+  @IsOptional()
+  @Type(() => Date)
+  starts_at: Date
+
+  @IsDate()
+  @IsOptional()
+  @IsGreaterThan("starts_at")
+  @Type(() => Date)
+  ends_at: Date
+
+  @IsISO8601Duration()
+  @IsOptional()
+  valid_duration: string
+
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  usage_limit: number
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  regions: string[]
+
+  @IsObject()
+  @IsOptional()
+  metadata: object
+}
+
+export class AdminUpdateDiscountRule {
+  @IsString()
+  @IsNotEmpty()
+  id: string
+
+  @IsString()
+  @IsOptional()
+  description: string
+
+  @IsString()
+  @IsNotEmpty()
+  type: string
+
+  @IsNumber()
+  @Type(() => Number)
+  value: string
+
+  @IsString()
+  @IsNotEmpty()
+  allocation: string
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  valid_for: string
 }

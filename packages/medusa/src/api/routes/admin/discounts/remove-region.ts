@@ -1,9 +1,10 @@
-import { defaultFields, defaultRelations } from "./"
-
+import DiscountService from "../../../../services/discount"
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 /**
  * @oas [delete] /discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
  * summary: "Remove Region availability"
+ * x-authenticated: true
  * description: "Removes a Region from the list of Regions that a Discount can be used in."
  * parameters:
  *   - (path) id=* {string} The id of the Discount.
@@ -22,12 +23,13 @@ import { defaultFields, defaultRelations } from "./"
  */
 export default async (req, res) => {
   const { discount_id, region_id } = req.params
-  const discountService = req.scope.resolve("discountService")
+
+  const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.removeRegion(discount_id, region_id)
 
   const discount = await discountService.retrieve(discount_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })
