@@ -23,7 +23,7 @@ describe("GET /store/collections", () => {
     })
 
     it("returns collections", () => {
-      expect(subject.body.collections[0][0].id).toEqual(IdMap.getId("col"))
+      expect(subject.body.collections[0].id).toEqual(IdMap.getId("col"))
     })
   })
 
