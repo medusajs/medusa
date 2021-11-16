@@ -1,4 +1,5 @@
 import { Router } from "express"
+import "reflect-metadata"
 import errorHandler from "./middlewares/error-handler"
 import admin from "./routes/admin"
 import store from "./routes/store"
@@ -17,8 +18,8 @@ export default (container, config) => {
 
 export * from "./routes/admin/variants"
 export * from "./routes/store/carts"
-export * from "./routes/store/products"
 export * from "./routes/store/gift-cards"
+export * from "./routes/store/products"
 export * from "./routes/store/return-reasons"
 export * from "./routes/store/returns"
 export * from "./routes/store/shipping-options"
