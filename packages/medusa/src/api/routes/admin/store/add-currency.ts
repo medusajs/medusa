@@ -1,7 +1,4 @@
-import { Response } from "express"
-import { AdminStoresRes } from "./index"
 import { StoreService } from "../../../../services"
-
 /**
  * @oas [post] /store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
@@ -21,7 +18,7 @@ import { StoreService } from "../../../../services"
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res: Response<AdminStoresRes>) => {
+export default async (req, res) => {
   const { currency_code } = req.params
 
   const storeService: StoreService = req.scope.resolve("storeService")

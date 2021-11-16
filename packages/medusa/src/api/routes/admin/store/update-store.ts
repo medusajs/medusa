@@ -1,6 +1,4 @@
-import { IsString, IsOptional } from "class-validator"
-import { Response } from "express"
-import { AdminStoresRes } from "."
+import { IsOptional, IsString } from "class-validator"
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -35,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res: Response<AdminStoresRes>) => {
+export default async (req, res) => {
   const validatedBody = await validator(AdminPostStoreReq, req.body)
 
   const storeService: StoreService = req.scope.resolve("storeService")

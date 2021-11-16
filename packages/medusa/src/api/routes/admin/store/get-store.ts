@@ -1,5 +1,3 @@
-import { Response } from "express"
-import { AdminStoresRes } from "./"
 import {
   FulfillmentProviderService,
   PaymentProviderService,
@@ -23,7 +21,7 @@ import {
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res: Response<AdminStoresRes>) => {
+export default async (req, res) => {
   try {
     const storeService: StoreService = req.scope.resolve("storeService")
     const paymentProviderService: PaymentProviderService = req.scope.resolve(

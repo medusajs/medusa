@@ -1,6 +1,4 @@
-import { Response } from "express"
 import { PaymentProviderService } from "../../../../services"
-import { AdminPaymentProvidersList } from "."
 /**
  * @oas [get] /store/payment-providers
  * operationId: "GetStorePaymentProviders"
@@ -20,7 +18,7 @@ import { AdminPaymentProvidersList } from "."
  *               items:
  *                 $ref: "#/components/schemas/store"
  */
-export default async (req, res: Response<AdminPaymentProvidersList>) => {
+export default async (req, res) => {
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )
