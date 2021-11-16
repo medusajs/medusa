@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsOptional, IsString } from "class-validator"
+import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
@@ -62,10 +62,12 @@ export default async (req, res) => {
 
 export class StoreGetVariantsParams {
   @IsOptional()
+  @IsInt()
   @Type(() => Number)
   limit?: number = 100
 
   @IsOptional()
+  @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
