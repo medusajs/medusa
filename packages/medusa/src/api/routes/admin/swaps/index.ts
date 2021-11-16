@@ -1,4 +1,6 @@
 import { Router } from "express"
+import { Swap } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -19,7 +21,7 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export const defaultAdminSwapRelations = [
   "order",
   "additional_items",
   "return_order",
@@ -36,7 +38,7 @@ export const defaultRelations = [
   "cart.payment",
 ]
 
-export const defaultFields = [
+export const defaultAdminSwapFields = [
   "id",
   "fulfillment_status",
   "payment_status",
@@ -53,3 +55,14 @@ export const defaultFields = [
   "cart.gift_card_total",
   "cart.total",
 ]
+
+export type AdminSwapsListRes = PaginatedResponse & {
+  swaps: Swap[]
+}
+
+export type AdminSwapsRes = {
+  swap: Swap
+}
+
+export * from "./get-swap"
+export * from "./list-swaps"
