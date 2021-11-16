@@ -3,6 +3,7 @@
  * operationId: "DeleteGiftCardsGiftCard"
  * summary: "Delete a Gift Card"
  * description: "Deletes a Gift Card"
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Gift Card to delete.
  * tags:

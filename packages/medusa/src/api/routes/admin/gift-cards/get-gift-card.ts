@@ -5,6 +5,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  * operationId: "GetGiftCardsGiftCard"
  * summary: "Retrieve a Gift Card"
  * description: "Retrieves a Gift Card."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Gift Card.
  * tags:

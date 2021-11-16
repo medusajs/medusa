@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/gift_card"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetGiftCardsReq, req.query)
+  const validated = await validator(AdminGetGiftCardsParams, req.query)
 
   const limit = validated.limit || 50
   const offset = validated.offset || 0
@@ -48,13 +48,15 @@ export default async (req, res) => {
   res.status(200).json({ gift_cards: giftCards })
 }
 
-export class AdminGetGiftCardsReq {
+export class AdminGetGiftCardsParams {
   @IsOptional()
   @IsString()
   limit?: number
+
   @IsOptional()
   @IsString()
   offset?: number
+
   @IsOptional()
   @IsString()
   q?: string

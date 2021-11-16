@@ -56,11 +56,11 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const valdiated = await validator(AdminPostGiftCardsGiftCardReq, req.body)
+  const validated = await validator(AdminPostGiftCardsGiftCardReq, req.body)
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  await giftCardService.update(id, valdiated)
+  await giftCardService.update(id, validated)
 
   const giftCard = await giftCardService.retrieve(id, {
     select: defaultAdminGiftCardFields,
@@ -74,16 +74,20 @@ export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 0 })
   balance?: number
+
   @IsOptional()
   @IsBoolean()
   is_disabled?: boolean
+
   @IsOptional()
   @IsDate()
   @Type(() => Date)
   ends_at?: Date
+
   @IsOptional()
   @IsString()
   region_id?: string
+
   @IsOptional()
   metadata?: object
 }

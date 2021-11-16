@@ -1,5 +1,4 @@
 import { Router } from "express"
-import "reflect-metadata"
 import { GiftCard } from "../../../.."
 import middlewares from "../../../middlewares"
 
@@ -53,6 +52,20 @@ export const allowedAdminGiftCardFields = [
 
 export const allowedAdminGiftCardRelations = ["region"]
 
-export type AdminGiftCardResponse = {
+export type AdminGiftCardsRes = {
   gift_card: GiftCard
 }
+
+export type AdminGiftCardsListRes = {
+  gift_cards: GiftCard[]
+}
+
+export type AdminGiftCardsDeleteRes = {
+  id: string
+  object: string
+  deleted: boolean
+}
+
+export * from "./create-gift-card"
+export * from "./list-gift-cards"
+export * from "./update-gift-card"

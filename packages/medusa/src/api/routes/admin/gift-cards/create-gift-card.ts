@@ -15,6 +15,7 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostGiftCards"
  * summary: "Create a Gift Card"
  * description: "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -73,16 +74,20 @@ export class AdminPostGiftCardsReq {
   @IsNumber()
   @Type(() => Number)
   value?: number
+
   @IsOptional()
   @IsDate()
   @Type(() => Date)
   ends_at?: Date
+
   @IsOptional()
   @IsBoolean()
   is_disabled?: boolean
+
   @IsOptional()
   @IsString()
   region_id?: string
+
   @IsOptional()
   metadata?: object
 }
