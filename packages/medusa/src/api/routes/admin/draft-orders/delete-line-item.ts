@@ -32,10 +32,7 @@ import { validator } from "../../../../utils/validator"
  */
 
 export default async (req, res) => {
-  const { id, line_id } = await validator(
-    AdminDeleteDraftOrdersDraftOrderLineItemsItemReq,
-    req.params
-  )
+  const { id, line_id } = req.params
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
@@ -67,12 +64,4 @@ export default async (req, res) => {
 
     res.status(200).json({ draft_order: draftOrder })
   })
-}
-
-export class AdminDeleteDraftOrdersDraftOrderLineItemsItemReq {
-  @IsString()
-  id: string
-
-  @IsString()
-  line_id: string
 }
