@@ -1,8 +1,11 @@
+import RegionService from "../../../../services/region"
+
 /**
  * @oas [delete] /regions/{id}
  * operationId: "DeleteRegionsRegion"
  * summary: "Delete a Region"
  * description: "Deletes a Region."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:
@@ -25,7 +28,9 @@
  */
 export default async (req, res) => {
   const { region_id } = req.params
-  const regionService = req.scope.resolve("regionService")
+
+  const regionService: RegionService = req.scope.resolve("regionService")
+
   await regionService.delete(region_id)
 
   res.status(200).json({

@@ -1,10 +1,13 @@
-import { defaultRelations, defaultFields } from "./"
+import { Region } from "../../../.."
+import RegionService from "../../../../services/region"
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
  * @oas [get] /regions/{id}
  * operationId: "GetRegionsRegion"
  * summary: "Retrieve a Region"
  * description: "Retrieves a Region."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Region.
  * tags:
@@ -21,11 +24,11 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { region_id } = req.params
-  const regionService = req.scope.resolve("regionService")
-  const data = await regionService.retrieve(region_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+  const regionService: RegionService = req.scope.resolve("regionService")
+  const region: Region = await regionService.retrieve(region_id, {
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
 
-  res.status(200).json({ region: data })
+  res.status(200).json({ region })
 }

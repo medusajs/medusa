@@ -1,16 +1,21 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
-
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { validator } from "../../../../utils/validator"
+import { Region } from "../../../.."
+import RegionService from "../../../../services/region"
 /**
- * @oas [post] /regions/{id}
- * operationId: "PostRegionsRegion"
- * summary: "Update a Region"
- * description: "Updates a Region"
- * parameters:
- *   - (path) id=* {string} The id of the Region.
+ * @oas [post] /regions
+ * operationId: "PostRegions"
+ * summary: "Create a Region"
+ * description: "Creates a Region"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
+ *       required:
+ *         - name
+ *         - currency_code
+ *         - tax_rate
  *       schema:
  *         properties:
  *           name:
@@ -53,29 +58,42 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const { region_id } = req.params
-  const schema = Validator.object().keys({
-    name: Validator.string(),
-    currency_code: Validator.string(),
-    tax_code: Validator.string().allow(""),
-    tax_rate: Validator.number(),
-    payment_providers: Validator.array().items(Validator.string()),
-    fulfillment_providers: Validator.array().items(Validator.string()),
-    // iso_2 country codes
-    countries: Validator.array().items(Validator.string()),
-  })
+  const validated = await validator(AdminPostRegionsReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const regionService: RegionService = req.scope.resolve("regionService")
+  const result: Region = await regionService.create(validated)
 
-  const regionService = req.scope.resolve("regionService")
-  await regionService.update(region_id, value)
-  const region = await regionService.retrieve(region_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+  const region: Region = await regionService.retrieve(result.id, {
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
 
   res.status(200).json({ region })
+}
+
+export class AdminPostRegionsReq {
+  @IsString()
+  name: string
+
+  @IsString()
+  currency_code: string
+
+  @IsString()
+  @IsOptional()
+  tax_code: string
+
+  @IsNumber()
+  tax_rate: number
+
+  @IsArray()
+  @IsString({ each: true })
+  payment_providers: string[]
+
+  @IsArray()
+  @IsString({ each: true })
+  fulfillment_providers: string[]
+
+  @IsArray()
+  @IsString({ each: true })
+  countries: string[]
 }

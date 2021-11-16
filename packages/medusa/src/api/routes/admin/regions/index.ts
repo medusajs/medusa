@@ -1,5 +1,8 @@
 import { Router } from "express"
+import { Region } from "../../../.."
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
@@ -71,7 +74,7 @@ export default (app) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultAdminRegionFields = [
   "id",
   "name",
   "currency_code",
@@ -83,8 +86,27 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = [
+export const defaultAdminRegionRelations = [
   "countries",
   "payment_providers",
   "fulfillment_providers",
 ]
+
+export class AdminRegionsRes {
+  region: Region
+}
+
+export type AdminRegionsListRes = PaginatedResponse & {
+  regions: Region[]
+}
+
+export type AdminRegionsDeleteRes = DeleteResponse
+
+export class FulfillmentOption {
+  provider_id: string
+  options: any[]
+}
+
+export class AdminGetRegionsRegionFulfillmentOptionsRes {
+  fulfillment_options: FulfillmentOption[]
+}

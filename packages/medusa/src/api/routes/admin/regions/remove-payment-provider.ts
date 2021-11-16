@@ -1,12 +1,15 @@
-import { defaultRelations, defaultFields } from "./"
+import { Region } from "../../../.."
+import RegionService from "../../../../services/region"
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
  * @oas [delete] /regions/{id}/payment-providers/{provider_id}
  * operationId: "PostRegionsRegionPaymentProvidersProvider"
  * summary: "Remove Payment Provider"
  * description: "Removes a Payment Provider."
+ * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) region_id=* {string} The id of the Region.
  *   - (path) provider_id=* {string} The id of the Payment Provider.
  * tags:
  *   - Region
@@ -22,12 +25,13 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { region_id, provider_id } = req.params
-  const regionService = req.scope.resolve("regionService")
+
+  const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.removePaymentProvider(region_id, provider_id)
 
-  const region = await regionService.retrieve(region_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+  const region: Region = await regionService.retrieve(region_id, {
+    select: defaultAdminRegionFields,
+    relations: defaultAdminRegionRelations,
   })
 
   res.json({ region })
