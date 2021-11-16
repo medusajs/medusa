@@ -87,11 +87,11 @@ export const defaultAdminDiscountsRelations = [
   "rule.valid_for",
 ]
 
-export type AdminDiscountRes = {
+export type AdminDiscountsRes = {
   discount: Discount
 }
 
-export type AdminGetDiscountsRes = PaginatedResponse & {
+export type AdminDiscountsListRes = PaginatedResponse & {
   discounts: Discount[]
 }
 

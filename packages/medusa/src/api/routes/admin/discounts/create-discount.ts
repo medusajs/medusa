@@ -143,8 +143,8 @@ export class AdminPostDiscountsDiscountRule {
   type: string
 
   @IsNumber()
-  @IsNotEmpty()
-  value: string
+  @Type(() => Number)
+  value: number
 
   @IsString()
   @IsNotEmpty()
