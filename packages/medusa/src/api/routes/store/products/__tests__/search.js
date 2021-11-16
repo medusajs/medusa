@@ -34,7 +34,7 @@ describe("GET /store/products/search", () => {
 
       expect(response.body.type).toEqual("invalid_data")
       expect(response.body.message).toEqual(
-        "q must be a string,,offset must be a number conforming to the specified constraints,,limit must be a number conforming to the specified constraints,"
+        "q must be a string, offset must be a number conforming to the specified constraints, limit must be a number conforming to the specified constraints"
       )
       expect(response.status).toEqual(400)
     })
