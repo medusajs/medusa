@@ -158,12 +158,15 @@ describe("/admin/gift-cards", () => {
     it("creates a gift card", async () => {
       const api = useApi()
 
+      const dateString = new Date().toISOString()
+
       const response = await api
         .post(
           "/admin/gift-cards",
           {
             value: 1000,
             region_id: "region",
+            ends_at: dateString,
           },
           {
             headers: {
