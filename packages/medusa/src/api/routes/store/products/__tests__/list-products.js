@@ -1,5 +1,5 @@
 import { IdMap } from "medusa-test-utils"
-import { defaultRelations } from ".."
+import { defaultStoreProductsRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
@@ -19,7 +19,7 @@ describe("GET /store/products", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
         { status: ["published"] },
-        { relations: defaultRelations, skip: 0, take: 100 }
+        { relations: defaultStoreProductsRelations, skip: 0, take: 100 }
       )
     })
 
@@ -30,10 +30,8 @@ describe("GET /store/products", () => {
   })
 
   describe("list all gift cards", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request("GET", "/store/products?is_giftcard=true")
+      await request("GET", "/store/products?is_giftcard=true")
     })
 
     afterAll(() => {
@@ -44,7 +42,7 @@ describe("GET /store/products", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
         { is_giftcard: true, status: ["published"] },
-        { relations: defaultRelations, skip: 0, take: 100 }
+        { relations: defaultStoreProductsRelations, skip: 0, take: 100 }
       )
     })
   })
