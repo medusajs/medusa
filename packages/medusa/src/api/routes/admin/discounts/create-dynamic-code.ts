@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import {
   IsNotEmpty,
   IsNumber,
