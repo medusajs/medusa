@@ -1,4 +1,5 @@
-import { IsNumberString, IsOptional, IsString } from "class-validator"
+import { Type } from "class-transformer"
+import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
@@ -28,13 +29,14 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product_variant"
  */
 export default async (req, res) => {
-  const validatedQuery = await validator(StoreGetVariantsParams, req.query)
-  const limit = validatedQuery.limit ? parseInt(validatedQuery.limit) : 100
-  const offset = validatedQuery.offset ? parseInt(validatedQuery.offset) : 0
+  const { limit, offset, expand, ids } = await validator(
+    StoreGetVariantsParams,
+    req.query
+  )
 
   let expandFields: string[] = []
-  if (validatedQuery.expand) {
-    expandFields = validatedQuery.expand.split(",")
+  if (expand) {
+    expandFields = expand.split(",")
   }
 
   let selector = {}
@@ -46,8 +48,8 @@ export default async (req, res) => {
     take: limit,
   }
 
-  if (validatedQuery.ids) {
-    selector = { id: validatedQuery.ids.split(",") }
+  if (ids) {
+    selector = { id: ids.split(",") }
   }
 
   const variantService: ProductVariantService = req.scope.resolve(
@@ -60,12 +62,14 @@ export default async (req, res) => {
 
 export class StoreGetVariantsParams {
   @IsOptional()
-  @IsNumberString()
-  limit?: string
+  @IsInt()
+  @Type(() => Number)
+  limit?: number = 100
 
   @IsOptional()
-  @IsNumberString()
-  offset?: string
+  @IsInt()
+  @Type(() => Number)
+  offset?: number = 0
 
   @IsOptional()
   @IsString()
