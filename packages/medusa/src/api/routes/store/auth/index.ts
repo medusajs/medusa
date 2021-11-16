@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Customer } from "./../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -17,3 +18,16 @@ export default (app) => {
 
   return app
 }
+
+export class StoreAuthRes {
+  customer: Customer
+}
+
+export class StoreGetAuthEmailRes {
+  exists: boolean
+}
+
+export * from "./create-session"
+export * from "./delete-session"
+export * from "./exists"
+export * from "./get-session"
