@@ -1,9 +1,12 @@
 import { IdMap } from "medusa-test-utils"
+import {
+  defaultStoreCustomersFields,
+  defaultStoreCustomersRelations,
+} from "../"
 import { request } from "../../../../../helpers/test-request"
-import { defaultFields, defaultRelations } from "../"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
-describe("POST /store/customers/:id", () => {
+describe("POST /store/customers/me", () => {
   describe("successfully updates a customer", () => {
     let subject
     beforeAll(async () => {
@@ -41,7 +44,10 @@ describe("POST /store/customers/:id", () => {
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
-        { relations: defaultRelations, select: defaultFields }
+        {
+          relations: defaultStoreCustomersRelations,
+          select: defaultStoreCustomersFields,
+        }
       )
     })
 
@@ -51,6 +57,34 @@ describe("POST /store/customers/:id", () => {
 
     it("status code 200", () => {
       expect(subject.status).toEqual(200)
+    })
+  })
+
+  describe("fails update a customer with a billing address with an invalid type", () => {
+    let subject
+    beforeAll(async () => {
+      subject = await request("POST", `/store/customers/me`, {
+        payload: {
+          billing_address: 42,
+        },
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
+          },
+        },
+      })
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CustomerService update 0 times", () => {
+      expect(CustomerServiceMock.update).toHaveBeenCalledTimes(0)
+    })
+
+    it("status code 400", () => {
+      expect(subject.status).toEqual(400)
     })
   })
 
