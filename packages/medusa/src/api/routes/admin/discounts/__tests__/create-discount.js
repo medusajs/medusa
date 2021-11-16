@@ -161,7 +161,7 @@ describe("POST /admin/discounts", () => {
 
     it("returns error", () => {
       expect(subject.body.message).toEqual(
-        `type should not be empty,type must be a string`
+        `type should not be empty, type must be a string`
       )
     })
   })
